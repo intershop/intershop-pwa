@@ -4,7 +4,6 @@ import { Observable, catchError, map, of, switchMap, take, throwError } from 'rx
 
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getNewsletterSubscriptionStatus } from 'ish-core/store/customer/user';
-import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 /**
  * The Newsletter Service handles the newsletter related interaction with the 'subscriptions' REST API.
@@ -23,7 +22,7 @@ export class NewsletterService {
    *                     Returns 'false' when a 404-error is thrown, which is the APIs response for "no subscription found".
    */
   getSubscription(userEmail: string): Observable<boolean> {
-    return this.apiService.get(`subscriptions/${encodeResourceID(userEmail)}`).pipe(
+    return this.apiService.get(`subscriptions/${this.apiService.encodeResourceId(userEmail)}`).pipe(
       map((params: { active: boolean }) => params.active),
       catchError(error => {
         if (error.status === 404) {
@@ -74,6 +73,8 @@ export class NewsletterService {
    * always returns 'false'
    */
   private unsubscribeFromNewsletter(userEmail: string): Observable<boolean> {
-    return this.apiService.delete(`subscriptions/${encodeResourceID(userEmail)}`).pipe(map(() => false));
+    return this.apiService
+      .delete(`subscriptions/${this.apiService.encodeResourceId(userEmail)}`)
+      .pipe(map(() => false));
   }
 }

@@ -15,6 +15,8 @@ describe('Order Template Service', () => {
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
+    when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
+
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
     });

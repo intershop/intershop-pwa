@@ -27,6 +27,7 @@ describe('Categories Service', () => {
     when(apiServiceMock.get('categories/dummyid@cat', anything())).thenReturn(
       of({ categoryPath: [{ id: 'blubb' }] } as CategoryData)
     );
+    when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }, provideMockStore()],
     });

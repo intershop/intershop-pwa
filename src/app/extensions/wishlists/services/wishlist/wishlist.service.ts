@@ -4,7 +4,6 @@ import { concatMap, first, map, switchMap } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 import { WishlistData } from '../../models/wishlist/wishlist.interface';
 import { WishlistMapper } from '../../models/wishlist/wishlist.mapper';
@@ -46,7 +45,7 @@ export class WishlistService {
       first(),
       concatMap(restResource =>
         this.apiService
-          .get<WishlistData>(`${restResource}/-/wishlists/${encodeResourceID(wishlistId)}`)
+          .get<WishlistData>(`${restResource}/-/wishlists/${this.apiService.encodeResourceId(wishlistId)}`)
           .pipe(map(wishlistData => this.wishlistMapper.fromData(wishlistData, wishlistId)))
       )
     );
@@ -82,7 +81,7 @@ export class WishlistService {
     return this.appFacade.customerRestResource$.pipe(
       first(),
       concatMap(restResource =>
-        this.apiService.delete<void>(`${restResource}/-/wishlists/${encodeResourceID(wishlistId)}`)
+        this.apiService.delete<void>(`${restResource}/-/wishlists/${this.apiService.encodeResourceId(wishlistId)}`)
       )
     );
   }
@@ -98,7 +97,7 @@ export class WishlistService {
       first(),
       concatMap(restResource =>
         this.apiService
-          .put(`${restResource}/-/wishlists/${encodeResourceID(wishlist.id)}`, wishlist)
+          .put(`${restResource}/-/wishlists/${this.apiService.encodeResourceId(wishlist.id)}`, wishlist)
           .pipe(map((response: Wishlist) => this.wishlistMapper.fromUpdate(response, wishlist.id)))
       )
     );
@@ -123,9 +122,12 @@ export class WishlistService {
       first(),
       concatMap(restResource =>
         this.apiService
-          .post(`${restResource}/-/wishlists/${encodeResourceID(wishlistId)}/products/${encodeResourceID(sku)}`, {
-            quantity,
-          })
+          .post(
+            `${restResource}/-/wishlists/${this.apiService.encodeResourceId(
+              wishlistId
+            )}/products/${this.apiService.encodeResourceId(sku)}`,
+            { quantity }
+          )
           .pipe(concatMap(() => this.getWishlist(wishlistId)))
       )
     );
@@ -149,7 +151,11 @@ export class WishlistService {
       first(),
       concatMap(restResource =>
         this.apiService
-          .delete(`${restResource}/-/wishlists/${encodeResourceID(wishlistId)}/products/${encodeResourceID(sku)}`)
+          .delete(
+            `${restResource}/-/wishlists/${this.apiService.encodeResourceId(
+              wishlistId
+            )}/products/${this.apiService.encodeResourceId(sku)}`
+          )
           .pipe(concatMap(() => this.getWishlist(wishlistId)))
       )
     );

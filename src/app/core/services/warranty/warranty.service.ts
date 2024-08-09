@@ -18,7 +18,7 @@ export class WarrantyService {
    */
   getWarranty(warrantySku: string): Observable<Warranty> {
     return this.apiService
-      .get<WarrantyData>(`products/${warrantySku}`, { sendSPGID: true })
+      .get<WarrantyData>(`products/${this.apiService.encodeResourceId(warrantySku)}`, { sendSPGID: true })
       .pipe(map(warrantyData => WarrantyMapper.fromData(warrantyData)));
   }
 }

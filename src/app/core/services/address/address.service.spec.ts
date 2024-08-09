@@ -24,6 +24,7 @@ describe('Address Service', () => {
       ],
     });
     when(appFacade.customerRestResource$).thenReturn(of('customers'));
+    when(apiService.encodeResourceId(anything())).thenCall(id => id);
 
     addressService = TestBed.inject(AddressService);
   });

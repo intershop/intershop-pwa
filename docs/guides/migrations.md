@@ -9,6 +9,18 @@ kb_sync_latest_only
 
 ## From 5.1 to 5.2
 
+> [!NOTE]
+> The Intershop PWA 5.2.0 is implemented and configured to work out-of-the-box with ICM 12.0.0.
+> This distinction is needed since the way encoded resource IDs are processed by ICM was changed in ICM 12.
+>
+> To use the fitting resource ID encoding for ICM 7.10 or ICM 11, the feature toggle `legacyEncoding` needs to be enabled.
+
+The function `encodeResourceID` has been moved to a method `encodeResourceId` of the [`api.service`](../../src/app/core/services/api/api.service.ts) and it is now used to encode all dynamic resource IDs in any REST API call to ICM.
+This was previously only done for the login but is now consistently used for all resource IDs.
+For ICM 7.10 and ICM 11 a duplicated `encodeURIComponent` encoding is applied, for ICM 12 and newer a single `encodeURIComponent` encoding with additional `+` character handling is used.
+To migrate custom code a simple search for `encodeResourceID(` and replace with `this.apiService.encodeResourceId(` should be sufficient.
+Please be aware when migrating that there is an intermediate [commit](https://github.com/intershop/intershop-pwa/commit/3e7c0ae2ff1d6e676f98d7c399b70b505f389e16) for the resource ID encoding in the 5.2 release that was improved with a later [commit](https://github.com/intershop/intershop-pwa/commit/TODO_with_release_creation) to work with the `legacyEncoding` feature toggle for ICM 7.10 and ICM 11 encoding not requiring any code adaptions anymore.
+
 The store action and method `addBasketToNewOrderTemplate` of the OrderTemplatesFacade have been renamed to `createOrderTemplateFromLineItems` and refactored slightly.
 
 The Intershop PWA specific Pipes `sanitize`, `makeHref` and `htmlEncode` were renamed using the common `ish` prefix that is used for the other custom Pipes as well.
@@ -20,12 +32,6 @@ A few Stylelint rules were changed and the `.scss` files were adapted.
 `scss/no-global-function-names` was enabled resulting in changes e.g. from `map-get($grid-breakpoints, 'xs')` to `map.get($grid-breakpoints, 'xs')` with the necessary `@use` references or from `darken($color-label-new, 20%)` to `color.adjust($color-label-new, $lightness: -20%)`.
 In addition empty comments in `.scss` files are no longer allowed and removed.
 In migration projects either keep the Stylelint rules with the old settings or migrate all your styling files accordingly running `npm run format`.
-
-The method [`encodeResourceID`](../../src/app/core/utils/url-resource-ids.ts) is now used to encode all dynamic resource IDs in any REST API call.
-This was previously only done for the login but is now consistently used for all resource IDs.
-For ICM 7.10 and ICM 11 this is done by default with a duplicated `encodeURIComponent` encoding.
-For ICM 12 and newer this needs to be changed to a single `encodeURIComponent` with additional `+` character handling.
-The ICM 12 handling is already prepared in [`encodeResourceID`](../../src/app/core/utils/url-resource-ids.ts) and needs to be activated in the source code if the Intershop PWA is used together with ICM 12.
 
 With the Intershop PWA version 5.2.0 the rendering of our demo/example view contexts was disabled by default.
 Each integrated view context triggers a REST call that will potentially decrease the SSR rendering performance, something that is not necessary if this feature is not actively used in a PWA project.

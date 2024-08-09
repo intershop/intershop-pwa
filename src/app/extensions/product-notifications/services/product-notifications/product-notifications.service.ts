@@ -6,7 +6,6 @@ import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 import { ProductNotificationData } from '../../models/product-notification/product-notification.interface';
 import { ProductNotificationMapper } from '../../models/product-notification/product-notification.mapper';
@@ -34,10 +33,10 @@ export class ProductNotificationsService {
         this.apiService
           .get(
             customer.isBusinessCustomer
-              ? `customers/${encodeResourceID(customer.customerNo)}/users/-/notifications/${encodeResourceID(
-                  notificationType
-                )}`
-              : `privatecustomers/-/notifications/${encodeResourceID(notificationType)}`
+              ? `customers/${this.apiService.encodeResourceId(
+                  customer.customerNo
+                )}/users/-/notifications/${notificationType}`
+              : `privatecustomers/-/notifications/${notificationType}`
           )
           .pipe(
             unpackEnvelope<Link>(),
@@ -66,10 +65,10 @@ export class ProductNotificationsService {
         this.apiService
           .post(
             customer.isBusinessCustomer
-              ? `customers/${encodeResourceID(customer.customerNo)}/users/-/notifications/${encodeResourceID(
+              ? `customers/${this.apiService.encodeResourceId(customer.customerNo)}/users/-/notifications/${
                   productNotification.type
-                )}`
-              : `privatecustomers/-/notifications/${encodeResourceID(productNotification.type)}`,
+                }`
+              : `privatecustomers/-/notifications/${productNotification.type}`,
             productNotification
           )
           .pipe(
@@ -100,12 +99,10 @@ export class ProductNotificationsService {
         this.apiService
           .put(
             customer.isBusinessCustomer
-              ? `customers/${encodeResourceID(customer.customerNo)}/users/-/notifications/${encodeResourceID(
+              ? `customers/${this.apiService.encodeResourceId(customer.customerNo)}/users/-/notifications/${
                   productNotification.type
-                )}/${sku}`
-              : `privatecustomers/-/notifications/${encodeResourceID(productNotification.type)}/${encodeResourceID(
-                  sku
-                )}`,
+                }/${this.apiService.encodeResourceId(sku)}`
+              : `privatecustomers/-/notifications/${productNotification.type}/${this.apiService.encodeResourceId(sku)}`,
             productNotification
           )
           .pipe(
@@ -135,10 +132,10 @@ export class ProductNotificationsService {
       switchMap(customer =>
         this.apiService.delete(
           customer.isBusinessCustomer
-            ? `customers/${encodeResourceID(customer.customerNo)}/users/-/notifications/${encodeResourceID(
-                productNotificationType
-              )}/${sku}`
-            : `privatecustomers/-/notifications/${encodeResourceID(productNotificationType)}/${encodeResourceID(sku)}`
+            ? `customers/${this.apiService.encodeResourceId(
+                customer.customerNo
+              )}/users/-/notifications/${productNotificationType}/${this.apiService.encodeResourceId(sku)}`
+            : `privatecustomers/-/notifications/${productNotificationType}/${this.apiService.encodeResourceId(sku)}`
         )
       )
     );

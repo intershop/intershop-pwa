@@ -29,6 +29,7 @@ describe('Order Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
+    when(apiService.encodeResourceId(anything())).thenCall(id => id);
 
     TestBed.configureTestingModule({
       providers: [

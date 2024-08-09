@@ -4,8 +4,9 @@ import { TestBed } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { noop } from 'rxjs';
-import { anything, capture, spy, verify } from 'ts-mockito';
+import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Link } from 'ish-core/models/link/link.model';
 import {
@@ -31,12 +32,14 @@ describe('Api Service', () => {
     let apiService: ApiService;
     let store: Store;
     let httpTestingController: HttpTestingController;
+    const featureToggleServiceMock = mock(FeatureToggleService);
 
     beforeEach(() => {
       TestBed.configureTestingModule({
         // https://angular.io/guide/http#testing-http-requests
         imports: [HttpClientTestingModule],
         providers: [
+          { provide: FeatureToggleService, useFactory: () => instance(featureToggleServiceMock) },
           provideMockStore({
             selectors: [
               { selector: isServerConfigurationLoaded, value: true },
@@ -168,6 +171,24 @@ describe('Api Service', () => {
       const req = httpTestingController.expectOne(`${REST_URL}/data`);
       req.flush({});
       expect(req.request.method).toEqual('DELETE');
+    });
+
+    describe('Encode Resource ID', () => {
+      it('should return a double encoded string if legacyEncoding is on', () => {
+        when(featureToggleServiceMock.enabled('legacyEncoding')).thenReturn(true);
+
+        expect(apiService.encodeResourceId('123456abc')).toEqual(`123456abc`);
+        expect(apiService.encodeResourceId('d.ori+6@test.intershop.de')).toEqual(`d.ori%252B6%2540test.intershop.de`);
+        expect(apiService.encodeResourceId('pmiller@test.intershop.de')).toEqual(`pmiller%2540test.intershop.de`);
+      });
+
+      it('should  return a single encoded string if legacyEncoding is off', () => {
+        when(featureToggleServiceMock.enabled('legacyEncoding')).thenReturn(false);
+
+        expect(apiService.encodeResourceId('123456abc')).toEqual(`123456abc`);
+        expect(apiService.encodeResourceId('d.ori+6@test.intershop.de')).toEqual(`d.ori+6%40test.intershop.de`);
+        expect(apiService.encodeResourceId('pmiller@test.intershop.de')).toEqual(`pmiller%40test.intershop.de`);
+      });
     });
   });
 

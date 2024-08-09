@@ -9,7 +9,6 @@ import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cos
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 @Injectable({ providedIn: 'root' })
 export class CostCentersService {
@@ -25,7 +24,7 @@ export class CostCentersService {
   getCostCenters(): Observable<CostCenter[]> {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
-        this.apiService.get(`customers/${encodeResourceID(customer.customerNo)}/costcenters`).pipe(
+        this.apiService.get(`customers/${this.apiService.encodeResourceId(customer.customerNo)}/costcenters`).pipe(
           this.apiService.resolveLinks<CostCenterData>(),
           map(ccData => ccData.map(CostCenterMapper.fromData))
         )
@@ -48,7 +47,9 @@ export class CostCentersService {
       switchMap(customer =>
         this.apiService
           .get<CostCenterData>(
-            `customers/${encodeResourceID(customer.customerNo)}/costcenters/${encodeResourceID(costCenterId)}`
+            `customers/${this.apiService.encodeResourceId(
+              customer.customerNo
+            )}/costcenters/${this.apiService.encodeResourceId(costCenterId)}`
           )
           .pipe(map(CostCenterMapper.fromData))
       )
@@ -69,7 +70,10 @@ export class CostCentersService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .post<CostCenterData>(`customers/${encodeResourceID(customer.customerNo)}/costcenters`, costCenter)
+          .post<CostCenterData>(
+            `customers/${this.apiService.encodeResourceId(customer.customerNo)}/costcenters`,
+            costCenter
+          )
           .pipe(concatMap(() => this.getCostCenter(costCenter.costCenterId)))
       )
     );
@@ -90,7 +94,9 @@ export class CostCentersService {
       switchMap(customer =>
         this.apiService
           .patch<CostCenterData>(
-            `customers/${encodeResourceID(customer.customerNo)}/costcenters/${encodeResourceID(costCenter.id)}`,
+            `customers/${this.apiService.encodeResourceId(
+              customer.customerNo
+            )}/costcenters/${this.apiService.encodeResourceId(costCenter.id)}`,
             costCenter
           )
           .pipe(map(CostCenterMapper.fromData))
@@ -110,7 +116,11 @@ export class CostCentersService {
 
     return this.currentCustomer$.pipe(
       switchMap(customer =>
-        this.apiService.delete(`customers/${encodeResourceID(customer.customerNo)}/costcenters/${encodeResourceID(id)}`)
+        this.apiService.delete(
+          `customers/${this.apiService.encodeResourceId(
+            customer.customerNo
+          )}/costcenters/${this.apiService.encodeResourceId(id)}`
+        )
       )
     );
   }
@@ -135,7 +145,9 @@ export class CostCentersService {
         forkJoin(
           buyers.map(buyer =>
             this.apiService.post(
-              `customers/${encodeResourceID(customer.customerNo)}/costcenters/${encodeResourceID(costCenterId)}/buyers`,
+              `customers/${this.apiService.encodeResourceId(
+                customer.customerNo
+              )}/costcenters/${this.apiService.encodeResourceId(costCenterId)}/buyers`,
               buyer
             )
           )
@@ -163,9 +175,11 @@ export class CostCentersService {
       switchMap(customer =>
         this.apiService
           .patch(
-            `customers/${encodeResourceID(customer.customerNo)}/costcenters/${encodeResourceID(
-              costCenterId
-            )}/buyers/${encodeResourceID(buyer.login)}`,
+            `customers/${this.apiService.encodeResourceId(
+              customer.customerNo
+            )}/costcenters/${this.apiService.encodeResourceId(costCenterId)}/buyers/${this.apiService.encodeResourceId(
+              buyer.login
+            )}`,
             buyer
           )
           .pipe(concatMap(() => this.getCostCenter(costCenterId)))
@@ -192,9 +206,11 @@ export class CostCentersService {
       switchMap(customer =>
         this.apiService
           .delete(
-            `customers/${encodeResourceID(customer.customerNo)}/costcenters/${encodeResourceID(
-              costCenterId
-            )}/buyers/${encodeResourceID(login)}`
+            `customers/${this.apiService.encodeResourceId(
+              customer.customerNo
+            )}/costcenters/${this.apiService.encodeResourceId(costCenterId)}/buyers/${this.apiService.encodeResourceId(
+              login
+            )}`
           )
           .pipe(concatMap(() => this.getCostCenter(costCenterId)))
       )

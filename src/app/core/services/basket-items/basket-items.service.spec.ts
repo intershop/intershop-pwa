@@ -33,6 +33,7 @@ describe('Basket Items Service', () => {
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
     when(apiServiceMock.currentBasketEndpoint()).thenReturn(instance(apiServiceMock));
+    when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
 
     TestBed.configureTestingModule({
       providers: [

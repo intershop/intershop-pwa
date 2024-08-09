@@ -7,7 +7,6 @@ import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 /**
  * The Address Service handles the interaction with the REST API concerning addresses.
@@ -26,7 +25,7 @@ export class AddressService {
     return this.appFacade.customerRestResource$.pipe(
       first(),
       concatMap(restResource =>
-        this.apiService.get(`${restResource}/${encodeResourceID(customerId)}/addresses`).pipe(
+        this.apiService.get(`${restResource}/${this.apiService.encodeResourceId(customerId)}/addresses`).pipe(
           unpackEnvelope<Link>(),
           this.apiService.resolveLinks<Address>(),
           map(addressesData => addressesData.map(AddressMapper.fromData))
@@ -52,7 +51,7 @@ export class AddressService {
       first(),
       concatMap(restResource =>
         this.apiService
-          .post(`${restResource}/${encodeResourceID(customerId)}/addresses`, customerAddress)
+          .post(`${restResource}/${this.apiService.encodeResourceId(customerId)}/addresses`, customerAddress)
           .pipe(this.apiService.resolveLink<Address>(), map(AddressMapper.fromData))
       )
     );
@@ -75,7 +74,9 @@ export class AddressService {
       concatMap(restResource =>
         this.apiService
           .put(
-            `${restResource}/${encodeResourceID(customerId)}/addresses/${encodeResourceID(address.id)}`,
+            `${restResource}/${this.apiService.encodeResourceId(
+              customerId
+            )}/addresses/${this.apiService.encodeResourceId(address.id)}`,
             customerAddress
           )
           .pipe(map(AddressMapper.fromData))
@@ -95,7 +96,11 @@ export class AddressService {
       first(),
       concatMap(restResource =>
         this.apiService
-          .delete(`${restResource}/${encodeResourceID(customerId)}/addresses/${encodeResourceID(addressId)}`)
+          .delete(
+            `${restResource}/${this.apiService.encodeResourceId(
+              customerId
+            )}/addresses/${this.apiService.encodeResourceId(addressId)}`
+          )
           .pipe(map(() => addressId))
       )
     );

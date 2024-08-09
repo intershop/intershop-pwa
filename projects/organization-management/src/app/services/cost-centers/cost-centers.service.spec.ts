@@ -7,15 +7,14 @@ import { CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cos
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
-import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 import { CostCentersService } from './cost-centers.service';
 
 describe('Cost Centers Service', () => {
   let apiService: ApiService;
   let costCentersService: CostCentersService;
-  const millersEMail = 'pmiller@test.intershop.de';
-  const millersCostcenterEndpoint = `customers/4711/costcenters/123/buyers/${encodeResourceID(millersEMail)}`;
+  const millersEMail = 'pmiller%40test.intershop.de';
+  const millersCostcenterEndpoint = `customers/4711/costcenters/123/buyers/${millersEMail}`;
 
   beforeEach(() => {
     apiService = mock(ApiService);
@@ -24,6 +23,7 @@ describe('Cost Centers Service', () => {
     when(apiService.patch(anything(), anything())).thenReturn(of({}));
     when(apiService.delete(anything())).thenReturn(of({}));
     when(apiService.resolveLinks()).thenReturn(() => of([]));
+    when(apiService.encodeResourceId(anything())).thenCall(id => id);
 
     TestBed.configureTestingModule({
       providers: [

@@ -177,6 +177,8 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 | sentry                       | Sentry error tracking and monitoring (additional configuration via `sentryDSN`)                                                                 |
 | tacton                       | Tacton product configuration integration (additional configuration via `tacton` and `dataRetention` configuration options)                      |
 | tracking                     | Google Tag Manager tracking (additional configuration via `gtmToken`)                                                                           |
+| **ICM compatibility**        |                                                                                                                                                 |
+| legacyEncoding               | Use URL resource encoding for ICM 7.10 and ICM 11                                                                                               |
 
 ### Configuring Features
 

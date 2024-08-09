@@ -22,7 +22,6 @@ import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-m
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { OrderService } from 'ish-core/services/order/order.service';
-import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 export type BasketUpdateType =
   | { commonShippingMethod: string }
@@ -184,7 +183,7 @@ export class BasketService {
     const params = new HttpParams().set('include', this.allTargetBasketIncludes.join());
     return this.apiService
       .post<BasketMergeData>(
-        `baskets/${targetBasketId}/merges`,
+        `baskets/${this.apiService.encodeResourceId(targetBasketId)}/merges`,
         { sourceBasket: sourceBasketId, sourceAuthenticationToken: sourceBasketAuthToken },
         {
           headers: this.basketHeaders,
@@ -261,7 +260,7 @@ export class BasketService {
     const body = { code: codeStr };
     return this.apiService
       .currentBasketEndpoint()
-      .post('promotioncodes', body, {
+      .post<{ infos: BasketInfo[] }>('promotioncodes', body, {
         headers: this.basketHeaders,
       })
       .pipe(map(({ infos }) => infos?.[0]?.message));
@@ -273,9 +272,11 @@ export class BasketService {
    * @param codeStr   The code string of the promotion code that should be removed from basket.
    */
   removePromotionCodeFromBasket(codeStr: string): Observable<string> {
-    return this.apiService.currentBasketEndpoint().delete<string>(`promotioncodes/${encodeResourceID(codeStr)}`, {
-      headers: this.basketHeaders,
-    });
+    return this.apiService
+      .currentBasketEndpoint()
+      .delete<string>(`promotioncodes/${this.apiService.encodeResourceId(codeStr)}`, {
+        headers: this.basketHeaders,
+      });
   }
 
   /**
@@ -331,7 +332,7 @@ export class BasketService {
     }
     return this.apiService
       .currentBasketEndpoint()
-      .patch(`addresses/${address.id}`, address, {
+      .patch<{ data: Address }>(`addresses/${this.apiService.encodeResourceId(address.id)}`, address, {
         headers: this.basketHeaders,
       })
       .pipe(
@@ -350,7 +351,7 @@ export class BasketService {
     return bucketId
       ? this.apiService
           .currentBasketEndpoint()
-          .get(`buckets/${bucketId}/eligible-shipping-methods`, {
+          .get(`buckets/${this.apiService.encodeResourceId(bucketId)}/eligible-shipping-methods`, {
             headers: this.basketHeaders,
           })
           .pipe(
@@ -423,9 +424,11 @@ export class BasketService {
     // if no type is provided save it as string
     const attribute = { ...attr, type: attr.type ?? 'String' };
 
-    return this.apiService.currentBasketEndpoint().patch<Attribute>(`attributes/${attribute.name}`, attribute, {
-      headers: this.basketHeaders,
-    });
+    return this.apiService
+      .currentBasketEndpoint()
+      .patch<Attribute>(`attributes/${this.apiService.encodeResourceId(attribute.name)}`, attribute, {
+        headers: this.basketHeaders,
+      });
   }
 
   /**
@@ -437,9 +440,11 @@ export class BasketService {
     if (!attributeName) {
       return throwError(() => new Error('deleteBasketAttribute() called without attributeName'));
     }
-    return this.apiService.currentBasketEndpoint().delete(`attributes/${attributeName}`, {
-      headers: this.basketHeaders,
-    });
+    return this.apiService
+      .currentBasketEndpoint()
+      .delete(`attributes/${this.apiService.encodeResourceId(attributeName)}`, {
+        headers: this.basketHeaders,
+      });
   }
 
   /**
@@ -478,7 +483,7 @@ export class BasketService {
 
     return this.apiService
       .currentBasketEndpoint()
-      .delete(`quotes/${quoteId}`, {
+      .delete(`quotes/${this.apiService.encodeResourceId(quoteId)}`, {
         headers: this.basketHeaders,
       })
       .pipe(map(BasketInfoMapper.fromInfo));

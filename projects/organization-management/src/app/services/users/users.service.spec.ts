@@ -7,7 +7,6 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
-import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 import { B2bRoleData } from '../../models/b2b-role/b2b-role.interface';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
@@ -19,8 +18,8 @@ describe('Users Service', () => {
   let apiService: ApiService;
   let usersService: UsersService;
   let appFacade: AppFacade;
-  const millersEMail = 'pmiller@test.intershop.de';
-  const millersEndpoint = `customers/4711/users/${encodeResourceID(millersEMail)}`;
+  const millersEMail = 'pmiller%40test.intershop.de';
+  const millersEndpoint = `customers/4711/users/${millersEMail}`;
 
   beforeEach(() => {
     apiService = mock(ApiService);
@@ -29,6 +28,7 @@ describe('Users Service', () => {
     when(apiService.delete(anything())).thenReturn(of({}));
     when(apiService.post(anyString(), anything())).thenReturn(of({}));
     when(apiService.put(anyString(), anything())).thenReturn(of({}));
+    when(apiService.encodeResourceId(anything())).thenCall(id => id);
     when(appFacade.currentLocale$).thenReturn(of('en_US'));
 
     TestBed.configureTestingModule({

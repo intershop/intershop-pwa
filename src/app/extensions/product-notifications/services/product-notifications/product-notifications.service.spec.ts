@@ -23,6 +23,7 @@ describe('Product Notifications Service', () => {
 
     when(apiServiceMock.get(anything())).thenReturn(of({ sku: '1234' }));
     when(apiServiceMock.resolveLinks()).thenReturn(() => of([]));
+    when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
 
     TestBed.configureTestingModule({
       providers: [
