@@ -81,6 +81,14 @@ footer {
       margin: 0;
       list-style: none;
     }
+
+    .link-group {
+      li {
+        a {
+          line-height: 25px;
+        }
+      }
+    }
   }
 }
 
@@ -96,8 +104,6 @@ footer {
 
 @media (max-width: $screen-xs-max) {
   .link-group {
-    margin-right: -($space-default);
-    margin-left: -($space-default);
     border-bottom: $border-width-default solid $border-color-default;
 
     ul {

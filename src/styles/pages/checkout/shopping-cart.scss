@@ -45,6 +45,10 @@
   h3 {
     margin-top: 0;
   }
+
+  .promotion-details-and-remove-links {
+    margin-bottom: divide($space-default, 3);
+  }
 }
 
 .address-summary {
@@ -101,6 +105,10 @@
   .form-control {
     padding: 0;
     background-color: inherit;
+  }
+
+  .promotion-details-and-remove-links {
+    margin-bottom: divide($space-default, 3);
   }
 }
 
