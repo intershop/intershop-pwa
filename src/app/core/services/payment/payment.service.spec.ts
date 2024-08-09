@@ -108,7 +108,7 @@ describe('Payment Service', () => {
       when(apiServiceMock.put(anyString(), anything(), anything())).thenReturn(of([]));
 
       paymentService.setBasketPayment('testPayment').subscribe(() => {
-        verify(apiServiceMock.put(`payments/open-tender?include=paymentMethod`, anything(), anything())).once();
+        verify(apiServiceMock.put(`payments/open-tender`, anything(), anything())).once();
         done();
       });
     });
@@ -117,7 +117,7 @@ describe('Payment Service', () => {
       when(apiServiceMock.post(anyString(), anything(), anything())).thenReturn(of([]));
 
       paymentService.createBasketPayment(newPaymentInstrument).subscribe(() => {
-        verify(apiServiceMock.post(`payment-instruments?include=paymentMethod`, anything(), anything())).once();
+        verify(apiServiceMock.post(`payment-instruments`, anything(), anything())).once();
         done();
       });
     });

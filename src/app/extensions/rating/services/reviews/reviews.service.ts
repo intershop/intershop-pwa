@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -25,7 +26,8 @@ export class ReviewsService {
       return throwError(() => new Error('getProductReviews() called without sku'));
     }
 
-    return this.apiService.get(`products/${encodeResourceID(sku)}/reviews?attrs=own`, { sendSPGID: true }).pipe(
+    const params = new HttpParams().set('attrs', 'own');
+    return this.apiService.get(`products/${encodeResourceID(sku)}/reviews`, { sendSPGID: true, params }).pipe(
       unpackEnvelope<Link>(),
       this.apiService.resolveLinks<ProductReview>(),
       map(reviews => ProductReviewsMapper.fromData(sku, reviews))

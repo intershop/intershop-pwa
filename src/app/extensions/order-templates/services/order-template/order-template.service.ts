@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, forkJoin, of, throwError } from 'rxjs';
 import { concatMap, map, switchMap } from 'rxjs/operators';
@@ -97,9 +98,9 @@ export class OrderTemplateService {
     }
     return this.apiService
       .post(
-        `customers/-/users/-/wishlists/${encodeResourceID(orderTemplateId)}/products/${encodeResourceID(
-          sku
-        )}?quantity=${quantity}`
+        `customers/-/users/-/wishlists/${encodeResourceID(orderTemplateId)}/products/${encodeResourceID(sku)}`,
+        {},
+        { params: new HttpParams().set('quantity', quantity || 1) }
       )
       .pipe(concatMap(() => this.getOrderTemplate(orderTemplateId)));
   }
