@@ -43,7 +43,7 @@ describe('Reviews Service', () => {
     when(apiServiceMock.resolveLinks()).thenReturn(() => of([review]));
 
     reviewsService.getProductReviews(sku).subscribe(data => {
-      verify(apiServiceMock.get(`products/${sku}/reviews?attrs=own`, anything())).once();
+      verify(apiServiceMock.get(`products/${sku}/reviews`, anything())).once();
       expect(data).toHaveProperty('reviews', [review]);
       done();
     });

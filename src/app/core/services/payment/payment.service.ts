@@ -67,14 +67,13 @@ export class PaymentService {
       return throwError(() => new Error('setBasketPayment() called without paymentInstrument'));
     }
 
+    const params = new HttpParams().set('include', 'paymentMethod');
     return this.apiService
       .currentBasketEndpoint()
       .put<{ data: PaymentInstrument; included: { paymentMethod: { [id: string]: PaymentMethodBaseData } } }>(
-        'payments/open-tender?include=paymentMethod',
+        'payments/open-tender',
         { paymentInstrument },
-        {
-          headers: this.basketHeaders,
-        }
+        { headers: this.basketHeaders, params }
       )
       .pipe(
         map(({ data, included }) =>
@@ -143,10 +142,12 @@ export class PaymentService {
       return throwError(() => new Error('createBasketPayment() called without paymentMethodId'));
     }
 
+    const params = new HttpParams().set('include', 'paymentMethod');
     return this.apiService
       .currentBasketEndpoint()
-      .post('payment-instruments?include=paymentMethod', paymentInstrument, {
+      .post<{ data: PaymentInstrument }>('payment-instruments', paymentInstrument, {
         headers: this.basketHeaders,
+        params,
       })
       .pipe(map(({ data }) => data));
   }
