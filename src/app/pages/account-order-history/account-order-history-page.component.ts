@@ -24,7 +24,7 @@ export class AccountOrderHistoryPageComponent implements OnInit {
   columnsToDisplay$: Observable<OrderColumnsType[]>;
   moreOrdersAvailable$: Observable<boolean>;
   filtersActive: boolean;
-  private isAdmin = false;
+  private isOrderManager = false;
 
   constructor(private accountFacade: AccountFacade) {}
 
@@ -33,10 +33,10 @@ export class AccountOrderHistoryPageComponent implements OnInit {
     this.ordersLoading$ = this.accountFacade.ordersLoading$;
     this.ordersError$ = this.accountFacade.ordersError$;
     this.moreOrdersAvailable$ = this.accountFacade.moreOrdersAvailable$;
-    this.columnsToDisplay$ = this.accountFacade.isAccountAdmin$.pipe(
-      tap(isAdmin => (this.isAdmin = isAdmin)),
-      map(isAdmin =>
-        isAdmin
+    this.columnsToDisplay$ = this.accountFacade.isOrderManager$.pipe(
+      tap(isOrderManager => (this.isOrderManager = isOrderManager)),
+      map(isOrderManager =>
+        isOrderManager
           ? ['creationDate', 'orderNoWithLink', 'lineItems', 'status', 'buyer', 'orderTotal']
           : ['creationDate', 'orderNoWithLink', 'lineItems', 'status', 'destination', 'orderTotal']
       )
@@ -53,7 +53,7 @@ export class AccountOrderHistoryPageComponent implements OnInit {
       ...filters,
       limit: 30,
       include: ['commonShipToAddress'],
-      buyer: filters.buyer || (this.isAdmin ? 'all' : undefined),
+      buyer: filters.buyer || (this.isOrderManager ? 'all' : undefined),
     });
   }
 

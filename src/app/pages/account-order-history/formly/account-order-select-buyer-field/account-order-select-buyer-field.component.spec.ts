@@ -18,7 +18,7 @@ describe('Account Order Select Buyer Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_USERS'),
+        AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_ORDERS'),
         FormlyModule.forRoot({
           types: [{ name: 'select-buyer', component: AccountOrderSelectBuyerFieldComponent }],
         }),

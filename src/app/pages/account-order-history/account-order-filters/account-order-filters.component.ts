@@ -142,7 +142,7 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
   constructor(private route: ActivatedRoute, private router: Router, private accountFacade: AccountFacade) {}
 
   ngOnInit() {
-    this.isAdmin$ = this.accountFacade.isAccountAdmin$.pipe(shareReplay(1));
+    this.isAdmin$ = this.accountFacade.isOrderManager$;
     this.fields$ = this.isAdmin$.pipe(
       map(isAdmin => [
         {
@@ -248,10 +248,12 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
   }
 
   private getModel(params?: UrlModel): Observable<FormModel> {
+    this.modelChange.emit(urlToQuery(params));
     return this.isAdmin$.pipe(
       distinctUntilChanged(),
-
-      tap(() => this.modelChange.emit(urlToQuery(params))),
+      tap(() => {
+        this.modelChange.emit(urlToQuery(params));
+      }),
       map(isAdmin => ({
         date:
           params?.from || params?.to
