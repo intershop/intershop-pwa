@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -17,7 +17,7 @@ export class ShoppingBasketPaymentComponent implements OnInit {
 
   paymentMethods$: Observable<PaymentMethod[]>;
   priceType$: Observable<'gross' | 'net'>;
-  redirectStatus$: Observable<string>;
+  redirectStatus: string;
 
   constructor(
     private checkoutFacade: CheckoutFacade,
@@ -27,10 +27,9 @@ export class ShoppingBasketPaymentComponent implements OnInit {
 
   ngOnInit(): void {
     this.priceType$ = this.checkoutFacade.priceType$;
-
-    // if page is shown after cancelled/faulty redirect determine error message variable
-    this.redirectStatus$ = this.route.queryParamMap.pipe(map(params => params.get('redirect')));
     this.paymentMethods$ = this.checkoutFacade.eligibleFastCheckoutPaymentMethods$;
+    // if page is shown after cancelled/faulty redirect determine error message variable
+    this.redirectStatus = this.route.snapshot.queryParamMap.get('redirect');
   }
 
   fastCheckout(paymentId: string) {

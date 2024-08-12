@@ -1,13 +1,19 @@
-<ul *ngIf="isApplicable()" class="list-unstyled">
-  <!-- error message in case after cancelled/faulty redirect -->
-  <div *ngIf="redirectStatus$ | async as redirectStatus" role="alert" class="alert alert-danger">
-    {{ 'checkout.payment.sorry_message.text' | translate }}
-    <ng-container *ngIf="redirectStatus === 'cancel'">{{ 'checkout.payment.canceled.text' | translate }}</ng-container>
-    <ng-container *ngIf="redirectStatus === 'failure'">{{ 'checkout.payment.failed.text' | translate }}</ng-container>
-  </div>
+<ul *ngIf="isApplicable()" class="list-unstyled mb-0">
+  <ish-error-message
+    *ngIf="redirectStatus === 'cancel'"
+    [error]="{ message: 'shopping_cart.payment.canceled.text' | translate }"
+  />
+  <ish-error-message
+    *ngIf="redirectStatus === 'failure'"
+    [error]="{
+      message: ('checkout.payment.sorry_message.text' | translate) + ' ' + ('checkout.payment.failed.text' | translate)
+    }"
+  />
+
   <!-- container for displaying of fast checkout payment methods -->
-  <ng-container *ngFor="let paymentMethod of paymentMethods$ | async">
-    <li class="d-block">
+  <ng-container *ngIf="paymentMethods$ | async as paymentMethods">
+    <li class="d-block text-center p-2">{{ 'shopping_cart.payment.or.text' | translate }}</li>
+    <li *ngFor="let paymentMethod of paymentMethods" class="d-block">
       <button
         (click)="fastCheckout(paymentMethod.id)"
         class="btn btn-lg btn-block btn-secondary"
