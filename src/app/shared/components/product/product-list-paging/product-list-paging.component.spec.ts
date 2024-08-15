@@ -42,9 +42,9 @@ describe('Product List Paging Component', () => {
         <li>
           <a
             queryparamshandling="merge"
+            class="link-decoration-hover active"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
-            class="active"
             href="/?page=1"
             >1</a
           >
@@ -52,6 +52,7 @@ describe('Product List Paging Component', () => {
         <li>
           <a
             queryparamshandling="merge"
+            class="link-decoration-hover"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=2"
@@ -61,6 +62,7 @@ describe('Product List Paging Component', () => {
         <li>
           <a
             queryparamshandling="merge"
+            class="link-decoration-hover"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=3"
@@ -70,7 +72,7 @@ describe('Product List Paging Component', () => {
         <li class="pagination-list-next">
           <a
             queryparamshandling="merge"
-            class="product-list-paging-next"
+            class="product-list-paging-next link-decoration-hover"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=2"
@@ -90,7 +92,7 @@ describe('Product List Paging Component', () => {
         <li>
           <a
             queryparamshandling="merge"
-            class="product-list-paging-previous"
+            class="product-list-paging-previous link-decoration-hover"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=1"
@@ -100,6 +102,7 @@ describe('Product List Paging Component', () => {
         <li>
           <a
             queryparamshandling="merge"
+            class="link-decoration-hover"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=1"
@@ -109,9 +112,9 @@ describe('Product List Paging Component', () => {
         <li>
           <a
             queryparamshandling="merge"
+            class="link-decoration-hover active"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
-            class="active"
             href="/?page=2"
             >2</a
           >
@@ -119,6 +122,7 @@ describe('Product List Paging Component', () => {
         <li>
           <a
             queryparamshandling="merge"
+            class="link-decoration-hover"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=3"
@@ -128,7 +132,7 @@ describe('Product List Paging Component', () => {
         <li class="pagination-list-next">
           <a
             queryparamshandling="merge"
-            class="product-list-paging-next"
+            class="product-list-paging-next link-decoration-hover"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=3"
@@ -148,7 +152,7 @@ describe('Product List Paging Component', () => {
         <li>
           <a
             queryparamshandling="merge"
-            class="product-list-paging-previous"
+            class="product-list-paging-previous link-decoration-hover"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=2"
@@ -158,6 +162,7 @@ describe('Product List Paging Component', () => {
         <li>
           <a
             queryparamshandling="merge"
+            class="link-decoration-hover"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=1"
@@ -167,6 +172,7 @@ describe('Product List Paging Component', () => {
         <li>
           <a
             queryparamshandling="merge"
+            class="link-decoration-hover"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=2"
@@ -176,9 +182,9 @@ describe('Product List Paging Component', () => {
         <li>
           <a
             queryparamshandling="merge"
+            class="link-decoration-hover active"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
-            class="active"
             href="/?page=3"
             >3</a
           >

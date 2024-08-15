@@ -7,7 +7,7 @@
           queryParamsHandling="merge"
           [queryParams]="{ page: currentPage - 1 }"
           [fragment]="fragmentOnRouting"
-          class="product-list-paging-previous"
+          class="product-list-paging-previous link-decoration-hover"
           >&laquo;</a
         >
       </ng-container>
@@ -20,6 +20,7 @@
         [queryParams]="{ page: p.value }"
         [fragment]="fragmentOnRouting"
         [ngClass]="{ active: p.value === currentPage }"
+        class="link-decoration-hover"
         >{{ p.display }}</a
       >
     </li>
@@ -30,7 +31,7 @@
           queryParamsHandling="merge"
           [queryParams]="{ page: currentPage + 1 }"
           [fragment]="fragmentOnRouting"
-          class="product-list-paging-next"
+          class="product-list-paging-next link-decoration-hover"
           >&raquo;</a
         >
       </ng-container>

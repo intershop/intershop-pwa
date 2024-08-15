@@ -52,7 +52,7 @@ describe('Basket Items Summary Component', () => {
 
   it('should not show showAll/HideAll links if there are less items than in collapsedItemsCount specified', () => {
     fixture.detectChanges();
-    expect(element.querySelector('.fa-angle-down')).toBeFalsy();
+    expect(element.querySelector('.fa-angle-right')).toBeFalsy();
     expect(element.querySelector('.fa-angle-up')).toBeFalsy();
   });
 
@@ -61,7 +61,7 @@ describe('Basket Items Summary Component', () => {
     component.basket.lineItems.push(BasketMockData.getBasketItem());
     component.basket.lineItems.push(BasketMockData.getBasketItem());
     fixture.detectChanges();
-    expect(element.querySelector('fa-icon[ng-reflect-icon="fas,angle-down"]')).toBeTruthy();
+    expect(element.querySelector('fa-icon[ng-reflect-icon="fas,angle-right"]')).toBeTruthy();
     expect(element.querySelector('fa-icon[ng-reflect-icon="fas,angle-up"]')).toBeFalsy();
   });
 
@@ -71,7 +71,7 @@ describe('Basket Items Summary Component', () => {
     component.basket.lineItems.push(BasketMockData.getBasketItem());
     component.basket.lineItems.push(BasketMockData.getBasketItem());
     fixture.detectChanges();
-    expect(element.querySelector('fa-icon[ng-reflect-icon="fas,angle-down"]')).toBeFalsy();
+    expect(element.querySelector('fa-icon[ng-reflect-icon="fas,angle-right"]')).toBeFalsy();
     expect(element.querySelector('fa-icon[ng-reflect-icon="fas,angle-up"]')).toBeTruthy();
   });
 });

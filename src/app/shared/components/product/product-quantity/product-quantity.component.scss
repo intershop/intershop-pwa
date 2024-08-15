@@ -9,10 +9,18 @@
 
   .decrease-button {
     left: 0;
+
+    &:hover {
+      text-decoration: none !important;
+    }
   }
 
   .increase-button {
     right: 0;
+
+    &:hover {
+      text-decoration: none !important;
+    }
   }
 
   // https://www.w3schools.com/howto/howto_css_hide_arrow_number.asp

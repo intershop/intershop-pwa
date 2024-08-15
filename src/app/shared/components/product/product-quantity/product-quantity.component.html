@@ -26,7 +26,7 @@
       <div class="counter-input">
         <button
           type="button"
-          class="btn btn-link decrease-button"
+          class="btn btn-link decrease-button text-decoration-none"
           (click)="decrease()"
           [disabled]="cannotDecrease$ | async"
           [attr.data-testing-id]="'decrease-quantity-' + elementId"
@@ -37,7 +37,7 @@
         </button>
         <button
           type="button"
-          class="btn btn-link increase-button"
+          class="btn btn-link increase-button text-decoration-none"
           (click)="increase()"
           [disabled]="cannotIncrease$ | async"
           [attr.data-testing-id]="'increase-quantity-' + elementId"

@@ -22,25 +22,25 @@
 
   <div class="row account-dashboard">
     <div class="col-6 col-sm-4 col-md-3 dashboard-item">
-      <a routerLink="/account/orders">
+      <a routerLink="/account/orders" class="link-decoration-hover">
         <div class="circle-icon"><fa-icon [icon]="['fas', 'list-alt']" /></div>
         {{ 'account.order_history.link' | translate }}
       </a>
     </div>
     <div *ishFeature="'wishlists'" class="col-6 col-sm-4 col-md-3 dashboard-item">
-      <a routerLink="/account/wishlists">
+      <a routerLink="/account/wishlists" class="link-decoration-hover">
         <div class="circle-icon"><fa-icon [icon]="['fas', 'heart']" /></div>
         {{ 'account.wishlists.link' | translate }}
       </a>
     </div>
     <div class="col-6 col-sm-4 col-md-3 dashboard-item">
-      <a routerLink="/account/addresses">
+      <a routerLink="/account/addresses" class="link-decoration-hover">
         <div class="circle-icon"><fa-icon [icon]="['fas', 'address-book']" /></div>
         {{ 'account.saved_addresses.link' | translate }}
       </a>
     </div>
     <div class="col-6 col-sm-4 col-md-3 dashboard-item">
-      <a routerLink="/account/profile">
+      <a routerLink="/account/profile" class="link-decoration-hover">
         <div class="circle-icon"><fa-icon [icon]="['fas', 'cog']" /></div>
         {{ 'account.profile.link' | translate }}
       </a>

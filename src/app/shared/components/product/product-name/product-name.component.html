@@ -2,7 +2,7 @@
   <ng-container *ngIf="productName$ | async as productName">
     <ng-container *ngIf="link; else noLink">
       <a
-        class="product-title"
+        class="product-title link-decoration-hover"
         data-testing-id="product-name-link"
         [routerLink]="productURL$ | async"
         [queryParamsHandling]="computedQueryParamsHandling"

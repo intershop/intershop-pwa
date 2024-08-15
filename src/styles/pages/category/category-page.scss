@@ -68,6 +68,10 @@ ul {
     position: relative;
     display: block;
 
+    &:hover {
+      color: $text-color-primary;
+    }
+
     img {
       width: 270px;
       height: auto;
@@ -79,13 +83,5 @@ ul {
   h2 {
     width: 100%;
     padding: 0;
-
-    @media (max-width: $screen-xs-max) {
-      font-size: 14px;
-    }
-
-    @media (max-width: $screen-xs-max) {
-      font-size: 13px;
-    }
   }
 }

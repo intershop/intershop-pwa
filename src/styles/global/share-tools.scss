@@ -47,6 +47,15 @@
         color: $text-color-corporate;
       }
     }
+
+    a {
+      // share tool links are never underlined
+      text-decoration: none !important;
+
+      &:hover {
+        text-decoration: none !important;
+      }
+    }
   }
 
   @media (min-width: $screen-sm-min) {

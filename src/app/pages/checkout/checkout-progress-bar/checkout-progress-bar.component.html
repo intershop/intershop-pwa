@@ -8,14 +8,14 @@
       }"
     >
       <ng-container *ngIf="checkoutStepLink(checkoutStep.step); else noLink">
-        <a [routerLink]="checkoutStep.link">
+        <a [routerLink]="checkoutStep.link" class="link-decoration-hover">
           <div class="progress-number"><fa-icon [icon]="['fas', 'check']" /></div>
-          <span class="progress-label"> {{ checkoutStep.labelKey | translate }} </span>
+          <span class="progress-label">{{ checkoutStep.labelKey | translate }} </span>
         </a>
       </ng-container>
       <ng-template #noLink>
         <div class="progress-number">{{ checkoutStep.stepKey | translate }}</div>
-        <span class="progress-label"> {{ checkoutStep.labelKey | translate }} </span>
+        <span class="progress-label">{{ checkoutStep.labelKey | translate }} </span>
       </ng-template>
     </li>
   </ul>

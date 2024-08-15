@@ -3,7 +3,7 @@
   class="category-name"
   [attr.data-testing-id]="'category-' + category.uniqueId"
 >
-  <a [routerLink]="category | ishCategoryRoute">
+  <a [routerLink]="category | ishCategoryRoute" class="link-decoration-hover">
     <ish-category-image [category]="category" />
     <h2 class="h3">{{ category.name }}</h2>
   </a>
