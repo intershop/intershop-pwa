@@ -5,6 +5,11 @@
     position: absolute;
     width: auto;
     margin: 0;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: none !important;
+    }
   }
 
   .decrease-button {

@@ -17,9 +17,7 @@
       font-size: 13px;
       color: $text-color-tertiary;
 
-      &:hover {
-        text-decoration: none;
-      }
+      @include hover-none-underline();
     }
   }
 
