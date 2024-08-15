@@ -29,6 +29,12 @@
         font-size: 85%;
       }
     }
+
+    @media (min-width: $screen-sm-min) {
+      .progress-label {
+        padding-left: $space-default * 0.5;
+      }
+    }
   }
 
   .progress-active {

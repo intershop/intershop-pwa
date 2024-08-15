@@ -5,7 +5,7 @@
       <ng-container *ngIf="facet.selected; else notSelectedBox">
         <button
           type="button"
-          class="btn btn-link btn-link-action"
+          class="btn btn-link btn-link-action link-decoration-hover"
           (click)="filter(facet)"
           [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
         >
@@ -21,7 +21,7 @@
       <ng-template #notSelectedBox>
         <button
           type="button"
-          class="filter-item-name btn btn-link btn-link-action"
+          class="filter-item-name btn btn-link btn-link-action link-decoration-hover"
           (click)="filter(facet)"
           [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
         >

@@ -89,11 +89,16 @@
   li {
     float: left;
 
+    a:not(.active) {
+      @include hover-none-underline();
+    }
+
     a,
     span {
       display: block;
       padding: 5px 9px;
       text-align: center;
+      text-decoration: none !important;
     }
 
     .active {

@@ -60,20 +60,11 @@
 
       a {
         color: inherit;
-        text-decoration: underline;
         text-transform: none;
-
-        &:hover {
-          color: $text-color-quaternary;
-        }
       }
 
       button.btn {
         color: $text-color-inverse;
-
-        &:hover {
-          color: $text-color-quaternary;
-        }
       }
 
       .infobox-count {

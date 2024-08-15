@@ -19,7 +19,10 @@
   .form-inline {
     * {
       margin-top: $space-default;
-      margin-right: ($space-default * 0.5);
+
+      @media (min-width: $screen-sm-min) {
+        margin-right: ($space-default * 0.5);
+      }
     }
 
     *:last-child {
@@ -44,6 +47,24 @@
 
   h3 {
     margin-top: 0;
+  }
+
+  .cart-items-collapse-link {
+    margin-top: $space-default;
+  }
+
+  .cart-items-collapse-link,
+  .promo-collapse-link {
+    width: 100%;
+    color: $color-primary;
+    text-align: left;
+    text-decoration: none !important;
+
+    .ng-fa-icon {
+      position: relative;
+      top: 2px;
+      color: $text-color-corporate;
+    }
   }
 
   .promotion-details-and-remove-links {

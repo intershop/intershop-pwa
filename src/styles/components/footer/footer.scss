@@ -73,6 +73,10 @@ footer {
         font-family: $font-family-condensedregular;
         color: $text-color-tertiary;
         text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
 
