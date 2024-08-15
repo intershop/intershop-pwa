@@ -69,7 +69,19 @@ a:not([href]):not([tabindex]) {
 a {
   cursor: pointer;
 
-  &:hover,
+  &:hover {
+    // global link behavior
+    text-decoration: underline;
+  }
+
+  &:not([href]):not([routerlink]) {
+    &:hover {
+      // global link behavior
+      text-decoration: none;
+    }
+  }
+
+  // :focus is not underlined because the clicked element would stay underlined if the page does not reload
   &:focus {
     text-decoration: none;
   }
@@ -80,6 +92,87 @@ a {
 
   &.teaser-link {
     display: block;
+  }
+}
+
+@mixin hover-underline-none() {
+  // default link and button link behavior
+  text-decoration: underline;
+
+  &:hover {
+    // underlined elements are not underlined on hover
+    text-decoration: none;
+  }
+}
+
+@mixin hover-none-underline() {
+  // elements which are styled as links with this class are not underlined but underlined on hover
+  text-decoration: none !important;
+
+  &:hover {
+    text-decoration: underline !important;
+  }
+}
+
+// link and button underline formatting for main content, modal content and cookies banner
+.main-container,
+.modal-content,
+.cookies-banner {
+  a {
+    &[href],
+    &[routerlink] {
+      // links which navigate are underlined by default
+      @include hover-underline-none();
+    }
+
+    &.btn {
+      // buttons are not underlined by default
+      text-decoration: none;
+
+      &.btn-link {
+        @include hover-underline-none();
+      }
+
+      &.btn-secondary {
+        // secondary buttons are never underlined
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+
+    &[role='tab'] {
+      // tabs are never underlined
+      text-decoration: none !important;
+    }
+  }
+
+  p,
+  label,
+  td,
+  .section,
+  .product-info {
+    a {
+      @include hover-underline-none();
+    }
+  }
+
+  button {
+    &.btn {
+      &.btn-link {
+        // buttons which are styled as links are underlined
+        @include hover-underline-none();
+      }
+    }
+  }
+
+  a,
+  button {
+    &.link-decoration-hover {
+      @include hover-none-underline();
+    }
   }
 }
 

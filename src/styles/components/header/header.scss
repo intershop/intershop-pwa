@@ -101,13 +101,6 @@ header {
     background: $color-inverse;
   }
 
-  .user-links,
-  .header-utility {
-    a span:hover {
-      color: $text-color-quaternary;
-    }
-  }
-
   .navbar-toggler {
     order: 20;
   }

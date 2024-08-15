@@ -2,7 +2,7 @@
   <ng-container *ngIf="user$ | async as user; else notLoggedIn">
     <a routerLink="/logout" data-testing-id="link-logout" [attr.aria-label]="'account.logout.link' | translate">
       <fa-icon [icon]="['fas', 'user']" class="header-icon" />
-      <span *ngIf="view !== 'small'"> {{ 'account.logout.link' | translate }} </span>
+      <span *ngIf="view !== 'small'">{{ 'account.logout.link' | translate }}</span>
     </a>
   </ng-container>
   <ng-template #notLoggedIn> &nbsp; </ng-template>

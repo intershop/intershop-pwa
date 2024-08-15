@@ -12,7 +12,9 @@
       *ngFor="let treeNode of treeNodes"
       [ngClass]="{ 'page-navigation-active': treeNode.contentPageId === currentContentPage.id }"
     >
-      <a [routerLink]="treeNode | ishContentPageRoute" [title]="treeNode.name">{{ treeNode.name }}</a>
+      <a [routerLink]="treeNode | ishContentPageRoute" [title]="treeNode.name" class="link-decoration-hover">{{
+        treeNode.name
+      }}</a>
       <ul *ngIf="treeNode.children.length && depth > counter" [ngClass]="'page-navigation-' + counter">
         <ng-container
           [ngTemplateOutlet]="pageTreeNode"

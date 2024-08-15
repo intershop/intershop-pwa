@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -22,7 +23,12 @@ describe('Basket Promotion Code Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [BasketPromotionCodeComponent, MockComponent(ErrorMessageComponent), MockDirective(NgbCollapse)],
+      declarations: [
+        BasketPromotionCodeComponent,
+        MockComponent(ErrorMessageComponent),
+        MockComponent(FaIconComponent),
+        MockDirective(NgbCollapse),
+      ],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
   });

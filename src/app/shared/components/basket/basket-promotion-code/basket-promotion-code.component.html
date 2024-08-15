@@ -1,11 +1,12 @@
 <div class="cart-summary">
   <button
     type="button"
-    class="btn btn-link btn-link-action"
+    class="btn btn-link btn-link-action promo-collapse-link"
     (click)="isCollapsed = !isCollapsed"
     data-testing-id="promo-collapse-link"
   >
     {{ 'shopping_cart.promotional_code.heading' | translate }}
+    <fa-icon [icon]="['fas', isCollapsed ? 'angle-right' : 'angle-down']" class="float-right" />
   </button>
 
   <ish-error-message [error]="promotionError$ | async" [toast]="toast" />
