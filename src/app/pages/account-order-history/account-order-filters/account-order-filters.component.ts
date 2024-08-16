@@ -15,10 +15,11 @@ import { UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, distinctUntilChanged, map, shareReplay, tap } from 'rxjs';
+import { Observable, distinctUntilChanged, map, shareReplay, takeUntil, tap } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
+import { whenFalsy } from 'ish-core/utils/operators';
 
 @Injectable()
 export class OrderDateFilterAdapter extends NgbDateAdapter<string> {
@@ -142,7 +143,10 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
   constructor(private route: ActivatedRoute, private router: Router, private accountFacade: AccountFacade) {}
 
   ngOnInit() {
-    this.isAdmin$ = this.accountFacade.isOrderManager$.pipe(shareReplay(1));
+    this.isAdmin$ = this.accountFacade.isOrderManager$.pipe(
+      takeUntil(this.accountFacade.isLoggedIn$.pipe(whenFalsy())),
+      shareReplay(1)
+    );
     this.fields$ = this.isAdmin$.pipe(
       map(isAdmin => [
         {

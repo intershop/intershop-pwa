@@ -21,6 +21,7 @@ describe('Account Order Filters Component', () => {
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
     when(accountFacade.isOrderManager$).thenReturn(of(true));
+    when(accountFacade.isLoggedIn$).thenReturn(of(true));
     await TestBed.configureTestingModule({
       imports: [
         MockComponent(FormlyForm),
