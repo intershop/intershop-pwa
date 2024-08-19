@@ -133,7 +133,9 @@ export class OrderService {
    * @returns       A list of the user's orders
    */
   getOrders(query: OrderListQuery): Observable<Order[]> {
-    let params = orderListQueryToHttpParams(query);
+    const q = query?.buyer === 'all' ? { ...query, buyer: undefined as string, allBuyers: 'true' } : query;
+
+    let params = orderListQueryToHttpParams(q);
     // for 7.10 compliance - ToDo: will be removed in PWA 6.0
     params = params.set('page[limit]', query.limit);
 

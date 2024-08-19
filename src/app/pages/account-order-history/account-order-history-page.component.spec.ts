@@ -20,6 +20,7 @@ describe('Account Order History Page Component', () => {
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
     when(accountFacade.orders$).thenReturn(of([]));
+    when(accountFacade.isOrderManager$).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
       declarations: [

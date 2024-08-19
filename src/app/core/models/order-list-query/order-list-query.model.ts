@@ -31,4 +31,5 @@ export interface OrderListQuery {
   lineItem_product?: string[];
   lineItem_customerProductID?: string[];
   lineItem_partialOrderNo?: string[];
+  buyer?: string;
 }

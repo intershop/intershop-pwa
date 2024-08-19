@@ -23,7 +23,7 @@ import {
   loadAddresses,
   updateCustomerAddress,
 } from 'ish-core/store/customer/addresses';
-import { getUserRoles } from 'ish-core/store/customer/authorization';
+import { getUserPermissions, getUserRoles } from 'ish-core/store/customer/authorization';
 import {
   firstGDPRDataRequest,
   getDataRequestError,
@@ -96,6 +96,10 @@ export class AccountFacade {
   userLoading$ = this.store.pipe(select(getUserLoading));
   isLoggedIn$ = this.store.pipe(select(getUserAuthorized));
   roles$ = this.store.pipe(select(getUserRoles));
+  isOrderManager$ = this.store.pipe(
+    select(getUserPermissions),
+    map(permissions => permissions?.includes('APP_B2B_MANAGE_ORDERS'))
+  );
 
   loginUser(credentials: Credentials) {
     this.store.dispatch(loginUser({ credentials }));

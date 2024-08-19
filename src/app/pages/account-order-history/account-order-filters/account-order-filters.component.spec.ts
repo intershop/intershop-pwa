@@ -1,11 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
+
+import { AccountFacade } from 'ish-core/facades/account.facade';
 
 import { AccountOrderFiltersComponent } from './account-order-filters.component';
 
@@ -13,8 +16,12 @@ describe('Account Order Filters Component', () => {
   let component: AccountOrderFiltersComponent;
   let fixture: ComponentFixture<AccountOrderFiltersComponent>;
   let element: HTMLElement;
+  let accountFacade: AccountFacade;
 
   beforeEach(async () => {
+    accountFacade = mock(AccountFacade);
+    when(accountFacade.isOrderManager$).thenReturn(of(true));
+    when(accountFacade.isLoggedIn$).thenReturn(of(true));
     await TestBed.configureTestingModule({
       imports: [
         MockComponent(FormlyForm),
@@ -23,7 +30,8 @@ describe('Account Order Filters Component', () => {
         RouterTestingModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [AccountOrderFiltersComponent, MockComponent(FaIconComponent)],
+      declarations: [AccountOrderFiltersComponent],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });
 

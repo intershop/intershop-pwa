@@ -15,8 +15,11 @@ import { UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Observable, distinctUntilChanged, map, shareReplay, takeUntil, tap } from 'rxjs';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
+import { whenFalsy } from 'ish-core/utils/operators';
 
 @Injectable()
 export class OrderDateFilterAdapter extends NgbDateAdapter<string> {
@@ -46,9 +49,10 @@ interface FormModel extends Record<string, unknown> {
   orderNo?: string;
   sku?: string;
   state?: string;
+  buyer?: string;
 }
 
-type UrlModel = Partial<Record<'from' | 'to' | 'orderNo' | 'sku' | 'state', string | string[]>>;
+type UrlModel = Partial<Record<'from' | 'to' | 'orderNo' | 'sku' | 'state' | 'buyer', string | string[]>>;
 
 function selectFirst(val: string | string[]): string {
   return Array.isArray(val) ? val[0] : val;
@@ -87,6 +91,7 @@ function urlToModel(params: UrlModel): FormModel {
     orderNo: selectAll(params.orderNo),
     sku: selectAll(params.sku),
     state: selectFirst(params.state),
+    buyer: selectFirst(params.buyer),
   });
 }
 
@@ -100,6 +105,7 @@ function modelToUrl(model: FormModel): UrlModel {
       ?.split(',')
       .map(s => s.trim())
       .filter(x => !!x),
+    buyer: model.buyer,
   });
 }
 
@@ -109,6 +115,7 @@ function urlToQuery(params: UrlModel): Partial<OrderListQuery> {
     creationDateTo: selectFirst(params.to),
     documentNumber: selectArray(params.orderNo),
     lineItem_product: selectArray(params.sku),
+    buyer: selectFirst(params.buyer) || '',
   });
 }
 
@@ -123,7 +130,9 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
 
   form = new UntypedFormGroup({});
 
-  fields: FormlyFieldConfig[];
+  fields$: Observable<FormlyFieldConfig[]>;
+  model$: Observable<FormModel>;
+  private isAdmin$: Observable<boolean>;
 
   @Output() modelChange = new EventEmitter<Partial<OrderListQuery>>();
 
@@ -131,49 +140,74 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
 
   formIsCollapsed = true;
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router, private accountFacade: AccountFacade) {}
 
   ngOnInit() {
-    this.fields = [
-      {
-        key: 'orderNo',
-        type: 'ish-text-input-field',
-        props: {
-          placeholder: 'account.order_history.filter.label.order_no',
-          fieldClass: 'col-12',
+    this.isAdmin$ = this.accountFacade.isOrderManager$.pipe(
+      takeUntil(this.accountFacade.isLoggedIn$.pipe(whenFalsy())),
+      shareReplay(1)
+    );
+    this.fields$ = this.isAdmin$.pipe(
+      map(isAdmin => [
+        {
+          key: 'orderNo',
+          type: 'ish-text-input-field',
+          props: {
+            placeholder: 'account.order_history.filter.label.order_no',
+            fieldClass: 'col-12',
+          },
         },
-      },
-      {
-        fieldGroupClassName: 'row',
-        fieldGroup: [
-          {
-            className: 'col-12 col-md-6',
-            key: 'sku',
-            type: 'ish-text-input-field',
-            props: {
-              label: 'account.order_history.filter.label.sku',
-              placeholder: 'account.order_history.filter.label.sku',
-              labelClass: 'col-md-6',
-              fieldClass: 'col-md-12',
+        {
+          fieldGroupClassName: 'row',
+          fieldGroup: [
+            {
+              className: 'col-12 col-md-6',
+              key: 'sku',
+              type: 'ish-text-input-field',
+              props: {
+                label: 'account.order_history.filter.label.sku',
+                placeholder: 'account.order_history.filter.label.sku',
+                labelClass: 'col-md-6',
+                fieldClass: 'col-md-12',
+              },
             },
-          },
-          {
-            className: 'col-12 col-md-6',
-            key: 'date',
-            type: 'ish-date-range-picker-field',
-            props: {
-              label: 'account.order_history.filter.label.date',
-              placeholder: 'checkout.desired_delivery_date.note',
-              minDays: -365 * 10,
-              maxDays: 0,
-              startDate: -30,
-              labelClass: 'col-md-6',
-              fieldClass: 'col-md-12',
+            {
+              className: 'col-12 col-md-6',
+              key: 'date',
+              type: 'ish-date-range-picker-field',
+              props: {
+                label: 'account.order_history.filter.label.date',
+                placeholder: 'checkout.desired_delivery_date.note',
+                minDays: -365 * 10,
+                maxDays: 0,
+                startDate: -30,
+                labelClass: 'col-md-6',
+                fieldClass: 'col-md-12',
+              },
             },
-          },
-        ],
-      },
-    ];
+          ],
+        },
+        ...(isAdmin
+          ? [
+              {
+                fieldGroupClassName: 'row justify-content-start',
+                type: 'ish-fieldset-field',
+                fieldGroup: [
+                  {
+                    type: 'ish-account-order-select-buyer-field',
+                    key: 'buyer',
+                    props: {
+                      label: 'account.order_history.filter.label.buyer',
+                      labelClass: 'col-md-12',
+                      fieldClass: 'col-md-6',
+                    },
+                  },
+                ],
+              },
+            ]
+          : []),
+      ])
+    );
   }
 
   ngAfterViewInit(): void {
@@ -185,7 +219,8 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
         this.formIsCollapsed = false;
       }
       this.form.patchValue(urlToModel(params));
-      this.modelChange.emit(urlToQuery(params));
+
+      this.model$ = this.getModel(params);
     });
   }
 
@@ -214,5 +249,28 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
     const date = this.form.get('date')?.value;
 
     return !this.formIsCollapsed && (!!productId || !!date);
+  }
+
+  private getModel(params?: UrlModel): Observable<FormModel> {
+    return this.isAdmin$.pipe(
+      distinctUntilChanged(),
+      tap(() => {
+        this.modelChange.emit(urlToQuery(params));
+      }),
+      map(isAdmin => ({
+        date:
+          params?.from || params?.to
+            ? {
+                fromDate: params?.from ? selectFirst(params.from) : '',
+                toDate: params?.to ? selectFirst(params.to) : '',
+              }
+            : undefined,
+        orderNo: params?.orderNo ? selectFirst(params.orderNo) : '',
+        sku: params?.sku ? selectFirst(params.sku) : '',
+        state: params?.from ? selectFirst(params.state) : '',
+        buyer: params?.buyer ? selectFirst(params.buyer) : isAdmin ? 'all' : '',
+      })),
+      shareReplay(1)
+    );
   }
 }

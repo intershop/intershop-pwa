@@ -63,6 +63,9 @@ For the migration of customer projects it needs to be checked whether a `customD
 Additionally it needs to be checked if the `textarea-description` wrapper is configured anywhere else then the default assignment to the `ish-textarea-field`.
 If so these wrapper configurations need to be replaced with `maxlength-description`.
 
+B2B users with the permission `APP_B2B_MANAGE_ORDERS` (only available for admin users in ICM 12.1.0 and higher) see now the orders of all users of the company on the My Account order history page.
+They can filter the orders by buyer in order to see only e.g. the own orders again.
+
 ## From 5.0 to 5.1
 
 The OrderListComponent is strictly presentational, components using it have to supply the data.
