@@ -31,7 +31,22 @@ export class CheckoutPaymentPageComponent implements OnInit {
     this.basketError$ = this.checkoutFacade.basketError$;
     this.loading$ = this.checkoutFacade.basketLoading$;
     this.priceType$ = this.checkoutFacade.priceType$;
-    this.paymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$().pipe(shareReplay(1));
+
+    this.paymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$().pipe(
+      withLatestFrom(this.basket$),
+      map(([pmList, basket]) =>
+        pmList?.filter(
+          pm =>
+            !pm.capabilities ||
+            !pm.capabilities.includes('FastCheckout') ||
+            (pm.capabilities &&
+              pm.capabilities.includes('FastCheckout') &&
+              basket?.payment?.capabilities?.includes('FastCheckout') &&
+              basket.payment.paymentInstrument.id === pm.id)
+        )
+      ),
+      shareReplay(1)
+    );
 
     // if there is only one eligible payment method without parameters, assign it automatically to the basket
     this.paymentMethods$

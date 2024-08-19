@@ -15,7 +15,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ErrorMessageComponent implements OnChanges {
-  @Input({ required: true }) error: HttpError;
+  @Input({ required: true }) error: Partial<HttpError>;
   @Input() toast = true;
 
   constructor(private messageFacade: MessageFacade) {}
@@ -26,7 +26,7 @@ export class ErrorMessageComponent implements OnChanges {
     }
   }
 
-  private displayToast(err: HttpError) {
+  private displayToast(err: Partial<HttpError>) {
     if (err && !err.errors) {
       this.messageFacade.error({
         message: err.message || err.code,

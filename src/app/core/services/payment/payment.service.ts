@@ -3,7 +3,7 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
-import { concatMap, first, map, withLatestFrom } from 'rxjs/operators';
+import { concatMap, first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -20,6 +20,7 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
  * The Payment Service handles the interaction with the 'baskets' and 'users' REST API concerning payment functionality.
@@ -53,6 +54,47 @@ export class PaymentService {
         params,
       })
       .pipe(map(PaymentMethodMapper.fromData));
+  }
+
+  /**
+   * Adds a fast checkout payment at the selected basket and generate redirect url in one step/request.
+   *
+   * @param paymentInstrument The payment instrument id.
+   * @returns                 The necessary url for redirecting to payment provider.
+   */
+  setBasketFastCheckoutPayment(paymentInstrument: string): Observable<string> {
+    if (!paymentInstrument) {
+      return throwError(() => new Error('setBasketFastCheckoutPayment() called without paymentInstrument'));
+    }
+    const loc = `${location.origin}${this.baseHref}`;
+
+    return this.store.pipe(select(getCurrentLocale)).pipe(
+      whenTruthy(),
+      take(1),
+      switchMap(currentLocale => {
+        const body = {
+          paymentInstrument,
+          redirect: {
+            successUrl: `${loc}/checkout/review;lang=${currentLocale}?redirect=success`,
+            cancelUrl: `${loc}/basket;lang=${currentLocale}?redirect=cancel`,
+            failureUrl: `${loc}/basket;lang=${currentLocale}?redirect=cancel`,
+          },
+        };
+
+        return this.apiService
+          .currentBasketEndpoint()
+          .put<{
+            data: {
+              redirect: {
+                redirectUrl: string;
+              };
+            };
+          }>('payments/open-tender', body, {
+            headers: this.basketHeaders,
+          })
+          .pipe(map(payload => payload.data.redirect.redirectUrl));
+      })
+    );
   }
 
   /**

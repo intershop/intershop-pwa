@@ -1,0 +1,31 @@
+<p *ngIf="paymentCostThresholdReached(paymentMethod); else displayPaymentCosts">
+  {{ 'checkout.payment.payment_cost_threshold.amount_reached' | translate }}
+  {{ basket.totals.total | ishPrice }}
+</p>
+<ng-template #displayPaymentCosts>
+  <div *ngIf="!paymentMethod.isRestricted; else displayRestrictions">
+    <p *ngIf="paymentMethod.paymentCosts?.[priceType]">
+      {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{ paymentMethod.paymentCosts | ishPrice }}&nbsp;
+      <span *ngIf="paymentMethod.paymentCostsThreshold" class="text-muted">
+        <span>-&nbsp;</span>{{ 'checkout.payment.payment_cost_threshold.text' | translate }}
+        <span class="text-nowrap" data-testing-id="basket-payment-cost">{{
+          paymentMethod.paymentCostsThreshold | ishPrice
+        }}</span>
+      </span>
+    </p>
+  </div>
+</ng-template>
+<!--payment restriction information -->
+<ng-template #displayRestrictions>
+  {{ 'checkout.payment.method.charges.text' | translate }}
+  &nbsp;
+  {{ paymentMethod.paymentCosts | ishPrice }}
+  &nbsp;
+  <p
+    *ngFor="let restriction of paymentMethod.restrictionCauses"
+    class="text-info"
+    data-testing-id="basket-payment-restriction-information"
+  >
+    {{ restriction.message }}
+  </p>
+</ng-template>

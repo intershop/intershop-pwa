@@ -103,7 +103,7 @@ export class PaymentMethodMapper {
    * valid: payment methods without capabilities or which have no capabilities given in the list below
    */
   private static isPaymentMethodValid(paymentData: PaymentMethodBaseData): boolean {
-    const invalidCapabilities = ['LimitedTender', 'FastCheckout'];
+    const invalidCapabilities = ['LimitedTender'];
 
     // without capabilities
     if (!paymentData.capabilities?.length) {

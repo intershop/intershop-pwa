@@ -115,6 +115,8 @@ export const startCheckoutSuccess = createAction(
 
 export const startCheckoutFail = createAction('[Basket API] Start the checkout process fail', httpError());
 
+export const startFastCheckout = createAction('[Basket] Start FastCheckout Process ', payload<{ paymentId: string }>());
+
 export const continueCheckout = createAction(
   '[Basket] Validate Basket and continue checkout',
   payload<{ targetStep: CheckoutStepType }>()
@@ -133,6 +135,11 @@ export const continueCheckoutSuccess = createAction(
 export const continueCheckoutWithIssues = createAction(
   '[Basket API] Validate Basket and continue with issues',
   payload<{ targetRoute: string; basketValidation: BasketValidation }>()
+);
+
+export const continueWithFastCheckout = createAction(
+  '[Basket Internal] Validate Basket and continue with fast checkout',
+  payload<{ targetRoute: string; basketValidation: BasketValidation; paymentId: string }>()
 );
 
 export const updateBasketItem = createAction(

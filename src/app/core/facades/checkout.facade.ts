@@ -36,6 +36,7 @@ import {
   getBasketShippingAddress,
   getBasketValidationResults,
   getCurrentBasket,
+  getEligibleFastCheckoutPaymentMethods,
   getSubmittedBasket,
   isBasketInvoiceAndShippingAddressEqual,
   loadBasketEligibleAddresses,
@@ -47,6 +48,7 @@ import {
   setBasketDesiredDeliveryDate,
   setBasketPayment,
   startCheckout,
+  startFastCheckout,
   submitOrder,
   updateBasket,
   updateBasketAddress,
@@ -265,10 +267,17 @@ export class CheckoutFacade {
       switchMap(() => this.store.pipe(select(getBasketEligiblePaymentMethods)))
     );
   }
+
+  eligibleFastCheckoutPaymentMethods$ = this.store.pipe(select(getEligibleFastCheckoutPaymentMethods));
+
   priceType$ = this.store.pipe(select(getServerConfigParameter<'gross' | 'net'>('pricing.priceType')));
 
   setBasketPayment(paymentName: string) {
     this.store.dispatch(setBasketPayment({ id: paymentName }));
+  }
+
+  startFastCheckout(paymentName: string) {
+    this.store.dispatch(startFastCheckout({ paymentId: paymentName }));
   }
 
   createBasketPayment(paymentInstrument: PaymentInstrument, saveForLater = false) {

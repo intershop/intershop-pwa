@@ -25,10 +25,12 @@ import {
   continueCheckoutFail,
   continueCheckoutSuccess,
   continueCheckoutWithIssues,
+  continueWithFastCheckout,
   loadBasketSuccess,
   startCheckout,
   startCheckoutFail,
   startCheckoutSuccess,
+  startFastCheckout,
   submitBasket,
   validateBasket,
 } from './basket.actions';
@@ -277,6 +279,59 @@ describe('Basket Validation Effects', () => {
       const expected$ = cold('-c', { c: completion });
 
       expect(effects.validateBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('startFastCheckoutProcess$ - trigger basket validation before redirect', () => {
+    const basketValidation: BasketValidation = {
+      basket: BasketMockData.getBasket(),
+      results: {
+        valid: true,
+        adjusted: false,
+      },
+    };
+
+    beforeEach(() => {
+      when(basketServiceMock.validateBasket(anything())).thenReturn(of(basketValidation));
+    });
+
+    it('should map to action of type ContinueWithFastCheckout in case of success', () => {
+      const action = startFastCheckout({ paymentId: 'FastCheckout' });
+      const completion = continueWithFastCheckout({
+        targetRoute: undefined,
+        basketValidation,
+        paymentId: 'FastCheckout',
+      });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.startFastCheckoutProcess$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type StartCheckoutFail', () => {
+      when(basketServiceMock.validateBasket(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
+
+      const action = startFastCheckout({ paymentId: 'FastCheckout' });
+      const completion = startCheckoutFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.startFastCheckoutProcess$).toBeObservable(expected$);
+    });
+
+    it('should map to action of type ContinueCheckoutWithIssues if basket is not valid', () => {
+      const action = startFastCheckout({ paymentId: 'FastCheckout' });
+      basketValidation.results.valid = false;
+      const completion = continueCheckoutWithIssues({
+        targetRoute: undefined,
+        basketValidation,
+      });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.startFastCheckoutProcess$).toBeObservable(expected$);
     });
   });
 
