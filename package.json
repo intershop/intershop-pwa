@@ -55,7 +55,8 @@
     "serve": "node dist/server/main.js",
     "start": "npm-run-all build serve",
     "start:ssr-dev": "ng run intershop-pwa:serve-ssr",
-    "xliff": "node scripts/convert-to-xliff.js"
+    "xliff": "node scripts/convert-to-xliff.js",
+    "audit": "better-npm-audit audit"
   },
   "dependencies": {
     "@angular-devkit/schematics": "^16.2.14",
@@ -142,6 +143,7 @@
     "@types/webpack": "^5.28.5",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
+    "better-npm-audit": "^3.8.3",
     "comment-json": "^4.2.3",
     "conventional-changelog-cli": "^4.1.0",
     "cspell": "^8.13.2",

@@ -1,0 +1,3 @@
+{
+  "GHSA-vc8w-jr9v-vj7f": "Ignored since we don't use Bootstrap Javascript (only Bootstrap styling with ng-bootstrap)"
+}
