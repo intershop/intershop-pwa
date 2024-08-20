@@ -1,13 +1,14 @@
 name: Updates
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - develop
       - upgrade/**
       - update/**
-  schedule:
-    - cron: '0 0 * * *'
+  # schedule:
+  #   - cron: '0 0 * * *'
 
 env:
   NODE_VERSION: 18.16.0
