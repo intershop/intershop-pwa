@@ -2,9 +2,9 @@ name: DeadCode
 
 on:
   workflow_dispatch:
-  schedule:
-    # every sunday at midnight
-    - cron: '0 0 * * 0'
+  # schedule:
+  #   # every sunday at midnight
+  #   - cron: '0 0 * * 0'
 
 env:
   NODE_VERSION: 18.16.0

@@ -6,8 +6,8 @@ on:
     types: [opened, synchronize]
     paths:
       - scripts/update-pwa.js
-  schedule:
-    - cron: '0 0 * * 1'
+  # schedule:
+  #   - cron: '0 0 * * 1'
 
 env:
   NODE_VERSION: 18.16.0
