@@ -29,6 +29,7 @@
 .gitattributes
 .editorconfig
 .nvmrc
+.nsprc
 package*.json
 Dockerfile*
 .browserslistrc
