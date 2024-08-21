@@ -3,7 +3,9 @@
 .main-container {
   position: relative;
   min-height: 200px;
+  overflow-y: auto;
   background: $color-inverse;
+  outline: none; // remove focus outline from container when using "skip to main content link"
 }
 
 .container {
@@ -17,6 +19,41 @@
   position: relative;
   min-width: 50px;
   min-height: 50px;
+}
+
+// first link in the page to skip to main content
+.skip-to-main-content {
+  a {
+    // hidden by default
+    position: absolute;
+    top: auto;
+    z-index: -999;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    background: $color-inverse;
+    transform: translateY(-100%);
+
+    &:focus {
+      // visible on focus
+      top: 10px;
+      right: 0;
+      left: 0;
+      z-index: 999;
+      width: 100%;
+      max-width: 25%;
+      height: auto;
+      padding: $space-default;
+      margin: 0 auto;
+      overflow: auto;
+      text-align: center;
+      opacity: 0.9;
+      transform: translateY(0%);
+    }
+  }
 }
 
 // Global Styles
