@@ -877,6 +877,7 @@
   "common.date_format.letters.d": "d",
   "common.date_format.letters.y": "y",
   "common.home.link": "Home",
+  "common.skip_to_main.link": "Skip to main content",
   "common.view_all.link": "View all",
   "common.view_all.link.label": "View all recently viewed items",
   "cookie.consent.option.functional.description": "These cookies are used to improve your shopping experience. Information that has already been entered (e.g. user name, language selection or the current location) is stored anonymously and will already be available when the shop is visited again.",
