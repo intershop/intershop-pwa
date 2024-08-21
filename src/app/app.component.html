@@ -1,8 +1,12 @@
+<span data-nosnippet class="skip-to-main-content"
+  ><a [routerLink]="[]" fragment="main-content">{{ 'common.skip_to_main.link' | translate }}</a></span
+>
+
 <div [ngClass]="wrapperClasses$ | async" class="d-flex flex-column min-vh-100">
   <header data-testing-id="page-header" class="top"><ish-header /></header>
 
   <div class="wrapper">
-    <main class="container main-container">
+    <main class="container main-container" id="main-content" tabindex="-1">
       <router-outlet />
     </main>
   </div>
