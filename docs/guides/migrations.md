@@ -25,8 +25,8 @@ Please be aware when migrating that there is an intermediate [commit](https://gi
 The store action and method `addBasketToNewOrderTemplate` of the OrderTemplatesFacade have been renamed to `createOrderTemplateFromLineItems` and refactored slightly.
 
 The Intershop PWA specific Pipes `sanitize`, `makeHref` and `htmlEncode` were renamed using the common `ish` prefix that is used for the other custom Pipes as well.
-When migrating, all occurrences of these Pipes need to be renamed to `ishSanitize`, `ishMakeHref` and `ishHtmlEncode`.
-The code generation was adapted to generate new Pipes from the beginning with the correct prefixes now.
+When migrating, rename all occurrences of these Pipes to `ishSanitize`, `ishMakeHref` and `ishHtmlEncode`.
+The code generation has been adapted to generate new Pipes from the beginning with the correct prefixes now.
 
 A few Stylelint rules have been changed and the `.scss` files have been adapted.
 `color-function-notation` has been changed to the default `modern` resulting in changed color notations from `rgba(0, 0, 0, 0.125)` to `rgb(0 0 0 / 0.125)`.
@@ -60,12 +60,12 @@ Besides this, the main difference to the general `description` wrapper is its re
 Together with the renaming, the implementation has been changed so that the description will only be rendered if the corresponding field has a `props.maxLength` value configured.
 Additionally, the `props` key to provide an alternative translation key has been changed from `customDescription` to `maxLengthDescription`.
 This change allows to use the `description` wrapper with its `customDescription` together with the `maxlength-description` wrapper with a customized `maxLengthDescription`.
-When migrating customer projects, checked to see if a `customDescription` is configured for an `ish-textarea-field`, and if so, replace it with `maxLengthDescription`.
+When migrating customer projects, check to see if a `customDescription` is configured for an `ish-textarea-field`, and if so, replace it with `maxLengthDescription`.
 You also need to check if the `textarea-description` wrapper is configured somewhere other than the default assignment to the `ish-textarea-field`.
 If so, replace these wrapper configurations with `maxlength-description`.
 
 B2B users with the permission `APP_B2B_MANAGE_ORDERS` (only available for admin users in ICM 12.1.0 and higher) now see the orders of all users of the company on the My Account order history page.
-They can filter the orders by buyer in order to see only, e.g., their own orders again.
+They can filter the orders by buyer in order to see, e.g., only their own orders again.
 
 In preparation of the cXML punchout self service configuration, we switched from a hidden route parameter that conveys the punchout type context information to a URL query parameter (e.g., `?format=cxml`).
 So customized routing within the punchout area needs to be adapted accordingly.
