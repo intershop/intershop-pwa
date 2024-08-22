@@ -17,7 +17,7 @@ kb_sync_latest_only
 
 The function `encodeResourceID` has been moved to a method `encodeResourceId` of the [`api.service`](../../src/app/core/services/api/api.service.ts), and it is now used to encode all dynamic resource IDs in any REST API call to ICM.
 This was previously only done for the login, but is now consistently used for all resource IDs.
-For ICM 7.10 and ICM 11, a duplicated `encodeURIComponent` encoding is applied. 
+For ICM 7.10 and ICM 11, a duplicated `encodeURIComponent` encoding is applied.
 For ICM 12 and newer, a single `encodeURIComponent` encoding with additional `+` character handling is used.
 To migrate custom code, searching for `encodeResourceID(` and replacing it with `this.apiService.encodeResourceId(` is sufficient.
 Please be aware when migrating that there is an intermediate [commit](https://github.com/intershop/intershop-pwa/commit/3e7c0ae2ff1d6e676f98d7c399b70b505f389e16) for the resource ID encoding in the 5.2 release that was improved with a later [commit](https://github.com/intershop/intershop-pwa/commit/TODO_with_release_creation) to work with the `legacyEncoding` feature toggle for ICM 7.10 and ICM 11 encoding not requiring any code adaptions anymore.
