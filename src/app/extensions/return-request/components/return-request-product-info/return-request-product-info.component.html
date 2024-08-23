@@ -1,0 +1,26 @@
+<div ishProductContext [sku]="sku">
+  <div class="row">
+    <div class="col-3">
+      <div class="ml-2">
+        <ish-product-image imageType="S" />
+      </div>
+    </div>
+    <div class="col-9">
+      <ish-product-name [link]="false" />
+      <div *ishProductContextAccess="let product = product">
+        <div>
+          <strong>{{ 'toolineo.account.return_request.modal.table.product.EAN' | translate }}</strong>
+          {{ getAttribute(product, 'EAN') }}
+        </div>
+        <div>
+          <strong>{{ 'toolineo.account.return_request.modal.table.product.item_number' | translate }}</strong>
+          {{ getAttribute(product, 'artnr') }}
+        </div>
+        <div>
+          <strong>{{ 'toolineo.account.return_request.modal.table.product.manufacturer_number' | translate }}</strong>
+          {{ getAttribute(product, 'mfg_number') }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

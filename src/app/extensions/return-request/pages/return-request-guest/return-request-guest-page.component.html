@@ -1,0 +1,27 @@
+<div class="d-flex justify-content-between mb-4">
+  <div class="d-flex flex-column justify-content-between">
+    <h1 class="mt-0">{{ 'toolineo.return_request_guest.heading' | translate }}</h1>
+    <span>{{ 'toolineo.return_request_guest.heading_info' | translate }}</span>
+  </div>
+  <div class="d-flex flex-column justify-content-between text-right">
+    <h2 class="mt-0">{{ 'toolineo.return_request_guest.sub_heading' | translate : { '0': documentNo } }}</h2>
+    <span>
+      <fa-icon [icon]="['fas', 'info-circle']" />
+      {{ 'toolineo.return_request_guest.sub_heading_info' | translate }}</span
+    >
+  </div>
+</div>
+
+<ng-container *ngIf="order$ | async as order; else noOrder">
+  <ish-lazy-return-request-return-button [order]="order" [isGuest]="true" />
+  <ish-order-list
+    [columnsToDisplay]="['creationDate', 'orderNoWithLink', 'lineItems', 'status', 'orderTotal']"
+    [orders]="[order]"
+  />
+</ng-container>
+
+<ng-template #noOrder>
+  <h3 class="text-center mt-4">{{ 'toolineo.return_request_guest.no_order_found' | translate }}</h3>
+</ng-template>
+
+<ish-loading *ngIf="showLoader" />
