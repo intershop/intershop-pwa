@@ -22,7 +22,7 @@ import { PriceItem } from 'ish-core/models/price-item/price-item.model';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class BasketValidationResultsComponent implements OnInit {
-  validationResults$: Observable<BasketValidationResultType>;
+  private validationResults$: Observable<BasketValidationResultType>;
 
   hasGeneralBasketError$: Observable<boolean>;
   errorMessages$: Observable<string[]>;
@@ -31,7 +31,7 @@ export class BasketValidationResultsComponent implements OnInit {
   removedItems$: Observable<{ message: string; productSKU: string; price: PriceItem }[]>;
   scrollToMessage$: Observable<boolean>;
 
-  itemHasBeenRemoved = false;
+  private itemHasBeenRemoved = false;
 
   // default values to control scrolling behavior
   scrollSpacing = 64;
@@ -104,7 +104,7 @@ export class BasketValidationResultsComponent implements OnInit {
     );
   }
 
-  isLineItemMessage(error: BasketFeedback): boolean {
+  private isLineItemMessage(error: BasketFeedback): boolean {
     return !!(
       error.parameters &&
       error.code !== 'basket.validation.line_item_shipping_restrictions.error' &&

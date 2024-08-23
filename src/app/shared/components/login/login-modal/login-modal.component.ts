@@ -11,6 +11,7 @@ export class LoginModalComponent {
 
   constructor(private cdRef: ChangeDetectorRef) {}
 
+  // not-dead-code
   detectChanges() {
     this.cdRef.detectChanges();
   }

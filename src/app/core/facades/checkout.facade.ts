@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
 import { formatISO } from 'date-fns';
 import { Subject, combineLatest, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, sample, switchMap, take, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, sample, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
@@ -36,6 +36,7 @@ import {
   getBasketShippingAddress,
   getBasketValidationResults,
   getCurrentBasket,
+  getEligibleFastCheckoutPaymentMethods,
   getSubmittedBasket,
   isBasketInvoiceAndShippingAddressEqual,
   loadBasketEligibleAddresses,
@@ -47,6 +48,7 @@ import {
   setBasketDesiredDeliveryDate,
   setBasketPayment,
   startCheckout,
+  startFastCheckout,
   submitOrder,
   updateBasket,
   updateBasketAddress,
@@ -129,6 +131,10 @@ export class CheckoutFacade {
     } else {
       this.store.dispatch(deleteBasketItem({ itemId: update.itemId }));
     }
+  }
+
+  updateBasketItemWarranty(itemId: string, warrantySku: string) {
+    this.store.dispatch(updateBasketItem({ lineItemUpdate: { itemId, warrantySku } }));
   }
 
   updateBasketShippingMethod(shippingId: string) {
@@ -261,10 +267,17 @@ export class CheckoutFacade {
       switchMap(() => this.store.pipe(select(getBasketEligiblePaymentMethods)))
     );
   }
+
+  eligibleFastCheckoutPaymentMethods$ = this.store.pipe(select(getEligibleFastCheckoutPaymentMethods));
+
   priceType$ = this.store.pipe(select(getServerConfigParameter<'gross' | 'net'>('pricing.priceType')));
 
   setBasketPayment(paymentName: string) {
     this.store.dispatch(setBasketPayment({ id: paymentName }));
+  }
+
+  startFastCheckout(paymentName: string) {
+    this.store.dispatch(startFastCheckout({ paymentId: paymentName }));
   }
 
   createBasketPayment(paymentInstrument: PaymentInstrument, saveForLater = false) {
@@ -296,9 +309,14 @@ export class CheckoutFacade {
     )
   );
 
+  /**
+   * Determines the eligible addresses of baskets that have an invoice address.
+   * This ensures that the basket has at least one address.
+   */
   eligibleAddresses$() {
     return this.basket$.pipe(
       whenTruthy(),
+      filter(basket => basket.invoiceToAddress !== undefined),
       take(1),
       tap(() => this.store.dispatch(loadBasketEligibleAddresses())),
       switchMap(() => this.store.pipe(select(getBasketEligibleAddresses)))

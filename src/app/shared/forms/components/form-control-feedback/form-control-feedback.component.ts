@@ -22,7 +22,7 @@ export class FormControlFeedbackComponent implements DoCheck {
     }
   }
 
-  getErrorList(): string[] {
+  private getErrorList(): string[] {
     if (!this.control.errors) {
       return [];
     }

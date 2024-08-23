@@ -36,12 +36,12 @@ export class LoginFormComponent implements OnInit {
   loginError$: Observable<HttpError>;
 
   form = new UntypedFormGroup({});
-  submitted = false;
+  private submitted = false;
 
   fields: FormlyFieldConfig[];
 
   constructor(
-    @Inject(USER_REGISTRATION_LOGIN_TYPE) public loginType: InjectSingle<typeof USER_REGISTRATION_LOGIN_TYPE>,
+    @Inject(USER_REGISTRATION_LOGIN_TYPE) private loginType: InjectSingle<typeof USER_REGISTRATION_LOGIN_TYPE>,
     private accountFacade: AccountFacade
   ) {}
 

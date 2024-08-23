@@ -11,7 +11,7 @@ describe('Product Variation Select Swatch Component', () => {
   let fixture: ComponentFixture<ProductVariationSelectSwatchComponent>;
   let element: HTMLElement;
 
-  const group_colorCode = {
+  const groupColorCode = {
     id: 'color',
     attributeType: 'colorCode',
     options: [
@@ -20,7 +20,7 @@ describe('Product Variation Select Swatch Component', () => {
     ],
   } as VariationOptionGroup;
 
-  const group_swatchImage = {
+  const groupSwatchImage = {
     id: 'swatch',
     attributeType: 'swatchImage',
     options: [
@@ -39,7 +39,7 @@ describe('Product Variation Select Swatch Component', () => {
     fixture = TestBed.createComponent(ProductVariationSelectSwatchComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.group = group_colorCode;
+    component.group = groupColorCode;
   });
 
   it('should be created', () => {
@@ -49,7 +49,7 @@ describe('Product Variation Select Swatch Component', () => {
   });
 
   it('should render a color code when the attribute type is "colorCode"', () => {
-    component.group = group_colorCode;
+    component.group = groupColorCode;
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <ul>
@@ -66,7 +66,7 @@ describe('Product Variation Select Swatch Component', () => {
   });
 
   it('should render a swatch image when the attribute type is "swatchImage"', () => {
-    component.group = group_swatchImage;
+    component.group = groupSwatchImage;
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <ul>
@@ -81,7 +81,7 @@ describe('Product Variation Select Swatch Component', () => {
   });
 
   it('should trigger changeOption output handler if color code element is clicked', () => {
-    component.group = group_colorCode;
+    component.group = groupColorCode;
     fixture.detectChanges();
     const emitter = spy(component.changeOption);
     const link = fixture.debugElement.query(By.css('li.selected a')).nativeElement;
@@ -98,7 +98,7 @@ describe('Product Variation Select Swatch Component', () => {
   });
 
   it('should trigger changeOption output handler if swatch image element is clicked', () => {
-    component.group = group_swatchImage;
+    component.group = groupSwatchImage;
     fixture.detectChanges();
     const emitter = spy(component.changeOption);
     const link = fixture.debugElement.query(By.css('li.selected a')).nativeElement;

@@ -146,4 +146,6 @@
     <!-- Gift -->
     <div *ngIf="pli.isFreeGift" class="list-item-promo">{{ 'checkout.pli.freegift.text' | translate }}</div>
   </div>
+  <!-- display/select warranty if available -->
+  <ish-line-item-warranty [pli]="pli" [editable]="editable" class="col-12" />
 </div>

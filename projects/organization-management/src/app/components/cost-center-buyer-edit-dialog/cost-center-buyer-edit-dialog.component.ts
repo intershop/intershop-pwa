@@ -8,7 +8,6 @@ import { CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { PriceHelper } from 'ish-core/models/price/price.helper';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { FormsService } from 'ish-shared/forms/utils/forms.service';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
@@ -24,7 +23,7 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
 
   costCenterBuyerForm = new FormGroup({});
   fields: FormlyFieldConfig[];
-  submitted = false;
+  private submitted = false;
 
   buyer: CostCenterBuyer;
 
@@ -65,16 +64,9 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
               fieldClass: 'col-md-8  pr-0',
               label: 'account.costcenter.details.buyers.dialog.editbudget.budget.label',
               addonLeft: {
-                text: this.appFacade.currencySymbol$(this.buyer?.budget.currency),
+                text: this.appFacade.currencySymbol$(this.buyer?.budget?.currency),
               },
-            },
-            validators: {
-              validation: [SpecialValidators.moneyAmount],
-            },
-            validation: {
-              messages: {
-                moneyAmount: 'account.costcenter.budget.error.valid',
-              },
+              mask: 'separator.2',
             },
           },
           {

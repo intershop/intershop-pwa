@@ -111,6 +111,7 @@ export class AccountPaymentComponent implements OnInit, OnChanges {
   /**
    * change the user's preferred payment instrument
    */
+  // visible-for-testing
   setAsDefaultPayment(id: string) {
     if (id && this.standardPaymentMethods?.some(pm => pm.id === id)) {
       this.accountFacade.updateUserPreferredPaymentMethod(this.user, id, this.preferredPaymentInstrument);

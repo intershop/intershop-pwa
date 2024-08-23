@@ -22,6 +22,7 @@ export class ProductAddToQuoteDialogComponent implements OnInit {
   state$: Observable<QuoteStatus>;
   error$: Observable<HttpError>;
 
+  // not-dead-code
   modalRef: NgbModalRef;
 
   constructor(private context: QuoteContextFacade, private router: Router) {}

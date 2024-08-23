@@ -5,7 +5,6 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { UserBudget } from '../../models/user-budget/user-budget.model';
 
@@ -28,9 +27,9 @@ export class UserBudgetFormComponent implements OnInit {
   fields: FormlyFieldConfig[];
   model: UserBudgetModel;
 
-  currentCurrency: string;
+  private currentCurrency: string;
 
-  periods = ['weekly', 'monthly', 'quarterly', 'half-yearly', 'yearly'];
+  private periods = ['weekly', 'monthly', 'quarterly', 'half-yearly', 'yearly'];
 
   private destroyRef = inject(DestroyRef);
 
@@ -88,14 +87,7 @@ export class UserBudgetFormComponent implements OnInit {
               addonLeft: {
                 text: this.appFacade.currencySymbol$(this.model.currency),
               },
-            },
-            validators: {
-              validation: [SpecialValidators.moneyAmount],
-            },
-            validation: {
-              messages: {
-                moneyAmount: 'account.user.new.OrderLimit.error.valid',
-              },
+              mask: 'separator.2',
             },
           },
           {
@@ -114,14 +106,7 @@ export class UserBudgetFormComponent implements OnInit {
                   addonLeft: {
                     text: this.appFacade.currencySymbol$(this.model.currency),
                   },
-                },
-                validators: {
-                  validation: [SpecialValidators.moneyAmount],
-                },
-                validation: {
-                  messages: {
-                    moneyAmount: 'account.user.new.Budget.error.valid',
-                  },
+                  mask: 'separator.2',
                 },
               },
               {

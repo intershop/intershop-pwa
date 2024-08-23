@@ -18,7 +18,6 @@
   <div>
     <!-- Error message -->
     <ish-error-message *ngIf="error?.message" [error]="error" />
-
     <ish-basket-error-message [error]="error" />
 
     <!-- Basket Info messages -->
@@ -98,6 +97,7 @@
             {{ 'shopping_cart.proceed_to_checkout.button.label' | translate }}
           </button>
           <ish-lazy-punchout-transfer-basket *ishIsAuthorizedTo="'APP_B2B_SEND_PUNCHOUT_BASKET'" />
+          <ish-shopping-basket-payment *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']" [basket]="basket" />
         </div>
 
         <div class="marketing-area">

@@ -14,18 +14,18 @@ describe('Newsletter Service', () => {
   let apiServiceMock: ApiService;
   let store$: MockStore;
 
-  let userEmail: string;
+  const userEmail = 'user%40test.com';
+  const usersSubscriptionEndpoint = `subscriptions/${userEmail}`;
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
+    when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
+
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }, provideMockStore()],
     });
     newsletterService = TestBed.inject(NewsletterService);
     store$ = TestBed.inject(MockStore);
-
-    userEmail = 'user@test.com';
-
     store$.overrideSelector(getNewsletterSubscriptionStatus, false);
   });
 
@@ -48,7 +48,7 @@ describe('Newsletter Service', () => {
     const newStatus = false;
 
     newsletterService.updateNewsletterSubscriptionStatus(newStatus, userEmail).subscribe(subscriptionStatus => {
-      verify(apiServiceMock.delete(`subscriptions/${userEmail}`)).once();
+      verify(apiServiceMock.delete(usersSubscriptionEndpoint)).once();
       expect(subscriptionStatus).toBeFalse();
       done();
     });
@@ -61,7 +61,7 @@ describe('Newsletter Service', () => {
     const newStatus = true;
 
     newsletterService.updateNewsletterSubscriptionStatus(newStatus, userEmail).subscribe(subscriptionStatus => {
-      verify(apiServiceMock.delete(`subscriptions/${userEmail}`)).never();
+      verify(apiServiceMock.delete(usersSubscriptionEndpoint)).never();
       expect(subscriptionStatus).toBeTrue();
       done();
     });
@@ -71,7 +71,7 @@ describe('Newsletter Service', () => {
     when(apiServiceMock.get(anything())).thenReturn(of({ active: true }));
 
     newsletterService.getSubscription(userEmail).subscribe(subscriptionStatus => {
-      verify(apiServiceMock.get(`subscriptions/${userEmail}`)).once();
+      verify(apiServiceMock.get(usersSubscriptionEndpoint)).once();
       expect(subscriptionStatus).toBeTrue();
       done();
     });
@@ -79,7 +79,7 @@ describe('Newsletter Service', () => {
     when(apiServiceMock.get(anything())).thenReturn(of({ active: false }));
 
     newsletterService.getSubscription(userEmail).subscribe(subscriptionStatus => {
-      verify(apiServiceMock.get(`subscriptions/${userEmail}`)).once();
+      verify(apiServiceMock.get(usersSubscriptionEndpoint)).once();
       expect(subscriptionStatus).toBeFalse();
       done();
     });
@@ -91,7 +91,7 @@ describe('Newsletter Service', () => {
     );
 
     newsletterService.getSubscription(userEmail).subscribe(subscriptionStatus => {
-      verify(apiServiceMock.get(`subscriptions/${userEmail}`)).once();
+      verify(apiServiceMock.get(usersSubscriptionEndpoint)).once();
       expect(subscriptionStatus).toBeFalse();
       done();
     });
@@ -99,7 +99,7 @@ describe('Newsletter Service', () => {
     when(apiServiceMock.get(anything())).thenReturn(of({ active: false }));
 
     newsletterService.getSubscription(userEmail).subscribe(subscriptionStatus => {
-      verify(apiServiceMock.get(`subscriptions/${userEmail}`)).once();
+      verify(apiServiceMock.get(usersSubscriptionEndpoint)).once();
       expect(subscriptionStatus).toBeFalse();
       done();
     });

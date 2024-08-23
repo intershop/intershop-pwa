@@ -37,8 +37,6 @@ export class AccountWishlistListComponent implements OnChanges {
    */
   @Output() deleteWishlist = new EventEmitter<string>();
 
-  /** The header text of the delete modal. */
-  deleteHeader: string;
   preferredWishlist: Wishlist;
 
   private destroyRef = inject(DestroyRef);

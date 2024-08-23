@@ -1,5 +1,6 @@
-import { createAction } from '@ngrx/store';
+import { createAction, createActionGroup } from '@ngrx/store';
 
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 import { OrderTemplate, OrderTemplateHeader } from '../../models/order-template/order-template.model';
@@ -65,7 +66,7 @@ export const addProductToOrderTemplateFail = createAction(
 );
 
 export const addProductToNewOrderTemplate = createAction(
-  '[Order Templates Internal] Add Product To New Order Template',
+  '[Order Templates] Add Product To New Order Template',
   payload<{ title: string; sku: string; quantity?: number }>()
 );
 
@@ -94,17 +95,17 @@ export const selectOrderTemplate = createAction(
   payload<{ id: string }>()
 );
 
-export const addBasketToNewOrderTemplate = createAction(
-  '[Order Templates] Add basket to New Order Template]',
-  payload<{ orderTemplate: OrderTemplateHeader }>()
-);
+export const orderTemplatesActions = createActionGroup({
+  source: 'Order Templates',
+  events: {
+    'Create Order Template from Line Items': payload<{ orderTemplate: OrderTemplateHeader; lineItems: LineItem[] }>(),
+  },
+});
 
-export const addBasketToNewOrderTemplateFail = createAction(
-  '[Order Templates API] Add basket to New Order Template Fail]',
-  httpError()
-);
-
-export const addBasketToNewOrderTemplateSuccess = createAction(
-  '[Order Templates API] Add basket to New Order Template Success]',
-  payload<{ orderTemplate: OrderTemplate }>()
-);
+export const orderTemplatesApiActions = createActionGroup({
+  source: 'Order Templates API',
+  events: {
+    'Create Order Template from Line Items Success': payload<{ orderTemplate: OrderTemplate }>(),
+    'Create Order Template from Line Items Fail': httpError<{}>(),
+  },
+});

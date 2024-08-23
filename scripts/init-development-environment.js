@@ -1,32 +1,17 @@
+const fs = require('fs');
+
 const force = process.argv.length > 2 && process.argv.slice(2).find(arg => arg === '-f' || arg === '--force');
 const empty = process.argv.length > 2 && process.argv.slice(2).find(arg => arg === '--empty');
 
-const envDevFile = 'src/environments/environment.development.ts';
+const envDevPath = 'src/environments/environment.development.ts';
+const envDevTemplatePath = 'src/environments/environment.development.ts.template';
 
-const fs = require('fs');
-
-if (empty) {
-  console.log('writing empty ' + envDevFile);
-
-  fs.writeFileSync(
-    envDevFile,
-    `import { Environment } from "./environment.model";
-
-export const overrides: Partial<Environment> = {};
-`
-  );
-} else if (!fs.existsSync(envDevFile) || force) {
-  if (fs.existsSync(envDevFile)) {
-    const environmentLocalBackupPath = envDevFile + '.bak';
-    console.log('creating backup ' + environmentLocalBackupPath);
-    fs.renameSync(envDevFile, environmentLocalBackupPath);
-  }
-
-  console.log('writing ' + envDevFile);
-
-  fs.writeFileSync(
-    envDevFile,
-    `import { Environment } from "./environment.model";
+/** @type string */
+let envDevTemplate;
+if (fs.existsSync(envDevTemplatePath)) {
+  envDevTemplate = fs.readFileSync(envDevTemplatePath, 'utf8');
+} else {
+  envDevTemplate = `import { Environment } from "./environment.model";
 
 /* eslint-disable */
 
@@ -40,8 +25,29 @@ export const overrides: Partial<Environment> = {
 
   // features: ['compare'],
 };
+`;
+}
+
+if (empty) {
+  console.log('writing empty ' + envDevPath);
+
+  fs.writeFileSync(
+    envDevPath,
+    `import { Environment } from "./environment.model";
+
+export const overrides: Partial<Environment> = {};
 `
   );
+} else if (!fs.existsSync(envDevPath) || force) {
+  if (fs.existsSync(envDevPath)) {
+    const environmentLocalBackupPath = envDevPath + '.bak';
+    console.log('creating backup ' + environmentLocalBackupPath);
+    fs.renameSync(envDevPath, environmentLocalBackupPath);
+  }
+
+  console.log('writing ' + envDevPath);
+
+  fs.writeFileSync(envDevPath, envDevTemplate);
 } else {
-  console.log('not overwriting existing ' + envDevFile);
+  console.log('not overwriting existing ' + envDevPath);
 }

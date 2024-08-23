@@ -1,7 +1,8 @@
-import { flatten, groupBy } from 'lodash-es';
+import { groupBy } from 'lodash-es';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { VariationProduct, VariationProductMaster } from 'ish-core/models/product/product.model';
 import { omit } from 'ish-core/utils/functions';
 
 import { VariationAttribute } from './variation-attribute.model';
@@ -12,13 +13,17 @@ export class ProductVariationHelper {
   /**
    * Build select value structure
    */
-  static buildVariationOptionGroups(product: ProductView): VariationOptionGroup[] {
-    if (!product?.variableVariationAttributes?.length) {
+  static buildVariationOptionGroups(
+    variationProduct: VariationProduct,
+    productMaster: VariationProductMaster,
+    variations: VariationProduct[]
+  ): VariationOptionGroup[] {
+    if (!variationProduct?.variableVariationAttributes?.length) {
       return [];
     }
 
     // transform currently selected variation attribute list to object with the attributeId as key
-    const currentSettings = product.variableVariationAttributes.reduce<{ [id: string]: VariationAttribute }>(
+    const currentSettings = variationProduct.variableVariationAttributes.reduce<{ [id: string]: VariationAttribute }>(
       (acc, attr) => ({
         ...acc,
         [attr.variationAttributeId]: attr,
@@ -28,7 +33,7 @@ export class ProductVariationHelper {
 
     // transform all variation attribute values to selectOptions
     // each with information about alternative combinations and active status (active status comes from currently selected variation)
-    const options: VariationSelectOption[] = (product.productMaster?.variationAttributeValues || [])
+    const options: VariationSelectOption[] = (productMaster?.variationAttributeValues || [])
       .map(attr => ({
         label: ProductVariationHelper.toDisplayValue(attr.value),
         value: ProductVariationHelper.toValue(attr.value)?.toString(),
@@ -38,7 +43,11 @@ export class ProductVariationHelper {
       }))
       .map(option => ({
         ...option,
-        alternativeCombination: ProductVariationHelper.alternativeCombinationCheck(option, product),
+        alternativeCombination: ProductVariationHelper.alternativeCombinationCheck(
+          option,
+          variationProduct,
+          variations
+        ),
       }));
 
     // group options list by attributeId
@@ -47,7 +56,7 @@ export class ProductVariationHelper {
     // go through those groups and transform them to more complex objects
     return Object.keys(groupedOptions).map(attrId => {
       // we need to get one of the original attributes again here, because we lost the attribute name
-      const attribute = product.productMaster.variationAttributeValues.find(a => a.variationAttributeId === attrId);
+      const attribute = productMaster.variationAttributeValues.find(a => a.variationAttributeId === attrId);
       return {
         id: attribute.variationAttributeId,
         label: attribute.name,
@@ -57,13 +66,18 @@ export class ProductVariationHelper {
     });
   }
 
-  static findPossibleVariation(name: string, value: string, product: ProductView): string {
+  static findPossibleVariation(
+    name: string,
+    value: string,
+    product: ProductView,
+    variations: VariationProduct[]
+  ): string {
     const target = omit(
       ProductVariationHelper.simplifyVariableVariationAttributes(product.variableVariationAttributes),
       name
     );
 
-    const candidates = product.variations
+    const candidates = variations
       .filter(variation =>
         variation.variableVariationAttributes.some(
           attr => attr.variationAttributeId === name && ProductVariationHelper.isEqual(attr.value, value)
@@ -92,22 +106,23 @@ export class ProductVariationHelper {
     return product && !!product.defaultVariationSKU;
   }
 
-  static productVariationCount(product: ProductView, filters: FilterNavigation): number {
-    if (!product) {
+  static productVariationCount(variations: VariationProduct[], filters: FilterNavigation): number {
+    if (!variations?.length) {
       return 0;
     } else if (!filters?.filter) {
-      return product.variations?.length;
+      return variations?.length;
     }
 
-    const selectedFacets = flatten(
-      filters.filter.map(filter => filter.facets.filter(facet => facet.selected).map(facet => facet.name))
-    ).map(selected => selected.split('='));
+    const selectedFacets = filters.filter
+      .map(filter => filter.facets.filter(facet => facet.selected).map(facet => facet.name))
+      .flat()
+      .map(selected => selected.split('='));
 
     if (!selectedFacets.length) {
-      return product.variations?.length;
+      return variations?.length;
     }
 
-    return product.variations
+    return variations
       .map(p => p.variableVariationAttributes)
       .filter(attrs =>
         attrs.every(
@@ -129,7 +144,11 @@ export class ProductVariationHelper {
    * @param product The given product containing the related product variations
    * @returns       Indicates if no perfect match is found.
    */
-  private static alternativeCombinationCheck(option: VariationSelectOption, product: ProductView): boolean {
+  private static alternativeCombinationCheck(
+    option: VariationSelectOption,
+    product: ProductView,
+    variations: VariationProduct[]
+  ): boolean {
     if (!product.variableVariationAttributes?.length) {
       return;
     }
@@ -147,7 +166,7 @@ export class ProductVariationHelper {
     }
 
     // check if one of the variation products has the same attributes as the attributes to be compared
-    return !product.variations.some(variation =>
+    return !variations.some(variation =>
       ProductVariationHelper.variationAttributeArrayEquals(variation.variableVariationAttributes, comparisonAttributes)
     );
   }

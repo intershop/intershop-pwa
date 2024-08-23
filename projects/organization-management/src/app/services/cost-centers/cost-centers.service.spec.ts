@@ -13,6 +13,8 @@ import { CostCentersService } from './cost-centers.service';
 describe('Cost Centers Service', () => {
   let apiService: ApiService;
   let costCentersService: CostCentersService;
+  const millersEMail = 'pmiller%40test.intershop.de';
+  const millersCostcenterEndpoint = `customers/4711/costcenters/123/buyers/${millersEMail}`;
 
   beforeEach(() => {
     apiService = mock(ApiService);
@@ -21,6 +23,7 @@ describe('Cost Centers Service', () => {
     when(apiService.patch(anything(), anything())).thenReturn(of({}));
     when(apiService.delete(anything())).thenReturn(of({}));
     when(apiService.resolveLinks()).thenReturn(() => of([]));
+    when(apiService.encodeResourceId(anything())).thenCall(id => id);
 
     TestBed.configureTestingModule({
       providers: [
@@ -107,23 +110,19 @@ describe('Cost Centers Service', () => {
   });
 
   it('should call the updateCostCenterBuyer of the customer API for updating a cost center buyer', done => {
-    const costCenterBuyer = { login: 'pmiller@test.intershop.de' } as CostCenterBuyer;
+    const costCenterBuyer = { login: millersEMail } as CostCenterBuyer;
 
     costCentersService.updateCostCenterBuyer('123', costCenterBuyer).subscribe(() => {
       verify(apiService.patch(anything(), anything())).once();
-      expect(capture(apiService.patch).last()[0]).toMatchInlineSnapshot(
-        `"customers/4711/costcenters/123/buyers/pmiller%2540test.intershop.de"`
-      );
+      expect(capture(apiService.patch).last()[0]).toMatchInlineSnapshot(`"${millersCostcenterEndpoint}"`);
       done();
     });
   });
 
   it('should call the deleteCostCenterBuyer of the customer API for deleting a cost center buyer', done => {
-    costCentersService.deleteCostCenterBuyer('123', 'pmiller@test.intershop.de').subscribe(() => {
+    costCentersService.deleteCostCenterBuyer('123', millersEMail).subscribe(() => {
       verify(apiService.delete(anything())).once();
-      expect(capture(apiService.delete).last()[0]).toMatchInlineSnapshot(
-        `"customers/4711/costcenters/123/buyers/pmiller%2540test.intershop.de"`
-      );
+      expect(capture(apiService.delete).last()[0]).toMatchInlineSnapshot(`"${millersCostcenterEndpoint}"`);
       done();
     });
   });

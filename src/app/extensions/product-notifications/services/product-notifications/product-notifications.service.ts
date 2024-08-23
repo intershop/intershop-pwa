@@ -33,7 +33,9 @@ export class ProductNotificationsService {
         this.apiService
           .get(
             customer.isBusinessCustomer
-              ? `customers/${customer.customerNo}/users/-/notifications/${notificationType}`
+              ? `customers/${this.apiService.encodeResourceId(
+                  customer.customerNo
+                )}/users/-/notifications/${notificationType}`
               : `privatecustomers/-/notifications/${notificationType}`
           )
           .pipe(
@@ -63,7 +65,9 @@ export class ProductNotificationsService {
         this.apiService
           .post(
             customer.isBusinessCustomer
-              ? `customers/${customer.customerNo}/users/-/notifications/${productNotification.type}`
+              ? `customers/${this.apiService.encodeResourceId(customer.customerNo)}/users/-/notifications/${
+                  productNotification.type
+                }`
               : `privatecustomers/-/notifications/${productNotification.type}`,
             productNotification
           )
@@ -95,8 +99,10 @@ export class ProductNotificationsService {
         this.apiService
           .put(
             customer.isBusinessCustomer
-              ? `customers/${customer.customerNo}/users/-/notifications/${productNotification.type}/${sku}`
-              : `privatecustomers/-/notifications/${productNotification.type}/${sku}`,
+              ? `customers/${this.apiService.encodeResourceId(customer.customerNo)}/users/-/notifications/${
+                  productNotification.type
+                }/${this.apiService.encodeResourceId(sku)}`
+              : `privatecustomers/-/notifications/${productNotification.type}/${this.apiService.encodeResourceId(sku)}`,
             productNotification
           )
           .pipe(
@@ -126,8 +132,10 @@ export class ProductNotificationsService {
       switchMap(customer =>
         this.apiService.delete(
           customer.isBusinessCustomer
-            ? `customers/${customer.customerNo}/users/-/notifications/${productNotificationType}/${sku}`
-            : `privatecustomers/-/notifications/${productNotificationType}/${sku}`
+            ? `customers/${this.apiService.encodeResourceId(
+                customer.customerNo
+              )}/users/-/notifications/${productNotificationType}/${this.apiService.encodeResourceId(sku)}`
+            : `privatecustomers/-/notifications/${productNotificationType}/${this.apiService.encodeResourceId(sku)}`
         )
       )
     );

@@ -10,7 +10,7 @@ import { DescriptionWrapperComponent } from './description-wrapper/description-w
 import { HorizontalCheckboxWrapperComponent } from './horizontal-checkbox-wrapper/horizontal-checkbox-wrapper.component';
 import { HorizontalWrapperComponent } from './horizontal-wrapper/horizontal-wrapper.component';
 import { InputAddonWrapperComponent } from './input-addon-wrapper/input-addon-wrapper.component';
-import { TextareaDescriptionWrapperComponent } from './textarea-description-wrapper/textarea-description-wrapper.component';
+import { MaxlengthDescriptionWrapperComponent } from './maxlength-description-wrapper/maxlength-description-wrapper.component';
 import { TooltipWrapperComponent } from './tooltip-wrapper/tooltip-wrapper.component';
 import { ValidationWrapperComponent } from './validation-wrapper/validation-wrapper.component';
 
@@ -19,7 +19,7 @@ const wrapperComponents = [
   HorizontalCheckboxWrapperComponent,
   HorizontalWrapperComponent,
   InputAddonWrapperComponent,
-  TextareaDescriptionWrapperComponent,
+  MaxlengthDescriptionWrapperComponent,
   TooltipWrapperComponent,
   ValidationWrapperComponent,
 ];
@@ -35,7 +35,7 @@ const wrapperComponents = [
         { name: 'form-field-horizontal', component: HorizontalWrapperComponent },
         { name: 'form-field-checkbox-horizontal', component: HorizontalCheckboxWrapperComponent },
         { name: 'input-addon', component: InputAddonWrapperComponent },
-        { name: 'textarea-description', component: TextareaDescriptionWrapperComponent },
+        { name: 'maxlength-description', component: MaxlengthDescriptionWrapperComponent },
         { name: 'tooltip', component: TooltipWrapperComponent },
         { name: 'validation', component: ValidationWrapperComponent },
         { name: 'description', component: DescriptionWrapperComponent },

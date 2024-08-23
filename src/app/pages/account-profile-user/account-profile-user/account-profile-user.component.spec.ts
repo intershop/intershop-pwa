@@ -69,7 +69,7 @@ describe('Account Profile User Component', () => {
     element = fixture.nativeElement;
 
     currentUser = { firstName: 'Patricia', lastName: 'Miller' } as User;
-    component.currentUser$ = of(currentUser);
+    component.currentUser = currentUser;
 
     invalidUser = { firstName: '', lastName: '' } as User;
 
@@ -113,7 +113,7 @@ describe('Account Profile User Component', () => {
 
     fixture.detectChanges();
 
-    component.submitForm(currentUser);
+    component.submitForm();
 
     verify(eventEmitter$.emit(anything())).once();
   });
@@ -121,23 +121,23 @@ describe('Account Profile User Component', () => {
   it('should not emit updateUserProfile event if form is invalid', () => {
     const eventEmitter$ = spy(component.updateUserProfile);
 
-    component.currentUser$ = of(invalidUser);
+    component.currentUser = invalidUser;
 
     fixture.detectChanges();
 
-    component.submitForm(anything());
+    component.submitForm();
 
     verify(eventEmitter$.emit(anything())).never();
   });
 
   it('should disable submit button when the user submits an invalid form', () => {
-    component.currentUser$ = of(invalidUser);
+    component.currentUser = invalidUser;
 
     fixture.detectChanges();
 
     expect(component.buttonDisabled).toBeFalse();
 
-    component.submitForm(anything());
+    component.submitForm();
 
     expect(component.buttonDisabled).toBeTrue();
   });

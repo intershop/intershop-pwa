@@ -1,12 +1,11 @@
+@use 'sass:color';
+@use 'sass:map';
+
 ///////////////////////////////////////////////////////////////////////////////
-//
 // DEFAULT THEME VARIABLES
-//
 // supposed to reflect the style guide of the storefront
-//
 ///////////////////////////////////////////////////////////////////////////////
 
-//
 // LOGOS
 
 $logo: url('/assets/themes/b2b/img/logo.png');
@@ -19,27 +18,23 @@ $logo-mobile-height: 41px;
 // General spaces
 $space-default: 15px;
 
-//
 // FONTS
 $font-family-regular: 'robotoregular', 'Helvetica', 'Arial', sans-serif;
 $font-family-bold: 'robotobold', 'Helvetica', 'Arial', sans-serif;
 $font-family-condensedregular: 'roboto_condensedregular', 'Helvetica Neue', helvetica, 'Arial', sans-serif;
 $font-family-condensedbold: 'roboto_condensedbold', 'Helvetica Neue', helvetica, 'Arial', sans-serif;
 
-//
 // FONT SIZES
 $font-size-corporate: 0.875rem; // 14px is the bootstrap 3 default font size (1rem should be around 16px)
 
-//
 //CORPORATE DESIGN COLORS
 
 $CORPORATE-PRIMARY: #688dc3; // BLUE
-$CORPORATE-SECONDARY: darken($CORPORATE-PRIMARY, 10%);
-$CORPORATE-LIGHT: lighten($CORPORATE-PRIMARY, 10%);
-$CORPORATE-DARK: darken($CORPORATE-PRIMARY, 20%);
+$CORPORATE-SECONDARY: color.adjust($CORPORATE-PRIMARY, $lightness: -10%);
+$CORPORATE-LIGHT: color.adjust($CORPORATE-PRIMARY, $lightness: 10%);
+$CORPORATE-DARK: color.adjust($CORPORATE-PRIMARY, $lightness: -20%);
 $CORPORATE-SHADOW: #7f9ecc80; // with alpha transparency
 
-//
 //TEXT COLORS
 
 $text-color-corporate: $CORPORATE-PRIMARY;
@@ -53,7 +48,6 @@ $text-color-quinary: #eee;
 $text-color-inverse: #fff;
 $text-color-special: #ea1919; //RED
 
-//
 //GENERAL COLORS
 
 $color-corporate: $CORPORATE-PRIMARY;
@@ -75,7 +69,6 @@ $color-label-sale: #ea1919; // sale
 $color-label-topseller: #f0c; // topseller
 $color-label-new: #06f; // new
 
-//
 // BORDERS
 
 $border-color-corporate: $color-corporate;
@@ -86,7 +79,6 @@ $border-color-lighter: #ddd;
 
 $border-width-default: 1px;
 
-//
 // BUTTONS
 
 // primary buttons
@@ -142,23 +134,18 @@ $toast-warning-icon: '<path d="M7.5,14.967A7.467,7.467,0,1,0,.033,7.5,7.476,7.47
 $toast-success-icon: '<path d="M437,75C388.7,26.6,324.4,0,256,0S123.3,26.6,75,75C26.6,123.3,0,187.6,0,256s26.6,132.7,75,181c48.4,48.4,112.6,75,181,75s132.7-26.6,181-75c48.4-48.4,75-112.6,75-181S485.4,123.3,437,75z M389,191L225,355c-4.5,4.5-10.6,7-17,7s-12.5-2.5-17-7l-68-68c-9.4-9.4-9.4-24.6,0-33.9c9.4-9.4,24.6-9.4,33.9,0l51,51l147-147c9.4-9.4,24.6-9.4,33.9,0C398.3,166.4,398.3,181.6,389,191z"/>';
 $toast-info-icon: '<path d="M256,0C114.6,0,0,114.6,0,256s114.6,256,256,256s256-114.6,256-256S397.4,0,256,0z M280,400c0,13.3-10.7,24-24,24s-24-10.7-24-24V216c0-13.3,10.7-24,24-24s24,10.7,24,24V400z M256,160c-17.7,0-32-14.3-32-32s14.3-32,32-32c17.7,0,32,14.3,32,32S273.7,160,256,160z"/>';
 /* stylelint-disable number-max-precision */
-$toast-error-color: rgba(114, 28, 36, 0.999999);
-$toast-warning-color: rgba(133, 100, 4, 0.999999);
-$toast-success-color: rgba(21, 87, 36, 0.999999);
-$toast-info-color: rgba(12, 84, 96, 0.999999);
+$toast-error-color: rgb(114 28 36 / 0.999999);
+$toast-warning-color: rgb(133 100 4 / 0.999999);
+$toast-success-color: rgb(21 87 36 / 0.999999);
+$toast-info-color: rgb(12 84 96 / 0.999999);
 /* stylelint-enable number-max-precision */
 
 ///////////////////////////////////////////////////////////////////////////////
-//
 // CUSTOMIZED BOOTSTRAP DEFAULT VARIABLES
-//
 // theme specific customization of Bootstrap variables
-//
 ///////////////////////////////////////////////////////////////////////////////
 
-//
 // Color system
-//
 
 $white: #fff;
 $gray-100: #f8f9fa;
@@ -181,21 +168,18 @@ $info: $color-special-tertiary;
 $success: $color-special-quaternary;
 
 // Body
-//
 // Settings for the `<body>` element.
 
 $body-bg: $white;
 $body-color: $color-primary;
 
 // Links
-//
 // Style anchor elements.
 
 $link-color: $CORPORATE-PRIMARY;
 $link-hover-color: $CORPORATE-SECONDARY;
 
 // Components
-//
 // Define common padding and border radius sizes and more.
 
 $border-radius: 0;
@@ -203,7 +187,6 @@ $border-radius-lg: 0;
 $border-radius-sm: 0;
 
 // Fonts
-//
 // Font, line-height, and color for body text, headings, and more.
 $font-family-sans-serif: $font-family-regular;
 $font-family-monospace: 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace;
@@ -224,7 +207,6 @@ $headings-line-height: 1.1;
 $headings-color: $text-color-primary;
 
 // Buttons + Forms
-//
 // Shared variables that are reassigned to `$input-` and `$btn-` specific variables.
 
 // Forms
@@ -232,13 +214,11 @@ $input-placeholder-color: $text-color-quaternary;
 $input-accent-color: #222;
 
 // Dropdown
-//
 // Dropdown menu container and contents.
 
-$dropdown-border-color: rgba(0, 0, 0, 0.15);
+$dropdown-border-color: rgb(0 0 0 / 0.15);
 
 // Grid breakpoints
-//
 // Define the minimum dimensions at which your layout will change,
 // adapting to different screen sizes, for use in media queries.
 
@@ -261,16 +241,16 @@ $grid-gutter-width: 30px;
 $container-max-widths: (
   sm: 768px,
   md: 770px,
-  lg: map-get($grid-breakpoints, lg) - $grid-gutter-width,
-  xl: map-get($grid-breakpoints, xl) - $grid-gutter-width,
+  lg: map.get($grid-breakpoints, lg) - $grid-gutter-width,
+  xl: map.get($grid-breakpoints, xl) - $grid-gutter-width,
 );
 // Navbar
 $navbar-padding-x: 0;
 // Popovers
 $popover-max-width: 310px;
-$popover-border-color: rgba(0, 0, 0, 0.2);
+$popover-border-color: rgb(0 0 0 / 0.2);
 // Modals
-$modal-content-border-color: rgba(0, 0, 0, 0.2);
+$modal-content-border-color: rgb(0 0 0 / 0.2);
 $modal-header-border-color: $border-color-light;
 // Carousel
 $carousel-control-color: $color-secondary;

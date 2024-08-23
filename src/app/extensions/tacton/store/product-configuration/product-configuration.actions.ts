@@ -6,7 +6,7 @@ import { TactonProductConfiguration } from '../../models/tacton-product-configur
 import { TactonSavedConfiguration } from '../../models/tacton-saved-configuration/tacton-saved-configuration.model';
 
 export const startConfigureTactonProduct = createAction(
-  '[Tacton Self-Service API] Start Product Configuration',
+  '[Tacton Self-Service] Start Product Configuration',
   payload<{ productPath: string }>()
 );
 
@@ -23,25 +23,25 @@ export const setCurrentConfiguration = createAction(
 export const clearTactonConfiguration = createAction('[Tacton Self-Service API] Clear Configuration');
 
 export const commitTactonConfigurationValue = createAction(
-  '[Tacton Self-Service API] Commit Configuration Value',
+  '[Tacton Self-Service] Commit Configuration Value',
   payload<{ valueId: string; value: string }>()
 );
 
 export const uncommitTactonConfigurationValue = createAction(
-  '[Tacton Self-Service API] Uncommit Configuration Value',
+  '[Tacton Self-Service] Uncommit Configuration Value',
   payload<{ valueId: string }>()
 );
 
 export const acceptTactonConfigurationConflictResolution = createAction(
-  '[Tacton Self-Service API] Accept ConflictResolution'
+  '[Tacton Self-Service] Accept ConflictResolution'
 );
 
 export const changeTactonConfigurationStep = createAction(
-  '[Tacton Self-Service API] Change Configuration Step',
+  '[Tacton Self-Service] Change Configuration Step',
   payload<{ step: string }>()
 );
 
-export const submitTactonConfiguration = createAction('[Tacton Self-Service API] Submit Configuration');
+export const submitTactonConfiguration = createAction('[Tacton Self-Service] Submit Configuration');
 
 export const submitTactonConfigurationSuccess = createAction(
   '[Tacton Self-Service API] Submit Configuration Success',

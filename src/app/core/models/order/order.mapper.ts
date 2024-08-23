@@ -64,7 +64,11 @@ export class OrderMapper {
         lineItems:
           included?.lineItems && data.lineItems?.length
             ? data.lineItems.map(lineItemId =>
-                LineItemMapper.fromOrderItemData(included.lineItems[lineItemId], included.lineItems_discounts)
+                LineItemMapper.fromOrderItemData(
+                  included.lineItems[lineItemId],
+                  included.lineItems_discounts,
+                  included.lineItems_warranty
+                )
               )
             : [],
         totalProductQuantity: data.totalProductQuantity,

@@ -4,7 +4,7 @@ import { routerNavigationAction } from '@ngrx/router-store';
 import { TranslateLoader } from '@ngx-translate/core';
 import { memoize } from 'lodash-es';
 import { Subject, combineLatest, defer, from, iif, of } from 'rxjs';
-import { catchError, filter, first, map, shareReplay, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { catchError, filter, map, shareReplay, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
 import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
 import { InjectSingle } from 'ish-core/utils/injection';
@@ -41,7 +41,7 @@ export class ICMTranslateLoader implements TranslateLoader {
       // the localization call should wait until all server supplied configuration parameter are applied to the state
       this.actions$.pipe(
         ofType(routerNavigationAction),
-        first(),
+        take(1),
         switchMap(() =>
           this.localizations.getServerTranslations(lang).pipe(
             tap(data => {

@@ -51,7 +51,7 @@ describe('Product Detail Info Component', () => {
   });
 
   it('should not display the product rating tab for variation master', () => {
-    when(context.select('variationCount')).thenReturn(of(2));
+    when(context.select('product')).thenReturn(of({ type: 'VariationProductMaster' }));
 
     fixture.detectChanges();
 

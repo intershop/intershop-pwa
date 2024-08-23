@@ -55,7 +55,7 @@ export class AccountOrderTemplateDetailLineItemComponent implements OnInit {
     }
   }
 
-  updateProductQuantity(sku: string, quantity: number) {
+  private updateProductQuantity(sku: string, quantity: number) {
     this.orderTemplatesFacade.addProductToOrderTemplate(
       this.currentOrderTemplate.id,
       sku,

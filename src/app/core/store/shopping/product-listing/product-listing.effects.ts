@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
-import { distinctUntilChanged, filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
@@ -125,6 +125,8 @@ export class ProductListingEffects {
         );
       }),
       distinctUntilChanged(isEqual),
+      // prevent an unnecessary loadMoreProductsForParamsAction in case a new search is triggered and a query parameter like a filter had been previously been set
+      debounceTime(1),
       map(({ id, filters, sorting, page }) => loadMoreProductsForParams({ id, filters, sorting, page }))
     )
   );

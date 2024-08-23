@@ -1,10 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
-import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Order } from 'ish-core/models/order/order.model';
 
-type OrderColumnsType =
+export type OrderColumnsType =
   | 'creationDate'
   | 'orderNo'
   | 'orderNoWithLink'
@@ -44,14 +42,4 @@ export class OrderListComponent {
   @Input() noOrdersMessageKey = 'account.orderlist.no_orders_message';
 
   @Input() loading: boolean;
-
-  /**
-   *  get buyer name from order attributes
-   */
-  getBuyerName(attributes: Attribute[]): string {
-    return `${AttributeHelper.getAttributeValueByAttributeName(
-      attributes,
-      'firstName'
-    )} ${AttributeHelper.getAttributeValueByAttributeName(attributes, 'lastName')}`;
-  }
 }

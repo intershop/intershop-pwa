@@ -101,4 +101,12 @@ export class PipesModule { }
     const content = tree.readContent('/src/app/extensions/feature/feature.module.ts');
     expect(content).toContain('FooPipe');
   });
+
+  it('should name the pipe with the correct prefix', async () => {
+    const options = { ...defaultOptions, name: 'foo' };
+
+    const tree = await schematicRunner.runSchematic('pipe', options, appTree);
+    const content = tree.readContent('/src/app/core/pipes/foo.pipe.ts');
+    expect(content).toContain('ishFoo');
+  });
 });

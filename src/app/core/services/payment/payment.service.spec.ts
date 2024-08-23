@@ -72,6 +72,7 @@ describe('Payment Service', () => {
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
     when(apiServiceMock.currentBasketEndpoint()).thenReturn(instance(apiServiceMock));
+    when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
 
     appFacadeMock = mock(AppFacade);
     when(appFacadeMock.customerRestResource$).thenReturn(of('customers'));
@@ -104,11 +105,28 @@ describe('Payment Service', () => {
       });
     });
 
+    it("should set a payment to the basket when 'setBasketFastCheckoutPayment' is called", done => {
+      when(apiServiceMock.put(anyString(), anything(), anything())).thenReturn(
+        of({
+          data: {
+            redirect: {
+              redirectUrl: '/checkout/review',
+            },
+          },
+        })
+      );
+
+      paymentService.setBasketFastCheckoutPayment('testPayment').subscribe(() => {
+        verify(apiServiceMock.put(`payments/open-tender`, anything(), anything())).once();
+        done();
+      });
+    });
+
     it("should set a payment to the basket when 'setBasketPayment' is called", done => {
-      when(apiServiceMock.put(anyString(), anything(), anything())).thenReturn(of([]));
+      when(apiServiceMock.put(anyString(), anything(), anything())).thenReturn(of({}));
 
       paymentService.setBasketPayment('testPayment').subscribe(() => {
-        verify(apiServiceMock.put(`payments/open-tender?include=paymentMethod`, anything(), anything())).once();
+        verify(apiServiceMock.put(`payments/open-tender`, anything(), anything())).once();
         done();
       });
     });
@@ -117,7 +135,7 @@ describe('Payment Service', () => {
       when(apiServiceMock.post(anyString(), anything(), anything())).thenReturn(of([]));
 
       paymentService.createBasketPayment(newPaymentInstrument).subscribe(() => {
-        verify(apiServiceMock.post(`payment-instruments?include=paymentMethod`, anything(), anything())).once();
+        verify(apiServiceMock.post(`payment-instruments`, anything(), anything())).once();
         done();
       });
     });

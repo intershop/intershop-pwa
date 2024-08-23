@@ -27,7 +27,7 @@ export class CMSCarouselComponent implements CMSComponent, OnChanges {
 
   @ViewChild('ngbCarousel') carousel: NgbCarousel;
 
-  slideItems = 6;
+  private slideItems = 6;
   itemGridSize = 12;
   pageletSlides: string[][] = [];
 

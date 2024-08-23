@@ -15,6 +15,7 @@ export class B2bUserMapper {
         login: e.login,
         firstName: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'firstName'),
         lastName: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'lastName'),
+        businessPartnerNo: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'businessPartnerNo'),
         roleIDs: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'roleIDs'),
         active: AttributeHelper.getAttributeValueByAttributeName(e.attributes, 'active'),
         userBudget: {

@@ -32,6 +32,7 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
 
   form = new UntypedFormGroup({});
 
+  // visible-for-testing
   submitted = false;
   isAddressFormCollapsed = true;
 
@@ -48,7 +49,7 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
   /**
    * checks, if all data are available to jump to the next checkout step
    */
-  isNextStepAvailable() {
+  private isNextStepAvailable() {
     return this.basket?.invoiceToAddress && this.basket.commonShipToAddress;
   }
 

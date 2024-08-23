@@ -46,7 +46,7 @@ export class WishlistPreferencesDialogComponent implements OnInit {
   wishListForm = new FormGroup({});
   model: Partial<Wishlist> = { preferred: false };
   fields: FormlyFieldConfig[];
-  submitted = false;
+  private submitted = false;
 
   /**
    *  A reference to the current modal.
@@ -56,7 +56,7 @@ export class WishlistPreferencesDialogComponent implements OnInit {
   // localization keys, default = for new
 
   primaryButton = 'account.wishlists.new_wishlist_form.create_button.text';
-  wishlistTitle = 'account.wishlists.choose_wishlist.new_wishlist_name.initial_value';
+  private wishlistTitle = 'account.wishlists.choose_wishlist.new_wishlist_name.initial_value';
   modalHeader = 'account.wishlists.new_wishlist_dialog.header';
 
   @ViewChild('modal') modalTemplate: TemplateRef<unknown>;

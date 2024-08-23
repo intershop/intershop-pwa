@@ -25,6 +25,7 @@ describe('Wishlist Service', () => {
         { provide: AppFacade, useFactory: () => instance(appFacade) },
       ],
     });
+    when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
     when(appFacade.customerRestResource$).thenReturn(of('privatecustomers'));
 
     wishlistService = TestBed.inject(WishlistService);
@@ -51,7 +52,7 @@ describe('Wishlist Service', () => {
             "itemsCount": 0,
             "preferred": true,
             "public": undefined,
-            "title": null,
+            "title": undefined,
           },
         ]
       `);
@@ -75,7 +76,7 @@ describe('Wishlist Service', () => {
             "itemsCount": 0,
             "preferred": true,
             "public": undefined,
-            "title": null,
+            "title": undefined,
           },
         ]
       `);

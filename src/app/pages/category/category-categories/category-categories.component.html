@@ -1,4 +1,5 @@
 <div class="category-page" [attr.data-testing-id]="category.uniqueId">
+  <!-- DISABLED VIEW CONTEXT --
   <div class="marketing-area">
     <ish-content-viewcontext
       *ngIf="category.categoryRef"
@@ -6,10 +7,12 @@
       [callParameters]="{ Category: category.categoryRef }"
     />
   </div>
+  -- DISABLED VIEW CONTEXT -->
   <div class="row">
     <div class="col-md-3">
       <div class="navigation-panel" [ngbCollapse]="isCollapsed">
         <ish-category-navigation [uniqueId]="category.categoryPath[0]" />
+        <!-- DISABLED VIEW CONTEXT --
         <div class="marketing-area">
           <ish-content-viewcontext
             *ngIf="category.categoryRef"
@@ -17,6 +20,7 @@
             [callParameters]="{ Category: category.categoryRef }"
           />
         </div>
+        -- DISABLED VIEW CONTEXT -->
       </div>
       <button type="button" class="d-md-none mobile-filter-toggle btn btn-link btn-link-action" (click)="toggle()">
         {{ 'search.mobile.filter.trigger' | translate }}
@@ -28,6 +32,7 @@
       <ish-breadcrumb />
       <h1>{{ category.name }}</h1>
 
+      <!-- DISABLED VIEW CONTEXT --
       <div class="marketing-area">
         <ish-content-viewcontext
           *ngIf="category.categoryRef"
@@ -35,9 +40,11 @@
           [callParameters]="{ Category: category.categoryRef }"
         />
       </div>
+      -- DISABLED VIEW CONTEXT -->
 
       <ish-category-list [categories]="category.children" />
 
+      <!-- DISABLED VIEW CONTEXT --
       <div class="marketing-area">
         <ish-content-viewcontext
           *ngIf="category.categoryRef"
@@ -45,8 +52,10 @@
           [callParameters]="{ Category: category.categoryRef }"
         />
       </div>
+      -- DISABLED VIEW CONTEXT -->
     </div>
   </div>
+  <!-- DISABLED VIEW CONTEXT --
   <div class="marketing-area">
     <ish-content-viewcontext
       *ngIf="category.categoryRef"
@@ -54,4 +63,5 @@
       [callParameters]="{ Category: category.categoryRef }"
     />
   </div>
+  -- DISABLED VIEW CONTEXT -->
 </div>

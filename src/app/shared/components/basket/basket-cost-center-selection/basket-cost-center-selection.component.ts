@@ -24,7 +24,7 @@ export class BasketCostCenterSelectionComponent implements OnInit {
   fields$: Observable<FormlyFieldConfig[]>;
   model: { costCenter: string };
 
-  costCenterOptions$: Observable<SelectOption[]>;
+  private costCenterOptions$: Observable<SelectOption[]>;
 
   private destroyRef = inject(DestroyRef);
 

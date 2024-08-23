@@ -1,10 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////
-//
 // MAIN STOREFRONT STYLING IMPORTS
-//
 ///////////////////////////////////////////////////////////////////////////////
 
-//
 // THIRD PARTY IMPORTS
 
 // import Bootstrap styles
@@ -20,13 +17,11 @@
 @import 'swiper/scss';
 @import 'swiper/scss/pagination';
 
-//
 // STYLING COMPATIBILITY LAYER
 
 // import breakpoint wrapper to match older bootstrap 3 implementation
 @import 'breakpoints';
 
-//
 // STOREFRONT SPECIFIC IMPORTS
 
 @import 'global/fonts/roboto';

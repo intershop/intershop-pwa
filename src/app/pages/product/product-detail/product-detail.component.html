@@ -44,13 +44,16 @@
       <ish-lazy-product-add-to-quote [cssClass]="'btn-secondary btn-block'" />
 
       <ish-lazy-product-notification-edit cssClass="btn btn-secondary btn-block" displayType="button" />
+      <ish-product-warranty (submitWarranty)="setSelectedWarranty($event)" />
     </div>
 
+    <!-- DISABLED VIEW CONTEXT --
     <div class="marketing-area">
       <ish-content-viewcontext
         viewContextId="viewcontext.include.product.productinfo"
         [callParameters]="{ Product: product.sku }"
       />
     </div>
+    -- DISABLED VIEW CONTEXT -->
   </div>
 </div>

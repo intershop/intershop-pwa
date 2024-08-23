@@ -45,6 +45,7 @@ export class ModalDialogLinkComponent {
   shown$ = new BehaviorSubject(false);
 
   /** enable parent components to close the modal */
+  // not-dead-code
   hide() {
     this.modal.hide();
   }

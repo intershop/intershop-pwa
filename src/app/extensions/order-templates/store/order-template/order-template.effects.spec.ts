@@ -8,6 +8,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
@@ -34,6 +35,8 @@ import {
   loadOrderTemplatesFail,
   loadOrderTemplatesSuccess,
   moveItemToOrderTemplate,
+  orderTemplatesActions,
+  orderTemplatesApiActions,
   removeItemFromOrderTemplate,
   removeItemFromOrderTemplateFail,
   removeItemFromOrderTemplateSuccess,
@@ -182,6 +185,100 @@ describe('Order Template Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.createOrderTemplate$).toBeObservable(expected$);
+    });
+  });
+
+  describe('createOrderTemplateFromLineItems$', () => {
+    const lineItems = [{ productSKU: 'sku1', quantity: { value: 65 } } as LineItem];
+    const orderTemplateData = [
+      {
+        title: 'testing order template',
+        id: '.SKsEQAE4FIAAAFuNiUBWx0d',
+      } as OrderTemplate,
+    ];
+    const orderTemplateHeader = {
+      title: 'testing order template',
+    };
+
+    beforeEach(() => {
+      store.dispatch(loginUserSuccess({ customer }));
+      when(orderTemplateServiceMock.createOrderTemplate(anything())).thenReturn(of(orderTemplateData[0]));
+      when(orderTemplateServiceMock.addProductToOrderTemplate(anything(), anything(), anything())).thenReturn(
+        of(orderTemplateData[0])
+      );
+    });
+
+    it('should call the OrderTemplateService for createOrderTemplateFromLineItems', done => {
+      const action = orderTemplatesActions.createOrderTemplateFromLineItems({
+        orderTemplate: orderTemplateHeader,
+        lineItems,
+      });
+      actions$ = of(action);
+
+      effects.createOrderTemplateFromLineItems$.subscribe(() => {
+        verify(orderTemplateServiceMock.createOrderTemplate(anything())).once();
+        verify(
+          orderTemplateServiceMock.addProductToOrderTemplate(
+            orderTemplateData[0].id,
+            lineItems[0].productSKU,
+            lineItems[0].quantity.value
+          )
+        ).once();
+        done();
+      });
+    });
+
+    it('should map to actions of type createOrderTemplateFromLineItemsSuccess and SuccessMessage', () => {
+      const action = orderTemplatesActions.createOrderTemplateFromLineItems({
+        orderTemplate: orderTemplateHeader,
+        lineItems,
+      });
+      const completion1 = orderTemplatesApiActions.createOrderTemplateFromLineItemsSuccess({
+        orderTemplate: orderTemplateData[0],
+      });
+      const completion2 = displaySuccessMessage({
+        message: 'account.order_template.new_from_basket_confirm.heading',
+        messageParams: { 0: orderTemplateHeader.title },
+      });
+      actions$ = hot('-a----a----a', { a: action });
+      const expected$ = cold('-(cd)-(cd)-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.createOrderTemplateFromLineItems$).toBeObservable(expected$);
+    });
+    it('should map failed order template creation calls to actions of type createOrderTemplateFail', () => {
+      const error = makeHttpError({ message: 'invalid' });
+      when(orderTemplateServiceMock.createOrderTemplate(anything())).thenReturn(throwError(() => error));
+
+      const action = orderTemplatesActions.createOrderTemplateFromLineItems({
+        orderTemplate: orderTemplateHeader,
+        lineItems,
+      });
+      const completion = createOrderTemplateFail({
+        error,
+      });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.createOrderTemplateFromLineItems$).toBeObservable(expected$);
+    });
+
+    it('should map failed order template item creation calls to actions of type createOrderTemplateFromLineItemsFail', () => {
+      const error = makeHttpError({ message: 'invalid' });
+      when(orderTemplateServiceMock.addProductToOrderTemplate(anything(), anything(), anything())).thenReturn(
+        throwError(() => error)
+      );
+
+      const action = orderTemplatesActions.createOrderTemplateFromLineItems({
+        orderTemplate: orderTemplateHeader,
+        lineItems,
+      });
+      const completion = orderTemplatesApiActions.createOrderTemplateFromLineItemsFail({
+        error,
+      });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.createOrderTemplateFromLineItems$).toBeObservable(expected$);
     });
   });
 

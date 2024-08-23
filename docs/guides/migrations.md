@@ -7,6 +7,69 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 5.1 to 5.2
+
+> [!NOTE]
+> The Intershop PWA 5.2.0 is implemented and configured to work out-of-the-box with ICM 12.0.0.
+> This distinction is needed since the way encoded resource IDs are processed by ICM was changed in ICM 12.
+>
+> To use the fitting resource ID encoding for ICM 7.10 or ICM 11, the feature toggle `legacyEncoding` needs to be enabled.
+
+The function `encodeResourceID` has been moved to a method `encodeResourceId` of the [`api.service`](../../src/app/core/services/api/api.service.ts), and it is now used to encode all dynamic resource IDs in any REST API call to ICM.
+This was previously only done for the login, but is now consistently used for all resource IDs.
+For ICM 7.10 and ICM 11, a duplicated `encodeURIComponent` encoding is applied.
+For ICM 12 and newer, a single `encodeURIComponent` encoding with additional `+` character handling is used.
+To migrate custom code, searching for `encodeResourceID(` and replacing it with `this.apiService.encodeResourceId(` is sufficient.
+Please be aware when migrating that there is an intermediate [commit](https://github.com/intershop/intershop-pwa/commit/3e7c0ae2ff1d6e676f98d7c399b70b505f389e16) for the resource ID encoding in the 5.2 release that was improved with a later [commit](https://github.com/intershop/intershop-pwa/commit/TODO_with_release_creation) to work with the `legacyEncoding` feature toggle for ICM 7.10 and ICM 11 encoding not requiring any code adaptions anymore.
+
+The store action and method `addBasketToNewOrderTemplate` of the OrderTemplatesFacade have been renamed to `createOrderTemplateFromLineItems` and refactored slightly.
+
+The Intershop PWA specific Pipes `sanitize`, `makeHref` and `htmlEncode` were renamed using the common `ish` prefix that is used for the other custom Pipes as well.
+When migrating, rename all occurrences of these Pipes to `ishSanitize`, `ishMakeHref` and `ishHtmlEncode`.
+The code generation has been adapted to generate new Pipes from the beginning with the correct prefixes now.
+
+A few Stylelint rules have been changed and the `.scss` files have been adapted.
+`color-function-notation` has been changed to the default `modern` resulting in changed color notations from `rgba(0, 0, 0, 0.125)` to `rgb(0 0 0 / 0.125)`.
+`scss/no-global-function-names` has been enabled resulting in changes, e.g., from `map-get($grid-breakpoints, 'xs')` to `map.get($grid-breakpoints, 'xs')` with the necessary `@use` references, or from `darken($color-label-new, 20%)` to `color.adjust($color-label-new, $lightness: -20%)`.
+In addition, empty comments in `.scss` files are no longer allowed and have been removed.
+In migration projects, either keep the Stylelint rules with the old settings or migrate all your styling files accordingly running `npm run format`.
+
+With Intershop PWA version 5.2.0, the rendering of our demo/example view contexts was disabled by default.
+Each integrated view context triggers a REST call that will potentially decrease the SSR rendering performance, something that is not necessary if this feature is not actively used in a PWA project.
+For this reason, the examples were commented out in the source code and have to be activated in the project source code if needed.
+See [CMS Integration - View Contexts](../concepts/cms-integration.md#view-contexts) for more information.
+
+The `ExternalDisplayPropertiesProvider` `setup` notation has been changed from providing only the `product` context to providing a combined `{ product, prices }` context object.
+For this reason, any custom `ContextDisplayPropertiesService` that implements the `ExternalDisplayPropertiesProvider` needs to be adapted accordingly (see the changes of #1657).
+
+The dead code detection script has been improved and extended and is now checking Angular components in more detail.
+This resulted in more variables and methods being declared as `private` and some unused code being removed.
+This should not affect PWA based projects as long as such internal declarations have not been used, else compiling will fail and the code would need to be adapted/reverted accordingly.
+
+Product variations have been eagerly loaded via effects.
+In projects with many variations, this can lead to performance issues, especially if the variation data is not needed for the current views.
+For this reason, product variations are now loaded lazily through the following changes that might need adaptions with project customizations.
+
+- The `variations` property on the product view interface has been removed. Variations can now be retrieved via the product context facade or the shopping facade.
+- The `productMaster` property on the product view model has been removed. The master product should be individually retrieved.
+- The `ish-product-item-variations` component has been refactored.
+
+The Formly wrapper `textarea-description` has been renamed to the more appropriate name `maxlength-description`, and the rendering logic and compatibility to the general `description` wrapper has been improved.
+The renaming should better convey the fact that this wrapper can be used not only for `ish-textarea-field` (where it is configured by default), but with other input field types as well.
+Besides this, the main difference to the general `description` wrapper is its remaining `maxlength` calculation.
+Together with the renaming, the implementation has been changed so that the description will only be rendered if the corresponding field has a `props.maxLength` value configured.
+Additionally, the `props` key to provide an alternative translation key has been changed from `customDescription` to `maxLengthDescription`.
+This change allows to use the `description` wrapper with its `customDescription` together with the `maxlength-description` wrapper with a customized `maxLengthDescription`.
+When migrating customer projects, check to see if a `customDescription` is configured for an `ish-textarea-field`, and if so, replace it with `maxLengthDescription`.
+You also need to check if the `textarea-description` wrapper is configured somewhere other than the default assignment to the `ish-textarea-field`.
+If so, replace these wrapper configurations with `maxlength-description`.
+
+B2B users with the permission `APP_B2B_MANAGE_ORDERS` (only available for admin users in ICM 12.1.0 and higher) now see the orders of all users of the company on the My Account order history page.
+They can filter the orders by buyer in order to see, e.g., only their own orders again.
+
+In preparation of the cXML punchout self service configuration, we switched from a hidden route parameter that conveys the punchout type context information to a URL query parameter (e.g., `?format=cxml`).
+So customized routing within the punchout area needs to be adapted accordingly.
+
 ## From 5.0 to 5.1
 
 The OrderListComponent is strictly presentational, components using it have to supply the data.
@@ -58,7 +121,7 @@ Since `defaultProject` is no longer a valid option in `angular.json`, it has bee
 
 We enabled the [Angular Hydration](https://angular.io/guide/hydration) to improve performance and prevent the UI from flickering when a page renders - please note that this feature is still in developer preview and may have some limitations.
 
-From this version, we use the [`takeUntilDestroyed`](https://indepth.dev/posts/1518/takeuntildestroy-in-angular-v16) operator to complete observables when the calling context (component, directive, service, etc) is destroyed.
+From this version, we use the [`takeUntilDestroyed`](https://angularindepth.com/posts/1518/takeuntildestroy-in-angular-v16) operator to complete observables when the calling context (component, directive, service, etc) is destroyed.
 The `add-destroy` schematic has been removed but you can keep the `takeUntil(destroy$)` mechanism for a transitional period.
 A [migration script](../../scripts/migrate-destroy-subject.ts) is created to support the migration to the new way to complete open observable subscriptions on destroy.
 This script can be executed with `npx ts-node .\scripts\migrate-destroy-subject.ts`.
@@ -193,7 +256,7 @@ will become
 },
 ```
 
-For more information about functional guards, see this [blog article](https://blog.angular.io/advancements-in-the-angular-router-5d69ec4c032).
+For more information about functional guards, see this [blog article](https://blog.angular.dev/advancements-in-the-angular-router-5d69ec4c032).
 
 With the [Prettier update to version 2.8](https://prettier.io/blog/2022/11/23/2.8.0.html#angular) the format of pipes in HTML files changed slightly.
 

@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -24,11 +25,14 @@ export class ReviewsService {
       return throwError(() => new Error('getProductReviews() called without sku'));
     }
 
-    return this.apiService.get(`products/${sku}/reviews?attrs=own`, { sendSPGID: true }).pipe(
-      unpackEnvelope<Link>(),
-      this.apiService.resolveLinks<ProductReview>(),
-      map(reviews => ProductReviewsMapper.fromData(sku, reviews))
-    );
+    const params = new HttpParams().set('attrs', 'own');
+    return this.apiService
+      .get(`products/${this.apiService.encodeResourceId(sku)}/reviews`, { sendSPGID: true, params })
+      .pipe(
+        unpackEnvelope<Link>(),
+        this.apiService.resolveLinks<ProductReview>(),
+        map(reviews => ProductReviewsMapper.fromData(sku, reviews))
+      );
   }
 
   /**
@@ -46,10 +50,12 @@ export class ReviewsService {
       return throwError(() => new Error('createProductReview() called without review'));
     }
 
-    return this.apiService.post(`products/${sku}/reviews`, { ...review, showAuthorNameFlag: true }).pipe(
-      this.apiService.resolveLink<ProductReview>(),
-      map(review => ProductReviewsMapper.fromData(sku, [{ ...review, own: true }]))
-    );
+    return this.apiService
+      .post(`products/${this.apiService.encodeResourceId(sku)}/reviews`, { ...review, showAuthorNameFlag: true })
+      .pipe(
+        this.apiService.resolveLink<ProductReview>(),
+        map(review => ProductReviewsMapper.fromData(sku, [{ ...review, own: true }]))
+      );
   }
 
   /**
@@ -66,6 +72,8 @@ export class ReviewsService {
       return throwError(() => new Error('deleteProductReview() called without reviewId'));
     }
 
-    return this.apiService.delete(`products/${sku}/reviews/${reviewId}`);
+    return this.apiService.delete(
+      `products/${this.apiService.encodeResourceId(sku)}/reviews/${this.apiService.encodeResourceId(reviewId)}`
+    );
   }
 }

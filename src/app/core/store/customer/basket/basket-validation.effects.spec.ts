@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
-import { Observable, noop, of, throwError } from 'rxjs';
+import { Observable, noop, of, throwError, toArray } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
@@ -25,10 +25,12 @@ import {
   continueCheckoutFail,
   continueCheckoutSuccess,
   continueCheckoutWithIssues,
+  continueWithFastCheckout,
   loadBasketSuccess,
   startCheckout,
   startCheckoutFail,
   startCheckoutSuccess,
+  startFastCheckout,
   submitBasket,
   validateBasket,
 } from './basket.actions';
@@ -50,6 +52,8 @@ describe('Basket Validation Effects', () => {
         RouterTestingModule.withRoutes([
           { path: 'checkout', children: [{ path: 'address', children: [] }] },
           { path: 'checkout', children: [{ path: 'review', children: [] }] },
+          { path: 'basket', children: [] },
+          { path: '**', children: [] },
         ]),
       ],
       providers: [
@@ -278,6 +282,59 @@ describe('Basket Validation Effects', () => {
     });
   });
 
+  describe('startFastCheckoutProcess$ - trigger basket validation before redirect', () => {
+    const basketValidation: BasketValidation = {
+      basket: BasketMockData.getBasket(),
+      results: {
+        valid: true,
+        adjusted: false,
+      },
+    };
+
+    beforeEach(() => {
+      when(basketServiceMock.validateBasket(anything())).thenReturn(of(basketValidation));
+    });
+
+    it('should map to action of type ContinueWithFastCheckout in case of success', () => {
+      const action = startFastCheckout({ paymentId: 'FastCheckout' });
+      const completion = continueWithFastCheckout({
+        targetRoute: undefined,
+        basketValidation,
+        paymentId: 'FastCheckout',
+      });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.startFastCheckoutProcess$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type StartCheckoutFail', () => {
+      when(basketServiceMock.validateBasket(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
+
+      const action = startFastCheckout({ paymentId: 'FastCheckout' });
+      const completion = startCheckoutFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.startFastCheckoutProcess$).toBeObservable(expected$);
+    });
+
+    it('should map to action of type ContinueCheckoutWithIssues if basket is not valid', () => {
+      const action = startFastCheckout({ paymentId: 'FastCheckout' });
+      basketValidation.results.valid = false;
+      const completion = continueCheckoutWithIssues({
+        targetRoute: undefined,
+        basketValidation,
+      });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.startFastCheckoutProcess$).toBeObservable(expected$);
+    });
+  });
+
   describe('validateBasketAndContinueCheckout$', () => {
     const basketValidation: BasketValidation = {
       basket: BasketMockData.getBasket(),
@@ -403,6 +460,52 @@ describe('Basket Validation Effects', () => {
       const expected$ = cold('-c', { c: completion });
 
       expect(effects.validateBasketAndContinueCheckout$).toBeObservable(expected$);
+    });
+
+    describe('handleBasketNotFoundError$', () => {
+      it('should navigate to (empty) /basket after ContinueCheckoutFail if basket expired or could not be found', done => {
+        const action = continueCheckoutFail({
+          error: makeHttpError({ message: 'invalid', code: 'basket.not_found.error' }),
+        });
+        actions$ = of(action);
+
+        effects.handleBasketNotFoundError$.pipe(toArray()).subscribe({
+          next: actions => {
+            expect(actions).toMatchInlineSnapshot(`
+            [Basket API] Load Basket Fail:
+              error: {"name":"HttpErrorResponse","message":"invalid","code":"bask...
+            `);
+
+            expect(location.path()).toMatchInlineSnapshot(`"/basket?error=true"`);
+
+            done();
+          },
+          error: fail,
+          complete: noop,
+        });
+      });
+
+      it('should navigate to (empty) /basket after StartCheckoutFail if basket expired or could not be found', done => {
+        const action = startCheckoutFail({
+          error: makeHttpError({ message: 'invalid', code: 'basket.not_found.error' }),
+        });
+        actions$ = of(action);
+
+        effects.handleBasketNotFoundError$.pipe(toArray()).subscribe({
+          next: actions => {
+            expect(actions).toMatchInlineSnapshot(`
+            [Basket API] Load Basket Fail:
+              error: {"name":"HttpErrorResponse","message":"invalid","code":"bask...
+            `);
+
+            expect(location.path()).toMatchInlineSnapshot(`"/basket?error=true"`);
+
+            done();
+          },
+          error: fail,
+          complete: noop,
+        });
+      });
     });
   });
 });

@@ -17,7 +17,6 @@ import {
   ProductCompletenessLevel,
   ProductHelper,
   VariationProduct,
-  VariationProductMaster,
 } from 'ish-core/models/product/product.model';
 import { generateCategoryUrl } from 'ish-core/routing/category/category.route';
 import { selectRouteParam } from 'ish-core/store/core/router';
@@ -64,7 +63,7 @@ export const getProductVariationSKUs = (sku: string) =>
     return state.variations[sku];
   });
 
-const internalProductVariations = (sku: string) =>
+export const getProductVariations = (sku: string) =>
   /* memoization manually by output: variation SKUs don't vary, but reference to state changes often */
   createSelectorFactory<object, VariationProduct[]>(projector => resultMemoize(projector, isEqual))(
     getProductsState,
@@ -73,34 +72,17 @@ const internalProductVariations = (sku: string) =>
       variations?.map(variationSku => productOrFailedStub(state, variationSku)) || []
   );
 
-const internalProductMasterSKU = (sku: string) =>
-  /* memoization automatically by output: string identity */
-  createSelector(
-    internalRawProduct(sku),
-    product => ProductHelper.isVariationProduct(product) && product.productMasterSKU
-  );
-
-const internalProductMaster = (sku: string) =>
-  /* memoization manually by output: master SKU doesn't vary, but reference to state changes often */
-  createSelectorFactory<object, VariationProductMaster>(projector => resultMemoize(projector, isEqual))(
-    getProductsState,
-    internalProductMasterSKU(sku),
-    productOrFailedStub
-  );
-
 export const getProduct = (sku: string) =>
   /* memoization automatically by inputs: as long as all dependant selectors are properly memoized */
   createSelector(
     internalRawProduct(sku),
     internalProductDefaultCategory(sku),
     internalProductDefaultVariationSKU(sku),
-    internalProductVariations(sku),
-    internalProductMaster(sku),
-    (product, defaultCategory, defaultVariationSKU, variations, productMaster): ProductView =>
+    (product, defaultCategory, defaultVariationSKU): ProductView =>
       ProductHelper.isMasterProduct(product)
-        ? createVariationProductMasterView(product, defaultVariationSKU, variations, defaultCategory)
+        ? createVariationProductMasterView(product, defaultVariationSKU, defaultCategory)
         : ProductHelper.isVariationProduct(product)
-        ? createVariationProductView(product, variations, productMaster, defaultCategory)
+        ? createVariationProductView(product, defaultCategory)
         : createProductView(product, defaultCategory)
   );
 
@@ -112,8 +94,9 @@ export const getProductVariationCount = (sku: string) =>
   createSelector(
     getAvailableFilter,
     getProduct(sku),
-    (filters, product) =>
-      ProductHelper.isMasterProduct(product) && ProductVariationHelper.productVariationCount(product, filters)
+    getProductVariations(sku),
+    (filters, product, variations) =>
+      ProductHelper.isMasterProduct(product) && ProductVariationHelper.productVariationCount(variations, filters)
   );
 
 export const getProductLinks = (sku: string) => createSelector(getProductsState, state => state.links[sku]);

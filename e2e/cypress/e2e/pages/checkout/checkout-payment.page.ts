@@ -20,7 +20,7 @@ export class CheckoutPaymentPage {
   }
 
   continueCheckout() {
-    cy.get('button').contains('Continue Checkout').click();
+    cy.get('button').contains('Continue checkout').click();
   }
 
   addPaymentInstrument(method: string) {

@@ -16,7 +16,7 @@
 <div *ngIf="punchoutTypes?.length > 1">
   <ul ngbNav class="nav-tabs section" [(activeId)]="selectedType">
     <li *ngFor="let type of punchoutTypes" [ngbNavItem]="type" role="presentation">
-      <a ngbNavLink [routerLink]="['../punchout', { format: type }]">{{
+      <a ngbNavLink [routerLink]="['../punchout']" [queryParams]="{ format: type }" class="mb-0">{{
         'account.punchout.type.text' | translate : { '0': type }
       }}</a>
     </li>

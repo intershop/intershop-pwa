@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 
+import { FeatureToggleType } from 'ish-core/feature-toggle.module';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
-import { FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { Translations } from 'ish-core/utils/translate/translations.type';
 
 import { environment } from '../../../../../environments/environment';

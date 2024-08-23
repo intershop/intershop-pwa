@@ -16,7 +16,7 @@ export class CostCenterEditPageComponent implements OnInit {
   loading$: Observable<boolean>;
   costCenter$: Observable<CostCenter>;
 
-  submitted = false;
+  private submitted = false;
   form = new UntypedFormGroup({});
 
   constructor(private organizationManagementFacade: OrganizationManagementFacade) {}

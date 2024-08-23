@@ -1,0 +1,34 @@
+<ng-container *ngIf="warranty">
+  <ish-modal-dialog-link
+    linkText="product.warranty.detail.text"
+    (click)="getWarrantyDetails()"
+    [options]="{ titleText: warranty.name, size: 'md' }"
+    [ngClass]="'details-link'"
+  >
+    <ish-error-message [error]="error$ | async" [toast]="false" />
+
+    <ng-container *ngIf="warrantyDetails$ | async as warrantyDetails">
+      <div class="mb-3">
+        {{ 'product.warranty.short_description.label' | translate }}
+        <strong [ishServerHtml]="warrantyDetails.shortDescription"></strong>
+      </div>
+      <div class="mb-3" [ishServerHtml]="warrantyDetails.longDescription"></div>
+
+      <div class="text-muted">
+        <p>
+          {{ 'product.warranty.type.text' | translate }}
+          {{ getWarrantyAttribute(warrantyDetails.attributes, 'WarrantyType') }}
+        </p>
+        <p>
+          {{ 'product.warranty.code.text' | translate }}
+          {{ getWarrantyAttribute(warrantyDetails.attributes, 'WarrantyCode') }}
+        </p>
+        <p>
+          {{ 'product.warranty.expire_date.text' | translate }}
+          {{ getWarrantyAttribute(warrantyDetails.attributes, 'WarrantyTimePeriod') }}
+        </p>
+      </div>
+    </ng-container>
+    <ish-loading *ngIf="loading$ | async" />
+  </ish-modal-dialog-link>
+</ng-container>

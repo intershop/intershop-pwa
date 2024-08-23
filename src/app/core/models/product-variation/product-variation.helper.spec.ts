@@ -1,5 +1,4 @@
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { VariationProduct, VariationProductMaster } from 'ish-core/models/product/product.model';
 
 import { ProductVariationHelper } from './product-variation.helper';
@@ -67,21 +66,16 @@ const productMaster = {
   ],
 } as VariationProductMaster;
 
-const variationProductView = {
-  ...productVariations[0],
-  productMaster,
-  variations: productVariations,
-} as ProductView;
-
-const masterProductView = {
-  ...productMaster,
-  variations: productVariations,
-} as ProductView;
+const variationProduct = productVariations[0];
 
 describe('Product Variation Helper', () => {
   describe('buildVariationOptionGroups', () => {
     it('should build variation option groups for variation product', () => {
-      const result = ProductVariationHelper.buildVariationOptionGroups(variationProductView);
+      const result = ProductVariationHelper.buildVariationOptionGroups(
+        variationProduct,
+        productMaster,
+        productVariations
+      );
       expect(result).toMatchInlineSnapshot(`
         [
           {
@@ -176,19 +170,27 @@ describe('Product Variation Helper', () => {
 
   describe('findPossibleVariation', () => {
     it('should find perfect match when first attribute is changed', () => {
-      expect(ProductVariationHelper.findPossibleVariation('a2', 'B', variationProductView)).toEqual('333');
+      expect(ProductVariationHelper.findPossibleVariation('a2', 'B', variationProduct, productVariations)).toEqual(
+        '333'
+      );
     });
 
     it('should find perfect match when second attribute is changed', () => {
-      expect(ProductVariationHelper.findPossibleVariation('a1', 'B', variationProductView)).toEqual('444');
+      expect(ProductVariationHelper.findPossibleVariation('a1', 'B', variationProduct, productVariations)).toEqual(
+        '444'
+      );
     });
 
     it('should find variation match when second attribute is changed and no perfect match could be found', () => {
-      expect(ProductVariationHelper.findPossibleVariation('a2', 'C', variationProductView)).toEqual('666');
+      expect(ProductVariationHelper.findPossibleVariation('a2', 'C', variationProduct, productVariations)).toEqual(
+        '666'
+      );
     });
 
     it('should return original sku when impossible selection is selected', () => {
-      expect(ProductVariationHelper.findPossibleVariation('a2', 'Z', variationProductView)).toEqual('222');
+      expect(ProductVariationHelper.findPossibleVariation('a2', 'Z', variationProduct, productVariations)).toEqual(
+        '222'
+      );
     });
   });
 
@@ -198,7 +200,7 @@ describe('Product Variation Helper', () => {
     });
 
     it('should use variation length when no filters are given', () => {
-      expect(ProductVariationHelper.productVariationCount(masterProductView, undefined)).toEqual(5);
+      expect(ProductVariationHelper.productVariationCount(productVariations, undefined)).toEqual(5);
     });
 
     it('should ignore irrelevant selections when counting', () => {
@@ -211,7 +213,7 @@ describe('Product Variation Helper', () => {
         ],
       } as FilterNavigation;
 
-      expect(ProductVariationHelper.productVariationCount(masterProductView, filters)).toEqual(5);
+      expect(ProductVariationHelper.productVariationCount(productVariations, filters)).toEqual(5);
     });
 
     it('should filter for products matching single selected attributes', () => {
@@ -231,7 +233,7 @@ describe('Product Variation Helper', () => {
         ],
       } as FilterNavigation;
 
-      expect(ProductVariationHelper.productVariationCount(masterProductView, filters)).toEqual(2);
+      expect(ProductVariationHelper.productVariationCount(productVariations, filters)).toEqual(2);
     });
 
     it('should filter for products matching complex value attributes', () => {
@@ -244,7 +246,7 @@ describe('Product Variation Helper', () => {
         ],
       } as FilterNavigation;
 
-      expect(ProductVariationHelper.productVariationCount(masterProductView, filters)).toEqual(3);
+      expect(ProductVariationHelper.productVariationCount(productVariations, filters)).toEqual(3);
     });
 
     it('should filter for products matching multiple selected attributes', () => {
@@ -260,7 +262,7 @@ describe('Product Variation Helper', () => {
         ],
       } as FilterNavigation;
 
-      expect(ProductVariationHelper.productVariationCount(masterProductView, filters)).toEqual(3);
+      expect(ProductVariationHelper.productVariationCount(productVariations, filters)).toEqual(3);
     });
 
     it('should filter for products matching multiple selected attributes over multiple facets', () => {
@@ -277,7 +279,7 @@ describe('Product Variation Helper', () => {
         ],
       } as FilterNavigation;
 
-      expect(ProductVariationHelper.productVariationCount(masterProductView, filters)).toEqual(1);
+      expect(ProductVariationHelper.productVariationCount(productVariations, filters)).toEqual(1);
     });
   });
 });

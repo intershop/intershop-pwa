@@ -62,6 +62,7 @@ export class CMSVideoComponent implements CMSComponent, OnInit {
     }
   }
 
+  // visible-for-testing
   tryProcessDefaultVideo() {
     this.nativeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.video);
   }
@@ -70,6 +71,7 @@ export class CMSVideoComponent implements CMSComponent, OnInit {
    * process video URL with a YouTube video ID regex (https://github.com/regexhq/youtube-regex)
    */
   // spell-checker: words mbed youtu
+  // visible-for-testing
   tryProcessYouTubeVideo(): boolean {
     const youTubeVideoRegex =
       /(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/i;
@@ -91,6 +93,7 @@ export class CMSVideoComponent implements CMSComponent, OnInit {
   /**
    * process video URL with a Vimeo video ID regex (https://github.com/regexhq/vimeo-regex)
    */
+  // visible-for-testing
   tryProcessVimeoVideo(): boolean {
     const vimeoVideoRegex =
       /(http|https)?:\/\/(www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|)(\d+)(?:|\/\?)/i;

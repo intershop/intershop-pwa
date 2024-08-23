@@ -37,6 +37,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 })
 export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
   @Input() address: Partial<Address>;
+  // not-dead-code
   @Input() resetForm = false;
   // display address extension form fields
   @Input() extension = false;
@@ -49,6 +50,7 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
 
   extensionModel: { email: string };
 
+  // visible-for-testing
   submitted = false;
   businessCustomer$: Observable<boolean>;
 
@@ -88,7 +90,7 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
     this.extensionModel = this.address ? { email: this.address.email } : undefined;
   }
 
-  doResetForm(resetForm: boolean) {
+  private doResetForm(resetForm: boolean) {
     if (resetForm && this.form) {
       this.addressForm.resetForm();
       this.form.reset();

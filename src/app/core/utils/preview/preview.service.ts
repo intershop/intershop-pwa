@@ -24,7 +24,7 @@ export class PreviewService {
   private initOnTopLevel = false; // for debug purposes. enables this feature even in top-level windows
 
   private hostMessagesSubject$ = new Subject<StorefrontEditingMessage>();
-  private _previewContextId: string;
+  private localPreviewContextId: string;
 
   constructor(
     private router: Router,
@@ -165,7 +165,7 @@ export class PreviewService {
   }
 
   set previewContextId(previewContextId: string) {
-    this._previewContextId = previewContextId;
+    this.localPreviewContextId = previewContextId;
     if (!SSR) {
       if (previewContextId) {
         sessionStorage.setItem('PreviewContextID', previewContextId);
@@ -176,7 +176,7 @@ export class PreviewService {
   }
 
   get previewContextId() {
-    return this._previewContextId ?? (!SSR ? sessionStorage.getItem('PreviewContextID') : undefined);
+    return this.localPreviewContextId ?? (!SSR ? sessionStorage.getItem('PreviewContextID') : undefined);
   }
 
   // TODO: replace usage of previewContextId to identify Design View mode

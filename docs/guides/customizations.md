@@ -74,7 +74,7 @@ CREATE src/app/shared/components/basket/custom-basket-display/custom-basket-disp
 > The Intershop PWA project is configured to work against a publicly available Intershop Commerce Management server by default (see `environment.model.ts`).
 >
 > ```
-> icmBaseURL: 'https://pwa-ish-demo.test.intershop.com',
+> icmBaseURL: 'https://develop.icm.intershop.de',
 > ```
 >
 > To configure your PWA project to use an own default ICM server, set the `icmBaseURL` in your projects `environment.model.ts` accordingly.
@@ -160,6 +160,18 @@ When modifying components it is most likely that related test cases will fail.
 If possible, use the Jest update feature **update snapshots** when adapting test cases.
 When you upgrade the PWA to a new version, those snapshots will most likely have merge conflicts in them.
 Here you can just accept either modification and update the test snapshots.
+
+You can disable creating component tests by adding the following snippet to your `angular.json`:
+
+```json
+  "projects": {
+    "intershop-pwa": {
+      "schematics": {
+        "intershop-schematics:component": {
+          "skipTests": true
+        }
+      },
+```
 
 ### Styling
 

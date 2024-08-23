@@ -1,10 +1,11 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
@@ -12,6 +13,7 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -20,6 +22,7 @@ import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
 import { BasketPaymentEffects } from './basket-payment.effects';
 import {
+  continueWithFastCheckout,
   createBasketPayment,
   createBasketPaymentFail,
   createBasketPaymentSuccess,
@@ -49,7 +52,10 @@ describe('Basket Payment Effects', () => {
     paymentServiceMock = mock(PaymentService);
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router']), CustomerStoreModule.forTesting('user', 'basket')],
+      imports: [
+        CoreStoreModule.forTesting(['configuration', 'serverConfig', 'router']),
+        CustomerStoreModule.forTesting('user', 'basket'),
+      ],
       providers: [
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         BasketPaymentEffects,
@@ -310,7 +316,7 @@ describe('Basket Payment Effects', () => {
 
       effects.sendPaymentRedirectData$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Basket] Update a Basket Payment with Redirect Data:
+          [Basket Internal] Update a Basket Payment with Redirect Data:
             params: {"redirect":"success","param1":"123"}
         `);
         done();
@@ -481,6 +487,68 @@ describe('Basket Payment Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasketAfterBasketChangeSuccess$).toBeObservable(expected$);
+    });
+  });
+
+  describe('continueWithFastCheckout$ - continue with redirect', () => {
+    const basketValidation: BasketValidation = {
+      basket: BasketMockData.getBasket(),
+      results: {
+        valid: true,
+        adjusted: false,
+      },
+    };
+
+    beforeEach(() => {
+      when(paymentServiceMock.setBasketFastCheckoutPayment(anyString())).thenReturn(of(undefined));
+      store.dispatch(
+        loadServerConfigSuccess({
+          config: {
+            general: {
+              defaultLocale: 'de_DE',
+              defaultCurrency: 'EUR',
+              locales: ['en_US', 'de_DE', 'fr_BE', 'nl_BE'],
+              currencies: ['USD', 'EUR'],
+            },
+          },
+        })
+      );
+    });
+
+    it('should start redirect in case of successful payment instrument assignment', fakeAsync(() => {
+      // mock location.assign() with jest.fn()
+      Object.defineProperty(window, 'location', {
+        value: { assign: jest.fn() },
+        writable: true,
+      });
+
+      const action = continueWithFastCheckout({
+        targetRoute: undefined,
+        basketValidation,
+        paymentId: 'FastCheckout',
+      });
+      actions$ = of(action);
+
+      effects.continueWithFastCheckout$.subscribe({ next: noop, error: fail, complete: noop });
+
+      tick(500);
+
+      expect(window.location.assign).toHaveBeenCalled();
+    }));
+    it('should map to action of type setBasketPaymentFail in case of failure', () => {
+      when(paymentServiceMock.setBasketFastCheckoutPayment(anyString())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
+      const action = continueWithFastCheckout({
+        targetRoute: undefined,
+        basketValidation,
+        paymentId: 'FastCheckout',
+      });
+      const completion = setBasketPaymentFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.continueWithFastCheckout$).toBeObservable(expected$);
     });
   });
 });

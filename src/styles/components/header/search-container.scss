@@ -172,7 +172,7 @@
     width: 400px;
     margin-top: 0;
     background: $color-inverse;
-    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.23);
+    box-shadow: 0 4px 7px rgb(0 0 0 / 0.23);
 
     .btn-search {
       @include media-breakpoint-down(md) {

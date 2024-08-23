@@ -4,7 +4,7 @@ import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 import { PunchoutType } from '../../models/punchout-user/punchout-user.model';
 
-export const loadPunchoutTypes = createAction('[Punchout] Load Punchout Types');
+export const loadPunchoutTypes = createAction('[Punchout Internal] Load Punchout Types');
 
 export const loadPunchoutTypesFail = createAction('[Punchout API] Load Punchout Types Fail', httpError());
 

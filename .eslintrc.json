@@ -43,6 +43,12 @@
             "style": "camelCase"
           }
         ],
+        "@angular-eslint/pipe-prefix": [
+          "error",
+          {
+            "prefixes": ["ish"]
+          }
+        ],
         "@angular-eslint/sort-ngmodule-metadata-arrays": "warn",
         "@ngrx/avoid-combining-selectors": "off",
         "@ngrx/avoid-mapping-selectors": "off",
@@ -103,19 +109,30 @@
           {
             "selector": "variable",
             "modifiers": ["const"],
-            "format": ["camelCase", "UPPER_CASE"],
-            "filter": {
-              "regex": "_",
-              "match": false
-            }
+            "format": ["camelCase", "UPPER_CASE"]
           },
           {
             "selector": "typeLike",
             "format": ["PascalCase"]
           },
           {
-            "selector": "function",
+            "selector": ["function", "classMethod", "classProperty"],
             "format": ["camelCase"]
+          },
+          {
+            "selector": "classProperty",
+            "modifiers": ["static"],
+            "format": ["camelCase", "UPPER_CASE"]
+          },
+          {
+            "selector": "parameter",
+            "format": ["camelCase"]
+          },
+          {
+            "selector": "parameter",
+            "modifiers": ["unused"],
+            "format": ["camelCase"],
+            "leadingUnderscore": "require"
           }
         ],
         "@typescript-eslint/no-empty-function": "warn",
@@ -134,7 +151,10 @@
             "allowTernary": true
           }
         ],
-        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { "argsIgnorePattern": "^_" }
+        ],
         "@typescript-eslint/prefer-optional-chain": "warn",
         "arrow-body-style": ["warn", "as-needed"],
         "arrow-parens": ["warn", "as-needed"],
@@ -216,7 +236,7 @@
               "message": "use star imports only for aggregation of deeper lying imports"
             },
             {
-              "importNamePattern": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection|pick|differenceBy|unionBy|mergeWith|snakeCase|capitalize)$).*",
+              "importNamePattern": "^(?!(range|uniq|memoize|once|groupBy|countBy|isEqual|intersection|pick|differenceBy|unionBy|mergeWith|snakeCase|capitalize)$).*",
               "name": "lodash.*",
               "filePattern": "^.*/src/app/(?!.*\\.spec\\.ts$).*\\.ts$",
               "message": "importing this operator from lodash is forbidden"
@@ -359,6 +379,12 @@
               "name": "ish-core/utils/dom/dom.service",
               "filePattern": "^.*\\.(component|directive)\\.ts*$",
               "message": "The \"DomService\" should only be used in injectable classes. Use the Angular \"Renderer2\" instead."
+            },
+            {
+              "importNamePattern": "^(F|f)eatureToggle",
+              "name": "ish-core/utils/feature-toggle/feature-toggle.service",
+              "filePattern": "^.*\\.ts*$",
+              "message": "Feature toggle related functionality should only be imported from the FeatureToggleModule"
             }
           ]
         ],

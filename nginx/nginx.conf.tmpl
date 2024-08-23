@@ -1,0 +1,74 @@
+
+user nginx;
+worker_processes {{ getenv "NGINX_WORKER_PROCESSES" "auto" }};
+
+error_log /var/log/nginx-error.log warn;
+error_log /dev/stdout;
+pid /var/run/nginx.pid;
+
+pcre_jit on;
+
+load_module /etc/nginx/modules/ngx_http_brotli_filter_module.so;
+load_module /etc/nginx/modules/ngx_http_brotli_static_module.so;
+
+events {
+    worker_connections {{ getenv "NGINX_WORKER_CONNECTIONS" "1024" }};
+}
+
+env REDIS_URI;
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+    log_format json escape=json '{'
+                                  '"date_access": "$time_iso8601",'
+                                  '"http":'
+                                    '{'
+                                      '"ident": "$remote_user",'
+                                      '"status_code": $status,'
+                                      '"referer": "$http_referer",'
+                                      '"useragent": "$http_user_agent",'
+                                      '"x_forward_for": "$http_x_forwarded_for"'
+                                      '"method": "$request_method",'
+                                      '"request_time": $request_time,'
+                                      '"host": "$http_host",'
+                                      '"uri": "$uri",'
+                                      '"request_id": "$request_id",'
+                                      '"request_length": $request_length,'
+                                      '"request_method": "$request_method",'
+                                      '"protocol": "$server_protocol",'
+                                    '},'
+                                  '"network":'
+                                    '{'
+                                      '"bytes_written": $body_bytes_sent,'
+                                      '"remote_ip": "$remote_addr"'
+                                    '},'
+                                  '"upstream":'
+                                    '{'
+                                      '"address_list": "$upstream_addr",'
+                                      '"status_code": "$upstream_status",'
+                                      '"response_time": "$upstream_response_time",'
+                                      '"response_length": "$upstream_response_length",'
+                                      '"cache_status": "$cache_status"'
+                                    '}'
+                                '}';
+
+    log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                    '$status $body_bytes_sent "$http_referer" '
+                    '"$http_user_agent" "$http_x_forwarded_for" '
+                    '$upstream_response_time "$cache_status" "$host" "$upstream_response_length" $request_time';
+
+    sendfile on;
+
+    keepalive_timeout 65;
+
+    include /etc/nginx/conf.d/features.conf;
+
+    # use the scheme from the X-Forwarded-Proto header if present or default to $scheme
+    map $http_x_forwarded_proto $thescheme {
+        default $http_x_forwarded_proto;
+        ''      $scheme;
+    }
+
+    include /etc/nginx/conf.d/multi-channel.conf;
+}

@@ -20,7 +20,6 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
@@ -53,7 +52,9 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
 
   filteredPaymentMethods: PaymentMethod[] = [];
 
+  // visible-for-testing
   nextSubmitted = false;
+  // visible-for-testing
   formSubmitted = false;
 
   redirectStatus: string;
@@ -131,21 +132,6 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
    */
   formIsOpen(index: number): boolean {
     return index === this.openFormIndex;
-  }
-
-  /**
-   * Determine whether payment cost threshold has been reached
-   * for usage in template
-   */
-  paymentCostThresholdReached(paymentMethod: PaymentMethod): boolean {
-    const basketTotalPrice = PriceItemHelper.selectType(this.basket.totals.total, this.priceType);
-
-    if (paymentMethod.paymentCostsThreshold && basketTotalPrice) {
-      return (
-        PriceItemHelper.selectType(paymentMethod.paymentCostsThreshold, this.priceType)?.value <= basketTotalPrice.value
-      );
-    }
-    return false;
   }
 
   /**

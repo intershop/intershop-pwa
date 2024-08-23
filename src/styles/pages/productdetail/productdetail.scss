@@ -1,4 +1,3 @@
-//
 // PRODUCT DETAILS
 
 .product-page {
@@ -72,16 +71,28 @@
 }
 
 .product-warranty {
-  margin-top: $space-default;
   font-family: $font-family-regular;
   color: $text-color-primary;
 
   .product-warranty-title {
+    margin-top: $space-default;
     font-weight: bold;
   }
 
   .product-warranty-list {
-    margin-top: divide($space-default, 3);
+    margin-top: divide($space-default, 2);
+
+    dd {
+      margin-bottom: 0;
+    }
+  }
+
+  .product-warranty-price {
+    font-weight: bold;
+
+    &::before {
+      content: ':';
+    }
   }
 }
 
@@ -118,7 +129,6 @@
   }
 }
 
-//
 // PRODUCT REVIEWS
 
 .review-item {

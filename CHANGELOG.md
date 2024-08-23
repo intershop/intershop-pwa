@@ -7,6 +7,107 @@ kb_everyone
 
 # Changelog
 
+## [5.2.0](https://github.com/intershop/intershop-pwa/releases/tag/5.2.0) (2024-08-23)
+
+> [!NOTE]
+> The Intershop PWA 5.2.0 has been developed and tested with Intershop Commerce Management (ICM) version 12.0.0.
+> It will work with all versions from ICM 12.0.0 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> _The PWA 5.2.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
+>
+> The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
+>
+> Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.9.1 for PWA 5.2.0 deployments.
+
+### Features
+
+- support for cXML punchout self service configuration (#1683) ([74bb9cf](https://github.com/intershop/intershop-pwa/commit/74bb9cf))
+- extend order list filter by buyer selection (#1697) ([28d9846](https://github.com/intershop/intershop-pwa/commit/28d9846))
+- fast checkout payment (e.g. PAYPAL Express) (#1682) ([fb5a0d6](https://github.com/intershop/intershop-pwa/commit/fb5a0d6))
+- switch to ICM 12 resource ID encoding and provide a feature toggle for 'legacyEncoding' (#1704) ([f7176c9](https://github.com/intershop/intershop-pwa/commit/f7176c9))
+- extend logging for monitoring by OPS (#1685) ([480447a](https://github.com/intershop/intershop-pwa/commit/480447a))
+- introduce `labelNoTranslate` and `titleNoTranslate` flag to prevent Formly field label translation ([4428c56](https://github.com/intershop/intershop-pwa/commit/4428c56))
+- make recently viewed products display lazy (#1654) ([0a27c17](https://github.com/intershop/intershop-pwa/commit/0a27c17))
+- introduce ishBrowserLazyView directive (#1654) ([dd219e3](https://github.com/intershop/intershop-pwa/commit/dd219e3))
+- set default theme also as default for override schematic (#1637) ([4755c15](https://github.com/intershop/intershop-pwa/commit/4755c15))
+- use optional template for environment.development.ts if avalable (#1639) ([d3c2249](https://github.com/intershop/intershop-pwa/commit/d3c2249))
+- product warranties support (#1368) ([bb952bd](https://github.com/intershop/intershop-pwa/commit/bb952bd))
+- add package ngx-mask ([ddf650f](https://github.com/intershop/intershop-pwa/commit/ddf650f))
+- exclusive ICM URL for SSR process (#1624) ([a324675](https://github.com/intershop/intershop-pwa/commit/a324675))
+- create order template from order (#1610) ([553e05a](https://github.com/intershop/intershop-pwa/commit/553e05a))
+- **Design View:** provide page structure tree information for the Design View (#1577) ([46c2d29](https://github.com/intershop/intershop-pwa/commit/46c2d29))
+- **nginx:** make `worker_processes` and `worker_connections` configurable (#1632) ([8f6e86f](https://github.com/intershop/intershop-pwa/commit/8f6e86f))
+- **schematics:** option to skip creating tests for components (#1663) ([5d6a685](https://github.com/intershop/intershop-pwa/commit/5d6a685))
+
+### Bug Fixes
+
+- prevent triggering the countries call more than once ([8479bdf](https://github.com/intershop/intershop-pwa/commit/8479bdf))
+- change facade method for eligible address determination (#1701) ([818a32b](https://github.com/intershop/intershop-pwa/commit/818a32b))
+- click empty mini cart in mobile view ([5ae95c3](https://github.com/intershop/intershop-pwa/commit/5ae95c3))
+- error message in the checkout after basket has expired ([c3d4b79](https://github.com/intershop/intershop-pwa/commit/c3d4b79))
+- remove logging data from nginx configuration file (#1696) ([bc6b628](https://github.com/intershop/intershop-pwa/commit/bc6b628))
+- fetch captcha V3 token after first form input (#1693) ([0d69d51](https://github.com/intershop/intershop-pwa/commit/0d69d51))
+- suppress the wrong display of Search-No-Results page after a search (#1679) ([3a92e22](https://github.com/intershop/intershop-pwa/commit/3a92e22))
+- encode product urls (#1688) ([d2e6c82](https://github.com/intershop/intershop-pwa/commit/d2e6c82))
+- remove '%' signs from product slugs (#1687) ([6903fd2](https://github.com/intershop/intershop-pwa/commit/6903fd2))
+- Formly 'ish-select-field' select box does not display updated model value correctly ([847aa97](https://github.com/intershop/intershop-pwa/commit/847aa97))
+- improved `textarea-description` Formly wrapper and renamed it to `maxlength-description` ([cb1366c](https://github.com/intershop/intershop-pwa/commit/cb1366c))
+- do not display "add to cart" button if product has no price (#1657) ([2732de4](https://github.com/intershop/intershop-pwa/commit/2732de4))
+- wishlist and order template titles with special characters do not displayed correct (#1658) ([42864a7](https://github.com/intershop/intershop-pwa/commit/42864a7))
+- handle setting price notification for products without a price (#1659) ([112f11e](https://github.com/intershop/intershop-pwa/commit/112f11e))
+- implement input mask for IBAN and BIC (#1655) ([06b5461](https://github.com/intershop/intershop-pwa/commit/06b5461))
+- improve mock data redirection for URLs with matrix parameters (#1324) ([db448ae](https://github.com/intershop/intershop-pwa/commit/db448ae))
+- add loading animation for search result page ([1699b79](https://github.com/intershop/intershop-pwa/commit/1699b79))
+- URI components are not encoded correctly (#1640, #1641) ([3e7c0ae](https://github.com/intershop/intershop-pwa/commit/3e7c0ae))
+- remove state error when loading /recently route directly ([69f0caf](https://github.com/intershop/intershop-pwa/commit/69f0caf))
+- introduce method to exclude failed/offline products from product lists (used for recently viewed and wishlist improvements) (#1647) ([f2f5ebd](https://github.com/intershop/intershop-pwa/commit/f2f5ebd))
+- disable hydration HTTP transfer cache (#1635) ([0f664eb](https://github.com/intershop/intershop-pwa/commit/0f664eb))
+- save Address Doctor configuration to the state management so it works with SSR (#1622) ([2cadc4b](https://github.com/intershop/intershop-pwa/commit/2cadc4b))
+- enable localized number inputs for price notifications ([1618b05](https://github.com/intershop/intershop-pwa/commit/1618b05))
+- enable localized number inputs for budgets ([a67cf06](https://github.com/intershop/intershop-pwa/commit/a67cf06))
+- **Design View:** show Design View editing frame highlighting inside the component to avoid cut display (#1651) ([1347fd8](https://github.com/intershop/intershop-pwa/commit/1347fd8))
+- **localization:** avoid NoSuchElementException when adding a new locale (#1652) ([b4971a3](https://github.com/intershop/intershop-pwa/commit/b4971a3))
+
+### Performance Improvements
+
+- switch to lazy triggering of 'loadProductParts' action ([e5f94f6](https://github.com/intershop/intershop-pwa/commit/e5f94f6))
+- disable rendering of view contexts by default (#1650) ([56c3869](https://github.com/intershop/intershop-pwa/commit/56c3869))
+
+### Documentation
+
+- add notes for `OVERRIDE_IDENTITY_PROVIDERS` usage ([4510f8b](https://github.com/intershop/intershop-pwa/commit/4510f8b))
+- update PWA sitemap documentation (#1642) ([41d7d1b](https://github.com/intershop/intershop-pwa/commit/41d7d1b))
+
+### Code Refactoring
+
+- rework product-item-variations component (#1648) ([a8c94a0](https://github.com/intershop/intershop-pwa/commit/a8c94a0))
+- disconnect master product from product view model (#1644) ([48fc8f7](https://github.com/intershop/intershop-pwa/commit/48fc8f7))
+- disconnect variations from product view model (#1644) ([5ffa2cc](https://github.com/intershop/intershop-pwa/commit/5ffa2cc))
+- extend the ExternalDisplayPropertiesProvider to get not only the product from the product context but the prices too (#1657) ([0e4f96e](https://github.com/intershop/intershop-pwa/commit/0e4f96e))
+- enforce consistent Pipe prefix (#1625) ([e845597](https://github.com/intershop/intershop-pwa/commit/e845597))
+
+### BREAKING CHANGES
+
+- The function `encodeResourceID` has been moved to a method `encodeResourceId` of the `api.service`, and it is now used to encode all dynamic resource IDs in any REST API call to ICM (see [Migrations / From 5.1 to 5.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-51-to-52) for more details).
+- The Formly wrapper `textarea-description` was renamed to `maxlength-description` (see [Migrations / From 5.1 to 5.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-51-to-52) for more details).
+- The `ish-product-item-variations` component has been refactored (see [Migrations / From 5.1 to 5.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-51-to-52) for more details).
+- The productMaster property on the product view model has been removed. The master product should be individually retrieved.
+- The variations property on the product view interface was removed. Variations can now be retrieved via the product context facade or the shopping facade.
+- The `ExternalDisplayPropertiesProvider` `setup` method was changed to no longer working with product data only but a combination of product and prices (see [Migrations / From 5.1 to 5.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-51-to-52) for more details).
+- Pipes `sanitize`, `makeHref` and `htmlEncode` are renamed using an `ish` prefix (see Migrations / From 5.1 to 5.2 for more details).
+- The store action and method `addBasketToNewOrderTemplate` of the OrderTemplatesFacade have been renamed to `createOrderTemplateFromLineItems` and refactored slightly.
+- In preparation of the cXML punchout self service configuration, we switched from a hidden route parameter that conveys the punchout type context information to a URL query parameter (e.g., `?format=cxml`). So customized routing within the punchout area needs to be adapted accordingly.
+- With Intershop PWA version 5.2.0, the rendering of our demo/example view contexts was disabled by default (see [Migrations / From 5.1 to 5.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-51-to-52) for more details).
+- A few Stylelint rules have been changed and the `.scss` files have been adapted (see [Migrations / From 5.1 to 5.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-51-to-52) for more details).
+
+### CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS
+
+- support for cXML punchout self service configuration (#1683) - ICM 12.2.0
+- extend order list filter by buyer selection (#1697) - ICM 12.1.0
+- fast checkout payment (e.g. PAYPAL Express) (#1682) - ICM 12.0.0 or ICM 7.10.41.3
+- product warranties support (#1368) - ICM 11.7.0
+
 ## [5.1.0](https://github.com/intershop/intershop-pwa/releases/tag/5.1.0) (2024-03-28)
 
 > [!NOTE]
@@ -88,7 +189,7 @@ kb_everyone
 - order list filtering (#1571) - ICM 11.7.0
 - support further budget periods (#1539) - ICM 11.8.0 or ICM 7.10.38.29-LTS
 - use server setting for message-to-merchant checkout field (#1542) - ICM 11.5.0
-- CMS navigation components (link, page, category) (#1266) - `icm-as-customization-headless:1.7.0`
+- CMS navigation components (link, page, category) (#1266) - ICM 12.0.0 with `icm-as-customization-headless:2.0.1`
 
 ## [5.0.0](https://github.com/intershop/intershop-pwa/releases/tag/5.0.0) (2023-12-31)
 

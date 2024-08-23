@@ -3,7 +3,7 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
-import { concatMap, first, map, withLatestFrom } from 'rxjs/operators';
+import { concatMap, first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -20,6 +20,7 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
  * The Payment Service handles the interaction with the 'baskets' and 'users' REST API concerning payment functionality.
@@ -56,6 +57,47 @@ export class PaymentService {
   }
 
   /**
+   * Adds a fast checkout payment at the selected basket and generate redirect url in one step/request.
+   *
+   * @param paymentInstrument The payment instrument id.
+   * @returns                 The necessary url for redirecting to payment provider.
+   */
+  setBasketFastCheckoutPayment(paymentInstrument: string): Observable<string> {
+    if (!paymentInstrument) {
+      return throwError(() => new Error('setBasketFastCheckoutPayment() called without paymentInstrument'));
+    }
+    const loc = `${location.origin}${this.baseHref}`;
+
+    return this.store.pipe(select(getCurrentLocale)).pipe(
+      whenTruthy(),
+      take(1),
+      switchMap(currentLocale => {
+        const body = {
+          paymentInstrument,
+          redirect: {
+            successUrl: `${loc}/checkout/review;lang=${currentLocale}?redirect=success`,
+            cancelUrl: `${loc}/basket;lang=${currentLocale}?redirect=cancel`,
+            failureUrl: `${loc}/basket;lang=${currentLocale}?redirect=cancel`,
+          },
+        };
+
+        return this.apiService
+          .currentBasketEndpoint()
+          .put<{
+            data: {
+              redirect: {
+                redirectUrl: string;
+              };
+            };
+          }>('payments/open-tender', body, {
+            headers: this.basketHeaders,
+          })
+          .pipe(map(payload => payload.data.redirect.redirectUrl));
+      })
+    );
+  }
+
+  /**
    * Adds a payment at the selected basket. If redirect is required the redirect urls are saved at basket in dependence of the payment instrument capabilities (redirectBeforeCheckout/RedirectAfterCheckout).
    *
    * @param paymentInstrument The unique name of the payment method, e.g. ISH_INVOICE
@@ -66,14 +108,13 @@ export class PaymentService {
       return throwError(() => new Error('setBasketPayment() called without paymentInstrument'));
     }
 
+    const params = new HttpParams().set('include', 'paymentMethod');
     return this.apiService
       .currentBasketEndpoint()
       .put<{ data: PaymentInstrument; included: { paymentMethod: { [id: string]: PaymentMethodBaseData } } }>(
-        'payments/open-tender?include=paymentMethod',
+        'payments/open-tender',
         { paymentInstrument },
-        {
-          headers: this.basketHeaders,
-        }
+        { headers: this.basketHeaders, params }
       )
       .pipe(
         map(({ data, included }) =>
@@ -115,16 +156,11 @@ export class PaymentService {
         redirect.failureUrl = `${loc}/checkout/payment;lang=${lang}?redirect=failure&orderId=*orderID*`;
       }
 
-      const body = {
-        paymentInstrument,
-        redirect,
-      };
+      const body = { paymentInstrument, redirect };
 
       return this.apiService
         .currentBasketEndpoint()
-        .put('payments/open-tender', body, {
-          headers: this.basketHeaders,
-        })
+        .put('payments/open-tender', body, { headers: this.basketHeaders })
         .pipe(map(() => paymentInstrument));
     }
   }
@@ -142,10 +178,12 @@ export class PaymentService {
       return throwError(() => new Error('createBasketPayment() called without paymentMethodId'));
     }
 
+    const params = new HttpParams().set('include', 'paymentMethod');
     return this.apiService
       .currentBasketEndpoint()
-      .post('payment-instruments?include=paymentMethod', paymentInstrument, {
+      .post<{ data: PaymentInstrument }>('payment-instruments', paymentInstrument, {
         headers: this.basketHeaders,
+        params,
       })
       .pipe(map(({ data }) => data));
   }
@@ -174,13 +212,7 @@ export class PaymentService {
 
     return this.apiService
       .currentBasketEndpoint()
-      .patch(
-        'payments/open-tender',
-        { redirect },
-        {
-          headers: this.basketHeaders,
-        }
-      )
+      .patch('payments/open-tender', { redirect }, { headers: this.basketHeaders })
       .pipe(map(({ data }) => data));
   }
 
@@ -209,9 +241,12 @@ export class PaymentService {
     }
 
     // basket payment instrument, payment will be deleted automatically, if necessary
-    return this.apiService.delete(`baskets/${basket.id}/payment-instruments/${paymentInstrument.id}`, {
-      headers: this.basketHeaders,
-    });
+    return this.apiService.delete(
+      `baskets/${this.apiService.encodeResourceId(basket.id)}/payment-instruments/${this.apiService.encodeResourceId(
+        paymentInstrument.id
+      )}`,
+      { headers: this.basketHeaders }
+    );
   }
 
   /**
@@ -227,9 +262,12 @@ export class PaymentService {
       return of();
     }
 
-    return this.apiService.delete(`baskets/${basket.id}/payments/${basket.payment.id}`, {
-      headers: this.basketHeaders,
-    });
+    return this.apiService.delete(
+      `baskets/${this.apiService.encodeResourceId(basket.id)}/payments/${this.apiService.encodeResourceId(
+        basket.payment.id
+      )}`,
+      { headers: this.basketHeaders }
+    );
   }
 
   /**
@@ -246,14 +284,16 @@ export class PaymentService {
     return this.appFacade.customerRestResource$.pipe(
       first(),
       concatMap(restResource =>
-        this.apiService.get(`${restResource}/${customer.customerNo}/payments`).pipe(
+        this.apiService.get(`${restResource}/${this.apiService.encodeResourceId(customer.customerNo)}/payments`).pipe(
           unpackEnvelope<Link>(),
           this.apiService.resolveLinks<PaymentInstrumentData>(),
           concatMap(instruments =>
-            this.apiService.options(`${restResource}/${customer.customerNo}/payments`).pipe(
-              unpackEnvelope<PaymentMethodOptionsDataType>('methods'),
-              map(methods => PaymentMethodMapper.fromOptions({ methods, instruments }))
-            )
+            this.apiService
+              .options(`${restResource}/${this.apiService.encodeResourceId(customer.customerNo)}/payments`)
+              .pipe(
+                unpackEnvelope<PaymentMethodOptionsDataType>('methods'),
+                map(methods => PaymentMethodMapper.fromOptions({ methods, instruments }))
+              )
           )
         )
       )
@@ -292,7 +332,7 @@ export class PaymentService {
       first(),
       concatMap(restResource =>
         this.apiService
-          .post(`${restResource}/${customerNo}/payments`, body)
+          .post(`${restResource}/${this.apiService.encodeResourceId(customerNo)}/payments`, body)
           .pipe(this.apiService.resolveLink<PaymentInstrument>())
       )
     );
@@ -315,7 +355,11 @@ export class PaymentService {
     return this.appFacade.customerRestResource$.pipe(
       first(),
       concatMap(restResource =>
-        this.apiService.delete<void>(`${restResource}/${customerNo}/payments/${paymentInstrumentId}`)
+        this.apiService.delete<void>(
+          `${restResource}/${this.apiService.encodeResourceId(customerNo)}/payments/${this.apiService.encodeResourceId(
+            paymentInstrumentId
+          )}`
+        )
       )
     );
   }
@@ -345,9 +389,11 @@ export class PaymentService {
 
       return this.apiService
         .currentBasketEndpoint()
-        .patch(`payment-instruments/${paymentInstrument.id}`, body, {
-          headers: this.basketHeaders,
-        })
+        .patch<{ data: PaymentInstrument }>(
+          `payment-instruments/${this.apiService.encodeResourceId(paymentInstrument.id)}`,
+          body,
+          { headers: this.basketHeaders }
+        )
         .pipe(map(({ data }) => data));
     } else {
       // update user payment instrument
@@ -363,7 +409,7 @@ export class PaymentService {
       };
 
       return this.apiService
-        .put(`customers/-/payments/${paymentInstrument.id}`, body)
+        .put(`customers/-/payments/${this.apiService.encodeResourceId(paymentInstrument.id)}`, body)
         .pipe(map(() => paymentInstrument));
     }
   }

@@ -76,6 +76,10 @@ export class OrganizationManagementFacade {
     return this.store.pipe(select(getCurrentUserBudget));
   }
 
+  fetchUsers() {
+    this.store.dispatch(loadUsers());
+  }
+
   addUser(user: B2bUser) {
     this.store.dispatch(
       addUser({

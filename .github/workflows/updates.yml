@@ -1,13 +1,14 @@
 name: Updates
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - develop
       - upgrade/**
       - update/**
-  schedule:
-    - cron: '0 0 * * *'
+  # schedule:
+  #   - cron: '0 0 * * *'
 
 env:
   NODE_VERSION: 18.16.0
@@ -39,8 +40,12 @@ jobs:
         if: always()
         run: npm outdated --long || true
 
-      - name: Must Have Updates for PWA
-        run: npm audit --omit=dev
+      - name: Production npm audit
+        run: npm audit --omit=dev || true
+        if: always()
+
+      - name: Better NPM Audit (for relevant vulnerability checking)
+        run: npm run audit --production
         if: always()
 
       - name: Peer Dependency Incompatibilities

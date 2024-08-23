@@ -105,7 +105,7 @@ describe('Categories Effects', () => {
 
       effects.selectedCategoryRef$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Categories Internal] Load Category By Reference:
+          [Categories] Load Category By Reference:
             categoryId: "dummy@domain"
         `);
         done();

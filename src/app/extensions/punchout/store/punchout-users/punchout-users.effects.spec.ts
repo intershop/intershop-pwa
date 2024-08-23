@@ -15,6 +15,7 @@ import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { PunchoutUser } from '../../models/punchout-user/punchout-user.model';
 import { PunchoutService } from '../../services/punchout/punchout.service';
+import { PunchoutStoreModule } from '../punchout-store.module';
 
 import {
   addPunchoutUser,
@@ -51,6 +52,7 @@ describe('Punchout Users Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router']),
+        PunchoutStoreModule.forTesting('punchoutUsers'),
         RouterTestingModule.withRoutes([
           { path: 'account/punchout', children: [] },
           { path: 'account/punchout/:PunchoutLogin', children: [] },
@@ -103,7 +105,7 @@ describe('Punchout Users Effects', () => {
 
   describe('loadDetailedUser$', () => {
     it('should call the service for retrieving user', done => {
-      router.navigate(['/account/punchout/ociuser@test.intershop.de', { format: 'oci' }]);
+      router.navigate(['/account/punchout/ociuser@test.intershop.de'], { queryParams: { format: 'oci' } });
 
       effects.loadDetailedUser$.subscribe(() => {
         verify(punchoutService.getUsers('oci')).once();
@@ -147,7 +149,7 @@ describe('Punchout Users Effects', () => {
               message: "account.punchout.user.created.message"
               messageParams: {"0":"ociuser@test.intershop.de"}
           `);
-          expect(location.path()).toMatchInlineSnapshot(`"/account/punchout;format=oci"`);
+          expect(location.path()).toMatchInlineSnapshot(`"/account/punchout?format=oci"`);
         },
         error: fail,
         complete: done,
@@ -191,7 +193,7 @@ describe('Punchout Users Effects', () => {
               message: "account.punchout.user.updated.message"
               messageParams: {"0":"ociuser@test.intershop.de"}
           `);
-          expect(location.path()).toMatchInlineSnapshot(`"/account/punchout;format=oci"`);
+          expect(location.path()).toMatchInlineSnapshot(`"/account/punchout?format=oci"`);
         },
         error: fail,
         complete: done,

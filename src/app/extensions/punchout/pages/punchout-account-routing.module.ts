@@ -15,6 +15,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'cxmlConfiguration/:PunchoutLogin',
+    loadChildren: () =>
+      import('./account-punchout-cxml-configuration/account-punchout-cxml-configuration-page.module').then(
+        m => m.AccountPunchoutCxmlConfigurationPageModule
+      ),
+  },
+  {
     path: 'create',
     loadChildren: () =>
       import('./account-punchout-create/account-punchout-create-page.module').then(
@@ -32,6 +39,5 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
 })
 export class PunchoutAccountRoutingModule {}

@@ -19,6 +19,7 @@ import { PricesService } from 'ish-core/services/prices/prices.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
+import { WarrantyService } from 'ish-core/services/warranty/warranty.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -44,6 +45,7 @@ describe('Shopping Store', () => {
   let suggestServiceMock: SuggestService;
   let filterServiceMock: FilterService;
   let priceServiceMock: PricesService;
+  let warrantyServiceMock: WarrantyService;
 
   beforeEach(() => {
     const catA = { uniqueId: 'A', categoryPath: ['A'], name: 'nA' } as Category;
@@ -141,6 +143,9 @@ describe('Shopping Store', () => {
     priceServiceMock = mock(PricesService);
     when(priceServiceMock.getProductPrices(anything())).thenReturn(of([]));
 
+    warrantyServiceMock = mock(WarrantyService);
+    when(warrantyServiceMock.getWarranty(anything())).thenReturn(of(undefined));
+
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], true),
@@ -185,6 +190,7 @@ describe('Shopping Store', () => {
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
+        { provide: WarrantyService, useFactory: () => instance(warrantyServiceMock) },
         provideStoreSnapshots(),
         SelectedProductContextFacade,
       ],
@@ -265,7 +271,7 @@ describe('Shopping Store', () => {
 
       it('should trigger suggest actions when suggest feature is used', () => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
-          [Suggest Search Internal] Load Search Suggestions:
+          [Suggest Search] Load Search Suggestions:
             searchTerm: "some"
           [Suggest Search API] Return Search Suggestions:
             searchTerm: "some"
@@ -332,7 +338,7 @@ describe('Shopping Store', () => {
           expect(store.actionsArray()).toMatchInlineSnapshot(`
             @ngrx/router-store/request: /product/P2
             @ngrx/router-store/navigation: /product/P2
-            [Products Internal] Load Product:
+            [Products] Load Product:
               sku: "P2"
             [Products API] Load Product Success:
               product: {"sku":"P2","name":"nP2"}
@@ -475,7 +481,7 @@ describe('Shopping Store', () => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
           @ngrx/router-store/request: /category/A.123.456/product/P1
           @ngrx/router-store/navigation: /category/A.123.456/product/P1
-          [Products Internal] Load Product:
+          [Products] Load Product:
             sku: "P1"
           [Products API] Load Product Success:
             product: {"sku":"P1","name":"nP1"}
@@ -566,6 +572,11 @@ describe('Shopping Store', () => {
               id: {"type":"category","value":"A.123.456"}
             [Viewconf Internal] Set Breadcrumb Data:
               breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
+            @ngrx/router-store/navigated: /category/A.123.456
+            [Product Listing] Load More Products:
+              id: {"type":"category","value":"A.123.456"}
+            [Viewconf Internal] Set Breadcrumb Data:
+              breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
             [Product Listing Internal] Load More Products For Params:
               id: {"type":"category","value":"A.123.456"}
               filters: undefined
@@ -588,11 +599,6 @@ describe('Shopping Store', () => {
               sortableAttributes: []
             [Filter API] Load Filter Success:
               filterNavigation: {}
-            @ngrx/router-store/navigated: /category/A.123.456
-            [Product Listing] Load More Products:
-              id: {"type":"category","value":"A.123.456"}
-            [Viewconf Internal] Set Breadcrumb Data:
-              breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
           `);
         }));
       });
@@ -657,7 +663,7 @@ describe('Shopping Store', () => {
           categoryId: "A.123.456"
         [Categories API] Load Category Success:
           categories: tree(A,A.123,A.123.456)
-        [Products Internal] Load Product:
+        [Products] Load Product:
           sku: "P1"
         [Products API] Load Product Success:
           product: {"sku":"P1","name":"nP1"}
@@ -691,6 +697,11 @@ describe('Shopping Store', () => {
             id: {"type":"category","value":"A.123.456"}
           [Viewconf Internal] Set Breadcrumb Data:
             breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
+          @ngrx/router-store/navigated: /category/A.123.456
+          [Product Listing] Load More Products:
+            id: {"type":"category","value":"A.123.456"}
+          [Viewconf Internal] Set Breadcrumb Data:
+            breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
           [Product Listing Internal] Load More Products For Params:
             id: {"type":"category","value":"A.123.456"}
             filters: undefined
@@ -713,11 +724,6 @@ describe('Shopping Store', () => {
             sortableAttributes: []
           [Filter API] Load Filter Success:
             filterNavigation: {}
-          @ngrx/router-store/navigated: /category/A.123.456
-          [Product Listing] Load More Products:
-            id: {"type":"category","value":"A.123.456"}
-          [Viewconf Internal] Set Breadcrumb Data:
-            breadcrumbData: [{"text":"nA","link":"/na-ctgA"},{"text":"nA123","link":"/na...
         `);
       }));
     });
@@ -771,7 +777,7 @@ describe('Shopping Store', () => {
         [User Internal] Personalization Status Determined
         @ngrx/router-store/request: /product/P1
         @ngrx/router-store/navigation: /product/P1
-        [Products Internal] Load Product:
+        [Products] Load Product:
           sku: "P1"
         [Products API] Load Product Success:
           product: {"sku":"P1","name":"nP1"}
@@ -832,7 +838,7 @@ describe('Shopping Store', () => {
           categoryId: "A.123.456"
         [Categories API] Load Category Success:
           categories: tree(A,A.123,A.123.456)
-        [Products Internal] Load Product:
+        [Products] Load Product:
           sku: "P3"
         [Products API] Load Product Fail:
           error: {"name":"HttpErrorResponse","message":"error loading product...

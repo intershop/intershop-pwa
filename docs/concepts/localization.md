@@ -85,7 +85,7 @@ export class Component {
 
 The PWA uses an [ICU Message Format](https://unicode-org.github.io/icu/userguide/format_parse/messages/) inspired way of supporting pluralization in translation keys.
 
-In addition to using pluralization for specific numbers, the Intershop PWA supports the following [pluralization cases](https://unicode-org.github.io/cldr-staging/charts/latest/supplemental/language_plural_rules.html): `zero`, `one`, `two`, `few`, `many` and `other`.
+In addition to using pluralization for specific numbers, the Intershop PWA supports the following [pluralization cases](https://www.unicode.org/cldr/charts/45/supplemental/language_plural_rules.html): `zero`, `one`, `two`, `few`, `many` and `other`.
 You can use these cases in your pluralizable translation definitions like this:
 
 ```json

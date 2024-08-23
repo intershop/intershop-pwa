@@ -64,6 +64,7 @@ export class ModalDialogComponent<T> implements OnDestroy {
 
   @ViewChild('template') modalDialogTemplate: TemplateRef<unknown>;
 
+  // visible-for-testing
   ngbModalRef: NgbModalRef;
 
   data: T;
@@ -112,6 +113,7 @@ export class ModalDialogComponent<T> implements OnDestroy {
    *
    * @param anchor The ID of the anchor element.
    */
+  // not-dead-code
   scrollToAnchor(anchor: string) {
     if (this.options.scrollable) {
       const element = this.document.getElementById(anchor);

@@ -15,6 +15,7 @@ import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { BasketApprovalInfoComponent } from 'ish-shared/components/basket/basket-approval-info/basket-approval-info.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketErrorMessageComponent } from 'ish-shared/components/basket/basket-error-message/basket-error-message.component';
 import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket/basket-merchant-message-view/basket-merchant-message-view.component';
 import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
@@ -40,6 +41,7 @@ describe('Checkout Review Component', () => {
         MockComponent(AddressComponent),
         MockComponent(BasketApprovalInfoComponent),
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketErrorMessageComponent),
         MockComponent(BasketMerchantMessageViewComponent),
         MockComponent(BasketShippingMethodComponent),
         MockComponent(BasketValidationResultsComponent),
@@ -113,6 +115,7 @@ describe('Checkout Review Component', () => {
       [
         "ish-modal-dialog-link",
         "ish-error-message",
+        "ish-basket-error-message",
         "ish-basket-validation-results",
         "ish-basket-merchant-message-view",
         "ish-info-box",

@@ -28,7 +28,7 @@ export class DataRequestsService {
 
     return this.apiService
       .put<DataRequestData>(
-        `gdpr-requests/${data.requestID}/confirmations`,
+        `gdpr-requests/${this.apiService.encodeResourceId(data.requestID)}/confirmations`,
         { hash: data.hash },
         { headers: dataRequestHeaderV1 }
       )

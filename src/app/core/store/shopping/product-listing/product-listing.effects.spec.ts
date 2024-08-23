@@ -70,7 +70,7 @@ describe('Product Listing Effects', () => {
     it('should fire all necessary actions for search page', fakeAsync(() => {
       store$.dispatch(loadMoreProducts({ id: { type: 'search', value: 'term' } }));
 
-      tick(0);
+      tick(5);
 
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
         [Product Listing] Load More Products:
@@ -92,7 +92,7 @@ describe('Product Listing Effects', () => {
     it('should fire all necessary actions for family page', fakeAsync(() => {
       store$.dispatch(loadMoreProducts({ id: { type: 'category', value: 'cat' } }));
 
-      tick(0);
+      tick(5);
 
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
         [Product Listing] Load More Products:
@@ -122,7 +122,7 @@ describe('Product Listing Effects', () => {
     it('should fire all necessary actions for search page', fakeAsync(() => {
       store$.dispatch(loadMoreProducts({ id: { type: 'search', value: 'term' } }));
 
-      tick(0);
+      tick(5);
 
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
         [Product Listing] Load More Products:
@@ -137,7 +137,7 @@ describe('Product Listing Effects', () => {
           searchParameter: {"param":[1],"searchTerm":[1]}
           page: undefined
           sorting: undefined
-        [Filter] Apply Filter:
+        [Filter Internal] Apply Filter:
           searchParameter: {"param":[1],"searchTerm":[1]}
       `);
       expect(store$.actionsArray()[1]).toHaveProperty('payload.filters.param', ['foobar']);
@@ -147,7 +147,7 @@ describe('Product Listing Effects', () => {
     it('should fire all necessary actions for family page', fakeAsync(() => {
       store$.dispatch(loadMoreProducts({ id: { type: 'category', value: 'cat' } }));
 
-      tick(0);
+      tick(5);
 
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
         [Product Listing] Load More Products:
@@ -162,7 +162,7 @@ describe('Product Listing Effects', () => {
           searchParameter: {"param":[1]}
           page: undefined
           sorting: undefined
-        [Filter] Apply Filter:
+        [Filter Internal] Apply Filter:
           searchParameter: {"param":[1]}
       `);
     }));

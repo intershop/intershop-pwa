@@ -48,12 +48,11 @@ export class ProductNotificationEditDialogComponent implements OnInit {
 
   modal: NgbModalRef;
   product$: Observable<ProductView>;
-  productAvailable$: Observable<boolean>;
   userEmail$: Observable<string>;
-  currentCurrency: string;
+  private currentCurrency: string;
 
   productNotificationForm = new UntypedFormGroup({});
-  submitted = false;
+  private submitted = false;
 
   productNotification$: Observable<ProductNotification>;
 
@@ -71,7 +70,7 @@ export class ProductNotificationEditDialogComponent implements OnInit {
 
   ngOnInit() {
     this.product$ = this.context.select('product');
-    this.productAvailable$ = this.context.select('product', 'available');
+    const productAvailable$ = this.context.select('product', 'available');
     this.userEmail$ = this.accountFacade.userEmail$;
 
     // determine current currency
@@ -82,7 +81,7 @@ export class ProductNotificationEditDialogComponent implements OnInit {
     // if no product notification is given as @Input parameter, trigger a REST call to fetch the notification
     this.productNotification$ = this.productNotification
       ? of(this.productNotification)
-      : this.productAvailable$.pipe(
+      : productAvailable$.pipe(
           switchMap(available =>
             this.productNotificationsFacade
               .productNotificationBySku$(this.context.get('sku'), available ? 'price' : 'stock')

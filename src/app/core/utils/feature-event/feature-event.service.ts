@@ -3,7 +3,7 @@ import { Injectable, InjectionToken, Injector, inject } from '@angular/core';
 import { Observable, Subject, switchMap } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
-import { FeatureToggleService, FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
 import { InjectMultiple } from 'ish-core/utils/injection';
 
 export interface FeatureEventResultListener {

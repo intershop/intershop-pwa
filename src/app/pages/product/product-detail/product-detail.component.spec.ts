@@ -5,7 +5,6 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { ContentViewcontextComponent } from 'ish-shared/cms/components/content-viewcontext/content-viewcontext.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
@@ -15,6 +14,7 @@ import { ProductPromotionComponent } from 'ish-shared/components/product/product
 import { ProductQuantityLabelComponent } from 'ish-shared/components/product/product-quantity-label/product-quantity-label.component';
 import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 import { ProductShipmentComponent } from 'ish-shared/components/product/product-shipment/product-shipment.component';
+import { ProductWarrantyComponent } from 'ish-shared/components/product/product-warranty/product-warranty.component';
 
 import { LazyProductAddToOrderTemplateComponent } from '../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
 import { LazyProductNotificationEditComponent } from '../../../extensions/product-notifications/exports/lazy-product-notification-edit/lazy-product-notification-edit.component';
@@ -39,7 +39,6 @@ describe('Product Detail Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [
-        MockComponent(ContentViewcontextComponent),
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToQuoteComponent),
         MockComponent(LazyProductNotificationEditComponent),
@@ -58,6 +57,7 @@ describe('Product Detail Component', () => {
         MockComponent(ProductQuantityComponent),
         MockComponent(ProductQuantityLabelComponent),
         MockComponent(ProductShipmentComponent),
+        MockComponent(ProductWarrantyComponent),
         ProductDetailComponent,
       ],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
@@ -98,7 +98,7 @@ describe('Product Detail Component', () => {
         "ish-lazy-product-add-to-order-template",
         "ish-lazy-product-add-to-quote",
         "ish-lazy-product-notification-edit",
-        "ish-content-viewcontext",
+        "ish-product-warranty",
       ]
     `);
   });

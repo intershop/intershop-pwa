@@ -1,5 +1,5 @@
 import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
-import { flatten, uniq } from 'lodash-es';
+import { uniq } from 'lodash-es';
 
 import { isArrayEqual } from 'ish-core/utils/functions';
 
@@ -37,5 +37,5 @@ export const getPreferredWishlist = createSelector(getAllWishlists, entities => 
 export const getAllWishlistsItemsSkus = createSelectorFactory<object, string[]>(projector =>
   resultMemoize(projector, isArrayEqual)
 )(getAllWishlists, (wishlists: Wishlist[]): string[] =>
-  uniq(flatten(wishlists.map(wishlist => wishlist.items.map(items => items.sku))))
+  uniq(wishlists.map(wishlist => wishlist.items.map(items => items.sku)).flat())
 );

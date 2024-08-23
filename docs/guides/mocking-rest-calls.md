@@ -22,6 +22,15 @@ The following configuration example will mock all CMS calls.
 apiMockPaths: ['^cms/.*'],
 ```
 
+> [!TIP]
+> With PWA version 5.2.0 a filtering for matrix parameters (e.g. `/cms;pgid=JdbSDW8rrqSRpGO4S7o0b4AK0000/includes`) was introduces.
+> This way personalized REST calls can be mocked now as well with file path without the matrix parameter.
+> The configuration would look like this.
+>
+> ```
+> apiMockPaths: ['^cms.*/.*'],
+> ```
+
 ## Supply Mocked Data
 
 Mocked data is put in the folder _assets/mock-data/<path>_.

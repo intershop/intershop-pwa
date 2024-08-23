@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { isEqual } from 'lodash-es';
 import { Observable, combineLatest, identity } from 'rxjs';
 import { debounce, distinctUntilChanged, filter, map, pairwise, startWith, switchMap, tap } from 'rxjs/operators';
 
@@ -35,16 +36,19 @@ import {
   getProductLinks,
   getProductParts,
   getProductVariationCount,
+  getProductVariations,
   loadProduct,
   loadProductIfNotLoaded,
   loadProductLinks,
   loadProductParts,
+  loadProductVariationsIfNotLoaded,
 } from 'ish-core/store/shopping/products';
 import { getPromotion, getPromotions, loadPromotion } from 'ish-core/store/shopping/promotions';
 import { getSearchTerm, getSuggestSearchResults, suggestSearch } from 'ish-core/store/shopping/search';
+import { getWarranty, getWarrantyError, getWarrantyLoading, warrantyActions } from 'ish-core/store/shopping/warranties';
 import { toObservable } from 'ish-core/utils/functions';
 import { InjectSingle } from 'ish-core/utils/injection';
-import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
+import { mapToProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 /* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
@@ -119,6 +123,14 @@ export class ShoppingFacade {
 
   failedProducts$ = this.store.pipe(select(getFailedProducts));
 
+  // remove all SKUs from the productSKUs that are also contained in the failed products
+  excludeFailedProducts$(productSKUs: string[] | Observable<string[]>) {
+    return combineLatest([toObservable(productSKUs), this.store.pipe(select(getFailedProducts))]).pipe(
+      distinctUntilChanged<[string[], string[]]>(isEqual),
+      map(([skus, failed]) => skus.filter(sku => !failed.includes(sku)))
+    );
+  }
+
   productPrices$(sku: string | Observable<string>, fresh = false) {
     return toObservable(sku).pipe(
       whenTruthy(),
@@ -142,21 +154,42 @@ export class ShoppingFacade {
     );
   }
 
-  productVariationCount$(sku: string) {
-    return toObservable(sku).pipe(switchMap(plainSKU => this.store.pipe(select(getProductVariationCount(plainSKU)))));
+  private lazyLoadVariations(sku: string | Observable<string>) {
+    return this.product$(sku, ProductCompletenessLevel.List).pipe(
+      whenTruthy(),
+      filter(ProductHelper.isMasterProduct),
+      mapToProperty('sku'),
+      distinctUntilChanged(),
+      tap(sku => {
+        this.store.dispatch(loadProductVariationsIfNotLoaded({ sku }));
+      })
+    );
+  }
+
+  productVariations$(sku: string | Observable<string>) {
+    return this.lazyLoadVariations(sku).pipe(switchMap(sku => this.store.pipe(select(getProductVariations(sku)))));
+  }
+
+  productVariationCount$(sku: string | Observable<string>) {
+    return this.lazyLoadVariations(sku).pipe(
+      switchMap(plainSKU => this.store.pipe(select(getProductVariationCount(plainSKU))))
+    );
   }
 
   // CHECKOUT
 
-  addProductToBasket(sku: string, quantity: number) {
-    this.store.dispatch(addProductToBasket({ sku, quantity }));
+  addProductToBasket(sku: string, quantity: number, warrantySku?: string) {
+    this.store.dispatch(addProductToBasket({ sku, quantity, warrantySku }));
   }
 
   // PRODUCT LISTING
 
-  productListingView$(id: ProductListingID) {
-    this.store.dispatch(loadMoreProducts({ id }));
-    return this.store.pipe(select(getProductListingView(id)));
+  productListingView$(id: ProductListingID | Observable<ProductListingID>) {
+    return toObservable(id).pipe(
+      whenTruthy(),
+      tap(id => this.store.dispatch(loadMoreProducts({ id }))),
+      switchMap(id => this.store.pipe(select(getProductListingView(id))))
+    );
   }
 
   productListingViewType$ = this.store.pipe(select(getProductListingViewType));
@@ -240,4 +273,14 @@ export class ShoppingFacade {
     });
     return this.store.pipe(select(getPromotions(promotionIds)));
   }
+
+  // WARRANTIES
+
+  warrantyById$(warrantyId: string) {
+    this.store.dispatch(warrantyActions.loadWarranty({ warrantyId }));
+    return this.store.pipe(select(getWarranty(warrantyId)));
+  }
+
+  warrantyError$ = this.store.pipe(select(getWarrantyError));
+  warrantyLoading$ = this.store.pipe(select(getWarrantyLoading));
 }

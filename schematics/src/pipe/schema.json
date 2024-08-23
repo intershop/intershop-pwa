@@ -13,6 +13,10 @@
         "$source": "workingDirectory"
       }
     },
+    "prefix": {
+      "type": "string",
+      "visible": false
+    },
     "restricted": {
       "type": "boolean",
       "visible": false,

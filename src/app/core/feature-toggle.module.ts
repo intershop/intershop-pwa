@@ -36,5 +36,5 @@ export class FeatureToggleModule {
   }
 }
 
-export { FeatureToggleService } from './utils/feature-toggle/feature-toggle.service';
+export { FeatureToggleService, type FeatureToggleType } from './utils/feature-toggle/feature-toggle.service';
 export { featureToggleGuard } from './guards/feature-toggle.guard';

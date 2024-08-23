@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { RecentlyFacade } from '../../facades/recently.facade';
@@ -14,9 +15,11 @@ import { RecentlyFacade } from '../../facades/recently.facade';
 export class RecentlyViewedComponent implements OnInit {
   recentlyProducts$: Observable<string[]>;
 
-  constructor(private recentlyFacade: RecentlyFacade) {}
+  constructor(private recentlyFacade: RecentlyFacade, private shoppingFacade: ShoppingFacade) {}
 
   ngOnInit() {
-    this.recentlyProducts$ = this.recentlyFacade.mostRecentlyViewedProducts$;
+    this.recentlyProducts$ = this.shoppingFacade.excludeFailedProducts$(
+      this.recentlyFacade.mostRecentlyViewedProducts$
+    );
   }
 }

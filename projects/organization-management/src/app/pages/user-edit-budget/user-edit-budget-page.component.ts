@@ -21,7 +21,7 @@ export class UserEditBudgetPageComponent implements OnInit {
   error$: Observable<HttpError>;
 
   budgetForm = new UntypedFormGroup({});
-  submitted = false;
+  private submitted = false;
 
   ngOnInit() {
     this.loading$ = this.organizationManagementFacade.usersLoading$;

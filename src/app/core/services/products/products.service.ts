@@ -1,6 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { flatten, range } from 'lodash-es';
+import { range } from 'lodash-es';
 import { Observable, from, identity, of, throwError } from 'rxjs';
 import { defaultIfEmpty, map, mergeMap, switchMap, toArray, withLatestFrom } from 'rxjs/operators';
 
@@ -45,9 +45,8 @@ export class ProductsService {
     }
 
     const params = new HttpParams().set('allImages', true).set('extended', true);
-
     return this.apiService
-      .get<ProductData>(`products/${sku}`, { sendSPGID: true, params })
+      .get<ProductData>(`products/${this.apiService.encodeResourceId(sku)}`, { sendSPGID: true, params })
       .pipe(map(element => this.productMapper.fromData(element)));
   }
 
@@ -210,7 +209,9 @@ export class ProductsService {
     }
     params = appendFormParamsToHttpParams(omit(searchParameter, 'category'), params);
 
-    const resource = searchParameter.category ? `categories/${searchParameter.category[0]}/products` : 'products';
+    const resource = searchParameter.category
+      ? `categories/${this.apiService.encodeResourceId(searchParameter.category[0])}/products`
+      : 'products';
 
     return this.apiService
       .get<{
@@ -262,10 +263,13 @@ export class ProductsService {
     const params = new HttpParams().set('extended', true);
 
     return this.apiService
-      .get<{ elements: Link[]; total: number; amount: number }>(`products/${sku}/variations`, {
-        sendSPGID: true,
-        params,
-      })
+      .get<{ elements: Link[]; total: number; amount: number }>(
+        `products/${this.apiService.encodeResourceId(sku)}/variations`,
+        {
+          sendSPGID: true,
+          params,
+        }
+      )
       .pipe(
         switchMap(resp =>
           !resp.total
@@ -279,7 +283,7 @@ export class ProductsService {
                       .map(i => [i * amount, Math.min(amount, res.total - amount * i)])
                       .map(([offset, length]) =>
                         this.apiService
-                          .get<{ elements: Link[] }>(`products/${sku}/variations`, {
+                          .get<{ elements: Link[] }>(`products/${this.apiService.encodeResourceId(sku)}/variations`, {
                             sendSPGID: true,
                             params: params.set('amount', length).set('offset', offset),
                           })
@@ -289,7 +293,7 @@ export class ProductsService {
                 }),
                 mergeMap(identity, 2),
                 toArray(),
-                map(resp2 => [...resp.elements, ...flatten(resp2)])
+                map(resp2 => [...resp.elements, ...resp2.flat()])
               )
         ),
         map((links: ProductVariationLink[]) => ({
@@ -308,8 +312,7 @@ export class ProductsService {
     if (!sku) {
       return throwError(() => new Error('getProductBundles() called without a sku'));
     }
-
-    return this.apiService.get(`products/${sku}/bundles`, { sendSPGID: true }).pipe(
+    return this.apiService.get(`products/${this.apiService.encodeResourceId(sku)}/bundles`, { sendSPGID: true }).pipe(
       unpackEnvelope<Link>(),
       map(links => ({
         stubs: links.map(link => this.productMapper.fromLink(link)),
@@ -326,15 +329,17 @@ export class ProductsService {
       return throwError(() => new Error('getRetailSetParts() called without a sku'));
     }
 
-    return this.apiService.get(`products/${sku}/partOfRetailSet`, { sendSPGID: true }).pipe(
-      unpackEnvelope<Link>(),
-      map(links => links.map(link => this.productMapper.fromRetailSetLink(link))),
-      defaultIfEmpty([])
-    );
+    return this.apiService
+      .get(`products/${this.apiService.encodeResourceId(sku)}/partOfRetailSet`, { sendSPGID: true })
+      .pipe(
+        unpackEnvelope<Link>(),
+        map(links => links.map(link => this.productMapper.fromRetailSetLink(link))),
+        defaultIfEmpty([])
+      );
   }
 
   getProductLinks(sku: string): Observable<ProductLinksDictionary> {
-    return this.apiService.get(`products/${sku}/links`, { sendSPGID: true }).pipe(
+    return this.apiService.get(`products/${this.apiService.encodeResourceId(sku)}/links`, { sendSPGID: true }).pipe(
       unpackEnvelope<{ linkType: string; categoryLinks: Link[]; productLinks: Link[] }>(),
       map(links =>
         links.reduce(

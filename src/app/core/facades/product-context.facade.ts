@@ -1,7 +1,7 @@
 import { Injectable, InjectionToken, Injector, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { RxState } from '@rx-angular/state';
-import { isEqual } from 'lodash-es';
+import { isEqual, pick } from 'lodash-es';
 import { BehaviorSubject, Observable, combineLatest, race } from 'rxjs';
 import {
   debounceTime,
@@ -23,7 +23,13 @@ import { Pricing } from 'ish-core/models/price/price.model';
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductCompletenessLevel, ProductHelper, SkuQuantityType } from 'ish-core/models/product/product.model';
+import {
+  ProductCompletenessLevel,
+  ProductHelper,
+  SkuQuantityType,
+  VariationProduct,
+  VariationProductMaster,
+} from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
@@ -77,7 +83,9 @@ const defaultDisplayProperties: ProductContextDisplayProperties<true | undefined
 };
 
 export interface ExternalDisplayPropertiesProvider {
-  setup(product$: Observable<ProductView>): Observable<Partial<ProductContextDisplayProperties<false>>>;
+  setup(
+    context$: Observable<Pick<ProductContext, 'product' | 'prices'>>
+  ): Observable<Partial<ProductContextDisplayProperties<false>>>;
 }
 
 export const EXTERNAL_DISPLAY_PROPERTY_PROVIDER = new InjectionToken<ExternalDisplayPropertiesProvider>(
@@ -100,9 +108,9 @@ export interface ProductContext {
   links: ProductLinksDictionary;
   promotions: Promotion[];
   parts: SkuQuantityType[];
-
-  // variation handling
+  variations: VariationProduct[];
   variationCount: number;
+  productMaster: VariationProductMaster;
 
   // quantity
   quantity: number;
@@ -116,6 +124,9 @@ export interface ProductContext {
   // child contexts
   propagateActive: boolean;
   children: Record<string | number, ProductContext>;
+
+  // selected warranty
+  selectedWarranty: string;
 }
 
 @Injectable()
@@ -131,6 +142,13 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
   private validProductSKU$ = this.select('product').pipe(
     filter(p => !!p && !p.failed),
     mapToProperty('sku')
+  );
+
+  private masterProductSKU$ = this.select('product').pipe(
+    switchMap(product =>
+      ProductHelper.isMasterProduct(product) ? this.validProductSKU$ : this.select('product', 'productMasterSKU')
+    ),
+    whenTruthy()
   );
 
   constructor(
@@ -181,11 +199,6 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
         map(args => generateProductUrl(...args)),
         distinctUntilChanged()
       )
-    );
-
-    this.connect(
-      'variationCount',
-      this.select('sku').pipe(switchMap(sku => this.shoppingFacade.productVariationCount$(sku)))
     );
 
     this.connect(
@@ -345,7 +358,14 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     const externalDisplayPropertyProviders = [
       injector.get(ProductContextDisplayPropertiesService),
       ...injector.get<ExternalDisplayPropertiesProvider[]>(EXTERNAL_DISPLAY_PROPERTY_PROVIDER, []),
-    ].map(edp => edp.setup(this.select('product')));
+    ].map(edp =>
+      edp.setup(
+        this.select().pipe(
+          map(context => pick(context, 'product', 'prices')),
+          distinctUntilChanged(isEqual)
+        )
+      )
+    );
 
     const internalDisplayProperty$ = combineLatest([this.select('product'), this.privateConfig$]).pipe(
       map(([product, privateConfig]) =>
@@ -378,7 +398,8 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
           skipWhile(children => !children || !Object.values(children)?.length),
           map(() => true)
         ),
-        this.select('parts').pipe(
+        this.select().pipe(
+          map(context => context.parts),
           skipWhile(parts => !parts?.length),
           map(() => true)
         ),
@@ -428,6 +449,19 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     };
 
     switch (k1) {
+      case 'variations':
+        wrap('variations', this.shoppingFacade.productVariations$(this.masterProductSKU$));
+        break;
+      case 'variationCount':
+        wrap('variationCount', this.shoppingFacade.productVariationCount$(this.validProductSKU$));
+        break;
+      case 'productMaster':
+        wrap(
+          'productMaster',
+          this.shoppingFacade
+            .product$(this.masterProductSKU$, ProductCompletenessLevel.List)
+            .pipe(filter(ProductHelper.isMasterProduct))
+        );
       case 'links':
         wrap('links', this.shoppingFacade.productLinks$(this.validProductSKU$));
         break;
@@ -486,7 +520,9 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
   }
 
   changeVariationOption(name: string, value: string) {
-    this.set('sku', () => ProductVariationHelper.findPossibleVariation(name, value, this.get('product')));
+    this.set('sku', () =>
+      ProductVariationHelper.findPossibleVariation(name, value, this.get('product'), this.get('variations'))
+    );
   }
 
   addToBasket() {
@@ -502,7 +538,7 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     items
       .filter(x => !!x && !!x.quantity)
       .forEach(child => {
-        this.shoppingFacade.addProductToBasket(child.sku, child.quantity);
+        this.shoppingFacade.addProductToBasket(child.sku, child.quantity, this.get('selectedWarranty'));
       });
   }
 
@@ -524,6 +560,10 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
           : ProductHelper.getPrimaryImage(product, imageType)
       )
     );
+  }
+
+  setSelectedWarranty(selectedWarranty: string) {
+    this.set('selectedWarranty', () => selectedWarranty);
   }
 
   ngOnDestroy(): void {

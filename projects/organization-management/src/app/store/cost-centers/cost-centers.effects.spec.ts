@@ -153,9 +153,9 @@ describe('Cost Centers Effects', () => {
 
       effects.triggerLoadCostCenter$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-                  [CostCenters] Load Cost Center:
-                    costCenterId: "100400"
-                  `);
+          [CostCenters Internal] Load Cost Center:
+            costCenterId: "100400"
+        `);
         done();
       });
     });

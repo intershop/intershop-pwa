@@ -18,6 +18,8 @@ describe('Users Service', () => {
   let apiService: ApiService;
   let usersService: UsersService;
   let appFacade: AppFacade;
+  const millersEMail = 'pmiller%40test.intershop.de';
+  const millersEndpoint = `customers/4711/users/${millersEMail}`;
 
   beforeEach(() => {
     apiService = mock(ApiService);
@@ -26,6 +28,7 @@ describe('Users Service', () => {
     when(apiService.delete(anything())).thenReturn(of({}));
     when(apiService.post(anyString(), anything())).thenReturn(of({}));
     when(apiService.put(anyString(), anything())).thenReturn(of({}));
+    when(apiService.encodeResourceId(anything())).thenCall(id => id);
     when(appFacade.currentLocale$).thenReturn(of('en_US'));
 
     TestBed.configureTestingModule({
@@ -59,11 +62,11 @@ describe('Users Service', () => {
   });
 
   it('should call the getUser of customer API when fetching user', done => {
-    usersService.getUser('pmiller@test.intershop.de').subscribe(() => {
+    usersService.getUser(millersEMail).subscribe(() => {
       verify(apiService.get(anything())).once();
       expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
         [
-          "customers/4711/users/pmiller%2540test.intershop.de",
+          "${millersEndpoint}",
         ]
       `);
       done();
@@ -71,11 +74,11 @@ describe('Users Service', () => {
   });
 
   it('should call delete method of customer API when delete user', done => {
-    usersService.deleteUser('pmiller@test.intershop.de').subscribe(() => {
+    usersService.deleteUser(millersEMail).subscribe(() => {
       verify(apiService.delete(anything())).once();
       expect(capture(apiService.delete).last()).toMatchInlineSnapshot(`
         [
-          "customers/4711/users/pmiller%2540test.intershop.de",
+          "${millersEndpoint}",
         ]
       `);
       done();
@@ -83,7 +86,7 @@ describe('Users Service', () => {
   });
 
   it('should call the addUser for creating a new b2b user', done => {
-    const user = { login: 'pmiller@test.intershop.de' } as B2bUser;
+    const user = { login: millersEMail } as B2bUser;
 
     usersService.addUser(user).subscribe(() => {
       verify(apiService.post(anything(), anything())).once();
@@ -93,13 +96,11 @@ describe('Users Service', () => {
   });
 
   it('should call the updateUser for updating a b2b user', done => {
-    const user = { login: 'pmiller@test.intershop.de' } as B2bUser;
+    const user = { login: millersEMail } as B2bUser;
 
     usersService.updateUser(user).subscribe(() => {
       verify(apiService.put(anything(), anything())).once();
-      expect(capture(apiService.put).last()[0]).toMatchInlineSnapshot(
-        `"customers/4711/users/pmiller%2540test.intershop.de"`
-      );
+      expect(capture(apiService.put).last()[0]).toMatchInlineSnapshot(`"${millersEndpoint}"`);
       done();
     });
   });
@@ -107,7 +108,7 @@ describe('Users Service', () => {
   it('should put the roles onto user when calling setUserRoles', done => {
     when(apiService.put(anyString(), anything())).thenReturn(of({ userRoles: [{ roleID: 'BUYER' }] as B2bRoleData[] }));
 
-    usersService.setUserRoles('pmiller@test.intershop.de', []).subscribe(data => {
+    usersService.setUserRoles(millersEMail, []).subscribe(data => {
       expect(data).toMatchInlineSnapshot(`
         [
           "BUYER",
@@ -116,7 +117,7 @@ describe('Users Service', () => {
       verify(apiService.put(anything(), anything())).once();
       expect(capture(apiService.put).last()).toMatchInlineSnapshot(`
         [
-          "customers/4711/users/pmiller%2540test.intershop.de/roles",
+          "${millersEndpoint}/roles",
           {
             "userRoles": [],
           },
@@ -130,7 +131,7 @@ describe('Users Service', () => {
     when(apiService.put(anyString(), anything())).thenReturn(of({}));
 
     usersService
-      .setUserBudget('pmiller@test.intershop.de', {
+      .setUserBudget(millersEMail, {
         orderSpentLimit: undefined,
         budget: { value: 2000, currency: 'USD' },
         budgetPeriod: 'monthly',
@@ -140,7 +141,7 @@ describe('Users Service', () => {
         verify(apiService.put(anything(), anything())).once();
         expect(capture(apiService.put).last()).toMatchInlineSnapshot(`
           [
-            "customers/4711/users/pmiller%2540test.intershop.de/budgets",
+            "${millersEndpoint}/budgets",
             {
               "budget": {
                 "currency": "USD",

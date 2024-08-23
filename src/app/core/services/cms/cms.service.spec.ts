@@ -15,6 +15,7 @@ describe('Cms Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
+    when(apiService.encodeResourceId(anything())).thenCall(id => id);
     cpepMapper = mock(ContentPageletEntryPointMapper);
 
     TestBed.configureTestingModule({

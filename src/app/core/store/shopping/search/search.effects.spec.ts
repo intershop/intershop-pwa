@@ -161,7 +161,7 @@ describe('Search Effects', () => {
       store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(500); // debounceTime
       expect(store$.actionsArray(/\[Suggest Search/)).toMatchInlineSnapshot(`
-        [Suggest Search Internal] Load Search Suggestions:
+        [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
           searchTerm: "good"
@@ -172,12 +172,12 @@ describe('Search Effects', () => {
       store$.dispatch(suggestSearch({ searchTerm: 'goo' }));
       tick(500);
       expect(store$.actionsArray(/\[Suggest Search/)).toMatchInlineSnapshot(`
-        [Suggest Search Internal] Load Search Suggestions:
+        [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
           searchTerm: "good"
           suggests: [{"term":"Goods"}]
-        [Suggest Search Internal] Load Search Suggestions:
+        [Suggest Search] Load Search Suggestions:
           searchTerm: "goo"
         [Suggest Search API] Return Search Suggestions:
           searchTerm: "goo"
@@ -188,17 +188,17 @@ describe('Search Effects', () => {
       store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(500);
       expect(store$.actionsArray(/\[Suggest Search/)).toMatchInlineSnapshot(`
-        [Suggest Search Internal] Load Search Suggestions:
+        [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
           searchTerm: "good"
           suggests: [{"term":"Goods"}]
-        [Suggest Search Internal] Load Search Suggestions:
+        [Suggest Search] Load Search Suggestions:
           searchTerm: "goo"
         [Suggest Search API] Return Search Suggestions:
           searchTerm: "goo"
           suggests: [{"term":"Goods"}]
-        [Suggest Search Internal] Load Search Suggestions:
+        [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
           searchTerm: "good"
@@ -231,9 +231,11 @@ describe('Search Effects', () => {
       verify(productsServiceMock.searchProducts(searchTerm, 12, anything(), 0)).once();
 
       store$.dispatch(loadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 2 }));
+      tick(5);
       verify(productsServiceMock.searchProducts(searchTerm, 12, anything(), 12)).once();
 
       store$.dispatch(loadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 3 }));
+      tick(5);
       verify(productsServiceMock.searchProducts(searchTerm, 12, anything(), 24)).once();
     }));
   });

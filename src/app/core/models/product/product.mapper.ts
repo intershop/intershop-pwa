@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { flatten } from 'lodash-es';
 
 import { AttachmentMapper } from 'ish-core/models/attachment/attachment.mapper';
 import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
@@ -10,6 +9,7 @@ import { ImageMapper } from 'ish-core/models/image/image.mapper';
 import { Link } from 'ish-core/models/link/link.model';
 import { VariationAttributeMapper } from 'ish-core/models/product-variation/variation-attribute.mapper';
 import { SeoAttributesMapper } from 'ish-core/models/seo-attributes/seo-attributes.mapper';
+import { WarrantyMapper } from 'ish-core/models/warranty/warranty.mapper';
 
 import { SkuQuantityType } from './product.helper';
 import { ProductData, ProductDataStub, ProductVariationLink } from './product.interface';
@@ -67,17 +67,21 @@ export class ProductMapper {
   }
 
   static constructMasterStub(sku: string, variations: Partial<VariationProduct>[]): Partial<VariationProductMaster> {
-    return (
-      variations?.length && {
-        type: 'VariationProductMaster',
-        sku,
-        completenessLevel: 0,
-        variationAttributeValues: flatten(variations.map(v => v.variableVariationAttributes)).filter(
-          (val, idx, arr) =>
-            arr.findIndex(el => el.variationAttributeId === val.variationAttributeId && el.value === val.value) === idx
-        ),
-      }
-    );
+    return variations?.length
+      ? {
+          type: 'VariationProductMaster',
+          sku,
+          completenessLevel: 0,
+          variationAttributeValues: variations
+            .map(v => v.variableVariationAttributes)
+            .flat()
+            .filter(
+              (val, idx, arr) =>
+                arr.findIndex(el => el.variationAttributeId === val.variationAttributeId && el.value === val.value) ===
+                idx
+            ),
+        }
+      : undefined;
   }
 
   fromLink(link: Link): Partial<Product> {
@@ -181,6 +185,7 @@ export class ProductMapper {
       completenessLevel: 3,
       failed: false,
       seoAttributes: SeoAttributesMapper.fromData(data.seoAttributes),
+      availableWarranties: WarrantyMapper.fromLinkData(data.availableWarranties),
     };
 
     return this.appendProductTypeForData(data, product);

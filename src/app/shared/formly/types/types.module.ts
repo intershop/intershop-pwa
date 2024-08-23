@@ -11,6 +11,7 @@ import {
 import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { CaptchaExportsModule } from 'src/app/extensions/captcha/exports/captcha-exports.module';
 
 import { DirectivesModule } from 'ish-core/directives.module';
@@ -53,6 +54,8 @@ const fieldComponents = [
     FormlySelectModule,
     IconModule,
     NgbDatepickerModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
     ReactiveFormsModule,
     TranslateModule,
 
@@ -136,7 +139,7 @@ const fieldComponents = [
         {
           name: 'ish-textarea-field',
           component: TextareaFieldComponent,
-          wrappers: ['form-field-horizontal', 'textarea-description', 'validation'],
+          wrappers: ['form-field-horizontal', 'maxlength-description', 'validation'],
         },
         {
           name: 'ish-checkbox-field',
@@ -167,6 +170,7 @@ const fieldComponents = [
     }),
   ],
   providers: [
+    provideNgxMask(),
     { provide: NgbDateParserFormatter, useClass: LocalizedParserFormatter, deps: [TranslateService] },
     { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter },
     { provide: NgbDatepickerI18n, useClass: IshDatepickerI18n },

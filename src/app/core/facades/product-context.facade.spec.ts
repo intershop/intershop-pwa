@@ -9,6 +9,7 @@ import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
+import { PriceHelper } from 'ish-core/models/price/price.helper';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 
@@ -16,6 +17,7 @@ import { AppFacade } from './app.facade';
 import {
   EXTERNAL_DISPLAY_PROPERTY_PROVIDER,
   ExternalDisplayPropertiesProvider,
+  ProductContext,
   ProductContextDisplayProperties,
   ProductContextFacade,
 } from './product-context.facade';
@@ -119,7 +121,6 @@ describe('Product Context Facade', () => {
           "requiredCompletenessLevel": 2,
           "sku": "123",
           "stepQuantity": 10,
-          "variationCount": undefined,
         }
       `);
     });
@@ -191,7 +192,6 @@ describe('Product Context Facade', () => {
           "requiredCompletenessLevel": 2,
           "sku": "123",
           "stepQuantity": 10,
-          "variationCount": undefined,
         }
       `);
     });
@@ -325,6 +325,7 @@ describe('Product Context Facade', () => {
 
     describe('display properties', () => {
       it('should set correct display properties for product', () => {
+        context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
         expect(context.get('displayProperties')).toMatchInlineSnapshot(`
           {
             "addToBasket": true,
@@ -350,6 +351,7 @@ describe('Product Context Facade', () => {
       });
 
       it('should include external displayProperty overrides when calculating', () => {
+        context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
         context.config = {
           readOnly: true,
           name: false,
@@ -575,6 +577,7 @@ describe('Product Context Facade', () => {
           { sku: 'p2', quantity: 2 },
         ])
       );
+      context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
       context.set('sku', () => '123');
     });
 
@@ -638,6 +641,7 @@ describe('Product Context Facade', () => {
       } as ProductView;
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
 
+      context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
       context.set('sku', () => '123');
     });
 
@@ -709,6 +713,45 @@ describe('Product Context Facade', () => {
       `);
     });
   });
+
+  describe('add to basket handling', () => {
+    let product: ProductView;
+
+    beforeEach(() => {
+      product = {
+        sku: '123',
+        completenessLevel: ProductCompletenessLevel.Detail,
+        available: true,
+      } as ProductView;
+
+      when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
+
+      context.set('sku', () => '123');
+    });
+
+    it('should set "addToBasket" to "false" for a product without a price', () => {
+      expect(context.get('displayProperties', 'addToBasket')).toMatchInlineSnapshot(`false`);
+    });
+
+    it('should set "addToBasket" to "true" for a product with price', () => {
+      context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
+      expect(context.get('displayProperties', 'addToBasket')).toMatchInlineSnapshot(`true`);
+    });
+
+    it('should set "addToBasket" to "true" for a retail set independend from a price', () => {
+      when(shoppingFacade.product$(anything(), anything())).thenReturn(
+        of({
+          sku: '456',
+          completenessLevel: ProductCompletenessLevel.Detail,
+          type: 'RetailSet',
+          available: true,
+        } as ProductView)
+      );
+      context.set('sku', () => '456');
+
+      expect(context.get('displayProperties', 'addToBasket')).toMatchInlineSnapshot(`true`);
+    });
+  });
 });
 
 describe('Product Context Facade', () => {
@@ -720,10 +763,12 @@ describe('Product Context Facade', () => {
     let someOther$: Subject<boolean>;
 
     class ProviderA implements ExternalDisplayPropertiesProvider {
-      setup(product$: Observable<ProductView>): Observable<Partial<ProductContextDisplayProperties<false>>> {
-        return product$.pipe(
-          map(p =>
-            p?.sku === '456'
+      setup(
+        context$: Observable<Pick<ProductContext, 'product' | 'prices'>>
+      ): Observable<Partial<ProductContextDisplayProperties<false>>> {
+        return context$.pipe(
+          map(({ product }) =>
+            product?.sku === '456'
               ? {
                   addToBasket: false,
                   addToCompare: false,
@@ -738,8 +783,10 @@ describe('Product Context Facade', () => {
     }
 
     class ProviderB implements ExternalDisplayPropertiesProvider {
-      setup(product$: Observable<ProductView>): Observable<Partial<ProductContextDisplayProperties<false>>> {
-        return product$.pipe(
+      setup(
+        context$: Observable<Pick<ProductContext, 'product' | 'prices'>>
+      ): Observable<Partial<ProductContextDisplayProperties<false>>> {
+        return context$.pipe(
           map(() => ({
             shipment: false,
             promotions: false,
@@ -749,8 +796,10 @@ describe('Product Context Facade', () => {
     }
 
     class ProviderC implements ExternalDisplayPropertiesProvider {
-      setup(product$: Observable<ProductView>): Observable<Partial<ProductContextDisplayProperties<false>>> {
-        return product$.pipe(
+      setup(
+        context$: Observable<Pick<ProductContext, 'product' | 'prices'>>
+      ): Observable<Partial<ProductContextDisplayProperties<false>>> {
+        return context$.pipe(
           switchMap(() => someOther$),
           map(prop => (prop ? { price: false } : {}))
         );
@@ -795,6 +844,7 @@ describe('Product Context Facade', () => {
     });
 
     it('should set correct display properties respecting overrides from providers for product 123', () => {
+      context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
       context.set('sku', () => '123');
 
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`

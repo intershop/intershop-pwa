@@ -16,7 +16,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
   providers: [
     {
       provide: STORE_MAP_ICON_CONFIGURATION,

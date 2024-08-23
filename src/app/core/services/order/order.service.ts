@@ -48,8 +48,9 @@ export class OrderService {
     'commonShipToAddress',
     'commonShippingMethod',
     'discounts',
-    'lineItems_discounts',
     'lineItems',
+    'lineItems_discounts',
+    'lineItems_warranty',
     'payments',
     'payments_paymentMethod',
     'payments_paymentInstrument',
@@ -114,7 +115,7 @@ export class OrderService {
         },
       };
       return this.apiService
-        .patch(`orders/${order.id}`, body, {
+        .patch(`orders/${this.apiService.encodeResourceId(order.id)}`, body, {
           headers: this.orderHeaders,
         })
         .pipe(map(OrderMapper.fromData));
@@ -132,7 +133,9 @@ export class OrderService {
    * @returns       A list of the user's orders
    */
   getOrders(query: OrderListQuery): Observable<Order[]> {
-    let params = orderListQueryToHttpParams(query);
+    const q = query?.buyer === 'all' ? { ...query, buyer: undefined as string, allBuyers: 'true' } : query;
+
+    let params = orderListQueryToHttpParams(q);
     // for 7.10 compliance - ToDo: will be removed in PWA 6.0
     params = params.set('page[limit]', query.limit);
 
@@ -158,7 +161,7 @@ export class OrderService {
     }
 
     return this.apiService
-      .get<OrderData>(`orders/${orderId}`, {
+      .get<OrderData>(`orders/${this.apiService.encodeResourceId(orderId)}`, {
         headers: this.orderHeaders,
         params,
       })
@@ -184,7 +187,7 @@ export class OrderService {
     }
 
     return this.apiService
-      .get<OrderData>(`orders/${orderId}`, {
+      .get<OrderData>(`orders/${this.apiService.encodeResourceId(orderId)}`, {
         headers: this.orderHeaders.set(ApiService.TOKEN_HEADER_KEY, apiToken),
         params,
         skipApiErrorHandling: true,
@@ -230,7 +233,7 @@ export class OrderService {
 
     return this.apiService
       .patch<OrderData>(
-        `orders/${orderId}`,
+        `orders/${this.apiService.encodeResourceId(orderId)}`,
         { orderCreation },
         {
           headers: this.orderHeaders,

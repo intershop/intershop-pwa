@@ -16,7 +16,6 @@
 /*.sublime-workspace
 /.nb-gradle
 /nbproject/
-/.nvmrc
 /.vim/
 /.angular/cache
 **/*.log

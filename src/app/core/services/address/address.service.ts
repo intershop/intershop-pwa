@@ -25,7 +25,7 @@ export class AddressService {
     return this.appFacade.customerRestResource$.pipe(
       first(),
       concatMap(restResource =>
-        this.apiService.get(`${restResource}/${customerId}/addresses`).pipe(
+        this.apiService.get(`${restResource}/${this.apiService.encodeResourceId(customerId)}/addresses`).pipe(
           unpackEnvelope<Link>(),
           this.apiService.resolveLinks<Address>(),
           map(addressesData => addressesData.map(AddressMapper.fromData))
@@ -51,7 +51,7 @@ export class AddressService {
       first(),
       concatMap(restResource =>
         this.apiService
-          .post(`${restResource}/${customerId}/addresses`, customerAddress)
+          .post(`${restResource}/${this.apiService.encodeResourceId(customerId)}/addresses`, customerAddress)
           .pipe(this.apiService.resolveLink<Address>(), map(AddressMapper.fromData))
       )
     );
@@ -73,7 +73,12 @@ export class AddressService {
       first(),
       concatMap(restResource =>
         this.apiService
-          .put(`${restResource}/${customerId}/addresses/${address.id}`, customerAddress)
+          .put(
+            `${restResource}/${this.apiService.encodeResourceId(
+              customerId
+            )}/addresses/${this.apiService.encodeResourceId(address.id)}`,
+            customerAddress
+          )
           .pipe(map(AddressMapper.fromData))
       )
     );
@@ -90,7 +95,13 @@ export class AddressService {
     return this.appFacade.customerRestResource$.pipe(
       first(),
       concatMap(restResource =>
-        this.apiService.delete(`${restResource}/${customerId}/addresses/${addressId}`).pipe(map(() => addressId))
+        this.apiService
+          .delete(
+            `${restResource}/${this.apiService.encodeResourceId(
+              customerId
+            )}/addresses/${this.apiService.encodeResourceId(addressId)}`
+          )
+          .pipe(map(() => addressId))
       )
     );
   }

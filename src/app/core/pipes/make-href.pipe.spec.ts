@@ -21,9 +21,7 @@ describe('Make Href Pipe', () => {
     when(multiSiteService.getLangUpdatedUrl(anything(), anything())).thenCall((url: string, _: LocationStrategy) =>
       of(url)
     );
-    when(multiSiteService.appendUrlParams(anything(), anything(), anything())).thenCall(
-      (url: string, _, __: string) => url
-    );
+    when(multiSiteService.appendUrlParams(anything(), anything(), anything())).thenCall((url: string) => url);
   });
 
   it('should be created', () => {

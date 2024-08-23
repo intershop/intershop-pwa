@@ -41,6 +41,15 @@
 </div>
 
 <ng-container *ngIf="order">
+  <div class="row">
+    <div class="col-md-6">
+      <!-- Add Order Items to Cart Button -->
+      <ish-account-order-to-basket [order]="order" [cssClass]="'mb-3'" />
+
+      <!-- Create Order-Template from Order Button -->
+      <ish-lazy-order-create-order-template [lineItems]="order.lineItems" [cssClass]="'mb-3'" />
+    </div>
+  </div>
   <div *ishFeature="'businessCustomerRegistration'" class="row">
     <!-- Buyer-->
     <ish-info-box heading="checkout.widget.buyer.heading" class="infobox-wrapper col-md-6">
@@ -71,15 +80,17 @@
     </ish-info-box>
     <!-- Payment -->
     <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper col-md-6">
-      <div class="float-right">
-        <p class="badge badge-info">{{ order.payment.status }}</p>
-      </div>
-      <p>
-        {{ order.payment.displayName }}<br />{{ order.payment.paymentInstrument.accountIdentifier }}
-        <ng-container *ngIf="!order.payment.displayName && !order.payment.paymentInstrument.accountIdentifier">
-          {{ order.payment.paymentInstrument }}
-        </ng-container>
-      </p>
+      <ng-container *ngIf="order.payment">
+        <div class="float-right">
+          <p class="badge badge-info">{{ order.payment.status }}</p>
+        </div>
+        <p>
+          {{ order.payment.displayName }}<br />{{ order.payment.paymentInstrument.accountIdentifier }}
+          <ng-container *ngIf="!order.payment.displayName && !order.payment.paymentInstrument.accountIdentifier">
+            {{ order.payment.paymentInstrument }}
+          </ng-container>
+        </p>
+      </ng-container>
     </ish-info-box>
   </div>
 
@@ -99,23 +110,11 @@
         <ish-basket-cost-summary [totals]="order.totals" />
       </div>
 
-      <!-- Add Order Items to Cart -->
-      <button
-        type="button"
-        class="btn btn-secondary btn-block mb-3"
-        [disabled]="displaySpinner()"
-        (click)="addOrderToBasket()"
-        data-testing-id="create-cart-from-order"
-      >
-        <ng-container *ngIf="this.displaySpinner() !== true; else spinning">
-          {{ 'account.orderdetails.add_to_cart.button.label' | translate }}
-        </ng-container>
-        <!-- spinning animation after clicking button -->
-        <ng-template #spinning>
-          <fa-icon [icon]="['fas', 'spinner']" [spin]="true" ngClass="pr-3" />
-          <span>{{ 'common.button.spinning.label' | translate }}</span>
-        </ng-template>
-      </button>
+      <!-- Add Order Items to Cart Button -->
+      <ish-account-order-to-basket [order]="order" [cssClass]="'mb-3'" />
+
+      <!-- Create Order-Template from Order Button -->
+      <ish-lazy-order-create-order-template [lineItems]="order.lineItems" [cssClass]="'mb-3'" />
     </div>
   </div>
 </ng-container>

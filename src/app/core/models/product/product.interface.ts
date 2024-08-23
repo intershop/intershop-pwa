@@ -7,7 +7,6 @@ import { Link } from 'ish-core/models/link/link.model';
 import { PriceData } from 'ish-core/models/price/price.interface';
 import { VariationAttributeData } from 'ish-core/models/product-variation/variation-attribute.interface';
 import { SeoAttributesData } from 'ish-core/models/seo-attributes/seo-attributes.interface';
-import { Warranty } from 'ish-core/models/warranty/warranty.model';
 
 export interface ProductData {
   sku: string;
@@ -24,7 +23,7 @@ export interface ProductData {
 
   images: Image[];
 
-  availableWarranties?: Warranty[];
+  availableWarranties?: Link[];
   availableGiftWraps?: unknown[];
   availableGiftMessages?: unknown[];
   bundles: unknown[];

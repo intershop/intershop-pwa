@@ -25,8 +25,10 @@ export class ContactFormComponent implements OnInit {
   /** The contact request to send. */
   @Output() request = new EventEmitter<Contact>();
 
-  /** The form for customer message to the shop. */
+  // visible-for-testing
   submitted = false;
+
+  /** The form for customer message to the shop. */
   contactForm = new UntypedFormGroup({});
   model$: Observable<Partial<Contact>>;
   fields: FormlyFieldConfig[];

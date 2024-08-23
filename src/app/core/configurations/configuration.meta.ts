@@ -2,11 +2,11 @@ import { Params } from '@angular/router';
 import { RouterNavigationPayload, routerNavigationAction } from '@ngrx/router-store';
 import { ActionReducer } from '@ngrx/store';
 
+import { FeatureToggleType } from 'ish-core/feature-toggle.module';
 import { applyConfiguration } from 'ish-core/store/core/configuration';
 import { ConfigurationState, configurationReducer } from 'ish-core/store/core/configuration/configuration.reducer';
 import { CoreState } from 'ish-core/store/core/core-store';
 import { RouterState } from 'ish-core/store/core/router/router.reducer';
-import { FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { mergeDeep } from 'ish-core/utils/functions';
 
 class SimpleParamMap {

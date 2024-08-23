@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enfinity
+xmlns="http://www.intershop.com/xml/ns/enfinity/6.5/bc_pmc/impex"
+xmlns:dt="http://www.intershop.com/xml/ns/enfinity/6.5/core/impex-dt"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.intershop.com/xml/ns/enfinity/6.5/bc_pmc/impex bc_pmc.xsd
+http://www.intershop.com/xml/ns/enfinity/6.5/core/impex-dt dt.xsd">
+<view-context id="viewcontext.include.category.base.bottom">
+<definition-name>app_sf_base_cm:viewcontext.include.category.pagelet2-ViewContext</definition-name>
+<display-name xml:lang="en-US">Category Base Marketing Bottom</display-name>
+<configuration-parameters>
+</configuration-parameters>
+</view-context>
+<view-context id="viewcontext.include.category.base.top">
+<definition-name>app_sf_base_cm:viewcontext.include.category.pagelet2-ViewContext</definition-name>
+<display-name xml:lang="en-US">Category Base Marketing Top</display-name>
+<configuration-parameters>
+</configuration-parameters>
+</view-context>
+<view-context id="viewcontext.include.category.content.bottom">
+<definition-name>app_sf_base_cm:viewcontext.include.category.pagelet2-ViewContext</definition-name>
+<display-name xml:lang="en-US">Category Content Marketing Bottom</display-name>
+<configuration-parameters>
+</configuration-parameters>
+</view-context>
+<view-context id="viewcontext.include.category.content.top">
+<definition-name>app_sf_base_cm:viewcontext.include.category.pagelet2-ViewContext</definition-name>
+<display-name xml:lang="en-US">Category Content Marketing Top</display-name>
+<configuration-parameters>
+</configuration-parameters>
+</view-context>
+<view-context id="viewcontext.include.category.navigation">
+<definition-name>app_sf_base_cm:viewcontext.include.category.pagelet2-ViewContext</definition-name>
+<display-name xml:lang="en-US">Category Navigation Panel Marketing</display-name>
+<configuration-parameters>
+</configuration-parameters>
+</view-context>
+<view-context id="viewcontext.include.family.base.bottom">
+<definition-name>app_sf_base_cm:viewcontext.include.category.pagelet2-ViewContext</definition-name>
+<display-name xml:lang="en-US">Family Base Marketing Bottom</display-name>
+<configuration-parameters>
+</configuration-parameters>
+</view-context>
+<view-context id="viewcontext.include.family.base.top">
+<definition-name>app_sf_base_cm:viewcontext.include.category.pagelet2-ViewContext</definition-name>
+<display-name xml:lang="en-US">Family Base Marketing Top</display-name>
+<configuration-parameters>
+</configuration-parameters>
+</view-context>
+<view-context id="viewcontext.include.family.content.bottom">
+<definition-name>app_sf_base_cm:viewcontext.include.category.pagelet2-ViewContext</definition-name>
+<display-name xml:lang="en-US">Family Content Marketing Bottom</display-name>
+<configuration-parameters>
+</configuration-parameters>
+</view-context>
+<view-context id="viewcontext.include.family.content.top">
+<definition-name>app_sf_base_cm:viewcontext.include.category.pagelet2-ViewContext</definition-name>
+<display-name xml:lang="en-US">Family Content Marketing Top</display-name>
+<configuration-parameters>
+</configuration-parameters>
+</view-context>
+<view-context id="viewcontext.include.family.navigation">
+<definition-name>app_sf_base_cm:viewcontext.include.category.pagelet2-ViewContext</definition-name>
+<display-name xml:lang="en-US">Family Navigation Panel Marketing</display-name>
+<configuration-parameters>
+</configuration-parameters>
+</view-context>
+<view-context id="viewcontext.include.product.base.bottom">
+<definition-name>app_sf_base_cm:viewcontext.include.product.pagelet2-ViewContext</definition-name>
+<display-name xml:lang="en-US">Product Base Marketing Bottom</display-name>
+</view-context>
+<view-context id="viewcontext.include.product.base.top">
+<definition-name>app_sf_base_cm:viewcontext.include.product.pagelet2-ViewContext</definition-name>
+<display-name xml:lang="en-US">Product Base Marketing Top</display-name>
+</view-context>
+<view-context id="viewcontext.include.product.content.bottom">
+<definition-name>app_sf_base_cm:viewcontext.include.product.pagelet2-ViewContext</definition-name>
+<display-name xml:lang="en-US">Product Content Marketing Bottom</display-name>
+</view-context>
+<view-context id="viewcontext.include.product.content.top">
+<definition-name>app_sf_base_cm:viewcontext.include.product.pagelet2-ViewContext</definition-name>
+<display-name xml:lang="en-US">Product Content Marketing Top</display-name>
+</view-context>
+<view-context id="viewcontext.include.product.productinfo">
+<definition-name>app_sf_base_cm:viewcontext.include.product.pagelet2-ViewContext</definition-name>
+<display-name xml:lang="en-US">Product Info Marketing</display-name>
+</view-context>
+</enfinity>

@@ -15,7 +15,6 @@ import { TokenService } from 'ish-core/services/token/token.service';
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
-import { encodeResourceID } from 'ish-core/utils/url-resource-ids';
 
 import { UserService } from './user.service';
 
@@ -40,6 +39,9 @@ describe('User Service', () => {
     apiTokenServiceMock = mock(ApiTokenService);
     appFacade = mock(AppFacade);
     tokenServiceMock = mock(TokenService);
+
+    when(apiServiceMock.b2bUserEndpoint()).thenReturn(instance(apiServiceMock));
+    when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
 
     when(tokenServiceMock.fetchToken(anyString(), anything())).thenReturn(of(token));
     when(appFacade.isAppTypeREST$).thenReturn(of(true));
@@ -393,9 +395,7 @@ describe('User Service', () => {
 
     it("should get eligible cost centers for business user when 'getEligibleCostCenters' is called", done => {
       userService.getEligibleCostCenters().subscribe(() => {
-        verify(
-          apiServiceMock.get(`customers/${customer.customerNo}/users/${encodeResourceID(user.login)}/costcenters`)
-        ).once();
+        verify(apiServiceMock.get(`/costcenters`)).once();
         done();
       });
     });

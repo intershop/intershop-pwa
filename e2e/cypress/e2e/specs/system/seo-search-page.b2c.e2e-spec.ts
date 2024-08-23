@@ -10,7 +10,7 @@ describe('Page Meta', () => {
   it('should have all metadata set on search result page', () => {
     at(SearchResultPage, page => {
       page.metaData.check({
-        title: "Search Result for 'kodak' | Intershop PWA",
+        title: "Search result for 'kodak' | Intershop PWA",
         url: /.*\/search\/kodak$/,
         description: 'Intershop - Progressive Web App',
       });
@@ -39,7 +39,7 @@ describe('Page Meta', () => {
       page.metaData.check({
         title: 'inTRONICS Home | Intershop PWA',
         url: /.*\/home$/,
-        description: 'inTRONICS home description ...',
+        description: 'inTRONICS Home description ...',
       });
     });
   });

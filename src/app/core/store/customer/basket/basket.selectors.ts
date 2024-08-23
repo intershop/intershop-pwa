@@ -80,6 +80,15 @@ export const getBasketEligiblePaymentMethods = createSelector(getBasketState, ge
   basket?.eligiblePaymentMethods?.map(pm => (customer ? pm : { ...pm, saveAllowed: false }))
 );
 
+export const getEligibleFastCheckoutPaymentMethods = createSelector(
+  getBasketState,
+  getLoggedInCustomer,
+  (basket, customer) =>
+    basket?.eligiblePaymentMethods
+      ?.filter(pm => pm.capabilities && pm.capabilities.includes('FastCheckout'))
+      .map(pm => (customer ? pm : { ...pm, saveAllowed: false }))
+);
+
 export const getBasketInvoiceAddress = createSelectorFactory<object, Address>(projector =>
   resultMemoize(projector, isEqual)
 )(getCurrentBasket, (basket: BasketView) => basket?.invoiceToAddress);

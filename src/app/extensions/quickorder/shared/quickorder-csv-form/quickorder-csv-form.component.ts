@@ -13,7 +13,7 @@ declare type CsvStatusType = 'Default' | 'ValidFormat' | 'InvalidFormat' | 'Inco
 })
 export class QuickorderCsvFormComponent implements OnInit {
   csvForm: FormGroup;
-  productsFromCsv: SkuQuantityType[] = [];
+  private productsFromCsv: SkuQuantityType[] = [];
   status: CsvStatusType;
 
   constructor(private qf: FormBuilder, private cdRef: ChangeDetectorRef, private shoppingFacade: ShoppingFacade) {}
@@ -53,11 +53,11 @@ export class QuickorderCsvFormComponent implements OnInit {
     }
   }
 
-  isValidCSVFile(file: File) {
+  private isValidCSVFile(file: File) {
     return file.name.endsWith('.csv');
   }
 
-  getDataRecordsArrayFromCSVFile(csvRecordsArray: string[]): SkuQuantityType[] {
+  private getDataRecordsArrayFromCSVFile(csvRecordsArray: string[]): SkuQuantityType[] {
     try {
       return csvRecordsArray
         .filter(r => !!r)

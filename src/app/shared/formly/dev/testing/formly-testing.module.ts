@@ -192,7 +192,7 @@ class RepeatFieldComponent extends FieldArrayType {}
       wrappers: [
         { name: 'form-field-horizontal', component: DummyWrapperComponent },
         { name: 'form-field-checkbox-horizontal', component: DummyWrapperComponent },
-        { name: 'textarea-description', component: DummyWrapperComponent },
+        { name: 'maxlength-description', component: DummyWrapperComponent },
         { name: 'tooltip', component: DummyWrapperComponent },
         { name: 'validation', component: DummyWrapperComponent },
         { name: 'description', component: DummyWrapperComponent },

@@ -75,6 +75,7 @@ import { BasketItemsSummaryComponent } from './components/basket/basket-items-su
 import { BasketMerchantMessageViewComponent } from './components/basket/basket-merchant-message-view/basket-merchant-message-view.component';
 import { BasketMerchantMessageComponent } from './components/basket/basket-merchant-message/basket-merchant-message.component';
 import { BasketOrderReferenceComponent } from './components/basket/basket-order-reference/basket-order-reference.component';
+import { BasketPaymentCostInfoComponent } from './components/basket/basket-payment-cost-info/basket-payment-cost-info.component';
 import { BasketPromotionCodeComponent } from './components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketPromotionComponent } from './components/basket/basket-promotion/basket-promotion.component';
 import { BasketShippingMethodComponent } from './components/basket/basket-shipping-method/basket-shipping-method.component';
@@ -110,6 +111,7 @@ import { LineItemEditDialogComponent } from './components/line-item/line-item-ed
 import { LineItemEditComponent } from './components/line-item/line-item-edit/line-item-edit.component';
 import { LineItemListElementComponent } from './components/line-item/line-item-list-element/line-item-list-element.component';
 import { LineItemListComponent } from './components/line-item/line-item-list/line-item-list.component';
+import { LineItemWarrantyComponent } from './components/line-item/line-item-warranty/line-item-warranty.component';
 import { Auth0SignInComponent } from './components/login/auth0-sign-in/auth0-sign-in.component';
 import { IdentityProviderLoginComponent } from './components/login/identity-provider-login/identity-provider-login.component';
 import { LoginFormComponent } from './components/login/login-form/login-form.component';
@@ -144,6 +146,8 @@ import { ProductVariationSelectDefaultComponent } from './components/product/pro
 import { ProductVariationSelectEnhancedComponent } from './components/product/product-variation-select-enhanced/product-variation-select-enhanced.component';
 import { ProductVariationSelectSwatchComponent } from './components/product/product-variation-select-swatch/product-variation-select-swatch.component';
 import { ProductVariationSelectComponent } from './components/product/product-variation-select/product-variation-select.component';
+import { ProductWarrantyDetailsComponent } from './components/product/product-warranty-details/product-warranty-details.component';
+import { ProductWarrantyComponent } from './components/product/product-warranty/product-warranty.component';
 import { ProductsListComponent } from './components/product/products-list/products-list.component';
 import { PromotionDetailsComponent } from './components/promotion/promotion-details/promotion-details.component';
 import { PromotionRemoveComponent } from './components/promotion/promotion-remove/promotion-remove.component';
@@ -226,6 +230,7 @@ const declaredComponents = [
   LineItemEditComponent,
   LineItemEditDialogComponent,
   LineItemListElementComponent,
+  LineItemWarrantyComponent,
   LoginModalComponent,
   PagingComponent,
   ProductChooseVariationComponent,
@@ -256,6 +261,7 @@ const exportedComponents = [
   BasketMerchantMessageComponent,
   BasketMerchantMessageViewComponent,
   BasketOrderReferenceComponent,
+  BasketPaymentCostInfoComponent,
   BasketPromotionCodeComponent,
   BasketPromotionComponent,
   BasketShippingAddressWidgetComponent,
@@ -305,6 +311,8 @@ const exportedComponents = [
   ProductVariationSelectDefaultComponent,
   ProductVariationSelectEnhancedComponent,
   ProductVariationSelectSwatchComponent,
+  ProductWarrantyComponent,
+  ProductWarrantyDetailsComponent,
   PromotionDetailsComponent,
   PromotionRemoveComponent,
   SearchBoxComponent,

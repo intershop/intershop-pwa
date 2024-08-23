@@ -23,11 +23,14 @@ import {
   continueCheckoutFail,
   continueCheckoutSuccess,
   continueCheckoutWithIssues,
+  continueWithFastCheckout,
   loadBasketEligiblePaymentMethods,
   loadBasketEligibleShippingMethods,
+  loadBasketFail,
   startCheckout,
   startCheckoutFail,
   startCheckoutSuccess,
+  startFastCheckout,
   submitBasket,
   validateBasket,
 } from './basket.actions';
@@ -159,6 +162,26 @@ export class BasketValidationEffects {
   );
 
   /**
+   * Validation the basket before starting the fast checkout effect.
+   */
+  startFastCheckoutProcess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(startFastCheckout),
+      mapToPayloadProperty('paymentId'),
+      concatMap(paymentId =>
+        this.basketService.validateBasket(this.validationSteps[0].scopes).pipe(
+          map(basketValidation =>
+            basketValidation.results.valid
+              ? continueWithFastCheckout({ targetRoute: undefined, basketValidation, paymentId })
+              : continueCheckoutWithIssues({ targetRoute: undefined, basketValidation })
+          ),
+          mapErrorToAction(startCheckoutFail)
+        )
+      )
+    )
+  );
+
+  /**
    * Jumps to the next checkout step after basket validation. In case of adjustments related data like product data, eligible shipping methods etc. are loaded.
    */
   jumpToNextCheckoutStep$ = createEffect(
@@ -191,6 +214,22 @@ export class BasketValidationEffects {
             .map(info => loadProduct({ sku: info.parameters.productSku }));
         }
       })
+    )
+  );
+
+  // if the basket is expired or doesn't exist - clear the basket and go to cart page
+  handleBasketNotFoundError$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(startCheckoutFail, continueCheckoutFail),
+      mapToPayloadProperty('error'),
+      filter(error => error?.code === 'basket.not_found.error' || error?.errors[0]?.code === 'basket.not_found.error'),
+      concatMap(error =>
+        from(
+          this.router.navigate([this.validationSteps[CheckoutStepType.BeforeCheckout].route], {
+            queryParams: { error: true },
+          })
+        ).pipe(map(() => loadBasketFail({ error })))
+      )
     )
   );
 

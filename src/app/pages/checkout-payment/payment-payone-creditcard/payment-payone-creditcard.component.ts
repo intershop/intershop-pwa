@@ -60,10 +60,10 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
   /**
    * flag to make sure that the init script is executed only once
    */
-  scriptLoaded = false;
+  private scriptLoaded = false;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  iframes: any;
+  private iframes: any;
 
   /**
    *  field for generic error message
@@ -101,7 +101,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
     (window as any).payoneCreditCardCallback = undefined;
   }
 
-  protected getParamValue(name: string, errorMessage: string): string {
+  private getParamValue(name: string, errorMessage: string): string {
     const parameter = this.paymentMethod.hostedPaymentPageParameters.find(param => param.name === name);
     if (!parameter?.value) {
       this.generalErrorMessage = errorMessage;
@@ -110,7 +110,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
     return parameter.value;
   }
 
-  loadScript() {
+  private loadScript() {
     // load script only once if component becomes visible
     if (this.activated && !this.scriptLoaded) {
       const request = JSON.parse(this.getParamValue('request', 'checkout.credit_card.config.error.notFound'));
@@ -156,6 +156,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
     }
   }
 
+  // visible-for-testing
   submitCallback(response: { status: string; pseudocardpan: string; truncatedcardpan: string }) {
     if (response.status === 'VALID' && !this.payoneCreditCardForm.invalid) {
       this.submitPayment.emit({

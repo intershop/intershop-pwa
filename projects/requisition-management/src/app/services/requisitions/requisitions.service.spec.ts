@@ -19,6 +19,8 @@ describe('Requisitions Service', () => {
     apiServiceMock = mock(ApiService);
     userServiceMock = mock(UserService);
     when(apiServiceMock.b2bUserEndpoint()).thenReturn(instance(apiServiceMock));
+    when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
+
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },

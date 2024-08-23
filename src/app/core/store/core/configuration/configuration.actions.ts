@@ -14,6 +14,6 @@ export const loadSingleServerTranslation = createAction(
 );
 
 export const loadSingleServerTranslationSuccess = createAction(
-  '[Configuration] Load Single Server Translation Success',
+  '[Configuration API] Load Single Server Translation Success',
   payload<{ lang: string; key: string; translation: string }>()
 );

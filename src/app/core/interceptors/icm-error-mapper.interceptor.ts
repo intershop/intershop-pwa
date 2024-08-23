@@ -89,6 +89,30 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
           errors: httpError.error?.errors,
         };
       }
+      // new ADR - used for cXML Punchout configuration
+      else if (httpError.error?.messages?.length) {
+        const errors: {
+          code: string;
+          causes?: {
+            code: string;
+            message: string;
+          }[];
+        }[] = httpError.error?.messages;
+        if (errors.length === 1) {
+          const error = errors[0];
+          if (error.causes?.length) {
+            return {
+              ...responseError,
+              errors: httpError.error.messages,
+              message: error.causes.map(c => '<div>'.concat(c.message).concat('</div>')).join(''),
+            };
+          }
+        }
+        return {
+          ...responseError,
+          errors: httpError.error?.errors,
+        };
+      }
 
       // handle all other error responses with error object
       return {

@@ -128,13 +128,10 @@ export class CostCenterFormComponent implements OnInit {
                   addonLeft: {
                     text: this.appFacade.currencySymbol$(currentCurrency),
                   },
-                },
-                validators: {
-                  validation: [SpecialValidators.moneyAmount],
+                  mask: 'separator.2',
                 },
                 validation: {
                   messages: {
-                    moneyAmount: 'account.costcenter.budget.error.valid',
                     required: 'account.costcenter.budget.error.required',
                   },
                 },

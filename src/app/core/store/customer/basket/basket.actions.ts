@@ -9,10 +9,9 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { ErrorFeedback } from 'ish-core/models/http-error/http-error.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
-import { LineItem } from 'ish-core/models/line-item/line-item.model';
+import { AddLineItemType, LineItem } from 'ish-core/models/line-item/line-item.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { SkuQuantityType } from 'ish-core/models/product/product.helper';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { BasketUpdateType } from 'ish-core/services/basket/basket.service';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
@@ -73,7 +72,7 @@ export const addMessageToMerchant = createAction(
   '[Basket] Message to Merchant',
   payload<{ messageToMerchant: string }>()
 );
-export const updateBasket = createAction('[Basket API] Update Basket', payload<{ update: BasketUpdateType }>());
+export const updateBasket = createAction('[Basket] Update Basket', payload<{ update: BasketUpdateType }>());
 
 export const updateBasketFail = createAction('[Basket API] Update Basket Fail', httpError());
 
@@ -82,11 +81,11 @@ export const deleteBasketShippingAddress = createAction(
   payload<{ addressId: string }>()
 );
 
-export const addProductToBasket = createAction('[Basket] Add Product', payload<SkuQuantityType>());
+export const addProductToBasket = createAction('[Basket] Add Product', payload<AddLineItemType>());
 
 export const addItemsToBasket = createAction(
   '[Basket Internal] Add Items To Basket',
-  payload<{ items: SkuQuantityType[] }>()
+  payload<{ items: AddLineItemType[] }>()
 );
 
 export const addItemsToBasketFail = createAction('[Basket API] Add Items To Basket Fail', httpError());
@@ -116,6 +115,8 @@ export const startCheckoutSuccess = createAction(
 
 export const startCheckoutFail = createAction('[Basket API] Start the checkout process fail', httpError());
 
+export const startFastCheckout = createAction('[Basket] Start FastCheckout Process ', payload<{ paymentId: string }>());
+
 export const continueCheckout = createAction(
   '[Basket] Validate Basket and continue checkout',
   payload<{ targetStep: CheckoutStepType }>()
@@ -134,6 +135,11 @@ export const continueCheckoutSuccess = createAction(
 export const continueCheckoutWithIssues = createAction(
   '[Basket API] Validate Basket and continue with issues',
   payload<{ targetRoute: string; basketValidation: BasketValidation }>()
+);
+
+export const continueWithFastCheckout = createAction(
+  '[Basket Internal] Validate Basket and continue with fast checkout',
+  payload<{ targetRoute: string; basketValidation: BasketValidation; paymentId: string }>()
 );
 
 export const updateBasketItem = createAction(
@@ -167,7 +173,7 @@ export const deleteBasketItemsSuccess = createAction(
 );
 
 export const removePromotionCodeFromBasket = createAction(
-  '[Basket Internal] Remove Promotion Code From Basket',
+  '[Basket] Remove Promotion Code From Basket',
   payload<{ code: string }>()
 );
 
@@ -181,7 +187,7 @@ export const removePromotionCodeFromBasketSuccess = createAction(
 );
 
 export const addPromotionCodeToBasket = createAction(
-  '[Basket Internal] Add Promotion Code To Basket',
+  '[Basket] Add Promotion Code To Basket',
   payload<{ code: string }>()
 );
 
@@ -207,7 +213,7 @@ export const deleteBasketAttributeFail = createAction('[Basket API] Delete Baske
 
 export const deleteBasketAttributeSuccess = createAction('[Basket API] Delete Basket Attribute Success');
 
-export const loadBasketEligibleAddresses = createAction('[Basket Internal] Load Basket Eligible Addresses');
+export const loadBasketEligibleAddresses = createAction('[Basket] Load Basket Eligible Addresses');
 
 export const loadBasketEligibleAddressesFail = createAction(
   '[Basket API] Load Basket Eligible Addresses Fail',
@@ -219,9 +225,7 @@ export const loadBasketEligibleAddressesSuccess = createAction(
   payload<{ addresses: Address[] }>()
 );
 
-export const loadBasketEligibleShippingMethods = createAction(
-  '[Basket Internal] Load Basket Eligible Shipping Methods'
-);
+export const loadBasketEligibleShippingMethods = createAction('[Basket] Load Basket Eligible Shipping Methods');
 
 export const loadBasketEligibleShippingMethodsFail = createAction(
   '[Basket API] Load Basket Eligible Shipping Methods Fail',
@@ -233,7 +237,7 @@ export const loadBasketEligibleShippingMethodsSuccess = createAction(
   payload<{ shippingMethods: ShippingMethod[] }>()
 );
 
-export const loadBasketEligiblePaymentMethods = createAction('[Basket Internal] Load Basket Eligible Payment Methods');
+export const loadBasketEligiblePaymentMethods = createAction('[Basket] Load Basket Eligible Payment Methods');
 
 export const loadBasketEligiblePaymentMethodsFail = createAction(
   '[Basket API] Load Basket Eligible Payment Methods Fail',
@@ -261,7 +265,7 @@ export const createBasketPaymentFail = createAction('[Basket API] Create a Baske
 export const createBasketPaymentSuccess = createAction('[Basket API] Create a Basket Payment Success');
 
 export const updateBasketPayment = createAction(
-  '[Basket] Update a Basket Payment with Redirect Data',
+  '[Basket Internal] Update a Basket Payment with Redirect Data',
   payload<{ params: Params }>()
 );
 

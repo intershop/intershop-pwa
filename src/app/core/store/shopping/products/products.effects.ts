@@ -297,34 +297,6 @@ export class ProductsEffects {
     )
   );
 
-  /**
-   * Trigger load product variations action on product success action for master products.
-   * Ignores product variation entries for products that are already present.
-   */
-  loadProductVariationsForMasterOrVariationProduct$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(loadProductSuccess),
-        mapToPayloadProperty('product'),
-        map(product =>
-          ProductHelper.isMasterProduct(product)
-            ? product.sku
-            : ProductHelper.isVariationProduct(product)
-            ? product.productMasterSKU
-            : undefined
-        ),
-        whenTruthy(),
-        groupBy(identity),
-        mergeMap(group$ =>
-          group$.pipe(
-            throttleTime(10),
-            map(sku => loadProductVariationsIfNotLoaded({ sku }))
-          )
-        )
-      ),
-    { dispatch: true }
-  );
-
   loadDefaultCategoryContextForProduct$ = createEffect(() =>
     this.store.pipe(
       ofProductUrl(),

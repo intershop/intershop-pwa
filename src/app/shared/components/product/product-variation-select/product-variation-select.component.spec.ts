@@ -20,6 +20,7 @@ describe('Product Variation Select Component', () => {
   let context: ProductContextFacade;
 
   const productMaster = {
+    type: 'VariationProductMaster',
     variationAttributeValues: [
       { variationAttributeId: 'a1', value: 'A', attributeType: 'colorCode' },
       { variationAttributeId: 'a1', value: 'B', attributeType: 'colorCode' },
@@ -35,6 +36,7 @@ describe('Product Variation Select Component', () => {
   } as VariationProductMaster;
 
   const variationProduct = {
+    type: 'VariationProduct',
     variableVariationAttributes: [
       { variationAttributeId: 'a1', value: 'B', attributeType: 'colorCode' },
       { variationAttributeId: 'a2', value: 'D', attributeType: 'defaultAndColorCode' },
@@ -46,12 +48,12 @@ describe('Product Variation Select Component', () => {
 
   const variationProductView = {
     ...variationProduct,
-    variations: [variationProduct],
     productMaster,
   } as ProductView;
 
   beforeEach(async () => {
     context = mock(ProductContextFacade);
+
     await TestBed.configureTestingModule({
       declarations: [
         MockComponent(ProductVariationSelectDefaultComponent),
@@ -69,7 +71,9 @@ describe('Product Variation Select Component', () => {
     element = fixture.nativeElement;
 
     when(context.select('product')).thenReturn(of(variationProductView));
+    when(context.select('variations')).thenReturn(of([variationProduct]));
     when(context.select('displayProperties', 'variations')).thenReturn(of(true));
+    when(context.select('productMaster')).thenReturn(of(productMaster));
   });
 
   it('should be created', () => {
