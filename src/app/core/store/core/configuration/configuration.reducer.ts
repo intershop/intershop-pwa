@@ -12,6 +12,7 @@ export interface ConfigurationState {
   baseURL?: string;
   server?: string;
   serverStatic?: string;
+  serverWeb?: string;
   channel?: string;
   application?: string;
   hybridApplication?: string;
@@ -34,6 +35,7 @@ const initialState: ConfigurationState = {
   baseURL: undefined,
   server: undefined,
   serverStatic: undefined,
+  serverWeb: undefined,
   channel: undefined,
   application: undefined,
   hybridApplication: undefined,

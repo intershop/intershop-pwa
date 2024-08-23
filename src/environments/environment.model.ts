@@ -12,6 +12,7 @@ export interface Environment {
   icmBaseURL: string;
   icmServer: string;
   icmServerStatic: string;
+  icmServerWeb: string;
   icmChannel: string;
   icmApplication?: string;
   hybridApplication?: string;
@@ -148,6 +149,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   icmBaseURL: 'https://develop.icm.intershop.de',
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
+  icmServerWeb: 'INTERSHOP/web/WFS',
   icmApplication: '-',
 
   /* FEATURE TOGGLES */

@@ -21,8 +21,8 @@ export class AccountPunchoutPageComponent implements OnInit {
   loading$: Observable<boolean>;
   error$: Observable<HttpError>;
 
-  ociPunchoutUrl = `${window.location.origin}/punchout?USERNAME=<USERNAME>&PASSWORD=<PASSWORD>&HOOK_URL=<HOOK_URL>`;
   cxmlPunchoutUrl$: Observable<string>;
+  ociPunchoutUrl$: Observable<string>;
 
   constructor(
     private accountFacade: AccountFacade,
@@ -41,6 +41,9 @@ export class AccountPunchoutPageComponent implements OnInit {
     this.cxmlPunchoutUrl$ = this.appFacade.getRestEndpoint$.pipe(
       withLatestFrom(this.accountFacade.customer$),
       map(([url, customer]) => `${url}/customers/${customer?.customerNo}/punchouts/cxml1.2/setuprequest`)
+    );
+    this.ociPunchoutUrl$ = this.appFacade.getPipelineEndpoint$.pipe(
+      map(url => `${url}/ViewOCICatalogPWA-Start?USERNAME=<USERNAME>&PASSWORD=<PASSWORD>&HOOK_URL=<HOOK_URL>`)
     );
   }
 

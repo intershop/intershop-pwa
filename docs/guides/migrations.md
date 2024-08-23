@@ -7,6 +7,11 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 5.2 to 5.3
+
+With ICM 12.2.0, 11.11.1 or 7.10.41.3 the ICM server itself provides an OCI punchout URL (Pipeline) that works better for the OCI punchout functions `BACKGROUND_SEARCH` and `VALIDATE` than the similar now deprecated functionality in the PWA.
+For that reason the provided OCI Punchout URL is now pointing to the ICM pipeline `ViewOCICatalogPWA-Start` that handles the different functionalities and redirects to the PWA (configured as _External Base URL_ in ICM) only for catalog browsing and the detail function.
+
 ## From 5.1 to 5.2
 
 > [!NOTE]
