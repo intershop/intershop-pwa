@@ -1066,7 +1066,7 @@
   "product.reviews.your_review.heading": "Votre avis sur le produit",
   "product.short_description.label": "Description courte",
   "product.specific_attributes.label": "Attributs spécifiques",
-  "product.variations.text": "{{ 0, plural, zero{Aucune variation} one{Une variation} other{# variations}}}",
+  "product.variations.text": "{{ 0, plural, =0{Aucune variation} =1{Une variation} other{# variations}}}",
   "product.warranty.code.text": "Code de garantie",
   "product.warranty.detail.text": "Détails",
   "product.warranty.expire_date.text": "Expire le :",
