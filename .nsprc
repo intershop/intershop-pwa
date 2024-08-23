@@ -1,3 +1,4 @@
 {
-  "GHSA-vc8w-jr9v-vj7f": "Ignored since we don't use Bootstrap Javascript (only Bootstrap styling with ng-bootstrap)"
+  "GHSA-vc8w-jr9v-vj7f": "Ignored since we don't use Bootstrap Javascript (only Bootstrap styling with ng-bootstrap)",
+  "GHSA-952p-6rrq-rcjv": "Ignoring for now since there is no known fix"
 }
