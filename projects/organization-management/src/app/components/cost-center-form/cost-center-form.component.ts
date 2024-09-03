@@ -69,6 +69,10 @@ export class CostCenterFormComponent implements OnInit {
     return [
       {
         type: 'ish-fieldset-field',
+        props: {
+          legend: 'account.costcenter.create.heading',
+          legendClass: 'legend-invisible',
+        },
         fieldGroup: [
           {
             key: 'currency',

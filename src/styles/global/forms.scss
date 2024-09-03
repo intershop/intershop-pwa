@@ -1,8 +1,14 @@
+// FIELDSET
 fieldset {
   margin-bottom: ($space-default);
 
   legend {
     font-size: $font-size-corporate;
+  }
+
+  .legend-invisible {
+    position: absolute;
+    left: -10000px;
   }
 }
 

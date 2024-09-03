@@ -6,6 +6,7 @@
 <form [formGroup]="form" (ngSubmit)="submitForm()">
   <div class="row">
     <fieldset class="col-sm-8">
+      <legend class="legend-invisible">{{ 'store_locator.title' | translate }}</legend>
       <formly-form [form]="form" [fields]="fields" [model]="model" />
       <div class="form-group row align-items-baseline">
         <div class="col-sm-4"></div>
