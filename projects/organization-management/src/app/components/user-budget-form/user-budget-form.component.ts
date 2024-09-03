@@ -68,6 +68,10 @@ export class UserBudgetFormComponent implements OnInit {
     return [
       {
         type: 'ish-fieldset-field',
+        props: {
+          legend: 'account.user.update_budget.heading',
+          legendClass: 'sr-only',
+        },
         fieldGroup: [
           {
             key: 'currency',
