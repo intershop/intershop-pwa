@@ -93,9 +93,3 @@ $design-view-color-include: #ce5399;
     }
   }
 }
-
-// apply design view specific changes to be able to edit all components
-::ng-deep .carousel-inner {
-  // carousel slide item
-  overflow: inherit;
-}
