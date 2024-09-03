@@ -69,6 +69,10 @@ export class CostCenterFormComponent implements OnInit {
     return [
       {
         type: 'ish-fieldset-field',
+        props: {
+          legend: this.costCenter ? 'account.costcenter.details.edit.heading' : 'account.costcenter.create.heading',
+          legendClass: 'sr-only',
+        },
         fieldGroup: [
           {
             key: 'currency',
@@ -170,6 +174,10 @@ export class CostCenterFormComponent implements OnInit {
         props: {
           // hide active flag for new cost centers
           fieldsetClass: !this.costCenter ? 'd-none' : undefined,
+          props: {
+            legend: this.costCenter ? 'account.costCenter.active.label' : undefined,
+            legendClass: 'sr-only',
+          },
         },
         fieldGroup: [
           {
