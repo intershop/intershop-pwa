@@ -52,7 +52,13 @@ describe('Products List Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
 
-    expect(element).toMatchInlineSnapshot(`<div class="product-list"><swiper></swiper></div>`);
+    expect(element).toMatchInlineSnapshot(`
+      <div class="product-list">
+        <div tabindex="0" role="button" class="swiper-button-prev"></div>
+        <swiper></swiper>
+        <div tabindex="0" role="button" class="swiper-button-next"></div>
+      </div>
+    `);
   });
 
   it('should set displayType of product item to listItemStyle value', () => {
