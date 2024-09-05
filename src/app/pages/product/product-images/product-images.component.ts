@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { distinctUntilKeyChanged, map, shareReplay, tap } from 'rxjs/operators';
-import SwiperCore, { Navigation } from 'swiper';
+import SwiperCore, { Navigation, A11y } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -10,7 +10,7 @@ import { ProductHelper } from 'ish-core/models/product/product.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
-SwiperCore.use([Navigation]);
+SwiperCore.use([Navigation, A11y]);
 
 /**
  * The Product Images Component
