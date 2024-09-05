@@ -1,10 +1,18 @@
-<a *ngIf="helpText" class="btn-link">
-  <fa-icon
-    [icon]="!isCollapsed ? ['fas', 'chevron-down'] : ['fas', 'chevron-up']"
-    (click)="isCollapsed = !isCollapsed"
-    (keyup.enter)="isCollapsed = !isCollapsed"
-    tabindex="0"
-  />
-</a>
+<button
+  *ngIf="helpText"
+  type="button"
+  class="btn btn-link cxml-text-toggle"
+  (click)="isCollapsed = !isCollapsed"
+  [attr.aria-expanded]="!isCollapsed"
+  [attr.title]="
+    isCollapsed
+      ? ('account.punchout.cxml.toggle.helptext_close.title' | translate)
+      : ('account.punchout.cxml.toggle.helptext_open.title' | translate)
+  "
+>
+  <fa-icon [icon]="['fas', isCollapsed ? 'chevron-up' : 'chevron-down']" />
+</button>
+
 <ng-template #fieldComponent></ng-template>
+
 <div [ishServerHtml]="helpText" [ngbCollapse]="!isCollapsed" class="mt-3"></div>

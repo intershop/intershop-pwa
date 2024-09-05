@@ -20,7 +20,7 @@
   <div class="form-inline" [ngbCollapse]="isCollapsed" data-testing-id="promo-code-form">
     <input
       [formControl]="codeInput"
-      (keydown.enter)="submitPromotionCode()"
+      (keyup.enter)="submitPromotionCode()"
       class="form-control"
       type="text"
       [maxlength]="codeMaxLength"

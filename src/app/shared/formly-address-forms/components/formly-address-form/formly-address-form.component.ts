@@ -80,6 +80,7 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
         countryCode: model.countryCode,
         ...configuration.getModel(this.addressModel),
       };
+
       this.addressFields = [this.createCountrySelectField()].concat(
         configuration.getFieldConfiguration(model.countryCode)
       );
@@ -95,27 +96,33 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
   }
 
   private createCountrySelectField(): FormlyFieldConfig {
-    return {
-      type: 'ish-fieldset-field',
-      fieldGroup: [
-        {
-          key: 'countryCode',
-          type: 'ish-select-field',
-          props: {
-            required: true,
-            label: 'account.address.country.label',
-            forceRequiredStar: true,
-            placeholder: 'account.option.select.text',
-            options: this.countries$,
-          },
-          validation: {
-            messages: {
-              required: 'account.address.country.error.default',
+    const countryFormFieldConfig = this.addressFields?.find(field => field.fieldGroup?.[0]?.key === 'countryCode');
+
+    /* prevent re-initializing the country select field so the tab-focus doesn't get lost when selecting a country and the form is updated
+   this also allows for a correct selection via the arrow keys when the select box dropdown isn't opened */
+    return this.addressModel.countryCode !== undefined && countryFormFieldConfig
+      ? countryFormFieldConfig
+      : {
+          type: 'ish-fieldset-field',
+          fieldGroup: [
+            {
+              key: 'countryCode',
+              type: 'ish-select-field',
+              props: {
+                required: true,
+                label: 'account.address.country.label',
+                forceRequiredStar: true,
+                placeholder: 'account.option.select.text',
+                options: this.countries$,
+              },
+              validation: {
+                messages: {
+                  required: 'account.address.country.error.default',
+                },
+              },
             },
-          },
-        },
-      ],
-    };
+          ],
+        };
   }
 
   private initForm() {

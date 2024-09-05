@@ -13,10 +13,15 @@
       </ng-container>
 
       <li>
-        <a href="javascript:window.print();" class="link-print" rel="nofollow">
+        <button
+          type="button"
+          href="javascript:window.print();"
+          class="link-print"
+          rel="nofollow"
+          [title]="'product.print_page.link' | translate"
+        >
           <fa-icon [icon]="['fas', 'print']" />
-          <span class="share-label">{{ 'product.print_page.link' | translate }}</span>
-        </a>
+        </button>
       </li>
 
       <li>
