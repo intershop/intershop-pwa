@@ -79,9 +79,14 @@
       <ng-template #CVCHelp>
         <span [innerHTML]="'checkout.credit_card.cvc.popover.content' | translate"></span>
       </ng-template>
-      <a [ngbPopover]="CVCHelp" [popoverTitle]="'checkout.credit_card.cvc.popover.title' | translate" placement="auto"
-        ><fa-icon [icon]="['fas', 'question-circle']" />
-      </a>
+      <button
+        class="btn btn-link details-tooltip text-decoration-none"
+        [ngbPopover]="CVCHelp"
+        [popoverTitle]="'checkout.credit_card.cvc.popover.title' | translate"
+        placement="auto"
+      >
+        <fa-icon [icon]="['fas', 'question-circle']" />
+      </button>
     </div>
   </div>
 </div>

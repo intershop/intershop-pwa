@@ -2,7 +2,7 @@
 
 .quick-cart-link {
   position: relative;
-  padding: 0 $space-default;
+  padding: 0;
   margin-left: $space-default;
   background: $color-tertiary;
 
@@ -26,10 +26,14 @@
       font-size: 17px;
       color: $text-color-secondary;
     }
+
+    &::after {
+      display: none;
+    }
   }
 
   > .btn-link {
-    padding: $space-default * 0.5;
+    padding: ($space-default * 0.5) $space-default;
     white-space: nowrap;
   }
 
@@ -49,7 +53,8 @@
 
   .mini-cart {
     position: absolute;
-    right: -1px;
+    top: -1px !important;
+    // left: 1px !important;
     z-index: 9999;
     width: 310px;
     padding: $space-default;
@@ -91,7 +96,7 @@
 
   @include clearfix();
 
-  padding: $space-default 0;
+  padding: $space-default 2px $space-default 0;
 
   & ~ .product-row {
     border-top: $border-width-default solid $border-color-light;

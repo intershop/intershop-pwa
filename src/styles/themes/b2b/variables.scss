@@ -216,7 +216,7 @@ $input-accent-color: $CORPORATE-DARK;
 // Dropdown
 // Dropdown menu container and contents.
 
-$dropdown-border-color: rgb(0 0 0 / 0.15);
+$dropdown-border-color: $color-inverse;
 
 // Grid breakpoints
 // Define the minimum dimensions at which your layout will change,

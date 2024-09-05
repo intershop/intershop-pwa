@@ -6,57 +6,47 @@
     <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
   </ng-template>
 
-  <div>
-    <a
+  <div class="float-right pt-3">
+    <button
+      type="button"
+      class="btn-tool btn-link"
+      title="{{ 'account.wishlist.header.send_wishlist.label' | translate }}"
+      (click)="shareWishlistDialog.show()"
+      data-testing-id="wishlist-sharing"
+    >
+      <fa-icon [icon]="['fas', 'paper-plane']" />
+    </button>
+    <button
+      *ngIf="wishlist.shared"
+      type="button"
+      class="btn-tool btn-link ml-3"
+      title="{{ 'account.wishlist.header.stop_wishlist_sharing.label' | translate }}"
+      (click)="unshareWishlist(wishlist.id)"
+      data-testing-id="wishlist-stop-sharing"
+    >
+      <fa-icon [icon]="['fas', 'pause']" />
+    </button>
+    <button
+      type="button"
+      (click)="editWishlistDialog.show()"
+      class="btn-tool btn-link ml-3"
+      [title]="'account.wishlist.header.edit_wishlist.label' | translate"
+      data-testing-id="wishlist-details-edit"
+    >
+      <fa-icon icon="pencil-alt" />
+    </button>
+  </div>
+  <h1>
+    {{ wishlist?.title }}
+    <button
       [ngbPopover]="WishlistDescription"
       placement="bottom"
-      class="text-decoration-none"
+      class="btn btn-link details-tooltip header-note text-decoration-none"
       popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
-      >{{ 'account.wishlists.heading.tooltip.link' | translate }} <fa-icon [icon]="['fas', 'info-circle']"
-    /></a>
-  </div>
-
-  <div class="row align-items-center">
-    <h1 class="col">{{ wishlist?.title }}</h1>
-    <ul class="col list-unstyled d-flex justify-content-end mb-0">
-      <li class="p-2">
-        <button
-          *ngIf="wishlist.shared"
-          type="button"
-          class="btn-tool btn-link"
-          title="{{ 'account.wishlist.header.stop_wishlist_sharing.label' | translate }}"
-          (click)="unshareWishlist(wishlist.id)"
-          data-testing-id="wishlist-stop-sharing"
-        >
-          <fa-icon [icon]="['fas', 'pause']" />
-        </button>
-      </li>
-
-      <li class="p-2">
-        <button
-          type="button"
-          class="btn-tool btn-link"
-          title="{{ 'account.wishlist.header.send_wishlist.label' | translate }}"
-          (click)="shareWishlistDialog.show()"
-          data-testing-id="wishlist-sharing"
-        >
-          <fa-icon [icon]="['fas', 'paper-plane']" />
-        </button>
-      </li>
-
-      <li class="p-2">
-        <button
-          type="button"
-          class="btn-tool btn-link"
-          title="{{ 'account.wishlist.header.edit_wishlist.label' | translate }}"
-          (click)="editWishlistDialog.show()"
-          data-testing-id="wishlist-details-edit"
-        >
-          <fa-icon [icon]="['fas', 'pencil-alt']" />
-        </button>
-      </li>
-    </ul>
-  </div>
+    >
+      {{ 'account.wishlists.heading.tooltip.link' | translate }} <fa-icon [icon]="['fas', 'info-circle']" />
+    </button>
+  </h1>
 
   <p *ngIf="wishlist?.preferred" data-testing-id="preferred-wishlist-text">
     {{ 'account.wishlist.header.preferred_wishlist' | translate }}

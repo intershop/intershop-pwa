@@ -67,15 +67,15 @@
   <ng-template #SurchargeDescription> <span [innerHTML]="surcharge.description"></span> </ng-template>
   <dt class="col-6">
     {{ surcharge.displayName }}
-    <a
-      class="details-tooltip text-decoration-none"
+    <button
+      class="btn btn-link details-tooltip text-decoration-none"
       [ngbPopover]="SurchargeDescription"
       [popoverTitle]="surcharge.displayName"
       placement="top"
     >
       {{ 'shopping_cart.detail.text' | translate }}
       <fa-icon [icon]="['fas', 'info-circle']" />
-    </a>
+    </button>
   </dt>
   <dd class="col-6">{{ surcharge.amount | ishPrice }}</dd>
 </ng-template>

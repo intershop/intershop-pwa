@@ -344,7 +344,7 @@ img.marketing {
 .details-link,
 .details-tooltip {
   display: inline-block;
-  padding-left: $space-default * 0.5;
+  padding: 0 0 0 $space-default * 0.5;
   font-family: $font-family-regular;
   font-size: 90%;
   text-transform: none;

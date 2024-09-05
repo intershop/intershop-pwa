@@ -2,8 +2,14 @@
   <ng-template #popover>
     <span [innerHTML]="tooltipInfo.text | translate"></span>
   </ng-template>
-  <a [ngbPopover]="popover" [popoverTitle]="tooltipInfo.title | translate" placement="top" [ngClass]="tooltipInfo.class"
-    >{{ tooltipInfo.link | translate }}
+  <button
+    [ngbPopover]="popover"
+    [popoverTitle]="tooltipInfo.title | translate"
+    placement="top"
+    class="btn btn-link details-tooltip text-decoration-none"
+    [ngClass]="tooltipInfo.class"
+  >
+    {{ tooltipInfo.link | translate }}
     <fa-icon [icon]="['fas', 'info-circle']" />
-  </a>
+  </button>
 </ng-container>

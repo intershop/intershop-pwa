@@ -3,15 +3,15 @@
   [ngClass]="{ 'd-none': view !== 'full', 'd-md-block': view !== 'small', 'mini-cart-active': !isCollapsed }"
   ishClickOutside
   (isClickedOutside)="collapse()"
+  ngbDropdown
+  #miniBasketDropdown="ngbDropdown"
 >
   <button
     type="button"
     class="btn btn-link"
-    (click)="toggleCollapse()"
+    ngbDropdownToggle
     aria-haspopup="menu"
-    [attr.aria-expanded]="!isCollapsed"
     [attr.aria-label]="'shopping_cart.ministatus.label' | translate : { '0': itemCount$ | async }"
-    aria-controls="mini_basket_content"
   >
     <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
     <span>{{ 'shopping_cart.ministatus.items.text' | translate : { '0': itemCount$ | async } }}</span>
@@ -20,7 +20,7 @@
     </ng-container>
   </button>
 
-  <div *ngIf="!isCollapsed" class="mini-cart" id="mini_basket_content">
+  <div ngbDropdownMenu class="mini-cart">
     <ish-lazy-mini-basket-content />
   </div>
 </div>

@@ -13,16 +13,14 @@
             <div *ngFor="let placeholder of placeholders">{{ '{' + placeholder + '}' }}</div>
           </ng-container>
         </ng-template>
-        <a
-          class="header-note pl-2"
+        <button
+          class="btn btn-link header-note details-tooltip pl-1"
           [ngbPopover]="OciConfigurationPlaceholder"
           placement="bottom"
-          triggers="click"
-          [autoClose]="'outside'"
           popoverTitle="{{ 'account.punchout.configuration.form.tooltip.placeholder.headline' | translate }}"
         >
           <fa-icon [icon]="['fas', 'info-circle']" />
-        </a>
+        </button>
       </div>
       <div class="col-md-3 list-header-item no-seperator">
         {{ 'account.punchout.configuration.form.heading.mapping' | translate }}
@@ -32,16 +30,14 @@
             class="list-position-outside"
           ></div>
         </ng-template>
-        <a
-          class="header-note pl-2"
+        <button
+          class="btn btn-link header-note details-tooltip pl-1"
           [ngbPopover]="OciConfigurationMapping"
           placement="bottom"
-          triggers="click"
-          [autoClose]="'outside'"
           popoverTitle="{{ 'account.punchout.configuration.form.tooltip.mapping.headline' | translate }}"
         >
           <fa-icon [icon]="['fas', 'info-circle']" />
-        </a>
+        </button>
       </div>
       <div class="col-md-3 list-header-item no-seperator">
         {{ 'account.punchout.configuration.form.heading.format' | translate }}
