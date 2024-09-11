@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
+import { SpecialValidators, formlyValidation } from 'ish-shared/forms/validators/special-validators';
 
 /**
  * The Update Password Form Component displays a Forgot Password Update Password form and triggers the submit.
@@ -46,6 +46,9 @@ export class UpdatePasswordFormComponent implements OnInit {
                 args: { 0: '7' },
               },
             },
+            validators: {
+              password: formlyValidation('password', SpecialValidators.password),
+            },
             validation: {
               messages: {
                 minLength: 'account.update_password.new_password.error.length',
@@ -54,12 +57,14 @@ export class UpdatePasswordFormComponent implements OnInit {
           },
           {
             key: 'passwordConfirmation',
-            type: 'ish-text-input-field',
+            type: 'ish-password-field',
             props: {
-              type: 'password',
               required: true,
               hideRequiredMarker: true,
               label: 'account.register.password_confirmation.label',
+            },
+            validators: {
+              password: formlyValidation('password', SpecialValidators.password),
             },
             validation: {
               messages: {

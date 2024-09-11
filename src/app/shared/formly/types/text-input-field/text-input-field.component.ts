@@ -8,7 +8,7 @@ import { provideNgxMask } from 'ngx-mask';
  * Type for a basic input field
  *
  * @props **ariaLabel** adds an aria-label to the component for better accessibility, recommended if there is no associated label
- * @props **type** supports all text types; 'text' (default), 'email', 'password', 'tel'
+ * @props **type** supports all text types; 'text' (default), 'email', 'tel'
  * @props **mask** adds a ngx-mask mask (https://www.npmjs.com/package/ngx-mask) to mask the input with a given pattern
  *
  * @defaultWrappers form-field-horizontal & validation
@@ -20,7 +20,7 @@ import { provideNgxMask } from 'ngx-mask';
   providers: [provideNgxMask()],
 })
 export class TextInputFieldComponent extends FieldType<FieldTypeConfig> implements OnInit {
-  private textInputFieldTypes = ['text', 'email', 'password', 'tel'];
+  private textInputFieldTypes = ['text', 'email', 'tel'];
   thousandSeparator: string;
   decimalMarker: ',' | '.';
 
@@ -37,7 +37,7 @@ export class TextInputFieldComponent extends FieldType<FieldTypeConfig> implemen
 
     if (!this.textInputFieldTypes.includes(field.props.type)) {
       throw new Error(
-        'parameter <props.type> is not valid for TextInputFieldComponent, only text, email, password and tel are possible values'
+        'parameter <props.type> is not valid for TextInputFieldComponent, only text, email and tel are possible values'
       );
     }
   }

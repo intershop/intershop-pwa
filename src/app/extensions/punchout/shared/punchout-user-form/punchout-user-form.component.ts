@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
+import { SpecialValidators, formlyValidation } from 'ish-shared/forms/validators/special-validators';
 
 import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-user.model';
 
@@ -87,18 +87,23 @@ export class PunchoutUserFormComponent implements OnInit {
               },
               hideRequiredMarker: true,
             },
+            validators: {
+              password: formlyValidation('password', SpecialValidators.password),
+            },
           },
           {
             key: 'passwordConfirmation',
-            type: 'ish-text-input-field',
+            type: 'ish-password-field',
             props: {
-              type: 'password',
               required: this.punchoutUser ? false : true,
               label: this.punchoutUser
                 ? 'account.punchout.password.new.confirmation.label'
                 : 'account.punchout.password.confirmation.label',
               attributes: { autocomplete: 'new-password' },
               hideRequiredMarker: true,
+            },
+            validators: {
+              password: formlyValidation('password', SpecialValidators.password),
             },
             validation: {
               messages: {

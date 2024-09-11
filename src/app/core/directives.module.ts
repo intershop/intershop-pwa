@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { BrowserLazyViewDirective } from './directives/browser-lazy-view.directive';
 import { ClickOutsideDirective } from './directives/click-outside.directive';
+import { FocusOutsideDirective } from './directives/focus-outside.directive';
 import { FormSubmitDirective } from './directives/form-submit.directive';
 import { IdentityProviderCapabilityDirective } from './directives/identity-provider-capability.directive';
 import { IntersectionObserverDirective } from './directives/intersection-observer.directive';
@@ -15,6 +16,7 @@ import { ServerHtmlDirective } from './directives/server-html.directive';
   declarations: [
     BrowserLazyViewDirective,
     ClickOutsideDirective,
+    FocusOutsideDirective,
     FormSubmitDirective,
     IdentityProviderCapabilityDirective,
     IntersectionObserverDirective,
@@ -27,6 +29,7 @@ import { ServerHtmlDirective } from './directives/server-html.directive';
   exports: [
     BrowserLazyViewDirective,
     ClickOutsideDirective,
+    FocusOutsideDirective,
     FormSubmitDirective,
     IdentityProviderCapabilityDirective,
     IntersectionObserverDirective,
