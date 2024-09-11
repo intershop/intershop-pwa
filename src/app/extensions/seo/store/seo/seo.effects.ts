@@ -72,6 +72,11 @@ export class SeoEffects {
             this.categoryPage$.pipe(
               map((category: CategoryView) => this.baseURL + generateCategoryUrl(category).substring(1))
             ),
+            // SEARCH RESULT PAGE
+            this.store.pipe(
+              ofUrl(/^\/search.*/),
+              map(() => decodeURI(this.doc.URL))
+            ),
             // DEFAULT
             this.appRef.isStable.pipe(
               whenTruthy(),
