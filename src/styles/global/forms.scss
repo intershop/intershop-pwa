@@ -95,6 +95,37 @@ input[type='search']::-ms-clear {
   display: none;
 }
 
+// password field with show/hide button (eye icon) to toggle visibility of the password
+.password-field-wrapper {
+  // hide the default "Show/Hide Password" button in Edge
+  input[type='password']::-ms-reveal {
+    display: none;
+  }
+
+  button {
+    &.btn-link {
+      position: absolute;
+      top: 1px;
+      right: 40px;
+      width: $space-default * 2;
+      padding-right: 6px;
+      padding-left: 6px;
+      pointer-events: auto; /* Ensure the button is clickable */
+      cursor: pointer; /* Ensure the cursor is a pointer */
+      opacity: 0;
+      transition: opacity 0.2s ease;
+
+      .ng-fa-icon {
+        color: $button-default-color;
+      }
+
+      &.visible {
+        opacity: 1;
+      }
+    }
+  }
+}
+
 /* removes the 'x' and other default search elements inside the search input in Chrome */
 input[type='search']::-webkit-search-decoration,
 input[type='search']::-webkit-search-cancel-button,
@@ -243,6 +274,12 @@ optgroup {
 .validation-offset-0 {
   .form-control-feedback {
     right: 10px;
+  }
+}
+
+.validation-offset-password {
+  .form-control-feedback {
+    right: 70px;
   }
 }
 

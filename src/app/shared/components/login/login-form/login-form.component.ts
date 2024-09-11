@@ -72,9 +72,8 @@ export class LoginFormComponent implements OnInit {
       },
       {
         key: 'password',
-        type: 'ish-text-input-field',
+        type: 'ish-password-field',
         props: {
-          type: 'password',
           label: 'account.login.password.label',
           labelClass: this.labelClass || 'col-md-3',
           fieldClass: this.inputClass || 'col-md-6',

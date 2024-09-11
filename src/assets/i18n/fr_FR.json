@@ -921,6 +921,8 @@
   "form.password.error.equalTo": "Vos mots de passe ne sont pas les mêmes.",
   "form.password.error.invalid": "Votre mot de passe doit contenir des chiffres et des lettres. Il ne doit pas contenir des espaces.",
   "form.password.error.required": "Veuillez saisir un mot de passe.",
+  "form.password.hide.button.label": "Masquer le mot de passe",
+  "form.password.show.button.label": "Afficher le mot de passe",
   "form.phone.error.invalid": "Veuillez saisir un numéro de téléphone valide.",
   "form.phone.error.required": "Veuillez saisir votre numéro de téléphone.",
   "header.navigation.collapse_category.aria_label": "Fermer la catégorie {{0}}",
