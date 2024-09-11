@@ -18,7 +18,7 @@ import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/cus
 import { User } from 'ish-core/models/user/user.model';
 import { ConfirmLeaveModalComponent } from 'ish-shared/components/registration/confirm-leave-modal/confirm-leave-modal.component';
 import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
+import { SpecialValidators, formlyValidation } from 'ish-shared/forms/validators/special-validators';
 
 export interface RegistrationConfigType {
   businessCustomer?: boolean;
@@ -290,15 +290,20 @@ export class RegistrationFormConfigurationService {
               },
               attributes: { autocomplete: 'new-password' },
             },
+            validators: {
+              password: formlyValidation('password', SpecialValidators.password),
+            },
           },
           {
             key: 'passwordConfirmation',
-            type: 'ish-text-input-field',
+            type: 'ish-password-field',
             props: {
-              type: 'password',
               required: true,
               label: 'account.register.password_confirmation.label',
               attributes: { autocomplete: 'new-password' },
+            },
+            validators: {
+              password: formlyValidation('password', SpecialValidators.password),
             },
             validation: {
               messages: {
