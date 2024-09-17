@@ -1,5 +1,6 @@
 <h1>
   {{ 'account.organization.cost_center_management' | translate }}
+  <ish-budget-info [suffix]="'account.organization.budget_price_type.suffix.info'" />
   <a
     *ngIf="!!(error$ | async) === false"
     routerLink="create"

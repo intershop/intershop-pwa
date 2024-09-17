@@ -215,6 +215,13 @@ img.marketing {
   white-space: nowrap;
 }
 
+.small-tooltip {
+  font-family: $font-family-regular;
+  font-size: 70%;
+  color: $CORPORATE-PRIMARY;
+  vertical-align: super;
+}
+
 .download-link {
   display: inline-block;
   padding-left: $space-default * 0.5;

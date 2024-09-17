@@ -1,6 +1,10 @@
 <ng-container *ngIf="costCenter">
   <div *ngIf="costCenter?.costCenterOwner.email === (userEmail$ | async)" class="row">
-    <ish-info-box heading="approval.detailspage.costcenter.approval.heading" class="infobox-wrapper col-12">
+    <ish-info-box class="infobox-wrapper col-12">
+      <h3>
+        {{ 'approval.detailspage.costcenter.approval.heading' | translate }}
+        <ish-lazy-budget-info />
+      </h3>
       <div class="row">
         <div class="col-md-6">
           <dl class="row dl-horizontal dl-separator">

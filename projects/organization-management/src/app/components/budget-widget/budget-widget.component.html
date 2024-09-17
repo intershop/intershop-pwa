@@ -1,5 +1,10 @@
 <ish-error-message [error]="error$ | async" />
-<ish-info-box heading="account.requisitions.widget.budget_title" class="infobox-wrapper" cssClass="infobox-widget">
+<ish-info-box class="infobox-wrapper" cssClass="infobox-widget">
+  <h3>
+    {{ 'account.requisitions.widget.budget_title' | translate }}
+    <ish-budget-info />
+  </h3>
+
   <div class="loading-container">
     <div *ngIf="(budgetLoading$ | async) !== true; else loading">
       <div class="row">

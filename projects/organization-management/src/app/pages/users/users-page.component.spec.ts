@@ -12,6 +12,7 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
+import { BudgetInfoComponent } from '../../components/budget-info/budget-info.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
@@ -37,6 +38,7 @@ describe('Users Page Component', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
+        MockComponent(BudgetInfoComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(FaIconComponent),
         MockComponent(LoadingComponent),

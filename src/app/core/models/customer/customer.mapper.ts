@@ -45,6 +45,7 @@ export class CustomerMapper {
           taxationID: data.taxationID,
           industry: data.industry,
           description: data.description,
+          budgetPriceType: data.budgetPriceType,
         }
       : {
           customerNo: data.customerNo,
