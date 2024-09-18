@@ -1,12 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { instance, mock } from 'ts-mockito';
 
-import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
 
@@ -24,10 +22,9 @@ describe('Budget Info Component', () => {
   beforeEach(async () => {
     const accountFacade = mock(AccountFacade);
 
-    when(accountFacade.customer$).thenReturn(of(customer));
     await TestBed.configureTestingModule({
-      imports: [NgbPopoverModule, TranslateModule.forRoot()],
-      declarations: [BudgetInfoComponent, MockComponent(FaIconComponent), MockDirective(ServerHtmlDirective)],
+      imports: [NgbPopoverModule],
+      declarations: [BudgetInfoComponent, MockComponent(FaIconComponent)],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });

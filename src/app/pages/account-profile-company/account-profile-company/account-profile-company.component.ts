@@ -28,25 +28,28 @@ export class AccountProfileCompanyComponent implements OnInit {
   model: Partial<Customer>;
   fields: FormlyFieldConfig[];
 
-  private budgetPriceType: FormlyFieldConfig[] = [
-    {
-      type: 'ish-radio-field',
-      key: 'budgetPriceType',
-      props: {
-        title: 'account.costcenter.price.type.title',
-        label: 'account.costcenter.gross.label',
-        value: 'gross',
+  private budgetPriceType: FormlyFieldConfig = {
+    type: 'ish-fieldset-field',
+    fieldGroup: [
+      {
+        type: 'ish-radio-field',
+        key: 'budgetPriceType',
+        props: {
+          title: 'account.costcenter.price.type.title',
+          value: 'gross',
+          label: 'account.costcenter.gross.label',
+        },
       },
-    },
-    {
-      type: 'ish-radio-field',
-      key: 'budgetPriceType',
-      props: {
-        label: 'account.costcenter.net.label',
-        value: 'net',
+      {
+        type: 'ish-radio-field',
+        key: 'budgetPriceType',
+        props: {
+          label: 'account.costcenter.net.label',
+          value: 'net',
+        },
       },
-    },
-  ];
+    ],
+  };
 
   constructor(private fieldLibrary: FieldLibrary) {}
 

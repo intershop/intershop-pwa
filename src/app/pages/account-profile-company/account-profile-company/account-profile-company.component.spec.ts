@@ -52,9 +52,9 @@ describe('Account Profile Company Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display 3 input fields for companyName, companyName2 and taxationID, budgetPriceType', () => {
+  it('should display 4 input fields for companyName, companyName2 and taxationID, budgetPriceType', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('formly-group formly-field')).toHaveLength(5);
+    expect(element.querySelectorAll('formly-group formly-field')).toHaveLength(4);
   });
 
   it('should emit updateCompanyProfile event if form is valid', () => {

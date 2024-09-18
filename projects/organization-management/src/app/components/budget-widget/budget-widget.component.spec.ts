@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -7,7 +6,6 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
-import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Price } from 'ish-core/models/price/price.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
@@ -45,28 +43,22 @@ describe('Budget Widget Component', () => {
   let element: HTMLElement;
 
   let organizationManagementFacade: OrganizationManagementFacade;
-  let accountFacade: AccountFacade;
 
   beforeEach(async () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
-    accountFacade = mock(AccountFacade);
 
     await TestBed.configureTestingModule({
       imports: [NgbPopoverModule, TranslateModule.forRoot()],
       declarations: [
-        BudgetInfoComponent,
         BudgetWidgetComponent,
+        MockComponent(BudgetInfoComponent),
         MockComponent(ErrorMessageComponent),
-        MockComponent(FaIconComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(LoadingComponent),
         MockComponent(UserBudgetComponent),
         MockDirective(AuthorizationToggleDirective),
       ],
-      providers: [
-        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
-        { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
-      ],
+      providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
     }).compileComponents();
   });
 
