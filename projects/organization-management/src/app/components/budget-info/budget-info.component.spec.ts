@@ -2,11 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { MockComponent } from 'ng-mocks';
-import { of } from 'rxjs';
 import { instance, mock } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { Customer } from 'ish-core/models/customer/customer.model';
 
 import { BudgetInfoComponent } from './budget-info.component';
 
@@ -14,10 +12,6 @@ describe('Budget Info Component', () => {
   let component: BudgetInfoComponent;
   let fixture: ComponentFixture<BudgetInfoComponent>;
   let element: HTMLElement;
-  const customer = {
-    customerNo: '42',
-    budgetPriceType: 'net',
-  } as Customer;
 
   beforeEach(async () => {
     const accountFacade = mock(AccountFacade);
@@ -33,7 +27,6 @@ describe('Budget Info Component', () => {
     fixture = TestBed.createComponent(BudgetInfoComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.customer$ = of(customer);
   });
 
   it('should be created', () => {
