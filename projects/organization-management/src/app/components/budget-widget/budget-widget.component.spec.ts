@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -48,7 +47,7 @@ describe('Budget Widget Component', () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
 
     await TestBed.configureTestingModule({
-      imports: [NgbPopoverModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [
         BudgetWidgetComponent,
         MockComponent(BudgetInfoComponent),
