@@ -217,8 +217,9 @@ export class ApiService {
     );
   }
 
+  // not-dead-code
   /**
-   * http options request
+   * @deprecated http options request - will be removed with the next major release (6.0)
    */
   options<T>(path: string, options?: AvailableOptions): Observable<T> {
     return this.execute(
