@@ -21,6 +21,8 @@ If your ICM doesn't support the new standard the method `getCustomerRestResource
 With ICM 12.2.0, 11.11.1 or 7.10.41.3 the ICM server itself provides an OCI punchout URL (Pipeline) that works better for the OCI punchout functions `BACKGROUND_SEARCH` and `VALIDATE` than the similar now deprecated functionality in the PWA.
 For that reason the provided OCI Punchout URL is now pointing to the ICM pipeline `ViewOCICatalogPWA-Start` that handles the different functionalities and redirects to the PWA (configured as _External Base URL_ in ICM) only for catalog browsing and the detail function.
 
+The OPTION REST call to fetch the oci punchout configurations has been replaced by a GET REST request to avoid possible CORS errors (requires ICM 12.2.1 or above).
+
 ## From 5.1 to 5.2
 
 > [!NOTE]
