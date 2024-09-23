@@ -14,12 +14,10 @@ describe('Budget Info Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
-    const accountFacade = mock(AccountFacade);
-
     await TestBed.configureTestingModule({
       imports: [NgbPopoverModule],
       declarations: [BudgetInfoComponent, MockComponent(FaIconComponent)],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
   });
 
