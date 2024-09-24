@@ -289,7 +289,9 @@ export class PaymentService {
           this.apiService.resolveLinks<PaymentInstrumentData>(),
           concatMap(instruments =>
             this.apiService
-              .options(`${restResource}/${this.apiService.encodeResourceId(customer.customerNo)}/payments`)
+              // replace the get request by an options request if your ICM version is lower than 11.10.0
+              // .options(`${restResource}/${this.apiService.encodeResourceId(customer.customerNo)}/payments`)
+              .get(`${restResource}/${this.apiService.encodeResourceId(customer.customerNo)}/eligible-payment-methods`)
               .pipe(
                 unpackEnvelope<PaymentMethodOptionsDataType>('methods'),
                 map(methods => PaymentMethodMapper.fromOptions({ methods, instruments }))

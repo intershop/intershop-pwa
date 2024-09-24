@@ -514,7 +514,8 @@ export class PunchoutService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .options<OciOptionsData>(
+          // replace the get request by an options request if your ICM version is lower than 12.2.1
+          .get<OciOptionsData>(
             `customers/${this.apiService.encodeResourceId(customer.customerNo)}/punchouts/${this.getResourceType(
               'oci'
             )}`,
