@@ -22,6 +22,7 @@ With ICM 12.2.0, 11.11.1 or 7.10.41.3 the ICM server itself provides an OCI punc
 For that reason the provided OCI Punchout URL is now pointing to the ICM pipeline `ViewOCICatalogPWA-Start` that handles the different functionalities and redirects to the PWA (configured as _External Base URL_ in ICM) only for catalog browsing and the detail function.
 
 The OPTION REST call to fetch the oci punchout configurations has been replaced by a GET REST request to avoid possible CORS errors (requires ICM 12.2.1 or above).
+The OPTION REST call to fetch the customer payment methods has been replaced by a GET REST requests to avoid possible CORS errors (requires ICM 11.10.0 or above).
 
 ## From 5.1 to 5.2
 
