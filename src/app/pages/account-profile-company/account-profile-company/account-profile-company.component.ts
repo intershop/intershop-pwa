@@ -28,11 +28,36 @@ export class AccountProfileCompanyComponent implements OnInit {
   model: Partial<Customer>;
   fields: FormlyFieldConfig[];
 
+  private budgetPriceType: FormlyFieldConfig = {
+    type: 'ish-fieldset-field',
+    fieldGroup: [
+      {
+        type: 'ish-radio-field',
+        key: 'budgetPriceType',
+        props: {
+          title: 'account.costcenter.price.type.title',
+          value: 'gross',
+          label: 'account.costcenter.gross.label',
+        },
+      },
+      {
+        type: 'ish-radio-field',
+        key: 'budgetPriceType',
+        props: {
+          label: 'account.costcenter.net.label',
+          value: 'net',
+        },
+      },
+    ],
+  };
+
   constructor(private fieldLibrary: FieldLibrary) {}
 
   ngOnInit() {
-    this.model = pick(this.currentCustomer, 'companyName', 'companyName2', 'taxationID');
-    this.fields = this.fieldLibrary.getConfigurationGroup('companyInfo', { companyName1: { key: 'companyName' } });
+    this.fields = this.fieldLibrary
+      .getConfigurationGroup('companyInfo', { companyName1: { key: 'companyName' } })
+      .concat(this.budgetPriceType);
+    this.model = pick(this.currentCustomer, 'companyName', 'companyName2', 'taxationID', 'budgetPriceType');
   }
 
   /**
@@ -47,8 +72,9 @@ export class AccountProfileCompanyComponent implements OnInit {
     const companyName = this.accountProfileCompanyForm.get('companyName').value;
     const companyName2 = this.accountProfileCompanyForm.get('companyName2').value;
     const taxationID = this.accountProfileCompanyForm.get('taxationID').value;
+    const budgetPriceType = this.accountProfileCompanyForm.get('budgetPriceType').value;
 
-    this.updateCompanyProfile.emit({ ...this.currentCustomer, companyName, companyName2, taxationID });
+    this.updateCompanyProfile.emit({ ...this.currentCustomer, companyName, companyName2, taxationID, budgetPriceType });
   }
 
   get buttonDisabled() {

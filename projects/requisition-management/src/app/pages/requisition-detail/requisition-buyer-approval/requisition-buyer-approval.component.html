@@ -1,5 +1,16 @@
 <div *ngIf="requisition?.userBudget" class="row">
-  <ish-info-box heading="approval.detailspage.buyer_budget.heading" class="infobox-wrapper col-12">
+  <ish-info-box class="infobox-wrapper col-12">
+    <div class="d-flex align-items-center">
+      <div class="pb-2">
+        <h3 class="p-0 m-0">
+          {{ 'approval.detailspage.buyer_budget.heading' | translate }}
+        </h3>
+      </div>
+      <div class="pl-2 pb-2">
+        <ish-lazy-budget-info />
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-md-6">
         <dl class="row dl-horizontal dl-separator">

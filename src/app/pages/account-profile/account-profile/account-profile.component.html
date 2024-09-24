@@ -71,6 +71,18 @@
           <!-- Taxation ID -->
           <dt class="col-md-4">{{ 'account.company_profile.taxation_id.label' | translate }}</dt>
           <dd class="col-md-8" data-testing-id="taxation-id-field">{{ customer.taxationID }}</dd>
+          <!-- Budget Price Type -->
+          <dt class="col-md-4">{{ 'account.costcenter.profile.price.type.label' | translate }}</dt>
+          <ng-container *ngIf="customer.budgetPriceType === 'gross'; else netDisplay">
+            <dd class="col-md-8" data-testing-id="budget-price-type-field">
+              {{ 'account.costcenter.gross.label' | translate }}
+            </dd>
+          </ng-container>
+          <ng-template #netDisplay>
+            <dd class="col-md-8" data-testing-id="budget-price-type-field">
+              {{ 'account.costcenter.net.label' | translate }}
+            </dd>
+          </ng-template>
         </dl>
       </div>
     </div>
