@@ -45,7 +45,7 @@ export class WishlistSharingDialogComponent implements OnInit {
 
   wishListForm = new FormGroup({});
   fields: FormlyFieldConfig[];
-  submitted = false;
+  private submitted = false;
 
   /**
    *  A reference to the current modal.

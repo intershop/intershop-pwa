@@ -37,7 +37,6 @@ describe('Wishlist Sharing Dialog Component', () => {
     const [arg] = capture(emitter.emit).last();
     expect(arg).toEqual({ recipients: recipientEmails, message: personalMessage });
     expect(component.wishListForm.valid).toBeTrue();
-    expect(component.submitted).toBeFalse();
   });
 
   it('should not emit wishlist sharing data when form is submitted and invalid', () => {
@@ -50,6 +49,5 @@ describe('Wishlist Sharing Dialog Component', () => {
 
     verify(emitter.emit(anything())).never();
     expect(component.wishListForm.invalid).toBeTrue();
-    expect(component.submitted).toBeTrue();
   });
 });
