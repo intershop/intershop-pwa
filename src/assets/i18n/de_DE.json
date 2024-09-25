@@ -296,7 +296,7 @@
   "account.ordertemplates.widget.heading": "Meine Bestellvorlagen",
   "account.ordertemplates.widget.view_all.link": "Alle Bestellvorlagen ansehen",
   "account.organization.budget_price_type.admin.info": "<br /> Sie können diese <a href=\"route://account/profile/company\">Einstellung</a> jederzeit ändern.",
-  "account.organization.budget_price_type.info": "Budgets werden in <b>{{0}}</b> berechnet.",
+  "account.organization.budget_price_type.info": "Budgets werden in <b>{{type, select, =net{netto} =gross{butto}}}</b> berechnet.",
   "account.organization.budget_price_type.suffix.info": "<br /> Der Konto-Administrator kann diese Einstellung jederzeit ändern.",
   "account.organization.cost_center_management": "Kostenstellenverwaltung",
   "account.organization.cost_center_management.back_to_list": "Zurück zur Kostenstellenverwaltung",

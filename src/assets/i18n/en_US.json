@@ -296,7 +296,7 @@
   "account.ordertemplates.widget.heading": "My order templates",
   "account.ordertemplates.widget.view_all.link": "View all order templates",
   "account.organization.budget_price_type.admin.info": "<br /> You can change this <a href=\"route://account/profile/company\">setting</a> at any time.",
-  "account.organization.budget_price_type.info": "Budgets are calculated in: <b>{{0}}</b>.",
+  "account.organization.budget_price_type.info": "Budgets are calculated in: <b>{{type, select, =net{net} =gross{gross}}}</b>.",
   "account.organization.budget_price_type.suffix.info": "<br /> The account admin can change this setting at any time.",
   "account.organization.cost_center_management": "Cost center management",
   "account.organization.cost_center_management.back_to_list": "Back to cost center management",

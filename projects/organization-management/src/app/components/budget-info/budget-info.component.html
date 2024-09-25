@@ -1,21 +1,13 @@
 <ng-template #BudgetPriceTypeInfo>
   <span
-    data-testing-id="BudgetPriceTypeInfoTestingID"
     [ishServerHtml]="
       (
-        'account.organization.budget_price_type.info'
-        | translate
-          : {
-              '0':
-                (customer$ | async).budgetPriceType === 'gross'
-                  ? ('account.costcenter.gross.label' | translate | lowercase)
-                  : ('account.costcenter.net.label' | translate | lowercase)
-            }
+        'account.organization.budget_price_type.info' | translate : { type: (customer$ | async).budgetPriceType }
       ).concat(additionalText | translate)
     "
   >
   </span
 ></ng-template>
-<a [ngbPopover]="BudgetPriceTypeInfo" placement="right">
+<a [ngbPopover]="BudgetPriceTypeInfo" data-testing-id="BudgetPriceTypeInfoTestingID" placement="right">
   <fa-icon [icon]="['fas', 'info-circle']" />
 </a>

@@ -296,7 +296,7 @@
   "account.ordertemplates.widget.heading": "Mes modèles de commande",
   "account.ordertemplates.widget.view_all.link": "Afficher tous les modèles de commande",
   "account.organization.budget_price_type.admin.info": "<br /> Vous pouvez modifier ce <a href=\"route://account/profile/company\">paramètre</a> à tout moment.",
-  "account.organization.budget_price_type.info": "Les budgets sont calculés en : <b>{{0}}</b>.",
+  "account.organization.budget_price_type.info": "Les budgets sont calculés en : <b>{{type, select, =net{net} =gross{brut}}}</b>.",
   "account.organization.budget_price_type.suffix.info": "<br /> L’administrateur du compte peut modifier ce paramètre à tout moment.",
   "account.organization.cost_center_management": "Gestion des centres de coûts",
   "account.organization.cost_center_management.back_to_list": "Retourner à la gestion des centres de coûts",

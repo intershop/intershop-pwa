@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -15,8 +14,7 @@ describe('Budget Info Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgbPopoverModule],
-      declarations: [BudgetInfoComponent, MockComponent(FaIconComponent)],
+      declarations: [MockComponent(FaIconComponent)],
       providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
   });
@@ -31,5 +29,6 @@ describe('Budget Info Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+    expect(element.querySelector('[data-testing-id=BudgetPriceTypeInfoTestingID]')).toBeTruthy();
   });
 });
