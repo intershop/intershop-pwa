@@ -13,6 +13,8 @@ export interface Customer {
   taxationID?: string;
   industry?: string;
   description?: string;
+
+  budgetPriceType?: 'net' | 'gross';
 }
 
 type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };

@@ -11,6 +11,7 @@ import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
+import { BudgetInfoComponent } from '../../components/budget-info/budget-info.component';
 import { CostCenterBudgetComponent } from '../../components/cost-center-budget/cost-center-budget.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
@@ -34,6 +35,7 @@ describe('Cost Centers Page Component', () => {
       imports: [CdkTableModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         CostCentersPageComponent,
+        MockComponent(BudgetInfoComponent),
         MockComponent(CostCenterBudgetComponent),
         MockComponent(FaIconComponent),
         MockComponent(LoadingComponent),
