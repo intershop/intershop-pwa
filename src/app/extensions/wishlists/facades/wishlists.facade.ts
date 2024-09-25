@@ -96,8 +96,4 @@ export class WishlistsFacade {
   unshareWishlist(wishlistId: string): void {
     this.store.dispatch(wishlistActions.unshareWishlist({ wishlistId }));
   }
-
-  loadSharedWishlist(id: string, owner: string, secureCode: string) {
-    this.store.dispatch(wishlistActions.loadSharedWishlist({ wishlistId: id, owner, secureCode }));
-  }
 }

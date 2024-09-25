@@ -9,7 +9,7 @@ import { wishlistActions } from '../store/wishlist';
 /**
  * Fetch the shared wishlist
  */
-export function fetchSharedWishlist(route: ActivatedRouteSnapshot): boolean | Observable<boolean> {
+export function fetchSharedWishlistGuard(route: ActivatedRouteSnapshot): boolean | Observable<boolean> {
   const store = inject(Store);
 
   return store.pipe(
