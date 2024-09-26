@@ -1,15 +1,21 @@
 <div *ngIf="requisition" class="section">
   <dl class="row dl-horizontal dl-separator">
     <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.order.request_id' | translate }}</dt>
-    <dd class="col-6 col-sm-8 col-md-9">{{ requisition.requisitionNo }}</dd>
+    <dd class="col-6 col-sm-8 col-md-9">{{ requisition.requisitionNo || requisition.recurringOrderDocumentNo }}</dd>
 
     <ng-container *ngIf="requisition.approval?.statusCode === 'APPROVED'">
-      <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.order_reference_id.label' | translate }}</dt>
+      <!-- prettier-ignore -->
+      <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.order_reference_id.label' | translate : { recurring: !requisition.requisitionNo } }}</dt>
       <dd class="col-6 col-sm-8 col-md-9">
-        <a *ngIf="view === 'buyer'; else noOrderLink" [routerLink]="'/account/orders/' + requisition.id">{{
-          requisition.orderNo
-        }}</a>
-        <ng-template #noOrderLink>{{ requisition.orderNo }}</ng-template>
+        <a
+          *ngIf="view === 'buyer'; else noOrderLink"
+          [routerLink]="[requisition.orderNo ? '/account/orders/' : '/account/recurring-orders/', requisition.id]"
+        >
+          {{ requisition.orderNo || requisition.recurringOrderDocumentNo }}
+        </a>
+        <ng-template #noOrderLink>
+          {{ requisition.orderNo || requisition.recurringOrderDocumentNo }}
+        </ng-template>
       </dd>
     </ng-container>
 
