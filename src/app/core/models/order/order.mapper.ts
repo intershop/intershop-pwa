@@ -23,6 +23,7 @@ export class OrderMapper {
         statusCode: data.statusCode,
         status: data.status,
         requisitionNo: data.requisitionDocumentNo,
+        recurringOrderID: data.recurringOrderID,
         approval:
           data.attributes &&
           AttributeHelper.getAttributeValueByAttributeName(

@@ -1,0 +1,5 @@
+<div *ngIf="recurrence" class="cart-summary">
+  <h5>{{ 'order.recurrence.heading' | translate }}</h5>
+
+  <ish-order-recurrence [recurrence]="recurrence" labelCssClass="col-6" valueCssClass="col-6 text-right" />
+</div>

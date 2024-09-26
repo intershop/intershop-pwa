@@ -19,8 +19,14 @@
           [routerLink]="[requisition.id, { status: status }]"
           [attr.aria-label]="'account.approvallist.table.id_of_order.aria_label' | translate"
         >
-          {{ requisition.requisitionNo }}
+          {{ requisition.requisitionNo || requisition.recurringOrderDocumentNo }}
         </a>
+        <fa-icon
+          *ngIf="requisition.recurringOrderDocumentNo"
+          [icon]="['fas', 'repeat']"
+          [title]="'account.approvallist.table.id_of_order.recurring' | translate"
+          class="ml-1"
+        />
       </td>
     </ng-container>
 
@@ -34,7 +40,9 @@
         *cdkCellDef="let requisition"
         [attr.data-label]="'account.approvallist.table.no_of_order' | translate"
       >
-        <a [routerLink]="['../../orders/', requisition.id]">{{ requisition.orderNo }}</a>
+        <a [routerLink]="[requisition.orderNo ? '../../orders/' : '../../recurring-orders/', requisition.id]">
+          {{ requisition.orderNo || requisition.recurringOrderDocumentNo }}
+        </a>
       </td>
     </ng-container>
 
@@ -48,7 +56,7 @@
         *cdkCellDef="let requisition"
         [attr.data-label]="'account.approvallist.table.no_of_order' | translate"
       >
-        {{ requisition.orderNo }}
+        {{ requisition.orderNo || requisition.recurringOrderDocumentNo }}
       </td>
     </ng-container>
 
