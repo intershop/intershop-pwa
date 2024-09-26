@@ -46,7 +46,7 @@ export class RequisitionManagementBreadcrumbService {
                       link: [`${prefix}/approver`, { status }],
                     },
                     {
-                      text: `${translation} - ${req.requisitionNo}`,
+                      text: `${translation} - ${req.requisitionNo || req.recurringOrderDocumentNo}`,
                     },
                   ]
                 : [
@@ -55,7 +55,7 @@ export class RequisitionManagementBreadcrumbService {
                       link: [`${prefix}/buyer`, { status }],
                     },
                     {
-                      text: `${translation} - ${req.requisitionNo}`,
+                      text: `${translation} - ${req.requisitionNo || req.recurringOrderDocumentNo}`,
                     },
                   ]
             )

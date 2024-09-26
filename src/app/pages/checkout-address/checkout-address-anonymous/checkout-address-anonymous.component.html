@@ -32,49 +32,51 @@
     </div>
 
     <!-- checkout as guest -->
-    <div *ishFeature="'guestCheckout'">
-      <h2>{{ 'checkout.addresses.checkout_as_guest.heading' | translate }}</h2>
-      <p>{{ 'checkout.address.anonymous.guestcheckout.text' | translate }}</p>
-      <button
-        *ngIf="isAddressFormCollapsed"
-        class="btn btn-secondary"
-        type="button"
-        (click)="showAddressForm()"
-        [attr.aria-expanded]="!isAddressFormCollapsed"
-        aria-controls="collapseBasic"
-        data-testing-id="guest-checkout-button"
-      >
-        {{ 'checkout.addresses.checkout_as_guest.heading' | translate }}
-      </button>
-
-      <!-- create address form -->
-      <div
-        id="collapseBasic"
-        class="section"
-        [ngbCollapse]="isAddressFormCollapsed"
-        data-testing-id="create-address-form"
-      >
-        <form
-          [formGroup]="form"
-          ishFormSubmit
-          #addressForm="ngForm"
-          (ngSubmit)="submitAddressForm()"
-          class="form-horizontal"
-          novalidate
+    <ng-container *ishFeature="'guestCheckout'">
+      <div *ngIf="!isRecurringOrder()" data-testing-id="guest-checkout">
+        <h2>{{ 'checkout.addresses.checkout_as_guest.heading' | translate }}</h2>
+        <p>{{ 'checkout.address.anonymous.guestcheckout.text' | translate }}</p>
+        <button
+          *ngIf="isAddressFormCollapsed"
+          class="btn btn-secondary"
+          type="button"
+          (click)="showAddressForm()"
+          [attr.aria-expanded]="!isAddressFormCollapsed"
+          aria-controls="collapseBasic"
+          data-testing-id="guest-checkout-button"
         >
-          <ish-checkout-address-anonymous-form [parentForm]="form" />
-          <div [ngClass]="{ 'row form-group': isShippingAddressFormExpanded }">
-            <div [ngClass]="{ 'offset-md-4 col-md-8': isShippingAddressFormExpanded }">
-              <button class="btn btn-primary" type="submit" [disabled]="form.invalid && addressForm.submitted">
-                {{ 'checkout.button.label' | translate }}
-              </button>
-              <button (click)="cancelAddressForm()" type="button" class="btn btn-secondary">
-                {{ 'checkout.address.cancel.button.label' | translate }}
-              </button>
+          {{ 'checkout.addresses.checkout_as_guest.heading' | translate }}
+        </button>
+
+        <!-- create address form -->
+        <div
+          id="collapseBasic"
+          class="section"
+          [ngbCollapse]="isAddressFormCollapsed"
+          data-testing-id="create-address-form"
+        >
+          <form
+            [formGroup]="form"
+            ishFormSubmit
+            #addressForm="ngForm"
+            (ngSubmit)="submitAddressForm()"
+            class="form-horizontal"
+            novalidate
+          >
+            <ish-checkout-address-anonymous-form [parentForm]="form" />
+            <div [ngClass]="{ 'row form-group': isShippingAddressFormExpanded }">
+              <div [ngClass]="{ 'offset-md-4 col-md-8': isShippingAddressFormExpanded }">
+                <button class="btn btn-primary" type="submit" [disabled]="form.invalid && addressForm.submitted">
+                  {{ 'checkout.button.label' | translate }}
+                </button>
+                <button (click)="cancelAddressForm()" type="button" class="btn btn-secondary">
+                  {{ 'checkout.address.cancel.button.label' | translate }}
+                </button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
+    </ng-container>
   </div>
 </div>

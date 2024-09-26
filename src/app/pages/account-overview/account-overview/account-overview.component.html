@@ -80,6 +80,13 @@
   <ish-lazy-wishlist-widget />
 </ng-container>
 
+<!-- Order Template Widget for punchout users -->
+<ng-container *ishIsAuthorizedTo="['APP_B2B_SEND_PUNCHOUT_BASKET']">
+  <div class="row" *ishFeature="'orderTemplates'">
+    <ish-lazy-order-template-widget class="col-12 col-md-4" />
+  </div>
+</ng-container>
+
 <p class="form-text">
   {{ 'account.overview.note.heading' | translate }}:
   <span

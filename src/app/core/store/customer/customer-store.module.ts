@@ -22,6 +22,8 @@ import { dataRequestsReducer } from './data-requests/data-requests.reducer';
 import { OrdersEffects } from './orders/orders.effects';
 import { ordersReducer } from './orders/orders.reducer';
 import { OrganizationManagementEffects } from './organization-management/organization-management.effects';
+import { RecurringOrdersEffects } from './recurring-orders/recurring-orders.effects';
+import { recurringOrdersReducer } from './recurring-orders/recurring-orders.reducer';
 import { RequisitionManagementEffects } from './requisition-management/requisition-management.effects';
 import { SsoRegistrationEffects } from './sso-registration/sso-registration.effects';
 import { ssoRegistrationReducer } from './sso-registration/sso-registration.reducer';
@@ -33,6 +35,7 @@ const customerReducers: ActionReducerMap<CustomerState> = {
   user: userReducer,
   addresses: addressesReducer,
   orders: ordersReducer,
+  recurringOrders: recurringOrdersReducer,
   basket: basketReducer,
   authorization: authorizationReducer,
   ssoRegistration: ssoRegistrationReducer,
@@ -48,6 +51,7 @@ const customerEffects = [
   BasketPromotionCodeEffects,
   BasketValidationEffects,
   OrdersEffects,
+  RecurringOrdersEffects,
   UserEffects,
   AuthorizationEffects,
   OrganizationManagementEffects,

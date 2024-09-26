@@ -42,7 +42,11 @@
     <!-- basket summary -->
     <div class="col-md-12 col-lg-4 order-summary" *ngIf="basket$ | async as basket">
       <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
+
       <ish-basket-address-summary [basket]="basket" />
+
+      <ish-basket-recurrence-summary [recurrence]="basket.recurrence" />
+
       <ish-basket-items-summary [basket]="basket" />
 
       <div class="cost-summary">

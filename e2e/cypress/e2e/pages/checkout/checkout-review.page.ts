@@ -14,7 +14,7 @@ export class CheckoutReviewPage {
 
   submitOrder() {
     waitLoadingEnd(1000);
-    cy.get('button').contains('Submit order').click();
+    cy.get('button').contains('Submit').contains('order').click();
     waitLoadingEnd(1000);
   }
 

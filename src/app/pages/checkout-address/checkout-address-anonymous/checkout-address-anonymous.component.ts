@@ -51,6 +51,10 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
     return this.basket?.invoiceToAddress && this.basket.commonShipToAddress;
   }
 
+  isRecurringOrder() {
+    return this.basket?.recurrence;
+  }
+
   showAddressForm() {
     this.isAddressFormCollapsed = false;
     // do not close address form immediately to show possible server errors

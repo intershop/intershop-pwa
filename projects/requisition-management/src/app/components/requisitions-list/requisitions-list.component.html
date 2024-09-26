@@ -20,8 +20,18 @@
           [routerLink]="[requisition.id, { status: status }]"
           [attr.aria-label]="'account.approvallist.table.id_of_order.aria_label' | translate"
         >
-          {{ requisition.requisitionNo }}
+          {{ requisition.requisitionNo || requisition.recurringOrderDocumentNo }}
         </a>
+        <fa-icon
+          *ngIf="requisition.recurringOrderDocumentNo"
+          [icon]="['fas', 'repeat']"
+          [title]="
+            requisition.approval.statusCode === 'APPROVED'
+              ? ('account.approvallist.table.id_of_order.recurring_approved' | translate)
+              : ('account.approvallist.table.id_of_order.recurring_not_approved' | translate)
+          "
+          class="ml-1"
+        />
       </td>
     </ng-container>
 
@@ -36,7 +46,9 @@
         *cdkCellDef="let requisition"
         [attr.data-label]="'account.approvallist.table.no_of_order.title' | translate"
       >
-        <a [routerLink]="['../../orders/', requisition.id]">{{ requisition.orderNo }}</a>
+        <a [routerLink]="[requisition.orderNo ? '../../orders/' : '../../recurring-orders/', requisition.id]">
+          {{ requisition.orderNo || requisition.recurringOrderDocumentNo }}
+        </a>
       </td>
     </ng-container>
 
@@ -51,7 +63,7 @@
         *cdkCellDef="let requisition"
         [attr.data-label]="'account.approvallist.table.no_of_order.title' | translate"
       >
-        {{ requisition.orderNo }}
+        {{ requisition.orderNo || requisition.recurringOrderDocumentNo }}
       </td>
     </ng-container>
 
@@ -161,7 +173,8 @@
             class="btn-tool btn-link"
             (click)="approveRequisition(requisition.id)"
             title="{{
-              'account.requisitions.approvals.approve' | translate : { requisitionNo: requisition.requisitionNo }
+              'account.requisitions.approvals.approve'
+                | translate : { requisitionNo: requisition.requisitionNo || requisition.recurringOrderDocumentNo }
             }}"
           >
             <fa-icon [icon]="['fas', 'check']" />
@@ -171,7 +184,8 @@
             class="btn-tool btn-link"
             (click)="openRejectDialog(requisition.id)"
             title="{{
-              'account.requisitions.approvals.reject' | translate : { requisitionNo: requisition.requisitionNo }
+              'account.requisitions.approvals.reject'
+                | translate : { requisitionNo: requisition.requisitionNo || requisition.recurringOrderDocumentNo }
             }}"
           >
             <fa-icon [icon]="['fas', 'times']" />

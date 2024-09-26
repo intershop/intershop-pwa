@@ -47,7 +47,10 @@ export class BasketValidationEffects {
 
   // validation step for each checkout step type
   private validationSteps: { [targetStep: string | number]: { scopes: BasketValidationScopeType[]; route: string } } = {
-    [CheckoutStepType.BeforeCheckout]: { scopes: ['Products', 'Promotion', 'Value', 'CostCenter'], route: '/basket' },
+    [CheckoutStepType.BeforeCheckout]: {
+      scopes: ['Products', 'Promotion', 'Value', 'CostCenter', 'Quote'],
+      route: '/basket',
+    },
     [CheckoutStepType.Addresses]: {
       scopes: ['InvoiceAddress', 'ShippingAddress', 'Addresses'],
       route: '/checkout/address',
