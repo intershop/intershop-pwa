@@ -1,0 +1,15 @@
+<span class="custom-control custom-switch d-inline">
+  <input
+    type="checkbox"
+    role="switch"
+    class="custom-control-input"
+    autocomplete="off"
+    [id]="id"
+    [checked]="active"
+    [disabled]="disabled"
+    (click)="toggleState()"
+  />
+  <label class="custom-control-label" [for]="id" data-testing-id="customControlLabel">{{
+    activeState ? labelActive : labelInactive
+  }}</label>
+</span>
