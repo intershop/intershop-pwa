@@ -66,7 +66,7 @@ describe('Wishlist MyAccount Functionality', () => {
     });
   });
 
-  it('user adds 2 products from the product detail page to wishlist (using preferred wishlist)', () => {
+  it('user adds a product from the product detail page to wishlist (using preferred wishlist)', () => {
     at(WishlistsOverviewPage, page => {
       page.addWishlist(anotherWishlist, false);
       page.header.gotoCategoryPage(_.category);
@@ -82,9 +82,13 @@ describe('Wishlist MyAccount Functionality', () => {
       page.breadcrumb.items.should('have.length', 4);
       page.breadcrumb.items.eq(3).should('contain', preferredWishlist);
       page.listItemLinks.invoke('attr', 'href').should('contain', _.product2);
+    });
+  });
+
+  it('user adds another product from the product detail page to wishlist (using preferred wishlist)', () => {
+    at(WishlistsDetailsPage, page => {
       page.header.gotoCategoryPage(_.category);
     });
-
     at(CategoryPage, page => page.gotoSubCategory(_.subcategory));
     at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product1));
     at(ProductDetailPage, page => {
