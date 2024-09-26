@@ -184,7 +184,6 @@ export class BasketMockData {
             currency: 'USD',
             type: 'PriceItem',
           },
-          rebateType: 'OrderValueOffDiscount',
         } as BasketRebate,
       ],
       itemSurchargeTotalsByType: [

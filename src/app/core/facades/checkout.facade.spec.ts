@@ -1,10 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { BehaviorSubject } from 'rxjs';
 
+import { Address } from 'ish-core/models/address/address.model';
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { UserCostCenter } from 'ish-core/models/user-cost-center/user-cost-center.model';
 import {
   getBasketEligibleShippingMethods,
+  getBasketInvoiceAddress,
   getBasketLastTimeProductAdded,
   getBasketLoading,
   getCurrentBasket,
@@ -12,15 +16,24 @@ import {
 import { getUserCostCenters } from 'ish-core/store/customer/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
+import { AccountFacade } from './account.facade';
 import { CheckoutFacade } from './checkout.facade';
 
 describe('Checkout Facade', () => {
   let store$: MockStore;
   let facade: CheckoutFacade;
+  let accountFacadeMock: Partial<AccountFacade>;
+  let isLoggedInSubject$: BehaviorSubject<boolean>;
 
   beforeEach(() => {
+    isLoggedInSubject$ = new BehaviorSubject(false);
+    accountFacadeMock = {
+      isLoggedIn$: isLoggedInSubject$.asObservable(),
+    };
+
     TestBed.configureTestingModule({
       providers: [
+        { provide: AccountFacade, useValue: accountFacadeMock },
         provideMockStore({
           selectors: [
             {
@@ -34,6 +47,10 @@ describe('Checkout Facade', () => {
             {
               selector: getBasketLoading,
               value: false,
+            },
+            {
+              selector: getBasketInvoiceAddress,
+              value: undefined,
             },
           ],
         }),
@@ -104,6 +121,64 @@ describe('Checkout Facade', () => {
             },
           ]
         `);
+        done();
+      });
+    });
+  });
+
+  describe('canUseBasketForRecurringOrder$', () => {
+    const mockLineItems: LineItem[] = [
+      { id: '1', quote: undefined } as LineItem,
+      { id: '2', quote: undefined } as LineItem,
+    ];
+
+    const mockAddress: Address = { id: '123', line1: 'Test Street' } as unknown as Address;
+
+    it('should return true when user is logged in, no invoice address', done => {
+      isLoggedInSubject$.next(true);
+      store$.overrideSelector(getBasketInvoiceAddress, undefined);
+      store$.overrideSelector(getCurrentBasket, { ...BasketMockData.getBasket(), lineItems: mockLineItems });
+
+      facade.canUseBasketForRecurringOrder$.subscribe(result => {
+        expect(result).toBeTrue();
+        done();
+      });
+    });
+
+    it('should return true when user is not logged in, no invoice address', done => {
+      isLoggedInSubject$.next(false);
+      store$.overrideSelector(getBasketInvoiceAddress, undefined);
+      store$.overrideSelector(getCurrentBasket, { ...BasketMockData.getBasket(), lineItems: mockLineItems });
+
+      facade.canUseBasketForRecurringOrder$.subscribe(result => {
+        expect(result).toBeTrue();
+        done();
+      });
+    });
+
+    it('should return false when user is not logged in and has invoice address (guest checkout)', done => {
+      isLoggedInSubject$.next(false);
+      store$.overrideSelector(getBasketInvoiceAddress, mockAddress);
+      store$.overrideSelector(getCurrentBasket, { ...BasketMockData.getBasket(), lineItems: mockLineItems });
+
+      facade.canUseBasketForRecurringOrder$.subscribe(result => {
+        expect(result).toBeFalse();
+        done();
+      });
+    });
+
+    const mockLineItemsWithQuote: LineItem[] = [
+      { id: '1', quote: undefined } as LineItem,
+      { id: '2', quote: 'some-quote-id' } as LineItem,
+    ];
+
+    it('should return false when user is logged in but basket has quote items', done => {
+      isLoggedInSubject$.next(true);
+      store$.overrideSelector(getBasketInvoiceAddress, undefined);
+      store$.overrideSelector(getCurrentBasket, { ...BasketMockData.getBasket(), lineItems: mockLineItemsWithQuote });
+
+      facade.canUseBasketForRecurringOrder$.subscribe(result => {
+        expect(result).toBeFalse();
         done();
       });
     });

@@ -30,6 +30,10 @@ describe('Basket Desired Delivery Date Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
+    component.basket = {
+      attributes: [{ name: 'desiredDeliveryDate', value: '2022-03-17' }],
+    } as Basket;
+
     when(checkoutFacade.setDesiredDeliveryDate(anything())).thenReturn();
   });
 
@@ -41,15 +45,19 @@ describe('Basket Desired Delivery Date Component', () => {
 
   it('should display desired delivery date input fields on form', () => {
     fixture.detectChanges();
-
     expect(element.innerHTML).toContain('desiredDeliveryDate');
   });
 
-  it('should show current desired delivery date from the store', () => {
+  it('should not display desired delivery date input fields for recurring order', () => {
     component.basket = {
+      recurrence: { interval: 'P7M' },
       attributes: [{ name: 'desiredDeliveryDate', value: '2022-03-17' }],
     } as Basket;
+    fixture.detectChanges();
+    expect(element.innerHTML).not.toContain('desiredDeliveryDate');
+  });
 
+  it('should show current desired delivery date from the store', () => {
     fixture.detectChanges();
     component.ngOnChanges({ basket: new SimpleChange(undefined, component.basket, false) });
 
@@ -57,12 +65,7 @@ describe('Basket Desired Delivery Date Component', () => {
   });
 
   it('should call setDesiredDeliveryDate if submit form is called', () => {
-    component.basket = {
-      attributes: [{ name: 'desiredDeliveryDate', value: '2022-03-17' }],
-    } as Basket;
-
     fixture.detectChanges();
-
     component.submitForm();
     verify(checkoutFacade.setDesiredDeliveryDate(anything())).once();
   });

@@ -17,7 +17,7 @@ export interface Order extends OrderBasket {
     status: 'COMPLETED' | 'ROLLED_BACK' | 'STOPPED' | 'CONTINUE';
     stopAction?: {
       type: 'Redirect' | 'Workflow';
-      exitReason?: 'waiting_for_pending_payments' | 'redirect_urls_required';
+      exitReason?: 'waiting_for_pending_payments' | 'redirect_urls_required' | 'recurring.order';
       redirectUrl?: string;
     };
   };
@@ -30,9 +30,11 @@ export interface Order extends OrderBasket {
   };
   requisitionNo?: string;
   paginationPosition?: number;
+  recurringOrderID?: string;
 }
 
 export interface Orders {
   orders: Order[];
   paging: PagingInfo;
+  recurringOrderID?: string;
 }

@@ -8,6 +8,7 @@ import { anything, instance, mock, verify } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { Basket } from 'ish-core/models/basket/basket.model';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { IdentityProviderLoginComponent } from 'ish-shared/components/login/identity-provider-login/identity-provider-login.component';
@@ -78,6 +79,20 @@ describe('Checkout Address Anonymous Component', () => {
   it('should render registration link on page', () => {
     fixture.detectChanges();
     expect(element.querySelector('a[data-testing-id="registration-link"]')).toBeTruthy();
+  });
+
+  it('should render guest checkout section when basket is not a recurring order', () => {
+    component.basket = { recurrence: undefined } as Basket;
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id=guest-checkout]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=guest-checkout-button]')).toBeTruthy();
+  });
+
+  it('should NOT render guest checkout section when basket is a recurring order', () => {
+    component.basket = { recurrence: { interval: 'P4D', startDate: '08.02.2025' } } as Basket;
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id=guest-checkout]')).toBeFalsy();
+    expect(element.querySelector('[data-testing-id=guest-checkout-button]')).toBeFalsy();
   });
 
   it('should initially not show invoice address form on page', () => {

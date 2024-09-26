@@ -63,6 +63,7 @@ import {
   updateBasket,
   updateBasketCostCenter,
   updateBasketFail,
+  updateBasketRecurrence,
   updateBasketShippingMethod,
 } from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
@@ -208,6 +209,17 @@ export class BasketEffects {
       ofType(updateBasketCostCenter),
       mapToPayloadProperty('costCenter'),
       map(costCenter => updateBasket({ update: { costCenter } }))
+    )
+  );
+
+  /**
+   * Sets the recurrence at the current basket.
+   */
+  updateBasketRecurrence$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateBasketRecurrence),
+      mapToPayloadProperty('recurrence'),
+      map(recurrence => updateBasket({ update: { recurrence } }))
     )
   );
 

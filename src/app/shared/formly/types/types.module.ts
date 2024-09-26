@@ -215,6 +215,7 @@ const fieldComponents = [
             validation: {
               messages: {
                 required: 'form.number.error.required',
+                min: 'form.number.error.min',
               },
             },
           },

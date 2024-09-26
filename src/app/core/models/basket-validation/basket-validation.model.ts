@@ -11,6 +11,7 @@ export type BasketValidationScopeType =
   | 'Payment'
   | 'Promotion'
   | 'CostCenter'
+  | 'Quote'
   | 'All'
   /* no scope: a minimum is validated */
   | '';
