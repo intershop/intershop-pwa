@@ -129,6 +129,7 @@ export const wishlistReducer = createReducer(
     const updatedWishlist: Wishlist = {
       ...state.entities[wishlistId],
       shared: false,
+      secureCode: undefined,
     };
 
     return wishlistsAdapter.upsertOne(updatedWishlist, state);
