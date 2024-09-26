@@ -1,0 +1,12 @@
+@import 'variables';
+
+#order-recurrence {
+  padding: ($space-default * 0.5) ($space-default * 1.5);
+  margin: ($space-default * 1) ($space-default * -1.5);
+  font-size: $font-size-corporate;
+  background-color: $white;
+}
+
+#order-recurrence-configuration {
+  height: 100px;
+}

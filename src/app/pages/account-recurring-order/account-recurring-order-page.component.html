@@ -1,0 +1,200 @@
+<!-- Print Button -->
+<div class="float-right">
+  <ul class="share-tools">
+    <li>
+      <a href="javascript:window.print();" class="link-print" rel="nofollow">
+        <fa-icon [icon]="['fas', 'print']" />
+        <span class="share-label">{{ 'account.recurring_order.details.print_link.text' | translate }}</span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<h1>{{ 'account.recurring_order.heading' | translate }}</h1>
+
+<div *ngIf="recurringOrder$ | async as recurringOrder" class="section">
+  <!-- Message for Inactive Orders -->
+  <ng-container *ngIf="!recurringOrder.active">
+    <div
+      *ngIf="recurringOrder.error; else inactiveMessage"
+      class="alert alert-warning"
+      (click)="toggleShowErrorCode()"
+      (keydown.enter)="toggleShowErrorCode()"
+      tabindex="0"
+    >
+      <p>{{ 'account.recurring_order.details.inactive-by-system.message' | translate }}</p>
+      <p *ngIf="recurringOrder.errorCode && showErrorCode">{{ recurringOrder.errorCode }}</p>
+    </div>
+    <ng-template #inactiveMessage>
+      <p
+        class="alert alert-warning"
+        [ishServerHtml]="'account.recurring_order.details.inactive.message' | translate"
+        [callbacks]="{ activate: activateRecurringOrder }"
+      ></p>
+    </ng-template>
+  </ng-container>
+
+  <p>{{ 'account.recurring_order.subtitle' | translate }}</p>
+
+  <!-- Order Summary Info -->
+  <div class="row pb-3">
+    <div class="col-12 col-sm-6">
+      <dl class="row dl-horizontal dl-separator">
+        <dt class="col-6">{{ 'account.recurring_order.details.order_number.label' | translate }}</dt>
+        <dd class="col-6" data-testing-id="rec-order-number">{{ recurringOrder.documentNo }}</dd>
+      </dl>
+
+      <dl *ngIf="recurringOrder.approvalStatuses" class="row dl-horizontal dl-separator">
+        <dt class="col-6">{{ 'account.recurring_order.details.requisition_number.label' | translate }}</dt>
+        <dd class="col-6">
+          <a [routerLink]="['/account/requisitions/buyer', recurringOrder.id, { status: 'APPROVED' }]">{{
+            recurringOrder.documentNo
+          }}</a
+          ><br />
+          (<ng-container *ngFor="let approval of recurringOrder.approvalStatuses; let last = last"
+            >{{
+              'account.recurring_order.details.approved.text'
+                | translate
+                  : {
+                      name: approval.approver.firstName + ' ' + approval.approver.lastName,
+                      date: approval.approvalDate | ishDate : 'shortDate'
+                    }
+            }}<ng-container *ngIf="!last">, </ng-container></ng-container
+          >)
+        </dd>
+      </dl>
+
+      <dl class="row dl-horizontal dl-separator">
+        <dt class="col-6">{{ 'account.recurring_order.details.creation_date.label' | translate }}</dt>
+        <dd class="col-6">{{ recurringOrder.creationDate | ishDate }}</dd>
+      </dl>
+
+      <dl class="row dl-horizontal dl-separator">
+        <dt class="col-6">{{ 'account.recurring_order.details.last_order_date.label' | translate }}</dt>
+        <dd class="col-6">
+          {{ recurringOrder.lastOrderDate ? (recurringOrder.lastOrderDate | ishDate) : '-' }}
+        </dd>
+      </dl>
+
+      <dl class="row dl-horizontal dl-separator">
+        <dt class="col-6">{{ 'account.recurring_order.details.next_order_date.label' | translate }}</dt>
+        <dd class="col-6">
+          {{ recurringOrder.nextOrderDate ? (recurringOrder.nextOrderDate | ishDate) : '-' }}
+        </dd>
+      </dl>
+
+      <dl class="row dl-horizontal dl-separator">
+        <dt class="col-6">{{ 'account.recurring_order.details.status.label' | translate }}</dt>
+        <dd class="col-6">
+          <span *ngIf="recurringOrder.expired; else switch">{{
+            'account.recurring_order.details.expired.text' | translate
+          }}</span>
+          <ng-template #switch>
+            <ish-switch
+              [active]="recurringOrder.active"
+              [labelActive]="'account.recurring_order.details.active.text' | translate"
+              [labelInactive]="'account.recurring_order.details.inactive.text' | translate"
+              (toggleSwitch)="switchActiveStatus($event)"
+            />
+          </ng-template>
+        </dd>
+      </dl>
+    </div>
+    <div class="col-12 col-sm-6">
+      <dl class="row dl-horizontal dl-separator">
+        <dt class="col-6">{{ 'account.recurring_order.details.order_count.label' | translate }}</dt>
+        <dd class="col-6">{{ recurringOrder.orderCount }}</dd>
+      </dl>
+
+      <dl *ngIf="recurringOrder.lastPlacedOrders?.length" class="row dl-horizontal dl-separator">
+        <dt class="col-6">{{ 'account.recurring_order.details.last_placed_orders.label' | translate }}</dt>
+        <dd class="col-6">
+          <div *ngFor="let order of recurringOrder.lastPlacedOrders">
+            <a [routerLink]="['/account/orders', order.id]">{{ order.documentNumber }}</a>
+          </div>
+        </dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="row d-flex">
+    <!-- Buyer -->
+    <ish-info-box
+      heading="account.recurring_order.details.buyer_info.heading"
+      class="infobox-wrapper col-md-6"
+      cssClass="pb-3"
+    >
+      <span *ngIf="recurringOrder.user.companyName">{{ recurringOrder.user.companyName }}<br /></span>
+      <span *ngIf="taxationID">
+        {{ 'account.recurring_order.details.taxationId.label' | translate }} {{ taxationID }}<br />
+      </span>
+      {{ recurringOrder.user.firstName }} {{ recurringOrder.user.lastName }}<br />
+      {{ recurringOrder.user.email }}<br />
+    </ish-info-box>
+    <!-- Additional Information -->
+    <ish-info-box
+      heading="account.recurring_order.details.additional_info.heading"
+      class="infobox-wrapper col-md-6"
+      cssClass="pb-3"
+    >
+      <dl *ngIf="recurringOrder.costCenterId" class="row dl-horizontal dl-separator">
+        <dt class="col-5">{{ 'account.recurring_order.details.cost_center.label' | translate }}</dt>
+        <dd class="col-7">{{ recurringOrder.costCenterId }} {{ recurringOrder.costCenterName }}</dd>
+      </dl>
+      <ish-order-recurrence [recurrence]="recurringOrder.recurrence" labelCssClass="col-5" valueCssClass="col-7" />
+    </ish-info-box>
+  </div>
+
+  <div class="row d-flex">
+    <!-- Invoice Address -->
+    <ish-info-box heading="account.recurring_order.details.billing_address.heading" class="infobox-wrapper col-md-6">
+      <ish-address [address]="recurringOrder.invoiceToAddress" />
+    </ish-info-box>
+    <!-- Shipping Address -->
+    <ish-info-box heading="account.recurring_order.details.shipping_address.heading" class="infobox-wrapper col-md-6">
+      <ish-address [address]="recurringOrder.commonShipToAddress" />
+    </ish-info-box>
+  </div>
+
+  <div class="row d-flex">
+    <!-- Shipping Method -->
+    <ish-info-box heading="account.recurring_order.details.shipping_method.heading" class="infobox-wrapper col-md-6">
+      <ish-basket-shipping-method [data]="recurringOrder" />
+    </ish-info-box>
+    <!-- Payment -->
+    <ish-info-box heading="account.recurring_order.details.payment_method.heading" class="infobox-wrapper col-md-6">
+      <ng-container *ngIf="recurringOrder.payment">
+        <p>{{ recurringOrder.payment.displayName }}</p>
+      </ng-container>
+    </ish-info-box>
+  </div>
+
+  <p class="alert alert-info" [ishServerHtml]="'account.recurring_order.details.info_message' | translate"></p>
+
+  <!-- Line Items -->
+  <ish-line-item-list
+    *ngIf="recurringOrder.lineItems?.length"
+    [lineItems]="recurringOrder.lineItems"
+    [editable]="false"
+    lineItemViewType="simple"
+  />
+
+  <div class="section row">
+    <div class="col-12 col-md-6 offset-md-6">
+      <div class="cost-summary">
+        <h3>{{ 'checkout.order_summary.heading' | translate }}</h3>
+        <ish-basket-cost-summary [totals]="recurringOrder.totals" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Links -->
+<div class="section d-flex justify-content-between">
+  <a routerLink="/account/recurring-orders" class="no-print">{{
+    'account.recurring_order.details.links.return_to_orders' | translate
+  }}</a>
+  <a routerLink="/home" class="no-print" data-testing-id="home-link">{{
+    'account.orderdetails.links.continue_shopping' | translate
+  }}</a>
+</div>

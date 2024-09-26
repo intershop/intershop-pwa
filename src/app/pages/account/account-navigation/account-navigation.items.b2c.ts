@@ -10,6 +10,12 @@ export const navigationItems: NavigationItem[] = [
     notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
   },
   {
+    id: 'recurring-orders',
+    localizationKey: 'account.recurring_orders.navigation.link',
+    routerLink: '/account/recurring-orders',
+    serverSetting: 'recurringOrder.enabled',
+  },
+  {
     id: 'wishlists',
     localizationKey: 'account.wishlists.link',
     routerLink: '/account/wishlists',

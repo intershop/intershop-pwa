@@ -1,0 +1,158 @@
+<ng-container *ngIf="recurringOrders?.length; else emptyList">
+  <table
+    cdk-table
+    [dataSource]="recurringOrders"
+    class="table table-lg mobile-optimized"
+    data-testing-id="recurringOrder-list"
+  >
+    <!-- Recurring Order Number -->
+    <ng-container cdkColumnDef="recurringOrderNo">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-recurringOrder-no">
+        {{ 'account.recurring_orders.table.id_of_order' | translate }}
+      </th>
+      <td
+        cdk-cell
+        *cdkCellDef="let recurringOrder"
+        [attr.data-label]="'account.recurring_orders.table.id_of_order' | translate"
+      >
+        <a
+          [routerLink]="['/account/recurring-orders/', recurringOrder.id]"
+          [queryParams]="{ context: context !== 'MY' ? context : undefined }"
+          [attr.aria-label]="'account.recurring_orders.table.id_of_order.aria_label' | translate"
+        >
+          {{ recurringOrder.documentNo }}
+        </a>
+      </td>
+    </ng-container>
+
+    <!-- Creation Date -->
+    <ng-container cdkColumnDef="creationDate">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-creation-date">
+        {{ 'account.recurring_orders.table.date_of_order' | translate }}
+      </th>
+      <td
+        cdk-cell
+        *cdkCellDef="let recurringOrder"
+        [attr.data-label]="'account.recurring_orders.table.date_of_order' | translate"
+      >
+        {{ recurringOrder.creationDate | ishDate }}
+      </td>
+    </ng-container>
+
+    <!-- Frequency -->
+    <ng-container cdkColumnDef="frequency">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-frequency">
+        {{ 'account.recurring_orders.table.order_frequency' | translate }}
+      </th>
+      <td
+        cdk-cell
+        *cdkCellDef="let recurringOrder"
+        [attr.data-label]="'account.recurring_orders.table.order_frequency' | translate"
+      >
+        {{
+          recurringOrder.expired
+            ? ('account.recurring_orders.expired.text' | translate)
+            : (recurringOrder.recurrence.interval | ishFrequency)
+        }}
+      </td>
+    </ng-container>
+
+    <!-- Last Order Date -->
+    <ng-container cdkColumnDef="lastOrderDate">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-last-order-date">
+        {{ 'account.recurring_orders.table.last_order_date' | translate }}
+      </th>
+      <td
+        cdk-cell
+        *cdkCellDef="let recurringOrder"
+        [attr.data-label]="'account.recurring_orders.table.last_order_date' | translate"
+      >
+        {{ recurringOrder.lastOrderDate ? (recurringOrder.lastOrderDate | ishDate) : '-' }}
+      </td>
+    </ng-container>
+
+    <!-- Next Order Date -->
+    <ng-container cdkColumnDef="nextOrderDate">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-next-order-date">
+        {{ 'account.recurring_orders.table.next_order_date' | translate }}
+      </th>
+      <td
+        cdk-cell
+        *cdkCellDef="let recurringOrder"
+        [attr.data-label]="'account.recurring_orders.table.next_order_date' | translate"
+      >
+        {{ recurringOrder.nextOrderDate ? (recurringOrder.nextOrderDate | ishDate) : '-' }}
+      </td>
+    </ng-container>
+
+    <!-- Buyer -->
+    <ng-container cdkColumnDef="buyer">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-buyer">
+        {{ 'account.recurring_orders.table.buyer' | translate }}
+      </th>
+      <td
+        cdk-cell
+        *cdkCellDef="let recurringOrder"
+        [attr.data-label]="'account.recurring_orders.table.buyer' | translate"
+      >
+        {{ recurringOrder.user.firstName }} {{ recurringOrder.user.lastName }}
+      </td>
+    </ng-container>
+
+    <!-- Order Total -->
+    <ng-container cdkColumnDef="orderTotal">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-total" class="text-right">
+        {{ 'account.recurring_orders.table.order_total' | translate }}
+      </th>
+      <td
+        cdk-cell
+        *cdkCellDef="let recurringOrder"
+        [attr.data-label]="'account.recurring_orders.table.order_total' | translate"
+        class="column-price"
+      >
+        {{ recurringOrder.totals.total | ishPrice : 'gross' }}
+      </td>
+    </ng-container>
+
+    <!-- Actions -->
+    <ng-container cdkColumnDef="actions">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-actions"></th>
+      <td cdk-cell *cdkCellDef="let recurringOrder" class="column-price text-nowrap">
+        <ish-switch
+          *ngIf="!recurringOrder.expired"
+          [id]="recurringOrder.id"
+          [active]="recurringOrder.active"
+          (toggleSwitch)="switchActiveStatus($event)"
+        />
+        <button
+          type="button"
+          class="btn-tool btn-link"
+          title="{{ 'account.recurring_orders.link.title.remove' | translate : { '0': recurringOrder.documentNo } }}"
+          (click)="openDeleteConfirmationDialog(recurringOrder, deleteDialog)"
+        >
+          <fa-icon [icon]="['fas', 'trash-alt']" />
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay"></tr>
+  </table>
+</ng-container>
+
+<ng-template #emptyList>
+  <p data-testing-id="emptyList">{{ 'account.recurring_orders.no_placed_orders_message' | translate }}</p>
+</ng-template>
+
+<ish-modal-dialog
+  #deleteDialog
+  [options]="{
+    confirmText: 'account.recurring_orders.delete.button.text' | translate,
+    rejectText: 'account.cancel.button.label' | translate,
+    titleText: 'undefined'
+  }"
+  (confirmed)="delete($event)"
+>
+  {{ 'account.recurring_orders.delete.do_you_really.text' | translate }}
+</ish-modal-dialog>
