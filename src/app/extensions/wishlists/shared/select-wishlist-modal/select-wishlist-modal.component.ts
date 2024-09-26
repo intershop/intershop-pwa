@@ -175,7 +175,7 @@ export class SelectWishlistModalComponent implements OnInit {
   get headerTranslationKey() {
     return this.addMoveProduct === 'add'
       ? 'product.add_to_wishlist.link'
-      : 'account.wishlist.table.options.move_to_another_wishlist';
+      : 'wishlist.table.options.move_to_another_wishlist';
   }
 
   /** translation key for the submit button */

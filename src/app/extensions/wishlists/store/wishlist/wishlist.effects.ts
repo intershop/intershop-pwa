@@ -16,6 +16,7 @@ import {
   whenTruthy,
 } from 'ish-core/utils/operators';
 
+import { WishlistSharingResponse } from '../../models/wishlist-sharing/wishlist-sharing.model';
 import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
 import { WishlistService } from '../../services/wishlist/wishlist.service';
 
@@ -41,6 +42,8 @@ import {
   updateWishlist,
   updateWishlistFail,
   updateWishlistSuccess,
+  wishlistActions,
+  wishlistApiActions,
 } from './wishlist.actions';
 import { getSelectedWishlistDetails, getSelectedWishlistId, getWishlistDetails } from './wishlist.selectors';
 
@@ -162,7 +165,7 @@ export class WishlistEffects {
             mergeMap(wishlist => [
               createWishlistSuccess({ wishlist }),
               addProductToWishlist({ wishlistId: wishlist.id, sku: payload.sku }),
-              selectWishlist({ id: wishlist.id }),
+              selectWishlist({ wishlistId: wishlist.id }),
             ]),
             mapErrorToAction(createWishlistFail)
           )
@@ -207,7 +210,7 @@ export class WishlistEffects {
     this.store.pipe(
       select(selectRouteParam('wishlistName')),
       distinctCompareWith(this.store.pipe(select(getSelectedWishlistId))),
-      map(id => selectWishlist({ id }))
+      map(id => selectWishlist({ wishlistId: id }))
     )
   );
 
@@ -239,6 +242,47 @@ export class WishlistEffects {
               ],
             })
           )
+        )
+      )
+    )
+  );
+
+  shareWishlist$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(wishlistActions.shareWishlist),
+      mapToPayload(),
+      mergeMap(payload =>
+        this.wishlistService.shareWishlist(payload.wishlistId, payload.wishlistSharing).pipe(
+          map((response: WishlistSharingResponse) =>
+            wishlistApiActions.shareWishlistSuccess({ wishlistSharingResponse: response })
+          ),
+          mapErrorToAction(wishlistApiActions.shareWishlistFail)
+        )
+      )
+    )
+  );
+
+  unshareWishlist$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(wishlistActions.unshareWishlist),
+      mapToPayloadProperty('wishlistId'),
+      mergeMap(wishlistId =>
+        this.wishlistService.unshareWishlist(wishlistId).pipe(
+          map(() => wishlistApiActions.unshareWishlistSuccess({ wishlistId })),
+          mapErrorToAction(wishlistApiActions.unshareWishlistFail)
+        )
+      )
+    )
+  );
+
+  loadSharedWishlist$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(wishlistActions.loadSharedWishlist),
+      mapToPayload(),
+      mergeMap(payload =>
+        this.wishlistService.getSharedWishlist(payload.wishlistId, payload.owner, payload.secureCode).pipe(
+          map(wishlist => wishlistApiActions.loadSharedWishlistSuccess({ wishlist })),
+          mapErrorToAction(wishlistApiActions.loadSharedWishlistFail)
         )
       )
     )

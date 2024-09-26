@@ -1,9 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable, filter, take } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
+import { WishlistSharing } from '../../models/wishlist-sharing/wishlist-sharing.model';
 import { Wishlist, WishlistItem } from '../../models/wishlist/wishlist.model';
 
 @Component({
@@ -16,7 +19,9 @@ export class AccountWishlistDetailPageComponent implements OnInit {
   wishlistError$: Observable<HttpError>;
   wishlistLoading$: Observable<boolean>;
 
-  constructor(private wishlistsFacade: WishlistsFacade) {}
+  private destroyedRef = inject(DestroyRef);
+
+  constructor(private wishlistsFacade: WishlistsFacade, private translate: TranslateService) {}
 
   ngOnInit() {
     this.wishlist$ = this.wishlistsFacade.currentWishlist$;
@@ -29,6 +34,40 @@ export class AccountWishlistDetailPageComponent implements OnInit {
       ...wishlist,
       id: wishlistName,
     });
+  }
+
+  unshareWishlist(wishlistId: string) {
+    this.wishlistsFacade.unshareWishlist(wishlistId);
+  }
+
+  shareWishlist(wishlistSharing: WishlistSharing, wishlistId: string) {
+    this.wishlistsFacade.shareWishlist(wishlistId, wishlistSharing);
+
+    // ensure owner and secureCode are in the store
+    this.wishlist$
+      .pipe(
+        filter(updatedWishlist => !!updatedWishlist?.owner && !!updatedWishlist?.secureCode),
+        take(1),
+        takeUntilDestroyed(this.destroyedRef)
+      )
+      .subscribe(updatedWishlist => {
+        this.sendEmail(wishlistSharing, updatedWishlist);
+      });
+  }
+
+  private sendEmail(wishlistSharing: WishlistSharing, wishlist: Wishlist) {
+    const emailSubject = this.translate.instant('email.wishlist_sharing.heading');
+    const defaultText = this.translate.instant('email.wishlist_sharing.text');
+
+    const emailBody = `${wishlistSharing.message || defaultText} ${wishlist.title}\n${
+      window.location.origin
+    }/wishlists/${wishlist.id}?owner=${wishlist.owner}&secureCode=${wishlist.secureCode}`;
+
+    const mailtoLink = `mailto:${wishlistSharing.recipients}?subject=${encodeURIComponent(
+      emailSubject
+    )}&body=${encodeURIComponent(emailBody)}`;
+
+    window.open(mailtoLink);
   }
 
   trackByFn(_: number, item: WishlistItem) {

@@ -15,15 +15,45 @@
     /></a>
   </div>
 
-  <button
-    type="button"
-    (click)="editWishlistDialog.show()"
-    class="btn-tool btn-link float-right"
-    [title]="'account.wishlist.header.edit_wishlist.label' | translate"
-    data-testing-id="wishlist-details-edit"
-  >
-    <fa-icon icon="pencil-alt" />
-  </button>
+  <ul class="share-tools">
+    <li>
+      <button
+        type="button"
+        *ngIf="wishlist.shared"
+        (click)="unshareWishlist(wishlist.id)"
+        class="btn-tool btn-link float-right"
+        data-testing-id="wishlist-stop-sharing"
+      >
+        <fa-icon icon="pause" />
+        <span class="share-label">{{ 'account.wishlist.header.stop_wishlist_sharing.label' | translate }}</span>
+      </button>
+    </li>
+
+    <li>
+      <button
+        type="button"
+        (click)="shareWishlistDialog.show()"
+        class="btn-tool btn-link float-right"
+        data-testing-id="wishlist-sharing"
+      >
+        <fa-icon icon="paper-plane" />
+        <span class="share-label">{{ 'account.wishlist.header.send_wishlist.label' | translate }}</span>
+      </button>
+    </li>
+
+    <li>
+      <button
+        type="button"
+        (click)="editWishlistDialog.show()"
+        class="btn-tool btn-link float-right"
+        data-testing-id="wishlist-details-edit"
+      >
+        <fa-icon icon="pencil-alt" />
+        <span class="share-label">{{ 'account.wishlist.header.edit_wishlist.label' | translate }}</span>
+      </button>
+    </li>
+  </ul>
+
   <h1>{{ wishlist?.title }}</h1>
 
   <p *ngIf="wishlist?.preferred" data-testing-id="preferred-wishlist-text">
@@ -33,15 +63,15 @@
   <div class="container">
     <ng-container *ngIf="wishlist.itemsCount && wishlist.itemsCount > 0; else noItems">
       <div class="list-header row">
-        <div class="col-3 col-sm-3 list-header-item">{{ 'account.wishlist.table.header.item' | translate }}</div>
+        <div class="col-3 col-sm-3 list-header-item">{{ 'wishlist.table.header.item' | translate }}</div>
         <div class="col-sm-9 col-9 list-header-item column-price">
-          {{ 'account.wishlist.table.header.price' | translate }}
+          {{ 'wishlist.table.header.price' | translate }}
         </div>
       </div>
       <div class="list-body">
         <ng-container *ngFor="let item of wishlist.items; trackBy: trackByFn">
           <div class="list-item-row">
-            <ish-account-wishlist-detail-line-item
+            <ish-wishlist-line-item
               ishProductContext
               [sku]="item.sku"
               [wishlistItemData]="item"
@@ -61,6 +91,12 @@
     #editWishlistDialog
     [wishlist]="wishlist"
     (submitWishlist)="editPreferences($event, wishlist.id)"
+  />
+
+  <ish-wishlist-sharing-dialog
+    #shareWishlistDialog
+    [wishlist]="wishlist"
+    (submitWishlistSharing)="shareWishlist($event, wishlist.id)"
   />
 </ng-container>
 
