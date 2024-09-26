@@ -1,0 +1,23 @@
+@import 'variables';
+
+.custom-control-input ~ .custom-control-label::before {
+  background-color: $text-color-quaternary;
+  border-color: $text-color-quaternary;
+}
+
+.custom-control-input:disabled ~ .custom-control-label::before {
+  background-color: $text-color-quinary;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  background-color: $CORPORATE-PRIMARY;
+  border-color: $CORPORATE-PRIMARY;
+}
+
+.custom-control-input:checked:disabled ~ .custom-control-label::before {
+  background-color: $CORPORATE-LIGHT;
+}
+
+.custom-switch .custom-control-label::after {
+  background-color: $white;
+}
