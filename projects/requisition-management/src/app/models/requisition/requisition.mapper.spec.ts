@@ -111,6 +111,8 @@ describe('Requisition Mapper', () => {
           "payment": undefined,
           "promotionCodes": undefined,
           "purchaseCurrency": "USD",
+          "recurrence": undefined,
+          "recurringOrderDocumentNo": undefined,
           "requisitionNo": "0001",
           "systemRejectErrors": [
             "some message",

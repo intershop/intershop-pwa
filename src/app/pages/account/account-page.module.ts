@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { authorizationToggleGuard } from 'ish-core/authorization-toggle.module';
 import { featureToggleGuard } from 'ish-core/feature-toggle.module';
+import { serverSettingGuard } from 'ish-core/guards/server-setting.guard';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountOverviewPageModule } from '../account-overview/account-overview-page.module';
@@ -99,6 +100,18 @@ const accountPageRoutes: Routes = [
         canActivate: [authorizationToggleGuard],
         data: { permission: 'APP_B2B_PURCHASE' },
         loadChildren: () => import('requisition-management').then(m => m.RequisitionManagementRoutingModule),
+      },
+      {
+        path: 'recurring-orders',
+        canActivate: [serverSettingGuard],
+        data: {
+          serverSetting: 'recurringOrder.enabled',
+          breadcrumbData: [{ key: 'account.recurring_orders.breadcrumb' }],
+        },
+        loadChildren: () =>
+          import('../account-recurring-orders/account-recurring-orders-page.module').then(
+            m => m.AccountRecurringOrdersPageModule
+          ),
       },
     ],
   },

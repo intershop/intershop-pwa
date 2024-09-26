@@ -12,6 +12,7 @@ import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-updat
 import { AddLineItemType, LineItem } from 'ish-core/models/line-item/line-item.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { BasketUpdateType } from 'ish-core/services/basket/basket.service';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
@@ -68,6 +69,12 @@ export const updateBasketCostCenter = createAction(
   '[Basket] Assign a Cost Center at Basket ',
   payload<{ costCenter: string }>()
 );
+
+export const updateBasketRecurrence = createAction(
+  '[Basket] Set the Recurrence Information at Basket ',
+  payload<{ recurrence: Recurrence }>()
+);
+
 export const addMessageToMerchant = createAction(
   '[Basket] Message to Merchant',
   payload<{ messageToMerchant: string }>()

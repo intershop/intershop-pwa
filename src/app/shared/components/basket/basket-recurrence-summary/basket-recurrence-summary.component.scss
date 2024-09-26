@@ -1,0 +1,5 @@
+@import 'variables';
+
+:host ::ng-deep dl {
+  font-size: $font-size-sm;
+}

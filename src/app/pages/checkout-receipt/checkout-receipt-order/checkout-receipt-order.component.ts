@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { Order } from 'ish-core/models/order/order.model';
+import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.model';
 
 @Component({
   selector: 'ish-checkout-receipt-order',
@@ -8,5 +9,5 @@ import { Order } from 'ish-core/models/order/order.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutReceiptOrderComponent {
-  @Input({ required: true }) order: Order;
+  @Input({ required: true }) order: Order | RecurringOrder;
 }

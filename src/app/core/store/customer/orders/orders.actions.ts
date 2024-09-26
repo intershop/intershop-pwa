@@ -9,7 +9,10 @@ export const createOrder = createAction('[Orders Internal] Create Order');
 
 export const createOrderFail = createAction('[Orders API] Create Order Fail', httpError());
 
-export const createOrderSuccess = createAction('[Orders API] Create Order Success', payload<{ order: Order }>());
+export const createOrderSuccess = createAction(
+  '[Orders API] Create Order Success',
+  payload<{ order: Order; basketId: string }>()
+);
 
 export const loadOrders = createAction('[Orders] Load Orders', payload<{ query: OrderListQuery }>());
 

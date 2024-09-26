@@ -56,10 +56,12 @@ export const ordersReducer = createReducer(
   on(createOrderSuccess, loadOrderSuccess, (state, action) => {
     const { order } = action.payload;
 
-    return {
-      ...orderAdapter.upsertOne(order, state),
-      selected: order.id,
-    };
+    return order.id
+      ? {
+          ...orderAdapter.upsertOne(order, state),
+          selected: order.id,
+        }
+      : state;
   }),
   on(loadOrdersSuccess, (state, action) => {
     const { orders, query, allRetrieved } = action.payload;

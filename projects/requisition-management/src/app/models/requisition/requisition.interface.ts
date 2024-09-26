@@ -9,6 +9,7 @@ import { RequisitionApproval, RequisitionUserBudget } from './requisition.model'
 export interface RequisitionBaseData extends BasketBaseData {
   requisitionNo: string;
   orderNo?: string;
+  recurringOrderDocumentNo?: string;
   order?: {
     itemId: string;
   };

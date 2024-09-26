@@ -17,6 +17,7 @@ import { v4 as uuid } from 'uuid';
  *   [id]="recurringOrder.id"
  *   [active]="recurringOrder.active"
  *   (toggleSwitch)="switchActiveStatus($event)"
+ *   ariaLabel="{{'account.recurring_orders.table.switch.aria_label' | translate : { '0': recurringOrder.documentNo } }}"
  * />
  */
 export class SwitchComponent implements OnChanges {
@@ -26,6 +27,8 @@ export class SwitchComponent implements OnChanges {
   @Input() labelActive = '';
   @Input() labelInactive = '';
   @Input() disabled = false;
+  // ariaLabel can be used to provide a label for screen readers (translated text is accepted)
+  @Input() ariaLabel = '';
 
   @Output() toggleSwitch = new EventEmitter<{ active: boolean; id: string }>();
 

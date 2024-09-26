@@ -8,6 +8,12 @@
         </th>
         <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.date_of_order' | translate">
           {{ order.creationDate | ishDate }}
+          <fa-icon
+            *ngIf="order.recurringOrderID"
+            [icon]="['fas', 'repeat']"
+            [title]="'account.orderlist.table.recurring.icon.title' | translate"
+            class="ml-1"
+          />
         </td>
       </ng-container>
 

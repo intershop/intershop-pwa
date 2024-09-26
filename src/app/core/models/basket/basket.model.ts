@@ -6,6 +6,7 @@ import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { LineItem, LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
+import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 
 export interface AbstractBasket<T> {
@@ -36,6 +37,7 @@ export interface AbstractBasket<T> {
   };
   externalOrderReference?: string;
   messageToMerchant?: string;
+  recurrence?: Recurrence;
 }
 
 export type Basket = AbstractBasket<LineItem>;
