@@ -52,7 +52,8 @@
           *ngIf="requisition.approval.statusCode !== 'APPROVED'; else leftBudgetDisplay"
           class="row dl-horizontal dl-separator"
         >
-          <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate }}</dt>
+          <!-- prettier-ignore -->
+          <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate : { recurring: !requisition.requisitionNo } }}</dt>
           <dd class="col-6" [ngClass]="{ 'text-danger': spentPercentageIncludingThisRequisition > 1 }">
             {{
               requisition.userBudget?.spentBudgetIncludingThisRequisition || requisition.totals.total
@@ -78,6 +79,11 @@
           [spentBudget]="requisition.userBudget?.spentBudget"
           [additionalAmount]="requisition.approval.statusCode !== 'APPROVED' ? orderTotal : undefined"
         />
+      </div>
+    </div>
+    <div *ngIf="requisition.recurrence" class="row mb-3">
+      <div class="col-md-6">
+        <ish-order-recurrence [recurrence]="requisition.recurrence" labelCssClass="col-6" valueCssClass="col-6" />
       </div>
     </div>
   </ish-info-box>

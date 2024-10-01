@@ -33,7 +33,8 @@
             </dd>
           </dl>
           <dl *ngIf="requisition.approval.statusCode !== 'APPROVED'" class="row dl-horizontal dl-separator">
-            <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate }}</dt>
+            <!-- prettier-ignore -->
+            <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate : { recurring: !requisition.requisitionNo } }}</dt>
             <dd class="col-6" [ngClass]="{ 'text-danger': ccVal.spentPercentageIncludingThisRequisition > 1 }">
               {{ ccVal.spentBudgetIncludingThisRequisition | ishPrice }} ({{
                 ccVal.spentPercentageIncludingThisRequisition | percent
@@ -73,7 +74,8 @@
             </dd>
           </dl>
           <dl *ngIf="requisition.approval.statusCode !== 'APPROVED'" class="row dl-horizontal dl-separator">
-            <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate }}</dt>
+            <!-- prettier-ignore -->
+            <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate : { recurring: !requisition.requisitionNo } }}</dt>
             <dd class="col-6" [ngClass]="{ 'text-danger': bVal.spentPercentageIncludingThisRequisition > 1 }">
               {{ bVal.spentBudgetIncludingThisRequisition | ishPrice }} ({{
                 bVal.spentPercentageIncludingThisRequisition | percent
@@ -83,6 +85,12 @@
         </div>
         <div *ngIf="buyer.budget" class="col-md-6 mb-2">
           <ish-budget-bar [budget]="buyer.budget" [spentBudget]="buyer.spentBudget" [additionalAmount]="orderTotal" />
+        </div>
+      </div>
+
+      <div *ngIf="requisition.recurrence" class="row mb-3">
+        <div class="col-md-6">
+          <ish-order-recurrence [recurrence]="requisition.recurrence" labelCssClass="col-6" valueCssClass="col-6" />
         </div>
       </div>
     </ish-info-box>

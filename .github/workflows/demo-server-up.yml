@@ -11,7 +11,7 @@ on:
 #
 # 2. Change these variables for your configuration:
 env:
-  ICM_BASE_URL: https://review.icm.intershop.de
+  ICM_BASE_URL: https://develop.icm.intershop.de
 
 jobs:
   CancelPrevious:

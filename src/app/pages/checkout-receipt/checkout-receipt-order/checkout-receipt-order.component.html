@@ -1,7 +1,12 @@
 <div *ngIf="order">
   <div class="cart-header">
     <h1 class="d-flex flex-wrap align-items-baseline">
-      <span class="cart-header-title">{{ 'checkout.receipt.tankyou.message' | translate }}</span>
+      <span class="cart-header-title">
+        {{
+          (order.recurrence ? 'checkout.receipt.recurring.tankyou.message' : 'checkout.receipt.tankyou.message')
+            | translate
+        }}
+      </span>
       <span class="header-note">
         <span>{{ 'shopping_cart.transaction.text' | translate }}</span>
         <ish-modal-dialog-link
@@ -21,14 +26,23 @@
   <!-- Receipt message -->
   <div class="section">
     <p>
-      <span>{{ 'checkout.order.number.label' | translate }}</span>
+      <span>{{
+        (order.recurrence ? 'checkout.order.recurring.number.label' : 'checkout.order.number.label') | translate
+      }}</span>
       <strong data-testing-id="order-document-number">
-        <a *ngIf="order.customerNo; else plainOrderNo" [routerLink]="'/account/orders/' + order.id">
+        <a
+          *ngIf="order.customerNo; else plainOrderNo"
+          [routerLink]="[order.recurrence ? '/account/recurring-orders/' : '/account/orders/', order.id]"
+        >
           {{ order.documentNo }}</a
         >
         <ng-template #plainOrderNo> {{ order.documentNo }}</ng-template>
       </strong>
     </p>
-    <p [innerHTML]="'checkout.receipt.notification.mail.text' | translate : { '0': order.invoiceToAddress.email }"></p>
+    <p
+      [innerHTML]="
+        'checkout.receipt.notification.mail.text' | translate : { '0': order.invoiceToAddress.email || order.email }
+      "
+    ></p>
   </div>
 </div>

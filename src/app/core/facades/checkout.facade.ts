@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
 import { formatISO } from 'date-fns';
-import { Subject, combineLatest, merge } from 'rxjs';
+import { Subject, combineLatest, iif, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, sample, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
@@ -9,7 +9,8 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
-import { selectRouteData } from 'ish-core/store/core/router';
+import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
+import { selectQueryParam, selectRouteData } from 'ish-core/store/core/router';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import {
   addMessageToMerchant,
@@ -54,10 +55,12 @@ import {
   updateBasketAddress,
   updateBasketCostCenter,
   updateBasketItem,
+  updateBasketRecurrence,
   updateBasketShippingMethod,
   updateConcardisCvcLastUpdated,
 } from 'ish-core/store/customer/basket';
 import { getOrdersError, getSelectedOrder } from 'ish-core/store/customer/orders';
+import { getRecurringOrder } from 'ish-core/store/customer/recurring-orders';
 import { getLoggedInUser, getUserCostCenters, loadUserCostCenters } from 'ish-core/store/customer/user';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
@@ -145,6 +148,10 @@ export class CheckoutFacade {
     this.store.dispatch(updateBasketCostCenter({ costCenter }));
   }
 
+  updateBasketRecurrence(recurrence: Recurrence) {
+    this.store.dispatch(updateBasketRecurrence({ recurrence }));
+  }
+
   updateBasketExternalOrderReference(externalOrderReference: string) {
     this.store.dispatch(updateBasket({ update: { externalOrderReference } }));
   }
@@ -166,7 +173,19 @@ export class CheckoutFacade {
 
   private ordersError$ = this.store.pipe(select(getOrdersError));
   basketOrOrdersError$ = merge(this.basketError$, this.ordersError$);
-  selectedOrder$ = this.store.pipe(select(getSelectedOrder));
+
+  submittedOrder$ = this.store.pipe(
+    select(selectQueryParam('recurringOrderId')),
+    switchMap(recurringOrderId =>
+      iif(
+        () => !!recurringOrderId,
+        // fetch recurring order information if recurringOrderId is present
+        this.store.pipe(select(getRecurringOrder(recurringOrderId))),
+        // otherwise fetch the information for a standard order
+        this.store.pipe(select(getSelectedOrder))
+      )
+    )
+  );
 
   // SHIPPING
 

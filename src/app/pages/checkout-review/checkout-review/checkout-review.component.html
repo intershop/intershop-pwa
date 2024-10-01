@@ -1,6 +1,9 @@
 <div class="cart-header">
   <h1 class="d-flex flex-wrap align-items-baseline">
-    <span class="cart-header-title">{{ 'checkout.order_review.heading.title' | translate }}</span>
+    <span class="cart-header-title">{{
+      (basket.recurrence ? 'checkout.order_review.recurring.heading.title' : 'checkout.order_review.heading.title')
+        | translate
+    }}</span>
     <span class="header-note">
       <span>{{ 'shopping_cart.transaction.text' | translate }}</span>
       <ish-modal-dialog-link
@@ -27,7 +30,12 @@
 
   <div class="col-md-12 col-lg-8">
     <div class="row">
-      <p class="col-md-9">{{ 'checkout.order_review.heading.text' | translate }}</p>
+      <p class="col-md-9">
+        {{
+          (basket.recurrence ? 'checkout.order_review.recurring.heading.text' : 'checkout.order_review.heading.text')
+            | translate
+        }}
+      </p>
       <p class="col-md-3 text-right">
         <a routerLink="/basket">{{ 'checkout.widget.return_to_cart.link' | translate }}</a>
       </p>
@@ -39,12 +47,27 @@
       <ish-basket-merchant-message-view [data]="basket" editRouterLink="/checkout/shipping" />
     </ng-container>
 
-    <div *ishFeature="'businessCustomerRegistration'" class="row">
+    <div class="row">
       <!-- Buyer-->
-      <ish-info-box heading="checkout.widget.buyer.heading" class="infobox-wrapper col-md-6">
-        <ish-basket-buyer [object]="basket" editRouterLink="/checkout/shipping" />
-      </ish-info-box>
+      <ng-container *ishFeature="'businessCustomerRegistration'">
+        <ish-info-box heading="checkout.widget.buyer.heading" class="infobox-wrapper col-md-6">
+          <ish-basket-buyer [object]="basket" editRouterLink="/checkout/shipping" />
+        </ish-info-box>
+      </ng-container>
+
+      <!-- Additional Information -->
+      <ng-container *ngIf="basket.recurrence">
+        <ish-info-box
+          heading="checkout.widget.additional-information.heading"
+          editRouterLink="/basket"
+          class="infobox-wrapper col-md-6"
+          cssClass="pb-3"
+        >
+          <ish-order-recurrence [recurrence]="basket.recurrence" labelCssClass="col-4" valueCssClass="col-8" />
+        </ish-info-box>
+      </ng-container>
     </div>
+
     <div class="row d-flex">
       <!-- Invoice Address -->
       <ish-info-box
@@ -106,7 +129,10 @@
           <ng-container *ngIf="submitting">
             <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pr-3" />
           </ng-container>
-          {{ 'checkout.order_review.send.button' | translate }}
+          {{
+            (basket.recurrence ? 'checkout.order_review.recurring.send.button' : 'checkout.order_review.send.button')
+              | translate
+          }}
         </button>
       </form>
     </div>

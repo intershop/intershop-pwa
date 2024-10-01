@@ -1,21 +1,23 @@
-<div>
-  <h3>{{ 'checkout.desired_delivery_date.title' | translate }}</h3>
+<ng-container *ngIf="!basket.recurrence">
+  <div>
+    <h3>{{ 'checkout.desired_delivery_date.title' | translate }}</h3>
 
-  <form [formGroup]="form" (ngSubmit)="submitForm()">
-    <div class="row">
-      <div *ngIf="showSuccessMessage" class="col-md-12">
-        <ish-success-message message="checkout.desired_delivery_date.success.message" [toast]="false" />
-      </div>
+    <form [formGroup]="form" (ngSubmit)="submitForm()">
+      <div class="row">
+        <div *ngIf="showSuccessMessage" class="col-md-12">
+          <ish-success-message message="checkout.desired_delivery_date.success.message" [toast]="false" />
+        </div>
 
-      <div class="col-md-6">
-        <formly-form [form]="form" [fields]="fields" [model]="model" />
-      </div>
+        <div class="col-md-6">
+          <formly-form [form]="form" [fields]="fields" [model]="model" />
+        </div>
 
-      <div class="col-md-2 pl-md-0">
-        <button type="submit" class="btn btn-secondary" [disabled]="disabled">
-          {{ 'checkout.desired_delivery_date.apply.button.label' | translate }}
-        </button>
+        <div class="col-md-2 pl-md-0">
+          <button type="submit" class="btn btn-secondary" [disabled]="disabled">
+            {{ 'checkout.desired_delivery_date.apply.button.label' | translate }}
+          </button>
+        </div>
       </div>
-    </div>
-  </form>
-</div>
+    </form>
+  </div>
+</ng-container>
