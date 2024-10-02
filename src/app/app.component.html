@@ -1,6 +1,8 @@
 <div [ngClass]="wrapperClasses$ | async" class="d-flex flex-column min-vh-100">
   <header data-testing-id="page-header" class="top"><ish-header /></header>
 
+  <ish-app-copilot />
+
   <div class="wrapper">
     <div role="main" class="container main-container">
       <router-outlet />
