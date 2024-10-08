@@ -399,7 +399,7 @@
         "ish-custom-rules/no-intelligence-in-artifacts": [
           "warn",
           {
-            "(component|pipe|directive)(\\.spec)?\\.ts$": {
+            "(component|pipe|directive)(\\..*)?\\.ts$": {
               // "router": "Angular artifacts should rely use the Router directly.",
               "ngrx": "Angular artifacts should rely on facades only.",
               "service": "Angular artifacts should rely on facades only."
