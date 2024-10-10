@@ -13,7 +13,7 @@ import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { focusFirstInvalidField, markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 @Component({
   selector: 'ish-checkout-review',
@@ -52,6 +52,7 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
     if (this.form.invalid) {
       this.submitted = true;
       markAsDirtyRecursive(this.form);
+      focusFirstInvalidField(this.form);
       return;
     }
     this.createOrder.emit();
@@ -63,6 +64,7 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
         type: 'ish-checkout-review-tac-field',
         key: 'termsAndConditions',
         props: {
+          required: true,
           validation: {
             show: true,
           },

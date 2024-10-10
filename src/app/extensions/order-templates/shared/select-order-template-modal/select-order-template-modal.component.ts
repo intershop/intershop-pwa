@@ -18,7 +18,7 @@ import { Observable, of } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { focusFirstInvalidField, markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 
@@ -73,11 +73,13 @@ export class SelectOrderTemplateModalComponent implements OnInit {
         this.submitExisting(radioButtons.orderTemplate);
       } else {
         markAsDirtyRecursive(this.formGroup);
+        focusFirstInvalidField(this.formGroup);
       }
     } else if (radioButtons.newOrderTemplate && this.formGroup.valid) {
       this.submitNew(radioButtons.newOrderTemplate);
     } else {
       markAsDirtyRecursive(this.formGroup);
+      focusFirstInvalidField(this.formGroup);
     }
   }
 

@@ -1,6 +1,9 @@
 <ng-container *ishProductContextAccess="let product = product">
   <div *ngIf="product.manufacturer as manufacturer" class="product-brand">
-    <a [routerLink]="['/search', manufacturer]">
+    <a
+      [routerLink]="['/search', manufacturer]"
+      [attr.aria-label]="'product.details.company.label' | translate : { '0': manufacturer }"
+    >
       <span itemprop="brand">{{ manufacturer }}</span>
     </a>
   </div>

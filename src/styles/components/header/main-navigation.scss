@@ -99,7 +99,7 @@
       .category-level3,
       .category-level4 {
         > li > a {
-          color: $text-color-tertiary;
+          color: $text-color-quaternary;
         }
       }
     }
@@ -232,7 +232,7 @@
 
             a {
               font-size: $font-size-sub-menu-item;
-              color: $text-color-tertiary;
+              color: $text-color-quaternary;
               text-transform: none;
             }
           }

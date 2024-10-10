@@ -33,6 +33,10 @@ export class UserProfileFormComponent implements OnInit {
     return [
       {
         type: 'ish-fieldset-field',
+        props: {
+          legend: 'account.register.personal_information.heading',
+          legendClass: 'legend-invisible',
+        },
         fieldGroup: [
           {
             type: '#title',

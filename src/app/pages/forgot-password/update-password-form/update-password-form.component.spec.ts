@@ -34,7 +34,7 @@ describe('Update Password Form Component', () => {
   it('should render forgot password form step 2 for password reminder', () => {
     fixture.detectChanges();
 
-    expect(element.innerHTML.match(/ish-password-field/g)).toHaveLength(1);
+    expect(element.innerHTML.match(/ish-password-field/g)).toHaveLength(2);
     expect(element.innerHTML).toContain('password');
     expect(element.innerHTML).toContain('passwordConfirmation');
 

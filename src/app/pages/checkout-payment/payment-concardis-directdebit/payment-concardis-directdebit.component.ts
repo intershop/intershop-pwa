@@ -5,7 +5,7 @@ import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { pairwise, startWith } from 'rxjs/operators';
 
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { focusFirstInvalidField, markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { ConcardisErrorMessageType, PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
 
@@ -155,6 +155,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
     if (this.parameterForm.invalid) {
       this.formSubmitted = true;
       markAsDirtyRecursive(this.parameterForm);
+      focusFirstInvalidField(this.parameterForm);
     }
 
     this.resetErrors();
@@ -184,6 +185,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
     if (this.parameterForm.invalid) {
       this.formSubmitted = true;
       markAsDirtyRecursive(this.parameterForm);
+      focusFirstInvalidField(this.parameterForm);
       return;
     }
     const parameters = Object.entries(this.parameterForm.controls)

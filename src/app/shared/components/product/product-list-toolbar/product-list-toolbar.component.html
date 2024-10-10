@@ -57,6 +57,7 @@
       id="SortingAttribute"
       name="SortingAttribute"
       (change)="changeSortBy($event.target)"
+      [attr.aria-label]="'product.items.sorting.label' | translate"
     >
       <option value="default" [selected]="sortBy === 'default'">
         {{ 'product.items.sorting.default.label' | translate }}

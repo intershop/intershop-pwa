@@ -48,12 +48,12 @@ While the `b2b` theme uses a [`variables.scss`](../../src/styles/themes/b2b/vari
 `b2b - variables.scss`
 
 ```
-$logo: url('/assets/themes/b2b/img/logo.png');
+$logo: url('/assets/themes/b2b/img/logo.svg');
 $logo-width: 114px;
 ...
 $font-family-regular: 'robotoregular', 'Helvetica', 'Arial', sans-serif;
 ...
-$CORPORATE-PRIMARY: #688dc3; // BLUE
+$CORPORATE-PRIMARY: #006b99; // sea blue
 $CORPORATE-SECONDARY: darken($CORPORATE-PRIMARY, 10%);
 $CORPORATE-LIGHT: lighten($CORPORATE-PRIMARY, 10%);
 $CORPORATE-DARK: darken($CORPORATE-PRIMARY, 20%);
@@ -85,16 +85,16 @@ In the [`properties.scss`](../../src/styles/themes/b2c/properties.scss) actual v
 
 ```
 :root {
-  --logo: url('/assets/themes/b2c/img/logo.png');
+  --logo: url('/assets/themes/b2c/img/logo.svg');
   --logo-width: 114px;
 ...
   --font-family-regular: 'robotoregular', 'Helvetica', 'Arial', sans-serif;
 ...
-  --corporate-primary: #ff6d00; // ORANGE
-  --corporate-secondary: #cc5700;
-  --corporate-light: #ff8a33;
-  --corporate-dark: #994100;
-  --corporate-shadow: #ff832680; // with alpha transparency
+  --corporate-primary: #006f6f; // dark turquoise
+  --corporate-secondary: #006464;
+  --corporate-light: #009797;
+  --corporate-dark: #005959;
+  --corporate-shadow: #73aaaa80; // with alpha transparency
 ...
   --text-color-corporate: var(--corporate-primary);
 }
@@ -103,7 +103,7 @@ In the [`properties.scss`](../../src/styles/themes/b2c/properties.scss) actual v
 With the introduction of CSS custom properties, the values of these properties can be overridden at runtime, in our case by defining them as inline styles in the `html` tag.
 
 ```
-<html style="--logo: url(https://localhost/INTERSHOP/static/WFS/inSPIRED-inTRONICS_Business-Site/rest/inSPIRED-inTRONICS_Business-rest/en_US/config/logo.png); --logo-width: 260px; -font-family-regular: Open+Sans; --corporate-primary: #688dc3;" lang="en-US">
+<html style="--logo: url(https://localhost/INTERSHOP/static/WFS/inSPIRED-inTRONICS_Business-Site/rest/inSPIRED-inTRONICS_Business-rest/en_US/config/logo.svg); --logo-width: 260px; -font-family-regular: Open+Sans; --corporate-primary: #006b99;" lang="en-US">
 ```
 
 > [!NOTE]
@@ -137,7 +137,7 @@ Also the used feature set can be changed with the _Features_ and _Additional Fea
 | Logo                | image reference      | Brand logo, can be a reference to an ICM managed image (uploaded and selected), an absolute URL (`https://`), or with the prefix `file://` pointing to an image in the PWA assets folder                               |
 | Logo (mobile)       | image reference      | Brand logo on mobile devices (see "Logo" description)                                                                                                                                                                  |
 | Favicon             | image reference      | Storefront Favicon (see "Logo" description)                                                                                                                                                                            |
-| CSS Properties      | key-value pairs      | CSS custom properties as multiline key (name without `--`) value pairs separated by a `:`, configurable properties can be found in `properties.scss`, example: `corporate-primary:#688dc3`                             |
+| CSS Properties      | key-value pairs      | CSS custom properties as multiline key (name without `--`) value pairs separated by a `:`, configurable properties can be found in `properties.scss`, example: `corporate-primary:#006b99`                             |
 | CSS Fonts           | font URL             | CSS font references (multiline) (e.g.; `https://fonts.googleapis.com/css2?family=Open+Sans`)                                                                                                                           |
 | CSS File            | URL                  | CSS style file reference, either ICM managed (uploaded and selected, could even be an unzipped `branding.zip`), an absolute URL (`https://`), or with the prefix `file://` pointing to a file in the PWA assets folder |
 | CSS Styling         | URL                  | CSS style definitions, added via a `style` tag to the HTML `head`                                                                                                                                                      |

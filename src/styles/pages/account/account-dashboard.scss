@@ -9,13 +9,13 @@
 
   .dashboard-item {
     margin-bottom: ($space-default * 2);
-    color: $text-color-secondary;
+    color: $text-color-tertiary;
     text-align: center;
     text-transform: uppercase;
 
     a {
       font-size: 13px;
-      color: $text-color-secondary;
+      color: $text-color-tertiary;
 
       &:hover {
         text-decoration: none;

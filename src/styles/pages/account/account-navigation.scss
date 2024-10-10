@@ -17,6 +17,8 @@
     }
 
     .ng-fa-icon {
+      display: inline-block;
+      min-width: 18px;
       margin-right: ($space-default * 0.5);
     }
 

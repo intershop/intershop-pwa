@@ -26,6 +26,7 @@ import { LocalizedParserFormatter } from './date-picker-field/localized-parser-f
 import { DateRangePickerFieldComponent } from './date-range-picker-field/date-range-picker-field.component';
 import { FieldsetFieldComponent } from './fieldset-field/fieldset-field.component';
 import { HtmlTextFieldComponent } from './html-text-field/html-text-field.component';
+import { PasswordFieldComponent } from './password-field/password-field.component';
 import { PlainTextFieldComponent } from './plain-text-field/plain-text-field.component';
 import { RadioFieldComponent } from './radio-field/radio-field.component';
 import { SelectFieldComponent } from './select-field/select-field.component';
@@ -39,6 +40,7 @@ const fieldComponents = [
   DateRangePickerFieldComponent,
   FieldsetFieldComponent,
   HtmlTextFieldComponent,
+  PasswordFieldComponent,
   PlainTextFieldComponent,
   RadioFieldComponent,
   SelectFieldComponent,
@@ -115,14 +117,9 @@ const fieldComponents = [
         },
         {
           name: 'ish-password-field',
-          extends: 'ish-text-input-field',
+          component: PasswordFieldComponent,
+          wrappers: ['form-field-horizontal', 'validation'],
           defaultOptions: {
-            props: {
-              type: 'password',
-            },
-            validators: {
-              password: formlyValidation('password', SpecialValidators.password),
-            },
             validation: {
               messages: {
                 password: 'form.password.error.invalid',

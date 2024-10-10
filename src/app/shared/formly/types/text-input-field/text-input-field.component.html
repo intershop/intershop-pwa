@@ -5,8 +5,11 @@
   class="form-control"
   [ngClass]="props.inputClass"
   [attr.data-testing-id]="field.key"
-  [attr.aria-label]="props.ariaLabel"
+  [attr.aria-label]="props.ariaLabel | translate"
   [mask]="props.mask"
   [decimalMarker]="decimalMarker"
   [thousandSeparator]="thousandSeparator"
+  [attr.aria-required]="props.required ? 'true' : undefined"
+  [attr.aria-invalid]="showError ? 'true' : undefined"
+  [attr.aria-describedby]="ariaDescribedByIds"
 />

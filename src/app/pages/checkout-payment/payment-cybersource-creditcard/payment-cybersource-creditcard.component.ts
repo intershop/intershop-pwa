@@ -18,7 +18,7 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { focusFirstInvalidField, markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- allows access to cybersource js functionality */
 declare let Flex: any;
@@ -203,6 +203,7 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit 
   submitNewPaymentInstrument() {
     if (this.cyberSourceCreditCardForm.invalid) {
       markAsDirtyRecursive(this.cyberSourceCreditCardForm);
+      focusFirstInvalidField(this.cyberSourceCreditCardForm);
     } else {
       this.expirationMonthVal = this.cyberSourceCreditCardForm.controls.expirationMonth.value;
       this.expirationYearVal = this.cyberSourceCreditCardForm.controls.expirationYear.value;

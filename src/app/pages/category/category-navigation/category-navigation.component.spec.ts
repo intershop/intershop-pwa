@@ -57,12 +57,18 @@ describe('Category Navigation Component', () => {
 
     expect(element.querySelectorAll('a')).toMatchInlineSnapshot(`
       NodeList [
-        <a class="filter-item-name" ng-reflect-router-link="/c/A" href="/c/A"> nA </a>,
-        <a class="filter-item-name filter-selected" ng-reflect-router-link="/c/A/A.1" href="/c/A/A.1">
+        <a class="filter-item-name link-decoration-hover" ng-reflect-router-link="/c/A" href="/c/A"> nA </a>,
+        <a
+        class="filter-item-name link-decoration-hover filter-selected"
+        ng-reflect-router-link="/c/A/A.1"
+        href="/c/A/A.1"
+      >
         nA.1
       </a>,
-        <a class="filter-item-name" ng-reflect-router-link="/c/A/A.2" href="/c/A/A.2"> nA.2 </a>,
-        <a class="filter-item-name" ng-reflect-router-link="/c/B" href="/c/B"> nB </a>,
+        <a class="filter-item-name link-decoration-hover" ng-reflect-router-link="/c/A/A.2" href="/c/A/A.2">
+        nA.2
+      </a>,
+        <a class="filter-item-name link-decoration-hover" ng-reflect-router-link="/c/B" href="/c/B"> nB </a>,
       ]
     `);
   });
@@ -74,10 +80,16 @@ describe('Category Navigation Component', () => {
 
     expect(element.querySelectorAll('a')).toMatchInlineSnapshot(`
       NodeList [
-        <a class="filter-item-name filter-selected" ng-reflect-router-link="/c/A/A.1" href="/c/A/A.1">
+        <a
+        class="filter-item-name link-decoration-hover filter-selected"
+        ng-reflect-router-link="/c/A/A.1"
+        href="/c/A/A.1"
+      >
         nA.1
       </a>,
-        <a class="filter-item-name" ng-reflect-router-link="/c/A/A.2" href="/c/A/A.2"> nA.2 </a>,
+        <a class="filter-item-name link-decoration-hover" ng-reflect-router-link="/c/A/A.2" href="/c/A/A.2">
+        nA.2
+      </a>,
       ]
     `);
   });

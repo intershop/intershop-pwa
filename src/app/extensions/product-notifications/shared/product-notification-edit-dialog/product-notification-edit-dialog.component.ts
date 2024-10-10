@@ -18,7 +18,7 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { focusFirstInvalidField, markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
@@ -111,6 +111,7 @@ export class ProductNotificationEditDialogComponent implements OnInit {
   submitForm() {
     if (this.productNotificationForm.invalid) {
       markAsDirtyRecursive(this.productNotificationForm);
+      focusFirstInvalidField(this.productNotificationForm);
       this.submitted = true;
       return;
     } else {

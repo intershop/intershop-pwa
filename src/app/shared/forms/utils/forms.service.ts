@@ -1,4 +1,6 @@
-import { Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, OperatorFunction, forkJoin } from 'rxjs';
@@ -20,7 +22,11 @@ export function mapToAddressOptions(): OperatorFunction<Address[], SelectOption[
 
 @Injectable({ providedIn: 'root' })
 export class FormsService {
-  constructor(private translate: TranslateService, private store: Store) {}
+  constructor(
+    private translate: TranslateService,
+    private store: Store,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
 
   /**
    * Get address select options for addresses in order to render them in an address select box.
@@ -108,5 +114,47 @@ export class FormsService {
       }
     }
     return salutationLabels;
+  }
+
+  /**
+   * Set focus on the first invalid field in a form.
+   * Has to be of type InputField, SelectElement or TextArea.
+   *
+   * @param form The form group to check for invalid fields.
+   * @param formId Optional id of the form to search for the first invalid field. Necessary if multiple form fields on one page have duplicate keys.
+   */
+  focusFirstInvalidFieldRecursive(form: FormGroup, formId?: string) {
+    // iterate over all form controls and check if they are invalid
+    for (const key of Object.keys(form.controls)) {
+      const control = form.get(key);
+
+      if (control && control.invalid) {
+        // recursively check nested FormGroup
+        if (control instanceof FormGroup) {
+          this.focusFirstInvalidFieldRecursive(control, formId);
+          break;
+        } else {
+          let element: HTMLElement;
+
+          if (formId) {
+            const formToSearch = this.document.getElementById(formId);
+            element = formToSearch.querySelector(`[id^='formly_'][id*='${key}']`);
+          } else {
+            element = this.document.querySelector(`[id^='formly_'][id*='${key}']`);
+          }
+
+          if (
+            element &&
+            (element instanceof HTMLInputElement ||
+              element instanceof HTMLSelectElement ||
+              element instanceof HTMLTextAreaElement)
+          ) {
+            (element as HTMLElement).focus();
+            // break after the first element with an error is focused
+            break;
+          }
+        }
+      }
+    }
   }
 }

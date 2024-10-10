@@ -13,7 +13,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { pick } from 'lodash-es';
 
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { focusFirstInvalidField, markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { Wishlist } from '../../models/wishlist/wishlist.model';
@@ -112,6 +112,7 @@ export class WishlistPreferencesDialogComponent implements OnInit {
     if (this.wishListForm.invalid) {
       this.submitted = true;
       markAsDirtyRecursive(this.wishListForm);
+      focusFirstInvalidField(this.wishListForm);
       return;
     }
 

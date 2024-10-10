@@ -5,7 +5,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { focusFirstInvalidField, markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { PunchoutFacade } from '../../../facades/punchout.facade';
 import { CxmlConfiguration } from '../../../models/cxml-configuration/cxml-configuration.model';
@@ -78,6 +78,7 @@ export class CxmlConfigurationFormComponent implements OnDestroy, OnInit {
     if (this.form.invalid) {
       this.submitted = true;
       markAsDirtyRecursive(this.form);
+      focusFirstInvalidField(this.form);
       return;
     }
 

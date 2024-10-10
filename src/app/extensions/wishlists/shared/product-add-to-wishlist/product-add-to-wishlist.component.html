@@ -7,15 +7,17 @@
   [ngClass]="cssClass"
   (click)="openModal(modal)"
   data-testing-id="addToWishlistButton"
+  [attr.title]="displayType === 'icon' ? ('product.add_to_wishlist.link' | translate) : undefined"
+  [attr.tabindex]="tabIndex"
 >
   <ng-container [ngSwitch]="displayType">
     <ng-template [ngSwitchCase]="'link'">{{ 'product.add_to_wishlist.link' | translate }}</ng-template>
     <ng-template [ngSwitchCase]="'animated'">
-      <fa-icon [icon]="['fas', 'heart']" [title]="'product.add_to_wishlist.link' | translate" />
+      <fa-icon [icon]="['fas', 'heart']" />
       <span class="share-label">{{ 'product.add_to_wishlist.link' | translate }}</span>
     </ng-template>
     <ng-template ngSwitchDefault>
-      <fa-icon [icon]="['fas', 'heart']" [title]="'product.add_to_wishlist.link' | translate" />
+      <fa-icon [icon]="['fas', 'heart']" />
     </ng-template>
   </ng-container>
 </button>

@@ -21,11 +21,12 @@
   <!-- Receipt message -->
   <div class="section">
     <p>
-      <span>{{ 'checkout.order.number.label' | translate }}</span>
+      <span>{{ 'checkout.order.number.label' | translate }}</span
+      >&nbsp;
       <strong data-testing-id="order-document-number">
-        <a *ngIf="order.customerNo; else plainOrderNo" [routerLink]="'/account/orders/' + order.id">
-          {{ order.documentNo }}</a
-        >
+        <a *ngIf="order.customerNo; else plainOrderNo" [routerLink]="'/account/orders/' + order.id">{{
+          order.documentNo
+        }}</a>
         <ng-template #plainOrderNo> {{ order.documentNo }}</ng-template>
       </strong>
     </p>

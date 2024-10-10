@@ -69,6 +69,10 @@ export class CostCenterFormComponent implements OnInit {
     return [
       {
         type: 'ish-fieldset-field',
+        props: {
+          legend: 'account.costcenter.create.heading',
+          legendClass: 'legend-invisible',
+        },
         fieldGroup: [
           {
             key: 'currency',
@@ -143,6 +147,7 @@ export class CostCenterFormComponent implements OnInit {
                 props: {
                   fieldClass: 'col-12 label-empty',
                   options: FormsService.getCostCenterBudgetPeriodOptions(),
+                  ariaLabel: 'account.costcenter.budget.label',
                 },
               },
             ],
