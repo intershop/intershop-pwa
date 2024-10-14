@@ -553,7 +553,7 @@
   "account.wishlists.edit_wishlist.confirmation": "Votre liste de souhaits \"{{0}}\" a été mise à jour.",
   "account.wishlists.edit_wishlist_form.save_button.text": "Enregistrer les modifications",
   "account.wishlists.heading": "Listes de souhaits",
-  "account.wishlists.heading.tooltip.content": "Vous pouvez créer une ou plusieurs listes de souhaits personnelles pour enregistrer et organiser les articles. Chaque liste a ses propres paramètres : <br><br> Le fait de faire d’une liste de souhaits votre liste de souhaits préférée ramènera toutes les autres listes (s’il y en a) à la normale. Tous les produits ajoutés seront ajoutés par défaut à la liste de souhaits préférée. <br><br> Vous pouvez partager des listes de souhaits avec vos amis en leur envoyant un courriel. Si vous ne souhaitez plus partager une liste de souhaits particulière, vous pouvez l’arrêter à tout moment.",
+  "account.wishlists.heading.tooltip.content": "Vous pouvez créer une ou plusieurs listes de souhaits personnelles pour enregistrer et organiser des articles. Chaque liste a ses propres paramètres : <br><br> Le fait de faire d’une liste de souhaits votre liste de souhaits préférée ramènera toutes les autres listes (s’il y en a) au statut normal. Tous les produits ajoutés seront ajoutés par défaut à la liste de souhaits préférée. <br><br> Vous pouvez partager des listes de souhaits avec vos amis en leur envoyant un courriel. Si vous ne souhaitez plus partager une liste de souhaits particulière, vous pouvez l’arrêter à tout moment.",
   "account.wishlists.heading.tooltip.headline": "Listes de souhaits",
   "account.wishlists.heading.tooltip.link": "Comment fonctionnent les listes de souhaits ?",
   "account.wishlists.items": "{{0, plural, one{# Article} other{# Articles}}}",
