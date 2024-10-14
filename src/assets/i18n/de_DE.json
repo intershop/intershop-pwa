@@ -553,7 +553,7 @@
   "account.wishlists.edit_wishlist.confirmation": "Ihre Wunschliste \"{{0}}\" wurde aktualisiert.",
   "account.wishlists.edit_wishlist_form.save_button.text": "Änderungen speichern",
   "account.wishlists.heading": "Wunschlisten",
-  "account.wishlists.heading.tooltip.content": "Sie können eine oder mehrere persönliche Wunschlisten erstellen, um Artikel zu speichern und zu organisieren. Jede Liste hat andere Einstellungen:<br> <b>Als bevorzugte Liste einstellen</b> markiert eine Wunschliste als bevorzugte Liste und setzt alle anderen (wenn vorhanden) zurück auf Standard. Alle hinzugefügten Produkte werden standardmäßig zu dieser Wunschliste hinzugefügt. <br><br> Per E-Mail können Sie Wunschlisten mit Freunden teilen. Wenn Sie diese Wunschliste nicht teilen möchten, können Sie auf das Symbol „Nicht mehr teilen“ klicken.",
+  "account.wishlists.heading.tooltip.content": "Sie können eine oder mehrere persönliche Wunschlisten erstellen, um Artikel zu speichern und zu organisieren. Jede Liste hat ihre eigenen Einstellungen:<br><br> Wenn Sie eine Wunschliste zu Ihrer bevorzugten Wunschliste machen, werden alle anderen Listen (sofern vorhanden) auf Standard zurückgesetzt. Alle hinzugefügten Produkte werden standardmäßig zur bevorzugten Wunschliste hinzugefügt. <br><br> Per E-Mail können Sie Wunschlisten mit Freunden teilen. Wenn Sie eine bestimmte Wunschliste nicht mehr teilen möchten, können Sie dies jederzeit beenden.",
   "account.wishlists.heading.tooltip.headline": "Wunschlisten",
   "account.wishlists.heading.tooltip.link": "Wie funktionieren Wunschlisten?",
   "account.wishlists.items": "{{0}} Artikel",
