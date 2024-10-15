@@ -27,6 +27,7 @@ export class ShoppingBasketPaymentComponent implements OnInit {
 
   ngOnInit(): void {
     this.priceType$ = this.checkoutFacade.priceType$;
+    this.checkoutFacade.loadEligiblePaymentMethods();
     this.paymentMethods$ = this.checkoutFacade.eligibleFastCheckoutPaymentMethods$;
     // if page is shown after cancelled/faulty redirect determine error message variable
     this.redirectStatus = this.route.snapshot.queryParamMap.get('redirect');

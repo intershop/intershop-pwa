@@ -269,6 +269,9 @@ export class CheckoutFacade {
   }
 
   eligibleFastCheckoutPaymentMethods$ = this.store.pipe(select(getEligibleFastCheckoutPaymentMethods));
+  loadEligiblePaymentMethods() {
+    this.store.dispatch(loadBasketEligiblePaymentMethods());
+  }
 
   priceType$ = this.store.pipe(select(getServerConfigParameter<'gross' | 'net'>('pricing.priceType')));
 
