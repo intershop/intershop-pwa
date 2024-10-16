@@ -22,7 +22,6 @@ describe('Punchout Service', () => {
     apiServiceMock = mock(ApiService);
     cookiesServiceMock = mock(CookiesService);
 
-    when(apiServiceMock.options(anything(), anything())).thenReturn(of({}));
     when(apiServiceMock.get(anything(), anything())).thenReturn(of({}));
     when(apiServiceMock.resolveLinks(anything())).thenReturn(() => of([]));
     when(apiServiceMock.post(anything(), anything(), anything())).thenReturn(of({}));
@@ -106,8 +105,8 @@ describe('Punchout Service', () => {
 
   it("should get oci options when 'getOciConfigurationOptions' is called", done => {
     punchoutService.getOciConfigurationOptions().subscribe(() => {
-      verify(apiServiceMock.options(anything(), anything())).once();
-      expect(capture(apiServiceMock.options).last()[0]).toMatchInlineSnapshot(`"customers/4711/punchouts/oci5"`);
+      verify(apiServiceMock.get(anything(), anything())).once();
+      expect(capture(apiServiceMock.get).last()[0]).toMatchInlineSnapshot(`"customers/4711/punchouts/oci5"`);
       done();
     });
   });
