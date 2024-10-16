@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { instance, mock } from 'ts-mockito';
 
-import { WishlistsFacade } from '../../../facades/wishlists.facade';
+import { WishlistsFacade } from '../../facades/wishlists.facade';
 
-import { AccountWishlistDetailLineItemComponent } from './account-wishlist-detail-line-item.component';
+import { WishlistLineItemComponent } from './wishlist-line-item.component';
 
-describe('Account Wishlist Detail Line Item Component', () => {
-  let component: AccountWishlistDetailLineItemComponent;
-  let fixture: ComponentFixture<AccountWishlistDetailLineItemComponent>;
+describe('Wishlist Line Item Component', () => {
+  let component: WishlistLineItemComponent;
+  let fixture: ComponentFixture<WishlistLineItemComponent>;
   let element: HTMLElement;
 
   beforeEach(async () => {
@@ -17,7 +17,7 @@ describe('Account Wishlist Detail Line Item Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountWishlistDetailLineItemComponent);
+    fixture = TestBed.createComponent(WishlistLineItemComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });
