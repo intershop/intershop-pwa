@@ -40,7 +40,6 @@ import {
   loadBasket,
   loadBasketByAPIToken,
   loadBasketByAPITokenFail,
-  loadBasketEligiblePaymentMethods,
   loadBasketEligibleShippingMethods,
   loadBasketEligibleShippingMethodsFail,
   loadBasketEligibleShippingMethodsSuccess,
@@ -375,20 +374,6 @@ export class BasketEffects {
             map(() => loadBasket())
           )
         )
-      )
-    );
-
-  /**
-   * Load eligible payment methods on cart page after the cart has been updated to show fastpay methods.
-   */
-  loadEligiblePayMethodsOnBasketPage$ =
-    !SSR &&
-    createEffect(() =>
-      this.actions$.pipe(
-        ofType(loadBasketSuccess),
-        map(() => this.router.url),
-        filter(url => /^\/basket/.test(url)),
-        map(() => loadBasketEligiblePaymentMethods())
       )
     );
 
