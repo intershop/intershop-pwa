@@ -43,6 +43,8 @@
             "style": "camelCase"
           }
         ],
+        // ToDo: no-host-metadata-property rule will be deprecated in Angular 18 and switching off the rule will be the default behavior and can be removed.
+        "@angular-eslint/no-host-metadata-property": "off",
         "@angular-eslint/pipe-prefix": [
           "error",
           {

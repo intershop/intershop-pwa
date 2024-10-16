@@ -26,6 +26,7 @@ SwiperCore.use([Navigation]);
   selector: 'ish-product-images',
   templateUrl: './product-images.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { ngSkipHydration: 'true' },
 })
 export class ProductImagesComponent implements OnInit {
   @ViewChild('carousel') carousel: SwiperComponent;
