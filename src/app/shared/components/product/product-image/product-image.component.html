@@ -13,7 +13,7 @@
   <ng-container *ngIf="productImage$ | async as image; else noImage">
     <img
       *ngIf="image.effectiveUrl; else noImage"
-      loading="lazy"
+      [attr.loading]="loading"
       class="product-image"
       [src]="image.effectiveUrl"
       [attr.height]="image.imageActualHeight"
@@ -25,7 +25,7 @@
 
   <ng-template #noImage>
     <img
-      loading="lazy"
+      [attr.loading]="loading"
       class="product-image"
       src="/assets/img/not-available.svg"
       [attr.alt]="'product.image.not_available.alttext' | translate"

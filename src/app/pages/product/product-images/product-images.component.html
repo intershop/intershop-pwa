@@ -23,6 +23,7 @@
                 [ngClass]="{ 'product-image-zoom': zoomImageIds$ | async }"
                 imageType="L"
                 [imageView]="imageView"
+                [loading]="i === 0 ? 'eager' : 'lazy'"
               />
             </div>
           </ng-template>
