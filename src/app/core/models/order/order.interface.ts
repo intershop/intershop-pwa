@@ -17,7 +17,7 @@ export interface OrderBaseData extends BasketBaseData {
     status: 'COMPLETED' | 'ROLLED_BACK' | 'STOPPED' | 'CONTINUE';
     stopAction?: {
       type: 'Redirect' | 'Workflow';
-      exitReason?: 'waiting_for_pending_payments' | 'redirect_urls_required';
+      exitReason?: 'waiting_for_pending_payments' | 'redirect_urls_required' | 'recurring.order';
       redirectUrl?: string;
     };
   };
@@ -25,6 +25,7 @@ export interface OrderBaseData extends BasketBaseData {
   status: string;
   basket: string;
   requisitionDocumentNo?: string;
+  recurringOrderID?: string;
   attributes?: Attribute[];
   taxIdentificationNumber?: string;
 }

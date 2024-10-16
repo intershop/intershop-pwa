@@ -1,0 +1,35 @@
+<div id="order-recurrence">
+  <div class="mt-1 mb-2">
+    <input
+      type="radio"
+      id="order_recurrence_single"
+      name="order_recurrence"
+      value="single-order"
+      class="form-check-input"
+      [checked]="!recurrence"
+      (change)="updateOrderRecurrence(null)"
+    />
+    <label class="form-check-label" for="order_recurrence_single">{{
+      'order.recurrence.single_order.label' | translate
+    }}</label>
+  </div>
+  <div>
+    <input
+      type="radio"
+      id="order_recurrence_recurring"
+      name="order_recurrence"
+      value="recurring-order"
+      class="form-check-input"
+      [checked]="!!recurrence"
+      (change)="updateOrderRecurrence(defaultRecurrence)"
+    />
+    <label class="form-check-label" for="order_recurrence_recurring">{{
+      'order.recurrence.recurring_order.label' | translate
+    }}</label>
+  </div>
+  <div *ngIf="!!recurrence" class="mt-3">
+    <form [formGroup]="form">
+      <formly-form [form]="form" [fields]="fields" [model]="model" />
+    </form>
+  </div>
+</div>

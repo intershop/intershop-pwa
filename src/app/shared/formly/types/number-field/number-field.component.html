@@ -1,0 +1,35 @@
+<div class="counter-input">
+  <button
+    type="button"
+    class="btn btn-link decrease-button"
+    (click)="decrease()"
+    [disabled]="cannotDecrease"
+    translate
+    tabindex="-1"
+  >
+    number.decrease.text
+  </button>
+  <button
+    type="button"
+    class="btn btn-link increase-button"
+    (click)="increase()"
+    [disabled]="cannotIncrease"
+    translate
+    tabindex="-1"
+  >
+    number.increase.text
+  </button>
+  <input
+    type="number"
+    [formControl]="formControl"
+    [formlyAttributes]="field"
+    class="form-control text-center"
+    [ngClass]="props.inputClass"
+    [attr.data-testing-id]="field.key"
+    pattern="[0-9]*"
+    [min]="props.min"
+    [max]="props.max"
+    [step]="props.step"
+    [attr.aria-label]="props.ariaLabel"
+  />
+</div>

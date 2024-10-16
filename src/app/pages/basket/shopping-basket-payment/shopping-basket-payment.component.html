@@ -12,21 +12,22 @@
 
   <!-- container for displaying of fast checkout payment methods -->
   <ng-container *ngIf="paymentMethods$ | async as paymentMethods">
-    <li class="d-block text-center p-2">{{ 'shopping_cart.payment.or.text' | translate }}</li>
-    <li *ngFor="let paymentMethod of paymentMethods" class="d-block">
-      <button
-        (click)="fastCheckout(paymentMethod.id)"
-        class="btn btn-lg btn-block btn-secondary"
-        [disabled]="paymentMethod.isRestricted"
-      >
-        {{ paymentMethod.displayName }}
-      </button>
-      <!-- payment cost information -->
-      <ish-basket-payment-cost-info
-        [basket]="basket"
-        [paymentMethod]="paymentMethod"
-        [priceType]="priceType$ | async"
-      />
-    </li>
-  </ng-container>
+    <ng-container *ngIf="paymentMethods.length">
+      <li class="d-block text-center p-2">{{ 'shopping_cart.payment.or.text' | translate }}</li>
+      <li *ngFor="let paymentMethod of paymentMethods" class="d-block">
+        <button
+          (click)="fastCheckout(paymentMethod.id)"
+          class="btn btn-lg btn-block btn-secondary"
+          [disabled]="paymentMethod.isRestricted"
+        >
+          {{ paymentMethod.displayName }}
+        </button>
+        <!-- payment cost information -->
+        <ish-basket-payment-cost-info
+          [basket]="basket"
+          [paymentMethod]="paymentMethod"
+          [priceType]="priceType$ | async"
+        />
+      </li> </ng-container
+  ></ng-container>
 </ul>

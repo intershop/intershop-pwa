@@ -1,0 +1,16 @@
+<ng-container *ngIf="recurrence">
+  <dl class="row dl-horizontal dl-separator">
+    <dt [class]="labelCssClass">{{ 'order.recurrence.interval.label' | translate }}</dt>
+    <dd [class]="valueCssClass">{{ recurrence.interval | ishFrequency }}</dd>
+    <dt [class]="labelCssClass">{{ 'order.recurrence.start.label' | translate }}</dt>
+    <dd [class]="valueCssClass">{{ recurrence.startDate | ishDate }}</dd>
+    <ng-container *ngIf="recurrence.endDate">
+      <dt [class]="labelCssClass">{{ 'order.recurrence.end.label' | translate }}</dt>
+      <dd [class]="valueCssClass">{{ recurrence.endDate | ishDate }}</dd>
+    </ng-container>
+    <ng-container *ngIf="recurrence.repetitions">
+      <dt [class]="labelCssClass">{{ 'order.recurrence.repetitions.label' | translate }}</dt>
+      <dd [class]="valueCssClass">after {{ recurrence.repetitions }} orders</dd>
+    </ng-container>
+  </dl>
+</ng-container>
