@@ -1,3 +1,4 @@
+/* eslint-disable etc/no-deprecated */
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
@@ -178,7 +179,7 @@ export class PunchoutIdentityProvider implements IdentityProvider {
     if (route.queryParamMap.get('FUNCTION') === 'DETAIL' && route.queryParamMap.get('PRODUCTID')) {
       return of(this.router.parseUrl(`/product/${route.queryParamMap.get('PRODUCTID')}`));
 
-      // Validation of Products
+      // Validation of Products - @deprecated This functionality should be handled by the ICM pipeline `ViewOCICatalogPWA-Start`.
     } else if (route.queryParamMap.get('FUNCTION') === 'VALIDATE' && route.queryParamMap.get('PRODUCTID')) {
       return this.punchoutService
         .getOciPunchoutProductData(route.queryParamMap.get('PRODUCTID'), route.queryParamMap.get('QUANTITY') || '1')
@@ -187,7 +188,7 @@ export class PunchoutIdentityProvider implements IdentityProvider {
           map(() => false)
         );
 
-      // Background Search
+      // Background Search - @deprecated: is now handled by the ICM ViewOCICatalogPWA-Start pipeline
     } else if (route.queryParamMap.get('FUNCTION') === 'BACKGROUND_SEARCH' && route.queryParamMap.get('SEARCHSTRING')) {
       return this.punchoutService.getOciPunchoutSearchData(route.queryParamMap.get('SEARCHSTRING')).pipe(
         tap(data => this.punchoutService.submitOciPunchoutData(data, false)),

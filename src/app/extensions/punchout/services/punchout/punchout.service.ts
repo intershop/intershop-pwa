@@ -391,6 +391,8 @@ export class PunchoutService {
    *
    * @param productId   The product id (SKU) of the product to validate.
    * @param quantity     The quantity for the validation (default: '1').
+   *
+   * @deprecated This functionality should be handled by the ICM pipeline `ViewOCICatalogPWA-Start`.
    */
   getOciPunchoutProductData(productId: string, quantity = '1'): Observable<Attribute<string>[]> {
     if (!productId) {
@@ -420,6 +422,8 @@ export class PunchoutService {
    * Gets a JSON object with the necessary OCI punchout data for the background search.
    *
    * @param searchString   The search string to search punchout products.
+   *
+   * @deprecated This functionality should be handled by the ICM pipeline `ViewOCICatalogPWA-Start`.
    */
   getOciPunchoutSearchData(searchString: string): Observable<Attribute<string>[]> {
     if (!searchString) {

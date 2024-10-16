@@ -1,3 +1,4 @@
+/* eslint-disable etc/no-deprecated */
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Params, Router, UrlTree, convertToParamMap } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
