@@ -15,41 +15,41 @@
     /></a>
   </div>
 
-  <ul class="share-tools">
-    <li>
+  <ul class="row list-unstyled justify-content-end">
+    <li class="p-2">
       <button
         type="button"
         *ngIf="wishlist.shared"
         (click)="unshareWishlist(wishlist.id)"
-        class="btn-tool btn-link float-right"
+        class="btn-tool btn-link"
         data-testing-id="wishlist-stop-sharing"
+        title="{{ 'account.wishlist.header.stop_wishlist_sharing.label' | translate }}"
       >
-        <fa-icon icon="pause" />
-        <span class="share-label">{{ 'account.wishlist.header.stop_wishlist_sharing.label' | translate }}</span>
+        <fa-icon [icon]="['fas', 'pause']" />
       </button>
     </li>
 
-    <li>
+    <li class="p-2">
       <button
         type="button"
         (click)="shareWishlistDialog.show()"
-        class="btn-tool btn-link float-right"
+        class="btn-tool btn-link"
         data-testing-id="wishlist-sharing"
+        title="{{ 'account.wishlist.header.send_wishlist.label' | translate }}"
       >
-        <fa-icon icon="paper-plane" />
-        <span class="share-label">{{ 'account.wishlist.header.send_wishlist.label' | translate }}</span>
+        <fa-icon [icon]="['fas', 'paper-plane']" />
       </button>
     </li>
 
-    <li>
+    <li class="p-2 pr-4">
       <button
         type="button"
         (click)="editWishlistDialog.show()"
-        class="btn-tool btn-link float-right"
+        class="btn-tool btn-link"
         data-testing-id="wishlist-details-edit"
+        title="{{ 'account.wishlist.header.edit_wishlist.label' | translate }}"
       >
-        <fa-icon icon="pencil-alt" />
-        <span class="share-label">{{ 'account.wishlist.header.edit_wishlist.label' | translate }}</span>
+        <fa-icon [icon]="['fas', 'pencil-alt']" />
       </button>
     </li>
   </ul>

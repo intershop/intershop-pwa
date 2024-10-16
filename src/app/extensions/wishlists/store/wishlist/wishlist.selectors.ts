@@ -6,7 +6,7 @@ import { isArrayEqual } from 'ish-core/utils/functions';
 import { Wishlist } from '../../models/wishlist/wishlist.model';
 import { getWishlistsState } from '../wishlists-store';
 
-import { initialState, wishlistsAdapter } from './wishlist.reducer';
+import { WishlistState, initialState, wishlistsAdapter } from './wishlist.reducer';
 
 const getWishlistState = createSelector(getWishlistsState, state => (state ? state.wishlists : initialState));
 
@@ -39,3 +39,21 @@ export const getAllWishlistsItemsSkus = createSelectorFactory<object, string[]>(
 )(getAllWishlists, (wishlists: Wishlist[]): string[] =>
   uniq(wishlists.map(wishlist => wishlist.items.map(items => items.sku)).flat())
 );
+
+export const getSharedWishlist = createSelector(getWishlistState, (state: WishlistState) => state.sharedWishlist);
+
+export const getSharedWishlistLoading = createSelector(
+  getWishlistState,
+  (state: WishlistState) => state.sharedWishlistLoading
+);
+
+export const getSharedWishlistError = createSelector(
+  getWishlistState,
+  (state: WishlistState) => state.sharedWishlistError
+);
+
+export const isSharedWishlistLoading = (wishlistId: string) =>
+  createSelector(getWishlistState, (state: WishlistState) => state.loading && state.selected === wishlistId);
+
+export const isSharedWishlistLoaded = (wishlistId: string) =>
+  createSelector(selectEntities, entities => !!entities[wishlistId]);

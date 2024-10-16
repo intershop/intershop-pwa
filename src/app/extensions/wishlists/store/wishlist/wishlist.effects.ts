@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { debounceTime, filter, map, mergeMap, switchMap } from 'rxjs/operators';
+import { from } from 'rxjs';
+import { concatMap, debounceTime, filter, map, mergeMap, switchMap, take } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
@@ -49,7 +51,12 @@ import { getSelectedWishlistDetails, getSelectedWishlistId, getWishlistDetails }
 
 @Injectable()
 export class WishlistEffects {
-  constructor(private actions$: Actions, private wishlistService: WishlistService, private store: Store) {}
+  constructor(
+    private actions$: Actions,
+    private wishlistService: WishlistService,
+    private store: Store,
+    private router: Router
+  ) {}
 
   loadWishlists$ = createEffect(() =>
     this.actions$.pipe(
@@ -281,8 +288,21 @@ export class WishlistEffects {
       mapToPayload(),
       mergeMap(payload =>
         this.wishlistService.getSharedWishlist(payload.wishlistId, payload.owner, payload.secureCode).pipe(
+          take(1),
           map(wishlist => wishlistApiActions.loadSharedWishlistSuccess({ wishlist })),
           mapErrorToAction(wishlistApiActions.loadSharedWishlistFail)
+        )
+      )
+    )
+  );
+
+  loadSharedWishlistFailed$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(wishlistApiActions.loadSharedWishlistFail),
+      mapToPayloadProperty('error'),
+      concatMap(() =>
+        from(this.router.navigate(['/error'])).pipe(
+          map(() => ({ type: '[Wishlist API] Navigation Success' })) // No-op action
         )
       )
     )

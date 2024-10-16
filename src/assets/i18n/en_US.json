@@ -566,6 +566,7 @@
   "account.wishlists.no_items": "You have not added any available items to your wish list.",
   "account.wishlists.no_wishlists": "Currently you don’t have any wish lists.",
   "account.wishlists.table.preferred": "Preferred",
+  "account.wishlists.table.shared": "Shared",
   "account.wishlists.widget.heading": "Your wish list items",
   "account.wishlists.wishlist_form.cancel_button.text": "Cancel",
   "account.wishlists.wishlist_form.name.error.maxlength": "The wish list name must not exceed 35 characters. ",
