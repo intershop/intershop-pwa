@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { LazyBudgetInfoComponent } from 'organization-management';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -30,6 +31,7 @@ describe('Requisition Cost Center Approval Component', () => {
       declarations: [
         MockComponent(BudgetBarComponent),
         MockComponent(InfoBoxComponent),
+        MockComponent(LazyBudgetInfoComponent),
         PricePipe,
         RequisitionCostCenterApprovalComponent,
       ],
@@ -107,7 +109,7 @@ describe('Requisition Cost Center Approval Component', () => {
     fixture.detectChanges();
 
     expect(element.textContent.replace(/^\s*[\r\n]*/gm, '')).toMatchInlineSnapshot(
-      `"approval.detailspage.cost_center.label100450 Headquarterapproval.detailspage.costcenter.budget.label $3,000.00 account.budget.already_spent.label $300.00 (10%) "`
+      `"approval.detailspage.costcenter.approval.heading approval.detailspage.cost_center.label100450 Headquarterapproval.detailspage.costcenter.budget.label $3,000.00 account.budget.already_spent.label $300.00 (10%) "`
     );
   });
 

@@ -1,13 +1,24 @@
-<h1>
-  {{ 'account.organization.cost_center_management' | translate }}
-  <a
-    *ngIf="!!(error$ | async) === false"
-    routerLink="create"
-    class="btn btn-secondary"
-    data-testing-id="add-cost-center-link"
-    >{{ 'account.costcenter.list.link.add' | translate }}</a
-  >
-</h1>
+<div class="d-md-flex align-items-center">
+  <div class="d-flex flex-row align-items-center">
+    <div class="py-2">
+      <h1>
+        {{ 'account.organization.cost_center_management' | translate }}
+      </h1>
+    </div>
+    <div class="p-2">
+      <ish-budget-info [suffix]="'account.organization.budget_price_type.suffix.info'" />
+    </div>
+  </div>
+  <div class="ml-auto py-2">
+    <a
+      *ngIf="!!(error$ | async) === false"
+      routerLink="create"
+      class="btn btn-secondary"
+      data-testing-id="add-cost-center-link"
+      >{{ 'account.costcenter.list.link.add' | translate }}</a
+    >
+  </div>
+</div>
 
 <div class="loading-container">
   <ng-container *ngIf="costCenters$ | async as costCenters">

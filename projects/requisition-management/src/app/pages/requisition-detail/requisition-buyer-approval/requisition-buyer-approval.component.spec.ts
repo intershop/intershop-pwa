@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { LazyBudgetInfoComponent } from 'organization-management';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -28,6 +29,7 @@ describe('Requisition Buyer Approval Component', () => {
       declarations: [
         MockComponent(BudgetBarComponent),
         MockComponent(InfoBoxComponent),
+        MockComponent(LazyBudgetInfoComponent),
         PricePipe,
         RequisitionBuyerApprovalComponent,
       ],
@@ -79,7 +81,7 @@ describe('Requisition Buyer Approval Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
     expect(element.textContent.replace(/^\s*[\r\n]*/gm, '')).toMatchInlineSnapshot(
-      `"approval.detailspage.buyer.labelPatricia Millerapproval.detailspage.order_spend_limit.label $500.00 account.budget.label $3,000.00 account.budget.already_spent.label $300.00 (10%)account.budget.left.label $2,700.00 (90%) "`
+      `"approval.detailspage.buyer_budget.heading approval.detailspage.buyer.labelPatricia Millerapproval.detailspage.order_spend_limit.label $500.00 account.budget.label $3,000.00 account.budget.already_spent.label $300.00 (10%)account.budget.left.label $2,700.00 (90%) "`
     );
   });
 
@@ -88,7 +90,7 @@ describe('Requisition Buyer Approval Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
     expect(element.textContent.replace(/^\s*[\r\n]*/gm, '')).toMatchInlineSnapshot(
-      `"approval.detailspage.buyer.labelPatricia Millerapproval.detailspage.order_spend_limit.label $500.00 account.budget.label $3,000.00 account.budget.already_spent.label $300.00 (10%)approval.detailspage.budget.including_order.label $2,300.00 (77%)"`
+      `"approval.detailspage.buyer_budget.heading approval.detailspage.buyer.labelPatricia Millerapproval.detailspage.order_spend_limit.label $500.00 account.budget.label $3,000.00 account.budget.already_spent.label $300.00 (10%)approval.detailspage.budget.including_order.label $2,300.00 (77%)"`
     );
   });
 });
