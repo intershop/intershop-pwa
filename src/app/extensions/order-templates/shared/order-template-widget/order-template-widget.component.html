@@ -8,9 +8,7 @@
       <ng-container *ngIf="orderTemplates$ | async as orderTemplates; else emptyList">
         <ng-container *ngIf="orderTemplates.length; else emptyList">
           <div *ngFor="let orderTemplate of orderTemplates" class="mb-2">
-            <a [routerLink]="['/account/order-templates/', orderTemplate.id]" class="text-decoration-none">{{
-              orderTemplate.title
-            }}</a>
+            <a [routerLink]="['/account/order-templates/', orderTemplate.id]">{{ orderTemplate.title }}</a>
             <a *ngIf="orderTemplate.items?.length" class="align-top float-right">
               <ish-product-add-to-basket
                 ishProductContext

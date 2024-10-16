@@ -17,6 +17,8 @@ import {
 import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 import { Observable, isObservable, map, of } from 'rxjs';
 
+import { ariaDescribedByIds } from 'ish-shared/forms/utils/form-utils';
+
 function toObservableNumber(days: number | Observable<number>) {
   const days$ = isObservable(days) ? days : of(days);
   return days$.pipe(map(daysLoc => (typeof daysLoc === 'number' ? daysLoc : undefined)));
@@ -139,5 +141,9 @@ export class DateRangePickerFieldComponent extends FieldType<FieldTypeConfig> im
   get startDate$(): Observable<NgbDateStruct> {
     const startDate$ = toObservableNumber(this.props.startDate);
     return this.addDaysToToday$(startDate$);
+  }
+
+  get ariaDescribedByIds(): string | null {
+    return ariaDescribedByIds(this.field.id, this.showError, this.props.customDescription);
   }
 }

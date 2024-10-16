@@ -40,7 +40,7 @@ describe('Filter Text Component', () => {
         <li class="filter-item filter-layer0">
           <button
             type="button"
-            class="filter-item-name btn btn-link btn-link-action"
+            class="filter-item-name btn btn-link btn-link-action link-decoration-hover"
             data-testing-id="filter-link-AsusName"
           >
             Asus (4)
@@ -49,7 +49,7 @@ describe('Filter Text Component', () => {
         <li class="filter-item filter-layer0 filter-selected">
           <button
             type="button"
-            class="btn btn-link btn-link-action"
+            class="btn btn-link btn-link-action link-decoration-hover"
             data-testing-id="filter-link-LogitechName"
           >
             <span class="filter-item-name"> Logitech </span><span class="count"> (5) </span>

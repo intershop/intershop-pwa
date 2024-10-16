@@ -12,6 +12,8 @@ import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 })
 export class CheckoutAddressAnonymousFormComponent implements OnInit {
   @Input({ required: true }) parentForm: FormGroup;
+  @Input() invoiceFormId: string;
+  @Input() shippingFormId: string;
 
   invoiceAddressForm = new FormGroup({});
   shippingAddressForm = new FormGroup({});

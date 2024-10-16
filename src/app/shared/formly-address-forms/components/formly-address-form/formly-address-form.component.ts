@@ -40,6 +40,9 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
 
   private countries$: Observable<SelectOption[]>;
 
+  // needed to correctly display the placeholder in the country select box when initializing the form
+  private fromInitialized = false;
+
   addressForm: FormGroup;
   addressModel: { [key: string]: unknown; countryCode: string };
   addressFields: FormlyFieldConfig[];
@@ -80,9 +83,10 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
         countryCode: model.countryCode,
         ...configuration.getModel(this.addressModel),
       };
-      this.addressFields = [this.createCountrySelectField()].concat(
-        configuration.getFieldConfiguration(model.countryCode)
-      );
+
+      this.addressFields = [
+        (this.fromInitialized && this.isCountryAlreadySelected()) || this.createCountrySelectField(),
+      ].concat(configuration.getFieldConfiguration(model.countryCode));
 
       this.addressModel.countryCode = model.countryCode;
       this.addressForm.updateValueAndValidity();
@@ -118,6 +122,12 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
     };
   }
 
+  // prevent re-initializing the country select field so the tab-focus doesn't get lost when selecting a country and the form is updated
+  // this also allows for a correct selection via the arrow keys when the select box dropdown isn't opened
+  private isCountryAlreadySelected(): FormlyFieldConfig {
+    return this.addressFields?.find(field => field.fieldGroup?.[0]?.key === 'countryCode');
+  }
+
   private initForm() {
     const configuration = this.afcProvider.getConfiguration('default', this.businessCustomer, this.shortForm);
     this.addressForm = new FormGroup({});
@@ -145,5 +155,7 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
       ...prefilledAddress,
     };
     this.addressForm.updateValueAndValidity();
+
+    this.fromInitialized = true;
   }
 }

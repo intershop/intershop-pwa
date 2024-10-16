@@ -22,7 +22,7 @@
           'quote.edit.unsubmitted.name.label' | translate
         }}</label>
         <div class="col-8 col-md-9 col-xl-10">
-          <ish-in-place-edit (edited)="update()" (aborted)="reset()">
+          <ish-in-place-edit (edited)="update()" (aborted)="reset()" ariaLabelName="quote.edit.unsubmitted.name.label">
             <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('displayName').value }">
               {{ form.get('displayName').value || 'quote.edit.unsubmitted.enter_an_optional_name.text' | translate }}
             </p>
@@ -37,7 +37,11 @@
           'quote.edit.unsubmitted.comment.label' | translate
         }}</label>
         <div class="col-8 col-md-9 col-xl-10">
-          <ish-in-place-edit (edited)="update()" (aborted)="reset()">
+          <ish-in-place-edit
+            (edited)="update()"
+            (aborted)="reset()"
+            ariaLabelName="quote.edit.unsubmitted.comment.label"
+          >
             <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('description').value }">
               {{ form.get('description').value || 'quote.edit.unsubmitted.provide_comment.text' | translate }}
             </p>

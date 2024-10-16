@@ -38,9 +38,12 @@
                             [routerLinkActiveOptions]="{ exact: false }"
                             (isActiveChange)="activeChanged($event, subItem)"
                           >
-                            <a [routerLink]="subItem.routerLink" [attr.data-testing-id]="subItem.id + '-nav-link'">
-                              {{ subItem.localizationKey | translate }}
-                            </a>
+                            <a
+                              [routerLink]="subItem.routerLink"
+                              [attr.data-testing-id]="subItem.id + '-nav-link'"
+                              class="link-decoration-hover"
+                              >{{ subItem.localizationKey | translate }}</a
+                            >
                           </li>
                         </ng-container>
                       </ng-container>
@@ -55,9 +58,12 @@
                 [routerLinkActive]="activeClass"
                 [routerLinkActiveOptions]="{ exact: item.routerLink === '/account' ? true : false }"
               >
-                <a [routerLink]="item.routerLink" [attr.data-testing-id]="item.id + '-nav-link'">
-                  <fa-icon *ngIf="item.faIcon" [icon]="item.faIcon" />
-                  {{ item.localizationKey | translate }}
+                <a
+                  [routerLink]="item.routerLink"
+                  [attr.data-testing-id]="item.id + '-nav-link'"
+                  class="link-decoration-hover"
+                >
+                  <fa-icon *ngIf="item.faIcon" [icon]="item.faIcon" />{{ item.localizationKey | translate }}
                 </a>
               </li>
             </ng-template>

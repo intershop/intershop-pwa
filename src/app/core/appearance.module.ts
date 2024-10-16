@@ -19,7 +19,8 @@ import { ThemeService } from './utils/theme/theme.service';
 export class AppearanceModule {
   constructor(popoverConfig: NgbPopoverConfig, themeService: ThemeService) {
     popoverConfig.placement = 'top';
-    popoverConfig.triggers = 'hover';
+    popoverConfig.triggers = 'click';
+    popoverConfig.autoClose = 'outside';
     popoverConfig.container = 'body';
 
     themeService.init();

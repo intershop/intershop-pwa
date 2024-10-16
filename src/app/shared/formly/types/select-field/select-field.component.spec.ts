@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
@@ -18,16 +19,12 @@ describe('Select Field Component', () => {
       declarations: [SelectFieldComponent],
       imports: [
         FormlyModule.forRoot({
-          types: [
-            {
-              name: 'ish-select-field',
-              component: SelectFieldComponent,
-            },
-          ],
+          types: [{ name: 'ish-select-field', component: SelectFieldComponent }],
         }),
         FormlySelectModule,
         FormlyTestingComponentsModule,
         ReactiveFormsModule,
+        TranslateModule.forRoot(),
       ],
     }).compileComponents();
   });

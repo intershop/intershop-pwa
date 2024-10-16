@@ -6,7 +6,7 @@ import { pick } from 'lodash-es';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { focusFirstInvalidField, markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Account Profile Company Page Component displays a form for changing a business customers' company data
@@ -42,6 +42,7 @@ export class AccountProfileCompanyComponent implements OnInit {
     if (this.accountProfileCompanyForm.invalid) {
       this.submitted = true;
       markAsDirtyRecursive(this.accountProfileCompanyForm);
+      focusFirstInvalidField(this.accountProfileCompanyForm);
       return;
     }
     const companyName = this.accountProfileCompanyForm.get('companyName').value;

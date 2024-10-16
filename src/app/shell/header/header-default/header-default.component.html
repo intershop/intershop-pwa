@@ -26,7 +26,14 @@
 
   <div class="header-utility">
     <a class="search-toggler" [ngClass]="{ 'active-search': showSearch }">
-      <fa-icon *ngIf="isSticky" class="header-icon" [icon]="['fas', 'search']" (click)="toggle('search')" />
+      <fa-icon
+        *ngIf="isSticky"
+        class="header-icon"
+        [icon]="['fas', 'search']"
+        (click)="toggle('search')"
+        (keydown.enter)="toggle('search')"
+        tabindex="0"
+      />
       <div
         *ngIf="isSticky || showSearch"
         class="search-container header-search-container"
@@ -62,7 +69,6 @@
           routerLink="/home"
           class="logo"
           [attr.aria-label]="'common.home.link' | translate"
-          role="img"
           data-testing-id="header-home-link-desktop"
         ></a>
         <a
@@ -71,7 +77,6 @@
           routerLink="/home"
           class="mobile-logo"
           [attr.aria-label]="'common.home.link' | translate"
-          role="img"
           data-testing-id="header-home-link-mobile"
         ></a>
       </div>

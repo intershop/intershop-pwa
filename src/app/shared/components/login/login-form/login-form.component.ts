@@ -7,7 +7,7 @@ import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { InjectSingle } from 'ish-core/utils/injection';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { focusFirstInvalidField, markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Login Form Page Container displays a login form using the {@link LoginFormComponent} and signs the user in
@@ -72,9 +72,8 @@ export class LoginFormComponent implements OnInit {
       },
       {
         key: 'password',
-        type: 'ish-text-input-field',
+        type: 'ish-password-field',
         props: {
-          type: 'password',
           label: 'account.login.password.label',
           labelClass: this.labelClass || 'col-md-3',
           fieldClass: this.inputClass || 'col-md-6',
@@ -94,6 +93,7 @@ export class LoginFormComponent implements OnInit {
     if (this.form.invalid) {
       this.submitted = true;
       markAsDirtyRecursive(this.form);
+      focusFirstInvalidField(this.form);
       return;
     }
 

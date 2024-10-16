@@ -17,6 +17,14 @@
 
     @include transition(max-width 0.5s ease-in-out);
 
+    span {
+      &.share-label {
+        @include transition(color 1s ease-in-out);
+
+        color: $text-color-inverse;
+      }
+    }
+
     button {
       padding: 3px 0 0;
       font-family: $font-family-regular;
@@ -39,6 +47,15 @@
         color: $text-color-corporate;
       }
     }
+
+    a {
+      // share tool links are never underlined
+      text-decoration: none !important;
+
+      &:hover {
+        text-decoration: none !important;
+      }
+    }
   }
 
   @media (min-width: $screen-sm-min) {
@@ -52,11 +69,15 @@
         cursor: pointer;
 
         .share-label {
+          @include transition(color 1s ease-in-out);
+
           color: $text-color-corporate;
         }
       }
 
       .share-label {
+        @include transition(color 1s ease-in-out);
+
         padding-left: ($space-default * 0.5);
         font-size: $font-size-base;
         line-height: 26px;

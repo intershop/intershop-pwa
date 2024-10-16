@@ -70,7 +70,7 @@
 
       <div class="cost-summary"><ish-basket-cost-summary [totals]="order.totals" /></div>
       <div *ngIf="order.customerNo" class="cart-summary">
-        <h3>{{ 'checkout.account.email.registered.heading' | translate }}</h3>
+        <h2 class="h3">{{ 'checkout.account.email.registered.heading' | translate }}</h2>
         {{ 'checkout.account.email.registered.text' | translate }}&nbsp;
         <a routerLink="/account" data-testing-id="myaccount-link" class="text-nowrap">{{
           'checkout.account.email.registered.link' | translate

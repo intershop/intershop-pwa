@@ -1,5 +1,5 @@
 <div class="section">
-  <h3>{{ 'account.wishlists.widget.heading' | translate }}</h3>
+  <h2 class="h3">{{ 'account.wishlists.widget.heading' | translate }}</h2>
   <ng-container *ngIf="allWishlistsItemsSkus$ | async as wishlistsItemsSkus">
     <ng-container *ngIf="wishlistsItemsSkus.length > 0; else noItems" class="section">
       <div class="product-list" data-testing-id="wishlistProductsList">

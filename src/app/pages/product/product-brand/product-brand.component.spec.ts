@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -21,7 +22,10 @@ describe('Product Brand Component', () => {
     when(context.select()).thenReturn(of({ product: { manufacturer: 'Samsung' } as ProductView } as ProductContext));
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([{ path: '**', component: ProductBrandComponent }])],
+      imports: [
+        RouterTestingModule.withRoutes([{ path: '**', component: ProductBrandComponent }]),
+        TranslateModule.forRoot(),
+      ],
       declarations: [ProductBrandComponent, ProductContextAccessDirective],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();

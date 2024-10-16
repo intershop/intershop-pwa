@@ -11,7 +11,7 @@ import { FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { focusFirstInvalidField, markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Wishlist Reject Approval Dialog shows the modal to reject a requisition.
@@ -77,6 +77,7 @@ export class RequisitionRejectDialogComponent implements OnInit {
     if (this.rejectForm.invalid) {
       this.submitted = true;
       markAsDirtyRecursive(this.rejectForm);
+      focusFirstInvalidField(this.rejectForm);
       return;
     }
 

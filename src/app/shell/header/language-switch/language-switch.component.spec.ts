@@ -71,10 +71,12 @@ describe('Language Switch Component', () => {
     expect(element.querySelectorAll('li')).toHaveLength(2);
     expect(element.querySelectorAll('[href]')).toMatchInlineSnapshot(`
       NodeList [
-        <a role="menuitem" href="en_US"> English (United States) </a>,
-        <a role="menuitem" href="fr_FR"> Français (France) </a>,
+        <a href="en_US" lang="locale.en_US.short"> English (United States) </a>,
+        <a href="fr_FR" lang="locale.fr_FR.short"> Français (France) </a>,
       ]
     `);
-    expect(element.querySelector('.language-switch-current-selection').textContent).toMatchInlineSnapshot(`"Deutsch"`);
+    expect(element.querySelector('.language-switch-current-selection').textContent).toMatchInlineSnapshot(
+      `"locale.de_DE.long"`
+    );
   });
 });

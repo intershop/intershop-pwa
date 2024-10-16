@@ -3,6 +3,8 @@ import { NgbCalendar, NgbDate, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap'
 import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 import { Observable, combineLatest, isObservable, map, of } from 'rxjs';
 
+import { ariaDescribedByIds } from 'ish-shared/forms/utils/form-utils';
+
 /**
  * Type for a  date-picker field.
  * Uses NgbDatepicker with custom formatting and parsing.
@@ -67,5 +69,9 @@ export class DatePickerFieldComponent extends FieldType<FieldTypeConfig> {
     const days = daysType === 'minDays' ? this.props.minDays : this.props.maxDays;
     const days$ = isObservable(days) ? days : of(days);
     return days$.pipe(map(daysLoc => (typeof daysLoc === 'number' ? daysLoc : undefined)));
+  }
+
+  get ariaDescribedByIds(): string | null {
+    return ariaDescribedByIds(this.field.id, this.showError, this.props.customDescription);
   }
 }

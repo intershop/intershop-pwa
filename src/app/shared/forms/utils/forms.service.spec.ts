@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { isEmpty, of } from 'rxjs';
 import { anyString, instance, mock, when } from 'ts-mockito';
@@ -95,6 +96,35 @@ describe('Forms Service', () => {
   describe('getCostCenterBudgetPeriodOptions', () => {
     it('should return budget period options if called', () => {
       expect(FormsService.getCostCenterBudgetPeriodOptions()).toHaveLength(6);
+    });
+  });
+
+  describe('focusFirstInvalidFieldRecursive', () => {
+    it('should focus on the first invalid field in a form', () => {
+      const form = new FormGroup({
+        field1: new FormControl('', Validators.required),
+        field2: new FormControl('', Validators.required),
+        field3: new FormControl(''),
+      });
+
+      const element1 = document.createElement('input');
+      element1.id = 'formly_field1';
+      document.body.appendChild(element1);
+
+      const element2 = document.createElement('input');
+      element2.id = 'formly_field2';
+      document.body.appendChild(element2);
+
+      const element3 = document.createElement('input');
+      element3.id = 'formly_field3';
+      document.body.appendChild(element3);
+
+      form.controls.field1.markAsTouched();
+      form.controls.field2.markAsTouched();
+
+      formsService.focusFirstInvalidFieldRecursive(form);
+
+      expect(document.activeElement).toBe(element1);
     });
   });
 });

@@ -5,6 +5,7 @@
     [routerLink]="linkTarget || (productURL$ | async)"
     [queryParamsHandling]="computedQueryParamsHandling"
     [queryParams]="{ page: null }"
+    tabindex="-1"
     ><ng-container *ngTemplateOutlet="image" />
   </a>
 </div>

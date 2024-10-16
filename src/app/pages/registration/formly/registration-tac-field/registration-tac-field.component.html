@@ -7,6 +7,9 @@
         [formlyAttributes]="field"
         [attr.data-testing-id]="field.key"
         class="form-check-input"
+        [attr.aria-required]="props.required ? 'true' : undefined"
+        [attr.aria-invalid]="showError ? 'true' : undefined"
+        [attr.aria-describedby]="ariaDescribedByIds"
       />
       <label class="form-check-label" [attr.for]="id"
         ><span
@@ -22,7 +25,7 @@
       ></label>
     </div>
     <ng-container *ngIf="showError" class="invalid-feedback d-block mb-2">
-      <ish-validation-message [field]="field" class="validation-message" />
+      <ish-validation-message [field]="field" class="validation-message" [id]="id + '-formly-validation-error'" />
     </ng-container>
   </div>
 </div>

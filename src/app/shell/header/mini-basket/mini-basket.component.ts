@@ -6,9 +6,11 @@ import {
   DestroyRef,
   Input,
   OnInit,
+  ViewChild,
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, concat, of, timer } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
@@ -24,6 +26,8 @@ import { whenTruthy } from 'ish-core/utils/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MiniBasketComponent implements OnInit {
+  @ViewChild('miniBasketDropdown', { static: true }) miniBasketDropdown!: NgbDropdown;
+
   basketAnimation$: Observable<string>;
   itemTotal$: Observable<PriceItem>;
   itemCount$: Observable<number>;
@@ -75,17 +79,11 @@ export class MiniBasketComponent implements OnInit {
   }
 
   /**
-   * Toggle the collapse state of the mini basket programmatically.
-   */
-  toggleCollapse() {
-    this.isCollapsed = !this.isCollapsed;
-  }
-
-  /**
    * Collapse the mini basket programmatically.
    */
   collapse() {
     this.isCollapsed = true;
+    this.miniBasketDropdown.close();
     this.cdRef.markForCheck();
   }
 
@@ -95,6 +93,7 @@ export class MiniBasketComponent implements OnInit {
   // visible-for-testing
   open() {
     this.isCollapsed = false;
+    this.miniBasketDropdown.open();
     this.cdRef.markForCheck();
   }
 }

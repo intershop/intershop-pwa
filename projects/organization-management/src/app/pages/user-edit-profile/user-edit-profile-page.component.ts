@@ -3,7 +3,7 @@ import { UntypedFormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { focusFirstInvalidField, markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
@@ -33,6 +33,7 @@ export class UserEditProfilePageComponent implements OnInit {
     if (this.profileForm.invalid) {
       this.submitted = true;
       markAsDirtyRecursive(this.profileForm);
+      focusFirstInvalidField(this.profileForm);
       return;
     }
 

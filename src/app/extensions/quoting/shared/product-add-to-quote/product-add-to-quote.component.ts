@@ -18,6 +18,10 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 export class ProductAddToQuoteComponent implements OnInit {
   @Input() displayType: 'icon' | 'link' = 'link';
   @Input() cssClass: string;
+  /**
+   * render context, e.g. 'grid' for product list grid view
+   */
+  @Input() renderContext: 'grid' | undefined;
 
   disabled$: Observable<boolean>;
   visible$: Observable<boolean>;
@@ -33,5 +37,10 @@ export class ProductAddToQuoteComponent implements OnInit {
     this.router.navigate(['/addProductToQuoteRequest'], {
       queryParams: { sku: this.context.get('sku'), quantity: this.context.get('quantity') },
     });
+  }
+
+  get tabIndex(): number {
+    // if shown in product list 'grid' view, the icon is not accessible using keyboard tab, otherwise it is accessible
+    return this.displayType === 'icon' && this.renderContext === 'grid' ? -1 : undefined;
   }
 }

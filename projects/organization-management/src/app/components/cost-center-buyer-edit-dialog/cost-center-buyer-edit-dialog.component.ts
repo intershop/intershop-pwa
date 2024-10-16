@@ -6,7 +6,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { PriceHelper } from 'ish-core/models/price/price.helper';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { focusFirstInvalidField, markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
@@ -87,6 +87,7 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
     if (this.costCenterBuyerForm.invalid) {
       this.submitted = true;
       markAsDirtyRecursive(this.costCenterBuyerForm);
+      focusFirstInvalidField(this.costCenterBuyerForm);
       return;
     }
 

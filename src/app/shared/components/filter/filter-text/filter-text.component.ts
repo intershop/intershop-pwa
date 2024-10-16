@@ -66,4 +66,8 @@ export class FilterTextComponent implements OnInit {
       .sort((a, b) => (a.selected > b.selected ? -1 : a.selected < b.selected ? 1 : 0))
       .slice(0, Math.max(this.filterElement.limitCount || 0, selectedFacetsCount));
   }
+
+  get filterListElementId(): string {
+    return `filter-list_${this.filterElement.name.replace(/\s+/g, '-')}`;
+  }
 }

@@ -8,11 +8,12 @@ import { startWith, switchMap } from 'rxjs/operators';
  */
 @Component({
   selector: 'ish-validation-message',
-  template: '<small class="mt-1">{{ errorMessage$ | async | translate }} </small>',
+  template: '<small class="mt-1" [id]="id">{{ errorMessage$ | async | translate }} </small>',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ValidationMessageComponent implements OnChanges {
   @Input({ required: true }) field: FormlyFieldConfig;
+  @Input() id: string;
   errorMessage$: Observable<string>;
 
   constructor(private config: FormlyConfig) {}

@@ -19,7 +19,7 @@
 // General class for status 'deactivated' in general lists
 .inactive {
   *:not(a) {
-    color: $text-color-quaternary;
+    color: $text-color-tertiary;
   }
 
   a {

@@ -116,7 +116,7 @@ export interface Environment {
   multiSiteLocaleMap: MultiSiteLocaleMap;
 
   // configuration of the styling theme color used for theme-color meta
-  // format: hex color e.g. themeColor: '#688dc3',
+  // format: hex color e.g. themeColor: '#006b99',
   themeColor?: string;
 
   // cookie consent options

@@ -34,12 +34,22 @@
   </div>
 
   <!-- 'Show All' and 'Hide All' links -->
-  <button *ngIf="isShowAllLinkVisible()" type="button" class="btn btn-link btn-link-action" (click)="toggleCollapse()">
+  <button
+    *ngIf="isShowAllLinkVisible()"
+    type="button"
+    class="btn btn-link btn-link-action cart-items-collapse-link"
+    (click)="toggleCollapse()"
+  >
     {{ 'checkout.show_all.link' | translate : { '0': basket.lineItems.length } }}&nbsp;
-    <fa-icon [icon]="['fas', 'angle-down']" />
+    <fa-icon [icon]="['fas', 'angle-right']" class="float-right" />
   </button>
-  <button *ngIf="isHideLinkVisible()" type="button" class="btn btn-link btn-link-action" (click)="toggleCollapse()">
+  <button
+    *ngIf="isHideLinkVisible()"
+    type="button"
+    class="btn btn-link btn-link-action cart-items-collapse-link"
+    (click)="toggleCollapse()"
+  >
     {{ 'checkout.hide_all.link' | translate }}&nbsp;
-    <fa-icon [icon]="['fas', 'angle-up']" />
+    <fa-icon [icon]="['fas', 'angle-up']" class="float-right" />
   </button>
 </div>

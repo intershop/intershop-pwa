@@ -10,6 +10,6 @@
     }"
   />
   <ng-container *ngIf="showError" class="invalid-feedback d-block">
-    <ish-validation-message [field]="field" class="validation-message" />
+    <ish-validation-message [field]="field" class="validation-message" [id]="id + '-formly-validation-error'" />
   </ng-container>
 </div>

@@ -16,7 +16,7 @@ import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/cus
 import { User } from 'ish-core/models/user/user.model';
 import { ConfirmLeaveModalComponent } from 'ish-shared/components/registration/confirm-leave-modal/confirm-leave-modal.component';
 import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
+import { SpecialValidators, formlyValidation } from 'ish-shared/forms/validators/special-validators';
 
 export interface RegistrationConfigType {
   businessCustomer?: boolean;
@@ -78,6 +78,8 @@ export class RegistrationFormConfigurationService {
         props: {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
+          legend: 'account.register.address.headding',
+          legendClass: 'legend-invisible',
         },
         fieldGroup: [
           {
@@ -94,6 +96,11 @@ export class RegistrationFormConfigurationService {
             },
             validators: {
               validation: [Validators.pattern('true')],
+            },
+            validation: {
+              messages: {
+                pattern: 'registration.tac.error.tip',
+              },
             },
           },
           {
@@ -232,6 +239,8 @@ export class RegistrationFormConfigurationService {
         props: {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
+          legend: 'account.register.email_password.heading',
+          legendClass: 'legend-invisible',
         },
         validators: {
           validation: [
@@ -258,7 +267,7 @@ export class RegistrationFormConfigurationService {
             },
             validation: {
               messages: {
-                required: 'form.email.error.required',
+                required: 'form.email.error.email_confirmation',
                 equalTo: 'account.registration.email.not_match.error',
               },
             },
@@ -276,15 +285,20 @@ export class RegistrationFormConfigurationService {
               },
               attributes: { autocomplete: 'new-password' },
             },
+            validators: {
+              password: formlyValidation('password', SpecialValidators.password),
+            },
           },
           {
             key: 'passwordConfirmation',
-            type: 'ish-text-input-field',
+            type: 'ish-password-field',
             props: {
-              type: 'password',
               required: true,
               label: 'account.register.password_confirmation.label',
               attributes: { autocomplete: 'new-password' },
+            },
+            validators: {
+              password: formlyValidation('password', SpecialValidators.password),
             },
             validation: {
               messages: {
@@ -313,6 +327,8 @@ export class RegistrationFormConfigurationService {
         props: {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
+          legend: 'account.register.personal_information.heading',
+          legendClass: 'legend-invisible',
         },
         fieldGroup: this.fieldLibrary.getConfigurationGroup('personalInfo'),
       },
@@ -334,6 +350,8 @@ export class RegistrationFormConfigurationService {
         props: {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
+          legend: 'account.register.company_information.heading',
+          legendClass: 'legend-invisible',
         },
         fieldGroup: this.fieldLibrary.getConfigurationGroup('companyInfo'),
       },

@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
-import { FormGroupDirective, UntypedFormGroup } from '@angular/forms';
+import { FormGroup, FormGroupDirective, UntypedFormGroup } from '@angular/forms';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 /**
  * The Checkout Address Anonymous Component renders the initial checkout address page of an anonymous user. On this page the user can either login or checkout as guest by entering an invoice and (optionally) shipping address.
@@ -32,11 +33,14 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
 
   form = new UntypedFormGroup({});
 
+  invoiceFormId = 'checkout_invoice_address_form';
+  shippingFormId = 'checkout_shipping_address_form';
+
   // visible-for-testing
   submitted = false;
   isAddressFormCollapsed = true;
 
-  constructor(private checkoutFacade: CheckoutFacade) {}
+  constructor(private checkoutFacade: CheckoutFacade, private formsService: FormsService) {}
   /**
     jumps to nextPage as soon as basket invoice and shipping addresses are set.
    */
@@ -82,6 +86,7 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
     if (this.form.invalid) {
       this.submitted = true;
       markAsDirtyRecursive(this.form);
+      this.scrollToFirstInvalidField();
       return;
     }
 
@@ -113,6 +118,34 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
     } else {
       this.checkoutFacade.createBasketAddress(invoiceAddress, 'any');
     }
+  }
+
+  /**
+   * When selecting the option to ship to a different address, the newly generated form fields have the
+   * same keys as the invoice address form fields. This function differentiates between the shipping and the
+   * invoice form and checks in which form an error occurred.
+   * This is necessary because if an error in the second form occurs, focusFirstInvalidFieldRecursive() would
+   * focus the field with the same key in the first form.
+   *
+   * TODO: This function is a workaround and the form should be fixed to have unique keys.
+   */
+  scrollToFirstInvalidField() {
+    if (this.form.controls.invoiceAddress?.invalid) {
+      this.formsService.focusFirstInvalidFieldRecursive(
+        this.form.controls.invoiceAddress as FormGroup,
+        this.invoiceFormId
+      );
+      return;
+    }
+    if (this.form.controls.shippingAddress?.invalid) {
+      this.formsService.focusFirstInvalidFieldRecursive(
+        this.form.controls.shippingAddress as FormGroup,
+        this.shippingFormId
+      );
+      return;
+    }
+    // check possible other fields outside the invoice and shipping forms
+    this.formsService.focusFirstInvalidFieldRecursive(this.form);
   }
 
   get nextDisabled() {
