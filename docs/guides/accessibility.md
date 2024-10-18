@@ -75,7 +75,8 @@ The tab-order has to be determined by the HTML-structure, not by the index.
 
 #### Tools
 
-With the current technology, automated tools can only check for around 25-30% of the WCAG criteria.
+While automated tools are useful for identifying **basic** accessibility issues, they can **only partially check that the WCAG criteria are met**.
+Manual testing is essential to ensure full compliance.
 They can however provide a **quick and easy overview over some accessibility issues** on a page and give a good starting point on where to focus and fix accessibility problems.
 The following list contains some suggestions of free tools that have been used to check the accessibility of the PWA:
 
