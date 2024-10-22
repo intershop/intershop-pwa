@@ -4,7 +4,11 @@ import { createAction } from '@ngrx/store';
 import { Address } from 'ish-core/models/address/address.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
-import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
+import {
+  BasketValidation,
+  BasketValidationResultType,
+  BasketValidationScopeType,
+} from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { ErrorFeedback } from 'ish-core/models/http-error/http-error.model';
@@ -319,4 +323,14 @@ export const setBasketDesiredDeliveryDateFail = createAction(
 
 export const setBasketDesiredDeliveryDateSuccess = createAction(
   '[Basket API] Add or Update Basket Desired Delivery Date Success'
+);
+
+export const navigateBasedOnValidation = createAction(
+  '[Basket] Navigate Based On Validation',
+  payload<{ results: BasketValidationResultType }>()
+);
+
+export const updateBasketPaymentRedirectUrl = createAction(
+  '[Basket] Update Payment Redirect URL',
+  payload<{ redirectUrl: string }>()
 );

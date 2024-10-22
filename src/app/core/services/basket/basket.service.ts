@@ -222,7 +222,7 @@ export class BasketService {
    */
   validateBasket(scopes: BasketValidationScopeType[] = ['']): Observable<BasketValidation> {
     const body = {
-      adjustmentsAllowed: !scopes.some(scope => scope === 'All'), // don't allow adjustments for 'All' validation steps, because you cannot show them to the user at once
+      adjustmentsAllowed: true,
       scopes,
     };
 

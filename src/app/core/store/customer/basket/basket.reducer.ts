@@ -84,6 +84,7 @@ import {
   updateBasketItemSuccess,
   updateBasketPayment,
   updateBasketPaymentFail,
+  updateBasketPaymentRedirectUrl,
   updateBasketPaymentSuccess,
   updateBasketShippingMethod,
   updateConcardisCvcLastUpdated,
@@ -357,6 +358,19 @@ export const basketReducer = createReducer(
       info: undefined,
       promotionError: undefined,
       validationResults: initialValidationResults,
+    })
+  ),
+  on(
+    updateBasketPaymentRedirectUrl,
+    (state, { payload: { redirectUrl } }): BasketState => ({
+      ...state,
+      basket: {
+        ...state.basket,
+        payment: {
+          ...state.basket.payment,
+          redirectUrl,
+        },
+      },
     })
   )
 );

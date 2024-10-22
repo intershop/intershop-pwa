@@ -4,7 +4,7 @@ import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { intersection } from 'lodash-es';
 import { EMPTY, Observable, from } from 'rxjs';
-import { concatMap, filter, map, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 
 import { BasketFeedbackView } from 'ish-core/models/basket-feedback/basket-feedback.model';
 import {
@@ -27,11 +27,13 @@ import {
   loadBasketEligiblePaymentMethods,
   loadBasketEligibleShippingMethods,
   loadBasketFail,
+  navigateBasedOnValidation,
   startCheckout,
   startCheckoutFail,
   startCheckoutSuccess,
   startFastCheckout,
   submitBasket,
+  updateBasketPaymentRedirectUrl,
   validateBasket,
 } from './basket.actions';
 import { getCurrentBasket } from './basket.selectors';
@@ -90,26 +92,30 @@ export class BasketValidationEffects {
   /**
    * Validates the basket and jumps to the next possible checkout step (basket acceleration)
    */
-  continueCheckoutWithAcceleration$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(startCheckoutSuccess),
-        mapToPayload(),
-        map(payload => payload.basketValidation.results),
-        filter(results => results.valid && !results.adjusted),
-        concatMap(() =>
-          this.basketService
-            .validateBasket(this.validationSteps[CheckoutStepType.Review].scopes)
-            .pipe(
-              concatMap(basketValidation =>
-                basketValidation?.results?.valid
-                  ? from(this.router.navigate([this.validationSteps[CheckoutStepType.Review].route]))
-                  : this.jumpToTargetRoute('auto', basketValidation?.results)
-              )
-            )
+  continueCheckoutWithAcceleration$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(startCheckoutSuccess),
+      mapToPayload(),
+      map(payload => payload.basketValidation.results),
+      filter(results => results.valid && !results.adjusted),
+      concatMap(() =>
+        this.basketService.validateBasket(this.validationSteps[CheckoutStepType.Review].scopes).pipe(
+          mergeMap(basketValidation => {
+            const actions = [];
+
+            if (basketValidation.basket.payment?.redirectUrl) {
+              actions.push(
+                updateBasketPaymentRedirectUrl({ redirectUrl: basketValidation.basket.payment.redirectUrl })
+              );
+            }
+
+            actions.push(navigateBasedOnValidation({ results: basketValidation.results }));
+
+            return actions;
+          })
         )
-      ),
-    { dispatch: false }
+      )
+    )
   );
 
   /**
@@ -122,11 +128,23 @@ export class BasketValidationEffects {
       whenTruthy(),
       concatMap(scopes =>
         this.basketService.validateBasket(scopes).pipe(
-          map(basketValidation =>
-            basketValidation.results.valid
-              ? continueCheckoutSuccess({ targetRoute: undefined, basketValidation })
-              : continueCheckoutWithIssues({ targetRoute: undefined, basketValidation })
-          ),
+          mergeMap(basketValidation => {
+            const actions = [];
+
+            if (basketValidation.basket.payment?.redirectUrl) {
+              actions.push(
+                updateBasketPaymentRedirectUrl({ redirectUrl: basketValidation.basket.payment.redirectUrl })
+              );
+            }
+
+            actions.push(
+              basketValidation.results.valid
+                ? continueCheckoutSuccess({ targetRoute: undefined, basketValidation })
+                : continueCheckoutWithIssues({ targetRoute: undefined, basketValidation })
+            );
+
+            return actions;
+          }),
           mapErrorToAction(continueCheckoutFail)
         )
       )
@@ -146,19 +164,50 @@ export class BasketValidationEffects {
 
         return this.basketService.validateBasket(this.validationSteps[targetStep - 1].scopes).pipe(
           withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-          concatMap(([basketValidation, basket]) =>
-            basketValidation.results.valid
-              ? targetStep === CheckoutStepType.Receipt && !basketValidation.results.adjusted
-                ? basket.approval?.approvalRequired
-                  ? [continueCheckoutSuccess({ targetRoute: undefined, basketValidation }), submitBasket()]
-                  : [continueCheckoutSuccess({ targetRoute: undefined, basketValidation }), createOrder()]
-                : [continueCheckoutSuccess({ targetRoute, basketValidation })]
-              : [continueCheckoutWithIssues({ targetRoute, basketValidation })]
-          ),
+          mergeMap(([basketValidation, basket]) => {
+            const actions = [];
+
+            if (basketValidation.basket.payment?.redirectUrl) {
+              actions.push(
+                updateBasketPaymentRedirectUrl({ redirectUrl: basketValidation.basket.payment.redirectUrl })
+              );
+            }
+
+            if (basketValidation.results.valid) {
+              if (targetStep === CheckoutStepType.Receipt && !basketValidation.results.adjusted) {
+                if (basket.approval?.approvalRequired) {
+                  actions.push(continueCheckoutSuccess({ targetRoute: undefined, basketValidation }), submitBasket());
+                } else {
+                  actions.push(continueCheckoutSuccess({ targetRoute: undefined, basketValidation }), createOrder());
+                }
+              } else {
+                actions.push(continueCheckoutSuccess({ targetRoute, basketValidation }));
+              }
+            } else {
+              actions.push(continueCheckoutWithIssues({ targetRoute, basketValidation }));
+            }
+
+            return actions;
+          }),
           mapErrorToAction(continueCheckoutFail)
         );
       })
     )
+  );
+
+  navigateBasedOnValidation$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(navigateBasedOnValidation),
+        map(action => {
+          if (action.payload.results.valid) {
+            this.router.navigate([this.validationSteps[CheckoutStepType.Review].route]);
+          } else {
+            this.jumpToTargetRoute('auto', action.payload.results);
+          }
+        })
+      ),
+    { dispatch: false }
   );
 
   /**
