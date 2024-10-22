@@ -18,6 +18,7 @@ import { DirectivesModule } from 'ish-core/directives.module';
 import { IconModule } from 'ish-core/icon.module';
 import { SpecialValidators, formlyValidation } from 'ish-shared/forms/validators/special-validators';
 
+import { BudgetTypeFieldComponent } from './budget-type-field/budget-type-field.component';
 import { CaptchaFieldComponent } from './captcha-field/captcha-field.component';
 import { CheckboxFieldComponent } from './checkbox-field/checkbox-field.component';
 import { DatePickerFieldComponent } from './date-picker-field/date-picker-field.component';
@@ -33,6 +34,7 @@ import { TextInputFieldComponent } from './text-input-field/text-input-field.com
 import { TextareaFieldComponent } from './textarea-field/textarea-field.component';
 
 const fieldComponents = [
+  BudgetTypeFieldComponent,
   CaptchaFieldComponent,
   CheckboxFieldComponent,
   DatePickerFieldComponent,
@@ -147,6 +149,7 @@ const fieldComponents = [
           wrappers: ['form-field-checkbox-horizontal'],
         },
         { name: 'ish-captcha-field', component: CaptchaFieldComponent },
+        { name: 'ish-budget-type-field', component: BudgetTypeFieldComponent },
         {
           name: 'ish-fieldset-field',
           component: FieldsetFieldComponent,

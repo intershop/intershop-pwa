@@ -6,12 +6,12 @@ import { instance, mock, when } from 'ts-mockito';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
 
-import { AccountProfileCompanyPageComponent } from './account-profile-company-page.component';
-import { AccountProfileCompanyComponent } from './account-profile-company/account-profile-company.component';
+import { OrganizationSettingsCompanyPageComponent } from './organization-settings-company-page.component';
+import { OrganizationSettingsCompanyComponent } from './organization-settings-company/organization-settings-company.component';
 
-describe('Account Profile Company Page Component', () => {
-  let component: AccountProfileCompanyPageComponent;
-  let fixture: ComponentFixture<AccountProfileCompanyPageComponent>;
+describe('Organization Settings Company Page Component', () => {
+  let component: OrganizationSettingsCompanyPageComponent;
+  let fixture: ComponentFixture<OrganizationSettingsCompanyPageComponent>;
   let element: HTMLElement;
   let accountFacade: AccountFacade;
 
@@ -20,13 +20,13 @@ describe('Account Profile Company Page Component', () => {
     when(accountFacade.customer$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      declarations: [AccountProfileCompanyPageComponent, MockComponent(AccountProfileCompanyComponent)],
+      declarations: [MockComponent(OrganizationSettingsCompanyComponent), OrganizationSettingsCompanyPageComponent],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountProfileCompanyPageComponent);
+    fixture = TestBed.createComponent(OrganizationSettingsCompanyPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });
@@ -37,7 +37,7 @@ describe('Account Profile Company Page Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should render account-profile-company component for a business customer', () => {
+  it('should render organization-settings-company component for a business customer', () => {
     const businessCustomer = {
       customerNo: '4711',
       isBusinessCustomer: true,
@@ -45,10 +45,10 @@ describe('Account Profile Company Page Component', () => {
     when(accountFacade.customer$).thenReturn(of(businessCustomer));
 
     fixture.detectChanges();
-    expect(element.querySelector('ish-account-profile-company')).toBeTruthy();
+    expect(element.querySelector('ish-organization-settings-company')).toBeTruthy();
   });
 
-  it('should not render account-profile-company component for a private customer', () => {
+  it('should not render organization-settings-company component for a private customer', () => {
     const privateCustomer = {
       customerNo: '4712',
       isBusinessCustomer: false,
@@ -56,6 +56,6 @@ describe('Account Profile Company Page Component', () => {
     when(accountFacade.customer$).thenReturn(of(privateCustomer));
 
     fixture.detectChanges();
-    expect(element.querySelector('ish-account-profile-company')).toBeFalsy();
+    expect(element.querySelector('ish-organization-settings-company')).toBeFalsy();
   });
 });

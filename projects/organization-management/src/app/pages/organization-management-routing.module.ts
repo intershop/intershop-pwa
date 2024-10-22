@@ -16,6 +16,20 @@ import { redirectFirstToParentGuard } from '../guards/redirect-first-to-parent.g
 export const routes: Routes = [
   { path: '', redirectTo: 'cost-centers', pathMatch: 'full' },
   {
+    path: 'settings',
+    loadChildren: () =>
+      import('./organization-settings/organization-settings-page.module').then(m => m.OrganizationSettingsPageModule),
+  },
+  {
+    path: 'settings/company',
+    loadChildren: () =>
+      import('./organization-settings-company/organization-settings-company-page.module').then(
+        m => m.OrganizationSettingsCompanyPageModule
+      ),
+    data: { permission: 'APP_B2B_MANAGE_USERS' },
+    canActivate: [authorizationToggleGuard],
+  },
+  {
     path: 'users',
     loadChildren: () => import('./users/users-page.module').then(m => m.UsersPageModule),
     data: { permission: 'APP_B2B_MANAGE_USERS' },

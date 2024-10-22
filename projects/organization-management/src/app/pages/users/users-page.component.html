@@ -1,13 +1,24 @@
-<h1>
-  {{ 'account.organization.user_management' | translate }}
-  <a
-    *ngIf="!!(error$ | async) === false"
-    routerLink="create"
-    class="btn btn-secondary"
-    data-testing-id="add-user-link"
-    >{{ 'account.user.list.link.add_user' | translate }}</a
-  >
-</h1>
+<div class="d-md-flex align-items-center">
+  <div class="d-flex flex-row align-items-center">
+    <div class="py-2">
+      <h1>
+        {{ 'account.organization.user_management' | translate }}
+      </h1>
+    </div>
+    <div class="p-2">
+      <ish-budget-info [suffix]="'account.organization.budget_price_type.admin.info'" />
+    </div>
+  </div>
+  <div class="ml-auto py-2">
+    <a
+      *ngIf="!!(error$ | async) === false"
+      routerLink="create"
+      class="btn btn-secondary"
+      data-testing-id="add-user-link"
+      >{{ 'account.user.list.link.add_user' | translate }}</a
+    >
+  </div>
+</div>
 
 <ish-error-message [error]="error$ | async" />
 

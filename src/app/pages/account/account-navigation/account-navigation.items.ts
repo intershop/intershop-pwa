@@ -68,6 +68,12 @@ export const navigationItems: NavigationItem[] = [
     isCollapsed: true,
     children: [
       {
+        id: 'org-settings',
+        localizationKey: 'account.organization.org_settings',
+        routerLink: '/account/organization/settings',
+        notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+      },
+      {
         id: 'addresses',
         localizationKey: 'account.saved_addresses.link',
         routerLink: '/account/addresses',

@@ -1,6 +1,10 @@
 <ng-template #template>
   <div class="modal-header">
-    <h2 *ngIf="options?.titleText" class="modal-title">{{ options.titleText }}</h2>
+    <h2 *ngIf="options?.titleText" class="modal-title">
+      <fa-icon *ngIf="options?.faIcon" class="{{ options.faIconClass }}" [icon]="options.faIcon" />{{
+        options.titleText
+      }}
+    </h2>
     <button type="button" class="close" [title]="'dialog.close.text' | translate" (click)="hide()">
       <span aria-hidden="true">&times;</span>
     </button>

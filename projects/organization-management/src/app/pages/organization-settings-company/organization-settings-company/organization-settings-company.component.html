@@ -10,14 +10,16 @@
       <p class="indicates-required">
         <span class="required">*</span>{{ 'account.required_field.message' | translate }}
       </p>
-      <form class="form-horizontal" [formGroup]="accountProfileCompanyForm" (ngSubmit)="submit()">
-        <formly-form [form]="accountProfileCompanyForm" [fields]="fields" [model]="model" />
+      <form class="form-horizontal" [formGroup]="organizationSettingsCompanyForm" (ngSubmit)="submit()">
+        <formly-form [form]="organizationSettingsCompanyForm" [fields]="fields" [model]="model" />
         <div class="row">
           <div class="offset-md-4 col-md-8">
             <button type="submit" class="btn btn-primary" [disabled]="buttonDisabled">
               {{ 'account.update.button.label' | translate }}
             </button>
-            <a routerLink="/account/profile" class="btn btn-secondary">{{ 'account.cancel.link' | translate }}</a>
+            <a routerLink="/account/organization/settings" class="btn btn-secondary">{{
+              'account.cancel.link' | translate
+            }}</a>
           </div>
         </div>
       </form>
