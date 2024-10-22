@@ -139,7 +139,6 @@
   "account.costcenter.name.error.required": "Veuillez saisir le nom du centre de coûts.",
   "account.costcenter.name.label": "Nom",
   "account.costcenter.net.label": "Net",
-  "account.costcenter.price.type.title": "Calcul du budget",
   "account.costcenter.profile.price.type.label": "Calcul du budget en",
   "account.costcenter.remove.button.label": "Supprimer",
   "account.costcenter.remove_buyer.question": "Cet acheteur a des demandes en attente qui seront invalidées.<br />Voulez-vous toujours supprimer l’acheteur du centre de coûts ?",

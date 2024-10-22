@@ -7,7 +7,6 @@ import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module'
 import { IdentityProviderCapabilityDirective } from 'ish-core/directives/identity-provider-capability.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { IdentityProviderModule } from 'ish-core/identity-provider.module';
-import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 
@@ -19,7 +18,6 @@ describe('Account Profile Component', () => {
   let element: HTMLElement;
 
   const user = { firstName: 'Patricia', lastName: 'Miller', email: 'patricia@test.intershop.de' } as User;
-  const customer = { isBusinessCustomer: false } as Customer;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -43,7 +41,6 @@ describe('Account Profile Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.user = user;
-    component.customer = customer;
   });
 
   it('should be created', () => {
@@ -61,14 +58,6 @@ describe('Account Profile Component', () => {
 
     expect(element.querySelector('[data-testing-id="company-info"]')).toBeFalsy();
     expect(element.querySelector('[data-testing-id="edit-company"]')).toBeFalsy();
-  });
-
-  it('should display company section and link for a business customer', () => {
-    component.customer = { isBusinessCustomer: true } as Customer;
-    fixture.detectChanges();
-
-    expect(element.querySelector('[data-testing-id="company-info"]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id="edit-company"]')).toBeTruthy();
   });
 
   it('should display newsletter subscription status when the newsletter feature is enabled', () => {

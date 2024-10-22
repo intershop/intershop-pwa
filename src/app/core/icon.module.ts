@@ -52,6 +52,7 @@ import {
   faTimes,
   faTimesCircle,
   faTrashAlt,
+  faTriangleExclamation,
   faUndo,
   faUser,
   faUserCheck,
@@ -115,6 +116,7 @@ export class IconModule {
       faTimes,
       faTimesCircle,
       faTrashAlt,
+      faTriangleExclamation,
       faUndo,
       faUser,
       faUserCheck

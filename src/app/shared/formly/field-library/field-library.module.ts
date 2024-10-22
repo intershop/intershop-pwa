@@ -6,6 +6,7 @@ import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
 import { AddressLine1Configuration } from './configurations/address-line-1.configuration';
 import { AddressLine2Configuration } from './configurations/address-line-2.configuration';
+import { BudgetTypeConfiguration } from './configurations/budget-type.configuration';
 import { CityConfiguration } from './configurations/city.configuration';
 import { CompanyName1Configuration } from './configurations/company-name-1.configuration';
 import { CompanyName2Configuration } from './configurations/company-name-2.configuration';
@@ -33,6 +34,7 @@ import { registerLibraryConfigReplacementExtension } from './library-config-repl
     { provide: FIELD_LIBRARY_CONFIGURATION, useClass: AddressLine2Configuration, multi: true },
     { provide: FIELD_LIBRARY_CONFIGURATION, useClass: PostalCodeConfiguration, multi: true },
     { provide: FIELD_LIBRARY_CONFIGURATION, useClass: CityConfiguration, multi: true },
+    { provide: FIELD_LIBRARY_CONFIGURATION, useClass: BudgetTypeConfiguration, multi: true },
     {
       provide: FIELD_LIBRARY_CONFIGURATION_GROUP,
       useValue: { id: 'personalInfo', shortcutFor: ['title', 'firstName', 'lastName', 'phoneHome'] },

@@ -34,6 +34,9 @@ describe('Registration Form Configuration Service', () => {
         key: 'taxationID',
       },
     ]);
+    when(fieldLibrary.getConfiguration('budgetPriceType')).thenReturn({
+      key: 'budgetPriceType',
+    });
     when(fieldLibrary.getConfigurationGroup('personalInfo')).thenReturn([
       {
         key: 'title',
@@ -73,6 +76,9 @@ describe('Registration Form Configuration Service', () => {
             "taxationID",
           ],
           [
+            "budgetPriceType",
+          ],
+          [
             "title",
             "firstName",
             "lastName",
@@ -105,6 +111,9 @@ describe('Registration Form Configuration Service', () => {
               "companyName1",
               "companyName2",
               "taxationID",
+            ],
+            [
+              "budgetPriceType",
             ],
             [
               "title",

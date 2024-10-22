@@ -1,0 +1,81 @@
+<h1>{{ 'account.organization.org_settings' | translate }}</h1>
+
+<!--Company Profile -->
+<div class="row section" data-testing-id="company-info">
+  <div class="col-10 col-lg-8">
+    <h3>{{ 'account.company_profile.detail.heading' | translate }}</h3>
+    <div class="row">
+      <div class="col-md-12">
+        <dl class="row dl-horizontal dl-separator">
+          <!-- Company Name -->
+          <dt class="col-md-4">{{ 'account.company_profile.name.label' | translate }}</dt>
+          <dd class="col-md-8" data-testing-id="company-field">
+            {{ customer.companyName }}<br />{{ customer.companyName2 }}
+          </dd>
+          <!-- Industry -->
+          <ng-container *ngIf="customer.industry">
+            <dt class="col-md-4">{{ 'account.company_profile.industry.label' | translate }}</dt>
+            <dd class="col-md-8">{{ customer.industry }}</dd>
+          </ng-container>
+          <!-- Taxation ID -->
+          <dt class="col-md-4">{{ 'account.company_profile.taxation_id.label' | translate }}</dt>
+          <dd class="col-md-8" data-testing-id="taxation-id-field">{{ customer.taxationID }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="col-2 col-lg-4">
+    <a
+      *ishIsAuthorizedTo="'APP_B2B_MANAGE_USERS'"
+      routerLink="/account/organization/settings/company"
+      class="btn-tool"
+      title="{{ 'account.profile.update.link' | translate }}"
+      data-testing-id="edit-company"
+    >
+      <fa-icon [icon]="['fas', 'pencil-alt']" />
+    </a>
+  </div>
+</div>
+
+<!--Preferences -->
+<div class="row section">
+  <div class="col-10 col-lg-8">
+    <h3>{{ 'account.organization.org_settings.preferences.subtitle' | translate }}</h3>
+    <form class="form-horizontal" [formGroup]="budgetTypeForm">
+      <formly-form
+        [form]="budgetTypeForm"
+        [fields]="fields"
+        [options]="options"
+        [model]="model"
+        (modelChange)="modelChanges ? budgetTypeChangeConfirmationDialog.show() : cleanUp()"
+      />
+    </form>
+  </div>
+</div>
+
+<!-- budget edit confirmation dialog -->
+
+<ish-modal-dialog
+  #budgetTypeChangeConfirmationDialog
+  [options]="{
+    confirmText: 'account.update.button.label' | translate,
+    rejectText: 'account.cancel.button.label' | translate,
+    titleText: 'account.organization.budget_price_type.notification_modal.header' | translate,
+    faIconClass: 'text-warning pr-2',
+    faIcon: ['fas', 'triangle-exclamation']
+  }"
+  (confirmed)="submit()"
+  (closed)="resetValues()"
+>
+  <p>
+    {{ 'account.organization.budget_price_type.notification_modal.info' | translate }}
+  </p>
+  <p [ishServerHtml]="'account.organization.budget_price_type.notification_modal.consequences' | translate"></p>
+
+  <ul>
+    <li>{{ 'account.organization.budget_price_type.notification_modal.reset_to_zero' | translate }}</li>
+    <li>{{ 'account.organization.budget_price_type.notification_modal.all_effected' | translate }}</li>
+  </ul>
+  <br />
+  {{ 'account.organization.budget_price_type.notification_modal.ask' | translate }}
+</ish-modal-dialog>

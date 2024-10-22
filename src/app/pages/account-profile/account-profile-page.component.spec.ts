@@ -4,7 +4,6 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 
 import { AccountProfilePageComponent } from './account-profile-page.component';
@@ -14,10 +13,6 @@ describe('Account Profile Page Component', () => {
   let component: AccountProfilePageComponent;
   let fixture: ComponentFixture<AccountProfilePageComponent>;
   let element: HTMLElement;
-  const customer = {
-    customerNo: 'Patricia',
-    isBusinessCustomer: false,
-  } as Customer;
 
   const user = {
     firstName: 'Patricia',
@@ -28,7 +23,6 @@ describe('Account Profile Page Component', () => {
   beforeEach(async () => {
     const accountFacade = mock(AccountFacade);
     when(accountFacade.user$).thenReturn(of(user));
-    when(accountFacade.customer$).thenReturn(of(customer));
 
     await TestBed.configureTestingModule({
       declarations: [AccountProfilePageComponent, MockComponent(AccountProfileComponent)],

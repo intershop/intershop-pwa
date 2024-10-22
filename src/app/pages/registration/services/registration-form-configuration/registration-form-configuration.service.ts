@@ -63,6 +63,7 @@ export class RegistrationFormConfigurationService {
       },
       ...(!registrationConfig.sso ? this.getCredentialsConfig() : []),
       ...(registrationConfig.businessCustomer ? this.getCompanyInfoConfig() : []),
+      ...(registrationConfig.businessCustomer ? this.getCustomerPreferencesConfig() : []),
       ...this.getPersonalInfoConfig(),
       {
         type: 'ish-registration-heading-field',
@@ -336,6 +337,26 @@ export class RegistrationFormConfigurationService {
           childClass: 'col-md-10 col-lg-8 col-xl-6',
         },
         fieldGroup: this.fieldLibrary.getConfigurationGroup('companyInfo'),
+      },
+    ];
+  }
+
+  private getCustomerPreferencesConfig(): FormlyFieldConfig[] {
+    return [
+      {
+        type: 'ish-registration-heading-field',
+        props: {
+          headingSize: 'h2',
+          heading: 'account.organization.org_settings.preferences.subtitle',
+        },
+      },
+      {
+        type: 'ish-fieldset-field',
+        props: {
+          fieldsetClass: 'row',
+          childClass: 'col-md-10 col-lg-8 col-xl-6',
+        },
+        fieldGroup: [this.fieldLibrary.getConfiguration('budgetPriceType')],
       },
     ];
   }

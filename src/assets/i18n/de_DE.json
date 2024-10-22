@@ -139,7 +139,6 @@
   "account.costcenter.name.error.required": "Bitte geben Sie den Namen der Kostenstelle ein.",
   "account.costcenter.name.label": "Name",
   "account.costcenter.net.label": "Netto",
-  "account.costcenter.price.type.title": "Berechnung des Budgets",
   "account.costcenter.profile.price.type.label": "Berechnung des Budgets in",
   "account.costcenter.remove.button.label": "Entfernen",
   "account.costcenter.remove_buyer.question": "Dieser Einkäufer hat offene Bestellanfragen, die dann ungültig werden.<br />Wollen Sie den Einkäufer dennoch aus der Kostenstelle entfernen?",

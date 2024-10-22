@@ -13,6 +13,7 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, race, take } from 'rxjs';
 
@@ -33,6 +34,14 @@ export interface ModalOptions extends NgbModalOptions {
    * Optional modal reject button text.
    */
   rejectText?: string;
+  /**
+   * Optional fa icon styling classes.
+   */
+  faIconClass?: string;
+  /**
+   * Optional icon parameters.
+   */
+  faIcon?: IconProp;
 }
 
 /**
