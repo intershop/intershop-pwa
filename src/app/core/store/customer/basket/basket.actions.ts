@@ -326,11 +326,11 @@ export const setBasketDesiredDeliveryDateSuccess = createAction(
 );
 
 export const navigateBasedOnValidation = createAction(
-  '[Basket] Navigate Based On Validation',
+  '[Basket Internal] Navigate Based On Validation',
   payload<{ results: BasketValidationResultType }>()
 );
 
 export const updateBasketPaymentRedirectUrl = createAction(
-  '[Basket] Update Payment Redirect URL',
+  '[Basket Internal] Update Payment Redirect URL',
   payload<{ redirectUrl: string }>()
 );
