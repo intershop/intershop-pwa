@@ -32,6 +32,7 @@ import {
   startCheckoutSuccess,
   startFastCheckout,
   submitBasket,
+  updateBasketPaymentRedirectUrl,
   validateBasket,
 } from './basket.actions';
 
@@ -211,6 +212,42 @@ describe('Basket Validation Effects', () => {
         complete: done,
       });
     });
+
+    it('should call updateBasketPaymentRedirectUrl if payment redirectUrl is present', done => {
+      const basketValidationWithRedirect: BasketValidation = {
+        ...basketValidation,
+        basket: {
+          ...basketValidation.basket,
+          payment: {
+            redirectUrl: 'https://redirect.url',
+            id: '',
+            paymentInstrument: undefined,
+          },
+        },
+      };
+      const action = startCheckoutSuccess({ basketValidation: basketValidationWithRedirect });
+      actions$ = of(action);
+
+      when(basketServiceMock.validateBasket(anything())).thenReturn(of(basketValidationWithRedirect));
+
+      effects.continueCheckoutWithAcceleration$.subscribe(action => {
+        expect(action).toEqual(updateBasketPaymentRedirectUrl({ redirectUrl: 'https://redirect.url' }));
+        done();
+      });
+    });
+
+    it('should not call updateBasketPaymentRedirectUrl if payment redirectUrl is not present', done => {
+      const action = startCheckoutSuccess({ basketValidation });
+      actions$ = of(action);
+
+      effects.continueCheckoutWithAcceleration$.subscribe({
+        next: () => {
+          verify(updateBasketPaymentRedirectUrl({ redirectUrl: 'https://redirect.url' })).never();
+        },
+        error: fail,
+        complete: done,
+      });
+    });
   });
 
   describe('validateBasket$', () => {
@@ -279,6 +316,42 @@ describe('Basket Validation Effects', () => {
       const expected$ = cold('-c', { c: completion });
 
       expect(effects.validateBasket$).toBeObservable(expected$);
+    });
+
+    it('should call updateBasketPaymentRedirectUrl if payment redirectUrl is present', done => {
+      const basketValidationWithRedirect: BasketValidation = {
+        ...basketValidation,
+        basket: {
+          ...basketValidation.basket,
+          payment: {
+            redirectUrl: 'https://redirect.url',
+            id: '',
+            paymentInstrument: undefined,
+          },
+        },
+      };
+      const action = validateBasket({ scopes: ['Products'] });
+      actions$ = of(action);
+
+      when(basketServiceMock.validateBasket(anything())).thenReturn(of(basketValidationWithRedirect));
+
+      effects.validateBasket$.subscribe(action => {
+        expect(action).toEqual(updateBasketPaymentRedirectUrl({ redirectUrl: 'https://redirect.url' }));
+        done();
+      });
+    });
+
+    it('should not call updateBasketPaymentRedirectUrl if payment redirectUrl is not present', done => {
+      const action = validateBasket({ scopes: ['Products'] });
+      actions$ = of(action);
+
+      effects.validateBasket$.subscribe({
+        next: () => {
+          verify(updateBasketPaymentRedirectUrl({ redirectUrl: 'https://redirect.url' })).never();
+        },
+        error: fail,
+        complete: done,
+      });
     });
   });
 
@@ -460,6 +533,42 @@ describe('Basket Validation Effects', () => {
       const expected$ = cold('-c', { c: completion });
 
       expect(effects.validateBasketAndContinueCheckout$).toBeObservable(expected$);
+    });
+
+    it('should call updateBasketPaymentRedirectUrl if payment redirectUrl is present', done => {
+      const basketValidationWithRedirect: BasketValidation = {
+        ...basketValidation,
+        basket: {
+          ...basketValidation.basket,
+          payment: {
+            redirectUrl: 'https://redirect.url',
+            id: '',
+            paymentInstrument: undefined,
+          },
+        },
+      };
+      const action = continueCheckout({ targetStep: CheckoutStepType.Addresses });
+      actions$ = of(action);
+
+      when(basketServiceMock.validateBasket(anything())).thenReturn(of(basketValidationWithRedirect));
+
+      effects.validateBasketAndContinueCheckout$.subscribe(action => {
+        expect(action).toEqual(updateBasketPaymentRedirectUrl({ redirectUrl: 'https://redirect.url' }));
+        done();
+      });
+    });
+
+    it('should not call updateBasketPaymentRedirectUrl if payment redirectUrl is not present', done => {
+      const action = continueCheckout({ targetStep: CheckoutStepType.Addresses });
+      actions$ = of(action);
+
+      effects.validateBasketAndContinueCheckout$.subscribe({
+        next: () => {
+          verify(updateBasketPaymentRedirectUrl({ redirectUrl: 'https://redirect.url' })).never();
+        },
+        error: fail,
+        complete: done,
+      });
     });
 
     describe('handleBasketNotFoundError$', () => {
