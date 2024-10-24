@@ -1,0 +1,39 @@
+<ng-template #modal let-addModal>
+  <div class="modal-header">
+    <h2 class="modal-title">{{ modalHeader | translate }}</h2>
+    <button type="button" class="close" [title]="'dialog.close.text' | translate" (click)="hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <form [formGroup]="wishListForm" (ngSubmit)="submitWishlistForm()">
+    <div class="modal-body">
+      <p class="indicates-required">
+        <span class="required">*</span> {{ 'account.required_field.message' | translate }}
+      </p>
+
+      <formly-form [form]="wishListForm" [fields]="fields" />
+
+      <p
+        [ishServerHtml]="
+          'account.wishlists.wishlist_sharing_form.privacy_policy.text'
+            | translate : { '0': 'page://page.privacyPolicy.pagelet2-Page' }
+        "
+      ></p>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="formDisabled"
+        data-testing-id="wishlist-share-dialog-submit"
+      >
+        {{ primaryButton | translate }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="hide()">
+        {{ 'account.wishlists.wishlist_sharing_form.cancel_button.text' | translate }}
+      </button>
+    </div>
+  </form>
+</ng-template>

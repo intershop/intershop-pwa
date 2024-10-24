@@ -316,7 +316,7 @@ describe('Wishlist Selectors', () => {
 
   describe('Get Selected Wishlist', () => {
     const loadWishlistsSuccessActions = loadWishlistsSuccess({ wishlists });
-    const selectWishlistAction = selectWishlist({ id: wishlists[1].id });
+    const selectWishlistAction = selectWishlist({ wishlistId: wishlists[1].id });
 
     beforeEach(() => {
       store$.dispatch(loadWishlistsSuccessActions);
