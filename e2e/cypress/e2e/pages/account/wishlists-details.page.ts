@@ -33,7 +33,7 @@ export class WishlistsDetailsPage {
   }
 
   editWishlistDetails(name: string, preferred: boolean) {
-    cy.get('[data-testing-id="wishlist-details-edit"] .share-label').click();
+    cy.get('[data-testing-id="wishlist-details-edit"]').click();
     cy.get('ngb-modal-window').find('[data-testing-id="title"]').clear().type(name);
     cy.get('[data-testing-id="preferred"]').uncheck();
     if (preferred) {

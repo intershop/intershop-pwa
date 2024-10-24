@@ -59,13 +59,13 @@ export class AccountWishlistDetailPageComponent implements OnInit {
     const emailSubject = this.translate.instant('email.wishlist_sharing.heading');
     const defaultText = this.translate.instant('email.wishlist_sharing.text');
 
-    const emailBody = `${wishlistSharing.message || defaultText} ${wishlist.title}\n${
-      window.location.origin
-    }/wishlists/${wishlist.id}?owner=${wishlist.owner}&secureCode=${wishlist.secureCode}`;
+    // get the base url, but consider multi-channel baseHref configurations
+    const baseUrl = window.location.origin + window.location.pathname.split('/').slice(0, -3).join('/');
+    const emailBody = `${wishlistSharing.message || defaultText} ${wishlist.title}\n${baseUrl}/wishlists/
+    ${wishlist.id}?owner=${wishlist.owner}&secureCode=${wishlist.secureCode}`;
 
-    const mailtoLink = `mailto:${wishlistSharing.recipients}?subject=${encodeURIComponent(
-      emailSubject
-    )}&body=${encodeURIComponent(emailBody)}`;
+    const mailtoLink = `mailto:${wishlistSharing.recipients}?subject=
+    ${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
 
     window.open(mailtoLink);
   }

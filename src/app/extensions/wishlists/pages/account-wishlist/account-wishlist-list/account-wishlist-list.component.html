@@ -19,7 +19,9 @@
         'account.wishlists.table.preferred' | translate
       }}</span>
       <span *ngIf="wishlist.preferred && wishlist.shared" class="input-help p-1">|</span>
-      <span *ngIf="wishlist.shared" class="input-help">{{ 'account.wishlists.table.shared' | translate }}</span>
+      <span *ngIf="wishlist.shared" class="input-help" [ngClass]="{ 'pl-3': !wishlist.preferred }">{{
+        'account.wishlists.table.shared' | translate
+      }}</span>
     </div>
     <div class="col-2 list-item">
       {{ 'account.wishlists.items' | translate : { '0': wishlist.itemsCount } }}
