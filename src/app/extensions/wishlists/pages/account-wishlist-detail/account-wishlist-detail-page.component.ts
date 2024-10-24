@@ -61,11 +61,13 @@ export class AccountWishlistDetailPageComponent implements OnInit {
 
     // get the base url, but consider multi-channel baseHref configurations
     const baseUrl = window.location.origin + window.location.pathname.split('/').slice(0, -3).join('/');
-    const emailBody = `${wishlistSharing.message || defaultText} ${wishlist.title}\n${baseUrl}/wishlists/
-    ${wishlist.id}?owner=${wishlist.owner}&secureCode=${wishlist.secureCode}`;
+    const emailBody = `${wishlistSharing.message || defaultText} ${wishlist.title}\n${baseUrl}/wishlists/${
+      wishlist.id
+    }?owner=${wishlist.owner}&secureCode=${wishlist.secureCode}`;
 
-    const mailtoLink = `mailto:${wishlistSharing.recipients}?subject=
-    ${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+    const mailtoLink = `mailto:${wishlistSharing.recipients}?subject=${encodeURIComponent(
+      emailSubject
+    )}&body=${encodeURIComponent(emailBody)}`;
 
     window.open(mailtoLink);
   }
