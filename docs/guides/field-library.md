@@ -239,19 +239,20 @@ The following is a list of reusable field configurations available in the PWA.
 They are automatically updated using sync-formly-docs.ts -->
 <!-- sync-start -->
 
-| Configuration ID | Type                 | Description                                                                                 |
-| ---------------- | -------------------- | ------------------------------------------------------------------------------------------- |
-| `title`          | ish-select-field     | Title/Salutation, automatically extracts options from FormsService, not required by default |
-| `firstName`      | ish-text-input-field | First name, special characters forbidden and required by default                            |
-| `lastName`       | ish-text-input-field | Last name, special characters forbidden and required by default                             |
-| `phoneHome`      | ish-phone-field      | Phone, not required by default                                                              |
-| `companyName1`   | ish-text-input-field | Company Name 1, required by default                                                         |
-| `companyName2`   | ish-text-input-field | Company name 2, not required by default                                                     |
-| `taxationID`     | ish-text-input-field | Taxation ID, not required by default                                                        |
-| `addressLine1`   | ish-text-input-field | Address Line 1 (usually street & number), required by default                               |
-| `addressLine2`   | ish-text-input-field | Address Line 2, not required by default                                                     |
-| `postalCode`     | ish-text-input-field | Postal code, required by default                                                            |
-| `city`           | ish-text-input-field | City, required by default                                                                   |
+| Configuration ID  | Type                  | Description                                                                                 |
+| ----------------- | --------------------- | ------------------------------------------------------------------------------------------- |
+| `title`           | ish-select-field      | Title/Salutation, automatically extracts options from FormsService, not required by default |
+| `firstName`       | ish-text-input-field  | First name, special characters forbidden and required by default                            |
+| `lastName`        | ish-text-input-field  | Last name, special characters forbidden and required by default                             |
+| `phoneHome`       | ish-phone-field       | Phone, not required by default                                                              |
+| `companyName1`    | ish-text-input-field  | Company Name 1, required by default                                                         |
+| `companyName2`    | ish-text-input-field  | Company name 2, not required by default                                                     |
+| `taxationID`      | ish-text-input-field  | Taxation ID, not required by default                                                        |
+| `addressLine1`    | ish-text-input-field  | Address Line 1 (usually street & number), required by default                               |
+| `addressLine2`    | ish-text-input-field  | Address Line 2, not required by default                                                     |
+| `postalCode`      | ish-text-input-field  | Postal code, required by default                                                            |
+| `city`            | ish-text-input-field  | City, required by default                                                                   |
+| `budgetPriceType` | ish-budget-type-field | Taxation ID, not required by default                                                        |
 
 | ConfigurationGroup ID | ShortcutFor Types                               |
 | --------------------- | ----------------------------------------------- |

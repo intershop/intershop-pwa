@@ -3,7 +3,10 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 
@@ -13,8 +16,11 @@ describe('Budget Type Field Component', () => {
   let component: FormlyTestingContainerComponent;
   let fixture: ComponentFixture<FormlyTestingContainerComponent>;
   let element: HTMLElement;
+  let accountFacade: AccountFacade;
 
   beforeEach(async () => {
+    accountFacade = mock(AccountFacade);
+
     await TestBed.configureTestingModule({
       declarations: [BudgetTypeFieldComponent],
       imports: [
@@ -26,10 +32,12 @@ describe('Budget Type Field Component', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
       ],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
   });
 
   beforeEach(() => {
+    when(accountFacade.isLoggedIn$).thenReturn(of(false));
     const testComponentInputs = {
       model: { budgetPriceType: 'net' },
       fields: [

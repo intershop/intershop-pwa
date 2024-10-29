@@ -1,11 +1,13 @@
 import { fillFormField } from '../../framework';
 
-export type ProfileEditCompanyTypes = Partial<Record<'companyName' | 'companyName2' | 'taxationID', string>>;
+export type OrganizationSettingsEditCompanyTypes = Partial<
+  Record<'companyName' | 'companyName2' | 'taxationID', string>
+>;
 
-export class ProfileEditCompanyPage {
+export class OrganizationSettingsEditCompanyPage {
   readonly tag = 'ish-account-profile-company';
 
-  fillForm(data: ProfileEditCompanyTypes) {
+  fillForm(data: OrganizationSettingsEditCompanyTypes) {
     Object.keys(data).forEach(key => fillFormField(this.tag, key, data[key]));
     return this;
   }

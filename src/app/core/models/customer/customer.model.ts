@@ -43,6 +43,7 @@ export type CustomerRegistrationType = {
 
 export interface SsoRegistrationType {
   companyInfo: { companyName1: string; companyName2?: string; taxationID: string };
+  budgetPriceType?: 'net' | 'gross';
   address: Address;
   userId: string;
   subscribedToNewsletter?: boolean;

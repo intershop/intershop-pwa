@@ -50,9 +50,11 @@ import {
   logoutUser,
   logoutUserFail,
   logoutUserSuccess,
+  postRegistrationProcessing,
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
+  setAdditionalRegistrationData,
   updateCustomer,
   updateCustomerFail,
   updateCustomerSuccess,
@@ -374,7 +376,7 @@ describe('User Effects', () => {
       });
     });
 
-    it('should dispatch a createUserSuccess and a loginUserWithToken action on successful user creation', () => {
+    it('should dispatch a createUserSuccess and a postRegistrationProcessing action on successful user creation', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
       const customer: Customer = { isBusinessCustomer: true, customerNo: 'PC' };
 
@@ -382,7 +384,11 @@ describe('User Effects', () => {
 
       const action = createUser({ customer, credentials } as CustomerRegistrationType);
       const completion1 = createUserSuccess({ email: customerLoginType.user.email });
-      const completion2 = loginUser({ credentials });
+      const completion2 = postRegistrationProcessing({
+        isApprovalRequired: false,
+        credentials,
+        email: customerLoginType.user.email,
+      });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-(bc)', { b: completion1, c: completion2 });
@@ -390,7 +396,7 @@ describe('User Effects', () => {
       expect(effects.createUser$).toBeObservable(expected$);
     });
 
-    it('should dispatch a createUserSuccess and a createUserApprovalRequired action if customer approval is enabled', () => {
+    it('should dispatch a createUserSuccess and a postRegistrationProcessing action if customer approval is enabled', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
       const customer: Customer = { isBusinessCustomer: false, customerNo: 'PC' };
 
@@ -409,7 +415,11 @@ describe('User Effects', () => {
 
       const action = createUser({ customer, credentials } as CustomerRegistrationType);
       const completion1 = createUserSuccess({ email: customerLoginType.user.email });
-      const completion2 = createUserApprovalRequired({ email: customerLoginType.user.email });
+      const completion2 = postRegistrationProcessing({
+        isApprovalRequired: true,
+        credentials,
+        email: customerLoginType.user.email,
+      });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-(bc)', { b: completion1, c: completion2 });
@@ -429,7 +439,11 @@ describe('User Effects', () => {
         subscriptionStatus: true,
         userEmail: customerLoginType.user.email,
       });
-      const completion3 = loginUser({ credentials });
+      const completion3 = postRegistrationProcessing({
+        isApprovalRequired: true,
+        credentials,
+        email: customerLoginType.user.email,
+      });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-(bcd)', { b: completion1, c: completion2, d: completion3 });
@@ -462,6 +476,106 @@ describe('User Effects', () => {
         complete: noop,
       });
     });
+  });
+
+  describe('setAdditionalRegistrationData$', () => {
+    it('should call the api service when Update event is called', done => {
+      const credentials: Credentials = { login: '1234', password: 'xxx' };
+      const customer: Customer = { isBusinessCustomer: false, customerNo: 'PC' };
+      const action = setAdditionalRegistrationData({
+        customer,
+        credentials,
+        isApprovalRequired: true,
+        email: 'test@intershop.de',
+      });
+
+      when(userServiceMock.updateCustomerRegistration(anything(), anything())).thenReturn(of(customer));
+
+      actions$ = of(action);
+
+      effects.setAdditionalRegistrationData$.subscribe(() => {
+        verify(userServiceMock.updateCustomerRegistration(anything(), anything())).once();
+        done();
+      });
+    });
+
+    it('should dispatch a updateCustomerFail action on failed customer update', () => {
+      const credentials: Credentials = { login: '1234', password: 'xxx' };
+      const customer: Customer = { isBusinessCustomer: false, customerNo: 'PC' };
+      const error = makeHttpError({ status: 401, code: 'field' });
+      when(userServiceMock.updateCustomerRegistration(anything(), anything())).thenReturn(throwError(() => error));
+
+      const action = setAdditionalRegistrationData({
+        customer,
+        credentials,
+        isApprovalRequired: true,
+        email: 'test@intershop.de',
+      });
+      const completion = updateCustomerFail({ error });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-b', { b: completion });
+
+      expect(effects.setAdditionalRegistrationData$).toBeObservable(expected$);
+    });
+
+    it('should dispatch updateCustomerSuccess and postRegistrationProcessing when customer creation successful', fakeAsync(() => {
+      const credentials: Credentials = { login: '1234', password: 'xxx' };
+      const customer: Customer = { isBusinessCustomer: false, customerNo: 'PC' };
+      const action = setAdditionalRegistrationData({
+        customer,
+        credentials,
+        isApprovalRequired: true,
+        email: 'test@intershop.de',
+      });
+      when(userServiceMock.updateCustomerRegistration(anything(), anything())).thenReturn(of(customer));
+
+      const completion1 = updateCustomerSuccess({ customer });
+      const completion2 = postRegistrationProcessing({
+        isApprovalRequired: true,
+        credentials,
+        email: 'test@intershop.de',
+      });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(bc)', { b: completion1, c: completion2 });
+
+      expect(effects.setAdditionalRegistrationData$).toBeObservable(expected$);
+    }));
+  });
+
+  describe('postRegistrationProcessing$', () => {
+    it('should dipatch loginUser when customer approval not necessary', fakeAsync(() => {
+      const credentials: Credentials = { login: '1234', password: 'xxx' };
+      const action = postRegistrationProcessing({
+        isApprovalRequired: false,
+        credentials,
+        email: 'test@intershop.de',
+      });
+
+      const completion = loginUser({ credentials });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-b', { b: completion });
+
+      expect(effects.postRegistrationProcessing$).toBeObservable(expected$);
+    }));
+
+    it('should dipatch createUserApprovalRequired when customer approval is necessary', fakeAsync(() => {
+      const credentials: Credentials = { login: '1234', password: 'xxx' };
+      const action = postRegistrationProcessing({
+        isApprovalRequired: true,
+        credentials,
+        email: 'test@intershop.de',
+      });
+
+      const completion = createUserApprovalRequired({ email: 'test@intershop.de' });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-b', { b: completion });
+
+      expect(effects.postRegistrationProcessing$).toBeObservable(expected$);
+    }));
   });
 
   describe('updateUser$', () => {

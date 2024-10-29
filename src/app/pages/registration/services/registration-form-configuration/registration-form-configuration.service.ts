@@ -139,6 +139,7 @@ export class RegistrationFormConfigurationService {
           companyName2: formValue.companyName2,
           taxationID: formValue.taxationID,
         },
+        budgetPriceType: formValue.budgetPriceType,
         address,
         userId: registrationConfig.userId,
         subscribedToNewsletter: formValue.newsletterSubscription,
@@ -168,6 +169,7 @@ export class RegistrationFormConfigurationService {
         customer.companyName = formValue.companyName1;
         customer.companyName2 = formValue.companyName2;
         customer.taxationID = formValue.taxationID;
+        customer.budgetPriceType = formValue.budgetPriceType;
         user.businessPartnerNo = `U${customer.customerNo}`;
       }
 

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -36,7 +35,6 @@ describe('Organization Settings Page Component', () => {
     await TestBed.configureTestingModule({
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
       declarations: [
-        MockComponent(FaIconComponent),
         MockComponent(ModalDialogComponent),
         MockDirective(AuthorizationToggleDirective),
         MockDirective(ServerHtmlDirective),

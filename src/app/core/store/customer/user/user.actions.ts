@@ -82,6 +82,16 @@ export const updateCustomerSuccess = createAction(
 
 export const updateCustomerFail = createAction('[User API] Update Customer Failed', httpError());
 
+export const setAdditionalRegistrationData = createAction(
+  '[User Internal] Set Additional Registration Data',
+  payload<{ customer: Customer; credentials: Credentials; isApprovalRequired: boolean; email: string }>()
+);
+
+export const postRegistrationProcessing = createAction(
+  '[User Internal] Post Registration Processing',
+  payload<{ isApprovalRequired: boolean; credentials: Credentials; email: string }>()
+);
+
 export const userErrorReset = createAction('[User Internal] Reset User Error');
 
 export const loadUserByAPIToken = createAction('[User] Load User by API Token');

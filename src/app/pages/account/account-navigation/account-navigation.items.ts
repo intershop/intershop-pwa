@@ -71,7 +71,7 @@ export const navigationItems: NavigationItem[] = [
         id: 'org-settings',
         localizationKey: 'account.organization.org_settings',
         routerLink: '/account/organization/settings',
-        notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+        permission: 'APP_B2B_MANAGE_USERS',
       },
       {
         id: 'addresses',

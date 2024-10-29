@@ -19,6 +19,8 @@ export const routes: Routes = [
     path: 'settings',
     loadChildren: () =>
       import('./organization-settings/organization-settings-page.module').then(m => m.OrganizationSettingsPageModule),
+    data: { permission: 'APP_B2B_MANAGE_USERS' },
+    canActivate: [authorizationToggleGuard],
   },
   {
     path: 'settings/company',

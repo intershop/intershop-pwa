@@ -47,14 +47,13 @@
         [fields]="fields"
         [options]="options"
         [model]="model"
-        (modelChange)="modelChanges ? budgetTypeChangeConfirmationDialog.show() : cleanUp()"
+        (modelChange)="budgetTypeChangeConfirmationDialog.show()"
       />
     </form>
   </div>
 </div>
 
 <!-- budget edit confirmation dialog -->
-
 <ish-modal-dialog
   #budgetTypeChangeConfirmationDialog
   [options]="{
@@ -65,7 +64,7 @@
     faIcon: ['fas', 'triangle-exclamation']
   }"
   (confirmed)="submit()"
-  (closed)="resetValues()"
+  (closed)="resetValue()"
 >
   <p>
     {{ 'account.organization.budget_price_type.notification_modal.info' | translate }}

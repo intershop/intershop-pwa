@@ -20,7 +20,12 @@
     </div>
     <div class="offset-md-4 col-md-8">
       <p class="form-text">
-        {{ 'account.organization.org_settings.preferences.budget_price_type.info' | translate }}
+        <ng-container *ngIf="isLoggedIn$ | async; else registrationText">
+          {{ 'account.organization.org_settings.preferences.budget_price_type.info' | translate }}
+        </ng-container>
+        <ng-template #registrationText>
+          {{ 'account.registration.budget_price_type.info' | translate }}
+        </ng-template>
       </p>
     </div>
   </div>
