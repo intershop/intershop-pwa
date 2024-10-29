@@ -5,7 +5,7 @@ export type OrganizationSettingsEditCompanyTypes = Partial<
 >;
 
 export class OrganizationSettingsEditCompanyPage {
-  readonly tag = 'ish-account-profile-company';
+  readonly tag = 'ish-organization-settings-company';
 
   fillForm(data: OrganizationSettingsEditCompanyTypes) {
     Object.keys(data).forEach(key => fillFormField(this.tag, key, data[key]));
