@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { pick } from 'lodash-es';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -15,9 +15,6 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrganizationSettingsPageComponent implements OnInit {
-  @ViewChild(FormlyForm)
-  formlyForm!: FormlyForm;
-
   private destroyRef = inject(DestroyRef);
   private initialBudgetPriceType: 'net' | 'gross';
 
@@ -43,8 +40,6 @@ export class OrganizationSettingsPageComponent implements OnInit {
       this.budgetTypeForm
         .get('budgetPriceType')
         .reset({ value: this.initialBudgetPriceType, disabled: false }, { emitEvent: false });
-
-      this.formlyForm.modelChange.emit(this.model);
     }
   }
 
