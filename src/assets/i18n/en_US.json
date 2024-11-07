@@ -299,7 +299,7 @@
   "account.organization.budget_price_type.notification_modal.all_effected": "Any calculations of user and cost center budgets will be affected.",
   "account.organization.budget_price_type.notification_modal.ask": "Do you really want to change the budget calculation?",
   "account.organization.budget_price_type.notification_modal.consequences": "This change has significant <strong>consequences</strong>:",
-  "account.organization.budget_price_type.notification_modal.header": "Important Notification",
+  "account.organization.budget_price_type.notification_modal.header": "Important notification",
   "account.organization.budget_price_type.notification_modal.info": "You are about to change the budget calculation.",
   "account.organization.budget_price_type.notification_modal.reset_to_zero": "All spent user budgets will be reset to zero.",
   "account.organization.budget_price_type.suffix.info": "<br /> The account admin can change this setting at any time.",
