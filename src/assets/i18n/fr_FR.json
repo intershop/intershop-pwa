@@ -301,7 +301,7 @@
   "account.organization.budget_price_type.notification_modal.consequences": "Ce changement a des <strong>conséquences</strong> importantes :",
   "account.organization.budget_price_type.notification_modal.header": "Notification importante",
   "account.organization.budget_price_type.notification_modal.info": "Vous êtes sur le point de modifier le calcul du budget.",
-  "account.organization.budget_price_type.notification_modal.reset_to_zero": "Tous les dépenses des budgets des utilisateurs seront remis à zéro.",  
+  "account.organization.budget_price_type.notification_modal.reset_to_zero": "Tous les dépenses des budgets des utilisateurs seront remis à zéro.",
   "account.organization.budget_price_type.suffix.info": "<br /> L’administrateur du compte peut modifier ce paramètre à tout moment.",
   "account.organization.cost_center_management": "Gestion des centres de coûts",
   "account.organization.cost_center_management.back_to_list": "Retourner à la gestion des centres de coûts",
