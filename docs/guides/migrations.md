@@ -7,6 +7,12 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 5.2 to 5.3
+
+The `updateUser` method of the UserService has been slightly refactored.
+It now sends the user password in the request body to enable password validation on e-mail change.
+The Authorization header has also been removed as authorization is done via session token.
+
 ## From 5.1 to 5.2
 
 > [!NOTE]

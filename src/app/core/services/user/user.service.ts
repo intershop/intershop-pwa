@@ -1,4 +1,3 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { pick } from 'lodash-es';
@@ -188,13 +187,6 @@ export class UserService {
       return throwError(() => new Error('updateUser() called without required body data'));
     }
 
-    const headers = credentials
-      ? new HttpHeaders().set(
-          ApiService.AUTHORIZATION_HEADER_KEY,
-          `BASIC ${window.btoa(`${credentials.login}:${credentials.password}`)}`
-        )
-      : undefined;
-
     const changedUser: object = {
       type: body.customer.isBusinessCustomer ? 'SMBCustomer' : 'PrivateCustomer',
       ...body.customer,
@@ -208,14 +200,15 @@ export class UserService {
       preferredShipToAddressUrn: undefined,
       preferredPaymentInstrumentId: undefined,
       preferredLanguage: body.user.preferredLanguage || 'en_US',
+      ...(credentials?.password ? { password: credentials.password } : {}), // Required for email change validation
     };
 
     return this.appFacade.customerRestResource$.pipe(
       first(),
       concatMap(restResource =>
         body.customer.isBusinessCustomer
-          ? this.apiService.put<User>('customers/-/users/-', changedUser, { headers }).pipe(map(UserMapper.fromData))
-          : this.apiService.put<User>(`${restResource}/-`, changedUser, { headers }).pipe(map(UserMapper.fromData))
+          ? this.apiService.put<User>('customers/-/users/-', changedUser, {}).pipe(map(UserMapper.fromData))
+          : this.apiService.put<User>(`${restResource}/-`, changedUser, {}).pipe(map(UserMapper.fromData))
       )
     );
   }
