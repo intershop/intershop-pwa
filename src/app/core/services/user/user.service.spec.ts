@@ -395,7 +395,7 @@ describe('User Service', () => {
 
     it("should get eligible cost centers for business user when 'getEligibleCostCenters' is called", done => {
       userService.getEligibleCostCenters().subscribe(() => {
-        verify(apiServiceMock.get(`/costcenters`)).once();
+        verify(apiServiceMock.get(`costcenters`)).once();
         done();
       });
     });
