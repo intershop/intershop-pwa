@@ -332,7 +332,7 @@ export class UserService {
   getEligibleCostCenters(): Observable<UserCostCenter[]> {
     return this.apiService
       .b2bUserEndpoint()
-      .get(`/costcenters`)
+      .get(`costcenters`)
       .pipe(
         unpackEnvelope(),
         map((costCenters: UserCostCenter[]) => costCenters)
