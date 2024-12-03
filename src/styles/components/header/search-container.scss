@@ -37,6 +37,20 @@
     }
   }
 
+  @media (min-width: $screen-sm) {
+    .search-box-wide {
+      position: absolute;
+      top: calc($search-container-height / -2);
+      right: 0;
+      width: 100%;
+
+      &.scale-up-horizontal-right {
+        width: 200%;
+        transition: width 0.3s ease 0.1s;
+      }
+    }
+  }
+
   ul.search-suggest-results {
     position: absolute;
     top: 37px;

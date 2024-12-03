@@ -1,4 +1,4 @@
-<div class="search clearfix">
+<div class="search clearfix search-box-wide" [ngClass]="{ 'scale-up-horizontal-right': inputFocused }">
   <input
     #searchInput
     [placeholder]="configuration?.placeholder || ''"
@@ -15,6 +15,7 @@
     (keydown.arrowdown)="selectSuggestedTerm(activeIndex + 1)"
     (keydown.arrowup)="selectSuggestedTerm(activeIndex - 1)"
     (keydown.enter)="submitSearch(searchInput.value)"
+    (focus)="focus()"
   />
 
   <div class="buttons">
