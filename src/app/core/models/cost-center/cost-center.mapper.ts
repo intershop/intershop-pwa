@@ -1,3 +1,5 @@
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
+
 import { CostCenterData } from './cost-center.interface';
 import { CostCenter } from './cost-center.model';
 
@@ -10,7 +12,10 @@ export class CostCenterMapper {
           documentNo: order.orderNo,
           status: order.orderStatus,
           creationDate: order.orderDate.toString(),
-          attributes: order.buyer.attributes,
+          user: {
+            firstName: AttributeHelper.getAttributeValueByAttributeName(order.buyer?.attributes, 'firstName'),
+            lastName: AttributeHelper.getAttributeValueByAttributeName(order.buyer?.attributes, 'lastName'),
+          },
           totalProductQuantity: order.items,
           totals: {
             total: {

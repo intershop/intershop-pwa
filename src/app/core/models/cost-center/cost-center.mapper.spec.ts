@@ -30,7 +30,7 @@ describe('Cost Center Mapper', () => {
       expect(costCenter).toBeTruthy();
       expect(costCenter.costCenterId).toBe('100400');
       expect(costCenter.orders).toHaveLength(2);
-      expect(costCenter.orders[0].attributes).toHaveLength(1);
+      expect(costCenter.orders[0].user.firstName).toBe('John');
       expect(costCenter.orders[1].totals.total.gross).toBe(1000.23);
     });
   });
