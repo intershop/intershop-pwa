@@ -6,6 +6,7 @@ import { concatMap, map, switchMap, take } from 'rxjs/operators';
 import { CostCenterData } from 'ish-core/models/cost-center/cost-center.interface';
 import { CostCenterMapper } from 'ish-core/models/cost-center/cost-center.mapper';
 import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
+import { Link } from 'ish-core/models/link/link.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -24,10 +25,9 @@ export class CostCentersService {
   getCostCenters(): Observable<CostCenter[]> {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
-        this.apiService.get(`customers/${this.apiService.encodeResourceId(customer.customerNo)}/costcenters`).pipe(
-          this.apiService.resolveLinks<CostCenterData>(),
-          map(ccData => ccData.map(CostCenterMapper.fromData))
-        )
+        this.apiService
+          .get<Link[]>(`customers/${this.apiService.encodeResourceId(customer.customerNo)}/costcenters`)
+          .pipe(map(CostCenterMapper.fromListData))
       )
     );
   }
