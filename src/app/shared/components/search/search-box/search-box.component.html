@@ -1,4 +1,7 @@
-<div class="search clearfix search-box-wide" [ngClass]="{ 'scale-up-horizontal-right': inputFocused }">
+<div
+  class="search clearfix search-box-wide"
+  [ngClass]="{ 'scale-up-horizontal-right': inputFocused || isContentInsideSearchInput() }"
+>
   <input
     #searchInput
     [placeholder]="configuration?.placeholder || ''"
@@ -47,7 +50,7 @@
     </button>
   </div>
 
-  <ng-container *ngIf="searchResults$ | async as results">
+  <ng-container *ngIf="isTypedEnoughCharactersToShowSuggest() && searchResults$ | async as results">
     <ul *ngIf="results.length && inputFocused" class="search-suggest-results">
       <li
         *ngFor="let result of results | slice : 0 : configuration?.maxAutoSuggests; let liIndex = index"

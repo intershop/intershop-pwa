@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { IconName } from '@fortawesome/fontawesome-svg-core';
@@ -37,6 +46,8 @@ export class SearchBoxComponent implements OnInit {
   activeIndex = -1;
   inputFocused: boolean;
 
+  @ViewChild('searchInput') searchInput: ElementRef;
+
   private destroyRef = inject(DestroyRef);
 
   constructor(private shoppingFacade: ShoppingFacade, private router: Router) {}
@@ -57,6 +68,7 @@ export class SearchBoxComponent implements OnInit {
     // suggests are triggered solely via stream
     this.searchResults$ = this.shoppingFacade.searchResults$(this.inputSearchTerms$);
   }
+
   blur() {
     this.inputFocused = false;
     this.activeIndex = -1;
@@ -103,5 +115,13 @@ export class SearchBoxComponent implements OnInit {
       }
       this.activeIndex = index;
     });
+  }
+
+  isContentInsideSearchInput(): boolean {
+    return this.searchInput?.nativeElement.value.length > 0;
+  }
+
+  isTypedEnoughCharactersToShowSuggest(): boolean {
+    return (this.searchInput?.nativeElement.value.length || 0) >= 2;
   }
 }
