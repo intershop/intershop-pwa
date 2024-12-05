@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { pick } from 'lodash-es';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -9,6 +9,10 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
+/**
+ * The Organization Settings Page Component shows the company profile.
+ * The account admin can edit it and change the type (gross / net) for the budget calculation
+ */
 @Component({
   selector: 'ish-organization-settings-page',
   templateUrl: './organization-settings-page.component.html',
@@ -21,7 +25,6 @@ export class OrganizationSettingsPageComponent implements OnInit {
   budgetTypeForm: FormGroup = new FormGroup({});
   model: Partial<Customer>;
   fields: FormlyFieldConfig[];
-  options: FormlyFormOptions = {};
   customer: Customer;
 
   constructor(private accountFacade: AccountFacade, private fieldLibrary: FieldLibrary) {}

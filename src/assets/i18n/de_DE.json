@@ -294,7 +294,7 @@
   "account.ordertemplates.link": "Bestellvorlagen",
   "account.ordertemplates.widget.heading": "Meine Bestellvorlagen",
   "account.ordertemplates.widget.view_all.link": "Alle Bestellvorlagen ansehen",
-  "account.organization.budget_price_type.admin.info": "<br /> Sie können diese <a href=\"route://account/profile/company\">Einstellung</a> jederzeit ändern.",
+  "account.organization.budget_price_type.admin.info": "<br /> Sie können diese <a href=\"route://account/organization/settings\">Einstellung</a> jederzeit ändern.",
   "account.organization.budget_price_type.info": "Budgets werden in <b>{{type, select, =net{netto} =gross{brutto}}}</b> berechnet.",
   "account.organization.budget_price_type.notification_modal.all_effected": "Die Änderung wird sich auf sämtliche Benutzer- und Kostenstellenbudgets auswirken.",
   "account.organization.budget_price_type.notification_modal.ask": "Wollen Sie die Budgetberechnung wirklich ändern?",

@@ -68,12 +68,6 @@ export const navigationItems: NavigationItem[] = [
     isCollapsed: true,
     children: [
       {
-        id: 'org-settings',
-        localizationKey: 'account.organization.org_settings',
-        routerLink: '/account/organization/settings',
-        permission: 'APP_B2B_MANAGE_USERS',
-      },
-      {
         id: 'addresses',
         localizationKey: 'account.saved_addresses.link',
         routerLink: '/account/addresses',
@@ -99,6 +93,12 @@ export const navigationItems: NavigationItem[] = [
         feature: 'punchout',
         permission: 'APP_B2B_MANAGE_PUNCHOUT',
       },
+      {
+        id: 'org-settings',
+        localizationKey: 'account.organization.org_settings',
+        routerLink: '/account/organization/settings',
+        permission: 'APP_B2B_MANAGE_USERS',
+      },
     ],
   },
   {
@@ -108,12 +108,6 @@ export const navigationItems: NavigationItem[] = [
     isCollapsed: true,
     notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
     children: [
-      {
-        id: 'profile',
-        localizationKey: 'account.profile.link',
-        routerLink: '/account/profile',
-        notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
-      },
       {
         id: 'payment',
         localizationKey: 'account.payment.link',
@@ -125,6 +119,12 @@ export const navigationItems: NavigationItem[] = [
         localizationKey: 'account.notifications.link',
         routerLink: '/account/notifications',
         feature: 'productNotifications',
+        notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+      },
+      {
+        id: 'profile',
+        localizationKey: 'account.profile.link',
+        routerLink: '/account/profile',
         notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
       },
     ],

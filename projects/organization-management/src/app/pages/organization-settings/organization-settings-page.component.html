@@ -26,7 +26,6 @@
   </div>
   <div class="col-2 col-lg-4">
     <a
-      *ishIsAuthorizedTo="'APP_B2B_MANAGE_USERS'"
       routerLink="/account/organization/settings/company"
       class="btn-tool"
       title="{{ 'account.profile.update.link' | translate }}"
@@ -38,14 +37,13 @@
 </div>
 
 <!--Preferences -->
-<div class="row section">
+<div *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting" class="row section">
   <div class="col-10 col-lg-8">
     <h3>{{ 'account.organization.org_settings.preferences.subtitle' | translate }}</h3>
     <form class="form-horizontal" [formGroup]="budgetTypeForm">
       <formly-form
         [form]="budgetTypeForm"
         [fields]="fields"
-        [options]="options"
         [model]="model"
         (click)="budgetTypeChangeConfirmationDialog.show()"
       />

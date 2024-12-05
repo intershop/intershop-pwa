@@ -1,16 +1,9 @@
 <ish-error-message [error]="error$ | async" />
 <ish-info-box class="infobox-wrapper" cssClass="infobox-widget">
-  <div class="d-flex align-items-center">
-    <div class="pb-2">
-      <h3 class="p-0 m-0">
-        {{ 'account.requisitions.widget.budget_title' | translate }}
-      </h3>
-    </div>
-    <div class="pl-2 pb-2">
-      <ish-budget-info />
-    </div>
+  <div class="d-flex align-items-start">
+    <h3 class="pr-2 mb-0">{{ 'account.requisitions.widget.budget_title' | translate }}</h3>
+    <ish-budget-info />
   </div>
-
   <div class="loading-container">
     <div *ngIf="(budgetLoading$ | async) !== true; else loading">
       <div class="row">

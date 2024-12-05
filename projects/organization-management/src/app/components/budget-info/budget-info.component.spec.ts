@@ -1,7 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { MockComponent, MockPipe } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 
 import { BudgetInfoComponent } from './budget-info.component';
 
@@ -12,6 +16,8 @@ describe('Budget Info Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [NgbPopoverModule],
+      declarations: [BudgetInfoComponent, MockComponent(FaIconComponent), MockPipe(ServerSettingPipe, () => true)],
       providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
   });
@@ -26,6 +32,10 @@ describe('Budget Info Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element.querySelector('[data-testing-id=BudgetPriceTypeInfoTestingID]')).toBeTruthy();
+  });
+
+  it('should be display the tooltip info icon', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id=budgetPriceTypeInfoTestingID]')).toBeTruthy();
   });
 });

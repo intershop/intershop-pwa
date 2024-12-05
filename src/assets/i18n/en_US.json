@@ -294,7 +294,7 @@
   "account.ordertemplates.link": "Order templates",
   "account.ordertemplates.widget.heading": "My order templates",
   "account.ordertemplates.widget.view_all.link": "View all order templates",
-  "account.organization.budget_price_type.admin.info": "<br /> You can change this <a href=\"route://account/profile/company\">setting</a> at any time.",
+  "account.organization.budget_price_type.admin.info": "<br /> You can change this <a href=\"route://account/organization/settings\">setting</a> at any time.",
   "account.organization.budget_price_type.info": "Budgets are calculated in: <b>{{type, select, =net{net} =gross{gross}}}</b>.",
   "account.organization.budget_price_type.notification_modal.all_effected": "Any calculations of user and cost center budgets will be affected.",
   "account.organization.budget_price_type.notification_modal.ask": "Do you really want to change the budget calculation?",

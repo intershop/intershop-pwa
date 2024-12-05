@@ -252,7 +252,7 @@ They are automatically updated using sync-formly-docs.ts -->
 | `addressLine2`    | ish-text-input-field  | Address Line 2, not required by default                                                     |
 | `postalCode`      | ish-text-input-field  | Postal code, required by default                                                            |
 | `city`            | ish-text-input-field  | City, required by default                                                                   |
-| `budgetPriceType` | ish-budget-type-field | Taxation ID, not required by default                                                        |
+| `budgetPriceType` | ish-budget-type-field | Budget Type ('gross' or 'net'), not required by default                                     |
 
 | ConfigurationGroup ID | ShortcutFor Types                               |
 | --------------------- | ----------------------------------------------- |

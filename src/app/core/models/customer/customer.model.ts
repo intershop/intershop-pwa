@@ -13,7 +13,6 @@ export interface Customer {
   taxationID?: string;
   industry?: string;
   description?: string;
-
   budgetPriceType?: 'net' | 'gross';
 }
 

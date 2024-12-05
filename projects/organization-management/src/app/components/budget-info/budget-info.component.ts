@@ -1,27 +1,23 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { Customer } from 'ish-core/models/customer/customer.model';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
+/**
+ * The Budget Info Component display an info icon containing a message which budget type (gross or net) is used.
+ *
+ */
 @Component({
   selector: 'ish-budget-info',
   templateUrl: './budget-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 @GenerateLazyComponent()
-export class BudgetInfoComponent implements OnInit {
-  @Input() suffix: string;
+export class BudgetInfoComponent {
+  /** translation key for a further message text after the main message */
+  @Input() suffix = '';
 
-  customer$: Observable<Customer>;
-
-  additionalText: string;
+  customer$ = this.accountFacade.customer$;
 
   constructor(private accountFacade: AccountFacade) {}
-
-  ngOnInit() {
-    this.suffix ? (this.additionalText = this.suffix) : (this.additionalText = '');
-    this.customer$ = this.accountFacade.customer$;
-  }
 }
