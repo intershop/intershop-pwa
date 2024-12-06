@@ -69,16 +69,6 @@ header {
     }
   }
 
-  .mid-header {
-    .quickorder-link {
-      .header-icon {
-        font-size: $font-size-corporate;
-        color: $CORPORATE-PRIMARY;
-        vertical-align: middle;
-      }
-    }
-  }
-
   &.homepage {
     margin-bottom: 0;
   }
@@ -174,6 +164,12 @@ header {
 
   @include media-breakpoint-down(sm) {
     color: $text-color-primary;
+  }
+}
+
+.quickorder-link {
+  .header-icon {
+    top: 2px;
   }
 }
 

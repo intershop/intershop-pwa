@@ -19,6 +19,9 @@
     <li *ishFeature="'compare'" class="d-none d-md-block">
       <ish-lazy-product-compare-status data-testing-id="compare-status-desktop" />
     </li>
+    <li *ishFeature="'quickorder'" class="d-none d-md-block">
+      <ish-lazy-quickorder-link />
+    </li>
     <li *ishFeature="'wishlists'" class="d-none d-md-block">
       <ish-lazy-wishlists-link />
     </li>
@@ -53,7 +56,7 @@
       [ngClass]="isSticky ? 'd-lg-none' : 'd-md-none'"
     />
   </div>
-  <div class="mid-header row align-items-center">
+  <div class="mid-header row align-items-center justify-content-between">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
@@ -75,9 +78,6 @@
           data-testing-id="header-home-link-mobile"
         ></a>
       </div>
-    </div>
-    <div class="col-md-5 text-right">
-      <ish-lazy-quickorder-link />
     </div>
     <div class="col-md-4">
       <div *ngIf="!isSticky && deviceType !== 'mobile'" class="search-container header-search-container">
