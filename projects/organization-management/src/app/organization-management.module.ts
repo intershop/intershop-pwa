@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ConfigOption, FormlyModule } from '@ngx-formly/core';
-import { FormlySelectModule } from '@ngx-formly/core/select';
 
-import { BudgetTypeFieldComponent } from 'ish-shared/formly/types/budget-type-field/budget-type-field.component';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { BudgetInfoComponent } from './components/budget-info/budget-info.component';
@@ -19,15 +16,6 @@ import { UserProfileFormComponent } from './components/user-profile-form/user-pr
 import { UserRolesSelectionComponent } from './components/user-roles-selection/user-roles-selection.component';
 import { OrganizationManagementStoreModule } from './store/organization-management-store.module';
 
-const budgetTypeFormlyConfig: ConfigOption = {
-  types: [
-    {
-      name: 'ish-budget-type-field',
-      component: BudgetTypeFieldComponent,
-    },
-  ],
-};
-
 const exportedComponents = [
   BuyersSelectComponent,
   BudgetInfoComponent,
@@ -43,12 +31,7 @@ const exportedComponents = [
 
 @NgModule({
   declarations: [...exportedComponents, BudgetWidgetComponent, CostCenterWidgetComponent],
+  imports: [OrganizationManagementStoreModule, SharedModule],
   exports: [...exportedComponents],
-  imports: [
-    FormlyModule.forChild(budgetTypeFormlyConfig),
-    FormlySelectModule,
-    OrganizationManagementStoreModule,
-    SharedModule,
-  ],
 })
 export class OrganizationManagementModule {}

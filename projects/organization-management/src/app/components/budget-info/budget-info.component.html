@@ -1,9 +1,8 @@
 <ng-template #BudgetPriceTypeInfo>
   <span
     [ishServerHtml]="
-      (
-        'account.organization.budget_price_type.info' | translate : { type: (customer$ | async).budgetPriceType }
-      ).concat(suffix | translate)
+      ('account.organization.budget_price_type.info' | translate : { type: (customer$ | async).budgetPriceType }) +
+      (suffix ?? '' | translate)
     "
   >
   </span

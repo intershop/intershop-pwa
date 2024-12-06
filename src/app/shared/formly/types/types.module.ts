@@ -169,6 +169,10 @@ const fieldComponents = [
           component: DateRangePickerFieldComponent,
           wrappers: ['form-field-horizontal', 'validation'],
         },
+        {
+          name: 'ish-budget-type-field',
+          component: BudgetTypeFieldComponent,
+        },
       ],
     }),
   ],

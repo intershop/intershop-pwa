@@ -62,8 +62,9 @@ export class RegistrationFormConfigurationService {
         },
       },
       ...(!registrationConfig.sso ? this.getCredentialsConfig() : []),
-      ...(registrationConfig.businessCustomer ? this.getCompanyInfoConfig() : []),
-      ...(registrationConfig.businessCustomer ? this.getCustomerPreferencesConfig() : []),
+      ...(registrationConfig.businessCustomer
+        ? [...this.getCompanyInfoConfig(), ...this.getCustomerPreferencesConfig()]
+        : []),
       ...this.getPersonalInfoConfig(),
       {
         type: 'ish-registration-heading-field',
