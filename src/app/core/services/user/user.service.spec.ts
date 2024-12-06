@@ -208,6 +208,24 @@ describe('User Service', () => {
         done();
       });
     });
+
+    it("should create a new busimess user when 'createUser' is called", done => {
+      when(apiServiceMock.post(anyString(), anything(), anything())).thenReturn(of({}));
+      when(apiServiceMock.put(anyString(), anything(), anything())).thenReturn(of({}));
+
+      const payload = {
+        customer: { customerNo: '4711', isBusinessCustomer: true, budgetPriceType: 'net' } as Customer,
+        address: {} as Address,
+        credentials: { login: 'pmiller@test.intershop.de', password: 'xyz' } as Credentials,
+        user: {} as User,
+      } as CustomerRegistrationType;
+
+      userService.createUser(payload).subscribe(() => {
+        verify(apiServiceMock.post('customers', anything(), anything())).once();
+        verify(apiServiceMock.put('customers/-', anything(), anything())).once();
+        done();
+      });
+    });
   });
 
   describe('Update a user', () => {

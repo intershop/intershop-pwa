@@ -43,11 +43,9 @@ import {
   logoutUser,
   logoutUserFail,
   logoutUserSuccess,
-  postRegistrationProcessing,
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
-  setAdditionalRegistrationData,
   updateCustomer,
   updateCustomerFail,
   updateCustomerSuccess,
@@ -78,9 +76,6 @@ export class UserEffects {
     private tokenService: TokenService
   ) {}
 
-  /**
-   * debounce time is necessary otherwise there will be conflicts with my registration requests
-   */
   loginUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loginUser),
@@ -167,59 +162,12 @@ export class UserEffects {
                   }),
                 ]
               : []),
-            ...(data.customer.budgetPriceType
-              ? [
-                  setAdditionalRegistrationData({
-                    customer: data.customer,
-                    credentials: data.credentials,
-                    isApprovalRequired: customerTypeForLoginApproval?.includes(
-                      data.customer.isBusinessCustomer ? 'SMB' : 'PRIVATE'
-                    ),
-                    email: createUserResponse.user.email,
-                  }),
-                ]
-              : [
-                  postRegistrationProcessing({
-                    isApprovalRequired: customerTypeForLoginApproval?.includes(
-                      data.customer.isBusinessCustomer ? 'SMB' : 'PRIVATE'
-                    ),
-                    credentials: data.credentials,
-                    email: createUserResponse.user.email,
-                  }),
-                ]),
+            customerTypeForLoginApproval?.includes(createUserResponse.customer.isBusinessCustomer ? 'SMB' : 'PRIVATE')
+              ? createUserApprovalRequired({ email: createUserResponse.user.email })
+              : loginUser({ credentials: data.credentials }),
           ]),
           mapErrorToAction(createUserFail)
         )
-      )
-    )
-  );
-
-  setAdditionalRegistrationData$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(setAdditionalRegistrationData),
-      mapToPayload(),
-      concatMap(payload =>
-        this.userService.updateCustomerRegistration(payload.customer, payload.credentials).pipe(
-          concatMap(changedCustomer => [
-            updateCustomerSuccess({ customer: changedCustomer }),
-            postRegistrationProcessing({
-              isApprovalRequired: payload.isApprovalRequired,
-              credentials: payload.credentials,
-              email: payload.email,
-            }),
-          ]),
-          mapErrorToAction(updateCustomerFail)
-        )
-      )
-    )
-  );
-
-  postRegistrationProcessing$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(postRegistrationProcessing),
-      mapToPayload(),
-      map(({ isApprovalRequired, credentials, email }) =>
-        isApprovalRequired ? createUserApprovalRequired({ email }) : loginUser({ credentials })
       )
     )
   );
@@ -288,9 +236,11 @@ export class UserEffects {
         concatLatestFrom(() => this.store.pipe(select(selectUrl))),
         filter(([, url]) => url.includes('/account/profile') || url.includes('/account/organization/settings')),
         concatMap(([, url]) =>
-          url.includes('/account/profile')
-            ? from(this.router.navigateByUrl('/account/profile'))
-            : from(this.router.navigateByUrl('/account/organization/settings'))
+          from(
+            this.router.navigateByUrl(
+              url.includes('/account/profile') ? '/account/profile' : '/account/organization/settings'
+            )
+          )
         )
       ),
     { dispatch: false }

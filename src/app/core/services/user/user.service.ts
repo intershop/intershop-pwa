@@ -170,7 +170,10 @@ export class UserService {
           .post<void>(AppFacade.getCustomerRestResource(body.customer.isBusinessCustomer), newCustomer, {
             captcha: pick(body, ['captcha', 'captchaAction']),
           })
-          .pipe(map<void, CustomerUserType>(() => ({ customer: body.customer, user: body.user })))
+          .pipe(
+            map<void, CustomerUserType>(() => ({ customer: body.customer, user: body.user })),
+            concatMap(customerUser => this.updateCustomerBudgetType(customerUser, body.credentials))
+          )
       )
     );
   }
@@ -272,36 +275,6 @@ export class UserService {
   }
 
   /**
-   * Updates the customer data of the b2b customer which is in the registration process.
-   *
-   * @param customer  The customer data to update the customer.
-   */
-  updateCustomerRegistration(customer: Customer, credentials: Credentials): Observable<Customer> {
-    if (!customer) {
-      return throwError(() => new Error('updateCustomer() called without customer'));
-    }
-
-    if (!customer.isBusinessCustomer) {
-      return throwError(() => new Error('updateCustomer() cannot be called for a private customer)'));
-    }
-
-    if (!credentials) {
-      return throwError(() => new Error('updateCustomer() called without credentials'));
-    }
-
-    const headers = credentials
-      ? new HttpHeaders().set(
-          ApiService.AUTHORIZATION_HEADER_KEY,
-          `BASIC ${window.btoa(`${credentials.login}:${credentials.password}`)}`
-        )
-      : undefined;
-
-    return this.apiService
-      .put('customers/-', { ...customer, type: 'SMBCustomer' }, { headers })
-      .pipe(map(CustomerMapper.fromData));
-  }
-
-  /**
    * Get User data for the logged in Business Customer.
    *
    * @returns The related customer user data.
@@ -388,5 +361,24 @@ export class UserService {
         }
       })
     );
+  }
+
+  /**
+   * Updates the customer budget type right after initial customer creation.
+   */
+  private updateCustomerBudgetType(
+    customerUser: CustomerUserType,
+    credentials: Credentials
+  ): Observable<CustomerUserType> {
+    if (!customerUser?.customer?.budgetPriceType) {
+      return of(customerUser);
+    }
+
+    const headers = new HttpHeaders().set(
+      ApiService.AUTHORIZATION_HEADER_KEY,
+      `BASIC ${window.btoa(`${credentials.login}:${credentials.password}`)}`
+    );
+
+    return this.apiService.put('customers/-', customerUser.customer, { headers }).pipe(map(() => customerUser));
   }
 }
