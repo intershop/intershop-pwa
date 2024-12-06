@@ -50,11 +50,11 @@ describe('Budget Type Field Component', () => {
             options: [
               {
                 value: 'gross',
-                label: 'account.costcenter.gross.label',
+                label: 'account.customer.price_type.gross.label',
               },
               {
                 value: 'net',
-                label: 'account.costcenter.net.label',
+                label: 'account.customer.price_type.net.label',
               },
             ],
           },

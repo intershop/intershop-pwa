@@ -7,7 +7,6 @@ import { pick } from 'lodash-es';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { PriceType } from 'ish-core/models/price/price.model';
-import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
@@ -28,14 +27,34 @@ export class OrganizationSettingsPageComponent implements OnInit {
   fields: FormlyFieldConfig[];
   customer: Customer;
 
-  constructor(private accountFacade: AccountFacade, private fieldLibrary: FieldLibrary) {}
+  constructor(private accountFacade: AccountFacade) {}
 
   ngOnInit() {
     this.accountFacade.customer$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(currentCustomer => {
       this.customer = currentCustomer;
       this.initialBudgetPriceType = currentCustomer.budgetPriceType;
     });
-    this.fields = [this.fieldLibrary.getConfiguration('budgetPriceType')];
+    this.fields = [
+      {
+        type: 'ish-budget-type-field',
+        key: 'budgetPriceType',
+        defaultValue: 'gross',
+        props: {
+          title: 'account.customer.price_type.label',
+          customDescription: 'account.organization.org_settings.preferences.budget_price_type.info',
+          options: [
+            {
+              value: 'gross',
+              label: 'account.customer.price_type.gross.label',
+            },
+            {
+              value: 'net',
+              label: 'account.customer.price_type.net.label',
+            },
+          ],
+        },
+      },
+    ];
     this.model = pick(this.customer, 'budgetPriceType');
   }
 

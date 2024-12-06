@@ -172,6 +172,7 @@ const fieldComponents = [
         {
           name: 'ish-budget-type-field',
           component: BudgetTypeFieldComponent,
+          wrappers: ['form-field-checkbox-horizontal', 'description'],
         },
       ],
     }),

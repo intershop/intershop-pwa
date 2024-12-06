@@ -11,7 +11,6 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
-import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
 
 import { OrganizationSettingsPageComponent } from './organization-settings-page.component';
 
@@ -20,17 +19,12 @@ describe('Organization Settings Page Component', () => {
   let fixture: ComponentFixture<OrganizationSettingsPageComponent>;
   let element: HTMLElement;
   let accountFacade: AccountFacade;
-  let fieldLibrary: FieldLibrary;
 
   const customer = { customerNo: 'KlausiCompany', isBusinessCustomer: true, budgetPriceType: 'net' } as Customer;
 
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
-    fieldLibrary = mock(FieldLibrary);
 
-    when(fieldLibrary.getConfiguration('budgetPriceType')).thenReturn({
-      key: 'budgetPriceType',
-    });
     when(accountFacade.customer$).thenReturn(of(customer));
 
     await TestBed.configureTestingModule({
@@ -42,10 +36,7 @@ describe('Organization Settings Page Component', () => {
         MockPipe(ServerSettingPipe, () => true),
         OrganizationSettingsPageComponent,
       ],
-      providers: [
-        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
-        { provide: FieldLibrary, useFactory: () => instance(fieldLibrary) },
-      ],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });
 

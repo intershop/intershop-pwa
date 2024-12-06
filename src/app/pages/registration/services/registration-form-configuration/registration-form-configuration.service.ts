@@ -359,7 +359,27 @@ export class RegistrationFormConfigurationService {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
         },
-        fieldGroup: [this.fieldLibrary.getConfiguration('budgetPriceType')],
+        fieldGroup: [
+          {
+            type: 'ish-budget-type-field',
+            key: 'budgetPriceType',
+            defaultValue: 'gross',
+            props: {
+              title: 'account.customer.price_type.label',
+              customDescription: 'account.registration.budget_price_type.info',
+              options: [
+                {
+                  value: 'gross',
+                  label: 'account.customer.price_type.gross.label',
+                },
+                {
+                  value: 'net',
+                  label: 'account.customer.price_type.net.label',
+                },
+              ],
+            },
+          },
+        ],
       },
     ];
   }

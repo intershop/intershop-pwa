@@ -1,32 +1,16 @@
 <ng-container *ngIf="props.options && props.options | formlySelectOptions : field | async as opts">
-  <div class="row">
-    <div class="col-md-4">
-      <label [attr.for]="id">{{ props.label | translate }}</label>
-    </div>
-    <div class="col-md-8">
-      <ng-container *ngFor="let opt of opts">
-        <input
-          type="radio"
-          [formControl]="formControl"
-          [value]="opt.value"
-          [id]="opt.value"
-          [attr.name]="radioName"
-          [ngClass]="props.inputClass"
-          [attr.data-testing-id]="'radio-' + opt.label"
-          [attr.aria-label]="props.ariaLabel"
-        />
-        <label class="pl-1 mr-2" [attr.for]="id">{{ opt.label }}</label>
-      </ng-container>
-    </div>
-    <div class="offset-md-4 col-md-8">
-      <p class="form-text">
-        <ng-container *ngIf="isLoggedIn$ | async; else registrationText">
-          {{ 'account.organization.org_settings.preferences.budget_price_type.info' | translate }}
-        </ng-container>
-        <ng-template #registrationText>
-          {{ 'account.registration.budget_price_type.info' | translate }}
-        </ng-template>
-      </p>
-    </div>
-  </div>
+  <ng-container *ngFor="let opt of opts">
+    <input
+      type="radio"
+      [formControl]="formControl"
+      [value]="opt.value"
+      [id]="opt.value"
+      [attr.name]="radioName"
+      class="form-check-input"
+      [ngClass]="props.inputClass"
+      [attr.data-testing-id]="'radio-' + opt.label"
+      [attr.aria-label]="props.ariaLabel"
+    />
+    <label class="form-check-label pr-3" [attr.for]="id">{{ opt.label }}</label>
+  </ng-container>
 </ng-container>
