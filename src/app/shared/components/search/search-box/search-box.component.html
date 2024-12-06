@@ -1,7 +1,4 @@
-<div
-  class="search clearfix search-box-wide"
-  [ngClass]="{ 'scale-up-horizontal-right': inputFocused || isContentInsideSearchInput() }"
->
+<div class="search clearfix search-box-wide" [ngClass]="{ 'scale-up-horizontal-right': inputFocused }">
   <input
     #searchInput
     [placeholder]="configuration?.placeholder || ''"

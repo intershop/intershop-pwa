@@ -117,10 +117,6 @@ export class SearchBoxComponent implements OnInit {
     });
   }
 
-  isContentInsideSearchInput(): boolean {
-    return this.searchInput?.nativeElement.value.length > 0;
-  }
-
   isTypedEnoughCharactersToShowSuggest(): boolean {
     return (this.searchInput?.nativeElement.value.length || 0) >= 2;
   }
