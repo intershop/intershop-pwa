@@ -1,6 +1,7 @@
 import { Address } from 'ish-core/models/address/address.model';
 import { Captcha } from 'ish-core/models/captcha/captcha.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
+import { PriceType } from 'ish-core/models/price/price.model';
 import { User } from 'ish-core/models/user/user.model';
 
 export interface Customer {
@@ -13,7 +14,7 @@ export interface Customer {
   taxationID?: string;
   industry?: string;
   description?: string;
-  budgetPriceType?: 'net' | 'gross';
+  budgetPriceType?: PriceType;
 }
 
 type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
@@ -42,7 +43,7 @@ export type CustomerRegistrationType = {
 
 export interface SsoRegistrationType {
   companyInfo: { companyName1: string; companyName2?: string; taxationID: string };
-  budgetPriceType?: 'net' | 'gross';
+  budgetPriceType?: PriceType;
   address: Address;
   userId: string;
   subscribedToNewsletter?: boolean;

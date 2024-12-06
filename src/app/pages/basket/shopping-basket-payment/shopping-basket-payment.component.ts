@@ -6,6 +6,7 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { PriceType } from 'ish-core/models/price/price.model';
 
 @Component({
   selector: 'ish-shopping-basket-payment',
@@ -16,7 +17,7 @@ export class ShoppingBasketPaymentComponent implements OnInit {
   @Input({ required: true }) basket: BasketView;
 
   paymentMethods$: Observable<PaymentMethod[]>;
-  priceType$: Observable<'gross' | 'net'>;
+  priceType$: Observable<PriceType>;
   redirectStatus: string;
 
   constructor(

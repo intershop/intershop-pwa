@@ -6,6 +6,7 @@ import { pick } from 'lodash-es';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
+import { PriceType } from 'ish-core/models/price/price.model';
 import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
@@ -20,7 +21,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 })
 export class OrganizationSettingsPageComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
-  private initialBudgetPriceType: 'net' | 'gross';
+  private initialBudgetPriceType: PriceType;
 
   budgetTypeForm: FormGroup = new FormGroup({});
   model: Partial<Customer>;
