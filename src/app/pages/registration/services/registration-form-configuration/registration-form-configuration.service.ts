@@ -1,5 +1,6 @@
 /* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
 import { Injectable } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -9,6 +10,7 @@ import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
@@ -28,13 +30,21 @@ export interface RegistrationConfigType {
 @Injectable()
 // eslint-disable-next-line ish-custom-rules/project-structure
 export class RegistrationFormConfigurationService {
+  private isApprovalServiceRunning = true;
+
   constructor(
     private accountFacade: AccountFacade,
+    private appFacade: AppFacade,
     private router: Router,
     private modalService: NgbModal,
     private featureToggle: FeatureToggleService,
     private fieldLibrary: FieldLibrary
-  ) {}
+  ) {
+    this.appFacade
+      .serverSetting$('services.OrderApprovalServiceDefinition.runnable')
+      .pipe(takeUntilDestroyed())
+      .subscribe((enabled: boolean) => (this.isApprovalServiceRunning = enabled));
+  }
 
   extractConfig(route: ActivatedRouteSnapshot) {
     return {
@@ -345,42 +355,44 @@ export class RegistrationFormConfigurationService {
   }
 
   private getCustomerPreferencesConfig(): FormlyFieldConfig[] {
-    return [
-      {
-        type: 'ish-registration-heading-field',
-        props: {
-          headingSize: 'h2',
-          heading: 'account.organization.org_settings.preferences.subtitle',
-        },
-      },
-      {
-        type: 'ish-fieldset-field',
-        props: {
-          fieldsetClass: 'row',
-          childClass: 'col-md-10 col-lg-8 col-xl-6',
-        },
-        fieldGroup: [
+    return this.isApprovalServiceRunning
+      ? [
           {
-            type: 'ish-radio-group-field',
-            key: 'budgetPriceType',
-            defaultValue: 'gross',
+            type: 'ish-registration-heading-field',
             props: {
-              title: 'account.customer.price_type.label',
-              customDescription: 'account.registration.budget_price_type.info',
-              options: [
-                {
-                  value: 'gross',
-                  label: 'account.customer.price_type.gross.label',
-                },
-                {
-                  value: 'net',
-                  label: 'account.customer.price_type.net.label',
-                },
-              ],
+              headingSize: 'h2',
+              heading: 'account.organization.org_settings.preferences.subtitle',
             },
           },
-        ],
-      },
-    ];
+          {
+            type: 'ish-fieldset-field',
+            props: {
+              fieldsetClass: 'row',
+              childClass: 'col-md-10 col-lg-8 col-xl-6',
+            },
+            fieldGroup: [
+              {
+                type: 'ish-radio-group-field',
+                key: 'budgetPriceType',
+                defaultValue: 'gross',
+                props: {
+                  title: 'account.customer.price_type.label',
+                  customDescription: 'account.registration.budget_price_type.info',
+                  options: [
+                    {
+                      value: 'gross',
+                      label: 'account.customer.price_type.gross.label',
+                    },
+                    {
+                      value: 'net',
+                      label: 'account.customer.price_type.net.label',
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ]
+      : [];
   }
 }

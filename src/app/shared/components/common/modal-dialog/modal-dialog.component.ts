@@ -35,13 +35,13 @@ export interface ModalOptions extends NgbModalOptions {
    */
   rejectText?: string;
   /**
-   * Optional fa icon styling classes.
+   * Optional icon properties to display an icon in front of the title, e.g. ['fas', 'triangle-exclamation'],
    */
-  faIconClass?: string;
+  icon?: IconProp;
   /**
-   * Optional icon parameters.
+   * Optional icon styling classes, e.g. faIconClass: 'text-warning pr-2'
    */
-  faIcon?: IconProp;
+  iconClass?: string;
 }
 
 /**
@@ -63,7 +63,7 @@ export interface ModalOptions extends NgbModalOptions {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModalDialogComponent<T> implements OnDestroy {
-  @Input() options: ModalOptions;
+  @Input({ required: true }) options: ModalOptions;
 
   @Output() confirmed = new EventEmitter<T>();
 
