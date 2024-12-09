@@ -5,11 +5,9 @@
       [formControl]="formControl"
       [value]="opt.value"
       [id]="opt.value"
-      [attr.name]="radioName"
       class="form-check-input"
       [ngClass]="props.inputClass"
       [attr.data-testing-id]="'radio-' + opt.label"
-      [attr.aria-label]="props.ariaLabel"
     />
     <label class="form-check-label pr-3" [attr.for]="id">{{ opt.label }}</label>
   </ng-container>

@@ -7,6 +7,7 @@ import { pick } from 'lodash-es';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { PriceType } from 'ish-core/models/price/price.model';
+import { whenTruthy } from 'ish-core/utils/operators';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
@@ -30,13 +31,13 @@ export class OrganizationSettingsPageComponent implements OnInit {
   constructor(private accountFacade: AccountFacade) {}
 
   ngOnInit() {
-    this.accountFacade.customer$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(currentCustomer => {
+    this.accountFacade.customer$.pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef)).subscribe(currentCustomer => {
       this.customer = currentCustomer;
       this.initialBudgetPriceType = currentCustomer.budgetPriceType;
     });
     this.fields = [
       {
-        type: 'ish-budget-type-field',
+        type: 'ish-radio-group-field',
         key: 'budgetPriceType',
         defaultValue: 'gross',
         props: {

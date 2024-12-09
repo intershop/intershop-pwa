@@ -10,9 +10,9 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 
-import { BudgetTypeFieldComponent } from './budget-type-field.component';
+import { RadioGroupFieldComponent } from './radio-group-field.component';
 
-describe('Budget Type Field Component', () => {
+describe('Radio Group Field Component', () => {
   let component: FormlyTestingContainerComponent;
   let fixture: ComponentFixture<FormlyTestingContainerComponent>;
   let element: HTMLElement;
@@ -22,10 +22,10 @@ describe('Budget Type Field Component', () => {
     accountFacade = mock(AccountFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [BudgetTypeFieldComponent],
+      declarations: [RadioGroupFieldComponent],
       imports: [
         FormlyModule.forRoot({
-          types: [{ name: 'ish-budget-type-field', component: BudgetTypeFieldComponent }],
+          types: [{ name: 'ish-radio-group-field', component: RadioGroupFieldComponent }],
         }),
         FormlySelectModule,
         FormlyTestingComponentsModule,
@@ -43,7 +43,7 @@ describe('Budget Type Field Component', () => {
       fields: [
         {
           key: 'budgetPriceType',
-          type: 'ish-budget-type-field',
+          type: 'ish-radio-group-field',
           defaultValue: 'gross',
           props: {
             label: 'Blubber',
@@ -78,7 +78,7 @@ describe('Budget Type Field Component', () => {
 
   it('should be rendered after creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-budget-type-field')).toBeTruthy();
+    expect(element.querySelector('ish-radio-group-field')).toBeTruthy();
   });
 
   it('should be linked to the model after creation', () => {

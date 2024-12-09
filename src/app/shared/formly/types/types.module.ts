@@ -18,7 +18,6 @@ import { DirectivesModule } from 'ish-core/directives.module';
 import { IconModule } from 'ish-core/icon.module';
 import { SpecialValidators, formlyValidation } from 'ish-shared/forms/validators/special-validators';
 
-import { BudgetTypeFieldComponent } from './budget-type-field/budget-type-field.component';
 import { CaptchaFieldComponent } from './captcha-field/captcha-field.component';
 import { CheckboxFieldComponent } from './checkbox-field/checkbox-field.component';
 import { DatePickerFieldComponent } from './date-picker-field/date-picker-field.component';
@@ -29,12 +28,12 @@ import { FieldsetFieldComponent } from './fieldset-field/fieldset-field.componen
 import { HtmlTextFieldComponent } from './html-text-field/html-text-field.component';
 import { PlainTextFieldComponent } from './plain-text-field/plain-text-field.component';
 import { RadioFieldComponent } from './radio-field/radio-field.component';
+import { RadioGroupFieldComponent } from './radio-group-field/radio-group-field.component';
 import { SelectFieldComponent } from './select-field/select-field.component';
 import { TextInputFieldComponent } from './text-input-field/text-input-field.component';
 import { TextareaFieldComponent } from './textarea-field/textarea-field.component';
 
 const fieldComponents = [
-  BudgetTypeFieldComponent,
   CaptchaFieldComponent,
   CheckboxFieldComponent,
   DatePickerFieldComponent,
@@ -43,6 +42,7 @@ const fieldComponents = [
   HtmlTextFieldComponent,
   PlainTextFieldComponent,
   RadioFieldComponent,
+  RadioGroupFieldComponent,
   SelectFieldComponent,
   TextareaFieldComponent,
   TextInputFieldComponent,
@@ -149,7 +149,6 @@ const fieldComponents = [
           wrappers: ['form-field-checkbox-horizontal'],
         },
         { name: 'ish-captcha-field', component: CaptchaFieldComponent },
-        { name: 'ish-budget-type-field', component: BudgetTypeFieldComponent },
         {
           name: 'ish-fieldset-field',
           component: FieldsetFieldComponent,
@@ -160,6 +159,11 @@ const fieldComponents = [
           wrappers: ['form-field-checkbox-horizontal'],
         },
         {
+          name: 'ish-radio-group-field',
+          component: RadioGroupFieldComponent,
+          wrappers: ['form-field-checkbox-horizontal', 'description'],
+        },
+        {
           name: 'ish-date-picker-field',
           component: DatePickerFieldComponent,
           wrappers: ['form-field-horizontal', 'validation'],
@@ -168,11 +172,6 @@ const fieldComponents = [
           name: 'ish-date-range-picker-field',
           component: DateRangePickerFieldComponent,
           wrappers: ['form-field-horizontal', 'validation'],
-        },
-        {
-          name: 'ish-budget-type-field',
-          component: BudgetTypeFieldComponent,
-          wrappers: ['form-field-checkbox-horizontal', 'description'],
         },
       ],
     }),

@@ -361,7 +361,7 @@ export class RegistrationFormConfigurationService {
         },
         fieldGroup: [
           {
-            type: 'ish-budget-type-field',
+            type: 'ish-radio-group-field',
             key: 'budgetPriceType',
             defaultValue: 'gross',
             props: {

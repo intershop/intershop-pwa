@@ -18,12 +18,6 @@ import { FormlySelectModule } from '@ngx-formly/core/select';
 @Component({ selector: 'ish-captcha-test-field', template: 'CaptchaFieldComponent: {{ field.key }} {{ to | json }}' })
 class CaptchaFieldComponent extends FieldType {}
 
-@Component({
-  selector: 'ish-budget-type-test-field',
-  template: 'BudgetTypeFieldComponent: {{ field.key }} {{ to | json }}',
-})
-class BudgetTypeFieldComponent extends FieldType {}
-
 @Component({ selector: 'ish-checkbox-test-field', template: 'CheckboxFieldComponent: {{ field.key }} {{ to | json }}' })
 class CheckboxFieldComponent extends FieldType {}
 
@@ -50,6 +44,12 @@ class FieldsetFieldComponent extends FieldType {
   template: `RadioFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }} `,
 })
 class RadioFieldComponent extends FieldType {}
+
+@Component({
+  selector: 'ish-radio-group-test-field',
+  template: 'RadioGroupFieldComponent: {{ field.key }} {{ to | json }}',
+})
+class RadioGroupFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-input-test-field',
@@ -125,7 +125,6 @@ class RepeatFieldComponent extends FieldArrayType {}
 
 @NgModule({
   declarations: [
-    BudgetTypeFieldComponent,
     CaptchaFieldComponent,
     CheckboxFieldComponent,
     DatePickerFieldComponent,
@@ -137,6 +136,7 @@ class RepeatFieldComponent extends FieldArrayType {}
     PhoneFieldComponent,
     PlainTextFieldComponent,
     RadioFieldComponent,
+    RadioGroupFieldComponent,
     RepeatFieldComponent,
     SelectFieldComponent,
     TextareaFieldComponent,
@@ -166,6 +166,7 @@ class RepeatFieldComponent extends FieldArrayType {}
           name: 'ish-radio-field',
           component: RadioFieldComponent,
         },
+        { name: 'ish-radio-group-field', component: RadioGroupFieldComponent },
         {
           name: 'ish-checkbox-field',
           component: CheckboxFieldComponent,
@@ -190,9 +191,7 @@ class RepeatFieldComponent extends FieldArrayType {}
           name: 'ish-textarea-field',
           component: TextareaFieldComponent,
         },
-        { name: 'ish-radio-field', component: RadioFieldComponent },
         { name: 'ish-captcha-field', component: CaptchaFieldComponent },
-        { name: 'ish-budget-type-field', component: BudgetTypeFieldComponent },
         { name: 'ish-date-picker-field', component: DatePickerFieldComponent },
         { name: 'ish-date-range-picker-field', component: DateRangePickerFieldComponent },
         { name: 'repeat', component: RepeatFieldComponent },
