@@ -45,7 +45,7 @@
         [form]="budgetTypeForm"
         [fields]="fields"
         [model]="model"
-        (click)="budgetTypeChangeConfirmationDialog.show()"
+        (modelChange)="openConfirmationDialog(budgetTypeChangeConfirmationDialog)"
       />
     </form>
   </div>

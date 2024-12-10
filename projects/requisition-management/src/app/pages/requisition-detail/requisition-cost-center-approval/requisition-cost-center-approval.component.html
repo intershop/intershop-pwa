@@ -2,7 +2,7 @@
   <div *ngIf="costCenter?.costCenterOwner.email === (userEmail$ | async)" class="row">
     <ish-info-box class="infobox-wrapper col-12">
       <div class="d-flex align-items-start">
-        <h3 class="mt-1 pr-2">
+        <h3 class="pr-2">
           {{ 'approval.detailspage.costcenter.approval.heading' | translate }}
         </h3>
         <ish-lazy-budget-info />

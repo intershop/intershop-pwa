@@ -8,6 +8,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { PriceType } from 'ish-core/models/price/price.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
@@ -59,11 +60,15 @@ export class OrganizationSettingsPageComponent implements OnInit {
     this.model = pick(this.customer, 'budgetPriceType');
   }
 
+  openConfirmationDialog(budgetTypeChangeConfirmationDialog: ModalDialogComponent<string>) {
+    if (this.model.budgetPriceType !== this.initialBudgetPriceType) {
+      budgetTypeChangeConfirmationDialog.show();
+    }
+  }
+
   resetValue() {
     if (this.initialBudgetPriceType !== this.budgetTypeForm.get('budgetPriceType').value) {
-      this.budgetTypeForm
-        .get('budgetPriceType')
-        .reset({ value: this.initialBudgetPriceType, disabled: false }, { emitEvent: false });
+      this.budgetTypeForm.get('budgetPriceType').reset({ value: this.initialBudgetPriceType, disabled: false });
     }
   }
 
