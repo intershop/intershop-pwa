@@ -14,6 +14,13 @@ const loadingPageRoutes: Routes = [
       headerType: 'simple',
     },
   },
+  {
+    path: 'checkout',
+    component: LoadingPageComponent,
+    data: {
+      headerType: 'checkout',
+    },
+  },
 ];
 
 @NgModule({
