@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { pick } from 'lodash-es';
 import { Observable, combineLatest, defer, forkJoin, of, throwError } from 'rxjs';
-import { concatMap, first, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, first, map, switchMap, take, tap } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
@@ -96,10 +96,9 @@ export class UserService {
 
   private fetchCustomer(options: AvailableOptions = {}): Observable<CustomerUserType> {
     return this.apiService.get<CustomerData>('customers/-', options).pipe(
-      withLatestFrom(this.appFacade.isAppTypeREST$),
-      concatMap(([data, isAppTypeRest]) =>
+      concatMap(data =>
         forkJoin([
-          isAppTypeRest && data.customerType === 'PRIVATE'
+          AppFacade.getCustomerRestResource(data.customerType !== 'PRIVATE') === 'privatecustomers'
             ? this.apiService.get<CustomerData>('privatecustomers/-', options)
             : of(data),
           this.apiService.get<{ pgid: string }>('personalization', options).pipe(map(data => data.pgid)),
@@ -164,12 +163,11 @@ export class UserService {
         )
       );
 
-    return this.appFacade.isAppTypeREST$.pipe(
+    return newCustomer$.pipe(
       first(),
-      withLatestFrom(newCustomer$.pipe(first())),
-      concatMap(([isAppTypeRest, newCustomer]) =>
+      concatMap(newCustomer =>
         this.apiService
-          .post<void>(AppFacade.getCustomerRestResource(body.customer.isBusinessCustomer, isAppTypeRest), newCustomer, {
+          .post<void>(AppFacade.getCustomerRestResource(body.customer.isBusinessCustomer), newCustomer, {
             captcha: pick(body, ['captcha', 'captchaAction']),
           })
           .pipe(map<void, CustomerUserType>(() => ({ customer: body.customer, user: body.user })))
