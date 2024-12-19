@@ -60,30 +60,6 @@ describe('Wishlist Service', () => {
     });
   });
 
-  it("should get wishlists when 'getWishlists' is called for b2c applications", done => {
-    when(apiServiceMock.get(`customers/-/wishlists`)).thenReturn(of({ elements: [{ uri: 'any/wishlists/1234' }] }));
-    when(apiServiceMock.get(`customers/-/wishlists/1234`)).thenReturn(of({ id: '1234', preferred: true }));
-    when(appFacade.customerRestResource$).thenReturn(of('customers'));
-
-    wishlistService.getWishlists().subscribe(data => {
-      verify(apiServiceMock.get(`customers/-/wishlists`)).once();
-      verify(apiServiceMock.get(`customers/-/wishlists/1234`)).once();
-      expect(data).toMatchInlineSnapshot(`
-        [
-          {
-            "id": "1234",
-            "items": [],
-            "itemsCount": 0,
-            "preferred": true,
-            "public": undefined,
-            "title": undefined,
-          },
-        ]
-      `);
-      done();
-    });
-  });
-
   it("should create a wishlist when 'createWishlist' is called", done => {
     const wishlistId = '1234';
     const wishlistHeader: WishlistHeader = { title: 'wishlist title', preferred: false };

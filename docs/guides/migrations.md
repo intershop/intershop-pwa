@@ -13,6 +13,11 @@ The `updateUser` method of the UserService has been slightly refactored.
 It now sends the user password in the request body to enable password validation on e-mail change.
 The Authorization header has also been removed as authorization is done via session token.
 
+The observable `isAppTypeREST$` of the AppFacade has been removed.
+Previously it has been used to determine whether the 'privatecustomers' or the 'customers' REST resource is needed to execute b2c user related REST requests.
+Now the 'privatecustomers' REST resource is the new standard for b2c users.
+If your ICM doesn't support the new standard the method `getCustomerRestResource` of the [`app.facade`](../../src/app/core/facades/app.facade.ts) has to be adapted.
+
 ## From 5.1 to 5.2
 
 > [!NOTE]

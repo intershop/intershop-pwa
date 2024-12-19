@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, merge, noop } from 'rxjs';
-import { filter, map, sample, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
+import { filter, map, sample, shareReplay, startWith, take, withLatestFrom } from 'rxjs/operators';
 
 import {
   getAvailableLocales,
@@ -76,28 +76,14 @@ export class AppFacade {
   ).pipe(startWith(true), shareReplay(1));
   path$ = this.store.pipe(select(selectPath));
 
-  /**
-   * selects whether the current application type is 'REST'. If the application type is unknown it returns true
-   */
-  isAppTypeREST$ = this.store.pipe(
-    select(
-      getServerConfigParameter<'intershop.REST' | 'intershop.B2CResponsive' | 'intershop.SMBResponsive'>(
-        'application.applicationType'
-      )
-    ),
-    map(appType => appType === 'intershop.REST' || !appType)
+  customerRestResource$ = this.store.pipe(
+    select(getLoggedInCustomer),
+    map(customer => AppFacade.getCustomerRestResource(!customer || customer.isBusinessCustomer)),
+    take(1)
   );
 
-  customerRestResource$ = this.isAppTypeREST$.pipe(
-    withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
-    map(([isRest, customer]) => AppFacade.getCustomerRestResource(!customer || customer.isBusinessCustomer, isRest))
-  );
-
-  static getCustomerRestResource(
-    isBusinessCustomer: boolean,
-    isAppTypeREST: boolean
-  ): 'customers' | 'privatecustomers' {
-    return isAppTypeREST && !isBusinessCustomer ? 'privatecustomers' : 'customers';
+  static getCustomerRestResource(isBusinessCustomer: boolean): 'customers' | 'privatecustomers' {
+    return !isBusinessCustomer ? 'privatecustomers' : 'customers';
   }
 
   setBusinessError(error: string) {

@@ -44,7 +44,6 @@ describe('User Service', () => {
     when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
 
     when(tokenServiceMock.fetchToken(anyString(), anything())).thenReturn(of(token));
-    when(appFacade.isAppTypeREST$).thenReturn(of(true));
     when(appFacade.currentLocale$).thenReturn(of('en_US'));
     when(appFacade.customerRestResource$).thenReturn(of('customers'));
 
