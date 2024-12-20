@@ -130,9 +130,9 @@ The spelling of the OCI punchout actions has changed due to a changed naming sch
 
 Since `defaultProject` is no longer a valid option in `angular.json`, it has been removed and the root project (project with an empty root) is used instead.
 
-We enabled the [Angular Hydration](https://angular.io/guide/hydration) to improve performance and prevent the UI from flickering when a page renders - please note that this feature is still in developer preview and may have some limitations.
+We enabled the [Angular Hydration](https://v16.angular.io/guide/hydration) to improve performance and prevent the UI from flickering when a page renders - please note that this feature is still in developer preview and may have some limitations.
 
-From this version, we use the [`takeUntilDestroyed`](https://angularindepth.com/posts/1518/takeuntildestroy-in-angular-v16) operator to complete observables when the calling context (component, directive, service, etc) is destroyed.
+From this version, we use the [`takeUntilDestroyed`](https://angular.love/takeuntildestroy-in-angular-v16) operator to complete observables when the calling context (component, directive, service, etc) is destroyed.
 The `add-destroy` schematic has been removed but you can keep the `takeUntil(destroy$)` mechanism for a transitional period.
 A [migration script](../../scripts/migrate-destroy-subject.ts) is created to support the migration to the new way to complete open observable subscriptions on destroy.
 This script can be executed with `npx ts-node .\scripts\migrate-destroy-subject.ts`.
