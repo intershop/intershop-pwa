@@ -1,6 +1,3 @@
-<!-- Error message -->
-<ish-error-message [error]="wishlistError$ | async" />
-
 <div *ngIf="wishlist$ | async as wishlist" class="col-9" data-testing-id="shared-wishlist">
   <h1>{{ wishlist.title }}</h1>
 

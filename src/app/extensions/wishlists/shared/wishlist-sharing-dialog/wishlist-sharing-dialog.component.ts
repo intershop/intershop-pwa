@@ -115,12 +115,12 @@ export class WishlistSharingDialogComponent implements OnInit {
 
   /** Opens the modal. */
   show() {
+    this.wishListForm.reset();
     this.modal = this.ngbModal.open(this.modalTemplate);
   }
 
   /** Close the modal. */
   hide() {
-    this.wishListForm.reset();
     this.submitted = false;
     if (this.modal) {
       this.modal.close();

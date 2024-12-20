@@ -1,10 +1,9 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot } from '@angular/router';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
 
-import { isSharedWishlistLoaded, isSharedWishlistLoading, wishlistActions } from '../store/wishlist';
+import { wishlistActions } from '../store/wishlist';
 
 /**
  * Fetch the shared wishlist
@@ -15,28 +14,12 @@ export function fetchSharedWishlistGuard(route: ActivatedRouteSnapshot): boolean
   const owner = route.queryParams.owner;
   const secureCode = route.queryParams.secureCode;
 
-  return store.pipe(
-    select(isSharedWishlistLoaded(wishlistId)),
-    switchMap(loaded => {
-      if (loaded) {
-        return of(true);
-      }
-
-      return store.pipe(
-        select(isSharedWishlistLoading(wishlistId)),
-        tap(loading => {
-          if (!loading) {
-            store.dispatch(
-              wishlistActions.loadSharedWishlist({
-                wishlistId,
-                owner,
-                secureCode,
-              })
-            );
-          }
-        }),
-        map(() => true)
-      );
+  store.dispatch(
+    wishlistActions.loadSharedWishlist({
+      wishlistId,
+      owner,
+      secureCode,
     })
   );
+  return of(true);
 }

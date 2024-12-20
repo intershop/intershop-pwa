@@ -565,6 +565,7 @@
   "account.wishlists.new_wishlist_form.create_button.text": "Create",
   "account.wishlists.no_items": "You have not added any available items to your wish list.",
   "account.wishlists.no_wishlists": "Currently you don’t have any wish lists.",
+  "account.wishlists.shared_wishlist.error": "The wish list could not be shared. Please try again later.",
   "account.wishlists.table.preferred": "Preferred",
   "account.wishlists.table.shared": "Shared",
   "account.wishlists.widget.heading": "Your wish list items",

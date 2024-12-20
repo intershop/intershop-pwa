@@ -41,19 +41,3 @@ export const getAllWishlistsItemsSkus = createSelectorFactory<object, string[]>(
 );
 
 export const getSharedWishlist = createSelector(getWishlistState, (state: WishlistState) => state.sharedWishlist);
-
-export const getSharedWishlistLoading = createSelector(
-  getWishlistState,
-  (state: WishlistState) => state.sharedWishlistLoading
-);
-
-export const getSharedWishlistError = createSelector(
-  getWishlistState,
-  (state: WishlistState) => state.sharedWishlistError
-);
-
-export const isSharedWishlistLoading = (wishlistId: string) =>
-  createSelector(getWishlistState, (state: WishlistState) => state.loading && state.selected === wishlistId);
-
-export const isSharedWishlistLoaded = (wishlistId: string) =>
-  createSelector(selectEntities, entities => !!entities[wishlistId]);

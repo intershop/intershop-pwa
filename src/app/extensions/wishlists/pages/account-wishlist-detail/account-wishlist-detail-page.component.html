@@ -20,12 +20,12 @@
     <ul class="col list-unstyled d-flex justify-content-end mb-0">
       <li class="p-2">
         <button
-          type="button"
           *ngIf="wishlist.shared"
-          (click)="unshareWishlist(wishlist.id)"
+          type="button"
           class="btn-tool btn-link"
-          data-testing-id="wishlist-stop-sharing"
           title="{{ 'account.wishlist.header.stop_wishlist_sharing.label' | translate }}"
+          (click)="unshareWishlist(wishlist.id)"
+          data-testing-id="wishlist-stop-sharing"
         >
           <fa-icon [icon]="['fas', 'pause']" />
         </button>
@@ -34,10 +34,10 @@
       <li class="p-2">
         <button
           type="button"
-          (click)="shareWishlistDialog.show()"
           class="btn-tool btn-link"
-          data-testing-id="wishlist-sharing"
           title="{{ 'account.wishlist.header.send_wishlist.label' | translate }}"
+          (click)="shareWishlistDialog.show()"
+          data-testing-id="wishlist-sharing"
         >
           <fa-icon [icon]="['fas', 'paper-plane']" />
         </button>
@@ -46,10 +46,10 @@
       <li class="p-2">
         <button
           type="button"
-          (click)="editWishlistDialog.show()"
           class="btn-tool btn-link"
-          data-testing-id="wishlist-details-edit"
           title="{{ 'account.wishlist.header.edit_wishlist.label' | translate }}"
+          (click)="editWishlistDialog.show()"
+          data-testing-id="wishlist-details-edit"
         >
           <fa-icon [icon]="['fas', 'pencil-alt']" />
         </button>

@@ -1,3 +1,4 @@
+import { APP_BASE_HREF } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -18,7 +19,10 @@ describe('Account Wishlist Detail Page Component', () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [AccountWishlistDetailPageComponent, MockComponent(ErrorMessageComponent)],
-      providers: [{ provide: WishlistsFacade, useFactory: () => instance(mock(WishlistsFacade)) }],
+      providers: [
+        { provide: APP_BASE_HREF, useValue: '/' },
+        { provide: WishlistsFacade, useFactory: () => instance(mock(WishlistsFacade)) },
+      ],
     }).compileComponents();
   });
 

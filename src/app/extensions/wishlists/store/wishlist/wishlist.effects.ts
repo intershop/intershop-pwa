@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { from } from 'rxjs';
-import { concatMap, debounceTime, filter, map, mergeMap, switchMap, take } from 'rxjs/operators';
+import { debounceTime, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
+import { businessError } from 'ish-core/store/core/error';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
@@ -51,12 +50,7 @@ import { getSelectedWishlistDetails, getSelectedWishlistId, getWishlistDetails }
 
 @Injectable()
 export class WishlistEffects {
-  constructor(
-    private actions$: Actions,
-    private wishlistService: WishlistService,
-    private store: Store,
-    private router: Router
-  ) {}
+  constructor(private actions$: Actions, private wishlistService: WishlistService, private store: Store) {}
 
   loadWishlists$ = createEffect(() =>
     this.actions$.pipe(
@@ -288,7 +282,6 @@ export class WishlistEffects {
       mapToPayload(),
       mergeMap(payload =>
         this.wishlistService.getSharedWishlist(payload.wishlistId, payload.owner, payload.secureCode).pipe(
-          take(1),
           map(wishlist => wishlistApiActions.loadSharedWishlistSuccess({ wishlist })),
           mapErrorToAction(wishlistApiActions.loadSharedWishlistFail)
         )
@@ -299,12 +292,7 @@ export class WishlistEffects {
   loadSharedWishlistFailed$ = createEffect(() =>
     this.actions$.pipe(
       ofType(wishlistApiActions.loadSharedWishlistFail),
-      mapToPayloadProperty('error'),
-      concatMap(() =>
-        from(this.router.navigate(['/error'])).pipe(
-          map(() => ({ type: '[Wishlist API] Navigation Success' })) // No-op action
-        )
-      )
+      map(() => businessError({ error: 'account.wishlists.shared_wishlist.error' }))
     )
   );
 }

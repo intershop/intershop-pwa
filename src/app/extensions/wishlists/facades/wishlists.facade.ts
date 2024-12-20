@@ -17,8 +17,6 @@ import {
   getPreferredWishlist,
   getSelectedWishlistDetails,
   getSharedWishlist,
-  getSharedWishlistError,
-  getSharedWishlistLoading,
   getWishlistsError,
   getWishlistsLoading,
   moveItemToWishlist,
@@ -39,8 +37,6 @@ export class WishlistsFacade {
   wishlistLoading$: Observable<boolean> = this.store.pipe(select(getWishlistsLoading));
   wishlistError$: Observable<HttpError> = this.store.pipe(select(getWishlistsError));
   sharedWishlist$: Observable<Wishlist> = this.store.pipe(select(getSharedWishlist));
-  sharedWishlistLoading$: Observable<boolean> = this.store.pipe(select(getSharedWishlistLoading));
-  sharedWishlistError$: Observable<HttpError> = this.store.pipe(select(getSharedWishlistError));
 
   wishlistSelectOptions$(filterCurrent = true) {
     return this.wishlists$.pipe(

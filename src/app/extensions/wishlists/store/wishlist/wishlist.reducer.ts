@@ -33,8 +33,6 @@ export interface WishlistState extends EntityState<Wishlist> {
   selected: string;
   error: HttpError;
   sharedWishlist: Wishlist;
-  sharedWishlistLoading: boolean;
-  sharedWishlistError: HttpError;
 }
 
 export const wishlistsAdapter = createEntityAdapter<Wishlist>({
@@ -46,8 +44,6 @@ export const initialState: WishlistState = wishlistsAdapter.getInitialState({
   selected: undefined,
   error: undefined,
   sharedWishlist: undefined,
-  sharedWishlistLoading: false,
-  sharedWishlistError: undefined,
 });
 
 export const wishlistReducer = createReducer(
@@ -67,6 +63,7 @@ export const wishlistReducer = createReducer(
     deleteWishlistFail,
     createWishlistFail,
     updateWishlistFail,
+    wishlistApiActions.loadSharedWishlistFail,
     wishlistApiActions.shareWishlistFail,
     wishlistApiActions.unshareWishlistFail
   ),
@@ -145,15 +142,6 @@ export const wishlistReducer = createReducer(
     (state, action): WishlistState => ({
       ...state,
       sharedWishlist: action.payload.wishlist,
-      sharedWishlistLoading: false,
-    })
-  ),
-  on(
-    wishlistApiActions.loadSharedWishlistFail,
-    (state, action): WishlistState => ({
-      ...state,
-      sharedWishlistLoading: false,
-      sharedWishlistError: action.payload.error,
     })
   )
 );

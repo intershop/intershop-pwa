@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { APP_BASE_HREF } from '@angular/common';
+import { ChangeDetectionStrategy, Component, DestroyRef, Inject, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, filter, take } from 'rxjs';
@@ -21,7 +22,11 @@ export class AccountWishlistDetailPageComponent implements OnInit {
 
   private destroyedRef = inject(DestroyRef);
 
-  constructor(private wishlistsFacade: WishlistsFacade, private translate: TranslateService) {}
+  constructor(
+    private wishlistsFacade: WishlistsFacade,
+    private translate: TranslateService,
+    @Inject(APP_BASE_HREF) private baseHref: string
+  ) {}
 
   ngOnInit() {
     this.wishlist$ = this.wishlistsFacade.currentWishlist$;
@@ -59,8 +64,7 @@ export class AccountWishlistDetailPageComponent implements OnInit {
     const emailSubject = this.translate.instant('email.wishlist_sharing.heading');
     const defaultText = this.translate.instant('email.wishlist_sharing.text');
 
-    // get the base url, but consider multi-channel baseHref configurations
-    const baseUrl = window.location.origin + window.location.pathname.split('/').slice(0, -3).join('/');
+    const baseUrl = `${location.origin}${this.baseHref}`;
     const emailBody = `${wishlistSharing.message || defaultText} ${wishlist.title}\n${baseUrl}/wishlists/${
       wishlist.id
     }?owner=${wishlist.owner}&secureCode=${wishlist.secureCode}`;
