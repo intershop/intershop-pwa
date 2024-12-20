@@ -34,6 +34,7 @@ import { QuickorderExportsModule } from '../extensions/quickorder/exports/quicko
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
 import { RatingExportsModule } from '../extensions/rating/exports/rating-exports.module';
 import { RecentlyExportsModule } from '../extensions/recently/exports/recently-exports.module';
+import { ReturnRequestExportsModule } from '../extensions/return-request/exports/return-request-exports.module';
 import { StoreLocatorExportsModule } from '../extensions/store-locator/exports/store-locator-exports.module';
 import { TactonExportsModule } from '../extensions/tacton/exports/tacton-exports.module';
 import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
@@ -187,6 +188,7 @@ const importExportModules = [
   RatingExportsModule,
   ReactiveFormsModule,
   RecentlyExportsModule,
+  ReturnRequestExportsModule,
   RoleToggleModule,
   RouterModule,
   StoreLocatorExportsModule,

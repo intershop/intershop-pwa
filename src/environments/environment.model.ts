@@ -51,6 +51,7 @@ export interface Environment {
     | 'tracking'
     | 'tacton'
     | 'maps'
+    | 'returnRequest'
   )[];
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */

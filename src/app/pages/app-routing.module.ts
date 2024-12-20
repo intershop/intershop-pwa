@@ -127,6 +127,19 @@ const routes: Routes = [
   },
   { path: 'cookies', loadChildren: () => import('./cookies/cookies-page.module').then(m => m.CookiesPageModule) },
   { path: 'cobrowse', loadChildren: () => import('./co-browse/co-browse-page.module').then(m => m.CoBrowsePageModule) },
+  {
+    path: 'return-request',
+    loadChildren: () =>
+      import('../extensions/return-request/pages/return-request-guest/return-request-guest-page.module').then(
+        m => m.ReturnRequestGuestPageModule
+      ),
+    data: {
+      meta: {
+        title: 'toolineo.return_request.guest_title',
+        robots: 'noindex, nofollow',
+      },
+    },
+  },
 ];
 
 @NgModule({
