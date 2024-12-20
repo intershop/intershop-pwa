@@ -39,6 +39,10 @@ export class ProductImageComponent implements OnInit {
    * A custom alt text for the img tag.
    */
   @Input() altText: string;
+  /**
+   * The image loading strategy.
+   */
+  @Input() loading: 'lazy' | 'eager' | 'auto' = 'lazy';
 
   productURL$: Observable<string>;
   productImage$: Observable<Image>;
