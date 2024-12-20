@@ -86,14 +86,16 @@ const filtered = externalLinks
   .filter((val, idx, arr) => arr.indexOf(val) === idx)
   .filter(
     link =>
-      !link.includes('tacton.com') &&
       !link.includes('repository.intershop.de') &&
       !link.includes('support.intershop.') &&
       !link.includes('docs.intershop.') &&
       !link.includes('azurewebsites.net') &&
       !link.includes('github.com') &&
-      !link.includes('github.com/intershop/intershop-pwa/commit') &&
-      !link.includes('ngrx.io') // service worker only
+      !link.includes('angular.io') &&
+      !link.includes('angular.love') &&
+      !link.includes('optimizesmart.com') &&
+      !link.includes('gnu.org') &&
+      !link.includes('tacton.com')
   );
 
 mapSeries(filtered, checkExternalLinkError).catch(error => {
