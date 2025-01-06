@@ -1,8 +1,5 @@
-import { APP_BASE_HREF } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, Inject, OnInit, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable, filter, take } from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -20,13 +17,7 @@ export class AccountWishlistDetailPageComponent implements OnInit {
   wishlistError$: Observable<HttpError>;
   wishlistLoading$: Observable<boolean>;
 
-  private destroyedRef = inject(DestroyRef);
-
-  constructor(
-    private wishlistsFacade: WishlistsFacade,
-    private translate: TranslateService,
-    @Inject(APP_BASE_HREF) private baseHref: string
-  ) {}
+  constructor(private wishlistsFacade: WishlistsFacade) {}
 
   ngOnInit() {
     this.wishlist$ = this.wishlistsFacade.currentWishlist$;
@@ -47,33 +38,6 @@ export class AccountWishlistDetailPageComponent implements OnInit {
 
   shareWishlist(wishlistSharing: WishlistSharing, wishlistId: string) {
     this.wishlistsFacade.shareWishlist(wishlistId, wishlistSharing);
-
-    // ensure owner and secureCode are in the store
-    this.wishlist$
-      .pipe(
-        filter(updatedWishlist => !!updatedWishlist?.owner && !!updatedWishlist?.secureCode),
-        take(1),
-        takeUntilDestroyed(this.destroyedRef)
-      )
-      .subscribe(updatedWishlist => {
-        this.sendEmail(wishlistSharing, updatedWishlist);
-      });
-  }
-
-  private sendEmail(wishlistSharing: WishlistSharing, wishlist: Wishlist) {
-    const emailSubject = this.translate.instant('email.wishlist_sharing.heading');
-    const defaultText = this.translate.instant('email.wishlist_sharing.text');
-
-    const baseUrl = `${location.origin}${this.baseHref}`;
-    const emailBody = `${wishlistSharing.message || defaultText} ${wishlist.title}\n${baseUrl}/wishlists/${
-      wishlist.id
-    }?owner=${wishlist.owner}&secureCode=${wishlist.secureCode}`;
-
-    const mailtoLink = `mailto:${wishlistSharing.recipients}?subject=${encodeURIComponent(
-      emailSubject
-    )}&body=${encodeURIComponent(emailBody)}`;
-
-    window.open(mailtoLink);
   }
 
   trackByFn(_: number, item: WishlistItem) {

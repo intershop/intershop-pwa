@@ -1,8 +1,10 @@
+import { APP_BASE_HREF } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
@@ -82,9 +84,11 @@ describe('Wishlist Effects', () => {
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
         RouterTestingModule.withRoutes([{ path: 'account/wishlists/:wishlistName', children: [] }]),
+        TranslateModule.forRoot(),
         WishlistsStoreModule.forTesting('wishlists'),
       ],
       providers: [
+        { provide: APP_BASE_HREF, useValue: '/' },
         { provide: WishlistService, useFactory: () => instance(wishlistServiceMock) },
         provideMockActions(() => actions$),
         WishlistEffects,
@@ -570,6 +574,7 @@ describe('Wishlist Effects', () => {
     };
 
     beforeEach(() => {
+      global.open = jest.fn();
       store.dispatch(loginUserSuccess({ customer }));
       when(wishlistServiceMock.shareWishlist(anyString(), anything())).thenReturn(of(wishlistSharingResponse));
     });
@@ -591,6 +596,7 @@ describe('Wishlist Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.shareWishlist$).toBeObservable(expected$);
+      expect(global.open).toHaveBeenCalled();
     });
 
     it('should map failed calls to actions of type ShareWishlistFail', () => {

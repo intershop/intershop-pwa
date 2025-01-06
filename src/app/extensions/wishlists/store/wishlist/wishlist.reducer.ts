@@ -120,8 +120,6 @@ export const wishlistReducer = createReducer(
     const updatedWishlist: Wishlist = {
       ...state.entities[wishlistId],
       shared: true,
-      owner: wishlistSharingResponse.owner,
-      secureCode: wishlistSharingResponse.secureCode,
     };
 
     return wishlistsAdapter.upsertOne(updatedWishlist, state);
@@ -132,7 +130,6 @@ export const wishlistReducer = createReducer(
     const updatedWishlist: Wishlist = {
       ...state.entities[wishlistId],
       shared: false,
-      secureCode: undefined,
     };
 
     return wishlistsAdapter.upsertOne(updatedWishlist, state);

@@ -1,9 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
-
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 
@@ -28,7 +25,7 @@ describe('Shared Wishlist Page Component', () => {
   beforeEach(async () => {
     wishlistFacadeMock = mock(WishlistsFacade);
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(ErrorMessageComponent), SharedWishlistPageComponent],
+      declarations: [SharedWishlistPageComponent],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }],
     }).compileComponents();
   });
