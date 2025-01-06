@@ -417,7 +417,7 @@ export class ApiService {
     const basketUrl$ = this.store
       .pipe(
         select(getBasketIdOrCurrent),
-        map(basketId => `baskets/${basketId}`)
+        map(basketId => `baskets/${this.encodeResourceId(basketId)}`)
       )
       .pipe(take(1));
 
