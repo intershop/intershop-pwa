@@ -117,7 +117,7 @@ export class BasketService {
     const params = new HttpParams().set('include', this.allBasketIncludes.join());
 
     return this.apiService
-      .get<BasketData>(`baskets/${basketId}`, {
+      .get<BasketData>(`baskets/${this.apiService.encodeResourceId(basketId)}`, {
         headers: this.basketHeaders,
         params,
       })
