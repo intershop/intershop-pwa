@@ -15,7 +15,7 @@ The output folder for the documentation is set to _<project-home>/docs/compodoc_
 We use an own styling theme based on the theme '_readthedocs_' provided by Compodoc.
 The _style.css_ file of the theme can be found in _<project-home>/docs/theme_.
 
-Examples for the comment styling pattern can be found here: [TypeDoc - DocComments](http://typedoc.org/guides/doccomments/).
+Examples for the comment styling pattern can be found here: [TypeDoc - DocComments](https://typedoc.org/documents/Doc_Comments.html).
 
 ## Usage
 

@@ -62,6 +62,7 @@ export class SentryConfigEffects {
         select(getLoggedInUser),
         mapToProperty('email'),
         distinctUntilChanged(),
+        // eslint-disable-next-line etc/no-deprecated
         tap(email => configureScope(scope => scope.setUser(email ? { email } : undefined)))
       ),
     { dispatch: false }
