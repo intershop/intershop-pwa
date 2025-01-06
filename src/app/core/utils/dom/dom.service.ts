@@ -2,8 +2,9 @@ import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, Renderer2, RendererFactory2, RendererStyleFlags2 } from '@angular/core';
 
 /**
- * Utility Service for DOM Manipulations using Angular Renderer2. It allows you to manipulate DOM elements without accessing the DOM directly. While working with SSR DOM manipulations are not possible on server, this is also handled properly.
- *
+ * Utility Service for DOM Manipulations using Angular Renderer2.
+ * It allows you to manipulate DOM elements without accessing the DOM directly.
+ * While working with SSR DOM manipulations are not possible on server, this is also handled properly.
  **/
 
 @Injectable({ providedIn: 'root' })

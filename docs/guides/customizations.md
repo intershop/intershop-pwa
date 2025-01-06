@@ -243,6 +243,12 @@ The first step for any migration is to add the Intershop PWA GitHub repository a
 git remote add intershop https://github.com/intershop/intershop-pwa.git
 ```
 
+Afterwards one needs to fetch the new release tags of the `intershop` remote.
+
+```
+git fetch intershop 'refs/tags/*:refs/tags/*'
+```
+
 For importing changes from the current release, you can use different approaches:
 
 ### 1. Range Cherry Pick of New Release Commits
