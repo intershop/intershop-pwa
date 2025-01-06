@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 import { authGuard } from 'ish-core/guards/auth.guard';
-import { featureToggleGuard } from 'ish-core/guards/feature-toggle.guard';
 
 const routes: Routes = [
   {
