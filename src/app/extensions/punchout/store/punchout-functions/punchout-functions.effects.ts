@@ -33,7 +33,7 @@ export class PunchoutFunctionsEffects {
     () =>
       this.actions$.pipe(
         ofType(transferPunchoutBasketSuccess),
-        map(() => window.sessionStorage.removeItem('basket-id'))
+        map(() => sessionStorage.removeItem('basket-id'))
       ),
     { dispatch: false }
   );
