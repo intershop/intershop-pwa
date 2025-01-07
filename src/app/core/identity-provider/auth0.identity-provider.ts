@@ -103,13 +103,13 @@ export class Auth0IdentityProvider implements IdentityProvider {
         ),
         whenTruthy(),
         switchMap(idToken => {
-          const inviteUserId = window.sessionStorage.getItem('invite-userid');
-          const inviteHash = window.sessionStorage.getItem('invite-hash');
+          const inviteUserId = sessionStorage.getItem('invite-userid');
+          const inviteHash = sessionStorage.getItem('invite-hash');
           return inviteUserId && inviteHash
             ? this.inviteRegistration(idToken, inviteUserId, inviteHash).pipe(
                 tap(() => {
-                  window.sessionStorage.removeItem('invite-userid');
-                  window.sessionStorage.removeItem('invite-hash');
+                  sessionStorage.removeItem('invite-userid');
+                  sessionStorage.removeItem('invite-hash');
                 })
               )
             : this.normalSignInRegistration(idToken);
@@ -222,8 +222,8 @@ export class Auth0IdentityProvider implements IdentityProvider {
 
   triggerInvite(route: ActivatedRouteSnapshot): TriggerReturnType {
     this.router.navigateByUrl('/loading');
-    window.sessionStorage.setItem('invite-userid', route.queryParams.uid);
-    window.sessionStorage.setItem('invite-hash', route.queryParams.Hash);
+    sessionStorage.setItem('invite-userid', route.queryParams.uid);
+    sessionStorage.setItem('invite-hash', route.queryParams.Hash);
     return this.oauthService.loadDiscoveryDocumentAndLogin({
       state: route.queryParams.returnUrl,
     });

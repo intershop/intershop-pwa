@@ -56,7 +56,7 @@ describe('Co Browse Identity Provider', () => {
     resetCalls(accountFacade);
     resetCalls(checkoutFacade);
 
-    window.sessionStorage.clear();
+    sessionStorage.clear();
   });
 
   describe('init', () => {
@@ -69,7 +69,7 @@ describe('Co Browse Identity Provider', () => {
     it('should add basket-id to session storage, when basket is available', () => {
       when(checkoutFacade.basket$).thenReturn(of(BasketMockData.getBasket()));
       identityProvider.init();
-      expect(window.sessionStorage.getItem('basket-id')).toEqual(BasketMockData.getBasket().id);
+      expect(sessionStorage.getItem('basket-id')).toEqual(BasketMockData.getBasket().id);
     });
   });
 
@@ -82,12 +82,12 @@ describe('Co Browse Identity Provider', () => {
     });
 
     it('should remove api token and basket-id on logout', done => {
-      expect(window.sessionStorage.getItem('basket-id')).toEqual(BasketMockData.getBasket().id);
+      expect(sessionStorage.getItem('basket-id')).toEqual(BasketMockData.getBasket().id);
 
       const logoutTrigger$ = identityProvider.triggerLogout() as Observable<UrlTree>;
 
       logoutTrigger$.subscribe(() => {
-        expect(window.sessionStorage.getItem('basket-id')).toBeNull();
+        expect(sessionStorage.getItem('basket-id')).toBeNull();
         verify(accountFacade.logoutUser()).once();
         done();
       });
