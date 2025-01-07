@@ -85,8 +85,8 @@ export class BasketEffects {
     this.actions$.pipe(
       ofType(loadBasket),
       mergeMap(() =>
-        !SSR && window.sessionStorage.getItem('basket-id')
-          ? of(loadBasketWithId({ basketId: window.sessionStorage.getItem('basket-id') }))
+        !SSR && sessionStorage.getItem('basket-id')
+          ? of(loadBasketWithId({ basketId: sessionStorage.getItem('basket-id') }))
           : this.basketService.getBasket().pipe(
               map(basket => loadBasketSuccess({ basket })),
               mapErrorToAction(loadBasketFail)

@@ -127,11 +127,11 @@ describe('Basket Effects', () => {
 
     describe('with basket-id in session storage', () => {
       beforeEach(() => {
-        window.sessionStorage.clear();
+        sessionStorage.clear();
       });
 
       it('should map to action of type LoadBasketWithId', () => {
-        window.sessionStorage.setItem('basket-id', 'BID');
+        sessionStorage.setItem('basket-id', 'BID');
         const action = loadBasket();
         const completion = loadBasketWithId({ basketId: 'BID' });
         actions$ = hot('-a-a-a', { a: action });

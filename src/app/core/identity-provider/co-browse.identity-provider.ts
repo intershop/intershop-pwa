@@ -43,7 +43,7 @@ export class CoBrowseIdentityProvider implements IdentityProvider {
     this.apiTokenService.restore$(['user', 'order']).subscribe(noop);
 
     this.checkoutFacade.basket$.pipe(whenTruthy(), first()).subscribe(basketView => {
-      window.sessionStorage.setItem('basket-id', basketView.id);
+      sessionStorage.setItem('basket-id', basketView.id);
     });
   }
 
@@ -93,7 +93,7 @@ export class CoBrowseIdentityProvider implements IdentityProvider {
   }
 
   triggerLogout(): TriggerReturnType {
-    window.sessionStorage.removeItem('basket-id');
+    sessionStorage.removeItem('basket-id');
     this.accountFacade.logoutUser(); // user will be logged out and related refresh token is revoked on server
     return this.accountFacade.isLoggedIn$.pipe(
       // wait until the user is logged out before you go to homepage to prevent unnecessary REST calls

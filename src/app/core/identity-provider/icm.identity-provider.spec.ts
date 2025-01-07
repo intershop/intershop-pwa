@@ -41,7 +41,7 @@ describe('Icm Identity Provider', () => {
     resetCalls(apiTokenService);
     resetCalls(accountFacade);
 
-    window.sessionStorage.clear();
+    sessionStorage.clear();
   });
 
   describe('init', () => {
