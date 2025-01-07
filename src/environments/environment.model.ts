@@ -196,15 +196,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
         description: 'cookie.consent.option.tracking.description',
       },
     },
-    allowedCookies: [
-      'apiToken',
-      'cookieConsent',
-      'preferredLocale',
-      'punchout_SID',
-      'punchout_BasketID',
-      'punchout_ReturnURL',
-      'punchout_HookURL',
-    ],
+    allowedCookies: ['apiToken', 'cookieConsent', 'preferredLocale'],
   },
   cookieConsentVersion: 1,
 

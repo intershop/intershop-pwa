@@ -5,13 +5,13 @@ import { Store, select } from '@ngrx/store';
 import { EMPTY, Observable, iif, throwError } from 'rxjs';
 import { concatMap, filter, map, switchMap, take } from 'rxjs/operators';
 
+import { MessageFacade } from 'ish-core/facades/message.facade';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getCurrentBasketId } from 'ish-core/store/customer/basket';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
-import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { DomService } from 'ish-core/utils/dom/dom.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -28,10 +28,10 @@ import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-
 @Injectable({ providedIn: 'root' })
 export class PunchoutService {
   constructor(
-    private apiService: ApiService,
-    private cookiesService: CookiesService,
     private store: Store,
+    private apiService: ApiService,
     private domService: DomService,
+    private messageFacade: MessageFacade,
     @Inject(DOCUMENT) private document: Document
   ) {}
 
@@ -208,7 +208,7 @@ export class PunchoutService {
    */
   private submitPunchoutForm(form: HTMLFormElement, submit = true) {
     if (!form) {
-      return throwError(() => new Error('submitPunchoutForm() of the punchout service called without a form'));
+      throw new Error('submitPunchoutForm() of the punchout service called without a form');
     }
 
     // replace the document content with the form and submit the form
@@ -242,15 +242,17 @@ export class PunchoutService {
    * transferCxmlPunchoutBasket
    */
   private transferCxmlPunchoutBasket() {
-    const punchoutSID = this.cookiesService.get('punchout_SID');
+    const punchoutSID = sessionStorage.getItem('punchout_SID');
     if (!punchoutSID) {
-      return throwError(() => new Error('no punchout_SID available in cookies for cXML punchout basket transfer'));
+      const errorMessage = 'no punchout_SID information available for cXML punchout basket transfer';
+      this.messageFacade.error({ message: errorMessage });
+      return throwError(() => new Error(errorMessage));
     }
-    const returnURL = this.cookiesService.get('punchout_ReturnURL');
+    const returnURL = sessionStorage.getItem('punchout_ReturnURL');
     if (!returnURL) {
-      return throwError(
-        () => new Error('no punchout_ReturnURL available in cookies for cXML punchout basket transfer')
-      );
+      const errorMessage = 'no punchout_ReturnURL information available for cXML punchout basket transfer';
+      this.messageFacade.error({ message: errorMessage });
+      return throwError(() => new Error(errorMessage));
     }
 
     return this.currentCustomer$.pipe(
@@ -270,8 +272,6 @@ export class PunchoutService {
           .pipe(map(data => this.submitPunchoutForm(this.createCxmlPunchoutForm(data, returnURL))))
       )
     );
-
-    // TODO: cleanup punchout cookies?
   }
 
   /**
@@ -453,13 +453,13 @@ export class PunchoutService {
    */
   submitOciPunchoutData(data: Attribute<string>[], submit = true) {
     if (!data?.length) {
-      return throwError(() => new Error('submitOciPunchoutData() of the punchout service called without data'));
+      throw new Error('submitOciPunchoutData() of the punchout service called without data');
     }
-    const hookUrl = this.cookiesService.get('punchout_HookURL');
+    const hookUrl = sessionStorage.getItem('punchout_HookURL');
     if (!hookUrl) {
-      return throwError(
-        () => new Error('no punchout_HookURL available in cookies for OCI Punchout submitPunchoutData()')
-      );
+      const errorMessage = 'no punchout_HookURL information available for OCI Punchout submitPunchoutData()';
+      this.messageFacade.error({ message: errorMessage });
+      throw new Error(errorMessage);
     }
     this.submitPunchoutForm(this.createOciForm(data, hookUrl), submit);
   }

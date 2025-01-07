@@ -12,7 +12,6 @@ import { IdentityProvider, TriggerReturnType } from 'ish-core/identity-provider/
 import { TokenService } from 'ish-core/services/token/token.service';
 import { selectQueryParam } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
-import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { PunchoutService } from '../services/punchout/punchout.service';
@@ -26,7 +25,6 @@ export class PunchoutIdentityProvider implements IdentityProvider {
     private appFacade: AppFacade,
     private accountFacade: AccountFacade,
     private punchoutService: PunchoutService,
-    private cookiesService: CookiesService,
     private checkoutFacade: CheckoutFacade,
     private tokenService: TokenService
   ) {}
@@ -50,7 +48,7 @@ export class PunchoutIdentityProvider implements IdentityProvider {
     this.apiTokenService.restore$(['user', 'order']).subscribe(noop);
 
     this.checkoutFacade.basket$.pipe(whenTruthy(), first()).subscribe(basketView => {
-      window.sessionStorage.setItem('basket-id', basketView.id);
+      sessionStorage.setItem('basket-id', basketView.id);
     });
   }
 
@@ -123,7 +121,7 @@ export class PunchoutIdentityProvider implements IdentityProvider {
   }
 
   triggerLogout(): TriggerReturnType {
-    window.sessionStorage.removeItem('basket-id');
+    sessionStorage.removeItem('basket-id');
     this.accountFacade.logoutUser(); // user will be logged out and related refresh token is revoked on server
     return this.accountFacade.isLoggedIn$.pipe(
       // wait until the user is logged out before you go to homepage to prevent unnecessary REST calls
@@ -147,11 +145,11 @@ export class PunchoutIdentityProvider implements IdentityProvider {
   private handleCxmlPunchoutLogin(route: ActivatedRouteSnapshot): Observable<UrlTree> {
     // fetch sid session information (basketId, returnURL, operation, ...)
     return this.punchoutService.getCxmlPunchoutSession(route.queryParamMap.get('sid')).pipe(
-      // persist cXML session information (sid, returnURL, basketId) in cookies for later basket transfer
+      // persist cXML session information (sid, returnURL, basketId) in session storage for later basket transfer
       tap(data => {
-        this.cookiesService.put('punchout_SID', route.queryParamMap.get('sid'));
-        this.cookiesService.put('punchout_ReturnURL', data.returnURL);
-        this.cookiesService.put('punchout_BasketID', data.basketId);
+        sessionStorage.setItem('punchout_SID', route.queryParamMap.get('sid'));
+        sessionStorage.setItem('punchout_ReturnURL', data.returnURL);
+        sessionStorage.setItem('punchout_BasketID', data.basketId);
       }),
       // use the basketId basket for the current PWA session (instead of default current basket)
       // TODO: if load basket error (currently no error page) -> logout and do not use default 'current' basket
@@ -163,10 +161,10 @@ export class PunchoutIdentityProvider implements IdentityProvider {
   }
 
   private handleOciPunchoutLogin(route: ActivatedRouteSnapshot) {
-    // save HOOK_URL to cookie for later basket transfer
-    this.cookiesService.put('punchout_HookURL', route.queryParamMap.get('HOOK_URL'));
+    // save HOOK_URL to session storage for later basket transfer
+    sessionStorage.setItem('punchout_HookURL', route.queryParamMap.get('HOOK_URL'));
 
-    const basketId = window.sessionStorage.getItem('basket-id');
+    const basketId = sessionStorage.getItem('basket-id');
     if (!basketId) {
       // create a new basket for every punchout session to avoid basket conflicts for concurrent punchout sessions
       this.checkoutFacade.createBasket();
