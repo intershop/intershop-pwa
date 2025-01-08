@@ -5,6 +5,7 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ApiService } from 'ish-core/services/api/api.service';
 
+import { WishlistSharing, WishlistSharingResponse } from '../../models/wishlist-sharing/wishlist-sharing.model';
 import { WishlistData } from '../../models/wishlist/wishlist.interface';
 import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
 
@@ -52,6 +53,32 @@ describe('Wishlist Service', () => {
             "itemsCount": 0,
             "preferred": true,
             "public": undefined,
+            "shared": undefined,
+            "title": undefined,
+          },
+        ]
+      `);
+      done();
+    });
+  });
+
+  it("should get wishlists when 'getWishlists' is called for b2c applications", done => {
+    when(apiServiceMock.get(`customers/-/wishlists`)).thenReturn(of({ elements: [{ uri: 'any/wishlists/1234' }] }));
+    when(apiServiceMock.get(`customers/-/wishlists/1234`)).thenReturn(of({ id: '1234', preferred: true }));
+    when(appFacade.customerRestResource$).thenReturn(of('customers'));
+
+    wishlistService.getWishlists().subscribe(data => {
+      verify(apiServiceMock.get(`customers/-/wishlists`)).once();
+      verify(apiServiceMock.get(`customers/-/wishlists/1234`)).once();
+      expect(data).toMatchInlineSnapshot(`
+        [
+          {
+            "id": "1234",
+            "items": [],
+            "itemsCount": 0,
+            "preferred": true,
+            "public": undefined,
+            "shared": undefined,
             "title": undefined,
           },
         ]
@@ -127,6 +154,59 @@ describe('Wishlist Service', () => {
     wishlistService.removeProductFromWishlist(wishlistId, sku).subscribe(() => {
       verify(apiServiceMock.delete(`privatecustomers/-/wishlists/${wishlistId}/products/${sku}`)).once();
       verify(apiServiceMock.get(`privatecustomers/-/wishlists/${wishlistId}`)).once();
+      done();
+    });
+  });
+
+  it("should share wishlist with other users when 'shareWishlist' is called", done => {
+    const wishlistId = '1234';
+    const wishlistSharing: WishlistSharing = {
+      recipients: 'user1@example.com,user2@example.com',
+      message: 'string',
+    };
+    const response: WishlistSharingResponse = {
+      wishlistId: '1234',
+      owner: 'string',
+      secureCode: 'secure123',
+    };
+
+    when(apiServiceMock.post(`privatecustomers/-/wishlists/${wishlistId}/share`, anything())).thenReturn(of(response));
+
+    wishlistService.shareWishlist(wishlistId, wishlistSharing).subscribe(data => {
+      verify(apiServiceMock.post(`privatecustomers/-/wishlists/${wishlistId}/share`, anything())).once();
+      expect(data).toMatchInlineSnapshot(`
+        {
+          "owner": "string",
+          "secureCode": "secure123",
+          "wishlistId": "1234",
+        }
+      `);
+      done();
+    });
+  });
+
+  it("should unshare wishlist when 'unshareWishlist' is called", done => {
+    const wishlistId = '1234';
+
+    when(apiServiceMock.delete(`privatecustomers/-/wishlists/${wishlistId}/share`)).thenReturn(of({}));
+
+    wishlistService.unshareWishlist(wishlistId).subscribe(() => {
+      verify(apiServiceMock.delete(`privatecustomers/-/wishlists/${wishlistId}/share`)).once();
+      done();
+    });
+  });
+
+  it("should get shared wishlist when 'getSharedWishlist' is called", done => {
+    const wishlistId = '1234';
+    const owner = 'string';
+    const secureCode = 'secure123';
+
+    when(apiServiceMock.get(`wishlists/${wishlistId};owner=${owner};secureCode=${secureCode}`)).thenReturn(
+      of({ title: 'wishlist title' } as WishlistData)
+    );
+
+    wishlistService.getSharedWishlist(wishlistId, owner, secureCode).subscribe(() => {
+      verify(apiServiceMock.get(`wishlists/${wishlistId};owner=${owner};secureCode=${secureCode}`)).once();
       done();
     });
   });

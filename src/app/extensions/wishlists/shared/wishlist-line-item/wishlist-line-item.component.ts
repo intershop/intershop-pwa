@@ -1,21 +1,22 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { WishlistsFacade } from '../../../facades/wishlists.facade';
-import { Wishlist, WishlistItem } from '../../../models/wishlist/wishlist.model';
+import { WishlistsFacade } from '../../facades/wishlists.facade';
+import { Wishlist, WishlistItem } from '../../models/wishlist/wishlist.model';
 
 /**
  * The Wishlist item component displays a wishlist item. This Item can be removed or moved to another wishlist.
  */
 @Component({
-  selector: 'ish-account-wishlist-detail-line-item',
-  templateUrl: './account-wishlist-detail-line-item.component.html',
+  selector: 'ish-wishlist-line-item',
+  templateUrl: './wishlist-line-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountWishlistDetailLineItemComponent {
+export class WishlistLineItemComponent {
   constructor(private wishlistsFacade: WishlistsFacade) {}
 
   @Input({ required: true }) wishlistItemData: WishlistItem;
   @Input({ required: true }) currentWishlist: Wishlist;
+  @Input() readOnly = false;
 
   moveItemToOtherWishlist(sku: string, wishlistMoveData: { id: string; title: string }) {
     if (wishlistMoveData.id) {

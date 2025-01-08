@@ -8,6 +8,7 @@ export interface Wishlist extends WishlistHeader {
   items?: WishlistItem[];
   itemsCount?: number;
   public?: boolean;
+  shared?: boolean;
 }
 
 export interface WishlistItem {

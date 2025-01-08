@@ -18,6 +18,7 @@ import { QuotingRoutingModule } from './extensions/quoting/pages/quoting-routing
 import { RecentlyRoutingModule } from './extensions/recently/pages/recently-routing.module';
 import { StoreLocatorRoutingModule } from './extensions/store-locator/pages/store-locator-routing.module';
 import { TactonRoutingModule } from './extensions/tacton/pages/tacton-routing.module';
+import { WishlistSharingRoutingModule } from './extensions/wishlists/pages/wishlist-sharing-routing.module';
 import { AppLastRoutingModule } from './pages/app-last-routing.module';
 import { AppRoutingModule } from './pages/app-routing.module';
 import { ShellModule } from './shell/shell.module';
@@ -39,6 +40,7 @@ import { ShellModule } from './shell/shell.module';
     RecentlyRoutingModule,
     CompareRoutingModule,
     ContactUsRoutingModule,
+    WishlistSharingRoutingModule,
     AppLastRoutingModule,
   ],
   /* eslint-enable @angular-eslint/sort-ngmodule-metadata-arrays */

@@ -1,9 +1,13 @@
-import { Injectable } from '@angular/core';
+import { APP_BASE_HREF } from '@angular/common';
+import { Inject, Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
+import { of } from 'rxjs';
 import { debounceTime, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
+import { businessError } from 'ish-core/store/core/error';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
@@ -16,6 +20,7 @@ import {
   whenTruthy,
 } from 'ish-core/utils/operators';
 
+import { WishlistSharing, WishlistSharingResponse } from '../../models/wishlist-sharing/wishlist-sharing.model';
 import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
 import { WishlistService } from '../../services/wishlist/wishlist.service';
 
@@ -41,12 +46,20 @@ import {
   updateWishlist,
   updateWishlistFail,
   updateWishlistSuccess,
+  wishlistActions,
+  wishlistApiActions,
 } from './wishlist.actions';
 import { getSelectedWishlistDetails, getSelectedWishlistId, getWishlistDetails } from './wishlist.selectors';
 
 @Injectable()
 export class WishlistEffects {
-  constructor(private actions$: Actions, private wishlistService: WishlistService, private store: Store) {}
+  constructor(
+    private actions$: Actions,
+    private wishlistService: WishlistService,
+    private store: Store,
+    private translateService: TranslateService,
+    @Inject(APP_BASE_HREF) private baseHref: string
+  ) {}
 
   loadWishlists$ = createEffect(() =>
     this.actions$.pipe(
@@ -162,7 +175,7 @@ export class WishlistEffects {
             mergeMap(wishlist => [
               createWishlistSuccess({ wishlist }),
               addProductToWishlist({ wishlistId: wishlist.id, sku: payload.sku }),
-              selectWishlist({ id: wishlist.id }),
+              selectWishlist({ wishlistId: wishlist.id }),
             ]),
             mapErrorToAction(createWishlistFail)
           )
@@ -207,7 +220,7 @@ export class WishlistEffects {
     this.store.pipe(
       select(selectRouteParam('wishlistName')),
       distinctCompareWith(this.store.pipe(select(getSelectedWishlistId))),
-      map(id => selectWishlist({ id }))
+      map(id => selectWishlist({ wishlistId: id }))
     )
   );
 
@@ -243,4 +256,70 @@ export class WishlistEffects {
       )
     )
   );
+
+  shareWishlist$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(wishlistActions.shareWishlist),
+      mapToPayload(),
+      concatLatestFrom(payload => this.store.pipe(select(getWishlistDetails(payload.wishlistId)))),
+      mergeMap(([payload, wishlist]) =>
+        this.wishlistService.shareWishlist(payload.wishlistId, payload.wishlistSharing).pipe(
+          switchMap(response => {
+            this.sendEmail(payload.wishlistSharing, response, wishlist?.title);
+            return of(wishlistApiActions.shareWishlistSuccess({ wishlistSharingResponse: response }));
+          }),
+          mapErrorToAction(wishlistApiActions.shareWishlistFail)
+        )
+      )
+    )
+  );
+
+  unshareWishlist$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(wishlistActions.unshareWishlist),
+      mapToPayloadProperty('wishlistId'),
+      mergeMap(wishlistId =>
+        this.wishlistService.unshareWishlist(wishlistId).pipe(
+          map(() => wishlistApiActions.unshareWishlistSuccess({ wishlistId })),
+          mapErrorToAction(wishlistApiActions.unshareWishlistFail)
+        )
+      )
+    )
+  );
+
+  loadSharedWishlist$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(wishlistActions.loadSharedWishlist),
+      mapToPayload(),
+      mergeMap(payload =>
+        this.wishlistService.getSharedWishlist(payload.wishlistId, payload.owner, payload.secureCode).pipe(
+          map(wishlist => wishlistApiActions.loadSharedWishlistSuccess({ wishlist })),
+          mapErrorToAction(wishlistApiActions.loadSharedWishlistFail)
+        )
+      )
+    )
+  );
+
+  loadSharedWishlistFailed$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(wishlistApiActions.loadSharedWishlistFail),
+      map(() => businessError({ error: 'account.wishlists.shared_wishlist.error' }))
+    )
+  );
+
+  private sendEmail(wishlistSharing: WishlistSharing, wishlistResponse: WishlistSharingResponse, title: string) {
+    const emailSubject = this.translateService.instant('email.wishlist_sharing.heading');
+    const defaultText = this.translateService.instant('email.wishlist_sharing.text');
+
+    const baseUrl = `${location.origin}${this.baseHref}`;
+    const emailBody = `${wishlistSharing.message || defaultText} ${title}\n${baseUrl}/wishlists/${
+      wishlistResponse.wishlistId
+    }?owner=${wishlistResponse.owner}&secureCode=${wishlistResponse.secureCode}`;
+
+    const mailtoLink = `mailto:${wishlistSharing.recipients}?subject=${encodeURIComponent(
+      emailSubject
+    )}&body=${encodeURIComponent(emailBody)}`;
+
+    window.open(mailtoLink);
+  }
 }

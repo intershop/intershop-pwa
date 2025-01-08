@@ -44,6 +44,7 @@ export class WishlistMapper {
         itemsCount: wishlistData.itemsCount || 0,
         preferred: wishlistData.preferred,
         public: wishlistData.public,
+        shared: wishlistData.shared,
         items,
       };
     } else {

@@ -1,8 +1,10 @@
+import { APP_BASE_HREF } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
@@ -41,6 +43,8 @@ import {
   updateWishlist,
   updateWishlistFail,
   updateWishlistSuccess,
+  wishlistActions,
+  wishlistApiActions,
 } from './wishlist.actions';
 import { WishlistEffects } from './wishlist.effects';
 
@@ -80,9 +84,11 @@ describe('Wishlist Effects', () => {
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
         RouterTestingModule.withRoutes([{ path: 'account/wishlists/:wishlistName', children: [] }]),
+        TranslateModule.forRoot(),
         WishlistsStoreModule.forTesting('wishlists'),
       ],
       providers: [
+        { provide: APP_BASE_HREF, useValue: '/' },
         { provide: WishlistService, useFactory: () => instance(wishlistServiceMock) },
         provideMockActions(() => actions$),
         WishlistEffects,
@@ -383,7 +389,7 @@ describe('Wishlist Effects', () => {
       const action = addProductToNewWishlist(payload);
       const completion1 = createWishlistSuccess({ wishlist });
       const completion2 = addProductToWishlist({ wishlistId: wishlist.id, sku: payload.sku });
-      const completion3 = selectWishlist({ id: wishlist.id });
+      const completion3 = selectWishlist({ wishlistId: wishlist.id });
       actions$ = hot('-a-----a-----a', { a: action });
       const expected$ = cold('-(bcd)-(bcd)-(bcd)', { b: completion1, c: completion2, d: completion3 });
       expect(effects.addProductToNewWishlist$).toBeObservable(expected$);
@@ -494,7 +500,7 @@ describe('Wishlist Effects', () => {
       effects.routeListenerForSelectedWishlist$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
           [Wishlist Internal] Select Wishlist:
-            id: ".SKsEQAE4FIAAAFuNiUBWx0d"
+            wishlistId: ".SKsEQAE4FIAAAFuNiUBWx0d"
         `);
         done();
       });
@@ -518,7 +524,7 @@ describe('Wishlist Effects', () => {
   describe('setWishlistBreadcrumb$', () => {
     beforeEach(() => {
       store.dispatch(loadWishlistsSuccess({ wishlists }));
-      store.dispatch(selectWishlist({ id: wishlists[0].id }));
+      store.dispatch(selectWishlist({ wishlistId: wishlists[0].id }));
     });
 
     it('should set the breadcrumb of the selected wishlist in my account area', done => {
@@ -548,5 +554,159 @@ describe('Wishlist Effects', () => {
 
       tick(2000);
     }));
+  });
+
+  describe('shareWishlist$', () => {
+    const wishlistSharing = {
+      recipients: 'string',
+      message: 'string',
+    };
+
+    const wishlistSharingResponse = {
+      wishlistId: '.SKsEQAE4FIAAAFuNiUBWx0d',
+      owner: 'string',
+      secureCode: 'string',
+    };
+
+    const payload = {
+      wishlistId: '.SKsEQAE4FIAAAFuNiUBWx0d',
+      wishlistSharing,
+    };
+
+    beforeEach(() => {
+      global.open = jest.fn();
+      store.dispatch(loginUserSuccess({ customer }));
+      when(wishlistServiceMock.shareWishlist(anyString(), anything())).thenReturn(of(wishlistSharingResponse));
+    });
+
+    it('should call the wishlistService for shareWishlist', done => {
+      const action = wishlistActions.shareWishlist(payload);
+      actions$ = of(action);
+
+      effects.shareWishlist$.subscribe(() => {
+        verify(wishlistServiceMock.shareWishlist(payload.wishlistId, wishlistSharing)).once();
+        done();
+      });
+    });
+
+    it('should map to actions of type ShareWishlistSuccess', () => {
+      const action = wishlistActions.shareWishlist(payload);
+      const completion = wishlistApiActions.shareWishlistSuccess({ wishlistSharingResponse });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.shareWishlist$).toBeObservable(expected$);
+      expect(global.open).toHaveBeenCalled();
+    });
+
+    it('should map failed calls to actions of type ShareWishlistFail', () => {
+      const error = makeHttpError({ message: 'invalid' });
+      when(wishlistServiceMock.shareWishlist(anyString(), anything())).thenReturn(throwError(() => error));
+
+      const action = wishlistActions.shareWishlist(payload);
+      const completion = wishlistApiActions.shareWishlistFail({ error });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.shareWishlist$).toBeObservable(expected$);
+    });
+  });
+
+  describe('unshareWishlist$', () => {
+    const wishlistId = '.SKsEQAE4FIAAAFuNiUBWx0d';
+
+    beforeEach(() => {
+      store.dispatch(loginUserSuccess({ customer }));
+      when(wishlistServiceMock.unshareWishlist(anyString())).thenReturn(of(undefined));
+    });
+
+    it('should call the wishlistService for unshareWishlist', done => {
+      const action = wishlistActions.unshareWishlist({ wishlistId });
+      actions$ = of(action);
+
+      effects.unshareWishlist$.subscribe(() => {
+        verify(wishlistServiceMock.unshareWishlist(wishlistId)).once();
+        done();
+      });
+    });
+
+    it('should map to actions of type UnshareWishlistSuccess', () => {
+      const action = wishlistActions.unshareWishlist({ wishlistId });
+      const completion = wishlistApiActions.unshareWishlistSuccess({ wishlistId });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.unshareWishlist$).toBeObservable(expected$);
+    });
+
+    it('should map failed calls to actions of type UnshareWishlistFail', () => {
+      const error = makeHttpError({ message: 'invalid' });
+      when(wishlistServiceMock.unshareWishlist(anyString())).thenReturn(throwError(() => error));
+
+      const action = wishlistActions.unshareWishlist({ wishlistId });
+      const completion = wishlistApiActions.unshareWishlistFail({ error });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.unshareWishlist$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadSharedWishlist$', () => {
+    const payload = {
+      wishlistId: '.SKsEQAE4FIAAAFuNiUBWx0d',
+      owner: 'string',
+      secureCode: 'string',
+    };
+
+    const wishlist = {
+      title: 'testing wishlist',
+      id: '.SKsEQAE4FIAAAFuNiUBWx0d',
+      itemCount: 0,
+      preferred: true,
+      public: false,
+      shared: true,
+    };
+
+    beforeEach(() => {
+      store.dispatch(loginUserSuccess({ customer }));
+      when(wishlistServiceMock.getSharedWishlist(anyString(), anyString(), anyString())).thenReturn(of(wishlist));
+    });
+
+    it('should call the wishlistService for getSharedWishlist', done => {
+      const action = wishlistActions.loadSharedWishlist(payload);
+      actions$ = of(action);
+
+      effects.loadSharedWishlist$.subscribe(() => {
+        verify(wishlistServiceMock.getSharedWishlist(payload.wishlistId, payload.owner, payload.secureCode)).once();
+        done();
+      });
+    });
+
+    it('should map to actions of type LoadSharedWishlistSuccess', () => {
+      const action = wishlistActions.loadSharedWishlist(payload);
+      const completion = wishlistApiActions.loadSharedWishlistSuccess({ wishlist });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadSharedWishlist$).toBeObservable(expected$);
+    });
+
+    it('should map failed calls to actions of type LoadSharedWishlistFail', () => {
+      const error = makeHttpError({ message: 'invalid' });
+      when(wishlistServiceMock.getSharedWishlist(anyString(), anyString(), anyString())).thenReturn(
+        throwError(() => error)
+      );
+
+      const action = wishlistActions.loadSharedWishlist(payload);
+      const completion = wishlistApiActions.loadSharedWishlistFail({ error });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadSharedWishlist$).toBeObservable(expected$);
+    });
   });
 });
