@@ -1,5 +1,6 @@
 import { Auth0Config } from 'ish-core/identity-provider/auth0.identity-provider';
 import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
+import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 import { MultiSiteLocaleMap } from 'ish-core/utils/multi-site/multi-site.service';
@@ -142,6 +143,9 @@ export interface Environment {
    * - 'stable': only fetch prices once per application lifetime
    */
   priceUpdate: 'stable' | 'always';
+
+  // sparque integration
+  sparque?: SparqueConfig;
 }
 
 export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {

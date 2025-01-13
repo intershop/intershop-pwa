@@ -1,31 +1,31 @@
+/* eslint-disable ish-custom-rules/ban-imports-file-pattern */
+import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
 import { ReplaySubject, Subject } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
-import { HighlightPipe } from 'ish-core/pipes/highlight.pipe';
+import { IconModule } from 'ish-core/icon.module';
+import { PipesModule } from 'ish-core/pipes.module';
 
-import { SearchBoxComponent } from './search-box.component';
+import { AdvancedSearchBoxComponent } from './advanced-search-box.component';
 
-describe('Search Box Component', () => {
-  let component: SearchBoxComponent;
-  let fixture: ComponentFixture<SearchBoxComponent>;
+describe('Advanced Search Box Component', () => {
+  let component: AdvancedSearchBoxComponent;
+  let fixture: ComponentFixture<AdvancedSearchBoxComponent>;
   let element: HTMLElement;
-  let searchResults$: Subject<SuggestTerm[]>;
+  let searchResults$: Subject<string[]>;
   let searchTerm$: Subject<string>;
 
   beforeEach(async () => {
     searchResults$ = new ReplaySubject(1);
     searchTerm$ = new ReplaySubject(1);
-    searchResults$.next([]);
+    searchResults$.next(undefined);
     searchTerm$.next(undefined);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [MockComponent(FaIconComponent), MockPipe(HighlightPipe), SearchBoxComponent],
+      imports: [CommonModule, IconModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
       providers: [
         {
           provide: ShoppingFacade,
@@ -36,7 +36,7 @@ describe('Search Box Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SearchBoxComponent);
+    fixture = TestBed.createComponent(AdvancedSearchBoxComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
@@ -53,7 +53,7 @@ describe('Search Box Component', () => {
 
   describe('with no results', () => {
     beforeEach(() => {
-      searchResults$.next([]);
+      searchResults$.next(undefined);
     });
 
     it('should show no results when no suggestions are found', () => {
@@ -66,7 +66,7 @@ describe('Search Box Component', () => {
 
   describe('with results', () => {
     beforeEach(() => {
-      searchResults$.next([{ term: 'Cameras' }, { term: 'Camcorders' }]);
+      searchResults$.next(['Cameras', 'Camcorders']);
     });
 
     it('should show results when suggestions are available', () => {
