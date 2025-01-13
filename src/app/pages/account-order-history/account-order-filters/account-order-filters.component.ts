@@ -154,6 +154,7 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
           type: 'ish-text-input-field',
           props: {
             placeholder: 'account.order_history.filter.label.order_no',
+            ariaLabel: 'account.order_history.filter.label.order_no',
             fieldClass: 'col-12',
           },
         },

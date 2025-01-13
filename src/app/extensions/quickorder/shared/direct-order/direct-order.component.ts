@@ -76,6 +76,7 @@ export class DirectOrderComponent implements OnInit, AfterViewInit {
         props: {
           fieldClass: 'col-12',
           placeholder: 'shopping_cart.direct_order.item_placeholder',
+          ariaLabel: 'shopping_cart.direct_order.item_placeholder',
           attributes: { autocomplete: 'on' },
         },
         validation: {

@@ -97,4 +97,29 @@ describe('Forms Service', () => {
       expect(FormsService.getCostCenterBudgetPeriodOptions()).toHaveLength(6);
     });
   });
+
+  describe('addAriaDescribedById', () => {
+    it('should add an id to an empty ariaDescribedBy property', () => {
+      expect(FormsService.addAriaDescribedById('', 'ariaDescribedById1')).toBe('ariaDescribedById1');
+    });
+
+    it('should add an id to an existing ariaDescribedBy property', () => {
+      const ariaDescribedBy = 'ariaDescribedById1 ariaDescribedById2';
+      expect(FormsService.addAriaDescribedById(ariaDescribedBy, 'ariaDescribedById3')).toBe(
+        'ariaDescribedById1 ariaDescribedById2 ariaDescribedById3'
+      );
+    });
+  });
+
+  describe('removeAriaDescribedById', () => {
+    it('should return undefined if the given ariaDescribedBy contains only the given elementId', () => {
+      expect(FormsService.removeAriaDescribedById('ariaDescribedById1', 'ariaDescribedById1')).toBeUndefined();
+    });
+
+    it('should remove the given id from an existing ariaDescribedBy property', () => {
+      const ariaDescribedBy = 'ariaDescribedById1 ariaDescribedById2';
+      expect(FormsService.removeAriaDescribedById(ariaDescribedBy, 'ariaDescribedById1')).toBe('ariaDescribedById2');
+      expect(FormsService.removeAriaDescribedById(ariaDescribedBy, 'ariaDescribedById2')).toBe('ariaDescribedById1');
+    });
+  });
 });

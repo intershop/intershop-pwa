@@ -16,7 +16,7 @@
     <img
       loading="lazy"
       [src]="pagelet.stringParam('Image')"
-      [attr.alt]="pagelet.stringParam('AlternateText') || ('image.alt_text.default' | translate)"
+      [alt]="pagelet.stringParam('AlternateText') || ('image.alt_text.default' | translate)"
     />
   </div>
 </ng-template>

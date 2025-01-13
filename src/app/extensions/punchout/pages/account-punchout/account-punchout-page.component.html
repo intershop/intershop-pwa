@@ -36,7 +36,7 @@
                 [routerLink]="['cxmlConfiguration', user.id]"
                 [queryParams]="{ format: selectedType }"
                 class="btn-tool"
-                title="{{ 'account.punchout.configure.link' | translate : { '0': user.login } }}"
+                [title]="'account.punchout.configure.link' | translate : { '0': user.login }"
               >
                 <fa-icon [icon]="['fas', 'cog']" />
               </a>
@@ -44,7 +44,7 @@
                 [routerLink]="[user.login]"
                 [queryParams]="{ format: selectedType }"
                 class="btn-tool"
-                title="{{ 'account.profile.update.link' | translate }}"
+                [title]="'account.profile.update.link' | translate : { '0': user.login }"
                 data-testing-id="edit-user"
               >
                 <fa-icon [icon]="['fas', 'pencil-alt']" />
@@ -52,7 +52,7 @@
               <button
                 type="button"
                 class="btn-tool btn-link"
-                title="{{ 'account.user.delete_user_dialog.header' | translate : { '0': user.login } }}"
+                [title]="'account.user.delete_user_dialog.header' | translate : { '0': user.login }"
                 (click)="modalDialog.show(user)"
                 data-testing-id="delete-user"
               >

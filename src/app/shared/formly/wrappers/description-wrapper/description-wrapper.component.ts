@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
 /**
@@ -15,7 +15,13 @@ import { FieldWrapper } from '@ngx-formly/core';
   templateUrl: './description-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DescriptionWrapperComponent extends FieldWrapper {
+export class DescriptionWrapperComponent extends FieldWrapper implements OnInit {
+  ngOnInit(): void {
+    if (this.props.customDescription) {
+      this.props.ariaDescribedByIds = `${this.field.id}-description`;
+    }
+  }
+
   get description() {
     return typeof this.props.customDescription === 'string'
       ? this.props.customDescription
