@@ -11,14 +11,16 @@ import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/ca
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
+import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { CountryService } from 'ish-core/services/country/country.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
+import { ICMSuggestionService } from 'ish-core/services/icm-suggestion/icm-suggestion.service';
 import { PricesService } from 'ish-core/services/prices/prices.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
-import { SuggestService } from 'ish-core/services/suggest/suggest.service';
+import { SuggestionService } from 'ish-core/services/suggestion/suggestion.service';
 import { WarrantyService } from 'ish-core/services/warranty/warranty.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
@@ -42,7 +44,7 @@ describe('Shopping Store', () => {
   let categoriesServiceMock: CategoriesService;
   let productsServiceMock: ProductsService;
   let promotionsServiceMock: PromotionsService;
-  let suggestServiceMock: SuggestService;
+  let suggestionServiceMock: ICMSuggestionService;
   let filterServiceMock: FilterService;
   let priceServiceMock: PricesService;
   let warrantyServiceMock: WarrantyService;
@@ -133,8 +135,8 @@ describe('Shopping Store', () => {
     promotionsServiceMock = mock(PromotionsService);
     when(promotionsServiceMock.getPromotion(anything())).thenReturn(of(promotion));
 
-    suggestServiceMock = mock(SuggestService);
-    when(suggestServiceMock.search('some')).thenReturn(of([{ term: 'something' }]));
+    suggestionServiceMock = mock(ICMSuggestionService);
+    when(suggestionServiceMock.search('some')).thenReturn(of<Suggestion>({ keywordSuggestions: ['something'] }));
 
     filterServiceMock = mock(FilterService);
     when(filterServiceMock.getFilterForSearch(anything())).thenReturn(of({} as FilterNavigation));
@@ -189,7 +191,7 @@ describe('Shopping Store', () => {
         { provide: PricesService, useFactory: () => instance(priceServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
-        { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
+        { provide: SuggestionService, useFactory: () => instance(suggestionServiceMock) },
         { provide: WarrantyService, useFactory: () => instance(warrantyServiceMock) },
         provideStoreSnapshots(),
         SelectedProductContextFacade,
@@ -275,7 +277,7 @@ describe('Shopping Store', () => {
             searchTerm: "some"
           [Suggest Search API] Return Search Suggestions:
             searchTerm: "some"
-            suggests: [{"term":"something"}]
+            suggests: {"keywordSuggestions":[1]}
         `);
       });
     });
