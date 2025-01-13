@@ -97,7 +97,12 @@ describe('Product Quantity Component', () => {
       ]
     `);
     expect(element.querySelector('select')).toMatchInlineSnapshot(`
-      <select data-testing-id="quantity" class="form-control" id="ASDF">
+      <select
+        data-testing-id="quantity"
+        class="form-control"
+        id="ASDF"
+        aria-label="product.quantity.aria_label"
+      >
         <option value="2">2</option>
         <option value="4">4</option>
         <option value="6">6</option>

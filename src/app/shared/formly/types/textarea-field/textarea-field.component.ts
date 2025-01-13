@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 
-import { ariaDescribedByIds } from 'ish-shared/forms/utils/form-utils';
-
 /**
  * Type for a basic textarea field
  *
@@ -27,8 +25,4 @@ export class TextareaFieldComponent extends FieldType<FieldTypeConfig> {
       rows: 1,
     },
   };
-
-  get ariaDescribedByIds(): string | null {
-    return ariaDescribedByIds(this.field.id, this.showError, this.props.customDescription);
-  }
 }

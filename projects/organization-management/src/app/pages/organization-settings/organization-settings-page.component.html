@@ -28,7 +28,9 @@
     <a
       routerLink="/account/organization/settings/company"
       class="btn-tool"
-      title="{{ 'account.profile.update.link' | translate }}"
+      [title]="
+        'account.profile.update.link' | translate : { '0': 'account.company_profile.detail.heading' | translate }
+      "
       data-testing-id="edit-company"
     >
       <fa-icon [icon]="['fas', 'pencil-alt']" />

@@ -4,10 +4,8 @@
   class="btn"
   [ngClass]="cssClass"
   [disabled]="disabled$ | async"
-  [attr.title]="
-    displayType === 'icon' ? ('quote.add_product_to_quote.button.add_to_quote.label' | translate) : undefined
-  "
-  [attr.tabindex]="ariaHidden ? -1 : 0"
+  [title]="displayType === 'icon' ? ('quote.add_product_to_quote.button.add_to_quote.label' | translate) : ''"
+  [tabindex]="ariaHidden ? -1 : 0"
   [attr.aria-hidden]="ariaHidden"
   (click)="addToQuote()"
   data-testing-id="addToQuoteButton"

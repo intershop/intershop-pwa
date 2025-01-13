@@ -4,7 +4,7 @@
     <a
       class="float-right btn-tool"
       routerLink="/checkout/address"
-      [title]="'checkout.address.update.invoice.label' | translate"
+      [title]="'checkout.address.update.title' | translate : { '0': 'checkout.address.billing.label' | translate }"
     >
       <fa-icon [icon]="['fas', 'pencil-alt']" />
     </a>
@@ -19,7 +19,7 @@
     <a
       class="float-right btn-tool"
       routerLink="/checkout/address"
-      [title]="'checkout.address.update.shipping.label' | translate"
+      [title]="'checkout.address.update.title' | translate : { '0': 'checkout.address.shipping.label' | translate }"
     >
       <fa-icon [icon]="['fas', 'pencil-alt']" />
     </a>

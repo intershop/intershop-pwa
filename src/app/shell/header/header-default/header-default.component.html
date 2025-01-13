@@ -25,7 +25,12 @@
   </ul>
 
   <div class="header-utility">
-    <a class="search-toggler" [ngClass]="{ 'active-search': showSearch }">
+    <a
+      class="search-toggler"
+      [ngClass]="{ 'active-search': showSearch }"
+      role="button"
+      [attr.aria-label]="'search.searchbox.button.sticky_header.aria_label' | translate"
+    >
       <fa-icon
         *ngIf="isSticky"
         class="header-icon"

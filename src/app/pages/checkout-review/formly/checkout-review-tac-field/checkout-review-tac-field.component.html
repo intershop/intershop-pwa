@@ -8,7 +8,7 @@
         [attr.data-testing-id]="field.key"
         [attr.aria-required]="props.required ? 'true' : undefined"
         [attr.aria-invalid]="showError ? 'true' : undefined"
-        [attr.aria-describedby]="ariaDescribedByIds"
+        [attr.aria-describedby]="props.ariaDescribedByIds"
       />
       <span
         [ishServerHtml]="'checkout.tac.text' | translate : { '0': 'page://page.termsAndConditions.pagelet2-Page' }"
@@ -17,7 +17,7 @@
   </div>
   <ng-container *ngIf="showError">
     <div class="validation-message">
-      <ish-validation-message [field]="field" class="validation-message" [id]="id + '-formly-validation-error'" />
+      <ish-validation-message [field]="field" class="validation-message" />
     </div>
   </ng-container>
 </div>

@@ -3,7 +3,7 @@
     <a
       (click)="optionChange(group.id, option.value)"
       (keydown.enter)="optionChange(group.id, option.value)"
-      title="{{ option.label }}"
+      [title]="option.label"
       tabindex="0"
     >
       <span
