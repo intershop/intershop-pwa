@@ -14,18 +14,28 @@
       <!-- Order number -->
       <ng-container cdkColumnDef="orderNo">
         <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-number">
-          {{ 'account.orderlist.table.order_number' | translate }}
+          <span aria-hidden="true">{{ 'account.orderlist.table.order_number' | translate }}</span>
+          <span class="sr-only">{{ 'account.orderlist.table.order_number.title' | translate }}</span>
         </th>
-        <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.order_number' | translate">
+        <td
+          cdk-cell
+          *cdkCellDef="let order"
+          [attr.data-label]="'account.orderlist.table.order_number.title' | translate"
+        >
           {{ order.documentNo }}
         </td>
       </ng-container>
 
       <ng-container cdkColumnDef="orderNoWithLink">
         <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-number">
-          {{ 'account.orderlist.table.order_number' | translate }}
+          <span aria-hidden="true">{{ 'account.orderlist.table.order_number' | translate }}</span>
+          <span class="sr-only">{{ 'account.orderlist.table.order_number.title' | translate }}</span>
         </th>
-        <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.order_number' | translate">
+        <td
+          cdk-cell
+          *cdkCellDef="let order"
+          [attr.data-label]="'account.orderlist.table.order_number.title' | translate"
+        >
           <a [routerLink]="'/account/orders/' + order.id">{{ order.documentNo }}</a>
         </td>
       </ng-container>

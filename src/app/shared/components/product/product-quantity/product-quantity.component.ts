@@ -1,12 +1,11 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { range } from 'lodash-es';
 import { Observable, combineLatest } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, shareReplay } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ariaDescribedByIds } from 'ish-shared/forms/utils/form-utils';
+import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 @Component({
   selector: 'ish-product-quantity',
@@ -20,6 +19,8 @@ export class ProductQuantityComponent implements OnInit {
 
   visible$: Observable<boolean>;
   quantity$: Observable<number>;
+  ariaDescribedByIds$: Observable<string>;
+
   min$: Observable<number>;
   max$: Observable<number>;
   step$: Observable<number>;
@@ -31,8 +32,6 @@ export class ProductQuantityComponent implements OnInit {
   cannotIncrease$: Observable<boolean>;
   cannotDecrease$: Observable<boolean>;
 
-  private destroyRef = inject(DestroyRef);
-
   constructor(private context: ProductContextFacade) {}
 
   ngOnInit() {
@@ -41,8 +40,13 @@ export class ProductQuantityComponent implements OnInit {
     this.min$ = this.context.select('minQuantity');
     this.max$ = this.context.select('maxQuantity');
     this.step$ = this.context.select('stepQuantity');
-    this.hasQuantityError$ = this.context.select('hasQuantityError');
+    this.hasQuantityError$ = this.context.select('hasQuantityError').pipe(shareReplay(1));
     this.quantityError$ = this.context.select('quantityError');
+    this.ariaDescribedByIds$ = this.hasQuantityError$.pipe(
+      map(hasQuantityError =>
+        hasQuantityError ? FormsService.addAriaDescribedById('', `${this.elementId}-validation-error`) : undefined
+      )
+    );
 
     this.selectValues$ = combineLatest([this.min$, this.max$, this.step$]).pipe(
       map(([min, max, step]) => range(min, max + 1, step))
@@ -73,11 +77,5 @@ export class ProductQuantityComponent implements OnInit {
 
   change(target: EventTarget) {
     this.setValue(Number.parseInt((target as HTMLDataElement).value, 10));
-  }
-
-  get ariaDescribedByIds(): string | null {
-    let hasQuantityError: boolean;
-    this.hasQuantityError$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => (hasQuantityError = value));
-    return ariaDescribedByIds(this.elementId, hasQuantityError);
   }
 }

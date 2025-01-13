@@ -38,7 +38,7 @@
       <a
         routerLink="edit"
         class="btn-tool"
-        [title]="'account.costcenter.update.link' | translate"
+        [title]="'account.costcenter.update.link' | translate : { '0': costCenter.name }"
         data-testing-id="edit-cost-center"
       >
         <fa-icon [icon]="['fas', 'pencil-alt']" />

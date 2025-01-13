@@ -29,7 +29,9 @@
       <a
         routerLink="profile"
         class="btn-tool"
-        [title]="'account.profile.update.link' | translate"
+        [title]="
+          'account.profile.update.link' | translate : { '0': 'account.user.details.profile.heading' | translate }
+        "
         data-testing-id="edit-user"
       >
         <fa-icon [icon]="['fas', 'pencil-alt']" />
@@ -58,7 +60,10 @@
       <a
         routerLink="roles"
         class="btn-tool"
-        [title]="'account.profile.update.link' | translate"
+        [title]="
+          'account.profile.update.link'
+            | translate : { '0': 'account.user.details.profile.role_permissions.heading' | translate }
+        "
         data-testing-id="edit-roles"
       >
         <fa-icon [icon]="['fas', 'pencil-alt']" />

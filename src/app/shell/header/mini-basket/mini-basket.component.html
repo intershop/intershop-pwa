@@ -30,6 +30,7 @@
     *ngIf="itemCount$ | async as itemCount; else emptyMobileCart"
     routerLink="/basket"
     class="item-count-container position-relative"
+    [attr.aria-label]="'shopping_cart.ministatus.label' | translate : { '0': itemCount$ | async }"
   >
     <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
     <span class="badge badge-pill" [ngClass]="basketAnimation$ | async">{{ itemCount }}</span>
@@ -45,6 +46,7 @@
       (click)="p.open()"
       (keyup.enter)="p.open()"
       tabindex="0"
+      [attr.aria-label]="'shopping_cart.ministatus.label' | translate : { '0': itemCount$ | async }"
     >
       <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
       <span class="badge badge-pill" [ngClass]="basketAnimation$ | async">0</span>

@@ -6,12 +6,12 @@
   class="btn"
   [disabled]="disabled$ | async"
   [ngClass]="cssClass"
-  [attr.title]="
+  [title]="
     displayType === 'icon'
       ? ('account.order_template.add_to_template.button.add_to_template.label' | translate)
       : undefined
   "
-  [attr.tabindex]="ariaHidden ? -1 : 0"
+  [tabindex]="ariaHidden ? -1 : 0"
   [attr.aria-hidden]="ariaHidden"
   (click)="openModal(modal)"
   data-testing-id="addToOrderTemplateButton"
