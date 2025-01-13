@@ -33,6 +33,7 @@
             class="form-control"
             id="concardis_creditcard_month"
             formControlName="expirationMonth"
+            [attr.aria-label]="'checkout.credit_card.expiration_month.select.label' | translate"
             data-testing-id="expirationMonth"
           >
             <option value="">{{ 'account.date.month' | translate }}</option>
@@ -48,6 +49,7 @@
             class="form-control"
             id="concardis_creditcard_year"
             formControlName="expirationYear"
+            [attr.aria-label]="'checkout.credit_card.expiration_year.select.label' | translate"
             data-testing-id="expirationYear"
           >
             <option value="">{{ 'account.date.year' | translate }}</option>

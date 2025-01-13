@@ -76,7 +76,11 @@
 
 <!-- mobile account navigation select box -->
 <ng-template #mobileNavigation>
-  <select (change)="navigateTo($event.target)" class="form-control">
+  <select
+    (change)="navigateTo($event.target)"
+    class="form-control"
+    [attr.aria-label]="'account.menu.select.label' | translate"
+  >
     <ng-container *ngFor="let item of navItems">
       <ng-container *ishIsAuthorizedTo="item.permission || 'always'">
         <ng-container *ishHasNotRole="item.notRole">

@@ -1,7 +1,13 @@
 <div *ngIf="visible$ | async" [ngClass]="{ 'has-error': hasQuantityError$ | async }" class="quantity-input">
   <ng-container [ngSwitch]="type">
     <ng-template ngSwitchCase="select">
-      <select (change)="change($event.target)" class="form-control" [id]="elementId" data-testing-id="quantity">
+      <select
+        (change)="change($event.target)"
+        class="form-control"
+        [id]="elementId"
+        [attr.aria-label]="'product.quantity.aria_label' | translate"
+        data-testing-id="quantity"
+      >
         <option *ngFor="let opt of selectValues$ | async" [value]="opt" [selected]="opt === (quantity$ | async)">
           {{ opt }}
         </option>
@@ -18,6 +24,9 @@
         [min]="min$ | async"
         [max]="max$ | async"
         [step]="step$ | async"
+        [attr.aria-label]="'product.quantity.aria_label' | translate"
+        [attr.aria-invalid]="(hasQuantityError$ | async) ? 'true' : undefined"
+        [attr.aria-describedby]="ariaDescribedByIds"
         (change)="change($event.target)"
         (keyup)="change($event.target)"
       />

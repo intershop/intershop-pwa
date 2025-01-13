@@ -74,6 +74,7 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
             type: 'ish-select-field',
             className: 'col-6 col-md-4',
             props: {
+              ariaLabel: 'account.costcenter.budget.period.select.label',
               fieldClass: 'col-12 label-empty',
               options: FormsService.getCostCenterBudgetPeriodOptions(),
             },

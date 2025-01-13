@@ -147,7 +147,7 @@ export class CostCenterFormComponent implements OnInit {
                 props: {
                   fieldClass: 'col-12 label-empty',
                   options: FormsService.getCostCenterBudgetPeriodOptions(),
-                  ariaLabel: 'account.costcenter.budget.label',
+                  ariaLabel: 'account.costcenter.budget.period.select.label',
                 },
               },
             ],

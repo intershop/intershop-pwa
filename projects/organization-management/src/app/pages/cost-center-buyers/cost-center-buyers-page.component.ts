@@ -137,7 +137,7 @@ export class CostCenterBuyersPageComponent implements OnInit {
               props: {
                 fieldClass: 'col-12',
                 options: FormsService.getCostCenterBudgetPeriodOptions(),
-                ariaLabel: 'account.costcenter.details.buyers.list.order_spend_limit.label',
+                ariaLabel: 'account.costcenter.budget.period.select.label',
               },
             },
           ],
