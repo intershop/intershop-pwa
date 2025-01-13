@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { SimpleSearchBoxComponent } from 'ish-core/standalone/component/suggest/simple-search-box/simple-search-box.component';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { ErrorPageComponent } from './error-page.component';
@@ -12,7 +13,7 @@ const errorPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(errorPageRoutes), SharedModule],
+  imports: [RouterModule.forChild(errorPageRoutes), SharedModule, SimpleSearchBoxComponent],
   declarations: [ErrorComponent, ErrorPageComponent, ServerErrorComponent],
 })
 export class ErrorPageModule {}

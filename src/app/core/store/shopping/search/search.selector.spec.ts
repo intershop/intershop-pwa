@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
+import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
@@ -22,15 +22,15 @@ describe('Search Selector', () => {
 
   describe('getSuggestSearchResults', () => {
     beforeEach(() => {
-      store$.dispatch(suggestSearchSuccess({ searchTerm: 'searchTerm', suggests: [{ term: 'term' } as SuggestTerm] }));
+      store$.dispatch(
+        suggestSearchSuccess({ searchTerm: 'searchTerm', suggests: { keywordSuggestions: ['term'] } as Suggestion })
+      );
     });
 
     it('should get search results when searchTerm exists', () => {
       expect(getSuggestSearchResults('searchTerm')(store$.state)).toMatchInlineSnapshot(`
         [
-          {
-            "term": "term",
-          },
+          "term",
         ]
       `);
     });

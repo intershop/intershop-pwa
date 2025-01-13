@@ -193,6 +193,7 @@ silktide
 sitekey
 sku
 skus
+sparque
 spgid
 srcache
 sslmode

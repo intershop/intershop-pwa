@@ -1,5 +1,6 @@
 <ng-template #searchBoxTemplate let-icon="icon">
-  <ish-lazy-search-box
+  <ish-advanced-search-box
+    *ngIf="isSparqueActive === true; else ICMSearchBox"
     data-testing-id="search-box-desktop"
     [configuration]="{
       placeholder: 'search.searchbox.instructional_text' | translate,
@@ -9,6 +10,18 @@
       showLastSearchTerm: true
     }"
   />
+  <ng-template #ICMSearchBox>
+    <ish-simple-search-box
+      data-testing-id="search-box-desktop"
+      [configuration]="{
+        placeholder: 'search.searchbox.instructional_text' | translate,
+        autoSuggest: true,
+        maxAutoSuggests: 10,
+        icon: icon,
+        showLastSearchTerm: true
+      }"
+    />
+  </ng-template>
 </ng-template>
 
 <div class="header container" [ngClass]="deviceType">
