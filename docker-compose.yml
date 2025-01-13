@@ -14,11 +14,11 @@ services:
     # command: ['node', 'dist/b2c/run-standalone']
     # command: ['node', 'dist/b2b/run-standalone']
     environment:
-      # ICM_BASE_URL:
+      ICM_BASE_URL: 'https://develop.icm.intershop.de'
       LOGGING: 'true'
       # LOG_ALL: 'false'
       SOURCE_MAPS: 'true'
-      TRUST_ICM: 'true'
+      # TRUST_ICM: 'true'
       # PROXY_ICM: 'true'
       # PROMETHEUS: 'true'
       # MULTI_SITE_LOCALE_MAP: |
@@ -29,15 +29,15 @@ services:
       #   - compare
       #   - rating
       # IDENTITY_PROVIDER: 'Auth0'
-      # IDENTITY_PROVIDERS: |
+      IDENTITY_PROVIDERS: |
+        Punchout:
+          type: PUNCHOUT
+        CoBrowse:
+          type: cobrowse
       #   Auth0:
       #     type: auth0
       #     domain: some-domain.auth0.com
       #     clientID: ASDF12345
-      #   Punchout:
-      #     type: PUNCHOUT
-      #   CoBrowse:
-      #     type: cobrowse
 
     # Logging to an External Device (see logging.md)
     # volumes:
@@ -77,6 +77,7 @@ services:
       # - '9113:9113'
     environment:
       UPSTREAM_PWA: 'http://pwa:4200'
+      ICM_BASE_URL: 'https://develop.icm.intershop.de'
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
       CACHE: 0
       # REDIS_URI: redis://redis:6379
@@ -93,12 +94,20 @@ services:
       # BASIC_AUTH: 'developer:!InterShop00!'
       # BASIC_AUTH_IP_WHITELIST: |
       #   - 1.2.3.4
-      # OVERRIDE_IDENTITY_PROVIDERS: |
-      #   .+:
-      #     - path: /en/punchout
-      #       type: Punchout
-      #     - path: /en/cobrowse
-      #       type: CoBrowse
+      OVERRIDE_IDENTITY_PROVIDERS: |
+        .+:
+          - path: /en/punchout
+            type: Punchout
+          - path: /de/punchout
+            type: Punchout
+          - path: /fr/punchout
+            type: Punchout
+          - path: /en/cobrowse
+            type: CoBrowse
+          - path: /de/cobrowse
+            type: CoBrowse
+          - path: /fr/cobrowse
+            type: CoBrowse
       MULTI_CHANNEL: |
         .+:
           - baseHref: /en
