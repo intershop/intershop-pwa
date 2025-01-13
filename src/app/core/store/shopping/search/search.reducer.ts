@@ -1,13 +1,13 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
-import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
+import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
 
 import { suggestSearchSuccess } from './search.actions';
 
 interface SuggestSearch {
   searchTerm: string;
-  suggests: SuggestTerm[];
+  suggests: Suggestion;
 }
 
 export const searchAdapter = createEntityAdapter<SuggestSearch>({

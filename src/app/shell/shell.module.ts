@@ -10,6 +10,8 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
+import { AdvancedSearchBoxComponent } from 'ish-core/standalone/component/suggest/advanced-search-box/advanced-search-box.component';
+import { SimpleSearchBoxComponent } from 'ish-core/standalone/component/suggest/simple-search-box/simple-search-box.component';
 import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
@@ -37,12 +39,14 @@ import { SubCategoryNavigationComponent } from './header/sub-category-navigation
 import { UserInformationMobileComponent } from './header/user-information-mobile/user-information-mobile.component';
 import { LazyContentIncludeComponent } from './shared/lazy-content-include/lazy-content-include.component';
 import { LazyMiniBasketContentComponent } from './shared/lazy-mini-basket-content/lazy-mini-basket-content.component';
-import { LazySearchBoxComponent } from './shared/lazy-search-box/lazy-search-box.component';
 
 const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderComponent];
 
+const importStandaloneComponents = [AdvancedSearchBoxComponent, SimpleSearchBoxComponent];
+
 @NgModule({
   imports: [
+    ...importStandaloneComponents,
     AuthorizationToggleModule,
     CommonModule,
     CompareExportsModule,
@@ -75,7 +79,6 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     LanguageSwitchComponent,
     LazyContentIncludeComponent,
     LazyMiniBasketContentComponent,
-    LazySearchBoxComponent,
     LoginStatusComponent,
     MiniBasketComponent,
     SubCategoryNavigationComponent,
