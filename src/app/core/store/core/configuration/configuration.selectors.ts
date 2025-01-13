@@ -133,6 +133,8 @@ export const getMultiSiteLocaleMap = createSelector(
   (state: ConfigurationState) => state.multiSiteLocaleMap
 );
 
+export const getSparqueConfig = createSelector(getConfigurationState, state => state.sparque);
+
 export const getRestEndpoint = createSelector(
   getICMServerURL,
   getConfigurationState,
