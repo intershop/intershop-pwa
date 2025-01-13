@@ -3,15 +3,17 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { SimpleSearchBoxComponent } from 'ish-core/standalone/component/suggest/simple-search-box/simple-search-box.component';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { HeaderNavigationComponent } from 'ish-shell/header/header-navigation/header-navigation.component';
 import { LanguageSwitchComponent } from 'ish-shell/header/language-switch/language-switch.component';
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
 import { MiniBasketComponent } from 'ish-shell/header/mini-basket/mini-basket.component';
 import { UserInformationMobileComponent } from 'ish-shell/header/user-information-mobile/user-information-mobile.component';
-import { LazySearchBoxComponent } from 'ish-shell/shared/lazy-search-box/lazy-search-box.component';
 
 import { LazyProductCompareStatusComponent } from '../../../extensions/compare/exports/lazy-product-compare-status/lazy-product-compare-status.component';
 import { LazyQuickorderLinkComponent } from '../../../extensions/quickorder/exports/lazy-quickorder-link/lazy-quickorder-link.component';
@@ -25,6 +27,7 @@ describe('Header Default Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
       imports: [FeatureToggleModule.forTesting('compare'), TranslateModule.forRoot()],
       declarations: [
         HeaderDefaultComponent,
@@ -33,9 +36,9 @@ describe('Header Default Component', () => {
         MockComponent(LanguageSwitchComponent),
         MockComponent(LazyProductCompareStatusComponent),
         MockComponent(LazyQuickorderLinkComponent),
-        MockComponent(LazySearchBoxComponent),
         MockComponent(LoginStatusComponent),
         MockComponent(MiniBasketComponent),
+        MockComponent(SimpleSearchBoxComponent),
         MockComponent(UserInformationMobileComponent),
         MockDirective(NgbCollapse),
       ],
@@ -66,7 +69,7 @@ describe('Header Default Component', () => {
 
   it('should render Search Box on template', () => {
     fixture.detectChanges();
-    expect(findAllCustomElements(element)).toContain('ish-lazy-search-box');
+    expect(findAllCustomElements(element)).toContain('ish-simple-search-box');
   });
 
   it('should render Header Navigation on template', () => {

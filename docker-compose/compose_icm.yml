@@ -1,0 +1,174 @@
+# docker-compose for an full deployment with following components
+# - ICM with necessary DB, WA and WAA_IMAGE
+# - utils like Mailserver; Dozzle
+
+name: ICM
+
+services:
+  # ICM container settings
+  icmDB:
+    image: ${MSSQLDOCKERIMAGE}
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: 1nstershop5A
+      MSSQL_PID: Developer
+      RECREATE_DB: 'TRUE'
+      RECREATE_USER: 'TRUE'
+      ICM_DB_NAME: ${JDBCDBNAME}
+      ICM_DB_USER: ${JDBCUSER}
+      ICM_DB_PASSWORD: ${JDBCPASSWORD}
+    ports:
+      - '1433:1433'
+    healthcheck:
+      test:
+        [
+          'CMD',
+          '/opt/mssql-tools/bin/sqlcmd',
+          '-b',
+          '-S',
+          'localhost',
+          '-U',
+          'intershop',
+          '-P',
+          'intershop',
+          '-q',
+          'quit',
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 8
+      start_period: 120s
+    volumes:
+      - dbdata:/var/opt/mssql/data
+
+  headless:
+    image: ${HEADLESS_IMAGE}
+    container_name: headless
+    volumes:
+      - customizations:/customizations
+
+  demodata:
+    image: ${DEMODATA_IMAGE}
+    container_name: demodata
+    volumes:
+      - customizations:/customizations
+
+  customize-with-solr:
+    image: ${CUSTOMIZATION_IMAGE_SOLR}
+    volumes:
+      - customizations:/customizations
+
+  icm-as:
+    image: ${APPSERVER_IMAGE}
+    container_name: icm-as
+    cpuset: ${CPU_SET}
+    depends_on:
+      icmDB:
+        condition: service_healthy
+    environment:
+      SERVER_NAME: '${SERVER_NAME}'
+      CARTRIDGE_LIST: '${CARTRIDGE_LIST}'
+      INTERSHOP_DATABASETYPE: '${DBTYPE}'
+      INTERSHOP_JDBC_URL: '${JDBCURL}'
+      INTERSHOP_JDBC_USER: '${JDBCUSER}'
+      INTERSHOP_JDBC_PASSWORD: '${JDBCPASSWORD}'
+      INTERSHOP_SERVLETENGINE_CONNECTOR_PORT: 7743
+      DEBUG_ICM: '${DEBUG_ICM}'
+      INTERSHOP_WEBSERVERURL: 'http://icmwebserver:${WA_HTTP_PORT}'
+      INTERSHOP_WEBSERVERSECUREURL: 'https://icmwebserver:${WA_HTTPS_PORT}'
+      INTERSHOP_SMTPSERVER: mail
+      MAIL_SMTP_HOST: mail
+      MAIL_SMTP_PORT: '1025'
+      MAIL_CLIENT_API_PORT: '8026'
+      MAIL_SMTP_MAILHOG_ENABLED: 'true'
+      INTERSHOP_ENCRYPTION_STRICTMODE_ENABLED: 'false'
+      SOLR_ZOOKEEPERHOSTLIST: 'solr:9983'
+      SOLR_CLUSTERINDEXPREFIX: 'my-resp-demo-test'
+
+    volumes:
+      - ${SITES_DIR}:/intershop/sites
+      - customizations:/intershop/customizations
+      - system-conf:/intershop/system-conf
+    ports:
+      - '7743:7743'
+      #debug port
+      - '7746:7746'
+      #jmx port
+      - '7747:7747'
+
+  icmwebserver:
+    image: ${WA_IMAGE}
+    container_name: icmwebserver
+    ports:
+      - '${WA_HTTP_PORT}:8080'
+      - '${WA_HTTPS_PORT}:8443'
+    depends_on:
+      - 'icm-as'
+    volumes:
+      - waproperties:/intershop/webadapter-conf
+      - pagecache:/intershop/pagecache
+      - walogs:/intershop/logs
+    environment:
+      # a configuration servlet must be available before the webadapter starts
+      ICM_ICMSERVLETURLS: 'cs.url.0=http://icm-as:7743/servlet/ConfigurationServlet'
+
+  icmwebadapteragent:
+    image: ${WAA_IMAGE}
+    container_name: icmwebadapteragent
+    depends_on:
+      - 'icmwebserver'
+    volumes:
+      - waproperties:/intershop/webadapter-conf
+      - pagecache:/intershop/pagecache
+      - walogs:/intershop/logs
+    environment:
+      # a configuration servlet must be available before the webadapteragent starts
+      ICM_AS_SERVICE: 'http://icm-as:7743/servlet/ConfigurationServlet'
+
+  debugging:
+    image: ${DEBUGGING_IMAGE}
+    container_name: debugging
+    command: ['sh', '-c', 'apt-get --yes update && apt-get --yes install ${DEBUGGING_PACKAGES} && sleep infinity']
+    volumes:
+      - sites:/intershop/sites
+      - system-conf:/intershop/system-conf
+      - waproperties:/intershop/webadapter-conf
+      - pagecache:/intershop/pagecache
+      - walogs:/intershop/logs
+
+  #util containers
+  mail:
+    image: mailhog/mailhog
+    ports:
+      - '8026:8025'
+      #- "1025:1025"
+
+  solr:
+    image: ${SOLRDOCKERIMAGE}
+    container_name: solr
+    environment:
+      SOLR_OPTS: '-Dsolr.disableConfigSetsCreateAuthChecks=true'
+    ports:
+      - '8983:8983'
+    command: 'solr -cloud -f'
+
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 9999:8080
+
+volumes:
+  customizations:
+  system-conf:
+  waproperties:
+  pagecache:
+  walogs:
+  dbdata:
+  sites:
+
+networks:
+  default:
+    name: ${NETWORK_NAME}
