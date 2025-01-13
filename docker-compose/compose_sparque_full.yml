@@ -1,0 +1,295 @@
+# docker-compose for an full deployment with following components
+# - ICM with necessary DB, WA and WAA_IMAGE
+# - Sparque Wrapper and Sparque Policy enforcer
+# - PWA
+# - utils like Mailserver; Dozzle
+
+name: SPARQUE(icm,wrapper,policy-enforcer)
+
+services:
+  # policy enforcer container settings
+  policy_enforcer:
+    container_name: policy_enforcer
+    hostname: search-sparque-policy-enforcer
+    image: ${POLICY_ENFORCER_IMAGE}
+    ports:
+      - '27090:7090'
+      - '28090:8090'
+      - '29090:9090'
+    environment:
+      - SPRING_CONFIG_LOCATION=/app/application.yml
+    volumes:
+      - ${APP_YML}:/app/application.yml
+
+  # sparque wrapper container settings
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/bitnami/redis/data
+  db:
+    image: postgres:latest
+    container_name: postgres_wrapper_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 'Zb641308809576!'
+      POSTGRES_DB: sparque_wrapper_acc
+    ports:
+      - '5433:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  wrapper_legacy:
+    image: ${SPARQUE_WRAPPER_IMAGE}
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - SPARQUE_CONFIG=default
+      - SPARQUE_MAGIC_CLIENT_ID=8OQKJtMlmADPDzOVvLrqQzXjaflgducc
+      - SPARQUE_MAGIC_CLIENT_SECRET=3hhGrhVgjt22SqTLdgN-vOf-GfYzWvsKHBSXGHrozt-mfT0wDgAPGO2yUUWCzth8
+      - SPARQUE_API_NO_ENDPOINT_CACHE_EXPIRATION_MINUTES=720
+      - REDIS_TIMEOUT_MS=2500
+      - REDIS_URL=redis:6379
+      - REDIS_DATABASE=0
+      - REDIS_CIRCUIT_BRK_TRIGGER_EXCEPTION_COUNT=3
+      - REDIS_CIRCUIT_BRK_SEC=10
+      - SPARQUE_API_ACCESS_TOKEN_ENCRYPTION_KEY=c6d3089cacaa4abc990d55b294e93320
+      - SPARQUE_API_BASE_URL=https://rest.sparque.ai/1
+      - CACHE_SHOULD_CACHE=${SPARQUE_CACHE_SHOULD_CACHE}
+      - CACHE_FILTERED_REQUESTS=false
+      - CACHE_DURATION_MINUTES_SEARCH=30
+      - CACHE_DURATION_MINUTES_SUGGESTIONS=30
+      - CACHE_DURATION_MINUTES_PRODUCTS=30
+      - CACHE_DURATION_MINUTES_RECOMMENDATIONS=30
+      - CACHE_DURATION_MINUTES_FACETS=30
+      - SEARCH_MAX_CONCURRENT_SEARCHES=100
+      - SEARCH_MAX_RESULTS=100
+      - SEARCH_DEFAULT_RESULTS=20
+      - JWT_KEY=f7960c6887a943e499c6118c5fc5ace8
+      - JWT_ISSUER=https://login.sparque.ai
+      - JWT_AUDIENCE=https://rest.sparque.ai
+      - JWT_TOKEN_URL=https://login.sparque.ai/oauth/token
+      - WORKSPACES_WITHOUT_PERSONALIZATION=${SPARQUE_WORKSPACES_WITHOUT_PERSONALIZATION}
+      - WORKSPACE_ENDPOINTSETS_WITHOUT_AUTH=${SPARQUE_WORKSPACE_ENDPOINTSETS_WITHOUT_AUTH}
+      - LOGLEVEL=Information
+    restart: always
+    ports:
+      - '${SPARQUE_WRAPPER_PORT}:5755'
+    depends_on:
+      - redis
+
+  # PWA container settings
+  pwa:
+    container_name: pwa
+    image: ${PWA_IMAGE}
+    environment:
+      LOGGING: 'true'
+      SOURCE_MAPS: 'true'
+      ICM_BASE_URL: ${ICM_BASE_URL}
+      TRUST_ICM: 'true'
+      SPARQUE: '{"server_url": "${SPARQUE_URL}", "wrapperAPI": "v2", "workspaceName": "intershop-project-base-v2-team2", "apiName": "PWA", "channelId": "ish"}'
+
+  nginx:
+    build: nginx
+    container_name: nginx
+    image: ${PWA_NGINX_IMAGE}
+    depends_on:
+      - pwa
+    ports:
+      - '4200:80'
+    environment:
+      UPSTREAM_PWA: 'http://pwa:4200'
+      ICM_BASE_URL: '${ICM_BASE_URL}'
+      DEBUG: 0
+      NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
+      CACHE: 0
+      SSR: 1
+      SSL: 0
+      MULTI_CHANNEL: |
+        .+:
+          - baseHref: /en
+            channel: default
+            lang: en_US
+          - baseHref: /de
+            channel: default
+            lang: de_DE
+          - baseHref: /fr
+            channel: default
+            lang: fr_FR
+          - baseHref: /b2c
+            channel: default
+            theme: b2c
+  # ICM container settings
+  icmDB:
+    image: ${MSSQLDOCKERIMAGE}
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: 1nstershop5A
+      MSSQL_PID: Developer
+      RECREATE_DB: 'TRUE'
+      RECREATE_USER: 'TRUE'
+      ICM_DB_NAME: ${JDBCDBNAME}
+      ICM_DB_USER: ${JDBCUSER}
+      ICM_DB_PASSWORD: ${JDBCPASSWORD}
+    ports:
+      - '1433:1433'
+    healthcheck:
+      test:
+        [
+          'CMD',
+          '/opt/mssql-tools/bin/sqlcmd',
+          '-b',
+          '-S',
+          'localhost',
+          '-U',
+          'intershop',
+          '-P',
+          'intershop',
+          '-q',
+          'quit',
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 8
+      start_period: 120s
+    volumes:
+      - dbdata:/var/opt/mssql/data
+
+  headless:
+    image: ${HEADLESS_IMAGE}
+    container_name: headless
+    volumes:
+      - customizations:/customizations
+
+  demodata:
+    image: ${DEMODATA_IMAGE}
+    container_name: demodata
+    volumes:
+      - customizations:/customizations
+
+  customize-with-solr:
+    image: ${CUSTOMIZATION_IMAGE_SOLR}
+    volumes:
+      - customizations:/customizations
+
+  icm-as:
+    image: ${APPSERVER_IMAGE}
+    container_name: icm-as
+    cpuset: ${CPU_SET}
+    depends_on:
+      icmDB:
+        condition: service_healthy
+    environment:
+      SERVER_NAME: '${SERVER_NAME}'
+      CARTRIDGE_LIST: '${CARTRIDGE_LIST}'
+      INTERSHOP_DATABASETYPE: '${DBTYPE}'
+      INTERSHOP_JDBC_URL: '${JDBCURL}'
+      INTERSHOP_JDBC_USER: '${JDBCUSER}'
+      INTERSHOP_JDBC_PASSWORD: '${JDBCPASSWORD}'
+      INTERSHOP_SERVLETENGINE_CONNECTOR_PORT: 7743
+      DEBUG_ICM: '${DEBUG_ICM}'
+      INTERSHOP_WEBSERVERURL: 'http://icmwebserver:${WA_HTTP_PORT}'
+      INTERSHOP_WEBSERVERSECUREURL: 'https://icmwebserver:${WA_HTTPS_PORT}'
+      INTERSHOP_CARTRIDGES_REST_TOKENKIND: 'JWT'
+      INTERSHOP_SEARCH_SPARQUE: 'true'
+      INTERSHOP_SMTPSERVER: mail
+      MAIL_SMTP_HOST: mail
+      MAIL_SMTP_PORT: '1025'
+      MAIL_CLIENT_API_PORT: '8026'
+      MAIL_SMTP_MAILHOG_ENABLED: 'true'
+      INTERSHOP_ENCRYPTION_STRICTMODE_ENABLED: 'false'
+      SOLR_ZOOKEEPERHOSTLIST: 'solr:9983'
+      SOLR_CLUSTERINDEXPREFIX: 'my-resp-demo-test'
+
+    volumes:
+      - ${SITES_DIR}:/intershop/sites
+      - customizations:/intershop/customizations
+      - system-conf:/intershop/system-conf
+    ports:
+      - '7743:7743'
+      #debug port
+      - '7746:7746'
+      #jmx port
+      - '7747:7747'
+
+  icmwebserver:
+    image: ${WA_IMAGE}
+    container_name: icmwebserver
+    ports:
+      - '${WA_HTTP_PORT}:8080'
+      - '${WA_HTTPS_PORT}:8443'
+    depends_on:
+      - 'icm-as'
+    volumes:
+      - waproperties:/intershop/webadapter-conf
+      - pagecache:/intershop/pagecache
+      - walogs:/intershop/logs
+    environment:
+      # a configuration servlet must be available before the webadapter starts
+      ICM_ICMSERVLETURLS: 'cs.url.0=http://icm-as:7743/servlet/ConfigurationServlet'
+
+  icmwebadapteragent:
+    image: ${WAA_IMAGE}
+    container_name: icmwebadapteragent
+    depends_on:
+      - 'icmwebserver'
+    volumes:
+      - waproperties:/intershop/webadapter-conf
+      - pagecache:/intershop/pagecache
+      - walogs:/intershop/logs
+    environment:
+      # a configuration servlet must be available before the webadapteragent starts
+      ICM_AS_SERVICE: 'http://icm-as:7743/servlet/ConfigurationServlet'
+
+  debugging:
+    image: ${DEBUGGING_IMAGE}
+    container_name: debugging
+    command: ['sh', '-c', 'apt-get --yes update && apt-get --yes install ${DEBUGGING_PACKAGES} && sleep infinity']
+    volumes:
+      - sites:/intershop/sites
+      - system-conf:/intershop/system-conf
+      - waproperties:/intershop/webadapter-conf
+      - pagecache:/intershop/pagecache
+      - walogs:/intershop/logs
+
+  #util containers
+  mail:
+    image: mailhog/mailhog
+    ports:
+      - '8026:8025'
+      #- "1025:1025"
+
+  solr:
+    image: ${SOLRDOCKERIMAGE}
+    container_name: solr
+    environment:
+      SOLR_OPTS: '-Dsolr.disableConfigSetsCreateAuthChecks=true'
+    ports:
+      - '8983:8983'
+    command: 'solr -cloud -f'
+
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 9999:8080
+
+volumes:
+  customizations:
+  system-conf:
+  waproperties:
+  pagecache:
+  walogs:
+  testmails:
+  dbdata:
+  redis-data:
+  postgres_data:
+  sites:
+  solrdata:
+
+networks:
+  default:
+    name: ${NETWORK_NAME}

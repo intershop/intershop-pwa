@@ -19,7 +19,7 @@ import {
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { SuggestService } from 'ish-core/services/suggest/suggest.service';
+import { SuggestionService } from 'ish-core/services/suggestion/suggestion.service';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
@@ -46,7 +46,7 @@ export class SearchEffects {
     private actions$: Actions,
     private store: Store,
     private productsService: ProductsService,
-    private suggestService: SuggestService,
+    private suggestService: SuggestionService,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
     private translateService: TranslateService,

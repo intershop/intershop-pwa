@@ -1,0 +1,68 @@
+intershop:
+  security:
+    cors:
+      allowedOrigins: 'http://localhost:4200 http://pwa:4200'
+    enforcer:
+logging:
+  config: classpath:logback_json.xml
+  level:
+    com.intershop: INFO
+management:
+  endpoint:
+    health:
+      enabled: true
+      group:
+        readiness:
+          include: readinessState
+      show-details: always
+    info:
+      enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      cors:
+        allowed-methods: GET
+        allowed-origins: '*'
+      exposure:
+        include: info,health,metrics,prometheus,openapi,swaggerui
+  health:
+    diskSpace:
+      enabled: false
+    probes:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  server:
+    port: 9090
+server:
+  port: 8090
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration,  org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
+  main:
+    allow-bean-definition-overriding: true
+    banner-mode: 'off'
+springdoc:
+  packagesToScan: com.intershop
+  show-actuator: true
+  use-management-port: true
+sparque:
+  path: /
+  defaultTargetUriWrapper: http://host.docker.internal:5755
+  defaultTargetUriSparque: https://rest.sparque.ai
+  connectTimeout: PT1S
+  requestTimeout: PT3S
+  clients:
+    - description: Team2 Sparque Test environment
+      workspaceToChannelSites:
+        intershop-project-base-v2-team2: inSPIRED-inTRONICS_Business-Site
+      issuer: https://icm-as:8443
+      name: Team2 UAT Test
+      targetURIWrapper: http://host.docker.internal:5755
+      targetURISparque: https://rest.sparque.ai
+      login: https://login.sparque.ai
