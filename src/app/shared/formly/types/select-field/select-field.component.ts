@@ -10,6 +10,7 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
  * * `` { value: any; label: string}[]``
  * * `` Observable<{ value: any; label: string}[]>``
  * @props **placeholder** defines the placeholder string that will be used as the first / default option
+ * @props **optionsTranslateDisabled** - disables options label translation (placeholder is still translated)
  *
  * @defaultWrappers form-field-horizontal & validation
  *
