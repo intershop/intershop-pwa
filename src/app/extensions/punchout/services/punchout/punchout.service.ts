@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { EMPTY, Observable, iif, throwError } from 'rxjs';
+import { EMPTY, Observable, throwError } from 'rxjs';
 import { concatMap, filter, map, switchMap, take } from 'rxjs/operators';
 
 import { MessageFacade } from 'ish-core/facades/message.facade';
@@ -191,11 +191,11 @@ export class PunchoutService {
     return this.store.pipe(select(getUserPermissions)).pipe(
       whenTruthy(),
       switchMap(permissions =>
-        iif(
-          () => permissions.includes('APP_B2B_SEND_CXML_BASKET'),
-          this.transferCxmlPunchoutBasket(),
-          iif(() => permissions.includes('APP_B2B_SEND_OCI_BASKET'), this.transferOciPunchoutBasket(), EMPTY)
-        )
+        permissions.includes('APP_B2B_SEND_CXML_BASKET')
+          ? this.transferCxmlPunchoutBasket()
+          : permissions.includes('APP_B2B_SEND_OCI_BASKET')
+          ? this.transferOciPunchoutBasket()
+          : EMPTY
       )
     );
   }
