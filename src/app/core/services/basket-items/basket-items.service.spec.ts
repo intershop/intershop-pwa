@@ -1,11 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { getServerConfig } from 'ish-core/store/core/server-config';
 import { getCurrentBasket } from 'ish-core/store/customer/basket';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
@@ -14,6 +15,7 @@ import { BasketItemUpdateType, BasketItemsService } from './basket-items.service
 describe('Basket Items Service', () => {
   let basketItemsService: BasketItemsService;
   let apiServiceMock: ApiService;
+  let store$: MockStore;
 
   const lineItemMockData = {
     id: 'test',
@@ -39,20 +41,63 @@ describe('Basket Items Service', () => {
       providers: [
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
         provideMockStore({
-          selectors: [{ selector: getCurrentBasket, value: { id: '123' } }],
+          selectors: [
+            {
+              selector: getCurrentBasket,
+              value: { id: '123', commonShippingMethod: { id: BasketMockData.getShippingMethod().id } },
+            },
+            { selector: getServerConfig, value: { shipping: { multipleShipmentsSupported: true } } },
+          ],
         }),
       ],
     });
 
     basketItemsService = TestBed.inject(BasketItemsService);
+    store$ = TestBed.inject(MockStore);
   });
 
-  it("should post item to basket when 'addItemsToBasket' is called", done => {
+  interface TestAddLineItemType {
+    product: string;
+    quantity: {
+      value: number;
+      unit: string;
+    };
+    warrantySku?: string;
+    shippingMethod?: string;
+  }
+
+  type TestData = {
+    multipleShipment: boolean;
+    expectedPayload: TestAddLineItemType[];
+  };
+
+  it.each<TestData>([
+    {
+      multipleShipment: true,
+      expectedPayload: [
+        {
+          product: itemMockData.sku,
+          quantity: { value: itemMockData.quantity, unit: itemMockData.unit },
+          shippingMethod: BasketMockData.getShippingMethod().id,
+        },
+      ],
+    },
+    {
+      multipleShipment: false,
+      expectedPayload: [
+        {
+          product: itemMockData.sku,
+          quantity: { value: itemMockData.quantity, unit: itemMockData.unit },
+        },
+      ],
+    },
+  ])("should post item to basket when 'addItemsToBasket' is called", (testData: TestData, done) => {
     when(apiServiceMock.post(anyString(), anything(), anything())).thenReturn(of({ data: [], infos: undefined }));
+    store$.overrideSelector(getServerConfig, { shipping: { multipleShipmentsSupported: testData.multipleShipment } });
 
     basketItemsService.addItemsToBasket([itemMockData]).subscribe(() => {
       // basket-endpoint 'baskets/current' is not considered in the verify, only data that comes after it
-      verify(apiServiceMock.post(`items`, anything(), anything())).once();
+      verify(apiServiceMock.post(`items`, deepEqual(testData.expectedPayload), anything())).once();
       done();
     });
   });
