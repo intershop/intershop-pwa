@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 
-import { ariaDescribedByIds } from 'ish-shared/forms/utils/form-utils';
-
 /**
  * Basic type for radio buttons
  *
@@ -25,9 +23,5 @@ import { ariaDescribedByIds } from 'ish-shared/forms/utils/form-utils';
 export class RadioFieldComponent extends FieldType<FieldTypeConfig> {
   get radioName() {
     return `${this.field.parent?.id || ''}${this.field.key}`;
-  }
-
-  get ariaDescribedByIds(): string | null {
-    return ariaDescribedByIds(this.field.id, this.showError, this.props.customDescription);
   }
 }

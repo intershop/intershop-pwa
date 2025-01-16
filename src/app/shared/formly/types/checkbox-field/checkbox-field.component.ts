@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 
-import { ariaDescribedByIds } from 'ish-shared/forms/utils/form-utils';
-
 /**
  * Type for a basic checkbox field.
  *
@@ -18,8 +16,4 @@ import { ariaDescribedByIds } from 'ish-shared/forms/utils/form-utils';
   templateUrl: './checkbox-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckboxFieldComponent extends FieldType<FieldTypeConfig> {
-  get ariaDescribedByIds(): string | null {
-    return ariaDescribedByIds(this.field.id, this.showError, this.props.customDescription);
-  }
-}
+export class CheckboxFieldComponent extends FieldType<FieldTypeConfig> {}

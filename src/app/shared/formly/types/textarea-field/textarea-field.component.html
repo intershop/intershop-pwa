@@ -8,6 +8,6 @@
   [attr.aria-label]="props.ariaLabel | translate"
   [attr.aria-required]="props.required ? 'true' : undefined"
   [attr.aria-invalid]="showError ? 'true' : undefined"
-  [attr.aria-describedby]="ariaDescribedByIds"
+  [attr.aria-describedby]="props.ariaDescribedByIds"
   [attr.data-testing-id]="field.key"
 ></textarea>

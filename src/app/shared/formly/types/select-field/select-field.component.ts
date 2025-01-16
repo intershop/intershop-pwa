@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
-import { ariaDescribedByIds } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * Type for a basic select field
@@ -34,8 +33,4 @@ export class SelectFieldComponent extends FieldType<FieldTypeConfig> {
       },
     },
   };
-
-  get ariaDescribedByIds(): string | null {
-    return ariaDescribedByIds(this.field.id, this.showError, this.props.customDescription);
-  }
 }
