@@ -19,9 +19,9 @@ export class ProductAddToCompareComponent implements OnInit {
   @Input() displayType: 'button' | 'icon' = 'button';
   @Input() cssClass: string;
   /**
-   * render context, e.g. 'grid' for product list grid view
+   * hidden for screen readers
    */
-  @Input() renderContext: 'grid' | undefined;
+  @Input() ariaHidden = false;
 
   isInCompareList$: Observable<boolean>;
   visible$: Observable<boolean>;
@@ -35,10 +35,5 @@ export class ProductAddToCompareComponent implements OnInit {
 
   toggleCompare() {
     this.compareFacade.toggleProductCompare(this.context.get('sku'));
-  }
-
-  get tabIndex(): number {
-    // if shown in product list 'grid' view, the icon is not accessible using keyboard tab, otherwise it is accessible
-    return this.displayType === 'icon' && this.renderContext === 'grid' ? -1 : undefined;
   }
 }

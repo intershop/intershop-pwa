@@ -29,9 +29,9 @@ export class ProductAddToWishlistComponent implements OnInit {
   @Input() displayType: 'icon' | 'link' | 'animated' = 'link';
   @Input() cssClass: string;
   /**
-   * render context, e.g. 'grid' for product list grid view
+   * hidden for screen readers
    */
-  @Input() renderContext: 'grid' | undefined;
+  @Input() ariaHidden = false;
 
   visible$: Observable<boolean>;
 
@@ -69,10 +69,5 @@ export class ProductAddToWishlistComponent implements OnInit {
     } else {
       this.wishlistsFacade.addProductToWishlist(wishlist.id, this.context.get('sku'));
     }
-  }
-
-  get tabIndex(): number {
-    // if shown in product list 'grid' view, the icon is not accessible using keyboard tab, otherwise it is accessible
-    return this.displayType === 'icon' && this.renderContext === 'grid' ? -1 : undefined;
   }
 }

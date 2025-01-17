@@ -32,9 +32,9 @@ export class ProductAddToBasketComponent implements OnInit {
    */
   @Input() cssClass: string;
   /**
-   * render context, e.g. 'grid' for product list grid view
+   * hidden for screen readers
    */
-  @Input() renderContext: 'grid' | undefined;
+  @Input() ariaHidden = false;
 
   private basketLoading$: Observable<boolean>;
   visible$: Observable<boolean>;
@@ -92,10 +92,5 @@ export class ProductAddToBasketComponent implements OnInit {
 
   get displayIcon(): boolean {
     return this.displayType === 'icon';
-  }
-
-  get tabIndex(): number {
-    // if shown in product list 'grid' view, the icon is not accessible using keyboard tab, otherwise it is accessible
-    return this.displayType === 'icon' && this.renderContext === 'grid' ? -1 : undefined;
   }
 }
