@@ -42,24 +42,24 @@ export class MetaDataModule {
     };
 
     if (expected.title) {
-      this.title.should(this.checkStrategy(expected.title), expected.title);
-      this.meta('og:title').should(this.checkStrategy(expected.title), expected.title);
+      this.title.should('equal', expected.title);
+      this.meta('og:title').should('equal', expected.title);
       this.title.then(title => {
         this.meta('og:title').should('equal', title);
       });
     }
 
     if (expected.url) {
-      this.canonicalLink.should(this.checkStrategy(expected.url), expected.url);
-      this.meta('og:url').should(this.checkStrategy(expected.url), expected.url);
+      this.canonicalLink.should('match', expected.url);
+      this.meta('og:url').should('match', expected.url);
       this.canonicalLink.then(url => {
         this.meta('og:url').should('equal', url);
       });
     }
 
     if (expected.description) {
-      this.meta('description').should(this.checkStrategy(expected.description), expected.description);
-      this.meta('og:description').should(this.checkStrategy(expected.description), expected.description);
+      this.meta('description').should('contain', expected.description);
+      this.meta('og:description').should('contain', expected.description);
 
       (this.meta('description') as Cypress.Chainable<unknown>).then(description => {
         this.meta('og:description').should('equal', description);

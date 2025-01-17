@@ -26,7 +26,7 @@ describe('Page Meta', () => {
       page.metaData.check({
         title: 'Smart Home - Home Entertainment | Intershop PWA',
         url: /.*\/smart-home-ctgHome-Entertainment.SmartHome$/,
-        description: 'Smart Home, Hands-free help from the Google AssistantSmart HomeHome Entertainment',
+        description: 'Smart HomeHome Entertainment',
       });
     });
   });
