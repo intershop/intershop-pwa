@@ -1,4 +1,4 @@
-import { Component, Type } from '@angular/core';
+import { Type } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Route, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -33,7 +33,6 @@ describe('Organization Management Breadcrumb Service', () => {
   let store: Store;
 
   beforeEach(() => {
-    @Component({ template: 'dummy' })
     class DummyComponent {}
     TestBed.configureTestingModule({
       imports: [
@@ -71,6 +70,42 @@ describe('Organization Management Breadcrumb Service', () => {
 
         tick(2000);
       }));
+    });
+
+    describe('company settings routes', () => {
+      it('should set breadcrumb for company setting page', done => {
+        router.navigateByUrl('/settings');
+
+        organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
+          expect(breadcrumbData).toMatchInlineSnapshot(`
+            [
+              {
+                "key": "account.organization.org_settings",
+              },
+            ]
+          `);
+          done();
+        });
+      });
+
+      it('should set breadcrumb for company edit page', done => {
+        router.navigateByUrl('/settings/company');
+
+        organizationManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
+          expect(breadcrumbData).toMatchInlineSnapshot(`
+            [
+              {
+                "key": "account.organization.org_settings",
+                "link": "/my-account/settings",
+              },
+              {
+                "key": "account.company_profile.heading",
+              },
+            ]
+          `);
+          done();
+        });
+      });
     });
 
     describe('user management routes', () => {

@@ -1,3 +1,5 @@
+export type PriceType = 'gross' | 'net';
+
 export interface Price {
   type: 'Money';
   value: number;

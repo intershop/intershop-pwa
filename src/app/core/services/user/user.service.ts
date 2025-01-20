@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { pick } from 'lodash-es';
@@ -170,7 +171,10 @@ export class UserService {
           .post<void>(AppFacade.getCustomerRestResource(body.customer.isBusinessCustomer), newCustomer, {
             captcha: pick(body, ['captcha', 'captchaAction']),
           })
-          .pipe(map<void, CustomerUserType>(() => ({ customer: body.customer, user: body.user })))
+          .pipe(
+            map<void, CustomerUserType>(() => ({ customer: body.customer, user: body.user })),
+            concatMap(customerUser => this.updateCustomerBudgetType(customerUser, body.credentials))
+          )
       )
     );
   }
@@ -358,5 +362,24 @@ export class UserService {
         }
       })
     );
+  }
+
+  /**
+   * Updates the customer budget type right after initial customer creation.
+   */
+  private updateCustomerBudgetType(
+    customerUser: CustomerUserType,
+    credentials: Credentials
+  ): Observable<CustomerUserType> {
+    if (!customerUser?.customer?.budgetPriceType) {
+      return of(customerUser);
+    }
+
+    const headers = new HttpHeaders().set(
+      ApiService.AUTHORIZATION_HEADER_KEY,
+      `BASIC ${window.btoa(`${credentials.login}:${credentials.password}`)}`
+    );
+
+    return this.apiService.put('customers/-', customerUser.customer, { headers }).pipe(map(() => customerUser));
   }
 }

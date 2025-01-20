@@ -8,11 +8,11 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
 
-import { AccountProfileCompanyComponent } from './account-profile-company.component';
+import { OrganizationSettingsCompanyComponent } from './organization-settings-company.component';
 
-describe('Account Profile Company Component', () => {
-  let component: AccountProfileCompanyComponent;
-  let fixture: ComponentFixture<AccountProfileCompanyComponent>;
+describe('Organization Settings Company Component', () => {
+  let component: OrganizationSettingsCompanyComponent;
+  let fixture: ComponentFixture<OrganizationSettingsCompanyComponent>;
   let element: HTMLElement;
   let fieldLibrary: FieldLibrary;
 
@@ -35,13 +35,13 @@ describe('Account Profile Company Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      declarations: [AccountProfileCompanyComponent, MockComponent(ErrorMessageComponent)],
+      declarations: [MockComponent(ErrorMessageComponent), OrganizationSettingsCompanyComponent],
       providers: [{ provide: FieldLibrary, useFactory: () => instance(fieldLibrary) }],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountProfileCompanyComponent);
+    fixture = TestBed.createComponent(OrganizationSettingsCompanyComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

@@ -9,22 +9,22 @@ import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
- * The Account Profile Company Page Component displays a form for changing a business customers' company data
- * see also: {@link AccountProfileCompanyPageComponent}
+ * The Organization Settings Company Page Component displays a form for changing a business customers' company data
+ * see also: {@link OrganizationSettingsCompanyPageComponent}
  */
 @Component({
-  selector: 'ish-account-profile-company',
-  templateUrl: './account-profile-company.component.html',
+  selector: 'ish-organization-settings-company',
+  templateUrl: './organization-settings-company.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountProfileCompanyComponent implements OnInit {
+export class OrganizationSettingsCompanyComponent implements OnInit {
   @Input({ required: true }) currentCustomer: Customer;
   @Input() error: HttpError;
   @Output() updateCompanyProfile = new EventEmitter<Customer>();
 
   private submitted = false;
 
-  accountProfileCompanyForm = new FormGroup({});
+  organizationSettingsCompanyForm = new FormGroup({});
   model: Partial<Customer>;
   fields: FormlyFieldConfig[];
 
@@ -39,19 +39,19 @@ export class AccountProfileCompanyComponent implements OnInit {
    * Submits form and throws update event when form is valid
    */
   submit() {
-    if (this.accountProfileCompanyForm.invalid) {
+    if (this.organizationSettingsCompanyForm.invalid) {
       this.submitted = true;
-      markAsDirtyRecursive(this.accountProfileCompanyForm);
+      markAsDirtyRecursive(this.organizationSettingsCompanyForm);
       return;
     }
-    const companyName = this.accountProfileCompanyForm.get('companyName').value;
-    const companyName2 = this.accountProfileCompanyForm.get('companyName2').value;
-    const taxationID = this.accountProfileCompanyForm.get('taxationID').value;
+    const companyName = this.organizationSettingsCompanyForm.get('companyName').value;
+    const companyName2 = this.organizationSettingsCompanyForm.get('companyName2').value;
+    const taxationID = this.organizationSettingsCompanyForm.get('taxationID').value;
 
     this.updateCompanyProfile.emit({ ...this.currentCustomer, companyName, companyName2, taxationID });
   }
 
   get buttonDisabled() {
-    return this.accountProfileCompanyForm.invalid && this.submitted;
+    return this.organizationSettingsCompanyForm.invalid && this.submitted;
   }
 }

@@ -1,8 +1,11 @@
 import { at } from '../../framework';
 import { createB2BUserViaREST } from '../../framework/b2b-user';
 import { LoginPage } from '../../pages/account/login.page';
-import { ProfileEditCompanyPage, ProfileEditCompanyTypes } from '../../pages/account/profile-edit-company.page';
-import { ProfilePage } from '../../pages/account/profile.page';
+import {
+  OrganizationSettingsEditCompanyPage,
+  OrganizationSettingsEditCompanyTypes,
+} from '../../pages/account/organization-settings-edit-company.page';
+import { OrganizationSettingsPage } from '../../pages/account/organization-settings.page';
 import { sensibleDefaults } from '../../pages/account/registration.page';
 
 const _ = {
@@ -11,32 +14,30 @@ const _ = {
     companyName: 'REALLY',
     companyName2: 'Big Foods',
     taxationID: '987654321',
-  } as ProfileEditCompanyTypes,
+  } as OrganizationSettingsEditCompanyTypes,
 };
 
 describe('Changing User', () => {
   before(() => {
     createB2BUserViaREST(_.user);
 
-    LoginPage.navigateTo('/account/profile');
+    LoginPage.navigateTo('/account/organization/settings');
     at(LoginPage, page =>
       page.fillForm(_.user.login, _.user.password).submit().its('response.statusCode').should('equal', 200)
     );
-    at(ProfilePage, page => {
-      page.name.should('contain', `${_.user.firstName} ${_.user.lastName}`);
-      page.phone.should('contain', _.user.phoneHome);
+    at(OrganizationSettingsPage, page => {
       page.companyName.should('contain', _.user.companyName1);
       page.taxationId.should('be.empty');
     });
   });
 
   it('should be able to edit company details and see changes', () => {
-    at(ProfilePage, page => page.editCompanyDetails());
+    at(OrganizationSettingsPage, page => page.editCompanyDetails());
 
-    at(ProfileEditCompanyPage, page =>
+    at(OrganizationSettingsEditCompanyPage, page =>
       page.fillForm(_.newDetails).submit().its('response.statusCode').should('equal', 200)
     );
-    at(ProfilePage, page => {
+    at(OrganizationSettingsPage, page => {
       page.companyName.should('contain', `${_.newDetails.companyName}${_.newDetails.companyName2}`);
       page.taxationId.should('contain', _.newDetails.taxationID);
     });

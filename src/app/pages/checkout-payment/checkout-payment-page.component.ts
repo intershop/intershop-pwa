@@ -9,6 +9,7 @@ import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { PriceType } from 'ish-core/models/price/price.model';
 
 @Component({
   selector: 'ish-checkout-payment-page',
@@ -20,7 +21,7 @@ export class CheckoutPaymentPageComponent implements OnInit {
   basketError$: Observable<HttpError>;
   loading$: Observable<boolean>;
   paymentMethods$: Observable<PaymentMethod[]>;
-  priceType$: Observable<'gross' | 'net'>;
+  priceType$: Observable<PriceType>;
 
   private destroyRef = inject(DestroyRef);
 

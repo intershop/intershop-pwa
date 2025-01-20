@@ -41,7 +41,10 @@ export class RequisitionCostCenterApprovalComponent implements OnInit, OnChanges
 
     this.orderTotal = {
       type: 'Money',
-      value: this.requisition?.totals?.total?.gross,
+      value:
+        this.requisition?.userBudget?.budgetPriceType === 'gross'
+          ? this.requisition?.totals?.total?.gross
+          : this.requisition?.totals?.total?.net,
       currency: this.requisition?.totals?.total?.currency,
     };
 

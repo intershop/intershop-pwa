@@ -1,5 +1,5 @@
 <ng-container *ngIf="currentCustomer$ | async as customer">
-  <ish-account-profile-company
+  <ish-organization-settings-company
     *ngIf="customer.isBusinessCustomer"
     [currentCustomer]="customer"
     [error]="userError$ | async"

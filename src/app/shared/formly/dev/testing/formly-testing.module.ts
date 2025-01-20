@@ -46,6 +46,12 @@ class FieldsetFieldComponent extends FieldType {
 class RadioFieldComponent extends FieldType {}
 
 @Component({
+  selector: 'ish-radio-group-test-field',
+  template: 'RadioGroupFieldComponent: {{ field.key }} {{ to | json }}',
+})
+class RadioGroupFieldComponent extends FieldType {}
+
+@Component({
   selector: 'ish-input-test-field',
   template: 'TextInputFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
@@ -130,6 +136,7 @@ class RepeatFieldComponent extends FieldArrayType {}
     PhoneFieldComponent,
     PlainTextFieldComponent,
     RadioFieldComponent,
+    RadioGroupFieldComponent,
     RepeatFieldComponent,
     SelectFieldComponent,
     TextareaFieldComponent,
@@ -159,6 +166,7 @@ class RepeatFieldComponent extends FieldArrayType {}
           name: 'ish-radio-field',
           component: RadioFieldComponent,
         },
+        { name: 'ish-radio-group-field', component: RadioGroupFieldComponent },
         {
           name: 'ish-checkbox-field',
           component: CheckboxFieldComponent,
@@ -183,7 +191,6 @@ class RepeatFieldComponent extends FieldArrayType {}
           name: 'ish-textarea-field',
           component: TextareaFieldComponent,
         },
-        { name: 'ish-radio-field', component: RadioFieldComponent },
         { name: 'ish-captcha-field', component: CaptchaFieldComponent },
         { name: 'ish-date-picker-field', component: DatePickerFieldComponent },
         { name: 'ish-date-range-picker-field', component: DateRangePickerFieldComponent },

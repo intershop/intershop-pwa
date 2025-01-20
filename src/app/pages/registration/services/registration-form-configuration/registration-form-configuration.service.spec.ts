@@ -1,8 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Params, UrlSegment } from '@angular/router';
-import { instance, mock, when } from 'ts-mockito';
+import { of } from 'rxjs';
+import { anyString, instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { extractKeys } from 'ish-shared/formly/dev/testing/formly-testing-utils';
 import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
@@ -15,10 +17,13 @@ import {
 describe('Registration Form Configuration Service', () => {
   let registrationConfigurationService: RegistrationFormConfigurationService;
   let accountFacade: AccountFacade;
+  let appFacade: AppFacade;
   let fieldLibrary: FieldLibrary;
 
   beforeEach(() => {
     accountFacade = mock(AccountFacade);
+    appFacade = mock(AppFacade);
+    when(appFacade.serverSetting$(anyString())).thenReturn(of(true));
     fieldLibrary = mock(FieldLibrary);
     when(fieldLibrary.getConfigurationGroup('companyInfo')).thenReturn([
       {
@@ -34,6 +39,9 @@ describe('Registration Form Configuration Service', () => {
         key: 'taxationID',
       },
     ]);
+    when(fieldLibrary.getConfiguration('budgetPriceType')).thenReturn({
+      key: 'budgetPriceType',
+    });
     when(fieldLibrary.getConfigurationGroup('personalInfo')).thenReturn([
       {
         key: 'title',
@@ -53,6 +61,7 @@ describe('Registration Form Configuration Service', () => {
       imports: [FeatureToggleModule.forTesting()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: FieldLibrary, useFactory: () => instance(fieldLibrary) },
         RegistrationFormConfigurationService,
       ],
@@ -71,6 +80,9 @@ describe('Registration Form Configuration Service', () => {
             "companyName1",
             "companyName2",
             "taxationID",
+          ],
+          [
+            "budgetPriceType",
           ],
           [
             "title",
@@ -105,6 +117,9 @@ describe('Registration Form Configuration Service', () => {
               "companyName1",
               "companyName2",
               "taxationID",
+            ],
+            [
+              "budgetPriceType",
             ],
             [
               "title",

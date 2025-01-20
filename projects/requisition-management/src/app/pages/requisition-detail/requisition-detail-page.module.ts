@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { OrganizationManagementExportsModule } from 'organization-management';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
@@ -15,7 +16,12 @@ import { RequisitionSummaryComponent } from './requisition-summary/requisition-s
 const requisitionDetailPageRoutes: Routes = [{ path: '', component: RequisitionDetailPageComponent }];
 
 @NgModule({
-  imports: [RequisitionManagementModule, RouterModule.forChild(requisitionDetailPageRoutes), SharedModule],
+  imports: [
+    OrganizationManagementExportsModule,
+    RequisitionManagementModule,
+    RouterModule.forChild(requisitionDetailPageRoutes),
+    SharedModule,
+  ],
   declarations: [
     BudgetBarComponent,
     RequisitionBuyerApprovalComponent,
