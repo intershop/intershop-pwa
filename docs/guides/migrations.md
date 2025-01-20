@@ -9,20 +9,27 @@ kb_sync_latest_only
 
 ## From 5.2 to 5.3
 
-The `updateUser` method of the UserService has been slightly refactored.
+The `updateUser` method of the `UserService` has been slightly refactored.
 It now sends the user password in the request body to enable password validation on e-mail change.
-The Authorization header has also been removed as authorization is done via session token.
+The authorization header has also been removed as authorization is done via session token.
 
-The observable `isAppTypeREST$` of the AppFacade has been removed.
-Previously it has been used to determine whether the 'privatecustomers' or the 'customers' REST resource is needed to execute b2c user related REST requests.
-Now the 'privatecustomers' REST resource is the new standard for b2c users.
+The observable `isAppTypeREST$` of the `AppFacade` has been removed.
+Previously it has been used to determine whether the `privatecustomers` or the `customers` REST resource is needed to execute b2c user related REST requests.
+Now the `privatecustomers` REST resource is the new standard for b2c users.
 If your ICM doesn't support the new standard the method `getCustomerRestResource` of the [`app.facade`](../../src/app/core/facades/app.facade.ts) has to be adapted.
 
 With ICM 12.2.0, 11.11.1 or 7.10.41.3 the ICM server itself provides an OCI punchout URL (Pipeline) that works better for the OCI punchout functions `BACKGROUND_SEARCH` and `VALIDATE` than the similar now deprecated functionality in the PWA.
 For that reason the provided OCI Punchout URL is now pointing to the ICM pipeline `ViewOCICatalogPWA-Start` that handles the different functionalities and redirects to the PWA (configured as _External Base URL_ in ICM) only for catalog browsing and the detail function.
 
-The OPTION REST call to fetch the oci punchout configurations has been replaced by a GET REST request to avoid possible CORS errors (requires ICM 12.2.1 or above).
-The OPTION REST call to fetch the customer payment methods has been replaced by a GET REST requests to avoid possible CORS errors (requires ICM 11.10.0 or above).
+The OPTION REST call to fetch the OCI punchout configurations has been replaced by a GET REST request to avoid possible CORS errors (requires ICM 12.2.1 or above).
+
+The OPTION REST call to fetch the eligible customer payment methods has been replaced by a GET REST requests to avoid possible CORS errors (requires ICM 11.10.0 or above).
+
+For B2B customer account admins it is now possible to configure if budgets are meant **net** or **gross**.
+This setting will apply for both user and cost center budgets and is a setting on customer level.
+It requires ICM 12.3.0 and is only visible if the ICM order approval service is running.
+If the customer has not yet set the budget type the default value **gross** is used.
+In a migration project that uses an ICM before 12.3.0 in the `organization-settings-page.component.html` the `Preferences` section and the used dialog should be removed and in the `budget-info.component.html` the suffix part `+ (suffix ?? '' | translate)` should be deleted.
 
 ## From 5.1 to 5.2
 
