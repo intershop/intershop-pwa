@@ -1,5 +1,7 @@
 <div>
   <ish-error-message [error]="error" />
-  <p class="indicates-required"><span class="required">*</span>{{ 'account.required_field.message' | translate }}</p>
+  <p class="indicates-required" aria-hidden="true">
+    <span class="required">*</span>{{ 'account.required_field.message' | translate }}
+  </p>
   <formly-form [form]="form" [fields]="fields" [model]="model" />
 </div>

@@ -7,7 +7,7 @@
   <!-- Containers in which we will load microform -->
   <div class="row form-group" [ngClass]="{ 'has-error': errorMessage?.number.message }">
     <label class="col-form-label col-md-4" for="number-container"
-      >{{ 'checkout.credit_card.number.label' | translate }}<span class="required">*</span></label
+      >{{ 'checkout.credit_card.number.label' | translate }}<span class="required" aria-hidden="true">*</span></label
     >
     <div class="col-sm-6">
       <div id="number-container" class="iframe-container form-control"></div>
@@ -26,7 +26,8 @@
     ]"
   >
     <label for="month" class="col-form-label col-md-4"
-      >{{ 'checkout.credit_card.expiration_date.label' | translate }}<span class="required">*</span></label
+      >{{ 'checkout.credit_card.expiration_date.label' | translate
+      }}<span class="required" aria-hidden="true">*</span></label
     >
     <div class="col-sm-6">
       <div class="clearfix row">
@@ -69,7 +70,7 @@
   <!-- security code CVC -->
   <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.securityCode?.message }">
     <label class="col-form-label col-md-4" for="securityCode-container"
-      >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required">*</span></label
+      >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required" aria-hidden="true">*</span></label
     >
     <div class="col-sm-6">
       <div id="securityCode-container" class="iframe-container form-control"></div>

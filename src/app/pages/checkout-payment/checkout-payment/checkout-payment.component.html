@@ -99,7 +99,7 @@
                 </div>
 
                 <div [ngbCollapse]="!formIsOpen(i)">
-                  <p class="indicates-required">
+                  <p class="indicates-required" aria-hidden="true">
                     <span class="required">*</span>{{ 'account.required_field.message' | translate }}
                   </p>
                   <ng-container [ngSwitch]="paymentMethod.serviceId">
