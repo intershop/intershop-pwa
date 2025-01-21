@@ -81,6 +81,8 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
   // not-dead-code
   isTabOut = false;
 
+  isLoading = false;
+
   private destroyRef = inject(DestroyRef);
 
   constructor(private shoppingFacade: ShoppingFacade, private router: Router) {}
@@ -185,8 +187,6 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
       return false;
     }
 
-    this.blur();
-
     if (this.activeIndex !== -1) {
       // something was selected via keyboard
       this.searchResults$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(results => {
@@ -196,6 +196,8 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
     } else {
       this.router.navigate(['/search', suggestedTerm]);
     }
+
+    this.blur();
 
     return false; // prevent form submission
   }
@@ -211,5 +213,9 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
       }
       this.activeIndex = index;
     });
+  }
+
+  truncate(text: string, limit: number): string {
+    return text.length > limit ? `${text.substring(0, limit)}...` : text;
   }
 }

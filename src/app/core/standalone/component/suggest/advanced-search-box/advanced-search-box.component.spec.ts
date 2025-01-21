@@ -55,7 +55,7 @@ describe('Advanced Search Box Component', () => {
     it('should show no results when no suggestions are found', () => {
       fixture.detectChanges();
 
-      const ul = element.querySelector('.search-suggest-results');
+      const ul = element.querySelector('.search-suggest-terms ul');
       expect(ul).toBeFalsy();
     });
   });
@@ -70,7 +70,7 @@ describe('Advanced Search Box Component', () => {
       searchTerm$.next('ca');
       fixture.detectChanges();
 
-      const ul = element.querySelector('.search-suggest-results');
+      const ul = element.querySelector('.search-suggest-terms ul');
       expect(ul.querySelectorAll('li')).toHaveLength(2);
     });
 
@@ -80,7 +80,7 @@ describe('Advanced Search Box Component', () => {
       component.configuration.maxAutoSuggests = 0;
       fixture.detectChanges();
 
-      const ul = element.querySelector('.search-suggest-results');
+      const ul = element.querySelector('.search-suggest-terms ul');
       expect(ul.querySelectorAll('li')).toHaveLength(0);
     });
 
@@ -88,7 +88,7 @@ describe('Advanced Search Box Component', () => {
       component.searchBoxFocus = false;
       fixture.detectChanges();
 
-      expect(element.querySelector('.search-suggest-results')).toBeFalsy();
+      expect(element.querySelector('.search-suggest-terms ul')).toBeFalsy();
     });
 
     it('should show no results when input is less than 2 characters', () => {
@@ -96,7 +96,7 @@ describe('Advanced Search Box Component', () => {
       component.inputSearchTerms$.next('a');
       fixture.detectChanges();
 
-      const ul = fixture.nativeElement.querySelector('.search-suggest-results');
+      const ul = fixture.nativeElement.querySelector('.search-suggest-terms ul');
       expect(ul).toBeFalsy();
     });
 
@@ -106,7 +106,7 @@ describe('Advanced Search Box Component', () => {
       component.inputSearchTerms$.next('ca');
       fixture.detectChanges();
 
-      const ul = fixture.nativeElement.querySelector('.search-suggest-results');
+      const ul = fixture.nativeElement.querySelector('.search-suggest-terms ul');
       expect(ul.querySelectorAll('li')).toHaveLength(2);
     });
 
@@ -119,7 +119,7 @@ describe('Advanced Search Box Component', () => {
       component.inputSearchTerms$.next('');
       fixture.detectChanges();
 
-      const ul = fixture.nativeElement.querySelector('.search-suggest-results');
+      const ul = fixture.nativeElement.querySelector('.search-suggest-terms ul');
       expect(ul).toBeFalsy();
     });
   });

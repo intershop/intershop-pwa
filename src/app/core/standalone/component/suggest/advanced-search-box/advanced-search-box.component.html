@@ -60,20 +60,25 @@
   </div>
 
   <ng-container *ngIf="searchResults$ | async as results">
-    <ul *ngIf="results.length && searchBoxFocus" class="search-suggest-results">
-      <li
-        *ngFor="let result of results | slice : 0 : configuration?.maxAutoSuggests; let liIndex = index"
-        [class.active-suggestion]="activeIndex === liIndex"
-        (mousedown)="submitSearch(result)"
-        (mouseenter)="activeIndex = liIndex"
-      >
-        <button
-          type="button"
-          class="search-result"
-          [innerHTML]="result | titlecase | ishHighlight : (inputSearchTerms$ | async)"
-        ></button>
-      </li>
-    </ul>
+    <div *ngIf="results.length && searchBoxFocus" class="search-suggest-results-container">
+      <div class="search-suggest-terms">
+        <div class="headline">{{ 'suggest.terms.headline' | translate }}</div>
+        <ul>
+          <li
+            *ngFor="let result of results | slice : 0 : configuration?.maxAutoSuggests; let liIndex = index"
+            [class.active-suggestion]="activeIndex === liIndex"
+            (mousedown)="submitSearch(result)"
+            (mouseenter)="activeIndex = liIndex"
+          >
+            <button
+              type="button"
+              class="search-result"
+              [innerHTML]="result | titlecase | ishHighlight : (inputSearchTerms$ | async)"
+            ></button>
+          </li>
+        </ul>
+      </div>
+    </div>
   </ng-container>
   <div class="search-suggest-backdrop" [ngClass]="{ show: searchBoxFocus }"></div>
 </div>

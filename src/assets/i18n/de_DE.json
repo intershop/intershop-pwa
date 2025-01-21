@@ -1287,6 +1287,7 @@
   "subscriptions.recipient.already_subscribed.error": "Der Newsletter wurde bereits abonniert.",
   "subscriptions.subscribed": "abonniert",
   "subscriptions.subscription_not_found.error": "Es wurde kein Newsletter-Abonnement gefunden.",
+  "suggest.terms.headline": "Search Suggestions",
   "tacton.bom.name.label": "Artikelnummer:",
   "tacton.bom.quantity.label": "Menge:",
   "tacton.bom.title": "Stückliste",
