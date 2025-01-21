@@ -49,12 +49,6 @@
         }
       }
 
-      .mid-header {
-        .quickorder-link {
-          display: none !important;
-        }
-      }
-
       .navbar-toggler {
         @include media-breakpoint-down(md) {
           display: block;
@@ -83,66 +77,20 @@
         }
       }
 
+      .mid-header {
+        .header-search-container {
+          @include media-breakpoint-up(md) {
+            display: none;
+          }
+        }
+      }
+
       .header-utility {
         order: 10;
         background: $color-inverse;
 
         @include media-breakpoint-down(md) {
           line-height: $header-height-mobile;
-        }
-
-        .ng-fa-icon {
-          &.header-icon {
-            padding: 0 10px;
-            color: $text-color-tertiary;
-          }
-        }
-
-        .header-search-container {
-          &.collapse {
-            input {
-              &.form-control {
-                // remove from tab order
-                display: none;
-              }
-            }
-
-            button {
-              &.btn-reset,
-              &.btn-search {
-                // remove from tab order
-                display: none;
-              }
-            }
-
-            &.show {
-              input {
-                &.form-control {
-                  // add only to tab order when shown
-                  display: block;
-                }
-              }
-
-              button {
-                &.btn-reset,
-                &.btn-search {
-                  // add only to tab order when shown
-                  display: block;
-                }
-              }
-            }
-          }
-
-          &.show {
-            height: $search-container-height;
-            overflow: unset;
-            transition: height 500ms ease-in-out;
-          }
-
-          &:not(.show) {
-            display: block; //required for animation
-            height: 0;
-          }
         }
       }
 
