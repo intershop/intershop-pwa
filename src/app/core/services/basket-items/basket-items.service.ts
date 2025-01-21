@@ -1,5 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { concatLatestFrom } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { Observable, forkJoin, iif, of, throwError } from 'rxjs';
 import { concatMap, first, map } from 'rxjs/operators';
@@ -12,6 +13,7 @@ import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
 import { AddLineItemType, LineItem, LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { getCurrentBasket } from 'ish-core/store/customer/basket';
 
 export type BasketItemUpdateType =
@@ -50,14 +52,19 @@ export class BasketItemsService {
     if (!items) {
       return throwError(() => new Error('addItemsToBasket() called without items'));
     }
-    return this.store.pipe(select(getCurrentBasket)).pipe(
+
+    return this.store.pipe(
+      select(getCurrentBasket),
       first(),
-      concatMap(basket =>
+      concatLatestFrom(() =>
+        this.store.pipe(select(getServerConfigParameter<boolean>('shipping.multipleShipmentsSupported')))
+      ),
+      concatMap(([basket, multipleShipmentsSupported]) =>
         this.apiService
           .currentBasketEndpoint()
           .post<{ data: LineItemData[]; infos: BasketInfo[]; errors?: ErrorFeedback[] }>(
             'items',
-            this.mapItemsToAdd(basket, items),
+            this.mapItemsToAdd(basket, items, multipleShipmentsSupported),
             {
               headers: this.basketHeaders,
             }
@@ -73,16 +80,15 @@ export class BasketItemsService {
     );
   }
 
-  private mapItemsToAdd(basket: Basket, items: AddLineItemType[]) {
+  private mapItemsToAdd(basket: Basket, items: AddLineItemType[], multipleShipmentsSupported: boolean) {
     return items.map(item => ({
       product: item.sku,
       quantity: {
         value: item.quantity,
         unit: item.unit,
       },
-      // ToDo: if multi buckets will be supported setting the shipping method to the common shipping method has to be reworked
-      shippingMethod: basket?.commonShippingMethod?.id,
-      warranty: item.warrantySku,
+      ...(multipleShipmentsSupported && { shippingMethod: basket?.commonShippingMethod?.id }),
+      ...(item.warrantySku && { warranty: item.warrantySku }),
     }));
   }
 
