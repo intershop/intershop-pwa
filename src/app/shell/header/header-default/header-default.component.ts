@@ -31,10 +31,10 @@ export class HeaderDefaultComponent implements OnChanges {
   @Input() reset: unknown;
 
   private activeComponent: CollapsibleComponent = 'search';
-  isSparqueActive = false;
+  isSparqueSuggestActive = false;
 
   constructor(appFacade: AppFacade) {
-    this.isSparqueActive = appFacade.isSparqueSuggestActive();
+    this.isSparqueSuggestActive = appFacade.isSparqueSuggestActive();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -87,6 +87,27 @@ export class HeaderDefaultComponent implements OnChanges {
       this.activeComponent = !this.isSticky ? 'search' : undefined;
     } else {
       this.activeComponent = component;
+
+      if (component === 'search') {
+        this.focusSearch();
+      }
     }
+  }
+
+  // scroll to the top and set focus to search input
+  scrollTopAndFocusSearch() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const checkInterval = setInterval(() => {
+      if (window.scrollY === 0) {
+        // wait until page has scrolled to top
+        clearInterval(checkInterval);
+        this.focusSearch();
+      }
+    }, 500);
+  }
+
+  private focusSearch() {
+    const searchInput = document.getElementById('header-search-input');
+    (searchInput as HTMLElement).focus();
   }
 }

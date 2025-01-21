@@ -49,12 +49,6 @@
         }
       }
 
-      .mid-header {
-        .quickorder-link {
-          display: none !important;
-        }
-      }
-
       .navbar-toggler {
         @include media-breakpoint-down(md) {
           display: block;
@@ -83,25 +77,20 @@
         }
       }
 
+      .mid-header {
+        .header-search-container {
+          @include media-breakpoint-up(md) {
+            display: none;
+          }
+        }
+      }
+
       .header-utility {
         order: 10;
         background: $color-inverse;
 
         @include media-breakpoint-down(md) {
           line-height: $header-height-mobile;
-        }
-
-        .header-search-container {
-          &.show {
-            height: $search-container-height;
-            overflow: unset;
-            transition: height 500ms ease-in-out;
-          }
-
-          &:not(.show) {
-            display: block; //required for animation
-            height: 0;
-          }
         }
       }
     }
