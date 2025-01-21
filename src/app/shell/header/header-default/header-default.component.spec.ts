@@ -16,7 +16,6 @@ import { MiniBasketComponent } from 'ish-shell/header/mini-basket/mini-basket.co
 import { UserInformationMobileComponent } from 'ish-shell/header/user-information-mobile/user-information-mobile.component';
 
 import { LazyProductCompareStatusComponent } from '../../../extensions/compare/exports/lazy-product-compare-status/lazy-product-compare-status.component';
-import { LazyQuickorderLinkComponent } from '../../../extensions/quickorder/exports/lazy-quickorder-link/lazy-quickorder-link.component';
 
 import { HeaderDefaultComponent } from './header-default.component';
 
@@ -35,7 +34,6 @@ describe('Header Default Component', () => {
         MockComponent(HeaderNavigationComponent),
         MockComponent(LanguageSwitchComponent),
         MockComponent(LazyProductCompareStatusComponent),
-        MockComponent(LazyQuickorderLinkComponent),
         MockComponent(LoginStatusComponent),
         MockComponent(MiniBasketComponent),
         MockComponent(SimpleSearchBoxComponent),

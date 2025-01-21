@@ -1,5 +1,6 @@
 /*********** SEARCH CONTAINER **********/
 
+// general search container (used in header and main content)
 .search-container {
   position: relative;
 
@@ -17,35 +18,49 @@
       box-shadow: none !important;
     }
 
-    &.btn-reset {
-      opacity: 0.6;
-    }
-
     &.btn-reset,
     &.btn-search {
       position: absolute;
       right: 0;
       width: auto;
+      height: $search-container-height;
       font-size: $font-size-lg;
-      background: 0;
-      border: 0;
+      color: $text-color-corporate;
+      background: $color-inverse;
+      border: $border-width-default solid $button-default-border;
 
       span::before {
         font-size: $font-size-lg;
         color: $text-color-inverse;
       }
     }
+
+    &.btn-reset {
+      right: $space-default * 3;
+      color: $text-color-quaternary;
+      border: none;
+      border-top: $border-width-default solid $border-color-light;
+      border-bottom: $border-width-default solid $border-color-light;
+      opacity: 1;
+    }
   }
 
   ul.search-suggest-results {
     position: absolute;
-    top: 37px;
+    top: 38px;
     z-index: 9999;
+    // preserve space for onscreen keyboard on mobile devices
+    max-height: calc(60vh - #{$header-height-mobile + $search-container-height * 3});
     padding: 0;
     margin: 0;
+    overflow-y: auto;
     list-style: none;
     background: $color-inverse;
     border: $border-width-default solid $border-color-light;
+
+    @media (min-width: $screen-sm) {
+      max-height: calc(100vh - 15 * #{$space-default});
+    }
 
     li {
       width: 100%;
@@ -110,10 +125,18 @@
 
       + .buttons {
         button {
-          color: $text-color-primary;
+          color: $text-color-corporate;
 
           .ng-fa-icon {
-            color: $text-color-primary;
+            color: $text-color-corporate;
+          }
+
+          &.btn-reset {
+            color: $text-color-quaternary;
+
+            .ng-fa-icon {
+              color: $text-color-quaternary;
+            }
           }
         }
       }
@@ -121,24 +144,79 @@
   }
 }
 
+// header search container
 .header-search-container {
   @include media-breakpoint-only(xs) {
     height: $search-container-height;
   }
 
-  @include media-breakpoint-only(md) {
-    height: 0;
+  .search {
+    &.advanced-search {
+      @media (min-width: $screen-sm) {
+        position: absolute;
+        top: calc($search-container-height / -2);
+        right: 0;
+        width: 100%;
+        transition: width 0.3s ease 0.1s;
+
+        &.focus {
+          width: 250%;
+        }
+
+        ul.search-suggest-results {
+          // suggest layer is not shown by default
+          display: none;
+        }
+
+        &.scaled-up {
+          ul.search-suggest-results {
+            // suggest layer is only shown when search box is scaled up to expanded width
+            display: block;
+          }
+        }
+      }
+
+      .search-suggest-backdrop {
+        position: fixed;
+        top: calc($header-height-mobile + $search-container-height);
+        right: 0;
+        z-index: 2;
+        width: 100%;
+        width: 100vw;
+        height: 0; // prevent overlaying any other elements
+        visibility: hidden; // combined with opacity
+        background: $color-dark;
+        opacity: 0;
+        transition: opacity 0.15s linear, visibility 0.15s linear; // similar to bootstrap modal
+
+        @media (min-width: $screen-sm) {
+          top: 170px;
+          height: calc(100vh - 170px);
+        }
+
+        &.show {
+          height: calc(100vh - #{$header-height-mobile + $search-container-height});
+          visibility: visible;
+          opacity: 0.5;
+
+          @media (min-width: $screen-sm) {
+            height: calc(100vh - 170px);
+          }
+        }
+      }
+    }
   }
 
   input {
     &.form-control {
       float: right;
       height: $search-container-height;
+      padding-right: $space-default * 5;
       padding-left: ($search-container-height * 0.5);
       font-size: 14px;
-      color: $white;
-      background: $color-primary;
-      border: $border-width-default solid $border-color-default;
+      color: $text-color-primary;
+      background: $color-inverse;
+      border: $border-width-default solid $border-color-light;
 
       &::placeholder {
         // specific lighter color to have a better contrast
@@ -146,10 +224,11 @@
       }
 
       @include media-breakpoint-down(sm) {
-        border: $border-width-default solid $border-color-default;
+        font-size: 16px !important; // prevent page zoom on mobile devices
+        border: $border-width-default solid $border-color-light;
 
         &:focus {
-          background: $color-tertiary;
+          background: $color-inverse;
         }
       }
     }
@@ -172,6 +251,7 @@
   }
 }
 
+// search container with toggle icon (mobile, desktop fixed header)
 .header-utility {
   .search-container {
     position: absolute;
@@ -183,51 +263,48 @@
     background: $color-inverse;
     box-shadow: 0 4px 7px rgb(0 0 0 / 0.23);
 
-    .btn-search {
+    &.header-search-container {
       @include media-breakpoint-down(md) {
-        right: divide($space-default * 2, 3);
-        margin-right: 0;
+        top: $header-height-mobile;
+        width: 100%;
+        padding: 0;
       }
     }
 
-    @include media-breakpoint-up(lg) {
-      height: 0;
-      overflow: hidden;
+    .btn-search {
+      @include media-breakpoint-down(md) {
+        right: 0;
+        margin-right: 0;
+      }
     }
   }
 
   .search-toggler {
     position: relative;
 
+    @include media-breakpoint-down(md) {
+      position: static;
+    }
+
     &.active-search {
-      background-color: $color-primary;
+      color: $text-color-quaternary;
+      background-color: $color-inverse;
 
       > .ng-fa-icon {
         color: $text-color-inverse !important;
       }
     }
   }
+}
 
-  @include media-breakpoint-down(md) {
-    .search-container.header-search-container {
-      top: $header-height-mobile;
-      display: block;
-      width: 100%;
-      padding: 0;
-      overflow: hidden;
-      transition: height 500ms ease-in-out;
-    }
-
-    .search-toggler {
-      position: static;
-    }
+// main search container
+.main-search-container {
+  ul.search-suggest-results {
+    width: 100%;
   }
 }
 
-.main-search-container ul.search-suggest-results {
-  width: 100%;
-}
-
+// error page search container
 .error-search-container {
   ul.search-suggest-results {
     top: 33px;
@@ -235,6 +312,7 @@
   }
 }
 
+// no search result page search container
 .no-search-result {
   + .search-container {
     .buttons button {

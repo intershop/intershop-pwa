@@ -1,13 +1,9 @@
 /* eslint-disable ish-custom-rules/ban-imports-file-pattern */
-import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { ReplaySubject, Subject } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { IconModule } from 'ish-core/icon.module';
-import { PipesModule } from 'ish-core/pipes.module';
 
 import { SimpleSearchBoxComponent } from './simple-search-box.component';
 
@@ -25,7 +21,7 @@ describe('Simple Search Box Component', () => {
     searchTerm$.next(undefined);
 
     await TestBed.configureTestingModule({
-      imports: [CommonModule, IconModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       providers: [
         {
           provide: ShoppingFacade,

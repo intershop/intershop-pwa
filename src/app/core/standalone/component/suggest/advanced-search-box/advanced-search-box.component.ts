@@ -1,10 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  ElementRef,
+  HostListener,
+  Input,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { IconName } from '@fortawesome/fontawesome-svg-core';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable, ReplaySubject, map, take } from 'rxjs';
+import { Observable, ReplaySubject, map, of, switchMap, take } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { IconModule } from 'ish-core/icon.module';
@@ -46,25 +56,34 @@ import { PipesModule } from 'ish-core/pipes.module';
   imports: [CommonModule, IconModule, PipesModule, TranslateModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdvancedSearchBoxComponent implements OnInit {
+export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
   /**
    * the search box configuration for this component
    */
   @Input() configuration: SearchBoxConfiguration;
 
+  @ViewChild('searchBox') searchBox: ElementRef;
+  @ViewChild('searchInput') searchInput: ElementRef;
+  @ViewChild('searchInputReset') searchInputReset: ElementRef;
+  @ViewChild('searchInputSubmit') searchInputSubmit: ElementRef;
+
   searchResults$: Observable<string[]>;
   inputSearchTerms$ = new ReplaySubject<string>(1);
 
   activeIndex = -1;
-  inputFocused: boolean;
+
+  // searchbox focus handling
+  searchBoxFocus = false;
+  private searchBoxInitialWidth: number;
+  searchBoxScaledUp = false;
+
+  // handle browser tab focus
+  // not-dead-code
+  isTabOut = false;
 
   private destroyRef = inject(DestroyRef);
 
   constructor(private shoppingFacade: ShoppingFacade, private router: Router) {}
-
-  get usedIcon(): IconName {
-    return this.configuration?.icon || 'search';
-  }
 
   ngOnInit() {
     // initialize with searchTerm when on search route
@@ -76,28 +95,97 @@ export class AdvancedSearchBoxComponent implements OnInit {
       .subscribe(term => this.inputSearchTerms$.next(term));
 
     // suggests are triggered solely via stream
-    this.searchResults$ = this.shoppingFacade.searchResults$(this.inputSearchTerms$);
+    this.searchResults$ = this.inputSearchTerms$.pipe(
+      switchMap(term => {
+        if (term.length < 2) {
+          return of([]); // emit an empty array if the input is less than 2 characters
+        }
+        return this.shoppingFacade.searchResults$(of(term));
+      })
+    );
   }
+
+  ngAfterViewInit() {
+    this.searchBoxInitialWidth = this.searchBox.nativeElement.offsetWidth;
+  }
+
+  @HostListener('transitionend', ['$event'])
+  onTransitionEnd(event: TransitionEvent) {
+    if (event.propertyName === 'width' && event.target === this.searchBox.nativeElement) {
+      const newWidth = this.searchInput.nativeElement.offsetWidth;
+      if (newWidth > this.searchBoxInitialWidth) {
+        // check if search box has scaled up
+        this.searchBoxScaledUp = true;
+      } else {
+        this.searchBoxScaledUp = false;
+      }
+    }
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    if (this.searchBoxFocus) {
+      // if searchbox has focus - scale down and remove focus when scrolling the document
+      this.blur();
+    }
+  }
+
   blur() {
-    this.inputFocused = false;
+    this.handleFocus(false);
+    this.searchInput.nativeElement.blur();
+  }
+
+  handleBlur(event: FocusEvent) {
+    if (!SSR) {
+      if (!document.hasFocus()) {
+        this.isTabOut = true;
+        return; // skip handling blur if browser tab loses focus
+      }
+      this.isTabOut = false; // reset flag
+
+      const currentElement = event.relatedTarget as HTMLElement;
+      if (
+        currentElement !== this.searchInput.nativeElement &&
+        currentElement !== this.searchInputReset?.nativeElement &&
+        currentElement !== this.searchInputSubmit.nativeElement
+      ) {
+        this.handleFocus(false); // do not scale down if one of the searchbox elements is focused
+      }
+    }
     this.activeIndex = -1;
   }
 
-  focus() {
-    this.inputFocused = true;
+  handleFocus(scaleUp: boolean = true) {
+    if (scaleUp) {
+      this.searchBoxFocus = true;
+    } else {
+      this.searchBoxFocus = false;
+      this.searchBoxScaledUp = false;
+    }
   }
 
-  searchSuggest(source: string | EventTarget) {
-    this.inputSearchTerms$.next(typeof source === 'string' ? source : (source as HTMLDataElement).value);
+  handleEscKey() {
+    this.blur();
+    this.inputSearchTerms$.next('');
+  }
+
+  handleReset() {
+    this.searchInput.nativeElement.focus(); // manually set focus to input to prevent blur event
+    this.inputSearchTerms$.next('');
+  }
+
+  searchSuggest(source: EventTarget) {
+    const inputValue = (source as HTMLInputElement).value;
+    this.inputSearchTerms$.next(inputValue);
   }
 
   submitSearch(suggestedTerm: string) {
     if (!suggestedTerm) {
+      this.searchInput.nativeElement.focus();
       return false;
     }
 
-    // remove focus when switching to search page
-    this.inputFocused = false;
+    this.blur();
 
     if (this.activeIndex !== -1) {
       // something was selected via keyboard
@@ -109,8 +197,7 @@ export class AdvancedSearchBoxComponent implements OnInit {
       this.router.navigate(['/search', suggestedTerm]);
     }
 
-    // prevent form submission
-    return false;
+    return false; // prevent form submission
   }
 
   selectSuggestedTerm(index: number) {
