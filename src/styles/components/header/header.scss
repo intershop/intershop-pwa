@@ -69,16 +69,6 @@ header {
     }
   }
 
-  .mid-header {
-    .quickorder-link {
-      .header-icon {
-        font-size: $font-size-corporate;
-        color: $CORPORATE-PRIMARY;
-        vertical-align: middle;
-      }
-    }
-  }
-
   &.homepage {
     margin-bottom: 0;
   }
@@ -164,6 +154,12 @@ header {
 .separator {
   padding-right: ($space-default * 0.5);
   padding-left: ($space-default * 0.5);
+}
+
+.quickorder-link {
+  .header-icon {
+    top: 2px;
+  }
 }
 
 .ng-fa-icon.header-icon {

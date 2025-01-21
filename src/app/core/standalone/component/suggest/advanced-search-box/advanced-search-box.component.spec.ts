@@ -1,13 +1,9 @@
 /* eslint-disable ish-custom-rules/ban-imports-file-pattern */
-import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { ReplaySubject, Subject } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { IconModule } from 'ish-core/icon.module';
-import { PipesModule } from 'ish-core/pipes.module';
 
 import { AdvancedSearchBoxComponent } from './advanced-search-box.component';
 
@@ -25,7 +21,7 @@ describe('Advanced Search Box Component', () => {
     searchTerm$.next(undefined);
 
     await TestBed.configureTestingModule({
-      imports: [CommonModule, IconModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       providers: [
         {
           provide: ShoppingFacade,
@@ -41,7 +37,7 @@ describe('Advanced Search Box Component', () => {
     element = fixture.nativeElement;
 
     // activate
-    component.inputFocused = true;
+    component.searchBoxFocus = true;
     component.configuration = { maxAutoSuggests: 4 };
   });
 
@@ -53,7 +49,7 @@ describe('Advanced Search Box Component', () => {
 
   describe('with no results', () => {
     beforeEach(() => {
-      searchResults$.next(undefined);
+      searchResults$.next([]);
     });
 
     it('should show no results when no suggestions are found', () => {
@@ -70,6 +66,8 @@ describe('Advanced Search Box Component', () => {
     });
 
     it('should show results when suggestions are available', () => {
+      component.searchBoxFocus = true;
+      searchTerm$.next('ca');
       fixture.detectChanges();
 
       const ul = element.querySelector('.search-suggest-results');
@@ -77,6 +75,8 @@ describe('Advanced Search Box Component', () => {
     });
 
     it('should show no results when suggestions are available but maxAutoSuggests is 0', () => {
+      component.searchBoxFocus = true;
+      searchTerm$.next('ca');
       component.configuration.maxAutoSuggests = 0;
       fixture.detectChanges();
 
@@ -85,10 +85,42 @@ describe('Advanced Search Box Component', () => {
     });
 
     it('should show no results when suggestions are available but input has no focus', () => {
-      component.inputFocused = false;
+      component.searchBoxFocus = false;
       fixture.detectChanges();
 
       expect(element.querySelector('.search-suggest-results')).toBeFalsy();
+    });
+
+    it('should show no results when input is less than 2 characters', () => {
+      component.searchBoxFocus = true;
+      component.inputSearchTerms$.next('a');
+      fixture.detectChanges();
+
+      const ul = fixture.nativeElement.querySelector('.search-suggest-results');
+      expect(ul).toBeFalsy();
+    });
+
+    it('should show results when input is 2 or more characters', () => {
+      component.searchBoxFocus = true;
+      searchTerm$.next('ca');
+      component.inputSearchTerms$.next('ca');
+      fixture.detectChanges();
+
+      const ul = fixture.nativeElement.querySelector('.search-suggest-results');
+      expect(ul.querySelectorAll('li')).toHaveLength(2);
+    });
+
+    it('should clear results when input is cleared', () => {
+      component.searchBoxFocus = true;
+
+      component.inputSearchTerms$.next('ca');
+      fixture.detectChanges();
+
+      component.inputSearchTerms$.next('');
+      fixture.detectChanges();
+
+      const ul = fixture.nativeElement.querySelector('.search-suggest-results');
+      expect(ul).toBeFalsy();
     });
   });
 
