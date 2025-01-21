@@ -209,8 +209,7 @@
             margin: 0;
             line-height: $line-height-base;
 
-            &:hover,
-            &.active-suggestion {
+            &:hover {
               button {
                 text-decoration: underline;
 

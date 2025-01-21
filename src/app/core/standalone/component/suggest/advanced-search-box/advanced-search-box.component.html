@@ -14,14 +14,29 @@
     [value]="inputSearchTerms$ | async"
     (focus)="handleFocus()"
     (blur)="handleBlur($event)"
-    (keydown)="handleFocus()"
-    (keydown.esc)="handleEscKey()"
-    (keydown.arrowleft)="selectSuggestedTerm(-1)"
-    (keydown.arrowright)="selectSuggestedTerm(-1)"
-    (keydown.arrowdown)="selectSuggestedTerm(activeIndex + 1)"
-    (keydown.arrowup)="selectSuggestedTerm(activeIndex - 1)"
-    (keydown.enter)="submitSearch(searchInput.value)"
+    (keyup)="handleFocus()"
+    (keyup.esc)="handleEscKey()"
+    (keyup.enter)="submitSearch(searchInput.value)"
   />
+
+  <ng-container *ngIf="searchResults$ | async as results">
+    <div *ngIf="results.length && searchBoxFocus" class="search-suggest-results-container" #searchSuggestLayer>
+      <div class="search-suggest-terms">
+        <div class="headline">{{ 'suggest.terms.headline' | translate }}</div>
+        <ul>
+          <li *ngFor="let result of results | slice : 0 : configuration?.maxAutoSuggests">
+            <button
+              type="button"
+              class="search-result"
+              [innerHTML]="result | titlecase | ishHighlight : (inputSearchTerms$ | async)"
+              (click)="submitSearch(result)"
+            ></button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </ng-container>
+  <div class="search-suggest-backdrop" [ngClass]="{ show: searchBoxFocus }"></div>
 
   <div class="buttons">
     <button
@@ -34,7 +49,7 @@
       (focus)="handleFocus()"
       (click)="handleReset()"
       (blur)="handleBlur($event)"
-      (keydown.esc)="handleEscKey()"
+      (keyup.esc)="handleEscKey()"
     >
       <fa-icon [icon]="['fas', 'times']" />
     </button>
@@ -45,10 +60,10 @@
       type="submit"
       name="search"
       [title]="'search.searchbox.button.title' | translate"
-      (keydown)="handleFocus()"
+      (keyup)="handleFocus()"
       (click)="submitSearch(searchInput.value)"
       (blur)="handleBlur($event)"
-      (keydown.esc)="handleEscKey()"
+      (keyup.esc)="handleEscKey()"
     >
       <!-- search button with icon -->
       <ng-container *ngIf="!configuration?.buttonText; else textBlock">
@@ -58,27 +73,4 @@
       <ng-template #textBlock> {{ configuration?.buttonText }} </ng-template>
     </button>
   </div>
-
-  <ng-container *ngIf="searchResults$ | async as results">
-    <div *ngIf="results.length && searchBoxFocus" class="search-suggest-results-container">
-      <div class="search-suggest-terms">
-        <div class="headline">{{ 'suggest.terms.headline' | translate }}</div>
-        <ul>
-          <li
-            *ngFor="let result of results | slice : 0 : configuration?.maxAutoSuggests; let liIndex = index"
-            [class.active-suggestion]="activeIndex === liIndex"
-            (mousedown)="submitSearch(result)"
-            (mouseenter)="activeIndex = liIndex"
-          >
-            <button
-              type="button"
-              class="search-result"
-              [innerHTML]="result | titlecase | ishHighlight : (inputSearchTerms$ | async)"
-            ></button>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </ng-container>
-  <div class="search-suggest-backdrop" [ngClass]="{ show: searchBoxFocus }"></div>
 </div>

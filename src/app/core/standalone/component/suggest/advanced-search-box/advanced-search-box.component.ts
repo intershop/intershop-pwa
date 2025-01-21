@@ -14,7 +14,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable, ReplaySubject, map, of, switchMap, take } from 'rxjs';
+import { Observable, ReplaySubject, map, of, switchMap } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { IconModule } from 'ish-core/icon.module';
@@ -32,14 +32,12 @@ import { PipesModule } from 'ish-core/pipes.module';
  * @property {SearchBoxConfiguration} configuration - The search box configuration for this component.
  * @property {Observable<SuggestTerm[]>} searchResults$ - An observable stream of search suggestions.
  * @property {ReplaySubject<string>} inputSearchTerms$ - A subject to emit search terms entered by the user.
- * @property {number} activeIndex - The index of the currently active suggestion.
  * @property {boolean} inputFocused - Indicates whether the search input is focused.
  *
  * @method blur - Handles the blur event of the search input.
  * @method focus - Handles the focus event of the search input.
  * @method searchSuggest - Emits a new search term to trigger suggestions.
  * @method submitSearch - Submits the selected or entered search term.
- * @method selectSuggestedTerm - Selects a suggested term based on the provided index.
  *
  * @constructor
  * @param {ShoppingFacade} shoppingFacade - The facade to interact with the shopping state.
@@ -66,11 +64,10 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
   @ViewChild('searchInput') searchInput: ElementRef;
   @ViewChild('searchInputReset') searchInputReset: ElementRef;
   @ViewChild('searchInputSubmit') searchInputSubmit: ElementRef;
+  @ViewChild('searchSuggestLayer') searchSuggestLayer: ElementRef;
 
   searchResults$: Observable<string[]>;
   inputSearchTerms$ = new ReplaySubject<string>(1);
-
-  activeIndex = -1;
 
   // searchbox focus handling
   searchBoxFocus = false;
@@ -149,12 +146,16 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
       if (
         currentElement !== this.searchInput.nativeElement &&
         currentElement !== this.searchInputReset?.nativeElement &&
-        currentElement !== this.searchInputSubmit.nativeElement
+        currentElement !== this.searchInputSubmit.nativeElement &&
+        !this.isElementWithinSearchSuggestLayer(currentElement)
       ) {
         this.handleFocus(false); // do not scale down if one of the searchbox elements is focused
       }
     }
-    this.activeIndex = -1;
+  }
+
+  isElementWithinSearchSuggestLayer(element: HTMLElement): boolean {
+    return this.searchSuggestLayer.nativeElement.contains(element);
   }
 
   handleFocus(scaleUp: boolean = true) {
@@ -187,32 +188,11 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
       return false;
     }
 
-    if (this.activeIndex !== -1) {
-      // something was selected via keyboard
-      this.searchResults$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(results => {
-        this.router.navigate(['/search', results[this.activeIndex]]);
-        this.activeIndex = -1;
-      });
-    } else {
-      this.router.navigate(['/search', suggestedTerm]);
-    }
+    this.router.navigate(['/search', suggestedTerm]);
 
     this.blur();
 
     return false; // prevent form submission
-  }
-
-  selectSuggestedTerm(index: number) {
-    this.searchResults$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(results => {
-      if (
-        (this.configuration?.maxAutoSuggests && index > this.configuration.maxAutoSuggests - 1) ||
-        index < -1 ||
-        index > results.length - 1
-      ) {
-        return;
-      }
-      this.activeIndex = index;
-    });
   }
 
   truncate(text: string, limit: number): string {
