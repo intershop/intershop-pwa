@@ -27,6 +27,7 @@
       color: $text-color-secondary;
     }
 
+    // hide drop down arrow
     &::after {
       display: none;
     }
@@ -37,7 +38,7 @@
     white-space: nowrap;
   }
 
-  &.mini-cart-active {
+  &.show {
     background: $color-corporate;
 
     > .btn-link {
@@ -54,7 +55,6 @@
   .mini-cart {
     position: absolute;
     top: -1px !important;
-    // left: 1px !important;
     z-index: 9999;
     width: 310px;
     padding: $space-default;

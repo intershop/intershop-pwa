@@ -37,7 +37,7 @@
     </button>
   </div>
   <h1>
-    {{ wishlist?.title }}
+    <span data-testing-id="wishlist-title">{{ wishlist?.title }}</span>
     <button
       [ngbPopover]="WishlistDescription"
       placement="bottom"

@@ -33,8 +33,6 @@ export class MiniBasketComponent implements OnInit {
   itemCount$: Observable<number>;
   basketLoading$: Observable<boolean>;
 
-  isCollapsed = true;
-
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
 
   private basketError$: Observable<HttpError>;
@@ -82,7 +80,6 @@ export class MiniBasketComponent implements OnInit {
    * Collapse the mini basket programmatically.
    */
   collapse() {
-    this.isCollapsed = true;
     this.miniBasketDropdown.close();
     this.cdRef.markForCheck();
   }
@@ -92,7 +89,6 @@ export class MiniBasketComponent implements OnInit {
    */
   // visible-for-testing
   open() {
-    this.isCollapsed = false;
     this.miniBasketDropdown.open();
     this.cdRef.markForCheck();
   }

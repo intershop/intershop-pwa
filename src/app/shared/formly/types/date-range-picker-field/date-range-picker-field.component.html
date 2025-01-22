@@ -49,16 +49,16 @@
         [attr.aria-describedby]="props.ariaDescribedByIds"
       />
       <div class="input-group-append">
-        <div
+        <button
           class="btn btn-secondary"
           (click)="d.toggle()"
-          (keydown.enter)="d.toggle()"
-          tabindex="-1"
           title="{{ 'account.date.title' | translate }}"
           data-testing-id="btn-date-picker"
+          aria-haspopup="dialog"
+          aria-expanded="false"
         >
           <fa-icon class="text-secondary" icon="calendar-day" />
-        </div>
+        </button>
       </div>
     </div>
   </div>
@@ -76,15 +76,15 @@
       [attr.aria-describedby]="props.ariaDescribedByIds"
     />
     <div class="input-group-append">
-      <div
+      <button
         class="btn btn-secondary"
         (click)="d.toggle()"
-        (keydown.enter)="d.toggle()"
-        tabindex="-1"
         title="{{ 'account.date.title' | translate }}"
+        aria-haspopup="dialog"
+        aria-expanded="false"
       >
         <fa-icon class="text-secondary" icon="calendar-day" />
-      </div>
+      </button>
     </div>
   </div>
 </div>

@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyModule } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -32,6 +33,7 @@ describe('Cxml Help Text Wrapper Component', () => {
           wrappers: [{ name: 'description', component: CxmlHelpTextWrapperComponent }],
         }),
         FormlyTestingComponentsModule,
+        TranslateModule.forRoot(),
       ],
       declarations: [
         CxmlHelpTextWrapperComponent,

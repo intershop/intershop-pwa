@@ -21,15 +21,7 @@ export class WishlistsDetailsPage {
   }
 
   get wishlistTitle() {
-    return cy
-      .get('ish-account-wishlist-detail-page')
-      .find('h1')
-      .then($h1 => {
-        // clone the h1 element and remove the button
-        const clonedH1 = $h1.clone();
-        clonedH1.find('button').remove();
-        return clonedH1.text().trim();
-      });
+    return cy.get('ish-account-wishlist-detail-page').find('h1 span[data-testing-id="wishlist-title"]').invoke('text');
   }
 
   get wishlistPreferredTextElement() {
