@@ -15,8 +15,8 @@
     { "name": "intershop", "path": ".vscode/intershop.txt" }
   ],
   "import": [
-    "node_modules/@cspell/dict-de-de/cspell-ext.json",
-    "node_modules/@cspell/dict-fr-fr/cspell-ext.json"
+    "@cspell/dict-de-de/cspell-ext.json",
+    "@cspell/dict-fr-fr/cspell-ext.json"
   ],
   "overrides": [
     {

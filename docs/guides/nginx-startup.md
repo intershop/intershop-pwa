@@ -59,7 +59,7 @@ nginx:
       - 1.2.3.4
 ```
 
-Entries of the IP whitelist are added to the NGINX config as [`allow`](http://nginx.org/en/docs/http/ngx_http_access_module.html) statements, which also supports IP ranges.
+Entries of the IP whitelist are added to the NGINX config as [`allow`](https://nginx.org/en/docs/http/ngx_http_access_module.html) statements, which also supports IP ranges.
 Please refer to the linked NGINX documentation on how to configure this.
 
 After globally activating basic authentication for your setup, you can also disable it selectively per site.
@@ -221,7 +221,7 @@ The feature name must only contain word characters (letters, numbers, and unders
 If the cache feature is switched off, all caching for pre-rendered pages is disabled.
 
 The cache duration for pre-rendered pages can be customized using `CACHE_DURATION_NGINX_OK` (for successful responses) and `CACHE_DURATION_NGINX_NF` (for 404 responses).
-The value supplied must be in the `time` format that is supported by [NGINX proxy_cache_valid](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_valid).
+The value supplied must be in the `time` format that is supported by [NGINX proxy_cache_valid](https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_valid).
 
 ### Shared Redis Cache
 
@@ -279,7 +279,7 @@ nginx:
     REDIS_URI: redis://redis:6379
 ```
 
-Passing extra command-line flags to the Redis service for configuration (see [Redis configuration](https://redis.io/docs/management/config/)) can be done via Docker `command`.
+Passing extra command-line flags to the Redis service for configuration (see [Redis configuration](https://redis.io/docs/latest/operate/oss_and_stack/management/config/)) can be done via Docker `command`.
 
 ```yaml
   redis:

@@ -13,7 +13,7 @@ In the PWA we supply a mocking mechanism so the frontend team can start implemen
 
 ## Switching On Mocking
 
-Mocking complete REST responses can be configured in _environment.ts_ for calls, that do not yet exist in the [REST API](http://developer.cloud.intershop.com) during development.
+Mocking complete REST responses can be configured in _environment.ts_ for calls, that do not yet exist in the [REST API](https://developer.cloud.intershop.com) during development.
 The property `apiMockPaths` is an array of regular expressions for paths.
 
 The following configuration example will mock all CMS calls.
