@@ -6,7 +6,7 @@
       class="btn btn-link"
       [title]="
         ariaLabelName === ''
-          ? 'inplace_edit.click_to_edit'
+          ? ('inplace_edit.click_to_edit' | translate)
           : ('inplace_edit.label' | translate : { '0': ariaLabelName | translate })
       "
     >
