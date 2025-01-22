@@ -28,6 +28,7 @@
 .husky
 .gitattributes
 .editorconfig
+.lingua
 .nvmrc
 .nsprc
 package*.json
