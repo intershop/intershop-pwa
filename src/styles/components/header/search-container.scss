@@ -156,20 +156,20 @@
           width: 250%;
         }
 
-        .search-suggest-results-container {
+        .search-suggest-container {
           // suggest layer is not shown by default
           display: none;
         }
 
         &.scaled-up {
-          .search-suggest-results-container {
+          .search-suggest-container {
             // suggest layer is only shown when search box is scaled up to expanded width
             display: block;
           }
         }
       }
 
-      .search-suggest-results-container {
+      .search-suggest-container {
         position: absolute;
         top: 38px;
         z-index: 9999;

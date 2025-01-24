@@ -14,13 +14,18 @@
     [value]="inputSearchTerms$ | async"
     (focus)="handleFocus()"
     (blur)="handleBlur($event)"
-    (keyup)="handleFocus()"
-    (keyup.esc)="handleEscKey()"
-    (keyup.enter)="submitSearch(searchInput.value)"
+    (keydown)="handleFocus()"
+    (keydown.esc)="handleEscKey()"
+    (keydown.enter)="submitSearch(searchInput.value)"
   />
 
+  <div *ngIf="searchSuggestError$ | async" class="search-suggest-container">
+    <div class="headline">{{ 'suggest.error.headline' | translate }}</div>
+    <p>{{ 'suggest.error.text' | translate }}</p>
+  </div>
+
   <ng-container *ngIf="searchResults$ | async as results">
-    <div *ngIf="results.length && searchBoxFocus" class="search-suggest-results-container" #searchSuggestLayer>
+    <div *ngIf="results.length; else noResults" class="search-suggest-container" #searchSuggestLayer>
       <div class="search-suggest-terms">
         <div class="headline">{{ 'suggest.terms.headline' | translate }}</div>
         <ul>
@@ -35,7 +40,15 @@
         </ul>
       </div>
     </div>
+    <ng-template #noResults>
+      <div class="search-suggest-container">
+        <div class="headline">{{ 'suggest.no_results.headline' | translate }}</div>
+        <p>{{ 'suggest.no_results.text' | translate }}</p>
+      </div>
+    </ng-template>
   </ng-container>
+
+  <div *ngIf="searchSuggestLoading$ | async" class="loading"></div>
   <div class="search-suggest-backdrop" [ngClass]="{ show: searchBoxFocus }"></div>
 
   <div class="buttons">
@@ -49,7 +62,7 @@
       (focus)="handleFocus()"
       (click)="handleReset()"
       (blur)="handleBlur($event)"
-      (keyup.esc)="handleEscKey()"
+      (keydown.esc)="handleEscKey()"
     >
       <fa-icon [icon]="['fas', 'times']" />
     </button>
@@ -60,10 +73,10 @@
       type="submit"
       name="search"
       [title]="'search.searchbox.button.title' | translate"
-      (keyup)="handleFocus()"
+      (keydown)="handleFocus()"
       (click)="submitSearch(searchInput.value)"
       (blur)="handleBlur($event)"
-      (keyup.esc)="handleEscKey()"
+      (keydown.esc)="handleEscKey()"
     >
       <!-- search button with icon -->
       <ng-container *ngIf="!configuration?.buttonText; else textBlock">

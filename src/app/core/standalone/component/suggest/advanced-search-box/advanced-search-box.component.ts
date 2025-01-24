@@ -18,6 +18,7 @@ import { Observable, ReplaySubject, map, of, switchMap } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { IconModule } from 'ish-core/icon.module';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SearchBoxConfiguration } from 'ish-core/models/search-box-configuration/search-box-configuration.model';
 import { PipesModule } from 'ish-core/pipes.module';
 
@@ -68,6 +69,8 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
 
   searchResults$: Observable<string[]>;
   inputSearchTerms$ = new ReplaySubject<string>(1);
+  searchSuggestLoading$: Observable<boolean>;
+  searchSuggestError$: Observable<HttpError>;
 
   // searchbox focus handling
   searchBoxFocus = false;
@@ -77,8 +80,6 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
   // handle browser tab focus
   // not-dead-code
   isTabOut = false;
-
-  isLoading = false;
 
   private destroyRef = inject(DestroyRef);
 
@@ -102,6 +103,9 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
         return this.shoppingFacade.searchResults$(of(term));
       })
     );
+
+    this.searchSuggestLoading$ = this.shoppingFacade.searchSuggestLoading$;
+    this.searchSuggestError$ = this.shoppingFacade.searchSuggestError$;
   }
 
   ngAfterViewInit() {
@@ -155,7 +159,7 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
   }
 
   isElementWithinSearchSuggestLayer(element: HTMLElement): boolean {
-    return this.searchSuggestLayer.nativeElement.contains(element);
+    return this.searchSuggestLayer?.nativeElement.contains(element) ?? false;
   }
 
   handleFocus(scaleUp: boolean = true) {

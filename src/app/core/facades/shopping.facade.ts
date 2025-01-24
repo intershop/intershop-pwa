@@ -5,6 +5,7 @@ import { Observable, combineLatest, identity } from 'rxjs';
 import { debounce, distinctUntilChanged, filter, map, pairwise, startWith, switchMap, tap } from 'rxjs/operators';
 
 import { PRICE_UPDATE } from 'ish-core/configurations/injection-keys';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
@@ -44,7 +45,13 @@ import {
   loadProductVariationsIfNotLoaded,
 } from 'ish-core/store/shopping/products';
 import { getPromotion, getPromotions, loadPromotion } from 'ish-core/store/shopping/promotions';
-import { getSearchTerm, getSuggestSearchResults, suggestSearch } from 'ish-core/store/shopping/search';
+import {
+  getSearchTerm,
+  getSuggestSearchError,
+  getSuggestSearchLoading,
+  getSuggestSearchResults,
+  suggestSearch,
+} from 'ish-core/store/shopping/search';
 import { getWarranty, getWarrantyError, getWarrantyLoading, warrantyActions } from 'ish-core/store/shopping/warranties';
 import { toObservable } from 'ish-core/utils/functions';
 import { InjectSingle } from 'ish-core/utils/injection';
@@ -238,6 +245,9 @@ export class ShoppingFacade {
       switchMap(term => this.store.pipe(select(getSuggestSearchResults(term))))
     );
   }
+  searchSuggestLoading$ = this.store.pipe(select(getSuggestSearchLoading));
+  searchSuggestError$: Observable<HttpError> = this.store.pipe(select(getSuggestSearchError));
+
   searchLoading$ = this.store.pipe(select(getProductListingLoading));
 
   searchItemsCount$ = this.searchTerm$.pipe(

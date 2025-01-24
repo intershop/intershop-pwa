@@ -28,7 +28,7 @@ export class SparqueSuggestionService extends SuggestionService {
   search(searchTerm: string): Observable<Suggestion> {
     const params = new HttpParams().set('Keyword', searchTerm);
     return this.sparqueApiService
-      .get<SparqueSuggestions>(`suggestions`, { params })
+      .get<SparqueSuggestions>(`suggestions`, { params, skipApiErrorHandling: true })
       .pipe(map(SparqueSuggestionMapper.fromData));
   }
 }
