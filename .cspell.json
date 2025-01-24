@@ -6,26 +6,9 @@
     "docs/compodoc/**",
     "environment.development.ts"
   ],
-  "ignoreRegExpList": [
-    "/\\b[\\w-]+(\\.[\\w-]+)+\\b/",
-    "  \"footer.content\": .*"
-  ],
+  "ignoreRegExpList": ["/\\b[\\w-]+(\\.[\\w-]+)+\\b/"],
   "dictionaries": ["intershop"],
   "dictionaryDefinitions": [
     { "name": "intershop", "path": ".vscode/intershop.txt" }
-  ],
-  "import": [
-    "@cspell/dict-de-de/cspell-ext.json",
-    "@cspell/dict-fr-fr/cspell-ext.json"
-  ],
-  "overrides": [
-    {
-      "language": "de-de",
-      "filename": "src/assets/i18n/de_DE.json"
-    },
-    {
-      "language": "fr-fr",
-      "filename": "src/assets/i18n/fr_FR.json"
-    }
   ]
 }
