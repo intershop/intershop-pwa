@@ -282,6 +282,13 @@ export const deleteBasketPaymentFail = createAction('[Basket API] Delete Basket 
 
 export const deleteBasketPaymentSuccess = createAction('[Basket API] Delete Basket Payment Success');
 
+export const startRedirectBeforeCheckout = createAction('[Basket] Start Redirect Before Checkout');
+
+export const startRedirectBeforeCheckoutFail = createAction(
+  '[Basket API] Start Redirect Before Checkout Fail',
+  httpError()
+);
+
 export const submitBasket = createAction('[Basket API] Submit a Basket for Approval');
 
 export const submitBasketSuccess = createAction('[Basket API] Submit a Basket for Approval Success');
