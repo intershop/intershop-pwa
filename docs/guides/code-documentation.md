@@ -7,44 +7,9 @@ kb_sync_latest_only
 
 # Code Documentation
 
-For our Intershop Progressive Web App, [Compodoc](https://compodoc.app) is used as documentation package.
-
-For documentation, the _tsconfig.doc.json_ file is used as configuration file.
-The output folder for the documentation is set to _<project-home>/docs/compodoc_.
-
-We use an own styling theme based on the theme '_readthedocs_' provided by Compodoc.
-The _style.css_ file of the theme can be found in _<project-home>/docs/theme_.
+The JSDoc comment format is used for general information.
 
 Examples for the comment styling pattern can be found here: [TypeDoc - DocComments](https://typedoc.org/documents/Doc_Comments.html).
-
-## Usage
-
-### Generate Code Documentation
-
-**Generate Code Documentation**
-
-```bash
-npm run compodoc
-```
-
-The generated documentation can be called by _<project-home>/docs/compodoc/index.html_.
-
-### Serve Generated Documentation with Compodoc
-
-**Serve Generated Documentation with Compodoc**
-
-```bash
-npm run compodoc:serve
-```
-
-Documentation is generated at _<project-home>/docs/compodoc_ (output folder).
-The local HTTP server is launched at _http://localhost:8080_.
-
-## Comments
-
-### General Information
-
-The JSDoc comment format is used for general information.
 
 Use this format to describe components, modules, etc., but also methods, inputs, variables and so on.
 
@@ -57,13 +22,6 @@ Use this format to describe components, modules, etc., but also methods, inputs,
 ```
 
 ### JSDoc Tags
-
-Currently Compodoc supports the following JSDoc tags :
-
-- `@returns`
-- `@param`
-- `@link`
-- `@example`
 
 **Example for parameter and return values**
 

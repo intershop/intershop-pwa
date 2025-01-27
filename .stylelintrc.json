@@ -5,7 +5,7 @@
     "stylelint-config-recess-order",
     "stylelint-prettier/recommended"
   ],
-  "ignoreFiles": ["**/node_modules/**", "**/dist/**", "**/compodoc/**"],
+  "ignoreFiles": ["**/node_modules/**", "**/dist/**"],
   "rules": {
     "alpha-value-notation": "number",
     "at-rule-no-vendor-prefix": true,
