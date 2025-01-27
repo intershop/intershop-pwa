@@ -19,11 +19,11 @@ export class OrderWidgetComponent implements OnInit {
   orders$: Observable<Order[]>;
   ordersLoading$: Observable<boolean>;
 
-  constructor(private accountfacade: AccountFacade) {}
+  constructor(private accountFacade: AccountFacade) {}
 
   ngOnInit(): void {
-    this.orders$ = this.accountfacade.orders$;
-    this.ordersLoading$ = this.accountfacade.ordersLoading$;
-    this.accountfacade.loadOrders({ limit: 5 });
+    this.orders$ = this.accountFacade.orders$;
+    this.ordersLoading$ = this.accountFacade.ordersLoading$;
+    this.accountFacade.loadOrders({ limit: 5 });
   }
 }
