@@ -19,38 +19,39 @@
     (keydown.enter)="submitSearch(searchInput.value)"
   />
 
-  <div *ngIf="searchSuggestError$ | async" class="search-suggest-container">
-    <div class="headline">{{ 'suggest.error.headline' | translate }}</div>
-    <p>{{ 'suggest.error.text' | translate }}</p>
-  </div>
-
-  <ng-container *ngIf="searchResults$ | async as results">
-    <div *ngIf="results.length; else noResults" class="search-suggest-container" #searchSuggestLayer>
-      <div class="search-suggest-terms">
-        <div class="headline">{{ 'suggest.terms.headline' | translate }}</div>
-        <ul>
-          <li *ngFor="let result of results | slice : 0 : configuration?.maxAutoSuggests">
-            <button
-              type="button"
-              class="search-result"
-              [innerHTML]="result | titlecase | ishHighlight : (inputSearchTerms$ | async)"
-              (click)="submitSearch(result)"
-            ></button>
-          </li>
-        </ul>
-      </div>
+  <ng-container *ngIf="searchBoxFocus">
+    <div *ngIf="searchSuggestError$ | async" class="search-suggest-container">
+      <div class="headline">{{ 'suggest.error.headline' | translate }}</div>
+      <p>{{ 'suggest.error.text' | translate }}</p>
     </div>
-    <ng-template #noResults>
-      <div class="search-suggest-container">
-        <div class="headline">{{ 'suggest.no_results.headline' | translate }}</div>
-        <p>{{ 'suggest.no_results.text' | translate }}</p>
+
+    <ng-container *ngIf="searchResults$ | async as results">
+      <div *ngIf="results.length; else noResults" class="search-suggest-container" #searchSuggestLayer>
+        <div class="search-suggest-terms">
+          <div class="headline">{{ 'suggest.terms.headline' | translate }}</div>
+          <ul>
+            <li *ngFor="let result of results | slice : 0 : configuration?.maxAutoSuggests">
+              <button
+                type="button"
+                class="search-result"
+                [innerHTML]="result | titlecase | ishHighlight : (inputSearchTerms$ | async)"
+                (click)="submitSearch(result)"
+              ></button>
+            </li>
+          </ul>
+        </div>
       </div>
-    </ng-template>
+      <ng-template #noResults>
+        <div *ngIf="(inputSearchTerms$ | async)?.length >= 2" class="search-suggest-container">
+          <div class="headline">{{ 'suggest.no_results.headline' | translate }}</div>
+          <p>{{ 'suggest.no_results.text' | translate }}</p>
+        </div>
+      </ng-template>
+    </ng-container>
+
+    <div *ngIf="searchSuggestLoading$ | async" class="loading"></div>
+    <div class="search-suggest-backdrop" [ngClass]="{ show: searchBoxFocus }"></div>
   </ng-container>
-
-  <div *ngIf="searchSuggestLoading$ | async" class="loading"></div>
-  <div class="search-suggest-backdrop" [ngClass]="{ show: searchBoxFocus }"></div>
-
   <div class="buttons">
     <button
       #searchInputReset

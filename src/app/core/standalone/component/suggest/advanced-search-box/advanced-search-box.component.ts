@@ -14,7 +14,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable, ReplaySubject, map, of, switchMap } from 'rxjs';
+import { Observable, ReplaySubject, map } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { IconModule } from 'ish-core/icon.module';
@@ -95,14 +95,7 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
       .subscribe(term => this.inputSearchTerms$.next(term));
 
     // suggests are triggered solely via stream
-    this.searchResults$ = this.inputSearchTerms$.pipe(
-      switchMap(term => {
-        if (term.length < 2) {
-          return of([]); // emit an empty array if the input is less than 2 characters
-        }
-        return this.shoppingFacade.searchResults$(of(term));
-      })
-    );
+    this.searchResults$ = this.shoppingFacade.searchResults$(this.inputSearchTerms$) as Observable<string[]>;
 
     this.searchSuggestLoading$ = this.shoppingFacade.searchSuggestLoading$;
     this.searchSuggestError$ = this.shoppingFacade.searchSuggestError$;

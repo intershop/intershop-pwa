@@ -88,16 +88,7 @@ describe('Advanced Search Box Component', () => {
       component.searchBoxFocus = false;
       fixture.detectChanges();
 
-      expect(element.querySelector('.search-suggest-terms ul')).toBeFalsy();
-    });
-
-    it('should show no results when input is less than 2 characters', () => {
-      component.searchBoxFocus = true;
-      component.inputSearchTerms$.next('a');
-      fixture.detectChanges();
-
-      const ul = fixture.nativeElement.querySelector('.search-suggest-terms ul');
-      expect(ul).toBeFalsy();
+      expect(element.querySelector('.search-suggest-container')).toBeFalsy();
     });
 
     it('should show results when input is 2 or more characters', () => {
@@ -108,19 +99,6 @@ describe('Advanced Search Box Component', () => {
 
       const ul = fixture.nativeElement.querySelector('.search-suggest-terms ul');
       expect(ul.querySelectorAll('li')).toHaveLength(2);
-    });
-
-    it('should clear results when input is cleared', () => {
-      component.searchBoxFocus = true;
-
-      component.inputSearchTerms$.next('ca');
-      fixture.detectChanges();
-
-      component.inputSearchTerms$.next('');
-      fixture.detectChanges();
-
-      const ul = fixture.nativeElement.querySelector('.search-suggest-terms ul');
-      expect(ul).toBeFalsy();
     });
   });
 

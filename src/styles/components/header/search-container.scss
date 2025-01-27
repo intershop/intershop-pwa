@@ -180,6 +180,7 @@
         margin: 0;
         overflow-y: auto;
         line-height: unset;
+        color: $text-color-primary;
         list-style: none;
         background-color: $color-inverse;
         border: $border-width-default solid $border-color-light;
@@ -195,6 +196,10 @@
           line-height: 1;
           color: $text-color-primary;
           text-transform: uppercase;
+        }
+
+        p {
+          padding: ($space-default * 0.5) 0;
         }
 
         ul {

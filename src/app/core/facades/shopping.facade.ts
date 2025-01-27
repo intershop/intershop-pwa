@@ -241,6 +241,7 @@ export class ShoppingFacade {
   searchTerm$ = this.store.pipe(select(getSearchTerm));
   searchResults$(searchTerm: Observable<string>) {
     return searchTerm.pipe(
+      filter(term => term.length >= 2),
       tap(term => this.store.dispatch(suggestSearch({ searchTerm: term }))),
       switchMap(term => this.store.pipe(select(getSuggestSearchResults(term))))
     );
