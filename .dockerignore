@@ -35,9 +35,6 @@
 !/dist/entrypoint.sh
 !/dist/robots.txt
 
-# from docs/.gitignore
-/docs/compodoc
-
 # from e2e/.gitignore
 /e2e/node_modules
 /e2e/reports
