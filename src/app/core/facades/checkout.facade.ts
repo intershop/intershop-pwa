@@ -50,6 +50,7 @@ import {
   setBasketPayment,
   startCheckout,
   startFastCheckout,
+  startRedirectBeforeCheckout,
   submitOrder,
   updateBasket,
   updateBasketAddress,
@@ -233,7 +234,7 @@ export class CheckoutFacade {
         if (
           shippingMethods?.length &&
           (!basket?.commonShippingMethod?.id ||
-            !shippingMethods.find(method => method.id === basket.commonShippingMethod?.id ?? ''))
+            !shippingMethods.find(method => method.id === basket.commonShippingMethod?.id))
         ) {
           return shippingMethods[0].id;
         }
@@ -260,6 +261,8 @@ export class CheckoutFacade {
 
   // PAYMENT
 
+  priceType$ = this.store.pipe(select(getServerConfigParameter<PriceType>('pricing.priceType')));
+
   eligiblePaymentMethods$() {
     return this.basket$.pipe(
       whenTruthy(),
@@ -273,8 +276,6 @@ export class CheckoutFacade {
   loadEligiblePaymentMethods() {
     this.store.dispatch(loadBasketEligiblePaymentMethods());
   }
-
-  priceType$ = this.store.pipe(select(getServerConfigParameter<PriceType>('pricing.priceType')));
 
   setBasketPayment(paymentName: string) {
     this.store.dispatch(setBasketPayment({ id: paymentName }));
@@ -290,6 +291,10 @@ export class CheckoutFacade {
 
   deleteBasketPayment(paymentInstrument: PaymentInstrument) {
     this.store.dispatch(deleteBasketPayment({ paymentInstrument }));
+  }
+
+  startRedirectBeforeCheckout() {
+    this.store.dispatch(startRedirectBeforeCheckout());
   }
 
   // ADDRESSES

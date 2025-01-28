@@ -2,7 +2,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
@@ -127,6 +127,30 @@ describe('Payment Service', () => {
 
       paymentService.setBasketPayment('testPayment').subscribe(() => {
         verify(apiServiceMock.put(`payments/open-tender`, anything(), anything())).once();
+        expect(capture(apiServiceMock.put).last()?.[1]).toMatchInlineSnapshot(`
+          {
+            "paymentInstrument": "testPayment",
+          }
+        `);
+        done();
+      });
+    });
+
+    it("should send redirect urls when 'sendRedirectUrls' is called", done => {
+      when(apiServiceMock.put(anyString(), anything(), anything())).thenReturn(of({}));
+
+      paymentService.sendRedirectUrls('testPayment').subscribe(() => {
+        verify(apiServiceMock.put(`payments/open-tender`, anything(), anything())).once();
+        expect(capture(apiServiceMock.put).last()?.[1]).toMatchInlineSnapshot(`
+          {
+            "paymentInstrument": "testPayment",
+            "redirect": {
+              "cancelUrl": "http://localhost//checkout/payment;lang=en_US?redirect=cancel",
+              "failureUrl": "http://localhost//checkout/payment;lang=en_US?redirect=failure",
+              "successUrl": "http://localhost//checkout/review;lang=en_US?redirect=success",
+            },
+          }
+        `);
         done();
       });
     });

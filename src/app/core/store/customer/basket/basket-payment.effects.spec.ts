@@ -10,6 +10,7 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -37,6 +38,8 @@ import {
   setBasketPayment,
   setBasketPaymentFail,
   setBasketPaymentSuccess,
+  startRedirectBeforeCheckout,
+  startRedirectBeforeCheckoutFail,
   updateBasketPayment,
   updateBasketPaymentFail,
   updateBasketPaymentSuccess,
@@ -204,6 +207,81 @@ describe('Basket Payment Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.setPaymentAtBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('startRedirectBeforeCheckout$ - continue with redirect', () => {
+    const paymentMethodId = 'MethodId123';
+    beforeEach(() => {
+      // mock location.assign() with jest.fn()
+      Object.defineProperty(window, 'location', {
+        value: { assign: jest.fn() },
+        writable: true,
+      });
+
+      when(paymentServiceMock.sendRedirectUrls(anything())).thenReturn(
+        of({ redirect: { redirectUrl: 'redirectUrl' } } as PaymentData)
+      );
+      store.dispatch(
+        loadServerConfigSuccess({
+          config: {
+            general: {
+              defaultLocale: 'de_DE',
+              defaultCurrency: 'EUR',
+              locales: ['en_US', 'de_DE', 'fr_BE', 'nl_BE'],
+              currencies: ['USD', 'EUR'],
+            },
+          },
+        })
+      );
+
+      store.dispatch(
+        loadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+            payment: {
+              paymentInstrument: { id: paymentMethodId } as PaymentInstrument,
+              redirectRequired: true,
+            } as Payment,
+          } as Basket,
+        })
+      );
+    });
+
+    it('should call the paymentService for startRedirectBeforeCheckout', done => {
+      when(paymentServiceMock.sendRedirectUrls(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
+      const action = startRedirectBeforeCheckout();
+      actions$ = of(action);
+
+      effects.startRedirectBeforeCheckout$.subscribe(() => {
+        verify(paymentServiceMock.sendRedirectUrls(paymentMethodId)).once();
+        done();
+      });
+    });
+
+    it('should start redirect in case of successful sending the redirect urls', fakeAsync(() => {
+      const action = startRedirectBeforeCheckout();
+      actions$ = of(action);
+
+      effects.startRedirectBeforeCheckout$.subscribe({ next: noop, error: fail, complete: noop });
+
+      tick(500);
+
+      expect(window.location.assign).toHaveBeenCalled();
+    }));
+    it('should map to action of type startRedirectBeforeCheckoutFail in case of failure', () => {
+      when(paymentServiceMock.sendRedirectUrls(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
+      const action = startRedirectBeforeCheckout();
+      const completion = startRedirectBeforeCheckoutFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.startRedirectBeforeCheckout$).toBeObservable(expected$);
     });
   });
 
