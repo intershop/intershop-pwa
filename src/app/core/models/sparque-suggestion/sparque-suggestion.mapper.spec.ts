@@ -78,9 +78,9 @@ describe('Sparque Suggestion Mapper', () => {
         categories: [],
         brands: [
           {
-            BrandName: 'Brand 1',
-            ImageUrl: 'http://brand.image.url',
-            TotalCount: 5,
+            brandName: 'Brand 1',
+            imageUrl: 'http://brand.image.url',
+            totalCount: 5,
           },
         ],
         keywordSuggestions: [],

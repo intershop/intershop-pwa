@@ -1,17 +1,23 @@
 /* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { ReplaySubject, Subject } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
+import { SuggestBrandsTileComponent } from 'ish-core/standalone/component/suggest/suggest-brands-tile/suggest-brands-tile.component';
+import { SuggestCategoriesTileComponent } from 'ish-core/standalone/component/suggest/suggest-categories-tile/suggest-categories-tile.component';
+import { SuggestKeywordsTileComponent } from 'ish-core/standalone/component/suggest/suggest-keywords-tile/suggest-keywords-tile.component';
+import { SuggestProductsTileComponent } from 'ish-core/standalone/component/suggest/suggest-products-tile/suggest-products-tile.component';
 
-import { AdvancedSearchBoxComponent } from './advanced-search-box.component';
+import { SearchBoxComponent } from './search-box.component';
 
-describe('Advanced Search Box Component', () => {
-  let component: AdvancedSearchBoxComponent;
-  let fixture: ComponentFixture<AdvancedSearchBoxComponent>;
+describe('Search Box Component', () => {
+  let component: SearchBoxComponent;
+  let fixture: ComponentFixture<SearchBoxComponent>;
   let element: HTMLElement;
-  let searchResults$: Subject<string[]>;
+  let searchResults$: Subject<Suggestion>;
   let searchTerm$: Subject<string>;
 
   beforeEach(async () => {
@@ -22,6 +28,12 @@ describe('Advanced Search Box Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
+      declarations: [
+        MockComponent(SuggestBrandsTileComponent),
+        MockComponent(SuggestCategoriesTileComponent),
+        MockComponent(SuggestKeywordsTileComponent),
+        MockComponent(SuggestProductsTileComponent),
+      ],
       providers: [
         {
           provide: ShoppingFacade,
@@ -32,7 +44,7 @@ describe('Advanced Search Box Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdvancedSearchBoxComponent);
+    fixture = TestBed.createComponent(SearchBoxComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
@@ -49,7 +61,7 @@ describe('Advanced Search Box Component', () => {
 
   describe('with no results', () => {
     beforeEach(() => {
-      searchResults$.next([]);
+      searchResults$.next(undefined);
     });
 
     it('should show no results when no suggestions are found', () => {
@@ -62,7 +74,7 @@ describe('Advanced Search Box Component', () => {
 
   describe('with results', () => {
     beforeEach(() => {
-      searchResults$.next(['Cameras', 'Camcorders']);
+      searchResults$.next({ keywordSuggestions: ['Cameras', 'Camcorders'] } as Suggestion);
     });
 
     it('should show results when suggestions are available', () => {
@@ -70,18 +82,7 @@ describe('Advanced Search Box Component', () => {
       searchTerm$.next('ca');
       fixture.detectChanges();
 
-      const ul = element.querySelector('.search-suggest-terms ul');
-      expect(ul.querySelectorAll('li')).toHaveLength(2);
-    });
-
-    it('should show no results when suggestions are available but maxAutoSuggests is 0', () => {
-      component.searchBoxFocus = true;
-      searchTerm$.next('ca');
-      component.configuration.maxAutoSuggests = 0;
-      fixture.detectChanges();
-
-      const ul = element.querySelector('.search-suggest-terms ul');
-      expect(ul.querySelectorAll('li')).toHaveLength(0);
+      expect(element.querySelector('ish-suggest-keywords-tile')).toBeTruthy();
     });
 
     it('should show no results when suggestions are available but input has no focus', () => {

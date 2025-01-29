@@ -26,22 +26,34 @@
 
   <ng-container *ngIf="searchResults$ | async as results">
     <div
-      *ngIf="results.length && hasMoreThanTwoCharacters; else noResults"
-      class="search-suggest-container"
+      *ngIf="
+        (results.keywordSuggestions.length ||
+          results.brands.length ||
+          results.products.length ||
+          results.categories.length) &&
+          hasMoreThanTwoCharacters;
+        else noResults
+      "
+      class="search-suggest-container d-flex flex-row"
       #searchSuggestLayer
     >
-      <div class="search-suggest-terms">
-        <div class="headline">{{ 'suggest.terms.headline' | translate }}</div>
-        <ul>
-          <li *ngFor="let result of results | slice : 0 : configuration?.maxAutoSuggests">
-            <button
-              type="button"
-              class="search-result"
-              [innerHTML]="result | titlecase | ishHighlight : (inputSearchTerms$ | async)"
-              (click)="submitSearch(result)"
-            ></button>
-          </li>
-        </ul>
+      <div class="d-flex flex-column">
+        <div *ngIf="results.keywordSuggestions">
+          <ish-suggest-keywords-tile
+            [keywords]="results.keywordSuggestions"
+            [inputTerms$]="inputSearchTerms$"
+            [maxAutoSuggests]="3"
+          />
+        </div>
+        <div *ngIf="results.categories">
+          <ish-suggest-categories-tile [categories]="results.categories" />
+        </div>
+        <div *ngIf="results.brands">
+          <ish-suggest-brands-tile [brands]="results.brands" />
+        </div>
+      </div>
+      <div *ngIf="results.products">
+        <ish-suggest-products-tile [products]="results.products" />
       </div>
     </div>
     <ng-template #noResults>

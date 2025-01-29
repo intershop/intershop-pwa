@@ -12,7 +12,7 @@ const { selectEntities: getSuggestSearchEntities } = searchAdapter.getSelectors(
 export const getSearchTerm = selectRouteParam('searchTerm');
 
 export const getSuggestSearchResults = (searchTerm: string) =>
-  createSelector(getSuggestSearchEntities, entities => entities[searchTerm]?.suggests.keywordSuggestions);
+  createSelector(getSuggestSearchEntities, entities => entities[searchTerm]?.suggests);
 
 export const getSuggestSearchLoading = createSelector(getSearchState, state => state.loading);
 

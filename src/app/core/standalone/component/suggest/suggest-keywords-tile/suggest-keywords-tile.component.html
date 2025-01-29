@@ -1,0 +1,13 @@
+<div class="search-suggest-terms">
+  <div class="headline">{{ 'suggest.terms.headline' | translate }}</div>
+  <ul>
+    <li *ngFor="let result of keywords | slice : 0 : maxAutoSuggests">
+      <button
+        type="button"
+        class="search-result"
+        [innerHTML]="result | titlecase | ishHighlight : (inputSearchTerms$ | async)"
+        (click)="submitSearch(result)"
+      ></button>
+    </li>
+  </ul>
+</div>

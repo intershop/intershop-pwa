@@ -20,7 +20,12 @@ import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { IconModule } from 'ish-core/icon.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SearchBoxConfiguration } from 'ish-core/models/search-box-configuration/search-box-configuration.model';
+import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
 import { PipesModule } from 'ish-core/pipes.module';
+import { SuggestBrandsTileComponent } from 'ish-core/standalone/component/suggest/suggest-brands-tile/suggest-brands-tile.component';
+import { SuggestCategoriesTileComponent } from 'ish-core/standalone/component/suggest/suggest-categories-tile/suggest-categories-tile.component';
+import { SuggestKeywordsTileComponent } from 'ish-core/standalone/component/suggest/suggest-keywords-tile/suggest-keywords-tile.component';
+import { SuggestProductsTileComponent } from 'ish-core/standalone/component/suggest/suggest-products-tile/suggest-products-tile.component';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
@@ -50,13 +55,22 @@ import { whenTruthy } from 'ish-core/utils/operators';
  * @lifecycle ngOnInit - Initializes the component and sets up the necessary streams.
  */
 @Component({
-  selector: 'ish-advanced-search-box',
-  templateUrl: './advanced-search-box.component.html',
+  selector: 'ish-search-box',
+  templateUrl: './search-box.component.html',
   standalone: true,
-  imports: [CommonModule, IconModule, PipesModule, TranslateModule],
+  imports: [
+    CommonModule,
+    IconModule,
+    PipesModule,
+    TranslateModule,
+    SuggestKeywordsTileComponent,
+    SuggestCategoriesTileComponent,
+    SuggestBrandsTileComponent,
+    SuggestProductsTileComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
+export class SearchBoxComponent implements OnInit, AfterViewInit {
   /**
    * the search box configuration for this component
    */
@@ -68,7 +82,7 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
   @ViewChild('searchInputSubmit') searchInputSubmit: ElementRef;
   @ViewChild('searchSuggestLayer') searchSuggestLayer: ElementRef;
 
-  searchResults$: Observable<string[]>;
+  searchResults$: Observable<Suggestion>;
   inputSearchTerms$ = new ReplaySubject<string>(1);
   searchSuggestLoading$: Observable<boolean>;
   searchSuggestError$: Observable<HttpError>;
@@ -97,9 +111,9 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
       .subscribe(term => this.inputSearchTerms$.next(term));
 
     // suggests are triggered solely via stream
-    this.searchResults$ = this.shoppingFacade.searchResults$(this.inputSearchTerms$).pipe(shareReplay(1)) as Observable<
-      string[]
-    >;
+    this.searchResults$ = this.shoppingFacade
+      .searchResults$(this.inputSearchTerms$)
+      .pipe(shareReplay(1)) as Observable<Suggestion>;
 
     this.searchSuggestLoading$ = this.shoppingFacade.searchSuggestLoading$;
     this.searchSuggestError$ = this.shoppingFacade.searchSuggestError$;

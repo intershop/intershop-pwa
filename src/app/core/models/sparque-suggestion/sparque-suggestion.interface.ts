@@ -41,9 +41,9 @@ export interface SparqueCategory {
 }
 
 export interface SparqueBrand {
-  BrandName: string;
-  TotalCount: number;
-  ImageUrl: string;
+  brandName: string;
+  totalCount: number;
+  imageUrl: string;
 }
 
 export interface SparqueKeywordSuggestions {

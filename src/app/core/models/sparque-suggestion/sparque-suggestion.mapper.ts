@@ -66,15 +66,15 @@ function mapCategories(categories: SparqueCategory[]): Category[] {
 function mapBrands(brands: SparqueBrand[]): Brand[] {
   return brands
     ? brands.map(brand => ({
-        name: brand.BrandName ? brand.BrandName : undefined,
-        imageUrl: brand.ImageUrl ? brand.ImageUrl : undefined,
-        productCount: brand.TotalCount ? brand.TotalCount : undefined,
+        name: brand.brandName ? brand.brandName : undefined,
+        imageUrl: brand.imageUrl ? brand.imageUrl : undefined,
+        productCount: brand.totalCount ? brand.totalCount : undefined,
       }))
     : undefined;
 }
 
-function mapKeywords(keyWords: SparqueKeywordSuggestions[]): string[] {
-  return keyWords ? keyWords.map(entry => entry.keyword) : [];
+function mapKeywords(keywords: SparqueKeywordSuggestions[]): string[] {
+  return keywords ? keywords.map(entry => entry.keyword) : [];
 }
 
 function mapContent(contentSuggestions: SparqueContentSuggestions[]): ContentSuggestion[] {
