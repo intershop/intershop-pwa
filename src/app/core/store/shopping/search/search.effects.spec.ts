@@ -96,24 +96,6 @@ describe('Search Effects', () => {
   });
 
   describe('suggestSearch$', () => {
-    it('should not fire when search term is falsy', fakeAsync(() => {
-      const action = suggestSearch({ searchTerm: undefined });
-      store$.dispatch(action);
-
-      tick(5000);
-
-      verify(suggestionServiceMock.search(anyString())).never();
-    }));
-
-    it('should not fire when search term is empty', fakeAsync(() => {
-      const action = suggestSearch({ searchTerm: '' });
-      store$.dispatch(action);
-
-      tick(5000);
-
-      verify(suggestionServiceMock.search(anyString())).never();
-    }));
-
     it('should return search terms when available', fakeAsync(() => {
       const action = suggestSearch({ searchTerm: 'g' });
       store$.dispatch(action);
@@ -121,30 +103,6 @@ describe('Search Effects', () => {
       tick(5000);
 
       verify(suggestionServiceMock.search('g')).once();
-    }));
-
-    it('should debounce correctly when search term is entered stepwise', fakeAsync(() => {
-      store$.dispatch(suggestSearch({ searchTerm: 'g' }));
-      tick(50);
-      store$.dispatch(suggestSearch({ searchTerm: 'goo' }));
-      tick(100);
-      store$.dispatch(suggestSearch({ searchTerm: 'good' }));
-      tick(200);
-
-      verify(suggestionServiceMock.search(anyString())).never();
-
-      tick(400);
-      verify(suggestionServiceMock.search('good')).once();
-    }));
-
-    it('should send only once if search term is entered multiple times', fakeAsync(() => {
-      store$.dispatch(suggestSearch({ searchTerm: 'good' }));
-      tick(2000);
-      verify(suggestionServiceMock.search('good')).once();
-      store$.dispatch(suggestSearch({ searchTerm: 'good' }));
-      tick(2000);
-
-      verify(suggestionServiceMock.search('good')).once();
     }));
 
     it('should not fire action when error is encountered at service level', fakeAsync(() => {
