@@ -3,7 +3,7 @@
   type="button"
   class="btn btn-link cxml-text-toggle"
   (click)="isCollapsed = !isCollapsed"
-  [attr.aria-expanded]="!isCollapsed"
+  [attr.aria-expanded]="isCollapsed"
   [attr.title]="
     isCollapsed
       ? ('account.punchout.cxml.toggle.helptext_close.title' | translate)

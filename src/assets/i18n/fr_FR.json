@@ -1225,6 +1225,7 @@
   "search.noresult.filtered_products.message": "Nous sommes désolés, nous n’avons pu trouver aucun produit correspondant à votre choix de filtre.",
   "search.noresult.guidelines": "<p>Conseils et directives de recherche</p><ol><li>Revérifiez l’orthographe. Essayez de varier l’orthographe ou parcourez nos listes de catégories de produits qui figurent sur notre page d’accueil.</li><li>Limitez la recherche à un ou deux termes.</li><li>Soyez moins précis dans votre terminologie. Utiliser un terme plus général vous conduira probablement à des produits similaires et connexes.",
   "search.searchbox.button.reset.title": "Retirer terme de recherche",
+  "search.searchbox.button.sticky_header.aria_label": "Ouvrir la recherche",
   "search.searchbox.button.title": "Lancer la recherche.",
   "search.searchbox.instructional_text": "Rechercher",
   "search.searchbox.label": "Recherche de produits",

@@ -21,6 +21,7 @@
         class="dropdown-toggle"
         (click)="toggleOpen(category.uniqueId)"
         (keydown.enter)="toggleOpen(category.uniqueId)"
+        role="button"
         [attr.aria-label]="
           isOpened(category.uniqueId)
             ? ('header.navigation.collapse_category.aria_label' | translate : { '0': category.name })
