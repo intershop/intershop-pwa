@@ -5,12 +5,13 @@ import { Router } from '@angular/router';
 import { IconName } from '@fortawesome/fontawesome-svg-core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, ReplaySubject } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map, shareReplay, take } from 'rxjs/operators';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { IconModule } from 'ish-core/icon.module';
 import { SearchBoxConfiguration } from 'ish-core/models/search-box-configuration/search-box-configuration.model';
 import { PipesModule } from 'ish-core/pipes.module';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
  * The search box container component
@@ -36,7 +37,7 @@ export class SimpleSearchBoxComponent implements OnInit {
 
   searchResults$: Observable<string[]>;
   inputSearchTerms$ = new ReplaySubject<string>(1);
-
+  searchSuggestLoading$: Observable<boolean>;
   activeIndex = -1;
   inputFocused: boolean;
 
@@ -52,13 +53,17 @@ export class SimpleSearchBoxComponent implements OnInit {
     // initialize with searchTerm when on search route
     this.shoppingFacade.searchTerm$
       .pipe(
+        whenTruthy(),
         map(x => (x ? x : '')),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(term => this.inputSearchTerms$.next(term));
 
     // suggests are triggered solely via stream
-    this.searchResults$ = this.shoppingFacade.searchResults$(this.inputSearchTerms$) as Observable<string[]>;
+    this.searchResults$ = this.shoppingFacade.searchResults$(this.inputSearchTerms$).pipe(shareReplay(1)) as Observable<
+      string[]
+    >;
+    this.searchSuggestLoading$ = this.shoppingFacade.searchSuggestLoading$;
   }
   blur() {
     this.inputFocused = false;

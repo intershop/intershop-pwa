@@ -3,9 +3,9 @@ import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
-import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn, unsetLoadingOn } from 'ish-core/utils/ngrx-creators';
+import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
-import { suggestSearch, suggestSearchFail, suggestSearchSuccess } from './search.actions';
+import { clearSuggestions, suggestSearch, suggestSearchFail, suggestSearchSuccess } from './search.actions';
 
 interface SuggestSearch {
   searchTerm: string;
@@ -28,8 +28,8 @@ const initialState: SearchState = searchAdapter.getInitialState({
 export const searchReducer = createReducer(
   initialState,
   setLoadingOn(suggestSearch),
-  unsetLoadingOn(suggestSearchFail, suggestSearchSuccess),
   unsetLoadingAndErrorOn(suggestSearchSuccess),
   setErrorOn(suggestSearchFail),
-  on(suggestSearchSuccess, (state, action) => searchAdapter.upsertOne(action.payload, state))
+  on(suggestSearchSuccess, (state, action) => searchAdapter.upsertOne(action.payload, state)),
+  on(clearSuggestions, (): SearchState => initialState)
 );

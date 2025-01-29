@@ -14,13 +14,14 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable, ReplaySubject, map } from 'rxjs';
+import { Observable, ReplaySubject, map, shareReplay } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { IconModule } from 'ish-core/icon.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SearchBoxConfiguration } from 'ish-core/models/search-box-configuration/search-box-configuration.model';
 import { PipesModule } from 'ish-core/pipes.module';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
  * @description
@@ -89,13 +90,16 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
     // initialize with searchTerm when on search route
     this.shoppingFacade.searchTerm$
       .pipe(
+        whenTruthy(),
         map(x => (x ? x : '')),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(term => this.inputSearchTerms$.next(term));
 
     // suggests are triggered solely via stream
-    this.searchResults$ = this.shoppingFacade.searchResults$(this.inputSearchTerms$) as Observable<string[]>;
+    this.searchResults$ = this.shoppingFacade.searchResults$(this.inputSearchTerms$).pipe(shareReplay(1)) as Observable<
+      string[]
+    >;
 
     this.searchSuggestLoading$ = this.shoppingFacade.searchSuggestLoading$;
     this.searchSuggestError$ = this.shoppingFacade.searchSuggestError$;
@@ -167,16 +171,22 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
   handleEscKey() {
     this.blur();
     this.inputSearchTerms$.next('');
+    this.shoppingFacade.clearSuggestSearchSuggestions();
   }
 
   handleReset() {
     this.searchInput.nativeElement.focus(); // manually set focus to input to prevent blur event
     this.inputSearchTerms$.next('');
+    this.shoppingFacade.clearSuggestSearchSuggestions();
   }
 
   searchSuggest(source: EventTarget) {
     const inputValue = (source as HTMLInputElement).value;
     this.inputSearchTerms$.next(inputValue);
+    if (inputValue === '') {
+      // clear suggestions in state when input is set to empty
+      this.shoppingFacade.clearSuggestSearchSuggestions();
+    }
   }
 
   submitSearch(suggestedTerm: string) {
@@ -194,5 +204,12 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
 
   truncate(text: string, limit: number): string {
     return text.length > limit ? `${text.substring(0, limit)}...` : text;
+  }
+
+  // getter method to check if the input search term has more than 2 characters
+  get hasMoreThanTwoCharacters(): boolean {
+    let term = '';
+    this.inputSearchTerms$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => (term = value));
+    return term.length >= 2;
   }
 }

@@ -21,3 +21,5 @@ export const suggestSearchSuccess = createAction(
 );
 
 export const suggestSearchFail = createAction('[Suggest Search API] Load Search Suggestions Fail', httpError());
+
+export const clearSuggestions = createAction('[Suggest Search API] Clear Suggestions');
