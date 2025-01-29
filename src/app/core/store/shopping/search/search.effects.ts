@@ -5,7 +5,7 @@ import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { from } from 'rxjs';
-import { concatMap, debounceTime, distinctUntilChanged, map, sample, switchMap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, map, sample, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
@@ -116,10 +116,7 @@ export class SearchEffects {
       this.actions$.pipe(
         ofType(suggestSearch),
         mapToPayloadProperty('searchTerm'),
-        debounceTime(400),
-        distinctUntilChanged(),
-        whenTruthy(),
-        switchMap(searchTerm =>
+        concatMap(searchTerm =>
           this.suggestService.search(searchTerm).pipe(
             map(suggests => suggestSearchSuccess({ searchTerm, suggests })),
             mapErrorToAction(suggestSearchFail)
