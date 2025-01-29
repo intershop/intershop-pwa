@@ -1,5 +1,3 @@
-<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
-<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <ul class="navbar-nav main-navigation-list">
   <li
     *ngFor="let category of categories$ | async; first as isFirst"
@@ -8,13 +6,13 @@
     [ngClass]="{ open: isOpened(category.uniqueId), first: isFirst }"
     (mouseenter)="subMenuShow(subMenu)"
     (mouseleave)="subMenuHide(subMenu)"
-    (click)="subMenuHide(subMenu)"
   >
     <a
       [routerLink]="category.url"
       [attr.data-testing-id]="category.uniqueId + '-link'"
       [ngStyle]="{ width: !(0 < mainNavigationMaxSubCategoriesDepth && category.hasChildren) ? '100%' : '' }"
       class="main-navigation-link"
+      (click)="subMenuHide(subMenu)"
     >
       {{ category.name }}
     </a>
