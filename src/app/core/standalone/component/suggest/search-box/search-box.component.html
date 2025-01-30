@@ -1,8 +1,4 @@
-<div
-  #searchBox
-  class="search advanced-search clearfix"
-  [ngClass]="{ focus: searchBoxFocus, 'scaled-up': searchBoxScaledUp }"
->
+<div #searchBox class="search clearfix" [ngClass]="{ focus: searchBoxFocus, 'scaled-up': searchBoxScaledUp }">
   <input
     #searchInput
     [placeholder]="configuration?.placeholder || ''"
