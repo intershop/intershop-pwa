@@ -5,8 +5,8 @@
       <button
         type="button"
         class="search-result"
-        [innerHTML]="result | titlecase | ishHighlight : (inputSearchTerms$ | async)"
-        (click)="submitSearch(result)"
+        [innerHTML]="result | titlecase | ishHighlight : (inputTerms$ | async)"
+        (click)="submit(result)"
       ></button>
     </li>
   </ul>

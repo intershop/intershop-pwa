@@ -34,7 +34,7 @@
           hasMoreThanTwoCharacters;
         else noResults
       "
-      class="search-suggest-container d-flex flex-row"
+      class="search-suggest-container"
       #searchSuggestLayer
     >
       <div class="d-flex flex-column">
@@ -42,6 +42,7 @@
           <ish-suggest-keywords-tile
             [keywords]="results.keywordSuggestions"
             [inputTerms$]="inputSearchTerms$"
+            (submitSearch)="submitSearch($event)"
             [maxAutoSuggests]="3"
           />
         </div>
