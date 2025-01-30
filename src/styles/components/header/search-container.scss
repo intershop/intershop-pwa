@@ -45,72 +45,6 @@
     }
   }
 
-  ul.search-suggest-results {
-    position: absolute;
-    top: 38px;
-    z-index: 9999;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    background: $color-inverse;
-    border: $border-width-default solid $border-color-light;
-
-    li {
-      width: 100%;
-      padding: 0 $space-default;
-
-      &:hover {
-        color: $text-color-inverse;
-        background: $border-color-corporate;
-        border-bottom: $border-width-default solid $border-color-default;
-
-        button {
-          color: $text-color-inverse;
-          border-top: $border-width-default solid transparent;
-        }
-
-        + li button {
-          border: none;
-        }
-      }
-
-      &.active-suggestion {
-        color: $text-color-inverse;
-        background: $color-corporate;
-        border-bottom: $border-width-default solid $border-color-corporate;
-
-        button {
-          color: $text-color-inverse;
-          border-top: $border-width-default solid transparent;
-        }
-
-        + li button {
-          border: none;
-        }
-      }
-
-      &:first-child button {
-        border: 0;
-      }
-
-      button {
-        width: 100%;
-        font-family: $font-family-regular;
-        font-size: 13px;
-        line-height: 47px;
-        color: $text-color-tertiary;
-        text-align: left;
-        background: none;
-        border: 0;
-        border-top: $border-width-default solid $border-color-light;
-
-        span {
-          font-weight: bold;
-        }
-      }
-    }
-  }
-
   input {
     &:focus {
       color: $text-color-primary;
@@ -144,140 +78,138 @@
   }
 
   .search {
-    &.advanced-search {
-      @media (min-width: $screen-sm) {
-        position: absolute;
-        top: calc($search-container-height / -2);
-        right: 0;
-        width: 100%;
-        transition: width 0.3s ease 0.1s;
+    @media (min-width: $screen-sm) {
+      position: absolute;
+      top: calc($search-container-height / -2);
+      right: 0;
+      width: 100%;
+      transition: width 0.3s ease 0.1s;
 
-        &.focus {
-          width: 250%;
-        }
-
-        .search-suggest-container {
-          // suggest layer is not shown by default
-          display: none;
-        }
-
-        &.scaled-up {
-          .search-suggest-container {
-            // suggest layer is only shown when search box is scaled up to expanded width
-            display: block;
-          }
-        }
+      &.focus {
+        width: 250%;
       }
 
       .search-suggest-container {
-        position: absolute;
-        top: 38px;
-        z-index: 9999;
-        width: 100%;
-        // preserve space for onscreen keyboard on mobile devices
-        max-height: calc(60vh - #{$header-height-mobile + $search-container-height * 3});
-        padding: $space-default $space-default * 2;
-        margin: 0;
-        overflow-y: auto;
-        line-height: unset;
+        // suggest layer is not shown by default
+        display: none;
+      }
+
+      &.scaled-up {
+        .search-suggest-container {
+          // suggest layer is only shown when search box is scaled up to expanded width
+          display: block;
+        }
+      }
+    }
+
+    .search-suggest-container {
+      position: absolute;
+      top: 38px;
+      z-index: 9999;
+      width: 100%;
+      // preserve space for onscreen keyboard on mobile devices
+      max-height: calc(60vh - #{$header-height-mobile + $search-container-height * 3});
+      padding: $space-default $space-default * 2;
+      margin: 0;
+      overflow-y: auto;
+      line-height: unset;
+      color: $text-color-primary;
+      list-style: none;
+      background-color: $color-inverse;
+      border: $border-width-default solid $border-color-light;
+
+      @media (min-width: $screen-sm) {
+        max-height: calc(100vh - 15 * #{$space-default});
+      }
+
+      .headline {
+        margin-bottom: $space-default * 0.5;
+        font-family: $font-family-condensedregular;
+        font-size: $h3-font-size;
+        line-height: 1;
         color: $text-color-primary;
+        text-transform: uppercase;
+      }
+
+      p {
+        padding: ($space-default * 0.5) 0;
+      }
+
+      ul {
+        padding: 0;
+        margin: 0 0 ($space-default * 2);
         list-style: none;
-        background-color: $color-inverse;
-        border: $border-width-default solid $border-color-light;
 
-        @media (min-width: $screen-sm) {
-          max-height: calc(100vh - 15 * #{$space-default});
-        }
-
-        .headline {
-          margin-bottom: $space-default * 0.5;
-          font-family: $font-family-condensedregular;
-          font-size: $h3-font-size;
-          line-height: 1;
-          color: $text-color-primary;
-          text-transform: uppercase;
-        }
-
-        p {
-          padding: ($space-default * 0.5) 0;
-        }
-
-        ul {
+        li {
+          display: block;
+          width: 100%;
           padding: 0;
-          margin: 0 0 ($space-default * 2);
-          list-style: none;
+          margin: 0;
+          line-height: $line-height-base;
 
-          li {
-            display: block;
-            width: 100%;
-            padding: 0;
-            margin: 0;
-            line-height: $line-height-base;
-
-            &:hover {
-              button {
-                text-decoration: underline;
-
-                span {
-                  text-decoration: underline;
-                }
-              }
-            }
-
+          &:hover {
             button {
-              width: 100%;
-              padding: ($space-default * 0.5) 0;
-              font-family: $font-family-regular;
-              font-size: $font-size-corporate;
-              line-height: $line-height-base;
-              text-align: left;
-              background: none;
-              border: 0;
+              text-decoration: underline;
 
               span {
-                color: $text-color-corporate;
+                text-decoration: underline;
               }
+            }
+          }
+
+          button {
+            width: 100%;
+            padding: ($space-default * 0.5) 0;
+            font-family: $font-family-regular;
+            font-size: $font-size-corporate;
+            line-height: $line-height-base;
+            text-align: left;
+            background: none;
+            border: 0;
+
+            span {
+              color: $text-color-corporate;
             }
           }
         }
       }
+    }
 
-      .loading {
-        position: absolute;
-        top: 10px;
-        right: 85px;
-        width: 20px;
-        height: 20px;
-        background: #fff url('/assets/img/loading.gif') center center no-repeat;
-        background-size: contain;
+    .loading {
+      position: absolute;
+      top: 10px;
+      right: 85px;
+      width: 20px;
+      height: 20px;
+      background: #fff url('/assets/img/loading.gif') center center no-repeat;
+      background-size: contain;
+    }
+
+    .search-suggest-backdrop {
+      position: fixed;
+      top: calc($header-height-mobile + $search-container-height);
+      right: 0;
+      z-index: 2;
+      width: 100%;
+      width: 100vw;
+      height: 0; // prevent overlaying any other elements
+      visibility: hidden; // combined with opacity
+      background: $color-dark;
+      opacity: 0;
+      transition: opacity 0.15s linear, visibility 0.15s linear; // similar to bootstrap modal
+
+      @media (min-width: $screen-sm) {
+        top: 170px;
+        height: calc(100vh - 170px);
       }
 
-      .search-suggest-backdrop {
-        position: fixed;
-        top: calc($header-height-mobile + $search-container-height);
-        right: 0;
-        z-index: 2;
-        width: 100%;
-        width: 100vw;
-        height: 0; // prevent overlaying any other elements
-        visibility: hidden; // combined with opacity
-        background: $color-dark;
-        opacity: 0;
-        transition: opacity 0.15s linear, visibility 0.15s linear; // similar to bootstrap modal
+      &.show {
+        height: calc(100vh - #{$header-height-mobile + $search-container-height});
+        visibility: visible;
+        opacity: 0.5;
 
         @media (min-width: $screen-sm) {
-          top: 170px;
           height: calc(100vh - 170px);
-        }
-
-        &.show {
-          height: calc(100vh - #{$header-height-mobile + $search-container-height});
-          visibility: visible;
-          opacity: 0.5;
-
-          @media (min-width: $screen-sm) {
-            height: calc(100vh - 170px);
-          }
         }
       }
     }
@@ -320,10 +252,6 @@
         color: $input-placeholder-color;
       }
     }
-  }
-
-  ul.search-suggest-results {
-    width: 100%;
   }
 }
 
@@ -369,30 +297,6 @@
       > .ng-fa-icon {
         color: $text-color-primary;
       }
-    }
-  }
-}
-
-// main search container
-.main-search-container {
-  ul.search-suggest-results {
-    width: 100%;
-  }
-}
-
-// error page search container
-.error-search-container {
-  ul.search-suggest-results {
-    top: 33px;
-    width: 100%;
-  }
-}
-
-// no search result page search container
-.no-search-result {
-  + .search-container {
-    .buttons button {
-      color: $text-color-primary !important;
     }
   }
 }

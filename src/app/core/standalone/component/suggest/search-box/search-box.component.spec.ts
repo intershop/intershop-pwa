@@ -51,6 +51,7 @@ describe('Search Box Component', () => {
     // activate
     component.searchBoxFocus = true;
     component.configuration = { maxAutoSuggests: 4 };
+    component.configuration = { autoSuggest: true };
   });
 
   it('should be created', () => {

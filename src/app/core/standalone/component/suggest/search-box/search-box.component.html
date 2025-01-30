@@ -24,7 +24,7 @@
     <p>{{ 'suggest.error.text' | translate }}</p>
   </div>
 
-  <ng-container *ngIf="searchResults$ | async as results">
+  <ng-container *ngIf="configuration?.autoSuggest && searchResults$ | async as results">
     <div
       *ngIf="
         (results.keywordSuggestions.length ||
