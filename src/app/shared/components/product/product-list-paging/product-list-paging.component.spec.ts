@@ -38,7 +38,7 @@ describe('Product List Paging Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <ul class="product-list-paging">
-        <li><span class="product-list-paging-previous">«</span></li>
+        <li><span>«</span></li>
         <li>
           <a
             queryparamshandling="merge"
@@ -72,7 +72,7 @@ describe('Product List Paging Component', () => {
         <li class="pagination-list-next">
           <a
             queryparamshandling="merge"
-            class="product-list-paging-next link-decoration-hover"
+            class="link-decoration-hover"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=2"
@@ -92,7 +92,7 @@ describe('Product List Paging Component', () => {
         <li>
           <a
             queryparamshandling="merge"
-            class="product-list-paging-previous link-decoration-hover"
+            class="link-decoration-hover"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=1"
@@ -132,7 +132,7 @@ describe('Product List Paging Component', () => {
         <li class="pagination-list-next">
           <a
             queryparamshandling="merge"
-            class="product-list-paging-next link-decoration-hover"
+            class="link-decoration-hover"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=3"
@@ -152,7 +152,7 @@ describe('Product List Paging Component', () => {
         <li>
           <a
             queryparamshandling="merge"
-            class="product-list-paging-previous link-decoration-hover"
+            class="link-decoration-hover"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=2"
@@ -189,7 +189,7 @@ describe('Product List Paging Component', () => {
             >3</a
           >
         </li>
-        <li class="pagination-list-next"><span class="product-list-paging-next">»</span></li>
+        <li class="pagination-list-next"><span>»</span></li>
       </ul>
     `);
   });

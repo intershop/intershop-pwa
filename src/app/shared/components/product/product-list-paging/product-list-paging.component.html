@@ -7,11 +7,11 @@
           queryParamsHandling="merge"
           [queryParams]="{ page: currentPage - 1 }"
           [fragment]="fragmentOnRouting"
-          class="product-list-paging-previous link-decoration-hover"
+          class="link-decoration-hover"
           >&laquo;</a
         >
       </ng-container>
-      <ng-template #inactiveFirstLink> <span class="product-list-paging-previous">&laquo;</span> </ng-template>
+      <ng-template #inactiveFirstLink><span>&laquo;</span></ng-template>
     </li>
     <li *ngFor="let p of pageIndices">
       <a
@@ -31,11 +31,11 @@
           queryParamsHandling="merge"
           [queryParams]="{ page: currentPage + 1 }"
           [fragment]="fragmentOnRouting"
-          class="product-list-paging-next link-decoration-hover"
+          class="link-decoration-hover"
           >&raquo;</a
         >
       </ng-container>
-      <ng-template #inactiveLastLink> <span class="product-list-paging-next">&raquo;</span> </ng-template>
+      <ng-template #inactiveLastLink><span>&raquo;</span></ng-template>
     </li>
   </ul>
 </ng-container>
