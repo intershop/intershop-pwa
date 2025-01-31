@@ -68,6 +68,7 @@ Make sure to use them as written in the table below.
 |                     | GMA_KEY               | string               | API key for Google Maps                                                                          |
 |                     | SENTRY_DSN            | string               | Sentry DSN URL for using Sentry Error Monitor                                                    |
 |                     | PROMETHEUS            | switch               | Exposes Prometheus metrics                                                                       |
+|                     | METRICS_DETAIL_LEVEL  | string               | `DEFAULT` or `DETAILED` - see [Guide - Monitoring with Prometheus](./prometheus-monitoring.md)   |
 |                     | IDENTITY_PROVIDER     | string               | ID of the default identity provider if other than `ICM`                                          |
 |                     | IDENTITY_PROVIDERS    | JSON                 | Configuration of additional identity providers besides the default `ICM`                         |
 |                     | ADDRESS_DOCTOR        | JSON                 | Configuration of address doctor with login, password, maxResultCount and url                     |

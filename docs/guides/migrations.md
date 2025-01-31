@@ -34,6 +34,10 @@ It requires ICM 12.3.0 and is only visible if the ICM order approval service is 
 If the customer has not yet set the budget type the default value **gross** is used.
 In a migration project that uses an ICM before 12.3.0 in the `organization-settings-page.component.html` the `Preferences` section and the used dialog should be removed and in the `budget-info.component.html` the suffix part `+ (suffix ?? '' | translate)` should be deleted.
 
+The configuration parameter `METRICS_DETAIL_LEVEL` for the SSR container has been introduced.
+By default it is set to the value `DEFAULT` which changes the SSR metrics (overall less metrics) compared to version 5.2.
+In order to restore the previous behavior the value can be set to `DETAILED`.
+
 ## From 5.1 to 5.2
 
 > [!NOTE]
