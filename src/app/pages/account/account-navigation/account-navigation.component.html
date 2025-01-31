@@ -40,8 +40,8 @@
                           >
                             <a
                               [routerLink]="subItem.routerLink"
-                              [attr.data-testing-id]="subItem.id + '-nav-link'"
                               class="link-decoration-hover"
+                              [attr.data-testing-id]="subItem.id + '-nav-link'"
                               >{{ subItem.localizationKey | translate }}</a
                             >
                           </li>
@@ -60,8 +60,8 @@
               >
                 <a
                   [routerLink]="item.routerLink"
-                  [attr.data-testing-id]="item.id + '-nav-link'"
                   class="link-decoration-hover"
+                  [attr.data-testing-id]="item.id + '-nav-link'"
                 >
                   <fa-icon *ngIf="item.faIcon" [icon]="item.faIcon" />{{ item.localizationKey | translate }}
                 </a>
