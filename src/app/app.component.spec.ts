@@ -10,7 +10,7 @@ import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { CookiesBannerComponent } from 'ish-shell/application/cookies-banner/cookies-banner.component';
 
 import { AppComponent } from './app.component';
-import { CopilotComponent } from './extensions/copilot/copilot.component';
+import { LazyCopilotComponent } from './extensions/copilot/exports/lazy-copilot/lazy-copilot.component';
 import { FooterComponent } from './shell/footer/footer/footer.component';
 import { HeaderComponent } from './shell/header/header/header.component';
 
@@ -29,9 +29,9 @@ describe('App Component', () => {
       declarations: [
         AppComponent,
         MockComponent(CookiesBannerComponent),
-        MockComponent(CopilotComponent),
         MockComponent(FooterComponent),
         MockComponent(HeaderComponent),
+        MockComponent(LazyCopilotComponent),
       ],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],

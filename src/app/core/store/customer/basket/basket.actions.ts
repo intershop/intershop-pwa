@@ -83,10 +83,7 @@ export const deleteBasketShippingAddress = createAction(
 
 export const addProductToBasket = createAction('[Basket] Add Product', payload<AddLineItemType>());
 
-export const addItemsToBasket = createAction(
-  '[Basket Internal] Add Items To Basket',
-  payload<{ items: AddLineItemType[] }>()
-);
+export const addItemsToBasket = createAction('[Basket] Add Items To Basket', payload<{ items: AddLineItemType[] }>());
 
 export const addItemsToBasketFail = createAction('[Basket API] Add Items To Basket Fail', httpError());
 

@@ -51,11 +51,6 @@ export const PRICE_UPDATE = createEnvironmentInjectionToken('priceUpdate');
  */
 export const THEME_COLOR = createEnvironmentInjectionToken('themeColor');
 
-/**
- * the configured copilot settings
- */
-export const COPILOT_SETTINGS = createEnvironmentInjectionToken('copilotConfig');
-
 /*
  * global definition of the Bootstrap grid system breakpoint widths
  */

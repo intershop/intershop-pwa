@@ -5,6 +5,7 @@ import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 import { MultiSiteLocaleMap } from 'ish-core/utils/multi-site/multi-site.service';
 
 import { AddressDoctorConfig } from '../app/extensions/address-doctor/models/address-doctor/address-doctor-config.model';
+import { CopilotConfig } from '../app/extensions/copilot/models/copilot-config/copilot-config.model';
 import { TactonConfig } from '../app/extensions/tacton/models/tacton-config/tacton-config.model';
 
 export interface Environment {
@@ -71,6 +72,9 @@ export interface Environment {
 
   // address doctor integration
   addressDoctor?: AddressDoctorConfig;
+
+  // Intershop Copilot
+  copilot?: CopilotConfig;
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
 
@@ -143,13 +147,6 @@ export interface Environment {
    * - 'stable': only fetch prices once per application lifetime
    */
   priceUpdate: 'stable' | 'always';
-
-  copilotConfig?: {
-    copilotTitle: string;
-    chatflowid: string;
-    apiHost: string;
-    cdnLink: string;
-  };
 }
 
 export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
@@ -218,10 +215,9 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   },
   priceUpdate: 'always',
 
-  copilotConfig: {
-    copilotTitle: 'inSPIRED Assistant',
+  copilot: {
+    copilotUIFile: 'https://cdn.jsdelivr.net/gh/intershop/ai-flowise-chat-embed@website/demo-store/dist/web.js',
     chatflowid: '3ae443a9-b15f-4eca-a23c-8b496b7bbddf',
     apiHost: 'https://ish-flowise-app.azurewebsites.net',
-    cdnLink: 'https://cdn.jsdelivr.net/gh/714Lemons/FlowiseChatEmbed@dev/dist/web.js',
   },
 };

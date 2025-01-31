@@ -5,11 +5,12 @@ import { Observable, combineLatest, identity } from 'rxjs';
 import { debounce, distinctUntilChanged, filter, map, pairwise, startWith, switchMap, tap } from 'rxjs/operators';
 
 import { PRICE_UPDATE } from 'ish-core/configurations/injection-keys';
+import { AddLineItemType } from 'ish-core/models/line-item/line-item.model';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { selectRouteParam } from 'ish-core/store/core/router';
-import { addProductToBasket } from 'ish-core/store/customer/basket';
+import { addItemsToBasket, addProductToBasket } from 'ish-core/store/customer/basket';
 import { getPriceDisplayType } from 'ish-core/store/customer/user';
 import {
   getCategory,
@@ -180,6 +181,10 @@ export class ShoppingFacade {
 
   addProductToBasket(sku: string, quantity: number, warrantySku?: string) {
     this.store.dispatch(addProductToBasket({ sku, quantity, warrantySku }));
+  }
+
+  addProductsToBasket(items: AddLineItemType[]) {
+    this.store.dispatch(addItemsToBasket({ items }));
   }
 
   // PRODUCT LISTING

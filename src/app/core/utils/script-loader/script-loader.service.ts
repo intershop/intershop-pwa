@@ -20,10 +20,11 @@ export class ScriptLoaderService {
   /**
    * load a script, if it has not already been loaded
    *
-   * @param url  script url, e.g. https://pptest.payengine.de/bridge/1.0/payengine.min.js
+   * @param url   script url, e.g. https://pptest.payengine.de/bridge/1.0/payengine.min.js
+   * @param type  optionally set a type if it is not a classic Javascript file, e.g. 'module'
    */
 
-  load(url: string): Observable<ScriptType> {
+  load(url: string, type?: string): Observable<ScriptType> {
     return new Observable<ScriptType>((observer: Observer<ScriptType>) => {
       let script = this.registeredScripts.find(s => s.src === url);
       if (!script) {
@@ -38,9 +39,11 @@ export class ScriptLoaderService {
       } else {
         // Load the script
         const scriptElement = this.renderer.createElement('script');
-        scriptElement.type = 'text/javascript';
-        scriptElement.src = script.src;
+        scriptElement.src = url;
         scriptElement.async = true;
+        if (type) {
+          scriptElement.type = type;
+        }
 
         scriptElement.onload = () => {
           script.loaded = true;

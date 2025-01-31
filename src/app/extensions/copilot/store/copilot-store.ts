@@ -1,11 +1,9 @@
 import { createFeatureSelector } from '@ngrx/store';
 
-import { CopilotToolCall } from './copilot.reducer';
+import { CopilotConfig } from '../models/copilot-config/copilot-config.model';
 
-// Define the structure of the CopilotState interface
-export interface CopilotCheck {
-  _copilot: CopilotToolCall;
+export interface CopilotState {
+  copilotConfig: CopilotConfig;
 }
 
-// Create a feature selector for the copilot state
-export const getCopilotToolCall = createFeatureSelector<CopilotToolCall>('copilot');
+export const getCopilotState = createFeatureSelector<CopilotState>('copilot');

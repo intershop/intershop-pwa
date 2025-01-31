@@ -1,22 +1,23 @@
-import { NgModule, Type } from '@angular/core';
-import { EffectsModule, FunctionalEffect } from '@ngrx/effects';
+import { NgModule } from '@angular/core';
+import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
-import { CopilotCheck } from './copilot-store';
-import { copilotReducer } from './copilot.reducer';
+import { CopilotConfigEffects } from './copilot-config/copilot-config.effects';
+import { copilotConfigReducer } from './copilot-config/copilot-config.reducer';
+import { CopilotState } from './copilot-store';
 
-const copilotReducers: ActionReducerMap<CopilotCheck> = {
-  _copilot: copilotReducer,
+const copilotReducers: ActionReducerMap<CopilotState> = {
+  copilotConfig: copilotConfigReducer,
 };
 
-const copilotEffects: (Type<unknown> | Record<string, FunctionalEffect>)[] = [];
+const copilotEffects = [CopilotConfigEffects];
 
 @NgModule({
-  imports: [EffectsModule.forFeature(copilotEffects), StoreModule.forFeature('copilot', copilotReducer)],
+  imports: [EffectsModule.forFeature(copilotEffects), StoreModule.forFeature('copilot', copilotReducers)],
 })
 export class CopilotStoreModule {
-  static forTesting(...reducers: (keyof ActionReducerMap<CopilotCheck>)[]) {
+  static forTesting(...reducers: (keyof ActionReducerMap<CopilotState>)[]) {
     return StoreModule.forFeature('copilot', pick(copilotReducers, reducers));
   }
 }

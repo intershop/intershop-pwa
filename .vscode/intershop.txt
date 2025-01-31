@@ -17,6 +17,8 @@ breakline
 brotli
 callparametersstring
 categoryref
+chatflow
+chatflowid
 cobrowse
 colorcode
 compodoc
@@ -49,6 +51,7 @@ errorpage
 extralarge
 fastpay
 fieldgroup
+flowise
 flushdb
 fontawesome
 foo

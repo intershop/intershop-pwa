@@ -27,7 +27,6 @@ import { AddressDoctorExportsModule } from '../extensions/address-doctor/exports
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
 import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
 import { ContactUsExportsModule } from '../extensions/contact-us/exports/contact-us-exports.module';
-import { CopilotExportsModule } from '../extensions/copilot/exports/copilot-exports.module';
 import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
 import { ProductNotificationsExportsModule } from '../extensions/product-notifications/exports/product-notifications-exports.module';
 import { PunchoutExportsModule } from '../extensions/punchout/exports/punchout-exports.module';
@@ -321,9 +320,9 @@ const exportedComponents = [
 ];
 
 @NgModule({
-  imports: [...importExportModules, CopilotExportsModule],
+  imports: [...importExportModules],
   declarations: [...declaredComponents, ...exportedComponents],
-  exports: [...exportedComponents, ...importExportModules, CopilotExportsModule],
+  exports: [...exportedComponents, ...importExportModules],
 })
 export class SharedModule {
   constructor(moduleLoader: ModuleLoaderService, featureEventNotifier: FeatureEventService, injector: Injector) {

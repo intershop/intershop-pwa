@@ -47,6 +47,20 @@ export class AppFacade {
   getRestEndpoint$ = this.store.pipe(select(getRestEndpoint));
   getPipelineEndpoint$ = this.store.pipe(select(getPipelineEndpoint));
 
+  getRestEndpointWithContext$ = combineLatest([
+    this.store.pipe(select(getRestEndpoint)),
+    this.store.pipe(
+      select(getCurrentLocale),
+      whenTruthy(),
+      map(l => `;loc=${l}`)
+    ),
+    this.store.pipe(
+      select(getCurrentCurrency),
+      whenTruthy(),
+      map(l => `;cur=${l}`)
+    ),
+  ]).pipe(map(arr => arr.join('')));
+
   appWrapperClasses$ = combineLatest([
     this.store.pipe(
       select(getWrapperClass),

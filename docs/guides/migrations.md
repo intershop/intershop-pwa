@@ -9,6 +9,10 @@ kb_sync_latest_only
 
 ## From 5.2 to 5.3
 
+The Intershop PWA 5.3.0 introduces a standard integration with Intershop Copilot.
+To enable the Copilot integration the feature toggle `copilot` and the `copilot` configuration with fitting `copilotUIFile`, `chatflowid` and `apiHost` have to be provided.
+A demo configuration for Intershop Copilot is configured in the Intershop PWA by default.
+
 The `updateUser` method of the `UserService` has been slightly refactored.
 It now sends the user password in the request body to enable password validation on e-mail change.
 The authorization header has also been removed as authorization is done via session token.
