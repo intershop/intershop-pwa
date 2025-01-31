@@ -1,7 +1,6 @@
 # export appropriate ICM_BASE_URL and use with
 # docker compose up --build
 
-version: '3'
 services:
   pwa:
     image: intershophub/intershop-pwa-ssr
@@ -13,6 +12,9 @@ services:
         # activeThemes: b2c
     # command: ['node', 'dist/b2c/run-standalone']
     # command: ['node', 'dist/b2b/run-standalone']
+    # ports:
+    #   - '4201:4200'
+    #   - '9113:9113'
     environment:
       ICM_BASE_URL: 'https://develop.icm.intershop.de'
       LOGGING: 'true'
@@ -21,6 +23,7 @@ services:
       # TRUST_ICM: 'true'
       # PROXY_ICM: 'true'
       # PROMETHEUS: 'true'
+      # METRICS_DETAIL_LEVEL: 'DETAILED'
       # MULTI_SITE_LOCALE_MAP: |
       #   en_US: /en
       #   de_DE: /de
@@ -73,8 +76,7 @@ services:
       - pwa
     ports:
       - '4200:80'
-      # - '4200:443'
-      # - '9113:9113'
+      # - '9114:9113'
     environment:
       UPSTREAM_PWA: 'http://pwa:4200'
       ICM_BASE_URL: 'https://develop.icm.intershop.de'

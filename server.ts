@@ -17,33 +17,67 @@ import {
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
 import * as client from 'prom-client';
+import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level';
+import { METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
 
 const collectDefaultMetrics = client.collectDefaultMetrics;
 
+const metricsDetailLevel =
+  MetricsDetailLevel[process.env.METRICS_DETAIL_LEVEL as keyof typeof MetricsDetailLevel] ?? MetricsDetailLevel.DEFAULT;
+
+const collectDetailedMetrics = metricsDetailLevel === MetricsDetailLevel.DETAILED;
+
 const defaultLabels =
-  process.env.pm_id && process.env.name ? { theme: process.env.name, pm2_id: process.env.pm_id } : undefined;
+  process.env.pm_id && process.env.name && collectDetailedMetrics
+    ? { theme: process.env.name, pm2_id: process.env.pm_id }
+    : undefined;
 
-client.register.setDefaultLabels(defaultLabels);
+if (defaultLabels) {
+  client.register.setDefaultLabels(defaultLabels);
+}
 
-const requestCounts = new client.Gauge({
-  name: 'pwa_http_request_counts',
-  help: 'counter for requests labeled with: method, status_code, theme, base_href, path',
-  labelNames: ['method', 'status_code', 'base_href', 'path'],
-});
+const requestCounts = collectDetailedMetrics
+  ? new client.Gauge({
+      name: 'pwa_http_request_counts',
+      help: 'counter for requests labeled with: method, status_code, theme, base_href, path',
+      labelNames: ['method', 'status_code', 'base_href', 'path'],
+    })
+  : undefined;
 
-const requestDuration = new client.Histogram({
-  name: 'pwa_http_request_duration_seconds',
-  help: 'duration histogram of http responses labeled with: status_code, theme',
-  buckets: [0.1, 0.3, 0.5, 0.7, 0.9, 1.1, 1.3, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30],
-  labelNames: ['status_code', 'base_href', 'path'],
-});
+const basicRequestCounts = collectDetailedMetrics
+  ? undefined
+  : new client.Gauge({
+      name: 'pwa_http_request_counts',
+      help: 'counter for requests labeled with: method, status_code',
+      labelNames: ['method', 'status_code'],
+    });
 
-const restRequestDuration = new client.Summary({
-  name: 'pwa_rest_request_duration_seconds',
-  help: 'duration histogram of ICM rest responses',
-  percentiles: [0.5, 0.9, 0.95, 0.99],
-  labelNames: ['endpoint'],
-});
+const requestDuration = collectDetailedMetrics
+  ? new client.Histogram({
+      name: 'pwa_http_request_duration_seconds',
+      help: 'duration histogram of http responses labeled with: status_code, theme',
+      buckets: [0.1, 0.3, 0.5, 0.7, 0.9, 1.1, 1.3, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30],
+      labelNames: ['status_code', 'base_href', 'path'],
+    })
+  : undefined;
+
+const basicRequestDuration = collectDetailedMetrics
+  ? undefined
+  : new client.Histogram({
+      name: 'pwa_http_request_duration_seconds',
+      help: 'duration histogram of http responses labeled with: status_code',
+      buckets: [0.1, 0.3, 0.5, 0.7, 0.9, 1.1, 1.3, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30],
+      labelNames: ['status_code'],
+    });
+
+const restRequestDuration = collectDetailedMetrics
+  ? new client.Summary({
+      name: 'pwa_rest_request_duration_seconds',
+      help: 'duration histogram of ICM rest responses',
+      percentiles: [0.5, 0.9, 0.95, 0.99],
+      labelNames: ['endpoint'],
+    })
+  : undefined;
 
 const PM2 = process.env.pm_id && process.env.name ? `${process.env.pm_id} ${process.env.name}` : undefined;
 
@@ -97,7 +131,6 @@ global['navigator'] = win.navigator;
 export function app() {
   const logging = /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase());
   const logAll = /on|1|true|yes/.test(process.env.LOG_ALL?.toLowerCase());
-
   const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
 
   const SSR_HYBRID_BACKEND = process.env.SSR_HYBRID_BACKEND || ICM_BASE_URL;
@@ -181,6 +214,7 @@ export function app() {
       providers: [
         { provide: 'SSR_HYBRID', useValue: !!process.env.SSR_HYBRID },
         { provide: 'PROMETHEUS_REST', useValue: prometheusRest },
+        { provide: METRICS_DETAIL_LEVEL, useValue: metricsDetailLevel },
       ],
       inlineCriticalCss: false,
     })
@@ -474,12 +508,17 @@ export function app() {
         const cleanUrl = req.originalUrl.replace(/[;?].*/g, '');
         const path = cleanUrl.replace(base_href, '');
 
-        requestCounts.inc({ method: req.method, status_code: res.statusCode, base_href, path });
-        requestDuration.labels({ status_code: res.statusCode, base_href, path }).observe(duration / 1000);
-        prometheusRest.forEach(({ endpoint, duration }) => {
-          restRequestDuration.labels({ endpoint }).observe(duration / 1000);
-        });
-        prometheusRest.length = 0;
+        if (collectDetailedMetrics) {
+          requestCounts.inc({ method: req.method, status_code: res.statusCode, base_href, path });
+          requestDuration.labels({ status_code: res.statusCode, base_href, path }).observe(duration / 1000);
+          prometheusRest.forEach(({ endpoint, duration }) => {
+            restRequestDuration.labels({ endpoint }).observe(duration / 1000);
+          });
+          prometheusRest.length = 0;
+        } else {
+          basicRequestCounts.inc({ method: req.method, status_code: res.statusCode });
+          basicRequestDuration.labels({ status_code: res.statusCode }).observe(duration / 1000);
+        }
       });
       next();
     });

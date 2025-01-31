@@ -1,5 +1,6 @@
 import { InjectionToken } from '@angular/core';
 
+import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level';
 import { createEnvironmentInjectionToken } from 'ish-core/utils/injection';
 
 /**
@@ -51,12 +52,14 @@ export const PRICE_UPDATE = createEnvironmentInjectionToken('priceUpdate');
  */
 export const THEME_COLOR = createEnvironmentInjectionToken('themeColor');
 
-/*
+/**
  * global definition of the Bootstrap grid system breakpoint widths
  */
-
 export const SMALL_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('smallBreakpointWidth');
-
 export const MEDIUM_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('mediumBreakpointWidth');
-
 export const LARGE_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('largeBreakpointWidth');
+
+/**
+ * InjectionToken for the metrics detail level configured via environment variable (not environment.ts)
+ */
+export const METRICS_DETAIL_LEVEL = new InjectionToken<MetricsDetailLevel>('metricsDetailLevel');
