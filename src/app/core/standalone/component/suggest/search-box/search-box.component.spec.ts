@@ -3,7 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { ReplaySubject, Subject } from 'rxjs';
+import { instance, mock } from 'ts-mockito';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
 import { SuggestBrandsTileComponent } from 'ish-core/standalone/component/suggest/suggest-brands-tile/suggest-brands-tile.component';
@@ -19,12 +21,14 @@ describe('Search Box Component', () => {
   let element: HTMLElement;
   let searchResults$: Subject<Suggestion>;
   let searchTerm$: Subject<string>;
+  let appFacade: AppFacade;
 
   beforeEach(async () => {
     searchResults$ = new ReplaySubject(1);
     searchTerm$ = new ReplaySubject(1);
     searchResults$.next(undefined);
     searchTerm$.next(undefined);
+    appFacade = mock(AppFacade);
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
@@ -39,6 +43,7 @@ describe('Search Box Component', () => {
           provide: ShoppingFacade,
           useFactory: () => ({ searchResults$: () => searchResults$, searchTerm$ } as Partial<ShoppingFacade>),
         },
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
       ],
     }).compileComponents();
   });
@@ -75,7 +80,13 @@ describe('Search Box Component', () => {
 
   describe('with results', () => {
     beforeEach(() => {
-      searchResults$.next({ keywordSuggestions: ['Cameras', 'Camcorders'] } as Suggestion);
+      searchResults$.next({
+        keywordSuggestions: ['Cameras', 'Camcorders'],
+        products: [],
+        categories: [],
+        brands: [],
+        contentSuggestions: [],
+      } as Suggestion);
     });
 
     it('should show results when suggestions are available', () => {

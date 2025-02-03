@@ -16,8 +16,10 @@
   />
 
   <div *ngIf="searchSuggestError$ | async" class="search-suggest-container">
-    <div class="headline">{{ 'suggest.error.headline' | translate }}</div>
-    <p>{{ 'suggest.error.text' | translate }}</p>
+    <div class="col-12">
+      <div class="headline">{{ 'suggest.error.headline' | translate }}</div>
+      <p>{{ 'suggest.error.text' | translate }}</p>
+    </div>
   </div>
 
   <ng-container *ngIf="configuration?.autoSuggest && searchResults$ | async as results">
@@ -33,30 +35,59 @@
       class="search-suggest-container"
       #searchSuggestLayer
     >
-      <div class="d-flex flex-column">
-        <div *ngIf="results.keywordSuggestions">
+      <div class="col-12 col-md-5 d-flex flex-column">
+        <div *ngIf="results.keywordSuggestions.length">
           <ish-suggest-keywords-tile
             [keywords]="results.keywordSuggestions"
+            [inputTerms$]="inputSearchTerms$"
+            (submitSearch)="submitSearch($event)"
+            [maxAutoSuggests]="5"
+          />
+        </div>
+        <div *ngIf="results.categories.length">
+          <ish-suggest-categories-tile
+            [categories]="results.categories"
             [inputTerms$]="inputSearchTerms$"
             (submitSearch)="submitSearch($event)"
             [maxAutoSuggests]="3"
           />
         </div>
-        <div *ngIf="results.categories">
-          <ish-suggest-categories-tile [categories]="results.categories" />
-        </div>
-        <div *ngIf="results.brands">
-          <ish-suggest-brands-tile [brands]="results.brands" />
+        <div *ngIf="results.brands.length">
+          <ish-suggest-brands-tile
+            [brands]="results.brands"
+            [inputTerms$]="inputSearchTerms$"
+            (submitSearch)="submitSearch($event)"
+            [maxAutoSuggests]="3"
+          />
         </div>
       </div>
-      <div *ngIf="results.products">
-        <ish-suggest-products-tile [products]="results.products" />
+      <div *ngIf="results.products.length" class="col-12 col-md-7">
+        <ish-suggest-products-tile
+          [products]="results.products"
+          [inputTerms$]="inputSearchTerms$"
+          (submitSearch)="submitSearch($event)"
+          [maxAutoSuggests]="8"
+        />
+      </div>
+      <div class="col-12">
+        <div class="show-all">
+          <button
+            type="button"
+            class="btn btn-link"
+            [title]="'search.searchbox.button.title' | translate"
+            (click)="submitSearch(searchInput.value)"
+          >
+            {{ 'suggest.view_all.link' | translate }}
+          </button>
+        </div>
       </div>
     </div>
     <ng-template #noResults>
       <div *ngIf="hasMoreThanTwoCharacters" class="search-suggest-container">
-        <div class="headline">{{ 'suggest.no_results.headline' | translate }}</div>
-        <p>{{ 'suggest.no_results.text' | translate }}</p>
+        <div class="col-12">
+          <div class="headline">{{ 'suggest.no_results.headline' | translate }}</div>
+          <p>{{ 'suggest.no_results.text' | translate }}</p>
+        </div>
       </div>
     </ng-template>
   </ng-container>

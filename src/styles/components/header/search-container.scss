@@ -101,7 +101,8 @@
       &.scaled-up {
         .search-suggest-container {
           // tablet and desktop: suggest layer is only shown when search box is scaled up to expanded width
-          display: block;
+          display: flex;
+          flex-wrap: wrap;
         }
       }
     }
@@ -115,7 +116,7 @@
       width: 100%;
       // preserve space for onscreen keyboard on mobile devices
       max-height: calc(60vh - #{$header-height-mobile + $search-container-height * 3});
-      padding: $space-default $space-default * 2;
+      padding: $space-default;
       margin: 0;
       overflow-y: auto;
       line-height: unset;
@@ -149,20 +150,9 @@
 
         li {
           display: block;
-          width: 100%;
           padding: 0;
           margin: 0;
           line-height: $line-height-base;
-
-          &:hover {
-            button {
-              text-decoration: underline;
-
-              span {
-                text-decoration: underline;
-              }
-            }
-          }
 
           button {
             width: 100%;
@@ -174,11 +164,73 @@
             background: none;
             border: 0;
 
+            &:hover {
+              text-decoration: underline;
+
+              span {
+                text-decoration: underline;
+              }
+            }
+
             span {
               color: $text-color-corporate;
             }
           }
         }
+      }
+
+      .search-suggest-categories {
+        li {
+          display: flex;
+          align-items: center;
+
+          a {
+            padding-right: $space-default;
+
+            img {
+              width: $space-default * 3;
+              height: $space-default * 3;
+            }
+          }
+        }
+      }
+
+      .search-suggest-products {
+        ul {
+          gap: $space-default;
+
+          li {
+            flex: 0 1 23%;
+
+            @media (min-width: $screen-sm) {
+              flex: 0 1 21%;
+            }
+
+            @media (min-width: $screen-md) {
+              flex: 0 1 22%;
+            }
+
+            img {
+              display: block;
+              margin: ($space-default * 0.5) 0;
+              border: $border-width-default solid $border-color-light;
+            }
+
+            button {
+              word-break: break-all;
+            }
+
+            .current-price {
+              font-family: $font-family-condensedregular;
+              font-size: $font-size-base;
+            }
+          }
+        }
+      }
+
+      .show-all {
+        padding: ($space-default * 0.5) 0;
+        background: $color-tertiary;
       }
     }
 

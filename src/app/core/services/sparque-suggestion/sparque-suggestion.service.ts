@@ -15,7 +15,7 @@ import { SuggestionService } from 'ish-core/services/suggestion/suggestion.servi
  */
 @Injectable({ providedIn: 'root' })
 export class SparqueSuggestionService extends SuggestionService {
-  constructor(private sparqueApiService: SparqueApiService) {
+  constructor(private sparqueApiService: SparqueApiService, private sparqueSuggestionMapper: SparqueSuggestionMapper) {
     super();
   }
 
@@ -29,6 +29,6 @@ export class SparqueSuggestionService extends SuggestionService {
     const params = new HttpParams().set('Keyword', searchTerm);
     return this.sparqueApiService
       .get<SparqueSuggestions>(`suggestions`, { params, skipApiErrorHandling: true })
-      .pipe(map(SparqueSuggestionMapper.fromData));
+      .pipe(map(suggestions => this.sparqueSuggestionMapper.fromData(suggestions)));
   }
 }
