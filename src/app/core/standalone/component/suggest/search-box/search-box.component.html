@@ -26,16 +26,21 @@
     <div
       *ngIf="
         (results.keywordSuggestions.length ||
+          results.categories.length ||
           results.brands.length ||
-          results.products.length ||
-          results.categories.length) &&
+          results.products.length) &&
           hasMoreThanTwoCharacters;
         else noResults
       "
       class="search-suggest-container"
       #searchSuggestLayer
     >
-      <div class="col-12 col-md-5 d-flex flex-column">
+      <div
+        class="col-12 d-flex flex-column"
+        [ngClass]="{
+          'col-md-5': results.products.length
+        }"
+      >
         <div *ngIf="results.keywordSuggestions.length">
           <ish-suggest-keywords-tile
             [keywords]="results.keywordSuggestions"
@@ -61,7 +66,13 @@
           />
         </div>
       </div>
-      <div *ngIf="results.products.length" class="col-12 col-md-7">
+      <div
+        *ngIf="results.products.length"
+        [ngClass]="{
+          'col-md-7': results.keywordSuggestions.length || results.brands.length || results.categories.length
+        }"
+        class="col-12"
+      >
         <ish-suggest-products-tile
           [products]="results.products"
           [inputTerms$]="inputSearchTerms$"
