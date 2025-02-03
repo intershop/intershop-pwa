@@ -46,7 +46,7 @@ const requestCounts = collectDetailedMetrics
 
 const basicRequestCounts = collectDetailedMetrics
   ? undefined
-  : new client.Gauge({
+  : new client.Counter({
       name: 'pwa_http_request_counts',
       help: 'counter for requests labeled with: method, status_code',
       labelNames: ['method', 'status_code'],

@@ -38,6 +38,8 @@ The configuration parameter `METRICS_DETAIL_LEVEL` for the SSR container has bee
 By default it is set to the value `DEFAULT` which changes the SSR metrics (overall less metrics) compared to version 5.2.
 In order to restore the previous behavior the value can be set to `DETAILED`.
 
+The type of the `pm2_process_restarts` metric has been changed from _Gauge_ to _Counter_.
+
 ## From 5.1 to 5.2
 
 > [!NOTE]

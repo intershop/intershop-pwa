@@ -18,7 +18,7 @@ const pm2Processes = new client.Gauge({
   help: 'counter for pm2 processes',
   labelNames: ['name'],
 });
-const pm2ProcessRestarts = new client.Gauge({
+const pm2ProcessRestarts = new client.Counter({
   name: 'pm2_process_restarts',
   help: 'counter for pm2 process restarts',
   labelNames: ['name'],
@@ -36,6 +36,16 @@ const pm2GetmetricsFailure = new client.Counter({
   name: 'pm2_getmetrics_failure',
   help: 'counter for unsuccessful getmetrics messages',
 });
+
+const pm2RestartState = {};
+
+function trackRestarts(name, totalRestartCount) {
+  let previousRestartCount = pm2RestartState[name] ?? 0;
+  let newRestartCount = totalRestartCount - previousRestartCount;
+  pm2RestartState[name] = totalRestartCount;
+
+  return newRestartCount > 0 ? newRestartCount : 0;
+}
 
 const app = express();
 
@@ -101,7 +111,8 @@ app.get('/metrics', (_, res) => {
             {}
           );
           Object.entries(pm2Restarts).forEach(([name, value]) => {
-            pm2ProcessRestarts.labels({ name }).set(value);
+            let newRestarts = trackRestarts(name, value);
+            pm2ProcessRestarts.labels({ name }).inc(newRestarts);
           });
         }
       });
