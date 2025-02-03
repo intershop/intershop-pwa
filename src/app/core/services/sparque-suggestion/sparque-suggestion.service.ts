@@ -26,7 +26,8 @@ export class SparqueSuggestionService extends SuggestionService {
    * @returns An Observable emitting the search suggestions.
    */
   search(searchTerm: string): Observable<Suggestion> {
-    const params = new HttpParams().set('Keyword', searchTerm);
+    // count: maximum number of suggestions which is used individually for each type of suggestion
+    const params = new HttpParams().set('Keyword', searchTerm).set('count', '8');
     return this.sparqueApiService
       .get<SparqueSuggestions>(`suggestions`, { params, skipApiErrorHandling: true })
       .pipe(map(suggestions => this.sparqueSuggestionMapper.fromData(suggestions)));
