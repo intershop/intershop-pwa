@@ -1,24 +1,25 @@
 import { TestBed } from '@angular/core/testing';
-import { Store, StoreModule } from '@ngrx/store';
-import { of } from 'rxjs';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { StoreModule } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 
 import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
+import { getStaticEndpoint } from 'ish-core/store/core/configuration';
 
 import { SparqueSuggestions } from './sparque-suggestion.interface';
 import { SparqueSuggestionMapper } from './sparque-suggestion.mapper';
 
 describe('Sparque Suggestion Mapper', () => {
-  let store: Store;
   let sparqueSuggestionMapper: SparqueSuggestionMapper;
 
   beforeEach(() => {
-    store = mock(Store);
-    when(store.pipe(anything())).thenReturn(of('https://static.url'));
-
     TestBed.configureTestingModule({
       imports: [StoreModule.forRoot({})],
-      providers: [{ provide: Store, useFactory: () => instance(store) }, SparqueSuggestionMapper],
+      providers: [
+        provideMockStore({
+          selectors: [{ selector: getStaticEndpoint, value: 'https://static.url' }],
+        }),
+        SparqueSuggestionMapper,
+      ],
     });
 
     sparqueSuggestionMapper = TestBed.inject(SparqueSuggestionMapper);
