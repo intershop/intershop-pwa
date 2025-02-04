@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 
 import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
@@ -13,7 +12,6 @@ describe('Sparque Suggestion Mapper', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot({})],
       providers: [
         provideMockStore({
           selectors: [{ selector: getStaticEndpoint, value: 'https://static.url' }],

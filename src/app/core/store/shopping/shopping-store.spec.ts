@@ -281,7 +281,6 @@ describe('Shopping Store', () => {
           [Suggest Search] Load Search Suggestions:
             searchTerm: "some"
           [Suggest Search API] Return Search Suggestions:
-            searchTerm: "some"
             suggests: {"keywordSuggestions":[1]}
         `);
       });

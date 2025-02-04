@@ -39,7 +39,7 @@ export class SparqueSuggestionMapper {
       : undefined;
   }
 
-  mapProducts(products: SparqueProduct[]): Product[] {
+  private mapProducts(products: SparqueProduct[]): Product[] {
     return products
       ? products.map(product => ({
           name: product.name ? product.name : undefined,
@@ -67,7 +67,7 @@ export class SparqueSuggestionMapper {
       : undefined;
   }
 
-  mapCategories(categories: SparqueCategory[]): Category[] {
+  private mapCategories(categories: SparqueCategory[]): Category[] {
     return categories
       ? categories.map(category => ({
           name: category.categoryName ? category.categoryName : undefined,
@@ -88,7 +88,7 @@ export class SparqueSuggestionMapper {
       : [];
   }
 
-  mapBrands(brands: SparqueBrand[]): Brand[] {
+  private mapBrands(brands: SparqueBrand[]): Brand[] {
     return brands
       ? brands.map(brand => ({
           name: brand.brandName ? brand.brandName : undefined,
@@ -98,11 +98,11 @@ export class SparqueSuggestionMapper {
       : undefined;
   }
 
-  mapKeywords(keywords: SparqueKeywordSuggestions[]): string[] {
+  private mapKeywords(keywords: SparqueKeywordSuggestions[]): string[] {
     return keywords ? keywords.map(entry => entry.keyword) : [];
   }
 
-  mapContent(contentSuggestions: SparqueContentSuggestions[]): ContentSuggestion[] {
+  private mapContent(contentSuggestions: SparqueContentSuggestions[]): ContentSuggestion[] {
     return contentSuggestions
       ? contentSuggestions.map(content => ({
           newsType: content.newsType ? content.newsType : undefined,
@@ -116,11 +116,11 @@ export class SparqueSuggestionMapper {
       : undefined;
   }
 
-  mapAttributes(attributes: SparqueAttribute[]): Attribute[] {
+  private mapAttributes(attributes: SparqueAttribute[]): Attribute[] {
     return attributes ? attributes.map(attribute => ({ name: attribute.name, value: attribute.value })) : [];
   }
 
-  mapImages(images: SparqueImage[]): Image[] {
+  private mapImages(images: SparqueImage[]): Image[] {
     return images
       ? images.map(image => ({
           name: image.id ? image.id : undefined,

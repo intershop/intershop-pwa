@@ -124,7 +124,6 @@ describe('Search Effects', () => {
         [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
-          searchTerm: "good"
           suggests: [{"keywordSuggestions":["Goods"]}]
       `);
 
@@ -135,12 +134,10 @@ describe('Search Effects', () => {
         [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
-          searchTerm: "good"
           suggests: [{"keywordSuggestions":["Goods"]}]
         [Suggest Search] Load Search Suggestions:
           searchTerm: "goo"
         [Suggest Search API] Return Search Suggestions:
-          searchTerm: "goo"
           suggests: [{"keywordSuggestions":["Goods"]}]
       `);
 
@@ -151,17 +148,14 @@ describe('Search Effects', () => {
         [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
-          searchTerm: "good"
           suggests: [{"keywordSuggestions":["Goods"]}]
         [Suggest Search] Load Search Suggestions:
           searchTerm: "goo"
         [Suggest Search API] Return Search Suggestions:
-          searchTerm: "goo"
           suggests: [{"keywordSuggestions":["Goods"]}]
         [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
-          searchTerm: "good"
           suggests: [{"keywordSuggestions":["Goods"]}]
       `);
     }));

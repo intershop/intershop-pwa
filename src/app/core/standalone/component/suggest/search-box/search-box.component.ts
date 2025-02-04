@@ -179,7 +179,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
     }
   }
 
-  isElementWithinSearchSuggestLayer(element: HTMLElement): boolean {
+  private isElementWithinSearchSuggestLayer(element: HTMLElement): boolean {
     return this.searchSuggestLayer?.nativeElement.contains(element) ?? false;
   }
 
@@ -224,10 +224,6 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
     this.blur();
 
     return false; // prevent form submission
-  }
-
-  truncate(text: string, limit: number): string {
-    return text.length > limit ? `${text.substring(0, limit)}...` : text;
   }
 
   // getter method to check if the input search term has more than 2 characters

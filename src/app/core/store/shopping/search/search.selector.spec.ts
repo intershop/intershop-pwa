@@ -22,9 +22,7 @@ describe('Search Selector', () => {
 
   describe('getSuggestSearchResults', () => {
     beforeEach(() => {
-      store$.dispatch(
-        suggestSearchSuccess({ searchTerm: 'searchTerm', suggests: { keywordSuggestions: ['term'] } as Suggestion })
-      );
+      store$.dispatch(suggestSearchSuccess({ suggests: { keywordSuggestions: ['term'] } as Suggestion }));
     });
 
     it('should get search results when searchTerm exists', () => {

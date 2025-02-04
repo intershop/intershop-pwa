@@ -121,7 +121,7 @@ export class SearchEffects {
             .get()
             .search(searchTerm)
             .pipe(
-              map(suggests => suggestSearchSuccess({ searchTerm, suggests })),
+              map(suggests => suggestSearchSuccess({ suggests })),
               mapErrorToAction(suggestSearchFail)
             )
         )

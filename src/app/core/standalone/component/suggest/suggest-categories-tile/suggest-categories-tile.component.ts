@@ -20,7 +20,7 @@ export class SuggestCategoriesTileComponent {
   @Input() inputTerms$ = new ReplaySubject<string>(1);
   @Output() submitSearch = new EventEmitter<string>();
 
-  categoryImageUrl = '/assets/img/not-available.svg';
+  private categoryImageUrl = '/assets/img/not-available.svg';
 
   getCategoryImageUrl(images: { effectiveUrl?: string }[]): string {
     return images?.[0]?.effectiveUrl || this.categoryImageUrl;

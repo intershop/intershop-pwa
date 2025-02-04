@@ -7,14 +7,12 @@ import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils
 import { clearSuggestions, suggestSearch, suggestSearchFail, suggestSearchSuccess } from './search.actions';
 
 export interface SuggestState {
-  searchTerm: string;
   suggests: Suggestion;
   loading: boolean;
   error: HttpError;
 }
 
 const initialState: SuggestState = {
-  searchTerm: undefined,
   suggests: undefined,
   loading: false,
   error: undefined,
@@ -30,7 +28,6 @@ export const searchReducer = createReducer(
     suggestSearchSuccess,
     (state, action): SuggestState => ({
       ...state,
-      searchTerm: action.payload.searchTerm,
       suggests: action.payload.suggests,
     })
   )
