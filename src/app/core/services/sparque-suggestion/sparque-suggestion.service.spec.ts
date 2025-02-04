@@ -35,7 +35,7 @@ describe('Sparque Suggestion Service', () => {
   });
 
   it('should map the response using SparqueSuggestionMapper', done => {
-    const suggestions = { keywordSuggestions: [{ term: 'test' }] };
+    const suggestions = { keywordSuggestions: [{ keyword: 'test' }] } as SparqueSuggestions;
     when(sparqueApiService.get(anything(), anything())).thenReturn(of<SparqueSuggestions>(suggestions));
 
     suggestService.search('test').subscribe(() => {
