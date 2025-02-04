@@ -200,11 +200,7 @@
           gap: $space-default;
 
           li {
-            flex: 0 1 23%;
-
-            @media (min-width: $screen-sm) {
-              flex: 0 1 21%;
-            }
+            flex: 0 1 21%;
 
             @media (min-width: $screen-md) {
               flex: 0 1 22%;
@@ -223,6 +219,23 @@
             .current-price {
               font-family: $font-family-condensedregular;
               font-size: $font-size-base;
+            }
+          }
+        }
+      }
+
+      .products-only {
+        .search-suggest-products {
+          ul {
+            li {
+              // more items per line on larger screens
+              @media (min-width: $screen-sm) {
+                flex: 0 1 14%;
+              }
+
+              @media (min-width: $screen-md) {
+                flex: 0 1 12%;
+              }
             }
           }
         }

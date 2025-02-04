@@ -69,7 +69,8 @@
       <div
         *ngIf="results.products.length"
         [ngClass]="{
-          'col-md-7': results.keywordSuggestions.length || results.brands.length || results.categories.length
+          'col-md-7': results.keywordSuggestions.length || results.brands.length || results.categories.length,
+          'products-only': !results.keywordSuggestions.length && !results.brands.length && !results.categories.length
         }"
         class="col-12"
       >
