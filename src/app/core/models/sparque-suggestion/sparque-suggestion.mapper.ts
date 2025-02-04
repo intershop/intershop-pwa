@@ -71,12 +71,12 @@ export class SparqueSuggestionMapper {
     return categories
       ? categories.map(category => ({
           name: category.categoryName ? category.categoryName : undefined,
-          uniqueId: category.CategoryID ? category.CategoryID : undefined,
-          categoryRef: category.CategoryURL ? category.CategoryURL : undefined,
-          categoryPath: category.ParentCategoryId
-            ? [category.ParentCategoryId, category.CategoryID ? category.CategoryID : undefined]
-            : category.CategoryID
-            ? [category.CategoryID]
+          uniqueId: category.categoryID ? category.categoryID : undefined,
+          categoryRef: category.categoryURL ? category.categoryURL : undefined,
+          categoryPath: category.parentCategoryId
+            ? [category.parentCategoryId, category.categoryID ? category.categoryID : undefined]
+            : category.categoryID
+            ? [category.categoryID]
             : [],
           hasOnlineProducts: category.totalCount && category.totalCount > 0,
           description: undefined,

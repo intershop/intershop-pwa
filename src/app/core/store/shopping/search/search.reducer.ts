@@ -1,4 +1,3 @@
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -7,29 +6,32 @@ import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils
 
 import { clearSuggestions, suggestSearch, suggestSearchFail, suggestSearchSuccess } from './search.actions';
 
-interface SuggestSearch {
+export interface SuggestState {
   searchTerm: string;
   suggests: Suggestion;
-}
-
-export const searchAdapter = createEntityAdapter<SuggestSearch>({
-  selectId: search => search.searchTerm,
-});
-export interface SearchState extends EntityState<SuggestSearch> {
   loading: boolean;
   error: HttpError;
 }
 
-const initialState: SearchState = searchAdapter.getInitialState({
+const initialState: SuggestState = {
+  searchTerm: undefined,
+  suggests: undefined,
   loading: false,
   error: undefined,
-});
+};
 
 export const searchReducer = createReducer(
   initialState,
   setLoadingOn(suggestSearch),
   unsetLoadingAndErrorOn(suggestSearchSuccess),
   setErrorOn(suggestSearchFail),
-  on(suggestSearchSuccess, (state, action) => searchAdapter.upsertOne(action.payload, state)),
-  on(clearSuggestions, (): SearchState => initialState)
+  on(clearSuggestions, (): SuggestState => initialState),
+  on(
+    suggestSearchSuccess,
+    (state, action): SuggestState => ({
+      ...state,
+      searchTerm: action.payload.searchTerm,
+      suggests: action.payload.suggests,
+    })
+  )
 );

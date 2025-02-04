@@ -8,7 +8,7 @@ import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, w
 import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
 import { ICMSuggestionService } from 'ish-core/services/icm-suggestion/icm-suggestion.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { SuggestionService } from 'ish-core/services/suggestion/suggestion.service';
+import { SuggestionServiceProvider } from 'ish-core/services/suggestion/provider/suggestion.service.provider';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadMoreProducts, setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
@@ -27,12 +27,15 @@ describe('Search Effects', () => {
   let router: Router;
   let productsServiceMock: ProductsService;
   let suggestionServiceMock: ICMSuggestionService;
+  let suggestionServiceProviderMock: SuggestionServiceProvider;
   let httpStatusCodeService: HttpStatusCodeService;
 
   const suggests = [{ keywordSuggestions: ['Goods'] }] as Suggestion;
 
   beforeEach(() => {
     suggestionServiceMock = mock(ICMSuggestionService);
+    suggestionServiceProviderMock = mock(SuggestionServiceProvider);
+    when(suggestionServiceProviderMock.get()).thenReturn(instance(suggestionServiceMock));
     when(suggestionServiceMock.search(anyString())).thenReturn(of<Suggestion>(suggests));
     productsServiceMock = mock(ProductsService);
     const skus = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
@@ -63,7 +66,7 @@ describe('Search Effects', () => {
       ],
       providers: [
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
-        { provide: SuggestionService, useFactory: () => instance(suggestionServiceMock) },
+        { provide: SuggestionServiceProvider, useFactory: () => instance(suggestionServiceProviderMock) },
         provideStoreSnapshots(),
       ],
     });
@@ -99,8 +102,6 @@ describe('Search Effects', () => {
     it('should return search terms when available', fakeAsync(() => {
       const action = suggestSearch({ searchTerm: 'g' });
       store$.dispatch(action);
-
-      tick(5000);
 
       verify(suggestionServiceMock.search('g')).once();
     }));

@@ -67,9 +67,9 @@ describe('Sparque Suggestion Mapper', () => {
         categories: [
           {
             categoryName: 'Category 1',
-            CategoryID: 'cat1',
-            CategoryURL: 'http://category.url',
-            ParentCategoryId: 'parentCat',
+            categoryID: 'cat1',
+            categoryURL: 'http://category.url',
+            parentCategoryId: 'parentCat',
             totalCount: 10,
             attributes: [{ name: 'Type', value: 'Electronics' }],
           },

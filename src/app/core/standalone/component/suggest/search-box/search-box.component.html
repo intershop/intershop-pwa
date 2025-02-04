@@ -38,7 +38,7 @@
       <div
         class="col-12 d-flex flex-column"
         [ngClass]="{
-          'col-md-5': results.products.length
+          'col-md-5': results.products?.length
         }"
       >
         <div *ngIf="results.keywordSuggestions.length">
@@ -49,7 +49,7 @@
             [maxAutoSuggests]="5"
           />
         </div>
-        <div *ngIf="results.categories.length">
+        <div *ngIf="results.categories?.length">
           <ish-suggest-categories-tile
             [categories]="results.categories"
             [inputTerms$]="inputSearchTerms$"
@@ -57,7 +57,7 @@
             [maxAutoSuggests]="3"
           />
         </div>
-        <div *ngIf="results.brands.length">
+        <div *ngIf="results.brands?.length">
           <ish-suggest-brands-tile
             [brands]="results.brands"
             [inputTerms$]="inputSearchTerms$"
@@ -67,7 +67,7 @@
         </div>
       </div>
       <div
-        *ngIf="results.products.length"
+        *ngIf="results.products?.length"
         [ngClass]="{
           'col-md-7': results.keywordSuggestions.length || results.brands.length || results.categories.length,
           'products-only': !results.keywordSuggestions.length && !results.brands.length && !results.categories.length

@@ -30,13 +30,13 @@ export interface SparqueProduct {
 }
 
 export interface SparqueCategory {
-  CategoryID: string;
+  categoryID: string;
   categoryName: string;
-  CategoryURL?: string;
+  categoryURL?: string;
   totalCount: number;
-  Position?: number;
-  ParentCategoryId: string;
-  SubCategories?: string[];
+  position?: number;
+  parentCategoryId: string;
+  subCategories?: string[];
   attributes?: SparqueAttribute[];
 }
 

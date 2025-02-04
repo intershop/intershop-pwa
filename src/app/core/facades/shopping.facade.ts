@@ -256,7 +256,7 @@ export class ShoppingFacade {
       filter(term => term.length >= 2),
       distinctUntilChanged(),
       tap(term => this.store.dispatch(suggestSearch({ searchTerm: term }))),
-      switchMap(term => this.store.pipe(select(getSuggestSearchResults(term))))
+      switchMap(() => this.store.pipe(select(getSuggestSearchResults)))
     );
   }
 

@@ -10,7 +10,7 @@ import { concatMap, map, sample, switchMap, withLatestFrom } from 'rxjs/operator
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { SuggestionService } from 'ish-core/services/suggestion/suggestion.service';
+import { SuggestionServiceProvider } from 'ish-core/services/suggestion/provider/suggestion.service.provider';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
@@ -43,7 +43,7 @@ export class SearchEffects {
     private actions$: Actions,
     private store: Store,
     private productsService: ProductsService,
-    private suggestService: SuggestionService,
+    private suggestionServiceProvider: SuggestionServiceProvider,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
     private translateService: TranslateService,
@@ -117,10 +117,13 @@ export class SearchEffects {
         ofType(suggestSearch),
         mapToPayloadProperty('searchTerm'),
         concatMap(searchTerm =>
-          this.suggestService.search(searchTerm).pipe(
-            map(suggests => suggestSearchSuccess({ searchTerm, suggests })),
-            mapErrorToAction(suggestSearchFail)
-          )
+          this.suggestionServiceProvider
+            .get()
+            .search(searchTerm)
+            .pipe(
+              map(suggests => suggestSearchSuccess({ searchTerm, suggests })),
+              mapErrorToAction(suggestSearchFail)
+            )
         )
       )
     );

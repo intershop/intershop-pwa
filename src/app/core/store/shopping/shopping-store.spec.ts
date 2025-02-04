@@ -20,6 +20,7 @@ import { ICMSuggestionService } from 'ish-core/services/icm-suggestion/icm-sugge
 import { PricesService } from 'ish-core/services/prices/prices.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
+import { SuggestionServiceProvider } from 'ish-core/services/suggestion/provider/suggestion.service.provider';
 import { SuggestionService } from 'ish-core/services/suggestion/suggestion.service';
 import { WarrantyService } from 'ish-core/services/warranty/warranty.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -45,6 +46,7 @@ describe('Shopping Store', () => {
   let productsServiceMock: ProductsService;
   let promotionsServiceMock: PromotionsService;
   let suggestionServiceMock: ICMSuggestionService;
+  let suggestionServiceProviderMock: SuggestionServiceProvider;
   let filterServiceMock: FilterService;
   let priceServiceMock: PricesService;
   let warrantyServiceMock: WarrantyService;
@@ -136,6 +138,8 @@ describe('Shopping Store', () => {
     when(promotionsServiceMock.getPromotion(anything())).thenReturn(of(promotion));
 
     suggestionServiceMock = mock(ICMSuggestionService);
+    suggestionServiceProviderMock = mock(SuggestionServiceProvider);
+    when(suggestionServiceProviderMock.get()).thenReturn(instance(suggestionServiceMock));
     when(suggestionServiceMock.search('some')).thenReturn(of<Suggestion>({ keywordSuggestions: ['something'] }));
 
     filterServiceMock = mock(FilterService);
@@ -192,6 +196,7 @@ describe('Shopping Store', () => {
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
         { provide: SuggestionService, useFactory: () => instance(suggestionServiceMock) },
+        { provide: SuggestionServiceProvider, useFactory: () => instance(suggestionServiceProviderMock) },
         { provide: WarrantyService, useFactory: () => instance(warrantyServiceMock) },
         provideStoreSnapshots(),
         SelectedProductContextFacade,
