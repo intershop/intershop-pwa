@@ -4,7 +4,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
-import { clearSuggestions, suggestSearch, suggestSearchFail, suggestSearchSuccess } from './search.actions';
+import { removeSuggestions, suggestSearch, suggestSearchFail, suggestSearchSuccess } from './search.actions';
 
 export interface SuggestState {
   suggests: Suggestion;
@@ -23,7 +23,7 @@ export const searchReducer = createReducer(
   setLoadingOn(suggestSearch),
   unsetLoadingAndErrorOn(suggestSearchSuccess),
   setErrorOn(suggestSearchFail),
-  on(clearSuggestions, (): SuggestState => initialState),
+  on(removeSuggestions, (): SuggestState => initialState),
   on(
     suggestSearchSuccess,
     (state, action): SuggestState => ({

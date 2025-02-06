@@ -56,11 +56,11 @@ import {
 } from 'ish-core/store/shopping/products';
 import { getPromotion, getPromotions, loadPromotion } from 'ish-core/store/shopping/promotions';
 import {
-  clearSuggestions,
   getSearchTerm,
   getSuggestSearchError,
   getSuggestSearchLoading,
   getSuggestSearchResults,
+  removeSuggestions,
   suggestSearch,
 } from 'ish-core/store/shopping/search';
 import { getWarranty, getWarrantyError, getWarrantyLoading, warrantyActions } from 'ish-core/store/shopping/warranties';
@@ -261,7 +261,7 @@ export class ShoppingFacade {
   }
 
   clearSuggestSearchSuggestions() {
-    this.store.dispatch(clearSuggestions());
+    this.store.dispatch(removeSuggestions());
   }
 
   searchSuggestLoading$ = this.store.pipe(select(getSuggestSearchLoading));
