@@ -1,16 +1,25 @@
 <p>{{ 'helpdesk.contactus.prolog' | translate }}</p>
-<p class="indicates-required"><span class="required">*</span>{{ 'helpdesk.contactus.indicates' | translate }}</p>
-<form class="form-horizontal" [formGroup]="contactForm" name="ContactUsForm" (ngSubmit)="submitForm()">
+<p class="indicates-required" aria-hidden="true">
+  <span class="required">*</span>{{ 'helpdesk.contactus.indicates' | translate }}
+</p>
+<form
+  [formGroup]="contactForm"
+  ishFormSubmit
+  #form="ngForm"
+  (ngSubmit)="submitForm()"
+  class="form-horizontal"
+  novalidate
+>
   <formly-form [form]="contactForm" [fields]="fields" [model]="model$ | async" />
 
   <div class="row form-group">
     <div class="offset-md-4 col-md-8">
       <input
         type="submit"
-        [disabled]="formDisabled"
-        data-testing-id="submitContact"
+        [disabled]="form.submitted && form.invalid"
         class="btn btn-primary"
         value="{{ 'helpdesk.contactus.submit' | translate }}"
+        data-testing-id="submitContact"
       />
     </div>
   </div>

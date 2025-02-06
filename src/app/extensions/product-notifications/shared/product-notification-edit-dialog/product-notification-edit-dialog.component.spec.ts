@@ -1,12 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
 
@@ -56,18 +55,6 @@ describe('Product Notification Edit Dialog Component', () => {
   describe('form submit', () => {
     beforeEach(() => {
       fb = TestBed.inject(UntypedFormBuilder);
-    });
-
-    it('should submit a valid form when the user fills all required fields', () => {
-      component.productNotificationForm = fb.group({
-        alertType: ['price'],
-        email: ['jlink@test.intershop.de', [Validators.required, SpecialValidators.email]],
-        priceValue: [1000],
-      });
-
-      expect(component.formDisabled).toBeFalse();
-      component.submitForm();
-      expect(component.formDisabled).toBeFalse();
     });
 
     it('should emit delete product notification when alert type is delete', () => {

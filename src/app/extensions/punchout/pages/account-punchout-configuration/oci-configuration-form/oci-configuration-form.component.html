@@ -47,7 +47,7 @@
         {{ 'account.punchout.configuration.form.heading.format' | translate }}
       </div>
     </div>
-    <form [formGroup]="form" (ngSubmit)="submitForm()" class="pt-1">
+    <form [formGroup]="form" ishFormSubmit #configForm="ngForm" (ngSubmit)="submitForm()" class="pt-1" novalidate>
       <div class="list-body">
         <formly-form [model]="model$ | async" [fields]="fields$ | async" [form]="form" class="pt-1" />
       </div>
@@ -57,7 +57,7 @@
             <button
               type="submit"
               class="btn btn-primary"
-              [disabled]="formDisabled"
+              [disabled]="form.invalid && configForm.submitted"
               data-testing-id="update-oci-configuration"
             >
               {{ 'account.update.button.label' | translate }}

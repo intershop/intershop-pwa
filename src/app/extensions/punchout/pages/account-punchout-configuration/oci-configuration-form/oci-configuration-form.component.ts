@@ -7,7 +7,6 @@ import { Observable, filter, map, shareReplay, take } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { PunchoutFacade } from '../../../facades/punchout.facade';
@@ -20,7 +19,6 @@ import { OciConfigurationItem } from '../../../models/oci-configuration-item/oci
 })
 export class OciConfigurationFormComponent implements OnInit {
   form: FormGroup = new FormGroup({});
-  private submitted = false;
 
   configItems$: Observable<OciConfigurationItem[]>;
   error$: Observable<HttpError>;
@@ -156,15 +154,8 @@ export class OciConfigurationFormComponent implements OnInit {
   }
 
   submitForm() {
-    if (this.form.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.form);
-      return;
+    if (this.form.valid) {
+      this.punchoutFacade.updateOciConfiguration(this.form.value.ociConfig);
     }
-    this.punchoutFacade.updateOciConfiguration(this.form.value.ociConfig);
-  }
-
-  get formDisabled() {
-    return this.form.invalid && this.submitted;
   }
 }

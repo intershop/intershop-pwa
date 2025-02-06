@@ -6,13 +6,18 @@
     </button>
   </div>
 
-  <form [formGroup]="wishListForm" (ngSubmit)="submitWishlistForm()">
+  <form [formGroup]="wishListForm" ishFormSubmit #form="ngForm" (ngSubmit)="submitWishlistForm()" novalidate>
     <div class="modal-body">
       <formly-form [form]="wishListForm" [fields]="fields" [model]="model" />
     </div>
 
     <div class="modal-footer">
-      <button type="submit" class="btn btn-primary" [disabled]="formDisabled" data-testing-id="wishlist-dialog-submit">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="form.submitted && wishListForm.invalid"
+        data-testing-id="wishlist-dialog-submit"
+      >
         {{ primaryButton | translate }}
       </button>
       <button type="button" class="btn btn-secondary" (click)="hide()">

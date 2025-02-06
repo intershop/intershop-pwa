@@ -53,12 +53,4 @@ describe('Update Password Form Component', () => {
 
     verify(eventEmitter$.emit(anything())).once();
   });
-
-  it('should disable submit button when the user submits an invalid form', () => {
-    fixture.detectChanges();
-
-    expect(component.buttonDisabled).toBeFalse();
-    component.submitPasswordForm();
-    expect(component.buttonDisabled).toBeTrue();
-  });
 });

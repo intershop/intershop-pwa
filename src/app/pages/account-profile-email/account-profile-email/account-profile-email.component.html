@@ -6,7 +6,14 @@
 <div class="row">
   <div class="col-md-10 col-xl-8">
     <div class="section">
-      <form [formGroup]="form" (ngSubmit)="submit()" class="form-horizontal" novalidate="novalidate">
+      <form
+        [formGroup]="form"
+        ishFormSubmit
+        #emailForm="ngForm"
+        (ngSubmit)="submit()"
+        class="form-horizontal"
+        novalidate
+      >
         <div class="row form-group">
           <div class="col-md-4 col-form-label">{{ 'account.update_email.email.label' | translate }}</div>
           <div *ngIf="currentUser" class="col-md-8 col-form-label">{{ currentUser.email }}</div>
@@ -16,7 +23,7 @@
 
         <div class="row">
           <div class="offset-md-4 col-md-8">
-            <button type="submit" class="btn btn-primary" [disabled]="buttonDisabled">
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid && emailForm.submitted">
               {{ 'account.update.button.label' | translate }}
             </button>
             <a routerLink="/account/profile" class="btn btn-secondary">{{ 'account.cancel.link' | translate }}</a>

@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  <form [formGroup]="form" (ngSubmit)="submitForm()" class="pt-1">
+  <form [formGroup]="form" ishFormSubmit #configForm="ngForm" (ngSubmit)="submitForm()" class="pt-1" novalidate>
     <div class="list-body">
       <formly-form [form]="form" [fields]="fields" [model]="model" class="pt-1" />
     </div>
@@ -20,7 +20,7 @@
           <button
             type="submit"
             class="btn btn-primary"
-            [disabled]="formDisabled"
+            [disabled]="form.invalid && configForm.submitted"
             data-testing-id="update-cxml-configuration"
           >
             {{ 'account.update.button.label' | translate }}
