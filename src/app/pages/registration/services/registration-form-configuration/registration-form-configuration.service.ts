@@ -91,7 +91,7 @@ export class RegistrationFormConfigurationService {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
           legend: 'account.register.address.headding',
-          legendClass: 'legend-invisible',
+          legendClass: 'sr-only',
         },
         fieldGroup: [
           {
@@ -254,7 +254,7 @@ export class RegistrationFormConfigurationService {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
           legend: 'account.register.email_password.heading',
-          legendClass: 'legend-invisible',
+          legendClass: 'sr-only',
         },
         validators: {
           validation: [
@@ -342,7 +342,7 @@ export class RegistrationFormConfigurationService {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
           legend: 'account.register.personal_information.heading',
-          legendClass: 'legend-invisible',
+          legendClass: 'sr-only',
         },
         fieldGroup: this.fieldLibrary.getConfigurationGroup('personalInfo'),
       },
@@ -365,7 +365,7 @@ export class RegistrationFormConfigurationService {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
           legend: 'account.register.company_information.heading',
-          legendClass: 'legend-invisible',
+          legendClass: 'sr-only',
         },
         fieldGroup: this.fieldLibrary.getConfigurationGroup('companyInfo'),
       },
