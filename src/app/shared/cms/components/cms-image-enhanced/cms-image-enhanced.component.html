@@ -1,11 +1,11 @@
 <ng-container *ngIf="pagelet?.hasParam('Link') && !pagelet.hasParam('LinkText'); else imageEnhanced">
   <ng-container *ngIf="isRouterLink(pagelet, 'Link'); else externalLink">
-    <a [routerLink]="routerLink(pagelet, 'Link')" [attr.title]="pagelet.stringParam('LinkTitle')" class="teaser-link">
+    <a [routerLink]="routerLink(pagelet, 'Link')" [title]="pagelet.stringParam('LinkTitle')" class="teaser-link">
       <ng-container *ngTemplateOutlet="imageEnhanced" />
     </a>
   </ng-container>
   <ng-template #externalLink>
-    <a [href]="pagelet.stringParam('Link')" [attr.title]="pagelet.stringParam('LinkTitle')" class="teaser-link">
+    <a [href]="pagelet.stringParam('Link')" [title]="pagelet.stringParam('LinkTitle')" class="teaser-link">
       <ng-container *ngTemplateOutlet="imageEnhanced" />
     </a>
   </ng-template>
@@ -32,7 +32,7 @@
       <img
         [attr.loading]="loading"
         [src]="pagelet.stringParam('Image')"
-        [attr.alt]="pagelet.stringParam('AlternateText') || ('image.alt_text.default' | translate)"
+        [alt]="pagelet.stringParam('AlternateText') || ('image.alt_text.default' | translate)"
         class="enhanced-image"
       />
     </picture>
@@ -47,7 +47,7 @@
       <a
         *ngIf="pagelet.hasParam('Link') && pagelet.hasParam('LinkText')"
         [routerLink]="routerLink(pagelet, 'Link')"
-        [attr.title]="pagelet.stringParam('LinkTitle')"
+        [title]="pagelet.stringParam('LinkTitle')"
         class="btn btn-lg btn-primary"
       >
         {{ pagelet.stringParam('LinkText') }}

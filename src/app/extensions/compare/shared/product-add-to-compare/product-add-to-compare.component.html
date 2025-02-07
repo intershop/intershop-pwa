@@ -5,7 +5,7 @@
   [ngClass]="cssClass"
   [class.is-selected]="isInCompareList$ | async"
   [title]="displayType === 'icon' ? ('product.compare.link' | translate) : ''"
-  [attr.tabindex]="ariaHidden ? -1 : 0"
+  [tabindex]="ariaHidden ? -1 : 0"
   [attr.aria-hidden]="ariaHidden"
   (click)="toggleCompare()"
 >

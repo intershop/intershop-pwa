@@ -98,7 +98,7 @@
                         (subItem.serverSetting || 'always' | ishServerSetting)
                       "
                     >
-                      <option [value]="subItem.routerLink" [attr.selected]="isSelected(subItem)">
+                      <option [value]="subItem.routerLink" [selected]="isSelected(subItem)">
                         {{ subItem.localizationKey | translate }}
                       </option>
                     </ng-container>
@@ -108,7 +108,7 @@
             </ng-container>
 
             <ng-template #noOptgroup>
-              <option [value]="item.routerLink" [attr.selected]="isSelected(item)">
+              <option [value]="item.routerLink" [selected]="isSelected(item)">
                 {{ item.localizationKey | translate }}
               </option>
             </ng-template>
