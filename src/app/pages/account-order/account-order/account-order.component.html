@@ -17,7 +17,10 @@
 
 <div *ngIf="order" class="section" data-testing-id="order-summary-info">
   <dl class="row dl-horizontal dl-separator">
-    <dt class="col-6 col-sm-4 col-md-2">{{ 'account.orderdetails.order_number.label' | translate }}</dt>
+    <dt class="col-6 col-sm-4 col-md-2">
+      <span aria-hidden="true">{{ 'account.orderdetails.order_number.label' | translate }}</span>
+      <span class="sr-only">{{ 'account.orderdetails.order_number.title' | translate }}</span>
+    </dt>
     <dd class="col-6 col-sm-8 col-md-10" data-testing-id="order-number">{{ order.documentNo }}</dd>
     <ng-container *ngIf="order.approval">
       <dt class="col-6 col-sm-4 col-md-2">{{ 'approval.detailspage.order.request_id' | translate }}</dt>
