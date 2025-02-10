@@ -8,28 +8,23 @@
   list-style: none;
 
   > li {
-    max-width: 50px;
+    width: 50px;
     height: 27px;
     padding: 0 divide($space-default * 2, 3);
     margin: 0;
-    overflow: hidden;
     font-size: 18px;
 
-    @include transition(max-width 0.5s ease-in-out);
+    // due to the whitespace in the share icon (last icon) it's aligned left to make the gaps look visually more uniform
+    &:not(:last-child) {
+      text-align: center;
+    }
 
-    span {
-      &.share-label {
-        @include transition(color 1s ease-in-out);
-
-        color: $text-color-inverse;
-      }
+    .add-to-wishlist {
+      margin: 0 !important;
     }
 
     button {
-      padding: 3px 0 0;
-      font-family: $font-family-regular;
-      text-transform: none;
-      white-space: normal;
+      padding: 0;
       background-color: transparent;
       border: 0;
     }
@@ -39,54 +34,9 @@
     font-size: 22px;
     color: $text-color-corporate;
     vertical-align: middle;
-  }
 
-  li {
     &:hover {
-      .ng-fa-icon {
-        color: $text-color-corporate;
-      }
-    }
-
-    a {
-      // share tool links are never underlined
-      text-decoration: none !important;
-
-      &:hover {
-        text-decoration: none !important;
-      }
-    }
-  }
-
-  @media (min-width: $screen-sm-min) {
-    li {
-      @include transition(max-width 0.5s ease-in-out);
-
-      &:hover {
-        max-width: 300px;
-        overflow: hidden;
-        color: $text-color-corporate;
-        cursor: pointer;
-
-        .share-label {
-          @include transition(color 1s ease-in-out);
-
-          color: $text-color-corporate;
-        }
-      }
-
-      .share-label {
-        @include transition(color 1s ease-in-out);
-
-        padding-left: ($space-default * 0.5);
-        font-size: $font-size-base;
-        line-height: 26px;
-        color: $text-color-quaternary;
-
-        @media (max-width: $screen-xs-max) {
-          display: none;
-        }
-      }
+      color: $CORPORATE-SECONDARY;
     }
   }
 }

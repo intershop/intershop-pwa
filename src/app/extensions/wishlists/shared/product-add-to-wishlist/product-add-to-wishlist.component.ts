@@ -26,7 +26,7 @@ import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wi
  */
 @GenerateLazyComponent()
 export class ProductAddToWishlistComponent implements OnInit {
-  @Input() displayType: 'icon' | 'link' | 'animated' = 'link';
+  @Input() displayType: 'icon' | 'link' = 'link';
   @Input() cssClass: string;
   /**
    * hidden for screen readers

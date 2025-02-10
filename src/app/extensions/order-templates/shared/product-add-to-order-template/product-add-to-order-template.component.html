@@ -1,4 +1,4 @@
-<!-- display addToOrderTemplate Icon/animated Icon or link-->
+<!-- display addToOrderTemplate Icon or link-->
 <button
   *ngIf="visible$ | async"
   type="button"
@@ -7,9 +7,7 @@
   [disabled]="disabled$ | async"
   [ngClass]="cssClass"
   [title]="
-    displayType === 'icon'
-      ? ('account.order_template.add_to_template.button.add_to_template.label' | translate)
-      : undefined
+    displayType === 'icon' ? ('account.order_template.add_to_template.button.add_to_template.label' | translate) : ''
   "
   [tabindex]="ariaHidden ? -1 : 0"
   [attr.aria-hidden]="ariaHidden"
@@ -17,12 +15,6 @@
   data-testing-id="addToOrderTemplateButton"
 >
   <ng-container [ngSwitch]="displayType">
-    <ng-template [ngSwitchCase]="'animated'">
-      <fa-icon [icon]="['fas', 'list']" />
-      <span class="share-label">{{
-        'account.order_template.add_to_template.button.add_to_template.label' | translate
-      }}</span>
-    </ng-template>
     <ng-template [ngSwitchCase]="'icon'">
       <fa-icon [icon]="['fas', 'list']" />
     </ng-template>

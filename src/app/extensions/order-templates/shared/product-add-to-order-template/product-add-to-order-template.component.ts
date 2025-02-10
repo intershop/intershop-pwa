@@ -26,7 +26,7 @@ import { SelectOrderTemplateModalComponent } from '../select-order-template-moda
 })
 @GenerateLazyComponent()
 export class ProductAddToOrderTemplateComponent implements OnInit {
-  @Input() displayType: 'icon' | 'link' | 'animated' = 'link';
+  @Input() displayType: 'icon' | 'link' = 'link';
   @Input() cssClass: string;
   /**
    * hidden for screen readers

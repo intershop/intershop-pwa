@@ -1,11 +1,11 @@
-<!-- display addToCart Icon/animated Icon or link-->
+<!-- display addToCart Icon or link-->
 <button
   *ngIf="visible$ | async"
   type="button"
   name="addProduct"
   class="btn add-to-wishlist"
   [ngClass]="cssClass"
-  [title]="displayType === 'icon' ? ('product.add_to_wishlist.link' | translate) : undefined"
+  [title]="displayType === 'icon' ? ('product.add_to_wishlist.link' | translate) : ''"
   [tabindex]="ariaHidden ? -1 : 0"
   [attr.aria-hidden]="ariaHidden"
   (click)="openModal(modal)"
@@ -13,10 +13,6 @@
 >
   <ng-container [ngSwitch]="displayType">
     <ng-template [ngSwitchCase]="'link'">{{ 'product.add_to_wishlist.link' | translate }}</ng-template>
-    <ng-template [ngSwitchCase]="'animated'">
-      <fa-icon [icon]="['fas', 'heart']" />
-      <span class="share-label">{{ 'product.add_to_wishlist.link' | translate }}</span>
-    </ng-template>
     <ng-template ngSwitchDefault>
       <fa-icon [icon]="['fas', 'heart']" />
     </ng-template>
