@@ -1,4 +1,3 @@
-<a routerLink="/compare" (click)="addToCompare()" rel="nofollow">
+<a routerLink="/compare" (click)="addToCompare()" rel="nofollow" [title]="'product.compare.link' | translate">
   <fa-icon [icon]="['fas', 'balance-scale']" />
-  <span class="share-label">{{ 'product.compare.link' | translate }}</span>
 </a>
