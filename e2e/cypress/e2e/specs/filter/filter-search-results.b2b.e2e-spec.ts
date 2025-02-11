@@ -19,7 +19,7 @@ describe('Searching B2B User', () => {
 
   it('should enter search term and wait for displayed suggestions', () => {
     at(HomePage, page => {
-      page.header.searchBox.type(_.suggestItemText);
+      page.header.searchBox.type(_.suggestTerm);
       page.header.searchBox.suggestions.should('contain', _.suggestItemText);
     });
   });

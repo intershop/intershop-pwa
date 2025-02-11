@@ -16,7 +16,6 @@ describe('Sparque Suggestion Mapper', () => {
         provideMockStore({
           selectors: [{ selector: getStaticEndpoint, value: 'https://static.url' }],
         }),
-        SparqueSuggestionMapper,
       ],
     });
 
