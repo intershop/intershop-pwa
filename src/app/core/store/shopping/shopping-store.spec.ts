@@ -21,7 +21,6 @@ import { PricesService } from 'ish-core/services/prices/prices.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { SuggestionServiceProvider } from 'ish-core/services/suggestion/provider/suggestion.service.provider';
-import { SuggestionService } from 'ish-core/services/suggestion/suggestion.service';
 import { WarrantyService } from 'ish-core/services/warranty/warranty.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
@@ -195,7 +194,6 @@ describe('Shopping Store', () => {
         { provide: PricesService, useFactory: () => instance(priceServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
-        { provide: SuggestionService, useFactory: () => instance(suggestionServiceMock) },
         { provide: SuggestionServiceProvider, useFactory: () => instance(suggestionServiceProviderMock) },
         { provide: WarrantyService, useFactory: () => instance(warrantyServiceMock) },
         provideStoreSnapshots(),

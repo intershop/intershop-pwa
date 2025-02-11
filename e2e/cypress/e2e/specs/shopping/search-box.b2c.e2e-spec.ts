@@ -13,10 +13,10 @@ describe('Search Box', () => {
 
   afterEach(() => {
     at(SearchResultPage, page => {
-      page.title.should('contain', 'kodak');
-      page.title.should('contain', '23 items');
-      page.header.searchBox.text.should('equal', 'kodak');
-      page.header.searchBox.assertNoSuggestions();
+      page.title.should('contain', '22 items');
+      page.title.should('contain', 'kensington');
+      page.header.searchBox.text.should('equal', 'kensington');
+      page.header.searchBox.assertSuggestionsNoDisplayed();
     });
 
     back();
@@ -27,39 +27,38 @@ describe('Search Box', () => {
   it('should display suggest overlay when typing and follow when entering', () => {
     at(HomePage, page => {
       page.header.searchBox.type('k');
-      page.header.searchBox.suggestions.should('contain', 'Kensington');
+      page.header.searchBox.assertNoSuggestions();
 
       page.header.searchBox.type('e');
       page.header.searchBox.suggestions.should('contain', 'Kensington');
 
       page.header.searchBox.backspace();
+      page.header.searchBox.assertNoSuggestions();
+
+      page.header.searchBox.type('ensington');
       page.header.searchBox.suggestions.should('contain', 'Kensington');
-
-      page.header.searchBox.type('o');
-      page.header.searchBox.suggestions.should('contain', 'Kodak');
-
-      page.header.searchBox.type('dak');
-      page.header.searchBox.suggestions.should('contain', 'Kodak');
 
       page.header.searchBox.enter();
     });
   });
 
-  it('should follow search when hitting enter with choosing suggestion with keyboard', () => {
+  // currently not working, because typing tab is not supported by cypress
+  // eslint-disable-next-line jest/no-disabled-tests
+  it.skip('should follow search when hitting enter with choosing suggestion with keyboard', () => {
     at(HomePage, page => {
-      page.header.searchBox.type('ko');
-      page.header.searchBox.suggestions.should('contain', 'Kodak');
+      page.header.searchBox.type('ke');
+      page.header.searchBox.suggestions.should('contain', 'Kensington');
 
-      page.header.searchBox.down().enter();
+      page.header.searchBox.tab().enter();
     });
   });
 
   it('should follow search when choosing suggestion with mouse', () => {
     at(HomePage, page => {
-      page.header.searchBox.type('kod');
-      page.header.searchBox.suggestions.should('contain', 'Kodak');
+      page.header.searchBox.type('Ken');
+      page.header.searchBox.suggestions.should('contain', 'Kensington');
 
-      page.header.searchBox.clickSuggestion('Kodak');
+      page.header.searchBox.clickSuggestion('Kensington');
     });
   });
 
@@ -68,8 +67,8 @@ describe('Search Box', () => {
       page.header.searchBox.clearButton.should('not.exist');
       page.header.searchBox.searchButton.should('be.visible');
 
-      page.header.searchBox.type('ko');
-      page.header.searchBox.suggestions.should('contain', 'Kodak');
+      page.header.searchBox.type('Ken');
+      page.header.searchBox.suggestions.should('contain', 'Kensington');
 
       page.header.searchBox.type('asdf');
       page.header.searchBox.assertNoSuggestions();
@@ -84,8 +83,7 @@ describe('Search Box', () => {
       page.header.searchBox.searchButton.click();
       at(HomePage);
 
-      page.header.searchBox.type('kodak');
-      page.header.searchBox.suggestions.should('contain', 'Kodak');
+      page.header.searchBox.type('kensington');
 
       page.header.searchBox.searchButton.should('be.visible');
       page.header.searchBox.searchButton.click();
@@ -94,8 +92,8 @@ describe('Search Box', () => {
 
   it('should properly track displaying suggestion focus', () => {
     at(HomePage, page => {
-      page.header.searchBox.type('ko');
-      page.header.searchBox.suggestions.should('contain', 'Kodak');
+      page.header.searchBox.type('ke');
+      page.header.searchBox.suggestions.should('contain', 'Kensington');
 
       page.header.searchBox.esc();
 
@@ -105,18 +103,18 @@ describe('Search Box', () => {
 
       page.header.searchBox.assertNoSuggestions();
 
-      page.header.searchBox.type('d');
-      page.header.searchBox.suggestions.should('contain', 'Kodak');
+      page.header.searchBox.type('ken');
+      page.header.searchBox.suggestions.should('contain', 'Kensington');
 
       page.header.gotoHomePage();
       waitLoadingEnd(2000);
 
-      page.header.searchBox.assertNoSuggestions();
+      page.header.searchBox.assertSuggestionsNoDisplayed();
 
-      page.header.searchBox.type('a');
-      page.header.searchBox.suggestions.should('contain', 'Kodak');
+      page.header.searchBox.focus();
+      page.header.searchBox.suggestions.should('contain', 'Kensington');
 
-      page.header.searchBox.clickSuggestion('Kodak');
+      page.header.searchBox.clickSuggestion('Kensington');
     });
   });
 });

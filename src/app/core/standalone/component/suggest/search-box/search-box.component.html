@@ -25,10 +25,10 @@
   <ng-container *ngIf="configuration?.autoSuggest && searchResults$ | async as results">
     <div
       *ngIf="
-        (results.keywordSuggestions.length ||
-          results.categories.length ||
-          results.brands.length ||
-          results.products.length) &&
+        (results.keywordSuggestions?.length ||
+          results.categories?.length ||
+          results.brands?.length ||
+          results.products?.length) &&
           hasMoreThanTwoCharacters;
         else noResults
       "
