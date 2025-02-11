@@ -14,8 +14,6 @@ import { SuggestionServiceProvider } from './suggestion.service.provider';
 describe('Suggestion Service Provider', () => {
   let suggestionServiceProvider: SuggestionServiceProvider;
   let store$: MockStore;
-  const icmSuggestionServiceMock = mock(ICMSuggestionService);
-  const sparqueSuggestionServiceMock = mock(SparqueSuggestionService);
   let isSparque = false;
 
   beforeEach(() => {
@@ -23,7 +21,8 @@ describe('Suggestion Service Provider', () => {
       providers: [
         {
           provide: SuggestionService,
-          useFactory: () => (isSparque ? instance(sparqueSuggestionServiceMock) : instance(icmSuggestionServiceMock)),
+          useFactory: () =>
+            isSparque ? instance(mock(SparqueSuggestionService)) : instance(mock(ICMSuggestionService)),
         },
         { provide: ApiService, useFactory: () => instance(mock(ApiService)) },
         { provide: SparqueApiService, useFactory: () => instance(mock(SparqueApiService)) },
