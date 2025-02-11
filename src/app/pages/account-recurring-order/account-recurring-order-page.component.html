@@ -30,6 +30,7 @@
         class="alert alert-warning"
         [ishServerHtml]="'account.recurring_order.details.inactive.message' | translate"
         [callbacks]="{ activate: activateRecurringOrder }"
+        tabindex="0"
       ></p>
     </ng-template>
   </ng-container>
@@ -95,6 +96,7 @@
               [labelActive]="'account.recurring_order.details.active.text' | translate"
               [labelInactive]="'account.recurring_order.details.inactive.text' | translate"
               (toggleSwitch)="switchActiveStatus($event)"
+              ariaLabel="{{ 'account.recurring_order.details.switch.aria_label' | translate }}"
             />
           </ng-template>
         </dd>
@@ -182,7 +184,7 @@
   <div class="section row">
     <div class="col-12 col-md-6 offset-md-6">
       <div class="cost-summary">
-        <h3>{{ 'checkout.order_summary.heading' | translate }}</h3>
+        <h2 class="h3">{{ 'checkout.order_summary.heading' | translate }}</h2>
         <ish-basket-cost-summary [totals]="recurringOrder.totals" />
       </div>
     </div>

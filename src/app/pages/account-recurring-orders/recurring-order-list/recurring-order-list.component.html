@@ -123,6 +123,9 @@
           [id]="recurringOrder.id"
           [active]="recurringOrder.active"
           (toggleSwitch)="switchActiveStatus($event)"
+          ariaLabel="{{
+            'account.recurring_orders.table.switch.aria_label' | translate : { '0': recurringOrder.documentNo }
+          }}"
         />
         <button
           type="button"
