@@ -3,9 +3,7 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
 
-import { AppFacade } from 'ish-core/facades/app.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { SearchBoxComponent } from 'ish-core/standalone/component/suggest/search-box/search-box.component';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
@@ -26,7 +24,6 @@ describe('Header Default Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
       imports: [FeatureToggleModule.forTesting('compare'), TranslateModule.forRoot()],
       declarations: [
         HeaderDefaultComponent,
