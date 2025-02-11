@@ -1,17 +1,12 @@
 /* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 import { ReplaySubject, Subject } from 'rxjs';
 import { instance, mock } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
-import { SuggestBrandsTileComponent } from 'ish-core/standalone/component/suggest/suggest-brands-tile/suggest-brands-tile.component';
-import { SuggestCategoriesTileComponent } from 'ish-core/standalone/component/suggest/suggest-categories-tile/suggest-categories-tile.component';
-import { SuggestKeywordsTileComponent } from 'ish-core/standalone/component/suggest/suggest-keywords-tile/suggest-keywords-tile.component';
-import { SuggestProductsTileComponent } from 'ish-core/standalone/component/suggest/suggest-products-tile/suggest-products-tile.component';
 
 import { SearchBoxComponent } from './search-box.component';
 
@@ -32,12 +27,6 @@ describe('Search Box Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(SuggestBrandsTileComponent),
-        MockComponent(SuggestCategoriesTileComponent),
-        MockComponent(SuggestKeywordsTileComponent),
-        MockComponent(SuggestProductsTileComponent),
-      ],
       providers: [
         {
           provide: ShoppingFacade,
