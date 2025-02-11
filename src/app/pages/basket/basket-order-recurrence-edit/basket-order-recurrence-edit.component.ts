@@ -64,6 +64,7 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
             label: 'order.recurrence.form.duration.label',
             labelClass: 'col-md-12',
             fieldClass: 'col-md-12',
+            ariaLabel: 'order.recurrence.form.duration.aria_label',
             min: 1,
           },
         },
@@ -76,6 +77,7 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
             label: 'order.recurrence.form.period.label',
             labelClass: 'col-md-12 hidden d-none d-lg-block',
             fieldClass: 'col-md-12',
+            ariaLabel: 'order.recurrence.form.period.aria_label',
           },
         },
       ],
@@ -112,6 +114,7 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
             placeholder: 'mm/dd/yy',
             labelClass: 'col-md-12',
             fieldClass: 'col-md-12',
+            ariaLabel: 'order.recurrence.form.ending.date.aria_label',
           },
           expressions: {
             'props.disabled': 'model.ending === "repetitions"',
@@ -143,6 +146,7 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
             labelClass: 'col-md-12',
             fieldClass: 'col-md-12',
             inputClass: 'testClass',
+            ariaLabel: 'order.recurrence.form.ending.repetitions.aria_label',
             min: 1,
           },
           expressions: {
