@@ -18,15 +18,15 @@ export class SuggestCategoriesTileComponent {
   @Input() categories: Category[];
   @Input() maxAutoSuggests: number;
   @Input() inputTerms$ = new ReplaySubject<string>(1);
-  @Output() submitSearch = new EventEmitter<string>();
+  @Output() routeChange = new EventEmitter<void>();
 
-  private categoryImageUrl = '/assets/img/not-available.svg';
+  categoryImageUrl = '/assets/img/not-available.svg';
 
   getCategoryImageUrl(images: { effectiveUrl?: string }[]): string {
     return images?.[0]?.effectiveUrl || this.categoryImageUrl;
   }
 
-  submit(term: string) {
-    this.submitSearch.emit(term);
+  handleInputFocus(): void {
+    this.routeChange.emit();
   }
 }

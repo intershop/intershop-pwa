@@ -2,17 +2,17 @@
   <div class="headline">{{ 'suggest.products.headline' | translate }}</div>
   <ul class="d-flex flex-wrap">
     <li *ngFor="let result of products | slice : 0 : maxAutoSuggests" class="d-flex flex-column">
-      <a [routerLink]="[]" tabindex="-1">
+      <a [routerLink]="'/prd' + result.sku" (click)="handleInputFocus()" tabindex="-1">
         <img
           src="https://demo.icm.intershop.de/INTERSHOP/static/WFS/inSPIRED-inTRONICS_Business-Site/-/inSPIRED/en_US/M/M_201807201_front.jpg"
           alt="{{ result.name }}"
         />
       </a>
-      <button
-        type="button"
-        [innerHTML]="result.name | titlecase | ishHighlight : (inputTerms$ | async)"
-        (click)="submit(result.name)"
-      ></button>
+      <a
+        [routerLink]="'/prd' + result.sku"
+        [innerHTML]="truncate(result.name, 40) | titlecase | ishHighlight : (inputTerms$ | async)"
+        (click)="handleInputFocus()"
+      ></a>
       <div class="current-price">$ 100.99</div>
     </li>
   </ul>

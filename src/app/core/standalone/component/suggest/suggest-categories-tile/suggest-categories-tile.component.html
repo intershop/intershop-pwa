@@ -2,14 +2,14 @@
   <div class="headline">{{ 'suggest.categories.headline' | translate }}</div>
   <ul>
     <li *ngFor="let result of categories | slice : 0 : maxAutoSuggests">
-      <a [routerLink]="[]" tabindex="-1">
+      <a class="category-image" [routerLink]="'/ctg' + result.uniqueId" (click)="handleInputFocus()" tabindex="-1">
         <img [src]="getCategoryImageUrl(result.images)" alt="{{ result.name }}" />
       </a>
-      <button
-        type="button"
-        [innerHTML]="result.name + ' (' + result.productCount + ')' | titlecase | ishHighlight : (inputTerms$ | async)"
-        (click)="submit(result.name)"
-      ></button>
+      <a
+        [routerLink]="'/ctg' + result.uniqueId"
+        [innerHTML]="result.name | titlecase | ishHighlight : (inputTerms$ | async)"
+        (click)="handleInputFocus()"
+      ></a>
     </li>
   </ul>
 </div>

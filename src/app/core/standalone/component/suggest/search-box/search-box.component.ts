@@ -14,7 +14,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable, ReplaySubject, map, shareReplay } from 'rxjs';
+import { Observable, ReplaySubject, shareReplay } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { IconModule } from 'ish-core/icon.module';
@@ -26,7 +26,6 @@ import { SuggestBrandsTileComponent } from 'ish-core/standalone/component/sugges
 import { SuggestCategoriesTileComponent } from 'ish-core/standalone/component/suggest/suggest-categories-tile/suggest-categories-tile.component';
 import { SuggestKeywordsTileComponent } from 'ish-core/standalone/component/suggest/suggest-keywords-tile/suggest-keywords-tile.component';
 import { SuggestProductsTileComponent } from 'ish-core/standalone/component/suggest/suggest-products-tile/suggest-products-tile.component';
-import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
  * @description
@@ -48,11 +47,10 @@ import { whenTruthy } from 'ish-core/utils/operators';
  * @method blur - Handles the blur event of the search input.
  * @method handleBlur - Handles the blur event of the search input with additional logic.
  * @method handleFocus - Handles the focus event of the search input.
- * @method handleEscKey - Handles the escape key event to clear the search input and suggestions.
+ * @method reset - Reset and clear the search input and suggestions.
  * @method handleReset - Handles the reset event to clear the search input and suggestions.
  * @method searchSuggest - Emits a new search term to trigger suggestions.
  * @method submitSearch - Submits the selected or entered search term.
- * @method truncate - Truncates the given text to the specified limit.
  * @method isElementWithinSearchSuggestLayer - Checks if the given element is within the search suggest layer.
  *
  * @constructor
@@ -111,15 +109,6 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
   constructor(private shoppingFacade: ShoppingFacade, private router: Router) {}
 
   ngOnInit() {
-    // initialize with searchTerm when on search route
-    this.shoppingFacade.searchTerm$
-      .pipe(
-        whenTruthy(),
-        map(x => (x ? x : '')),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(term => this.inputSearchTerms$.next(term));
-
     // suggests are triggered solely via stream
     this.searchResults$ = this.shoppingFacade
       .searchResults$(this.inputSearchTerms$)
@@ -192,7 +181,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
     }
   }
 
-  handleEscKey() {
+  reset() {
     this.blur();
     this.inputSearchTerms$.next('');
     this.shoppingFacade.clearSuggestSearchSuggestions();

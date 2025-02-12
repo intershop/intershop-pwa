@@ -18,9 +18,13 @@ export class SuggestProductsTileComponent {
   @Input() products: Product[];
   @Input() maxAutoSuggests: number;
   @Input() inputTerms$ = new ReplaySubject<string>(1);
-  @Output() submitSearch = new EventEmitter<string>();
+  @Output() routeChange = new EventEmitter<void>();
 
-  submit(term: string) {
-    this.submitSearch.emit(term);
+  handleInputFocus(): void {
+    this.routeChange.emit();
+  }
+
+  truncate(text: string, limit: number): string {
+    return text.length > limit ? `${text.substring(0, limit)}...` : text;
   }
 }

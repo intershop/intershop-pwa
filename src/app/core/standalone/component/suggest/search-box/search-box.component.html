@@ -11,7 +11,7 @@
     (focus)="handleFocus()"
     (blur)="handleBlur($event)"
     (keydown)="handleFocus()"
-    (keydown.esc)="handleEscKey()"
+    (keydown.esc)="reset()"
     (keydown.enter)="submitSearch(searchInput.value)"
   />
 
@@ -53,7 +53,7 @@
           <ish-suggest-categories-tile
             [categories]="results.categories"
             [inputTerms$]="inputSearchTerms$"
-            (submitSearch)="submitSearch($event)"
+            (routeChange)="reset()"
             [maxAutoSuggests]="3"
           />
         </div>
@@ -61,7 +61,7 @@
           <ish-suggest-brands-tile
             [brands]="results.brands"
             [inputTerms$]="inputSearchTerms$"
-            (submitSearch)="submitSearch($event)"
+            (routeChange)="reset()"
             [maxAutoSuggests]="3"
           />
         </div>
@@ -77,7 +77,7 @@
         <ish-suggest-products-tile
           [products]="results.products"
           [inputTerms$]="inputSearchTerms$"
-          (submitSearch)="submitSearch($event)"
+          (routeChange)="reset()"
           [maxAutoSuggests]="8"
         />
       </div>
@@ -118,7 +118,7 @@
       (focus)="handleFocus()"
       (click)="handleReset()"
       (blur)="handleBlur($event)"
-      (keydown.esc)="handleEscKey()"
+      (keydown.esc)="reset()"
     >
       <fa-icon [icon]="['fas', 'times']" />
     </button>
@@ -132,7 +132,7 @@
       (keydown)="handleFocus()"
       (click)="submitSearch(searchInput.value)"
       (blur)="handleBlur($event)"
-      (keydown.esc)="handleEscKey()"
+      (keydown.esc)="reset()"
     >
       <!-- search button with icon -->
       <ng-container *ngIf="!configuration?.buttonText; else textBlock">

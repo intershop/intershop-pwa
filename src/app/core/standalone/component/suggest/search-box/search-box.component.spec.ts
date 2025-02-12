@@ -75,7 +75,7 @@ describe('Search Box Component', () => {
 
     it('should show results when suggestions are available', () => {
       component.searchBoxFocus = true;
-      searchTerm$.next('ca');
+      component.inputSearchTerms$.next('ca');
       fixture.detectChanges();
 
       expect(element.querySelector('ish-suggest-keywords-tile')).toBeTruthy();
@@ -90,7 +90,6 @@ describe('Search Box Component', () => {
 
     it('should show results when input is 2 or more characters', () => {
       component.searchBoxFocus = true;
-      searchTerm$.next('ca');
       component.inputSearchTerms$.next('ca');
       fixture.detectChanges();
 
@@ -101,7 +100,8 @@ describe('Search Box Component', () => {
 
   describe('with inputs', () => {
     it('should show searchTerm when on search page', () => {
-      searchTerm$.next('search');
+      component.searchBoxFocus = true;
+      component.inputSearchTerms$.next('search');
 
       fixture.detectChanges();
       const input = element.querySelector('input');
