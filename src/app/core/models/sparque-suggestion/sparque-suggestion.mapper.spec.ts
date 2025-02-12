@@ -1,9 +1,27 @@
+import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+
 import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
+import { getStaticEndpoint } from 'ish-core/store/core/configuration';
 
 import { SparqueSuggestions } from './sparque-suggestion.interface';
 import { SparqueSuggestionMapper } from './sparque-suggestion.mapper';
 
 describe('Sparque Suggestion Mapper', () => {
+  let sparqueSuggestionMapper: SparqueSuggestionMapper;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideMockStore({
+          selectors: [{ selector: getStaticEndpoint, value: 'https://static.url' }],
+        }),
+      ],
+    });
+
+    sparqueSuggestionMapper = TestBed.inject(SparqueSuggestionMapper);
+  });
+
   describe('fromData', () => {
     it('should map products correctly', () => {
       const sparqueSuggestions: SparqueSuggestions = {
@@ -25,7 +43,7 @@ describe('Sparque Suggestion Mapper', () => {
         contentSuggestions: [],
       };
 
-      const result: Suggestion = SparqueSuggestionMapper.fromData(sparqueSuggestions);
+      const result: Suggestion = sparqueSuggestionMapper.fromData(sparqueSuggestions);
 
       expect(result.products).toHaveLength(1);
       expect(result.products[0].name).toBe('Product 1');
@@ -46,11 +64,11 @@ describe('Sparque Suggestion Mapper', () => {
         products: [],
         categories: [
           {
-            CategoryName: 'Category 1',
-            CategoryID: 'cat1',
-            CategoryURL: 'http://category.url',
-            ParentCategoryId: 'parentCat',
-            TotalCount: 10,
+            categoryName: 'Category 1',
+            categoryID: 'cat1',
+            categoryURL: 'http://category.url',
+            parentCategoryId: 'parentCat',
+            totalCount: 10,
             attributes: [{ name: 'Type', value: 'Electronics' }],
           },
         ],
@@ -59,7 +77,7 @@ describe('Sparque Suggestion Mapper', () => {
         contentSuggestions: [],
       };
 
-      const result: Suggestion = SparqueSuggestionMapper.fromData(sparqueSuggestions);
+      const result: Suggestion = sparqueSuggestionMapper.fromData(sparqueSuggestions);
 
       expect(result.categories).toHaveLength(1);
       expect(result.categories[0].name).toBe('Category 1');
@@ -78,16 +96,16 @@ describe('Sparque Suggestion Mapper', () => {
         categories: [],
         brands: [
           {
-            BrandName: 'Brand 1',
-            ImageUrl: 'http://brand.image.url',
-            TotalCount: 5,
+            brandName: 'Brand 1',
+            imageUrl: 'http://brand.image.url',
+            totalCount: 5,
           },
         ],
         keywordSuggestions: [],
         contentSuggestions: [],
       };
 
-      const result: Suggestion = SparqueSuggestionMapper.fromData(sparqueSuggestions);
+      const result: Suggestion = sparqueSuggestionMapper.fromData(sparqueSuggestions);
 
       expect(result.brands).toHaveLength(1);
       expect(result.brands[0].name).toBe('Brand 1');
@@ -104,7 +122,7 @@ describe('Sparque Suggestion Mapper', () => {
         contentSuggestions: [],
       };
 
-      const result: Suggestion = SparqueSuggestionMapper.fromData(sparqueSuggestions);
+      const result: Suggestion = sparqueSuggestionMapper.fromData(sparqueSuggestions);
 
       expect(result.keywordSuggestions).toHaveLength(2);
       expect(result.keywordSuggestions).toContain('keyword1');
@@ -131,7 +149,7 @@ describe('Sparque Suggestion Mapper', () => {
         ],
       };
 
-      const result: Suggestion = SparqueSuggestionMapper.fromData(sparqueSuggestions);
+      const result: Suggestion = sparqueSuggestionMapper.fromData(sparqueSuggestions);
 
       expect(result.contentSuggestions).toHaveLength(1);
       expect(result.contentSuggestions[0].newsType).toBe('News');
@@ -144,7 +162,7 @@ describe('Sparque Suggestion Mapper', () => {
     });
 
     it('should return undefined for undefined input', () => {
-      const result: Suggestion = SparqueSuggestionMapper.fromData(undefined);
+      const result: Suggestion = sparqueSuggestionMapper.fromData(undefined);
       expect(result).toBeUndefined();
     });
   });

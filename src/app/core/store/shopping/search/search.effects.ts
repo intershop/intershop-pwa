@@ -4,22 +4,13 @@ import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { EMPTY, from } from 'rxjs';
-import {
-  catchError,
-  concatMap,
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  sample,
-  switchMap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { from } from 'rxjs';
+import { concatMap, map, sample, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { SuggestionService } from 'ish-core/services/suggestion/suggestion.service';
+import { SuggestionServiceProvider } from 'ish-core/services/suggestion/provider/suggestion.service.provider';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
@@ -38,7 +29,13 @@ import {
   whenTruthy,
 } from 'ish-core/utils/operators';
 
-import { searchProducts, searchProductsFail, suggestSearch, suggestSearchSuccess } from './search.actions';
+import {
+  searchProducts,
+  searchProductsFail,
+  suggestSearch,
+  suggestSearchFail,
+  suggestSearchSuccess,
+} from './search.actions';
 
 @Injectable()
 export class SearchEffects {
@@ -46,7 +43,7 @@ export class SearchEffects {
     private actions$: Actions,
     private store: Store,
     private productsService: ProductsService,
-    private suggestService: SuggestionService,
+    private suggestionServiceProvider: SuggestionServiceProvider,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
     private translateService: TranslateService,
@@ -119,14 +116,14 @@ export class SearchEffects {
       this.actions$.pipe(
         ofType(suggestSearch),
         mapToPayloadProperty('searchTerm'),
-        debounceTime(400),
-        distinctUntilChanged(),
-        whenTruthy(),
-        switchMap(searchTerm =>
-          this.suggestService.search(searchTerm).pipe(
-            map(suggests => suggestSearchSuccess({ searchTerm, suggests })),
-            catchError(() => EMPTY)
-          )
+        concatMap(searchTerm =>
+          this.suggestionServiceProvider
+            .get()
+            .search(searchTerm)
+            .pipe(
+              map(suggests => suggestSearchSuccess({ suggests })),
+              mapErrorToAction(suggestSearchFail)
+            )
         )
       )
     );

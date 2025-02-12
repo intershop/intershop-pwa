@@ -1,6 +1,5 @@
 <ng-template #searchBoxTemplate let-icon="icon">
-  <ish-advanced-search-box
-    *ngIf="isSparqueSuggestActive; else simpleSearchBox"
+  <ish-search-box
     data-testing-id="search-box-desktop"
     [configuration]="{
       placeholder: 'search.searchbox.instructional_text' | translate,
@@ -10,18 +9,6 @@
       showLastSearchTerm: true
     }"
   />
-  <ng-template #simpleSearchBox>
-    <ish-simple-search-box
-      data-testing-id="search-box-desktop"
-      [configuration]="{
-        placeholder: 'search.searchbox.instructional_text' | translate,
-        autoSuggest: true,
-        maxAutoSuggests: 10,
-        icon: icon,
-        showLastSearchTerm: true
-      }"
-    />
-  </ng-template>
 </ng-template>
 
 <div class="header container" [ngClass]="deviceType">
@@ -41,56 +28,30 @@
   </ul>
 
   <div class="header-utility">
-    <ng-container *ngIf="isSparqueSuggestActive; else simpleSuggest">
-      <a *ngIf="isSticky && deviceType !== 'mobile'; else mobileSearch">
-        <fa-icon
-          class="header-icon"
-          [icon]="['fas', 'search']"
-          (click)="scrollTopAndFocusSearch()"
-          (keydown.enter)="scrollTopAndFocusSearch()"
-          tabindex="0"
-        />
-      </a>
+    <a *ngIf="isSticky && deviceType !== 'mobile'; else mobileSearch">
+      <fa-icon
+        class="header-icon"
+        [icon]="['fas', 'search']"
+        (click)="scrollTopAndFocusSearch()"
+        (keydown.enter)="scrollTopAndFocusSearch()"
+        tabindex="0"
+      />
+    </a>
 
-      <ng-template #mobileSearch>
-        <a class="search-toggler" [ngClass]="{ 'active-search': showSearch }">
-          <fa-icon
-            *ngIf="isSticky"
-            class="header-icon"
-            [icon]="['fas', 'search']"
-            (click)="scrollTopAndFocusSearch()"
-          />
-          <div
-            *ngIf="isSticky || showSearch"
-            class="search-container header-search-container"
-            [ngbCollapse]="!showSearch"
-            [ngClass]="{ show: !isSticky }"
-          >
-            <ng-container *ngTemplateOutlet="searchBoxTemplate" />
-          </div>
-        </a>
-      </ng-template>
-    </ng-container>
-
-    <ng-template #simpleSuggest>
+    <ng-template #mobileSearch>
       <a class="search-toggler" [ngClass]="{ 'active-search': showSearch }">
-        <fa-icon
-          *ngIf="isSticky"
-          class="header-icon"
-          [icon]="['fas', 'search']"
-          (click)="toggle('search')"
-          (keydown.enter)="toggle('search')"
-          tabindex="0"
-        />
+        <fa-icon *ngIf="isSticky" class="header-icon" [icon]="['fas', 'search']" (click)="scrollTopAndFocusSearch()" />
         <div
           *ngIf="isSticky || showSearch"
           class="search-container header-search-container"
           [ngbCollapse]="!showSearch"
+          [ngClass]="{ show: !isSticky }"
         >
-          <ng-container *ngTemplateOutlet="searchBoxTemplate; context: { icon: 'angle-right' }" />
+          <ng-container *ngTemplateOutlet="searchBoxTemplate" />
         </div>
       </a>
     </ng-template>
+
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch *ngIf="!isSticky" data-testing-id="language-switch-desktop" />
     </div>

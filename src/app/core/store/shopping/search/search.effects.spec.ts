@@ -8,7 +8,7 @@ import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, w
 import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
 import { ICMSuggestionService } from 'ish-core/services/icm-suggestion/icm-suggestion.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { SuggestionService } from 'ish-core/services/suggestion/suggestion.service';
+import { SuggestionServiceProvider } from 'ish-core/services/suggestion/provider/suggestion.service.provider';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadMoreProducts, setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
@@ -27,12 +27,15 @@ describe('Search Effects', () => {
   let router: Router;
   let productsServiceMock: ProductsService;
   let suggestionServiceMock: ICMSuggestionService;
+  let suggestionServiceProviderMock: SuggestionServiceProvider;
   let httpStatusCodeService: HttpStatusCodeService;
 
   const suggests = [{ keywordSuggestions: ['Goods'] }] as Suggestion;
 
   beforeEach(() => {
     suggestionServiceMock = mock(ICMSuggestionService);
+    suggestionServiceProviderMock = mock(SuggestionServiceProvider);
+    when(suggestionServiceProviderMock.get()).thenReturn(instance(suggestionServiceMock));
     when(suggestionServiceMock.search(anyString())).thenReturn(of<Suggestion>(suggests));
     productsServiceMock = mock(ProductsService);
     const skus = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
@@ -63,7 +66,7 @@ describe('Search Effects', () => {
       ],
       providers: [
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
-        { provide: SuggestionService, useFactory: () => instance(suggestionServiceMock) },
+        { provide: SuggestionServiceProvider, useFactory: () => instance(suggestionServiceProviderMock) },
         provideStoreSnapshots(),
       ],
     });
@@ -96,55 +99,11 @@ describe('Search Effects', () => {
   });
 
   describe('suggestSearch$', () => {
-    it('should not fire when search term is falsy', fakeAsync(() => {
-      const action = suggestSearch({ searchTerm: undefined });
-      store$.dispatch(action);
-
-      tick(5000);
-
-      verify(suggestionServiceMock.search(anyString())).never();
-    }));
-
-    it('should not fire when search term is empty', fakeAsync(() => {
-      const action = suggestSearch({ searchTerm: '' });
-      store$.dispatch(action);
-
-      tick(5000);
-
-      verify(suggestionServiceMock.search(anyString())).never();
-    }));
-
     it('should return search terms when available', fakeAsync(() => {
       const action = suggestSearch({ searchTerm: 'g' });
       store$.dispatch(action);
 
-      tick(5000);
-
       verify(suggestionServiceMock.search('g')).once();
-    }));
-
-    it('should debounce correctly when search term is entered stepwise', fakeAsync(() => {
-      store$.dispatch(suggestSearch({ searchTerm: 'g' }));
-      tick(50);
-      store$.dispatch(suggestSearch({ searchTerm: 'goo' }));
-      tick(100);
-      store$.dispatch(suggestSearch({ searchTerm: 'good' }));
-      tick(200);
-
-      verify(suggestionServiceMock.search(anyString())).never();
-
-      tick(400);
-      verify(suggestionServiceMock.search('good')).once();
-    }));
-
-    it('should send only once if search term is entered multiple times', fakeAsync(() => {
-      store$.dispatch(suggestSearch({ searchTerm: 'good' }));
-      tick(2000);
-      verify(suggestionServiceMock.search('good')).once();
-      store$.dispatch(suggestSearch({ searchTerm: 'good' }));
-      tick(2000);
-
-      verify(suggestionServiceMock.search('good')).once();
     }));
 
     it('should not fire action when error is encountered at service level', fakeAsync(() => {
@@ -165,7 +124,6 @@ describe('Search Effects', () => {
         [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
-          searchTerm: "good"
           suggests: [{"keywordSuggestions":["Goods"]}]
       `);
 
@@ -176,12 +134,10 @@ describe('Search Effects', () => {
         [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
-          searchTerm: "good"
           suggests: [{"keywordSuggestions":["Goods"]}]
         [Suggest Search] Load Search Suggestions:
           searchTerm: "goo"
         [Suggest Search API] Return Search Suggestions:
-          searchTerm: "goo"
           suggests: [{"keywordSuggestions":["Goods"]}]
       `);
 
@@ -192,17 +148,14 @@ describe('Search Effects', () => {
         [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
-          searchTerm: "good"
           suggests: [{"keywordSuggestions":["Goods"]}]
         [Suggest Search] Load Search Suggestions:
           searchTerm: "goo"
         [Suggest Search API] Return Search Suggestions:
-          searchTerm: "goo"
           suggests: [{"keywordSuggestions":["Goods"]}]
         [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
-          searchTerm: "good"
           suggests: [{"keywordSuggestions":["Goods"]}]
       `);
     }));

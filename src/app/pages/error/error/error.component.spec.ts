@@ -6,7 +6,7 @@ import { instance, mock } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { SimpleSearchBoxComponent } from 'ish-core/standalone/component/suggest/simple-search-box/simple-search-box.component';
+import { SearchBoxComponent } from 'ish-core/standalone/component/suggest/search-box/search-box.component';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 
 import { ErrorComponent } from './error.component';
@@ -20,7 +20,7 @@ describe('Error Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [ErrorComponent, MockComponent(SimpleSearchBoxComponent), ServerHtmlDirective],
+      declarations: [ErrorComponent, MockComponent(SearchBoxComponent), ServerHtmlDirective],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
@@ -51,6 +51,6 @@ describe('Error Component', () => {
 
   it('should render search box on template', () => {
     fixture.detectChanges();
-    expect(findAllCustomElements(element)).toEqual(['ish-simple-search-box']);
+    expect(findAllCustomElements(element)).toEqual(['ish-search-box']);
   });
 });

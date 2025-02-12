@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SimpleSearchBoxComponent } from 'ish-core/standalone/component/suggest/simple-search-box/simple-search-box.component';
+import { SearchBoxComponent } from 'ish-core/standalone/component/suggest/search-box/search-box.component';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { SearchNoResultComponent } from './search-no-result/search-no-result.component';
@@ -16,7 +16,7 @@ const searchPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(searchPageRoutes), SharedModule, SimpleSearchBoxComponent],
+  imports: [RouterModule.forChild(searchPageRoutes), SearchBoxComponent, SharedModule],
   declarations: [SearchNoResultComponent, SearchPageComponent, SearchResultComponent],
 })
 export class SearchPageModule {}

@@ -14,49 +14,71 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable, ReplaySubject, map, of, switchMap, take } from 'rxjs';
+import { Observable, ReplaySubject, shareReplay } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { IconModule } from 'ish-core/icon.module';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SearchBoxConfiguration } from 'ish-core/models/search-box-configuration/search-box-configuration.model';
+import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
 import { PipesModule } from 'ish-core/pipes.module';
+import { SuggestBrandsTileComponent } from 'ish-core/standalone/component/suggest/suggest-brands-tile/suggest-brands-tile.component';
+import { SuggestCategoriesTileComponent } from 'ish-core/standalone/component/suggest/suggest-categories-tile/suggest-categories-tile.component';
+import { SuggestKeywordsTileComponent } from 'ish-core/standalone/component/suggest/suggest-keywords-tile/suggest-keywords-tile.component';
+import { SuggestProductsTileComponent } from 'ish-core/standalone/component/suggest/suggest-products-tile/suggest-products-tile.component';
 
 /**
  * @description
- * The `AdvancedSearchBoxComponent` is a standalone component that provides a search box with auto-suggest functionality.
+ * The `SearchBoxComponent` is a standalone component that provides a search box with auto-suggest functionality.
  * It interacts with the `ShoppingFacade` to fetch search suggestions and handles user input to perform searches.
  *
  * @example
- * <app-advanced-search-box [configuration]="searchBoxConfig"></app-advanced-search-box>
+ * <ish-search-box [configuration]="searchBoxConfig"></ish-search-box>
  *
  * @property {SearchBoxConfiguration} configuration - The search box configuration for this component.
- * @property {Observable<SuggestTerm[]>} searchResults$ - An observable stream of search suggestions.
+ * @property {Observable<Suggestion>} searchResults$ - An observable stream of search suggestions.
  * @property {ReplaySubject<string>} inputSearchTerms$ - A subject to emit search terms entered by the user.
- * @property {number} activeIndex - The index of the currently active suggestion.
- * @property {boolean} inputFocused - Indicates whether the search input is focused.
+ * @property {Observable<boolean>} searchSuggestLoading$ - An observable stream indicating the loading state of search suggestions.
+ * @property {Observable<HttpError>} searchSuggestError$ - An observable stream of errors that occur during search suggestions.
+ * @property {boolean} searchBoxFocus - Indicates whether the search box is focused.
+ * @property {boolean} searchBoxScaledUp - Indicates whether the search box has scaled up.
+ * @property {boolean} isTabOut - Indicates whether the browser tab is out of focus.
  *
  * @method blur - Handles the blur event of the search input.
- * @method focus - Handles the focus event of the search input.
+ * @method handleBlur - Handles the blur event of the search input with additional logic.
+ * @method handleFocus - Handles the focus event of the search input.
+ * @method reset - Reset and clear the search input and suggestions.
+ * @method handleReset - Handles the reset event to clear the search input and suggestions.
  * @method searchSuggest - Emits a new search term to trigger suggestions.
  * @method submitSearch - Submits the selected or entered search term.
- * @method selectSuggestedTerm - Selects a suggested term based on the provided index.
+ * @method isElementWithinSearchSuggestLayer - Checks if the given element is within the search suggest layer.
  *
  * @constructor
  * @param {ShoppingFacade} shoppingFacade - The facade to interact with the shopping state.
  * @param {Router} router - The Angular router to navigate to the search results page.
  *
- * @getter usedIcon - Returns the icon to be used in the search box.
+ * @getter hasMoreThanTwoCharacters - Returns true if the input search term has more than 2 characters.
  *
  * @lifecycle ngOnInit - Initializes the component and sets up the necessary streams.
+ * @lifecycle ngAfterViewInit - Handles additional initialization after the view has been initialized.
  */
 @Component({
-  selector: 'ish-advanced-search-box',
-  templateUrl: './advanced-search-box.component.html',
+  selector: 'ish-search-box',
+  templateUrl: './search-box.component.html',
   standalone: true,
-  imports: [CommonModule, IconModule, PipesModule, TranslateModule],
+  imports: [
+    CommonModule,
+    IconModule,
+    PipesModule,
+    TranslateModule,
+    SuggestKeywordsTileComponent,
+    SuggestCategoriesTileComponent,
+    SuggestBrandsTileComponent,
+    SuggestProductsTileComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
+export class SearchBoxComponent implements OnInit, AfterViewInit {
   /**
    * the search box configuration for this component
    */
@@ -66,11 +88,12 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
   @ViewChild('searchInput') searchInput: ElementRef;
   @ViewChild('searchInputReset') searchInputReset: ElementRef;
   @ViewChild('searchInputSubmit') searchInputSubmit: ElementRef;
+  @ViewChild('searchSuggestLayer') searchSuggestLayer: ElementRef;
 
-  searchResults$: Observable<string[]>;
+  searchResults$: Observable<Suggestion>;
   inputSearchTerms$ = new ReplaySubject<string>(1);
-
-  activeIndex = -1;
+  searchSuggestLoading$: Observable<boolean>;
+  searchSuggestError$: Observable<HttpError>;
 
   // searchbox focus handling
   searchBoxFocus = false;
@@ -86,23 +109,13 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
   constructor(private shoppingFacade: ShoppingFacade, private router: Router) {}
 
   ngOnInit() {
-    // initialize with searchTerm when on search route
-    this.shoppingFacade.searchTerm$
-      .pipe(
-        map(x => (x ? x : '')),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(term => this.inputSearchTerms$.next(term));
-
     // suggests are triggered solely via stream
-    this.searchResults$ = this.inputSearchTerms$.pipe(
-      switchMap(term => {
-        if (term.length < 2) {
-          return of([]); // emit an empty array if the input is less than 2 characters
-        }
-        return this.shoppingFacade.searchResults$(of(term));
-      })
-    );
+    this.searchResults$ = this.shoppingFacade
+      .searchResults$(this.inputSearchTerms$)
+      .pipe(shareReplay(1)) as Observable<Suggestion>;
+
+    this.searchSuggestLoading$ = this.shoppingFacade.searchSuggestLoading$;
+    this.searchSuggestError$ = this.shoppingFacade.searchSuggestError$;
   }
 
   ngAfterViewInit() {
@@ -147,12 +160,16 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
       if (
         currentElement !== this.searchInput.nativeElement &&
         currentElement !== this.searchInputReset?.nativeElement &&
-        currentElement !== this.searchInputSubmit.nativeElement
+        currentElement !== this.searchInputSubmit.nativeElement &&
+        !this.isElementWithinSearchSuggestLayer(currentElement)
       ) {
         this.handleFocus(false); // do not scale down if one of the searchbox elements is focused
       }
     }
-    this.activeIndex = -1;
+  }
+
+  private isElementWithinSearchSuggestLayer(element: HTMLElement): boolean {
+    return this.searchSuggestLayer?.nativeElement.contains(element) ?? false;
   }
 
   handleFocus(scaleUp: boolean = true) {
@@ -164,19 +181,25 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
     }
   }
 
-  handleEscKey() {
+  reset() {
     this.blur();
     this.inputSearchTerms$.next('');
+    this.shoppingFacade.clearSuggestSearchSuggestions();
   }
 
   handleReset() {
     this.searchInput.nativeElement.focus(); // manually set focus to input to prevent blur event
     this.inputSearchTerms$.next('');
+    this.shoppingFacade.clearSuggestSearchSuggestions();
   }
 
   searchSuggest(source: EventTarget) {
     const inputValue = (source as HTMLInputElement).value;
     this.inputSearchTerms$.next(inputValue);
+    if (inputValue === '') {
+      // clear suggestions in state when input is set to empty
+      this.shoppingFacade.clearSuggestSearchSuggestions();
+    }
   }
 
   submitSearch(suggestedTerm: string) {
@@ -185,31 +208,17 @@ export class AdvancedSearchBoxComponent implements OnInit, AfterViewInit {
       return false;
     }
 
-    this.blur();
+    this.router.navigate(['/search', suggestedTerm]);
 
-    if (this.activeIndex !== -1) {
-      // something was selected via keyboard
-      this.searchResults$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(results => {
-        this.router.navigate(['/search', results[this.activeIndex]]);
-        this.activeIndex = -1;
-      });
-    } else {
-      this.router.navigate(['/search', suggestedTerm]);
-    }
+    this.blur();
 
     return false; // prevent form submission
   }
 
-  selectSuggestedTerm(index: number) {
-    this.searchResults$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(results => {
-      if (
-        (this.configuration?.maxAutoSuggests && index > this.configuration.maxAutoSuggests - 1) ||
-        index < -1 ||
-        index > results.length - 1
-      ) {
-        return;
-      }
-      this.activeIndex = index;
-    });
+  // getter method to check if the input search term has more than 2 characters
+  get hasMoreThanTwoCharacters(): boolean {
+    let term = '';
+    this.inputSearchTerms$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => (term = value));
+    return term.length >= 2;
   }
 }

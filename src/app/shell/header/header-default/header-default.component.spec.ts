@@ -3,11 +3,9 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
 
-import { AppFacade } from 'ish-core/facades/app.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { SimpleSearchBoxComponent } from 'ish-core/standalone/component/suggest/simple-search-box/simple-search-box.component';
+import { SearchBoxComponent } from 'ish-core/standalone/component/suggest/search-box/search-box.component';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { HeaderNavigationComponent } from 'ish-shell/header/header-navigation/header-navigation.component';
 import { LanguageSwitchComponent } from 'ish-shell/header/language-switch/language-switch.component';
@@ -26,7 +24,6 @@ describe('Header Default Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
       imports: [FeatureToggleModule.forTesting('compare'), TranslateModule.forRoot()],
       declarations: [
         HeaderDefaultComponent,
@@ -36,7 +33,7 @@ describe('Header Default Component', () => {
         MockComponent(LazyProductCompareStatusComponent),
         MockComponent(LoginStatusComponent),
         MockComponent(MiniBasketComponent),
-        MockComponent(SimpleSearchBoxComponent),
+        MockComponent(SearchBoxComponent),
         MockComponent(UserInformationMobileComponent),
         MockDirective(NgbCollapse),
       ],
@@ -67,7 +64,7 @@ describe('Header Default Component', () => {
 
   it('should render Search Box on template', () => {
     fixture.detectChanges();
-    expect(findAllCustomElements(element)).toContain('ish-simple-search-box');
+    expect(findAllCustomElements(element)).toContain('ish-search-box');
   });
 
   it('should render Header Navigation on template', () => {

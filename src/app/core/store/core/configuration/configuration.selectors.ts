@@ -152,3 +152,15 @@ export const getPipelineEndpoint = createSelector(
   (serverUrl, state, locale, application, currency) =>
     serverUrl && state.channel ? `${serverUrl}/${state.channel}/${locale}/${application}/${currency}` : undefined
 );
+
+export const getStaticEndpoint = createSelector(
+  getConfigurationState,
+  getICMApplication,
+  getCurrentLocale,
+  (state, application, locale) =>
+    state.baseURL && state.serverStatic && state.channel
+      ? `${state.baseURL}/${state.serverStatic}/${state.channel}/${application}/${
+          state.channel.split('-')[0]
+        }/${locale}`
+      : undefined
+);

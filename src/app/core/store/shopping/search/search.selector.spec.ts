@@ -22,16 +22,16 @@ describe('Search Selector', () => {
 
   describe('getSuggestSearchResults', () => {
     beforeEach(() => {
-      store$.dispatch(
-        suggestSearchSuccess({ searchTerm: 'searchTerm', suggests: { keywordSuggestions: ['term'] } as Suggestion })
-      );
+      store$.dispatch(suggestSearchSuccess({ suggests: { keywordSuggestions: ['term'] } as Suggestion }));
     });
 
     it('should get search results when searchTerm exists', () => {
-      expect(getSuggestSearchResults('searchTerm')(store$.state)).toMatchInlineSnapshot(`
-        [
-          "term",
-        ]
+      expect(getSuggestSearchResults(store$.state)).toMatchInlineSnapshot(`
+        {
+          "keywordSuggestions": [
+            "term",
+          ],
+        }
       `);
     });
   });

@@ -95,6 +95,7 @@ describe('Sparque Api Service', () => {
     });
 
     it('should call the httpClient.options method when sparqueApiService.options method is called.', done => {
+      // eslint-disable-next-line etc/no-deprecated
       sparqueApiService.options('data').subscribe({
         next: data => {
           expect(data).toBeTruthy();
@@ -109,7 +110,7 @@ describe('Sparque Api Service', () => {
 
     it('should create Error Action if httpClient.options throws Error.', () => {
       const statusText = 'ERROR';
-
+      // eslint-disable-next-line etc/no-deprecated
       sparqueApiService.options('data').subscribe({ next: fail, error: fail });
       const req = httpTestingController.expectOne(getRestURL('/data'));
 

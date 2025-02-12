@@ -4,14 +4,15 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ReplaySubject, Subject } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
 
-import { AdvancedSearchBoxComponent } from './advanced-search-box.component';
+import { SearchBoxComponent } from './search-box.component';
 
-describe('Advanced Search Box Component', () => {
-  let component: AdvancedSearchBoxComponent;
-  let fixture: ComponentFixture<AdvancedSearchBoxComponent>;
+describe('Search Box Component', () => {
+  let component: SearchBoxComponent;
+  let fixture: ComponentFixture<SearchBoxComponent>;
   let element: HTMLElement;
-  let searchResults$: Subject<string[]>;
+  let searchResults$: Subject<Suggestion>;
   let searchTerm$: Subject<string>;
 
   beforeEach(async () => {
@@ -32,13 +33,14 @@ describe('Advanced Search Box Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdvancedSearchBoxComponent);
+    fixture = TestBed.createComponent(SearchBoxComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
     // activate
     component.searchBoxFocus = true;
     component.configuration = { maxAutoSuggests: 4 };
+    component.configuration = { autoSuggest: true };
   });
 
   it('should be created', () => {
@@ -49,84 +51,57 @@ describe('Advanced Search Box Component', () => {
 
   describe('with no results', () => {
     beforeEach(() => {
-      searchResults$.next([]);
+      searchResults$.next(undefined);
     });
 
     it('should show no results when no suggestions are found', () => {
       fixture.detectChanges();
 
-      const ul = element.querySelector('.search-suggest-results');
+      const ul = element.querySelector('.search-suggest-terms ul');
       expect(ul).toBeFalsy();
     });
   });
 
   describe('with results', () => {
     beforeEach(() => {
-      searchResults$.next(['Cameras', 'Camcorders']);
+      searchResults$.next({
+        keywordSuggestions: ['Cameras', 'Camcorders'],
+        products: [],
+        categories: [],
+        brands: [],
+        contentSuggestions: [],
+      } as Suggestion);
     });
 
     it('should show results when suggestions are available', () => {
       component.searchBoxFocus = true;
-      searchTerm$.next('ca');
+      component.inputSearchTerms$.next('ca');
       fixture.detectChanges();
 
-      const ul = element.querySelector('.search-suggest-results');
-      expect(ul.querySelectorAll('li')).toHaveLength(2);
-    });
-
-    it('should show no results when suggestions are available but maxAutoSuggests is 0', () => {
-      component.searchBoxFocus = true;
-      searchTerm$.next('ca');
-      component.configuration.maxAutoSuggests = 0;
-      fixture.detectChanges();
-
-      const ul = element.querySelector('.search-suggest-results');
-      expect(ul.querySelectorAll('li')).toHaveLength(0);
+      expect(element.querySelector('ish-suggest-keywords-tile')).toBeTruthy();
     });
 
     it('should show no results when suggestions are available but input has no focus', () => {
       component.searchBoxFocus = false;
       fixture.detectChanges();
 
-      expect(element.querySelector('.search-suggest-results')).toBeFalsy();
-    });
-
-    it('should show no results when input is less than 2 characters', () => {
-      component.searchBoxFocus = true;
-      component.inputSearchTerms$.next('a');
-      fixture.detectChanges();
-
-      const ul = fixture.nativeElement.querySelector('.search-suggest-results');
-      expect(ul).toBeFalsy();
+      expect(element.querySelector('.search-suggest-container')).toBeFalsy();
     });
 
     it('should show results when input is 2 or more characters', () => {
       component.searchBoxFocus = true;
-      searchTerm$.next('ca');
       component.inputSearchTerms$.next('ca');
       fixture.detectChanges();
 
-      const ul = fixture.nativeElement.querySelector('.search-suggest-results');
+      const ul = fixture.nativeElement.querySelector('.search-suggest-terms ul');
       expect(ul.querySelectorAll('li')).toHaveLength(2);
-    });
-
-    it('should clear results when input is cleared', () => {
-      component.searchBoxFocus = true;
-
-      component.inputSearchTerms$.next('ca');
-      fixture.detectChanges();
-
-      component.inputSearchTerms$.next('');
-      fixture.detectChanges();
-
-      const ul = fixture.nativeElement.querySelector('.search-suggest-results');
-      expect(ul).toBeFalsy();
     });
   });
 
   describe('with inputs', () => {
     it('should show searchTerm when on search page', () => {
-      searchTerm$.next('search');
+      component.searchBoxFocus = true;
+      component.inputSearchTerms$.next('search');
 
       fixture.detectChanges();
       const input = element.querySelector('input');
