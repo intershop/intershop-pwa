@@ -21,7 +21,6 @@ describe('Sparque Suggestion Service', () => {
       providers: [
         { provide: SparqueApiService, useFactory: () => instance(sparqueApiService) },
         { provide: SparqueSuggestionMapper, useFactory: () => instance(sparqueSuggestionMapper) },
-        SparqueSuggestionService,
       ],
     });
     suggestService = TestBed.inject(SparqueSuggestionService);
