@@ -15,8 +15,6 @@ import { PaymentPayoneInterceptor } from './interceptors/payment-payone.intercep
 import { PGIDChangeInterceptor } from './interceptors/pgid-change.interceptor';
 import { PreviewInterceptor } from './interceptors/preview.interceptor';
 import { InternationalizationModule } from './internationalization.module';
-import { ICMSuggestionService } from './services/icm-suggestion/icm-suggestion.service';
-import { SuggestionService } from './services/suggestion/suggestion.service';
 import { StateManagementModule } from './state-management.module';
 import { DefaultErrorHandler } from './utils/default-error-handler';
 
@@ -45,8 +43,6 @@ import { DefaultErrorHandler } from './utils/default-error-handler';
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: PreviewInterceptor, multi: true },
     { provide: ErrorHandler, useClass: DefaultErrorHandler },
-    // to use Sparque for suggestion exchange ICMSuggestionService with SparqueSuggestionService
-    { provide: SuggestionService, useClass: ICMSuggestionService },
     {
       provide: APP_BASE_HREF,
       useFactory: (s: PlatformLocation, baseHref: string) => baseHref || s.getBaseHrefFromDOM(),

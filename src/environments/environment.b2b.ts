@@ -17,14 +17,14 @@ export const environment: Environment = {
    *   - add the team2 workspace and API(intershop-project-base-v2-team2|PWA) to the list for WORKSPACE_ENDPOINTSETS_WITHOUT_AUTH
    *   - set CACHE_SHOULD_CACHE to false
    * 4. start the docker-compose => docker-compose up -d
-   * 5. to check if the sparque wrapper is running correctly open the url http://localhost:5755/swagger/index.html**/
+   * 5. to check if the sparque wrapper is running correctly open the url http://localhost:5755/swagger/index.html
   sparque: {
     server_url: 'http://host.docker.internal:28090',
     wrapperAPI: 'v2',
     WorkspaceName: 'intershop-project-base-v2-team2',
     ApiName: 'PWA',
     ChannelId: 'ish',
-  },
+  },**/
 
   features: [
     ...ENVIRONMENT_DEFAULTS.features,
