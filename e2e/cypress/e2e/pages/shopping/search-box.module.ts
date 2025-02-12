@@ -33,7 +33,7 @@ export class SearchBoxModule {
   }
 
   private suggestionsOverlay() {
-    return cy.get('ul.search-suggest-results');
+    return cy.get('div.search-suggest-terms');
   }
 
   search(searchTerm: string) {
@@ -42,6 +42,10 @@ export class SearchBoxModule {
 
   assertNoSuggestions() {
     this.suggestionsOverlay().should('not.exist');
+  }
+
+  assertSuggestionsNoDisplayed() {
+    this.suggestionsOverlay().should('not.be.visible');
   }
 
   clickSuggestion(text: string) {
@@ -68,6 +72,12 @@ export class SearchBoxModule {
 
   down() {
     this.inputField().type('{downarrow}');
+    cy.wait(SearchBoxModule.INTERACTION_WAIT);
+    return this;
+  }
+
+  tab() {
+    this.inputField().type('{tab}');
     cy.wait(SearchBoxModule.INTERACTION_WAIT);
     return this;
   }

@@ -1,0 +1,145 @@
+<div #searchBox class="search clearfix" [ngClass]="{ focus: searchBoxFocus, 'scaled-up': searchBoxScaledUp }">
+  <input
+    #searchInput
+    [placeholder]="configuration?.placeholder || ''"
+    autocomplete="off"
+    type="search"
+    id="header-search-input"
+    class="form-control searchTerm"
+    (input)="searchSuggest($event.target)"
+    [value]="inputSearchTerms$ | async"
+    (focus)="handleFocus()"
+    (blur)="handleBlur($event)"
+    (keydown)="handleFocus()"
+    (keydown.esc)="reset()"
+    (keydown.enter)="submitSearch(searchInput.value)"
+  />
+
+  <div *ngIf="searchSuggestError$ | async" class="search-suggest-container">
+    <div class="col-12">
+      <div class="headline">{{ 'suggest.error.headline' | translate }}</div>
+      <p>{{ 'suggest.error.text' | translate }}</p>
+    </div>
+  </div>
+
+  <ng-container *ngIf="configuration?.autoSuggest && searchResults$ | async as results">
+    <div
+      *ngIf="
+        (results.keywordSuggestions?.length ||
+          results.categories?.length ||
+          results.brands?.length ||
+          results.products?.length) &&
+          hasMoreThanTwoCharacters;
+        else noResults
+      "
+      class="search-suggest-container"
+      #searchSuggestLayer
+    >
+      <div
+        class="col-12 d-flex flex-column"
+        [ngClass]="{
+          'col-md-5': results.products?.length
+        }"
+      >
+        <div *ngIf="results.keywordSuggestions.length">
+          <ish-suggest-keywords-tile
+            [keywords]="results.keywordSuggestions"
+            [inputTerms$]="inputSearchTerms$"
+            (submitSearch)="submitSearch($event)"
+            [maxAutoSuggests]="5"
+          />
+        </div>
+        <div *ngIf="results.categories?.length">
+          <ish-suggest-categories-tile
+            [categories]="results.categories"
+            [inputTerms$]="inputSearchTerms$"
+            (routeChange)="reset()"
+            [maxAutoSuggests]="3"
+          />
+        </div>
+        <div *ngIf="results.brands?.length">
+          <ish-suggest-brands-tile
+            [brands]="results.brands"
+            [inputTerms$]="inputSearchTerms$"
+            (routeChange)="reset()"
+            [maxAutoSuggests]="3"
+          />
+        </div>
+      </div>
+      <div
+        *ngIf="results.products?.length"
+        [ngClass]="{
+          'col-md-7': results.keywordSuggestions.length || results.brands.length || results.categories.length,
+          'products-only': !results.keywordSuggestions.length && !results.brands.length && !results.categories.length
+        }"
+        class="col-12"
+      >
+        <ish-suggest-products-tile
+          [products]="results.products"
+          [inputTerms$]="inputSearchTerms$"
+          (routeChange)="reset()"
+          [maxAutoSuggests]="8"
+        />
+      </div>
+      <div class="col-12">
+        <div class="show-all">
+          <button
+            type="button"
+            class="btn btn-link"
+            [title]="'search.searchbox.button.title' | translate"
+            (click)="submitSearch(searchInput.value)"
+          >
+            {{ 'suggest.view_all.link' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <ng-template #noResults>
+      <div *ngIf="hasMoreThanTwoCharacters" class="search-suggest-container">
+        <div class="col-12">
+          <div class="headline">{{ 'suggest.no_results.headline' | translate }}</div>
+          <p>{{ 'suggest.no_results.text' | translate }}</p>
+        </div>
+      </div>
+    </ng-template>
+  </ng-container>
+
+  <div *ngIf="searchSuggestLoading$ | async" class="loading"></div>
+  <div class="search-suggest-backdrop" [ngClass]="{ show: searchBoxFocus }"></div>
+
+  <div class="buttons">
+    <button
+      #searchInputReset
+      *ngIf="inputSearchTerms$ | async"
+      class="btn-reset btn btn-primary"
+      type="reset"
+      name="reset"
+      [title]="'search.searchbox.button.reset.title' | translate"
+      (focus)="handleFocus()"
+      (click)="handleReset()"
+      (blur)="handleBlur($event)"
+      (keydown.esc)="reset()"
+    >
+      <fa-icon [icon]="['fas', 'times']" />
+    </button>
+
+    <button
+      #searchInputSubmit
+      class="btn-search btn btn-primary"
+      type="submit"
+      name="search"
+      [title]="'search.searchbox.button.title' | translate"
+      (keydown)="handleFocus()"
+      (click)="submitSearch(searchInput.value)"
+      (blur)="handleBlur($event)"
+      (keydown.esc)="reset()"
+    >
+      <!-- search button with icon -->
+      <ng-container *ngIf="!configuration?.buttonText; else textBlock">
+        <fa-icon [icon]="['fas', 'search']" />
+      </ng-container>
+      <!-- search button with text -->
+      <ng-template #textBlock> {{ configuration?.buttonText }} </ng-template>
+    </button>
+  </div>
+</div>
