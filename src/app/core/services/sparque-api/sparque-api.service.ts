@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { concatLatestFrom } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { Observable, combineLatest, defer, first, forkJoin, iif, map, of, switchMap, take } from 'rxjs';
+import { EMPTY, Observable, combineLatest, defer, first, forkJoin, iif, map, of, switchMap, take } from 'rxjs';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
@@ -31,6 +31,8 @@ const SPARQUE_CONFIG_EXCLUDE_PARAMS = ['server_url', 'wrapperAPI'];
  */
 @Injectable({ providedIn: 'root' })
 export class SparqueApiService extends ApiService {
+  private static SPARQUE_PERSONALIZATION_IDENTIFIER = 'userId';
+
   constructor(
     protected httpClient: HttpClient,
     protected store: Store,
@@ -98,29 +100,50 @@ export class SparqueApiService extends ApiService {
   }
 
   /**
-   * merges supplied and default headers
+   * Constructs HTTP headers for a request, optionally including an authorization token.
+   *
+   * @param options - Optional parameters that may include additional headers and query parameters.
+   * @returns An observable that emits the constructed HttpHeaders.
+   *
+   * This method performs the following steps:
+   * 1. Initializes default headers with 'content-type' and 'Accept' set to 'application/json'.
+   * 2. Checks if the `SPARQUE_PERSONALIZATION_IDENTIFIER` is present in the query parameters.
+   * 3. If the identifier is present, it attempts to retrieve an API token:
+   *    - If an API token is available, it uses it.
+   *    - If no API token is available, it fetches an anonymous token.
+   * 4. Appends the authorization token to the headers if available.
+   * 5. Merges any additional headers provided in the options with the default headers.
    */
   protected constructHeaders(options?: AvailableOptions): Observable<HttpHeaders> {
     let defaultHeaders = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
 
-    return this.apiTokenService.apiToken$.pipe(
-      first(),
-      switchMap(apiToken =>
-        iif(() => !!apiToken, of(apiToken), this.tokenService.fetchToken('anonymous')).pipe(
-          whenTruthy(),
-          first(),
-          switchMap(apiToken => {
-            defaultHeaders = defaultHeaders.append('Authorization', `bearer ${apiToken}`);
-            return of(
-              options?.headers
-                ? // append incoming headers to default ones
-                  options.headers.keys().reduce((acc, key) => acc.set(key, options.headers.get(key)), defaultHeaders)
-                : // just use default headers
-                  defaultHeaders
-            );
-          })
+    return iif(
+      () => options?.params?.keys().includes(SparqueApiService.SPARQUE_PERSONALIZATION_IDENTIFIER),
+      this.apiTokenService.apiToken$.pipe(
+        first(),
+        switchMap(apiToken =>
+          iif(
+            () => options?.params?.keys().includes(SparqueApiService.SPARQUE_PERSONALIZATION_IDENTIFIER) && !!apiToken,
+            of(apiToken),
+            this.tokenService.fetchToken('anonymous')
+          )
         )
-      )
+      ),
+      of(EMPTY)
+    ).pipe(
+      first(),
+      switchMap(apiToken => {
+        if (apiToken && apiToken !== EMPTY) {
+          defaultHeaders = defaultHeaders.append('Authorization', `bearer ${apiToken}`);
+        }
+        return of(
+          options?.headers
+            ? // append incoming headers to default ones
+              options.headers.keys().reduce((acc, key) => acc.set(key, options.headers.get(key)), defaultHeaders)
+            : // just use default headers
+              defaultHeaders
+        );
+      })
     );
   }
 
