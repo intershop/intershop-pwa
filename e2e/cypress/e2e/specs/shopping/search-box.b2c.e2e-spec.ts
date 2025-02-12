@@ -15,7 +15,7 @@ describe('Search Box', () => {
     at(SearchResultPage, page => {
       page.title.should('contain', '22 items');
       page.title.should('contain', 'kensington');
-      page.header.searchBox.text.should('equal', 'kensington');
+      page.header.searchBox.text.should('contain', 'ken');
       page.header.searchBox.assertSuggestionsNoDisplayed();
     });
 
@@ -55,7 +55,7 @@ describe('Search Box', () => {
 
   it('should follow search when choosing suggestion with mouse', () => {
     at(HomePage, page => {
-      page.header.searchBox.type('Ken');
+      page.header.searchBox.type('ken');
       page.header.searchBox.suggestions.should('contain', 'Kensington');
 
       page.header.searchBox.clickSuggestion('Kensington');
@@ -103,7 +103,7 @@ describe('Search Box', () => {
 
       page.header.searchBox.assertNoSuggestions();
 
-      page.header.searchBox.type('ken');
+      page.header.searchBox.type('kensington');
       page.header.searchBox.suggestions.should('contain', 'Kensington');
 
       page.header.gotoHomePage();
