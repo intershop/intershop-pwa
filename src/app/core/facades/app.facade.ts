@@ -1,12 +1,10 @@
 import { getCurrencySymbol } from '@angular/common';
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, merge, noop } from 'rxjs';
 import { filter, map, sample, shareReplay, startWith, take, withLatestFrom } from 'rxjs/operators';
 
-import { SparqueSuggestionService } from 'ish-core/services/sparque-suggestion/sparque-suggestion.service';
-import { SuggestionService } from 'ish-core/services/suggestion/suggestion.service';
 import {
   getAvailableLocales,
   getCurrentCurrency,
@@ -149,9 +147,5 @@ export class AppFacade {
   regions$(countryCode: string) {
     this.store.dispatch(loadRegions({ countryCode }));
     return this.store.pipe(select(getRegionsByCountryCode(countryCode)));
-  }
-
-  isSparqueSuggestActive(): boolean {
-    return inject(SuggestionService) instanceof SparqueSuggestionService;
   }
 }
