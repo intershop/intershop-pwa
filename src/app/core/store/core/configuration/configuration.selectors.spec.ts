@@ -18,6 +18,7 @@ import {
   getIdentityProvider,
   getPipelineEndpoint,
   getRestEndpoint,
+  getStaticEndpoint,
 } from './configuration.selectors';
 
 // mock `isDevMode` to return `false`
@@ -51,6 +52,7 @@ describe('Configuration Selectors', () => {
       expect(getIdentityProvider(store$.state)).toBeUndefined();
       expect(getRestEndpoint(store$.state)).toBeUndefined();
       expect(getPipelineEndpoint(store$.state)).toBeUndefined();
+      expect(getStaticEndpoint(store$.state)).toBeUndefined();
     });
   });
 
@@ -87,6 +89,7 @@ describe('Configuration Selectors', () => {
       expect(getFeatures(store$.state)).toIncludeAllMembers(['compare', 'recently']);
       expect(getRestEndpoint(store$.state)).toEqual('http://example.org/api/site/-');
       expect(getPipelineEndpoint(store$.state)).toEqual('http://example.org/web/site/en_US/-/USD');
+      expect(getStaticEndpoint(store$.state)).toEqual('http://example.org/static/site/-/site/en_US');
     });
 
     describe('after setting application', () => {
@@ -105,6 +108,7 @@ describe('Configuration Selectors', () => {
         expect(getFeatures(store$.state)).toIncludeAllMembers(['compare', 'recently']);
         expect(getRestEndpoint(store$.state)).toEqual('http://example.org/api/site/app');
         expect(getPipelineEndpoint(store$.state)).toEqual('http://example.org/web/site/en_US/app/USD');
+        expect(getStaticEndpoint(store$.state)).toEqual('http://example.org/static/site/app/site/en_US');
       });
     });
 

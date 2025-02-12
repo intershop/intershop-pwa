@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import { AppFacade } from 'ish-core/facades/app.facade';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
@@ -31,11 +30,6 @@ export class HeaderDefaultComponent implements OnChanges {
   @Input() reset: unknown;
 
   private activeComponent: CollapsibleComponent = 'search';
-  isSparqueSuggestActive = false;
-
-  constructor(appFacade: AppFacade) {
-    this.isSparqueSuggestActive = appFacade.isSparqueSuggestActive();
-  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.reset) {
