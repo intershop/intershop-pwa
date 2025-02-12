@@ -178,7 +178,8 @@ If no environment variable is set, this feature is disabled.
 > [!IMPORTANT]
 > To configure additional headers, the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.8.0 or above has to be used.
 
-For some security or functional reasons it is necessary to add additional headers to page responses.
+For some security or functional reasons, it is necessary to add additional headers to page responses.
+One such security reason may be a Content Security Policy directive.
 To make such headers configurable, the environment variable `ADDITIONAL_HEADERS` has been introduced.
 
 ```yaml

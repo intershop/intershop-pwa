@@ -124,6 +124,7 @@ services:
             theme: b2c
       # ADDITIONAL_HEADERS: |
       #   headers:
+      #     - Content-Security-Policy: 'default-src develop.icm.intershop.de ''self''; style-src ''unsafe-inline'' ''self''; font-src data: ''self'';'
       #     - X-Frame-Options: 'SAMEORIGIN'
 
     # Logging to an External Device (see logging.md)
