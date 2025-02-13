@@ -18,7 +18,7 @@
       *ishIdentityProviderCapability="'editEmail'"
       routerLink="/account/profile/email"
       class="btn-tool"
-      [title]="'account.profile.email.update.link' | translate"
+      [title]="'account.profile.update.link' | translate : { '0': 'account.profile.email.heading' | translate }"
       data-testing-id="edit-email"
     >
       <fa-icon [icon]="['fas', 'pencil-alt']" />
@@ -43,7 +43,7 @@
     <a
       routerLink="/account/profile/password"
       class="btn-tool"
-      title="{{ 'account.profile.password.update.link' | translate }}"
+      [title]="'account.profile.update.link' | translate : { '0': 'account.profile.password.heading' | translate }"
       data-testing-id="edit-password"
     >
       <fa-icon [icon]="['fas', 'pencil-alt']" />
@@ -90,7 +90,7 @@
       *ishIdentityProviderCapability="'editProfile'"
       routerLink="/account/profile/user"
       class="btn-tool"
-      title="{{ 'account.profile.detail.update.link' | translate }}"
+      [title]="'account.profile.update.link' | translate : { '0': 'account.profile.detail.heading' | translate }"
       data-testing-id="edit-user"
     >
       <fa-icon [icon]="['fas', 'pencil-alt']" />

@@ -31,7 +31,10 @@
     <a
       routerLink="budget"
       class="btn-tool"
-      [title]="'account.profile.update.link' | translate"
+      [title]="
+        'account.profile.update.link'
+          | translate : { '0': 'account.user.details.profile.budget_limits.heading' | translate }
+      "
       data-testing-id="edit-budget"
     >
       <fa-icon [icon]="['fas', 'pencil-alt']" />

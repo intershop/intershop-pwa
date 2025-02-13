@@ -8,7 +8,7 @@
           *ngIf="collapseChange | async"
           type="button"
           class="btn-tool btn-link"
-          title="{{ 'checkout.address.update.shipping.label' | translate }}"
+          [title]="'checkout.address.update.title' | translate : { '0': 'checkout.address.shipping.label' | translate }"
           (click)="showAddressForm(address)"
           data-testing-id="edit-shipping-address-link"
         >
