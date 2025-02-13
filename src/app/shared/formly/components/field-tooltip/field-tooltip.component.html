@@ -3,6 +3,7 @@
     <span [innerHTML]="tooltipInfo.text | translate"></span>
   </ng-template>
   <button
+    type="button"
     [ngbPopover]="popover"
     [popoverTitle]="tooltipInfo.title | translate"
     placement="top"
