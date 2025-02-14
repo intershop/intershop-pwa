@@ -31,11 +31,12 @@
 <!-- Add a new Invoice to address -->
 <div class="row" *ngIf="(collapseChange | async) && (isLoggedIn$ | async)">
   <button
-    data-testing-id="create-invoice-address-link"
+    type="button"
     class="btn btn-link"
     (click)="showAddressForm()"
     [attr.aria-expanded]="(collapseChange | async) === false"
     aria-controls="invoice-address-panel"
+    data-testing-id="create-invoice-address-link"
   >
     {{ 'checkout.create_invoice_address.link' | translate }}
   </button>

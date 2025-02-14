@@ -13,9 +13,10 @@
         <button
           ngbDropdownItem
           *ngIf="!option.alternativeCombination || multipleOptions"
+          type="button"
           [value]="option.value"
-          [attr.data-testing-id]="group.id + '-' + option.value"
           (click)="optionChange(group.id, option.value)"
+          [attr.data-testing-id]="group.id + '-' + option.value"
         >
           <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }" />
         </button>

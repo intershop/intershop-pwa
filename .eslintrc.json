@@ -941,7 +941,8 @@
       ],
       "rules": {
         "@angular-eslint/template/no-positive-tabindex": "error",
-        "@angular-eslint/template/prefer-self-closing-tags": "error"
+        "@angular-eslint/template/prefer-self-closing-tags": "error",
+        "@angular-eslint/template/button-has-type": "warn"
       }
     },
     {
