@@ -7,6 +7,7 @@ import { ReplaySubject, switchMap } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Product } from 'ish-core/models/product/product.model';
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { PipesModule } from 'ish-core/pipes.module';
 
 @Component({
@@ -20,6 +21,7 @@ export class SuggestProductsTileComponent {
   @Input() products: Product[];
   @Input() maxAutoSuggests: number;
   @Input() inputTerms$ = new ReplaySubject<string>(1);
+  @Input() deviceType: DeviceType;
   @Output() routeChange = new EventEmitter<void>();
 
   private destroyRef = inject(DestroyRef);

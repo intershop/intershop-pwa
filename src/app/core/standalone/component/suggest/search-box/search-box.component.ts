@@ -7,6 +7,7 @@ import {
   ElementRef,
   HostListener,
   Input,
+  OnDestroy,
   OnInit,
   ViewChild,
   inject,
@@ -21,6 +22,7 @@ import { IconModule } from 'ish-core/icon.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SearchBoxConfiguration } from 'ish-core/models/search-box-configuration/search-box-configuration.model';
 import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { PipesModule } from 'ish-core/pipes.module';
 import { SuggestBrandsTileComponent } from 'ish-core/standalone/component/suggest/suggest-brands-tile/suggest-brands-tile.component';
 import { SuggestCategoriesTileComponent } from 'ish-core/standalone/component/suggest/suggest-categories-tile/suggest-categories-tile.component';
@@ -58,11 +60,12 @@ import { SuggestProductsTileComponent } from 'ish-core/standalone/component/sugg
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchBoxComponent implements OnInit, AfterViewInit {
+export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * the search box configuration for this component
    */
   @Input() configuration: SearchBoxConfiguration;
+  @Input() deviceType: DeviceType;
 
   @ViewChild('searchBox') searchBox: ElementRef;
   @ViewChild('searchInput') searchInput: ElementRef;
@@ -84,6 +87,8 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
   // not-dead-code
   isTabOut = false;
 
+  private resizeTimeout: ReturnType<typeof setTimeout>;
+
   private destroyRef = inject(DestroyRef);
 
   constructor(private shoppingFacade: ShoppingFacade, private router: Router) {}
@@ -100,6 +105,10 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.searchBoxInitialWidth = this.searchBox.nativeElement.offsetWidth;
+  }
+
+  ngOnDestroy() {
+    clearTimeout(this.resizeTimeout);
   }
 
   @HostListener('transitionend', ['$event'])
@@ -153,6 +162,8 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
   }
 
   handleFocus(scaleUp: boolean = true) {
+    this.updateMobileSuggestLayerHeight();
+
     if (scaleUp) {
       this.searchBoxFocus = true;
     } else {
@@ -201,4 +212,17 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
     this.inputSearchTerms$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => (term = value));
     return term.length >= 2;
   }
+
+  // set CSS variable for suggest layer height on mobile devices to prevent keyboard overlay issues
+  private updateMobileSuggestLayerHeight = () => {
+    if (!SSR && this.deviceType === 'mobile') {
+      clearTimeout(this.resizeTimeout);
+
+      // timeout to wait for keyboard animation to finish
+      this.resizeTimeout = setTimeout(() => {
+        const remainingHeight = window.visualViewport?.height || window.innerHeight;
+        document.documentElement.style.setProperty('--viewport-remaining-height', `${remainingHeight}px`);
+      }, 300);
+    }
+  };
 }
