@@ -2,17 +2,12 @@ import { Directive, ElementRef, EventEmitter, HostListener, Output } from '@angu
 
 /**
  * This directive can be set on a html tag to check focus outside of the tag.
- * It only works on desktop devices, NOT on touch devices.
  */
 @Directive({
   selector: '[ishFocusOutside]',
 })
 export class FocusOutsideDirective {
-  private isTouchDevice: boolean;
-
-  constructor(private elementRef: ElementRef) {
-    this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  }
+  constructor(private elementRef: ElementRef) {}
 
   /**
    * Event to tell the listener, when focus moves outside the target element
@@ -24,8 +19,7 @@ export class FocusOutsideDirective {
    */
   @HostListener('document:focusin', ['$event.target'])
   onFocusIn(targetElement: ElementRef): void {
-    const focusedInside = this.elementRef.nativeElement.contains(targetElement);
-    if (!focusedInside && !this.isTouchDevice) {
+    if (!this.elementRef.nativeElement.contains(targetElement)) {
       this.isFocusedOutside.emit(true);
     }
   }

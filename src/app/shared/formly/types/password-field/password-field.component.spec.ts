@@ -1,9 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
@@ -30,7 +28,7 @@ describe('Password Field Component', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [MockComponent(FaIconComponent), PasswordFieldComponent],
+      declarations: [PasswordFieldComponent],
     }).compileComponents();
   });
 

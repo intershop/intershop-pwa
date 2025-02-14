@@ -119,9 +119,12 @@ const fieldComponents = [
         },
         {
           name: 'ish-password-field',
-          component: PasswordFieldComponent,
-          wrappers: ['form-field-horizontal', 'validation'],
+          extends: 'ish-password-novalidate-field',
           defaultOptions: {
+            props: { attributes: { autocomplete: 'new-password' } },
+            validators: {
+              password: formlyValidation('password', SpecialValidators.password),
+            },
             validation: {
               messages: {
                 password: 'form.password.error.invalid',
@@ -129,6 +132,19 @@ const fieldComponents = [
               },
             },
           },
+        },
+        {
+          name: 'ish-password-novalidate-field',
+          component: PasswordFieldComponent,
+          defaultOptions: {
+            props: { attributes: { autocomplete: 'current-password' } },
+            validation: {
+              messages: {
+                required: 'form.password.error.required',
+              },
+            },
+          },
+          wrappers: ['form-field-horizontal', 'validation'],
         },
         {
           name: 'ish-select-field',

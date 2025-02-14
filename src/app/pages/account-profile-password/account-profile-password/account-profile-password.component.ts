@@ -12,7 +12,7 @@ import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { SpecialValidators, formlyValidation } from 'ish-shared/forms/validators/special-validators';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 /**
  * The Account Profile Password Page Component displays a form for changing the user's password
@@ -40,7 +40,7 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
         fieldGroup: [
           {
             key: 'currentPassword',
-            type: 'ish-password-field',
+            type: 'ish-password-novalidate-field',
             props: {
               required: true,
               hideRequiredMarker: true,
@@ -64,22 +64,16 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
                 key: 'account.register.password.extrainfo.message',
                 args: { 0: '7' },
               },
-              attributes: { autocomplete: 'new-password' },
-            },
-            validators: {
-              password: formlyValidation('password', SpecialValidators.password),
             },
           },
           {
             key: 'passwordConfirmation',
-            type: 'ish-password-field',
+            type: 'ish-password-novalidate-field',
             props: {
               required: true,
               hideRequiredMarker: true,
               label: 'account.update_password.newpassword_confirmation.label',
-            },
-            validators: {
-              password: formlyValidation('password', SpecialValidators.password),
+              attributes: { autocomplete: 'new-password' },
             },
             validation: {
               messages: {

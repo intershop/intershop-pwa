@@ -69,7 +69,7 @@ export class LoginFormComponent implements OnInit {
       },
       {
         key: 'password',
-        type: 'ish-password-field',
+        type: 'ish-password-novalidate-field',
         props: {
           label: 'account.login.password.label',
           labelClass: this.labelClass || 'col-md-3',
