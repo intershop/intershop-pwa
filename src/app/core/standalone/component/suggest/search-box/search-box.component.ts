@@ -15,7 +15,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable, ReplaySubject, shareReplay } from 'rxjs';
+import { Observable, ReplaySubject, map, shareReplay } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { IconModule } from 'ish-core/icon.module';
@@ -87,6 +87,10 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   // not-dead-code
   isTabOut = false;
 
+  // check if suggest has results
+  searchBoxResults$: Observable<boolean>;
+
+  // search suggest layer height
   private resizeTimeout: ReturnType<typeof setTimeout>;
 
   private destroyRef = inject(DestroyRef);
@@ -98,6 +102,21 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
     this.searchResults$ = this.shoppingFacade
       .searchResults$(this.inputSearchTerms$)
       .pipe(shareReplay(1)) as Observable<Suggestion>;
+
+    // check if there are results to show the suggest layer AND to add aria attributes
+    this.searchBoxResults$ = this.searchResults$.pipe(
+      map(
+        results =>
+          !!(
+            results &&
+            (results.keywordSuggestions?.length ||
+              results.categories?.length ||
+              results.brands?.length ||
+              results.products?.length)
+          )
+      ),
+      shareReplay(1)
+    );
 
     this.searchSuggestLoading$ = this.shoppingFacade.searchSuggestLoading$;
     this.searchSuggestError$ = this.shoppingFacade.searchSuggestError$;

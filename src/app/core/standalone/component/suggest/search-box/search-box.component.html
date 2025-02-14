@@ -13,9 +13,11 @@
     (keydown)="handleFocus()"
     (keydown.esc)="reset()"
     (keydown.enter)="submitSearch(searchInput.value)"
+    aria-controls="search-suggest-layer"
+    [attr.aria-expanded]="(searchBoxResults$ | async) && hasMoreThanTwoCharacters && searchBoxFocus ? 'true' : 'false'"
   />
 
-  <div *ngIf="searchSuggestError$ | async" class="search-suggest-container">
+  <div *ngIf="searchSuggestError$ | async" class="search-suggest-container" aria-live="polite">
     <div class="col-12">
       <div class="headline">{{ 'suggest.error.headline' | translate }}</div>
       <p>{{ 'suggest.error.text' | translate }}</p>
@@ -24,15 +26,10 @@
 
   <ng-container *ngIf="configuration?.autoSuggest && searchResults$ | async as results">
     <div
-      *ngIf="
-        (results.keywordSuggestions?.length ||
-          results.categories?.length ||
-          results.brands?.length ||
-          results.products?.length) &&
-          hasMoreThanTwoCharacters;
-        else noResults
-      "
+      *ngIf="(searchBoxResults$ | async) && hasMoreThanTwoCharacters; else noResults"
+      id="search-suggest-layer"
       class="search-suggest-container"
+      aria-labelledby="header-search-input"
       #searchSuggestLayer
     >
       <div
@@ -96,7 +93,7 @@
       </div>
     </div>
     <ng-template #noResults>
-      <div *ngIf="hasMoreThanTwoCharacters" class="search-suggest-container">
+      <div *ngIf="hasMoreThanTwoCharacters" class="search-suggest-container" aria-live="polite">
         <div class="col-12">
           <div class="headline">{{ 'suggest.no_results.headline' | translate }}</div>
           <p>{{ 'suggest.no_results.text' | translate }}</p>
