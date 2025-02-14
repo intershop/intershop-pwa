@@ -474,7 +474,7 @@ describe('Product Context Facade', () => {
 
       product.attributeGroups = {
         [AttributeGroupTypes.ProductLabelAttributes]: {
-          attributes: [{ name: 'sale', type: 'String', value: 'sale' }],
+          attributes: [{ name: 'sale', type: 'Boolean', value: 'true' }],
         } as AttributeGroup,
       };
 
