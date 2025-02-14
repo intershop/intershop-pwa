@@ -129,7 +129,7 @@
       border: $border-width-default solid $border-color-light;
 
       @media (min-width: $screen-sm) {
-        max-height: calc(100vh - 5 * #{$space-default});
+        max-height: calc(100vh - (#{$space-default} * 10));
       }
 
       .headline {
