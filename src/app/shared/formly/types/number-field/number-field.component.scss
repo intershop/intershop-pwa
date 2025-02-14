@@ -1,0 +1,31 @@
+.counter-input {
+  position: relative;
+
+  button {
+    position: absolute;
+    width: auto;
+    margin: 0;
+  }
+
+  .decrease-button {
+    left: 0;
+  }
+
+  .increase-button {
+    right: 0;
+  }
+
+  // https://www.w3schools.com/howto/howto_css_hide_arrow_number.asp
+
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    margin: 0;
+    appearance: none;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    appearance: textfield;
+  }
+}

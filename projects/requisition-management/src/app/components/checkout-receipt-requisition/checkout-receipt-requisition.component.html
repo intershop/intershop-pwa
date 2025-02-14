@@ -10,7 +10,7 @@
         <a
           [routerLink]="['/account/requisitions/buyer/' + req.id, { status: 'PENDING' }]"
           data-testing-id="requisition-number"
-          >{{ req.requisitionNo }}</a
+          >{{ req.requisitionNo || req.recurringOrderDocumentNo }}</a
         >
       </strong>
     </p>

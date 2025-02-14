@@ -38,6 +38,13 @@
       <span class="badge badge-info">{{ order.status }}</span>
     </dd>
   </dl>
+  <span
+    *ngIf="order.recurringOrderID"
+    [ishServerHtml]="
+      'account.orderdetails.recurring_order.info'
+        | translate : { link: 'route://account/recurring-orders/' + order.recurringOrderID }
+    "
+  ></span>
 </div>
 
 <ng-container *ngIf="order">
