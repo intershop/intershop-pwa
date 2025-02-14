@@ -3,7 +3,7 @@ import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
-import { SpecialValidators, formlyValidation } from 'ish-shared/forms/validators/special-validators';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-user.model';
 
@@ -82,20 +82,16 @@ export class PunchoutUserFormComponent implements OnInit {
               postWrappers: [{ wrapper: 'description', index: -1 }],
               label: this.punchoutUser ? 'account.punchout.password.new.label' : 'account.punchout.password.label',
               required: this.punchoutUser ? false : true,
-              attributes: { autocomplete: 'new-password' },
               customDescription: {
                 key: 'account.register.password.extrainfo.message',
                 args: { 0: '7' },
               },
               hideRequiredMarker: true,
             },
-            validators: {
-              password: formlyValidation('password', SpecialValidators.password),
-            },
           },
           {
             key: 'passwordConfirmation',
-            type: 'ish-password-field',
+            type: 'ish-password-novalidate-field',
             props: {
               required: this.punchoutUser ? false : true,
               label: this.punchoutUser
@@ -103,9 +99,6 @@ export class PunchoutUserFormComponent implements OnInit {
                 : 'account.punchout.password.confirmation.label',
               attributes: { autocomplete: 'new-password' },
               hideRequiredMarker: true,
-            },
-            validators: {
-              password: formlyValidation('password', SpecialValidators.password),
             },
             validation: {
               messages: {

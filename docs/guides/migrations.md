@@ -31,6 +31,9 @@ It requires ICM 12.3.0 and is only visible if the ICM order approval service is 
 If the customer has not yet set the budget type the default value **gross** is used.
 In a migration project that uses an ICM before 12.3.0 in the `organization-settings-page.component.html` the `Preferences` section and the used dialog should be removed and in the `budget-info.component.html` the suffix part `+ (suffix ?? '' | translate)` should be deleted.
 
+A password reveal button has been added to the formly password field following the [Microsoft Edge guidelines](https://learn.microsoft.com/en-us/microsoft-edge/web-platform/password-reveal#visibility-of-the-control).
+Use the new formly field type `ish-password-novalidate-field` instead of the `ish-text-input-field` with `type="password"` if you want to define a password field without the password validator but with a reveal button (e.g. for password fields on the login form or password confirmation fields).
+
 ## From 5.1 to 5.2
 
 > [!NOTE]
