@@ -308,7 +308,7 @@ input {
   padding: 0 !important;
   margin: 1px;
   border: 1px solid transparent;
-  border-radius: 50%;
+  border-radius: $swatch-image-border-radius;
 }
 
 .filter-swatch {
@@ -319,7 +319,9 @@ input {
     display: inline-block;
     width: $swatch-image-diameter;
     height: $swatch-image-diameter;
-    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border-radius: $swatch-image-border-radius;
 
     &.filter-color-bright {
       border: 1px solid $border-color-light;
