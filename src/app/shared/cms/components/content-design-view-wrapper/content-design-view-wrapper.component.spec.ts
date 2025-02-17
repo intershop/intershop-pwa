@@ -73,7 +73,7 @@ describe('Content Design View Wrapper Component', () => {
       <div class="design-view-wrapper pagelet" ng-reflect-ng-class="pagelet">
         <div class="design-view-wrapper-actions">
           <div class="name">Pagelet Name xyz</div>
-          <button class="btn" title="designview.edit.link.title">
+          <button type="button" class="btn" title="designview.edit.link.title">
             <fa-icon ng-reflect-icon="fas,pencil-alt"></fa-icon>
           </button>
         </div>
@@ -100,7 +100,7 @@ describe('Content Design View Wrapper Component', () => {
       <div class="design-view-wrapper slot" ng-reflect-ng-class="slot">
         <div class="design-view-wrapper-actions">
           <div class="name">Slot Name xyz</div>
-          <button class="btn" title="designview.add.link.title">
+          <button type="button" class="btn" title="designview.add.link.title">
             <fa-icon ng-reflect-icon="fas,plus"></fa-icon>
           </button>
         </div>
@@ -120,7 +120,7 @@ describe('Content Design View Wrapper Component', () => {
       <div class="design-view-wrapper include" ng-reflect-ng-class="include">
         <div class="design-view-wrapper-actions">
           <div class="name">Include Name xyz</div>
-          <button class="btn" title="designview.add.link.title">
+          <button type="button" class="btn" title="designview.add.link.title">
             <fa-icon ng-reflect-icon="fas,plus"></fa-icon>
           </button>
         </div>
