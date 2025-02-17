@@ -34,6 +34,7 @@
     }
 
     .language-switch-container {
+      left: 0 !important;
       z-index: 9999;
       padding: divide($space-default * 2, 3) $space-default;
       background: $color-inverse;
