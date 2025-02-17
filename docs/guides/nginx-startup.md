@@ -180,6 +180,7 @@ If no environment variable is set, this feature is disabled.
 
 For some security or functional reasons, it is necessary to add additional headers to page responses.
 One such security reason may be a Content Security Policy directive.
+More on that in the next chapter.
 To make such headers configurable, the environment variable `ADDITIONAL_HEADERS` has been introduced.
 
 ```yaml
@@ -196,6 +197,41 @@ Alternatively, the source can be supplied by setting `ADDITIONAL_HEADERS_SOURCE`
 For every entry NGINX will add this header to every possible response.
 
 To make the additional headers available during build-time, the value for the environment variable `ADDITIONAL_HEADERS` can be put into the [additional-headers.yaml](../../nginx/additional-headers.yaml) file.
+
+#### Content Security Policy
+
+In order to add a Content Security Policy (CSP) to fulfill the requirements of PCI DSS 4.0 a header can be added to each response handled by nginx.
+A simple one may look like this:
+
+```yaml
+nginx:
+  environment:
+    ADDITIONAL_HEADERS: |
+      headers:
+        - Content-Security-Policy: 'default-src https://develop.icm.intershop.de ''self''; style-src ''unsafe-inline'' ''self''; font-src data: ''self'';'
+```
+
+This simple example security policy does following:
+
+- `default-src https://develop.icm.intershop.de 'self'`: This sets the default policy for fetching resources such as scripts, images, etc. It allows resources to be loaded only from `https://develop.icm.intershop.de` and the same origin (`'self'`).
+- `style-src 'unsafe-inline' 'self'`: This allows the use of inline styles (`'unsafe-inline'`) and styles from the same origin (`'self'`). Inline styles are used at some places in the PWA and this directive permits them.
+- `font-src data: 'self'`: This allows fonts to be loaded from data URIs (`data:`) and the same origin (`'self'`). Due to the usage of “fontawesome” it is required to define this extra policy to permit these fonts.
+
+Since there are no other directives defined the fallback (`default-src`) is used for all other resource types (frame, media, ...).
+
+Many payment integrations use iFrames and/or scripts from the payment provider, they have to be included into the CSP.
+Here a small sample how such a policy may look like for Payone:
+
+```
+Content-Security-Policy: 'default-src https://develop.icm.intershop.de ''self''; style-src ''unsafe-inline'' ''self''; font-src data: ''self''; script-src secure.pay1.de ''self''; frame-src secure.pay1.de;'
+```
+
+Here's a breakdown of what the two additional policies in this CSP header, added to the initial example, do:
+
+- `script-src secure.pay1.de 'self'` This allows scripts to be loaded only from `secure.pay1.de` and the same origin (`'self'`).
+- `frame-src secure.pay1.de`: This allows framing (embedding the site in an iframe) only from `secure.pay1.de`.
+
+In summary, this CSP header restricts the sources from which various types of content can be loaded, enhancing security by reducing the risk of cross-site scripting (XSS) and other attacks.
 
 ### Other
 
