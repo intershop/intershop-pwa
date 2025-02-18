@@ -124,7 +124,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
           // resolve Payone localization object from language (default: en -> Payone.ClientApi.Language.en)
           let langCode = this.getParamValue('languageCode', '');
 
-          // fallback to old parameter (have value like 'Payone.ClientApi.Language.en) and extract language code from it
+          // fallback to old parameter (have value like 'Payone.ClientApi.Language.en') and extract language code from it
           if (!langCode) {
             const lang = this.getParamValue('language', '');
             const langParts = lang.split('.');
