@@ -176,12 +176,14 @@ If no environment variable is set, this feature is disabled.
 ### Add Additional Headers
 
 > [!IMPORTANT]
-> To configure additional headers, the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.8.0 or above has to be used.
+> To configure additional headers, the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.9.3 or above has to be used.
 
 For some security or functional reasons, it is necessary to add additional headers to page responses.
 One such security reason may be a Content Security Policy directive.
 More on that in the next chapter.
 To make such headers configurable, the environment variable `ADDITIONAL_HEADERS` has been introduced.
+
+`docker-compose` example:
 
 ```yaml
 nginx:
@@ -190,6 +192,16 @@ nginx:
       headers:
         - header-a: 'value-a'
         - header-b: 'value-b'
+```
+
+[PWA Helm Cart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) example:
+
+```yaml
+cache:
+  additionalHeaders: |
+    headers:
+      - header-a: 'value-a'
+      - header-b: 'value-b'
 ```
 
 Alternatively, the source can be supplied by setting `ADDITIONAL_HEADERS_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources/).
@@ -201,26 +213,36 @@ To make the additional headers available during build-time, the value for the en
 #### Content Security Policy
 
 In order to add a Content Security Policy (CSP) to fulfill the requirements of PCI DSS 4.0 a header can be added to each response handled by nginx.
-A simple one may look like this:
+A simple one may look like this.
+
+`docker-compose` example:
 
 ```yaml
 nginx:
   environment:
     ADDITIONAL_HEADERS: |
       headers:
-        - Content-Security-Policy: 'default-src https://develop.icm.intershop.de ''self''; style-src ''unsafe-inline'' ''self''; font-src data: ''self'';'
+        - Content-Security-Policy: "default-src https://develop.icm.intershop.de 'self'; style-src 'unsafe-inline' 'self'; font-src data: 'self';"
+```
+
+[PWA Helm Cart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) example:
+
+```yaml
+cache:
+  additionalHeaders: |
+    headers:
+      - Content-Security-Policy: "default-src https://develop.icm.intershop.de 'self'; style-src 'unsafe-inline' 'self'; font-src data: 'self';"
 ```
 
 This simple example security policy does following:
 
 - `default-src https://develop.icm.intershop.de 'self'`: This sets the default policy for fetching resources such as scripts, images, etc. It allows resources to be loaded only from `https://develop.icm.intershop.de` and the same origin (`'self'`).
-  > [!IMPORTANT]
-  > The example value 'https://develop.icm.intershop.de' was used here for better readability.
-  > The value needs to be the ICM server and must not be hard coded.
-  > It has to be set to the same value as the ICM_BASE_URL.
-  > This can be done for instance within the Helm charts.
 - `style-src 'unsafe-inline' 'self'`: This allows the use of inline styles (`'unsafe-inline'`) and styles from the same origin (`'self'`). Inline styles are used at some places in the PWA and this directive permits them.
 - `font-src data: 'self'`: This allows fonts to be loaded from data URIs (`data:`) and the same origin (`'self'`). Due to the usage of “fontawesome” it is required to define this extra policy to permit these fonts.
+
+> [!IMPORTANT]
+> The value `https://develop.icm.intershop.de` is used here as an example for the development configuration.
+> The value needs to point to the ICM server, it has to be set to the same value as the `ICM_BASE_URL`.
 
 Since there are no other directives defined the fallback (`default-src`) is used for all other resource types (frame, media, ...).
 
@@ -228,7 +250,7 @@ Many payment integrations use iFrames and/or scripts from the payment provider, 
 Here a small sample how such a policy may look like for Payone:
 
 ```
-Content-Security-Policy: 'default-src https://develop.icm.intershop.de ''self''; style-src ''unsafe-inline'' ''self''; font-src data: ''self''; script-src secure.pay1.de ''self''; frame-src secure.pay1.de;'
+Content-Security-Policy: "default-src https://develop.icm.intershop.de 'self'; style-src 'unsafe-inline' 'self'; font-src data: 'self'; script-src secure.pay1.de 'self'; frame-src secure.pay1.de;"
 ```
 
 Here's a breakdown of what the two additional policies in this CSP header, added to the initial example, do:
