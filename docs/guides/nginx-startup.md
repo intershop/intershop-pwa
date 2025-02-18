@@ -214,6 +214,11 @@ nginx:
 This simple example security policy does following:
 
 - `default-src https://develop.icm.intershop.de 'self'`: This sets the default policy for fetching resources such as scripts, images, etc. It allows resources to be loaded only from `https://develop.icm.intershop.de` and the same origin (`'self'`).
+  > [!IMPORTANT]
+  > The example value 'https://develop.icm.intershop.de' was used here for better readability.
+  > The value needs to be the ICM server and must not be hard coded.
+  > It has to be set to the same value as the ICM_BASE_URL.
+  > This can be done for instance within the Helm charts.
 - `style-src 'unsafe-inline' 'self'`: This allows the use of inline styles (`'unsafe-inline'`) and styles from the same origin (`'self'`). Inline styles are used at some places in the PWA and this directive permits them.
 - `font-src data: 'self'`: This allows fonts to be loaded from data URIs (`data:`) and the same origin (`'self'`). Due to the usage of “fontawesome” it is required to define this extra policy to permit these fonts.
 
