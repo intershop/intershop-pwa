@@ -24,6 +24,7 @@ import { addProductToBasket } from 'ish-core/store/customer/basket';
 import { getPriceDisplayType } from 'ish-core/store/customer/user';
 import {
   getCategory,
+  getCategoryEntities,
   getCategoryIdByRefId,
   getNavigationCategories,
   getNavigationCategoryTree,
@@ -81,6 +82,8 @@ export class ShoppingFacade {
   category$(uniqueId: string) {
     return this.store.pipe(select(getCategory(uniqueId)));
   }
+
+  categoryNodes$ = this.store.pipe(select(getCategoryEntities));
 
   categoryIdByRefId$(categoryRefId: string) {
     this.store.dispatch(loadCategoryByRef({ categoryId: categoryRefId }));
