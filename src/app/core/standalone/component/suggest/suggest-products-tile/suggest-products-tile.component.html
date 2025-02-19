@@ -1,15 +1,24 @@
 <div class="search-suggest-products">
   <div class="headline">{{ 'suggest.products.headline' | translate }}</div>
-  <ul class="d-flex flex-wrap">
-    <li *ngFor="let result of products | slice : 0 : maxAutoSuggests" class="d-flex flex-column">
-      <a [routerLink]="'/prd' + result.sku" (click)="handleInputFocus()" tabindex="-1">
+  <ul>
+    <li *ngFor="let result of products | slice : 0 : maxAutoSuggests">
+      <a class="product-image" [routerLink]="'/prd' + result.sku" (click)="handleInputFocus()" tabindex="-1">
         <img [src]="getImageEffectiveUrl(result)" alt="{{ result.name }}" />
       </a>
+      <!-- truncate product name on desktop only -->
       <a
+        *ngIf="deviceType === 'desktop'; else mobileTablet"
         [routerLink]="'/prd' + result.sku"
-        [innerHTML]="truncate(result.name, 40) | titlecase | ishHighlight : (inputTerms$ | async)"
+        [innerHTML]="truncate(result.name, 38) | titlecase | ishHighlight : (inputTerms$ | async)"
         (click)="handleInputFocus()"
       ></a>
+      <ng-template #mobileTablet>
+        <a
+          [routerLink]="'/prd' + result.sku"
+          [innerHTML]="result.name | titlecase | ishHighlight : (inputTerms$ | async)"
+          (click)="handleInputFocus()"
+        ></a>
+      </ng-template>
       <div class="current-price">{{ getPrice(result) }}</div>
     </li>
   </ul>
