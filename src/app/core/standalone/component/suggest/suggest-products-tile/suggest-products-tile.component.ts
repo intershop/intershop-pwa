@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, Input, Output, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, switchMap } from 'rxjs';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { Product } from 'ish-core/models/product/product.model';
 import { PipesModule } from 'ish-core/pipes.module';
 
@@ -20,8 +22,31 @@ export class SuggestProductsTileComponent {
   @Input() inputTerms$ = new ReplaySubject<string>(1);
   @Output() routeChange = new EventEmitter<void>();
 
+  private destroyRef = inject(DestroyRef);
+  private currencySymbol: string;
+
+  constructor(private appFacade: AppFacade) {
+    this.appFacade.currentCurrency$
+      .pipe(
+        switchMap(currency => this.appFacade.currencySymbol$(currency)),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(currencySymbol => (this.currencySymbol = currencySymbol));
+  }
+
   handleInputFocus(): void {
     this.routeChange.emit();
+  }
+
+  getPrice(product: Product): string {
+    const price = product.attributes?.find(attribute => attribute.name === 'price')
+      ? product.attributes.find(attribute => attribute.name === 'price')?.value
+      : 'N/A';
+    return this.currencySymbol.concat(` ${price}`);
+  }
+
+  getImageEffectiveUrl(product: Product): string {
+    return product.images.find(image => image.typeID === 'S').effectiveUrl;
   }
 
   truncate(text: string, limit: number): string {
