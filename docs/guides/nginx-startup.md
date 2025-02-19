@@ -234,13 +234,20 @@ cache:
 
 Explanation of example security policy:
 
-- `default-src https://develop.icm.intershop.de 'self'`: This sets the default policy for fetching resources such as scripts, images, etc. It allows resources to be loaded only from `https://develop.icm.intershop.de` and the same origin (`'self'`).
-- `style-src 'unsafe-inline' 'self'`: This allows the use of inline styles (`'unsafe-inline'`) and styles from the same origin (`'self'`). Inline styles are used at some places in the PWA, and this directive permits them.
-- `font-src data: 'self'`: This allows fonts to be loaded from data URIs (`data:`) and the same origin (`'self'`). Due to the usage of “fontawesome”, it is required to define this extra policy to permit these fonts.
+- `default-src https://develop.icm.intershop.de 'self'`:
+  This sets the default policy for fetching resources such as scripts, images, etc.
+  It allows resources to be loaded only from `https://develop.icm.intershop.de` and the same origin (`'self'`).
+- `style-src 'unsafe-inline' 'self'`:
+  This allows the use of inline styles (`'unsafe-inline'`) and styles from the same origin (`'self'`).
+  Inline styles are used at some places in the PWA, and this directive permits them.
+- `font-src data: 'self'`:
+  This allows fonts to be loaded from data URIs (`data:`) and the same origin (`'self'`).
+  Due to the usage of “fontawesome”, it is required to define this extra policy to permit these fonts.
 
 > [!IMPORTANT]
 > The value `https://develop.icm.intershop.de` is used here as an example for the development configuration.
-> The value needs to point to the ICM server; it has to be set to the same value as the `ICM_BASE_URL`.
+> The value needs to point to the ICM server.
+> It has to be set to the same value as the `ICM_BASE_URL`.
 
 Since there are no other directives defined, the fallback (`default-src`) is used for all other resource types (frame, media, ...).
 
@@ -255,8 +262,10 @@ Content-Security-Policy: "default-src https://develop.icm.intershop.de 'self'; s
 
 Explanation of the two additional CSP header policies:
 
-- `script-src secure.pay1.de 'self'` This allows scripts to be loaded only from `secure.pay1.de` and the same origin (`'self'`).
-- `frame-src secure.pay1.de`: This allows framing (embedding the site in an iFrame) only from `secure.pay1.de`.
+- `script-src secure.pay1.de 'self'`:
+  This allows scripts to be loaded only from `secure.pay1.de` and the same origin (`'self'`).
+- `frame-src secure.pay1.de`:
+  This allows framing (embedding the site in an iFrame) only from `secure.pay1.de`.
 
 In summary, this CSP header restricts the sources from which various types of content can be loaded, enhancing security by reducing the risk of cross-site scripting (XSS) and other attacks.
 
