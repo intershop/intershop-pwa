@@ -1,6 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { Category } from 'ish-core/models/category/category.model';
 import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
 import { getStaticEndpoint } from 'ish-core/store/core/configuration';
 
@@ -9,10 +13,14 @@ import { SparqueSuggestionMapper } from './sparque-suggestion.mapper';
 
 describe('Sparque Suggestion Mapper', () => {
   let sparqueSuggestionMapper: SparqueSuggestionMapper;
+  let shoppingFacadeMock: ShoppingFacade;
+  const category = { name: 'Category 1', uniqueId: 'root.cat1' } as Category;
 
   beforeEach(() => {
+    shoppingFacadeMock = mock(ShoppingFacade);
     TestBed.configureTestingModule({
       providers: [
+        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacadeMock) },
         provideMockStore({
           selectors: [{ selector: getStaticEndpoint, value: 'https://static.url' }],
         }),
@@ -20,6 +28,7 @@ describe('Sparque Suggestion Mapper', () => {
     });
 
     sparqueSuggestionMapper = TestBed.inject(SparqueSuggestionMapper);
+    when(shoppingFacadeMock.categoryNodes$).thenReturn(of({ 'root.cat1': category }));
   });
 
   describe('fromData', () => {
@@ -50,8 +59,8 @@ describe('Sparque Suggestion Mapper', () => {
       expect(result.products[0].shortDescription).toBe('Short description');
       expect(result.products[0].longDescription).toBe('Long description');
       expect(result.products[0].manufacturer).toBe('Manufacturer');
-      expect(result.products[0].images).toHaveLength(1);
-      expect(result.products[0].images[0].effectiveUrl).toBe('http://image.url');
+      expect(result.products[0].images).toHaveLength(2);
+      expect(result.products[0].images[0].effectiveUrl).toBe('https://static.url/1');
       expect(result.products[0].attributes).toHaveLength(1);
       expect(result.products[0].attributes[0].name).toBe('Color');
       expect(result.products[0].attributes[0].value).toBe('Red');
@@ -81,7 +90,7 @@ describe('Sparque Suggestion Mapper', () => {
 
       expect(result.categories).toHaveLength(1);
       expect(result.categories[0].name).toBe('Category 1');
-      expect(result.categories[0].uniqueId).toBe('cat1');
+      expect(result.categories[0].uniqueId).toBe('root.cat1');
       expect(result.categories[0].categoryRef).toBe('http://category.url');
       expect(result.categories[0].categoryPath).toEqual(['parentCat', 'cat1']);
       expect(result.categories[0].hasOnlineProducts).toBeTrue();

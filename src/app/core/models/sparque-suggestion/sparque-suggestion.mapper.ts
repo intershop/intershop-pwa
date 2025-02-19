@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
+import { concatLatestFrom } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Category } from 'ish-core/models/category/category.model';
+import { ImageMapper } from 'ish-core/models/image/image.mapper';
 import { Image } from 'ish-core/models/image/image.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { Brand, ContentSuggestion, Suggestion } from 'ish-core/models/suggestion/suggestion.model';
@@ -22,12 +25,24 @@ import {
 @Injectable({ providedIn: 'root' })
 export class SparqueSuggestionMapper {
   private icmStaticURL: string;
+  private categoryUniqueIds: string[];
 
-  constructor(store: Store) {
-    store.pipe(select(getStaticEndpoint)).subscribe(url => (this.icmStaticURL = url));
+  constructor(private imageMapper: ImageMapper, private shoppingFacade: ShoppingFacade, private store: Store) {}
+
+  private getServerData(): void {
+    this.store
+      .pipe(
+        select(getStaticEndpoint),
+        concatLatestFrom(() => [this.shoppingFacade.categoryNodes$])
+      )
+      .subscribe(([url, nodes]) => {
+        this.icmStaticURL = url;
+        this.categoryUniqueIds = Object.keys(nodes);
+      });
   }
 
   fromData(suggestion: SparqueSuggestions): Suggestion {
+    this.getServerData();
     return suggestion
       ? {
           products: this.mapProducts(suggestion.products),
@@ -71,7 +86,7 @@ export class SparqueSuggestionMapper {
     return categories
       ? categories.map(category => ({
           name: category.categoryName ? category.categoryName : undefined,
-          uniqueId: category.categoryID ? category.categoryID : undefined,
+          uniqueId: category.categoryID ? this.getUniqueCategoryId(category.categoryID) : undefined,
           categoryRef: category.categoryURL ? category.categoryURL : undefined,
           categoryPath: category.parentCategoryId
             ? [category.parentCategoryId, category.categoryID ? category.categoryID : undefined]
@@ -80,12 +95,22 @@ export class SparqueSuggestionMapper {
             : [],
           hasOnlineProducts: category.totalCount && category.totalCount > 0,
           description: undefined,
-          images: this.extractImageUrl(category.attributes),
+          images: category.attributes ? this.extractImageUrl(category.attributes) : undefined,
           attributes: this.mapAttributes(category.attributes),
           completenessLevel: 0,
           productCount: category.totalCount ? category.totalCount : undefined,
         }))
       : [];
+  }
+
+  private getUniqueCategoryId(categoryId: string): string {
+    let uniqueId = categoryId;
+    this.categoryUniqueIds.forEach(id => {
+      if (id.endsWith(uniqueId)) {
+        uniqueId = id;
+      }
+    });
+    return uniqueId;
   }
 
   private mapBrands(brands: SparqueBrand[]): Brand[] {
@@ -121,18 +146,17 @@ export class SparqueSuggestionMapper {
   }
 
   private mapImages(images: SparqueImage[]): Image[] {
-    return images
-      ? images.map(image => ({
-          name: image.id ? image.id : undefined,
-          type: undefined,
-          effectiveUrl: image.url ? image.url : undefined,
-          viewID: image.id ? image.id : undefined,
-          typeID: undefined,
-          primaryImage: image.isPrimaryImage ? image.isPrimaryImage : false,
-          imageActualHeight: undefined,
-          imageActualWidth: undefined,
-        }))
-      : [];
+    const urlOfPrimaryImage = this.getUrlOfPrimaryImage(images).startsWith('/')
+      ? this.getUrlOfPrimaryImage(images)
+      : `/${this.getUrlOfPrimaryImage(images)}`;
+
+    return this.imageMapper.fromImageUrl(this.icmStaticURL.concat(urlOfPrimaryImage));
+  }
+
+  private getUrlOfPrimaryImage(images: SparqueImage[]): string {
+    const noImageImageUrl = '/assets/img/not-available.svg';
+    const primaryImage = images.find(image => image.isPrimaryImage);
+    return primaryImage ? primaryImage.id : noImageImageUrl;
   }
 
   private extractImageUrl(attributes: { name: string; value: string }[]): Image[] {
@@ -145,7 +169,7 @@ export class SparqueSuggestionMapper {
             typeID: undefined,
             imageActualHeight: undefined,
             imageActualWidth: undefined,
-            effectiveUrl: `${this.icmStaticURL}/${imageAttribute.value}`,
+            effectiveUrl: imageAttribute.value ? `${this.icmStaticURL}/${imageAttribute.value}` : undefined,
             type: undefined,
             primaryImage: true,
           },
