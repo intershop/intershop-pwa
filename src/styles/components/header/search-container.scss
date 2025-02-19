@@ -115,7 +115,10 @@
       display: none;
       width: 100%;
       // preserve space for onscreen keyboard on mobile devices
-      max-height: calc(60vh - #{$header-height-mobile + $search-container-height * 3});
+      // use --viewport-remaining-height which is set and calculated in TypeScript
+      // if not set, fall back to 60vh
+      // subtract the fixed header and search container height from remaining viewport height to ensure proper spacing
+      max-height: calc(var(--viewport-remaining-height, 60vh) - #{$header-height-mobile + $search-container-height});
       padding: $space-default;
       margin: 0;
       overflow-y: auto;
@@ -126,7 +129,7 @@
       border: $border-width-default solid $border-color-light;
 
       @media (min-width: $screen-sm) {
-        max-height: calc(100vh - 5 * #{$space-default});
+        max-height: calc(100vh - (#{$space-default} * 5));
       }
 
       .headline {
@@ -192,10 +195,10 @@
             &.category-image {
               width: $space-default * 4;
               padding: 0 $space-default 0 0;
-            }
 
-            img {
-              max-width: $space-default * 3;
+              img {
+                max-width: $space-default * 3;
+              }
             }
           }
         }
@@ -203,28 +206,54 @@
 
       .search-suggest-products {
         ul {
-          gap: $space-default;
+          @media (min-width: $screen-md) {
+            display: flex;
+            flex-flow: row wrap;
+            gap: $space-default;
+          }
 
           li {
-            flex: 0 1 21%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
 
             @media (min-width: $screen-md) {
               flex: 0 1 22%;
+              flex-direction: column;
             }
 
-            img {
-              display: block;
-              margin: ($space-default * 0.5) 0;
-              border: $border-width-default solid $border-color-light;
-            }
+            a {
+              &.product-image {
+                width: $space-default * 4;
+                padding: 0 $space-default 0 0;
 
-            button {
-              word-break: break-all;
+                @media (min-width: $screen-md) {
+                  display: block;
+                  width: 100%;
+                  padding: 0;
+                  margin: ($space-default * 0.5) 0;
+                }
+
+                img {
+                  max-width: $space-default * 3;
+
+                  @media (min-width: $screen-md) {
+                    max-width: 100%;
+                    border: $border-width-default solid $border-color-light;
+                  }
+                }
+              }
             }
 
             .current-price {
+              display: none;
               font-family: $font-family-condensedregular;
               font-size: $font-size-base;
+
+              @media (min-width: $screen-md) {
+                display: block;
+                align-self: flex-start;
+              }
             }
           }
         }
