@@ -28,39 +28,19 @@ import { SuggestKeywordsTileComponent } from 'ish-core/standalone/component/sugg
 import { SuggestProductsTileComponent } from 'ish-core/standalone/component/suggest/suggest-products-tile/suggest-products-tile.component';
 
 /**
- * @description
- * The `SearchBoxComponent` is a standalone component that provides a search box with auto-suggest functionality.
- * It interacts with the `ShoppingFacade` to fetch search suggestions and handles user input to perform searches.
+ * The SearchBoxComponent is responsible for handling the search box functionality,
+ * including managing the search input, handling focus and blur events, and interacting
+ * with the shopping facade to fetch search suggestions and results.
+ *
+ * @remarks
+ * This component uses Angular's lifecycle hooks to initialize and manage the search box.
+ * It also listens to various events such as transition end and window scroll to handle
+ * the search box's behavior appropriately.
  *
  * @example
- * <ish-search-box [configuration]="searchBoxConfig"></ish-search-box>
+ * <app-search-box [configuration]="searchBoxConfig"></app-search-box>
  *
- * @property {SearchBoxConfiguration} configuration - The search box configuration for this component.
- * @property {Observable<Suggestion>} searchResults$ - An observable stream of search suggestions.
- * @property {ReplaySubject<string>} inputSearchTerms$ - A subject to emit search terms entered by the user.
- * @property {Observable<boolean>} searchSuggestLoading$ - An observable stream indicating the loading state of search suggestions.
- * @property {Observable<HttpError>} searchSuggestError$ - An observable stream of errors that occur during search suggestions.
- * @property {boolean} searchBoxFocus - Indicates whether the search box is focused.
- * @property {boolean} searchBoxScaledUp - Indicates whether the search box has scaled up.
- * @property {boolean} isTabOut - Indicates whether the browser tab is out of focus.
- *
- * @method blur - Handles the blur event of the search input.
- * @method handleBlur - Handles the blur event of the search input with additional logic.
- * @method handleFocus - Handles the focus event of the search input.
- * @method reset - Reset and clear the search input and suggestions.
- * @method handleReset - Handles the reset event to clear the search input and suggestions.
- * @method searchSuggest - Emits a new search term to trigger suggestions.
- * @method submitSearch - Submits the selected or entered search term.
- * @method isElementWithinSearchSuggestLayer - Checks if the given element is within the search suggest layer.
- *
- * @constructor
- * @param {ShoppingFacade} shoppingFacade - The facade to interact with the shopping state.
- * @param {Router} router - The Angular router to navigate to the search results page.
- *
- * @getter hasMoreThanTwoCharacters - Returns true if the input search term has more than 2 characters.
- *
- * @lifecycle ngOnInit - Initializes the component and sets up the necessary streams.
- * @lifecycle ngAfterViewInit - Handles additional initialization after the view has been initialized.
+ * @publicApi
  */
 @Component({
   selector: 'ish-search-box',
