@@ -2,14 +2,16 @@
   <div class="headline">{{ 'suggest.categories.headline' | translate }}</div>
   <ul>
     <li *ngFor="let result of categories | slice : 0 : maxAutoSuggests">
-      <a class="category-image" [routerLink]="'/ctg' + result.uniqueId" (click)="handleInputFocus()" tabindex="-1">
-        <img [src]="getCategoryImageUrl(result.images)" alt="{{ result.name }}" />
-      </a>
-      <a
-        [routerLink]="'/ctg' + result.uniqueId"
-        [innerHTML]="result.name | titlecase | ishHighlight : (inputTerms$ | async)"
-        (click)="handleInputFocus()"
-      ></a>
+      <ng-container *ngIf="getCategoryView(result.uniqueId) | async as category">
+        <a class="category-image" [routerLink]="category | ishCategoryRoute" (click)="handleInputFocus()" tabindex="-1">
+          <img [src]="getCategoryImageUrl(result.images)" alt="{{ category.name }}" />
+        </a>
+        <a
+          [routerLink]="category | ishCategoryRoute"
+          [innerHTML]="category.name | titlecase | ishHighlight : (inputTerms$ | async)"
+          (click)="handleInputFocus()"
+        ></a>
+      </ng-container>
     </li>
   </ul>
 </div>
