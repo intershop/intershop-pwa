@@ -1,6 +1,7 @@
 <ng-template #searchBoxTemplate let-icon="icon">
   <ish-search-box
     data-testing-id="search-box-desktop"
+    [deviceType]="deviceType"
     [configuration]="{
       placeholder: 'search.searchbox.instructional_text' | translate,
       autoSuggest: true,
