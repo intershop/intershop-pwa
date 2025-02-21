@@ -85,10 +85,6 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   private searchBoxInitialWidth: number;
   searchBoxScaledUp = false;
 
-  // handle browser tab focus
-  // not-dead-code
-  isTabOut = false;
-
   // check if suggest has results
   searchBoxResults$: Observable<boolean>;
 
@@ -153,40 +149,34 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  blur() {
-    this.handleFocus(false);
-    this.searchInput.nativeElement.blur();
+  @HostListener('document:click', ['$event.target'])
+  onClick(targetElement: undefined): void {
+    this.checkIfOutside(targetElement);
   }
 
-  handleBlur(event: FocusEvent) {
-    if (!SSR) {
-      if (!document.hasFocus()) {
-        this.isTabOut = true;
-        return; // skip handling blur if browser tab loses focus
-      }
-      this.isTabOut = false; // reset flag
+  @HostListener('document:focusin', ['$event.target'])
+  onFocusIn(targetElement: undefined): void {
+    this.checkIfOutside(targetElement);
+  }
 
-      const currentElement = event.relatedTarget as HTMLElement;
-      if (
-        currentElement !== this.searchInput.nativeElement &&
-        currentElement !== this.searchInputReset?.nativeElement &&
-        currentElement !== this.searchInputSubmit.nativeElement &&
-        !this.isElementWithinSearchSuggestLayer(currentElement)
-      ) {
-        this.handleFocus(false); // do not scale down if one of the searchbox elements is focused
-      }
+  private checkIfOutside(targetElement: undefined): void {
+    const clickedOrFocusedInside = this.searchBox.nativeElement.contains(targetElement);
+    if (!clickedOrFocusedInside) {
+      this.blur();
     }
   }
 
-  private isElementWithinSearchSuggestLayer(element: HTMLElement): boolean {
-    return this.searchSuggestLayer?.nativeElement.contains(element) ?? false;
+  private blur() {
+    this.setFocus(false);
+    this.searchInput.nativeElement.blur();
   }
 
-  handleFocus(scaleUp: boolean = true) {
+  setFocus(scaleUp: boolean) {
     this.updateMobileSuggestLayerHeight();
 
     if (scaleUp) {
       this.searchBoxFocus = true;
+      // this.searchBoxScaledUp is set using transitionend event
     } else {
       this.searchBoxFocus = false;
       this.searchBoxScaledUp = false;
@@ -199,8 +189,15 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
     this.shoppingFacade.clearSuggestSearchSuggestions();
   }
 
+  // @HostListener('document:focusin') prevents this.searchInput.nativeElement.focus();
+  private setFocusOnSearchInput(): void {
+    setTimeout(() => {
+      this.searchInput.nativeElement.focus();
+    }, 10);
+  }
+
   handleReset() {
-    this.searchInput.nativeElement.focus(); // manually set focus to input to prevent blur event
+    this.setFocusOnSearchInput(); // manually set focus to input to prevent blur event
     this.inputSearchTerms$.next('');
     this.shoppingFacade.clearSuggestSearchSuggestions();
   }
@@ -216,7 +213,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
 
   submitSearch(suggestedTerm: string) {
     if (!suggestedTerm) {
-      this.searchInput.nativeElement.focus();
+      this.setFocusOnSearchInput();
       return false;
     }
 

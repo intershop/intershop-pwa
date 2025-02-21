@@ -8,9 +8,8 @@
     class="form-control searchTerm"
     (input)="searchSuggest($event.target)"
     [value]="inputSearchTerms$ | async"
-    (focus)="handleFocus()"
-    (blur)="handleBlur($event)"
-    (keydown)="handleFocus()"
+    (focus)="setFocus(true)"
+    (keydown)="setFocus(true)"
     (keydown.esc)="reset()"
     (keydown.enter)="submitSearch(searchInput.value)"
     aria-controls="search-suggest-layer"
@@ -131,9 +130,8 @@
       type="reset"
       name="reset"
       [title]="'search.searchbox.button.reset.title' | translate"
-      (focus)="handleFocus()"
+      (focus)="setFocus(true)"
       (click)="handleReset()"
-      (blur)="handleBlur($event)"
       (keydown.esc)="reset()"
     >
       <fa-icon [icon]="['fas', 'times']" />
@@ -145,9 +143,8 @@
       type="submit"
       name="search"
       [title]="'search.searchbox.button.title' | translate"
-      (keydown)="handleFocus()"
+      (keydown)="setFocus(true)"
       (click)="submitSearch(searchInput.value)"
-      (blur)="handleBlur($event)"
       (keydown.esc)="reset()"
     >
       <!-- search button with icon -->
