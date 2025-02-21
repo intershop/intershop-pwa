@@ -26,6 +26,7 @@ export class SuggestProductsTileComponent {
 
   private destroyRef = inject(DestroyRef);
   private currencySymbol: string;
+  private noImageImageUrl = '/assets/img/not-available.svg';
 
   constructor(private appFacade: AppFacade) {
     this.appFacade.currentCurrency$
@@ -40,15 +41,9 @@ export class SuggestProductsTileComponent {
     this.routeChange.emit();
   }
 
-  getPrice(product: Product): string {
-    const price = product.attributes?.find(attribute => attribute.name === 'price')
-      ? product.attributes.find(attribute => attribute.name === 'price')?.value
-      : 'N/A';
-    return this.currencySymbol.concat(` ${price}`);
-  }
-
   getImageEffectiveUrl(product: Product): string {
-    return product.images.find(image => image.typeID === 'S').effectiveUrl;
+    const image = product.images?.find(img => img.typeID === 'S');
+    return image ? image.effectiveUrl : this.noImageImageUrl;
   }
 
   truncate(text: string, limit: number): string {
