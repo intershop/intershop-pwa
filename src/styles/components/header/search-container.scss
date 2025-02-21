@@ -244,17 +244,6 @@
                 }
               }
             }
-
-            .current-price {
-              display: none;
-              font-family: $font-family-condensedregular;
-              font-size: $font-size-base;
-
-              @media (min-width: $screen-md) {
-                display: block;
-                align-self: flex-start;
-              }
-            }
           }
         }
       }
