@@ -1334,6 +1334,7 @@
   "suggest.no_results.headline": "No results found",
   "suggest.no_results.text": "Your search term returned 0 results.",
   "suggest.products.headline": "Products",
+  "suggest.recent_searched_terms.headline": "Recent searched terms",
   "suggest.terms.headline": "Search Suggestions",
   "suggest.view_all.link": "Show all results",
   "tacton.bom.name.label": "Product ID:",

@@ -155,7 +155,7 @@ export class SparqueSuggestionMapper {
 
   private getUrlOfPrimaryImage(images: SparqueImage[]): string {
     const noImageImageUrl = '/assets/img/not-available.svg';
-    const primaryImage = images.find(image => image.isPrimaryImage);
+    const primaryImage = images?.find(image => image.isPrimaryImage);
     return primaryImage ? primaryImage.id : noImageImageUrl;
   }
 

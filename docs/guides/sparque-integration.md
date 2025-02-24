@@ -33,4 +33,20 @@ Example for the specification of the sparque configuration in a docker compose f
 ## Affected Components
 
 - [Search Box Component](../../src/app/core/standalone/component/suggest/search-box/search-box.component.ts): This component is responsible for providing autosuggestions for search queries. When a user starts typing in the search box, the component interacts with the Sparque AI search engine to fetch and display relevant keyword suggestions, products, catalogs and brands in real-time. This enhances the user experience by helping users quickly find what they are looking for and reducing the effort required to type full search queries.
+
   > This component will also used for the Solr suggestion, in case Sparque is not configured.
+
+  The Search Box Component consists of several components that work together to provide a seamless search experience:
+
+  - **[ish-suggest-keywords-tile](../../src/app/core/standalone/component/suggest/suggest-keywords-tile/suggest-keywords-tile.component.ts)**: Displays real-time keyword suggestions.
+  - **[ish-suggest-categories-tile](../../src/app/core/standalone/component/suggest/suggest-categories-tile/suggest-categories-tile.component.ts)**: Displays the real-time suggested categories.
+  - **[ish-suggest-products-tile](../../src/app/core/standalone/component/suggest/suggest-products-tile/suggest-products-tile.component.ts)**: Shows relevant product suggestions based on the user's input.
+  - **[ish-suggest-brands-tile](../../src/app/core/standalone/component/suggest/suggest-brands-tile/suggest-brands-tile.component.ts)**: Provides brand suggestions related to the search terms.
+  - **[ish-suggest-search-terms-tile](../../src/app/core/standalone/component/suggest/suggest-search-terms-tile/suggest-search-terms-tile.component.ts)**: Shows the search terms the user has already searched for in the past. The only the last 10 search terms are stored in the browser's local storage.
+
+  The arrangement of these components is realized via the flex framework.
+  The number of objects to be displayed can be configured individually for each component.
+
+  ```ts
+  @Input() maxAutoSuggests: number;
+  ```

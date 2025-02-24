@@ -28,6 +28,7 @@ import { SuggestBrandsTileComponent } from 'ish-core/standalone/component/sugges
 import { SuggestCategoriesTileComponent } from 'ish-core/standalone/component/suggest/suggest-categories-tile/suggest-categories-tile.component';
 import { SuggestKeywordsTileComponent } from 'ish-core/standalone/component/suggest/suggest-keywords-tile/suggest-keywords-tile.component';
 import { SuggestProductsTileComponent } from 'ish-core/standalone/component/suggest/suggest-products-tile/suggest-products-tile.component';
+import { SuggestSearchTermsTileComponent } from 'ish-core/standalone/component/suggest/suggest-search-terms-tile/suggest-search-terms-tile.component';
 
 /**
  * The SearchBoxComponent is responsible for handling the search box functionality,
@@ -53,10 +54,11 @@ import { SuggestProductsTileComponent } from 'ish-core/standalone/component/sugg
     IconModule,
     PipesModule,
     TranslateModule,
-    SuggestKeywordsTileComponent,
-    SuggestCategoriesTileComponent,
     SuggestBrandsTileComponent,
+    SuggestCategoriesTileComponent,
+    SuggestKeywordsTileComponent,
     SuggestProductsTileComponent,
+    SuggestSearchTermsTileComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -229,7 +231,15 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   get hasMoreThanTwoCharacters(): boolean {
     let term = '';
     this.inputSearchTerms$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => (term = value));
-    return term.length >= 3;
+    return term.length > 2;
+  }
+
+  hasSearchedTerms(): boolean {
+    let terms = [];
+    this.shoppingFacade.recentlySearchTerms$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(data => (terms = data));
+    return terms.length > 0;
   }
 
   // set CSS variable for suggest layer height on mobile devices to prevent keyboard overlay issues

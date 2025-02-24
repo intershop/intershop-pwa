@@ -302,6 +302,8 @@ describe('Shopping Store', () => {
           [Viewconf Internal] Set Breadcrumb Data:
             breadcrumbData: [{"text":"search.breadcrumbs.your_search.label something"}]
           @ngrx/router-store/navigated: /search/something
+          [Suggest Search Term Internal] Add Search Terms to Suggestion:
+            searchTerm: "something"
           [Product Listing] Load More Products:
             id: {"type":"search","value":"something"}
           [Viewconf Internal] Set Breadcrumb Data:
@@ -532,6 +534,8 @@ describe('Shopping Store', () => {
           [Viewconf Internal] Set Breadcrumb Data:
             breadcrumbData: [{"text":"search.breadcrumbs.your_search.label something"}]
           @ngrx/router-store/navigated: /search/something
+          [Suggest Search Term Internal] Add Search Terms to Suggestion:
+            searchTerm: "something"
           [Product Listing] Load More Products:
             id: {"type":"search","value":"something"}
           [Viewconf Internal] Set Breadcrumb Data:
@@ -909,6 +913,8 @@ describe('Shopping Store', () => {
         @ngrx/router-store/request: /search/something
         @ngrx/router-store/navigation: /search/something
         @ngrx/router-store/navigated: /search/something
+        [Suggest Search Term Internal] Add Search Terms to Suggestion:
+          searchTerm: "something"
         [Product Listing] Load More Products:
           id: {"type":"search","value":"something"}
         [Viewconf Internal] Set Breadcrumb Data:

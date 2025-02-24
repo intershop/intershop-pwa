@@ -26,7 +26,12 @@ describe('Search Box Component', () => {
       providers: [
         {
           provide: ShoppingFacade,
-          useFactory: () => ({ searchResults$: () => searchResults$, searchTerm$ } as Partial<ShoppingFacade>),
+          useFactory: () =>
+            ({
+              searchResults$: () => searchResults$,
+              searchTerm$,
+              recentlySearchTerms$: new ReplaySubject<string[]>(1),
+            } as Partial<ShoppingFacade>),
         },
       ],
     }).compileComponents();
@@ -81,11 +86,11 @@ describe('Search Box Component', () => {
       expect(element.querySelector('ish-suggest-keywords-tile')).toBeTruthy();
     });
 
-    it('should show no results when suggestions are available but input has no focus', () => {
+    it('should show no results when suggestions are available', () => {
       component.searchBoxFocus = false;
       fixture.detectChanges();
 
-      expect(element.querySelector('.search-suggest-container')).toBeFalsy();
+      expect(element.querySelector('.search-suggest-container')).toBeTruthy();
     });
 
     it('should show results when input is 3 or more characters', () => {
