@@ -24,7 +24,7 @@
     </div>
   </div>
 
-  <ng-container *ngIf="configuration?.autoSuggest && searchResults$ | async as results">
+  <ng-container *ngIf="configuration?.autoSuggest && searchResults$ | async as results; else initialState">
     <div
       *ngIf="(searchBoxResults$ | async) && hasMoreThanTwoCharacters; else noResults"
       id="search-suggest-layer"
@@ -93,14 +93,32 @@
       </div>
     </div>
     <ng-template #noResults>
-      <div *ngIf="hasMoreThanTwoCharacters" class="search-suggest-container" aria-live="polite">
-        <div class="col-12">
+      <div class="search-suggest-container" aria-live="polite">
+        <div *ngIf="hasMoreThanTwoCharacters" class="col-12">
           <div class="headline">{{ 'suggest.no_results.headline' | translate }}</div>
           <p>{{ 'suggest.no_results.text' | translate }}</p>
+        </div>
+        <div *ngIf="hasSearchedTerms()" class="col-12" #searchSuggestLayer>
+          <ish-suggest-search-terms-tile
+            [maxRecentlySearchedWords]="5"
+            [inputTerms$]="inputSearchTerms$"
+            (submitSearch)="submitSearch($event)"
+          />
         </div>
       </div>
     </ng-template>
   </ng-container>
+  <ng-template #initialState
+    ><div *ngIf="hasSearchedTerms() && configuration?.autoSuggest" class="search-suggest-container" #searchSuggestLayer>
+      <div class="col-12">
+        <ish-suggest-search-terms-tile
+          [maxRecentlySearchedWords]="5"
+          [inputTerms$]="inputSearchTerms$"
+          (submitSearch)="submitSearch($event)"
+        />
+      </div>
+    </div>
+  </ng-template>
 
   <div *ngIf="searchSuggestLoading$ | async" class="loading"></div>
   <div class="search-suggest-backdrop" [ngClass]="{ show: searchBoxFocus }"></div>

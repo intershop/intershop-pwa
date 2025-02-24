@@ -30,6 +30,7 @@ import {
 } from 'ish-core/utils/operators';
 
 import {
+  addSearchTermToSuggestion,
   searchProducts,
   searchProductsFail,
   suggestSearch,
@@ -67,7 +68,10 @@ export class SearchEffects {
       withLatestFrom(this.store.pipe(select(selectRouteParam('searchTerm')))),
       map(([, searchTerm]) => searchTerm),
       whenTruthy(),
-      map(searchTerm => loadMoreProducts({ id: { type: 'search', value: searchTerm } }))
+      concatMap(searchTerm => [
+        addSearchTermToSuggestion({ searchTerm }),
+        loadMoreProducts({ id: { type: 'search', value: searchTerm } }),
+      ])
     )
   );
 

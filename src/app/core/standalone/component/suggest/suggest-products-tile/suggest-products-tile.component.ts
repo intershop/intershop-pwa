@@ -1,11 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, Input, Output, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { ReplaySubject, switchMap } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 
-import { AppFacade } from 'ish-core/facades/app.facade';
 import { Product } from 'ish-core/models/product/product.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { PipesModule } from 'ish-core/pipes.module';
@@ -24,18 +22,7 @@ export class SuggestProductsTileComponent {
   @Input() deviceType: DeviceType;
   @Output() routeChange = new EventEmitter<void>();
 
-  private destroyRef = inject(DestroyRef);
-  private currencySymbol: string;
   private noImageImageUrl = '/assets/img/not-available.svg';
-
-  constructor(private appFacade: AppFacade) {
-    this.appFacade.currentCurrency$
-      .pipe(
-        switchMap(currency => this.appFacade.currencySymbol$(currency)),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(currencySymbol => (this.currencySymbol = currencySymbol));
-  }
 
   handleInputFocus(): void {
     this.routeChange.emit();
