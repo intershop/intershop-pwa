@@ -6,6 +6,7 @@ import { toObservable } from 'ish-core/utils/functions';
 
 import {
   addToCompare,
+  compareProducts,
   getCompareProductsCount,
   getCompareProductsSKUs,
   isInCompareProducts,
@@ -35,5 +36,9 @@ export class CompareFacade {
 
   removeProductFromCompare(sku: string) {
     this.store.dispatch(removeFromCompare({ sku }));
+  }
+
+  compareProducts(skus: string[]) {
+    this.store.dispatch(compareProducts({ skus }));
   }
 }

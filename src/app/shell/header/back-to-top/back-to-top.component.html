@@ -1,6 +1,7 @@
 <button
   type="button"
-  class="btn btn-primary shadow back-to-top-btn"
+  class="btn shadow back-to-top-btn"
+  [ngClass]="('copilot' | ishFeature) ? 'btn-secondary' : 'btn-primary'"
   [style.display]="isVisible ? 'block' : 'none'"
   [title]="'back_to_top.title' | translate"
   (click)="jump()"

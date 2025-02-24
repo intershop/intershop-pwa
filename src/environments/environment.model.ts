@@ -5,6 +5,7 @@ import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 import { MultiSiteLocaleMap } from 'ish-core/utils/multi-site/multi-site.service';
 
 import { AddressDoctorConfig } from '../app/extensions/address-doctor/models/address-doctor/address-doctor-config.model';
+import { CopilotConfig } from '../app/extensions/copilot/models/copilot-config/copilot-config.model';
 import { TactonConfig } from '../app/extensions/tacton/models/tacton-config/tacton-config.model';
 
 export interface Environment {
@@ -52,6 +53,7 @@ export interface Environment {
     | 'tracking'
     | 'tacton'
     | 'maps'
+    | 'copilot'
   )[];
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
@@ -70,6 +72,9 @@ export interface Environment {
 
   // address doctor integration
   addressDoctor?: AddressDoctorConfig;
+
+  // Intershop Copilot
+  copilot?: CopilotConfig;
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
 

@@ -238,7 +238,7 @@
               "message": "use star imports only for aggregation of deeper lying imports"
             },
             {
-              "importNamePattern": "^(?!(range|uniq|memoize|once|groupBy|countBy|isEqual|intersection|pick|differenceBy|unionBy|mergeWith|snakeCase|capitalize)$).*",
+              "importNamePattern": "^(?!(range|uniq|memoize|once|groupBy|countBy|isEqual|intersection|pick|differenceBy|unionBy|merge|mergeWith|snakeCase|capitalize)$).*",
               "name": "lodash.*",
               "filePattern": "^.*/src/app/(?!.*\\.spec\\.ts$).*\\.ts$",
               "message": "importing this operator from lodash is forbidden"
