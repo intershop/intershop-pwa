@@ -90,7 +90,7 @@
       </div>
     </div>
     <ng-template #noResults>
-      <div class="search-suggest-container" aria-live="polite">
+      <div *ngIf="hasMinimumCharCount || hasSearchedTerms()" class="search-suggest-container" aria-live="polite">
         <div *ngIf="hasMinimumCharCount" class="col-12">
           <div class="headline">{{ 'suggest.no_results.headline' | translate }}</div>
           <p>{{ 'suggest.no_results.text' | translate }}</p>
