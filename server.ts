@@ -17,6 +17,7 @@ import {
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
 import * as client from 'prom-client';
+import * as crypto from 'crypto';
 
 const collectDefaultMetrics = client.collectDefaultMetrics;
 
@@ -168,14 +169,31 @@ export function app() {
     }
   }
 
+  // SRI
+  function calculateSRI(filePath: string): string {
+    const fileContent = fs.readFileSync(filePath, 'utf8');
+    const hash = crypto.createHash('sha384').update(fileContent, 'utf8').digest('base64');
+    return `sha384-${hash}`;
+  }
+
+  function injectSRI(html: string, browserFolder: string): string {
+    return html.replace(/<script src="DEPLOY_URL_PLACEHOLDER([^"]+)" type="module"><\/script>/g, (match, src) => {
+      const filePath = join(browserFolder, src);
+      if (fs.existsSync(filePath)) {
+        const sri = calculateSRI(filePath);
+        return `<script src="DEPLOY_URL_PLACEHOLDER${src}" integrity="${sri}" crossorigin="anonymous" type="module"></script>`;
+      }
+      return match;
+    });
+  }
+
   // Express server
   const server = express();
 
   const prometheusRest: { endpoint: string; duration: number }[] = [];
 
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
-  server.engine(
-    'html',
+  server.engine('html', (filePath, options, callback) => {
     ngExpressEngine({
       bootstrap: AppServerModule,
       providers: [
@@ -183,8 +201,14 @@ export function app() {
         { provide: 'PROMETHEUS_REST', useValue: prometheusRest },
       ],
       inlineCriticalCss: false,
-    })
-  );
+    })(filePath, options, (err, html) => {
+      if (err) {
+        return callback(err);
+      }
+      const htmlWithSRI = injectSRI(html, BROWSER_FOLDER);
+      callback(null, htmlWithSRI);
+    });
+  });
 
   server.set('view engine', 'html');
   server.set('views', BROWSER_FOLDER);
