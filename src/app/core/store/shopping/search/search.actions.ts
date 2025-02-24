@@ -23,3 +23,8 @@ export const suggestSearchSuccess = createAction(
 );
 
 export const suggestSearchFail = createAction('[Suggest Search API] Load Search Suggestions Fail', httpError());
+
+export const addSearchTermToSuggestion = createAction(
+  '[Suggest Search Term Internal] Add Search Terms to Suggestion',
+  payload<{ searchTerm: string }>()
+);
