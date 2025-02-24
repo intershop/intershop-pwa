@@ -9,7 +9,6 @@
     (input)="handleInput($event.target)"
     [value]="inputSearchTerms$ | async"
     (focus)="handleFocus(true)"
-    (keydown.esc)="resetInput()"
     (keydown.enter)="submitSearch(searchInput.value)"
     aria-controls="search-suggest-layer"
     [attr.aria-expanded]="(searchBoxResults$ | async) && hasMoreThanTwoCharacters && searchBoxFocus ? 'true' : 'false'"
@@ -129,6 +128,7 @@
       type="reset"
       name="reset"
       [title]="'search.searchbox.button.reset.title' | translate"
+      (focus)="handleFocus(true)"
       (click)="handleResetButton($event); setFocusOnSearchInput()"
     >
       <fa-icon [icon]="['fas', 'times']" />
@@ -140,8 +140,8 @@
       type="submit"
       name="search"
       [title]="'search.searchbox.button.title' | translate"
+      (focus)="handleFocus(true)"
       (click)="submitSearch(searchInput.value)"
-      (keydown.esc)="resetInput()"
     >
       <!-- search button with icon -->
       <ng-container *ngIf="!configuration?.buttonText; else textBlock">

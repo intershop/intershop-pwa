@@ -151,20 +151,29 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  // reset input when ESC key is pressed and element is focused within the search box
+  @HostListener('document:keydown.escape', ['$event'])
+  onEscape(event: KeyboardEvent) {
+    if (this.searchBox.nativeElement.contains(event.target)) {
+      event.preventDefault(); // Optional: Prevent default behavior
+      this.resetInput();
+    }
+  }
+
   // remove focus when clicking outside the search box
   @HostListener('document:click', ['$event.target'])
   onClick(targetElement: undefined): void {
-    this.checkIfOutside(targetElement);
+    this.blurIfOutside(targetElement);
   }
 
   // remove focus when focused outside the search box
   @HostListener('document:focusin', ['$event.target'])
   onFocusIn(targetElement: undefined): void {
-    this.checkIfOutside(targetElement);
+    this.blurIfOutside(targetElement);
   }
 
   // check if the target element is outside the search box
-  private checkIfOutside(targetElement: undefined): void {
+  private blurIfOutside(targetElement: undefined): void {
     const clickedOrFocusedInside = this.searchBox.nativeElement.contains(targetElement);
     if (!clickedOrFocusedInside) {
       this.blur();
