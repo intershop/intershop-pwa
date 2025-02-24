@@ -59,6 +59,7 @@ import {
 import { getPromotion, getPromotions, loadPromotion } from 'ish-core/store/shopping/promotions';
 import {
   getSearchTerm,
+  getSearchedTerms,
   getSuggestSearchError,
   getSuggestSearchLoading,
   getSuggestSearchResults,
@@ -256,12 +257,12 @@ export class ShoppingFacade {
   }
 
   // SEARCH
-
+  recentlySearchTerms$ = this.store.pipe(select(getSearchedTerms));
   searchTerm$ = this.store.pipe(select(getSearchTerm));
   searchResults$(searchTerm: Observable<string>) {
     return searchTerm.pipe(
       debounceTime(400),
-      filter(term => term.length >= 3),
+      filter(term => term.length > 2),
       distinctUntilChanged(),
       tap(term => this.store.dispatch(suggestSearch({ searchTerm: term }))),
       switchMap(() => this.store.pipe(select(getSuggestSearchResults)))
