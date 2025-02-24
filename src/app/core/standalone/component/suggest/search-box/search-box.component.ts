@@ -242,7 +242,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // getter method to check if the input search term has more than 3 characters
-  get hasMoreThanTwoCharacters(): boolean {
+  get hasMinimumCharCount(): boolean {
     let term = '';
     this.inputSearchTerms$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => (term = value));
     return term.length > 2;

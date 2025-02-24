@@ -11,7 +11,7 @@
     (focus)="handleFocus(true)"
     (keydown.enter)="submitSearch(searchInput.value)"
     aria-controls="search-suggest-layer"
-    [attr.aria-expanded]="(searchBoxResults$ | async) && hasMoreThanTwoCharacters && searchBoxFocus ? 'true' : 'false'"
+    [attr.aria-expanded]="(searchBoxResults$ | async) && hasMinimumCharCount && searchBoxFocus ? 'true' : 'false'"
   />
 
   <div *ngIf="searchSuggestError$ | async" class="search-suggest-container" aria-live="polite">
@@ -23,7 +23,7 @@
 
   <ng-container *ngIf="configuration?.autoSuggest && searchResults$ | async as results; else initialState">
     <div
-      *ngIf="(searchBoxResults$ | async) && hasMoreThanTwoCharacters; else noResults"
+      *ngIf="(searchBoxResults$ | async) && hasMinimumCharCount; else noResults"
       id="search-suggest-layer"
       class="search-suggest-container"
       aria-labelledby="header-search-input"
@@ -91,7 +91,7 @@
     </div>
     <ng-template #noResults>
       <div class="search-suggest-container" aria-live="polite">
-        <div *ngIf="hasMoreThanTwoCharacters" class="col-12">
+        <div *ngIf="hasMinimumCharCount" class="col-12">
           <div class="headline">{{ 'suggest.no_results.headline' | translate }}</div>
           <p>{{ 'suggest.no_results.text' | translate }}</p>
         </div>
