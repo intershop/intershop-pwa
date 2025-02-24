@@ -36,20 +36,27 @@
     input {
       &.form-control {
         height: $search-container-height;
-        color: $white;
-        background: $color-primary;
-        border: $border-width-default solid $border-color-default;
+        border: $border-width-default solid $border-color-light;
 
         &:focus {
           color: $text-color-primary;
           background: $color-inverse;
-          border: $border-width-default solid $border-color-light;
           box-shadow: none;
 
-          + button {
-            &.btn-search {
-              span::before {
-                color: $text-color-primary;
+          + .buttons {
+            button {
+              color: $text-color-corporate;
+
+              .ng-fa-icon {
+                color: $text-color-corporate;
+              }
+
+              &.btn-reset {
+                color: $text-color-quaternary;
+
+                .ng-fa-icon {
+                  color: $text-color-quaternary;
+                }
               }
             }
           }
@@ -59,7 +66,7 @@
 
     .btn-primary {
       right: 0;
-      bottom: 1px;
+      bottom: 0;
       margin-bottom: 0;
       font-weight: normal;
     }

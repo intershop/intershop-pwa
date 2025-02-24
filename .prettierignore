@@ -41,6 +41,7 @@ node_modules
 /dist/**/server/**
 /out-tsc
 /coverage
+/docs/compodoc
 /junit.xml
 /eslint-rules/dist
 /schematics/src/**/files/**

@@ -2,9 +2,20 @@ import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 import { Observable, combineLatest, identity } from 'rxjs';
-import { debounce, distinctUntilChanged, filter, map, pairwise, startWith, switchMap, tap } from 'rxjs/operators';
+import {
+  debounce,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  pairwise,
+  startWith,
+  switchMap,
+  tap,
+} from 'rxjs/operators';
 
 import { PRICE_UPDATE } from 'ish-core/configurations/injection-keys';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
@@ -13,6 +24,7 @@ import { addProductToBasket } from 'ish-core/store/customer/basket';
 import { getPriceDisplayType } from 'ish-core/store/customer/user';
 import {
   getCategory,
+  getCategoryEntities,
   getCategoryIdByRefId,
   getNavigationCategories,
   getNavigationCategoryTree,
@@ -44,7 +56,15 @@ import {
   loadProductVariationsIfNotLoaded,
 } from 'ish-core/store/shopping/products';
 import { getPromotion, getPromotions, loadPromotion } from 'ish-core/store/shopping/promotions';
-import { getSearchTerm, getSuggestSearchResults, suggestSearch } from 'ish-core/store/shopping/search';
+import {
+  getSearchTerm,
+  getSearchedTerms,
+  getSuggestSearchError,
+  getSuggestSearchLoading,
+  getSuggestSearchResults,
+  removeSuggestions,
+  suggestSearch,
+} from 'ish-core/store/shopping/search';
 import { getWarranty, getWarrantyError, getWarrantyLoading, warrantyActions } from 'ish-core/store/shopping/warranties';
 import { toObservable } from 'ish-core/utils/functions';
 import { InjectSingle } from 'ish-core/utils/injection';
@@ -63,6 +83,8 @@ export class ShoppingFacade {
   category$(uniqueId: string) {
     return this.store.pipe(select(getCategory(uniqueId)));
   }
+
+  categoryNodes$ = this.store.pipe(select(getCategoryEntities));
 
   categoryIdByRefId$(categoryRefId: string) {
     this.store.dispatch(loadCategoryByRef({ categoryId: categoryRefId }));
@@ -230,14 +252,25 @@ export class ShoppingFacade {
   }
 
   // SEARCH
-
+  recentlySearchTerms$ = this.store.pipe(select(getSearchedTerms));
   searchTerm$ = this.store.pipe(select(getSearchTerm));
   searchResults$(searchTerm: Observable<string>) {
     return searchTerm.pipe(
+      debounceTime(400),
+      filter(term => term.length > 2),
+      distinctUntilChanged(),
       tap(term => this.store.dispatch(suggestSearch({ searchTerm: term }))),
-      switchMap(term => this.store.pipe(select(getSuggestSearchResults(term))))
+      switchMap(() => this.store.pipe(select(getSuggestSearchResults)))
     );
   }
+
+  clearSuggestSearchSuggestions() {
+    this.store.dispatch(removeSuggestions());
+  }
+
+  searchSuggestLoading$ = this.store.pipe(select(getSuggestSearchLoading));
+  searchSuggestError$: Observable<HttpError> = this.store.pipe(select(getSuggestSearchError));
+
   searchLoading$ = this.store.pipe(select(getProductListingLoading));
 
   searchItemsCount$ = this.searchTerm$.pipe(

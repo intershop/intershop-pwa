@@ -90,3 +90,4 @@ kb_sync_latest_only
 - [Guide - Store Locator with Google Maps](./guides/store-locator.md)
 - [Guide - Address Check with Address Doctor](./guides/address-doctor.md)
 - [Guide - E-Mail Marketing/Newsletter Subscription](./guides/newsletter-subscription.md)
+- [Guide - Sparque Integration](./guides/sparque-integration.md)
