@@ -6,11 +6,10 @@
     type="search"
     id="header-search-input"
     class="form-control searchTerm"
-    (input)="searchSuggest($event.target)"
+    (input)="handleInput($event.target)"
     [value]="inputSearchTerms$ | async"
-    (focus)="setFocus(true)"
-    (keydown)="setFocus(true)"
-    (keydown.esc)="reset()"
+    (focus)="handleFocus(true)"
+    (keydown.esc)="resetInput()"
     (keydown.enter)="submitSearch(searchInput.value)"
     aria-controls="search-suggest-layer"
     [attr.aria-expanded]="(searchBoxResults$ | async) && hasMoreThanTwoCharacters && searchBoxFocus ? 'true' : 'false'"
@@ -49,7 +48,7 @@
           <ish-suggest-categories-tile
             [categories]="results.categories"
             [inputTerms$]="inputSearchTerms$"
-            (routeChange)="reset()"
+            (routeChange)="resetInput()"
             [maxAutoSuggests]="3"
           />
         </div>
@@ -57,7 +56,7 @@
           <ish-suggest-brands-tile
             [brands]="results.brands"
             [inputTerms$]="inputSearchTerms$"
-            (routeChange)="reset()"
+            (routeChange)="resetInput()"
             [maxAutoSuggests]="3"
           />
         </div>
@@ -74,7 +73,7 @@
           [products]="results.products"
           [inputTerms$]="inputSearchTerms$"
           [deviceType]="deviceType"
-          (routeChange)="reset()"
+          (routeChange)="resetInput()"
           [maxAutoSuggests]="8"
         />
       </div>
@@ -130,9 +129,7 @@
       type="reset"
       name="reset"
       [title]="'search.searchbox.button.reset.title' | translate"
-      (focus)="setFocus(true)"
-      (click)="handleReset()"
-      (keydown.esc)="reset()"
+      (click)="handleResetButton($event); setFocusOnSearchInput()"
     >
       <fa-icon [icon]="['fas', 'times']" />
     </button>
@@ -143,9 +140,8 @@
       type="submit"
       name="search"
       [title]="'search.searchbox.button.title' | translate"
-      (keydown)="setFocus(true)"
       (click)="submitSearch(searchInput.value)"
-      (keydown.esc)="reset()"
+      (keydown.esc)="resetInput()"
     >
       <!-- search button with icon -->
       <ng-container *ngIf="!configuration?.buttonText; else textBlock">

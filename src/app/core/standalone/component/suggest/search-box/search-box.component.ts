@@ -128,6 +128,8 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
     clearTimeout(this.resizeTimeout);
   }
 
+  // add event listener for transition end to check if search box has scaled up
+  // to show the suggest layer only if the input has scaled up
   @HostListener('transitionend', ['$event'])
   onTransitionEnd(event: TransitionEvent) {
     if (event.propertyName === 'width' && event.target === this.searchBox.nativeElement) {
@@ -141,24 +143,27 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  // if searchbox has focus - scale down and remove focus when scrolling the document
   @HostListener('window:scroll', [])
   onWindowScroll() {
     if (this.searchBoxFocus) {
-      // if searchbox has focus - scale down and remove focus when scrolling the document
       this.blur();
     }
   }
 
+  // remove focus when clicking outside the search box
   @HostListener('document:click', ['$event.target'])
   onClick(targetElement: undefined): void {
     this.checkIfOutside(targetElement);
   }
 
+  // remove focus when focused outside the search box
   @HostListener('document:focusin', ['$event.target'])
   onFocusIn(targetElement: undefined): void {
     this.checkIfOutside(targetElement);
   }
 
+  // check if the target element is outside the search box
   private checkIfOutside(targetElement: undefined): void {
     const clickedOrFocusedInside = this.searchBox.nativeElement.contains(targetElement);
     if (!clickedOrFocusedInside) {
@@ -166,12 +171,14 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  // simple blur method to remove focus from search input
   private blur() {
-    this.setFocus(false);
+    this.handleFocus(false);
     this.searchInput.nativeElement.blur();
   }
 
-  setFocus(scaleUp: boolean) {
+  // handle focus status of search box
+  handleFocus(scaleUp: boolean) {
     this.updateMobileSuggestLayerHeight();
 
     if (scaleUp) {
@@ -183,26 +190,14 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  reset() {
-    this.blur();
-    this.inputSearchTerms$.next('');
-    this.shoppingFacade.clearSuggestSearchSuggestions();
+  // manually set focus on search input
+  // the exlicit function call in the component is needed to get the focus working in iOS devices
+  setFocusOnSearchInput() {
+    this.searchInput.nativeElement.focus();
   }
 
-  // @HostListener('document:focusin') prevents this.searchInput.nativeElement.focus();
-  private setFocusOnSearchInput(): void {
-    setTimeout(() => {
-      this.searchInput.nativeElement.focus();
-    }, 10);
-  }
-
-  handleReset() {
-    this.setFocusOnSearchInput(); // manually set focus to input to prevent blur event
-    this.inputSearchTerms$.next('');
-    this.shoppingFacade.clearSuggestSearchSuggestions();
-  }
-
-  searchSuggest(source: EventTarget) {
+  // handle the user input
+  handleInput(source: EventTarget) {
     const inputValue = (source as HTMLInputElement).value;
     this.inputSearchTerms$.next(inputValue);
     if (inputValue === '') {
@@ -211,6 +206,21 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  // reset all and blur the input
+  resetInput() {
+    this.blur();
+    this.inputSearchTerms$.next('');
+    this.shoppingFacade.clearSuggestSearchSuggestions();
+  }
+
+  // handle the reset button
+  handleResetButton(event: Event) {
+    event.stopPropagation(); // important to prevent any other event listeners from firing
+    this.inputSearchTerms$.next('');
+    this.shoppingFacade.clearSuggestSearchSuggestions();
+  }
+
+  // submit the search form
   submitSearch(suggestedTerm: string) {
     if (!suggestedTerm) {
       this.setFocusOnSearchInput();
@@ -218,9 +228,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.router.navigate(['/search', suggestedTerm]);
-
     this.blur();
-
     return false; // prevent form submission
   }
 
