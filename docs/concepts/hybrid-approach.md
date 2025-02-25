@@ -69,7 +69,7 @@ _configuration via `icm_as` Helm chart_:
 ```yaml
 INTERSHOP_APITOKEN_COOKIE_ENABLED: true
 INTERSHOP_APITOKEN_COOKIE_SSLMODE: true
-INTERSHOP_WEBSERVERSECUREURL: https://<icm-web>
+INTERSHOP_WEBSERVERSECUREURL: https://<NGINX>
 ```
 
 ### Intershop Progressive Web App (PWA)
