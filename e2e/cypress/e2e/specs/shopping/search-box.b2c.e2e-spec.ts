@@ -29,13 +29,13 @@ describe('Search Box', () => {
       page.header.searchBox.type('k');
       page.header.searchBox.assertNoSuggestions();
 
-      page.header.searchBox.type('e');
+      page.header.searchBox.type('en');
       page.header.searchBox.suggestions.should('contain', 'Kensington');
 
       page.header.searchBox.backspace();
       page.header.searchBox.assertNoSuggestions();
 
-      page.header.searchBox.type('ensington');
+      page.header.searchBox.type('nsington');
       page.header.searchBox.suggestions.should('contain', 'Kensington');
 
       page.header.searchBox.enter();
