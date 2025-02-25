@@ -125,6 +125,11 @@ You can use the `override` schematic to introduce custom theme overrides:
 
 ![override](./customizations-ng-g-override-schematic.gif)
 
+> [!IMPORTANT]
+> The different theme names must be distinct and must not be included in another theme name.
+> Otherwise this can lead to problems with the replacement logic, resulting in unintended replacements being used within a theme.
+> This means **intershop** and **intershop**B2B is a problematic theme name combination while `intershopB2C` and `intershopB2B` should work together without problems.
+
 ### Existing Features
 
 When you want to **disable code** provided by Intershop, it is better to **comment it out instead of deleting** it.

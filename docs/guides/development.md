@@ -22,7 +22,8 @@ git clone https://github.com/intershop/intershop-pwa.git
 After having cloned the project from the Git repository, open a command line in the project folder and run `npm install` to download all required dependencies into your development environment.
 
 The project uses [Angular CLI](https://angular.io/cli) - a command line interface for Angular - that has to be installed globally.
-Run `npm install -g @angular/cli` once to globally install Angular CLI on your development machine.
+Run `npm install -g @angular/cli@16` once to globally install Angular CLI on your development machine.
+Make sure to install the Angular CLI version that fits to our current project dependency Angular version.
 
 Use `ng serve --open` to start the development server and open the Progressive Web app in your browser.
 
@@ -150,7 +151,6 @@ As Angular runs in the browser, all the development tool functionality provided 
 
 - [Redux DevTools](https://github.com/reduxjs/redux-devtools) for debugging application state changes
 - [Angular DevTools](https://angular.io/guide/devtools) for debugging and profiling Angular applications in Chrome
-- [Angular Augury](https://augury.rangle.io/) for debugging and profiling Angular applications in Firefox (no longer maintained)
 
 ### Tackling Memory Problems
 
@@ -170,7 +170,7 @@ This can be done by setting the environment variable `NODE_OPTIONS=--max_old_spa
 - Use `ng.profiler.timeChangeDetection({record:true})` to profile a change detection cycle of the current page.
 - Use the `json` pipe in Angular to print out data on templates. Easy-to-use snippets are available with `ng-debug` and `ng-debug-async` .
 
-[Everything You Need to Know About Debugging Angular Applications](https://angularindepth.com/posts/1138/everything-you-need-to-know-about-debugging-angular-applications)
+[Everything You Need to Know About Debugging Angular Applications](https://angular.love/everything-you-need-to-know-about-debugging-angular-applications)
 
 - Provides a more in-depth view about internals.
 

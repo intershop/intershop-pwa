@@ -35,7 +35,7 @@ See also [Angular Style Guide](https://angular.io/guide/styleguide#style-05-15).
 
 ## Put as Little Logic Into `constructor` as Possible - Use `ngOnInit`
 
-See [The essential difference between Constructor and ngOnInit in Angular](https://angularindepth.com/posts/1119/the-essential-difference-between-constructor-and-ngoninit-in-angular) and [Angular constructor versus ngOnInit](https://ultimatecourses.com/blog/angular-constructor-ngoninit-lifecycle-hook).
+See [The essential difference between Constructor and ngOnInit in Angular](https://angular.love/the-essential-difference-between-constructor-and-ngoninit-in-angular) and [Angular constructor versus ngOnInit](https://ultimatecourses.com/blog/angular-constructor-ngoninit-lifecycle-hook).
 
 ## Use Property Binding to Bind Dynamic Values to Attributes or Properties
 
@@ -121,7 +121,7 @@ The custom trackBy function needs to return unique values for all unique inputs.
 
 ## Do Not Unsubscribe, Use the takeUntilDestroyed Operator Instead
 
-Following the ideas of the article [takeUntilDestroyed in Angular v16](https://angularindepth.com/posts/1518/takeuntildestroy-in-angular-v16), the following pattern is used for ending subscriptions to observables that are not handled via async pipe in the templates.
+Following the ideas of the article [takeUntilDestroyed in Angular v16](https://angular.love/takeuntildestroy-in-angular-v16), the following pattern is used for ending subscriptions to observables that are not handled via async pipe in the templates.
 
 :heavy_check_mark: **'unsubscribe' via takeUntilDestroyed**
 

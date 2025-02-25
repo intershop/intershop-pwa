@@ -107,7 +107,7 @@ pwa:
   environment:
     COPILOT: |
       ...
-      theme: { "chatWindow": { "title": "Assistant Title" }, "button": { "backgroundColor": "purple" } }
+      theme: { "chatWindow": { "title": "Assistant Title" }, "button": { "backgroundColor": "purple", "size": 60 }, "tooltip": { "showTooltip": true } }
 ```
 
 Example via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
@@ -118,7 +118,7 @@ environment:
     value: |
       {
         ...
-        "theme": { "chatWindow": { "title": "Assistant Title" }, "button": { "backgroundColor": "purple" }  }
+        "theme": { "chatWindow": { "title": "Assistant Title" }, "button": { "backgroundColor": "purple", "size": 60 }, "tooltip": { "showTooltip": true } }
       }
 ```
 
