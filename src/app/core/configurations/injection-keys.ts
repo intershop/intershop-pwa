@@ -60,3 +60,5 @@ export const SMALL_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('smallBrea
 export const MEDIUM_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('mediumBreakpointWidth');
 
 export const LARGE_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('largeBreakpointWidth');
+
+export const EXTRALARGE_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('extralargeBreakpointWidth');
