@@ -236,6 +236,9 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
       return false;
     }
 
+    // add the suggested term to the input field
+    this.inputSearchTerms$.next(suggestedTerm);
+
     this.router.navigate(['/search', suggestedTerm]);
     this.blur();
     return false; // prevent form submission
