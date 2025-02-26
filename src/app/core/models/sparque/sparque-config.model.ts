@@ -3,9 +3,9 @@
  */
 export interface SparqueConfig {
   // base url of the sparque wrapper server
-  server_url: string;
+  serverUrl: string;
   // version of the sparque wrapper REST API
-  wrapperAPI: string;
+  wrapperApi: string;
   // sparque workspace name
   WorkspaceName: string;
   // sparque API name
