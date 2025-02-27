@@ -18,7 +18,6 @@ services:
       LOGGING: 'true'
       # LOG_ALL: 'false'
       SOURCE_MAPS: 'true'
-      SPARQUE: '{"server_url": "https://policy.test.intershop.com", "wrapperAPI": "v2", "WorkspaceName": "intershop-project-base-v2-team2", "ApiName": "PWA", "ChannelId": "ish"}'
       # TRUST_ICM: 'true'
       # PROXY_ICM: 'true'
       # PROMETHEUS: 'true'
