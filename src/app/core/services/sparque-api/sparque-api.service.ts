@@ -2,10 +2,26 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { concatLatestFrom } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { EMPTY, Observable, combineLatest, defer, first, forkJoin, iif, map, of, switchMap, take, tap } from 'rxjs';
+import {
+  EMPTY,
+  MonoTypeOperatorFunction,
+  Observable,
+  catchError,
+  combineLatest,
+  concatMap,
+  defer,
+  first,
+  forkJoin,
+  iif,
+  map,
+  of,
+  switchMap,
+  take,
+  tap,
+  throwError,
+} from 'rxjs';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
+import { AvailableOptions } from 'ish-core/services/api/api.service';
 import { TokenService } from 'ish-core/services/token/token.service';
 import { getCurrentLocale, getSparqueConfig } from 'ish-core/store/core/configuration';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
@@ -30,18 +46,15 @@ const SPARQUE_CONFIG_EXCLUDE_PARAMS = ['server_url', 'wrapperAPI'];
  * @param tokenService - The service used to fetch tokens.
  */
 @Injectable({ providedIn: 'root' })
-export class SparqueApiService extends ApiService {
+export class SparqueApiService {
   private static SPARQUE_PERSONALIZATION_IDENTIFIER = 'userId';
 
   constructor(
-    protected httpClient: HttpClient,
-    protected store: Store,
-    protected featureToggleService: FeatureToggleService,
+    private httpClient: HttpClient,
+    private store: Store,
     private apiTokenService: ApiTokenService,
     private tokenService: TokenService
-  ) {
-    super(httpClient, store, featureToggleService);
-  }
+  ) {}
 
   protected constructHttpClientParams(
     path: string,
@@ -162,6 +175,37 @@ export class SparqueApiService extends ApiService {
     ]).pipe(
       first(),
       map(arr => arr.join(''))
+    );
+  }
+
+  private handleErrors<T>(dispatch: boolean): MonoTypeOperatorFunction<T> {
+    return catchError(error => {
+      if (dispatch) {
+        if (error.status === 0) {
+          console.log('NO ANSWER');
+          return EMPTY;
+        } else if (error.status >= 500 && error.status < 600) {
+          console.log('SERVICE UNAVAILABLE');
+          return EMPTY;
+        }
+      }
+      return throwError(() => error);
+    });
+  }
+
+  private execute<T>(options: AvailableOptions, httpCall$: Observable<T>): Observable<T> {
+    return httpCall$.pipe(this.handleErrors(true));
+  }
+
+  /**
+   * http get request
+   */
+  get<T>(path: string, options?: AvailableOptions): Observable<T> {
+    return this.execute(
+      options,
+      this.constructHttpClientParams(path, options).pipe(
+        concatMap(([url, httpOptions]) => this.httpClient.get<T>(url, httpOptions))
+      )
     );
   }
 }

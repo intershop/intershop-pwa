@@ -135,7 +135,6 @@ jobs:
         if: matrix.test == 'b2b'
         run: |
           echo "THEME=b2b" >> $GITHUB_ENV
-          echo "SPARQUE={"server_url": "https://policy.test.intershop.com", "wrapperAPI": "v2", "workspaceName": "intershop-project-base-v2-team2", "apiName": "PWA", "channelId": "ish"}" >> $GITHUB_ENV
 
       - name: Start SSR
         run: |
