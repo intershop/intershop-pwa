@@ -18,6 +18,7 @@ services:
       LOGGING: 'true'
       # LOG_ALL: 'false'
       SOURCE_MAPS: 'true'
+      SPARQUE: '{"url": "https://policy.test.intershop.com", "wrapperAPI": "v2", "workspaceName": "intershop-project-base-v2-team2", "apiName": "PWA", "channelId": "ish"}'
       # TRUST_ICM: 'true'
       # PROXY_ICM: 'true'
       # PROMETHEUS: 'true'
