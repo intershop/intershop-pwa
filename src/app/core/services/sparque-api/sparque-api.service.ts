@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { concatLatestFrom } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { EMPTY, Observable, combineLatest, defer, first, forkJoin, iif, map, of, switchMap, take } from 'rxjs';
+import { EMPTY, Observable, combineLatest, defer, first, forkJoin, iif, map, of, switchMap, take, tap } from 'rxjs';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
@@ -155,6 +155,7 @@ export class SparqueApiService extends ApiService {
       this.store.pipe(
         select(getSparqueConfig),
         whenTruthy(),
+        tap(config => console.log('config', config)),
         map(config => config.server_url.concat('/api/', config.wrapperAPI))
       ),
       of(`/${path}`),
