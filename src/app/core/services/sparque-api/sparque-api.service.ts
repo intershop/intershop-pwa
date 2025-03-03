@@ -193,7 +193,7 @@ export class SparqueApiService {
     });
   }
 
-  private execute<T>(options: AvailableOptions, httpCall$: Observable<T>): Observable<T> {
+  private execute<T>(httpCall$: Observable<T>): Observable<T> {
     return httpCall$.pipe(this.handleErrors(true));
   }
 
@@ -202,7 +202,6 @@ export class SparqueApiService {
    */
   get<T>(path: string, options?: AvailableOptions): Observable<T> {
     return this.execute(
-      options,
       this.constructHttpClientParams(path, options).pipe(
         concatMap(([url, httpOptions]) => this.httpClient.get<T>(url, httpOptions))
       )
