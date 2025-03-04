@@ -5,11 +5,11 @@ kb_everyone
 kb_sync_latest_only
 -->
 
-# Intershop Copilot
+# Intershop Copilot for Buyers
 
-The Intershop PWA provides an integration with Intershop Copilot.
+The Intershop PWA provides an integration with Intershop Copilot for Buyers.
 
-Official Intershop Documentation: [Intershop Copilot - AI Purchase and Service Assistant](https://support.intershop.com/kb/index.php/Display/31N345)
+Official Intershop Documentation: [Intershop Copilot - AI Purchase and Service Assistant](https://knowledge.intershop.com/kb/index.php/Display/31N345)
 
 The Intershop Copilot system consists of:
 
@@ -22,7 +22,7 @@ It is a customized fork of [FlowiseChatEmbed](https://github.com/FlowiseAI/Flowi
 
 ## Configuration
 
-For the integration of the Intershop Copilot, the feature toggle `copilot` needs to be enabled in the PWA configuration.
+For the integration of the Intershop Copilot for Buyers, the feature toggle `copilot` needs to be enabled in the PWA configuration.
 Additionally, a project- or deployment-specific configuration is needed that provides the following values:
 
 - `copilotUIFile` - URL to the Javascript file that contains the compiled version of the Intershop Copilot embedded chatbot
@@ -142,11 +142,11 @@ customCSS: `
 ## `handleToolCall` Actions
 
 Tool calls like `openBasket` are triggered by the Copilot backend service and can be detected in the PWA.
-The `handleToolCall` method handles these actions and the parameters given by the Intershop Copilot.
+The `handleToolCall` method handles these actions and the parameters given by the Intershop Copilot for Buyers.
 A new method in the Copilot backend service that is meant to control something inside the PWA needs a new handler in this function.
 
 The handler currently checks only the last tool call.
-So, for example, the user asked for a laptop, and the Intershop Copilot first runs the `search` and then the `openProduct` tool.
+So, for example, the user asked for a laptop, and the Intershop Copilot for Buyers first runs the `search` and then the `openProduct` tool.
 In that case, only the `openProduct` tool is handled.
 
 Refer to the `handleToolCall` method of the [`copilot.component.ts`](../../src/app/extensions/copilot/shared/copilot/copilot.component.ts) and ensure that any functionalities that depend on certain feature toggles are enabled in the PWA configuration as well, e.g., `compare` in the current implementation.

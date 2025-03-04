@@ -903,7 +903,7 @@
   "copilot.placeholder": "Geben Sie Ihre Frage ein",
   "copilot.starter_prompt_1": "Was können Sie für mich tun?",
   "copilot.starter_prompt_2": "Wer sind Sie?",
-  "copilot.title": "Intershop Copilot",
+  "copilot.title": "Intershop Copilot für Käufer",
   "copilot.welcome_message": "Willkommen! Wie kann ich Ihnen heute helfen?",
   "customer.creation_failed.error": "Leider ist beim Anlegen Ihres Kundenkontos etwas schiefgegangen. Bitte versuchen Sie es später noch einmal oder kontaktieren Sie unseren Kundensupport.",
   "customer.credentials.login.not_unique.error": "Die angegebene E-Mail-Adresse wird bereits verwendet. Prüfen Sie die Richtigkeit der Eingabe oder geben Sie eine andere E-Mail-Adresse an.",

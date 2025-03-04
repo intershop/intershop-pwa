@@ -83,7 +83,7 @@ kb_sync_latest_only
 
 ### Third-party Integrations
 
-- [Guide - Intershop Copilot](./guides/copilot.md)
+- [Guide - Intershop Copilot for Buyers](./guides/copilot.md)
 - [Guide - Tracking with Google Tag Manager](./guides/google-tag-manager.md)
 - [Guide - Client-Side Error Monitoring with Sentry](./guides/sentry-error-monitoring.md)
 - [Guide - Extended Product Configurations with Tacton](./guides/tacton-product-configuration.md)
