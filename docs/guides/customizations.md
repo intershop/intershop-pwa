@@ -16,14 +16,14 @@ Generally speaking:
 
 It can be tempting to always modify existing templates, component and style files inline when doing customization.
 However, when merging incoming upgrades the number of merge conflicts can possibly be large.
-So if you want to upgrade to new PWA versions later, stick to the recommendations in this guide.
+So, if you want to upgrade to new PWA versions later, stick to the recommendations in this guide.
 
 If modifications to standard files seem absolutely inevitable, it is good practice to mark the customizations with some `// CUSTOMIZATION` or `<!-- CUSTOMIZATION -->` comments.
 Either mark a changed line like this or use it as a beginning and end marker for added blocks.
 
 ## Set up an Intershop PWA-based Project
 
-When initially setting up an Intershop PWA-based project it is not advisable to clone the complete GitHub repository of the Intershop PWA.
+When initially setting up an Intershop PWA-based project, it is not advisable to clone the complete GitHub repository of the Intershop PWA.
 All that is needed initially is the `master` branch that includes the released versions of the PWA.
 This can be achieved with the following Git command.
 
@@ -53,7 +53,7 @@ It will:
 
 - add an Angular theme configuration in `angular.json` which is used to configure your individual theme. This **default** theme will be used instead of the existing B2B and B2C themes. It is possible to configure and run multiple themes next to each other, see [Guide - Themes](./themes.md).
 - add the theme-prefix as the active theme in `package.json` and replace all active themes (if `--default` is used)
-- add the theme-prefix specific file `environment.<theme-prefix>.ts` which should be used for further theme configuration
+- add the theme-prefix-specific file `environment.<theme-prefix>.ts` which should be used for further theme configuration
 - add initial style files for styling customization under `src/styles/themes/<theme-prefix>`
 - add the theme-prefix to the override schematic `schematics/src/helpers/override/schema.json`
 - change the project prefix for new Angular artifacts from `ish` to `custom`
@@ -62,7 +62,7 @@ It will:
 > [!NOTE]
 > If only one theme is active, PM2 will run the theme-specific SSR process in cluster mode on the default port (see [Building Multiple Themes](../guides/ssr-startup.md#building-multiple-themes)).
 
-After that we recommend to additionally use the prefix `custom` in every component to further help identifying customized components.
+After that, we recommend to additionally use the prefix `custom` in every component to further help identifying customized components.
 
 ```bash
 $ ng g c shared/components/basket/custom-basket-display
@@ -88,7 +88,7 @@ CREATE src/app/shared/components/basket/custom-basket-display/custom-basket-disp
 When **adding new functionality**, it is better to encapsulate it in **new components** that handle every aspect of the customization and just **use them in existing templates**.
 That way the modifications on existing code are most often kept to a single line change only.
 
-When **heavily customizing** existing components it is better to **copy components** and change all references.
+When **heavily customizing** existing components, it is better to **copy components** and change all references.
 If 20 % of the component has to be changed, it is already a good idea to duplicate it.
 That way, incoming changes will not affect your customizations.
 Typical hot-spots where copying is a good idea are header-related or product-detail-page-related customizations.
@@ -132,7 +132,7 @@ This allows Git to merge changes more predictably since original and incoming pa
 Commenting out should be done in the form of block comments starting a line above and ending in an additional line below the code.
 Use `<!--` and `-->` for HTML and `/*` and `*/` for SCSS and TypeScript.
 
-Some of the provided components supply **configuration parameters** which can be used to handle customization in an easy way (i.e. disabling features or switching between them).
+Some of the provided components supply **configuration parameters**, which can be used to handle customization in an easy way (i.e., disabling features or switching between them).
 
 ### New Features
 
@@ -150,13 +150,13 @@ Improving and parsing improper data too late could lead to more modifications on
 ### NgRx
 
 Adding **new data** to the state should always almost exclusively be done by adding new stores in **store groups**.
-Add one with `ng g store-group <group>` and then add consecutive stores with `ng g store --feature <group> <store>`.
-Keep modifications to the existing store as little as possible.
+Add one with `ng g store-group <group>`, and then add consecutive stores with `ng g store --feature <group> <store>`.
+Keep modifications to the existing store to a minimum.
 As NgRx is loosely coupled by nature, you can deactivate effects by commenting out the `@Effect` decorator.
 
 ### Testing
 
-When modifying components it is most likely that related test cases will fail.
+When modifying components, it is most likely that related test cases will fail.
 If possible, use the Jest update feature **update snapshots** when adapting test cases.
 When you upgrade the PWA to a new version, those snapshots will most likely have merge conflicts in them.
 Here you can just accept either modification and update the test snapshots.
@@ -179,7 +179,7 @@ Changing the styling by applying changes to SCSS files should be done in the cus
 This folder is created when adding a new theme, see [Start Customization](../guides/customizations.md#start-customization).
 There are two approaches to apply a theme-specific styling:
 
-- Copy only the `*.scss` files you need to change to your themes folder and adjust the file references. All files which are not overwritten in your theme will be taken from the standard and all changes and bugfixes in these files when migrating the PWA will be applied and used in your project.
+- Copy only the `*.scss` files you need to change to your themes folder and adjust the file references. All files which are not overwritten in your theme will be taken from the standard, and all changes and bugfixes in these files when migrating the PWA will be applied and used in your project.
 - Copy the complete set of standard `*.scss` files to your themes folder and adjust the file references. All standard changes and bugfixes to `*.scss` files will not be applied to your theme during a PWA migration.
 
 Just putting a theme override file next to the original file in the `src/styles` folder will not lead to the expected results.
@@ -188,7 +188,7 @@ The lookup starts with the file `style.scss` in the theme-specific folder.
 > [!NOTE]
 > You should
 >
-> - not change global `*.scss` files in `src/styles` and only apply style changes in your theme folder by copying files into the this folder and adjusting file references
+> - not change global `*.scss` files in `src/styles` and only apply style changes in your theme folder by copying files into this folder and adjusting file references.
 > - not delete the standard theme folders to prevent merge conflicts when migrating the PWA (changes in standard files but deleted in your project).
 
 When styling is done on component level, all styling is encapsulated to exactly this component (default behavior).
@@ -201,10 +201,10 @@ You can re-use variables from the global styling on component level by importing
 ```
 
 > [!NOTE]
-> Be aware that Visual Studio Code will not resolve all import references correctly but it still works in the build PWA version.
+> Be aware that Visual Studio Code will not resolve all import references correctly, but it still works in the build PWA version.
 
 > [!NOTE]
-> For bundled styles optimization PurgeCSS is used. Please read [the additional documentation](./optimizations.md#purgecss) regarding the usage and configuration of PurgeCSS in the Intershop PWA.
+> For bundled styles optimization, PurgeCSS is used. Please read [the additional documentation](./optimizations.md#purgecss) regarding the usage and configuration of PurgeCSS in the Intershop PWA.
 
 ### Static Assets
 
@@ -221,7 +221,7 @@ After that run `npm install` to regenerate the file.
 ### Cypress Tests
 
 We currently do not support specific adaptions for customizing Cypress tests in projects.
-In theory the customized PWA project can re-use our Page Objects without much adaptions if the customized PWA also uses the same selectors for CSS classes and data-testing-ids.
+In theory, the customized PWA project can re-use our Page Objects without much adaptions if the customized PWA also uses the same selectors for CSS classes and data-testing-ids.
 
 Specs should be copied and adapted for the project to use correct demo data.
 When executing tests, the test itself requires an appropriate demo server to be launched before the run.
@@ -233,17 +233,17 @@ The same system can be adopted for customization projects.
 
 Importing changes of new releases is done with Git tooling.
 If you stick to the guidelines in this chapter, the process of updating should run without major problems.
-Also remember to use `npm install` after importing a change that modified the `package.json` and `package-lock.json` and run tests and linting in the process.
+Also remember to use `npm install` after importing a change that modified the `package.json` and `package-lock.json`, and run tests and linting in the process.
 
 Reading through the [migrations.md](./migrations.md) and the [CHANGELOG.md](../../CHANGELOG.md) - here especially the 'Breaking Changes' section - should be the first step before any migration.
 
-The first step for any migration is to add the Intershop PWA GitHub repository as an additional remote if this is not already the case.
+Begin any migration with adding the Intershop PWA GitHub repository as an additional remote if this is not already the case.
 
 ```
 git remote add intershop https://github.com/intershop/intershop-pwa.git
 ```
 
-Afterwards one needs to fetch the new release tags of the `intershop` remote.
+Afterward, you need to fetch the new release tags of the `intershop` remote.
 
 ```
 git fetch intershop 'refs/tags/*:refs/tags/*'
@@ -253,14 +253,14 @@ For importing changes from the current release, you can use different approaches
 
 ### 1. Range Cherry Pick of New Release Commits
 
-For the range `git cherry-pick` approach one needs to create a new branch based on the current project's main development branch, naming it, for example, `migration_to_1.1`.
+For the range `git cherry-pick` approach, you need to create a new branch based on the current project's main development branch, naming it, for example, `migration_to_1.1`.
 
 ```
 git checkout -b migration_to_1.1
 ```
 
-Now the Git commits of the new Intershop PWA release will be cherry picked into this migration branch.
-For this, one needs to provide the wanted commit range which should be possible by using the Intershop PWA version tags, e.g., `1.0.0` to `1.1.0` (since the end tag is a merge commit, it will lead to an error at the end of the cherry pick; to prevent this, only the commits up to the second parent should be used with `^2`).
+Now, the Git commits of the new Intershop PWA release will be cherry-picked into this migration branch.
+For this, you need to provide the wanted commit range by using the Intershop PWA version tags, e.g., `1.0.0` to `1.1.0` (since the end tag is a merge commit, it will lead to an error at the end of the cherry pick; to prevent this, only the commits up to the second parent should be used with `^2`).
 If there are any problems with the tags, using the specific commit SHAs should always work.
 
 ```
@@ -273,12 +273,12 @@ Thus, if any merge conflicts arise, this will be within the specific Intershop P
 If merge conflicts need to be resolved, it is advisable to disable any pre-commit hooks during the migration.
 For this purpose, set `HUSKY=0` as environment variable.
 
-After successfully going through the range cherry pick (with `git commit` and `git cherry-pick --continue` after each resolved merge conflict), an `npm install` will probably be required and you need to check whether the project code still works as expected.
+After successfully going through the range, cherry-pick (with `git commit` and `git cherry-pick --continue` after each resolved merge conflict), an `npm install` will probably be required, and you need to check whether the project code still works as expected.
 Starting the server or `npm run check` are good basic tests for that.
 
 ### 2. Rebase Commits of New Release
 
-For the `git rebase --onto` approach you need to create a new branch based on the release tag of the Intershop PWA you want to migrate to, naming it, for example, `migration_to_1.1`.
+For the `git rebase --onto` approach, you need to create a new branch based on the release tag of the Intershop PWA you want to migrate to, naming it, for example, `migration_to_1.1`.
 
 ```
 git checkout -b migration_to_1.1 1.1.0
@@ -300,7 +300,7 @@ Thus, if any merge conflicts arise, this will be within the specific Intershop P
 If merge conflicts need to be resolved, it is advisable to disable any pre-commit hooks during the migration.
 For this purpose, set `HUSKY=0` as environment variable.
 
-After successfully going through the rebase onto (with `git rebase --continue` after each resolved merge conflict), an `npm install` will probably be required and you need to check whether the project code still works as expected.
+After successfully going through the rebase onto (with `git rebase --continue` after each resolved merge conflict), an `npm install` will probably be required, and you need to check whether the project code still works as expected.
 Starting the server or `npm run check` are good basic tests for that.
 
 ### 3. Merge the New Release in its Entirety
@@ -312,7 +312,7 @@ Just add the Intershop PWA GitHub repository as a second remote in your project 
 ## Hints
 
 - The Intershop PWA project is configured to follow consistent formatting rules.
-  For a better overview of relevant changes and less merge efforts it is advised to adhere to these rules during project development as well.
+  For a better overview of relevant changes and less merge efforts, it is advised to adhere to these rules during project development as well.
   For this, you need to configure your IDE accordingly.
   The fitting Visual Studio Code configuration is part of the project.
 - The Intershop PWA project configures and contains a set of linting rules that also aim to ensure a consistent code style and are intended to prevent any coding patterns that are considered problematic.

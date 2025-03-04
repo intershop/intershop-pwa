@@ -10,7 +10,7 @@ kb_sync_latest_only
 ## Building
 
 To **simply** build the Intershop PWA in server-side rendering mode, you can use the _package.json_ script `npm run build`, which builds the Intershop PWA with the `production` configuration of the `angular.json` with the default theme.
-Afterwards you can start the application with `npm run serve` (or do both by using `npm run start`).
+Afterward, you can start the application with `npm run serve` (or do both by using `npm run start`).
 
 To build a specific theme (see [Guide - Themes][themes]), you can build (and run) via `npm` using the `--configuration=` argument.
 All `configuration` options must be in the format `--configuration=<theme>,(production|development)`.
@@ -41,7 +41,7 @@ Only empty strings count as inactive.
 
 If the format is _switch_, the property is switched on by supplying `on`, `1`, `yes` or `true` (checked case-insensitive), anything else is considered `off`.
 
-All parameters are **case sensitive**.
+All parameters are **case-sensitive**.
 Make sure to use them as written in the table below.
 
 |                     | parameter             | format               | comment                                                                                          |

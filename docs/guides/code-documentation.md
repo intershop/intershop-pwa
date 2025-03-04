@@ -21,7 +21,7 @@ Use this format to describe components, modules, etc., but also methods, inputs,
  */
 ```
 
-### JSDoc Tags
+## JSDoc Tags
 
 **Example for parameter and return values**
 
@@ -89,7 +89,7 @@ searchProducts(
  */
 ```
 
-## Document only if documentation is needed!
+## Document Only When Needed!
 
 This is not a project with obligatory documentation, so: Do not document the obvious! For example, if behavior and requirements can be implied by a method signature, no additional documentation is needed.
 Instead **pay attention to useful names**.
@@ -97,10 +97,10 @@ If you cannot find a precise name for your variable or method, maybe this is a s
 
 However, there are some cases where documentation is recommended:
 
-- Technical background required,
+- Technical background required
 
-- Restraints on method arguments, that cannot be inferred by the method signature alone,
+- Restraints on method arguments, that cannot be inferred by the method signature alone
 
-- Tricky parts where some degree of magic is happening (especially useful as in-line documentation),
+- Tricky parts where some degree of magic is happening (especially useful as in-line documentation)
 
-- Class documentation for exported shared components.
+- Class documentation for exported shared components

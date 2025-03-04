@@ -33,7 +33,7 @@ No need to supply a certificate and a key.
 They are automatically generated inside the running container.
 The certificate is self-signed and will not work in your browser.
 You have to confirm the security exception.
-As developer convenience you can volume mount an internal folder to your host system to effectively trust the generated certificate.
+As developer convenience, you can volume mount an internal folder to your host system to effectively trust the generated certificate.
 Please check the NGINX logs for the following output.
 
 <!-- cSpell: disable -->
@@ -59,7 +59,7 @@ nginx:
       - 1.2.3.4
 ```
 
-Entries of the IP whitelist are added to the NGINX config as [`allow`](https://nginx.org/en/docs/http/ngx_http_access_module.html) statements, which also supports IP ranges.
+IP whitelist entries are added to the NGINX config as [`allow`](https://nginx.org/en/docs/http/ngx_http_access_module.html) statements, which also support IP ranges.
 Please refer to the linked NGINX documentation on how to configure this.
 
 After globally activating basic authentication for your setup, you can also disable it selectively per site.
@@ -124,7 +124,7 @@ proxy_pass https://develop.icm.intershop.de/INTERSHOP/static/WFS/inSPIRED-inTRON
 The process will utilize your [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax).
 Be sure to include `application` if you deviate from standard `rest` application.
 
-The [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax) has to include the correct channel value (e.g., `inSPIRED-inTRONICS_Business-Site` and `inSPIRED-inTRONICS-Site` instead of `default`) because it is used to generate the correct sitemap URL path, e.g.,
+The [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax) has to include the correct channel value (e.g., `inSPIRED-inTRONICS_Business-Site` and `inSPIRED-inTRONICS-Site` instead of `default`), because it is used to generate the correct sitemap URL path, e.g.,
 
 ```yaml
 nginx:
@@ -285,7 +285,7 @@ Built-in features can be enabled and disabled:
 ## Features
 
 New features can be supplied in the folder `nginx/features`.
-A file named `<feature>.conf` is included if the environment variable `<feature>` is set to `on`, `1`, `true` or `yes` (case insensitive).
+A file named `<feature>.conf` is included if the environment variable `<feature>` is set to `on`, `1`, `true` or `yes` (case-insensitive).
 Otherwise, the feature is disabled and an optional file `<feature>-off.conf` is included in the configuration.
 The feature name must only contain word characters (letters, numbers, and underscore).
 
@@ -337,7 +337,7 @@ docker run --rm -it bitnami/redis redis-cli -u <REDIS_URI> flushdb
 
 #### Redis for Development
 
-For development environments a local Redis can be started with the example `docker-compose.yml` configuration.
+For development environments, a local Redis can be started with the example `docker-compose.yml` configuration.
 
 ```yaml
 redis:
