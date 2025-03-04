@@ -29,7 +29,7 @@ describe('Suggest Search Terms Tile Component', () => {
     element = fixture.nativeElement;
 
     component.maxRecentlySearchedWords = 2;
-    recentlySearchTerms$.next(['term1', 'term2', 'term3']);
+    recentlySearchTerms$.next(['Term1', 'Term2', 'Term3']);
   });
 
   it('should be created', () => {
@@ -41,5 +41,12 @@ describe('Suggest Search Terms Tile Component', () => {
   it('should display the correct number of saved terms', () => {
     fixture.detectChanges();
     expect(element.querySelectorAll('button')).toHaveLength(2);
+  });
+
+  it('should display saved term names correctly', () => {
+    fixture.detectChanges();
+    const savedTermElements = element.querySelectorAll('ul li button');
+    expect(savedTermElements[0].textContent).toContain('Term1');
+    expect(savedTermElements[1].textContent).toContain('Term2');
   });
 });

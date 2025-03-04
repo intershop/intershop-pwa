@@ -47,5 +47,6 @@ describe('Suggest Brands Tile Component', () => {
     fixture.detectChanges();
     const brandElements = element.querySelectorAll('ul li a');
     expect(brandElements[0].textContent).toContain('Branda');
+    expect(brandElements[1].textContent).toContain('Brandb');
   });
 });

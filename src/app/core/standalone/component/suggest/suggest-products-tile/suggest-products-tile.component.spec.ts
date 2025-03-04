@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { spy, when } from 'ts-mockito';
 
 import { SuggestProductsTileComponent } from './suggest-products-tile.component';
 
@@ -77,5 +78,26 @@ describe('Suggest Products Tile Component', () => {
   it('should display the correct number of product suggestions', () => {
     fixture.detectChanges();
     expect(element.querySelectorAll('li')).toHaveLength(1);
+  });
+
+  it('should display keyword names correctly', () => {
+    fixture.detectChanges();
+    const keywordElements = element.querySelectorAll('ul li a');
+    expect(keywordElements[1].textContent).toContain('Product 1');
+  });
+
+  it('should display the image', () => {
+    const componentSpy = spy(component);
+    when(componentSpy.getImageEffectiveUrl(component.products[0])).thenReturn('http://domain.com/M/3538322-4095.jpg');
+
+    fixture.detectChanges();
+    const imageElement = element.querySelector('img');
+    expect(imageElement.getAttribute('src')).toBe('http://domain.com/M/3538322-4095.jpg');
+  });
+
+  it('should display the image not available image', () => {
+    fixture.detectChanges();
+    const imageElement = element.querySelector('img');
+    expect(imageElement.getAttribute('src')).toBe('/assets/img/not-available.svg');
   });
 });

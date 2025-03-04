@@ -19,7 +19,7 @@ describe('Suggest Keywords Tile Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    component.keywords = ['test1', 'test2', 'test3'];
+    component.keywords = ['Test1', 'Test2', 'Test3'];
     component.maxAutoSuggests = 2;
   });
 
@@ -32,5 +32,12 @@ describe('Suggest Keywords Tile Component', () => {
   it('should display the correct number of suggestions', () => {
     fixture.detectChanges();
     expect(element.querySelectorAll('button')).toHaveLength(2);
+  });
+
+  it('should display keyword names correctly', () => {
+    fixture.detectChanges();
+    const keywordElements = element.querySelectorAll('ul li button');
+    expect(keywordElements[0].textContent).toContain('Test1');
+    expect(keywordElements[1].textContent).toContain('Test2');
   });
 });
