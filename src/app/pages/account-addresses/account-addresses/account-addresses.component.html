@@ -1,11 +1,13 @@
 <div class="my-account-savedAddresses myAccount-addressBox">
-  <h1>
-    {{ 'account.addresses.saved_address.heading' | translate }}
+  <div class="d-flex align-items-center justify-content-between flex-wrap">
+    <h1>
+      {{ 'account.addresses.saved_address.heading' | translate }}
+    </h1>
     <!-- Add address link -->
     <button
       type="button"
       *ngIf="isCreateAddressFormCollapsed && !updateFormExpandedAddressId"
-      class="btn btn-secondary float-right"
+      class="btn btn-secondary m-0"
       (click)="showCreateAddressForm()"
       [attr.aria-expanded]="!isCreateAddressFormCollapsed"
       aria-controls="collapseBasic"
@@ -13,7 +15,7 @@
     >
       {{ 'account.addresses.add_address.button.text' | translate }}
     </button>
-  </h1>
+  </div>
 
   <!-- Error message -->
   <ish-error-message [error]="error" />
