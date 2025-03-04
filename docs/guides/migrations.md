@@ -9,30 +9,30 @@ kb_sync_latest_only
 
 ## From 5.2 to 5.3
 
-The Intershop PWA 5.3.0 introduces a standard integration with Intershop Copilot.
-To enable the Copilot integration the feature toggle `copilot` and the `copilot` configuration with fitting `copilotUIFile`, `chatflowid` and `apiHost` have to be configured.
+The Intershop PWA 5.3.0 introduces a standard integration with Intershop Copilot for Buyers.
+To enable the Copilot integration, the feature toggle `copilot` and the `copilot` configuration with fitting `copilotUIFile`, `chatflowid` and `apiHost` have to be configured.
 
 The `updateUser` method of the `UserService` has been slightly refactored.
 It now sends the user password in the request body to enable password validation on e-mail change.
-The authorization header has also been removed as authorization is done via session token.
+The authorization header has also been removed, as authorization is done via session token.
 
 The observable `isAppTypeREST$` of the `AppFacade` has been removed.
-Previously it has been used to determine whether the `privatecustomers` or the `customers` REST resource is needed to execute b2c user related REST requests.
-Now the `privatecustomers` REST resource is the new standard for b2c users.
-If your ICM doesn't support the new standard the method `getCustomerRestResource` of the [`app.facade`](../../src/app/core/facades/app.facade.ts) has to be adapted.
+Previously, it has been used to determine whether the `privatecustomers` or the `customers` REST resource is needed to execute B2C user-related REST requests.
+Now the `privatecustomers` REST resource is the new standard for B2C users.
+If your ICM does not support the new standard, the method `getCustomerRestResource` of the [`app.facade`](../../src/app/core/facades/app.facade.ts) has to be adapted.
 
-With ICM 12.2.0, 11.11.1 or 7.10.41.3 the ICM server itself provides an OCI punchout URL (Pipeline) that works better for the OCI punchout functions `BACKGROUND_SEARCH` and `VALIDATE` than the similar now deprecated functionality in the PWA.
-For that reason the provided OCI Punchout URL is now pointing to the ICM pipeline `ViewOCICatalogPWA-Start` that handles the different functionalities and redirects to the PWA (configured as _External Base URL_ in ICM) only for catalog browsing and the detail function.
+With ICM 12.2.0, 11.11.1 or 7.10.41.3, the ICM server itself provides an OCI punchout URL (pipeline) that works better for the OCI punchout functions `BACKGROUND_SEARCH` and `VALIDATE` than the now-deprecated functionality in the PWA.
+For that reason, the provided OCI Punchout URL is now pointing to the ICM pipeline `ViewOCICatalogPWA-Start` that handles the different functionalities and redirects to the PWA (configured as _External Base URL_ in ICM) only for catalog browsing and the detail function.
 
 The OPTION REST call to fetch the OCI punchout configurations has been replaced by a GET REST request to avoid possible CORS errors (requires ICM 12.2.1 or above).
 
 The OPTION REST call to fetch the eligible customer payment methods has been replaced by a GET REST requests to avoid possible CORS errors (requires ICM 11.10.0 or above).
 
-For B2B customer account admins it is now possible to configure if budgets are meant **net** or **gross**.
+For B2B customer account admins, it is now possible to configure budgets as either **net** or **gross**.
 This setting will apply for both user and cost center budgets and is a setting on customer level.
 It requires ICM 12.3.0 and is only visible if the ICM order approval service is running.
-If the customer has not yet set the budget type the default value **gross** is used.
-In a migration project that uses an ICM before 12.3.0 in the `organization-settings-page.component.html` the `Preferences` section and the used dialog should be removed and in the `budget-info.component.html` the suffix part `+ (suffix ?? '' | translate)` should be deleted.
+If the customer has not yet set the budget type, the default value **gross** is used.
+In a migration project that uses an ICM before 12.3.0, in the `organization-settings-page.component.html` the `Preferences` section and the used dialog should be removed, and in the `budget-info.component.html` the suffix part `+ (suffix ?? '' | translate)` should be deleted.
 
 The configuration parameter `METRICS_DETAIL_LEVEL` for the SSR container has been introduced.
 By default it is set to the value `DEFAULT` which changes the SSR metrics (overall less metrics) compared to version 5.2.
@@ -53,7 +53,7 @@ This was previously only done for the login, but is now consistently used for al
 For ICM 7.10 and ICM 11, a duplicated `encodeURIComponent` encoding is applied.
 For ICM 12 and newer, a single `encodeURIComponent` encoding with additional `+` character handling is used.
 To migrate custom code, searching for `encodeResourceID(` and replacing it with `this.apiService.encodeResourceId(` is the first step.
-In addition any custom REST requests via the `ApiService` to ICM should be adapted to use `this.apiService.encodeResourceId()` for resource IDs in the path.
+In addition, any custom REST requests via the `ApiService` to ICM should be adapted to use `this.apiService.encodeResourceId()` for resource IDs in the path.
 The RegEx `\/\$\{(?!this\.apiService\.encodeResourceId)` might be helpful to identify potential places within `*.service.ts` files to add the encoding in your custom code.
 Please be aware when migrating that there is an intermediate [commit](https://github.com/intershop/intershop-pwa/commit/3e7c0ae2ff1d6e676f98d7c399b70b505f389e16) for the resource ID encoding in the 5.2 release that was improved with a later [commit](https://github.com/intershop/intershop-pwa/commit/TODO_with_release_creation) to work with the `legacyEncoding` feature toggle for ICM 7.10 and ICM 11 encoding not requiring any code adaptions anymore.
 
@@ -79,7 +79,7 @@ For this reason, any custom `ContextDisplayPropertiesService` that implements th
 
 The dead code detection script has been improved and extended and is now checking Angular components in more detail.
 This resulted in more variables and methods being declared as `private` and some unused code being removed.
-This should not affect PWA based projects as long as such internal declarations have not been used, else compiling will fail and the code would need to be adapted/reverted accordingly.
+This should not affect PWA-based projects as long as such internal declarations have not been used, else compiling will fail and the code would need to be adapted/reverted accordingly.
 
 Product variations have been eagerly loaded via effects.
 In projects with many variations, this can lead to performance issues, especially if the variation data is not needed for the current views.
@@ -156,7 +156,7 @@ Since `defaultProject` is no longer a valid option in `angular.json`, it has bee
 
 We enabled the [Angular Hydration](https://v16.angular.io/guide/hydration) to improve performance and prevent the UI from flickering when a page renders - please note that this feature is still in developer preview and may have some limitations.
 
-From this version, we use the [`takeUntilDestroyed`](https://angular.love/takeuntildestroy-in-angular-v16) operator to complete observables when the calling context (component, directive, service, etc) is destroyed.
+From this version, we use the [`takeUntilDestroyed`](https://angular.love/takeuntildestroy-in-angular-v16) operator to complete observables when the calling context (component, directive, service, etc.) is destroyed.
 The `add-destroy` schematic has been removed but you can keep the `takeUntil(destroy$)` mechanism for a transitional period.
 A [migration script](../../scripts/migrate-destroy-subject.ts) is created to support the migration to the new way to complete open observable subscriptions on destroy.
 This script can be executed with `npx ts-node .\scripts\migrate-destroy-subject.ts`.

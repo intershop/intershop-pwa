@@ -118,7 +118,7 @@ To disable the integrated cookie consent handling implementation, remove the fol
 <ish-cookies-banner></ish-cookies-banner>
 ```
 
-With this change, the integrated cookie consent handling will no longer check whether the banner should be displayed or not and the `cookieConsent` cookie will no longer be written.
+With this change, the integrated cookie consent handling will no longer check whether the banner should be displayed or not, and the `cookieConsent` cookie will no longer be written.
 
 In addition, the `cookies` route should be removed from [`app-routing.module.ts`](../../src/app/pages/app-routing.module.ts):
 
