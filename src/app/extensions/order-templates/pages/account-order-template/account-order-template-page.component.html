@@ -1,15 +1,17 @@
 <div class="order-template">
-  <h1>
-    {{ 'account.ordertemplates.heading' | translate
-    }}<button
+  <div class="d-flex align-items-center justify-content-between flex-wrap">
+    <h1>
+      {{ 'account.ordertemplates.heading' | translate }}
+    </h1>
+    <button
       type="button"
-      class="btn btn-secondary"
+      class="btn btn-secondary m-0"
       data-testing-id="add-order-template"
       (click)="addOrderTemplateDialog.show()"
     >
       {{ 'account.order_template.list.button.add_template.label' | translate }}
     </button>
-  </h1>
+  </div>
 
   <!-- Error message -->
   <ish-error-message [error]="orderTemplateError$ | async" />
