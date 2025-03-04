@@ -18,7 +18,7 @@ describe('Suggest Search Terms Tile Component', () => {
     when(shoppingFacade.recentlySearchTerms$).thenReturn(recentlySearchTerms$);
 
     await TestBed.configureTestingModule({
-      imports: [SuggestSearchTermsTileComponent, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   });

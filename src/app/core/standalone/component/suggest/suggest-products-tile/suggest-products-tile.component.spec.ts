@@ -11,7 +11,7 @@ describe('Suggest Products Tile Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, SuggestProductsTileComponent, TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

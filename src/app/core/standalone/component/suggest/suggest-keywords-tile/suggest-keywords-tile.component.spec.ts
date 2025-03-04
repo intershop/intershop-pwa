@@ -10,7 +10,7 @@ describe('Suggest Keywords Tile Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SuggestKeywordsTileComponent, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
     }).compileComponents();
   });
 

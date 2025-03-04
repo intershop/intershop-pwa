@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { ReplaySubject } from 'rxjs';
 import { instance, mock } from 'ts-mockito';
@@ -16,7 +15,7 @@ describe('Suggest Categories Tile Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, SuggestCategoriesTileComponent, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
       declarations: [],
     }).compileComponents();
