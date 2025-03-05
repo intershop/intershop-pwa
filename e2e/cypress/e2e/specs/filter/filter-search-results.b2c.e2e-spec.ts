@@ -3,7 +3,7 @@ import { HomePage } from '../../pages/home.page';
 import { SearchResultPage } from '../../pages/shopping/search-result.page';
 
 const _ = {
-  suggestTerm: 'go',
+  suggestTerm: 'gop',
   searchTerm: 'gopro',
   suggestItemText: 'Gopro',
   results: 6,

@@ -6,15 +6,12 @@
     type="search"
     id="header-search-input"
     class="form-control searchTerm"
-    (input)="searchSuggest($event.target)"
+    (input)="handleInput($event.target)"
     [value]="inputSearchTerms$ | async"
-    (focus)="handleFocus()"
-    (blur)="handleBlur($event)"
-    (keydown)="handleFocus()"
-    (keydown.esc)="reset()"
+    (focus)="handleFocus(true)"
     (keydown.enter)="submitSearch(searchInput.value)"
     aria-controls="search-suggest-layer"
-    [attr.aria-expanded]="(searchBoxResults$ | async) && hasMoreThanTwoCharacters && searchBoxFocus ? 'true' : 'false'"
+    [attr.aria-expanded]="(searchBoxResults$ | async) && hasMinimumCharCount && searchBoxFocus ? 'true' : 'false'"
   />
 
   <div *ngIf="searchSuggestError$ | async" class="search-suggest-container" aria-live="polite">
@@ -26,7 +23,7 @@
 
   <ng-container *ngIf="configuration?.autoSuggest && searchResults$ | async as results; else initialState">
     <div
-      *ngIf="(searchBoxResults$ | async) && hasMoreThanTwoCharacters; else noResults"
+      *ngIf="(searchBoxResults$ | async) && hasMinimumCharCount; else noResults"
       id="search-suggest-layer"
       class="search-suggest-container"
       aria-labelledby="header-search-input"
@@ -50,7 +47,7 @@
           <ish-suggest-categories-tile
             [categories]="results.categories"
             [inputTerms$]="inputSearchTerms$"
-            (routeChange)="reset()"
+            (routeChange)="resetInput()"
             [maxAutoSuggests]="3"
           />
         </div>
@@ -58,7 +55,7 @@
           <ish-suggest-brands-tile
             [brands]="results.brands"
             [inputTerms$]="inputSearchTerms$"
-            (routeChange)="reset()"
+            (routeChange)="resetInput()"
             [maxAutoSuggests]="3"
           />
         </div>
@@ -75,7 +72,7 @@
           [products]="results.products"
           [inputTerms$]="inputSearchTerms$"
           [deviceType]="deviceType"
-          (routeChange)="reset()"
+          (routeChange)="resetInput()"
           [maxAutoSuggests]="8"
         />
       </div>
@@ -93,8 +90,8 @@
       </div>
     </div>
     <ng-template #noResults>
-      <div class="search-suggest-container" aria-live="polite">
-        <div *ngIf="hasMoreThanTwoCharacters" class="col-12">
+      <div *ngIf="hasMinimumCharCount || hasSearchedTerms()" class="search-suggest-container" aria-live="polite">
+        <div *ngIf="hasMinimumCharCount" class="col-12">
           <div class="headline">{{ 'suggest.no_results.headline' | translate }}</div>
           <p>{{ 'suggest.no_results.text' | translate }}</p>
         </div>
@@ -131,10 +128,8 @@
       type="reset"
       name="reset"
       [title]="'search.searchbox.button.reset.title' | translate"
-      (focus)="handleFocus()"
-      (click)="handleReset()"
-      (blur)="handleBlur($event)"
-      (keydown.esc)="reset()"
+      (focus)="handleFocus(true)"
+      (click)="handleResetButton($event); setFocusOnSearchInput()"
     >
       <fa-icon [icon]="['fas', 'times']" />
     </button>
@@ -145,10 +140,8 @@
       type="submit"
       name="search"
       [title]="'search.searchbox.button.title' | translate"
-      (keydown)="handleFocus()"
+      (focus)="handleFocus(true)"
       (click)="submitSearch(searchInput.value)"
-      (blur)="handleBlur($event)"
-      (keydown.esc)="reset()"
     >
       <!-- search button with icon -->
       <ng-container *ngIf="!configuration?.buttonText; else textBlock">

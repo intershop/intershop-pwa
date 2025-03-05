@@ -90,7 +90,7 @@ describe('Search Box Component', () => {
       component.searchBoxFocus = false;
       fixture.detectChanges();
 
-      expect(element.querySelector('.search-suggest-container')).toBeTruthy();
+      expect(element.querySelector('.search-suggest-container')).toBeFalsy();
     });
 
     it('should show results when input is 3 or more characters', () => {

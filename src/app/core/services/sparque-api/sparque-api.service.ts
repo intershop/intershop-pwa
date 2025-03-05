@@ -12,7 +12,7 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 // sparque config keys that should not be appended to the query params
-const SPARQUE_CONFIG_EXCLUDE_PARAMS = ['server_url', 'wrapperAPI'];
+const SPARQUE_CONFIG_EXCLUDE_PARAMS = ['serverUrl', 'wrapperApi'];
 
 /**
  * Service to interact with the Sparque API.
@@ -155,7 +155,7 @@ export class SparqueApiService extends ApiService {
       this.store.pipe(
         select(getSparqueConfig),
         whenTruthy(),
-        map(config => config.server_url.concat('/api/', config.wrapperAPI))
+        map(config => config.serverUrl.concat('/api/', config.wrapperApi))
       ),
       of(`/${path}`),
     ]).pipe(
