@@ -4,7 +4,7 @@ import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
 import { SearchResultPage } from '../../pages/shopping/search-result.page';
 
 const _ = {
-  suggestTerm: 'ke',
+  suggestTerm: 'ken',
   suggestItemText: 'Kensington',
   searchTerm: 'Kensington K55786WW',
   product: '5800646',

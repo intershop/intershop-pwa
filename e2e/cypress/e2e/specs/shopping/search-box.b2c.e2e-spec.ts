@@ -30,12 +30,15 @@ describe('Search Box', () => {
       page.header.searchBox.assertNoSuggestions();
 
       page.header.searchBox.type('e');
+      page.header.searchBox.assertNoSuggestions();
+
+      page.header.searchBox.type('n');
       page.header.searchBox.suggestions.should('contain', 'Kensington');
 
       page.header.searchBox.backspace();
       page.header.searchBox.assertNoSuggestions();
 
-      page.header.searchBox.type('ensington');
+      page.header.searchBox.type('nsington');
       page.header.searchBox.suggestions.should('contain', 'Kensington');
 
       page.header.searchBox.enter();
@@ -46,7 +49,7 @@ describe('Search Box', () => {
   // eslint-disable-next-line jest/no-disabled-tests
   it.skip('should follow search when hitting enter with choosing suggestion with keyboard', () => {
     at(HomePage, page => {
-      page.header.searchBox.type('ke');
+      page.header.searchBox.type('ken');
       page.header.searchBox.suggestions.should('contain', 'Kensington');
 
       page.header.searchBox.tab().enter();
@@ -92,7 +95,7 @@ describe('Search Box', () => {
 
   it('should properly track displaying suggestion focus', () => {
     at(HomePage, page => {
-      page.header.searchBox.type('ke');
+      page.header.searchBox.type('ken');
       page.header.searchBox.suggestions.should('contain', 'Kensington');
 
       page.header.searchBox.esc();

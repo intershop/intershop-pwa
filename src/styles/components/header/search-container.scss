@@ -218,8 +218,8 @@
             align-items: center;
 
             @media (min-width: $screen-md) {
-              flex: 0 1 22%;
               flex-direction: column;
+              width: calc((100% - 45px) / 4);
             }
 
             a {
