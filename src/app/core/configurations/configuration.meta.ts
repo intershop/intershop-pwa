@@ -3,6 +3,7 @@ import { RouterNavigationPayload, routerNavigationAction } from '@ngrx/router-st
 import { ActionReducer } from '@ngrx/store';
 
 import { FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { SparqueConfig, getEmptySparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { applyConfiguration } from 'ish-core/store/core/configuration';
 import { ConfigurationState, configurationReducer } from 'ish-core/store/core/configuration/configuration.reducer';
 import { CoreState } from 'ish-core/store/core/core-store';
@@ -21,6 +22,8 @@ class SimpleParamMap {
 
 // eslint-disable-next-line complexity
 function extractConfigurationParameters(state: ConfigurationState, paramMap: SimpleParamMap) {
+  console.log('extractConfigurationParameters');
+  console.log('paramMap', paramMap);
   const keys: (keyof ConfigurationState)[] = ['channel', 'application', 'lang', 'currency', 'identityProvider'];
   const properties: Partial<ConfigurationState> = keys
     .filter(key => paramMap.has(key) && paramMap.get(key) !== 'default')
@@ -49,10 +52,24 @@ function extractConfigurationParameters(state: ConfigurationState, paramMap: Sim
     properties._deviceType = paramMap.get('device');
   }
 
+  if (paramMap.has('sparque')) {
+    properties.sparque = mapSparqueConfig(paramMap.get<string>('sparque'));
+  }
+
   if (Object.keys(properties).length) {
     return configurationReducer(state, applyConfiguration(properties));
   }
   return state;
+}
+
+function mapSparqueConfig(sparque: string): SparqueConfig {
+  const sparqueParam = new Map(sparque.split(',').map(item => item.split('=') as [string, string]));
+  const sparqueConfig = getEmptySparqueConfig();
+  Object.getOwnPropertyNames(sparqueConfig).forEach(key => {
+    sparqueConfig[key] = decodeURIComponent(sparqueParam.get(key));
+  });
+
+  return sparqueConfig;
 }
 
 /**

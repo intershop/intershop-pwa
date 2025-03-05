@@ -7,13 +7,17 @@ export interface SparqueConfig {
   // version of the sparque wrapper REST API
   wrapperAPI: string;
   // sparque workspace name
-  WorkspaceName: string;
+  workspaceName: string;
   // sparque API name
-  ApiName: string;
+  apiName: string;
   // sparque deployment configuration e.g. production
   config?: string;
   // id of channel where sparque product data are assigned to
-  ChannelId?: string;
+  channelId?: string;
 
   [key: string]: unknown;
+}
+
+export function getEmptySparqueConfig(): SparqueConfig {
+  return { server_url: '', wrapperAPI: '', workspaceName: '', apiName: '', channelId: '' };
 }

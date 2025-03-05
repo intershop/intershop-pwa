@@ -8,14 +8,6 @@ export const environment: Environment = {
 
   themeColor: '#688dc3',
 
-  sparque: {
-    server_url: 'https://policy.test.intershop.com',
-    wrapperAPI: 'v2',
-    WorkspaceName: 'intershop-project-base-v2-team2',
-    ApiName: 'PWA',
-    ChannelId: 'ish',
-  },
-
   features: [
     ...ENVIRONMENT_DEFAULTS.features,
     'businessCustomerRegistration',
