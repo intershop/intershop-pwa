@@ -1,4 +1,11 @@
-<form name="LoginUserForm" [formGroup]="requestReminderForm" class="form-horizontal" (ngSubmit)="submitForm()">
+<form
+  [formGroup]="requestReminderForm"
+  ishFormSubmit
+  #form="ngForm"
+  (ngSubmit)="submitForm()"
+  class="form-horizontal"
+  novalidate
+>
   <formly-form [form]="requestReminderForm" [fields]="fields" />
 
   <div class="row form-group">
@@ -8,7 +15,7 @@
         value="PasswordReminder"
         name="passwordReminder"
         class="btn btn-primary"
-        [disabled]="buttonDisabled"
+        [disabled]="requestReminderForm.invalid && form.submitted"
       >
         {{ 'forgot_password.form.send.button.label' | translate }}
       </button>

@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 /**
@@ -26,7 +25,6 @@ export class UpdatePasswordFormComponent implements OnInit {
 
   updatePasswordForm = new FormGroup({});
   fields: FormlyFieldConfig[];
-  private submitted = false;
 
   ngOnInit() {
     this.fields = [
@@ -76,18 +74,10 @@ export class UpdatePasswordFormComponent implements OnInit {
   }
 
   submitPasswordForm() {
-    if (this.updatePasswordForm.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.updatePasswordForm);
-      return;
+    if (this.updatePasswordForm.valid) {
+      this.submitPassword.emit({
+        password: this.updatePasswordForm.get('password').value,
+      });
     }
-
-    this.submitPassword.emit({
-      password: this.updatePasswordForm.get('password').value,
-    });
-  }
-
-  get buttonDisabled() {
-    return this.updatePasswordForm.invalid && this.submitted;
   }
 }

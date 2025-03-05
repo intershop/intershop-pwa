@@ -1,7 +1,7 @@
 <ish-error-message [error]="error$ | async" />
 
 <div data-testing-id="account-create-full-page">
-  <form [formGroup]="form" (ngSubmit)="onCreate()">
+  <form [formGroup]="form" ishFormSubmit #registrationForm="ngForm" (ngSubmit)="onCreate()" novalidate>
     <formly-form [model]="model" [form]="form" [options]="options" [fields]="fields" />
     <div class="row">
       <div class="col-md-10 col-lg-8 col-xl-6">
@@ -9,7 +9,7 @@
           <div class="offset-md-4 col-md-8">
             <input
               type="submit"
-              [disabled]="submitDisabled"
+              [disabled]="form.invalid && registrationForm.submitted"
               class="btn btn-primary"
               value="{{ 'account.create.button.label' | translate }}"
             />

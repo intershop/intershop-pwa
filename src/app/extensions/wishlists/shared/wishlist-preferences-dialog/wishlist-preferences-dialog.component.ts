@@ -13,7 +13,6 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { pick } from 'lodash-es';
 
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { Wishlist } from '../../models/wishlist/wishlist.model';
@@ -46,7 +45,6 @@ export class WishlistPreferencesDialogComponent implements OnInit {
   wishListForm = new FormGroup({});
   model: Partial<Wishlist> = { preferred: false };
   fields: FormlyFieldConfig[];
-  private submitted = false;
 
   /**
    *  A reference to the current modal.
@@ -109,19 +107,15 @@ export class WishlistPreferencesDialogComponent implements OnInit {
 
   /** Emits the wishlist data, when the form was valid. */
   submitWishlistForm() {
-    if (this.wishListForm.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.wishListForm);
-      return;
+    if (this.wishListForm.valid) {
+      this.submitWishlist.emit({
+        id: !this.wishlist ? this.model.title : this.wishlistTitle,
+        preferred: this.model.preferred,
+        title: this.model.title,
+        public: false,
+      });
+      this.hide();
     }
-
-    this.submitWishlist.emit({
-      id: !this.wishlist ? this.model.title : this.wishlistTitle,
-      preferred: this.model.preferred,
-      title: this.model.title,
-      public: false,
-    });
-    this.hide();
   }
 
   /** Opens the modal. */
@@ -137,13 +131,8 @@ export class WishlistPreferencesDialogComponent implements OnInit {
 
   /** Close the modal. */
   hide() {
-    this.submitted = false;
     if (this.modal) {
       this.modal.close();
     }
-  }
-
-  get formDisabled() {
-    return this.wishListForm.invalid && this.submitted;
   }
 }

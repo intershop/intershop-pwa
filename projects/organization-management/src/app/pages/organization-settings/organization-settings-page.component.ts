@@ -9,7 +9,6 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { PriceType } from 'ish-core/models/price/price.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Organization Settings Page Component shows the company profile.
@@ -76,17 +75,15 @@ export class OrganizationSettingsPageComponent implements OnInit {
    * Submits form and throws update event when form is valid
    */
   submit() {
-    if (this.budgetTypeForm.invalid) {
-      markAsDirtyRecursive(this.budgetTypeForm);
-      return;
+    if (this.budgetTypeForm.valid) {
+      const budgetPriceType = this.budgetTypeForm.get('budgetPriceType').value;
+
+      this.accountFacade.updateCustomerProfile(
+        { ...this.customer, budgetPriceType },
+        { message: 'account.profile.update_company_profile.message' }
+      );
+
+      this.initialBudgetPriceType = this.budgetTypeForm.get('budgetPriceType').value;
     }
-    const budgetPriceType = this.budgetTypeForm.get('budgetPriceType').value;
-
-    this.accountFacade.updateCustomerProfile(
-      { ...this.customer, budgetPriceType },
-      { message: 'account.profile.update_company_profile.message' }
-    );
-
-    this.initialBudgetPriceType = this.budgetTypeForm.get('budgetPriceType').value;
   }
 }

@@ -76,12 +76,4 @@ describe('Organization Settings Company Component', () => {
 
     verify(eventEmitter$.emit(anything())).never();
   });
-
-  it('should disable submit button when the user submits an invalid form', () => {
-    fixture.detectChanges();
-
-    expect(component.buttonDisabled).toBeFalse();
-    component.submit();
-    expect(component.buttonDisabled).toBeTrue();
-  });
 });

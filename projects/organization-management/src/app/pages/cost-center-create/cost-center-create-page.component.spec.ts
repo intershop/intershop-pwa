@@ -50,26 +50,4 @@ describe('Cost Center Create Page Component', () => {
 
     expect(element.querySelector('ish-cost-center-form')).toBeTruthy();
   });
-
-  it('should not submit a form when the user does not fill all required fields', () => {
-    component.form = fb.group({
-      costCenterId: ['', [Validators.required]],
-    });
-
-    fixture.detectChanges();
-
-    expect(component.formDisabled).toBeFalse();
-    component.submitForm();
-
-    expect(component.formDisabled).toBeTrue();
-  });
-
-  it('should submit a form when the user fills all required fields', () => {
-    fixture.detectChanges();
-
-    expect(component.formDisabled).toBeFalse();
-    component.submitForm();
-
-    expect(component.formDisabled).toBeFalse();
-  });
 });

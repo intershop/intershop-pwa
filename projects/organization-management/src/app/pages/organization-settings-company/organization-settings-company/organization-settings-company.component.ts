@@ -6,7 +6,6 @@ import { pick } from 'lodash-es';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Organization Settings Company Page Component displays a form for changing a business customers' company data
@@ -21,8 +20,6 @@ export class OrganizationSettingsCompanyComponent implements OnInit {
   @Input({ required: true }) currentCustomer: Customer;
   @Input() error: HttpError;
   @Output() updateCompanyProfile = new EventEmitter<Customer>();
-
-  private submitted = false;
 
   organizationSettingsCompanyForm = new FormGroup({});
   model: Partial<Customer>;
@@ -39,19 +36,12 @@ export class OrganizationSettingsCompanyComponent implements OnInit {
    * Submits form and throws update event when form is valid
    */
   submit() {
-    if (this.organizationSettingsCompanyForm.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.organizationSettingsCompanyForm);
-      return;
+    if (this.organizationSettingsCompanyForm.valid) {
+      const companyName = this.organizationSettingsCompanyForm.get('companyName').value;
+      const companyName2 = this.organizationSettingsCompanyForm.get('companyName2').value;
+      const taxationID = this.organizationSettingsCompanyForm.get('taxationID').value;
+
+      this.updateCompanyProfile.emit({ ...this.currentCustomer, companyName, companyName2, taxationID });
     }
-    const companyName = this.organizationSettingsCompanyForm.get('companyName').value;
-    const companyName2 = this.organizationSettingsCompanyForm.get('companyName2').value;
-    const taxationID = this.organizationSettingsCompanyForm.get('taxationID').value;
-
-    this.updateCompanyProfile.emit({ ...this.currentCustomer, companyName, companyName2, taxationID });
-  }
-
-  get buttonDisabled() {
-    return this.organizationSettingsCompanyForm.invalid && this.submitted;
   }
 }

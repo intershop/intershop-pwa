@@ -7,13 +7,13 @@
       </button>
     </div>
 
-    <form [formGroup]="rejectForm" (ngSubmit)="submitForm()" class="clearfix">
+    <form [formGroup]="rejectForm" ishFormSubmit #form="ngForm" (ngSubmit)="submitForm()" class="clearfix" novalidate>
       <div class="modal-body">
         <formly-form [form]="rejectForm" [fields]="fields" />
       </div>
 
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" [disabled]="formDisabled">
+        <button type="submit" class="btn btn-primary" [disabled]="rejectForm.invalid && form.submitted">
           {{ 'approval.rejectform.button.reject.label' | translate }}
         </button>
         <button type="button" class="btn btn-secondary" (click)="hide()">

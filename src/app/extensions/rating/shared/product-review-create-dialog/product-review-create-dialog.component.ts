@@ -5,7 +5,6 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, map, tap } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { ProductReviewsFacade } from '../../facades/product-reviews.facade';
 import { ProductReview } from '../../models/product-reviews/product-review.model';
@@ -24,7 +23,6 @@ export class ProductReviewCreateDialogComponent implements OnInit {
   @ViewChild('modal') modalTemplate: TemplateRef<unknown>;
 
   form = new UntypedFormGroup({});
-  private submitted = false;
   fields: FormlyFieldConfig[];
   model$: Observable<Partial<ProductReview>>;
 
@@ -109,7 +107,6 @@ export class ProductReviewCreateDialogComponent implements OnInit {
   /** Opens the modal. */
   show() {
     this.form.reset();
-    this.submitted = false;
     this.modal = this.ngbModal.open(this.modalTemplate);
   }
 
@@ -122,17 +119,9 @@ export class ProductReviewCreateDialogComponent implements OnInit {
 
   /** Send the review to the server */
   submitForm(sku: string) {
-    if (this.form.invalid) {
-      markAsDirtyRecursive(this.form);
-      this.submitted = true;
-      return;
-    } else {
+    if (this.form.valid) {
       this.reviewFacade.createProductReview(sku, this.form.value);
       this.hide();
     }
-  }
-
-  get formDisabled() {
-    return this.form.invalid && this.submitted;
   }
 }

@@ -11,8 +11,6 @@ import { FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
-
 /**
  * The Wishlist Reject Approval Dialog shows the modal to reject a requisition.
  *
@@ -33,7 +31,6 @@ export class RequisitionRejectDialogComponent implements OnInit {
   @Output() submitRejectRequisition = new EventEmitter<string>();
 
   rejectForm = new FormGroup({});
-  private submitted = false;
   fields: FormlyFieldConfig[];
 
   /**
@@ -74,14 +71,10 @@ export class RequisitionRejectDialogComponent implements OnInit {
 
   /** Emits the reject comment data, when the form was valid. */
   submitForm() {
-    if (this.rejectForm.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.rejectForm);
-      return;
+    if (this.rejectForm.valid) {
+      this.submitRejectRequisition.emit(this.rejectForm.get('comment').value);
+      this.hide();
     }
-
-    this.submitRejectRequisition.emit(this.rejectForm.get('comment').value);
-    this.hide();
   }
 
   /** Opens the modal. */
@@ -92,13 +85,8 @@ export class RequisitionRejectDialogComponent implements OnInit {
 
   /** Close the modal. */
   hide() {
-    this.submitted = false;
     if (this.modal) {
       this.modal.close();
     }
-  }
-
-  get formDisabled() {
-    return this.rejectForm.invalid && this.submitted;
   }
 }

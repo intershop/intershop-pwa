@@ -6,7 +6,6 @@ import { map, shareReplay, startWith } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Contact } from 'ish-core/models/contact/contact.model';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { ContactUsFacade } from '../../../facades/contact-us.facade';
 
@@ -24,9 +23,6 @@ import { ContactUsFacade } from '../../../facades/contact-us.facade';
 export class ContactFormComponent implements OnInit {
   /** The contact request to send. */
   @Output() request = new EventEmitter<Contact>();
-
-  // visible-for-testing
-  submitted = false;
 
   /** The form for customer message to the shop. */
   contactForm = new UntypedFormGroup({});
@@ -124,18 +120,10 @@ export class ContactFormComponent implements OnInit {
     ];
   }
 
-  /** emit contact request, when for is valid or mark form as dirty, when form is invalid */
+  /** emit contact request on submit */
   submitForm() {
     if (this.contactForm.valid) {
       this.request.emit(this.contactForm.value);
-    } else {
-      markAsDirtyRecursive(this.contactForm);
-      this.submitted = true;
     }
-  }
-
-  /** return boolean to set submit button enabled/disabled */
-  get formDisabled(): boolean {
-    return this.contactForm.invalid && this.submitted;
   }
 }

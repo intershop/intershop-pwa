@@ -6,7 +6,7 @@
     </button>
   </div>
 
-  <form [formGroup]="wishListForm" (ngSubmit)="submitWishlistForm()">
+  <form [formGroup]="wishListForm" ishFormSubmit #form="ngForm" (ngSubmit)="submitWishlistForm()" novalidate>
     <div class="modal-body">
       <p class="indicates-required">
         <span class="required">*</span> {{ 'account.required_field.message' | translate }}
@@ -26,7 +26,7 @@
       <button
         type="submit"
         class="btn btn-primary"
-        [disabled]="formDisabled"
+        [disabled]="form.submitted && wishListForm.invalid"
         data-testing-id="wishlist-share-dialog-submit"
       >
         {{ primaryButton | translate }}

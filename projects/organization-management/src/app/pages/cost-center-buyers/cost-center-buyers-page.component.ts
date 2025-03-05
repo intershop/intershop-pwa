@@ -10,7 +10,6 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PriceHelper } from 'ish-core/models/price/price.model';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
@@ -31,7 +30,6 @@ export class CostCenterBuyersPageComponent implements OnInit {
   buyers$: Observable<B2bUser[]>;
 
   form: FormGroup = new FormGroup({});
-  private submitted = false;
 
   fields: FormlyFieldConfig[];
   model: {
@@ -82,7 +80,7 @@ export class CostCenterBuyersPageComponent implements OnInit {
           !buyer.active ? `<p class="input-help">${inactiveText}</p>` : ''
         } `,
         login: buyer.login,
-        budgetValue: undefined,
+        budgetValue: undefined as number,
         currency,
         budgetPeriod: FormsService.getCostCenterBudgetPeriodOptions()[0].value,
       })),
@@ -157,26 +155,23 @@ export class CostCenterBuyersPageComponent implements OnInit {
   }
 
   submitForm() {
-    if (this.form.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.form);
-      return;
+    if (this.form.valid) {
+      const buyers: CostCenterBuyer[] = this.model.addBuyers
+        .map(item =>
+          item.selected
+            ? {
+                login: item.login,
+                budget: PriceHelper.getPrice(item.currency, item.budgetValue || 0),
+                budgetPeriod: item.budgetPeriod,
+              }
+            : undefined
+        )
+        .filter(item => item !== undefined);
+      this.organizationManagementFacade.addBuyersToCostCenter(buyers);
     }
-    const buyers: CostCenterBuyer[] = this.model.addBuyers
-      .map(item =>
-        item.selected
-          ? {
-              login: item.login,
-              budget: PriceHelper.getPrice(item.currency, item.budgetValue || 0),
-              budgetPeriod: item.budgetPeriod,
-            }
-          : undefined
-      )
-      .filter(item => item !== undefined);
-    this.organizationManagementFacade.addBuyersToCostCenter(buyers);
   }
 
   get formDisabled() {
-    return (this.form.invalid && this.submitted) || !this.model.addBuyers.some(buyer => buyer.selected);
+    return !this.model.addBuyers.some(buyer => buyer.selected);
   }
 }

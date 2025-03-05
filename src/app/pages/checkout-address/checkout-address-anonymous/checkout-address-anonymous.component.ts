@@ -4,7 +4,6 @@ import { FormGroupDirective, UntypedFormGroup } from '@angular/forms';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Checkout Address Anonymous Component renders the initial checkout address page of an anonymous user. On this page the user can either login or checkout as guest by entering an invoice and (optionally) shipping address.
@@ -33,7 +32,6 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
   form = new UntypedFormGroup({});
 
   // visible-for-testing
-  submitted = false;
   isAddressFormCollapsed = true;
 
   constructor(private checkoutFacade: CheckoutFacade) {}
@@ -71,52 +69,42 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
     this.addressForm.control.get('shipOptions').setValue({
       shipOption: 'shipToInvoiceAddress',
     });
-
-    this.submitted = false;
   }
 
   /**
    * submits address form and leads to next checkout page (checkout shipping)
    */
   submitAddressForm() {
-    if (this.form.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.form);
-      return;
-    }
+    if (this.form.valid) {
+      // submit address form
+      const invoiceAddress = {
+        ...this.form.get('invoiceAddress').value.address,
+        email: this.form.get('additionalAddressAttributes').value.email,
+      };
 
-    // submit address form
-    const invoiceAddress = {
-      ...this.form.get('invoiceAddress').value.address,
-      email: this.form.get('additionalAddressAttributes').value.email,
-    };
+      const shippingAddress =
+        this.form.get('shipOptions').value.shipOption === 'shipToInvoiceAddress'
+          ? undefined
+          : this.form.get('shippingAddress').value.address;
 
-    const shippingAddress =
-      this.form.get('shipOptions').value.shipOption === 'shipToInvoiceAddress'
-        ? undefined
-        : this.form.get('shippingAddress').value.address;
+      if (this.form.get('additionalAddressAttributes').get('taxationID')) {
+        if (this.form.get('additionalAddressAttributes').value.taxationID) {
+          this.checkoutFacade.setBasketCustomAttribute({
+            name: 'taxationID',
+            value: this.form.get('additionalAddressAttributes').value.taxationID,
+          });
+        } else {
+          this.checkoutFacade.deleteBasketCustomAttribute('taxationID');
+        }
+      }
 
-    if (this.form.get('additionalAddressAttributes').get('taxationID')) {
-      if (this.form.get('additionalAddressAttributes').value.taxationID) {
-        this.checkoutFacade.setBasketCustomAttribute({
-          name: 'taxationID',
-          value: this.form.get('additionalAddressAttributes').value.taxationID,
-        });
+      if (shippingAddress) {
+        this.checkoutFacade.createBasketAddress(invoiceAddress, 'invoice');
+        this.checkoutFacade.createBasketAddress(shippingAddress, 'shipping');
       } else {
-        this.checkoutFacade.deleteBasketCustomAttribute('taxationID');
+        this.checkoutFacade.createBasketAddress(invoiceAddress, 'any');
       }
     }
-
-    if (shippingAddress) {
-      this.checkoutFacade.createBasketAddress(invoiceAddress, 'invoice');
-      this.checkoutFacade.createBasketAddress(shippingAddress, 'shipping');
-    } else {
-      this.checkoutFacade.createBasketAddress(invoiceAddress, 'any');
-    }
-  }
-
-  get nextDisabled() {
-    return this.form.invalid && this.submitted;
   }
 
   get isShippingAddressFormExpanded() {

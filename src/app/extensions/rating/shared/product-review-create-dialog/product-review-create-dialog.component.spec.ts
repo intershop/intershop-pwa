@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -34,8 +33,6 @@ describe('Product Review Create Dialog Component', () => {
     when(accountFacade.user$).thenReturn(of({ firstName: 'Patricia', lastName: 'Miller' } as User));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [ProductReviewCreateDialogComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: ProductReviewsFacade, useFactory: () => instance(reviewsFacade) },

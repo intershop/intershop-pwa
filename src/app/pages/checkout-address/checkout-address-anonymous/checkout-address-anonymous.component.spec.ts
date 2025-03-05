@@ -109,14 +109,6 @@ describe('Checkout Address Anonymous Component', () => {
     expect(element.querySelector('ish-error-message')).toBeTruthy();
   });
 
-  it('should set submitted flag if submit is clicked and form is not valid', async () => {
-    expect(component.submitted).toBeFalsy();
-    component.submitAddressForm();
-    await fixture.whenStable();
-
-    expect(component.submitted).toBeTruthy();
-  });
-
   it('should NOT create address for invalid form', () => {
     component.submitAddressForm();
     fixture.detectChanges();

@@ -3,7 +3,6 @@ import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Request Reminder Form Component displays a Forgot Password Request Reminder form and triggers the submit.
@@ -23,8 +22,6 @@ export class RequestReminderFormComponent implements OnInit {
    * Submit the form data to trigger the request for a password reminder.
    */
   @Output() submitPasswordReminder = new EventEmitter<PasswordReminder>();
-
-  private submitted = false;
 
   requestReminderForm = new UntypedFormGroup({});
   fields: FormlyFieldConfig[];
@@ -49,17 +46,9 @@ export class RequestReminderFormComponent implements OnInit {
     ];
   }
 
-  get buttonDisabled() {
-    return this.requestReminderForm.invalid && this.submitted;
-  }
-
   submitForm() {
-    if (this.requestReminderForm.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.requestReminderForm);
-      return;
+    if (this.requestReminderForm.valid) {
+      this.submitPasswordReminder.emit(this.requestReminderForm.value);
     }
-
-    this.submitPasswordReminder.emit(this.requestReminderForm.value);
   }
 }

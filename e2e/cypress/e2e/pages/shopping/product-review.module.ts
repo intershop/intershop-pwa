@@ -21,7 +21,7 @@ export class ProductReviewModule {
   }
 
   get reviewCreationForm() {
-    return cy.get('#createProductReviewForm');
+    return cy.get('[data-testing-id="create-product-review-form"]');
   }
 
   get ownProductReview() {
@@ -42,14 +42,14 @@ export class ProductReviewModule {
     Object.keys(data)
       .filter(key => data[key] !== undefined && key !== 'rating')
       .forEach((key: keyof ProductReviewForm) => {
-        fillFormField('#createProductReviewForm', key, data[key]);
+        fillFormField('[data-testing-id="create-product-review-form"]', key, data[key]);
       });
 
     return this;
   }
 
   submitReviewCreationForm() {
-    cy.get('button[form=createProductReviewForm]').click();
+    cy.get('[data-testing-id="create-product-review-form"] button[type=submit]').click();
   }
 
   deleteOwnReview() {

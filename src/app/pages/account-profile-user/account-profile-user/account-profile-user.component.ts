@@ -10,7 +10,6 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 interface ComponentState {
   currentUser: User;
@@ -34,8 +33,6 @@ export class AccountProfileUserComponent extends RxState<ComponentState> impleme
   @Input() error: HttpError;
 
   @Output() updateUserProfile = new EventEmitter<User>();
-
-  private submitted = false;
 
   accountProfileUserForm = new FormGroup({});
 
@@ -91,21 +88,12 @@ export class AccountProfileUserComponent extends RxState<ComponentState> impleme
    * Submits form and throws update event when form is valid
    */
   submitForm() {
-    if (this.accountProfileUserForm.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.accountProfileUserForm);
-      return;
+    if (this.accountProfileUserForm.valid) {
+      if (this.accountProfileUserForm.get('newsletter')) {
+        const subscribedToNewsletter = this.accountProfileUserForm.get('newsletter').value;
+        this.accountFacade.updateNewsletterSubscription(subscribedToNewsletter);
+      }
+      this.updateUserProfile.emit({ ...this.get('currentUser'), ...this.accountProfileUserForm.value });
     }
-
-    if (this.accountProfileUserForm.get('newsletter')) {
-      const subscribedToNewsletter = this.accountProfileUserForm.get('newsletter').value;
-      this.accountFacade.updateNewsletterSubscription(subscribedToNewsletter);
-    }
-
-    this.updateUserProfile.emit({ ...this.get('currentUser'), ...this.accountProfileUserForm.value });
-  }
-
-  get buttonDisabled() {
-    return this.accountProfileUserForm.invalid && this.submitted;
   }
 }

@@ -3,7 +3,7 @@
 
   <ish-error-message [error]="error$ | async" />
 
-  <form *ngIf="form$ | async as form" [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal">
+  <form *ngIf="form$ | async as form" [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate>
     <ish-user-roles-selection formControlName="roleIDs" [staticRoles]="staticRoles$ | async" />
 
     <div class="row">

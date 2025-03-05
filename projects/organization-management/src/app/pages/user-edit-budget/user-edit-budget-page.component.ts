@@ -3,7 +3,6 @@ import { UntypedFormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
@@ -21,7 +20,6 @@ export class UserEditBudgetPageComponent implements OnInit {
   error$: Observable<HttpError>;
 
   budgetForm = new UntypedFormGroup({});
-  private submitted = false;
 
   ngOnInit() {
     this.loading$ = this.organizationManagementFacade.usersLoading$;
@@ -30,34 +28,26 @@ export class UserEditBudgetPageComponent implements OnInit {
   }
 
   submitForm() {
-    if (this.budgetForm.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.budgetForm);
-      return;
+    if (this.budgetForm.valid) {
+      const formValue = this.budgetForm.value;
+
+      const budget: UserBudget = formValue
+        ? {
+            budget: formValue.budgetValue
+              ? { value: formValue.budgetValue, currency: formValue.currency, type: 'Money' }
+              : undefined,
+            budgetPeriod: formValue.budgetPeriod,
+            orderSpentLimit: formValue.orderSpentLimitValue
+              ? {
+                  value: formValue.orderSpentLimitValue,
+                  currency: formValue.currency,
+                  type: 'Money',
+                }
+              : undefined,
+          }
+        : undefined;
+
+      this.organizationManagementFacade.setSelectedUserBudget(budget);
     }
-
-    const formValue = this.budgetForm.value;
-
-    const budget: UserBudget = formValue
-      ? {
-          budget: formValue.budgetValue
-            ? { value: formValue.budgetValue, currency: formValue.currency, type: 'Money' }
-            : undefined,
-          budgetPeriod: formValue.budgetPeriod,
-          orderSpentLimit: formValue.orderSpentLimitValue
-            ? {
-                value: formValue.orderSpentLimitValue,
-                currency: formValue.currency,
-                type: 'Money',
-              }
-            : undefined,
-        }
-      : undefined;
-
-    this.organizationManagementFacade.setSelectedUserBudget(budget);
-  }
-
-  get formDisabled() {
-    return this.budgetForm.invalid && this.submitted;
   }
 }

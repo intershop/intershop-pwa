@@ -76,7 +76,7 @@ If functionality is implemented as an extension, the form models and services ca
 - Form validation:
   - If a form is shown, there should not be any validation error messages.
   - If a user starts to enter data in an input field, this field will be validated immediately.
-  - If the user presses the submit button, all form controls of the form are validated; the submit button will be disabled as long as there is any unhandled form error.
+  - If the user presses the submit button, all form controls of the form are validated and in case of validation errors the focus is set to the first invalid form field; the submit button will be disabled as long as there is any unhandled form error.
 
 ## General Rules
 

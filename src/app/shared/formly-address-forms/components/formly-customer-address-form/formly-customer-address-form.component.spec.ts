@@ -72,17 +72,6 @@ describe('Formly Customer Address Form Component', () => {
     verify(emitter.emit()).once();
   });
 
-  it('should set submitted flag if submit is clicked and form is not valid', async () => {
-    component.form = new FormGroup({
-      control: new FormControl('', Validators.required),
-    });
-    expect(component.submitted).toBeFalsy();
-    component.submitForm();
-    await fixture.whenStable();
-
-    expect(component.submitted).toBeTruthy();
-  });
-
   it('should NOT throw submit event for invalid form', () => {
     component.form = new FormGroup({
       control: new FormControl('', Validators.required),

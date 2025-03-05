@@ -7,7 +7,6 @@ import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { InjectSingle } from 'ish-core/utils/injection';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Login Form Page Container displays a login form using the {@link LoginFormComponent} and signs the user in
@@ -36,8 +35,6 @@ export class LoginFormComponent implements OnInit {
   loginError$: Observable<HttpError>;
 
   form = new UntypedFormGroup({});
-  private submitted = false;
-
   fields: FormlyFieldConfig[];
 
   constructor(
@@ -91,16 +88,8 @@ export class LoginFormComponent implements OnInit {
   }
 
   loginUser() {
-    if (this.form.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.form);
-      return;
+    if (this.form.valid) {
+      this.accountFacade.loginUser(this.form.value);
     }
-
-    this.accountFacade.loginUser(this.form.value);
-  }
-
-  get buttonDisabled() {
-    return this.form.invalid && this.submitted;
   }
 }

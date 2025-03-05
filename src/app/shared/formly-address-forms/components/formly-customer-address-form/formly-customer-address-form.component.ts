@@ -16,7 +16,6 @@ import { map, withLatestFrom } from 'rxjs/operators';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { Address } from 'ish-core/models/address/address.model';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Customer Address Form Component renders an address form with apply/cancel buttons so that the user can create or edit an address.
@@ -50,8 +49,6 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
 
   extensionModel: { email: string };
 
-  // visible-for-testing
-  submitted = false;
   businessCustomer$: Observable<boolean>;
 
   @ViewChild('addressForm') addressForm: FormGroupDirective;
@@ -94,32 +91,22 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
     if (resetForm && this.form) {
       this.addressForm.resetForm();
       this.form.reset();
-      this.submitted = false;
     }
-  }
-
-  get formDisabled() {
-    return this.form.invalid && this.submitted;
   }
 
   submitForm() {
-    // if the form is invalid only mark all invalid fields
-    if (this.form.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.form);
-      return;
+    if (this.form.valid) {
+      // build address from form data and send it to the parent
+      let formAddress: Address = this.form.value.address;
+      if (this.address) {
+        // update form values in the original address
+        formAddress = { ...this.address, mainDivisionCode: '', ...formAddress };
+      }
+      if (this.extension) {
+        formAddress = { ...formAddress, email: this.extensionForm.get('email')?.value };
+      }
+      this.save.emit(formAddress);
     }
-
-    // build address from form data and send it to the parent
-    let formAddress: Address = this.form.value.address;
-    if (this.address) {
-      // update form values in the original address
-      formAddress = { ...this.address, mainDivisionCode: '', ...formAddress };
-    }
-    if (this.extension) {
-      formAddress = { ...formAddress, email: this.extensionForm.get('email')?.value };
-    }
-    this.save.emit(formAddress);
   }
 
   cancelForm() {

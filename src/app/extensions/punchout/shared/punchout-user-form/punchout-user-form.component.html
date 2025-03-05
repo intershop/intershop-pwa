@@ -1,8 +1,13 @@
-<form class="form-horizontal" [formGroup]="form" (ngSubmit)="submitForm()">
+<form class="form-horizontal" [formGroup]="form" ishFormSubmit #userForm="ngForm" (ngSubmit)="submitForm()" novalidate>
   <formly-form [form]="form" [fields]="fields" [model]="model" />
   <div class="row">
     <div class="offset-md-4 col-md-8">
-      <button type="submit" class="btn btn-primary" [disabled]="formDisabled" data-testing-id="punchout-user-submit">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="form.invalid && userForm.submitted"
+        data-testing-id="punchout-user-submit"
+      >
         {{ (punchoutUser ? 'account.update.button.label' : 'account.user.new.button.create.label') | translate }}
       </button>
       <a [routerLink]="['../']" [queryParams]="{ format: punchoutType }" class="btn btn-secondary">{{
