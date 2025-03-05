@@ -25,6 +25,8 @@ import {
   setBasketPayment,
   setBasketPaymentFail,
   setBasketPaymentSuccess,
+  startRedirectBeforeCheckout,
+  startRedirectBeforeCheckoutFail,
   updateBasketPayment,
   updateBasketPaymentFail,
   updateBasketPaymentSuccess,
@@ -37,27 +39,6 @@ import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 @Injectable()
 export class BasketPaymentEffects {
   constructor(private actions$: Actions, private store: Store, private paymentService: PaymentService) {}
-
-  /**
-   * The redirect fast checkout payment method effect.
-   */
-  continueWithFastCheckout$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(continueWithFastCheckout),
-        mapToPayloadProperty('paymentId'),
-        switchMap(paymentInstrumentId =>
-          this.paymentService.setBasketFastCheckoutPayment(paymentInstrumentId).pipe(
-            concatMap(redirectUrl => {
-              location.assign(redirectUrl);
-              return EMPTY;
-            }),
-            mapErrorToAction(setBasketPaymentFail)
-          )
-        )
-      ),
-    { dispatch: false }
-  );
 
   /**
    * The load basket eligible payment methods effect.
@@ -85,6 +66,23 @@ export class BasketPaymentEffects {
         this.paymentService.setBasketPayment(paymentInstrumentId).pipe(
           map(() => setBasketPaymentSuccess()),
           mapErrorToAction(setBasketPaymentFail)
+        )
+      )
+    )
+  );
+
+  startRedirectBeforeCheckout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(startRedirectBeforeCheckout),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
+      map(([, basket]) => basket?.payment?.paymentInstrument.id),
+      concatMap(paymentInstrumentId =>
+        this.paymentService.sendRedirectUrls(paymentInstrumentId).pipe(
+          concatMap(paymentData => {
+            location.assign(paymentData?.redirect?.redirectUrl);
+            return EMPTY;
+          }),
+          mapErrorToAction(startRedirectBeforeCheckoutFail)
         )
       )
     )
@@ -208,5 +206,26 @@ export class BasketPaymentEffects {
         )
       )
     )
+  );
+
+  /**
+   * The redirect fast checkout payment method effect.
+   */
+  continueWithFastCheckout$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(continueWithFastCheckout),
+        mapToPayloadProperty('paymentId'),
+        switchMap(paymentInstrumentId =>
+          this.paymentService.setBasketFastCheckoutPayment(paymentInstrumentId).pipe(
+            concatMap(redirectUrl => {
+              location.assign(redirectUrl);
+              return EMPTY;
+            }),
+            mapErrorToAction(setBasketPaymentFail)
+          )
+        )
+      ),
+    { dispatch: false }
   );
 }

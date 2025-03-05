@@ -80,7 +80,7 @@
         <p>
           {{ 'account.punchout.oci.info.url.helptext' | translate }}
         </p>
-        <p>{{ ociPunchoutUrl }}</p>
+        <p>{{ ociPunchoutUrl$ | async }}</p>
       </ng-template>
       <ng-template [ngSwitchCase]="'cxml'">
         <p>

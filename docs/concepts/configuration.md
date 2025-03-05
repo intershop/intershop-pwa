@@ -18,7 +18,8 @@ In addition, the PWA, when run with Angular Universal, consists of a server-side
 
 ### Angular CLI Environments
 
-The standard way of configuring an Angular Application is managing multiple environment files that are part of the project's source tree, usually located in _src/environments._ To choose one configuration, you have to supply the parameter when building the Angular Application.
+The standard way of configuring an Angular Application is managing multiple environment files that are part of the project's source tree, usually located in _src/environments_.
+To choose one configuration, you have to supply the parameter when building the Angular Application.
 See [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md) and [Configuring Application Environments](https://angular.io/guide/build#configure-environment-specific-defaults) for further information.
 
 Do not access properties supplied with environment files directly in artifacts.
@@ -94,7 +95,7 @@ This provides the most flexible way of configuring the application at runtime.
 
 ### Build Settings
 
-One example for a build time configuration is the property `serviceWorker`, which is managed in the _angular.json_ configurations and used to activate the [service worker](./progressive-web-app.md#service-worker).
+One example for a build-time configuration is the property `serviceWorker`, which is managed in the _angular.json_ configurations and used to activate the [service worker](./progressive-web-app.md#service-worker).
 
 In general, properties available at build time can only be supplied by Angular CLI environments (see above).
 
@@ -118,7 +119,7 @@ Nevertheless, default values can be provided by environment files and can later 
 
 Everything managed in the NgRx state is accumulated on the server side and sent to the client side with the initial HTML response.
 
-To access these properties, we provide the [`StatePropertiesService`](../../src/app/core/utils/state-transfer/state-properties.service.ts), which takes care of retrieving the configuration either from the configuration state, an environment variable or the _environment.ts_ (in that order).
+To access these properties, we provide the [`StatePropertiesService`](../../src/app/core/utils/state-transfer/state-properties.service.ts), which takes care of retrieving the configuration either from the configuration state, an environment variable, or the _environment.ts_ (in that order).
 
 ### Configurations REST Resource
 
@@ -156,7 +157,7 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | compare                      | Product compare feature (additional configuration via `dataRetention` configuration options)                                                    |
 | contactUs                    | Allow the user to contact the website provider via a contact web form                                                                           |
-| extraConfiguration           | Fetch extra configuration information from _Configuration_ CMS component for [configurable themes etc.](../guides/themes.md#configurable-theme) |
+| extraConfiguration           | Fetch extra configuration information from _Configuration_ CMS component for [configurable themes](../guides/themes.md#configurable-theme) etc. |
 | productNotifications         | Product notifications feature for price and in stock notifications                                                                              |
 | rating                       | Display product ratings                                                                                                                         |
 | recently                     | Display recently viewed products (additional configuration via `dataRetention` configuration options)                                           |
@@ -173,6 +174,7 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 | guestCheckout                | Allow unregistered guest checkout                                                                                                               |
 | wishlists                    | Wishlist product list feature                                                                                                                   |
 | **Third-party Integrations** |                                                                                                                                                 |
+| copilot                      | Intershop Copilot integration for embedded chatbot (requires an additional `copilot` configuration)                                             |
 | maps                         | Google Maps integration for locating stores (used with the `storeLocator` feature, additional configuration via `gmaKey`)                       |
 | sentry                       | Sentry error tracking and monitoring (additional configuration via `sentryDSN`)                                                                 |
 | tacton                       | Tacton product configuration integration (additional configuration via `tacton` and `dataRetention` configuration options)                      |

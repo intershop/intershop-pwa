@@ -72,6 +72,18 @@ export class SpecialValidators {
       : { email: { valid: false } };
   }
 
+  static emailList(control: FormControl): { [error: string]: { valid: boolean } } {
+    /*
+     * (see "email" validator)
+     * - comma-separated list of email addresses
+     */
+    return /^([\w\-\~\+]+\.)*[\w\-\~\+]+@(([\w][\w\-]*)?[\w]\.)+[a-zA-Z]{2,}(,\s*([\w\-\~\+]+\.)*[\w\-\~\+]+@(([\w][\w\-]*)?[\w]\.)+[a-zA-Z]{2,})*$/.test(
+      control.value
+    )
+      ? undefined
+      : { emailList: { valid: false } };
+  }
+
   static phone(control: FormControl): { [error: string]: { valid: boolean } } {
     /*
      * simplified phone matching

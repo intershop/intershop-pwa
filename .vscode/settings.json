@@ -36,5 +36,8 @@
   "eslint.options": {
     "extensions": [".ts", ".html"]
   },
-  "eslint.validate": ["javascript", "typescript", "html"]
+  "eslint.validate": ["javascript", "typescript", "html"],
+
+  "lingua.flatTranslationKeys": true,
+  "lingua.defaultLanguage": "en_US"
 }

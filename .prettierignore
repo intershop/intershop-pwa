@@ -28,6 +28,7 @@
 .husky
 .gitattributes
 .editorconfig
+.lingua
 .nvmrc
 .nsprc
 package*.json
@@ -40,7 +41,6 @@ node_modules
 /dist/**/server/**
 /out-tsc
 /coverage
-/docs/compodoc
 /junit.xml
 /eslint-rules/dist
 /schematics/src/**/files/**

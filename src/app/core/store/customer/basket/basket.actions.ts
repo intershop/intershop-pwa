@@ -83,10 +83,7 @@ export const deleteBasketShippingAddress = createAction(
 
 export const addProductToBasket = createAction('[Basket] Add Product', payload<AddLineItemType>());
 
-export const addItemsToBasket = createAction(
-  '[Basket Internal] Add Items To Basket',
-  payload<{ items: AddLineItemType[] }>()
-);
+export const addItemsToBasket = createAction('[Basket] Add Items To Basket', payload<{ items: AddLineItemType[] }>());
 
 export const addItemsToBasketFail = createAction('[Basket API] Add Items To Basket Fail', httpError());
 
@@ -281,6 +278,13 @@ export const deleteBasketPayment = createAction(
 export const deleteBasketPaymentFail = createAction('[Basket API] Delete Basket Payment Fail', httpError());
 
 export const deleteBasketPaymentSuccess = createAction('[Basket API] Delete Basket Payment Success');
+
+export const startRedirectBeforeCheckout = createAction('[Basket] Start Redirect Before Checkout');
+
+export const startRedirectBeforeCheckoutFail = createAction(
+  '[Basket API] Start Redirect Before Checkout Fail',
+  httpError()
+);
 
 export const submitBasket = createAction('[Basket API] Submit a Basket for Approval');
 

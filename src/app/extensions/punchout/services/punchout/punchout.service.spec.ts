@@ -6,7 +6,6 @@ import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
-import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 
 import { PunchoutUser } from '../../models/punchout-user/punchout-user.model';
 
@@ -14,15 +13,12 @@ import { PunchoutService } from './punchout.service';
 
 describe('Punchout Service', () => {
   let apiServiceMock: ApiService;
-  let cookiesServiceMock: CookiesService;
   let punchoutService: PunchoutService;
   const punchoutUser = { login: 'ociuser', punchoutType: 'oci' } as PunchoutUser;
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
-    cookiesServiceMock = mock(CookiesService);
 
-    when(apiServiceMock.options(anything(), anything())).thenReturn(of({}));
     when(apiServiceMock.get(anything(), anything())).thenReturn(of({}));
     when(apiServiceMock.resolveLinks(anything())).thenReturn(() => of([]));
     when(apiServiceMock.post(anything(), anything(), anything())).thenReturn(of({}));
@@ -35,7 +31,6 @@ describe('Punchout Service', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
-        { provide: CookiesService, useFactory: () => instance(cookiesServiceMock) },
         provideMockStore({
           selectors: [
             { selector: getLoggedInCustomer, value: { customerNo: '4711', isBusinessCustomer: true } as Customer },
@@ -106,8 +101,8 @@ describe('Punchout Service', () => {
 
   it("should get oci options when 'getOciConfigurationOptions' is called", done => {
     punchoutService.getOciConfigurationOptions().subscribe(() => {
-      verify(apiServiceMock.options(anything(), anything())).once();
-      expect(capture(apiServiceMock.options).last()[0]).toMatchInlineSnapshot(`"customers/4711/punchouts/oci5"`);
+      verify(apiServiceMock.get(anything(), anything())).once();
+      expect(capture(apiServiceMock.get).last()[0]).toMatchInlineSnapshot(`"customers/4711/punchouts/oci5"`);
       done();
     });
   });

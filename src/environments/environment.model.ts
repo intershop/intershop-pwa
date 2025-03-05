@@ -5,6 +5,7 @@ import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 import { MultiSiteLocaleMap } from 'ish-core/utils/multi-site/multi-site.service';
 
 import { AddressDoctorConfig } from '../app/extensions/address-doctor/models/address-doctor/address-doctor-config.model';
+import { CopilotConfig } from '../app/extensions/copilot/models/copilot-config/copilot-config.model';
 import { TactonConfig } from '../app/extensions/tacton/models/tacton-config/tacton-config.model';
 
 export interface Environment {
@@ -12,6 +13,7 @@ export interface Environment {
   icmBaseURL: string;
   icmServer: string;
   icmServerStatic: string;
+  icmServerWeb: string;
   icmChannel: string;
   icmApplication?: string;
   hybridApplication?: string;
@@ -51,6 +53,7 @@ export interface Environment {
     | 'tracking'
     | 'tacton'
     | 'maps'
+    | 'copilot'
   )[];
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
@@ -69,6 +72,9 @@ export interface Environment {
 
   // address doctor integration
   addressDoctor?: AddressDoctorConfig;
+
+  // Intershop Copilot
+  copilot?: CopilotConfig;
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
 
@@ -148,6 +154,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   icmBaseURL: 'https://develop.icm.intershop.de',
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
+  icmServerWeb: 'INTERSHOP/web/WFS',
   icmApplication: '-',
 
   /* FEATURE TOGGLES */
@@ -196,15 +203,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
         description: 'cookie.consent.option.tracking.description',
       },
     },
-    allowedCookies: [
-      'apiToken',
-      'cookieConsent',
-      'preferredLocale',
-      'punchout_SID',
-      'punchout_BasketID',
-      'punchout_ReturnURL',
-      'punchout_HookURL',
-    ],
+    allowedCookies: ['apiToken', 'cookieConsent', 'preferredLocale'],
   },
   cookieConsentVersion: 1,
 

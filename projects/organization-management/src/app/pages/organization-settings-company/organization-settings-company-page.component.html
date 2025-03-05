@@ -1,0 +1,10 @@
+<ng-container *ngIf="currentCustomer$ | async as customer">
+  <ish-organization-settings-company
+    *ngIf="customer.isBusinessCustomer"
+    [currentCustomer]="customer"
+    [error]="userError$ | async"
+    (updateCompanyProfile)="updateCompanyProfile($event)"
+  />
+
+  <ish-loading *ngIf="userLoading$ | async" />
+</ng-container>

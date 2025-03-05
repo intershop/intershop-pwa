@@ -5,6 +5,7 @@ import { map, startWith, withLatestFrom } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
+import { WishlistSharing } from '../models/wishlist-sharing/wishlist-sharing.model';
 import { Wishlist, WishlistHeader } from '../models/wishlist/wishlist.model';
 import {
   addProductToNewWishlist,
@@ -15,11 +16,13 @@ import {
   getAllWishlistsItemsSkus,
   getPreferredWishlist,
   getSelectedWishlistDetails,
+  getSharedWishlist,
   getWishlistsError,
   getWishlistsLoading,
   moveItemToWishlist,
   removeItemFromWishlist,
   updateWishlist,
+  wishlistActions,
 } from '../store/wishlist';
 
 /* eslint-disable @typescript-eslint/member-ordering */
@@ -33,6 +36,7 @@ export class WishlistsFacade {
   allWishlistsItemsSkus$: Observable<string[]> = this.store.pipe(select(getAllWishlistsItemsSkus));
   wishlistLoading$: Observable<boolean> = this.store.pipe(select(getWishlistsLoading));
   wishlistError$: Observable<HttpError> = this.store.pipe(select(getWishlistsError));
+  sharedWishlist$: Observable<Wishlist> = this.store.pipe(select(getSharedWishlist));
 
   wishlistSelectOptions$(filterCurrent = true) {
     return this.wishlists$.pipe(
@@ -85,5 +89,13 @@ export class WishlistsFacade {
 
   removeProductFromWishlist(wishlistId: string, sku: string): void {
     this.store.dispatch(removeItemFromWishlist({ wishlistId, sku }));
+  }
+
+  shareWishlist(wishlistId: string, wishlistSharing: WishlistSharing): void {
+    this.store.dispatch(wishlistActions.shareWishlist({ wishlistId, wishlistSharing }));
+  }
+
+  unshareWishlist(wishlistId: string): void {
+    this.store.dispatch(wishlistActions.unshareWishlist({ wishlistId }));
   }
 }

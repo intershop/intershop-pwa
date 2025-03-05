@@ -18,9 +18,7 @@ html:not(.cypress-tests) {
   right: $space-default;
   bottom: $space-default;
   z-index: $zindex-fixed;
+  width: auto !important;
+  margin-bottom: 0 !important;
   animation: back-to-top-btn-animation 0.15s ease-in-out;
-
-  @media (max-width: $screen-xs-max) {
-    width: auto !important;
-  }
 }

@@ -1,18 +1,20 @@
 <ish-error-message [error]="error$ | async" />
-<ish-info-box heading="account.requisitions.widget.budget_title" class="infobox-wrapper" cssClass="infobox-widget">
+<ish-info-box class="infobox-wrapper" cssClass="infobox-widget">
+  <div class="d-flex align-items-start">
+    <h3 class="pr-2">{{ 'account.requisitions.widget.budget_title' | translate }}</h3>
+    <ish-budget-info />
+  </div>
   <div class="loading-container">
-    <div *ngIf="(budgetLoading$ | async) !== true; else loading">
-      <div class="row">
-        <div class="col-12">
-          <ish-user-budget progressBarClass="background-inverse" [budget]="userBudget$ | async" />
-        </div>
+    <div *ngIf="(budgetLoading$ | async) !== true; else loading" class="row">
+      <div class="col-12">
+        <ish-user-budget progressBarClass="background-inverse" [budget]="userBudget$ | async" />
       </div>
-      <div *ishIsAuthorizedTo="'APP_B2B_MANAGE_USERS'" class="row">
-        <div class="col">
-          <a routerLink="/account/organization/users">
-            {{ 'account.requisitions.widget.manage_budgets' | translate }}
-          </a>
-        </div>
+    </div>
+    <div *ishIsAuthorizedTo="'APP_B2B_MANAGE_USERS'" class="row">
+      <div class="col">
+        <a routerLink="/account/organization/users">
+          {{ 'account.requisitions.widget.manage_budgets' | translate }}
+        </a>
       </div>
     </div>
 

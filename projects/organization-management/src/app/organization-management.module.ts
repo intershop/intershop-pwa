@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
+import { BudgetInfoComponent } from './components/budget-info/budget-info.component';
 import { BudgetWidgetComponent } from './components/budget-widget/budget-widget.component';
 import { BuyersSelectComponent } from './components/buyers-select/buyers-select.component';
 import { CostCenterBudgetComponent } from './components/cost-center-budget/cost-center-budget.component';
@@ -17,6 +18,7 @@ import { OrganizationManagementStoreModule } from './store/organization-manageme
 
 const exportedComponents = [
   BuyersSelectComponent,
+  BudgetInfoComponent,
   CostCenterBudgetComponent,
   CostCenterBuyerEditDialogComponent,
   CostCenterFormComponent,
@@ -29,7 +31,7 @@ const exportedComponents = [
 
 @NgModule({
   declarations: [...exportedComponents, BudgetWidgetComponent, CostCenterWidgetComponent],
-  exports: [...exportedComponents],
   imports: [OrganizationManagementStoreModule, SharedModule],
+  exports: [...exportedComponents],
 })
 export class OrganizationManagementModule {}

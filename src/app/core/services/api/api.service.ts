@@ -217,8 +217,9 @@ export class ApiService {
     );
   }
 
+  // not-dead-code
   /**
-   * http options request
+   * @deprecated http options request - will be removed with the next major release (6.0)
    */
   options<T>(path: string, options?: AvailableOptions): Observable<T> {
     return this.execute(
@@ -417,7 +418,7 @@ export class ApiService {
     const basketUrl$ = this.store
       .pipe(
         select(getBasketIdOrCurrent),
-        map(basketId => `baskets/${basketId}`)
+        map(basketId => `baskets/${this.encodeResourceId(basketId)}`)
       )
       .pipe(take(1));
 

@@ -21,7 +21,7 @@
 />
 
 <div *ngIf="moreOrdersAvailable$ | async" class="d-flex justify-content-center">
-  <button class="btn btn-secondary" (click)="loadMoreOrders()" [disabled]="ordersLoading$ | async">
+  <button type="button" class="btn btn-secondary" (click)="loadMoreOrders()" [disabled]="ordersLoading$ | async">
     {{ 'account.order.load_more' | translate }}
   </button>
 </div>

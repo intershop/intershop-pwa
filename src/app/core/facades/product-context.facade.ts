@@ -348,8 +348,10 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
       this.select('product').pipe(
         map(
           product =>
-            // eslint-disable-next-line unicorn/no-null
-            ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductLabelAttributes)?.[0]?.name || null
+            ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductLabelAttributes)?.filter(
+              attr => attr.value
+              // eslint-disable-next-line unicorn/no-null
+            )[0]?.name || null
         ),
         distinctUntilChanged()
       )

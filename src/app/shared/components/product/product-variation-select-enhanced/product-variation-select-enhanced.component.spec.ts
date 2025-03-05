@@ -85,9 +85,9 @@ describe('Product Variation Select Enhanced Component', () => {
           <img class="image-swatch" alt="zzz" src="imageZ.png" /><span class="label selected">zzz </span>
         </button>
         <div ngbdropdownmenu="" class="variation-options" aria-labelledby="uuidswatchlabel">
-          <button ngbdropdownitem="" value="Y" data-testing-id="swatch-Y">
+          <button ngbdropdownitem="" type="button" value="Y" data-testing-id="swatch-Y">
             <img class="image-swatch" alt="yyy" src="imageY.png" /><span class="label">yyy </span></button
-          ><button ngbdropdownitem="" value="Z" data-testing-id="swatch-Z">
+          ><button ngbdropdownitem="" type="button" value="Z" data-testing-id="swatch-Z">
             <img class="image-swatch" alt="zzz" src="imageZ.png" /><span class="label selected"
               >zzz
             </span>

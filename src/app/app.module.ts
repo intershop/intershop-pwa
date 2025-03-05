@@ -12,12 +12,14 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { CompareRoutingModule } from './extensions/compare/pages/compare-routing.module';
 import { ContactUsRoutingModule } from './extensions/contact-us/pages/contact-us-routing.module';
+import { CopilotExportsModule } from './extensions/copilot/exports/copilot-exports.module';
 import { PunchoutRoutingModule } from './extensions/punchout/pages/punchout-routing.module';
 import { QuickorderRoutingModule } from './extensions/quickorder/pages/quickorder-routing.module';
 import { QuotingRoutingModule } from './extensions/quoting/pages/quoting-routing.module';
 import { RecentlyRoutingModule } from './extensions/recently/pages/recently-routing.module';
 import { StoreLocatorRoutingModule } from './extensions/store-locator/pages/store-locator-routing.module';
 import { TactonRoutingModule } from './extensions/tacton/pages/tacton-routing.module';
+import { WishlistSharingRoutingModule } from './extensions/wishlists/pages/wishlist-sharing-routing.module';
 import { AppLastRoutingModule } from './pages/app-last-routing.module';
 import { AppRoutingModule } from './pages/app-routing.module';
 import { ShellModule } from './shell/shell.module';
@@ -30,6 +32,7 @@ import { ShellModule } from './shell/shell.module';
     BrowserAnimationsModule,
     CoreModule,
     ShellModule,
+    CopilotExportsModule,
     AppRoutingModule,
     QuickorderRoutingModule,
     QuotingRoutingModule,
@@ -39,6 +42,7 @@ import { ShellModule } from './shell/shell.module';
     RecentlyRoutingModule,
     CompareRoutingModule,
     ContactUsRoutingModule,
+    WishlistSharingRoutingModule,
     AppLastRoutingModule,
   ],
   /* eslint-enable @angular-eslint/sort-ngmodule-metadata-arrays */

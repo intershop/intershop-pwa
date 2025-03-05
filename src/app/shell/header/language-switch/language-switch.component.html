@@ -8,6 +8,7 @@
 >
   <button
     ngbDropdownToggle
+    type="button"
     class="language-switch-button btn btn-link"
     aria-expanded="false"
     aria-haspopup="menu"
@@ -19,7 +20,7 @@
       }}<span class="switch_arrow"></span
     ></span>
   </button>
-  <div ngbDropdownMenu class="language-switch-container dropdown-menu" style="left: 0 !important" role="menu">
+  <div ngbDropdownMenu class="language-switch-container dropdown-menu" role="menu">
     <div class="language-switch-menu-container">
       <ng-container *ngIf="availableLocales$ | async as availableLocales">
         <ul *ngIf="availableLocales.length">

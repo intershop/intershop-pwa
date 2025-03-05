@@ -43,7 +43,7 @@ export class BasketMockData {
   static getBasketUser(isB2BUser: boolean = false) {
     return {
       companyName: isB2BUser ? 'KlausInc.' : undefined,
-      companyName2: isB2BUser ? 'Department Klaustown' : undefined,
+      companyName2: isB2BUser ? 'Department Klausen' : undefined,
       firstName: 'Klaus',
       lastName: 'Klausen',
     };

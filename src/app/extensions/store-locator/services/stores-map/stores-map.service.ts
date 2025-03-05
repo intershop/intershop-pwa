@@ -17,6 +17,7 @@ export const STORE_MAP_ICON_CONFIGURATION = new InjectionToken<IconConfiguration
 export class StoresMapService {
   private map: google.maps.Map;
   private infoWindow: google.maps.InfoWindow;
+  // eslint-disable-next-line etc/no-deprecated
   private entries: { store: StoreLocation; marker: google.maps.Marker }[] = [];
 
   constructor(
@@ -62,6 +63,7 @@ export class StoresMapService {
     this.entries = [];
     const bounds = new google.maps.LatLngBounds();
     stores.forEach(store => {
+      // eslint-disable-next-line etc/no-deprecated
       const marker = new google.maps.Marker({
         map: this.map,
         position: { lat: store.latitude, lng: store.longitude },

@@ -43,6 +43,8 @@
             "style": "camelCase"
           }
         ],
+        // ToDo: no-host-metadata-property rule will be deprecated in Angular 18 and switching off the rule will be the default behavior and can be removed.
+        "@angular-eslint/no-host-metadata-property": "off",
         "@angular-eslint/pipe-prefix": [
           "error",
           {
@@ -236,7 +238,7 @@
               "message": "use star imports only for aggregation of deeper lying imports"
             },
             {
-              "importNamePattern": "^(?!(range|uniq|memoize|once|groupBy|countBy|isEqual|intersection|pick|differenceBy|unionBy|mergeWith|snakeCase|capitalize)$).*",
+              "importNamePattern": "^(?!(range|uniq|memoize|once|groupBy|countBy|isEqual|intersection|pick|differenceBy|unionBy|merge|mergeWith|snakeCase|capitalize)$).*",
               "name": "lodash.*",
               "filePattern": "^.*/src/app/(?!.*\\.spec\\.ts$).*\\.ts$",
               "message": "importing this operator from lodash is forbidden"
@@ -399,7 +401,7 @@
         "ish-custom-rules/no-intelligence-in-artifacts": [
           "warn",
           {
-            "(component|pipe|directive)(\\.spec)?\\.ts$": {
+            "(component|pipe|directive)(\\..*)?\\.ts$": {
               // "router": "Angular artifacts should rely use the Router directly.",
               "ngrx": "Angular artifacts should rely on facades only.",
               "service": "Angular artifacts should rely on facades only."
@@ -939,7 +941,8 @@
       ],
       "rules": {
         "@angular-eslint/template/no-positive-tabindex": "error",
-        "@angular-eslint/template/prefer-self-closing-tags": "error"
+        "@angular-eslint/template/prefer-self-closing-tags": "error",
+        "@angular-eslint/template/button-has-type": "warn"
       }
     },
     {

@@ -7,7 +7,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 
-import { Price } from './price.model';
+import { Price, PriceType } from './price.model';
 
 export function formatPrice(price: Price, lang: string): string {
   const symbol = getCurrencySymbol(price.currency, 'narrow', lang);
@@ -26,7 +26,7 @@ export class PricePipe implements PipeTransform {
     private accountFacade: AccountFacade
   ) {}
 
-  transform(data: Price | PriceItem, priceType?: 'gross' | 'net'): string {
+  transform(data: Price | PriceItem, priceType?: PriceType): string {
     if (!data) {
       return this.translateService.instant('product.price.na.text');
     }

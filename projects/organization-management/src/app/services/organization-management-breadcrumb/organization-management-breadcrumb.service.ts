@@ -24,6 +24,13 @@ export class OrganizationManagementBreadcrumbService {
       switchMap(([, path]) => {
         if (path.endsWith('users')) {
           return of([{ key: 'account.organization.user_management' }]);
+        } else if (path.endsWith('settings')) {
+          return of([{ key: 'account.organization.org_settings' }]);
+        } else if (path.endsWith('settings/company')) {
+          return of([
+            { key: 'account.organization.org_settings', link: `${prefix}/settings` },
+            { key: 'account.company_profile.heading' },
+          ]);
         } else if (path.endsWith('cost-centers')) {
           return of([{ key: 'account.organization.cost_center_management' }]);
         } else if (path.endsWith('users/create')) {

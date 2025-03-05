@@ -11,10 +11,11 @@
 </ng-container>
 <ng-template #loginButton>
   <button
-    data-testing-id="create-quote-from-basket"
+    type="button"
     class="btn btn-secondary"
     [title]="'account.login.quotes.message' | translate"
     (click)="login()"
+    data-testing-id="create-quote-from-basket"
   >
     {{ 'shopping_cart.quote.create.button' | translate }}
   </button>

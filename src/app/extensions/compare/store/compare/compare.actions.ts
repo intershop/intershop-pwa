@@ -7,3 +7,5 @@ export const addToCompare = createAction('[Compare] Add Product to Compare', pay
 export const removeFromCompare = createAction('[Compare] Remove Product from Compare', payload<{ sku: string }>());
 
 export const toggleCompare = createAction('[Compare] Toggle Product Compare', payload<{ sku: string }>());
+
+export const compareProducts = createAction('[Compare] Compare Products', payload<{ skus: string[] }>());

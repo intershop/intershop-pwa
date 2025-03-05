@@ -13,6 +13,7 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, race, take } from 'rxjs';
 
@@ -33,6 +34,14 @@ export interface ModalOptions extends NgbModalOptions {
    * Optional modal reject button text.
    */
   rejectText?: string;
+  /**
+   * Optional icon properties to display an icon in front of the title, e.g. ['fas', 'triangle-exclamation'],
+   */
+  icon?: IconProp;
+  /**
+   * Optional icon styling classes, e.g. faIconClass: 'text-warning pr-2'
+   */
+  iconClass?: string;
 }
 
 /**
@@ -54,7 +63,7 @@ export interface ModalOptions extends NgbModalOptions {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModalDialogComponent<T> implements OnDestroy {
-  @Input() options: ModalOptions;
+  @Input({ required: true }) options: ModalOptions;
 
   @Output() confirmed = new EventEmitter<T>();
 

@@ -7,44 +7,9 @@ kb_sync_latest_only
 
 # Code Documentation
 
-For our Intershop Progressive Web App, [Compodoc](https://compodoc.app) is used as documentation package.
-
-For documentation, the _tsconfig.doc.json_ file is used as configuration file.
-The output folder for the documentation is set to _<project-home>/docs/compodoc_.
-
-We use an own styling theme based on the theme '_readthedocs_' provided by Compodoc.
-The _style.css_ file of the theme can be found in _<project-home>/docs/theme_.
-
-Examples for the comment styling pattern can be found here: [TypeDoc - DocComments](http://typedoc.org/guides/doccomments/).
-
-## Usage
-
-### Generate Code Documentation
-
-**Generate Code Documentation**
-
-```bash
-npm run compodoc
-```
-
-The generated documentation can be called by _<project-home>/docs/compodoc/index.html_.
-
-### Serve Generated Documentation with Compodoc
-
-**Serve Generated Documentation with Compodoc**
-
-```bash
-npm run compodoc:serve
-```
-
-Documentation is generated at _<project-home>/docs/compodoc_ (output folder).
-The local HTTP server is launched at _http://localhost:8080_.
-
-## Comments
-
-### General Information
-
 The JSDoc comment format is used for general information.
+
+Examples for the comment styling pattern can be found here: [TypeDoc - DocComments](https://typedoc.org/documents/Doc_Comments.html).
 
 Use this format to describe components, modules, etc., but also methods, inputs, variables and so on.
 
@@ -56,14 +21,7 @@ Use this format to describe components, modules, etc., but also methods, inputs,
  */
 ```
 
-### JSDoc Tags
-
-Currently Compodoc supports the following JSDoc tags :
-
-- `@returns`
-- `@param`
-- `@link`
-- `@example`
+## JSDoc Tags
 
 **Example for parameter and return values**
 
@@ -131,7 +89,7 @@ searchProducts(
  */
 ```
 
-## Document only if documentation is needed!
+## Document Only When Needed!
 
 This is not a project with obligatory documentation, so: Do not document the obvious! For example, if behavior and requirements can be implied by a method signature, no additional documentation is needed.
 Instead **pay attention to useful names**.
@@ -139,10 +97,10 @@ If you cannot find a precise name for your variable or method, maybe this is a s
 
 However, there are some cases where documentation is recommended:
 
-- Technical background required,
+- Technical background required
 
-- Restraints on method arguments, that cannot be inferred by the method signature alone,
+- Restraints on method arguments, that cannot be inferred by the method signature alone
 
-- Tricky parts where some degree of magic is happening (especially useful as in-line documentation),
+- Tricky parts where some degree of magic is happening (especially useful as in-line documentation)
 
-- Class documentation for exported shared components.
+- Class documentation for exported shared components

@@ -28,6 +28,7 @@ import { FieldsetFieldComponent } from './fieldset-field/fieldset-field.componen
 import { HtmlTextFieldComponent } from './html-text-field/html-text-field.component';
 import { PlainTextFieldComponent } from './plain-text-field/plain-text-field.component';
 import { RadioFieldComponent } from './radio-field/radio-field.component';
+import { RadioGroupFieldComponent } from './radio-group-field/radio-group-field.component';
 import { SelectFieldComponent } from './select-field/select-field.component';
 import { TextInputFieldComponent } from './text-input-field/text-input-field.component';
 import { TextareaFieldComponent } from './textarea-field/textarea-field.component';
@@ -41,6 +42,7 @@ const fieldComponents = [
   HtmlTextFieldComponent,
   PlainTextFieldComponent,
   RadioFieldComponent,
+  RadioGroupFieldComponent,
   SelectFieldComponent,
   TextareaFieldComponent,
   TextInputFieldComponent,
@@ -155,6 +157,11 @@ const fieldComponents = [
           name: 'ish-radio-field',
           component: RadioFieldComponent,
           wrappers: ['form-field-checkbox-horizontal'],
+        },
+        {
+          name: 'ish-radio-group-field',
+          component: RadioGroupFieldComponent,
+          wrappers: ['form-field-checkbox-horizontal', 'description'],
         },
         {
           name: 'ish-date-picker-field',

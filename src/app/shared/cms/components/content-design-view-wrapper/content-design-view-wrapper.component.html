@@ -7,6 +7,7 @@
           <ng-container *ngIf="pagelet$ | async as pagelet">
             <div class="name">{{ pagelet.displayName ? pagelet.displayName : '(Language missing)' }}</div>
             <button
+              type="button"
               (click)="triggerAction(pagelet.id, 'pageletEdit')"
               class="btn"
               title="{{ 'designview.edit.link.title' | translate }}"
@@ -29,6 +30,7 @@
         <ng-template [ngSwitchCase]="'slot'">
           <div class="name">{{ pagelet.slot(this.slotId).displayName }}</div>
           <button
+            type="button"
             (click)="triggerAction(this.slotId, 'slotAdd')"
             class="btn"
             title="{{ 'designview.add.link.title' | translate }}"
@@ -40,6 +42,7 @@
         <ng-template [ngSwitchCase]="'include'">
           <div class="name">{{ include.displayName }}</div>
           <button
+            type="button"
             (click)="triggerAction(include.id, 'includeAdd')"
             class="btn"
             title="{{ 'designview.add.link.title' | translate }}"

@@ -13,7 +13,8 @@ Before working with this project, download and install [Node.js](https://nodejs.
 Currently Node.js 18.16.0 LTS with the corresponding npm 9.5.1 is used for development.
 
 The project uses [Angular CLI](https://angular.io/cli) which has to be installed globally.
-Run `npm install -g @angular/cli` once to globally install Angular CLI on your development machine.
+Run `npm install -g @angular/cli@16` once to globally install Angular CLI on your development machine.
+Make sure to install the Angular CLI version that fits to our current project dependency Angular version.
 
 ### Step 1 - Clone the Project
 

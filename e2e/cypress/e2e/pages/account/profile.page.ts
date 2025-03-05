@@ -17,10 +17,6 @@ export class ProfilePage {
     cy.get('[data-testing-id="edit-user"]').click();
   }
 
-  editCompanyDetails() {
-    cy.get('[data-testing-id="edit-company"]').click();
-  }
-
   get email() {
     return cy.get(this.tag).find('[data-testing-id="email-field"]');
   }
@@ -31,14 +27,6 @@ export class ProfilePage {
 
   get phone() {
     return cy.get(this.tag).find('[data-testing-id="phone-field"]');
-  }
-
-  get companyName() {
-    return cy.get(this.tag).find('[data-testing-id="company-field"]');
-  }
-
-  get taxationId() {
-    return cy.get(this.tag).find('[data-testing-id="taxation-id-field"]');
   }
 
   get title() {

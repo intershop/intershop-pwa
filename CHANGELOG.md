@@ -7,6 +7,72 @@ kb_everyone
 
 # Changelog
 
+## [5.3.0](https://github.com/intershop/intershop-pwa/releases/tag/5.3.0) (2025-03-05)
+
+> [!NOTE]
+> The Intershop PWA 5.3.0 has been developed and tested with Intershop Commerce Management (ICM) version 12.3.0.
+> It will work with all versions from ICM 12.3.0 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> _The PWA 5.3.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
+>
+> The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
+>
+> Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.9.3 for PWA 5.3.0 deployments.
+
+### Features
+
+- configurable SSR metrics granularity (#1747) ([bbca251](https://github.com/intershop/intershop-pwa/commit/bbca251))
+- Intershop Copilot integration (#1698) ([0655b09](https://github.com/intershop/intershop-pwa/commit/0655b09))
+- add tax type settings for budgets (#1715) ([d46bfbd](https://github.com/intershop/intershop-pwa/commit/d46bfbd))
+- change OCI punchout URL to point to an ICM Pipeline (#1702) ([c96b895](https://github.com/intershop/intershop-pwa/commit/c96b895))
+- add icmServerWeb/ICM_SERVER_WEB configuration option for ICM Pipeline URL references ([e6d8ce1](https://github.com/intershop/intershop-pwa/commit/e6d8ce1))
+- save punchout information in session storage instead of in cookies (#1731) ([02051ca](https://github.com/intershop/intershop-pwa/commit/02051ca))
+- provide option to disable the automatic translation of formly select field options (#1735) ([3eb3e14](https://github.com/intershop/intershop-pwa/commit/3eb3e14))
+- wishlist sharing (#1590) ([e3b4598](https://github.com/intershop/intershop-pwa/commit/e3b4598))
+
+### Bug Fixes
+
+- change SSR metrics from Gauge to Counter (#1747) ([8215728](https://github.com/intershop/intershop-pwa/commit/8215728))
+- styling improvement for swatch (image) filters ([fd63a8b](https://github.com/intershop/intershop-pwa/commit/fd63a8b))
+- consider only 'true' product labels and select the first ([7f7299b](https://github.com/intershop/intershop-pwa/commit/7f7299b))
+- use correct punchout REST API headers for cXML and OCI punchout (#1746) ([eb607cc](https://github.com/intershop/intershop-pwa/commit/eb607cc))
+- fetch updated Redirect-URL before redirecting (#1743) ([ea74674](https://github.com/intershop/intershop-pwa/commit/ea74674))
+- don't send shipping method in POST items request when ICM runs in single-shipment-mode (#1739) ([5b7c997](https://github.com/intershop/intershop-pwa/commit/5b7c997))
+- remove evaluation of both punchout type transfers to prevent false error messages (#1737) ([b41b52c](https://github.com/intershop/intershop-pwa/commit/b41b52c))
+- Bootstrap carousel slide content overflow when changing slides ([0c8cf50](https://github.com/intershop/intershop-pwa/commit/0c8cf50))
+- improved styling of loading spinner (loading animation placement for long containers, z-index) ([d10ac9a](https://github.com/intershop/intershop-pwa/commit/d10ac9a))
+- SSR rendered pages with status code 404 or 503 should be returned instead of serving expired pages from the NGINX cache with status 200 (#1732) ([2966ea8](https://github.com/intershop/intershop-pwa/commit/2966ea8))
+- do not shortly display the product image twice on PDP ([16b6afa](https://github.com/intershop/intershop-pwa/commit/16b6afa))
+- display orders on cost center details page ([003413f](https://github.com/intershop/intershop-pwa/commit/003413f))
+- double header display in checkout (SSR) (#1721) ([4fd1165](https://github.com/intershop/intershop-pwa/commit/4fd1165))
+- password check for user email update (#1722) ([4d5e69a](https://github.com/intershop/intershop-pwa/commit/4d5e69a))
+- remove double slashes in cost center REST call (#1723) ([d84dffd](https://github.com/intershop/intershop-pwa/commit/d84dffd))
+- eslint-rule "no-intelligence-in-artifacts" also checks components of different themes (#1716) ([e31a906](https://github.com/intershop/intershop-pwa/commit/e31a906))
+
+### Performance Improvements
+
+- load the main product image eagerly on PDP (#1717) ([9326b29](https://github.com/intershop/intershop-pwa/commit/9326b29))
+- omit cost center details REST calls for lists ([9acf72c](https://github.com/intershop/intershop-pwa/commit/9acf72c))
+
+### Documentation
+
+- documentation improvements: Angular CLI version, theme naming and Copilot theme config examples ([cda1e0a](https://github.com/intershop/intershop-pwa/commit/cda1e0a))
+- add description how to configure Content Security Policy with Additional Headers feature (#1751) ([c8c1d99](https://github.com/intershop/intershop-pwa/commit/c8c1d99))
+- remove compodoc integration from project (#1745) ([da4d015](https://github.com/intershop/intershop-pwa/commit/da4d015))
+
+### BREAKING CHANGES
+
+- New default SSR metrics format - previous behavior can be restored via configuration, see [Migrations / From 5.2 to 5.3](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-52-to-53) for more details.
+
+### CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS
+
+- add tax type settings for budgets (#1715) - ICM 12.3.0
+- change OCI punchout URL to point to an ICM Pipeline (#1702) - ICM 12.2.0, 11.11.1 or 7.10.41.3
+- password check for user email update (#1722) - ICM 13.0.0, 12.3.1 or 7.10.41.7
+- use GET request instead of an OPTIONS call for the OCI punchout configuration (#1714) - ICM 12.2.1
+- use GET request instead of an OPTIONS call for the eligible customer payment methods (#1714) - ICM 11.10.0
+
 ## [5.2.0](https://github.com/intershop/intershop-pwa/releases/tag/5.2.0) (2024-08-23)
 
 > [!NOTE]

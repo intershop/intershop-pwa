@@ -37,10 +37,6 @@ cookieConsentOptions: {
     'apiToken',
     'cookieConsent',
     'preferredLocale',
-    'punchout_SID',
-    'punchout_BasketID',
-    'punchout_ReturnURL',
-    'punchout_HookURL',
   ],
 },
 ```
@@ -108,15 +104,11 @@ This route can be linked to from anywhere within the application.
 
 ## PWA Required Cookies
 
-| Name               | Expiration | Provider      | Description                                                       | Category    |
-| ------------------ | ---------- | ------------- | ----------------------------------------------------------------- | ----------- |
-| apiToken           | 1 hour     | Intershop PWA | The API token used by the Intershop Commerce Management REST API. | First Party |
-| cookieConsent      | 1 year     | Intershop PWA | Saves the user's cookie consent settings.                         | First Party |
-| preferredLocale    | 1 year     | Intershop PWA | Saves the user's language selection.                              | First Party |
-| punchout_SID       | Session    | Intershop PWA | Saves punchout session related data - Session ID.                 | First Party |
-| punchout_BasketID  | Session    | Intershop PWA | Saves punchout session related data - Basket ID.                  | First Party |
-| punchout_ReturnURL | Session    | Intershop PWA | Saves punchout session related data - Return URL.                 | First Party |
-| punchout_HookURL   | Session    | Intershop PWA | Saves punchout session related data - Hook URL.                   | First Party |
+| Name            | Expiration | Provider      | Description                                                       | Category    |
+| --------------- | ---------- | ------------- | ----------------------------------------------------------------- | ----------- |
+| apiToken        | 1 hour     | Intershop PWA | The API token used by the Intershop Commerce Management REST API. | First Party |
+| cookieConsent   | 1 year     | Intershop PWA | Saves the user's cookie consent settings.                         | First Party |
+| preferredLocale | 1 year     | Intershop PWA | Saves the user's language selection.                              | First Party |
 
 ## Disabling the Integrated Cookie Consent Handling
 
@@ -126,7 +118,7 @@ To disable the integrated cookie consent handling implementation, remove the fol
 <ish-cookies-banner></ish-cookies-banner>
 ```
 
-With this change, the integrated cookie consent handling will no longer check whether the banner should be displayed or not and the `cookieConsent` cookie will no longer be written.
+With this change, the integrated cookie consent handling will no longer check whether the banner should be displayed or not, and the `cookieConsent` cookie will no longer be written.
 
 In addition, the `cookies` route should be removed from [`app-routing.module.ts`](../../src/app/pages/app-routing.module.ts):
 

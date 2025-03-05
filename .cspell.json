@@ -3,29 +3,11 @@
   "ignorePaths": [
     "node_modules/**",
     "**/*.spec.ts",
-    "docs/compodoc/**",
     "environment.development.ts"
   ],
-  "ignoreRegExpList": [
-    "/\\b[\\w-]+(\\.[\\w-]+)+\\b/",
-    "  \"footer.content\": .*"
-  ],
+  "ignoreRegExpList": ["/\\b[\\w-]+(\\.[\\w-]+)+\\b/"],
   "dictionaries": ["intershop"],
   "dictionaryDefinitions": [
     { "name": "intershop", "path": ".vscode/intershop.txt" }
-  ],
-  "import": [
-    "node_modules/@cspell/dict-de-de/cspell-ext.json",
-    "node_modules/@cspell/dict-fr-fr/cspell-ext.json"
-  ],
-  "overrides": [
-    {
-      "language": "de-de",
-      "filename": "src/assets/i18n/de_DE.json"
-    },
-    {
-      "language": "fr-fr",
-      "filename": "src/assets/i18n/fr_FR.json"
-    }
   ]
 }

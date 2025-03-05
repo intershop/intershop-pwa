@@ -33,7 +33,7 @@ No need to supply a certificate and a key.
 They are automatically generated inside the running container.
 The certificate is self-signed and will not work in your browser.
 You have to confirm the security exception.
-As developer convenience you can volume mount an internal folder to your host system to effectively trust the generated certificate.
+As developer convenience, you can volume mount an internal folder to your host system to effectively trust the generated certificate.
 Please check the NGINX logs for the following output.
 
 <!-- cSpell: disable -->
@@ -59,7 +59,7 @@ nginx:
       - 1.2.3.4
 ```
 
-Entries of the IP whitelist are added to the NGINX config as [`allow`](http://nginx.org/en/docs/http/ngx_http_access_module.html) statements, which also supports IP ranges.
+IP whitelist entries are added to the NGINX config as [`allow`](https://nginx.org/en/docs/http/ngx_http_access_module.html) statements, which also support IP ranges.
 Please refer to the linked NGINX documentation on how to configure this.
 
 After globally activating basic authentication for your setup, you can also disable it selectively per site.
@@ -105,7 +105,7 @@ http://foo.com/en/sitemap_pwa.xml
 To make above sitemap index file available under your deployment, you need to add the environment variable `ICM_BASE_URL` to your NGINX container.
 Let `ICM_BASE_URL` point to your ICM backend installation, e.g., `https://develop.icm.intershop.de`.
 
-On a local development system you need to add it to [`docker-compose.yml`](../../docker-compose.yml), e.g.,
+On a local development system, you need to add it to [`docker-compose.yml`](../../docker-compose.yml), e.g.,
 
 ```yaml
 nginx:
@@ -113,7 +113,7 @@ nginx:
     ICM_BASE_URL: 'https://develop.icm.intershop.de'
 ```
 
-When the container is started it will process cache-ignore and multi-channel templates as well as sitemap proxy rules like this:
+When the container is started, it will process cache-ignore and multi-channel templates as well as sitemap proxy rules like this:
 
 ```yaml
 location /sitemap_ {
@@ -124,7 +124,7 @@ proxy_pass https://develop.icm.intershop.de/INTERSHOP/static/WFS/inSPIRED-inTRON
 The process will utilize your [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax).
 Be sure to include `application` if you deviate from standard `rest` application.
 
-The [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax) has to include the correct channel value (e.g., `inSPIRED-inTRONICS_Business-Site` and `inSPIRED-inTRONICS-Site` instead of `default`) because it is used to generate the correct sitemap URL path, e.g.,
+The [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax) has to include the correct channel value (e.g., `inSPIRED-inTRONICS_Business-Site` and `inSPIRED-inTRONICS-Site` instead of `default`), because it is used to generate the correct sitemap URL path, e.g.,
 
 ```yaml
 nginx:
@@ -148,9 +148,9 @@ nginx:
 ### Override Identity Providers by Path
 
 The PWA can be configured with multiple identity providers.
-In some use cases a specific identity provider must be selected when a certain route is requested.
+In some use cases, a specific identity provider must be selected when a certain route is requested.
 For example, a punchout user should be logged in by the punchout identity provider requesting a punchout route.
-For all other possible routes the default identity provider must be selected.
+For all other possible routes, the default identity provider must be selected.
 This can be done by setting the environment variable `OVERRIDE_IDENTITY_PROVIDER`.
 
 ```yaml
@@ -176,10 +176,13 @@ If no environment variable is set, this feature is disabled.
 ### Add Additional Headers
 
 > [!IMPORTANT]
-> To configure additional headers, the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.8.0 or above has to be used.
+> To configure additional headers, the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.9.3 or above has to be used.
 
-For some security or functional reasons it is necessary to add additional headers to page responses.
+For some security or functional reasons, it is necessary to add additional headers to page responses.
+One such security reason may be a Content Security Policy directive.
 To make such headers configurable, the environment variable `ADDITIONAL_HEADERS` has been introduced.
+
+`docker-compose` example:
 
 ```yaml
 nginx:
@@ -190,11 +193,81 @@ nginx:
         - header-b: 'value-b'
 ```
 
+[PWA Helm Cart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) example:
+
+```yaml
+cache:
+  additionalHeaders: |
+    headers:
+      - header-a: 'value-a'
+      - header-b: 'value-b'
+```
+
 Alternatively, the source can be supplied by setting `ADDITIONAL_HEADERS_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources/).
 
-For every entry NGINX will add this header to every possible response.
+For every entry, NGINX will add this header to every possible response.
 
 To make the additional headers available during build-time, the value for the environment variable `ADDITIONAL_HEADERS` can be put into the [additional-headers.yaml](../../nginx/additional-headers.yaml) file.
+
+#### Content Security Policy
+
+In order to add a Content Security Policy (CSP) to fulfill the requirements of PCI DSS 4.0, a header can be added to each response handled by NGINX.
+
+`docker-compose` example:
+
+```yaml
+nginx:
+  environment:
+    ADDITIONAL_HEADERS: |
+      headers:
+        - Content-Security-Policy: "default-src https://develop.icm.intershop.de 'self'; style-src 'unsafe-inline' 'self'; font-src data: 'self';"
+```
+
+[PWA Helm Cart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) example:
+
+```yaml
+cache:
+  additionalHeaders: |
+    headers:
+      - Content-Security-Policy: "default-src https://develop.icm.intershop.de 'self'; style-src 'unsafe-inline' 'self'; font-src data: 'self';"
+```
+
+Explanation of example security policy:
+
+- `default-src https://develop.icm.intershop.de 'self'`:
+  This sets the default policy for fetching resources such as scripts, images, etc.
+  It allows resources to be loaded only from `https://develop.icm.intershop.de` and the same origin (`'self'`).
+- `style-src 'unsafe-inline' 'self'`:
+  This allows the use of inline styles (`'unsafe-inline'`) and styles from the same origin (`'self'`).
+  Inline styles are used at some places in the PWA, and this directive permits them.
+- `font-src data: 'self'`:
+  This allows fonts to be loaded from data URIs (`data:`) and the same origin (`'self'`).
+  Due to the usage of “fontawesome”, it is required to define this extra policy to permit these fonts.
+
+> [!IMPORTANT]
+> The value `https://develop.icm.intershop.de` is used here as an example for the development configuration.
+> The value needs to point to the ICM server.
+> It has to be set to the same value as the `ICM_BASE_URL`.
+
+Since there are no other directives defined, the fallback (`default-src`) is used for all other resource types (frame, media, ...).
+
+Many payment integrations use iFrames and/or scripts from the payment provider.
+They have to be included into the CSP.
+
+Example policy for Payone:
+
+```
+Content-Security-Policy: "default-src https://develop.icm.intershop.de 'self'; style-src 'unsafe-inline' 'self'; font-src data: 'self'; script-src secure.pay1.de 'self'; frame-src secure.pay1.de;"
+```
+
+Explanation of the two additional CSP header policies:
+
+- `script-src secure.pay1.de 'self'`:
+  This allows scripts to be loaded only from `secure.pay1.de` and the same origin (`'self'`).
+- `frame-src secure.pay1.de`:
+  This allows framing (embedding the site in an iFrame) only from `secure.pay1.de`.
+
+In summary, this CSP header restricts the sources from which various types of content can be loaded, enhancing security by reducing the risk of cross-site scripting (XSS) and other attacks.
 
 ### Other
 
@@ -212,7 +285,7 @@ Built-in features can be enabled and disabled:
 ## Features
 
 New features can be supplied in the folder `nginx/features`.
-A file named `<feature>.conf` is included if the environment variable `<feature>` is set to `on`, `1`, `true` or `yes` (case insensitive).
+A file named `<feature>.conf` is included if the environment variable `<feature>` is set to `on`, `1`, `true` or `yes` (case-insensitive).
 Otherwise, the feature is disabled and an optional file `<feature>-off.conf` is included in the configuration.
 The feature name must only contain word characters (letters, numbers, and underscore).
 
@@ -221,7 +294,7 @@ The feature name must only contain word characters (letters, numbers, and unders
 If the cache feature is switched off, all caching for pre-rendered pages is disabled.
 
 The cache duration for pre-rendered pages can be customized using `CACHE_DURATION_NGINX_OK` (for successful responses) and `CACHE_DURATION_NGINX_NF` (for 404 responses).
-The value supplied must be in the `time` format that is supported by [NGINX proxy_cache_valid](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_valid).
+The value supplied must be in the `time` format that is supported by [NGINX proxy_cache_valid](https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_valid).
 
 ### Shared Redis Cache
 
@@ -264,7 +337,7 @@ docker run --rm -it bitnami/redis redis-cli -u <REDIS_URI> flushdb
 
 #### Redis for Development
 
-For development environments a local Redis can be started with the example `docker-compose.yml` configuration.
+For development environments, a local Redis can be started with the example `docker-compose.yml` configuration.
 
 ```yaml
 redis:
@@ -279,7 +352,7 @@ nginx:
     REDIS_URI: redis://redis:6379
 ```
 
-Passing extra command-line flags to the Redis service for configuration (see [Redis configuration](https://redis.io/docs/management/config/)) can be done via Docker `command`.
+Passing extra command-line flags to the Redis service for configuration (see [Redis configuration](https://redis.io/docs/latest/operate/oss_and_stack/management/config/)) can be done via Docker `command`.
 
 ```yaml
   redis:

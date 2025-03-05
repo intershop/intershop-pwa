@@ -5,6 +5,7 @@ import { concatMap, first, map, switchMap } from 'rxjs/operators';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
+import { WishlistSharing, WishlistSharingResponse } from '../../models/wishlist-sharing/wishlist-sharing.model';
 import { WishlistData } from '../../models/wishlist/wishlist.interface';
 import { WishlistMapper } from '../../models/wishlist/wishlist.mapper';
 import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
@@ -159,5 +160,49 @@ export class WishlistService {
           .pipe(concatMap(() => this.getWishlist(wishlistId)))
       )
     );
+  }
+
+  /**
+   * Shares the wishlist with other users (a comma separated list of email addresses)
+   *
+   * @param wishlistId       The wishlist id.
+   * @param wishlistSharing  The wishlist sharing data.
+   * @returns                The wishlist sharing response data with the secureCode which should be used to access the shared wishlist.
+   */
+  shareWishlist(wishlistId: string, wishlistSharing: WishlistSharing): Observable<WishlistSharingResponse> {
+    return this.appFacade.customerRestResource$.pipe(
+      first(),
+      concatMap(restResource =>
+        this.apiService
+          .post(`${restResource}/-/wishlists/${wishlistId}/share`, wishlistSharing)
+          .pipe(map((response: WishlistSharingResponse) => response))
+      )
+    );
+  }
+
+  /**
+   * Unshare the wishlist and invalidate all generated secureCodes.
+   *
+   * @param wishlistId  The wishlist id.
+   */
+  unshareWishlist(wishlistId: string): Observable<void> {
+    return this.appFacade.customerRestResource$.pipe(
+      first(),
+      concatMap(restResource => this.apiService.delete<void>(`${restResource}/-/wishlists/${wishlistId}/share`))
+    );
+  }
+
+  /**
+   * Gets the shared wishlist using the secureCode to check access.
+   *
+   * @param wishlistId  The wishlist id.
+   * @param owner       The wishlist owner.
+   * @param secureCode  The secureCode.
+   * @returns           The wishlist.
+   */
+  getSharedWishlist(wishlistId: string, owner: string, secureCode: string): Observable<Wishlist> {
+    return this.apiService
+      .get<WishlistData>(`wishlists/${wishlistId};owner=${owner};secureCode=${secureCode}`)
+      .pipe(map(wishlist => this.wishlistMapper.fromData(wishlist, wishlistId)));
   }
 }

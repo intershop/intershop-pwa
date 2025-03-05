@@ -34,5 +34,8 @@ export interface CostCenter extends CostCenterBase {
   spentBudget?: Price;
   remainingBudget?: Price;
   buyers?: CostCenterBuyer[];
-  orders?: Pick<Order, 'documentNo' | 'creationDate' | 'status' | 'attributes' | 'totalProductQuantity' | 'totals'>[];
+  orders?: Pick<
+    Order,
+    'documentNo' | 'creationDate' | 'status' | 'attributes' | 'user' | 'totalProductQuantity' | 'totals'
+  >[];
 }

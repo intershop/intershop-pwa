@@ -44,6 +44,7 @@ describe('Tacton Step Buttons Component', () => {
       <div class="d-flex flex-nowrap justify-content-between tacton-button-bar">
         <div class="d-inline-block mr-auto">
           <button
+            type="button"
             data-testing-id="reset-configuration-button"
             class="btn btn-secondary no-wrap text-nowrap"
           >
@@ -51,12 +52,12 @@ describe('Tacton Step Buttons Component', () => {
           </button>
         </div>
         <div class="d-inline-block ml-2">
-          <button data-testing-id="previous-button" class="btn btn-secondary text-nowrap">
+          <button type="button" data-testing-id="previous-button" class="btn btn-secondary text-nowrap">
             tacton.step_buttons.previous.label
           </button>
         </div>
         <div class="d-inline-block ml-2">
-          <button data-testing-id="next-button" class="btn btn-primary text-nowrap">
+          <button type="button" data-testing-id="next-button" class="btn btn-primary text-nowrap">
             tacton.step_buttons.next.label
           </button>
         </div>

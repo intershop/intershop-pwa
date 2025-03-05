@@ -16,6 +16,7 @@ import {
   getICMServerURL,
   getICMStaticURL,
   getIdentityProvider,
+  getPipelineEndpoint,
   getRestEndpoint,
 } from './configuration.selectors';
 
@@ -42,13 +43,14 @@ describe('Configuration Selectors', () => {
 
   describe('initial state', () => {
     it('should be undefined or empty values for most selectors', () => {
-      expect(getRestEndpoint(store$.state)).toBeUndefined();
       expect(getICMBaseURL(store$.state)).toBeUndefined();
       expect(getICMServerURL(store$.state)).toBeUndefined();
       expect(getICMStaticURL(store$.state)).toBeUndefined();
       expect(getFeatures(store$.state)).toBeUndefined();
       expect(getDeviceType(store$.state)).toBeUndefined();
       expect(getIdentityProvider(store$.state)).toBeUndefined();
+      expect(getRestEndpoint(store$.state)).toBeUndefined();
+      expect(getPipelineEndpoint(store$.state)).toBeUndefined();
     });
   });
 
@@ -59,18 +61,32 @@ describe('Configuration Selectors', () => {
           baseURL: 'http://example.org',
           server: 'api',
           serverStatic: 'static',
+          serverWeb: 'web',
           channel: 'site',
           features: ['compare', 'recently'],
+        })
+      );
+      store$.dispatch(
+        loadServerConfigSuccess({
+          config: {
+            general: {
+              defaultLocale: 'en_US',
+              defaultCurrency: 'USD',
+              locales: ['en_US', 'fr_BE', 'de_DE'],
+              currencies: ['USD', 'EUR'],
+            },
+          },
         })
       );
     });
 
     it('should have defined values for all selectors', () => {
-      expect(getRestEndpoint(store$.state)).toEqual('http://example.org/api/site/-');
       expect(getICMBaseURL(store$.state)).toEqual('http://example.org');
       expect(getICMServerURL(store$.state)).toEqual('http://example.org/api');
       expect(getICMStaticURL(store$.state)).toEqual('http://example.org/static/site/-');
       expect(getFeatures(store$.state)).toIncludeAllMembers(['compare', 'recently']);
+      expect(getRestEndpoint(store$.state)).toEqual('http://example.org/api/site/-');
+      expect(getPipelineEndpoint(store$.state)).toEqual('http://example.org/web/site/en_US/-/USD');
     });
 
     describe('after setting application', () => {
@@ -83,11 +99,12 @@ describe('Configuration Selectors', () => {
       });
 
       it('should have defined values for all selectors', () => {
-        expect(getRestEndpoint(store$.state)).toEqual('http://example.org/api/site/app');
         expect(getICMBaseURL(store$.state)).toEqual('http://example.org');
         expect(getICMServerURL(store$.state)).toEqual('http://example.org/api');
         expect(getICMStaticURL(store$.state)).toEqual('http://example.org/static/site/app');
         expect(getFeatures(store$.state)).toIncludeAllMembers(['compare', 'recently']);
+        expect(getRestEndpoint(store$.state)).toEqual('http://example.org/api/site/app');
+        expect(getPipelineEndpoint(store$.state)).toEqual('http://example.org/web/site/en_US/app/USD');
       });
     });
 

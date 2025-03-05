@@ -7,7 +7,7 @@ import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
 
 const _ = {
   user: {
-    login: 'aarbeit@test.intershop.de',
+    login: 'mjogger@test.intershop.de',
     password: sensibleDefaults.password,
   },
   sku: '201807199',

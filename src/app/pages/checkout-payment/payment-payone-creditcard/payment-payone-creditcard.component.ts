@@ -121,9 +121,17 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
         .load('https://secure.pay1.de/client-api/js/v1/payone_hosted_min.js')
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
-          // append localization language: Payone.ClientApi.Language.en, Language to display error-messages (default:Payone.ClientApi.Language.en)
-          // eslint-disable-next-line no-eval
-          config.language = eval(this.getParamValue('language', ''));
+          // resolve Payone localization object from language (default: en -> Payone.ClientApi.Language.en)
+          let langCode = this.getParamValue('languageCode', '');
+
+          // fallback to old parameter (have value like 'Payone.ClientApi.Language.en') and extract language code from it
+          if (!langCode) {
+            const lang = this.getParamValue('language', '');
+            const langParts = lang.split('.');
+            langCode = langParts.length > 1 ? langParts[langParts.length - 1] : 'en';
+          }
+
+          config.language = Payone.ClientApi.Language[langCode] || Payone.ClientApi.Language.en;
 
           // setup
           this.iframes = new Payone.ClientApi.HostedIFrames(config, request);

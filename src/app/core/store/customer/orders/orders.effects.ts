@@ -128,7 +128,7 @@ export class OrdersEffects {
     this.actions$.pipe(
       ofType(loadMoreOrders),
       concatLatestFrom(() => this.store.pipe(select(getOrderListQuery))),
-      map(([, query]) => loadOrders({ query: { ...query, offset: (query.offset ?? 0) + query.limit } }))
+      map(([, query]) => loadOrders({ query: { ...query, offset: (query?.offset ?? 0) + query.limit } }))
     )
   );
 

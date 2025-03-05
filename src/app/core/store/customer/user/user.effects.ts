@@ -234,8 +234,14 @@ export class UserEffects {
       this.actions$.pipe(
         ofType(updateUserSuccess, updateCustomerSuccess, updateUserPasswordSuccess),
         concatLatestFrom(() => this.store.pipe(select(selectUrl))),
-        filter(([, url]) => url.includes('/account/profile')),
-        concatMap(() => from(this.router.navigateByUrl('/account/profile')))
+        filter(([, url]) => url.includes('/account/profile') || url.includes('/account/organization/settings')),
+        concatMap(([, url]) =>
+          from(
+            this.router.navigateByUrl(
+              url.includes('/account/profile') ? '/account/profile' : '/account/organization/settings'
+            )
+          )
+        )
       ),
     { dispatch: false }
   );

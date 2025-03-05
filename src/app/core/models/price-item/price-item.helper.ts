@@ -1,10 +1,10 @@
-import { Price, Pricing, ScaledPrice } from 'ish-core/models/price/price.model';
+import { Price, PriceType, Pricing, ScaledPrice } from 'ish-core/models/price/price.model';
 import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 
 import { PriceItem, ScaledPriceItem } from './price-item.model';
 
 export class PriceItemHelper {
-  static selectType(priceItem: PriceItem, type: 'gross' | 'net'): Price {
+  static selectType(priceItem: PriceItem, type: PriceType): Price {
     if (priceItem && type) {
       return {
         type: 'Money',
@@ -14,7 +14,7 @@ export class PriceItemHelper {
     }
   }
 
-  static selectScaledPriceType(priceItem: ScaledPriceItem, type: 'gross' | 'net'): ScaledPrice {
+  static selectScaledPriceType(priceItem: ScaledPriceItem, type: PriceType): ScaledPrice {
     if (priceItem && type) {
       return {
         type: 'Money',
@@ -25,7 +25,7 @@ export class PriceItemHelper {
     }
   }
 
-  static selectPricing(priceDetails: ProductPriceDetails, type: 'gross' | 'net'): Pricing {
+  static selectPricing(priceDetails: ProductPriceDetails, type: PriceType): Pricing {
     return {
       salePrice: PriceItemHelper.selectType(priceDetails?.prices?.salePrice, type),
       listPrice: PriceItemHelper.selectType(priceDetails?.prices?.listPrice, type),

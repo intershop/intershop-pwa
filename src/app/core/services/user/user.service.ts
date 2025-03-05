@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { pick } from 'lodash-es';
 import { Observable, combineLatest, defer, forkJoin, of, throwError } from 'rxjs';
-import { concatMap, first, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, first, map, switchMap, take, tap } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
@@ -97,10 +97,9 @@ export class UserService {
 
   private fetchCustomer(options: AvailableOptions = {}): Observable<CustomerUserType> {
     return this.apiService.get<CustomerData>('customers/-', options).pipe(
-      withLatestFrom(this.appFacade.isAppTypeREST$),
-      concatMap(([data, isAppTypeRest]) =>
+      concatMap(data =>
         forkJoin([
-          isAppTypeRest && data.customerType === 'PRIVATE'
+          AppFacade.getCustomerRestResource(data.customerType !== 'PRIVATE') === 'privatecustomers'
             ? this.apiService.get<CustomerData>('privatecustomers/-', options)
             : of(data),
           this.apiService.get<{ pgid: string }>('personalization', options).pipe(map(data => data.pgid)),
@@ -165,15 +164,17 @@ export class UserService {
         )
       );
 
-    return this.appFacade.isAppTypeREST$.pipe(
+    return newCustomer$.pipe(
       first(),
-      withLatestFrom(newCustomer$.pipe(first())),
-      concatMap(([isAppTypeRest, newCustomer]) =>
+      concatMap(newCustomer =>
         this.apiService
-          .post<void>(AppFacade.getCustomerRestResource(body.customer.isBusinessCustomer, isAppTypeRest), newCustomer, {
+          .post<void>(AppFacade.getCustomerRestResource(body.customer.isBusinessCustomer), newCustomer, {
             captcha: pick(body, ['captcha', 'captchaAction']),
           })
-          .pipe(map<void, CustomerUserType>(() => ({ customer: body.customer, user: body.user })))
+          .pipe(
+            map<void, CustomerUserType>(() => ({ customer: body.customer, user: body.user })),
+            concatMap(customerUser => this.updateCustomerBudgetType(customerUser, body.credentials))
+          )
       )
     );
   }
@@ -188,13 +189,6 @@ export class UserService {
       return throwError(() => new Error('updateUser() called without required body data'));
     }
 
-    const headers = credentials
-      ? new HttpHeaders().set(
-          ApiService.AUTHORIZATION_HEADER_KEY,
-          `BASIC ${window.btoa(`${credentials.login}:${credentials.password}`)}`
-        )
-      : undefined;
-
     const changedUser: object = {
       type: body.customer.isBusinessCustomer ? 'SMBCustomer' : 'PrivateCustomer',
       ...body.customer,
@@ -208,14 +202,15 @@ export class UserService {
       preferredShipToAddressUrn: undefined,
       preferredPaymentInstrumentId: undefined,
       preferredLanguage: body.user.preferredLanguage || 'en_US',
+      ...(credentials?.password ? { password: credentials.password } : {}), // Required for email change validation
     };
 
     return this.appFacade.customerRestResource$.pipe(
       first(),
       concatMap(restResource =>
         body.customer.isBusinessCustomer
-          ? this.apiService.put<User>('customers/-/users/-', changedUser, { headers }).pipe(map(UserMapper.fromData))
-          : this.apiService.put<User>(`${restResource}/-`, changedUser, { headers }).pipe(map(UserMapper.fromData))
+          ? this.apiService.put<User>('customers/-/users/-', changedUser, {}).pipe(map(UserMapper.fromData))
+          : this.apiService.put<User>(`${restResource}/-`, changedUser, {}).pipe(map(UserMapper.fromData))
       )
     );
   }
@@ -332,7 +327,7 @@ export class UserService {
   getEligibleCostCenters(): Observable<UserCostCenter[]> {
     return this.apiService
       .b2bUserEndpoint()
-      .get(`/costcenters`)
+      .get(`costcenters`)
       .pipe(
         unpackEnvelope(),
         map((costCenters: UserCostCenter[]) => costCenters)
@@ -367,5 +362,24 @@ export class UserService {
         }
       })
     );
+  }
+
+  /**
+   * Updates the customer budget type right after initial customer creation.
+   */
+  private updateCustomerBudgetType(
+    customerUser: CustomerUserType,
+    credentials: Credentials
+  ): Observable<CustomerUserType> {
+    if (!customerUser?.customer?.budgetPriceType) {
+      return of(customerUser);
+    }
+
+    const headers = new HttpHeaders().set(
+      ApiService.AUTHORIZATION_HEADER_KEY,
+      `BASIC ${window.btoa(`${credentials.login}:${credentials.password}`)}`
+    );
+
+    return this.apiService.put('customers/-', customerUser.customer, { headers }).pipe(map(() => customerUser));
   }
 }

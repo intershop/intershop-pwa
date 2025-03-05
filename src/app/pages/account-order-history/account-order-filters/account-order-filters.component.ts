@@ -15,7 +15,7 @@ import { UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, distinctUntilChanged, map, shareReplay, takeUntil, tap } from 'rxjs';
+import { Observable, distinctUntilChanged, map, shareReplay, takeUntil } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
@@ -252,11 +252,9 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
   }
 
   private getModel(params?: UrlModel): Observable<FormModel> {
+    this.modelChange.emit(urlToQuery(params));
     return this.isAdmin$.pipe(
       distinctUntilChanged(),
-      tap(() => {
-        this.modelChange.emit(urlToQuery(params));
-      }),
       map(isAdmin => ({
         date:
           params?.from || params?.to

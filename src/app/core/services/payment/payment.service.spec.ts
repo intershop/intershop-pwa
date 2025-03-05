@@ -2,7 +2,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
@@ -127,6 +127,30 @@ describe('Payment Service', () => {
 
       paymentService.setBasketPayment('testPayment').subscribe(() => {
         verify(apiServiceMock.put(`payments/open-tender`, anything(), anything())).once();
+        expect(capture(apiServiceMock.put).last()?.[1]).toMatchInlineSnapshot(`
+          {
+            "paymentInstrument": "testPayment",
+          }
+        `);
+        done();
+      });
+    });
+
+    it("should send redirect urls when 'sendRedirectUrls' is called", done => {
+      when(apiServiceMock.put(anyString(), anything(), anything())).thenReturn(of({}));
+
+      paymentService.sendRedirectUrls('testPayment').subscribe(() => {
+        verify(apiServiceMock.put(`payments/open-tender`, anything(), anything())).once();
+        expect(capture(apiServiceMock.put).last()?.[1]).toMatchInlineSnapshot(`
+          {
+            "paymentInstrument": "testPayment",
+            "redirect": {
+              "cancelUrl": "http://localhost//checkout/payment;lang=en_US?redirect=cancel",
+              "failureUrl": "http://localhost//checkout/payment;lang=en_US?redirect=failure",
+              "successUrl": "http://localhost//checkout/review;lang=en_US?redirect=success",
+            },
+          }
+        `);
         done();
       });
     });
@@ -214,7 +238,6 @@ describe('Payment Service', () => {
     it("should get a user's payment method data when 'getUserPaymentMethods' is called for b2c/b2x applications", done => {
       when(apiServiceMock.get(anyString())).thenReturn(of([]));
       when(apiServiceMock.resolveLinks()).thenReturn(() => of([]));
-      when(apiServiceMock.options(anyString())).thenReturn(of([]));
       const customer = {
         customerNo: '4711',
         isBusinessCustomer: false,
@@ -222,7 +245,7 @@ describe('Payment Service', () => {
 
       paymentService.getUserPaymentMethods(customer).subscribe(() => {
         verify(apiServiceMock.get('customers/4711/payments')).once();
-        verify(apiServiceMock.options('customers/4711/payments')).once();
+        verify(apiServiceMock.get('customers/4711/eligible-payment-methods')).once();
         done();
       });
     });
@@ -230,7 +253,6 @@ describe('Payment Service', () => {
     it("should get a user's payment method data when 'getUserPaymentMethods' is called for rest applications", done => {
       when(apiServiceMock.get(anyString())).thenReturn(of([]));
       when(apiServiceMock.resolveLinks()).thenReturn(() => of([]));
-      when(apiServiceMock.options(anyString())).thenReturn(of([]));
       when(appFacadeMock.customerRestResource$).thenReturn(of('privatecustomers'));
       const customer = {
         customerNo: '4711',
@@ -239,7 +261,7 @@ describe('Payment Service', () => {
 
       paymentService.getUserPaymentMethods(customer).subscribe(() => {
         verify(apiServiceMock.get('privatecustomers/4711/payments')).once();
-        verify(apiServiceMock.options('privatecustomers/4711/payments')).once();
+        verify(apiServiceMock.get('privatecustomers/4711/eligible-payment-methods')).once();
         done();
       });
     });

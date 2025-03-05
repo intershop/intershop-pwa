@@ -13,7 +13,7 @@ export class WishlistsDetailsPage {
   }
 
   get listItems() {
-    return cy.get('ish-account-wishlist-detail-line-item');
+    return cy.get('ish-wishlist-line-item');
   }
 
   get listItemLinks() {
@@ -29,7 +29,7 @@ export class WishlistsDetailsPage {
   }
 
   getWishlistItemById(id: string) {
-    return cy.get('span').contains(id).closest('ish-account-wishlist-detail-line-item').parent();
+    return cy.get('span').contains(id).closest('ish-wishlist-line-item').parent();
   }
 
   editWishlistDetails(name: string, preferred: boolean) {

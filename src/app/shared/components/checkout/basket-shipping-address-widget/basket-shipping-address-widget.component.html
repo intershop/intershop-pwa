@@ -66,11 +66,12 @@
 <!-- Add a new Shipping to address -->
 <div *ngIf="displayAddAddressLink$ | async" class="row">
   <button
-    data-testing-id="create-shipping-address-link"
+    type="button"
     class="btn btn-link"
     (click)="showAddressForm()"
     [attr.aria-expanded]="(collapseChange | async) === false"
     aria-controls="shipping-address-panel"
+    data-testing-id="create-shipping-address-link"
   >
     {{ 'checkout.create_shipping_address.link' | translate }}
   </button>

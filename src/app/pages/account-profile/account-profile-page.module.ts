@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { authorizationToggleGuard } from 'ish-core/guards/authorization-toggle.guard';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountProfilePageComponent } from './account-profile-page.component';
@@ -45,21 +44,6 @@ const routes: Routes = [
     },
     loadChildren: () =>
       import('../account-profile-user/account-profile-user-page.module').then(m => m.AccountProfileUserPageModule),
-  },
-  {
-    path: 'company',
-    canActivate: [authorizationToggleGuard],
-    data: {
-      permission: 'APP_B2B_MANAGE_USERS',
-      breadcrumbData: [
-        { key: 'account.profile.link', link: '/account/profile' },
-        { key: 'account.company_profile.heading' },
-      ],
-    },
-    loadChildren: () =>
-      import('../account-profile-company/account-profile-company-page.module').then(
-        m => m.AccountProfileCompanyPageModule
-      ),
   },
 ];
 

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
+import { WishlistSharing } from '../../models/wishlist-sharing/wishlist-sharing.model';
 import { Wishlist, WishlistItem } from '../../models/wishlist/wishlist.model';
 
 @Component({
@@ -29,6 +30,14 @@ export class AccountWishlistDetailPageComponent implements OnInit {
       ...wishlist,
       id: wishlistName,
     });
+  }
+
+  unshareWishlist(wishlistId: string) {
+    this.wishlistsFacade.unshareWishlist(wishlistId);
+  }
+
+  shareWishlist(wishlistSharing: WishlistSharing, wishlistId: string) {
+    this.wishlistsFacade.shareWishlist(wishlistId, wishlistSharing);
   }
 
   trackByFn(_: number, item: WishlistItem) {

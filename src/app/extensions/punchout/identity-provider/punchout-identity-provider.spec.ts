@@ -1,3 +1,4 @@
+/* eslint-disable etc/no-deprecated */
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Params, Router, UrlTree, convertToParamMap } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -11,7 +12,6 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { TokenService } from 'ish-core/services/token/token.service';
 import { selectQueryParam } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
-import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
@@ -32,7 +32,6 @@ describe('Punchout Identity Provider', () => {
   const appFacade = mock(AppFacade);
   const accountFacade = mock(AccountFacade);
   const checkoutFacade = mock(CheckoutFacade);
-  const cookiesService = mock(CookiesService);
 
   let punchoutIdentityProvider: PunchoutIdentityProvider;
   let store$: MockStore;
@@ -45,7 +44,6 @@ describe('Punchout Identity Provider', () => {
         { provide: ApiTokenService, useFactory: () => instance(apiTokenService) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
-        { provide: CookiesService, useFactory: () => instance(cookiesService) },
         { provide: PunchoutService, useFactory: () => instance(punchoutService) },
         { provide: TokenService, useFactory: () => instance(mock(TokenService)) },
         provideMockStore(),
@@ -67,9 +65,8 @@ describe('Punchout Identity Provider', () => {
     resetCalls(appFacade);
     resetCalls(accountFacade);
     resetCalls(checkoutFacade);
-    resetCalls(cookiesService);
 
-    window.sessionStorage.clear();
+    sessionStorage.clear();
   });
 
   describe('init', () => {
@@ -82,7 +79,7 @@ describe('Punchout Identity Provider', () => {
     it('should add basket-id to session storage, when basket is available', () => {
       when(checkoutFacade.basket$).thenReturn(of(BasketMockData.getBasket()));
       punchoutIdentityProvider.init();
-      expect(window.sessionStorage.getItem('basket-id')).toEqual(BasketMockData.getBasket().id);
+      expect(sessionStorage.getItem('basket-id')).toEqual(BasketMockData.getBasket().id);
     });
   });
 
@@ -95,12 +92,12 @@ describe('Punchout Identity Provider', () => {
     });
 
     it('should remove api token and basket-id on logout', done => {
-      expect(window.sessionStorage.getItem('basket-id')).toEqual(BasketMockData.getBasket().id);
+      expect(sessionStorage.getItem('basket-id')).toEqual(BasketMockData.getBasket().id);
 
       const logoutTrigger$ = punchoutIdentityProvider.triggerLogout() as Observable<UrlTree>;
 
       logoutTrigger$.subscribe(() => {
-        expect(window.sessionStorage.getItem('basket-id')).toBeNull();
+        expect(sessionStorage.getItem('basket-id')).toBeNull();
         verify(accountFacade.logoutUser()).once();
         done();
       });
@@ -187,14 +184,14 @@ describe('Punchout Identity Provider', () => {
             );
           });
 
-          it('should set cookies, load basket basket and return to homepage', fakeAsync(() => {
+          it('should set session storage, load basket basket and return to homepage', fakeAsync(() => {
             const login$ = punchoutIdentityProvider.triggerLogin(getSnapshot(queryParams)) as Observable<
               boolean | UrlTree
             >;
             login$.subscribe(() => {
-              verify(cookiesService.put('punchout_SID', 'sid')).once();
-              verify(cookiesService.put('punchout_ReturnURL', 'home')).once();
-              verify(cookiesService.put('punchout_BasketID', 'basket-id')).once();
+              expect(sessionStorage.getItem('punchout_SID')).toEqual('sid');
+              expect(sessionStorage.getItem('punchout_ReturnURL')).toEqual('home');
+              expect(sessionStorage.getItem('punchout_BasketID')).toEqual('basket-id');
             });
 
             tick(500);
@@ -208,12 +205,12 @@ describe('Punchout Identity Provider', () => {
             queryParams = { HOOK_URL: 'url', USERNAME: 'username', PASSWORD: 'password' };
           });
 
-          it('should set cookie and create basket on login', done => {
+          it('should set session storage and create basket on login', done => {
             const login$ = punchoutIdentityProvider.triggerLogin(getSnapshot(queryParams)) as Observable<
               boolean | UrlTree
             >;
             login$.subscribe(() => {
-              verify(cookiesService.put('punchout_HookURL', 'url')).once();
+              expect(sessionStorage.getItem('punchout_HookURL')).toEqual('url');
               verify(checkoutFacade.createBasket()).once();
               expect(routerSpy).toHaveBeenCalledWith('/home');
               done();
@@ -221,7 +218,7 @@ describe('Punchout Identity Provider', () => {
           });
 
           it('should reload basket when basket is saved in session storage', done => {
-            window.sessionStorage.setItem('basket-id', 'basket-id');
+            sessionStorage.setItem('basket-id', 'basket-id');
             const login$ = punchoutIdentityProvider.triggerLogin(getSnapshot(queryParams)) as Observable<
               boolean | UrlTree
             >;
