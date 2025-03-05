@@ -25,16 +25,16 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { SparqueApiService } from './sparque-api.service';
 
 const sparqueConfig = {
-  server_url: 'http://fancy:0815',
-  ApiName: 'dopeShit',
-  WorkspaceName: 'OttoKartoffel',
-  wrapperAPI: 'infinity',
+  serverUrl: 'http://fancy:0815',
+  wrapperApi: 'infinity',
+  ApiName: 'foo',
+  WorkspaceName: 'bar',
   ChannelId: 'aura',
 } as SparqueConfig;
 
 function getRestURL(endpoint: string): string {
-  return sparqueConfig.server_url
-    .concat('/api/', sparqueConfig.wrapperAPI)
+  return sparqueConfig.serverUrl
+    .concat('/api/', sparqueConfig.wrapperApi)
     .concat(endpoint)
     .concat('?ApiName=')
     .concat(sparqueConfig.ApiName)
