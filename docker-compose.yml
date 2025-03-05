@@ -113,8 +113,8 @@ services:
           - baseHref: /en
             channel: default
             sparque:
-              server_url: https://policy.test.intershop.com
-              wrapperAPI: v2
+              serverUrl: https://policy.test.intershop.com
+              wrapperApi: v2
               workspaceName: intershop-project-base-v2-team2
               apiName: PWA
               channelId: ish

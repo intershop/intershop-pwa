@@ -21,7 +21,7 @@ Example for the specification of the sparque configuration in a docker compose f
 # PWA container settings
 pwa:
   environment:
-    SPARQUE: '{"serverUrl": "<sparque connection url>", "wrapperApi": "<wrapper api version>", "WorkspaceName": "<name of the workspace>", "ApiName": "<used sparque api>", "ChannelId": <in sparque workspace configured channel>}'
+    SPARQUE: '{"serverUrl": "<sparque connection url>", "wrapperApi": "<wrapper api version>", "workspaceName": "<name of the workspace>", "apiName": "<used sparque api>", "channelId": <in sparque workspace configured channel>}'
 ```
 
 Example for the specification of the sparque configuration in an environment file:
@@ -30,14 +30,32 @@ Example for the specification of the sparque configuration in an environment fil
 sparque: {
   serverUrl: '<sparque connection url>',
   wrapperApi: '<wrapper api version>',
-  WorkspaceName: '<name of the workspace>',
-  ApiName: '<used sparque api>',
-  ChannelId: '<in sparque workspace configured channel>',
+  workspaceName: '<name of the workspace>',
+  apiName: '<used sparque api>',
+  channelId: '<in sparque workspace configured channel>',
 },
 ```
 
 > The specification of the sparque configuration data in the kubernetes deployment file uses the same key/value syntax.
 > The value of the SPARQUE key is a string that must be specified in JSON format. See the example above.
+
+### Multi Site Configurations
+
+The sparque integration also supports dynamic configurations of a single PWA container deployment in regards of a multi-site scenario. (see [Guide - Multi Site Configurations](./multi-site-configurations.md))
+
+Example for the specification of multiple domain configuration in a an NGINX docker yaml:
+
+```yaml
+'domain1':
+  channel: channel1
+  sparque:
+    serverUrl: <sparque connection url>
+    wrapperApi: <wrapper api version>
+    workspaceName: <name of the workspace>
+    apiName: <used sparque api>
+    channelId: <in sparque workspace configured channel>
+  ...
+```
 
 ## Suggest Components
 
