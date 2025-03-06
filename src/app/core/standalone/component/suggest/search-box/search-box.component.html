@@ -14,10 +14,15 @@
     [attr.aria-expanded]="(searchBoxResults$ | async) && hasMinimumCharCount && searchBoxFocus ? 'true' : 'false'"
   />
 
-  <div *ngIf="searchSuggestError$ | async" class="search-suggest-container" aria-live="polite">
+  <div *ngIf="searchSuggestError$ | async as error" class="search-suggest-container" aria-live="polite">
     <div class="col-12">
       <div class="headline">{{ 'suggest.error.headline' | translate }}</div>
-      <p>{{ 'suggest.error.text' | translate }}</p>
+      <p *ngIf="error.message.includes('sparque.suggest.server.error.text'); else generalError">
+        {{ 'sparque.suggest.server.error.text' | translate }}
+      </p>
+      <ng-template #generalError>
+        <p #generalError>{{ 'suggest.error.text' | translate }}</p>
+      </ng-template>
     </div>
   </div>
 

@@ -70,9 +70,9 @@ export class ApiService {
   static AUTHORIZATION_HEADER_KEY = 'Authorization';
 
   constructor(
-    protected httpClient: HttpClient,
-    protected store: Store,
-    protected featureToggleService: FeatureToggleService
+    private httpClient: HttpClient,
+    private store: Store,
+    private featureToggleService: FeatureToggleService
   ) {}
 
   /**
@@ -95,7 +95,7 @@ export class ApiService {
   /**
    * merges supplied and default headers
    */
-  protected constructHeaders(options?: AvailableOptions): Observable<HttpHeaders> {
+  private constructHeaders(options?: AvailableOptions): Observable<HttpHeaders> {
     const defaultHeaders = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
 
     return of(
@@ -187,7 +187,7 @@ export class ApiService {
       : of('');
   }
 
-  protected constructHttpClientParams(
+  private constructHttpClientParams(
     path: string,
     options?: AvailableOptions
   ): Observable<[string, { headers: HttpHeaders; params: HttpParams }]> {
