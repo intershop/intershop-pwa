@@ -1,6 +1,6 @@
 <ng-template #modal let-selectModal>
   <div class="modal-header">
-    <h2 class="modal-title">
+    <h2 id="product-notification-edit-modal-title" class="modal-title">
       <ng-container *ngIf="product$ | async as product">
         {{ product.name }}
       </ng-container>

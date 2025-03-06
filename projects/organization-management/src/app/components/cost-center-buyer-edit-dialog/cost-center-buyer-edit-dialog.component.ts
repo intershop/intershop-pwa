@@ -106,7 +106,7 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
       budgetPeriod: buyer.budgetPeriod,
     };
 
-    this.modal = this.ngbModal.open(this.modalTemplate, { size: 'lg' });
+    this.modal = this.ngbModal.open(this.modalTemplate, { size: 'lg', ariaLabelledBy: 'cc-buyer-edit-modal-title' });
   }
 
   /** Close the modal. */
