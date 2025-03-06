@@ -107,7 +107,7 @@ export class ProductReviewCreateDialogComponent implements OnInit {
   /** Opens the modal. */
   show() {
     this.form.reset();
-    this.modal = this.ngbModal.open(this.modalTemplate);
+    this.modal = this.ngbModal.open(this.modalTemplate, { ariaLabelledBy: 'product-review-create-modal-title' });
   }
 
   /** Close the modal. */

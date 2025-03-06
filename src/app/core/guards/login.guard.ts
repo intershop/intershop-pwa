@@ -36,7 +36,11 @@ export async function loginGuard(route: ActivatedRouteSnapshot, _: RouterStateSn
     return true;
   }
 
-  const currentDialog = modalService.open(LoginModalComponent, { centered: true, size: 'sm' });
+  const currentDialog = modalService.open(LoginModalComponent, {
+    centered: true,
+    size: 'sm',
+    ariaLabelledBy: 'login-modal-title',
+  });
 
   const loginModalComponent = currentDialog.componentInstance as LoginModalComponent;
   loginModalComponent.loginMessageKey = route.queryParamMap.get('messageKey');

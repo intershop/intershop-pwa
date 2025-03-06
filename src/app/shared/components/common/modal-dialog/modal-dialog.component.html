@@ -1,6 +1,6 @@
 <ng-template #template>
   <div class="modal-header">
-    <h2 *ngIf="options.titleText" class="modal-title">
+    <h2 *ngIf="options.titleText" [id]="'modal-title-' + uuid" class="modal-title">
       <fa-icon *ngIf="options.icon" [icon]="options.icon" class="{{ options.iconClass }} " />{{ options.titleText }}
     </h2>
     <button type="button" class="close" [title]="'dialog.close.text' | translate" (click)="hide()">
