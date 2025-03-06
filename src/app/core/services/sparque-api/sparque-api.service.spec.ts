@@ -1,12 +1,11 @@
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Action, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { BehaviorSubject, noop } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { TokenService } from 'ish-core/services/token/token.service';
@@ -17,9 +16,9 @@ import {
   getRestEndpoint,
   getSparqueConfig,
 } from 'ish-core/store/core/configuration';
-import { serverError } from 'ish-core/store/core/error';
 import { isServerConfigurationLoaded } from 'ish-core/store/core/server-config';
 import { getPGID } from 'ish-core/store/customer/user';
+import { sparqueSuggestServerError } from 'ish-core/store/shopping/search';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 
 import { SparqueApiService } from './sparque-api.service';
@@ -27,21 +26,21 @@ import { SparqueApiService } from './sparque-api.service';
 const sparqueConfig = {
   serverUrl: 'http://fancy:0815',
   wrapperApi: 'infinity',
-  ApiName: 'foo',
-  WorkspaceName: 'bar',
-  ChannelId: 'aura',
+  apiName: 'foo',
+  workspaceName: 'bar',
+  channelId: 'aura',
 } as SparqueConfig;
 
 function getRestURL(endpoint: string): string {
   return sparqueConfig.serverUrl
     .concat('/api/', sparqueConfig.wrapperApi)
     .concat(endpoint)
-    .concat('?ApiName=')
-    .concat(sparqueConfig.ApiName)
-    .concat('&WorkspaceName=')
-    .concat(sparqueConfig.WorkspaceName)
-    .concat('&ChannelId=')
-    .concat(sparqueConfig.ChannelId)
+    .concat('?apiName=')
+    .concat(sparqueConfig.apiName)
+    .concat('&workspaceName=')
+    .concat(sparqueConfig.workspaceName)
+    .concat('&channelId=')
+    .concat(sparqueConfig.channelId)
     .concat('&Locale=en-US');
 }
 
@@ -53,7 +52,6 @@ describe('Sparque Api Service', () => {
     let sparqueApiService: SparqueApiService;
     let store: Store;
     let httpTestingController: HttpTestingController;
-    const featureToggleServiceMock = mock(FeatureToggleService);
     const apiTokenServiceMock = mock(ApiTokenService);
     const tokenServiceMock = mock(TokenService);
 
@@ -63,7 +61,6 @@ describe('Sparque Api Service', () => {
         imports: [HttpClientTestingModule],
         providers: [
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
-          { provide: FeatureToggleService, useFactory: () => instance(featureToggleServiceMock) },
           { provide: TokenService, useFactory: () => instance(tokenServiceMock) },
           provideMockStore({
             selectors: [
@@ -94,36 +91,6 @@ describe('Sparque Api Service', () => {
       httpTestingController.verify();
     });
 
-    it('should call the httpClient.options method when sparqueApiService.options method is called.', done => {
-      // eslint-disable-next-line etc/no-deprecated
-      sparqueApiService.options('data').subscribe({
-        next: data => {
-          expect(data).toBeTruthy();
-        },
-        complete: done,
-      });
-
-      const req = httpTestingController.expectOne(getRestURL('/data'));
-      req.flush({});
-      expect(req.request.method).toEqual('OPTIONS');
-    });
-
-    it('should create Error Action if httpClient.options throws Error.', () => {
-      const statusText = 'ERROR';
-      // eslint-disable-next-line etc/no-deprecated
-      sparqueApiService.options('data').subscribe({ next: fail, error: fail });
-      const req = httpTestingController.expectOne(getRestURL('/data'));
-
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(noop);
-      req.flush('err', { status: 500, statusText });
-      consoleSpy.mockRestore();
-
-      verify(store.dispatch(anything())).once();
-      const [action] = capture<Action & { payload: { error: HttpError } }>(store.dispatch).last();
-      expect(action.type).toEqual(serverError.type);
-      expect(action.payload.error).toHaveProperty('statusText', statusText);
-    });
-
     it('should call the httpClient.get method when sparqueApiService.get method is called.', done => {
       sparqueApiService.get('data').subscribe({
         next: data => {
@@ -137,94 +104,24 @@ describe('Sparque Api Service', () => {
       expect(req.request.method).toEqual('GET');
     });
 
-    it('should create Error Action if httpClient.get throws Error.', () => {
-      const statusText = 'ERROR';
-
-      sparqueApiService.get('data').subscribe({ next: fail, error: fail });
-      const req = httpTestingController.expectOne(getRestURL('/data'));
-
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(noop);
-      req.flush('err', { status: 500, statusText });
-      consoleSpy.mockRestore();
-
-      verify(store.dispatch(anything())).once();
-      const [action] = capture<Action & { payload: { error: HttpError } }>(store.dispatch).last();
-      expect(action.type).toEqual(serverError.type);
-      expect(action.payload.error).toHaveProperty('statusText', statusText);
-    });
-
-    it('should call the httpClient.put method when sparqueApiService.put method is called.', done => {
-      sparqueApiService.put('data').subscribe({
-        next: data => {
-          expect(data).toBeTruthy();
+    it('should create Error Action if httpClient.get throws Error.', done => {
+      sparqueApiService.get('data').subscribe({
+        next: fail,
+        error: err => {
+          expect(err).toBeInstanceOf(HttpErrorResponse);
+          done();
         },
-        complete: done,
+        complete: fail,
       });
 
-      const req = httpTestingController.expectOne(getRestURL('/data'));
-      req.flush({});
-      expect(req.request.method).toEqual('PUT');
-    });
+      httpTestingController
+        .expectOne(() => true)
+        .flush('', {
+          status: 400,
+          statusText: 'Error',
+        });
 
-    it('should call the httpClient.patch method when sparqueApiService.patch method is called.', done => {
-      sparqueApiService.patch('data').subscribe({
-        next: data => {
-          expect(data).toBeTruthy();
-        },
-        complete: done,
-      });
-
-      const req = httpTestingController.expectOne(getRestURL('/data'));
-      req.flush({});
-      expect(req.request.method).toEqual('PATCH');
-    });
-
-    it('should call the httpClient.post method when sparqueApiService.post method is called.', done => {
-      sparqueApiService.post('data').subscribe({
-        next: data => {
-          expect(data).toBeTruthy();
-        },
-        complete: done,
-      });
-
-      const req = httpTestingController.expectOne(getRestURL('/data'));
-      req.flush({});
-      expect(req.request.method).toEqual('POST');
-    });
-
-    it('should call the httpClient.delete method when sparqueApiService.delete method is called.', done => {
-      sparqueApiService.delete('data').subscribe({
-        next: data => {
-          expect(data).toBeTruthy();
-        },
-        complete: done,
-      });
-
-      const req = httpTestingController.expectOne(getRestURL('/data'));
-      req.flush({});
-      expect(req.request.method).toEqual('DELETE');
-    });
-
-    describe('Encode Resource ID', () => {
-      it('should return a double encoded string if legacyEncoding is on', () => {
-        when(featureToggleServiceMock.enabled('legacyEncoding')).thenReturn(true);
-
-        expect(sparqueApiService.encodeResourceId('123456abc')).toEqual(`123456abc`);
-        expect(sparqueApiService.encodeResourceId('d.ori+6@test.intershop.de')).toEqual(
-          `d.ori%252B6%2540test.intershop.de`
-        );
-        expect(sparqueApiService.encodeResourceId('pmiller@test.intershop.de')).toEqual(
-          `pmiller%2540test.intershop.de`
-        );
-      });
-
-      it('should  return a single encoded string if legacyEncoding is off', () => {
-        when(featureToggleServiceMock.enabled('legacyEncoding')).thenReturn(false);
-
-        expect(sparqueApiService.encodeResourceId('123456abc')).toEqual(`123456abc`);
-        expect(sparqueApiService.encodeResourceId('d.ori+6@test.intershop.de')).toEqual(`d.ori+6%40test.intershop.de`);
-        expect(sparqueApiService.encodeResourceId('pmiller@test.intershop.de')).toEqual(`pmiller%40test.intershop.de`);
-      });
+      verify(store.dispatch(anything())).never();
     });
   });
 
@@ -414,7 +311,14 @@ describe('Sparque Api Service', () => {
     });
 
     it('should dispatch communication timeout errors when getting status 0', done => {
-      sparqueApiService.get('route').subscribe({ next: fail, error: fail, complete: done });
+      sparqueApiService.get('data').subscribe({
+        next: fail,
+        error: err => {
+          expect(err).toBeInstanceOf(HttpErrorResponse);
+          done();
+        },
+        complete: fail,
+      });
 
       httpTestingController
         .expectOne(() => true)
@@ -424,14 +328,19 @@ describe('Sparque Api Service', () => {
         });
 
       verify(store.dispatch(anything())).once();
-      expect(capture(store.dispatch).last()?.[0]).toMatchInlineSnapshot(`
-        [Error Internal] Communication Timeout Error:
-          error: {"headers":{"normalizedNames":{},"lazyUpdate":null,"headers"...
-      `);
+      const dispatchedAction = capture(store.dispatch).last()?.[0] as { payload: { error: HttpError }; type: string };
+      expect(dispatchedAction.type).toBe(sparqueSuggestServerError.type);
     });
 
     it('should dispatch general errors when getting status 500', done => {
-      sparqueApiService.get('route').subscribe({ next: fail, error: fail, complete: done });
+      sparqueApiService.get('data').subscribe({
+        next: fail,
+        error: err => {
+          expect(err).toBeInstanceOf(HttpErrorResponse);
+          done();
+        },
+        complete: fail,
+      });
 
       httpTestingController
         .expectOne(() => true)
@@ -441,10 +350,8 @@ describe('Sparque Api Service', () => {
         });
 
       verify(store.dispatch(anything())).once();
-      expect(capture(store.dispatch).last()?.[0]).toMatchInlineSnapshot(`
-        [Error Internal] Server Error (5xx):
-          error: {"headers":{"normalizedNames":{},"lazyUpdate":null,"headers"...
-      `);
+      const dispatchedAction = capture(store.dispatch).last()?.[0] as { payload: { error: HttpError }; type: string };
+      expect(dispatchedAction.type).toBe(sparqueSuggestServerError.type);
     });
 
     it('should not dispatch errors when getting status 404', done => {

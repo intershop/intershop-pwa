@@ -2,12 +2,28 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { concatLatestFrom } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { EMPTY, Observable, combineLatest, defer, first, forkJoin, iif, map, of, switchMap, take } from 'rxjs';
+import {
+  EMPTY,
+  MonoTypeOperatorFunction,
+  Observable,
+  catchError,
+  combineLatest,
+  concatMap,
+  defer,
+  first,
+  forkJoin,
+  iif,
+  map,
+  of,
+  switchMap,
+  take,
+  throwError,
+} from 'rxjs';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
+import { AvailableOptions } from 'ish-core/services/api/api.service';
 import { TokenService } from 'ish-core/services/token/token.service';
 import { getCurrentLocale, getSparqueConfig } from 'ish-core/store/core/configuration';
+import { sparqueSuggestServerError } from 'ish-core/store/shopping/search';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -15,35 +31,30 @@ import { whenTruthy } from 'ish-core/utils/operators';
 const SPARQUE_CONFIG_EXCLUDE_PARAMS = ['serverUrl', 'wrapperApi'];
 
 /**
- * Service to interact with the Sparque API.
+ * Service for interacting with the Sparque API.
  *
- * This service extends the `ApiService` and provides methods to construct HTTP client parameters,
- * headers, and URLs for making API requests to the Sparque backend.
+ * This service provides methods to construct HTTP requests with appropriate headers and parameters,
+ * handle errors, and execute HTTP GET requests. It leverages Angular's HttpClient for making HTTP calls
+ * and NgRx Store for accessing application state.
  *
- * @extends ApiService
- *
- * @constructor
- * @param httpClient - The HTTP client used to make requests.
- * @param store - The store used to select state.
- * @param featureToggleService - The service used to manage feature toggles.
- * @param apiTokenService - The service used to manage API tokens.
- * @param tokenService - The service used to fetch tokens.
+ * The service includes methods to:
+ * - Construct HTTP client parameters and headers.
+ * - Convert paths to HTTP parameters based on Sparque configuration and locale.
+ * - Handle errors and dispatch actions to the store in case of server errors.
+ * - Execute HTTP GET requests.
  */
 @Injectable({ providedIn: 'root' })
-export class SparqueApiService extends ApiService {
+export class SparqueApiService {
   private static SPARQUE_PERSONALIZATION_IDENTIFIER = 'userId';
 
   constructor(
-    protected httpClient: HttpClient,
-    protected store: Store,
-    protected featureToggleService: FeatureToggleService,
+    private httpClient: HttpClient,
+    private store: Store,
     private apiTokenService: ApiTokenService,
     private tokenService: TokenService
-  ) {
-    super(httpClient, store, featureToggleService);
-  }
+  ) {}
 
-  protected constructHttpClientParams(
+  private constructHttpClientParams(
     path: string,
     options?: AvailableOptions
   ): Observable<[string, { headers: HttpHeaders; params: HttpParams }]> {
@@ -114,7 +125,7 @@ export class SparqueApiService extends ApiService {
    * 4. Appends the authorization token to the headers if available.
    * 5. Merges any additional headers provided in the options with the default headers.
    */
-  protected constructHeaders(options?: AvailableOptions): Observable<HttpHeaders> {
+  private constructHeaders(options?: AvailableOptions): Observable<HttpHeaders> {
     let defaultHeaders = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
 
     return iif(
@@ -147,7 +158,7 @@ export class SparqueApiService extends ApiService {
     );
   }
 
-  constructUrlForPath(path: string): Observable<string> {
+  private constructUrlForPath(path: string): Observable<string> {
     if (path.startsWith('http://') || path.startsWith('https://')) {
       return of(path);
     }
@@ -161,6 +172,33 @@ export class SparqueApiService extends ApiService {
     ]).pipe(
       first(),
       map(arr => arr.join(''))
+    );
+  }
+
+  private handleErrors<T>(dispatch: boolean): MonoTypeOperatorFunction<T> {
+    return catchError(error => {
+      if (dispatch && (error.status === 0 || (error.status >= 500 && error.status < 600))) {
+        if (error.message.includes('suggestions')) {
+          error.message = 'sparque.suggest.server.error.text';
+        }
+        this.store.dispatch(sparqueSuggestServerError(error));
+      }
+      return throwError(() => error);
+    });
+  }
+
+  private execute<T>(httpCall$: Observable<T>): Observable<T> {
+    return httpCall$.pipe(this.handleErrors(true));
+  }
+
+  /**
+   * http get request
+   */
+  get<T>(path: string, options?: AvailableOptions): Observable<T> {
+    return this.execute(
+      this.constructHttpClientParams(path, options).pipe(
+        concatMap(([url, httpOptions]) => this.httpClient.get<T>(url, httpOptions))
+      )
     );
   }
 }
