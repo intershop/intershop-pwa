@@ -219,7 +219,9 @@ export class RegistrationFormConfigurationService {
             () => cancelled || registered,
             of(true),
             of({}).pipe(
-              map(() => this.modalService.open(ConfirmLeaveModalComponent)),
+              map(() =>
+                this.modalService.open(ConfirmLeaveModalComponent, { ariaLabelledBy: 'confirm-leave-modal-title' })
+              ),
               switchMap(modalRef => race(modalRef.dismissed, from(modalRef.result))),
               tap(result => (result ? this.accountFacade.cancelRegistration() : noop))
             )

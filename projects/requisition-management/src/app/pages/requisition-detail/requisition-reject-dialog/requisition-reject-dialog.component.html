@@ -1,7 +1,9 @@
 <ng-template #modal let-rejectModal>
   <div class="modal-content">
     <div class="modal-header">
-      <h2 class="modal-title">{{ 'approval.rejectform.reject_order.heading' | translate }}</h2>
+      <h2 id="requisition-reject-modal-title" class="modal-title">
+        {{ 'approval.rejectform.reject_order.heading' | translate }}
+      </h2>
       <button type="button" class="close" [title]="'dialog.close.text' | translate" (click)="hide()">
         <span aria-hidden="true">&times;</span>
       </button>
