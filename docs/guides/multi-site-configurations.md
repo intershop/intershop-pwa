@@ -48,6 +48,7 @@ All other properties are optional:
 - **lang**: the default language as defined in the Angular CLI environment
 - **currency**: the default currency for this channel
 - **theme**: the theme used for the channel (see [Guide - Themes](./themes.md))
+- **sparque**: the sparque connection configuration (see [Guide - Sparque](./sparque-integration.md))
 - **protected**: Selectively disable basic auth for a given domain and/or baseHref. Only applies in combination with globally activated nginx basic authentication.
 
 Dynamically directing the PWA to different ICM installations can be done by using:

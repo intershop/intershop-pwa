@@ -11,18 +11,12 @@ Sparque AI works as a search engine and delivers various information, like keywo
 
 ## Configuration
 
-To use the Sparque search engine, the following steps must be taken into account during deployment:
+To use the Sparque search engine, the PWA must be configured.
+The configuration data is described in the [Sparque Config Model](../../src/app/core/models/sparque/sparque-config.model.ts) and contains values that are necessary for the interaction with the Sparque server.
+Depending on how the PWA is set up, you have various options for storing the sparque configuration.
+In any case, the name of the configuration parameters must correspond exactly to the names of the parameters in the sparque config model.
 
-- store the correct sparque configuration as an environment variable [Sparque Config Model](../../src/app/core/models/sparque/sparque-config.model.ts)
-
-Example for the specification of the sparque configuration in a docker compose file:
-
-```yaml
-# PWA container settings
-pwa:
-  environment:
-    SPARQUE: '{"serverUrl": "<sparque connection url>", "wrapperApi": "<wrapper api version>", "WorkspaceName": "<name of the workspace>", "ApiName": "<used sparque api>", "ChannelId": <in sparque workspace configured channel>}'
-```
+> If the sparque configuration data is not stored, the Solr search engine is used by default.
 
 Example for the specification of the sparque configuration in an environment file:
 
@@ -30,14 +24,41 @@ Example for the specification of the sparque configuration in an environment fil
 sparque: {
   serverUrl: '<sparque connection url>',
   wrapperApi: '<wrapper api version>',
-  WorkspaceName: '<name of the workspace>',
-  ApiName: '<used sparque api>',
-  ChannelId: '<in sparque workspace configured channel>',
+  workspaceName: '<name of the workspace>',
+  apiName: '<used sparque api>',
+  channelId: '<in sparque workspace configured channel>',
 },
+```
+
+Example for the specification of the sparque configuration in a docker compose file:
+
+```yaml
+# PWA container settings
+pwa:
+  environment:
+    SPARQUE: '{"serverUrl": "<sparque connection url>", "wrapperApi": "<wrapper api version>", "workspaceName": "<name of the workspace>", "apiName": "<used sparque api>", "channelId": <in sparque workspace configured channel>}'
 ```
 
 > The specification of the sparque configuration data in the kubernetes deployment file uses the same key/value syntax.
 > The value of the SPARQUE key is a string that must be specified in JSON format. See the example above.
+
+### Multi Site Configurations
+
+The sparque integration also supports dynamic configurations of a single PWA container deployment in regards of a multi-site scenario. (see [Guide - Multi Site Configurations](./multi-site-configurations.md))
+
+Example for the specification of multiple domain configuration in a NGINX docker yaml:
+
+```yaml
+'domain1':
+  channel: channel1
+  sparque:
+    serverUrl: <sparque connection url>
+    wrapperApi: <wrapper api version>
+    workspaceName: <name of the workspace>
+    apiName: <used sparque api>
+    channelId: <in sparque workspace configured channel>
+  ...
+```
 
 ## Suggest Components
 
