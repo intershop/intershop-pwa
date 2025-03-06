@@ -46,7 +46,7 @@ pwa:
 
 The sparque integration also supports dynamic configurations of a single PWA container deployment in regards of a multi-site scenario. (see [Guide - Multi Site Configurations](./multi-site-configurations.md))
 
-Example for the specification of multiple domain configuration in a an NGINX docker yaml:
+Example for the specification of multiple domain configuration in a NGINX docker yaml:
 
 ```yaml
 'domain1':
