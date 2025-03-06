@@ -11,18 +11,12 @@ Sparque AI works as a search engine and delivers various information, like keywo
 
 ## Configuration
 
-To use the Sparque search engine, the following steps must be taken into account during deployment:
+To use the Sparque search engine, the PWA must be configured.
+The configuration data is described in the [Sparque Config Model](../../src/app/core/models/sparque/sparque-config.model.ts) and contains values that are necessary for the interaction with the Sparque server.
+Depending on how the PWA is set up, you have various options for storing the sparque configuration.
+In any case, the name of the configuration parameters must correspond exactly to the names of the parameters in the sparque config model.
 
-- store the correct sparque configuration as an environment variable [Sparque Config Model](../../src/app/core/models/sparque/sparque-config.model.ts)
-
-Example for the specification of the sparque configuration in a docker compose file:
-
-```yaml
-# PWA container settings
-pwa:
-  environment:
-    SPARQUE: '{"serverUrl": "<sparque connection url>", "wrapperApi": "<wrapper api version>", "workspaceName": "<name of the workspace>", "apiName": "<used sparque api>", "channelId": <in sparque workspace configured channel>}'
-```
+> If the sparque configuration data is not stored, the Solr search engine is used by default.
 
 Example for the specification of the sparque configuration in an environment file:
 
@@ -34,6 +28,15 @@ sparque: {
   apiName: '<used sparque api>',
   channelId: '<in sparque workspace configured channel>',
 },
+```
+
+Example for the specification of the sparque configuration in a docker compose file:
+
+```yaml
+# PWA container settings
+pwa:
+  environment:
+    SPARQUE: '{"serverUrl": "<sparque connection url>", "wrapperApi": "<wrapper api version>", "workspaceName": "<name of the workspace>", "apiName": "<used sparque api>", "channelId": <in sparque workspace configured channel>}'
 ```
 
 > The specification of the sparque configuration data in the kubernetes deployment file uses the same key/value syntax.
