@@ -66,7 +66,7 @@
           [title]="'account.order_template.edit.heading' | translate"
           [routerLink]="'/account/order-templates/' + orderTemplate.id"
           data-testing-id="order-template-details-edit"
-          ><fa-icon icon="pencil-alt"
+          ><fa-icon [icon]="['fas', 'pencil-alt']"
         /></a>
         <button
           type="button"

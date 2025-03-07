@@ -89,7 +89,7 @@ describe('Fieldset Field Component', () => {
 
   it('should contain a legend in a fieldset', () => {
     fixture.detectChanges();
-    expect(element.querySelector('fieldset > div > legend')).toBeTruthy();
+    expect(element.querySelector('fieldset > legend')).toBeTruthy();
   });
 
   it('should contain a legend class in a fieldset', () => {

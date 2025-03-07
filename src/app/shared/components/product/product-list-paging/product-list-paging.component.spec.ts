@@ -38,7 +38,7 @@ describe('Product List Paging Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <ul class="product-list-paging">
-        <li>«</li>
+        <li><span>«</span></li>
         <li>
           <a
             queryparamshandling="merge"
@@ -89,7 +89,6 @@ describe('Product List Paging Component', () => {
         <li>
           <a
             queryparamshandling="merge"
-            class="product-list-paging-previous"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=1"
@@ -146,7 +145,6 @@ describe('Product List Paging Component', () => {
         <li>
           <a
             queryparamshandling="merge"
-            class="product-list-paging-previous"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
             href="/?page=2"
@@ -181,7 +179,7 @@ describe('Product List Paging Component', () => {
             >3</a
           >
         </li>
-        <li class="pagination-list-next">»</li>
+        <li class="pagination-list-next"><span>»</span></li>
       </ul>
     `);
   });

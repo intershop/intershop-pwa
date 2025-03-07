@@ -3,10 +3,10 @@
     *ngIf="editRouterLink"
     class="float-right btn-tool"
     [routerLink]="editRouterLink"
-    [title]="'checkout.update.label' | translate : { '0': heading | translate }"
+    [title]="'infobox.update.title' | translate : { '0': heading | translate }"
   >
     <fa-icon [icon]="['fas', 'pencil-alt']" />
   </a>
-  <h3 *ngIf="heading">{{ heading | translate }}</h3>
+  <h2 class="h3" *ngIf="heading">{{ heading | translate }}</h2>
   <ng-content></ng-content>
 </div>

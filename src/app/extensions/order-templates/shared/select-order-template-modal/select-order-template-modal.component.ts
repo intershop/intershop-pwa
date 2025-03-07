@@ -114,7 +114,7 @@ export class SelectOrderTemplateModalComponent implements OnInit {
   /** open modal */
   show() {
     this.showForm = true;
-    this.modal = this.ngbModal.open(this.modalTemplate);
+    this.modal = this.ngbModal.open(this.modalTemplate, { ariaLabelledBy: 'select-order-template-modal-title' });
 
     // set default values after init (for example after closing and reopening the modal)
     this.orderTemplateOptions$

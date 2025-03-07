@@ -58,9 +58,13 @@
     <div class="text-right pt-3 pb-3">
       <ul class="share-tools">
         <li>
-          <a href="javascript:window.print();" class="link-print" rel="nofollow">
+          <a
+            href="javascript:window.print();"
+            class="link-print"
+            rel="nofollow"
+            [title]="'checkout.receipt.print.button.label' | translate"
+          >
             <fa-icon [icon]="['fas', 'print']" />
-            <span class="share-label">{{ 'checkout.receipt.print.button.label' | translate }}</span>
           </a>
         </li>
       </ul>
@@ -70,7 +74,7 @@
 
       <div class="cost-summary"><ish-basket-cost-summary [totals]="order.totals" /></div>
       <div *ngIf="order.customerNo" class="cart-summary">
-        <h3>{{ 'checkout.account.email.registered.heading' | translate }}</h3>
+        <h2 class="h3">{{ 'checkout.account.email.registered.heading' | translate }}</h2>
         {{ 'checkout.account.email.registered.text' | translate }}&nbsp;
         <a routerLink="/account" data-testing-id="myaccount-link" class="text-nowrap">{{
           'checkout.account.email.registered.link' | translate

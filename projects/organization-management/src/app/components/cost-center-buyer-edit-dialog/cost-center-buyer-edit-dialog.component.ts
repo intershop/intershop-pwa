@@ -74,6 +74,7 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
             type: 'ish-select-field',
             className: 'col-6 col-md-4',
             props: {
+              ariaLabel: 'account.costcenter.budget.period.select.label',
               fieldClass: 'col-12 label-empty',
               options: FormsService.getCostCenterBudgetPeriodOptions(),
             },
@@ -115,7 +116,7 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
       budgetPeriod: buyer.budgetPeriod,
     };
 
-    this.modal = this.ngbModal.open(this.modalTemplate, { size: 'lg' });
+    this.modal = this.ngbModal.open(this.modalTemplate, { size: 'lg', ariaLabelledBy: 'cc-buyer-edit-modal-title' });
   }
 
   /** Close the modal. */

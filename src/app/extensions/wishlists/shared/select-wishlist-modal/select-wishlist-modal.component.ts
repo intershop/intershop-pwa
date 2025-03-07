@@ -112,7 +112,7 @@ export class SelectWishlistModalComponent implements OnInit {
   /** open modal */
   show() {
     this.showForm = true;
-    this.modal = this.ngbModal.open(this.modalTemplate);
+    this.modal = this.ngbModal.open(this.modalTemplate, { ariaLabelledBy: 'select-wishlist-modal-title' });
 
     this.wishlistsFacade.preferredWishlist$
       .pipe(

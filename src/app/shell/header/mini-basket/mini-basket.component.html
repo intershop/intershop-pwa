@@ -1,10 +1,18 @@
 <div
   class="quick-cart-link"
-  [ngClass]="{ 'd-none': view !== 'full', 'd-md-block': view !== 'small', 'mini-cart-active': !isCollapsed }"
+  [ngClass]="{ 'd-none': view !== 'full', 'd-md-block': view !== 'small' }"
   ishClickOutside
   (isClickedOutside)="collapse()"
+  ngbDropdown
+  #miniBasketDropdown="ngbDropdown"
 >
-  <button type="button" class="btn btn-link" (click)="toggleCollapse()">
+  <button
+    type="button"
+    class="btn btn-link"
+    ngbDropdownToggle
+    aria-haspopup="menu"
+    [attr.aria-label]="'shopping_cart.ministatus.label' | translate : { '0': itemCount$ | async }"
+  >
     <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
     <span>{{ 'shopping_cart.ministatus.items.text' | translate : { '0': itemCount$ | async } }}</span>
     <ng-container *ngIf="itemTotal$ | async as itemTotal">
@@ -12,7 +20,7 @@
     </ng-container>
   </button>
 
-  <div *ngIf="!isCollapsed" class="mini-cart">
+  <div ngbDropdownMenu class="mini-cart">
     <ish-lazy-mini-basket-content />
   </div>
 </div>
@@ -22,6 +30,7 @@
     *ngIf="itemCount$ | async as itemCount; else emptyMobileCart"
     routerLink="/basket"
     class="item-count-container position-relative"
+    [attr.aria-label]="'shopping_cart.ministatus.label' | translate : { '0': itemCount$ | async }"
   >
     <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
     <span class="badge badge-pill" [ngClass]="basketAnimation$ | async">{{ itemCount }}</span>
@@ -37,6 +46,7 @@
       (click)="p.open()"
       (keyup.enter)="p.open()"
       tabindex="0"
+      [attr.aria-label]="'shopping_cart.ministatus.label' | translate : { '0': itemCount$ | async }"
     >
       <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
       <span class="badge badge-pill" [ngClass]="basketAnimation$ | async">0</span>

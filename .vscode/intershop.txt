@@ -169,6 +169,7 @@ roadmap
 roboto
 robotobold
 robotoregular
+routerlink
 ruleset
 rulesets
 rxjs

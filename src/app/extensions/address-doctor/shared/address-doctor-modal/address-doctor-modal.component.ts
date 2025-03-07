@@ -54,7 +54,11 @@ export class AddressDoctorModalComponent {
       address,
     };
 
-    this.ngbModalRef = this.ngbModal.open(this.modalDialogTemplate, this.options || { size: 'lg' });
+    const options = this.options || { size: 'lg' };
+    this.ngbModalRef = this.ngbModal.open(this.modalDialogTemplate, {
+      ...options,
+      ariaLabelledBy: 'address-doctor-modal-title',
+    });
     this.ngbModalRef.hidden.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.hidden.emit(true);
     });

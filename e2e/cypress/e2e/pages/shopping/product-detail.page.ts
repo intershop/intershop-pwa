@@ -38,10 +38,10 @@ export class ProductDetailPage {
 
   private addToCartButton = () => cy.get('ish-product-detail').find('[data-testing-id="addToCartButton"]');
   private addToCompareButton() {
-    return cy.get('ish-product-detail').find('ish-product-detail-actions [data-testing-id*="compare"] .share-label');
+    return cy.get('ish-product-detail').find('ish-product-detail-actions [data-testing-id*="compare"]');
   }
   private addToWishlistButton() {
-    return cy.get('ish-product-detail').find('ish-product-detail-actions [data-testing-id*="wishlist"] .share-label');
+    return cy.get('ish-product-detail').find('ish-product-detail-actions [data-testing-id*="wishlist"]');
   }
 
   private addToOrderTemplateButton() {

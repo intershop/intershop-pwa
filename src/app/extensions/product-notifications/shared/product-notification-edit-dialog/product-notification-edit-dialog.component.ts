@@ -100,7 +100,7 @@ export class ProductNotificationEditDialogComponent implements OnInit {
 
   // open modal
   show() {
-    this.modal = this.ngbModal.open(this.modalTemplate);
+    this.modal = this.ngbModal.open(this.modalTemplate, { ariaLabelledBy: 'product-notification-edit-modal-title' });
   }
 
   get formDisabled() {

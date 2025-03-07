@@ -16,6 +16,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, race, take } from 'rxjs';
+import { v4 as uuid } from 'uuid';
 
 export interface ModalOptions extends NgbModalOptions {
   /**
@@ -78,6 +79,8 @@ export class ModalDialogComponent<T> implements OnDestroy {
 
   data: T;
 
+  uuid = uuid();
+
   private hide$ = new Subject<void>();
 
   private destroyRef = inject(DestroyRef);
@@ -90,7 +93,10 @@ export class ModalDialogComponent<T> implements OnDestroy {
   show(data?: T) {
     this.data = data ? data : undefined;
 
-    this.ngbModalRef = this.ngbModal.open(this.modalDialogTemplate, this.options);
+    this.ngbModalRef = this.ngbModal.open(this.modalDialogTemplate, {
+      ...this.options,
+      ariaLabelledBy: `modal-title-${this.uuid}`,
+    });
 
     race(this.ngbModalRef.dismissed, this.hide$)
       .pipe(take(1), takeUntilDestroyed(this.destroyRef))

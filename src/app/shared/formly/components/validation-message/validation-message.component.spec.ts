@@ -19,6 +19,7 @@ describe('Validation Message Component', () => {
     fixture = TestBed.createComponent(ValidationMessageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    component.field = { id: 'test' };
   });
 
   it('should be created', () => {

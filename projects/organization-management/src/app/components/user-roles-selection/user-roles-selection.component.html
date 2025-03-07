@@ -1,4 +1,5 @@
 <fieldset>
+  <legend class="sr-only">{{ 'account.user.details.profile.role_permissions.heading' | translate }}</legend>
   <div class="row">
     <div class="col-md-4 col-form-label">{{ 'account.user.details.profile.role_permissions.heading' | translate }}</div>
     <div class="col-md-8">
@@ -25,14 +26,21 @@
             </ul>
             <p>
               <!-- Expand/Collapse user permissions -->
-              <a *ngIf="!isExpanded[i]" (click)="toggleExpanded(i)" (keydown.enter)="toggleExpanded(i)" tabindex="0">
-                {{ 'account.user.details.profile.role.show_permissions.link' | translate }}&nbsp;
-                <fa-icon [icon]="['fas', 'angle-down']" />
-              </a>
-              <a *ngIf="isExpanded[i]" (click)="toggleExpanded(i)" (keydown.enter)="toggleExpanded(i)" tabindex="0">
-                {{ 'account.user.details.profile.role.hide_permissions.link' | translate }}&nbsp;
-                <fa-icon [icon]="['fas', 'angle-up']" />
-              </a>
+              <button
+                type="button"
+                (click)="toggleExpanded(i)"
+                class="btn btn-link btn-link-action text-decoration-none"
+              >
+                <ng-container *ngIf="isExpanded[i]; else show_permissions_link">
+                  {{ 'account.user.details.profile.role.hide_permissions.link' | translate }}&nbsp;
+                  <fa-icon [icon]="['fas', 'angle-up']" />
+                </ng-container>
+
+                <ng-template #show_permissions_link>
+                  {{ 'account.user.details.profile.role.show_permissions.link' | translate }}&nbsp;
+                  <fa-icon [icon]="['fas', 'angle-down']" />
+                </ng-template>
+              </button>
             </p>
           </div>
         </ng-container>

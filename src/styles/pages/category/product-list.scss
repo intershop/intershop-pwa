@@ -124,12 +124,12 @@
   a {
     &.product-title {
       display: block;
-      padding-top: $space-default;
+      padding-top: 0;
+      margin-top: $space-default;
       font-family: $font-family-condensedregular;
       font-size: $font-size-lg;
       color: $text-color-primary;
       text-align: center;
-      text-decoration: none !important;
     }
   }
 
@@ -176,7 +176,7 @@
 .scaled-prices {
   margin-bottom: $space-default;
   font-family: $font-family-condensedregular;
-  color: $text-color-quaternary;
+  color: $text-color-tertiary;
 }
 
 .product-list-container {

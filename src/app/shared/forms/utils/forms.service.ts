@@ -54,6 +54,34 @@ export class FormsService {
   }
 
   /**
+   * Adds an html element id to the given aria-describedBy property and returns it.
+   *
+   * @param ariaDescribedBy The aria-describedBy attribute of an html element.
+   * @param idToAdd an elementId that should be added to the ariaDescribedBy property.
+   * @returns the updated aria-describedBy property.
+   */
+  static addAriaDescribedById(ariaDescribedBy: string, idToAdd: string): string {
+    if (ariaDescribedBy) {
+      return `${ariaDescribedBy} ${idToAdd}`;
+    } else {
+      return idToAdd;
+    }
+  }
+
+  /**
+   * Removes an html element id to the given aria-describedBy property and returns it.
+   *
+   * @param ariaDescribedBy The aria-describedBy attribute of an html element.
+   * @param idToAdd an elementId that should be removed from the ariaDescribedBy property.
+   * @returns the updated aria-describedBy property.
+   */
+  static removeAriaDescribedById(ariaDescribedByIds: string, idToRemove: string): string {
+    if (ariaDescribedByIds) {
+      return ariaDescribedByIds.replace(idToRemove, '').trim() || undefined;
+    }
+  }
+
+  /**
    * Gets all possible salutation options for a certain country.
    *
    * @param countryCode country code of the country for which the salutations should be determined.

@@ -28,6 +28,10 @@ import { SelectOrderTemplateModalComponent } from '../select-order-template-moda
 export class ProductAddToOrderTemplateComponent implements OnInit {
   @Input() displayType: 'icon' | 'link' | 'animated' = 'link';
   @Input() cssClass: string;
+  /**
+   * hidden for screen readers
+   */
+  @Input() ariaHidden = false;
 
   disabled$: Observable<boolean>;
   visible$: Observable<boolean>;

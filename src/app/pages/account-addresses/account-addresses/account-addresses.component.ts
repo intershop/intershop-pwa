@@ -113,6 +113,7 @@ export class AccountAddressesComponent implements OnInit {
           mapToAddressOptions()
         ),
         placeholder: 'account.addresses.preferredinvoice.button.label',
+        ariaLabel: 'account.addresses.preferredinvoice.heading',
       },
     };
 
@@ -133,6 +134,7 @@ export class AccountAddressesComponent implements OnInit {
           mapToAddressOptions()
         ),
         placeholder: 'account.addresses.preferredshipping.button.label',
+        ariaLabel: 'account.addresses.preferredshipping.heading',
       },
     };
 

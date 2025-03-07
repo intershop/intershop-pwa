@@ -68,6 +68,10 @@ export class UserBudgetFormComponent implements OnInit {
     return [
       {
         type: 'ish-fieldset-field',
+        props: {
+          legend: 'account.user.update_budget.heading',
+          legendClass: 'sr-only',
+        },
         fieldGroup: [
           {
             key: 'currency',
@@ -115,6 +119,7 @@ export class UserBudgetFormComponent implements OnInit {
                 key: 'budgetPeriod',
                 props: {
                   fieldClass: 'col-12 label-empty',
+                  ariaLabel: 'account.user.budget.period.select.label',
                   options: this.periods.map(period => ({
                     value: period,
                     // keep-localization-pattern: ^account\.user\.new\.budget\.period\.value.*

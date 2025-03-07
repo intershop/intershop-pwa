@@ -21,7 +21,7 @@ export class WishlistsDetailsPage {
   }
 
   get wishlistTitle() {
-    return cy.get('ish-account-wishlist-detail-page').find('h1').invoke('text');
+    return cy.get('ish-account-wishlist-detail-page').find('h1 span[data-testing-id="wishlist-title"]').invoke('text');
   }
 
   get wishlistPreferredTextElement() {

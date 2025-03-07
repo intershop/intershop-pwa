@@ -132,7 +132,7 @@ export class WishlistPreferencesDialogComponent implements OnInit {
     } else {
       this.model = pick(this.wishlist, 'title', 'preferred');
     }
-    this.modal = this.ngbModal.open(this.modalTemplate);
+    this.modal = this.ngbModal.open(this.modalTemplate, { ariaLabelledBy: 'wishlist-preferences-modal-title' });
   }
 
   /** Close the modal. */

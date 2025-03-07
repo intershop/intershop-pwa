@@ -18,6 +18,10 @@ import { CompareFacade } from '../../facades/compare.facade';
 export class ProductAddToCompareComponent implements OnInit {
   @Input() displayType: 'button' | 'icon' = 'button';
   @Input() cssClass: string;
+  /**
+   * hidden for screen readers
+   */
+  @Input() ariaHidden = false;
 
   isInCompareList$: Observable<boolean>;
   visible$: Observable<boolean>;

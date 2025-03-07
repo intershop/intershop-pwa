@@ -2,18 +2,20 @@
 <ish-error-message [error]="orderTemplateError$ | async" />
 
 <ng-container *ngIf="orderTemplate$ | async as orderTemplate" ishProductContext>
-  <h1 class="clearfix">
-    {{ orderTemplate?.title }}
+  <div class="d-flex align-items-center justify-content-between flex-wrap">
+    <h1 class="clearfix">
+      {{ orderTemplate?.title }}
+    </h1>
     <button
       type="button"
       (click)="editOrderTemplateDialog.show()"
-      class="btn btn-secondary float-right"
+      class="btn btn-secondary float-right m-0"
       [title]="'account.order_template.edit.heading' | translate"
       data-testing-id="order-template-details-edit"
     >
       {{ 'account.order_template.order_template.edit.rename' | translate }}
     </button>
-  </h1>
+  </div>
 
   <p
     *ngIf="noOfUnavailableProducts$ | async as noOfUnavailableProducts"

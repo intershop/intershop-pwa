@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Inject, Input } from '@angular/core
 import { RxState } from '@rx-angular/state';
 import { EMPTY, Observable, combineLatest, of } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
-import SwiperCore, { Navigation, Pagination, SwiperOptions } from 'swiper';
+import SwiperCore, { Navigation, Pagination, SwiperOptions, A11y } from 'swiper';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -11,7 +11,7 @@ import { ProductCompletenessLevel } from 'ish-core/models/product/product.model'
 import { InjectSingle } from 'ish-core/utils/injection';
 import { mapToProperty } from 'ish-core/utils/operators';
 
-SwiperCore.use([Navigation, Pagination]);
+SwiperCore.use([Navigation, Pagination, A11y]);
 
 /**
  * The Product Link Carousel Component

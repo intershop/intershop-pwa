@@ -14,7 +14,7 @@
     h1,
     h2,
     h3 {
-      .btn {
+      .btn:not(.details-tooltip) {
         @media (max-width: $screen-xs-max) {
           display: block;
           width: 100%;
@@ -27,6 +27,11 @@
           float: right;
         }
       }
+    }
+
+    .details-tooltip {
+      color: $link-color;
+      text-transform: none;
     }
   }
 

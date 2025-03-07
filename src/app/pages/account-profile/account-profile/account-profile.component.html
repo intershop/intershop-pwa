@@ -3,7 +3,7 @@
 <!-- Email -->
 <div class="row section">
   <div class="col-10 col-lg-8">
-    <h3>{{ 'account.profile.email.heading' | translate }}</h3>
+    <h2 class="h3">{{ 'account.profile.email.heading' | translate }}</h2>
     <div class="row">
       <div class="col-md-12">
         <dl class="row dl-horizontal dl-separator">
@@ -18,7 +18,7 @@
       *ishIdentityProviderCapability="'editEmail'"
       routerLink="/account/profile/email"
       class="btn-tool"
-      [title]="'account.profile.update.link' | translate"
+      [title]="'account.profile.update.link' | translate : { '0': 'account.profile.email.heading' | translate }"
       data-testing-id="edit-email"
     >
       <fa-icon [icon]="['fas', 'pencil-alt']" />
@@ -29,7 +29,7 @@
 <!-- Password -->
 <div class="row section" *ishIdentityProviderCapability="'editPassword'">
   <div class="col-10 col-lg-8">
-    <h3>{{ 'account.profile.password.heading' | translate }}</h3>
+    <h2 class="h3">{{ 'account.profile.password.heading' | translate }}</h2>
     <div class="row">
       <div class="col-md-12">
         <dl class="row dl-horizontal dl-separator">
@@ -43,7 +43,7 @@
     <a
       routerLink="/account/profile/password"
       class="btn-tool"
-      title="{{ 'account.profile.update.link' | translate }}"
+      [title]="'account.profile.update.link' | translate : { '0': 'account.profile.password.heading' | translate }"
       data-testing-id="edit-password"
     >
       <fa-icon [icon]="['fas', 'pencil-alt']" />
@@ -54,7 +54,7 @@
 <!-- Profile -->
 <div class="row section">
   <div class="col-10 col-lg-8">
-    <h3>{{ 'account.profile.detail.heading' | translate }}</h3>
+    <h2 class="h3">{{ 'account.profile.detail.heading' | translate }}</h2>
     <div class="row">
       <div class="col-md-12">
         <dl class="row dl-horizontal dl-separator">
@@ -90,7 +90,7 @@
       *ishIdentityProviderCapability="'editProfile'"
       routerLink="/account/profile/user"
       class="btn-tool"
-      title="{{ 'account.profile.update.link' | translate }}"
+      [title]="'account.profile.update.link' | translate : { '0': 'account.profile.detail.heading' | translate }"
       data-testing-id="edit-user"
     >
       <fa-icon [icon]="['fas', 'pencil-alt']" />

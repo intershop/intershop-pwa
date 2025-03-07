@@ -28,6 +28,10 @@ import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wi
 export class ProductAddToWishlistComponent implements OnInit {
   @Input() displayType: 'icon' | 'link' | 'animated' = 'link';
   @Input() cssClass: string;
+  /**
+   * hidden for screen readers
+   */
+  @Input() ariaHidden = false;
 
   visible$: Observable<boolean>;
 
