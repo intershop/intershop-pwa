@@ -280,33 +280,33 @@
       background: #fff url('/assets/img/loading.gif') center center no-repeat;
       background-size: contain;
     }
+  }
 
-    .search-suggest-backdrop {
-      position: fixed;
-      top: calc($header-height-mobile + $search-container-height);
-      right: 0;
-      z-index: 2;
-      width: 100%;
-      width: 100vw;
-      height: 0; // prevent overlaying any other elements
-      visibility: hidden; // combined with opacity
-      background: $color-dark;
-      opacity: 0;
-      transition: opacity 0.15s linear, visibility 0.15s linear; // similar to bootstrap modal
+  .search-suggest-backdrop {
+    position: fixed;
+    top: calc($header-height-mobile + $search-container-height);
+    right: 0;
+    z-index: 2;
+    width: 100%;
+    width: 100vw;
+    height: 0; // prevent overlaying any other elements
+    visibility: hidden; // combined with opacity
+    background: $color-dark;
+    opacity: 0;
+    transition: opacity 0.15s linear, visibility 0.15s linear; // similar to bootstrap modal
+
+    @media (min-width: $screen-sm) {
+      top: 170px;
+      height: calc(100vh - 170px);
+    }
+
+    &.show {
+      height: calc(100vh - #{$header-height-mobile + $search-container-height});
+      visibility: visible;
+      opacity: 0.5;
 
       @media (min-width: $screen-sm) {
-        top: 170px;
         height: calc(100vh - 170px);
-      }
-
-      &.show {
-        height: calc(100vh - #{$header-height-mobile + $search-container-height});
-        visibility: visible;
-        opacity: 0.5;
-
-        @media (min-width: $screen-sm) {
-          height: calc(100vh - 170px);
-        }
       }
     }
   }
