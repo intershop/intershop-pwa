@@ -54,12 +54,12 @@ export class UpdatePasswordFormComponent implements OnInit {
           },
           {
             key: 'passwordConfirmation',
-            type: 'ish-text-input-field',
+            type: 'ish-password-novalidate-field',
             props: {
-              type: 'password',
               required: true,
               hideRequiredMarker: true,
               label: 'account.register.password_confirmation.label',
+              attributes: { autocomplete: 'new-password' },
             },
             validation: {
               messages: {
