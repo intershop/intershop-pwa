@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
@@ -14,11 +15,14 @@ describe('Checkbox Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [CheckboxFieldComponent],
       imports: [
         FormlyModule.forRoot({
           types: [{ name: 'checkbox', component: CheckboxFieldComponent }],
         }),
         FormlyTestingComponentsModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
       ],
     }).compileComponents();
   });
@@ -38,6 +42,7 @@ describe('Checkbox Field Component', () => {
     fixture = TestBed.createComponent(FormlyTestingContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+
     component.testComponentInputs = testComponentInputs;
   });
 

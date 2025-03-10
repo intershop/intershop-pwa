@@ -8,12 +8,13 @@
     <!-- Requisition No -->
     <ng-container cdkColumnDef="requisitionNo">
       <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-requisition-no">
-        {{ 'account.approvallist.table.id_of_order' | translate }}
+        <span aria-hidden="true">{{ 'account.approvallist.table.id_of_order' | translate }}</span>
+        <span class="sr-only">{{ 'account.approvallist.table.id_of_order.title' | translate }}</span>
       </th>
       <td
         cdk-cell
         *cdkCellDef="let requisition"
-        [attr.data-label]="'account.approvallist.table.id_of_order' | translate"
+        [attr.data-label]="'account.approvallist.table.id_of_order.title' | translate"
       >
         <a
           [routerLink]="[requisition.id, { status: status }]"
@@ -27,12 +28,13 @@
     <!-- Order No -->
     <ng-container cdkColumnDef="orderNo">
       <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-no">
-        {{ 'account.approvallist.table.no_of_order' | translate }}
+        <span aria-hidden="true">{{ 'account.approvallist.table.no_of_order' | translate }}</span>
+        <span class="sr-only">{{ 'account.approvallist.table.no_of_order.title' | translate }}</span>
       </th>
       <td
         cdk-cell
         *cdkCellDef="let requisition"
-        [attr.data-label]="'account.approvallist.table.no_of_order' | translate"
+        [attr.data-label]="'account.approvallist.table.no_of_order.title' | translate"
       >
         <a [routerLink]="['../../orders/', requisition.id]">{{ requisition.orderNo }}</a>
       </td>
@@ -41,12 +43,13 @@
     <!-- Order No - No link -->
     <ng-container cdkColumnDef="orderNoSimple">
       <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-no-simple">
-        {{ 'account.approvallist.table.no_of_order' | translate }}
+        <span aria-hidden="true">{{ 'account.approvallist.table.no_of_order' | translate }}</span>
+        <span class="sr-only">{{ 'account.approvallist.table.no_of_order.title' | translate }}</span>
       </th>
       <td
         cdk-cell
         *cdkCellDef="let requisition"
-        [attr.data-label]="'account.approvallist.table.no_of_order' | translate"
+        [attr.data-label]="'account.approvallist.table.no_of_order.title' | translate"
       >
         {{ requisition.orderNo }}
       </td>

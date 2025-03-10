@@ -1,23 +1,31 @@
 <div class="wishlist">
-  <h1 class="cart-header">
-    {{ 'account.wishlists.heading' | translate }}
-    <ng-template #WishlistDescription>
-      <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
-    </ng-template>
-    <a
-      class="header-note pl-2"
-      [ngbPopover]="WishlistDescription"
-      placement="bottom"
-      popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
+  <div class="d-flex align-items-center justify-content-between flex-wrap">
+    <h1>
+      {{ 'account.wishlists.heading' | translate }}
+      <ng-template #WishlistDescription>
+        <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
+      </ng-template>
+      <button
+        type="button"
+        class="btn btn-link details-tooltip header-note mt-1"
+        [ngbPopover]="WishlistDescription"
+        placement="bottom"
+        popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
+      >
+        {{ 'account.wishlists.heading.tooltip.link' | translate }}
+        <fa-icon [icon]="['fas', 'info-circle']" />
+      </button>
+    </h1>
+
+    <button
+      type="button"
+      class="btn btn-secondary m-0"
+      data-testing-id="add-wishlist"
+      (click)="addWishlistDialog.show()"
     >
-      {{ 'account.wishlists.heading.tooltip.link' | translate }}
-      <fa-icon [icon]="['fas', 'info-circle']" />
-    </a>
-    <button type="button" class="btn btn-secondary" data-testing-id="add-wishlist" (click)="addWishlistDialog.show()">
       {{ 'account.wishlists.add_wishlist' | translate }}
     </button>
-  </h1>
-
+  </div>
   <!-- Error message -->
   <ish-error-message [error]="wishlistError$ | async" />
 

@@ -6,6 +6,8 @@
   [attr.name]="radioName"
   class="form-check-input"
   [ngClass]="props.inputClass"
+  [attr.aria-label]="props.ariaLabel | translate"
+  [attr.aria-required]="props.required ? 'true' : undefined"
+  [attr.aria-invalid]="showError ? 'true' : undefined"
   [attr.data-testing-id]="'radio-' + props.label"
-  [attr.aria-label]="props.ariaLabel"
 />

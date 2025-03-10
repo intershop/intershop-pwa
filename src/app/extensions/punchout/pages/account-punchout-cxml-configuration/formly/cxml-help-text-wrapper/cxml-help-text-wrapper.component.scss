@@ -1,5 +1,10 @@
-fa-icon {
+.cxml-text-toggle {
   position: absolute;
   top: 20px;
   z-index: 3;
+  padding: 0;
+
+  fa-icon {
+    display: block;
+  }
 }

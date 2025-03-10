@@ -39,6 +39,7 @@ export class SelectWishlistFormComponent implements OnInit {
         defaultValue: this.translate.instant('account.wishlists.choose_wishlist.new_wishlist_name.initial_value'),
         props: {
           required: true,
+          ariaLabel: 'account.wishlists.wishlist_form.name.label',
         },
         validators: {
           validation: [SpecialValidators.noHtmlTags],
@@ -88,6 +89,7 @@ export class SelectWishlistFormComponent implements OnInit {
               defaultValue: this.translate.instant('account.wishlists.choose_wishlist.new_wishlist_name.initial_value'),
               props: {
                 required: true,
+                ariaLabel: 'account.wishlists.wishlist_form.name.label',
               },
               validators: {
                 validation: [SpecialValidators.noHtmlTags],

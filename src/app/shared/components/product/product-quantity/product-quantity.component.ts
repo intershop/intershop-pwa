@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { range } from 'lodash-es';
 import { Observable, combineLatest } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, shareReplay } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 @Component({
   selector: 'ish-product-quantity',
@@ -18,6 +19,8 @@ export class ProductQuantityComponent implements OnInit {
 
   visible$: Observable<boolean>;
   quantity$: Observable<number>;
+  ariaDescribedByIds$: Observable<string>;
+
   min$: Observable<number>;
   max$: Observable<number>;
   step$: Observable<number>;
@@ -37,8 +40,13 @@ export class ProductQuantityComponent implements OnInit {
     this.min$ = this.context.select('minQuantity');
     this.max$ = this.context.select('maxQuantity');
     this.step$ = this.context.select('stepQuantity');
-    this.hasQuantityError$ = this.context.select('hasQuantityError');
+    this.hasQuantityError$ = this.context.select('hasQuantityError').pipe(shareReplay(1));
     this.quantityError$ = this.context.select('quantityError');
+    this.ariaDescribedByIds$ = this.hasQuantityError$.pipe(
+      map(hasQuantityError =>
+        hasQuantityError ? FormsService.addAriaDescribedById('', `${this.elementId}-validation-error`) : undefined
+      )
+    );
 
     this.selectValues$ = combineLatest([this.min$, this.max$, this.step$]).pipe(
       map(([min, max, step]) => range(min, max + 1, step))

@@ -97,6 +97,7 @@ export class BasketShippingAddressWidgetComponent implements OnInit {
           fieldClass: 'col-12',
           options: FormsService.getAddressOptions(this.addresses$),
           placeholder: this.emptyOptionLabel,
+          ariaLabel: this.emptyOptionLabel,
         },
         hooks: {
           onInit: field => {

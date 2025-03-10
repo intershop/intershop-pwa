@@ -21,7 +21,11 @@
         <ish-filter-navigation [showCategoryFilter]="false" />
       </div>
 
-      <button type="button" class="d-md-none mobile-filter-toggle btn btn-link btn-link-action" (click)="toggle()">
+      <button
+        type="button"
+        class="d-md-none mobile-filter-toggle btn btn-link btn-link-action link-decoration-hover"
+        (click)="toggle()"
+      >
         {{ 'search.mobile.filter.trigger' | translate }}
         <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" />
       </button>

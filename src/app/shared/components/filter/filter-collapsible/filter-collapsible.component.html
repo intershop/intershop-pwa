@@ -1,14 +1,17 @@
 <div class="filter-group" [ngClass]="{ collapsed: isCollapsed }">
-  <h3
+  <button
+    type="button"
     (click)="toggle()"
-    (keydown.enter)="toggle()"
-    tabindex="0"
     [attr.aria-expanded]="!isCollapsed"
-    [attr.aria-controls]="'filter-list_' + title"
+    [attr.aria-controls]="ariaControlsId"
+    class="btn-filter-toggle"
+    data-testing-id="filter-toggle-button"
   >
-    {{ title }}
-    <fa-icon [icon]="['fas', isCollapsed ? 'angle-right' : 'angle-down']" class="float-right" />
-  </h3>
+    <h3>
+      {{ title }}
+      <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" />
+    </h3>
+  </button>
 
   <ng-content></ng-content>
 </div>

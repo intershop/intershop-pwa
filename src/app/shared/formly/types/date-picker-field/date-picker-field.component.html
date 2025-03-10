@@ -13,18 +13,23 @@
     ngbDatepicker
     #d="ngbDatepicker"
     data-testing-id="date-picker"
+    [attr.aria-label]="props.ariaLabel"
+    [attr.aria-required]="props.required ? 'true' : undefined"
+    [attr.aria-invalid]="showError ? 'true' : undefined"
+    [attr.aria-describedby]="props.ariaDescribedByIds"
   />
 
   <div class="input-group-append">
-    <div
+    <button
       class="btn btn-secondary"
       (click)="d.toggle()"
-      (keydown.enter)="d.toggle()"
-      tabindex="0"
       type="button"
       data-testing-id="btn-date-picker"
+      title="{{ 'checkout.shipping.calendar.title' | translate }}"
+      aria-haspopup="dialog"
+      aria-expanded="false"
     >
       <fa-icon class="text-primary" icon="calendar-day" />
-    </div>
+    </button>
   </div>
 </div>

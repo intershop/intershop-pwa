@@ -9,7 +9,7 @@
     <div class="col-lg-6">
       <div class="section">
         <div *ngIf="(isLoggedIn$ | async) !== true">
-          <h2>{{ 'account.login.signin.heading' | translate }}</h2>
+          <h1 class="h2">{{ 'account.login.signin.heading' | translate }}</h1>
           <p *ngIf="loginMessageKey$ | async as loginMessageKey" class="alert alert-info">
             {{ loginMessageKey | translate }}
           </p>

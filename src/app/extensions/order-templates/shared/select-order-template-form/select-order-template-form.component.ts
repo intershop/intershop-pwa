@@ -43,6 +43,7 @@ export class SelectOrderTemplateFormComponent implements OnInit {
         defaultValue: this.translate.instant('account.order_template.new_order_template.text'),
         props: {
           required: true,
+          ariaLabel: 'account.order_template.form.name.label',
         },
         validators: {
           validation: [SpecialValidators.noHtmlTags],
@@ -92,6 +93,7 @@ export class SelectOrderTemplateFormComponent implements OnInit {
               defaultValue: this.translate.instant('account.order_template.new_order_template.text'),
               props: {
                 required: true,
+                ariaLabel: 'account.order_template.form.name.label',
               },
               validators: {
                 validation: [SpecialValidators.noHtmlTags],

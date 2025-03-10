@@ -14,7 +14,7 @@
       />
     </ng-container>
     <ng-template #anonymousCheckoutStart>
-      <h1>&nbsp;</h1>
+      <h1>{{ 'checkout.addresses.heading.anonymous' | translate }}</h1>
       <!-- empty h1 to provide space -->
       <ish-checkout-address-anonymous
         [basket]="basket"

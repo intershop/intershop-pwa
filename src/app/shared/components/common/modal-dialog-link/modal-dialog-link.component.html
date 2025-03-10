@@ -1,10 +1,4 @@
-<button
-  type="button"
-  class="btn btn-link btn-link-action"
-  (click)="modalDialog.show()"
-  rel="nofollow"
-  aria-haspopup="dialog"
->
+<button type="button" class="btn btn-link btn-link-action" (click)="modalDialog.show()" aria-haspopup="dialog">
   {{ linkText | translate }}
 </button>
 <ish-modal-dialog #modalDialog [options]="options" (shown)="shown()" (closed)="closed()">

@@ -1,9 +1,9 @@
 :root {
   // LOGOS
-  --logo: url('/assets/themes/b2c/img/logo.png');
+  --logo: url('/assets/themes/b2c/img/logo.svg');
   --logo-width: 114px;
   --logo-height: 40px;
-  --logo-mobile: url('/assets/themes/b2c/img/logo_mobile.png');
+  --logo-mobile: url('/assets/themes/b2c/img/logo_mobile.svg');
   --logo-mobile-width: 41px;
   --logo-mobile-height: 41px;
 
@@ -14,18 +14,18 @@
   --font-family-condensedbold: 'roboto_condensedbold', 'Helvetica Neue', helvetica, 'Arial', sans-serif;
 
   // CORPORATE DESIGN COLORS
-  --corporate-primary: #ff6d00; // ORANGE
-  --corporate-secondary: #cc5700; // darken($CORPORATE-PRIMARY, 10%);
-  --corporate-light: #ff8a33; // lighten($CORPORATE-PRIMARY, 10%);
-  --corporate-dark: #994100; // darken($CORPORATE-PRIMARY, 20%);
-  --corporate-shadow: #ff832680; // with alpha transparency
+  --corporate-primary: #006f6f; // dark turquoise
+  --corporate-secondary: #006464; // darken($CORPORATE-PRIMARY, 10%);
+  --corporate-light: #009797; // lighten($CORPORATE-PRIMARY, 10%);
+  --corporate-dark: #005959; // darken($CORPORATE-PRIMARY, 20%);
+  --corporate-shadow: #73aaaa80; // with alpha transparency
 
   // TEXT COLOR
   --text-color-corporate: var(--corporate-primary);
   --text-color-primary: #222;
-  --text-color-secondary: #555;
-  --text-color-tertiary: #8b8b8b;
-  --text-color-quaternary: #999;
+  --text-color-secondary: #6b6b6b;
+  --text-color-tertiary: #757575;
+  --text-color-quaternary: #8b8b8b;
   --text-color-quinary: #eee;
 
   // GENERAL COLORS

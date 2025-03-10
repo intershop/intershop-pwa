@@ -32,7 +32,7 @@
       <img
         [attr.loading]="loading"
         [src]="pagelet.stringParam('Image')"
-        [attr.alt]="pagelet.stringParam('AlternateText') || ('image.alt_text.default' | translate)"
+        [alt]="pagelet.stringParam('AlternateText') || ('image.alt_text.default' | translate)"
         class="enhanced-image"
       />
     </picture>

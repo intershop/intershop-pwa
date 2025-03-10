@@ -2,7 +2,7 @@
   <ng-container *ngIf="user$ | async as user; else notLoggedIn">
     <a routerLink="/logout" data-testing-id="link-logout" [attr.aria-label]="'account.logout.link' | translate">
       <fa-icon [icon]="['fas', 'user']" class="header-icon" />
-      <span *ngIf="view !== 'small'"> {{ 'account.logout.link' | translate }} </span>
+      <span *ngIf="view !== 'small'">{{ 'account.logout.link' | translate }}</span>
     </a>
   </ng-container>
   <ng-template #notLoggedIn> &nbsp; </ng-template>
@@ -33,8 +33,9 @@
       class="my-account-link my-account-logout"
       data-testing-id="link-logout"
       [attr.aria-label]="'account.logout.link' | translate"
+      [ngClass]="getViewClasses()"
     >
-      <span [ngClass]="getViewClasses()">{{ 'account.logout.link' | translate }}</span>
+      <span>{{ 'account.logout.link' | translate }}</span>
     </a>
   </ng-container>
   <!-- not logged in -->
@@ -56,7 +57,8 @@
       class="my-account-link my-account-register"
       rel="nofollow"
       [attr.aria-label]="'account.register.link' | translate"
-      ><span [ngClass]="getViewClasses()">{{ 'account.register.link' | translate }}</span>
+      [ngClass]="getViewClasses()"
+      ><span>{{ 'account.register.link' | translate }}</span>
     </a>
   </ng-template>
 </ng-template>

@@ -1,10 +1,11 @@
 <button
   type="button"
   [ngClass]="cssClass"
+  [title]="'product.notification.delete.link.title' | translate"
   (click)="openConfirmationDialog(deleteDialog)"
   data-testing-id="product-notification-delete"
 >
-  <fa-icon [icon]="['fas', 'trash-alt']" [title]="'product.notification.delete.link.title' | translate" />
+  <fa-icon [icon]="['fas', 'trash-alt']" />
 </button>
 
 <ish-modal-dialog

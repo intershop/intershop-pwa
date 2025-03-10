@@ -3,9 +3,10 @@
     <!-- Quote Number -->
     <ng-container cdkColumnDef="quoteNo">
       <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-number">
-        {{ 'quote.list.table.quote_no' | translate }}
+        <span aria-hidden="true">{{ 'quote.list.table.quote_no' | translate }}</span>
+        <span class="sr-only">{{ 'quote.list.table.quote_no.title' | translate }}</span>
       </th>
-      <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.quote_no' | translate">
+      <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.quote_no.title' | translate">
         <a [routerLink]="[quote.id]">{{ quote.number }}</a>
       </td>
     </ng-container>

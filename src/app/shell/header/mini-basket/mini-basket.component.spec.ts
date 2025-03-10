@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
@@ -34,7 +36,7 @@ describe('Mini Basket Component', () => {
         MockComponent(LazyMiniBasketContentComponent),
         PricePipe,
       ],
-      imports: [TranslateModule.forRoot()],
+      imports: [NgbDropdownModule, TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
@@ -86,21 +88,23 @@ describe('Mini Basket Component', () => {
     expect(element.textContent.replace(/ /g, '')).toMatchInlineSnapshot(`"30items/$141,796.98"`);
   });
 
-  it('should set isCollapsed to proper value if toggleCollapsed is called', () => {
-    component.isCollapsed = true;
-    component.toggleCollapse();
-    expect(component.isCollapsed).toBeFalsy();
-    component.toggleCollapse();
-    expect(component.isCollapsed).toBeTruthy();
-  });
+  it('should toggle dropdown menu when clicked', () => {
+    const toggleButton = fixture.debugElement.query(By.css('button[ngbDropdownToggle]')).nativeElement;
+    toggleButton.click();
+    fixture.detectChanges();
 
-  it('should set isCollapsed to true if collapse() is called', () => {
-    component.collapse();
-    expect(component.isCollapsed).toBeTruthy();
-  });
+    const dropdownMenu = fixture.debugElement.query(By.css('div[ngbDropdownMenu]'));
+    // menu should be present
+    expect(dropdownMenu).toBeTruthy();
 
-  it('should set isCollapsed to false if open() is called', () => {
-    component.open();
-    expect(component.isCollapsed).toBeFalsy();
+    // check if menu is shown
+    expect(dropdownMenu.nativeElement.classList).toContain('show');
+
+    // click again to close
+    toggleButton.click();
+    fixture.detectChanges();
+
+    // menu should be hidden
+    expect(dropdownMenu.nativeElement.classList).not.toContain('show');
   });
 });

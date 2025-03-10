@@ -108,7 +108,7 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
   show() {
     this.orderTemplateForm.reset();
     this.model = pick(this.orderTemplate, 'title');
-    this.modal = this.ngbModal.open(this.modalTemplate);
+    this.modal = this.ngbModal.open(this.modalTemplate, { ariaLabelledBy: 'order-template-preferences-title' });
   }
 
   /** Close the modal. */

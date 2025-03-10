@@ -2,6 +2,6 @@
 <p *ngIf="parameter?.properties?.tc_component_picture">
   <img
     [src]="getImageUrl(parameter.properties.tc_component_picture) | async"
-    [attr.alt]="parameter.properties.tc_component_picture"
+    [alt]="parameter.properties.tc_component_picture"
   />
 </p>

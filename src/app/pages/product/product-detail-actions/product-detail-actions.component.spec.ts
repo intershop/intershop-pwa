@@ -56,19 +56,15 @@ describe('Product Detail Actions Component', () => {
 
   describe('link rendering', () => {
     it(`should show "email to friend" link when product information is available`, () => {
-      translate.set('product.email_a_friend.link', 'Email a friend');
       fixture.detectChanges();
-      expect(
-        element.querySelector('fa-icon[ng-reflect-icon="fas,paper-plane"]').nextElementSibling.textContent
-      ).toContain('Email a friend');
+
+      expect(element.querySelector('fa-icon[ng-reflect-icon="fas,share-alt"]')).toBeTruthy();
     });
 
     it(`should show "print page" link when product information is available`, () => {
-      translate.set('product.print_page.link', 'Print Page');
       fixture.detectChanges();
-      expect(element.querySelector('fa-icon[ng-reflect-icon="fas,print"]').nextElementSibling.textContent).toContain(
-        'Print Page'
-      );
+
+      expect(element.querySelector('fa-icon[ng-reflect-icon="fas,print"]')).toBeTruthy();
     });
 
     it(`should show "compare" link when product information is available`, () => {

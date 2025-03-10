@@ -6,7 +6,7 @@
       *ngIf="collapseChange | async"
       type="button"
       class="btn-tool btn-link float-right"
-      [title]="'checkout.address.update.invoice.label' | translate"
+      [title]="'checkout.address.update.title' | translate : { '0': 'checkout.address.billing.label' | translate }"
       (click)="showAddressForm(address)"
       data-testing-id="edit-invoice-address-link"
     >

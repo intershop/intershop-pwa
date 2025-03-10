@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -16,7 +17,7 @@ describe('Budget Info Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgbPopoverModule],
+      imports: [NgbPopoverModule, TranslateModule.forRoot()],
       declarations: [BudgetInfoComponent, MockComponent(FaIconComponent), MockPipe(ServerSettingPipe, () => true)],
       providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();

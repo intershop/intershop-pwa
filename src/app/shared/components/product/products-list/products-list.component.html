@@ -2,6 +2,7 @@
   <ng-container *ngIf="products.length">
     <ng-container *ngIf="listStyle === 'carousel'; else plainList">
       <div class="product-list">
+        <div class="swiper-button-prev" tabindex="0" role="button"></div>
         <swiper [config]="swiperConfig">
           <ng-template *ngFor="let sku of products" swiperSlide let-data>
             <div [ngClass]="listItemCSSClass">
@@ -15,6 +16,7 @@
             </div>
           </ng-template>
         </swiper>
+        <div class="swiper-button-next" tabindex="0" role="button"></div>
       </div>
     </ng-container>
 

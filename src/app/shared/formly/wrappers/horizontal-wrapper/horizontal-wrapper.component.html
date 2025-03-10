@@ -5,7 +5,7 @@
     class="col-form-label"
     [ngClass]="props.labelClass ? props.labelClass : dprops.labelClass"
     >{{ props.labelNoTranslate ? props.label : (props.label | translate)
-    }}<span *ngIf="props.required && !props.hideRequiredMarker" class="required">*</span>
+    }}<span *ngIf="props.required && !props.hideRequiredMarker" class="required" aria-hidden="true">*</span>
   </label>
   <div [ngClass]="props.fieldClass ? props.fieldClass : dprops.fieldClass">
     <ng-template #fieldComponent></ng-template>

@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCalendar, NgbDate, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 
@@ -34,6 +35,7 @@ describe('Date Picker Field Component', () => {
         }),
         FormlyTestingComponentsModule,
         ReactiveFormsModule,
+        TranslateModule.forRoot(),
       ],
     }).compileComponents();
 

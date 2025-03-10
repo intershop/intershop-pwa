@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@a
 import { isEqual } from 'lodash-es';
 import { Observable, combineLatest, of } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import SwiperCore, { Navigation, Pagination, SwiperOptions } from 'swiper';
+import SwiperCore, { Navigation, Pagination, SwiperOptions, A11y } from 'swiper';
 
 import {
   LARGE_BREAKPOINT_WIDTH,
@@ -14,7 +14,7 @@ import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { ProductItemDisplayType } from 'ish-shared/components/product/product-item/product-item.component';
 
-SwiperCore.use([Pagination, Navigation]);
+SwiperCore.use([Pagination, Navigation, A11y]);
 
 @Component({
   selector: 'ish-products-list',
@@ -51,7 +51,10 @@ export class ProductsListComponent implements OnChanges {
     this.swiperConfig = {
       watchSlidesProgress: true,
       direction: 'horizontal',
-      navigation: true,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
       pagination: {
         clickable: true,
       },

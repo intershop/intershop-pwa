@@ -18,6 +18,10 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 export class ProductAddToQuoteComponent implements OnInit {
   @Input() displayType: 'icon' | 'link' = 'link';
   @Input() cssClass: string;
+  /**
+   * hidden for screen readers
+   */
+  @Input() ariaHidden = false;
 
   disabled$: Observable<boolean>;
   visible$: Observable<boolean>;

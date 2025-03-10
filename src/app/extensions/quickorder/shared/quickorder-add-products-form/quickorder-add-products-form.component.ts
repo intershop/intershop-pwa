@@ -76,6 +76,7 @@ export class QuickorderAddProductsFormComponent implements OnInit {
               props: {
                 fieldClass: 'col-12',
                 placeholder: 'shopping_cart.direct_order.item_placeholder',
+                ariaLabel: 'shopping_cart.direct_order.item_placeholder',
               },
               expressions: {
                 'props.required': conf => !!conf.model.quantity,

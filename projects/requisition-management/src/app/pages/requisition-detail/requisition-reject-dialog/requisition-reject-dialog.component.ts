@@ -80,7 +80,7 @@ export class RequisitionRejectDialogComponent implements OnInit {
   /** Opens the modal. */
   show() {
     this.rejectForm.reset();
-    this.modal = this.ngbModal.open(this.modalTemplate);
+    this.modal = this.ngbModal.open(this.modalTemplate, { ariaLabelledBy: 'requisition-reject-modal-title' });
   }
 
   /** Close the modal. */

@@ -24,7 +24,7 @@ universalTest 2 "${PWA_BASE_URL}/computers/notebooks-and-pcs/notebooks-ctgComput
 universalTest 3 "${PWA_BASE_URL}/login" "<ish-loading"
 universalTest 4 "${PWA_BASE_URL}/register" "Create account"
 universalTest 5 "${PWA_BASE_URL}/computers/notebooks-and-pcs-ctgComputers.1835" "<h1>Notebooks and PCs</h1>"
-universalTest 6 "${PWA_BASE_URL}/computers/notebooks-and-pcs-ctgComputers.1835" "<h3>PCs</h3>"
+universalTest 6 "${PWA_BASE_URL}/computers/notebooks-and-pcs-ctgComputers.1835" "<h2 class=.h3.>PCs</h2>"
 universalTest 7 "${PWA_BASE_URL}/computers/notebooks-and-pcs/notebooks-ctgComputers.1835.151" "add-to-compare"
 universalTest 8 "${PWA_BASE_URL}/home" "intershop-pwa-state"
 universalTest 9 "${PWA_BASE_URL}/home" "baseURL"

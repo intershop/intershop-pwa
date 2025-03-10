@@ -17,7 +17,7 @@
           <div *ngIf="(basketError$ | async) === undefined && nextDisabled" role="alert" class="alert alert-danger">
             {{ 'checkout.shipping_method.no_Selection.error' | translate }}
           </div>
-          <h3>{{ 'checkout.shipping_method.selection.heading' | translate }}</h3>
+          <h2 class="h3">{{ 'checkout.shipping_method.selection.heading' | translate }}</h2>
           <ish-checkout-shipping />
         </div>
 

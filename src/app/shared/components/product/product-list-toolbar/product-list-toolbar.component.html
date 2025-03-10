@@ -54,8 +54,7 @@
   <div *ngIf="sortOptions?.length" class="col-8 col-sm-12 col-md-3 sort-by">
     <select
       class="form-control sort-by-filter"
-      id="SortingAttribute"
-      name="SortingAttribute"
+      [attr.aria-label]="'product.items.sorting.label' | translate"
       (change)="changeSortBy($event.target)"
     >
       <option value="default" [selected]="sortBy === 'default'">

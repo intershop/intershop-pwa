@@ -3,7 +3,7 @@
     <ng-container [ngSwitch]="viewType">
       <!-- default display option is radio-buttons -->
       <ng-template ngSwitchDefault>
-        <div class="product-warranty-title">{{ 'product.warranty.heading.text' | translate }}</div>
+        <div class="product-warranty-title">{{ 'product.warranty.heading.text' | translate }}:</div>
         <div class="product-warranty-list" data-testing-id="product-warranties">
           <div class="mb-2" *ngFor="let warranty of warranties">
             <input
@@ -30,6 +30,7 @@
       <ng-template ngSwitchCase="select">
         <select
           class="form-control d-inline-block w-auto"
+          [attr.aria-label]="'product.warranty.heading.text' | translate"
           (change)="updateWarranty($event.target)"
           data-testing-id="product-warranties"
         >

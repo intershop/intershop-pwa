@@ -3,7 +3,7 @@
     <ul class="filter-list">
       <li *ngFor="let category of navigationCategories$ | async" class="filter-item">
         <a
-          class="filter-item-name"
+          class="filter-item-name link-decoration-hover"
           [ngClass]="{ 'filter-selected': category.uniqueId === currentCategoryId }"
           [routerLink]="category.url"
         >

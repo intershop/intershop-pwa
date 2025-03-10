@@ -1,21 +1,41 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, isObservable, of } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
+
+import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 /**
  * Component that reads a fields validity status and displays active error messages.
  */
 @Component({
   selector: 'ish-validation-message',
-  template: '<small class="mt-1">{{ errorMessage$ | async | translate }} </small>',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: '<small class="mt-1" id="{{ field.id }}-validation-error">{{ errorMessage$ | async | translate }} </small>',
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-export class ValidationMessageComponent implements OnChanges {
+export class ValidationMessageComponent implements OnInit, OnChanges, OnDestroy {
   @Input({ required: true }) field: FormlyFieldConfig;
+  @Input() id: string;
   errorMessage$: Observable<string>;
 
   constructor(private config: FormlyConfig) {}
+
+  ngOnInit(): void {
+    this.field.props = {
+      ...this.field.props,
+      ariaDescribedByIds: FormsService.addAriaDescribedById(
+        this.field.props?.ariaDescribedByIds,
+        `${this.field.id}-validation-error`
+      ),
+    };
+  }
+
+  ngOnDestroy(): void {
+    this.field.props.ariaDescribedByIds = FormsService.removeAriaDescribedById(
+      this.field.props.ariaDescribedByIds,
+      `${this.field.id}-validation-error`
+    );
+  }
 
   ngOnChanges() {
     this.errorMessage$ = this.field.formControl.statusChanges.pipe(
