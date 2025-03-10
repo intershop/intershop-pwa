@@ -7,6 +7,14 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 5.3 to 6.0
+
+The Intershop PWA 6.0 release contains functionality to improve the **accessibility** of the PWA:
+
+A directive `ishFormSubmit` has been introduced for form html elements.
+In case of validation errors the focus is set to the first invalid form field after submit.
+The logic to disable the submit buttons as long as the form is invalid has been simplified, the usage of the function `markAsDirtyRecursive` is no longer necessary for formly forms.
+
 ## From 5.2 to 5.3
 
 The Intershop PWA 5.3.0 introduces a standard integration with Intershop Copilot for Buyers.

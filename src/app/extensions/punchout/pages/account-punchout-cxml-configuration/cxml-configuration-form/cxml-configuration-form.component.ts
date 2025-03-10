@@ -5,7 +5,6 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { PunchoutFacade } from '../../../facades/punchout.facade';
 import { CxmlConfiguration } from '../../../models/cxml-configuration/cxml-configuration.model';
@@ -22,7 +21,6 @@ export class CxmlConfigurationFormComponent implements OnDestroy, OnInit {
   model: { [key: string]: string };
   fields: FormlyFieldConfig[];
 
-  private submitted = false;
   cxmlConfigurationError$: Observable<HttpError>;
 
   constructor(private punchoutFacade: PunchoutFacade) {}
@@ -75,22 +73,14 @@ export class CxmlConfigurationFormComponent implements OnDestroy, OnInit {
   }
 
   submitForm() {
-    if (this.form.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.form);
-      return;
+    if (this.form.valid) {
+      const updateData = Object.entries(this.form.value).map(([name, value]) => ({
+        name: name.replaceAll(':', '.'),
+        value: value ? value : null,
+      }));
+
+      this.updateConfiguration(updateData as CxmlConfiguration[]);
     }
-
-    const updateData = Object.entries(this.form.value).map(([name, value]) => ({
-      name: name.replaceAll(':', '.'),
-      value: value ? value : null,
-    }));
-
-    this.updateConfiguration(updateData as CxmlConfiguration[]);
-  }
-
-  get formDisabled() {
-    return this.form.invalid && this.submitted;
   }
 
   private updateConfiguration(cxmlConfig: CxmlConfiguration[]) {

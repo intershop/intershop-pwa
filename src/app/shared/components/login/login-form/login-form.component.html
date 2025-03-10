@@ -1,11 +1,17 @@
 <ish-error-message [error]="loginError$ | async" [toast]="false" />
 
-<form [formGroup]="form" class="form-horizontal" (ngSubmit)="loginUser()">
+<form [formGroup]="form" ishFormSubmit #loginForm="ngForm" (ngSubmit)="loginUser()" class="form-horizontal" novalidate>
   <formly-form [form]="form" [fields]="fields" />
 
   <div class="row form-group">
     <div [ngClass]="signInClass || 'offset-md-3 col-md-auto'">
-      <button type="submit" value="Login" name="login" class="btn btn-primary" [disabled]="buttonDisabled">
+      <button
+        type="submit"
+        value="Login"
+        name="login"
+        class="btn btn-primary"
+        [disabled]="form.invalid && loginForm.submitted"
+      >
         {{ 'account.signin.button.label' | translate }}
       </button>
     </div>

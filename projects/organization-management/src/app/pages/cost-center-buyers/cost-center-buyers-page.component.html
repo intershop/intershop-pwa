@@ -28,12 +28,17 @@
         </div>
       </div>
 
-      <form (ngSubmit)="submitForm()" [formGroup]="form">
+      <form [formGroup]="form" (ngSubmit)="submitForm()" #buyersForm="ngForm" novalidate>
         <div class="list-body">
           <formly-form [model]="model" [fields]="fields" [form]="form" class="pt-1" />
         </div>
         <div class="row justify-content-end">
-          <button type="submit" class="btn btn-primary" [disabled]="formDisabled" data-testing-id="add-buyers-submit">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="formDisabled || (buyersForm.submitted && form.invalid)"
+            data-testing-id="add-buyers-submit"
+          >
             {{ 'account.costcenter.details.buyers.action.add' | translate }}
           </button>
           <a routerLink="../" class="btn btn-secondary" data-testing-id="add-cost-center-buyers-cancel">{{

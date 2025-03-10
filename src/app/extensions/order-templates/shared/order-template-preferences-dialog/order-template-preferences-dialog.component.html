@@ -6,7 +6,7 @@
     </button>
   </div>
 
-  <form [formGroup]="orderTemplateForm" (ngSubmit)="submitOrderTemplateForm()">
+  <form [formGroup]="orderTemplateForm" ishFormSubmit #form="ngForm" (ngSubmit)="submitOrderTemplateForm()" novalidate>
     <div class="modal-body">
       <formly-form [form]="orderTemplateForm" [fields]="fields" [model]="model" />
     </div>
@@ -15,7 +15,7 @@
       <button
         type="submit"
         class="btn btn-primary"
-        [disabled]="formDisabled"
+        [disabled]="orderTemplateForm.invalid && form.submitted"
         data-testing-id="order-template-dialog-submit"
       >
         {{ primaryButton | translate }}

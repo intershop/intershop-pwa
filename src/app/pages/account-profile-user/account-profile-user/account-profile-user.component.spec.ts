@@ -129,16 +129,4 @@ describe('Account Profile User Component', () => {
 
     verify(eventEmitter$.emit(anything())).never();
   });
-
-  it('should disable submit button when the user submits an invalid form', () => {
-    component.currentUser = invalidUser;
-
-    fixture.detectChanges();
-
-    expect(component.buttonDisabled).toBeFalse();
-
-    component.submitForm();
-
-    expect(component.buttonDisabled).toBeTrue();
-  });
 });

@@ -1,42 +1,44 @@
 <ng-template #modal let-reviewModal>
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2 class="modal-title">{{ 'product.reviews.create.dialog.heading' | translate }}</h2>
-      <button type="button" class="close" [title]="'dialog.close.text' | translate" (click)="hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-
-    <div class="modal-body">
-      <ng-container *ishProductContextAccess="let product = product">
-        <div class="d-flex">
-          <ish-product-image imageType="S" [link]="true" />
-          <div>
-            <ish-product-name [link]="false" />
-            <ish-product-id />
-            <ish-product-variation-display />
-          </div>
+  <ng-container *ishProductContextAccess="let product = product">
+    <form
+      [formGroup]="form"
+      ishFormSubmit
+      #reviewForm="ngForm"
+      (ngSubmit)="submitForm(product.sku)"
+      class="form-horizontal"
+      data-testing-id="create-product-review-form"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">{{ 'product.reviews.create.dialog.heading' | translate }}</h2>
+          <button type="button" class="close" [title]="'dialog.close.text' | translate" (click)="hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
 
-        <p>{{ 'product.reviews.create.dialog.description.text' | translate }}</p>
+        <div class="modal-body">
+          <div class="d-flex">
+            <ish-product-image imageType="S" [link]="true" />
+            <div>
+              <ish-product-name [link]="false" />
+              <ish-product-id />
+              <ish-product-variation-display />
+            </div>
+          </div>
 
-        <form
-          id="createProductReviewForm"
-          class="form-horizontal"
-          [formGroup]="form"
-          (ngSubmit)="submitForm(product.sku)"
-        >
+          <p>{{ 'product.reviews.create.dialog.description.text' | translate }}</p>
+
           <formly-form [form]="form" [fields]="fields" [model]="model$ | async" />
-        </form>
-      </ng-container>
-    </div>
-    <div class="modal-footer">
-      <button type="submit" form="createProductReviewForm" class="btn btn-primary" [disabled]="formDisabled">
-        {{ 'product.reviews.create.dialog.confirm.button.label' | translate }}
-      </button>
-      <button type="button" class="btn btn-secondary" (click)="hide()">
-        {{ 'product.reviews.create.dialog.cancel.button.label' | translate }}
-      </button>
-    </div>
-  </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid && reviewForm.submitted">
+            {{ 'product.reviews.create.dialog.confirm.button.label' | translate }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="hide()">
+            {{ 'product.reviews.create.dialog.cancel.button.label' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </ng-container>
 </ng-template>

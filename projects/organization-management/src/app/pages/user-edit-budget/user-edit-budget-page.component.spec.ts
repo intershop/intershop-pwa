@@ -55,13 +55,4 @@ describe('User Edit Budget Page Component', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
-
-  it('should submit a valid form when the user fills all required fields', () => {
-    fixture.detectChanges();
-
-    expect(component.formDisabled).toBeFalse();
-    component.submitForm();
-
-    expect(component.formDisabled).toBeFalse();
-  });
 });

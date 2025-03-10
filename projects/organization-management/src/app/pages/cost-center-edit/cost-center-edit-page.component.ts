@@ -3,7 +3,6 @@ import { UntypedFormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 import { CostCenter, CostCenterBase } from 'ish-core/models/cost-center/cost-center.model';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
@@ -16,7 +15,6 @@ export class CostCenterEditPageComponent implements OnInit {
   loading$: Observable<boolean>;
   costCenter$: Observable<CostCenter>;
 
-  private submitted = false;
   form = new UntypedFormGroup({});
 
   constructor(private organizationManagementFacade: OrganizationManagementFacade) {}
@@ -27,27 +25,19 @@ export class CostCenterEditPageComponent implements OnInit {
   }
 
   submitForm(cc: CostCenter) {
-    if (this.form.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.form);
-      return;
+    if (this.form.valid) {
+      const formValue = this.form.value;
+
+      const costCenter: CostCenterBase = {
+        id: cc.id,
+        costCenterId: formValue.costCenterId,
+        name: formValue.name,
+        budget: { value: formValue.budgetValue, currency: cc.budget.currency, type: 'Money' },
+        budgetPeriod: formValue.budgetPeriod,
+        costCenterOwner: { login: formValue.costCenterManager },
+        active: formValue.active,
+      };
+      this.organizationManagementFacade.updateCostCenter(costCenter);
     }
-
-    const formValue = this.form.value;
-
-    const costCenter: CostCenterBase = {
-      id: cc.id,
-      costCenterId: formValue.costCenterId,
-      name: formValue.name,
-      budget: { value: formValue.budgetValue, currency: cc.budget.currency, type: 'Money' },
-      budgetPeriod: formValue.budgetPeriod,
-      costCenterOwner: { login: formValue.costCenterManager },
-      active: formValue.active,
-    };
-    this.organizationManagementFacade.updateCostCenter(costCenter);
-  }
-
-  get formDisabled() {
-    return this.form.invalid && this.submitted;
   }
 }

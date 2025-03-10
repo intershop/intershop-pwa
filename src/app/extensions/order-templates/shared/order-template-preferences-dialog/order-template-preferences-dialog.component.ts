@@ -13,7 +13,6 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { pick } from 'lodash-es';
 
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { OrderTemplate } from '../../models/order-template/order-template.model';
@@ -46,7 +45,6 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
   orderTemplateForm = new FormGroup({});
   model: Partial<OrderTemplate>;
   fields: FormlyFieldConfig[];
-  private submitted = false;
 
   /**
    *  A reference to the current modal.
@@ -96,18 +94,14 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
 
   /** Emits the order template data, when the form was valid. */
   submitOrderTemplateForm() {
-    if (this.orderTemplateForm.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.orderTemplateForm);
-      return;
+    if (this.orderTemplateForm.valid) {
+      this.submitOrderTemplate.emit({
+        id: !this.orderTemplate ? this.model.title : this.orderTemplateTitle,
+        title: this.model.title,
+      });
+
+      this.hide();
     }
-
-    this.submitOrderTemplate.emit({
-      id: !this.orderTemplate ? this.model.title : this.orderTemplateTitle,
-      title: this.model.title,
-    });
-
-    this.hide();
   }
 
   /** Opens the modal. */
@@ -119,13 +113,8 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
 
   /** Close the modal. */
   hide() {
-    this.submitted = false;
     if (this.modal) {
       this.modal.close();
     }
-  }
-
-  get formDisabled() {
-    return this.orderTemplateForm.invalid && this.submitted;
   }
 }

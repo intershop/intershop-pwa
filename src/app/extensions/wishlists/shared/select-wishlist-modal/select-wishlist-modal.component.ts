@@ -18,7 +18,6 @@ import { filter, map, take, withLatestFrom } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 
@@ -68,13 +67,9 @@ export class SelectWishlistModalComponent implements OnInit {
     if (radioButtons?.wishlist && radioButtons.wishlist !== 'new') {
       if (this.formGroup.valid) {
         this.submitExisting(radioButtons.wishlist);
-      } else {
-        markAsDirtyRecursive(this.formGroup);
       }
     } else if (radioButtons.newList && this.formGroup.valid) {
       this.submitNew(radioButtons.newList);
-    } else {
-      markAsDirtyRecursive(this.formGroup);
     }
   }
 
