@@ -227,3 +227,8 @@ whitespaces
 wishtack
 xdescribe
 zindex
+vulnarable
+clickjacking
+nosniff
+geolocation
+vulnarability
