@@ -123,7 +123,6 @@
   </ng-template>
 
   <div *ngIf="searchSuggestLoading$ | async" class="loading"></div>
-  <div class="search-suggest-backdrop" [ngClass]="{ show: searchBoxFocus }"></div>
 
   <div class="buttons">
     <button
@@ -157,3 +156,4 @@
     </button>
   </div>
 </div>
+<div class="search-suggest-backdrop" [ngClass]="{ show: searchBoxFocus }"></div>
