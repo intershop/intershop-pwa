@@ -19,6 +19,7 @@ callparametersstring
 categoryref
 chatflow
 chatflowid
+clickjacking
 cobrowse
 colorcode
 compodoc
@@ -61,6 +62,7 @@ foos
 formly
 fortawesome
 français
+geolocation
 giftwrap
 glyphicon
 glyphicons
@@ -107,6 +109,7 @@ nguniversal
 nofollow
 noindex
 noneditable
+nosniff
 notselected
 npsc
 objs
@@ -220,6 +223,8 @@ viewcontextid
 viewcontexts
 viewports
 viewtype
+vulnarability
+vulnarable
 walkthrough
 webserver
 webserversecureurl
@@ -227,8 +232,3 @@ whitespaces
 wishtack
 xdescribe
 zindex
-vulnarable
-clickjacking
-nosniff
-geolocation
-vulnarability
