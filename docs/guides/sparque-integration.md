@@ -7,7 +7,7 @@ kb_sync_latest_only
 
 # SPARQUE.AI Integration
 
- SPARQUE.AI works as an AI-powered search engine and delivers various information, like keyword suggestions, search results, filter options, and category navigation.
+SPARQUE.AI works as an AI-powered search engine and delivers various information, like keyword suggestions, search results, filter options, and category navigation.
 
 ## Configuration
 
