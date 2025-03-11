@@ -200,7 +200,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // manually set focus on search input
-  // the exlicit function call in the component is needed to get the focus working in iOS devices
+  // the explicit function call in the component is needed to get the focus working in iOS devices
   setFocusOnSearchInput() {
     this.searchInput.nativeElement.focus();
   }
