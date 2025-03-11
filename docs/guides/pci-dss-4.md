@@ -5,7 +5,7 @@ kb_everyone
 kb_sync_latest_only
 -->
 
-# Guide to Applying PCI DSS 4.0 Requirements to the Intershop PWA
+# PCI DSS 4.0 in Intershop PWA
 
 PCI DSS stands for Payment Card Industry Data Security Standard and is a comprehensive set of security guidelines designed to protect payment card information during storage, processing, and transmission.
 These standards are established to ensure that organizations handling card data maintain a secure environment and mitigate risks associated with data breaches.
@@ -13,6 +13,10 @@ These standards are established to ensure that organizations handling card data 
 With the release of PCI DSS 4.0, organizations that handle payment card data must ensure compliance with updated security requirements.
 With using the Intershop Progressive Web Application (PWA), you need to incorporate security best practices to protect cardholder data and sensitive authentication data.
 This guide outlines the key considerations and best practices for applying PCI DSS 4.0 to the Angular-based Intershop PWA.
+
+# References
+
+- [PCI DSS: v4.0.1](https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0_1.pdf)
 
 # Understanding PCI DSS 4.0 Applicability
 
@@ -50,7 +54,7 @@ All custom payment integrations must use the same approach to not break these re
 # Secure Angular PWA Code & Dependencies (Requirement 6)
 
 Securing the codebase of a Web App is critical to achieving PCI DSS compliance.
-Since the frontend is a major attack surface, it is mandatory to ensure secure coding practices, dependency management, and protection against common web vulnerabilities.
+Given that the frontend often presents a tempting target for attackers, it is mandatory to ensure secure coding practices, dependency management, and protection against common web vulnerabilities.
 
 The following sections provide a detailed breakdown of how to harden your PWA against exploits, data breaches, and injection attacks.
 
@@ -64,14 +68,14 @@ Summarized this means you have to
 - Define strict CSP rules to allow only trusted sources.
 - Avoid using unsafe-inline and unsafe-eval in scripts.
   In order to protect the PWA against cross-site scripting attacks the Angular built-in security mechanisms like DomSanitizer and template escaping are used.
-  Additionally is the injection of dynamic content is disabled and user generated input is escaped/sanitized.
+  Additionally, is the injection of dynamic content is disabled, and user-generated input is escaped/sanitized.
 
 ## Secure API Calls & Prevent CORS Attacks
 
-Of course communicates the PWA heavily with ICM and other systems to fulfill certain requests.
-Especially while preparing the payment and paying an order sensitive data are handled.
-It is mandatory to do such communication always secured.
-Ensure all API requests are sent over HTTPS (TLS 1.2 o 1.3) as it is done in the standard implementation of the Intershop PWA.
+Of course, the PWA communicates extensively with the ICM and other systems to fulfill certain requests.
+Especially during the preparation and payment of an order, sensitive data is handled.
+It is imperative that this communication is always secure.
+Make sure that all API requests are sent over HTTPS (TLS 1.2 or 1.3), as is done in the default implementation of the Intershop PWA.
 
 ## Harden Dependency Security & Package Management
 
@@ -124,21 +128,17 @@ It is highly recommended to keep this functionality this way to reduce attack ve
 
 # Logging & Monitoring (PCI DSS Requirements 10 & 11)
 
-Logging and monitoring form the backbone of an effective security strategy.
-A comprehensive logging and monitoring is essential to detect, analyze, and respond to security events.
-The PWA together with ICM applies some best practices, like:
+Logging and monitoring are the backbone of an effective security strategy.
+Comprehensive logging and monitoring is essential for detecting, analyzing, and responding to security events.
+The PWA, along with the ICM, employs several best practices, such as
 
 - Authentication & Authorization: Logs all login attempts (successful and failed), account lockouts, password changes, and MFA events.
-- System & Application Errors: Logging of unexpected errors, exceptions, and system failures that could signal an attack or misconfiguration.
-- File Integrity: Changes to critical files or configurations are managed and monitored, by Git repositories.
+- System & Application Errors: Log unexpected errors, exceptions, and system failures that could indicate an attack or misconfiguration.
+- File Integrity: Changes to critical files or configurations are managed and monitored through Git repositories.
 - Sensitive Data: Cardholder data, full PAN, or sensitive authentication data are never logged.
 - Structured Logging: ICM uses a consistent log format (JSON) to facilitate automated parsing, aggregation, and analysis.
-- Automated Alerts: Alerts are configured for abnormal behavior such as repeated failed logins, unexpected IP address changes, or high volumes of error logs.
-- Dashboard & Visualization: Use dashboards to visualize trends and quickly identify security incidents.
-
-**_TODO:_**
-
-- Use intrusion detection and automated monitoring tools.
+- Automated Alerts: Alerts can be configured for anomalous behavior such as repeated failed logins, unexpected IP address changes, or high volumes of error logs.
+- Dashboards & Visualization: Use dashboards to visualize trends and quickly identify security incidents.
 
 # Regular Testing & Continuous Compliance (PCI DSS Requirements 11 & 12)
 
