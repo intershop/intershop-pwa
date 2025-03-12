@@ -8,7 +8,7 @@
         </a>
         <a
           [routerLink]="category | ishCategoryRoute"
-          [innerHTML]="category.name | titlecase | ishHighlight : (inputTerms$ | async)"
+          [innerHTML]="category.name | ishHighlight : (inputTerms$ | async)"
           (click)="handleInputFocus()"
         ></a>
       </ng-container>

@@ -4,7 +4,7 @@
     <li *ngFor="let result of keywords | slice : 0 : maxAutoSuggests">
       <button
         type="button"
-        [innerHTML]="result | titlecase | ishHighlight : (inputTerms$ | async)"
+        [innerHTML]="result | ishHighlight : (inputTerms$ | async)"
         (click)="submit(result)"
       ></button>
     </li>

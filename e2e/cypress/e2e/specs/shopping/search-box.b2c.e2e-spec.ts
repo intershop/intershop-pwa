@@ -33,13 +33,13 @@ describe('Search Box', () => {
       page.header.searchBox.assertNoSuggestions();
 
       page.header.searchBox.type('n');
-      page.header.searchBox.suggestions.should('contain', 'Kensington');
+      page.header.searchBox.suggestions.should('contain', 'kensington');
 
       page.header.searchBox.backspace();
       page.header.searchBox.assertNoSuggestions();
 
       page.header.searchBox.type('nsington');
-      page.header.searchBox.suggestions.should('contain', 'Kensington');
+      page.header.searchBox.suggestions.should('contain', 'kensington');
 
       page.header.searchBox.enter();
     });
@@ -50,7 +50,7 @@ describe('Search Box', () => {
   it.skip('should follow search when hitting enter with choosing suggestion with keyboard', () => {
     at(HomePage, page => {
       page.header.searchBox.type('ken');
-      page.header.searchBox.suggestions.should('contain', 'Kensington');
+      page.header.searchBox.suggestions.should('contain', 'kensington');
 
       page.header.searchBox.tab().enter();
     });
@@ -59,9 +59,9 @@ describe('Search Box', () => {
   it('should follow search when choosing suggestion with mouse', () => {
     at(HomePage, page => {
       page.header.searchBox.type('ken');
-      page.header.searchBox.suggestions.should('contain', 'Kensington');
+      page.header.searchBox.suggestions.should('contain', 'kensington');
 
-      page.header.searchBox.clickSuggestion('Kensington');
+      page.header.searchBox.clickSuggestion('kensington');
     });
   });
 
@@ -71,7 +71,7 @@ describe('Search Box', () => {
       page.header.searchBox.searchButton.should('be.visible');
 
       page.header.searchBox.type('Ken');
-      page.header.searchBox.suggestions.should('contain', 'Kensington');
+      page.header.searchBox.suggestions.should('contain', 'kensington');
 
       page.header.searchBox.type('asdf');
       page.header.searchBox.assertNoSuggestions();
@@ -96,7 +96,7 @@ describe('Search Box', () => {
   it('should properly track displaying suggestion focus', () => {
     at(HomePage, page => {
       page.header.searchBox.type('ken');
-      page.header.searchBox.suggestions.should('contain', 'Kensington');
+      page.header.searchBox.suggestions.should('contain', 'kensington');
 
       page.header.searchBox.esc();
 
@@ -107,7 +107,7 @@ describe('Search Box', () => {
       page.header.searchBox.assertNoSuggestions();
 
       page.header.searchBox.type('kensington');
-      page.header.searchBox.suggestions.should('contain', 'Kensington');
+      page.header.searchBox.suggestions.should('contain', 'kensington');
 
       page.header.gotoHomePage();
       waitLoadingEnd(2000);
@@ -115,9 +115,9 @@ describe('Search Box', () => {
       page.header.searchBox.assertSuggestionsNoDisplayed();
 
       page.header.searchBox.focus();
-      page.header.searchBox.suggestions.should('contain', 'Kensington');
+      page.header.searchBox.suggestions.should('contain', 'kensington');
 
-      page.header.searchBox.clickSuggestion('Kensington');
+      page.header.searchBox.clickSuggestion('kensington');
     });
   });
 });
