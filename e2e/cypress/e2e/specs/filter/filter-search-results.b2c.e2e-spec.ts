@@ -5,7 +5,7 @@ import { SearchResultPage } from '../../pages/shopping/search-result.page';
 const _ = {
   suggestTerm: 'gop',
   searchTerm: 'gopro',
-  suggestItemText: 'Gopro',
+  suggestItemText: 'gopro',
   results: 6,
   filter: {
     name: 'Price',

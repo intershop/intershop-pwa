@@ -5,7 +5,7 @@ import { SearchResultPage } from '../../pages/shopping/search-result.page';
 
 const _ = {
   suggestTerm: 'bel',
-  suggestItemText: 'Belkin',
+  suggestItemText: 'belkin',
   searchTerm: 'belkin n300',
   product: '10802812',
 };
