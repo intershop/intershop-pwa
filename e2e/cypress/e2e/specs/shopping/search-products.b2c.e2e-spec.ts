@@ -5,7 +5,7 @@ import { SearchResultPage } from '../../pages/shopping/search-result.page';
 
 const _ = {
   suggestTerm: 'ken',
-  suggestItemText: 'Kensington',
+  suggestItemText: 'kensington',
   searchTerm: 'Kensington K55786WW',
   product: '5800646',
   searchTermWithMoreResults: 'acer',
