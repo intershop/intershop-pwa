@@ -5,7 +5,7 @@
       <a
         [routerLink]="['/search/*']"
         [queryParams]="{ filters: 'ManufacturerName=' + result.name }"
-        [innerHTML]="result.name | titlecase | ishHighlight : (inputTerms$ | async)"
+        [innerHTML]="result.name | ishHighlight : (inputTerms$ | async)"
         (click)="handleInputFocus()"
       ></a>
     </li>

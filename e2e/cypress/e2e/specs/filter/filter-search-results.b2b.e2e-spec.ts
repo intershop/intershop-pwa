@@ -5,7 +5,7 @@ import { SearchResultPage } from '../../pages/shopping/search-result.page';
 const _ = {
   suggestTerm: 'logi',
   searchTerm: 'logitech',
-  suggestItemText: 'Logitech',
+  suggestItemText: 'logitech',
   results: 9,
   filter: {
     name: 'Price',

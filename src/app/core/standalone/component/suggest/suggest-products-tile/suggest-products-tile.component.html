@@ -9,13 +9,13 @@
       <a
         *ngIf="deviceType === 'desktop'; else mobileTablet"
         [routerLink]="'/prd' + result.sku"
-        [innerHTML]="truncate(result.name, 38) | titlecase | ishHighlight : (inputTerms$ | async)"
+        [innerHTML]="truncate(result.name, 38) | ishHighlight : (inputTerms$ | async)"
         (click)="handleInputFocus()"
       ></a>
       <ng-template #mobileTablet>
         <a
           [routerLink]="'/prd' + result.sku"
-          [innerHTML]="result.name | titlecase | ishHighlight : (inputTerms$ | async)"
+          [innerHTML]="result.name | ishHighlight : (inputTerms$ | async)"
           (click)="handleInputFocus()"
         ></a>
       </ng-template>
