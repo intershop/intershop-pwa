@@ -223,8 +223,6 @@ viewcontextid
 viewcontexts
 viewports
 viewtype
-vulnarability
-vulnarable
 walkthrough
 webserver
 webserversecureurl
