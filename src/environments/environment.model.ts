@@ -33,6 +33,7 @@ export interface Environment {
     | 'rating'
     | 'recently'
     | 'saveLanguageSelection'
+    | 'stickyHeader'
     | 'storeLocator'
     /* B2B features */
     | 'businessCustomerRegistration'
@@ -49,11 +50,11 @@ export interface Environment {
     | 'legacyEncoding'
     /* Third-party Integrations */
     | 'addressDoctor'
-    | 'sentry'
-    | 'tracking'
-    | 'tacton'
-    | 'maps'
     | 'copilot'
+    | 'maps'
+    | 'sentry'
+    | 'tacton'
+    | 'tracking'
   )[];
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
@@ -165,6 +166,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
     'rating',
     'recently',
     'saveLanguageSelection',
+    'stickyHeader',
     'storeLocator',
   ],
 

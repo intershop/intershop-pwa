@@ -15,6 +15,8 @@ A directive `ishFormSubmit` has been introduced for form html elements.
 In case of validation errors the focus is set to the first invalid form field after submit.
 The logic to disable the submit buttons as long as the form is invalid has been simplified, the usage of the function `markAsDirtyRecursive` is no longer necessary for formly forms.
 
+The feature toggle `stickyHeader` has been added to enable or disable the sticky header.
+
 ## From 5.2 to 5.3
 
 The Intershop PWA 5.3.0 introduces a standard integration with Intershop Copilot for Buyers.
