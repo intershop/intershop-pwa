@@ -5,6 +5,7 @@ import { Store, select } from '@ngrx/store';
 import { defer, fromEvent } from 'rxjs';
 import { bufferToggle, concatMap, delay, distinctUntilChanged, filter, first, map } from 'rxjs/operators';
 
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
 import { selectRouteData } from 'ish-core/store/core/router';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -13,16 +14,21 @@ import { setBreadcrumbData, setStickyHeader } from './viewconf.actions';
 
 @Injectable()
 export class ViewconfEffects {
-  constructor(private store: Store, private actions$: Actions) {}
+  constructor(private store: Store, private actions$: Actions, private featureToggleService: FeatureToggleService) {}
 
   toggleStickyHeader$ =
     !SSR &&
     createEffect(() =>
-      defer(() =>
-        fromEvent(window, 'scroll').pipe(
-          map(() => window.scrollY >= 170),
-          distinctUntilChanged(),
-          map(sticky => setStickyHeader({ sticky }))
+      this.featureToggleService.enabled$('stickyHeader').pipe(
+        whenTruthy(),
+        concatMap(() =>
+          defer(() =>
+            fromEvent(window, 'scroll').pipe(
+              map(() => window.scrollY >= 170),
+              distinctUntilChanged(),
+              map(sticky => setStickyHeader({ sticky }))
+            )
+          )
         )
       )
     );

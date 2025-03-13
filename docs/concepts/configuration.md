@@ -162,6 +162,7 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 | rating                       | Display product ratings                                                                                                                         |
 | recently                     | Display recently viewed products (additional configuration via `dataRetention` configuration options)                                           |
 | saveLanguageSelection        | Save the user's language selection and restore it after PWA load                                                                                |
+| stickyHeader                 | Display sticky header                                                                                                                           |
 | storeLocator                 | Display physical stores and their addresses                                                                                                     |
 | **B2B Features**             |                                                                                                                                                 |
 | businessCustomerRegistration | Create business customers on registration                                                                                                       |
