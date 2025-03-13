@@ -1,0 +1,19 @@
+<ng-container *ngIf="totalItems > pageSize">
+  <div class="d-flex justify-content-between py-2 px-3 bg-light align-items-center">
+    <div>{{ totalItems }} line items</div>
+    <div class="d-flex align-items-center">
+      <button
+        type="button"
+        class="btn btn-primary m-0"
+        (click)="gotoPage(pageNumber - 1)"
+        [disabled]="pageNumber === 1"
+      >
+        <
+      </button>
+      <span class="text-center px-3">{{ pageNumber }}</span>
+      <button type="button" class="btn btn-primary m-0" (click)="gotoPage(pageNumber + 1)" [disabled]="!morePages()">
+        >
+      </button>
+    </div>
+  </div>
+</ng-container>
