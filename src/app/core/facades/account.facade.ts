@@ -182,6 +182,7 @@ export class AccountFacade {
   orders$ = this.store.pipe(select(getOrders));
 
   loadOrders(query?: OrderListQuery) {
+    console.log(query);
     this.store.dispatch(loadOrders({ query: query || { limit: 30 } }));
   }
 

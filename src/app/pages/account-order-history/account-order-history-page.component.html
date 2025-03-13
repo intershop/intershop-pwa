@@ -10,7 +10,7 @@
 />
 
 <ish-order-list
-  [orders]="orders$ | async"
+  [orders]="(orders$ | async).slice((pageNumber - 1) * pageSize, (pageNumber - 1) * pageSize + pageSize)"
   [columnsToDisplay]="columnsToDisplay$ | async"
   [noOrdersMessageKey]="
     !filtersActive
@@ -20,11 +20,18 @@
   [loading]="ordersLoading$ | async"
 />
 
-<div *ngIf="moreOrdersAvailable$ | async" class="d-flex justify-content-center">
+<ish-pagination
+  [pageSize]="pageSize"
+  [pageNumber]="pageNumber"
+  (pageChanged)="loadMoreOrders($event.page)"
+  [totalItems]="100"
+/>
+
+<!-- <div *ngIf="moreOrdersAvailable$ | async" class="d-flex justify-content-center">
   <button type="button" class="btn btn-secondary" (click)="loadMoreOrders()" [disabled]="ordersLoading$ | async">
     {{ 'account.order.load_more' | translate }}
   </button>
-</div>
+</div> -->
 
 <h2 class="h4 form-text">{{ 'account.order.questions.title' | translate }}</h2>
 <p

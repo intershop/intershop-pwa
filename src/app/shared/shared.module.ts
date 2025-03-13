@@ -118,6 +118,7 @@ import { LoginFormComponent } from './components/login/login-form/login-form.com
 import { LoginModalComponent } from './components/login/login-modal/login-modal.component';
 import { OrderListComponent } from './components/order/order-list/order-list.component';
 import { OrderWidgetComponent } from './components/order/order-widget/order-widget.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 import { ProductAddToBasketComponent } from './components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductAttachmentsComponent } from './components/product/product-attachments/product-attachments.component';
 import { ProductAttributesComponent } from './components/product/product-attributes/product-attributes.component';
@@ -316,6 +317,7 @@ const exportedComponents = [
   PromotionDetailsComponent,
   PromotionRemoveComponent,
   SuccessMessageComponent,
+  PaginationComponent,
 ];
 
 @NgModule({

@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable, map, shareReplay, tap } from 'rxjs';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, map, shareReplay, take, tap } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -24,7 +25,11 @@ export class AccountOrderHistoryPageComponent implements OnInit {
   columnsToDisplay$: Observable<OrderColumnsType[]>;
   moreOrdersAvailable$: Observable<boolean>;
   filtersActive: boolean;
+  pageSize = 10;
+  pageNumber = 1;
+
   private isOrderManager = false;
+  private destroyRef = inject(DestroyRef);
 
   constructor(private accountFacade: AccountFacade) {}
 
@@ -51,13 +56,19 @@ export class AccountOrderHistoryPageComponent implements OnInit {
     this.filtersActive = Object.keys(filters).length > 0;
     this.accountFacade.loadOrders({
       ...filters,
-      limit: 30,
+      limit: 10,
       include: ['commonShipToAddress'],
       buyer: filters.buyer || (this.isOrderManager ? 'all' : undefined),
     });
   }
 
-  loadMoreOrders(): void {
-    this.accountFacade.loadMoreOrders();
+  loadMoreOrders(pageNumber: number): void {
+    this.pageNumber = pageNumber;
+    this.orders$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(orders => {
+      const requiredItemCount = (pageNumber - 1) * this.pageSize + 1;
+      if (orders.length < requiredItemCount) {
+        this.accountFacade.loadMoreOrders();
+      }
+    });
   }
 }
