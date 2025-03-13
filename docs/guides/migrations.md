@@ -19,6 +19,15 @@ The OpenResty/NGINX image was updated to `openresty/openresty:1.27.1.2-2-jammy` 
 This update resolves the issue with the `luarocks` package manager (see [#1825](https://github.com/intershop/intershop-pwa/pull/1825)).
 With the working `luarocks` package manager, the installation of the `lua-resty-redis-connector` was re-enabeld again.
 
+The order history listing for the PWA was improved.
+Previously, there was a "load more" button to extend the order list if there were more orders to display.
+Now, the order list provides a complete paging bar if there are more than 25 orders (by default) to display.
+This functionality requires ICM 13.1.0 or newer, which includes the extended [Order REST API 1.8.0](https://support.intershop.com/kb/index.php/Display/3T1454) that returns the necessary paging information.
+
+PWA projects that are not yet using ICM 13.1.0 or newer will only see the first 25 orders without any indication that additional relevant orders exist.
+Searching and filtering will continue to function as before there, but the "load more" button will no longer be available.
+For such projects, consider skipping the order history paging commit when migrating to PWA 8.0.0, and apply it once the migration to ICM 13.1.0 is complete.
+
 ## From 7.0.0 to 7.1.0
 
 Due to installation issues with the used `luarocks` package manager, we have disabled the installation of the `lua-resty-redis-connector` that provides the functionality to connect to a shared Redis cache.
