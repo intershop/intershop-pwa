@@ -2,11 +2,12 @@ import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
+import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { PaymentMapper } from 'ish-core/models/payment/payment.mapper';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
 
 import { OrderData } from './order.interface';
-import { Order } from './order.model';
+import { Order, Orders } from './order.model';
 
 export class OrderMapper {
   // eslint-disable-next-line complexity
@@ -95,9 +96,23 @@ export class OrderMapper {
     }
   }
 
-  static fromListData(payload: OrderData): Order[] {
+  static fromListData(payload: OrderData): Orders {
     if (Array.isArray(payload.data)) {
-      return payload.data.map(data => OrderMapper.fromData({ ...payload, data }));
+      return {
+        orders: payload.data.map(data => OrderMapper.fromData({ ...payload, data })),
+        paging: OrderMapper.fromInfo(payload),
+      };
+    }
+  }
+
+  static fromInfo(payload: OrderData): PagingInfo {
+    if (payload.info) {
+      const { info } = payload;
+      return {
+        limit: info.limit,
+        offset: info.offset,
+        total: info.total,
+      };
     }
   }
 }
