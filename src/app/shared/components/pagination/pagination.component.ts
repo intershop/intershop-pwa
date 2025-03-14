@@ -29,4 +29,27 @@ export class PaginationComponent implements OnChanges {
   gotoPage(page: number) {
     this.pageChanged.emit({ page, pageSize: this.pageSize });
   }
+
+  generatePagination(currentPage: number, totalPages: number): (number | string)[] {
+    const pages: (number | string)[] = [];
+    const addPage = (page: number | string) => {
+      if (pages[pages.length - 1] !== page) {
+        pages.push(page);
+      }
+    };
+
+    addPage(1);
+    if (currentPage > 3) {
+      addPage('...');
+    }
+    for (let page = Math.max(2, currentPage - 1); page <= Math.min(totalPages - 1, currentPage + 1); page++) {
+      addPage(page);
+    }
+    if (currentPage < totalPages - 2) {
+      addPage('...');
+    }
+    addPage(totalPages);
+
+    return pages;
+  }
 }
