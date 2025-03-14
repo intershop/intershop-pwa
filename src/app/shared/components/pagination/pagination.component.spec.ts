@@ -76,4 +76,34 @@ describe('Pagination Component', () => {
     const nextPageButton: HTMLButtonElement = element.querySelector('[data-testing-id="next-page-button"]');
     expect(nextPageButton.disabled).toBeFalsy();
   });
+
+  it('should contain only two items in the pages list if there are only two pages', () => {
+    component.pageSize = 25;
+    component.totalItems = 50;
+    component.numPages = Math.ceil(component.totalItems / component.pageSize);
+    component.pageNumber = 1;
+    const paginationItems = component.generatePagination(component.pageNumber, component.numPages);
+    fixture.detectChanges();
+    expect(paginationItems).toHaveLength(2);
+  });
+
+  it('should add "..." after the first page in pages list if more than 3 pages away', () => {
+    component.pageSize = 25;
+    component.totalItems = 250;
+    component.numPages = Math.ceil(component.totalItems / component.pageSize);
+    component.pageNumber = 6;
+    const paginationItems = component.generatePagination(component.pageNumber, component.numPages);
+    fixture.detectChanges();
+    expect(paginationItems[1]).toEqual('...');
+  });
+
+  it('should add "..." before the last page in pages list if more than 3 pages away', () => {
+    component.pageSize = 25;
+    component.totalItems = 250;
+    component.numPages = Math.ceil(component.totalItems / component.pageSize);
+    component.pageNumber = 1;
+    const paginationItems = component.generatePagination(component.pageNumber, component.numPages);
+    fixture.detectChanges();
+    expect(paginationItems[paginationItems.length - 2]).toEqual('...');
+  });
 });
