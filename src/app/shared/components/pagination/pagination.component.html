@@ -14,7 +14,13 @@
       >
         <
       </button>
-      <span class="text-center px-3">{{ pageNumber }}</span>
+      <!-- <span class="text-center px-3">{{ pageNumber }}</span> -->
+      <div class="d-flex align-items-center px-2">
+        <ng-container *ngFor="let page of generatePagination(pageNumber, numPages)">
+          <a *ngIf="page !== '...'" class="px-1">{{ page }}</a>
+          <span *ngIf="page === '...'">{{ page }}</span>
+        </ng-container>
+      </div>
       <button
         type="button"
         class="btn btn-primary m-0"
