@@ -18,6 +18,7 @@ export class LastNameConfiguration extends FieldLibraryConfiguration {
       props: {
         label: 'account.address.lastname.label',
         required: true,
+        attributes: { autocomplete: 'family-name' },
       },
       validators: {
         validation: [SpecialValidators.noSpecialChars],

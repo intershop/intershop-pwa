@@ -16,6 +16,7 @@ export class AddressLine2Configuration extends FieldLibraryConfiguration {
       props: {
         label: 'account.address.street2.label',
         required: false,
+        attributes: { autocomplete: 'address-line2' },
       },
     };
   }

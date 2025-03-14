@@ -260,6 +260,7 @@ export class RegistrationFormConfigurationService {
             props: {
               label: 'account.register.email.label',
               required: true,
+              attributes: { autocomplete: 'email' },
             },
           },
           {
@@ -269,6 +270,7 @@ export class RegistrationFormConfigurationService {
               type: 'email',
               label: 'account.register.email_confirmation.label',
               required: true,
+              attributes: { autocomplete: 'email' },
             },
             validation: {
               messages: {

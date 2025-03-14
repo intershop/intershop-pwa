@@ -16,6 +16,7 @@ export class PhoneHomeConfiguration extends FieldLibraryConfiguration {
       props: {
         label: 'account.profile.phone.label',
         required: false,
+        attributes: { autocomplete: 'tel' },
       },
     };
   }

@@ -16,6 +16,7 @@ export class CompanyName1Configuration extends FieldLibraryConfiguration {
       props: {
         label: 'account.address.company_name.label',
         required: true,
+        attributes: { autocomplete: 'organization' },
       },
       validation: {
         messages: {

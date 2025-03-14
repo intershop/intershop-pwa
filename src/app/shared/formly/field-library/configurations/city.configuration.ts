@@ -16,6 +16,7 @@ export class CityConfiguration extends FieldLibraryConfiguration {
       props: {
         label: 'account.address.city.label',
         required: true,
+        attributes: { autocomplete: 'address-level2' },
       },
       validation: {
         messages: {

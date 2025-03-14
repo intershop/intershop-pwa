@@ -16,6 +16,7 @@ export class PostalCodeConfiguration extends FieldLibraryConfiguration {
       props: {
         label: 'account.address.postalcode.label',
         required: true,
+        attributes: { autocomplete: 'postal-code' },
       },
       validation: {
         messages: {

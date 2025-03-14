@@ -18,6 +18,7 @@ export class FirstNameConfiguration extends FieldLibraryConfiguration {
       props: {
         label: 'account.address.firstname.label',
         required: true,
+        attributes: { autocomplete: 'given-name' },
       },
       validators: {
         validation: [SpecialValidators.noSpecialChars],

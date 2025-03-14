@@ -22,6 +22,7 @@ export class TitleConfiguration extends FieldLibraryConfiguration {
         label: 'account.address.title.label',
         placeholder: 'account.option.select.text',
         options: this.formsService.getSalutationOptions(),
+        attributes: { autocomplete: 'honorific-prefix' },
       },
     };
   }
