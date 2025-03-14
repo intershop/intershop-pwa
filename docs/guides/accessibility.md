@@ -8,17 +8,20 @@ kb_sync_latest_only
 # Accessibility
 
 - [Accessibility](#accessibility)
+  - [Introduction](#introduction)
+  - [Workflow](#workflow)
+    - [1. Follow accessibility guidelines during development](#1-follow-accessibility-guidelines-during-development)
+    - [2. Use appropriate tools to test accessibility partially automated](#2-use-appropriate-tools-to-test-accessibility-partially-automated)
+    - [3. Test accessibility manually](#3-test-accessibility-manually)
   - [Check the Accessibility of a Page](#check-the-accessibility-of-a-page)
-    - [Automated Testing](#automated-testing)
-      - [ESLint Rules](#eslint-rules)
-        - [Accessibility Plugin](#accessibility-plugin)
-        - [Additional Rules](#additional-rules)
+    - [ESLint Rules](#eslint-rules)
+      - [Accessibility Plugin](#accessibility-plugin)
+      - [Additional Rules](#additional-rules)
     - [Partially automated Testing](#partially-automated-testing)
-      - [Tools](#tools)
-        - [Google Lighthouse](#google-lighthouse)
-        - [Silktide - Accessibility Checker](#silktide---accessibility-checker)
-        - [WAVE - Web Accessibility Evaluation Tool](#wave---web-accessibility-evaluation-tool)
-        - [IBM - Equal Access Accessibility Checker](#ibm---equal-access-accessibility-checker)
+      - [Chrome Google Lighthouse](#chrome-google-lighthouse)
+      - [Silktide - Accessibility Checker](#silktide---accessibility-checker)
+      - [WAVE - Web Accessibility Evaluation Tool](#wave---web-accessibility-evaluation-tool)
+      - [IBM - Equal Access Accessibility Checker](#ibm---equal-access-accessibility-checker)
     - [Manual Testing](#manual-testing)
       - [Keyboard](#keyboard)
       - [Screen Reader](#screen-reader)
@@ -33,47 +36,65 @@ kb_sync_latest_only
     - [Titles instead of ARIA-Attributes](#titles-instead-of-aria-attributes)
   - [Further References](#further-references)
 
+## Introduction
+
 The goal of accessibility is to unlock the full potential of the Web and enable people with disabilities to participate equally.
-To achieve this, the [Web Content Accessibility Guidelines (WCAG)](https://wcagcom.wpenginepowered.com/resource/what-is-wcag/) provide a set of standards ("[success criteria](https://www.w3.org/WAI/WCAG22/Understanding/)") that ensure online content is perceivable, operable, understandable, and robust for everyone.
+To achieve this, the [Web Content Accessibility Guidelines (WCAG 2.2.)](https://wcagcom.wpenginepowered.com/resource/what-is-wcag/) provide a set of standards ("[success criteria](https://www.w3.org/WAI/WCAG22/Understanding/)") that ensure online content is perceivable, operable, understandable, and robust for everyone.
+The PWA largely fulfills this standard.
+
+This guide outlines multiple methods for checking website accessibility and applying the Web Content Accessibility Guidelines (WCAG) 2.2.
+
+## Workflow
+
+The following steps outline a structured method for evaluating accessibility, including adhering to guidelines, leveraging automated tools, and conducting manual testing.
+
+### 1. Follow accessibility guidelines during development
+
+- Use the [Accessibility Easy Check Checklist](accessibility-easy-check.md).
+
+- ESLint Rules: Keep the ESLint accessibility rules enabled in your IDE to ensure compliance during development.
+
+### 2. Use appropriate tools to test accessibility partially automated
+
+Scan the page with several accessibility test tools and and fix issues:
+
+- Do a first check with `Google Lighthouse`
+- Use `Silktide` and `Wave` to identify any automatically detected issues according to the required WCAG 2.2 AA level.
+
+### 3. Test accessibility manually
+
+- Keyboard navigation: Navigate and operate through the page using only the keyboard.
+
+- Screen reader testing: Use a screen reader like `NVDA` (or Silktide's simulated screen reader) to verify the accuracy of the HTML markup.
 
 ## Check the Accessibility of a Page
 
-### Automated Testing
+### ESLint Rules
 
-#### ESLint Rules
-
-The `@angular-eslint` repo contains a number of linting rules that can help enforce accessibility best practices in Angular component templates.
+The `@angular-eslint` repo contains a number of linting rules that help to enforce accessibility best practices in Angular component templates.
 
 Most of the accessibility rules that are enabled in the Intershop PWA are contained in the plugin `@angular-eslint/template/accessibility` that is configured in the `.eslintrc.json` file of the project.
+Some further rules complement this plugin.
 To check whether the rules are followed in your custom code or not, run `npm run lint`.
-
-Only some individual rules that do not come with this plugin are specifically written down here.
 
 > [!WARNING]
 > These rules alone are not sufficient to guarantee good accessibility of a website.
 
-##### Accessibility Plugin
+#### Accessibility Plugin
 
 ```
 plugin:@angular-eslint/template/accessibility
 ```
 
-For reference on which rules the plugin currently includes, please check the official repository:
+For reference on which rules the plugin currently includes, please check the official repository: [ESLint-Plugin Accessibility Rules](https://github.com/angular-eslint/angular-eslint/blob/main/packages/eslint-plugin-template/src/configs/accessibility.json)
 
-- [ESLint-Plugin Accessibility Rules](https://github.com/angular-eslint/angular-eslint/blob/main/packages/eslint-plugin-template/src/configs/accessibility.json)
+#### Additional Rules
 
-##### Additional Rules
+[@angular-eslint/template/no-positive-tabindex](https://github.com/angular-eslint/angular-eslint/blob/main/packages/eslint-plugin-template/docs/rules/no-positive-tabindex.md): Ensures that the tabindex attribute is not positive
 
-```
-@angular-eslint/template/no-positive-tabindex
-```
-
-If an unreachable element has to be made reachable by providing a `tabindex`, the index should never be a positive number, only `0` (element is tab focusable) or `-1` (element is not tab focusable).
-The tab-order has to be determined by the HTML-structure, not by the index.
+[@angular-eslint/template/button-has-type](https://github.com/angular-eslint/angular-eslint/blob/main/packages/eslint-plugin-template/docs/rules/button-has-type.md): Ensures that a button has a valid type specified
 
 ### Partially automated Testing
-
-#### Tools
 
 While automated tools are useful for identifying **basic** accessibility issues, they can **only partially check that the WCAG criteria are met**.
 Manual testing is essential to ensure full compliance.
@@ -85,7 +106,7 @@ The following list contains some suggestions of free tools that have been used t
 - _WAVE_: good for checking non-visible attributes like aria-labels and -roles or image alt-texts
 - _IBM_: categorizes the issues directly after the WCAG criteria, but throws many false positives
 
-##### Google Lighthouse
+#### Chrome Google Lighthouse
 
 Google Lighthouse is a tool directly build into the dev-tools of the Google Chrome browser and is great to **get a first quick overview** over the page status.
 
@@ -101,7 +122,7 @@ If a page needs to be tested which has elements that don’t stay after a reload
 
 The list of checked criteria can be found [here](https://developer.chrome.com/docs/lighthouse/accessibility/scoring).
 
-##### Silktide - Accessibility Checker
+#### Silktide - Accessibility Checker
 
 Silktide is a Chrome-only extension with **many different functionalities** for accessibility that combines a lot of features of other tools.
 
@@ -116,7 +137,7 @@ Browser Plugin:
 
 - [Chrome](https://chromewebstore.google.com/detail/silktide-accessibility-ch/mpobacholfblmnpnfbiomjkecoojakah)
 
-##### WAVE - Web Accessibility Evaluation Tool
+#### WAVE - Web Accessibility Evaluation Tool
 
 WAVE is a browser extension and website.
 The extension can be toggled by clicking the extension-icon in the browser.
@@ -134,9 +155,9 @@ Browser Plugin:
 - [Chrome](https://chromewebstore.google.com/detail/wave-evaluation-tool/jbbplnpkjmmeebjpijfedlgcdilocofh)
 - [Firefox](https://addons.mozilla.org/en-US/firefox/addon/wave-accessibility-tool)
 
-Website for deployed websites: https://wave.webaim.org
+Use the [WAVE Web Evaluation Tool Website](https://wave.webaim.org) for deployed websites
 
-##### IBM - Equal Access Accessibility Checker
+#### IBM - Equal Access Accessibility Checker
 
 IBM is a browser extension that after installing it can be found in the dev-tools (opened by pressing "`F12`") of the browser like Google Lighthouse.
 
