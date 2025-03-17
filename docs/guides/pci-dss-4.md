@@ -20,44 +20,25 @@ This guide outlines the key considerations and best practices for applying PCI D
 PCI DSS 4.0 requires securing data at REST, data in transit, authentication mechanisms, and application security.
 Since the PWA operates on both client-side and server-side, compliance must address:
 
-- Frontend Security (Angular PWA)
-- Backend Security (SSR in Express, ICM)
-- Data Storage and Transmission
-- Access Control and Authentication
-- Logging, Monitoring, and Incident Response
+| Topic                                      | Angular PWA | SSR in Express | ICM |
+| ------------------------------------------ | ----------- | -------------- | --- |
+| Frontend Security                          | x           |                |     |
+| Backend Security                           |             | x              | x   |
+| Data Transmission                          | x           | x              | x   |
+| Data Storage                               |             |                | x   |
+| Access Control and Authentication          |             |                | x   |
+| Logging, Monitoring, and Incident Response |             |                | x   |
 
-## Secure Data Handling (PCI DSS Requirement 3 & 4)
+## Secure Angular PWA Code & Dependencies
 
-Protecting Cardholder Data (CHD) and Sensitive Authentication Data (SAD) is one of the core requirements of PCI DSS 4.0.
-In the Intershop PWA Server-Side Rendering (SSR) is used.
-The data are processed both on the client-side (Angular PWA) and server-side (Express framework).
-To comply with PCI DSS, you need to secure data storage, transmission, and ensure proper encryption mechanisms.
-The requirements mandate that SAD must never be stored after authorization.
-This includes:
-
-- Full Magnetic Stripe Data
-- Card Verification Code (CVV, CVC, CID, CAV2, etc.)
-- PINs and PIN Blocks
-  The primary goal is to minimize the scope of your Cardholder Data Environment (CDE).
-  This is achieved by the default implementation by using Third-party PCI DSS-compliant payment provider like Stripe, or Payone to avoid handling raw card data.
-  When processing payments the payment processor integrations rely on redirecting to the provider for entering the CHD or using JavaScript SDKs provided by the payment processor to directly capture card details without exposing them to the PWA.
-
-## Secure Authentication & Access Control (Requirement 8 & 9)
-
-Ensuring strong authentication and access control is critical in securing the PWA, especially when dealing with payment transactions and cardholder data.
-Since the handling of these CHD is completely in the hands of the integrated payment providers these sensitive data are never handled with the PWA and the requirements are fulfilled.
-All custom payment integrations must use the same approach to not break these requirements in a customization.
-
-## Secure Angular PWA Code & Dependencies (Requirement 6)
-
-Securing the codebase of a Web App is critical to achieving PCI DSS compliance.
+Securing the codebase of a web application is critical to achieving PCI DSS compliance, especially requirement 6.
 Given that the frontend often presents a tempting target for attackers, it is mandatory to ensure secure coding practices, dependency management, and protection against common web vulnerabilities.
 
 The following sections provide a detailed breakdown of how to harden your PWA against exploits, data breaches, and injection attacks.
 
 ### Prevent Cross-Site Scripting (XSS) Attacks
 
-PCI DSS 4.0 requires protection against cross-site scripting (XSS) and injection attacks.
+PCI DSS 4.0 requires protection against cross-site scripting and injection attacks.
 A Content Security Policy (CSP) helps by restricting the sources from which scripts, styles, and other resources can be loaded.
 A way how to implement CSP in the PWA was described in the document "[Building and Running NGINX Docker Image](nginx-startup.md)".
 Summarized this means you have to
@@ -73,17 +54,6 @@ Of course, the PWA communicates extensively with the ICM and other systems to fu
 Especially during the preparation and payment of an order, sensitive data is handled.
 It is imperative that this communication is always secure.
 Make sure that all API requests are sent over HTTPS (TLS 1.2 or 1.3), as is done in the default implementation of the Intershop PWA.
-
-### Harden Dependency Security & Package Management
-
-Since the PWA uses Angular and therefor uses Node.js and NPM, keeping dependencies secure is essential.
-There are a few points to do/consider in order to prevent supply chain attacks by detecting and fixing vulnerable packages.
-These are
-
-- Perform regular security audits (`npm audit`).
-- Use a package-lock file (`package-lock.json`) to prevent dependency tampering.
-- Automatically update vulnerable dependencies (e.g. with Dependabot in ICM).
-- Ensure dependencies come from trusted sources.
 
 ### Use Secure HTTP Headers to Prevent Browser Attacks
 
@@ -106,12 +76,6 @@ PCI DSS requires secure authentication and session handling to protect user cred
 One best practice is to use Secure, HttpOnly cookies for session storage instead of local storage, which helps prevent unauthorized access to session data.
 Another recommendation is to implement automatic session timeouts and logout users after periods of inactivity, reducing the risk of session hijacking.
 
-### Implement Security Logging & Intrusion Detection
-
-PCI DSS 4.0 mandates that applications log and monitor security events to detect suspicious activity.
-To implement effective security logging, organizations should log all authentication events, including failed logins and account changes.
-Because the check of the credentials is done in ICM the logging of these kind of activities is also done there.
-
 ### Secure Server-Side Rendering (SSR)
 
 Secure Server-Side Rendering is used in the Intershop Progressive Web App when running in a Docker container.
@@ -120,25 +84,51 @@ Additionally, preventing SSR template injection is vital; this can be achieved b
 Finally, using only trusted sources for dynamic content further minimizes the risk of introducing vulnerabilities.
 By default these points are fulfilled.
 For instance the CMS HTML component uses InsertAdjacentHTML to render the server-side content within the PWA.
-This method however does not interpret content (https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML#security_considerations) to prevent attacks.
+This method however does [not interpret content](https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML#security_considerations) to prevent attacks.
 It is highly recommended to keep this functionality this way to reduce attack vectors of your storefront.
 
-## Logging & Monitoring (PCI DSS Requirements 10 & 11)
+### Regular Testing & Harden Dependency Management
+
+Maintaining security isn’t a one-time task; it’s a continuous process.
+This is why the PCI DSS requirements address it.
+For the PWA, we have implemented automated testing and vulnerability scanning.
+While the automated tests support overall stability, `npm audit` (PWA) and Dependabot (ICM) are used to automatically identify and remediate vulnerabilities in third-party packages.
+The package-lock file (`package-lock.json`) is tracked in Git to prevent dependency tampering.
+
+## Additional Points to Consider
+
+### Secure Data Handling
+
+Protecting Cardholder Data (CHD) and Sensitive Authentication Data (SAD) is one of the core requirements of PCI DSS 4.0.
+In the Intershop PWA Server-Side Rendering (SSR) is used.
+The data are processed on the client-side (Angular PWA), server-side (Express framework) as well as in ICM and third-party system like the payment processor.
+To comply with PCI DSS, you need to secure data storage, transmission, and ensure proper encryption mechanisms.
+The requirements mandate that SAD must never be stored after authorization.
+This includes:
+
+- Full Magnetic Stripe Data
+- Card Verification Code (CVV, CVC, CID, CAV2, etc.)
+- PINs and PIN Blocks
+  The primary goal is to minimize the scope of your Cardholder Data Environment (CDE).
+  This is achieved by the default implementation by using Third-party PCI DSS-compliant payment provider like Stripe, or Payone to avoid handling raw card data.
+  When processing payments the payment processor integrations rely on redirecting to the provider for entering the CHD or using JavaScript SDKs provided by the payment processor to directly capture card details without exposing them to the PWA.
+
+### Secure Authentication & Access Control
+
+Ensuring strong authentication and access control is critical in securing the PWA, especially when dealing with payment transactions and cardholder data.
+Since the handling of these CHD is completely in the hands of the integrated payment providers these sensitive data are never handled with the PWA and the PCI DSS requirements are fulfilled.
+All custom payment integrations must use the same approach to not break these requirements in a customization.
+
+### Logging & Monitoring
 
 Logging and monitoring are the backbone of an effective security strategy.
 Comprehensive logging and monitoring is essential for detecting, analyzing, and responding to security events.
-The PWA, along with the ICM, employs several best practices, such as
+PCI DSS requires the use of several best practices, including
 
-- Authentication & Authorization: Logs all login attempts (successful and failed), account lockouts, password changes, and MFA events.
+- Authentication & Authorization: Log all login attempts (successful and failed), account lockouts, password changes, and MFA events.
 - System & Application Errors: Log unexpected errors, exceptions, and system failures that could indicate an attack or misconfiguration.
-- File Integrity: Changes to critical files or configurations are managed and monitored through Git repositories.
-- Sensitive Data: Cardholder data, full PAN, or sensitive authentication data are never logged.
+- File Integrity: Manage and monitor changes to critical files or configurations using Git repositories.
+- Sensitive Data: Cardholder data, full PAN, or sensitive authentication data is never logged.
 - Structured Logging: ICM uses a consistent log format (JSON) to facilitate automated parsing, aggregation, and analysis.
 - Automated Alerts: Alerts can be configured for anomalous behavior such as repeated failed logins, unexpected IP address changes, or high volumes of error logs.
 - Dashboards & Visualization: Use dashboards to visualize trends and quickly identify security incidents.
-
-## Regular Testing & Continuous Compliance (PCI DSS Requirements 11 & 12)
-
-Maintaining security isn’t a one-time task; it’s a continuous process.
-For the PWA we implemented automated testing and vulnerability scans.
-While the automated tests support the general stability, `npm audit` (PWA) and Dependabot (ICM) are used to automatically identify and remediate vulnerabilities in third-party packages.
