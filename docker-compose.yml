@@ -6,10 +6,10 @@ services:
     image: intershophub/intershop-pwa-ssr
     build:
       context: .
-      args:
-        serviceWorker: 'false'
-        # activeThemes: b2b
-        # activeThemes: b2c
+      # args:
+      #   serviceWorker: 'false'
+      #   activeThemes: b2b
+      #   activeThemes: b2c
     # command: ['node', 'dist/b2c/run-standalone']
     # command: ['node', 'dist/b2b/run-standalone']
     # ports:
@@ -17,10 +17,11 @@ services:
     #   - '9113:9113'
     environment:
       ICM_BASE_URL: 'https://develop.icm.intershop.de'
+      # TRUST_ICM: 'true'
       LOGGING: 'true'
       # LOG_ALL: 'false'
       SOURCE_MAPS: 'true'
-      # TRUST_ICM: 'true'
+      # SSR_HYBRID: 'true'
       # PROXY_ICM: 'true'
       # PROMETHEUS: 'true'
       # METRICS_DETAIL_LEVEL: 'DETAILED'
@@ -46,6 +47,80 @@ services:
     # volumes:
     #   - d:/pwa/logs:/.pm2/logs/
 
+  nginx:
+    image: intershophub/intershop-pwa-nginx
+    build: nginx
+    depends_on:
+      - pwa
+    ports:
+      - '4200:80'
+      # - '9114:9113'
+      # - '443:443'
+    environment:
+      UPSTREAM_PWA: 'http://pwa:4200'
+      ICM_BASE_URL: 'https://develop.icm.intershop.de'
+      NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
+      CACHE: 0
+      # LOG_ALL: 0
+      # SSL: 1
+      # SSR: 0
+      # DEBUG: 1
+      # PROMETHEUS: 1
+      # COMPRESSION: 0
+      # DEVICE_DETECTION: 0
+      # CACHING_IGNORE_PARAMS: |
+      #   params:
+      OVERRIDE_IDENTITY_PROVIDERS: |
+        .+:
+          - path: /en/punchout
+            type: Punchout
+          - path: /de/punchout
+            type: Punchout
+          - path: /fr/punchout
+            type: Punchout
+          - path: /en/cobrowse
+            type: CoBrowse
+          - path: /de/cobrowse
+            type: CoBrowse
+          - path: /fr/cobrowse
+            type: CoBrowse
+      # MULTI_CHANNEL_SOURCE: env:///ASDF?type=application/yaml
+      MULTI_CHANNEL: |
+        .+:
+          - baseHref: /en
+            channel: default
+            lang: en_US
+          - baseHref: /de
+            channel: default
+            lang: de_DE
+          - baseHref: /fr
+            channel: default
+            lang: fr_FR
+          - baseHref: /b2c
+            channel: default
+            theme: b2c
+      # ADDITIONAL_HEADERS: |
+      #   headers:
+      #     - Content-Security-Policy: "default-src https://develop.icm.intershop.de 'self'; style-src 'unsafe-inline' 'self'; font-src data: 'self'; script-src secure.pay1.de 'self'; frame-src secure.pay1.de;"
+      #     - X-Frame-Options: 'SAMEORIGIN'
+      # REDIS_URI: redis://redis:6379
+
+    # Logging to an External Device (see logging.md)
+    # volumes:
+    #   - d:/pwa/logs:/var/log/
+
+    # Uncomment this if you want the containers CA to be available on your local machine
+    # 1.) provide below adjusted volume mapping
+    # 2.) download and install mkcert -> https://github.com/FiloSottile/mkcert
+    # 3.) `export CAROOT=/home/your-user/ca-dir`
+    # 4.) `mkcert -install`
+    #
+    # For more details have a look at https://github.com/FiloSottile/mkcert#installing-the-ca-on-other-systems
+    #
+    # hostname: 'your-local-host-name-with-fqdn'
+    # volumes:
+    #  - /home/your-user/ca-dir:/root/.local/share/mkcert
+
   # <CDN-Example>
   # add 127.0.0.1 mypwa.net to your hosts file and
   # uncomment the following lines
@@ -68,79 +143,3 @@ services:
   #   container_name: redis
   #   environment:
   #     - ALLOW_EMPTY_PASSWORD=yes
-
-  nginx:
-    image: intershophub/intershop-pwa-nginx
-    build: nginx
-    depends_on:
-      - pwa
-    ports:
-      - '4200:80'
-      # - '9114:9113'
-    environment:
-      UPSTREAM_PWA: 'http://pwa:4200'
-      ICM_BASE_URL: 'https://develop.icm.intershop.de'
-      NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
-      CACHE: 0
-      # REDIS_URI: redis://redis:6379
-      # LOG_ALL: off
-      # SSL: 1
-      # SSR: 0
-      # DEBUG: 1
-      # PROMETHEUS: 1
-      # COMPRESSION: 0
-      # DEVICE_DETECTION: 0
-      # CACHING_IGNORE_PARAMS: |
-      #   params:
-      # MULTI_CHANNEL_SOURCE: env:///ASDF?type=application/yaml
-      # BASIC_AUTH: 'developer:!InterShop00!'
-      # BASIC_AUTH_IP_WHITELIST: |
-      #   - 1.2.3.4
-      OVERRIDE_IDENTITY_PROVIDERS: |
-        .+:
-          - path: /en/punchout
-            type: Punchout
-          - path: /de/punchout
-            type: Punchout
-          - path: /fr/punchout
-            type: Punchout
-          - path: /en/cobrowse
-            type: CoBrowse
-          - path: /de/cobrowse
-            type: CoBrowse
-          - path: /fr/cobrowse
-            type: CoBrowse
-      MULTI_CHANNEL: |
-        .+:
-          - baseHref: /en
-            channel: default
-            lang: en_US
-          - baseHref: /de
-            channel: default
-            lang: de_DE
-          - baseHref: /fr
-            channel: default
-            lang: fr_FR
-          - baseHref: /b2c
-            channel: default
-            theme: b2c
-      # ADDITIONAL_HEADERS: |
-      #   headers:
-      #     - Content-Security-Policy: "default-src https://develop.icm.intershop.de 'self'; style-src 'unsafe-inline' 'self'; font-src data: 'self'; script-src secure.pay1.de 'self'; frame-src secure.pay1.de;"
-      #     - X-Frame-Options: 'SAMEORIGIN'
-
-    # Logging to an External Device (see logging.md)
-    # volumes:
-    #   - d:/pwa/logs:/var/log/
-
-    # Uncomment this if you want the containers CA to be available on your local machine
-    # 1.) provide below adjusted volume mapping
-    # 2.) download and install mkcert -> https://github.com/FiloSottile/mkcert
-    # 3.) `export CAROOT=/home/your-user/ca-dir`
-    # 4.) `mkcert -install`
-    #
-    # For more details have a look at https://github.com/FiloSottile/mkcert#installing-the-ca-on-other-systems
-    #
-    # hostname: 'your-local-host-name-with-fqdn'
-    # volumes:
-    #  - /home/your-user/ca-dir:/root/.local/share/mkcert
