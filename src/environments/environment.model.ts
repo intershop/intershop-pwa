@@ -157,6 +157,8 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmServerWeb: 'INTERSHOP/web/WFS',
   icmApplication: '-',
+  // eslint-disable-next-line etc/no-commented-out-code
+  // hybridApplication: '-',
 
   /* FEATURE TOGGLES */
   features: [
