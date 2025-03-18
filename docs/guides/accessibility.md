@@ -26,14 +26,8 @@ kb_sync_latest_only
       - [Keyboard](#keyboard)
       - [Screen Reader](#screen-reader)
         - [Settings](#settings)
-        - [Speech Viewer](#speech-viewer)
-        - [Shortcuts](#shortcuts)
+        - [Introduction Video](#introduction-video)
     - [Example Workflow](#example-workflow)
-  - [Project specific Applications](#project-specific-applications)
-    - [How to fix `click-events-have-key-events` problems](#how-to-fix-click-events-have-key-events-problems)
-    - [Form Submission using the key "Enter"](#form-submission-using-the-key-enter)
-    - [Form submission in dialogs](#form-submission-in-dialogs)
-    - [Titles instead of ARIA-Attributes](#titles-instead-of-aria-attributes)
   - [Further References](#further-references)
 
 ## Introduction
@@ -194,8 +188,7 @@ Things to look out for:
 
 #### Screen Reader
 
-For the beginning, it is recommended to start with Silktide’s simulated screen reader.
-It is less sophisticated and a lot easier and simpler to use.
+For the beginning, the easy to use Silktide’s simulated screen reader is a good option to read content aloud.
 
 A locally installed screen reader can be used to **thoroughly test a page** for features and properties that the simulated screen reader isn’t capable of (like announcing errors via aria-live attributes).
 It also reflects the real world application of such an assistive technology a lot closer than the simulated one.
@@ -215,38 +208,9 @@ Then navigate to "_Preferences_" → "_Settings…_".
 - "_Mouse_" → all the options should be unchecked, so the program only reads content focused by the keyboard
 - "_Speech_" → the "Rate" should probably be tuned down because the program reads very fast for someone who isn’t used to the software
 
-##### Speech Viewer
+##### Introduction Video
 
-It is also very helpful enabling the "**Speech Viewer**", that displays the spoken text.
-
-The "_Speech Viewer_" can be accessed by clicking the NVDA system tray icon and enabling it through "_Tools_" → "_Speech viewer_".
-
-It’s also recommended checking "_Show Speech Viewer on Startup_" at the bottom of the "_Speech Viewer_".
-
-##### Shortcuts
-
-NVDA has a huge list of **shortcuts**.
-The following ones are the most useful for **checking** the correct **HTML structure** and correctly defined **aria-roles**.
-It’s possible to move in the reverse order by pressing the "`Shift`"-key together with the shortcut key.
-
-- "`D`"-key - next landmark (header, main, footer, …)
-- "`H`"-key - next heading
-- "`1`"-"`6`"-keys - jump to heading-levels 1-6
-- "`G`"-key - next graphic
-- "`K`"-key - next link
-- "`B`"-key - next button
-- "`L`"-key - next list
-- "`I`"-key - next item in a list
-
-[General shortcut list](https://dequeuniversity.com/screenreaders/nvda-keyboard-shortcuts) |
-[Complete shortcut list](https://www.nvaccess.org/files/nvda/documentation/keyCommands.html)
-
-These shortcuts can help decide if an element has an appropriate `aria-role`.
-
-For example, if it’s unclear if an icon should have an "`img`"-role, think about if it’d make sense that it’s possible to access that icon with the "`G`"-key shortcut.
-In most cases, that doesn’t make sense, because an icon often just visually represents the underlying function of a link or button.
-The graphical content of the icon isn’t that important.
-It’s better to make the icon `aria-hidden` and give the underlying link/button an accessible name.
+If you have no experience with screen readers the following video about [Accessibility Testing with the NVDA Screen reader](https://www.youtube.com/watch?v=Vx1vSd5uYS8) might be helpful.
 
 ### Example Workflow
 
@@ -265,110 +229,6 @@ It’s better to make the icon `aria-hidden` and give the underlying link/button
 
 > [!NOTE]
 > Be aware of general accessibility issues like accessible link/button names, sufficient color contrast, marked links and an always visible tab-focus.
-
-## Project specific Applications
-
-### How to fix `click-events-have-key-events` problems
-
-To address this issue, make sure that every `<a>` tag in the HTML files includes a `routerLink` attribute.
-If a link is only intended to trigger an action and not used to navigate the user to another page, it is recommended to use `<button>` tags instead of anchor tags, because buttons inherently provide better support for keyboard interactions and enhance overall accessibility.
-To make the buttons look like links use the css classes `btn btn-link btn-link-action` for text links and `btn-tool btn-link` for icon links.
-In case you have to use anchor tags nevertheless e.g. because of styling issues make sure you define a keypress.enter action and the tabindex="0" attribute for the anchor tag.
-
-Other HTML elements (`<div>`, `<span>`, etc.) with a `click()` event that report this ESLint error can be fixed by adding a `(keydown.enter)` event that should be assigned with the `click()` event's method.
-In addition, a `tabindex="0"` needs to be added to such elements to make them tab focusable.
-
-### Form Submission using the key "Enter"
-
-Implicit form submission using the "Enter" key is vital to assistive technologies, see also [HTML5 specification](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission).
-Therefore, the `form` tag has to include an `input` of `type="submit"`, for example
-
-```html
-<form>
-  <label for="foo">Name:</label>
-  <input type="text" name="foo" id="foo" />
-  <input type="submit" value="Submit" />
-</form>
-```
-
-or a button of type "submit"
-
-```html
-<form>
-  <label for="foo">Name:</label>
-  <input type="text" name="foo" id="foo" />
-  <button type="submit">Submit</button>
-</form>
-```
-
-### Form submission in dialogs
-
-Dialogs (or modals) are separated into three sections:
-
-- modal header
-- modal body
-- modal footer
-
-where the form is positioned inside the model body and the buttons are positioned inside the modal footer.
-The following simplified example shows the wrong HTML structure:
-
-:x: **Wrong HTML structure**
-
-```html
-<div class="modal-body">
-  <form (ngSubmit)="submit()">
-    <formly-form></formly-form>
-  </form>
-</div>
-<div class="modal-footer">
-  <button type="button" (click)="submit()">Submit</button>
-  <button type="button" (click)="cancel()">Cancel</button>
-</div>
-```
-
-The button with the text "Submit" calls the same function `foo()` as the form `(ngSubmit)` but the form would not be submitted using the "Enter" key because the submit button is positioned outside the `form` tag.
-The following example shows the correct HTML structure:
-
-:heavy_check_mark: **Correct HTML structure**
-
-```html
-<form (ngSubmit)="submit()">
-  <div class="modal-body">
-    <formly-form></formly-form>
-  </div>
-  <div class="modal-footer">
-    <button type="submit">Submit</button>
-    <button type="button" (click)="cancel()">Cancel</button>
-  </div>
-</form>
-```
-
-where
-
-- the `form` tag surrounds both the formly form (including the form elements) and the submit button
-- the function `submit()` is only called at the `form` tag
-- the "Submit" button is correctly defined using `type="submit"` and does not call `submit()` using `(click)=""`
-- the "Cancel" button is only defined as `type="button"` to prevent any default behavior
-
-### Titles instead of ARIA-Attributes
-
-If an element has to be made more descriptive by adding a title-attribute or an aria-label, we decided to use the title and not the label, because a title provides visual feedback and can also be read as a label by screen-readers.
-
-:x: **Wrong HTML structure, title and aria-label would be read by a screen-reader**
-
-```html
-<button [title]="Close" [aria-label]="close">
-  <span>x</span>
-</button>
-```
-
-:heavy_check_mark: **Preferred HTML structure when a title is needed**
-
-```html
-<button [title]="Close">
-  <span>x</span>
-</button>
-```
 
 ## Further References
 
