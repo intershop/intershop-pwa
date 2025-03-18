@@ -157,6 +157,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmServerWeb: 'INTERSHOP/web/WFS',
   icmApplication: '-',
+  hybridApplication: '-',
 
   /* FEATURE TOGGLES */
   features: [
