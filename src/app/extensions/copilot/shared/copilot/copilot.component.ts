@@ -59,7 +59,7 @@ export class CopilotComponent {
   private loadCopilot() {
     combineLatest([
       this.copilotFacade.copilotConfiguration$.pipe(
-        switchMap(config => this.scriptLoader.load(config.copilotUIFile, 'module').pipe(map(() => config)))
+        switchMap(config => this.scriptLoader.load(config.copilotUIFile, { type: 'module' }).pipe(map(() => config)))
       ),
       this.translateService.get([
         'copilot.disclaimer.buttonText',
