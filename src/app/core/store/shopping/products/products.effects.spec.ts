@@ -11,6 +11,7 @@ import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, w
 import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
+import { SearchServiceProvider } from 'ish-core/services/search/provider/search.service.provider';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user/user.actions';
 import { loadCategory } from 'ish-core/store/shopping/categories';
@@ -41,11 +42,14 @@ describe('Products Effects', () => {
   let effects: ProductsEffects;
   let store: Store;
   let productsServiceMock: ProductsService;
+  let searchServiceProviderMock: SearchServiceProvider;
   let router: Router;
   let httpStatusCodeService: HttpStatusCodeService;
 
   beforeEach(() => {
+    searchServiceProviderMock = mock(SearchServiceProvider);
     productsServiceMock = mock(ProductsService);
+    when(searchServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
     when(productsServiceMock.getProduct(anyString())).thenCall((sku: string) => {
       if (sku === 'invalid') {
         return throwError(() => makeHttpError({ message: 'invalid' }));
@@ -85,6 +89,7 @@ describe('Products Effects', () => {
       ],
       providers: [
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
+        { provide: SearchServiceProvider, useFactory: () => instance(searchServiceProviderMock) },
         ProductsEffects,
         provideMockActions(() => actions$),
       ],
@@ -268,6 +273,7 @@ describe('Products Effects', () => {
             id: {"type":"search","value":"test","filters":{"searchTerm":[1]}}
             itemCount: 2
             sortableAttributes: []
+          NO_ACTION
         `);
         done();
       });

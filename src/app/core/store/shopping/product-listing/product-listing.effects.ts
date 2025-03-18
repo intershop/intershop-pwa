@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 import { debounceTime, distinctUntilChanged, filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
@@ -9,7 +9,7 @@ import {
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
-import { getDeviceType } from 'ish-core/store/core/configuration';
+import { getDeviceType, getSparqueConfig } from 'ish-core/store/core/configuration';
 import { selectQueryParam, selectQueryParams } from 'ish-core/store/core/router';
 import {
   applyFilter,
@@ -164,7 +164,9 @@ export class ProductListingEffects {
       mapToPayload(),
       map(({ id, filters }) => ({ type: id.type, value: id.value, filters })),
       distinctUntilChanged(isEqual),
-      map(({ type, value, filters }) => {
+      concatLatestFrom(() => this.store.pipe(select(getSparqueConfig))),
+      filter(([, sparqueConfig]) => !sparqueConfig),
+      map(([{ type, value, filters }]) => {
         if (filters) {
           const searchParameter = filters;
           return applyFilter({ searchParameter });
