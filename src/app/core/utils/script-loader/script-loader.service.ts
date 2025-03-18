@@ -7,6 +7,21 @@ interface ScriptType {
   loaded: boolean;
 }
 
+interface ScriptLoaderOption {
+  /**
+   * optionally set a type if it is not a classic Javascript file, e.g. 'module'
+   */
+  type?: string;
+  /**
+   * integrity hash and crossOrigin to 'anonymous' (parameter 'crossorigin' ignored in that case)
+   */
+  integrity?: string;
+  /**
+   * optional value for crossOrigin attribute in script tag
+   */
+  crossorigin?: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class ScriptLoaderService {
   private registeredScripts: ScriptType[] = [];
@@ -21,10 +36,11 @@ export class ScriptLoaderService {
    * load a script, if it has not already been loaded
    *
    * @param url   script url, e.g. https://pptest.payengine.de/bridge/1.0/payengine.min.js
-   * @param type  optionally set a type if it is not a classic Javascript file, e.g. 'module'
+   * @param options  a set of optional parameters to configure script handling optionally set a type if it is not a classic Javascript file, e.g. 'module'
+   * @returns Observable<ScriptType>
    */
 
-  load(url: string, type?: string): Observable<ScriptType> {
+  load(url: string, options?: ScriptLoaderOption): Observable<ScriptType> {
     return new Observable<ScriptType>((observer: Observer<ScriptType>) => {
       let script = this.registeredScripts.find(s => s.src === url);
       if (!script) {
@@ -41,8 +57,17 @@ export class ScriptLoaderService {
         const scriptElement = this.renderer.createElement('script');
         scriptElement.src = url;
         scriptElement.async = true;
-        if (type) {
-          scriptElement.type = type;
+        if (options?.type) {
+          scriptElement.type = options.type;
+        }
+
+        if (options?.crossorigin) {
+          scriptElement.crossOrigin = options.crossorigin;
+        }
+
+        if (options?.integrity) {
+          scriptElement.integrity = options.integrity;
+          scriptElement.crossOrigin = 'anonymous'; // required to be 'anonymous' if integrity is given
         }
 
         scriptElement.onload = () => {
