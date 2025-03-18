@@ -20,6 +20,7 @@ import { ICMSuggestionService } from 'ish-core/services/icm-suggestion/icm-sugge
 import { PricesService } from 'ish-core/services/prices/prices.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
+import { SearchServiceProvider } from 'ish-core/services/search/provider/search.service.provider';
 import { SuggestionServiceProvider } from 'ish-core/services/suggestion/provider/suggestion.service.provider';
 import { WarrantyService } from 'ish-core/services/warranty/warranty.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -43,6 +44,7 @@ describe('Shopping Store', () => {
   let router: Router;
   let categoriesServiceMock: CategoriesService;
   let productsServiceMock: ProductsService;
+  let searchServiceProviderMock: SearchServiceProvider;
   let promotionsServiceMock: PromotionsService;
   let suggestionServiceMock: ICMSuggestionService;
   let suggestionServiceProviderMock: SuggestionServiceProvider;
@@ -114,7 +116,9 @@ describe('Shopping Store', () => {
     const countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(EMPTY);
 
+    searchServiceProviderMock = mock(SearchServiceProvider);
     productsServiceMock = mock(ProductsService);
+    when(searchServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
     when(productsServiceMock.getProduct(anyString())).thenCall(sku => {
       if (['P1', 'P2'].find(x => x === sku)) {
         return of({ sku, name: `n${sku}` });
@@ -129,7 +133,7 @@ describe('Shopping Store', () => {
         total: 2,
       })
     );
-    when(productsServiceMock.searchProducts('something', anyNumber(), anything(), anyNumber())).thenReturn(
+    when(productsServiceMock.searchProducts(anything())).thenReturn(
       of({ products: [{ sku: 'P1' }, { sku: 'P2' }] as Product[], sortableAttributes: [], total: 2 })
     );
 
@@ -194,6 +198,7 @@ describe('Shopping Store', () => {
         { provide: PricesService, useFactory: () => instance(priceServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
+        { provide: SearchServiceProvider, useFactory: () => instance(searchServiceProviderMock) },
         { provide: SuggestionServiceProvider, useFactory: () => instance(suggestionServiceProviderMock) },
         { provide: WarrantyService, useFactory: () => instance(warrantyServiceMock) },
         provideStoreSnapshots(),
@@ -328,6 +333,7 @@ describe('Shopping Store', () => {
             id: {"type":"search","value":"something"}
             itemCount: 2
             sortableAttributes: []
+          NO_ACTION
           [Filter API] Load Filter Success:
             filterNavigation: {}
         `);
@@ -560,6 +566,7 @@ describe('Shopping Store', () => {
             id: {"type":"search","value":"something"}
             itemCount: 2
             sortableAttributes: []
+          NO_ACTION
           [Filter API] Load Filter Success:
             filterNavigation: {}
         `);
@@ -939,6 +946,7 @@ describe('Shopping Store', () => {
           id: {"type":"search","value":"something"}
           itemCount: 2
           sortableAttributes: []
+        NO_ACTION
         [Filter API] Load Filter Success:
           filterNavigation: {}
       `);

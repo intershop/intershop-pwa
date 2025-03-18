@@ -28,7 +28,7 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 // sparque config keys that should not be appended to the query params
-const SPARQUE_CONFIG_EXCLUDE_PARAMS = ['serverUrl', 'wrapperApi'];
+const SPARQUE_CONFIG_EXCLUDE_PARAMS = ['serverUrl', 'wrapperApi', 'enablePrices', 'facetOptionsCount'];
 
 /**
  * Service for interacting with the Sparque API.

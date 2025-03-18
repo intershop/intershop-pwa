@@ -8,12 +8,14 @@ import { from } from 'rxjs';
 import { concatMap, map, sample, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
+import { SearchParameter } from 'ish-core/models/search/search.model';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
-import { ProductsService } from 'ish-core/services/products/products.service';
+import { SearchServiceProvider } from 'ish-core/services/search/provider/search.service.provider';
 import { SuggestionServiceProvider } from 'ish-core/services/suggestion/provider/suggestion.service.provider';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
+import { loadFilterSuccess } from 'ish-core/store/shopping/filter';
 import {
   getProductListingItemsPerPage,
   loadMoreProducts,
@@ -43,7 +45,7 @@ export class SearchEffects {
   constructor(
     private actions$: Actions,
     private store: Store,
-    private productsService: ProductsService,
+    private searchServiceProvider: SearchServiceProvider,
     private suggestionServiceProvider: SuggestionServiceProvider,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
@@ -81,35 +83,50 @@ export class SearchEffects {
       mapToPayload(),
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
       concatLatestFrom(() => this.store.pipe(select(getProductListingItemsPerPage('search')))),
-      map(([payload, pageSize]) => ({ ...payload, amount: pageSize, offset: (payload.page - 1) * pageSize })),
-      concatMap(({ searchTerm, amount, sorting, offset, page }) =>
-        this.productsService.searchProducts(searchTerm, amount, sorting, offset).pipe(
-          concatMap(({ total, products, sortableAttributes }) => {
-            // route to product detail page if only one product was found
-            if (total === 1) {
-              this.router.navigate([generateProductUrl(products[0])]);
-            }
-            // provide the data for the search result page
-            return [
-              ...products.map(product => loadProductSuccess({ product })),
-              setProductListingPages(
-                this.productListingMapper.createPages(
-                  products.map(p => p.sku),
-                  'search',
-                  searchTerm,
-                  amount,
-                  {
-                    startPage: page,
-                    sorting,
-                    sortableAttributes,
-                    itemCount: total,
-                  }
-                )
-              ),
-            ];
-          }),
-          mapErrorToAction(searchProductsFail)
-        )
+      map(
+        ([payload, pageSize]) =>
+          <SearchParameter>{
+            searchTerm: payload.searchTerm,
+            offset: (payload.page - 1) * pageSize,
+            amount: pageSize,
+            page: payload.page,
+            sorting: payload.sorting,
+          }
+      ),
+      concatMap(searchParameter =>
+        this.searchServiceProvider
+          .get()
+          .searchProducts(searchParameter)
+          .pipe(
+            concatMap(searchResponse => {
+              // route to product detail page if only one product was found
+              if (searchResponse.total === 1) {
+                this.router.navigate([generateProductUrl(searchResponse.products[0])]);
+              }
+              // provide the data for the search result page
+              return [
+                ...searchResponse.products.map(product => loadProductSuccess({ product })),
+                setProductListingPages(
+                  this.productListingMapper.createPages(
+                    searchResponse.products.map(p => p.sku),
+                    'search',
+                    searchParameter.searchTerm,
+                    searchParameter.amount,
+                    {
+                      startPage: searchParameter.page,
+                      sorting: searchParameter.sorting,
+                      sortableAttributes: searchResponse.sortableAttributes,
+                      itemCount: searchResponse.total,
+                    }
+                  )
+                ),
+                searchResponse.filter
+                  ? loadFilterSuccess({ filterNavigation: { filter: searchResponse.filter } })
+                  : { type: 'NO_ACTION' },
+              ];
+            }),
+            mapErrorToAction(searchProductsFail)
+          )
       )
     )
   );
