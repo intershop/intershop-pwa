@@ -44,7 +44,7 @@
               "includePaths": ["src/styles/themes/theme_placeholder"]
             },
             "sourceMap": true,
-            "allowedCommonJsDependencies": ["fast-sha256"]
+            "allowedCommonJsDependencies": ["localforage"]
           },
           "defaultConfiguration": "b2b,production",
           "configurations": {
