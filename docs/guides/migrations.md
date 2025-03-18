@@ -21,6 +21,10 @@ The signature of the `ScriptLoader`'s `load` function was changed slightly.
 The second parameter was changed from type `string` to `ScriptLoaderOption`.
 The new type allows to set all options supported by the loader.
 
+The Cybersource integration has been migrated to version 2 of the Microform API.
+In order to utilize this integration, it is necessary to have an ICM with a Cybersource Service Connector 2.
+Given that the support for [Microform v1 will come to an end on July 1, 2025](https://support.visaacceptance.com/knowledgebase/Knowledgearticle/?code=KA-07550), its support was terminated.
+
 ## From 5.2 to 5.3
 
 The Intershop PWA 5.3.0 introduces a standard integration with Intershop Copilot for Buyers.
