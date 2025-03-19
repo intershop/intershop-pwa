@@ -23,7 +23,7 @@ export class SuggestSearchTermsTileComponent {
   keywords: string[];
 
   constructor(shoppingFacade: ShoppingFacade) {
-    shoppingFacade.recentlySearchTerms$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(terms => {
+    shoppingFacade.recentSearchTerms$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(terms => {
       this.keywords = terms;
     });
   }

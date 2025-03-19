@@ -12,10 +12,10 @@ describe('Suggest Search Terms Tile Component', () => {
   let fixture: ComponentFixture<SuggestSearchTermsTileComponent>;
   let element: HTMLElement;
   const shoppingFacade = mock(ShoppingFacade);
-  const recentlySearchTerms$ = new BehaviorSubject<string[]>([]);
+  const recentSearchTerms$ = new BehaviorSubject<string[]>([]);
 
   beforeEach(async () => {
-    when(shoppingFacade.recentlySearchTerms$).thenReturn(recentlySearchTerms$);
+    when(shoppingFacade.recentSearchTerms$).thenReturn(recentSearchTerms$);
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
@@ -29,7 +29,7 @@ describe('Suggest Search Terms Tile Component', () => {
     element = fixture.nativeElement;
 
     component.maxRecentlySearchedWords = 2;
-    recentlySearchTerms$.next(['Term1', 'Term2', 'Term3']);
+    recentSearchTerms$.next(['Term1', 'Term2', 'Term3']);
   });
 
   it('should be created', () => {
