@@ -22,8 +22,8 @@ export class AccountOrderHistoryPageComponent implements OnInit {
   orders$: Observable<Order[]>;
   ordersLoading$: Observable<boolean>;
   ordersError$: Observable<HttpError>;
+  ordersForPage$: Observable<Order[]>;
   columnsToDisplay$: Observable<OrderColumnsType[]>;
-  moreOrdersAvailable$: Observable<boolean>;
   filtersActive: boolean;
   pageSize = 10;
   pageNumber = 1;
@@ -37,7 +37,6 @@ export class AccountOrderHistoryPageComponent implements OnInit {
     this.orders$ = this.accountFacade.orders$.pipe(shareReplay(1));
     this.ordersLoading$ = this.accountFacade.ordersLoading$;
     this.ordersError$ = this.accountFacade.ordersError$;
-    this.moreOrdersAvailable$ = this.accountFacade.moreOrdersAvailable$;
     this.columnsToDisplay$ = this.accountFacade.isOrderManager$.pipe(
       tap(isOrderManager => (this.isOrderManager = isOrderManager)),
       map(isOrderManager =>
@@ -46,12 +45,19 @@ export class AccountOrderHistoryPageComponent implements OnInit {
           : ['creationDate', 'orderNoWithLink', 'lineItems', 'status', 'destination', 'orderTotal']
       )
     );
+    this.getOrdersForPage();
   }
 
-  /**
-   * Load filtered orders
-   *
-   */
+  getOrdersForPage() {
+    this.ordersForPage$ = this.orders$.pipe(
+      map(orders => {
+        const start = (this.pageNumber - 1) * this.pageSize;
+        const end = start + this.pageSize;
+        return orders.filter(order => order.paginationPosition >= start && order.paginationPosition < end);
+      })
+    );
+  }
+
   loadFilteredOrders(filters: Partial<OrderListQuery>) {
     this.filtersActive = Object.keys(filters).length > 0;
     this.accountFacade.loadOrders({
@@ -64,11 +70,12 @@ export class AccountOrderHistoryPageComponent implements OnInit {
 
   loadMoreOrders(pageNumber: number): void {
     this.pageNumber = pageNumber;
+
     this.orders$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(orders => {
-      const requiredItemCount = (pageNumber - 1) * this.pageSize + 1;
-      if (orders.length < requiredItemCount) {
-        this.accountFacade.loadMoreOrders();
+      if (!orders.find(order => order.paginationPosition === (pageNumber - 1) * this.pageSize)) {
+        this.accountFacade.loadMoreOrders((pageNumber - 1) * this.pageSize, this.pageSize);
       }
+      this.getOrdersForPage();
     });
   }
 }
