@@ -15,7 +15,6 @@ import {
 } from 'rxjs/operators';
 
 import { PRICE_UPDATE } from 'ish-core/configurations/injection-keys';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
@@ -252,7 +251,7 @@ export class ShoppingFacade {
   }
 
   // SEARCH
-  recentlySearchTerms$ = this.store.pipe(select(getSearchedTerms));
+  recentSearchTerms$ = this.store.pipe(select(getSearchedTerms));
   searchTerm$ = this.store.pipe(select(getSearchTerm));
   searchResults$(searchTerm: Observable<string>) {
     return searchTerm.pipe(
@@ -268,7 +267,7 @@ export class ShoppingFacade {
   }
 
   searchSuggestLoading$ = this.store.pipe(select(getSuggestSearchLoading));
-  searchSuggestError$: Observable<HttpError> = this.store.pipe(select(getSuggestSearchError));
+  searchSuggestError$ = this.store.pipe(select(getSuggestSearchError));
 
   searchLoading$ = this.store.pipe(select(getProductListingLoading));
 

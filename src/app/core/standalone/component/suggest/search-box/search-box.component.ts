@@ -253,9 +253,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
 
   hasSearchedTerms(): boolean {
     let terms = [];
-    this.shoppingFacade.recentlySearchTerms$
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(data => (terms = data));
+    this.shoppingFacade.recentSearchTerms$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => (terms = data));
     return terms.length > 0;
   }
 

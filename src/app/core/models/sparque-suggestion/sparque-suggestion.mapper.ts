@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { concatLatestFrom } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
+import { take } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
@@ -33,7 +34,8 @@ export class SparqueSuggestionMapper {
     this.store
       .pipe(
         select(getStaticEndpoint),
-        concatLatestFrom(() => [this.shoppingFacade.categoryNodes$])
+        concatLatestFrom(() => [this.shoppingFacade.categoryNodes$]),
+        take(1)
       )
       .subscribe(([url, nodes]) => {
         this.icmStaticURL = url;
@@ -104,13 +106,8 @@ export class SparqueSuggestionMapper {
   }
 
   private getUniqueCategoryId(categoryId: string): string {
-    let uniqueId = categoryId;
-    this.categoryUniqueIds.forEach(id => {
-      if (id.endsWith(uniqueId)) {
-        uniqueId = id;
-      }
-    });
-    return uniqueId;
+    const hits = this.categoryUniqueIds.filter(id => id.endsWith(categoryId));
+    return hits.length > 0 ? hits[0] : categoryId;
   }
 
   private mapBrands(brands: SparqueBrand[]): Brand[] {
