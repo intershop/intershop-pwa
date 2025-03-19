@@ -69,7 +69,6 @@ describe('Search Effects', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
-        { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: SearchServiceProvider, useFactory: () => instance(searchServiceProviderMock) },
         { provide: SuggestionServiceProvider, useFactory: () => instance(suggestionServiceProviderMock) },
         provideStoreSnapshots(),
