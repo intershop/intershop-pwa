@@ -10,7 +10,7 @@
 />
 
 <ish-order-list
-  [orders]="(orders$ | async).slice((pageNumber - 1) * pageSize, (pageNumber - 1) * pageSize + pageSize)"
+  [orders]="ordersForPage$ | async"
   [columnsToDisplay]="columnsToDisplay$ | async"
   [noOrdersMessageKey]="
     !filtersActive
@@ -24,7 +24,7 @@
   [pageSize]="pageSize"
   [pageNumber]="pageNumber"
   (pageChanged)="loadMoreOrders($event.page)"
-  [totalItems]="11"
+  [totalItems]="100"
 />
 
 <!-- <div *ngIf="moreOrdersAvailable$ | async" class="d-flex justify-content-center">

@@ -30,7 +30,6 @@ import {
   getDataRequestLoading,
 } from 'ish-core/store/customer/data-requests';
 import {
-  getMoreOrdersAvailable,
   getOrders,
   getOrdersError,
   getOrdersLoading,
@@ -182,14 +181,11 @@ export class AccountFacade {
   orders$ = this.store.pipe(select(getOrders));
 
   loadOrders(query?: OrderListQuery) {
-    console.log(query);
     this.store.dispatch(loadOrders({ query: query || { limit: 30 } }));
   }
 
-  moreOrdersAvailable$ = this.store.pipe(select(getMoreOrdersAvailable));
-
-  loadMoreOrders() {
-    this.store.dispatch(loadMoreOrders());
+  loadMoreOrders(offset: number, limit: number) {
+    this.store.dispatch(loadMoreOrders({ data: { offset, limit } }));
   }
 
   selectedOrder$ = this.store.pipe(select(getSelectedOrder));
