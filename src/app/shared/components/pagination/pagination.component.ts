@@ -26,8 +26,8 @@ export class PaginationComponent implements OnChanges {
     }
   }
 
-  gotoPage(page: number) {
-    this.pageChanged.emit({ page, pageSize: this.pageSize });
+  gotoPage(page: number | string) {
+    this.pageChanged.emit({ page: page as number, pageSize: this.pageSize });
   }
 
   generatePagination(currentPage: number, totalPages: number): (number | string)[] {

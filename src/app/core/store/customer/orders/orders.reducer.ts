@@ -28,7 +28,6 @@ export interface OrdersState extends EntityState<Order> {
   loading: boolean;
   selected: string;
   query: OrderListQuery;
-  moreAvailable: boolean;
   error: HttpError;
 }
 
@@ -36,7 +35,6 @@ const initialState: OrdersState = orderAdapter.getInitialState({
   loading: false,
   selected: undefined,
   query: undefined,
-  moreAvailable: true,
   error: undefined,
 });
 
@@ -62,13 +60,15 @@ export const ordersReducer = createReducer(
     };
   }),
   on(loadOrdersSuccess, (state, action) => {
-    const { orders, query, allRetrieved } = action.payload;
-    const newState = { ...state, query, moreAvailable: !allRetrieved };
-    if (!query.offset) {
-      return orderAdapter.setAll(orders, newState);
-    } else {
-      return orderAdapter.addMany(orders, newState);
-    }
+    const { orders, query } = action.payload;
+    const newState = { ...state, query };
+
+    const updatedOrders = orders.map((order, index) => ({
+      ...order,
+      paginationPosition: (query.offset ? query.offset : 0) + index,
+    }));
+
+    return query.offset ? orderAdapter.addMany(updatedOrders, newState) : orderAdapter.setAll(updatedOrders, newState);
   }),
 
   on(

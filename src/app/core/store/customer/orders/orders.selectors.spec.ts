@@ -19,7 +19,6 @@ import {
   selectOrder,
 } from './orders.actions';
 import {
-  getMoreOrdersAvailable,
   getOrder,
   getOrderListQuery,
   getOrders,
@@ -94,7 +93,7 @@ describe('Orders Selectors', () => {
 
     describe('and reporting success', () => {
       beforeEach(() => {
-        store$.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 }, allRetrieved: true }));
+        store$.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 } }));
       });
 
       it('should set loading to false', () => {
@@ -112,10 +111,6 @@ describe('Orders Selectors', () => {
 
       it('should have a query', () => {
         expect(getOrderListQuery(store$.state)).toEqual({ limit: 30 });
-      });
-
-      it('should have no more orders available', () => {
-        expect(getMoreOrdersAvailable(store$.state)).toBeFalse();
       });
     });
 
