@@ -30,7 +30,7 @@ describe('Search Box Component', () => {
             ({
               searchResults$: () => searchResults$,
               searchTerm$,
-              recentlySearchTerms$: new ReplaySubject<string[]>(1),
+              recentSearchTerms$: new ReplaySubject<string[]>(1),
             } as Partial<ShoppingFacade>),
         },
       ],
