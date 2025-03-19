@@ -293,6 +293,22 @@ describe('Product Mapper', () => {
     ])(`should parse correct sku when given '%s'`, uri => {
       expect(ProductMapper.parseSkuFromURI(uri)).toEqual('123');
     });
+
+    it.each([
+      'products/123%20007%20with%20space',
+      'products/123%20007%20with%20space?test=dummy',
+      'site/-;loc=en_US;cur=USD/products/123%20007%20with%20space?test=dummy&test2=dummy',
+    ])(`should parse correct decoded sku when given '%s'`, uri => {
+      expect(ProductMapper.parseSkuFromURI(uri)).toEqual('123 007 with space');
+    });
+
+    it.each([
+      'products/123%20%C3%A4+%C3%B6%26%C3%BC',
+      'products/123%20%C3%A4+%C3%B6%26%C3%BC?test=dummy',
+      'site/-;loc=en_US;cur=USD/products/123%20%C3%A4+%C3%B6%26%C3%BC?test=dummy&test2=dummy',
+    ])(`should parse correct decoded sku when given '%s'`, uri => {
+      expect(ProductMapper.parseSkuFromURI(uri)).toEqual('123 ä+ö&ü');
+    });
   });
 
   it('should find default variation for master product', () => {

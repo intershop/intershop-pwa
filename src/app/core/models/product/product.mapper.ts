@@ -51,7 +51,7 @@ export class ProductMapper {
   static parseSkuFromURI(uri: string): string {
     const match = /products[^\/]*\/([^\?]*)/.exec(uri);
     if (match) {
-      return match[1];
+      return decodeURIComponent(match[1]);
     } else {
       console.warn(`could not find sku in uri '${uri}'`);
       return;
