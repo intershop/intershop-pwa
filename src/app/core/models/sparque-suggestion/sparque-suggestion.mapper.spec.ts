@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -8,7 +7,6 @@ import { Category } from 'ish-core/models/category/category.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { SparqueMapper } from 'ish-core/models/sparque/sparque.mapper';
 import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
-import { getStaticEndpoint } from 'ish-core/store/core/configuration';
 
 import { SparqueProduct, SparqueSuggestions } from './sparque-suggestion.interface';
 import { SparqueSuggestionMapper } from './sparque-suggestion.mapper';
@@ -65,9 +63,6 @@ describe('Sparque Suggestion Mapper', () => {
       providers: [
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacadeMock) },
         { provide: SparqueMapper, useFactory: () => instance(sparqueMapperMock) },
-        provideMockStore({
-          selectors: [{ selector: getStaticEndpoint, value: 'https://static.url' }],
-        }),
       ],
     });
     sparqueSuggestionMapper = TestBed.inject(SparqueSuggestionMapper);
