@@ -211,17 +211,7 @@ describe('Orders Effects', () => {
     it('should load all orders of a user and dispatch a LoadOrdersSuccess action', () => {
       const query = { limit: 30 };
       const action = loadOrders({ query });
-      const completion = loadOrdersSuccess({ orders, query, allRetrieved: true });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadOrders$).toBeObservable(expected$);
-    });
-
-    it('should report more available if limit was reached', () => {
-      const query = { limit: orders.length };
-      const action = loadOrders({ query });
-      const completion = loadOrdersSuccess({ orders, query, allRetrieved: false });
+      const completion = loadOrdersSuccess({ orders, query });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -244,7 +234,7 @@ describe('Orders Effects', () => {
     it('should load more orders', () => {
       store.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 } }));
 
-      const action = loadMoreOrders();
+      const action = loadMoreOrders({ data: { limit: 30, offset: 30 } });
       const completion = loadOrders({ query: { limit: 30, offset: 30 } });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
