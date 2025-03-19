@@ -20,24 +20,24 @@ kb_sync_latest_only
 
 ## Introduction
 
-The accessibility checklist is designed to assist projects, developers, visual and interaction designers, and requirements engineers in preventing and identifying accessibility issues.
+The accessibility checklist is designed to assist developers, visual and interaction designers, requirements engineers and projects in preventing and identifying accessibility issues.
 These checks address only a few accessibility concerns and are intended to be quick and simple rather than thorough.
 A web page or component may appear to meet these criteria while still containing significant accessibility barriers.
 A more in-depth evaluation is necessary for a comprehensive accessibility assessment.
 
-The checklist covers essential aspects of web accessibility and should be used
+The checklist covers essential aspects of web accessibility and should be used:
 
-- when creating interaction and visual design: To ensure that designs and requirements meet accessibility standards from the outset.
+- when creating interaction and visual design: Ensure designs meet accessibility standards from the outset and maintain consistent interactions to avoid confusion.
 
-- during development and code reviews: To verify that code complies with accessibility best practices and standards.
+- during development and code reviews: Verify that code complies with accessibility best practices and standards.
 
-- when analyzing existing shops or agency deliverables: To evaluate the accessibility of existing content or submissions.
+- when analyzing existing shops or agency deliverables: Evaluate the accessibility of existing pages or submissions.
 
-If you need more general information about accessibility in the PWA read also our [accessibility guide](accessibility.md).
+If you need more general information about accessibility in the PWA, see [Accessibility](accessibility.md).
 
 ## Development Accessibility Checklist
 
-If you perform any of the following checks on any web page, the results will give you a basic idea of how accessible the page is.
+Performing any of the following checks on a web page will provide you with a basic understanding of its accessibility.
 
 ### Common
 
@@ -62,11 +62,11 @@ If you perform any of the following checks on any web page, the results will giv
   Headings communicate the organization of the content on the page.
   Screen reader users often use page headings as a way to navigate a web page.
 
-  - All pages should at least have a \<h1> level heading giving the title of the page.
+  - All pages should at least have a `<h1>` level heading giving the title of the page.
   - Levels should not be skipped as sub-headings are created, like the table-of-contents in a book.
-  - Do not select heading levels based on their appearance, use css classes for the correct styling.
+  - Do not select heading levels based on their appearance, use CSS classes for the correct styling.
 
-- [ ] **4. [Correct messaging and feedback](https://www.w3.org/WAI/perspective-videos/notifications/)**
+- [ ] **4. [Correct Messaging and Feedback](https://www.w3.org/WAI/perspective-videos/notifications/)**
 
   Users need to know what is going on, and get appropriate feedback during interaction.
 
@@ -79,15 +79,17 @@ If you perform any of the following checks on any web page, the results will giv
 - [ ] **5. [Full Keyboard Support](https://webaim.org/techniques/keyboard/)**
 
   Many users with motor disabilities rely on a keyboard.
-  All controls must be accessible to keyboard users:
+  Ensure that all interactive elements and controls are keyboard accessible and the user can navigate the entire page without being "trapped".
 
   - You may need to use tabindex="0" to ensure an element can receive keyboard focus.
   - All click events must also have key events.
+  - Verify that hover and important interactions and element toggles are accessible via both keyboard and touch not to make interactions solely dependent on hover.
+  - Ensure modals are properly accessible, focus is managed and that they can be easily closed.
 
 - [ ] **6. Tab Navigation Order**
 
-  The keyboard navigation order must be logical and intuitive.
-  This generally means that it follows the visual flow of the page—left to right, top to bottom.
+  The keyboard navigation order must be logical and intuitive, with focus moving consistently through the page.
+  This generally means that it follows the visual flow of the page-left to right, top to bottom.
   For best results:
 
   - Structure your underlying source code so that the reading/navigation order is correct.
@@ -95,7 +97,8 @@ If you perform any of the following checks on any web page, the results will giv
 
 - [ ] **7. [Visible Keyboard Focus](https://www.w3.org/WAI/test-evaluate/easy-checks/keyboard-focus/)**
 
-  For people who rely on a keyboard to navigate it is important that they always know which element, e.g. link or form control, has focus.
+  For keyboard users, it's crucial to always know which element (e.g., link or form control) has focus.
+  The focus indicator must be clearly visible on every interactive element.
 
 ### Visual Requirements
 
@@ -105,7 +108,7 @@ If you perform any of the following checks on any web page, the results will giv
   Typically this is the text and background color.
   Some people cannot read text or find elements if there is insufficient contrast between colors.
   The contrast between text and background should be above 4.5:1.  
-   The [Color Contrast Analyzer](https://developer.paciellogroup.com/resources/contrastanalyser/) is a tool that allows you to measure the contrasts.
+  The [Color Contrast Analyzer](https://developer.paciellogroup.com/resources/contrastanalyser/) is a tool that allows you to measure the contrasts.
 
 - [ ] **9. [Use of Color](https://www.w3.org/WAI/WCAG21/Understanding/use-of-color.html) ([WCAG 1.4.1](https://w3.org/TR/WCAG21#use-of-color))**
 
@@ -113,7 +116,7 @@ If you perform any of the following checks on any web page, the results will giv
   That's why color should not be used as the only visual means of conveying information, indicating an action, prompting a response, or distinguishing a visual element.
   Provide visual cues other than color (like underlining for links) to clarify the usage of interactive elements.
 
-- [ ] **10. [Touch target Size](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) ([WCAG 2.5.8](https://www.w3.org/TR/WCAG22/#target-size-minimum))**
+- [ ] **10. [Touch Target Size](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) ([WCAG 2.5.8](https://www.w3.org/TR/WCAG22/#target-size-minimum))**
 
   Using larger target sizes (e.g. for links or buttons) will help many people use targets more easily, especially if they utilize specialized input devices.
 
@@ -122,20 +125,23 @@ If you perform any of the following checks on any web page, the results will giv
 
 ### Proper Semantics
 
-- [ ] **11. Use of Correct HTML Elements**
+- [ ] **11. Use of Correct HTML Elements and Semantic Structure of the Page**
 
   Use the correct HTML elements for their intended functions and meaning (e.g. headlines for headings, paragraphs for text blocks, links for navigation, buttons for actions, lists for listings, tables for data, etc.).
 
-- [ ] **12. Enhanced HTML markup**
+  Employ HTML5 semantic elements (e.g. landmark elements <header>, <nav>, <main>, <footer>) to provide meaningful structure to the content.
+  Semantic elements help screen readers and assistive technologies better understand the layout and purpose of the page, enhancing the browsing experience for users with disabilities and improving search engine optimization (SEO).
 
-  Use ARIA attributes to enhance accessibility and to provide additional context where native HTML elements are insufficient.  
+- [ ] **12. Enhanced HTML Markup**
+
+  Use ARIA attributes to enhance accessibility and to provide additional context where native HTML elements are insufficient.
   Use additional attributes to enhance and describe elements if they contain no text.
 
 ### Images
 
 - [ ] **13. [Image Alternative Text](https://www.w3.org/WAI/test-evaluate/easy-checks/image-alt/)**
 
-  Image alternative text (“alt text”) is used by people who do not see the image.
+  Image alternative text ("alt text") is used by people who do not see the image.
   It is a short description that conveys the purpose of a functional image or informative image.
 
 - [ ] **14. Functional Images**
@@ -157,6 +163,8 @@ If you perform any of the following checks on any web page, the results will giv
 - [ ] **16. [Labels](https://www.w3.org/WAI/test-evaluate/easy-checks/form-field-labels/)**
 
   Form field labels should tell us what information to enter or what checkbox to select.
+  Ensure all form elements have associated and visible labels to provide context to users, especially those relying on assistive technologies.
+  If not, add the appropriate ARIA attribute.
 
 - [ ] **17. [Required Fields](https://www.w3.org/WAI/test-evaluate/easy-checks/required-fields/)**
 
