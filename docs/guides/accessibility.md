@@ -25,8 +25,8 @@ kb_sync_latest_only
 ## Introduction
 
 The goal of accessibility is to unlock the full potential of the Web and enable people with disabilities to participate equally.
-To achieve this, the [Web Content Accessibility Guidelines (WCAG 2.2.)](https://wcagcom.wpenginepowered.com/resource/what-is-wcag/) provide a set of standards ("[success criteria](https://www.w3.org/WAI/WCAG22/Understanding/)") that ensure online content is perceivable, operable, understandable, and robust for everyone.
-The PWA largely fulfills this standard.
+To achieve this, the [Web Content Accessibility Guidelines (WCAG 2.2.)](https://wcagcom.wpenginepowered.com/resource/what-is-wcag/) provide a set of standards ("[success criteria](https://www.w3.org/WAI/WCAG22/Understanding/)") to ensure that online content is perceivable, operable, understandable, and robust for everyone.
+The PWA largely fulfills these standards.
 
 This guide outlines multiple methods for checking website accessibility and applying the Web Content Accessibility Guidelines (WCAG) 2.2.
 
@@ -49,7 +49,6 @@ Scan the page using multiple partially automated accessibility testing tools and
 **Test Manually**
 
 - Keyboard navigation: Navigate and operate through the page using only the keyboard.
-
 - Screen reader testing: Use a screen reader like _NVDA_ (or _Silktide's_ simulated screen reader) to verify the accuracy of the HTML markup.
 
 ## Check the Accessibility of a Page
@@ -76,54 +75,53 @@ Additional rules:
 
 While automated tools are useful for identifying **basic** accessibility issues, they can **only partially check that the WCAG criteria are met**.
 Manual testing is essential to ensure full compliance.
-They can however provide a **quick and easy overview over some accessibility issues** on a page and give a good starting point on where to focus and fix accessibility problems.
+However these tools can provide a **quick and easy overview over some accessibility issues** on a page and give a good starting point on where to focus and fix accessibility problems.
 The following list contains some suggestions of free tools that have been used to check the accessibility of the PWA:
 
-- _Google Lighthouse_: quick overview and good for detecting general problems
-- _Silktide_: huge toolbox, can categorize issues after different WCAG versions
-- _WAVE_: good for checking non-visible attributes like aria-labels and -roles or image alt-texts
-- _IBM_: categorizes the issues directly after the WCAG criteria, but throws many false positives
+- _Google Lighthouse_: gives a quick overview and detects general problems
+- _Silktide_: huge toolbox, can categorize issues by different WCAG versions
+- _WAVE_: visualizes non-visible attributes like aria-labels and -roles or image alt-texts
+- _IBM_: categorizes the issues directly by the WCAG criteria
 
 #### Chrome Google Lighthouse
 
-[Google Lighthouse](https://developer.chrome.com/docs/lighthouse) is a tool built directly into the Chrome DevTools and is great for **getting a quick initial overview** of a page's status.
+[Google Lighthouse](https://developer.chrome.com/docs/lighthouse) is a tool built directly into the Chrome DevTools that **provides a quick initial overview** of a page's status.
 The list of checked criteria can be found [here](https://developer.chrome.com/docs/lighthouse/accessibility/scoring).
 
 #### Silktide - Accessibility Checker
 
-[Silktide](https://chromewebstore.google.com/detail/silktide-accessibility-ch/mpobacholfblmnpnfbiomjkecoojakah) is a Chrome-only extension that combines a lot of features of other tools with many different functionalities for accessibility checks.
+[Silktide](https://chromewebstore.google.com/detail/silktide-accessibility-ch/mpobacholfblmnpnfbiomjkecoojakah) is a Chrome-only extension with many accessibility checking functionalities.
 
 It also includes a simple simulated screen reader, similar to a locally installed one, for quickly checking accessible names of buttons and links.
 While limited compared to full screen readers, it's a useful tool for beginners.
 
 #### WAVE - Web Accessibility Evaluation Tool
 
-[WAVE](https://wave.webaim.org/) is a browser extension for [Chrome](https://chromewebstore.google.com/detail/wave-evaluation-tool/jbbplnpkjmmeebjpijfedlgcdilocofh) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/wave-accessibility-tool/), as well as a website that allows testing of deployed websites.
+[WAVE](https://wave.webaim.org/) is a browser extension for [Chrome](https://chromewebstore.google.com/detail/wave-evaluation-tool/jbbplnpkjmmeebjpijfedlgcdilocofh) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/wave-accessibility-tool/), as well as a website for testing deployed websites.
 
-It is a helpful tool for visualizing non-visual accessibility attributes like `aria-labels`, `aria-roles`, and `alt` attributes for images including a detailed description and the related WCAG criteria. _WAVE_ can also visualize the tab order and the HTML site structure (landmarks and headings).
+It is a helpful tool for visualizing non-visual accessibility attributes like `aria-labels`, `aria-roles`, and `alt` attributes for images including a detailed description and the related WCAG criteria. _WAVE_ can also visualize the tab order and the HTML page structure (landmarks and headings).
 
 #### IBM - Equal Access Accessibility Checker
 
 _IBM_ is a browser extension for [Chrome](https://chromewebstore.google.com/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/) that integrates into the developer tools.
-
-It is useful because it categorizes issues directly based on WCAG criteria.
+It categorizes issues directly based on WCAG criteria.
 
 ### Manual Testing
 
 #### Keyboard
 
-The point of manual testing via keyboard—without using a mouse—is to check the general operability of the page and ensure a logical HTML structure.
+The purpose of manual testing via keyboard - without using a mouse - is to check the general operability of the page and ensure a logical HTML structure.
 Simply avoid using the mouse and navigate/operate the page using the TAB, ENTER, SPACE, or Arrow keys for certain input fields or menus.
 
 #### Screen Reader
 
 For the beginning, it is recommended to start with _Silktide’s_ simulated screen reader.
-It is less sophisticated and a lot easier and simpler to use.
+It is less sophisticated and much easier and simpler to use.
 A locally installed screen reader can be used to thoroughly test a page for features and properties that the simulated screen reader isn’t capable of.
 It also reflects the real world application of such an assistive technology a lot closer than the simulated one.
 A widely used locally installed screen reader is [NVDA](https://www.nvaccess.org/download/).
 
-If you have no experience with screen readers the following video about [Accessibility Testing with the NVDA Screen reader](https://www.youtube.com/watch?v=Vx1vSd5uYS8) might be helpful.
+If you have no experience with screen readers, the following video about [Accessibility Testing with the NVDA Screen reader](https://www.youtube.com/watch?v=Vx1vSd5uYS8) might be helpful.
 
 ## Further References
 
