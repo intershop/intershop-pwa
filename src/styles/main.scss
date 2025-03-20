@@ -17,6 +17,9 @@
 @import 'swiper/scss';
 @import 'swiper/scss/pagination';
 
+// import ng-select default theme
+@import '~@ng-select/ng-select/themes/default.theme.css';
+
 // STYLING COMPATIBILITY LAYER
 
 // import breakpoint wrapper to match older bootstrap 3 implementation
