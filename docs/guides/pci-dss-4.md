@@ -24,7 +24,7 @@ Since the PWA operates on both client-side and server-side, compliance must addr
 | ------------------------------------------ | ----------- | -------------- | --- |
 | Frontend Security                          | x           |                |     |
 | Backend Security                           |             | x              | x   |
-| Data Transmission                          | x           | x              | x   |
+| Data Transmission                          | x           |                | x   |
 | Data Storage                               |             |                | x   |
 | Access Control and Authentication          |             |                | x   |
 | Logging, Monitoring, and Incident Response |             |                | x   |
@@ -40,13 +40,14 @@ The following sections provide a detailed breakdown of how to harden your PWA ag
 
 PCI DSS 4.0 requires protection against cross-site scripting and injection attacks.
 A Content Security Policy (CSP) helps by restricting the sources from which scripts, styles, and other resources can be loaded.
-A way how to implement CSP in the PWA was described in the document "[Building and Running NGINX Docker Image](nginx-startup.md)".
+A way how to implement CSP in the PWA was described in the document "[Building and Running NGINX Docker Image - Add Additional Headers - Content Security Policy](nginx-startup.md#content-security-policy)".
 Summarized this means you have to
 
 - Define strict CSP rules to allow only trusted sources.
 - Avoid using unsafe-inline and unsafe-eval in scripts.
-  To protect the PWA from cross-site scripting attacks, Angular's built-in security mechanisms such as DomSanitizer and template escaping are used.
-  In addition, dynamic content injection is disabled and user-generated input is escaped/sanitized.
+
+To protect the PWA from cross-site scripting attacks, Angular's built-in security mechanisms such as DomSanitizer and template escaping are used.
+In addition, dynamic content injection is disabled and user-generated input is escaped/sanitized.
 
 ### Secure API Calls & Prevent CORS Attacks
 
@@ -73,7 +74,7 @@ Recommended Security Headers
 ### Enforce Secure Authentication & Session Management
 
 PCI DSS requires secure authentication and session handling to protect user credentials.
-One best practice is to use Secure, HttpOnly cookies for session storage instead of local storage, which helps prevent unauthorized access to session data.
+One best practice is to use Secure cookies, which helps prevent unauthorized access to session data.
 Another recommendation is to implement automatic session timeouts and logout users after periods of inactivity, reducing the risk of session hijacking.
 
 ### Secure Server-Side Rendering (SSR)
@@ -101,7 +102,7 @@ The package-lock file (`package-lock.json`) is tracked in Git to prevent depende
 
 Protecting Cardholder Data (CHD) and Sensitive Authentication Data (SAD) is one of the core requirements of PCI DSS 4.0.
 In the Intershop PWA Server-Side Rendering (SSR) is used.
-The data are processed on the client-side (Angular PWA), server-side (Express framework) as well as in ICM and third-party system like the payment processor.
+The data is processed on the client-side (Angular PWA) as well as in ICM and third-party system like the payment processor.
 To comply with PCI DSS, you need to secure data storage, transmission, and ensure proper encryption mechanisms.
 The requirements mandate that SAD must never be stored after authorization.
 This includes:
@@ -109,9 +110,10 @@ This includes:
 - Full Magnetic Stripe Data
 - Card Verification Code (CVV, CVC, CID, CAV2, etc.)
 - PINs and PIN Blocks
-  The primary goal is to minimize the scope of your Cardholder Data Environment (CDE).
-  This is achieved by the default implementation by using Third-party PCI DSS-compliant payment provider like Stripe, or Payone to avoid handling raw card data.
-  When processing payments the payment processor integrations rely on redirecting to the provider for entering the CHD or using JavaScript SDKs provided by the payment processor to directly capture card details without exposing them to the PWA.
+
+The primary goal is to minimize the scope of your Cardholder Data Environment (CDE).
+This is achieved by the default implementation by using Third-party PCI DSS-compliant payment provider like Stripe, or Payone to avoid handling raw card data.
+When processing payments the payment processor integrations rely on redirecting to the provider for entering the CHD or using JavaScript SDKs provided by the payment processor to directly capture card details without exposing them to the PWA.
 
 ### Secure Authentication & Access Control
 
