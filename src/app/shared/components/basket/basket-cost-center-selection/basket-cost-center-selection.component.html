@@ -1,6 +1,12 @@
-<ng-container *ngIf="fields$ | async as fields" data-testing-id="cost-center-select">
-  <h2 class="h3">{{ 'checkout.cost_center.select.heading' | translate }}</h2>
+<ng-container data-testing-id="cost-center-select">
   <form [formGroup]="form">
-    <formly-form [form]="form" [fields]="fields" [model]="model" />
+    <h3>{{ 'checkout.cost_center.select.heading' | translate }}</h3>
+    <ng-select
+      class="ng-invalid"
+      bindLabel="label"
+      bindValue="value"
+      formControlName="costCenter"
+      [items]="costCenterOptions$ | async"
+    />
   </form>
 </ng-container>

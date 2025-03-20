@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { UntypedFormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, combineLatest } from 'rxjs';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { distinctUntilChanged, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -20,18 +19,18 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketCostCenterSelectionComponent implements OnInit {
-  form = new UntypedFormGroup({});
-  fields$: Observable<FormlyFieldConfig[]>;
-  model: { costCenter: string };
+  form: FormGroup;
 
-  private costCenterOptions$: Observable<SelectOption[]>;
+  costCenterOptions$: Observable<SelectOption[]>;
+  selectedCostCenter: string;
 
   private destroyRef = inject(DestroyRef);
 
   constructor(
     private checkoutFacade: CheckoutFacade,
     private accountFacade: AccountFacade,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit() {
@@ -40,25 +39,22 @@ export class BasketCostCenterSelectionComponent implements OnInit {
       switchMap(() => this.checkoutFacade.eligibleCostCenterSelectOptions$())
     );
 
-    this.fields$ = combineLatest([
-      this.costCenterOptions$,
-      // retrigger field render when cost center is updated (maybe we don't need the placeholder anymore)
-      this.checkoutFacade.basket$.pipe(
-        map(basket => basket?.costCenter),
-        distinctUntilChanged()
-      ),
-    ]).pipe(
-      map(([options]) => options),
-      map(options => (options.length ? this.getFields(options) : undefined)),
-      whenTruthy()
-    );
-
     // initialize model with the basket costCenter
     this.checkoutFacade.basket$
       .pipe(whenTruthy(), take(1), takeUntilDestroyed(this.destroyRef))
-      .subscribe(basket => (this.model = { costCenter: basket.costCenter }));
+      .subscribe(basket => this.setupForm(basket.costCenter));
 
-    // save changes after form value changed
+    // mark form as dirty to display validation errors
+    this.checkoutFacade.basketValidationResults$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(results => {
+      if (
+        !results?.valid &&
+        results?.errors?.find(error => error.code === 'basket.validation.cost_center_missing.error')
+      ) {
+        markAsDirtyRecursive(this.form);
+        this.cd.markForCheck();
+      }
+    });
+
     this.form.valueChanges
       .pipe(
         whenTruthy(),
@@ -72,34 +68,11 @@ export class BasketCostCenterSelectionComponent implements OnInit {
           this.checkoutFacade.updateBasketCostCenter(costCenter);
         }
       });
-
-    // mark form as dirty to display validation errors
-    this.checkoutFacade.basketValidationResults$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(results => {
-      if (
-        !results?.valid &&
-        results?.errors?.find(error => error.code === 'basket.validation.cost_center_missing.error')
-      ) {
-        markAsDirtyRecursive(this.form);
-        this.cd.markForCheck();
-      }
-    });
   }
-  private getFields(options: SelectOption[]): FormlyFieldConfig[] {
-    if (options.length === 1 && options[0].value && !this.model?.costCenter) {
-      this.model = { ...this.model, costCenter: options[0].value };
-    }
-    return [
-      {
-        key: 'costCenter',
-        type: 'ish-select-field',
-        props: {
-          label: 'checkout.cost_center.select.label',
-          required: true,
-          hideRequiredMarker: true,
-          options,
-          placeholder: options.length > 1 && !this.model?.costCenter ? 'account.option.select.text' : undefined,
-        },
-      },
-    ];
+
+  private setupForm(costCenter: string) {
+    this.form = this.fb.group({
+      costCenter: [costCenter],
+    });
   }
 }

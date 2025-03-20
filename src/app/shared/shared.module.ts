@@ -1,7 +1,7 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { CommonModule } from '@angular/common';
 import { Injector, NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {
   NgbCarouselModule,
@@ -10,6 +10,7 @@ import {
   NgbModalModule,
   NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule } from '@ngx-translate/core';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SwiperModule } from 'swiper/angular';
@@ -194,6 +195,9 @@ const importExportModules = [
   TactonExportsModule,
   TranslateModule,
   WishlistsExportsModule,
+  NgSelectModule,
+  FormsModule,
+  ReactiveFormsModule,
 ];
 
 const declaredComponents = [
