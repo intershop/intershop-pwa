@@ -10,6 +10,7 @@ import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module'
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { AccountRecurringOrdersPageComponent } from './account-recurring-orders-page.component';
 import { RecurringOrderListComponent } from './recurring-order-list/recurring-order-list.component';
@@ -22,8 +23,6 @@ describe('Account Recurring Orders Page Component', () => {
 
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
-    when(accountFacade.recurringOrdersContext$).thenReturn(of('MY'));
-    when(accountFacade.recurringOrders$()).thenReturn(of([{ id: '4711' } as RecurringOrder]));
 
     await TestBed.configureTestingModule({
       imports: [
@@ -35,6 +34,7 @@ describe('Account Recurring Orders Page Component', () => {
       declarations: [
         AccountRecurringOrdersPageComponent,
         MockComponent(ErrorMessageComponent),
+        MockComponent(LoadingComponent),
         MockComponent(RecurringOrderListComponent),
       ],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
@@ -45,11 +45,32 @@ describe('Account Recurring Orders Page Component', () => {
     fixture = TestBed.createComponent(AccountRecurringOrdersPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    when(accountFacade.recurringOrdersContext$).thenReturn(of('MY'));
+    when(accountFacade.recurringOrders$()).thenReturn(of([{ id: '4711' } as RecurringOrder]));
+    when(accountFacade.recurringOrdersLoading$).thenReturn(of(false));
+    when(accountFacade.recurringOrdersError$).thenReturn(of(undefined));
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should display loading overlay if recurring orders are loading', () => {
+    when(accountFacade.recurringOrdersLoading$).thenReturn(of(true));
+    fixture.detectChanges();
+    expect(element.querySelector('ish-loading')).toBeTruthy();
+  });
+
+  it('should display my tab as active if context is MY', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id=tab-link-my]').getAttribute('class')).toContain('active');
+  });
+
+  it('should display admin tab as active if context is ADMIN', () => {
+    when(accountFacade.recurringOrdersContext$).thenReturn(of('ADMIN'));
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id=tab-link-admin]').getAttribute('class')).toContain('active');
   });
 });

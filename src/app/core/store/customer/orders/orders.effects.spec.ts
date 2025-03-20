@@ -133,7 +133,7 @@ describe('Orders Effects', () => {
   });
 
   describe('continueAfterOrderCreation', () => {
-    it('should navigate to /checkout/receipt after CreateOrderSuccess if there is no redirect required', fakeAsync(() => {
+    it('should navigate to /checkout/receipt with order id as parameter after CreateOrderSuccess if there is no redirect required', fakeAsync(() => {
       const action = createOrderSuccess({ order: { id: '123' } as Order, basketId: 'BID' });
       actions$ = of(action);
 
@@ -142,6 +142,26 @@ describe('Orders Effects', () => {
       tick(500);
 
       expect(location.path()).toEqual('/checkout/receipt?orderId=123');
+    }));
+
+    it('should navigate to /checkout/receipt with recurring order id as parameter after CreateOrderSuccess', fakeAsync(() => {
+      const action = createOrderSuccess({
+        order: {
+          id: '123',
+          orderCreation: {
+            status: 'STOPPED',
+            stopAction: { exitReason: 'recurring.order' },
+          },
+        } as Order,
+        basketId: 'BID',
+      });
+      actions$ = of(action);
+
+      effects.continueAfterOrderCreation$.subscribe({ next: noop, error: fail, complete: noop });
+
+      tick(500);
+
+      expect(location.path()).toEqual('/checkout/receipt?recurringOrderId=BID');
     }));
 
     it('should navigate to an external url after CreateOrderSuccess if there is redirect required', fakeAsync(() => {
