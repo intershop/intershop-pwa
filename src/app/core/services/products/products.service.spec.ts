@@ -82,6 +82,22 @@ describe('Products Service', () => {
     when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
   });
 
+  it('should return the matched terms when search term is executed', done => {
+    when(apiServiceMock.get(anything(), anything())).thenReturn(of({ elements: [{ type: undefined, term: 'Goods' }] }));
+
+    productsService.search('g').subscribe(res => {
+      expect(res).toMatchInlineSnapshot(`
+        {
+          "keywordSuggestions": [
+            "Goods",
+          ],
+        }
+      `);
+      verify(apiServiceMock.get(anything(), anything())).once();
+      done();
+    });
+  });
+
   it("should get Product data when 'getProduct' is called", done => {
     when(apiServiceMock.get(`products/${productSku}`, anything())).thenReturn(of({ sku: productSku } as Product));
     productsService.getProduct(productSku).subscribe(data => {

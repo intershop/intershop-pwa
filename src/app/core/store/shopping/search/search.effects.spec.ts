@@ -6,10 +6,8 @@ import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
-import { ICMSuggestionService } from 'ish-core/services/icm-suggestion/icm-suggestion.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SearchServiceProvider } from 'ish-core/services/search/provider/search.service.provider';
-import { SuggestionServiceProvider } from 'ish-core/services/suggestion/provider/suggestion.service.provider';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadMoreProducts, setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
@@ -27,20 +25,15 @@ describe('Search Effects', () => {
   let effects: SearchEffects;
   let router: Router;
   let productsServiceMock: ProductsService;
-  let suggestionServiceMock: ICMSuggestionService;
-  let suggestionServiceProviderMock: SuggestionServiceProvider;
   let searchServiceProviderMock: SearchServiceProvider;
   let httpStatusCodeService: HttpStatusCodeService;
 
   const suggests = [{ keywordSuggestions: ['Goods'] }] as Suggestion;
 
   beforeEach(() => {
-    suggestionServiceMock = mock(ICMSuggestionService);
-    suggestionServiceProviderMock = mock(SuggestionServiceProvider);
-    when(suggestionServiceProviderMock.get()).thenReturn(instance(suggestionServiceMock));
-    when(suggestionServiceMock.search(anyString())).thenReturn(of<Suggestion>(suggests));
     searchServiceProviderMock = mock(SearchServiceProvider);
     productsServiceMock = mock(ProductsService);
+    when(productsServiceMock.search(anyString())).thenReturn(of<Suggestion>(suggests));
     when(searchServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
     const skus = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
     when(productsServiceMock.searchProducts(anything())).thenCall(
@@ -70,7 +63,6 @@ describe('Search Effects', () => {
       ],
       providers: [
         { provide: SearchServiceProvider, useFactory: () => instance(searchServiceProviderMock) },
-        { provide: SuggestionServiceProvider, useFactory: () => instance(suggestionServiceProviderMock) },
         provideStoreSnapshots(),
       ],
     });
@@ -107,18 +99,18 @@ describe('Search Effects', () => {
       const action = suggestSearch({ searchTerm: 'g' });
       store$.dispatch(action);
 
-      verify(suggestionServiceMock.search('g')).once();
+      verify(productsServiceMock.search('g')).once();
     }));
 
     it('should not fire action when error is encountered at service level', fakeAsync(() => {
-      when(suggestionServiceMock.search(anyString())).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
+      when(productsServiceMock.search(anyString())).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
 
       store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(4000);
 
       effects.suggestSearch$.subscribe({ next: fail, error: fail });
 
-      verify(suggestionServiceMock.search('good')).once();
+      verify(productsServiceMock.search('good')).once();
     }));
 
     it('should fire all necessary actions for suggest-search', fakeAsync(() => {

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { take } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { Category } from 'ish-core/models/category/category.model';

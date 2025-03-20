@@ -11,7 +11,6 @@ import { ProductListingMapper } from 'ish-core/models/product-listing/product-li
 import { SearchParameter } from 'ish-core/models/search/search.model';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { SearchServiceProvider } from 'ish-core/services/search/provider/search.service.provider';
-import { SuggestionServiceProvider } from 'ish-core/services/suggestion/provider/suggestion.service.provider';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
@@ -46,7 +45,6 @@ export class SearchEffects {
     private actions$: Actions,
     private store: Store,
     private searchServiceProvider: SearchServiceProvider,
-    private suggestionServiceProvider: SuggestionServiceProvider,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
     private translateService: TranslateService,
@@ -138,7 +136,7 @@ export class SearchEffects {
         ofType(suggestSearch),
         mapToPayloadProperty('searchTerm'),
         concatMap(searchTerm =>
-          this.suggestionServiceProvider
+          this.searchServiceProvider
             .get()
             .search(searchTerm)
             .pipe(
