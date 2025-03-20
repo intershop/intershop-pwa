@@ -24,15 +24,15 @@ kb_sync_latest_only
 
 ## Introduction
 
-The goal of accessibility is to unlock the full potential of the Web and enable people with disabilities to participate equally.
+The goal of accessibility is to unlock the full potential of the Web and enable people with disabilities to participate on an equal basis.
 To achieve this, the [Web Content Accessibility Guidelines (WCAG 2.2.)](https://wcagcom.wpenginepowered.com/resource/what-is-wcag/) provide a set of standards ("[success criteria](https://www.w3.org/WAI/WCAG22/Understanding/)") to ensure that online content is perceivable, operable, understandable, and robust for everyone.
-The PWA largely fulfills these standards.
+The PWA largely meets this standard.
 
 This guide outlines multiple methods for checking website accessibility and applying the Web Content Accessibility Guidelines (WCAG) 2.2.
 
 ## Workflow
 
-The following steps outline a structured method for evaluating accessibility, including adhering to guidelines, leveraging automated tools, and conducting manual testing.
+The following steps outline a structured method for evaluating accessibility, including following guidelines, using automated tools, and performing manual testing.
 
 **Follow Accessibility Guidelines During Development**
 
@@ -55,7 +55,7 @@ Scan the page using multiple partially automated accessibility testing tools and
 
 ### ESLint Rules
 
-The `@angular-eslint` repository provides several linting rules to help enforce accessibility best practices in Angular component templates.
+The `@angular-eslint` repository contains a set of linting rules that help to enforce accessibility best practices in Angular component templates.
 
 Most of the accessibility rules enabled in the Intershop PWA are part of the `@angular-eslint/template/accessibility` plugin, which is configured in the project's [.eslintrc.json](../../.eslintrc.json) file.
 To verify whether your custom code adheres to these rules, run `npm run lint`.
@@ -64,7 +64,7 @@ Only a few specific rules that are not included in this plugin are explicitly li
 Refer to the official repository to check which rules the plugin currently includes: [ESLint-Plugin Accessibility Rules](https://github.com/angular-eslint/angular-eslint/blob/main/packages/eslint-plugin-template/src/configs/accessibility.json)
 
 > [!WARNING]
-> These rules alone are not sufficient to guarantee a good accessibility of a website.
+> These rules alone are not sufficient to ensure good website accessibility.
 
 Additional rules:
 
@@ -73,10 +73,10 @@ Additional rules:
 
 ### Partially Automated Testing
 
-While automated tools are useful for identifying **basic** accessibility issues, they can **only partially check that the WCAG criteria are met**.
+While automated tools are useful for identifying **basic** accessibility issues, they can **only partially verify compliance with the WCAG criteria**.
 Manual testing is essential to ensure full compliance.
-However these tools can provide a **quick and easy overview over some accessibility issues** on a page and give a good starting point on where to focus and fix accessibility problems.
-The following list contains some suggestions of free tools that have been used to check the accessibility of the PWA:
+However, they can provide a **quick and easy overview of some accessibility issues** on a page, and a good starting point for where to focus and fix accessibility problems.
+The following list contains some suggestions for free tools that have been used to check the accessibility of the PWA:
 
 - _Google Lighthouse_: gives a quick overview and detects general problems
 - _Silktide_: huge toolbox, can categorize issues by different WCAG versions
@@ -93,7 +93,7 @@ The list of checked criteria can be found [here](https://developer.chrome.com/do
 [Silktide](https://chromewebstore.google.com/detail/silktide-accessibility-ch/mpobacholfblmnpnfbiomjkecoojakah) is a Chrome-only extension with many accessibility checking functionalities.
 
 It also includes a simple simulated screen reader, similar to a locally installed one, for quickly checking accessible names of buttons and links.
-While limited compared to full screen readers, it's a useful tool for beginners.
+While limited compared to full screen readers, it is a useful tool for beginners.
 
 #### WAVE - Web Accessibility Evaluation Tool
 
@@ -115,9 +115,9 @@ Simply avoid using the mouse and navigate/operate the page using the TAB, ENTER,
 
 #### Screen Reader
 
-For the beginning, it is recommended to start with _Silktide’s_ simulated screen reader.
+For the beginning, Intershop recommends to start with _Silktide’s_ simulated screen reader.
 It is less sophisticated and much easier and simpler to use.
-A locally installed screen reader can be used to thoroughly test a page for features and properties that the simulated screen reader isn’t capable of.
+A locally installed screen reader can be used to thoroughly test a page for features and properties that the simulated screen reader is not capable of.
 It also reflects the real world application of such an assistive technology a lot closer than the simulated one.
 A widely used locally installed screen reader is [NVDA](https://www.nvaccess.org/download/).
 
