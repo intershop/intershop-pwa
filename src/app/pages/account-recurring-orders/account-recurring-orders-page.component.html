@@ -6,12 +6,18 @@
 
 <ul *ishIsAuthorizedTo="'APP_B2B_MANAGE_ORDERS'" ngbNav class="nav-tabs" [(activeId)]="context">
   <li ngbNavItem="MY" role="presentation">
-    <a ngbNavLink [routerLink]="['../recurring-orders']">{{ 'account.recurring_orders.tab_my' | translate }}</a>
+    <a ngbNavLink [routerLink]="['../recurring-orders']" data-testing-id="tab-link-my">{{
+      'account.recurring_orders.tab_my' | translate
+    }}</a>
   </li>
   <li ngbNavItem="ADMIN" role="presentation">
-    <a ngbNavLink [routerLink]="['../recurring-orders']" [queryParams]="{ context: 'ADMIN' }">{{
-      'account.recurring_orders.tab_all' | translate
-    }}</a>
+    <a
+      ngbNavLink
+      [routerLink]="['../recurring-orders']"
+      [queryParams]="{ context: 'ADMIN' }"
+      data-testing-id="tab-link-admin"
+      >{{ 'account.recurring_orders.tab_all' | translate }}</a
+    >
   </li>
 </ul>
 
