@@ -12,7 +12,7 @@ The up-to-date document can be found in the [PCI Document Library](https://www.p
 These standards are established to ensure that organizations handling card data maintain a secure environment and mitigate risks associated with data breaches.
 
 With the release of PCI DSS 4.0, organizations that handle payment card data must ensure compliance with updated security requirements.
-With using the Intershop Progressive Web Application (PWA), you need to incorporate security best practices to protect cardholder data and sensitive authentication data.
+With using the Intershop Progressive Web App (PWA), you need to incorporate security best practices to protect cardholder data and sensitive authentication data.
 This guide outlines the key considerations and best practices for applying PCI DSS 4.0 to the Angular-based Intershop PWA.
 
 ## Understanding PCI DSS 4.0 Applicability
@@ -40,11 +40,11 @@ The following sections provide a detailed breakdown of how to harden your PWA ag
 
 PCI DSS 4.0 requires protection against cross-site scripting and injection attacks.
 A Content Security Policy (CSP) helps by restricting the sources from which scripts, styles, and other resources can be loaded.
-A way how to implement CSP in the PWA was described in the document "[Building and Running NGINX Docker Image - Add Additional Headers - Content Security Policy](nginx-startup.md#content-security-policy)".
-Summarized this means you have to
+A way how to implement CSP in the PWA is described in the document "[Building and Running NGINX Docker Image - Add Additional Headers - Content Security Policy](nginx-startup.md#content-security-policy)".
+In summary, this means you have to:
 
-- Define strict CSP rules to allow only trusted sources.
-- Avoid using unsafe-inline and unsafe-eval in scripts.
+- Define strict CSP rules to allow only trusted sources
+- Avoid using unsafe-inline and unsafe-eval in scripts
 
 To protect the PWA from cross-site scripting attacks, Angular's built-in security mechanisms such as DomSanitizer and template escaping are used.
 In addition, dynamic content injection is disabled and user-generated input is escaped/sanitized.
