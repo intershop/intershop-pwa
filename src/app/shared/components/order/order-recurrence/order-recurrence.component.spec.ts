@@ -1,4 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { MockPipe } from 'ng-mocks';
+
+import { DatePipe } from 'ish-core/pipes/date.pipe';
+import { FrequencyPipe } from 'ish-core/pipes/frequency.pipe';
 
 import { OrderRecurrenceComponent } from './order-recurrence.component';
 
@@ -9,7 +14,8 @@ describe('Order Recurrence Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [OrderRecurrenceComponent],
+      imports: [TranslateModule.forRoot()],
+      declarations: [MockPipe(DatePipe), MockPipe(FrequencyPipe), OrderRecurrenceComponent],
     }).compileComponents();
   });
 

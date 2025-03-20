@@ -129,6 +129,18 @@ class DateRangePickerFieldComponent extends FieldType {}
 })
 class RepeatFieldComponent extends FieldArrayType {}
 
+@Component({
+  selector: 'ish-number-test-field',
+  template: 'NumberFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
+})
+class NumberFieldComponent extends FieldType {}
+
+@Component({
+  selector: 'ish-information-test-field',
+  template: 'InformationFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
+})
+class InformationFieldComponent extends FieldType {}
+
 @NgModule({
   declarations: [
     CaptchaFieldComponent,
@@ -138,6 +150,8 @@ class RepeatFieldComponent extends FieldArrayType {}
     EmailFieldComponent,
     FieldsetFieldComponent,
     HtmlTextFieldComponent,
+    InformationFieldComponent,
+    NumberFieldComponent,
     PasswordFieldComponent,
     PhoneFieldComponent,
     PlainTextFieldComponent,
@@ -210,6 +224,14 @@ class RepeatFieldComponent extends FieldArrayType {}
         { name: 'ish-date-picker-field', component: DatePickerFieldComponent },
         { name: 'ish-date-range-picker-field', component: DateRangePickerFieldComponent },
         { name: 'repeat', component: RepeatFieldComponent },
+        {
+          name: 'ish-number-field',
+          component: NumberFieldComponent,
+        },
+        {
+          name: 'ish-information-field',
+          component: InformationFieldComponent,
+        },
       ],
       wrappers: [
         { name: 'form-field-horizontal', component: DummyWrapperComponent },

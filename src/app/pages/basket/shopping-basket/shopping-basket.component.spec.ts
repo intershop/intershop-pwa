@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent } from 'ng-mocks';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -50,7 +49,6 @@ describe('Shopping Basket Component', () => {
         MockComponent(LineItemListComponent),
         MockComponent(ModalDialogLinkComponent),
         MockComponent(ShoppingBasketPaymentComponent),
-        MockPipe(ServerSettingPipe),
         ShoppingBasketComponent,
       ],
       imports: [

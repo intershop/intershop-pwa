@@ -70,7 +70,7 @@ export class RecurringOrdersEffects {
       concatLatestFrom(payload => this.store.pipe(select(getRecurringOrder(payload.recurringOrderId)))),
       concatLatestFrom(() => this.store.pipe(select(selectQueryParam('context')))),
       mergeMap(([[payload, recurringOrder], context]) => {
-        if (payload.active !== recurringOrder.active) {
+        if (payload.active !== recurringOrder?.active) {
           return this.recurringOrdersService
             .updateRecurringOrder(payload.recurringOrderId, payload.active, context)
             .pipe(

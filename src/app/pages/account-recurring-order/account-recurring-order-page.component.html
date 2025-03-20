@@ -42,7 +42,7 @@
   <p>{{ 'account.recurring_order.subtitle' | translate }}</p>
 
   <!-- Order Summary Info -->
-  <div class="row pb-3">
+  <div class="row pb-3" data-testing-id="order-summary-info">
     <div class="col-12 col-sm-6">
       <dl class="row dl-horizontal dl-separator">
         <dt class="col-6">
@@ -55,9 +55,10 @@
       <dl *ngIf="recurringOrder.approvalStatuses" class="row dl-horizontal dl-separator">
         <dt class="col-6">{{ 'account.recurring_order.details.requisition_number.label' | translate }}</dt>
         <dd class="col-6">
-          <a [routerLink]="['/account/requisitions/buyer', recurringOrder.id, { status: 'APPROVED' }]">{{
-            recurringOrder.documentNo
-          }}</a
+          <a
+            [routerLink]="['/account/requisitions/buyer', recurringOrder.id, { status: 'APPROVED' }]"
+            data-testing-id="requisiton-link"
+            >{{ recurringOrder.documentNo }}</a
           ><br />
           (<ng-container *ngFor="let approval of recurringOrder.approvalStatuses; let last = last"
             >{{
@@ -200,7 +201,7 @@
 
 <!-- Links -->
 <div class="section d-flex justify-content-between">
-  <a routerLink="/account/recurring-orders" class="no-print">{{
+  <a routerLink="/account/recurring-orders" class="no-print" data-testing-id="recurring-orders-link">{{
     'account.recurring_order.details.links.return_to_orders' | translate
   }}</a>
   <a routerLink="/home" class="no-print" data-testing-id="home-link">{{

@@ -10,5 +10,7 @@
     [disabled]="disabled"
     (click)="toggleState()"
   />
-  <label class="custom-control-label" [for]="id">{{ activeState ? labelActive : labelInactive }}</label>
+  <label class="custom-control-label" [for]="id" data-testing-id="customControlLabel">{{
+    activeState ? labelActive : labelInactive
+  }}</label>
 </span>

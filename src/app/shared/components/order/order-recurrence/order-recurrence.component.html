@@ -5,7 +5,7 @@
     <dt [class]="labelCssClass">{{ 'order.recurrence.start.label' | translate }}</dt>
     <dd [class]="valueCssClass">{{ recurrence.startDate | ishDate }}</dd>
     <ng-container *ngIf="recurrence.endDate">
-      <dt [class]="labelCssClass">{{ 'order.recurrence.end.label' | translate }}</dt>
+      <dt [class]="labelCssClass" data-testing-id="end-date-label">{{ 'order.recurrence.end.label' | translate }}</dt>
       <dd [class]="valueCssClass">{{ recurrence.endDate | ishDate }}</dd>
     </ng-container>
     <ng-container *ngIf="recurrence.repetitions">

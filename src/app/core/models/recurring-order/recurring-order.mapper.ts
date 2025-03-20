@@ -82,13 +82,13 @@ export class RecurringOrderMapper {
       costCenterId: data.costCenterID,
       costCenterName: data.costCenterName,
 
-      customerNo: data.buyer.customerNo,
-      email: data.buyer.email,
+      customerNo: data.buyer?.customerNo,
+      email: data.buyer?.email,
       user: {
-        email: data.buyer.email,
-        firstName: data.buyer.firstName,
-        lastName: data.buyer.lastName,
-        companyName: data.buyer.companyName,
+        email: data.buyer?.email,
+        firstName: data.buyer?.firstName,
+        lastName: data.buyer?.lastName,
+        companyName: data.buyer?.companyName,
       },
 
       invoiceToAddress: data.addresses?.find(address => address.urn === data.invoiceToAddress),
@@ -97,7 +97,9 @@ export class RecurringOrderMapper {
         methods => methods.id === data.shippingBuckets?.[0]?.shippingMethod
       ),
 
-      payment: PaymentMapper.fromIncludeData(data.payments[0], data.paymentMethods[0], undefined),
+      payment: data.payments?.length
+        ? PaymentMapper.fromIncludeData(data.payments[0], data.paymentMethods[0], undefined)
+        : undefined,
 
       approvalStatuses: data.approvalStatuses
         ?.map(status => ({
@@ -118,7 +120,7 @@ export class RecurringOrderMapper {
 
       lastPlacedOrders: data.lastOrders,
 
-      lineItems: data.lineItems.map(lineItem => LineItemMapper.fromData(lineItem)),
+      lineItems: data.lineItems?.length ? data.lineItems.map(lineItem => LineItemMapper.fromData(lineItem)) : [],
 
       totals: BasketMapper.getTotals(data as unknown as BasketBaseData),
     };
