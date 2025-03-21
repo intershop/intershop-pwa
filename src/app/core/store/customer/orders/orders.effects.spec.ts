@@ -112,7 +112,7 @@ describe('Orders Effects', () => {
       const basketId = BasketMockData.getBasket().id;
       const newOrder = { id: basketId } as Order;
       const action = createOrder();
-      const completion = createOrderSuccess({ order: newOrder });
+      const completion = createOrderSuccess({ order: newOrder, basketId: 'BID' });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -134,7 +134,7 @@ describe('Orders Effects', () => {
 
   describe('continueAfterOrderCreation', () => {
     it('should navigate to /checkout/receipt after CreateOrderSuccess if there is no redirect required', fakeAsync(() => {
-      const action = createOrderSuccess({ order: { id: '123' } as Order });
+      const action = createOrderSuccess({ order: { id: '123' } as Order, basketId: 'BID' });
       actions$ = of(action);
 
       effects.continueAfterOrderCreation$.subscribe({ next: noop, error: fail, complete: noop });
@@ -156,6 +156,7 @@ describe('Orders Effects', () => {
           id: '123',
           orderCreation: { status: 'STOPPED', stopAction: { type: 'Redirect', redirectUrl: 'http://test' } },
         } as Order,
+        basketId: 'BID',
       });
       actions$ = of(action);
 
@@ -175,6 +176,7 @@ describe('Orders Effects', () => {
           orderCreation: { status: 'ROLLED_BACK' },
           infos: [{ message: 'Info' }],
         } as Order,
+        basketId: 'BID',
       });
       actions$ = of(action);
 
@@ -383,7 +385,7 @@ describe('Orders Effects', () => {
     });
 
     it('should trigger SelectOrderAfterRedirect action if checkout payment/receipt page is called with query param "redirect" and an order is available', done => {
-      store.dispatch(createOrderSuccess({ order }));
+      store.dispatch(createOrderSuccess({ order, basketId: 'BID' }));
 
       router.navigate(['checkout', 'receipt'], {
         queryParams: { redirect: 'success', param1: 123, orderId: order.id },

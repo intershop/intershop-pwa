@@ -22,9 +22,13 @@
       class="breadcrumbs-list"
       [ngClass]="{ 'breadcrumbs-list-active': last }"
     >
-      <a *ngIf="item.link; else noLink" [routerLink]="item.link" class="breadcrumbs-list-link">{{
-        item.text || (item.key | translate)
-      }}</a>
+      <a
+        *ngIf="item.link; else noLink"
+        [routerLink]="item.link"
+        [queryParams]="item.linkParams"
+        class="breadcrumbs-list-link"
+        >{{ item.text || (item.key | translate) }}</a
+      >
       <ng-template #noLink>
         <div aria-current="location">{{ item.text || (item.key | translate) }}</div>
       </ng-template>

@@ -24,6 +24,7 @@ export class RequisitionMapper {
           id: data.id,
           requisitionNo: data.requisitionNo,
           orderNo: data.orderNo,
+          recurringOrderDocumentNo: data.recurringOrderDocumentNo,
           creationDate: data.creationDate,
           userBudget: this.fromUserBudgets(data.userBudgets, data.purchaseCurrency),
           lineItemCount: data.lineItemCount,
@@ -64,7 +65,7 @@ export class RequisitionMapper {
       return (
         payload.data
           /* filter requisitions that didn't need an approval */
-          .filter(data => data.requisitionNo)
+          .filter(data => data.requisitionNo || data.recurringOrderDocumentNo)
           .map(data => ({
             ...this.fromData({ ...payload, data }),
             totals: {
