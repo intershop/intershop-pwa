@@ -40,9 +40,8 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
         fieldGroup: [
           {
             key: 'currentPassword',
-            type: 'ish-text-input-field',
+            type: 'ish-password-novalidate-field',
             props: {
-              type: 'password',
               required: true,
               hideRequiredMarker: true,
               label: 'account.password.label',
@@ -65,17 +64,16 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
                 key: 'account.register.password.extrainfo.message',
                 args: { 0: '7' },
               },
-              attributes: { autocomplete: 'new-password' },
             },
           },
           {
             key: 'passwordConfirmation',
-            type: 'ish-text-input-field',
+            type: 'ish-password-novalidate-field',
             props: {
-              type: 'password',
               required: true,
               hideRequiredMarker: true,
               label: 'account.update_password.newpassword_confirmation.label',
+              attributes: { autocomplete: 'new-password' },
             },
             validation: {
               messages: {

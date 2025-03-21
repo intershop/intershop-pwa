@@ -288,14 +288,12 @@ export class RegistrationFormConfigurationService {
                 key: 'account.register.password.extrainfo.message',
                 args: { 0: '7' },
               },
-              attributes: { autocomplete: 'new-password' },
             },
           },
           {
             key: 'passwordConfirmation',
-            type: 'ish-text-input-field',
+            type: 'ish-password-novalidate-field',
             props: {
-              type: 'password',
               required: true,
               label: 'account.register.password_confirmation.label',
               attributes: { autocomplete: 'new-password' },

@@ -928,6 +928,7 @@
   "form.password.error.equalTo": "Your passwords do not match.",
   "form.password.error.invalid": "Your password must include both numeric and alphabetic characters. It must not contain whitespace characters.",
   "form.password.error.required": "Please enter a password.",
+  "form.password.show.button.label": "Show password",
   "form.phone.error.invalid": "Please enter a valid phone number.",
   "form.phone.error.required": "Please enter your phone number.",
   "header.navigation.collapse_category.aria_label": "Collapse category {{0}}",

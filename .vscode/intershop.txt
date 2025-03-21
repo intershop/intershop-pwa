@@ -111,6 +111,7 @@ noindex
 noneditable
 nosniff
 notselected
+novalidate
 npsc
 objs
 oidc
