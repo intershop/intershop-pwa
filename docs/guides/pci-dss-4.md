@@ -5,7 +5,7 @@ kb_everyone
 kb_sync_latest_only
 -->
 
-# Security Standard PCI DSS 4.0 in Intershop PWA
+# Security Standard PCI DSS 4.0
 
 PCI DSS stands for Payment Card Industry Data Security Standard and is a comprehensive set of security guidelines designed to protect payment card information during storage, processing, and transmission.
 The up-to-date document can be found in the [PCI Document Library](https://www.pcisecuritystandards.org/document_library/?category=pcidss).
