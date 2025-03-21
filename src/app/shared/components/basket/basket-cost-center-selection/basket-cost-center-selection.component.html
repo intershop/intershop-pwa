@@ -1,12 +1,18 @@
-<ng-container data-testing-id="cost-center-select">
+<ng-container>
   <form [formGroup]="form">
     <h3>{{ 'checkout.cost_center.select.heading' | translate }}</h3>
     <ng-select
+      data-testing-id="cost-center-select"
       class="ng-invalid"
       bindLabel="label"
       bindValue="value"
       formControlName="costCenter"
-      [items]="costCenterOptions$ | async"
+      (scroll)="onScroll($event.end)"
+      (scrollToEnd)="onScrollToEnd()"
+      [items]="costCenterOptionsBuffer"
+      [virtualScroll]="true"
+      [required]="true"
+      [placeholder]="'account.option.select.text' | translate"
     />
   </form>
 </ng-container>

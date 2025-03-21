@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { distinctUntilChanged, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { distinctUntilChanged, map, take, withLatestFrom } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -21,8 +21,10 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 export class BasketCostCenterSelectionComponent implements OnInit {
   form: FormGroup;
 
-  costCenterOptions$: Observable<SelectOption[]>;
-  selectedCostCenter: string;
+  bufferSize = 25;
+  itemsBeforeFetchingMore = 5;
+  costCenterOptions: SelectOption[];
+  costCenterOptionsBuffer: SelectOption[];
 
   private destroyRef = inject(DestroyRef);
 
@@ -34,15 +36,20 @@ export class BasketCostCenterSelectionComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.costCenterOptions$ = this.accountFacade.isBusinessCustomer$.pipe(
-      whenTruthy(),
-      switchMap(() => this.checkoutFacade.eligibleCostCenterSelectOptions$())
-    );
+    this.form = this.fb.group({ costCenter: [undefined] });
 
-    // initialize model with the basket costCenter
-    this.checkoutFacade.basket$
-      .pipe(whenTruthy(), take(1), takeUntilDestroyed(this.destroyRef))
-      .subscribe(basket => this.setupForm(basket.costCenter));
+    combineLatest([
+      this.accountFacade.isBusinessCustomer$.pipe(whenTruthy()),
+      this.checkoutFacade.eligibleCostCenterSelectOptions$(),
+      this.checkoutFacade.basket$.pipe(whenTruthy(), take(1)),
+    ])
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(([_, costCenterOptions, basket]) => {
+        this.costCenterOptions = costCenterOptions;
+        this.costCenterOptionsBuffer = this.costCenterOptions.slice(0, this.bufferSize);
+        this.setupForm(basket.costCenter);
+        this.cd.markForCheck();
+      });
 
     // mark form as dirty to display validation errors
     this.checkoutFacade.basketValidationResults$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(results => {
@@ -70,9 +77,29 @@ export class BasketCostCenterSelectionComponent implements OnInit {
       });
   }
 
+  onScrollToEnd() {
+    this.fetchMore();
+  }
+
+  onScroll(end: number) {
+    if (this.costCenterOptions.length <= this.costCenterOptionsBuffer.length) {
+      return;
+    }
+
+    if (end + this.itemsBeforeFetchingMore >= this.costCenterOptionsBuffer.length) {
+      this.fetchMore();
+    }
+  }
+
+  private fetchMore() {
+    const length = this.costCenterOptionsBuffer.length;
+    const additionalCostCenters = this.costCenterOptions.slice(length, this.bufferSize + length);
+    this.costCenterOptions.concat(additionalCostCenters);
+  }
+
   private setupForm(costCenter: string) {
-    this.form = this.fb.group({
-      costCenter: [costCenter],
-    });
+    const defaultOption =
+      costCenter || (this.costCenterOptions.length === 1 ? this.costCenterOptions[0].value : undefined);
+    this.form.patchValue({ costCenter: defaultOption });
   }
 }
