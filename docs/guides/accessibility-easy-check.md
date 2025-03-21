@@ -129,7 +129,7 @@ Performing any of the following checks on a web page will give you a basic under
 
   Use the correct HTML elements for their intended function and meaning (e.g., headlines for headings, paragraphs for text blocks, links for navigation, buttons for actions, lists for listings, tables for data, etc.).
 
-  Employ HTML5 semantic elements (e.g. landmark elements <header>, <nav>, <main>, <footer>) to provide meaningful structure to the content.
+  Employ HTML5 semantic elements (e.g., landmark elements `<header>`, `<nav>`, `<main>`, `<footer>`) to provide meaningful structure to the content.
   Semantic elements help screen readers and assistive technologies better understand the layout and purpose of the page, improving the browsing experience for users with disabilities and improving search engine optimization (SEO).
 
 - [ ] **12. Enhanced HTML Markup**
