@@ -7,6 +7,20 @@ kb_sync_latest_only
 
 # Security Standard PCI DSS 4.0
 
+- [Security Standard PCI DSS 4.0](#security-standard-pci-dss-40)
+  - [Understanding PCI DSS 4.0 Applicability](#understanding-pci-dss-40-applicability)
+  - [Secure Angular PWA Code \& Dependencies](#secure-angular-pwa-code--dependencies)
+    - [Prevent Cross-Site Scripting (XSS) Attacks](#prevent-cross-site-scripting-xss-attacks)
+    - [Secure API Calls \& Prevent CORS Attacks](#secure-api-calls--prevent-cors-attacks)
+    - [Use Secure HTTP Headers to Prevent Browser Attacks](#use-secure-http-headers-to-prevent-browser-attacks)
+    - [Enforce Secure Authentication \& Session Management](#enforce-secure-authentication--session-management)
+    - [Secure Server-Side Rendering (SSR)](#secure-server-side-rendering-ssr)
+    - [Regular Testing \& Harden Dependency Management](#regular-testing--harden-dependency-management)
+  - [Additional Points to Consider](#additional-points-to-consider)
+    - [Secure Data Handling](#secure-data-handling)
+    - [Secure Authentication \& Access Control](#secure-authentication--access-control)
+    - [Logging \& Monitoring](#logging--monitoring)
+
 PCI DSS stands for Payment Card Industry Data Security Standard and is a comprehensive set of security guidelines designed to protect payment card information during storage, processing, and transmission.
 The up-to-date document can be found in the [PCI Document Library](https://www.pcisecuritystandards.org/document_library/?category=pcidss).
 These standards are established to ensure that organizations handling card data maintain a secure environment and mitigate risks associated with data breaches.
@@ -60,7 +74,7 @@ Make sure that all API requests are sent over HTTPS (TLS 1.2 or 1.3), as it is d
 
 To comply with PCI DSS 4.0, your PWA’s productive environment (Node.js + Express) must enforce security headers.
 
-__Recommended Security Headers__
+**Recommended Security Headers**
 
 | Header                    | Purpose                      | Example                                        |
 | ------------------------- | ---------------------------- | ---------------------------------------------- |
