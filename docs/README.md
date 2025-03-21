@@ -49,6 +49,7 @@ kb_sync_latest_only
 - [Guide - Working with ESLint](./guides/eslint.md)
 - [Guide - Accessibility](./guides/accessibility.md)
 - [Concept - Captcha](./concepts/captcha.md)
+- [Guide - Security Standard PCI DSS 4.0](./guides/pci-dss-4.md)
 
 ### Customization
 
