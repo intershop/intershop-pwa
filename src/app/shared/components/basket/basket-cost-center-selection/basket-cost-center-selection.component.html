@@ -1,18 +1,21 @@
 <ng-container>
   <form [formGroup]="form">
     <h3>{{ 'checkout.cost_center.select.heading' | translate }}</h3>
-    <ng-select
-      data-testing-id="cost-center-select"
-      class="ng-invalid"
-      bindLabel="label"
-      bindValue="value"
-      formControlName="costCenter"
-      (scroll)="onScroll($event.end)"
-      (scrollToEnd)="onScrollToEnd()"
-      [items]="costCenterOptionsBuffer"
-      [virtualScroll]="true"
-      [required]="true"
-      [placeholder]="'account.option.select.text' | translate"
-    />
+    <div class="d-flex flex-row align-items-center justify-content-between w-100">
+      <label class="w-auto" for="costCenter">{{ 'checkout.cost_center.select.label' | translate }}</label>
+      <ng-select
+        data-testing-id="cost-center-select"
+        class="w-75"
+        bindLabel="label"
+        bindValue="value"
+        formControlName="costCenter"
+        (scroll)="onScroll($event.end)"
+        (scrollToEnd)="onScrollToEnd()"
+        [items]="costCenterOptionsBuffer"
+        [virtualScroll]="true"
+        [required]="true"
+        [placeholder]="'account.option.select.text' | translate"
+      />
+    </div>
   </form>
 </ng-container>
