@@ -189,6 +189,19 @@ optgroup {
   }
 }
 
+ng-select.ng-invalid.ng-dirty .ng-select-container {
+  border-color: $error-color;
+  box-shadow: inset 0 1px 1px rgb(0 0 0 / 0.075), 0 0 8px $error-color;
+
+  .ng-arrow {
+    border-color: $error-color transparent transparent;
+  }
+
+  .ng-placeholder {
+    color: $error-color;
+  }
+}
+
 .has-error {
   .col-form-label,
   .ng-fa-icon,
