@@ -19,7 +19,7 @@ The minimum version requirements for the involved systems are the following:
 - ICM 7.10.38.6-LTS
 
 The following guide though is written with a current PWA 5.x and ICM 11+ in mind.
-For instructions and examples for older PWA or ICM versions please read an older version of this document.
+Examples for older ICM versions are included where it seems helpful.
 
 > [!NOTE]
 > This feature relies on the PWA and ICM being able to read and write each other's `apiToken` cookies.
@@ -47,6 +47,7 @@ This mapping table is also used in the browser-side PWA to switch from the singl
 ### Intershop Commerce Management (ICM)
 
 The ICM must be run with [Secure URL-only Server Configuration](https://docs.intershop.com/icm/7.10/olh/oma/en/topics/managing_site_settings/topic_secure_url-only_server_configuration.html), which can be done by adding `SecureAccessOnly=true` to the appserver configuration.
+This is the default for ICM 11+ deployments.
 
 Furthermore, the synchronization of the `apiToken` cookie must be switched on, so that users and baskets are synchronized between PWA and ICM.
 See [Concept - Integration of Progressive Web App and inSPIRED Storefront](https://support.intershop.com/kb/index.php/Display/2928F6).
@@ -61,10 +62,19 @@ INTERSHOP_APITOKEN_COOKIE_SSLMODE: true
 INTERSHOP_WEBSERVERSECUREURL: https://<NGINX>
 ```
 
-_configuration via icm.properties_:
+_configuration via icm.properties (ICM 11+)_:
 
 ```properties
-intershop.environment.HYBRID=SecureAccessOnly=true,intershop.apitoken.cookie.enabled=true,intershop.apitoken.cookie.sslmode=true
+intershop.environment.HYBRID=intershop.apitoken.cookie.enabled=true,intershop.apitoken.cookie.sslmode=true
+intershop.WebServerSecureURL=https://<NGINX>
+```
+
+_configuration via \$SERVER/share/system/config/cluster/appserver.properties (ICM 7.10)_:
+
+```properties
+SecureAccessOnly=true
+intershop.apitoken.cookie.enabled=true
+intershop.apitoken.cookie.sslmode=true
 intershop.WebServerSecureURL=https://<NGINX>
 ```
 
