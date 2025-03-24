@@ -149,7 +149,7 @@ export class CostCenterFormComponent implements OnInit {
           },
           {
             key: 'costCenterManager',
-            type: 'ish-select-field',
+            type: 'ish-search-select-field',
             props: {
               label: 'account.costcenter.manager.label',
               required: true,
