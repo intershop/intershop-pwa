@@ -1,7 +1,7 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { CommonModule } from '@angular/common';
 import { Injector, NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {
   NgbCarouselModule,
@@ -196,7 +196,6 @@ const importExportModules = [
   TranslateModule,
   WishlistsExportsModule,
   NgSelectModule,
-  FormsModule,
   ReactiveFormsModule,
 ];
 
