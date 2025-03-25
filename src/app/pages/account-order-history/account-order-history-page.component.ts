@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Observable, map, shareReplay, take, tap } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, map, shareReplay, take, tap } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -26,10 +26,12 @@ export class AccountOrderHistoryPageComponent implements OnInit {
   columnsToDisplay$: Observable<OrderColumnsType[]>;
   filtersActive: boolean;
   pageSize = 10;
-  pageNumber = 1;
 
   private isOrderManager = false;
   private destroyRef = inject(DestroyRef);
+
+  private pageNumberSubject = new BehaviorSubject<number>(1);
+  pageNumber$ = this.pageNumberSubject.asObservable();
 
   constructor(private accountFacade: AccountFacade) {}
 
@@ -49,9 +51,9 @@ export class AccountOrderHistoryPageComponent implements OnInit {
   }
 
   getOrdersForPage() {
-    this.ordersForPage$ = this.orders$.pipe(
-      map(orders => {
-        const start = (this.pageNumber - 1) * this.pageSize;
+    this.ordersForPage$ = combineLatest([this.orders$, this.pageNumber$]).pipe(
+      map(([orders, pageNumber]) => {
+        const start = (pageNumber - 1) * this.pageSize;
         const end = start + this.pageSize;
         return orders.filter(order => order.paginationPosition >= start && order.paginationPosition < end);
       })
@@ -69,13 +71,12 @@ export class AccountOrderHistoryPageComponent implements OnInit {
   }
 
   loadMoreOrders(pageNumber: number): void {
-    this.pageNumber = pageNumber;
+    this.pageNumberSubject.next(pageNumber);
 
     this.orders$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(orders => {
       if (!orders.find(order => order.paginationPosition === (pageNumber - 1) * this.pageSize)) {
         this.accountFacade.loadMoreOrders((pageNumber - 1) * this.pageSize, this.pageSize);
       }
-      this.getOrdersForPage();
     });
   }
 }
