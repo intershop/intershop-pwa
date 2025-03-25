@@ -81,9 +81,9 @@ The following list contains some suggestions for free tools that have been used 
 - _Google Lighthouse_: gives a quick overview and detects general problems
 - _Silktide_: huge toolbox, can categorize issues by different WCAG versions
 - _WAVE_: visualizes non-visible attributes like aria-labels and -roles or image alt-texts
-- _IBM_: categorizes the issues directly by the WCAG criteria
+- _IBM Equal Access Toolkit_: categorizes the issues directly by the WCAG criteria
 
-#### Chrome Google Lighthouse
+#### Google Lighthouse
 
 [Google Lighthouse](https://developer.chrome.com/docs/lighthouse) is a tool built directly into the Chrome DevTools that **provides a quick initial overview** of a page's status.
 The list of checked criteria can be found [here](https://developer.chrome.com/docs/lighthouse/accessibility/scoring).
@@ -97,13 +97,13 @@ While limited compared to full screen readers, it is a useful tool for beginners
 
 #### WAVE - Web Accessibility Evaluation Tool
 
-[WAVE](https://wave.webaim.org/) is a browser extension for [Chrome](https://chromewebstore.google.com/detail/wave-evaluation-tool/jbbplnpkjmmeebjpijfedlgcdilocofh) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/wave-accessibility-tool/), as well as a website for testing deployed websites.
+[WAVE](https://wave.webaim.org) is a browser extension for [Chrome](https://chromewebstore.google.com/detail/wave-evaluation-tool/jbbplnpkjmmeebjpijfedlgcdilocofh) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/wave-accessibility-tool), as well as a website for testing deployed websites.
 
 It is a helpful tool for visualizing non-visual accessibility attributes like `aria-labels`, `aria-roles`, and `alt` attributes for images including a detailed description and the related WCAG criteria. _WAVE_ can also visualize the tab order and the HTML page structure (landmarks and headings).
 
 #### IBM - Equal Access Accessibility Checker
 
-_IBM_ is a browser extension for [Chrome](https://chromewebstore.google.com/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/) that integrates into the developer tools.
+[IBM Equal Access Toolkit](https://github.com/IBMa/equal-access) provides browser extensions for [Chrome](https://chromewebstore.google.com/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker) that integrate into the developer tools.
 It categorizes issues directly based on WCAG criteria.
 
 ### Manual Testing
@@ -119,7 +119,7 @@ For the beginning, Intershop recommends to start with _Silktide’s_ simulated s
 It is less sophisticated and much easier and simpler to use.
 A locally installed screen reader can be used to thoroughly test a page for features and properties that the simulated screen reader is not capable of.
 It also reflects the real world application of such an assistive technology a lot closer than the simulated one.
-A widely used locally installed screen reader is [NVDA](https://www.nvaccess.org/download/).
+A widely used locally installed screen reader is [NVDA](https://www.nvaccess.org/about-nvda/).
 
 If you have no experience with screen readers, the following video about [Accessibility Testing with the NVDA Screen reader](https://www.youtube.com/watch?v=Vx1vSd5uYS8) might be helpful.
 
