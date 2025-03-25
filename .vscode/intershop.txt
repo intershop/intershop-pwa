@@ -188,6 +188,7 @@ serializable
 setcontext
 setuprequest
 signup
+silktide
 sitekey
 sku
 skus
@@ -226,6 +227,7 @@ viewcontexts
 viewports
 viewtype
 walkthrough
+wcag
 webserver
 webserversecureurl
 whitespaces

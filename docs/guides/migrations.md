@@ -9,7 +9,10 @@ kb_sync_latest_only
 
 ## From 5.3 to 6.0
 
-The Intershop PWA 6.0 release contains functionality to improve the **accessibility** of the PWA:
+The Intershop PWA 6.0 release contains functionality to improve the **accessibility** of the PWA.
+
+To get an impression of the numerous adaptions needed to make the PWA more accessible, please check the [according pull request](https://github.com/intershop/intershop-pwa/pull/1694) and read the extended accessibility documentation available in the [Accessibility Guide](./accessibility.md) and the [Accessibility Easy Check](./accessibility-easy-check.md).
+These changes will result in migration efforts and require PWA projects to adapt their customization as well.
 
 A directive `ishFormSubmit` has been introduced for form html elements.
 In case of validation errors the focus is set to the first invalid form field after submit.
