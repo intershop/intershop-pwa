@@ -7,6 +7,59 @@ kb_everyone
 
 # Changelog
 
+## [6.0.0](https://github.com/intershop/intershop-pwa/releases/tag/6.0.0) (2025-03-27)
+
+> [!NOTE]
+> The Intershop PWA 6.0.0 has been developed and tested with Intershop Commerce Management (ICM) version 12.3.0.
+> It will work with all versions from ICM 12.3.0 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> _The PWA 6.0.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
+>
+> The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
+>
+> Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.9.3 for PWA 6.0.0 deployments.
+
+### Features
+
+- migrate Cybersource integration to Microform v2 (#1773) ([371fd77](https://github.com/intershop/intershop-pwa/commit/371fd77))
+- **accessibility:** provide/improve meaningful h1 headings (#1694) ([fac412e](https://github.com/intershop/intershop-pwa/commit/fac412e))
+- **accessibility:** add accessible names for dialogs (#1694) ([93f0f97](https://github.com/intershop/intershop-pwa/commit/93f0f97))
+- **accessibility:** replace animated buttons (#1694) ([165eed6](https://github.com/intershop/intershop-pwa/commit/165eed6))
+- **accessibility:** add/enhances attributes for better screen reader support (#1694) ([b69a259](https://github.com/intershop/intershop-pwa/commit/b69a259))
+- **accessibility:** improve keyboard support (#1694) ([a5dfb8d](https://github.com/intershop/intershop-pwa/commit/a5dfb8d))
+- **accessibility:** added missing `<legend>`-elements to form fieldsets (#1694) ([47bd468](https://github.com/intershop/intershop-pwa/commit/47bd468))
+- **accessibility:** add "Skip to main content" link (#1694) ([df995ad](https://github.com/intershop/intershop-pwa/commit/df995ad))
+- **accessibility:** ensure links are distinguishable without relying on color alone, update underline behavior (#1694) ([1d0139d](https://github.com/intershop/intershop-pwa/commit/1d0139d))
+- **accessibility:** enlarge touch targets for links (#1694) ([4c4d877](https://github.com/intershop/intershop-pwa/commit/4c4d877))
+- **accessibility:** adjust colors to meet sufficient contrast ratio requirements (#1694) ([eaee557](https://github.com/intershop/intershop-pwa/commit/eaee557))
+- **accessibility:** reorder headings to follow a correct, sequentially-descending hierarchy (#1694) ([666cfbb](https://github.com/intershop/intershop-pwa/commit/666cfbb))
+- **accessibility:** update tab-focus visibility to use browser's default focus styling (#1694) ([61437a5](https://github.com/intershop/intershop-pwa/commit/61437a5))
+- **accessibility:** replace `<div role="main">` with `<main>` element for better semantics (#1694) ([6ca9a02](https://github.com/intershop/intershop-pwa/commit/6ca9a02))
+- **accessibility:** add ARIA, `lang` and `title` attributes (#1694) ([756062e](https://github.com/intershop/intershop-pwa/commit/756062e))
+- **accessibility:** add password reveal button (#1752) ([6fd6989](https://github.com/intershop/intershop-pwa/commit/6fd6989))
+- **accessibility:** sticky header feature toggle (#1770) ([aec2208](https://github.com/intershop/intershop-pwa/commit/aec2208))
+- **accessibility:** set focus on the first invalid form field (#1749) ([d63837b](https://github.com/intershop/intershop-pwa/commit/d63837b))
+
+### Bug Fixes
+
+- missing translation on search result page for page title and description ( #1779) ([0e6e3c0](https://github.com/intershop/intershop-pwa/commit/0e6e3c0))
+- consistent decoded handling of product SKUs with specials characters (#1774) ([dcd0bb1](https://github.com/intershop/intershop-pwa/commit/dcd0bb1))
+
+### Documentation
+
+- update and extend accessibility documentation (#1700) ([206b00a](https://github.com/intershop/intershop-pwa/commit/206b00a))
+- provide some guidance to aproach PCI DSS 4 (#1768) ([6a0ebb5](https://github.com/intershop/intershop-pwa/commit/6a0ebb5))
+
+### Code Refactoring
+
+- provide an 'options' parameter for the ScriptLoaderService 'load' method ([4cbcdb8](https://github.com/intershop/intershop-pwa/commit/4cbcdb8))
+
+### BREAKING CHANGES
+
+- The used Cybersource Microform v1 was replaced by Microform v2, see [Migrations / From 5.3 to 6.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-53-to-60) for more details.
+- The signature of the `ScriptLoaderService`'s `load` method was changed. The optional second parameter was changed from type `string` to `ScriptLoaderOption`.
+
 ## [5.3.0](https://github.com/intershop/intershop-pwa/releases/tag/5.3.0) (2025-03-05)
 
 > [!NOTE]
