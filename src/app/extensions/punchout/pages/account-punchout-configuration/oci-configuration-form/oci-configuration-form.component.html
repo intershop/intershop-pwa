@@ -13,16 +13,16 @@
             <div *ngFor="let placeholder of placeholders">{{ '{' + placeholder + '}' }}</div>
           </ng-container>
         </ng-template>
-        <a
-          class="header-note pl-2"
+        <button
+          type="button"
+          class="btn btn-link header-note details-tooltip pl-1"
           [ngbPopover]="OciConfigurationPlaceholder"
           placement="bottom"
-          triggers="click"
-          [autoClose]="'outside'"
+          [title]="'account.punchout.configuration.form.tooltip.placeholder.headline' | translate"
           popoverTitle="{{ 'account.punchout.configuration.form.tooltip.placeholder.headline' | translate }}"
         >
           <fa-icon [icon]="['fas', 'info-circle']" />
-        </a>
+        </button>
       </div>
       <div class="col-md-3 list-header-item no-seperator">
         {{ 'account.punchout.configuration.form.heading.mapping' | translate }}
@@ -32,22 +32,22 @@
             class="list-position-outside"
           ></div>
         </ng-template>
-        <a
-          class="header-note pl-2"
+        <button
+          type="button"
+          class="btn btn-link header-note details-tooltip pl-1"
           [ngbPopover]="OciConfigurationMapping"
           placement="bottom"
-          triggers="click"
-          [autoClose]="'outside'"
+          [title]="'account.punchout.configuration.form.tooltip.mapping.headline' | translate"
           popoverTitle="{{ 'account.punchout.configuration.form.tooltip.mapping.headline' | translate }}"
         >
           <fa-icon [icon]="['fas', 'info-circle']" />
-        </a>
+        </button>
       </div>
       <div class="col-md-3 list-header-item no-seperator">
         {{ 'account.punchout.configuration.form.heading.format' | translate }}
       </div>
     </div>
-    <form [formGroup]="form" (ngSubmit)="submitForm()" class="pt-1">
+    <form [formGroup]="form" ishFormSubmit #configForm="ngForm" (ngSubmit)="submitForm()" class="pt-1" novalidate>
       <div class="list-body">
         <formly-form [model]="model$ | async" [fields]="fields$ | async" [form]="form" class="pt-1" />
       </div>
@@ -57,7 +57,7 @@
             <button
               type="submit"
               class="btn btn-primary"
-              [disabled]="formDisabled"
+              [disabled]="form.invalid && configForm.submitted"
               data-testing-id="update-oci-configuration"
             >
               {{ 'account.update.button.label' | translate }}

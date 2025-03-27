@@ -44,18 +44,22 @@
         [value]="formatter.format(fromDate)"
         (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
         [attr.aria-label]="'account.order_history.filter.label.date.aria_label' | translate"
+        [attr.aria-required]="props.required ? 'true' : undefined"
+        [attr.aria-invalid]="showError ? 'true' : undefined"
+        [attr.aria-describedby]="props.ariaDescribedByIds"
       />
       <div class="input-group-append">
-        <div
+        <button
+          type="button"
           class="btn btn-secondary"
           (click)="d.toggle()"
-          (keydown.enter)="d.toggle()"
-          tabindex="-1"
           title="{{ 'account.date.title' | translate }}"
           data-testing-id="btn-date-picker"
+          aria-haspopup="dialog"
+          aria-expanded="false"
         >
           <fa-icon class="text-secondary" icon="calendar-day" />
-        </div>
+        </button>
       </div>
     </div>
   </div>
@@ -68,17 +72,21 @@
       [value]="formatter.format(toDate)"
       (input)="toDate = validateInput(toDate, dpToDate.value)"
       [attr.aria-label]="'account.order_history.filter.label.date.aria_label' | translate"
+      [attr.aria-required]="props.required ? 'true' : undefined"
+      [attr.aria-invalid]="showError ? 'true' : undefined"
+      [attr.aria-describedby]="props.ariaDescribedByIds"
     />
     <div class="input-group-append">
-      <div
+      <button
+        type="button"
         class="btn btn-secondary"
         (click)="d.toggle()"
-        (keydown.enter)="d.toggle()"
-        tabindex="-1"
         title="{{ 'account.date.title' | translate }}"
+        aria-haspopup="dialog"
+        aria-expanded="false"
       >
         <fa-icon class="text-secondary" icon="calendar-day" />
-      </div>
+      </button>
     </div>
   </div>
 </div>

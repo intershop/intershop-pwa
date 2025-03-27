@@ -91,7 +91,48 @@
           line-height: $header-height-mobile;
         }
 
+        .ng-fa-icon {
+          &.header-icon {
+            padding: 0 10px;
+            color: $text-color-tertiary;
+          }
+        }
+
         .header-search-container {
+          &.collapse {
+            input {
+              &.form-control {
+                // remove from tab order
+                display: none;
+              }
+            }
+
+            button {
+              &.btn-reset,
+              &.btn-search {
+                // remove from tab order
+                display: none;
+              }
+            }
+
+            &.show {
+              input {
+                &.form-control {
+                  // add only to tab order when shown
+                  display: block;
+                }
+              }
+
+              button {
+                &.btn-reset,
+                &.btn-search {
+                  // add only to tab order when shown
+                  display: block;
+                }
+              }
+            }
+          }
+
           &.show {
             height: $search-container-height;
             overflow: unset;
@@ -103,6 +144,10 @@
             height: 0;
           }
         }
+      }
+
+      .mini-cart {
+        top: -2px !important;
       }
     }
   }

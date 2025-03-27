@@ -1,13 +1,13 @@
 <ng-template #modal let-selectModal>
   <div class="modal-header">
-    <h2 class="modal-title">{{ headerTranslationKey | translate }}</h2>
+    <h2 id="select-wishlist-modal-title" class="modal-title">{{ headerTranslationKey | translate }}</h2>
     <button type="button" class="close" [title]="'dialog.close.text' | translate" (click)="hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
 
   <ng-container *ngIf="showForm; else showSuccess">
-    <form [formGroup]="formGroup" (ngSubmit)="submitForm()">
+    <form [formGroup]="formGroup" ishFormSubmit (ngSubmit)="submitForm()" novalidate>
       <div class="modal-body">
         <ish-select-wishlist-form [formGroup]="formGroup" [addMoveProduct]="addMoveProduct" />
       </div>

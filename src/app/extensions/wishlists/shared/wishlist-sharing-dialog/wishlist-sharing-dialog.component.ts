@@ -12,7 +12,6 @@ import { FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { WishlistSharing } from '../../models/wishlist-sharing/wishlist-sharing.model';
@@ -45,7 +44,6 @@ export class WishlistSharingDialogComponent implements OnInit {
 
   wishListForm = new FormGroup({});
   fields: FormlyFieldConfig[];
-  private submitted = false;
 
   /**
    *  A reference to the current modal.
@@ -99,35 +97,26 @@ export class WishlistSharingDialogComponent implements OnInit {
 
   /** Emits the wishlist sharing data, when the form was valid. */
   submitWishlistForm() {
-    if (this.wishListForm.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.wishListForm);
-      return;
+    if (this.wishListForm.valid) {
+      this.submitWishlistSharing.emit({
+        recipients: this.wishListForm.get('friendEmails').value,
+        message: this.wishListForm.get('personalMessage').value,
+      });
+
+      this.hide();
     }
-
-    this.submitWishlistSharing.emit({
-      recipients: this.wishListForm.get('friendEmails').value,
-      message: this.wishListForm.get('personalMessage').value,
-    });
-
-    this.hide();
   }
 
   /** Opens the modal. */
   show() {
     this.wishListForm.reset();
-    this.modal = this.ngbModal.open(this.modalTemplate);
+    this.modal = this.ngbModal.open(this.modalTemplate, { ariaLabelledBy: 'wishlist-sharing-modal-title' });
   }
 
   /** Close the modal. */
   hide() {
-    this.submitted = false;
     if (this.modal) {
       this.modal.close();
     }
-  }
-
-  get formDisabled() {
-    return this.wishListForm.invalid && this.submitted;
   }
 }

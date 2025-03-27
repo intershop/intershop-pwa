@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { NgxMaskDirective } from 'ngx-mask';
 
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
@@ -15,16 +16,14 @@ describe('Text Input Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      declarations: [TextInputFieldComponent],
       imports: [
         FormlyModule.forRoot({
-          types: [
-            {
-              name: 'ish-text-input-field',
-              component: TextInputFieldComponent,
-            },
-          ],
+          types: [{ name: 'ish-text-input-field', component: TextInputFieldComponent }],
         }),
         FormlyTestingComponentsModule,
+        NgxMaskDirective,
+        ReactiveFormsModule,
         TranslateModule.forRoot(),
       ],
     }).compileComponents();
@@ -47,6 +46,7 @@ describe('Text Input Field Component', () => {
         input: '',
       },
     };
+
     fixture = TestBed.createComponent(FormlyTestingContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;

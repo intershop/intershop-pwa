@@ -11,7 +11,7 @@ a.product-title {
 
 .product-id {
   font-size: $font-size-corporate;
-  color: $text-color-quaternary;
+  color: $text-color-tertiary;
 
   .product-id-label {
     padding-right: divide($space-default, 3);
@@ -20,7 +20,7 @@ a.product-title {
 
 .product-info {
   font-family: $font-family-condensedregular;
-  color: $text-color-quaternary;
+  color: $text-color-tertiary;
 
   .label-quantity {
     text-transform: uppercase;
@@ -28,14 +28,6 @@ a.product-title {
 
   .product-brand {
     text-transform: uppercase;
-
-    a {
-      color: $text-color-quaternary;
-
-      &:hover {
-        color: $text-color-tertiary;
-      }
-    }
   }
 
   .current-price {
@@ -88,10 +80,6 @@ a.product-title {
   .add-to-cart {
     margin-top: $space-default;
     margin-bottom: $space-default;
-  }
-
-  .add-to-wishlist {
-    padding-left: 0;
   }
 
   .btn.btn-block {

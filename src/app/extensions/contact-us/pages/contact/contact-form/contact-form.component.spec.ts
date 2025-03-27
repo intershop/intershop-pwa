@@ -54,7 +54,6 @@ describe('Contact Form Component', () => {
     fixture.detectChanges();
     component.submitForm();
     verify(emitter.emit(anything())).never();
-    expect(component.submitted).toBeTrue();
   });
 
   it('should emit contact request when valid form is submitted', () => {

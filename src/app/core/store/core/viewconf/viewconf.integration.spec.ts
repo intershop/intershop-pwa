@@ -1,7 +1,10 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { of } from 'rxjs';
+import { anything, instance, mock, when } from 'ts-mockito';
 
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -11,8 +14,11 @@ import { getBreadcrumbData, getHeaderType, getWrapperClass } from './viewconf.se
 describe('Viewconf Integration', () => {
   let store$: StoreWithSnapshots;
   let router: Router;
+  const featureToggleServiceMock = mock(FeatureToggleService);
 
   beforeEach(() => {
+    when(featureToggleServiceMock.enabled$(anything())).thenReturn(of(true));
+
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'viewconf'], [ViewconfEffects]),
@@ -29,7 +35,10 @@ describe('Viewconf Integration', () => {
           { path: '**', children: [] },
         ]),
       ],
-      providers: [provideStoreSnapshots()],
+      providers: [
+        { provide: FeatureToggleService, useFactory: () => instance(featureToggleServiceMock) },
+        provideStoreSnapshots(),
+      ],
     });
 
     store$ = TestBed.inject(StoreWithSnapshots);

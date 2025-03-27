@@ -90,6 +90,8 @@ export class RegistrationFormConfigurationService {
         props: {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
+          legend: 'account.register.address.headding',
+          legendClass: 'sr-only',
         },
         fieldGroup: [
           {
@@ -106,6 +108,11 @@ export class RegistrationFormConfigurationService {
             },
             validators: {
               validation: [Validators.pattern('true')],
+            },
+            validation: {
+              messages: {
+                pattern: 'registration.tac.error.tip',
+              },
             },
           },
           {
@@ -212,7 +219,9 @@ export class RegistrationFormConfigurationService {
             () => cancelled || registered,
             of(true),
             of({}).pipe(
-              map(() => this.modalService.open(ConfirmLeaveModalComponent)),
+              map(() =>
+                this.modalService.open(ConfirmLeaveModalComponent, { ariaLabelledBy: 'confirm-leave-modal-title' })
+              ),
               switchMap(modalRef => race(modalRef.dismissed, from(modalRef.result))),
               tap(result => (result ? this.accountFacade.cancelRegistration() : noop))
             )
@@ -246,6 +255,8 @@ export class RegistrationFormConfigurationService {
         props: {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
+          legend: 'account.register.email_password.heading',
+          legendClass: 'sr-only',
         },
         validators: {
           validation: [
@@ -272,7 +283,7 @@ export class RegistrationFormConfigurationService {
             },
             validation: {
               messages: {
-                required: 'form.email.error.required',
+                required: 'form.email.error.email_confirmation',
                 equalTo: 'account.registration.email.not_match.error',
               },
             },
@@ -288,14 +299,12 @@ export class RegistrationFormConfigurationService {
                 key: 'account.register.password.extrainfo.message',
                 args: { 0: '7' },
               },
-              attributes: { autocomplete: 'new-password' },
             },
           },
           {
             key: 'passwordConfirmation',
-            type: 'ish-text-input-field',
+            type: 'ish-password-novalidate-field',
             props: {
-              type: 'password',
               required: true,
               label: 'account.register.password_confirmation.label',
               attributes: { autocomplete: 'new-password' },
@@ -327,6 +336,8 @@ export class RegistrationFormConfigurationService {
         props: {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
+          legend: 'account.register.personal_information.heading',
+          legendClass: 'sr-only',
         },
         fieldGroup: this.fieldLibrary.getConfigurationGroup('personalInfo'),
       },
@@ -348,6 +359,8 @@ export class RegistrationFormConfigurationService {
         props: {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
+          legend: 'account.register.company_information.heading',
+          legendClass: 'sr-only',
         },
         fieldGroup: this.fieldLibrary.getConfigurationGroup('companyInfo'),
       },

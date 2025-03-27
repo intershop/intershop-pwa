@@ -117,23 +117,28 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit 
     // load script only once if component becomes visible
     if (this.activated) {
       const flexkeyId = this.getParamValue('flexkeyId', 'checkout.credit_card.flexkeyId.error.notFound');
+      if (flexkeyId) {
+        const parts = flexkeyId.split('.');
+        const payload = JSON.parse(window.atob(parts[1]));
+        const ctxData = payload.ctx[0].data;
 
-      this.scriptLoader
-        .load('https://flex.cybersource.com/cybersource/assets/microform/0.11/flex-microform.min.js')
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(() => {
-          // the capture context that was requested server-side for this transaction
-          const captureContext = flexkeyId;
+        this.scriptLoader
+          .load(ctxData.clientLibrary, { type: 'module', integrity: ctxData.clientLibraryIntegrity })
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe(() => {
+            // the capture context that was requested server-side for this transaction
+            const captureContext = flexkeyId;
 
-          // setup
-          const flex = new Flex(captureContext);
-          this.microform = flex.microform();
-          const cardNumber = this.microform.createField('number');
-          const securityCode = this.microform.createField('securityCode');
+            // setup
+            const flex = new Flex(captureContext);
+            this.microform = flex.microform('card');
+            const cardNumber = this.microform.createField('number');
+            const securityCode = this.microform.createField('securityCode');
 
-          cardNumber.load('#number-container');
-          securityCode.load('#securityCode-container');
-        });
+            cardNumber.load('#number-container');
+            securityCode.load('#securityCode-container');
+          });
+      }
     }
   }
 
@@ -170,7 +175,18 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit 
     } else if (!this.cyberSourceCreditCardForm.invalid) {
       const tokenSplit = token.split('.');
       const payloadJson: {
-        data: { number: string; type: string; expirationMonth: string; expirationYear: string };
+        content: {
+          paymentInformation: {
+            card: {
+              number: {
+                maskedValue: string;
+                detectedCardTypes: string[];
+              };
+              expirationMonth: { value: string };
+              expirationYear: { value: string };
+            };
+          };
+        };
         iss: string;
         exp: string;
         iat: string;
@@ -181,9 +197,12 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit 
         parameters: [
           { name: 'token', value: token },
           { name: 'tokenExpiryTime', value: payloadJson.exp },
-          { name: 'cardType', value: payloadJson.data.type },
-          { name: 'maskedCardNumber', value: payloadJson.data.number },
-          { name: 'expirationDate', value: `${this.expirationMonthVal}/${this.expirationYearVal}` },
+          { name: 'cardType', value: payloadJson.content.paymentInformation.card.number.detectedCardTypes[0] },
+          { name: 'maskedCardNumber', value: payloadJson.content.paymentInformation.card.number.maskedValue },
+          {
+            name: 'expirationDate',
+            value: `${payloadJson.content.paymentInformation.card.expirationMonth.value}/${payloadJson.content.paymentInformation.card.expirationYear.value}`,
+          },
         ],
         saveAllowed: this.paymentMethod.saveAllowed && this.cyberSourceCreditCardForm.get('saveForLater').value,
       });

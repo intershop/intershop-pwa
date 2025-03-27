@@ -3,7 +3,7 @@
     <ul class="share-tools">
       <ng-container *ishFeature="'wishlists'">
         <li *ngIf="configuration$('addToWishlist') | async" [attr.data-testing-id]="'wishlist-' + product.sku">
-          <ish-lazy-product-add-to-wishlist displayType="animated" />
+          <ish-lazy-product-add-to-wishlist [displayType]="'icon'" />
         </li>
       </ng-container>
       <ng-container *ishFeature="'compare'">
@@ -13,9 +13,13 @@
       </ng-container>
 
       <li>
-        <a href="javascript:window.print();" class="link-print" rel="nofollow">
+        <a
+          href="javascript:window.print();"
+          class="link-print"
+          rel="nofollow"
+          [title]="'product.print_page.link' | translate"
+        >
           <fa-icon [icon]="['fas', 'print']" />
-          <span class="share-label">{{ 'product.print_page.link' | translate }}</span>
         </a>
       </li>
 
@@ -24,9 +28,9 @@
           href="mailto:
           ?subject={{ 'email.recommended_product.heading' | translate : { '0': channelName } }}
           &body={{ 'email.recommended_product.text' | translate : { '0': product.name + '%0A', '1': document.URL } }}"
+          [title]="'product.email_a_friend.link' | translate"
         >
-          <fa-icon [icon]="['fas', 'paper-plane']" />
-          <span class="share-label">{{ 'product.email_a_friend.link' | translate }}</span>
+          <fa-icon [icon]="['fas', 'share-alt']" />
         </a>
       </li>
     </ul>

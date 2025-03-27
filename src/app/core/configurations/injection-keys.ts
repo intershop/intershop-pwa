@@ -58,6 +58,7 @@ export const THEME_COLOR = createEnvironmentInjectionToken('themeColor');
 export const SMALL_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('smallBreakpointWidth');
 export const MEDIUM_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('mediumBreakpointWidth');
 export const LARGE_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('largeBreakpointWidth');
+export const EXTRALARGE_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('extralargeBreakpointWidth');
 
 /**
  * InjectionToken for the metrics detail level configured via environment variable (not environment.ts)

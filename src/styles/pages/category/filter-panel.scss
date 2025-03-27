@@ -14,10 +14,17 @@
     margin-top: $space-default;
   }
 
-  h3 {
-    cursor: pointer;
+  .btn-filter-toggle {
+    width: 100%;
+    padding: 0;
+    text-align: left;
+    background-color: transparent;
+    border: 0;
+  }
 
+  h3 {
     .ng-fa-icon {
+      float: right;
       color: $text-color-corporate;
     }
   }
@@ -77,14 +84,14 @@
   li {
     &.filter-item {
       padding: 3px 0;
-      color: $text-color-quaternary;
+      color: $text-color-tertiary;
 
       a,
       .btn-link-action {
         display: block;
 
         &.filter-item-name {
-          color: $text-color-quaternary;
+          color: $text-color-tertiary;
         }
 
         &.filter-swatch {
@@ -134,7 +141,7 @@
 
       span {
         font-weight: normal;
-        color: $text-color-quaternary;
+        color: $text-color-tertiary;
 
         &.icon-selected {
           display: inline-block;
@@ -147,7 +154,7 @@
       }
 
       &.filter-color {
-        border-color: $text-color-quaternary;
+        border-color: $text-color-tertiary;
 
         a,
         .btn-link-action {

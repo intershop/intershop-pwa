@@ -1,12 +1,12 @@
 <ng-template #modal let-addModal>
   <div class="modal-header">
-    <h2 class="modal-title">{{ this.modalTitle || modalHeader | translate }}</h2>
+    <h2 id="order-template-preferences-title" class="modal-title">{{ this.modalTitle || modalHeader | translate }}</h2>
     <button type="button" class="close" [title]="'dialog.close.text' | translate" (click)="hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
 
-  <form [formGroup]="orderTemplateForm" (ngSubmit)="submitOrderTemplateForm()">
+  <form [formGroup]="orderTemplateForm" ishFormSubmit #form="ngForm" (ngSubmit)="submitOrderTemplateForm()" novalidate>
     <div class="modal-body">
       <formly-form [form]="orderTemplateForm" [fields]="fields" [model]="model" />
     </div>
@@ -15,7 +15,7 @@
       <button
         type="submit"
         class="btn btn-primary"
-        [disabled]="formDisabled"
+        [disabled]="orderTemplateForm.invalid && form.submitted"
         data-testing-id="order-template-dialog-submit"
       >
         {{ primaryButton | translate }}

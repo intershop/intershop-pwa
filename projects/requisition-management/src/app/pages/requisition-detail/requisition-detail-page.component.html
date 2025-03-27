@@ -2,9 +2,13 @@
   <div class="float-right">
     <ul class="share-tools">
       <li>
-        <a href="javascript:window.print();" class="link-print" rel="nofollow">
+        <a
+          href="javascript:window.print();"
+          class="link-print"
+          rel="nofollow"
+          [title]="'account.orderdetails.print_link.text' | translate"
+        >
           <fa-icon [icon]="['fas', 'print']" />
-          <span class="share-label">{{ 'account.orderdetails.print_link.text' | translate }}</span>
         </a>
       </li>
     </ul>
@@ -35,7 +39,7 @@
 
     <ng-container *ngTemplateOutlet="approvalButtonBar; context: { requisition: requisition }" />
 
-    <h2>{{ 'approval.detailspage.order_details.heading' | translate }}</h2>
+    <h1 class="h2">{{ 'approval.detailspage.order_details.heading' | translate }}</h1>
 
     <div *ngIf="'shipping.messageToMerchant' | ishServerSetting">
       <!-- MessageToMerchant-->
@@ -85,7 +89,7 @@
     <div class="section row">
       <div class="col-12 col-md-6 offset-md-6">
         <div class="cost-summary">
-          <h3>{{ 'checkout.order_summary.heading' | translate }}</h3>
+          <h2 class="h3">{{ 'checkout.order_summary.heading' | translate }}</h2>
           <ish-basket-cost-summary [totals]="requisition.totals" />
         </div>
       </div>

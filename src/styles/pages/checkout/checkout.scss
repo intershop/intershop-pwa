@@ -16,7 +16,7 @@
   }
 
   .cart-pli-data {
-    color: $text-color-quaternary;
+    color: $text-color-tertiary;
 
     span {
       display: inline-block;
@@ -37,7 +37,7 @@
     margin-bottom: $space-default * 2;
     background-color: $color-tertiary;
 
-    h3 {
+    h2 {
       margin-top: 0;
     }
 
@@ -52,27 +52,19 @@
       color: $text-color-inverse;
       background: $CORPORATE-PRIMARY;
 
-      h3 {
+      h2,
+      .h3 {
         font-size: $font-size-navbar-item;
         color: inherit;
       }
 
       a {
         color: inherit;
-        text-decoration: underline;
         text-transform: none;
-
-        &:hover {
-          color: $text-color-quaternary;
-        }
       }
 
       button.btn {
         color: $text-color-inverse;
-
-        &:hover {
-          color: $text-color-quaternary;
-        }
       }
 
       .infobox-count {

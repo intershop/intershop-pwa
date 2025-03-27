@@ -5,6 +5,7 @@
     [routerLink]="linkTarget || (productURL$ | async)"
     [queryParamsHandling]="computedQueryParamsHandling"
     [queryParams]="{ page: null }"
+    tabindex="-1"
     ><ng-container *ngTemplateOutlet="image" />
   </a>
 </div>
@@ -18,7 +19,7 @@
       [src]="image.effectiveUrl"
       [attr.height]="image.imageActualHeight"
       [attr.width]="image.imageActualWidth"
-      [attr.alt]="altText || (defaultAltText$ | async)"
+      [alt]="altText || (defaultAltText$ | async)"
       itemprop="image"
     />
   </ng-container>
@@ -28,7 +29,7 @@
       [attr.loading]="loading"
       class="product-image"
       src="/assets/img/not-available.svg"
-      [attr.alt]="'product.image.not_available.alttext' | translate"
+      [alt]="'product.image.not_available.alttext' | translate"
     />
   </ng-template>
 </ng-template>

@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-user.model';
@@ -19,7 +18,6 @@ export class PunchoutUserFormComponent implements OnInit {
   @Input() punchoutType: PunchoutType;
   @Output() submitUser = new EventEmitter<PunchoutUser>();
 
-  private submitted = false;
   form = new UntypedFormGroup({});
   fields: FormlyFieldConfig[];
   model = {};
@@ -82,7 +80,6 @@ export class PunchoutUserFormComponent implements OnInit {
               postWrappers: [{ wrapper: 'description', index: -1 }],
               label: this.punchoutUser ? 'account.punchout.password.new.label' : 'account.punchout.password.label',
               required: this.punchoutUser ? false : true,
-              attributes: { autocomplete: 'new-password' },
               customDescription: {
                 key: 'account.register.password.extrainfo.message',
                 args: { 0: '7' },
@@ -92,9 +89,8 @@ export class PunchoutUserFormComponent implements OnInit {
           },
           {
             key: 'passwordConfirmation',
-            type: 'ish-text-input-field',
+            type: 'ish-password-novalidate-field',
             props: {
-              type: 'password',
               required: this.punchoutUser ? false : true,
               label: this.punchoutUser
                 ? 'account.punchout.password.new.confirmation.label'
@@ -124,25 +120,16 @@ export class PunchoutUserFormComponent implements OnInit {
 
   /** emit punchout user, when form is valid - mark form as dirty, when form is invalid */
   submitForm() {
-    if (this.form.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.form);
-      return;
+    if (this.form.valid) {
+      if (this.punchoutUser) {
+        this.submitUser.emit({
+          ...this.punchoutUser,
+          active: this.form.value.active,
+          password: this.form.value.password,
+        });
+      } else {
+        this.submitUser.emit({ ...this.form.value, punchoutType: this.punchoutType });
+      }
     }
-
-    if (this.punchoutUser) {
-      this.submitUser.emit({
-        ...this.punchoutUser,
-        active: this.form.value.active,
-        password: this.form.value.password,
-      });
-    } else {
-      this.submitUser.emit({ ...this.form.value, punchoutType: this.punchoutType });
-    }
-  }
-
-  /** return boolean to set submit button enabled/disabled */
-  get formDisabled(): boolean {
-    return this.form.invalid && this.submitted;
   }
 }

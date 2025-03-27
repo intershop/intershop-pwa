@@ -7,12 +7,21 @@
   </div>
   <div class="row mb-4">
     <div class="col-md-4 d-flex align-items-center">
-      <button type="button" class="btn btn-link pl-0" (click)="expandForm()">
-        {{
-          formIsCollapsed
-            ? ('account.order_history.filter.show' | translate)
-            : ('account.order_history.filter.hide' | translate)
-        }}
+      <button
+        type="button"
+        class="btn btn-link pl-0 text-decoration-none"
+        (click)="expandForm()"
+        [attr.aria-expanded]="!formIsCollapsed"
+      >
+        <ng-container *ngIf="formIsCollapsed; else hide_filters">
+          {{ 'account.order_history.filter.show' | translate }}&nbsp;
+          <fa-icon [icon]="['fas', 'angle-down']" />
+        </ng-container>
+
+        <ng-template #hide_filters>
+          {{ 'account.order_history.filter.hide' | translate }}&nbsp;
+          <fa-icon [icon]="['fas', 'angle-up']" />
+        </ng-template>
       </button>
     </div>
     <div class="col-md-8 text-right">

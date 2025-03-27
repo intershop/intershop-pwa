@@ -1,3 +1,4 @@
+// FIELDSET
 fieldset {
   margin-bottom: ($space-default);
 
@@ -8,7 +9,7 @@ fieldset {
 
 // 	REQUIRED FIELDS
 .indicates-required {
-  color: $text-color-quaternary;
+  color: $text-color-tertiary;
 
   .required {
     margin-right: 4px;
@@ -61,10 +62,6 @@ label {
   min-width: 80px;
   max-width: 165px;
   margin-bottom: $space-default;
-}
-
-input {
-  accent-color: $input-accent-color;
 }
 
 input[type='file'] {
@@ -134,13 +131,17 @@ input.form-check-input {
   }
 }
 
-.form-control:focus {
-  border-color: $color-special-tertiary;
-  box-shadow: inset 0 1px 1px rgb(0 0 0 / 0.075), 0 0 8px $color-special-tertiary;
+.form-control {
+  &:focus {
+    border-color: $CORPORATE-PRIMARY;
+    box-shadow: none;
+  }
+
+  @include focus-visible-reset();
 }
 
 .input-help {
-  color: $text-color-quaternary;
+  color: $text-color-tertiary;
 }
 
 select {
@@ -209,7 +210,7 @@ optgroup {
 
     &:focus {
       border-color: $error-color;
-      box-shadow: inset 0 1px 1px rgb(0 0 0 / 0.075), 0 0 8px $error-color;
+      box-shadow: none;
     }
   }
 

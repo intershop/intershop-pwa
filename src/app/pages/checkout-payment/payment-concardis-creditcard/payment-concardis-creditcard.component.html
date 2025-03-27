@@ -7,7 +7,7 @@
   <!-- Credit card number -->
   <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.cardNumber?.message }">
     <label class="col-form-label col-md-4" for="cardpanInput"
-      >{{ 'checkout.credit_card.number.label' | translate }}<span class="required">*</span></label
+      >{{ 'checkout.credit_card.number.label' | translate }}<span class="required" aria-hidden="true">*</span></label
     >
     <div class="col-sm-6">
       <div id="a_credit_card_number_container" class="iframe-container"></div>
@@ -24,7 +24,8 @@
     [ishShowFormFeedback]="[parameterForm.controls.expirationMonth, parameterForm.controls.expirationYear]"
   >
     <label for="month" class="col-form-label col-md-4"
-      >{{ 'checkout.credit_card.expiration_date.label' | translate }}<span class="required">*</span></label
+      >{{ 'checkout.credit_card.expiration_date.label' | translate
+      }}<span class="required" aria-hidden="true">*</span></label
     >
     <div class="col-sm-6">
       <div class="clearfix row">
@@ -33,6 +34,7 @@
             class="form-control"
             id="concardis_creditcard_month"
             formControlName="expirationMonth"
+            [attr.aria-label]="'checkout.credit_card.expiration_month.select.label' | translate"
             data-testing-id="expirationMonth"
           >
             <option value="">{{ 'account.date.month' | translate }}</option>
@@ -48,6 +50,7 @@
             class="form-control"
             id="concardis_creditcard_year"
             formControlName="expirationYear"
+            [attr.aria-label]="'checkout.credit_card.expiration_year.select.label' | translate"
             data-testing-id="expirationYear"
           >
             <option value="">{{ 'account.date.year' | translate }}</option>
@@ -70,7 +73,7 @@
   <!-- CVC -->
   <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.cvc?.message }">
     <label class="col-form-label col-md-4" for="cvcInput"
-      >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required">*</span></label
+      >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required" aria-hidden="true">*</span></label
     >
     <div class="col-3 col-md-2">
       <div id="a_verification_container" class="iframe-container"></div>
@@ -82,9 +85,15 @@
       <ng-template #CVCHelp>
         <span [innerHTML]="'checkout.credit_card.cvc.popover.content' | translate"></span>
       </ng-template>
-      <a [ngbPopover]="CVCHelp" [popoverTitle]="'checkout.credit_card.cvc.popover.title' | translate" placement="auto"
-        ><fa-icon [icon]="['fas', 'question-circle']" />
-      </a>
+      <button
+        type="button"
+        class="btn btn-link details-tooltip"
+        [ngbPopover]="CVCHelp"
+        [popoverTitle]="'checkout.credit_card.cvc.popover.title' | translate"
+        placement="auto"
+      >
+        <fa-icon [icon]="['fas', 'question-circle']" />
+      </button>
     </div>
   </div>
 </div>

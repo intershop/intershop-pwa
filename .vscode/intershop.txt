@@ -19,6 +19,7 @@ callparametersstring
 categoryref
 chatflow
 chatflowid
+clickjacking
 cobrowse
 colorcode
 compodoc
@@ -61,6 +62,7 @@ foos
 formly
 fortawesome
 français
+geolocation
 giftwrap
 glyphicon
 glyphicons
@@ -107,7 +109,9 @@ nguniversal
 nofollow
 noindex
 noneditable
+nosniff
 notselected
+novalidate
 npsc
 objs
 oidc
@@ -169,6 +173,7 @@ roadmap
 roboto
 robotobold
 robotoregular
+routerlink
 ruleset
 rulesets
 rxjs
@@ -183,6 +188,7 @@ serializable
 setcontext
 setuprequest
 signup
+silktide
 sitekey
 sku
 skus
@@ -221,6 +227,7 @@ viewcontexts
 viewports
 viewtype
 walkthrough
+wcag
 webserver
 webserversecureurl
 whitespaces

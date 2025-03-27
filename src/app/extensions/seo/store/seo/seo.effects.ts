@@ -8,7 +8,7 @@ import { REQUEST } from '@nguniversal/express-engine/tokens';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
 import { Subject, combineLatest, merge, race } from 'rxjs';
-import { distinctUntilChanged, filter, map, switchMap, takeWhile, tap } from 'rxjs/operators';
+import { delay, distinctUntilChanged, filter, map, switchMap, takeWhile, tap } from 'rxjs/operators';
 
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
@@ -163,6 +163,7 @@ export class SeoEffects {
   seoTitle$ = createEffect(
     () =>
       this.pageTitle$.pipe(
+        delay(0), // ensures asynchronous stream processing to prevent "missing translation" issues
         switchMap(title => combineLatest([this.translate.get(title), this.translate.get('seo.applicationName')])),
         map(([title, application]) => `${title} | ${application}`),
         tap(title => {
@@ -176,6 +177,7 @@ export class SeoEffects {
   seoDescription$ = createEffect(
     () =>
       this.pageDescription$.pipe(
+        delay(0), // ensures asynchronous stream processing to prevent "missing translation" issues
         switchMap(description => this.translate.get(description)),
         tap(description => {
           this.addOrModifyTag({ name: 'description', content: description });

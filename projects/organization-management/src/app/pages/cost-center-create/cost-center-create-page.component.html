@@ -1,13 +1,13 @@
 <h1>{{ 'account.costcenter.create.heading' | translate }}</h1>
 
-<form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
+<form [formGroup]="form" (ngSubmit)="submitForm()" ishFormSubmit #ccForm="ngForm" class="form-horizontal" novalidate>
   <ish-cost-center-form [form]="form" />
   <div class="row">
     <div class="offset-md-4 col-md-8">
       <button
         type="submit"
         class="btn btn-primary"
-        [disabled]="formDisabled"
+        [disabled]="form.invalid && ccForm.submitted"
         data-testing-id="create-cost-center-submit"
       >
         {{ 'account.costcenter.create.button.label' | translate }}

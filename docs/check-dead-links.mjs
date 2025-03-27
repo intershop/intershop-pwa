@@ -10,11 +10,30 @@ async function mapSeries(iterable, action) {
   }
 }
 
+const linkCheck = axios.create({
+  headers: {
+    'User-Agent':
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+  },
+});
+
+linkCheck.interceptors.response.use(
+  response => response,
+  error => {
+    // ignore 403 (authentication required)
+    if (error.response?.status === 403) {
+      return null;
+    }
+    return Promise.reject({ message: `Request failed with status code ${error.response?.status}` });
+  }
+);
+
 async function checkExternalLinkError(link) {
   console.log('check', link);
-  return axios.head(link).catch(() =>
+
+  return linkCheck.head(link).catch(() =>
     // retry with get
-    axios.get(link)
+    linkCheck.get(link)
   );
 }
 
@@ -90,12 +109,7 @@ const filtered = externalLinks
       !link.includes('support.intershop.') &&
       !link.includes('docs.intershop.') &&
       !link.includes('azurewebsites.net') &&
-      !link.includes('github.com') &&
-      !link.includes('angular.io') &&
-      !link.includes('angular.love') &&
-      !link.includes('optimizesmart.com') &&
-      !link.includes('gnu.org') &&
-      !link.includes('tacton.com')
+      !link.includes('github.com')
   );
 
 mapSeries(filtered, checkExternalLinkError).catch(error => {

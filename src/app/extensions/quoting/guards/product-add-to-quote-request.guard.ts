@@ -18,7 +18,11 @@ export function productAddToQuoteRequestGuard(route: ActivatedRouteSnapshot): bo
     addProductToQuoteRequest({ sku: route.queryParamMap.get('sku'), quantity: +route.queryParamMap.get('quantity') })
   );
 
-  const ref = modalService.open(ProductAddToQuoteDialogComponent, { centered: true, size: 'lg' });
+  const ref = modalService.open(ProductAddToQuoteDialogComponent, {
+    centered: true,
+    size: 'lg',
+    ariaLabelledBy: 'product-add-to-quote-modal-title',
+  });
   const component = ref.componentInstance as ProductAddToQuoteDialogComponent;
   component.modalRef = ref;
 

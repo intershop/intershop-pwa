@@ -33,6 +33,7 @@ export interface Environment {
     | 'rating'
     | 'recently'
     | 'saveLanguageSelection'
+    | 'stickyHeader'
     | 'storeLocator'
     /* B2B features */
     | 'businessCustomerRegistration'
@@ -49,11 +50,11 @@ export interface Environment {
     | 'legacyEncoding'
     /* Third-party Integrations */
     | 'addressDoctor'
-    | 'sentry'
-    | 'tracking'
-    | 'tacton'
-    | 'maps'
     | 'copilot'
+    | 'maps'
+    | 'sentry'
+    | 'tacton'
+    | 'tracking'
   )[];
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
@@ -122,7 +123,7 @@ export interface Environment {
   multiSiteLocaleMap: MultiSiteLocaleMap;
 
   // configuration of the styling theme color used for theme-color meta
-  // format: hex color e.g. themeColor: '#688dc3',
+  // format: hex color e.g. themeColor: '#006b99',
   themeColor?: string;
 
   // cookie consent options
@@ -165,6 +166,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
     'rating',
     'recently',
     'saveLanguageSelection',
+    'stickyHeader',
     'storeLocator',
   ],
 

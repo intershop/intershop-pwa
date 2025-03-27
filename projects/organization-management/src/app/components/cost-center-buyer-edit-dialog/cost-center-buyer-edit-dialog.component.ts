@@ -6,7 +6,6 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { PriceHelper } from 'ish-core/models/price/price.helper';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
@@ -23,7 +22,6 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
 
   costCenterBuyerForm = new FormGroup({});
   fields: FormlyFieldConfig[];
-  private submitted = false;
 
   buyer: CostCenterBuyer;
 
@@ -74,6 +72,7 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
             type: 'ish-select-field',
             className: 'col-6 col-md-4',
             props: {
+              ariaLabel: 'account.costcenter.budget.period.select.label',
               fieldClass: 'col-12 label-empty',
               options: FormsService.getCostCenterBudgetPeriodOptions(),
             },
@@ -84,26 +83,18 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
   }
 
   submitCostCenterBuyerForm() {
-    if (this.costCenterBuyerForm.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.costCenterBuyerForm);
-      return;
+    if (this.costCenterBuyerForm.valid) {
+      const changedBuyer: CostCenterBuyer = {
+        login: this.buyer.login,
+        firstName: this.buyer.firstName,
+        lastName: this.buyer.lastName,
+        budget: PriceHelper.getPrice(this.buyer.budget.currency, this.model.budgetValue ?? 0),
+        budgetPeriod: this.model.budgetPeriod,
+      };
+
+      this.organizationManagementFacade.updateCostCenterBuyer(changedBuyer);
+      this.hide();
     }
-
-    const changedBuyer: CostCenterBuyer = {
-      login: this.buyer.login,
-      firstName: this.buyer.firstName,
-      lastName: this.buyer.lastName,
-      budget: PriceHelper.getPrice(this.buyer.budget.currency, this.model.budgetValue ?? 0),
-      budgetPeriod: this.model.budgetPeriod,
-    };
-
-    this.organizationManagementFacade.updateCostCenterBuyer(changedBuyer);
-    this.hide();
-  }
-
-  get formDisabled() {
-    return this.costCenterBuyerForm.invalid && this.submitted;
   }
 
   /** Opens the modal. */
@@ -115,7 +106,7 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
       budgetPeriod: buyer.budgetPeriod,
     };
 
-    this.modal = this.ngbModal.open(this.modalTemplate, { size: 'lg' });
+    this.modal = this.ngbModal.open(this.modalTemplate, { size: 'lg', ariaLabelledBy: 'cc-buyer-edit-modal-title' });
   }
 
   /** Close the modal. */

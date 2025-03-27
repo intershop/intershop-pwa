@@ -5,7 +5,6 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 /**
@@ -26,8 +25,6 @@ export class AccountProfileEmailComponent implements OnInit {
   form = new FormGroup({});
   fields: FormlyFieldConfig[];
   model: Partial<User>;
-
-  private submitted = false;
 
   ngOnInit() {
     this.model = {};
@@ -92,21 +89,13 @@ export class AccountProfileEmailComponent implements OnInit {
    * Submits form and throws create event when form is valid
    */
   submit() {
-    if (this.form.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.form);
-      return;
+    if (this.form.valid) {
+      const email = this.form.get('email').value;
+
+      this.updateEmail.emit({
+        user: { ...this.currentUser, email, login: undefined },
+        credentials: { login: this.currentUser.email, password: this.form.get('currentPassword').value },
+      });
     }
-
-    const email = this.form.get('email').value;
-
-    this.updateEmail.emit({
-      user: { ...this.currentUser, email, login: undefined },
-      credentials: { login: this.currentUser.email, password: this.form.get('currentPassword').value },
-    });
-  }
-
-  get buttonDisabled() {
-    return this.form.invalid && this.submitted;
   }
 }

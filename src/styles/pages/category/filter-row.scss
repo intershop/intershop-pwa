@@ -26,7 +26,7 @@
       &.list-view-link,
       &.list-view-link:hover,
       &.list-view-link:focus {
-        color: $text-color-quaternary;
+        color: $text-color-tertiary;
       }
 
       &.grid-view-link {
@@ -88,7 +88,18 @@
 
   li {
     float: left;
-    margin-right: ($space-default);
+
+    a:not(.active) {
+      @include hover-none-underline();
+    }
+
+    a,
+    span {
+      display: block;
+      padding: 5px 9px;
+      text-align: center;
+      text-decoration: none !important;
+    }
 
     .active {
       color: $text-color-primary;

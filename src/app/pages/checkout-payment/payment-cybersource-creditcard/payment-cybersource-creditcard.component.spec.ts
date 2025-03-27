@@ -64,7 +64,18 @@ describe('Payment Cybersource Creditcard Component', () => {
     const emitter = spy(component.submitPayment);
 
     const payloadjson = {
-      data: { number: '4111 1111 1111 1111', type: '001', expirationMonth: '11', expirationYear: '2022' },
+      content: {
+        paymentInformation: {
+          card: {
+            number: {
+              maskedValue: '4111 1111 1111 1111',
+              detectedCardTypes: '001',
+            },
+            expirationMonth: { value: '08' },
+            expirationYear: { value: '2028' },
+          },
+        },
+      },
       iss: 'test',
       exp: '123423',
       iat: 'test',
@@ -72,10 +83,10 @@ describe('Payment Cybersource Creditcard Component', () => {
     };
     const payload = window.btoa(JSON.stringify(payloadjson));
 
-    component.cyberSourceCreditCardForm.controls.expirationMonth.setValue('11');
-    component.cyberSourceCreditCardForm.controls.expirationYear.setValue('2022');
-    component.expirationMonthVal = '11';
-    component.expirationYearVal = '2022';
+    component.cyberSourceCreditCardForm.controls.expirationMonth.setValue('08');
+    component.cyberSourceCreditCardForm.controls.expirationYear.setValue('2028');
+    component.expirationMonthVal = '08';
+    component.expirationYearVal = '2028';
     component.submitCallback(undefined, 'header.' + `${payload}` + '.signature');
 
     verify(emitter.emit(anything())).once();
@@ -86,7 +97,18 @@ describe('Payment Cybersource Creditcard Component', () => {
     const emitter = spy(component.submitPayment);
 
     const payloadjson = {
-      data: { number: '4111 1111 1111 1111', type: '001', expirationMonth: '11', expirationYear: '2022' },
+      content: {
+        paymentInformation: {
+          card: {
+            number: {
+              maskedValue: '4111 1111 1111 1111',
+              detectedCardTypes: '001',
+            },
+            expirationMonth: { value: '08' },
+            expirationYear: { value: '2023' },
+          },
+        },
+      },
       iss: 'test',
       exp: '123423',
       iat: 'test',
@@ -94,8 +116,8 @@ describe('Payment Cybersource Creditcard Component', () => {
     };
     const payload = window.btoa(JSON.stringify(payloadjson));
 
-    component.expirationMonthVal = '11';
-    component.expirationYearVal = '2022';
+    component.expirationMonthVal = '08';
+    component.expirationYearVal = '2023';
     component.submitCallback(undefined, 'header.' + `${payload}` + '.signature');
 
     verify(emitter.emit(anything())).never();

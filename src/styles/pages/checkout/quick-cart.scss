@@ -2,7 +2,7 @@
 
 .quick-cart-link {
   position: relative;
-  padding: 0 $space-default;
+  padding: 0;
   margin-left: $space-default;
   background: $color-tertiary;
 
@@ -11,7 +11,7 @@
     text-transform: uppercase;
 
     span {
-      color: $text-color-quaternary;
+      color: $text-color-secondary;
 
       &.mini-cart-price {
         font-size: $font-size-base;
@@ -21,38 +21,40 @@
     }
 
     .ng-fa-icon {
-      padding: 0;
+      padding: 0 !important;
       margin-right: ($space-default * 0.5);
       font-size: 17px;
+      color: $text-color-secondary;
+    }
+
+    // hide drop down arrow
+    &::after {
+      display: none;
     }
   }
 
   > .btn-link {
-    padding: 0 ($space-default * 0.5);
+    padding: ($space-default * 0.5) $space-default;
     white-space: nowrap;
   }
 
-  &.mini-cart-active {
+  &.show {
     background: $color-corporate;
 
     > .btn-link {
       span {
         color: $text-color-inverse;
-
-        &.mini-cart-price {
-          color: $text-color-secondary;
-        }
       }
 
       > .ng-fa-icon {
-        color: $text-color-inverse;
+        color: $text-color-inverse !important;
       }
     }
   }
 
   .mini-cart {
     position: absolute;
-    right: -1px;
+    top: -1px !important;
     z-index: 9999;
     width: 310px;
     padding: $space-default;
@@ -94,7 +96,7 @@
 
   @include clearfix();
 
-  padding: $space-default 0;
+  padding: $space-default 2px $space-default 0;
 
   & ~ .product-row {
     border-top: $border-width-default solid $border-color-light;
@@ -121,7 +123,7 @@
       font-family: $font-family-condensedregular;
       font-size: $font-size-base;
       font-weight: normal;
-      color: $text-color-quaternary;
+      color: $text-color-tertiary;
       text-overflow: ellipsis;
       text-transform: none;
       white-space: nowrap;
@@ -136,7 +138,7 @@
 
     .cart-pli-data {
       font-size: 85%;
-      color: $text-color-quaternary;
+      color: $text-color-tertiary;
 
       span {
         display: inline-block;

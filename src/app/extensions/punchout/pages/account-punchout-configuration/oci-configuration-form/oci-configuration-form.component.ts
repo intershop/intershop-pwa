@@ -2,12 +2,10 @@ import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { TranslateService } from '@ngx-translate/core';
 import { Observable, filter, map, shareReplay, take } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { PunchoutFacade } from '../../../facades/punchout.facade';
@@ -20,7 +18,6 @@ import { OciConfigurationItem } from '../../../models/oci-configuration-item/oci
 })
 export class OciConfigurationFormComponent implements OnInit {
   form: FormGroup = new FormGroup({});
-  private submitted = false;
 
   configItems$: Observable<OciConfigurationItem[]>;
   error$: Observable<HttpError>;
@@ -35,7 +32,7 @@ export class OciConfigurationFormComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private punchoutFacade: PunchoutFacade, private translate: TranslateService) {}
+  constructor(private punchoutFacade: PunchoutFacade) {}
 
   ngOnInit() {
     this.error$ = this.punchoutFacade.ociConfigurationError$;
@@ -90,7 +87,7 @@ export class OciConfigurationFormComponent implements OnInit {
                 className: 'list-item col-md-3',
                 props: {
                   fieldClass: 'col-md-11',
-                  ariaLabel: this.translate.instant('account.punchout.oci.transform.aria_label'),
+                  ariaLabel: 'account.punchout.oci.transform.aria_label',
                 },
               },
               {
@@ -116,7 +113,7 @@ export class OciConfigurationFormComponent implements OnInit {
                         },
                       },
                       props: {
-                        ariaLabel: this.translate.instant('account.punchout.oci.map_from.aria_label'),
+                        ariaLabel: 'account.punchout.oci.map_from.aria_label',
                       },
                     },
                     {
@@ -126,7 +123,7 @@ export class OciConfigurationFormComponent implements OnInit {
                       props: {
                         fieldClass: 'ml-1',
                         arrowRight: true,
-                        ariaLabel: this.translate.instant('account.punchout.oci.map_to.aria_label'),
+                        ariaLabel: 'account.punchout.oci.map_to.aria_label',
                       },
                       validation: {
                         messages: {
@@ -145,7 +142,7 @@ export class OciConfigurationFormComponent implements OnInit {
                 props: {
                   fieldClass: 'col-12',
                   options,
-                  ariaLabel: this.translate.instant('account.punchout.oci.formatter.aria_label'),
+                  ariaLabel: 'account.punchout.oci.formatter.aria_label',
                 },
               },
             ],
@@ -156,15 +153,8 @@ export class OciConfigurationFormComponent implements OnInit {
   }
 
   submitForm() {
-    if (this.form.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.form);
-      return;
+    if (this.form.valid) {
+      this.punchoutFacade.updateOciConfiguration(this.form.value.ociConfig);
     }
-    this.punchoutFacade.updateOciConfiguration(this.form.value.ociConfig);
-  }
-
-  get formDisabled() {
-    return this.form.invalid && this.submitted;
   }
 }

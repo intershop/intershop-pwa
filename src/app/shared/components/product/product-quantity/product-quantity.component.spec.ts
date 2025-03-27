@@ -21,6 +21,8 @@ describe('Product Quantity Component', () => {
     when(context.select('minQuantity')).thenReturn(of(2));
     when(context.select('maxQuantity')).thenReturn(of(6));
     when(context.select('stepQuantity')).thenReturn(of(2));
+    const hasQuantityError$ = of(false);
+    when(context.select('hasQuantityError')).thenReturn(hasQuantityError$);
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
@@ -95,7 +97,12 @@ describe('Product Quantity Component', () => {
       ]
     `);
     expect(element.querySelector('select')).toMatchInlineSnapshot(`
-      <select data-testing-id="quantity" class="form-control" id="ASDF">
+      <select
+        data-testing-id="quantity"
+        class="form-control"
+        id="ASDF"
+        aria-label="product.quantity.aria_label"
+      >
         <option value="2">2</option>
         <option value="4">4</option>
         <option value="6">6</option>

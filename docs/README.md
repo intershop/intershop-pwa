@@ -48,7 +48,9 @@ kb_sync_latest_only
 - [Guide - Data Handling with Mappers](./guides/data-handling-with-mappers.md)
 - [Guide - Working with ESLint](./guides/eslint.md)
 - [Guide - Accessibility](./guides/accessibility.md)
+- [Guide - Accessibility Easy Checks](./guides/accessibility-easy-check.md)
 - [Concept - Captcha](./concepts/captcha.md)
+- [Guide - Security Standard PCI DSS 4.0](./guides/pci-dss-4.md)
 
 ### Customization
 

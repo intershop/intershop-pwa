@@ -6,9 +6,11 @@
     [ngClass]="cssClass"
     [class.btn-primary]="!displayIcon"
     [disabled]="buttonDisabled$ | async"
-    [attr.title]="translationKey$ | async | translate"
-    data-testing-id="addToCartButton"
+    [title]="displayIcon ? (translationKey$ | async | translate) : ''"
+    [tabindex]="ariaHidden ? -1 : 0"
+    [attr.aria-hidden]="ariaHidden"
     (click)="addToBasket()"
+    data-testing-id="addToCartButton"
   >
     <ng-container *ngIf="(displaySpinner$ | async) !== true; else spinning">
       <!-- Add to Cart button -->

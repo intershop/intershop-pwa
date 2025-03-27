@@ -38,8 +38,6 @@ export class RegistrationPageComponent implements OnInit {
     private featureEventService: FeatureEventService
   ) {}
 
-  private submitted = false;
-
   loading$: Observable<boolean>;
   private registrationConfig: RegistrationConfigType;
 
@@ -70,8 +68,8 @@ export class RegistrationPageComponent implements OnInit {
 
   onCreate() {
     if (this.form.invalid) {
+      // is still needed here
       markAsDirtyRecursive(this.form);
-      this.submitted = true;
       return;
     }
     // keep-localization-pattern: ^customer\..*\.error$
@@ -102,11 +100,6 @@ export class RegistrationPageComponent implements OnInit {
 
   private submitRegistrationForm() {
     this.registrationFormConfiguration.submitRegistrationForm(this.form, this.registrationConfig, this.model);
-  }
-
-  /** return boolean to set submit button enabled/disabled */
-  get submitDisabled(): boolean {
-    return this.form.invalid && this.submitted;
   }
 
   private clearCaptchaToken() {

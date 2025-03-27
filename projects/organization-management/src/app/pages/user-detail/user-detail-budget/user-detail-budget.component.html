@@ -1,6 +1,6 @@
 <div *ngIf="budget" class="row section">
   <div class="col-10 col-lg-8">
-    <h3>{{ 'account.user.details.profile.budget_limits.heading' | translate }}</h3>
+    <h2 class="h3">{{ 'account.user.details.profile.budget_limits.heading' | translate }}</h2>
 
     <div class="row">
       <div class="col-md-12" data-testing-id="user-budget">
@@ -31,7 +31,10 @@
     <a
       routerLink="budget"
       class="btn-tool"
-      [title]="'account.profile.update.link' | translate"
+      [title]="
+        'account.profile.update.link'
+          | translate : { '0': 'account.user.details.profile.budget_limits.heading' | translate }
+      "
       data-testing-id="edit-budget"
     >
       <fa-icon [icon]="['fas', 'pencil-alt']" />

@@ -4,7 +4,9 @@
   class="btn add-to-compare"
   [ngClass]="cssClass"
   [class.is-selected]="isInCompareList$ | async"
-  title="{{ 'product.compare.link' | translate }}"
+  [title]="displayType === 'icon' ? ('product.compare.link' | translate) : ''"
+  [tabindex]="ariaHidden ? -1 : 0"
+  [attr.aria-hidden]="ariaHidden"
   (click)="toggleCompare()"
 >
   <ng-container *ngIf="displayType === 'icon'; else defaultButton">

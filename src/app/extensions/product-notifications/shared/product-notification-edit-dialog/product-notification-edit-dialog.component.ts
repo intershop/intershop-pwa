@@ -18,7 +18,6 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
@@ -52,7 +51,6 @@ export class ProductNotificationEditDialogComponent implements OnInit {
   private currentCurrency: string;
 
   productNotificationForm = new UntypedFormGroup({});
-  private submitted = false;
 
   productNotification$: Observable<ProductNotification>;
 
@@ -100,20 +98,12 @@ export class ProductNotificationEditDialogComponent implements OnInit {
 
   // open modal
   show() {
-    this.modal = this.ngbModal.open(this.modalTemplate);
-  }
-
-  get formDisabled() {
-    return this.productNotificationForm.invalid && this.submitted;
+    this.modal = this.ngbModal.open(this.modalTemplate, { ariaLabelledBy: 'product-notification-edit-modal-title' });
   }
 
   // submit the form
   submitForm() {
-    if (this.productNotificationForm.invalid) {
-      markAsDirtyRecursive(this.productNotificationForm);
-      this.submitted = true;
-      return;
-    } else {
+    if (this.productNotificationForm.valid) {
       const sku = this.context.get('sku');
       const formValue = this.productNotificationForm.value;
       const productNotificationType = formValue.priceValue === undefined ? 'stock' : 'price';

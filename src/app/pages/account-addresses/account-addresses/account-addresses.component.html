@@ -1,11 +1,13 @@
 <div class="my-account-savedAddresses myAccount-addressBox">
-  <h1>
-    {{ 'account.addresses.saved_address.heading' | translate }}
+  <div class="d-flex align-items-center justify-content-between flex-wrap">
+    <h1>
+      {{ 'account.addresses.saved_address.heading' | translate }}
+    </h1>
     <!-- Add address link -->
     <button
       type="button"
       *ngIf="isCreateAddressFormCollapsed && !updateFormExpandedAddressId"
-      class="btn btn-secondary float-right"
+      class="btn btn-secondary m-0"
       (click)="showCreateAddressForm()"
       [attr.aria-expanded]="!isCreateAddressFormCollapsed"
       aria-controls="collapseBasic"
@@ -13,7 +15,7 @@
     >
       {{ 'account.addresses.add_address.button.text' | translate }}
     </button>
-  </h1>
+  </div>
 
   <!-- Error message -->
   <ish-error-message [error]="error" />
@@ -39,7 +41,7 @@
       <!-- preferred invoice address == preferred shipping address -->
       <ng-container *ngIf="hasPreferredAddresses && preferredAddressesEqual">
         <div class="section" data-testing-id="preferred-invoice-and-shipping-address">
-          <h3>{{ 'account.addresses.preferredinvoiceandshipping.heading' | translate }}</h3>
+          <h2 class="h3">{{ 'account.addresses.preferredinvoiceandshipping.heading' | translate }}</h2>
           <ng-container
             *ngTemplateOutlet="
               addressTile;
@@ -60,7 +62,7 @@
       <ng-container *ngIf="!hasPreferredAddresses || !preferredAddressesEqual">
         <!-- preferred invoice address -->
         <div class="section" data-testing-id="preferred-invoice-address">
-          <h3>{{ 'account.addresses.preferredinvoice.heading' | translate }}</h3>
+          <h2 class="h3">{{ 'account.addresses.preferredinvoice.heading' | translate }}</h2>
           <ng-container *ngIf="preferredInvoiceToAddress; else noInvoiceToAddress">
             <ng-container
               *ngTemplateOutlet="
@@ -83,7 +85,7 @@
 
         <!--preferred shipping address -->
         <div class="section" data-testing-id="preferred-shipping-address">
-          <h3>{{ 'account.addresses.preferredshipping.heading' | translate }}</h3>
+          <h2 class="h3">{{ 'account.addresses.preferredshipping.heading' | translate }}</h2>
           <ng-container *ngIf="preferredShipToAddress; else noShipToAddress">
             <ng-container
               *ngTemplateOutlet="
@@ -108,7 +110,7 @@
       <!-- further addresses -->
       <ng-container *ngIf="furtherAddresses?.length > 0">
         <div class="section" data-testing-id="further-addresses">
-          <h3>{{ 'account.addresses.heading' | translate }}</h3>
+          <h2 class="h3">{{ 'account.addresses.heading' | translate }}</h2>
           <div *ngFor="let currentAddress of furtherAddresses" class="list-item-row">
             <ng-container
               *ngTemplateOutlet="

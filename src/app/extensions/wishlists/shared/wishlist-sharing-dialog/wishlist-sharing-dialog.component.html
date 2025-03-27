@@ -1,14 +1,14 @@
 <ng-template #modal let-addModal>
   <div class="modal-header">
-    <h2 class="modal-title">{{ modalHeader | translate }}</h2>
+    <h2 id="wishlist-sharing-modal-title" class="modal-title">{{ modalHeader | translate }}</h2>
     <button type="button" class="close" [title]="'dialog.close.text' | translate" (click)="hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
 
-  <form [formGroup]="wishListForm" (ngSubmit)="submitWishlistForm()">
+  <form [formGroup]="wishListForm" ishFormSubmit #form="ngForm" (ngSubmit)="submitWishlistForm()" novalidate>
     <div class="modal-body">
-      <p class="indicates-required">
+      <p class="indicates-required" aria-hidden="true">
         <span class="required">*</span> {{ 'account.required_field.message' | translate }}
       </p>
 
@@ -26,7 +26,7 @@
       <button
         type="submit"
         class="btn btn-primary"
-        [disabled]="formDisabled"
+        [disabled]="form.submitted && wishListForm.invalid"
         data-testing-id="wishlist-share-dialog-submit"
       >
         {{ primaryButton | translate }}

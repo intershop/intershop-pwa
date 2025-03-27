@@ -3,7 +3,7 @@
 <!-- Company Profile -->
 <div class="row section" data-testing-id="company-info">
   <div class="col-10 col-lg-8">
-    <h3>{{ 'account.company_profile.detail.heading' | translate }}</h3>
+    <h2 class="h3">{{ 'account.company_profile.detail.heading' | translate }}</h2>
     <div class="row">
       <div class="col-md-12">
         <dl class="row dl-horizontal dl-separator">
@@ -28,7 +28,9 @@
     <a
       routerLink="/account/organization/settings/company"
       class="btn-tool"
-      title="{{ 'account.profile.update.link' | translate }}"
+      [title]="
+        'account.profile.update.link' | translate : { '0': 'account.company_profile.detail.heading' | translate }
+      "
       data-testing-id="edit-company"
     >
       <fa-icon [icon]="['fas', 'pencil-alt']" />
@@ -39,8 +41,8 @@
 <!-- Preferences -->
 <div *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting" class="row section">
   <div class="col-10 col-lg-8">
-    <h3>{{ 'account.organization.org_settings.preferences.subtitle' | translate }}</h3>
-    <form class="form-horizontal" [formGroup]="budgetTypeForm">
+    <h2 class="h3">{{ 'account.organization.org_settings.preferences.subtitle' | translate }}</h2>
+    <form class="form-horizontal" [formGroup]="budgetTypeForm" novalidate>
       <formly-form
         [form]="budgetTypeForm"
         [fields]="fields"

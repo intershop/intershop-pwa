@@ -1,9 +1,11 @@
-<h1>
-  {{ 'account.punchout.heading' | translate }}
-  <a *ngIf="selectedType === 'oci'" routerLink="configuration" class="btn btn-secondary">{{
+<div class="d-flex align-items-center justify-content-between flex-wrap">
+  <h1>
+    {{ 'account.punchout.heading' | translate }}
+  </h1>
+  <a *ngIf="selectedType === 'oci'" routerLink="configuration" class="btn btn-secondary m-0">{{
     'account.punchout.configuration.button.label' | translate
   }}</a>
-</h1>
+</div>
 <ish-error-message [error]="error" />
 
 <p *ngIf="punchoutTypes?.length > 0; else noPunchoutTypes">

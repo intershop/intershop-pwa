@@ -13,7 +13,6 @@ import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 @Component({
   selector: 'ish-checkout-review',
@@ -32,7 +31,6 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
 
   model = { termsAndConditions: false };
 
-  private submitted = false;
   multipleBuckets = false;
 
   ngOnInit() {
@@ -49,12 +47,9 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
    * sends an event to submit order
    */
   submitOrder() {
-    if (this.form.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.form);
-      return;
+    if (this.form.valid) {
+      this.createOrder.emit();
     }
-    this.createOrder.emit();
   }
 
   private setFields() {
@@ -63,6 +58,7 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
         type: 'ish-checkout-review-tac-field',
         key: 'termsAndConditions',
         props: {
+          required: true,
           validation: {
             show: true,
           },
@@ -77,9 +73,5 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
         },
       },
     ];
-  }
-
-  get formDisabled() {
-    return (this.form.invalid && this.submitted) || this.multipleBuckets;
   }
 }

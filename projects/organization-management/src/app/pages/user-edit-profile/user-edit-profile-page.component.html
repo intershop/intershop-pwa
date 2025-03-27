@@ -1,10 +1,22 @@
 <div *ngIf="selectedUser$ | async as user">
   <h1>{{ 'account.user.update_profile.heading' | translate }} - {{ user.firstName }} {{ user.lastName }}</h1>
-  <form [formGroup]="profileForm" (ngSubmit)="submitForm(user)" class="form-horizontal" novalidate="novalidate">
+  <form
+    [formGroup]="profileForm"
+    ishFormSubmit
+    #form="ngForm"
+    (ngSubmit)="submitForm(user)"
+    class="form-horizontal"
+    novalidate
+  >
     <ish-user-profile-form [form]="profileForm" [user]="user" [error]="userError$ | async" />
     <div class="row">
       <div class="offset-md-4 col-md-8">
-        <button type="submit" class="btn btn-primary" [disabled]="formDisabled" data-testing-id="edit-user-submit">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="profileForm.invalid && form.submitted"
+          data-testing-id="edit-user-submit"
+        >
           {{ 'account.update.button.label' | translate }}
         </button>
         <a routerLink="../" class="btn btn-secondary" data-testing-id="edit-user-cancel">{{

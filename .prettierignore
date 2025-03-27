@@ -24,6 +24,9 @@
 *.key
 *.lua
 *.xml
+*.bak
+*.rej
+*.orig
 .*ignore
 .husky
 .gitattributes
@@ -53,3 +56,5 @@ nginx.conf
 /charts/**/templates/*
 *~
 /src/environments/environment.development.ts
+.DS_Store
+Thumbs.db

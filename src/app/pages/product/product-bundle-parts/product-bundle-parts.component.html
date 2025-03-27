@@ -1,5 +1,5 @@
 <div *ngIf="visible$ | async" class="bundled-product-list">
-  <h3>{{ 'product.productBundle.products.heading' | translate }}</h3>
+  <h2 class="h3">{{ 'product.productBundle.products.heading' | translate }}</h2>
 
   <div class="product-list row">
     <ng-container *ngFor="let part of parts$ | async">

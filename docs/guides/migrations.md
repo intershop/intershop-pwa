@@ -7,6 +7,27 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 5.3 to 6.0
+
+The Intershop PWA 6.0 release contains functionality to improve the **accessibility** of the PWA.
+
+To get an impression of the numerous adaptions needed to make the PWA more accessible, please check the [according pull request](https://github.com/intershop/intershop-pwa/pull/1694) and read the extended accessibility documentation available in the [Accessibility Guide](./accessibility.md) and the [Accessibility Easy Check](./accessibility-easy-check.md).
+These changes will result in migration efforts and require PWA projects to adapt their customization as well.
+
+A directive `ishFormSubmit` has been introduced for form html elements.
+In case of validation errors the focus is set to the first invalid form field after submit.
+The logic to disable the submit buttons as long as the form is invalid has been simplified, the usage of the function `markAsDirtyRecursive` is no longer necessary for formly forms.
+
+The feature toggle `stickyHeader` has been added to enable or disable the sticky header.
+
+The signature of the `ScriptLoader`'s `load` function was changed slightly.
+The second parameter was changed from type `string` to `ScriptLoaderOption`.
+The new type allows to set all options supported by the loader.
+
+The Cybersource integration has been migrated to version 2 of the Microform API.
+In order to utilize this integration, it is necessary to have an ICM with a Cybersource Service Connector 2.
+Given that the support for [Microform v1 will come to an end on July 1, 2025](https://support.visaacceptance.com/knowledgebase/Knowledgearticle/?code=KA-07550), its support was terminated.
+
 ## From 5.2 to 5.3
 
 The Intershop PWA 5.3.0 introduces a standard integration with Intershop Copilot for Buyers.
@@ -39,6 +60,9 @@ By default it is set to the value `DEFAULT` which changes the SSR metrics (overa
 In order to restore the previous behavior the value can be set to `DETAILED`.
 
 The type of the `pm2_process_restarts` metric has been changed from _Gauge_ to _Counter_.
+
+A password reveal button has been added to the formly password field following the [Microsoft Edge guidelines](https://learn.microsoft.com/en-us/microsoft-edge/web-platform/password-reveal#visibility-of-the-control).
+Use the new formly field type `ish-password-novalidate-field` instead of the `ish-text-input-field` with `type="password"` if you want to define a password field without the password validator but with a reveal button (e.g. for password fields on the login form or password confirmation fields).
 
 ## From 5.1 to 5.2
 

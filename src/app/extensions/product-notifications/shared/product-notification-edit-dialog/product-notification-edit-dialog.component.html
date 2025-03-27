@@ -1,6 +1,6 @@
 <ng-template #modal let-selectModal>
   <div class="modal-header">
-    <h2 class="modal-title">
+    <h2 id="product-notification-edit-modal-title" class="modal-title">
       <ng-container *ngIf="product$ | async as product">
         {{ product.name }}
       </ng-container>
@@ -11,7 +11,7 @@
   </div>
 
   <ng-container *ngIf="productNotification$ | async as productNotification; else createNotificationButton">
-    <form [formGroup]="productNotificationForm" (ngSubmit)="submitForm()">
+    <form [formGroup]="productNotificationForm" ishFormSubmit #form="ngForm" (ngSubmit)="submitForm()" novalidate>
       <div class="modal-body">
         <ish-product-image imageType="L" />
 
@@ -22,7 +22,12 @@
         />
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" data-testing-id="product-notification-edit-dialog-edit">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="productNotificationForm.invalid && form.submitted"
+          data-testing-id="product-notification-edit-dialog-edit"
+        >
           {{ 'product.notification.edit.form.update.button.label' | translate }}
         </button>
         <button type="button" class="btn btn-secondary" (click)="hide()">
@@ -33,7 +38,7 @@
   </ng-container>
 
   <ng-template #createNotificationButton>
-    <form [formGroup]="productNotificationForm" (ngSubmit)="submitForm()">
+    <form [formGroup]="productNotificationForm" ishFormSubmit (ngSubmit)="submitForm()" novalidate>
       <div class="modal-body">
         <ish-product-image imageType="L" />
 

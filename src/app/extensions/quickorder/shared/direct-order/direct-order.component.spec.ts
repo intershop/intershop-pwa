@@ -56,6 +56,7 @@ describe('Direct Order Component', () => {
         <formly-field
         ><ish-input-test-field
           >TextInputFieldComponent: sku ish-text-input-field { "fieldClass": "col-12", "placeholder":
+          "shopping_cart.direct_order.item_placeholder", "ariaLabel":
           "shopping_cart.direct_order.item_placeholder", "attributes": { "autocomplete": "on" }, "label":
           "", "disabled": false}</ish-input-test-field
         ></formly-field

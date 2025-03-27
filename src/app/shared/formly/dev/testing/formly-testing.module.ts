@@ -180,6 +180,10 @@ class RepeatFieldComponent extends FieldArrayType {}
           component: PasswordFieldComponent,
         },
         {
+          name: 'ish-password-novalidate-field',
+          component: PasswordFieldComponent,
+        },
+        {
           name: 'ish-phone-field',
           component: PhoneFieldComponent,
         },

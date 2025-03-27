@@ -1,11 +1,15 @@
 <div class="cart-summary">
   <button
     type="button"
-    class="btn btn-link btn-link-action"
+    id="promotion-code-button"
+    class="btn btn-link btn-link-action promo-collapse-link"
     (click)="isCollapsed = !isCollapsed"
+    [attr.aria-expanded]="!isCollapsed"
+    aria-controls="promo-code-input"
     data-testing-id="promo-collapse-link"
   >
     {{ 'shopping_cart.promotional_code.heading' | translate }}
+    <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" class="float-right" />
   </button>
 
   <ish-error-message [error]="promotionError$ | async" [toast]="toast" />
@@ -16,14 +20,16 @@
     [toast]="toast"
   />
 
-  <div class="form-inline" [ngbCollapse]="isCollapsed" data-testing-id="promo-code-form">
+  <div id="promo-code-input" class="form-inline" [ngbCollapse]="isCollapsed" data-testing-id="promo-code-form">
     <input
       [formControl]="codeInput"
-      (keydown.enter)="submitPromotionCode()"
+      (keyup.enter)="submitPromotionCode()"
       class="form-control"
       type="text"
       [maxlength]="codeMaxLength"
+      [attr.aria-label]="'shopping_cart.promotional_code.label' | translate"
       [placeholder]="'shopping_cart.promotional_code.label' | translate"
+      aria-labelledby="promotion-code-button"
     />
     <button type="button" class="btn btn-secondary" [disabled]="!codeInput.valid" (click)="submitPromotionCode()">
       {{ 'shopping_cart.promotion.apply.button.label' | translate }}

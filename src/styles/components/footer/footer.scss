@@ -4,11 +4,13 @@
 
 footer {
   clear: both;
-  color: $text-color-secondary;
+  color: $text-color-tertiary;
 
   // h4 is obsolete, should use .link-group-heading instead
   h4,
   .link-group-heading {
+    margin-top: divide($space-default * 2, 3);
+    margin-bottom: $space-default;
     font-family: $font-family-regular;
     font-size: 18px;
     color: $text-color-inverse;
@@ -40,8 +42,13 @@ footer {
     }
 
     a {
-      text-decoration: none;
+      color: $text-color-inverse;
+      text-decoration: underline;
       text-transform: uppercase;
+
+      &:hover {
+        text-decoration: none;
+      }
     }
   }
 
@@ -64,8 +71,12 @@ footer {
       a,
       a:not([href]):not([tabindex]) {
         font-family: $font-family-condensedregular;
-        color: $text-color-quaternary;
+        color: $text-color-tertiary;
         text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
 
@@ -73,6 +84,14 @@ footer {
       padding: 0;
       margin: 0;
       list-style: none;
+    }
+
+    .link-group {
+      li {
+        a {
+          line-height: 25px;
+        }
+      }
     }
   }
 }
@@ -89,8 +108,6 @@ footer {
 
 @media (max-width: $screen-xs-max) {
   .link-group {
-    margin-right: -($space-default);
-    margin-left: -($space-default);
     border-bottom: $border-width-default solid $border-color-default;
 
     ul {

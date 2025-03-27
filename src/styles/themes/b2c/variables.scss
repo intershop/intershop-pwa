@@ -59,14 +59,14 @@ $color-quaternary: var(--color-quaternary);
 
 $color-dark: #000;
 $color-inverse: #fff;
-$color-special-primary: #e74c3c; //RED
+$color-special-primary: #c00; //RED
 $color-special-secondary: #f39c12; //ORANGE
-$color-special-tertiary: #00abea; //BLUE
-$color-special-quaternary: #5cb85c; // GREEN
+$color-special-tertiary: #006b99; //SEA BLUE
+$color-special-quaternary: #3c7d3c; // GREEN
 
 // colors for product label ribbons
 $color-label-sale: #ea1919; // sale
-$color-label-topseller: #f0c; // topseller
+$color-label-topseller: #cf00a5; // topseller
 $color-label-new: #06f; // new
 
 // BORDERS
@@ -83,7 +83,7 @@ $border-width-default: 1px;
 
 // primary buttons
 $button-primary-bg: $CORPORATE-PRIMARY;
-$button-primary-border: $CORPORATE-SECONDARY;
+$button-primary-border: $CORPORATE-PRIMARY;
 $button-focus-box-shadow: $CORPORATE-SHADOW;
 
 // default buttons
@@ -152,7 +152,7 @@ $white: #fff;
 $gray-100: #f8f9fa;
 $gray-200: #e9ecef;
 $gray-300: #dee2e6;
-$gray-400: #ced4da;
+$gray-400: #757575;
 $gray-500: #adb5bd;
 $gray-600: #6c757d;
 $gray-700: #495057;
@@ -163,7 +163,7 @@ $black: #000;
 // NOTE: these two variables cannot be set with CSS custom properties
 // since they are used for Bootstrap internal color calculations
 // if necessary such Bootstrap generated styles need to be overridden in project styles (e.g. see buttons.scss)
-$primary: #ff6d00; // ORANGE
+$primary: #006f6f;
 $secondary: color.adjust($primary, $lightness: -10%);
 // ------------------------------
 
@@ -215,13 +215,13 @@ $headings-color: $text-color-primary;
 // Shared variables that are reassigned to `$input-` and `$btn-` specific variables.
 
 // Forms
-$input-placeholder-color: $text-color-quaternary;
-$input-accent-color: #222;
+$input-placeholder-color: $text-color-tertiary;
+$input-accent-color: $CORPORATE-DARK;
 
 // Dropdown
 // Dropdown menu container and contents.
 
-$dropdown-border-color: rgb(0 0 0 / 0.15);
+$dropdown-border-color: $color-inverse;
 
 // Grid breakpoints
 // Define the minimum dimensions at which your layout will change,

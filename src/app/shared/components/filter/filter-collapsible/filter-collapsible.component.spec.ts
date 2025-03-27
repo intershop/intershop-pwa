@@ -29,25 +29,37 @@ describe('Filter Collapsible Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should hide content when header is clicked', fakeAsync(() => {
+  it('should hide content when toggle button is clicked', fakeAsync(() => {
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <div class="filter-group">
-        <h3 tabindex="0" aria-expanded="true" aria-controls="filter-list_Price">
-          Price <fa-icon class="float-right" ng-reflect-icon="fas,angle-down"></fa-icon>
-        </h3>
+        <button
+          type="button"
+          data-testing-id="filter-toggle-button"
+          class="btn-filter-toggle"
+          aria-expanded="true"
+          aria-controls="filter-list_Price"
+        >
+          <h3>Price <fa-icon ng-reflect-icon="fas,angle-up"></fa-icon></h3>
+        </button>
       </div>
     `);
-    const filterGroupHead = fixture.nativeElement.querySelectorAll('h3')[0];
-    filterGroupHead.click();
+    const filterGroupToggleButton = fixture.nativeElement.querySelector('[data-testing-id=filter-toggle-button]');
+    filterGroupToggleButton.click();
     tick(500);
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
       <div class="filter-group collapsed">
-        <h3 tabindex="0" aria-expanded="false" aria-controls="filter-list_Price">
-          Price <fa-icon class="float-right" ng-reflect-icon="fas,angle-right"></fa-icon>
-        </h3>
+        <button
+          type="button"
+          data-testing-id="filter-toggle-button"
+          class="btn-filter-toggle"
+          aria-expanded="false"
+          aria-controls="filter-list_Price"
+        >
+          <h3>Price <fa-icon ng-reflect-icon="fas,angle-down"></fa-icon></h3>
+        </button>
       </div>
     `);
   }));
