@@ -44,7 +44,7 @@ export class ProductsService extends SearchService {
    * @param searchTerm  The search term to get suggestions for.
    * @returns           List of suggested search terms.
    */
-  search(searchTerm: string): Observable<Suggestion> {
+  searchSuggestions(searchTerm: string): Observable<Suggestion> {
     const params = new HttpParams().set('SearchTerm', searchTerm);
     return this.apiService.get('suggest', { params }).pipe(
       unpackEnvelope<{ term: string }>(),
@@ -84,7 +84,7 @@ export class ProductsService extends SearchService {
     amount: number,
     sortKey?: string,
     offset = 0
-  ): Observable<{ products: Product[]; sortableAttributes: SortableAttributesType[]; total: number }> {
+  ): Observable<SearchResponse> {
     if (!categoryUniqueId) {
       return throwError(() => new Error('getCategoryProducts() called without categoryUniqueId'));
     }

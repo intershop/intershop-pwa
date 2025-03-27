@@ -71,4 +71,22 @@ export class SparqueMapper {
   getStaticURL(): string {
     return this.icmStaticURL;
   }
+
+  getImage(attributes: SparqueAttribute[], name: string): Image[] {
+    const imageAttribute = attributes.find(attr => attr.name === 'image');
+    return imageAttribute
+      ? [
+          {
+            name,
+            viewID: undefined,
+            typeID: undefined,
+            imageActualHeight: undefined,
+            imageActualWidth: undefined,
+            effectiveUrl: imageAttribute.value ? `${this.getStaticURL()}/${imageAttribute.value}` : undefined,
+            type: undefined,
+            primaryImage: true,
+          },
+        ]
+      : [];
+  }
 }

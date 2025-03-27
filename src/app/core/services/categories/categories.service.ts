@@ -8,13 +8,16 @@ import { CategoryData } from 'ish-core/models/category/category.interface';
 import { CategoryMapper } from 'ish-core/models/category/category.mapper';
 import { CategoryCompletenessLevel, CategoryHelper } from 'ish-core/models/category/category.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { NavigationService } from 'ish-core/services/navigation/navigation.service';
 
 /**
  * The Categories Service handles the interaction with the 'categories' REST API.
  */
 @Injectable({ providedIn: 'root' })
-export class CategoriesService {
-  constructor(private apiService: ApiService, private categoryMapper: CategoryMapper) {}
+export class CategoriesService extends NavigationService {
+  constructor(private apiService: ApiService, private categoryMapper: CategoryMapper) {
+    super();
+  }
 
   /**
    * Get the full Category data for the given unique category ID.

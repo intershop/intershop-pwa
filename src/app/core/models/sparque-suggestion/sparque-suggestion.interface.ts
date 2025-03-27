@@ -69,12 +69,12 @@ interface SparqueOffer {
   type: string;
 }
 
-interface SparqueAttribute {
+export interface SparqueAttribute {
   name: string;
   value: string;
 }
 
-interface SparqueImage {
+export interface SparqueImage {
   id: string;
   extension?: string;
   url: string;

@@ -5,7 +5,7 @@ import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { from } from 'rxjs';
-import { concatMap, map, sample, switchMap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, map, sample, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { SearchParameter } from 'ish-core/models/search/search.model';
@@ -79,6 +79,7 @@ export class SearchEffects {
     this.actions$.pipe(
       ofType(searchProducts),
       mapToPayload(),
+      tap(payload => console.log('searchProducts payload', payload)),
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
       concatLatestFrom(() => this.store.pipe(select(getProductListingItemsPerPage('search')))),
       map(
@@ -138,7 +139,7 @@ export class SearchEffects {
         concatMap(searchTerm =>
           this.searchServiceProvider
             .get()
-            .search(searchTerm)
+            .searchSuggestions(searchTerm)
             .pipe(
               map(suggests => suggestSearchSuccess({ suggests })),
               mapErrorToAction(suggestSearchFail)

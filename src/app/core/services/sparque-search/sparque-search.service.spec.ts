@@ -44,7 +44,7 @@ describe('Sparque Search Service', () => {
     const suggestions = { keywordSuggestions: [{ keyword: 'test' }] } as SparqueSuggestions;
     when(sparqueApiService.get(anything(), anything())).thenReturn(of<SparqueSuggestions>(suggestions));
 
-    searchService.search('test').subscribe(() => {
+    searchService.searchSuggestions('test').subscribe(() => {
       verify(sparqueSuggestionMapper.fromData(suggestions)).once();
       done();
     });

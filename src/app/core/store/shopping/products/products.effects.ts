@@ -15,6 +15,7 @@ import {
   mergeMap,
   switchMap,
   take,
+  tap,
   throttleTime,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -120,26 +121,32 @@ export class ProductsEffects {
       concatLatestFrom(() => this.store.pipe(select(getProductListingItemsPerPage('category')))),
       map(([payload, pageSize]) => ({ ...payload, amount: pageSize, offset: (payload.page - 1) * pageSize })),
       mergeMap(({ categoryId, amount, sorting, offset, page }) =>
-        this.productsService.getCategoryProducts(categoryId, amount, sorting, offset).pipe(
-          concatMap(({ total, products, sortableAttributes }) => [
-            ...products.map(product => loadProductSuccess({ product })),
-            setProductListingPages(
-              this.productListingMapper.createPages(
-                products.map(p => p.sku),
-                'category',
-                categoryId,
-                amount,
-                {
-                  startPage: page,
-                  sortableAttributes,
-                  sorting,
-                  itemCount: total,
-                }
-              )
-            ),
-          ]),
-          mapErrorToAction(loadProductsForCategoryFail, { categoryId })
-        )
+        this.searchServiceProvider
+          .get()
+          .getCategoryProducts(categoryId, amount, sorting, offset)
+          .pipe(
+            concatMap(searchResponse => [
+              ...searchResponse.products.map(product => loadProductSuccess({ product })),
+              setProductListingPages(
+                this.productListingMapper.createPages(
+                  searchResponse.products.map(p => p.sku),
+                  'category',
+                  categoryId,
+                  amount,
+                  {
+                    startPage: page,
+                    sortableAttributes: searchResponse.sortableAttributes,
+                    sorting,
+                    itemCount: searchResponse.total,
+                  }
+                )
+              ),
+              searchResponse.filter
+                ? loadFilterSuccess({ filterNavigation: { filter: searchResponse.filter } })
+                : { type: 'NO_ACTION' },
+            ]),
+            mapErrorToAction(loadProductsForCategoryFail, { categoryId })
+          )
       )
     )
   );
@@ -183,6 +190,7 @@ export class ProductsEffects {
     this.actions$.pipe(
       ofType(loadProductsForFilter),
       mapToPayload(),
+      tap(d => console.log('assada: ', d)),
       switchMap(({ id, searchParameter, page, sorting }) =>
         this.store.pipe(
           select(getProductListingItemsPerPage(id.type)),

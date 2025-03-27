@@ -1,6 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, throwError } from 'rxjs';
 
 import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
 import { SparqueSearchResponse } from 'ish-core/models/sparque-search/sparque-search.interface';
@@ -28,7 +28,7 @@ export class SparqueSearchService extends SearchService {
    * @param searchTerm - The term to search for suggestions.
    * @returns An Observable emitting the search suggestions.
    */
-  search(searchTerm: string): Observable<Suggestion> {
+  searchSuggestions(searchTerm: string): Observable<Suggestion> {
     // count: maximum number of suggestions which is used individually for each type of suggestion
     const params = new HttpParams().set('Keyword', searchTerm).set('count', '8');
     return this.sparqueApiService
@@ -59,6 +59,9 @@ export class SparqueSearchService extends SearchService {
     sortKey?: string,
     offset = 0
   ): Observable<SearchResponse> {
+    if (!searchParameter.searchTerm) {
+      return this.getCategoryProducts(searchParameter.category?.[0], amount, sortKey, offset);
+    }
     let params = new HttpParams()
       .set('count', amount ? amount.toString() : '')
       .set('offset', offset.toString())
@@ -66,11 +69,37 @@ export class SparqueSearchService extends SearchService {
     if (sortKey) {
       params = params.set('sorting', sortKey);
     }
+
+    console.log('loadProductsForFilter', searchParameter);
     params = appendFormParamsToHttpParams(searchParameter, params);
 
     return this.sparqueApiService
       .get<SparqueSearchResponse>(`search`, { params, skipApiErrorHandling: true })
       .pipe(map(result => this.sparqueSearchMapper.fromData(result, searchParameter)));
+  }
+
+  getCategoryProducts(
+    categoryUniqueId: string,
+    amount: number,
+    sortKey?: string,
+    offset = 0
+  ): Observable<SearchResponse> {
+    if (!categoryUniqueId) {
+      return throwError(() => new Error('getCategoryProducts() called without categoryUniqueId'));
+    }
+
+    let params = new HttpParams()
+      .set('amount', amount.toString())
+      .set('offset', offset.toString())
+      .set('categoryIds', categoryUniqueId.split('.')[1]);
+
+    if (sortKey) {
+      params = params.set('sorting', sortKey);
+    }
+
+    return this.sparqueApiService
+      .get<SparqueSearchResponse>(`products`, { params })
+      .pipe(map(result => this.sparqueSearchMapper.fromData(result, { ['category']: [categoryUniqueId] })));
   }
 }
 

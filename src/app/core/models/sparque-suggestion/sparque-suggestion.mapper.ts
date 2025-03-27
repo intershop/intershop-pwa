@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { Category } from 'ish-core/models/category/category.model';
 import { Image } from 'ish-core/models/image/image.model';
 import { SparqueMapper } from 'ish-core/models/sparque/sparque.mapper';
@@ -16,11 +15,7 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class SparqueSuggestionMapper {
-  private categoryUniqueIds: string[];
-
-  constructor(private shoppingFacade: ShoppingFacade, private sparqueMapper: SparqueMapper) {
-    this.shoppingFacade.categoryNodes$.subscribe(nodes => (this.categoryUniqueIds = Object.keys(nodes)));
-  }
+  constructor(private sparqueMapper: SparqueMapper) {}
 
   fromData(suggestion: SparqueSuggestions): Suggestion {
     return suggestion
@@ -38,7 +33,9 @@ export class SparqueSuggestionMapper {
     return categories
       ? categories.map(category => ({
           name: category.categoryName ? category.categoryName : undefined,
-          uniqueId: category.categoryID ? this.getUniqueCategoryId(category.categoryID) : undefined,
+          uniqueId: category.parentCategoryId
+            ? category.parentCategoryId.concat('.').concat(category.categoryID)
+            : category.categoryID,
           categoryRef: category.categoryURL ? category.categoryURL : undefined,
           categoryPath: category.parentCategoryId
             ? [category.parentCategoryId, category.categoryID ? category.categoryID : undefined]
@@ -46,18 +43,13 @@ export class SparqueSuggestionMapper {
             ? [category.categoryID]
             : [],
           hasOnlineProducts: category.totalCount && category.totalCount > 0,
-          description: undefined,
+          description: category.attributes?.find(attr => attr.name === 'description')?.value,
           images: category.attributes ? this.extractImageUrl(category.attributes) : undefined,
           attributes: this.sparqueMapper.mapAttributes(category.attributes),
           completenessLevel: 0,
           productCount: category.totalCount ? category.totalCount : undefined,
         }))
       : [];
-  }
-
-  private getUniqueCategoryId(categoryId: string): string {
-    const hits = this.categoryUniqueIds.filter(id => id.endsWith(categoryId));
-    return hits.length > 0 ? hits[0] : categoryId;
   }
 
   private mapBrands(brands: SparqueBrand[]): Brand[] {
