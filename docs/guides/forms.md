@@ -7,19 +7,17 @@ kb_sync_latest_only
 
 # Forms
 
-- [Forms](#forms)
-  - [File and Naming Conventions](#file-and-naming-conventions)
-    - [Reusable Form Components](#reusable-form-components)
-    - [Page Specific Form Components](#page-specific-form-components)
-    - [Data Models](#data-models)
-    - [Services](#services)
-    - [Extensions](#extensions)
-  - [Form Behavior](#form-behavior)
-  - [General Rules](#general-rules)
-    - [Usage of Formly, Template Driven and Reactive Forms](#usage-of-formly-template-driven-and-reactive-forms)
-    - [Validators](#validators)
-    - [Keep Templates Simple](#keep-templates-simple)
-- [Further References](#further-references)
+- [File and Naming Conventions](#file-and-naming-conventions)
+  - [Reusable Form Components](#reusable-form-components)
+  - [Page Specific Form Components](#page-specific-form-components)
+  - [Data Models](#data-models)
+  - [Services](#services)
+  - [Extensions](#extensions)
+- [Form Behavior](#form-behavior)
+- [General Rules](#general-rules)
+  - [Usage of Formly, Template Driven and Reactive Forms](#usage-of-formly-template-driven-and-reactive-forms)
+  - [Validators](#validators)
+  - [Keep Templates Simple](#keep-templates-simple)
 
 The Intershop PWA has switched to using [formly](https://formly.dev) to define and build forms.
 Refer to our [Formly Documentation](./formly.md) for information.

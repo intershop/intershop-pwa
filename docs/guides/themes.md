@@ -7,6 +7,14 @@ kb_sync_latest_only
 
 # Themes
 
+- [Multiple Themes](#multiple-themes)
+- [Developing the PWA with Several Themes](#developing-the-pwa-with-several-themes)
+- [Configurable Theme](#configurable-theme)
+  - [ICM Requirements](#icm-requirements)
+  - [Configuration Parameters](#configuration-parameters)
+  - [Configuration JSON](#configuration-json)
+  - [Developing with the Configurable Theme](#developing-with-the-configurable-theme)
+
 ## Multiple Themes
 
 It is possible to create multiple themes for the PWA, and the Intershop Progressive Web App currently uses multi-theming to provide different features, configurations, and styles for the B2B and the B2C application.

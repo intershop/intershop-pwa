@@ -7,6 +7,15 @@ kb_sync_latest_only
 
 # End-to-End Testing with Cypress
 
+- [When to Write Cypress Tests?](#when-to-write-cypress-tests)
+- [Rules for Developing Cypress Tests](#rules-for-developing-cypress-tests)
+  - [Always Stick to Small Scope](#always-stick-to-small-scope)
+  - [Pay Respect to Individuality](#pay-respect-to-individuality)
+  - [Do not Reinvent the Wheel](#do-not-reinvent-the-wheel)
+  - [Stick to the PageObject Pattern](#stick-to-the-pageobject-pattern)
+- [Debugging Flaky Cypress Tests](#debugging-flaky-cypress-tests)
+- [Further References](#further-references)
+
 ## When to Write Cypress Tests?
 
 With Angular most of the functionality of simple components or artifacts of the state management can be tested with [Unit Tests][guide-unit-tests].
@@ -66,7 +75,7 @@ Add the following to the [CoreModule providers](../../src/app/core/core.module.t
 That way each network response will be delayed randomly from 500 to 2000 ms.
 To be able to run tests locally now, the `defaultCommandTimeout` in [cypress.config.ts](../../e2e/cypress.config.ts) probably has to be increased.
 
-# Further References
+## Further References
 
 - [Concept - Testing the PWA][concept-testing]
 - [Guide - Unit Testing with Jest][guide-unit-tests]

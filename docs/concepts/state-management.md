@@ -7,6 +7,29 @@ kb_sync_latest_only
 
 # State Management
 
+- [Architecture](#architecture)
+  - [State](#state)
+  - [Selectors](#selectors)
+  - [Actions](#actions)
+  - [Reducers](#reducers)
+  - [Effects](#effects)
+  - [Facades](#facades)
+  - [Context Facades](#context-facades)
+- [File Structure](#file-structure)
+- [Core Store Structure](#core-store-structure)
+- [Naming](#naming)
+  - [Actions - Types](#actions---types)
+  - [Actions - Creators](#actions---creators)
+  - [Reducer](#reducer)
+  - [State](#state-1)
+  - [Selectors](#selectors-1)
+  - [Facades - Streams](#facades---streams)
+  - [Facades - Action Dispatchers](#facades---action-dispatchers)
+- [Entity State Adapter for Managing Record Collections: @ngrx/entity](#entity-state-adapter-for-managing-record-collections-ngrxentity)
+- [Normalized State](#normalized-state)
+- [State Transfer](#state-transfer)
+- [Further References](#further-references)
+
 This concept describes how [NgRx](https://ngrx.io/) is integrated into the Intershop Progressive Web App for the application wide state management.
 
 ## Architecture
@@ -229,7 +252,7 @@ If certain slices of the state should not be passed to the client, you can put a
 For reasons of performance, this filtering is limited to a depth of two levels.
 This means feature stores can exclude reducers (in their respective `X-store.module.ts`) and core store slices can exclude properties (in their respective `X.reducer.ts`).
 
-# Further References
+## Further References
 
 - [@rx-angular/state][rx-angular-state]
 - [Facades – The Best Layer of your Angular Application @ ngLeipzig #36][facades-meetup]

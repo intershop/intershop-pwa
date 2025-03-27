@@ -7,6 +7,12 @@ kb_sync_latest_only
 
 # Angular Change Detection
 
+- [Zones](#zones)
+- [Zone Stability](#zone-stability)
+- [Using Zone Stability](#using-zone-stability)
+  - [Service Workers and Universal](#service-workers-and-universal)
+  - [Pitfall: The Zone Must Become Stable](#pitfall-the-zone-must-become-stable)
+
 Change detection is one of the core concepts of Angular.
 Component templates contain data bindings that embed data from the component class into the view.
 The change detection cycle keeps view and data in sync.

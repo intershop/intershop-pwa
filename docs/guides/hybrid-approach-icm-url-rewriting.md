@@ -7,6 +7,10 @@ kb_sync_latest_only
 
 # Handle Rewritten ICM URLs in the Hybrid Approach
 
+- [Mapping Incoming Rewritten ICM URLs to the PWA](#mapping-incoming-rewritten-icm-urls-to-the-pwa)
+- [Mapping PWA URLs to Rewritten ICM URLs](#mapping-pwa-urls-to-rewritten-icm-urls)
+- [Further References](#further-references)
+
 If the ICM is set up with [URL Rewriting](https://support.intershop.com/kb/index.php/Display/28R955), further modifications are required to run the deployment with the [Hybrid Approach](../concepts/hybrid-approach.md).
 
 The examples in this guide follow the default example for ICM URL rewriting.
@@ -76,6 +80,6 @@ _server.ts_:
 +  app.use('/helpdesk', icmProxy);
 ```
 
-# Further References
+## Further References
 
 - [Concept - Hybrid Approach](../concepts/hybrid-approach.md)

@@ -7,6 +7,14 @@ kb_sync_latest_only
 
 # Authentication Concept
 
+- [Introduction](#introduction)
+- [Library angular-oauth2-oidc](#library-angular-oauth2-oidc)
+- [Implementation and Configuration of Identity Providers](#implementation-and-configuration-of-identity-providers)
+- [PWA Initialization](#pwa-initialization)
+- [Login, Registration, Token Refreshment, Logout](#login-registration-token-refreshment-logout)
+- [Vanishing of the apiToken Cookie](#vanishing-of-the-apitoken-cookie)
+- [Further References](#further-references)
+
 ## Introduction
 
 Several ICM REST operations require an authenticated user.

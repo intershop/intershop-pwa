@@ -7,6 +7,11 @@ kb_sync_latest_only
 
 # Propagating Environment Variables
 
+- [Angular CLI Environment Files](#angular-cli-environment-files)
+- [URL Parameters](#url-parameters)
+- [Runtime Environment Properties](#runtime-environment-properties)
+- [Further References](#further-references)
+
 This guide describes how to propagate additional configuration from the outside into the PWA client application to be used on the storefront.
 
 Configuration parameters can be provided from different sources.

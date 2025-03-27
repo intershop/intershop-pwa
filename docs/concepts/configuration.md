@@ -7,6 +7,27 @@ kb_sync_latest_only
 
 # Configuration
 
+- [Ways of Configuring Angular Applications](#ways-of-configuring-angular-applications)
+  - [Angular CLI Environments](#angular-cli-environments)
+  - [Node.js Environment Variables](#nodejs-environment-variables)
+  - [NgRx Configuration State](#ngrx-configuration-state)
+  - [URL Parameters](#url-parameters)
+- [Different Levels of Configuration Settings](#different-levels-of-configuration-settings)
+  - [Build Settings](#build-settings)
+  - [Deployment Settings](#deployment-settings)
+  - [Runtime Settings](#runtime-settings)
+  - [Configurations REST Resource](#configurations-rest-resource)
+- [ICM Endpoint Configuration](#icm-endpoint-configuration)
+  - [Setting the Base URL](#setting-the-base-url)
+  - [Settings for Channels and Applications](#settings-for-channels-and-applications)
+- [Feature Toggles](#feature-toggles)
+  - [Available Feature Toggles](#available-feature-toggles)
+  - [Configuring Features](#configuring-features)
+  - [Programmatically Switching Features](#programmatically-switching-features)
+  - [Unit Testing with Feature Toggles](#unit-testing-with-feature-toggles)
+- [Setting Default Locale](#setting-default-locale)
+- [Extend Locales](#extend-locales)
+
 In a complex application like the Intershop Progressive Web App, there are multiple ways and kinds of configuration.
 The complexity increases if you consider that the communication with Intershop Commerce Management has to be coordinated as well.
 In addition, the PWA, when run with Angular Universal, consists of a server-side and a client-side application.

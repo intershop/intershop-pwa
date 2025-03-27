@@ -7,6 +7,11 @@ kb_sync_latest_only
 
 # Search Engine Optimization (SEO)
 
+- [Server Side Rendering](#server-side-rendering)
+- [robots.txt](#robotstxt)
+- [Page Metadata](#page-metadata)
+- [Optimized URLs](#optimized-urls)
+
 This concept documents our approach for search engine optimization for the Intershop Progressive Web App.
 
 ## Server Side Rendering

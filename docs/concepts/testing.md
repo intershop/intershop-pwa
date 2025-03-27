@@ -7,6 +7,16 @@ kb_sync_latest_only
 
 # Testing the PWA
 
+- [Different Levels of Testing](#different-levels-of-testing)
+  - [Unit](#unit)
+  - [Module](#module)
+  - [Integration](#integration)
+  - [End-to-End](#end-to-end)
+- [Test File Locations](#test-file-locations)
+- [Deviation from Standard Angular Test Frameworks](#deviation-from-standard-angular-test-frameworks)
+- [PageObject Pattern](#pageobject-pattern)
+- [Handling Test Data](#handling-test-data)
+
 ## Different Levels of Testing
 
 Testing the PWA follows the basic principle of the test pyramid ([https://martinfowler.com/bliki/TestPyramid.html](https://martinfowler.com/bliki/TestPyramid.html)).

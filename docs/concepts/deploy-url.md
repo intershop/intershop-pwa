@@ -7,6 +7,16 @@ kb_sync_latest_only
 
 # Deploy URL
 
+- [Built-in Angular CLI Support](#built-in-angular-cli-support)
+- [Setting Deploy URL Dynamically](#setting-deploy-url-dynamically)
+  - [Problem](#problem)
+  - [Solution](#solution)
+  - [Building with Dynamic Deploy URL](#building-with-dynamic-deploy-url)
+- [Scenarios](#scenarios)
+  - [CDN Support](#cdn-support)
+  - [Embed PWA with Proxy on Website](#embed-pwa-with-proxy-on-website)
+- [Further References](#further-references)
+
 This document describes how to provide the Intershop PWA with a dynamic deploy URL to set up client-side retrieval of static assets and JavaScript chunks from a (possibly) different source than the URL from which the pre-rendering is delivered.
 
 ## Built-in Angular CLI Support
@@ -80,7 +90,7 @@ To set this up manually, a lot of rewriting for static PWA assets would have to 
 By setting a deployment URL, only the incoming routing for server-side rendering would be targeted at the portal's reverse proxy.
 After parsing the response, the client-side application pulls all necessary static assets and JavaScript chunks directly from the deployment URL.
 
-# Further References
+## Further References
 
 - [Concept - Hybrid Approach][concept-hybrid-approach]
 - [Guide - Building and Running Server-Side Rendering][guide-ssr-container]

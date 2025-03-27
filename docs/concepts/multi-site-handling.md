@@ -7,6 +7,11 @@ kb_sync_latest_only
 
 # Multi-Site Handling
 
+- [Motivation](#motivation)
+- [Configuration](#configuration)
+- [Multi-Site Production Deployment](#multi-site-production-deployment)
+- [Further References](#further-references)
+
 ## Motivation
 
 Imagine running an Europe-wide shop with Intershop, where the website is available in 16 different countries with different languages and a varying selection of products, but only little modification of the website appearance over all.
@@ -60,7 +65,7 @@ These steps should give an overview of the internal workings:
 
 7. Once booted up, additional REST calls are directed to the matching ICM endpoint for the configured channel.
 
-# Further References
+## Further References
 
 - [Guide - Building and Running nginx Docker Image](../guides/nginx-startup.md)
 - [Guide - Multi-Site Configurations](../guides/multi-site-configurations.md)

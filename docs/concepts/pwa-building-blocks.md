@@ -7,6 +7,16 @@ kb_sync_latest_only
 
 # Building Blocks of the Intershop PWA Public Deployment
 
+- [Intershop Commerce Management (ICM)](#intershop-commerce-management-icm)
+- [PWA - Server-Side Rendering (SSR)](#pwa---server-side-rendering-ssr)
+- [PWA - Nginx](#pwa---nginx)
+- [Browser](#browser)
+- [Default Production Deployment](#default-production-deployment)
+- [Deployment Without Nginx](#deployment-without-nginx)
+- [Hiding the ICM Backend](#hiding-the-icm-backend)
+- [Stateless vs. Stateful Building Blocks](#stateless-vs-stateful-building-blocks)
+- [Further References](#further-references)
+
 ## Intershop Commerce Management (ICM)
 
 The Intershop Commerce Management (ICM) provides the necessary data for running the [default Intershop PWA deployment](https://intershoppwa.azurewebsites.net/home) via a REST API.
@@ -46,7 +56,7 @@ The browser runs the bootstrapped/pre-rendered Angular application.
 After initially communicating with the _nginx_ webserver, later REST requests are directed to the configured ICM endpoint or custom backend.
 For more information on the browser's role in rendering the Intershop PWA, see [Deployment Scenarios for Angular Applications](deployment-angular.md).
 
-# Default Production Deployment
+## Default Production Deployment
 
 Chaining the building blocks together results in the depicted system.
 Read on for a step-by-step walkthrough of the initial connection request.
@@ -99,7 +109,7 @@ The **nginx container** is not technically stateless, since it handles caching o
 However, nginx is not functionally dependent on its internal state like the ICM is.
 If an nginx container were to lose its internal state, all cached responses would instead be passed on to the _express.js_ server and be answered at the cost of a delay.
 
-# Further References
+## Further References
 
 - [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md)
 - [Guide - Building and Running nginx Docker Image](../guides/nginx-startup.md)

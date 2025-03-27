@@ -7,6 +7,13 @@ kb_sync_latest_only
 
 # URL Rewriting
 
+- [Rewriting Concept](#rewriting-concept)
+- [Rewriting Artifacts](#rewriting-artifacts)
+  - [matchXRoute](#matchxroute)
+  - [XRoutePipe](#xroutepipe)
+  - [ofXRoute (optional)](#ofxroute-optional)
+- [Further References](#further-references)
+
 The PWA allows to supply localized and SEO optimized URLs for categories and product detail pages.
 
 ## Rewriting Concept
@@ -32,7 +39,7 @@ It is helpful to implement an exported `generateXRoute` helper function, that tr
 
 To detect routes in NgRx Effects, we recommend to also supply an operator, that filters for URLs of customized routes using the `RouteNavigation` as an input.
 
-# Further References
+## Further References
 
 - [URLMatcher Angular Documentation][urlmatcher]
 

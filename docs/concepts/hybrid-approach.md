@@ -7,6 +7,22 @@ kb_sync_latest_only
 
 # Hybrid Approach
 
+- [Requirements](#requirements)
+- [Architectural Concept](#architectural-concept)
+- [Configuration](#configuration)
+  - [Intershop Commerce Management (ICM)](#intershop-commerce-management-icm)
+  - [Intershop Progressive Web App (PWA)](#intershop-progressive-web-app-pwa)
+  - [Mapping Table](#mapping-table)
+- [PWA Adaptions](#pwa-adaptions)
+  - [Preparing the PWA for the Hybrid Approach with the Responsive Starter Store](#preparing-the-pwa-for-the-hybrid-approach-with-the-responsive-starter-store)
+- [Development Environment](#development-environment)
+  - [Configuration of a Common Domain](#configuration-of-a-common-domain)
+  - [ICM](#icm)
+  - [PWA](#pwa)
+  - [NGINX](#nginx)
+  - [Docker Compose for PWA/NGINX](#docker-compose-for-pwanginx)
+- [Further References](#further-references)
+
 This document describes how to run PWA and ICM using the Hybrid Approach, so that pages from the Intershop Progressive Web App and pages from the classic storefront (Responsive Starter Store) can be run in parallel.
 
 A possible scenario would be to have the shopping experience with all its SEO optimizations handled by the PWA and to delegate highly customized parts of the checkout or My Account area to the ICM.

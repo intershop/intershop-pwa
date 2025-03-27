@@ -7,6 +7,12 @@ kb_sync_latest_only
 
 # Project Structure
 
+- [File Name Conventions](#file-name-conventions)
+- [General Folder Structure](#general-folder-structure)
+- [Extension Folder Structure](#extension-folder-structure)
+- [Modules](#modules)
+  - [Extending Modules](#extending-modules)
+
 ## File Name Conventions
 
 In accordance with the [Angular Style Guide](https://angular.io/guide/styleguide) and the [Angular CLI](https://angular.io/guide/file-structure) convention of naming generated elements in the file system, all file and folder names should use a hyphenated, lowercase structure (kebab-case). camelCase should not be used, especially since it can lead to problems when working with different operating systems, where some systems are case indifferent regarding file and folder naming (Windows).

@@ -7,6 +7,28 @@ kb_sync_latest_only
 
 # Customizations
 
+- [Set up an Intershop PWA-based Project](#set-up-an-intershop-pwa-based-project)
+- [Start Customization](#start-customization)
+- [Specific Concerns](#specific-concerns)
+  - [Components](#components)
+    - [Theme-Specific Overrides](#theme-specific-overrides)
+      - [Schematic Support](#schematic-support)
+  - [Existing Features](#existing-features)
+  - [New Features](#new-features)
+  - [Data](#data)
+  - [NgRx](#ngrx)
+  - [Testing](#testing)
+  - [Styling](#styling)
+  - [Static Assets](#static-assets)
+  - [Dependencies](#dependencies)
+  - [Cypress Tests](#cypress-tests)
+- [Import Changes from New PWA Release (Migration)](#import-changes-from-new-pwa-release-migration)
+  - [1. Range Cherry Pick of New Release Commits](#1-range-cherry-pick-of-new-release-commits)
+  - [2. Rebase Commits of New Release](#2-rebase-commits-of-new-release)
+  - [3. Merge the New Release in its Entirety](#3-merge-the-new-release-in-its-entirety)
+- [Hints](#hints)
+- [Further References](#further-references)
+
 When customizing the PWA, always keep in mind that you may want to upgrade from time to time and will have to merge incoming changes into your codebase.
 We, therefore, suggest not to edit existing files to a large extent and to keep them as intact as possible.
 In this document we provide a couple of rules to follow.
@@ -328,6 +350,6 @@ Just add the Intershop PWA GitHub repository as a second remote in your project 
 - `npm run check` should run through successfully on local development environments after a feature or bug fix or migration has finished.
   This check can be left to a CI pipeline as well but the task should be configured in a way that fits the requirements of the project.
 
-# Further References
+## Further References
 
 - [How to do projects with Intershop PWA 1.0 and Themes](https://www.youtube.com/watch?v=qz-ONgd9qdY)

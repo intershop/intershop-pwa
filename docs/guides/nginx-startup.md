@@ -7,6 +7,27 @@ kb_sync_latest_only
 
 # Building and Running NGINX Docker Image
 
+- [Building](#building)
+- [Configuration](#configuration)
+  - [HTTPS or SSL](#https-or-ssl)
+  - [Basic Auth](#basic-auth)
+  - [Multi-Site](#multi-site)
+  - [Ignore Parameters During Caching](#ignore-parameters-during-caching)
+  - [Access ICM Sitemap](#access-icm-sitemap)
+  - [Override Identity Providers by Path](#override-identity-providers-by-path)
+  - [Add Additional Headers](#add-additional-headers)
+    - [Content Security Policy](#content-security-policy)
+  - [Other](#other)
+- [Features](#features)
+  - [Cache](#cache)
+  - [Shared Redis Cache](#shared-redis-cache)
+    - [Cache Timing](#cache-timing)
+    - [Clearing the Redis Cache](#clearing-the-redis-cache)
+    - [Redis for Development](#redis-for-development)
+  - [Brotli Configuration](#brotli-configuration)
+- [Environment Variables](#environment-variables)
+- [Further References](#further-references)
+
 We provide an [NGINX](https://nginx.org/) Docker image based on [OpenResty](https://openresty.org/en/) for the [PWA deployment](../concepts/pwa-building-blocks.md#pwa---nginx).
 
 ## Building
@@ -36,13 +57,9 @@ You have to confirm the security exception.
 As developer convenience, you can volume mount an internal folder to your host system to effectively trust the generated certificate.
 Please check the NGINX logs for the following output.
 
-<!-- cSpell: disable -->
-
 ```
 You can now export the local CA by adjusting your docker-compose.yml /home/your-user/ca-dir:/root/.local/share/mkcert/rootCA.pem
 ```
-
-<!-- cSpell: enable -->
 
 ### Basic Auth
 

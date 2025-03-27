@@ -7,6 +7,12 @@ kb_sync_latest_only
 
 # Intershop Copilot for Buyers
 
+- [Configuration](#configuration)
+- [Additional `chatflowConfig` Variables](#additional-chatflowconfig-variables)
+- [Customize Chatbot](#customize-chatbot)
+- [Override Chatbot Styling](#override-chatbot-styling)
+- [`handleToolCall` Actions](#handletoolcall-actions)
+
 The Intershop PWA provides an integration with Intershop Copilot for Buyers.
 
 Official Intershop Documentation: [Intershop Copilot - AI Purchase and Service Assistant](https://knowledge.intershop.com/kb/index.php/Display/31N345)

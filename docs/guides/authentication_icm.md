@@ -7,6 +7,11 @@ kb_sync_latest_only
 
 # Authentication by the ICM Server
 
+- [Login](#login)
+- [Registration](#registration)
+- [Token Lifetime](#token-lifetime)
+- [Logout](#logout)
+
 This document describes the main authentication mechanism if the ICM server is used as identity provider.
 If you need an introduction to this topic, read the [Authentication Concept](../concepts/authentication.md) first.
 
