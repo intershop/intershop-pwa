@@ -1,17 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
 import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
+import { URLFormParams } from 'ish-core/utils/url-form-params';
 
-/**
- * Abstract service for providing search term suggestions.
- *
- * This service defines a contract for implementing search term suggestion functionality.
- * Implementations of this service should provide a method to return a list of suggested
- * search terms based on a given search term.
- */
 @Injectable({ providedIn: 'root' })
-export abstract class SuggestionService {
+export abstract class SearchService {
   /**
    * Searches for suggestions based on the provided search term.
    *
@@ -19,4 +14,11 @@ export abstract class SuggestionService {
    * @returns An observable that emits the search results.
    */
   abstract search(searchTerm: string): Observable<Suggestion>;
+  abstract searchProducts(searchParams: SearchParameter): Observable<SearchResponse>;
+  abstract getFilteredProducts(
+    searchParameter: URLFormParams,
+    amount: number,
+    sortKey?: string,
+    offset?: number
+  ): Observable<SearchResponse>;
 }

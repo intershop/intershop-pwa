@@ -23,11 +23,12 @@ import { ProductListingMapper } from 'ish-core/models/product-listing/product-li
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsService } from 'ish-core/services/products/products.service';
+import { SearchServiceProvider } from 'ish-core/services/search/provider/search.service.provider';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadCategory } from 'ish-core/store/shopping/categories';
-import { loadProductsForFilter } from 'ish-core/store/shopping/filter';
+import { loadFilterSuccess, loadProductsForFilter } from 'ish-core/store/shopping/filter';
 import { getProductListingItemsPerPage, setProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
@@ -72,6 +73,7 @@ export class ProductsEffects {
     private actions$: Actions,
     private store: Store,
     private productsService: ProductsService,
+    private searchServiceProvider: SearchServiceProvider,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
     private router: Router
@@ -187,26 +189,30 @@ export class ProductsEffects {
           whenTruthy(),
           first(),
           switchMap(pageSize =>
-            this.productsService
+            this.searchServiceProvider
+              .get()
               .getFilteredProducts(searchParameter, pageSize, sorting, ((page || 1) - 1) * pageSize)
               .pipe(
-                mergeMap(({ products, total, sortableAttributes }) => [
-                  ...products.map((product: Product) => loadProductSuccess({ product })),
+                mergeMap(searchResponse => [
+                  ...searchResponse.products.map((product: Product) => loadProductSuccess({ product })),
                   setProductListingPages(
                     this.productListingMapper.createPages(
-                      products.map(p => p.sku),
+                      searchResponse.products.map(p => p.sku),
                       id.type,
                       id.value,
                       pageSize,
                       {
                         filters: id.filters,
-                        itemCount: total,
+                        itemCount: searchResponse.total,
                         startPage: page,
-                        sortableAttributes,
+                        sortableAttributes: searchResponse.sortableAttributes,
                         sorting,
                       }
                     )
                   ),
+                  searchResponse.filter
+                    ? loadFilterSuccess({ filterNavigation: { filter: searchResponse.filter } })
+                    : { type: 'NO_ACTION' },
                 ]),
                 mapErrorToAction(loadProductFail)
               )
