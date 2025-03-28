@@ -66,7 +66,7 @@ export class ApiTokenService {
   /**
    * stores current apiToken information, will be used to add authentication header for each request
    */
-  private apiToken$: BehaviorSubject<string>;
+  apiToken$: BehaviorSubject<string>;
 
   /**
    * informs subscriber that cookie is unexpectedly removed (e.g. logout from another tab)

@@ -2,22 +2,22 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
+import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 
-import { SuggestService } from './suggest.service';
+import { ICMSuggestionService } from './icm-suggestion.service';
 
-describe('Suggest Service', () => {
+describe('Icm Suggestion Service', () => {
   let apiService: ApiService;
-  let suggestService: SuggestService;
+  let suggestService: ICMSuggestionService;
 
   beforeEach(() => {
     apiService = mock(ApiService);
-    when(apiService.get(anything(), anything())).thenReturn(of<SuggestTerm[]>([]));
+    when(apiService.get(anything(), anything())).thenReturn(of<Suggestion>({}));
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiService) }],
     });
-    suggestService = TestBed.inject(SuggestService);
+    suggestService = TestBed.inject(ICMSuggestionService);
   });
 
   it('should always delegate to api service when called', () => {
@@ -32,12 +32,11 @@ describe('Suggest Service', () => {
 
     suggestService.search('g').subscribe(res => {
       expect(res).toMatchInlineSnapshot(`
-        [
-          {
-            "term": "Goods",
-            "type": undefined,
-          },
-        ]
+        {
+          "keywordSuggestions": [
+            "Goods",
+          ],
+        }
       `);
       verify(apiService.get(anything(), anything())).once();
       done();

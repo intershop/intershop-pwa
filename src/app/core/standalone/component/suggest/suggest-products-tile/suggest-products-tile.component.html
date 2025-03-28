@@ -1,0 +1,24 @@
+<div class="search-suggest-products">
+  <div class="headline">{{ 'suggest.products.headline' | translate }}</div>
+  <ul>
+    <li *ngFor="let result of products | slice : 0 : maxAutoSuggests">
+      <a class="product-image" [routerLink]="'/prd' + result.sku" (click)="handleInputFocus()" tabindex="-1">
+        <img [src]="getImageEffectiveUrl(result)" alt="{{ result.name }}" />
+      </a>
+      <!-- truncate product name on desktop only -->
+      <a
+        *ngIf="deviceType === 'desktop'; else mobileTablet"
+        [routerLink]="'/prd' + result.sku"
+        [innerHTML]="truncate(result.name, 38) | ishHighlight : (inputTerms$ | async)"
+        (click)="handleInputFocus()"
+      ></a>
+      <ng-template #mobileTablet>
+        <a
+          [routerLink]="'/prd' + result.sku"
+          [innerHTML]="result.name | ishHighlight : (inputTerms$ | async)"
+          (click)="handleInputFocus()"
+        ></a>
+      </ng-template>
+    </li>
+  </ul>
+</div>
