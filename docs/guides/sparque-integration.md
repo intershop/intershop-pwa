@@ -87,3 +87,5 @@ Example for the specification of multiple domain configuration in a NGINX docker
   ```ts
   @Input() maxAutoSuggests: number;
   ```
+
+  The default settings are 5 elements for keywords and recent search terms, 3 elements each for categories and brands and 8 elements for products.
