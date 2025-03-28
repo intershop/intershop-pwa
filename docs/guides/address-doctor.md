@@ -7,6 +7,10 @@ kb_sync_latest_only
 
 # Address Check with Address Doctor
 
+- [Setup](#setup)
+- [Workflow](#workflow)
+- [Further References](#further-references)
+
 We integrated [Address Doctor](https://www.informatica.com/de/products/data-quality/data-as-a-service/address-verification.html) to verify address data for correctness.
 
 The current integration is based on the [Address Doctor API 6.0.0](https://docs.informatica.com/data-as-a-service/address-verification/6-0-0/developer-guide/preface.html).

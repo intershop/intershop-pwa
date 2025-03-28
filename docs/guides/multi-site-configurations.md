@@ -5,17 +5,16 @@ kb_everyone
 kb_sync_latest_only
 -->
 
-# Multi Site Configurations
+# Multi-Site Configurations
 
-- [Multi Site Configurations](#multi-site-configurations)
-  - [Syntax](#syntax)
-  - [Examples](#examples)
-    - [One domain, One Channel, Multiple Locales](#one-domain-one-channel-multiple-locales)
-    - [Multiple Domains, Multiple Channels, Multiple Locales](#multiple-domains-multiple-channels-multiple-locales)
-    - [Multiple Subdomains, Multiple channels, Multiple Locales](#multiple-subdomains-multiple-channels-multiple-locales)
-    - [Extended Example with Many Different Configurations](#extended-example-with-many-different-configurations)
-    - [Extended Example with two domains, one with basic auth (except /fr), the other without](#extended-example-with-two-domains-one-with-basic-auth-except-fr-the-other-without)
-  - [Integrate your multi-site configuration with the language switch](#integrate-your-multi-site-configuration-with-the-language-switch)
+- [Syntax](#syntax)
+- [Examples](#examples)
+  - [One Domain, One Channel, Multiple Locales](#one-domain-one-channel-multiple-locales)
+  - [Multiple Domains, Multiple Channels, Multiple Locales](#multiple-domains-multiple-channels-multiple-locales)
+  - [Multiple Subdomains, Multiple Channels, Multiple Locales](#multiple-subdomains-multiple-channels-multiple-locales)
+  - [Extended Example with Many Different Configurations](#extended-example-with-many-different-configurations)
+  - [Extended Example with Two Domains, One with Basic Auth (Except /fr), the Other Without](#extended-example-with-two-domains-one-with-basic-auth-except-fr-the-other-without)
+- [Integrate Your Multi-Site Configuration with the Language Switch](#integrate-your-multi-site-configuration-with-the-language-switch)
 - [Further References](#further-references)
 
 As explained in [Multi-Site Handling](../concepts/multi-site-handling.md), the PWA supports dynamic configurations of a single PWA container deployment.
@@ -234,7 +233,7 @@ In case you want to extend this functionality to work with more locales, extend 
 
 In case you want to transfer this functionality to work with your specific multi-site setup, override the `multi-site.service.ts` and provide an implementation that conforms to your setup (as well as configuring the environment variable for your specific use case).
 
-# Further References
+## Further References
 
 - [Guide - Building and Running nginx Docker Image](../guides/nginx-startup.md)
 - [Concept - Multi-Site Handling](../concepts/multi-site-handling.md)

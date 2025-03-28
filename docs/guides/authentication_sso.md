@@ -7,6 +7,12 @@ kb_sync_latest_only
 
 # Authentication with Single Sign-On (SSO)
 
+- [SSO with Auth0 for PWA](#sso-with-auth0-for-pwa)
+- [Business Cases](#business-cases)
+  - [Create New User](#create-new-user)
+  - [User Forgot Password](#user-forgot-password)
+- [Further References](#further-references)
+
 Intershop Commerce Management supports logging in clients via SSO (see [Concept - Single Sign-On (SSO)][kb-concept-sso]).
 
 The PWA uses the library [angular-oauth2-oidc](https://github.com/manfredsteyer/angular-oauth2-oidc#readme) to support an easy configuration for providing access to identity providers.

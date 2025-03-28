@@ -40,6 +40,7 @@
         // testing
         "andys8.jest-snippets",
         // documentation
+        "yzhang.markdown-all-in-one",
         "streetsidesoftware.code-spell-checker"
         // synchronize-marker:vscode-extensions:end
       ]

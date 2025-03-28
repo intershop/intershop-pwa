@@ -7,6 +7,9 @@ kb_sync_latest_only
 
 # Working with ESLint
 
+- [Configuring ESLint](#configuring-eslint)
+- [Custom ESLint Rules](#custom-eslint-rules)
+
 The PWA uses [ESLint](https://eslint.org) for static code analysis and to enforce best practices.
 In order to use ESLint with Angular, we use the [`typescript-eslint`](https://typescript-eslint.io) and [`angular-eslint`](https://github.com/angular-eslint/angular-eslint) packages extensively.
 

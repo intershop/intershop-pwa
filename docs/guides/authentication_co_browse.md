@@ -7,6 +7,12 @@ kb_sync_latest_only
 
 # Authentication with the Co-Browse Identity Provider
 
+- [Introduction](#introduction)
+- [Configuration](#configuration)
+- [Login](#login)
+- [Token Lifetime](#token-lifetime)
+- [Logout](#logout)
+
 > [!IMPORTANT]
 > To use the Co-Browse functionality ICM version 11.8.0 or above is needed.
 

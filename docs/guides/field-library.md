@@ -7,24 +7,19 @@ kb_sync_latest_only
 
 # Field Library
 
-<!-- cSpell: disable -->
-
-- [Field Library](#field-library)
-  - [Overview](#overview)
-  - [The Field Library](#the-field-library)
-    - [Retrieving Configurations](#retrieving-configurations)
-    - [Retrieving Configuration Groups](#retrieving-configuration-groups)
-    - [Defining Your Own Configurations \& Configuration Groups](#defining-your-own-configurations--configuration-groups)
-      - [Defining a FieldLibraryConfiguration](#defining-a-fieldlibraryconfiguration)
-      - [Defining a FieldLibraryConfigurationGroup](#defining-a-fieldlibraryconfigurationgroup)
-  - [Automatic Field Replacement Using the '#' Pseudo-Type](#automatic-field-replacement-using-the--pseudo-type)
-  - [Address Forms](#address-forms)
-    - [Using the formly-address-form Component](#using-the-formly-address-form-component)
-    - [Creating a New Country Specific Form](#creating-a-new-country-specific-form)
-  - [Standard Reusable Form Configurations](#standard-reusable-form-configurations)
+- [Overview](#overview)
+- [The Field Library](#the-field-library)
+  - [Retrieving Configurations](#retrieving-configurations)
+  - [Retrieving Configuration Groups](#retrieving-configuration-groups)
+  - [Defining Your Own Configurations \& Configuration Groups](#defining-your-own-configurations--configuration-groups)
+    - [Defining a FieldLibraryConfiguration](#defining-a-fieldlibraryconfiguration)
+    - [Defining a FieldLibraryConfigurationGroup](#defining-a-fieldlibraryconfigurationgroup)
+- [Automatic Field Replacement Using the '#' Pseudo-Type](#automatic-field-replacement-using-the--pseudo-type)
+- [Address Forms](#address-forms)
+  - [Using the formly-address-form Component](#using-the-formly-address-form-component)
+  - [Creating a New Country Specific Form](#creating-a-new-country-specific-form)
+- [Standard Reusable Form Configurations](#standard-reusable-form-configurations)
 - [Further References](#further-references)
-
-<!-- cSpell: enable -->
 
 ## Overview
 
@@ -260,7 +255,7 @@ They are automatically updated using sync-formly-docs.ts -->
 
    <!-- sync-end -->
 
-# Further References
+## Further References
 
 - [Formly documentation](./formly.md)
 - [General forms documentation](./forms.md)

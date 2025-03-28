@@ -7,20 +7,19 @@ kb_sync_latest_only
 
 # Accessibility
 
-- [Accessibility](#accessibility)
-  - [Introduction](#introduction)
-  - [Workflow](#workflow)
-  - [Check the Accessibility of a Page](#check-the-accessibility-of-a-page)
-    - [ESLint Rules](#eslint-rules)
-    - [Partially Automated Testing](#partially-automated-testing)
-      - [Chrome Google Lighthouse](#chrome-google-lighthouse)
-      - [Silktide - Accessibility Checker](#silktide---accessibility-checker)
-      - [WAVE - Web Accessibility Evaluation Tool](#wave---web-accessibility-evaluation-tool)
-      - [IBM - Equal Access Accessibility Checker](#ibm---equal-access-accessibility-checker)
-    - [Manual Testing](#manual-testing)
-      - [Keyboard](#keyboard)
-      - [Screen Reader](#screen-reader)
-  - [Further References](#further-references)
+- [Introduction](#introduction)
+- [Workflow](#workflow)
+- [Check the Accessibility of a Page](#check-the-accessibility-of-a-page)
+  - [ESLint Rules](#eslint-rules)
+  - [Partially Automated Testing](#partially-automated-testing)
+    - [Google Lighthouse](#google-lighthouse)
+    - [Silktide - Accessibility Checker](#silktide---accessibility-checker)
+    - [WAVE - Web Accessibility Evaluation Tool](#wave---web-accessibility-evaluation-tool)
+    - [IBM - Equal Access Accessibility Checker](#ibm---equal-access-accessibility-checker)
+  - [Manual Testing](#manual-testing)
+    - [Keyboard](#keyboard)
+    - [Screen Reader](#screen-reader)
+- [Further References](#further-references)
 
 ## Introduction
 

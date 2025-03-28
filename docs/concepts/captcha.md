@@ -7,6 +7,14 @@ kb_sync_latest_only
 
 # CAPTCHA in the PWA
 
+- [Introduction](#introduction)
+- [High Level Overview](#high-level-overview)
+- [Integration of the CAPTCHA Components](#integration-of-the-captcha-components)
+- [Basic Components](#basic-components)
+  - [CAPTCHA V2 (captcha-v2.component.ts)](#captcha-v2-captcha-v2componentts)
+  - [CAPTCHA V3 (captcha-v3.component.ts)](#captcha-v3-captcha-v3componentts)
+- [Further References](#further-references)
+
 ## Introduction
 
 The PWA supports reCAPTCHA V2 as well as reCAPTCHA V3.

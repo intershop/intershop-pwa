@@ -7,6 +7,16 @@ kb_sync_latest_only
 
 # Developing with NgRx
 
+- [NgRx Pitfalls](#ngrx-pitfalls)
+  - [Using Services and catchError](#using-services-and-catcherror)
+  - [Using `switchMap` can Lead to Race Conditions](#using-switchmap-can-lead-to-race-conditions)
+  - [Should I put XYZ into the Store or the Component?](#should-i-put-xyz-into-the-store-or-the-component)
+- [Testing NgRx Artifacts](#testing-ngrx-artifacts)
+  - [Using the State Management in Tests](#using-the-state-management-in-tests)
+  - [Reducers and Actions](#reducers-and-actions)
+  - [Selectors](#selectors)
+  - [Effects](#effects)
+
 ## NgRx Pitfalls
 
 ### Using Services and catchError

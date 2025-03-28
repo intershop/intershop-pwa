@@ -7,6 +7,11 @@ kb_sync_latest_only
 
 # E-Mail Marketing/Newsletter Subscription
 
+- [Introduction](#introduction)
+- [Configuration](#configuration)
+- [Storefront](#storefront)
+- [Further References](#further-references)
+
 ## Introduction
 
 In the PWA registered users can subscribe to and unsubscribe from a newsletter service.

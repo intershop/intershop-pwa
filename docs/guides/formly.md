@@ -7,29 +7,24 @@ kb_sync_latest_only
 
 # Formly
 
-<!-- cSpell: disable -->
-
-- [Formly](#formly)
-  - [Overview](#overview)
-    - [Formly-Form Component](#formly-form-component)
-    - [FormlyFieldConfig](#formlyfieldconfig)
-  - [Customizing Form Logic](#customizing-form-logic)
-    - [Custom Field Types](#custom-field-types)
-    - [Custom Wrappers](#custom-wrappers)
-    - [Custom Extensions](#custom-extensions)
-    - [Validation](#validation)
-    - [Extras](#extras)
-    - [Formly Config Service](#formly-config-service)
-  - [Testing Formly](#testing-formly)
-    - [Testing Custom Types](#testing-custom-types)
-    - [Testing Wrappers](#testing-wrappers)
-  - [How to Configure Formly](#how-to-configure-formly)
-  - [Intershop's Custom Formly Parts](#intershops-custom-formly-parts)
-    - [Field Types](#field-types)
-    - [Wrappers](#wrappers)
-    - [Extensions](#extensions)
-
-<!-- cSpell: enable -->
+- [Overview](#overview)
+  - [Formly-Form Component](#formly-form-component)
+  - [FormlyFieldConfig](#formlyfieldconfig)
+- [Customizing Form Logic](#customizing-form-logic)
+  - [Custom Field Types](#custom-field-types)
+  - [Custom Wrappers](#custom-wrappers)
+  - [Custom Extensions](#custom-extensions)
+  - [Validation](#validation)
+  - [Extras](#extras)
+  - [Formly Config Service](#formly-config-service)
+- [Testing Formly](#testing-formly)
+  - [Testing Custom Types](#testing-custom-types)
+  - [Testing Wrappers](#testing-wrappers)
+- [How to Configure Formly](#how-to-configure-formly)
+- [Intershop's Custom Formly Parts](#intershops-custom-formly-parts)
+  - [Field Types](#field-types)
+  - [Wrappers](#wrappers)
+  - [Extensions](#extensions)
 
 ## Overview
 

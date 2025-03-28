@@ -7,6 +7,13 @@ kb_sync_latest_only
 
 # Building and Running Server-Side Rendering
 
+- [Building](#building)
+- [Building Multiple Themes](#building-multiple-themes)
+- [Running](#running)
+- [Development](#development)
+- [Local ICM Cache](#local-icm-cache)
+- [Further References](#further-references)
+
 ## Building
 
 To **simply** build the Intershop PWA in server-side rendering mode, you can use the _package.json_ script `npm run build`, which builds the Intershop PWA with the `production` configuration of the `angular.json` with the default theme.

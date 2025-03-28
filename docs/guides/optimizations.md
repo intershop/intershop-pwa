@@ -9,6 +9,13 @@ kb_sync_latest_only
 
 ## NGINX Optimizations
 
+- [NGINX Optimizations](#nginx-optimizations)
+- [Custom Webpack Build](#custom-webpack-build)
+- [PurgeCSS](#purgecss)
+  - [Safelisting](#safelisting)
+  - [Development](#development)
+- [Further References](#further-references)
+
 The NGINX building block applies:
 
 - Compression of responses
@@ -70,7 +77,7 @@ In this startup process the following line can be read, indicating the usage of 
 serve@b2b,production: setting up purgecss CSS minification
 ```
 
-# Further References
+## Further References
 
 - [Guide - Building and Running NGINX Docker Image][nginx-startup]
 

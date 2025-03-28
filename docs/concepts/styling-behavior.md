@@ -7,6 +7,13 @@ kb_sync_latest_only
 
 # Styling & Behavior
 
+- [Bootstrap Integration](#bootstrap-integration)
+- [Assets](#assets)
+- [Fonts](#fonts)
+- [Icons](#icons)
+- [Optimization](#optimization)
+- [References](#references)
+
 The visual design (styling) and the interaction design (behavior) of the Intershop Progressive Web App is derived from the Responsive Starter Store with some changes (e.g., the header) to improve and modernize the customer experience and to provide an easy optical distinction between the two Intershop storefronts.
 While the Responsive Starter Store is based on a customized/themed [Bootstrap 3](https://getbootstrap.com/docs/3.3/), the Intershop Progressive Web App styling was migrated to build upon the current version of [Bootstrap 4](https://getbootstrap.com/).
 This also means that the Intershop Progressive Web App styling is now based on [Sass](https://sass-lang.com/).

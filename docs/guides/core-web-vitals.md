@@ -7,6 +7,10 @@ kb_sync_latest_only
 
 # Core Web Vitals
 
+- [CMS](#cms)
+  - [Enhanced Image Teaser](#enhanced-image-teaser)
+- [Further References](#further-references)
+
 With the growing importance of good Core Web Vitals (CWV) metrics, the Intershop PWA includes several optimizations and functionalities that are intended to improve these metrics.
 The following chapter lists aspects of the Intershop PWA that are related to the CWV and should be considered while developing an Intershop PWA based storefront.
 In addition, you will find relevant configuration options to keep in mind when maintaining the content of the PWA in the underlying Intershop Commerce Management.

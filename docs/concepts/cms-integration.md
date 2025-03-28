@@ -7,6 +7,14 @@ kb_sync_latest_only
 
 # CMS Integration
 
+- [Introduction](#introduction)
+- [Angular CMS Components](#angular-cms-components)
+- [View Contexts](#view-contexts)
+- [Design View](#design-view)
+- [Design Preview](#design-preview)
+- [Navigation CMS Components](#navigation-cms-components)
+- [Integration with an External CMS](#integration-with-an-external-cms)
+
 ## Introduction
 
 The Intershop REST API contains resources reflecting the aspects of Intershop's integrated Content Management System (CMS), i.e.

@@ -7,6 +7,14 @@ kb_sync_latest_only
 
 # Cookie Consent
 
+- [Configure Cookie Consent Options](#configure-cookie-consent-options)
+- [Control Cookie Consent Banner Display](#control-cookie-consent-banner-display)
+- [Cookie Consent Settings](#cookie-consent-settings)
+- [Enable PWA Functionality Dependent on Cookie Consent Settings](#enable-pwa-functionality-dependent-on-cookie-consent-settings)
+- [Displaying the Cookie Consent Options](#displaying-the-cookie-consent-options)
+- [PWA Required Cookies](#pwa-required-cookies)
+- [Disabling the Integrated Cookie Consent Handling](#disabling-the-integrated-cookie-consent-handling)
+
 The Intershop PWA features its own cookie consent implementation that allows to configure the different options a shop user should be presented with when deciding which types of cookies the user wants to allow and which not.
 Based on this decision, a cookie is written that stores the user's cookie consent settings.
 These settings can then be used to enable or disable certain features that rely on cookies or other means of collecting user information.

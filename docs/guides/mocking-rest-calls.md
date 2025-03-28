@@ -7,6 +7,9 @@ kb_sync_latest_only
 
 # Mocking REST API Calls
 
+- [Switching On Mocking](#switching-on-mocking)
+- [Supply Mocked Data](#supply-mocked-data)
+
 Sometimes during development, it might be necessary to work with mocked data.
 This is especially necessary when developing new features in parallel where backend and frontend are involved.
 In the PWA, we supply a mocking mechanism so that the frontend team can start implementation with mocked data until the backend implementation is finished.

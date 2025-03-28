@@ -7,6 +7,11 @@ kb_sync_latest_only
 
 # Deployment Scenarios for Angular Applications
 
+- [Simple Browser-Side Rendering](#simple-browser-side-rendering)
+- [Browser-Side Rendering with On-Demand Server-Side Pre-Rendering (Angular Universal)](#browser-side-rendering-with-on-demand-server-side-pre-rendering-angular-universal)
+- [Impact of Service Workers](#impact-of-service-workers)
+- [Further References](#further-references)
+
 ## Simple Browser-Side Rendering
 
 Angular applications are built for a [static deployment][angular-deployment] by default.
@@ -50,7 +55,7 @@ After that, the service worker lets the application behave like a simple browser
 
 However, browsers and crawlers that do not support JavaScript execution will still receive fully pre-rendered page responses from the SSR process.
 
-# Further References
+## Further References
 
 - [Concept - Building Blocks][concept-building-blocks]
 - [Concept - Progressive Web App][concept-progressive-web-app]

@@ -7,6 +7,19 @@ kb_sync_latest_only
 
 # Development Environment
 
+- [Local Environment Configuration](#local-environment-configuration)
+- [Development Server](#development-server)
+- [Testing Production Setups](#testing-production-setups)
+- [Development Tools](#development-tools)
+  - [Pre-Commit Check](#pre-commit-check)
+  - [Clean Working Copy](#clean-working-copy)
+  - [Visual Studio Code Remote Development](#visual-studio-code-remote-development)
+- [Debugging](#debugging)
+  - [Browser Extensions](#browser-extensions)
+  - [Tackling Memory Problems](#tackling-memory-problems)
+  - [Recommended Articles](#recommended-articles)
+- [Parallelism](#parallelism)
+
 Developing with the Intershop PWA requires to download and install [Node.js](https://nodejs.org) with the included npm package manager.
 Check the project's `package.json` in the `engines` section for the recommended node version.
 

@@ -7,6 +7,9 @@ kb_sync_latest_only
 
 # Progressive Web App
 
+- [Web App Manifest](#web-app-manifest)
+- [Service Worker](#service-worker)
+
 In order to be a [Progressive Web Application](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps), the Intershop PWA implements some advanced concepts matching those criteria.
 
 ## Web App Manifest

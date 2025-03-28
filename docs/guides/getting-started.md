@@ -7,6 +7,19 @@ kb_sync_latest_only
 
 # Getting Started
 
+- [Quick Start](#quick-start)
+  - [Step 1 - Clone the Project](#step-1---clone-the-project)
+  - [Step 2 - Install the Dependencies](#step-2---install-the-dependencies)
+  - [Step 3 - Start the Intershop PWA](#step-3---start-the-intershop-pwa)
+- [Customization](#customization)
+- [Deployment](#deployment)
+- [Running Tests](#running-tests)
+- [Code Style](#code-style)
+- [Type Safety](#type-safety)
+- [Pre-Commit Check](#pre-commit-check)
+- [Code Scaffolding](#code-scaffolding)
+- [Further Help](#further-help)
+
 ## Quick Start
 
 Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager.
