@@ -15,8 +15,8 @@ To get an impression of the numerous adaptions needed to make the PWA more acces
 These changes will result in migration efforts and require PWA projects to adapt their customization as well.
 
 A directive `ishFormSubmit` has been introduced for form html elements.
-In case of validation errors the focus is set to the first invalid form field after submit.
-The logic to disable the submit buttons as long as the form is invalid has been simplified, the usage of the function `markAsDirtyRecursive` is no longer necessary for formly forms.
+In case of validation errors, the focus is set to the first invalid form field after submit.
+The logic to disable the submit buttons as long as the form is invalid has been simplified, using the `markAsDirtyRecursive` function is no longer necessary for formly forms.
 
 The feature toggle `stickyHeader` has been added to enable or disable the sticky header.
 
@@ -25,7 +25,7 @@ The second parameter was changed from type `string` to `ScriptLoaderOption`.
 The new type allows to set all options supported by the loader.
 
 The Cybersource integration has been migrated to version 2 of the Microform API.
-In order to utilize this integration, it is necessary to have an ICM with a Cybersource Service Connector 2.
+To utilize this integration, it is necessary to have an ICM with a Cybersource Service Connector 2.
 Given that the support for [Microform v1 will come to an end on July 1, 2025](https://support.visaacceptance.com/knowledgebase/Knowledgearticle/?code=KA-07550), its support was terminated.
 
 ## From 5.2 to 5.3
@@ -62,7 +62,7 @@ In order to restore the previous behavior the value can be set to `DETAILED`.
 The type of the `pm2_process_restarts` metric has been changed from _Gauge_ to _Counter_.
 
 A password reveal button has been added to the formly password field following the [Microsoft Edge guidelines](https://learn.microsoft.com/en-us/microsoft-edge/web-platform/password-reveal#visibility-of-the-control).
-Use the new formly field type `ish-password-novalidate-field` instead of the `ish-text-input-field` with `type="password"` if you want to define a password field without the password validator but with a reveal button (e.g. for password fields on the login form or password confirmation fields).
+Use the new formly field type `ish-password-novalidate-field` instead of the `ish-text-input-field` with `type="password"` if you want to define a password field without the password validator but with a reveal button (e.g., for password fields on the login form or password confirmation fields).
 
 ## From 5.1 to 5.2
 
