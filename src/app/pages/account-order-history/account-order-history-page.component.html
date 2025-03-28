@@ -10,7 +10,7 @@
 />
 
 <ish-order-list
-  [orders]="orders$ | async"
+  [orders]="ordersForPage$ | async"
   [columnsToDisplay]="columnsToDisplay$ | async"
   [noOrdersMessageKey]="
     !filtersActive
@@ -20,10 +20,11 @@
   [loading]="ordersLoading$ | async"
 />
 
-<div *ngIf="moreOrdersAvailable$ | async" class="d-flex justify-content-center">
-  <button type="button" class="btn btn-secondary" (click)="loadMoreOrders()" [disabled]="ordersLoading$ | async">
-    {{ 'account.order.load_more' | translate }}
-  </button>
+<div class="row">
+  <div class="d-flex w-100 grey-panel align-items-center flex-wrap justify-content-between px-3 py-2 mb-3">
+    <span class="text-nowrap">{{ 'shopping_cart.paging.items.label' | translate : { '0': '100' } }}</span>
+    <ish-paging [currentPage]="pageNumber$ | async" [lastPage]="10" (goToPage)="loadMoreOrders($event)" />
+  </div>
 </div>
 
 <h2 class="h4 form-text">{{ 'account.order.questions.title' | translate }}</h2>

@@ -13,13 +13,16 @@ export const createOrderSuccess = createAction('[Orders API] Create Order Succes
 
 export const loadOrders = createAction('[Orders] Load Orders', payload<{ query: OrderListQuery }>());
 
-export const loadMoreOrders = createAction('[Orders] Load More Orders');
+export const loadMoreOrders = createAction(
+  '[Orders] Load More Orders',
+  payload<{ data: { offset: number; limit: number } }>()
+);
 
 export const loadOrdersFail = createAction('[Orders API] Load Orders Fail', httpError());
 
 export const loadOrdersSuccess = createAction(
   '[Orders API] Load Orders Success',
-  payload<{ orders: Order[]; query: OrderListQuery; allRetrieved?: boolean }>()
+  payload<{ orders: Order[]; query: OrderListQuery }>()
 );
 
 export const loadOrder = createAction('[Orders Internal] Load Order', payload<{ orderId: string }>());
