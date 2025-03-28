@@ -11,11 +11,7 @@ exports[`Header Default Component should render normal header adequately for des
     </li>
   </ul>
   <div class="header-utility">
-    <a
-      role="button"
-      class="search-toggler"
-      aria-label="search.searchbox.button.sticky_header.aria_label"
-    ></a>
+    <a class="search-toggler"></a>
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
     </div>
@@ -84,10 +80,7 @@ exports[`Header Default Component should render normal header adequately for mob
     </li>
   </ul>
   <div class="header-utility">
-    <a
-      role="button"
-      class="search-toggler active-search"
-      aria-label="search.searchbox.button.sticky_header.aria_label"
+    <a class="search-toggler active-search"
       ><div class="search-container header-search-container show" ng-reflect-collapsed="false">
         <ish-search-box
           data-testing-id="search-box-desktop"
@@ -157,11 +150,7 @@ exports[`Header Default Component should render normal header adequately for tab
     </li>
   </ul>
   <div class="header-utility">
-    <a
-      role="button"
-      class="search-toggler"
-      aria-label="search.searchbox.button.sticky_header.aria_label"
-    ></a>
+    <a class="search-toggler"></a>
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
     </div>
