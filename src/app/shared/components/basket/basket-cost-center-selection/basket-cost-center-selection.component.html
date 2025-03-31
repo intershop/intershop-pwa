@@ -1,21 +1,6 @@
-<ng-container>
+<ng-container *ngIf="fields$ | async as fields" data-testing-id="cost-center-select">
+  <h2 class="h3">{{ 'checkout.cost_center.select.heading' | translate }}</h2>
   <form [formGroup]="form">
-    <h3>{{ 'checkout.cost_center.select.heading' | translate }}</h3>
-    <div class="d-flex flex-row align-items-center justify-content-between w-100">
-      <label class="w-auto" for="costCenter">{{ 'checkout.cost_center.select.label' | translate }}</label>
-      <ng-select
-        class="w-75"
-        data-testing-id="cost-center-select"
-        bindLabel="label"
-        bindValue="value"
-        formControlName="costCenter"
-        (scroll)="onScroll($event.end)"
-        (scrollToEnd)="onScrollToEnd()"
-        [items]="costCenterOptionsBuffer"
-        [virtualScroll]="true"
-        [required]="true"
-        [placeholder]="'account.option.select.text' | translate"
-      />
-    </div>
+    <formly-form [form]="form" [fields]="fields" [model]="model" />
   </form>
 </ng-container>

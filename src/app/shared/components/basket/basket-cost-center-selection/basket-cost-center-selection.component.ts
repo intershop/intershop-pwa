@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { combineLatest } from 'rxjs';
-import { distinctUntilChanged, map, take, withLatestFrom } from 'rxjs/operators';
+import { UntypedFormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Observable, combineLatest } from 'rxjs';
+import { distinctUntilChanged, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -19,49 +20,45 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketCostCenterSelectionComponent implements OnInit {
-  form: FormGroup;
+  form = new UntypedFormGroup({});
+  fields$: Observable<FormlyFieldConfig[]>;
+  model: { costCenter: string };
 
-  bufferSize = 25;
-  itemsBeforeFetchingMore = 5;
-  costCenterOptions: SelectOption[];
-  costCenterOptionsBuffer: SelectOption[];
+  private costCenterOptions$: Observable<SelectOption[]>;
 
   private destroyRef = inject(DestroyRef);
 
   constructor(
     private checkoutFacade: CheckoutFacade,
     private accountFacade: AccountFacade,
-    private cd: ChangeDetectorRef,
-    private fb: FormBuilder
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.form = this.fb.group({ costCenter: [undefined] });
+    this.costCenterOptions$ = this.accountFacade.isBusinessCustomer$.pipe(
+      whenTruthy(),
+      switchMap(() => this.checkoutFacade.eligibleCostCenterSelectOptions$())
+    );
 
-    combineLatest([
-      this.accountFacade.isBusinessCustomer$.pipe(whenTruthy()),
-      this.checkoutFacade.eligibleCostCenterSelectOptions$(),
-      this.checkoutFacade.basket$.pipe(whenTruthy(), take(1)),
-    ])
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(([_, costCenterOptions, basket]) => {
-        this.costCenterOptions = costCenterOptions;
-        this.costCenterOptionsBuffer = this.costCenterOptions.slice(0, this.bufferSize);
-        this.setupForm(basket.costCenter);
-        this.cd.markForCheck();
-      });
+    this.fields$ = combineLatest([
+      this.costCenterOptions$,
+      // retrigger field render when cost center is updated (maybe we don't need the placeholder anymore)
+      this.checkoutFacade.basket$.pipe(
+        map(basket => basket?.costCenter),
+        distinctUntilChanged()
+      ),
+    ]).pipe(
+      map(([options]) => options),
+      map(options => (options.length ? this.getFields(options) : undefined)),
+      whenTruthy()
+    );
 
-    // mark form as dirty to display validation errors
-    this.checkoutFacade.basketValidationResults$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(results => {
-      if (
-        !results?.valid &&
-        results?.errors?.find(error => error.code === 'basket.validation.cost_center_missing.error')
-      ) {
-        markAsDirtyRecursive(this.form);
-        this.cd.markForCheck();
-      }
-    });
+    // initialize model with the basket costCenter
+    this.checkoutFacade.basket$
+      .pipe(whenTruthy(), take(1), takeUntilDestroyed(this.destroyRef))
+      .subscribe(basket => (this.model = { costCenter: basket.costCenter }));
 
+    // save changes after form value changed
     this.form.valueChanges
       .pipe(
         whenTruthy(),
@@ -75,31 +72,34 @@ export class BasketCostCenterSelectionComponent implements OnInit {
           this.checkoutFacade.updateBasketCostCenter(costCenter);
         }
       });
-  }
 
-  onScrollToEnd() {
-    this.fetchMore();
+    // mark form as dirty to display validation errors
+    this.checkoutFacade.basketValidationResults$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(results => {
+      if (
+        !results?.valid &&
+        results?.errors?.find(error => error.code === 'basket.validation.cost_center_missing.error')
+      ) {
+        markAsDirtyRecursive(this.form);
+        this.cd.markForCheck();
+      }
+    });
   }
-
-  onScroll(end: number) {
-    if (this.costCenterOptions.length <= this.costCenterOptionsBuffer.length) {
-      return;
+  private getFields(options: SelectOption[]): FormlyFieldConfig[] {
+    if (options.length === 1 && options[0].value && !this.model?.costCenter) {
+      this.model = { ...this.model, costCenter: options[0].value };
     }
-
-    if (end + this.itemsBeforeFetchingMore >= this.costCenterOptionsBuffer.length) {
-      this.fetchMore();
-    }
-  }
-
-  private fetchMore() {
-    const length = this.costCenterOptionsBuffer.length;
-    const additionalCostCenters = this.costCenterOptions.slice(length, this.bufferSize + length);
-    this.costCenterOptions.concat(additionalCostCenters);
-  }
-
-  private setupForm(costCenter: string) {
-    const defaultOption =
-      costCenter || (this.costCenterOptions.length === 1 ? this.costCenterOptions[0].value : undefined);
-    this.form.patchValue({ costCenter: defaultOption });
+    return [
+      {
+        key: 'costCenter',
+        type: 'ish-search-select-field',
+        props: {
+          label: 'checkout.cost_center.select.label',
+          required: true,
+          hideRequiredMarker: true,
+          options,
+          placeholder: options.length > 1 && !this.model?.costCenter ? 'account.option.select.text' : undefined,
+        },
+      },
+    ];
   }
 }

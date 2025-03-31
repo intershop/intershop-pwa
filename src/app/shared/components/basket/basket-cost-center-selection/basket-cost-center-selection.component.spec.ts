@@ -1,6 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -39,7 +37,7 @@ describe('Basket Cost Center Selection Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [BasketCostCenterSelectionComponent],
-      imports: [FormlyTestingModule, FormsModule, NgSelectModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
@@ -69,45 +67,82 @@ describe('Basket Cost Center Selection Component', () => {
     beforeEach(() => {
       when(accountFacade.isBusinessCustomer$).thenReturn(of(true));
     });
-
     it('should be rendered with correct option and no placeholder for single cost center option', () => {
       when(checkoutFacade.eligibleCostCenterSelectOptions$()).thenReturn(of([mockCostCenterOptions[0]]));
       fixture.detectChanges();
 
-      expect(component.form.value.costCenter).toEqual(mockCostCenterOptions[0].value);
-      expect(component.costCenterOptions).toHaveLength(1);
-      expect(component.costCenterOptionsBuffer).toHaveLength(1);
+      expect(element.querySelectorAll('formly-group formly-field')).toHaveLength(1);
+      expect(element.querySelector('formly-group formly-field').textContent).toMatchInlineSnapshot(`
+        "SearchSelectFieldComponent: costCenter ish-search-select-field {
+          "label": "checkout.cost_center.select.label",
+          "required": true,
+          "hideRequiredMarker": true,
+          "options": [
+            {
+              "label": "Cost Center 1",
+              "value": "1"
+            }
+          ],
+          "placeholder": "",
+          "disabled": false
+        }"
+      `);
     });
 
     it('should be rendered with correct options and placeholder for multiple cost center options', () => {
       when(checkoutFacade.eligibleCostCenterSelectOptions$()).thenReturn(of(mockCostCenterOptions));
       fixture.detectChanges();
-
-      const selectField = element.querySelector('ng-select[data-testing-id=cost-center-select]');
-
-      expect(component.form.value.costCenter).toBeUndefined();
-      expect(component.costCenterOptions).toHaveLength(mockCostCenterOptions.length);
-      expect(component.costCenterOptionsBuffer).toHaveLength(mockCostCenterOptions.length);
-      expect(selectField.textContent.trim()).toBe('account.option.select.text');
+      expect(element.querySelectorAll('formly-group formly-field')).toHaveLength(1);
+      expect(element.querySelector('formly-group formly-field').textContent).toMatchInlineSnapshot(`
+        "SearchSelectFieldComponent: costCenter ish-search-select-field {
+          "label": "checkout.cost_center.select.label",
+          "required": true,
+          "hideRequiredMarker": true,
+          "options": [
+            {
+              "label": "Cost Center 1",
+              "value": "1"
+            },
+            {
+              "label": "Cost Center 2",
+              "value": "2"
+            }
+          ],
+          "placeholder": "account.option.select.text",
+          "disabled": false
+        }"
+      `);
     });
 
-    it('should be rendered with correct option after cost center is selected', () => {
+    it('should be rendered with correct options and no placeholder after cost center is selected', () => {
       const subject$ = new BehaviorSubject(BasketMockData.getBasket());
-      const selectField = element.querySelector('ng-select[data-testing-id=cost-center-select]');
       when(checkoutFacade.basket$).thenReturn(subject$.asObservable());
       when(checkoutFacade.eligibleCostCenterSelectOptions$()).thenReturn(of(mockCostCenterOptions));
       fixture.detectChanges();
-
-      expect(component.costCenterOptions).toHaveLength(mockCostCenterOptions.length);
-      expect(component.costCenterOptionsBuffer).toHaveLength(mockCostCenterOptions.length);
-      expect(component.form.value.costCenter).toBeUndefined();
-      expect(selectField.textContent.trim()).toBe('account.option.select.text');
-
+      component.form.get('costCenter').setValue('2');
       subject$.next({ ...BasketMockData.getBasket(), costCenter: '2' });
-      component.form.patchValue({ costCenter: '2' });
       fixture.detectChanges();
 
-      expect(component.form.value.costCenter).toEqual('2');
+      expect(element.querySelectorAll('formly-group formly-field')).toHaveLength(1);
+      expect(element.querySelector('formly-group formly-field').textContent).toMatchInlineSnapshot(`
+        "SearchSelectFieldComponent: costCenter ish-search-select-field {
+          "label": "checkout.cost_center.select.label",
+          "required": true,
+          "hideRequiredMarker": true,
+          "options": [
+            {
+              "label": "Cost Center 1",
+              "value": "1"
+            },
+            {
+              "label": "Cost Center 2",
+              "value": "2"
+            }
+          ],
+          "placeholder": "",
+          "disabled": false
+        }"
+      `);
     });
   });
 });
