@@ -42,7 +42,7 @@ export class CartPage {
   }
 
   get costCenterSelection() {
-    return cy.get('select[data-testing-id="costCenter"]');
+    return cy.get('ng-select[data-testing-id="costCenter"]');
   }
 
   selectCostCenter(id: string) {
