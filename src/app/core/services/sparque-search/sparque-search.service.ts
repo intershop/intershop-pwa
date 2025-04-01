@@ -10,6 +10,7 @@ import { SparqueSuggestionMapper } from 'ish-core/models/sparque-suggestion/spar
 import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
 import { SearchService } from 'ish-core/services/search/search.service';
 import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.service';
+import { omit } from 'ish-core/utils/functions';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 @Injectable({ providedIn: 'root' })
@@ -45,12 +46,12 @@ export class SparqueSearchService extends SearchService {
       params = params.set('sorting', searchParams.sorting);
     }
     if (!searchParams.searchParameter && searchParams.searchTerm) {
-      searchParams.searchParameter = { searchTerm: [searchParams.searchTerm] };
+      params = params.set('keyword', searchParams.searchTerm);
     }
-    params = appendFormParamsToHttpParams(searchParams.searchParameter, params);
+
     return this.sparqueApiService
       .get<SparqueSearchResponse>(`search`, { params, skipApiErrorHandling: true })
-      .pipe(map(result => this.sparqueSearchMapper.fromData(result, searchParams.searchParameter)));
+      .pipe(map(result => this.sparqueSearchMapper.fromData(result, { searchTerm: [searchParams.searchTerm] })));
   }
 
   getFilteredProducts(
@@ -62,11 +63,12 @@ export class SparqueSearchService extends SearchService {
     let params = new HttpParams()
       .set('count', amount ? amount.toString() : '')
       .set('offset', offset.toString())
-      .set('facetOptionsCount', 5);
+      .set('facetOptionsCount', 5)
+      .set('keyword', searchParameter.searchTerm ? searchParameter.searchTerm[0] : '');
     if (sortKey) {
       params = params.set('sorting', sortKey);
     }
-    params = appendFormParamsToHttpParams(searchParameter, params);
+    params = params.append('selectedFacets', selectedFacets(omit(searchParameter, 'searchTerm')));
 
     return this.sparqueApiService
       .get<SparqueSearchResponse>(`search`, { params, skipApiErrorHandling: true })
@@ -74,25 +76,10 @@ export class SparqueSearchService extends SearchService {
   }
 }
 
-function appendFormParamsToHttpParams(
-  object: URLFormParams,
-  params: HttpParams = new HttpParams(),
-  separator = ','
-): HttpParams {
-  return object
-    ? Object.entries(object)
-        .filter(([, value]) => Array.isArray(value) && value.length)
-        .reduce((p, [key, val]) => {
-          if (key.includes('searchTerm')) {
-            return p.set('keyword', val.join(separator));
-          }
-          if (p.get('SelectedFacets')) {
-            return p.set(
-              'SelectedFacets',
-              p.get('SelectedFacets').concat('&').concat(key).concat('|').concat(val.join(separator))
-            );
-          }
-          return p.set('SelectedFacets', key.concat('|').concat(val.join(separator)));
-        }, params)
-    : params;
+function selectedFacets(object: URLFormParams): string {
+  let params = '';
+  Object.entries(object).forEach(([key, val]) => {
+    params = params + key.concat('|').concat(val[0]).concat(',');
+  });
+  return params.substring(0, params.length - 1);
 }
