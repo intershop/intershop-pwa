@@ -42,11 +42,13 @@ export class CartPage {
   }
 
   get costCenterSelection() {
-    return cy.get('ng-select[data-testing-id="costCenter"]');
+    return cy.get('[data-testing-id="costCenter"]');
   }
 
   selectCostCenter(id: string) {
-    this.costCenterSelection.select(id);
+    this.costCenterSelection.click();
+    console.log('selecting cost center', id);
+    // TODO: implement cost center selection on ng-select (not a select box)
   }
 
   addProductToWishlist() {

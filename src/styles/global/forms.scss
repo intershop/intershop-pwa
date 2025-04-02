@@ -189,45 +189,6 @@ optgroup {
   }
 }
 
-.ng-select .ng-select-container {
-  border: 1px solid $gray-400;
-  border-radius: 0 !important;
-}
-
-ng-select.ng-select-opened .ng-select-container {
-  border-color: $CORPORATE-PRIMARY !important;
-}
-
-.ng-option-marked {
-  background-color: $gray-100 !important;
-}
-
-.ng-option-selected {
-  background-color: $gray-300 !important;
-
-  .ng-option-label {
-    font-weight: 400 !important;
-  }
-}
-
-.ng-clear-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-ng-select.ng-invalid.ng-dirty .ng-select-container {
-  border-color: $error-color;
-
-  .ng-arrow {
-    border-color: $error-color transparent transparent;
-  }
-
-  .ng-placeholder {
-    color: $error-color;
-  }
-}
-
 .has-error {
   .col-form-label,
   .ng-fa-icon,

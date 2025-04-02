@@ -18,7 +18,7 @@
 @import 'swiper/scss/pagination';
 
 // import ng-select default theme
-@import '~@ng-select/ng-select/themes/default.theme.css';
+@import '@ng-select/ng-select/scss/default.theme';
 
 // STYLING COMPATIBILITY LAYER
 
@@ -39,6 +39,7 @@
 @import 'global/toasts';
 @import 'global/swiper';
 @import 'global/forms';
+@import 'global/ng-select';
 @import 'global/lists';
 @import 'global/share-tools';
 @import 'global/notifications';

@@ -10,7 +10,6 @@ import {
   NgbModalModule,
   NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule } from '@ngx-translate/core';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SwiperModule } from 'swiper/angular';
@@ -195,8 +194,6 @@ const importExportModules = [
   TactonExportsModule,
   TranslateModule,
   WishlistsExportsModule,
-  NgSelectModule,
-  ReactiveFormsModule,
 ];
 
 const declaredComponents = [
