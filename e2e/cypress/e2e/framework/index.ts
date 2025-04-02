@@ -33,7 +33,7 @@ export function fillFormField(parent: string, key: string, value: number | strin
     const field = form.find(`[data-testing-id="${key}"]`);
     expect(field.length).to.equal(1, `expected to find one form field "${key}" in "${parent}"`);
     const tagName = field.prop('tagName');
-    expect(tagName).to.match(/^(INPUT|SELECT|TEXTAREA)$/);
+    expect(tagName).to.match(/^(INPUT|SELECT|TEXTAREA|NG-SELECT)$/);
 
     cy.get(parent).within(() => {
       if (/^(INPUT|TEXTAREA)$/.test(tagName)) {
@@ -42,7 +42,7 @@ export function fillFormField(parent: string, key: string, value: number | strin
         if (value) {
           inputField.type(value.toString());
         }
-      } else if (tagName === 'SELECT') {
+      } else if (tagName === 'SELECT' || tagName === 'NG-SELECT') {
         if (typeof value === 'number') {
           cy.get(`[data-testing-id="${key}"]`)
             .find('option')
