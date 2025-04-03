@@ -4,6 +4,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 
+import { IconModule } from 'ish-core/icon.module';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 
@@ -28,6 +29,7 @@ describe('Search Select Field Component', () => {
         }),
         FormlySelectModule,
         FormlyTestingComponentsModule,
+        IconModule,
         NgSelectModule,
         ReactiveFormsModule,
       ],
@@ -66,6 +68,6 @@ describe('Search Select Field Component', () => {
 
   it('should be rendered after creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-search-select-field > ng-select')).toBeTruthy();
+    expect(element.querySelector('ish-search-select-field > .ng-select-container > ng-select')).toBeTruthy();
   });
 });
