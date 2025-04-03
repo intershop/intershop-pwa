@@ -42,7 +42,7 @@ export function fillFormField(parent: string, key: string, value: number | strin
         if (value) {
           inputField.type(value.toString());
         }
-      } else if (tagName === 'SELECT' || tagName === 'NG-SELECT') {
+      } else if (tagName === 'SELECT') {
         if (typeof value === 'number') {
           cy.get(`[data-testing-id="${key}"]`)
             .find('option')
@@ -52,6 +52,15 @@ export function fillFormField(parent: string, key: string, value: number | strin
         } else {
           cy.get(`[data-testing-id="${key}"]`).select(value);
         }
+      } else if (tagName === 'NG-SELECT') {
+        cy.wrap(cy.get(`[data-testing-id="${key}"]`))
+          .click()
+          .get('ng-dropdown-panel')
+          .get('.ng-option')
+          .contains(String(value))
+          .then(item => {
+            cy.wrap(item).click();
+          });
       }
     });
   });

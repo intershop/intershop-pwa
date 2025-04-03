@@ -29,6 +29,7 @@ describe('Shopping User B2B', () => {
     });
     at(CartPage, page => {
       page.costCenterSelection.should('exist');
+      cy.wait(1000);
       page.selectCostCenter(_.costCenter);
       page.beginCheckout();
     });

@@ -46,9 +46,17 @@ export class CartPage {
   }
 
   selectCostCenter(id: string) {
-    this.costCenterSelection.click();
-    console.log('selecting cost center', id);
-    // TODO: implement cost center selection on ng-select (not a select box)
+    this.costCenterSelection.then(selects => {
+      const select = selects[0];
+      cy.wrap(select)
+        .click()
+        .get('ng-dropdown-panel')
+        .get('.ng-option')
+        .contains(id)
+        .then(item => {
+          cy.wrap(item).click();
+        });
+    });
   }
 
   addProductToWishlist() {
