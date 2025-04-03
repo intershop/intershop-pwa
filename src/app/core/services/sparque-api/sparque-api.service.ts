@@ -28,7 +28,7 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 // sparque config keys that should not be appended to the query params
-const SPARQUE_CONFIG_EXCLUDE_PARAMS = ['serverUrl', 'wrapperApi'];
+const SPARQUE_CONFIG_EXCLUDE_PARAMS = ['serverUrl', 'wrapperApi', 'enablePrices'];
 
 /**
  * Service for interacting with the Sparque API.
@@ -64,13 +64,7 @@ export class SparqueApiService {
         this.constructHeaders(options).pipe(
           map(headers => ({
             headers,
-            params: options?.params
-              ? // append incoming params to default ones
-                options.params
-                  .keys()
-                  .reduce((acc, key) => acc.set(key, options.params.get(key)), this.sparqueQueryToHttpParams(path))
-              : // just use default headers
-                this.sparqueQueryToHttpParams(path),
+            params: this.sparqueQueryToHttpParams(path, options?.params),
             responseType: options?.responseType,
           }))
         )
@@ -87,7 +81,7 @@ export class SparqueApiService {
    * @param path - The path to be converted to HTTP parameters.
    * @returns An instance of HttpParams containing the Sparque configuration and locale.
    */
-  private sparqueQueryToHttpParams(path: string): HttpParams {
+  private sparqueQueryToHttpParams(path: string, params: HttpParams): HttpParams {
     if (path.startsWith('http://') || path.startsWith('https://')) {
       return new HttpParams();
     }
@@ -107,6 +101,19 @@ export class SparqueApiService {
         });
         sparqueParams = sparqueParams.append('Locale', locale.replace('_', '-'));
       });
+    params?.keys().forEach(key => {
+      if (key.includes('selectedFacets')) {
+        params
+          .get(key)
+          ?.split(',')
+          .forEach(value => {
+            sparqueParams = sparqueParams.append(key, value);
+          });
+      } else {
+        sparqueParams = sparqueParams.append(key, params.get(key));
+      }
+    });
+
     return sparqueParams;
   }
 
