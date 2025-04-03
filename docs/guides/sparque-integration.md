@@ -26,13 +26,14 @@ In any case, the name of the configuration parameters must correspond exactly to
 
 Example for the specification of the SPARQUE configuration in an environment file:
 
-```typescript
+```ts
 sparque: {
   serverUrl: '<sparque connection url>',
   wrapperApi: '<wrapper api version>',
   workspaceName: '<name of the workspace>',
   apiName: '<used sparque api>',
   channelId: '<in sparque workspace configured channel>',
+  enablePrices: true | false,
 },
 ```
 
@@ -42,7 +43,7 @@ Example for the specification of the SPARQUE configuration in a Docker compose f
 # PWA container settings
 pwa:
   environment:
-    SPARQUE: '{"serverUrl": "<sparque connection url>", "wrapperApi": "<wrapper api version>", "workspaceName": "<name of the workspace>", "apiName": "<used sparque api>", "channelId": <in sparque workspace configured channel>}'
+    SPARQUE: '{"serverUrl": "<sparque connection url>", "wrapperApi": "<wrapper api version>", "workspaceName": "<name of the workspace>", "apiName": "<used sparque api>", "channelId": <in sparque workspace configured channel>, "enablePrices": <true|false>}'
 ```
 
 > [!NOTE]
@@ -64,7 +65,56 @@ Example for the specification of multiple domain configuration in a NGINX docker
     workspaceName: <name of the workspace>
     apiName: <used sparque api>
     channelId: <in sparque workspace configured channel>
+    enablePrices: true | false
   ...
+```
+
+## Provider Concept
+
+To exchange services without changing the corresponding effects method the provider concept is introduced.
+The provider contains a _get()_ method which returns the proper service instance regarding the predefined criteria.
+Each provider is bound to an abstract service class.
+The actual service is then an extension of the abstract class.
+The service must implement the methods defined in the abstract class.
+
+```ts
+// example SearchServiceProvider
+@Injectable({ providedIn: 'root' })
+export class SearchServiceProvider {
+  ...
+  get(): SearchService {
+    ...
+    return isSparque ? this.sparqueSearchService : this.productsService;
+  }
+}
+
+// example abstract SearchService
+@Injectable({ providedIn: 'root' })
+export abstract class SearchService {
+  ...
+  abstract search(searchTerm: string): Observable<Suggestion>;
+}
+// example SearchService implementation
+@Injectable({ providedIn: 'root' })
+export class SparqueSearchService extends SearchService {
+  ...
+  search(searchTerm: string): Observable<Suggestion> {
+    ...
+  }
+}
+
+// usage in the products.effects.ts effect
+loadFilteredProducts$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadProductsForFilter),
+      ...
+      switchMap(pageSize =>
+            this.searchServiceProvider
+              .get()
+              ....
+      )
+  ...
+);
 ```
 
 ## Suggest Components
