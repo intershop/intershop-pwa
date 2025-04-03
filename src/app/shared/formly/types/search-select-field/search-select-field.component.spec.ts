@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
-import { MockComponent } from 'ng-mocks';
 
+import { IconModule } from 'ish-core/icon.module';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 
@@ -18,7 +17,7 @@ describe('Search Select Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(FaIconComponent), SearchSelectFieldComponent],
+      declarations: [SearchSelectFieldComponent],
       imports: [
         FormlyModule.forRoot({
           types: [
@@ -30,6 +29,7 @@ describe('Search Select Field Component', () => {
         }),
         FormlySelectModule,
         FormlyTestingComponentsModule,
+        IconModule,
         NgSelectModule,
         ReactiveFormsModule,
       ],
