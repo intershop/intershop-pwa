@@ -53,14 +53,10 @@ export function fillFormField(parent: string, key: string, value: number | strin
           cy.get(`[data-testing-id="${key}"]`).select(value);
         }
       } else if (tagName === 'NG-SELECT') {
-        cy.wrap(cy.get(`[data-testing-id="${key}"]`))
-          .click()
-          .get('ng-dropdown-panel')
-          .get('.ng-option')
-          .contains(String(value))
-          .then(item => {
-            cy.wrap(item).click();
-          });
+        const field = cy.get(`[data-testing-id="${key}"] input`);
+        if (value) {
+          field.type(value.toString());
+        }
       }
     });
   });
