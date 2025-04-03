@@ -51,10 +51,7 @@ export class ProductsListComponent implements OnChanges {
     this.swiperConfig = {
       watchSlidesProgress: true,
       direction: 'horizontal',
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
+      navigation: true,
       pagination: {
         clickable: true,
       },
