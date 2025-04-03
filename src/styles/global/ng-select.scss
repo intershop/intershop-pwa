@@ -1,14 +1,70 @@
 .ng-select {
-  &.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
-    border: solid 2px #000;
-    box-shadow: none;
+  &.ng-select-opened {
+    > .ng-select-container {
+      border: solid 2px #000;
+      border-radius: 4px;
+
+      .ng-arrow {
+        border-color: transparent transparent $ng-select-border;
+
+        &:hover {
+          border-color: transparent transparent $ng-select-border;
+        }
+      }
+    }
   }
 
-  &.ng-select-opened .ng-select-container {
-    border-color: $CORPORATE-PRIMARY !important;
+  &.ng-select-focused {
+    &:not(.ng-select-opened) > .ng-select-container {
+      border: solid 2px #000;
+      border-radius: 4px;
+      box-shadow: none;
+    }
   }
 
-  &.ng-invalid.ng-dirty .ng-select-container {
+  .ng-clear-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ng-arrow-wrapper {
+    width: 17px;
+    padding-right: 0;
+
+    &:hover {
+      .ng-arrow {
+        border-top-color: $ng-select-border;
+      }
+    }
+
+    .ng-arrow {
+      border-color: $ng-select-border transparent transparent;
+    }
+  }
+}
+
+.ng-dropdown-panel {
+  .ng-dropdown-panel-items {
+    .ng-option {
+      padding: 2px 10px;
+
+      &.ng-option-selected,
+      &.ng-option-selected.ng-option-marked {
+        background-color: $gray-300;
+
+        .ng-option-label {
+          font-weight: 400;
+        }
+      }
+
+      &.ng-option-marked {
+        background-color: $gray-100;
+      }
+    }
+  }
+
+  &.ng-invalid.ng-dirty:not(.ng-select-opened) .ng-select-container {
     border-color: $error-color;
 
     .ng-arrow {
@@ -19,33 +75,13 @@
       color: $error-color;
     }
   }
-
-  .ng-select-container {
-    border: 1px solid $gray-400;
-    border-radius: 0 !important;
-  }
-
-  .ng-option-marked {
-    background-color: $gray-100 !important;
-  }
-
-  .ng-option-selected {
-    background-color: $gray-300 !important;
-
-    .ng-option-label {
-      font-weight: 400 !important;
-    }
-  }
-
-  .ng-clear-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 }
 
+// Firefox specific definitions to imitate the different focus-visible styling
 @-moz-document url-prefix() {
+  .ng-select.ng-select-opened > .ng-select-container,
   .ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
     border: solid 3px #0060df;
+    border-radius: 2px;
   }
 }

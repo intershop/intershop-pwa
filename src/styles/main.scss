@@ -18,6 +18,9 @@
 @import 'swiper/scss/pagination';
 
 // import ng-select default theme
+$ng-select-border: $gray-400;
+$ng-select-border-radius: 0;
+
 @import '@ng-select/ng-select/scss/default.theme';
 
 // STYLING COMPATIBILITY LAYER
