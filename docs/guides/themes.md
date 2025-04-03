@@ -153,6 +153,11 @@ Also the used feature set can be changed with the _Features_ and _Additional Fea
 | Additional Features | comma separated list | Additional PWA features, a comma separated list of features added to the default feature set of the used theme                                                                                                         |
 | Configuration JSON  | JSON                 | Additional Configuration data in JSON notation, will be available in the PWA state, accessible via `appFacade.extraSetting$(path)`                                                                                     |
 
+> [!NOTE]
+> The `Features` or `Additional Features` configuration might not work for all features as expected or without problems in development environments.
+> In these cases the `features` configuration in `environment.development.ts` should be used to enable a wanted feature.
+> In production like environments with SSR and state transfer the configured feature set will be initialized correctly.
+
 ### Configuration JSON
 
 The _Configuration_ CMS component provides a generic _Configuration JSON_ parameter that can be used to add any structured data in JSON format for the specific needs of the PWA customization in projects without having to change or extend the CMS component model.

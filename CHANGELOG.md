@@ -20,6 +20,8 @@ kb_everyone
 >
 > Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.9.3 for PWA 6.0.0 deployments.
 
+From PWA 6.0.0, we support semantic versioning.
+
 ### Features
 
 - migrate Cybersource integration to Microform v2 (#1773) ([371fd77](https://github.com/intershop/intershop-pwa/commit/371fd77))
