@@ -37,7 +37,7 @@ export class SparqueSearchMapper {
         name: facet.id ? facet.id : facet.value,
         displayName: facet.value,
         count: facet.score,
-        selected: searchParameter[facetGroup.id]?.includes(facet.id),
+        selected: searchParameter[facetGroup.id] ? searchParameter[facetGroup.id]?.includes(facet.id) : false,
         level: 0,
         searchParameter: calculateSearchParams(
           searchParameter,
@@ -52,7 +52,7 @@ export class SparqueSearchMapper {
         id: facetGroup.id,
         facets,
         selectionType: 'single',
-        limitCount: 5,
+        limitCount: 10,
       };
     });
   }

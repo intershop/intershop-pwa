@@ -15,7 +15,7 @@ import { SearchServiceProvider } from 'ish-core/services/search/provider/search.
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user/user.actions';
 import { loadCategory } from 'ish-core/store/shopping/categories';
-import { loadProductsForFilter } from 'ish-core/store/shopping/filter';
+import { loadFilterSuccess, loadProductsForFilter } from 'ish-core/store/shopping/filter';
 import { setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
 import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
@@ -85,7 +85,7 @@ describe('Products Effects', () => {
           { path: 'product/:sku', children: [] },
           { path: '**', children: [] },
         ]),
-        ShoppingStoreModule.forTesting('products', 'categories', 'productListing', 'productPrices'),
+        ShoppingStoreModule.forTesting('products', 'categories', 'productListing', 'productPrices', 'filter'),
       ],
       providers: [
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
@@ -252,6 +252,31 @@ describe('Products Effects', () => {
 
   describe('loadFilteredProducts$', () => {
     it('should trigger product actions for ApplyFilterSuccess action', done => {
+      store.dispatch(
+        loadFilterSuccess({
+          filterNavigation: {
+            filter: [
+              {
+                name: 'Category',
+                displayType: 'text_clear',
+                id: 'category',
+                facets: [
+                  {
+                    name: 'blubber',
+                    count: 10,
+                    selected: false,
+                    displayName: 'blubber',
+                    searchParameter: { param: ['b'] },
+                    level: 0,
+                  },
+                ],
+                selectionType: 'single',
+                limitCount: 10,
+              },
+            ],
+          },
+        })
+      );
       const action = loadProductsForFilter({
         id: {
           type: 'search',
