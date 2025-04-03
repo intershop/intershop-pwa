@@ -3,12 +3,11 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
-import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
+import { anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
-import { ICMSuggestionService } from 'ish-core/services/icm-suggestion/icm-suggestion.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { SuggestionServiceProvider } from 'ish-core/services/suggestion/provider/suggestion.service.provider';
+import { SearchServiceProvider } from 'ish-core/services/search/provider/search.service.provider';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadMoreProducts, setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
@@ -26,20 +25,18 @@ describe('Search Effects', () => {
   let effects: SearchEffects;
   let router: Router;
   let productsServiceMock: ProductsService;
-  let suggestionServiceMock: ICMSuggestionService;
-  let suggestionServiceProviderMock: SuggestionServiceProvider;
+  let searchServiceProviderMock: SearchServiceProvider;
   let httpStatusCodeService: HttpStatusCodeService;
 
   const suggests = [{ keywordSuggestions: ['Goods'] }] as Suggestion;
 
   beforeEach(() => {
-    suggestionServiceMock = mock(ICMSuggestionService);
-    suggestionServiceProviderMock = mock(SuggestionServiceProvider);
-    when(suggestionServiceProviderMock.get()).thenReturn(instance(suggestionServiceMock));
-    when(suggestionServiceMock.search(anyString())).thenReturn(of<Suggestion>(suggests));
+    searchServiceProviderMock = mock(SearchServiceProvider);
     productsServiceMock = mock(ProductsService);
+    when(productsServiceMock.search(anyString())).thenReturn(of<Suggestion>(suggests));
+    when(searchServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
     const skus = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-    when(productsServiceMock.searchProducts(anyString(), anyNumber(), anything(), anyNumber())).thenCall(
+    when(productsServiceMock.searchProducts(anything())).thenCall(
       (searchTerm: string, amount: number, _, offset: number) => {
         if (!searchTerm) {
           return throwError(() => makeHttpError({ message: 'ERROR' }));
@@ -65,8 +62,7 @@ describe('Search Effects', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
-        { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
-        { provide: SuggestionServiceProvider, useFactory: () => instance(suggestionServiceProviderMock) },
+        { provide: SearchServiceProvider, useFactory: () => instance(searchServiceProviderMock) },
         provideStoreSnapshots(),
       ],
     });
@@ -103,18 +99,18 @@ describe('Search Effects', () => {
       const action = suggestSearch({ searchTerm: 'g' });
       store$.dispatch(action);
 
-      verify(suggestionServiceMock.search('g')).once();
+      verify(productsServiceMock.search('g')).once();
     }));
 
     it('should not fire action when error is encountered at service level', fakeAsync(() => {
-      when(suggestionServiceMock.search(anyString())).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
+      when(productsServiceMock.search(anyString())).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
 
       store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(4000);
 
       effects.suggestSearch$.subscribe({ next: fail, error: fail });
 
-      verify(suggestionServiceMock.search('good')).once();
+      verify(productsServiceMock.search('good')).once();
     }));
 
     it('should fire all necessary actions for suggest-search', fakeAsync(() => {
@@ -182,15 +178,49 @@ describe('Search Effects', () => {
       router.navigate(['search', searchTerm]);
       tick(500);
 
-      verify(productsServiceMock.searchProducts(searchTerm, 12, anything(), 0)).once();
+      verify(productsServiceMock.searchProducts(anything())).once();
+      expect(capture(productsServiceMock.searchProducts).last()).toMatchInlineSnapshot(`
+        [
+          {
+            "amount": 12,
+            "offset": 0,
+            "page": 1,
+            "searchTerm": "123",
+            "sorting": undefined,
+          },
+        ]
+      `);
 
       store$.dispatch(loadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 2 }));
       tick(5);
-      verify(productsServiceMock.searchProducts(searchTerm, 12, anything(), 12)).once();
+      verify(productsServiceMock.searchProducts(anything())).times(2);
+
+      expect(capture(productsServiceMock.searchProducts).last()).toMatchInlineSnapshot(`
+        [
+          {
+            "amount": 12,
+            "offset": 12,
+            "page": 2,
+            "searchTerm": "123",
+            "sorting": undefined,
+          },
+        ]
+      `);
 
       store$.dispatch(loadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 3 }));
       tick(5);
-      verify(productsServiceMock.searchProducts(searchTerm, 12, anything(), 24)).once();
+      verify(productsServiceMock.searchProducts(anything())).times(3);
+      expect(capture(productsServiceMock.searchProducts).last()).toMatchInlineSnapshot(`
+        [
+          {
+            "amount": 12,
+            "offset": 24,
+            "page": 3,
+            "searchTerm": "123",
+            "sorting": undefined,
+          },
+        ]
+      `);
     }));
   });
 });
