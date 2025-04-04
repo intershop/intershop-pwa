@@ -4,10 +4,10 @@ import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
 import { SearchResultPage } from '../../pages/shopping/search-result.page';
 
 const _ = {
-  suggestTerm: 'ko',
-  suggestItemText: 'Kodak',
-  searchTerm: 'kodak M552',
-  product: '7912057',
+  suggestTerm: 'ken',
+  suggestItemText: 'kensington',
+  searchTerm: 'Kensington K55786WW',
+  product: '5800646',
   searchTermWithMoreResults: 'acer',
   searchTermWithOneResult: 'acer c110',
   oneResultProduct: '9438012',
@@ -24,7 +24,7 @@ describe('Searching User', () => {
   });
 
   it('should perform search and land on search result page', () => {
-    at(HomePage, page => page.header.searchBox.search(_.searchTerm));
+    at(HomePage, page => page.header.searchBox.search(_.suggestItemText));
     at(SearchResultPage);
   });
 
@@ -36,7 +36,7 @@ describe('Searching User', () => {
     at(SearchResultPage, page => page.productList.gotoProductDetailPageBySku(_.product));
     at(ProductDetailPage, page => {
       page.sku.should('have.text', _.product);
-      page.breadcrumb.items.should('have.length', 4);
+      page.breadcrumb.items.should('have.length', 5);
     });
   });
 
