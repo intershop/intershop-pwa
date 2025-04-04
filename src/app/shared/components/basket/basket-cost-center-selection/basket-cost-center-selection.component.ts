@@ -91,7 +91,7 @@ export class BasketCostCenterSelectionComponent implements OnInit {
     return [
       {
         key: 'costCenter',
-        type: 'ish-select-field',
+        type: 'ish-search-select-field',
         props: {
           label: 'checkout.cost_center.select.label',
           required: true,

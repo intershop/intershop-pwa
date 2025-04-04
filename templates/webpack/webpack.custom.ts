@@ -245,6 +245,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
             /\bnav-link\b/,
             /\bpopover\b/,
             /\btable\b/,
+            /\bng-select\b/,
           ],
         },
       })

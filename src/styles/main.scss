@@ -17,6 +17,12 @@
 @import 'swiper/scss';
 @import 'swiper/scss/pagination';
 
+// import ng-select default theme
+$ng-select-border: $gray-400;
+$ng-select-border-radius: 0;
+
+@import '@ng-select/ng-select/scss/default.theme';
+
 // STYLING COMPATIBILITY LAYER
 
 // import breakpoint wrapper to match older bootstrap 3 implementation
@@ -36,6 +42,7 @@
 @import 'global/toasts';
 @import 'global/swiper';
 @import 'global/forms';
+@import 'global/ng-select';
 @import 'global/lists';
 @import 'global/share-tools';
 @import 'global/notifications';
