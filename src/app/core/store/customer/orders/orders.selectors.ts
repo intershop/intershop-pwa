@@ -20,6 +20,8 @@ export const getOrders = selectAll;
 
 export const getOrderListQuery = createSelector(getOrdersState, state => state.query);
 
+export const getOrdersPagingData = createSelector(getOrdersState, state => state.paging);
+
 export const getOrder = (orderId: string) =>
   createSelector(selectAll, entities => entities.find(e => e.id === orderId));
 

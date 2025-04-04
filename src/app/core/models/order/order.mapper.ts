@@ -2,17 +2,18 @@ import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
+import { PagingData } from 'ish-core/models/paging/paging.model';
 import { PaymentMapper } from 'ish-core/models/payment/payment.mapper';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
 
 import { OrderData } from './order.interface';
-import { Order } from './order.model';
+import { Order, OrdersInformation } from './order.model';
 
 export class OrderMapper {
   // eslint-disable-next-line complexity
   static fromData(payload: OrderData): Order {
     if (!Array.isArray(payload.data)) {
-      const { data, included, infos } = payload;
+      const { data, included } = payload;
       const totals = BasketMapper.getTotals(data, included ? included.discounts : undefined);
 
       return {
@@ -85,7 +86,6 @@ export class OrderMapper {
               )
             : undefined,
         totals,
-        infos,
         attributes: data.attributes,
         taxationId: data.taxIdentificationNumber,
         user: data.buyer,
@@ -95,9 +95,23 @@ export class OrderMapper {
     }
   }
 
-  static fromListData(payload: OrderData): Order[] {
+  static fromInfo(payload: OrderData): PagingData {
+    if (payload.info) {
+      const { info } = payload;
+      return {
+        limit: info.limit,
+        offset: info.offset,
+        total: info.total,
+      };
+    }
+  }
+
+  static fromListData(payload: OrderData): OrdersInformation {
     if (Array.isArray(payload.data)) {
-      return payload.data.map(data => OrderMapper.fromData({ ...payload, data }));
+      return {
+        orders: payload.data.map(data => OrderMapper.fromData({ ...payload, data })),
+        paging: OrderMapper.fromInfo(payload),
+      };
     }
   }
 }
