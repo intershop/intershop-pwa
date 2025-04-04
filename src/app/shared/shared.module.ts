@@ -232,7 +232,6 @@ const declaredComponents = [
   LineItemListElementComponent,
   LineItemWarrantyComponent,
   LoginModalComponent,
-  PagingComponent,
   ProductChooseVariationComponent,
   ProductIdComponent,
   ProductItemVariationsComponent,
@@ -317,6 +316,7 @@ const exportedComponents = [
   PromotionRemoveComponent,
   SearchBoxComponent,
   SuccessMessageComponent,
+  PagingComponent,
 ];
 
 @NgModule({

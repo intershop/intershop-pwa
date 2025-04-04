@@ -1,5 +1,6 @@
 import { AbstractBasket } from 'ish-core/models/basket/basket.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
+import { PagingData } from 'ish-core/models/paging/paging.model';
 
 export interface OrderLineItem extends LineItem {
   name: string;
@@ -28,4 +29,10 @@ export interface Order extends OrderBasket {
     date: number;
   };
   requisitionNo?: string;
+  paginationPosition?: number;
+}
+
+export interface OrdersInformation {
+  orders: Order[];
+  paging: PagingData;
 }
