@@ -33,6 +33,7 @@ import {
   getOrders,
   getOrdersError,
   getOrdersLoading,
+  getOrdersPagingData,
   getSelectedOrder,
   loadMoreOrders,
   loadOrders,
@@ -179,6 +180,7 @@ export class AccountFacade {
   // ORDERS
 
   orders$ = this.store.pipe(select(getOrders));
+  ordersPagingData$ = this.store.pipe(select(getOrdersPagingData));
 
   loadOrders(query?: OrderListQuery) {
     this.store.dispatch(loadOrders({ query: query || { limit: 30 } }));

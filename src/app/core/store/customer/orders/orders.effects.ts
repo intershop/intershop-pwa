@@ -117,7 +117,7 @@ export class OrdersEffects {
       mapToPayloadProperty('query'),
       switchMap(query =>
         this.orderService.getOrders(query).pipe(
-          map(orders => loadOrdersSuccess({ orders, query })),
+          map(info => loadOrdersSuccess({ orders: info.orders, query, paging: info.paging })),
           mapErrorToAction(loadOrdersFail)
         )
       )

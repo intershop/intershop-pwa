@@ -4,6 +4,7 @@ import { createReducer, on } from '@ngrx/store';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { Order } from 'ish-core/models/order/order.model';
+import { PagingData } from 'ish-core/models/paging/paging.model';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
 import {
@@ -29,6 +30,7 @@ export interface OrdersState extends EntityState<Order> {
   selected: string;
   query: OrderListQuery;
   error: HttpError;
+  paging: PagingData;
 }
 
 const initialState: OrdersState = orderAdapter.getInitialState({
@@ -36,6 +38,7 @@ const initialState: OrdersState = orderAdapter.getInitialState({
   selected: undefined,
   query: undefined,
   error: undefined,
+  paging: undefined,
 });
 
 export const ordersReducer = createReducer(
@@ -68,7 +71,10 @@ export const ordersReducer = createReducer(
       paginationPosition: (query.offset ? query.offset : 0) + index,
     }));
 
-    return query.offset ? orderAdapter.addMany(updatedOrders, newState) : orderAdapter.setAll(updatedOrders, newState);
+    return {
+      ...(query.offset ? orderAdapter.addMany(updatedOrders, newState) : orderAdapter.setAll(updatedOrders, newState)),
+      paging: action.payload.paging,
+    };
   }),
 
   on(
