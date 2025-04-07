@@ -19,6 +19,8 @@ export class CostCentersPageComponent implements OnInit {
   error$: Observable<HttpError>;
   loading$: Observable<boolean>;
 
+  pageLimit = 25;
+
   columnsToDisplay: CostCenterColumnsType[] = [
     'costCenterId',
     'costCenterName',
@@ -35,6 +37,7 @@ export class CostCentersPageComponent implements OnInit {
   constructor(private organizationManagementFacade: OrganizationManagementFacade) {}
 
   ngOnInit() {
+    this.organizationManagementFacade.loadCostCenters(0, this.pageLimit);
     this.costCenters$ = this.organizationManagementFacade.costCenters$;
     this.error$ = this.organizationManagementFacade.costCentersError$;
     this.loading$ = this.organizationManagementFacade.costCentersLoading$;

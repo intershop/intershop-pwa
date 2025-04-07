@@ -1,15 +1,19 @@
 import { createAction } from '@ngrx/store';
 
 import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
+import { PagingData } from 'ish-core/models/paging/paging.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-export const loadCostCenters = createAction('[CostCenters] Load Cost Centers');
+export const loadCostCenters = createAction(
+  '[CostCenters] Load Cost Centers',
+  payload<{ offset?: number; limit?: number }>()
+);
 
 export const loadCostCentersFail = createAction('[CostCenters API] Load Cost Centers Fail', httpError());
 
 export const loadCostCentersSuccess = createAction(
   '[CostCenters API] Load Cost Centers Success',
-  payload<{ costCenters: CostCenter[] }>()
+  payload<{ costCenters: CostCenter[]; paging: PagingData }>()
 );
 
 export const loadCostCenter = createAction(
