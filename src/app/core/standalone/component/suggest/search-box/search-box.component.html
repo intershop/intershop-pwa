@@ -5,13 +5,12 @@
     autocomplete="off"
     type="search"
     id="header-search-input"
-    class="form-control searchTerm"
+    class="form-control searchTerm search-input"
     (input)="handleInput($event.target)"
     [value]="inputSearchTerms$ | async"
     (focus)="handleFocus(true)"
     (keydown.enter)="submitSearch(searchInput.value)"
-    aria-controls="search-suggest-layer"
-    [attr.aria-expanded]="(searchBoxResults$ | async) && hasMinimumCharCount && searchBoxFocus ? 'true' : 'false'"
+    [attr.aria-label]="'search.searchbox.label' | translate"
   />
 
   <div *ngIf="searchSuggestError$ | async as error" class="search-suggest-container">
@@ -124,22 +123,24 @@
   <div *ngIf="searchSuggestLoading$ | async" class="loading"></div>
 
   <div class="buttons">
+    <!-- Clear input button -->
     <button
       #searchInputReset
       *ngIf="inputSearchTerms$ | async"
-      class="btn-reset btn btn-primary"
+      class="btn btn-reset"
       type="reset"
       name="reset"
       [title]="'search.searchbox.button.reset.title' | translate"
       (focus)="handleFocus(true)"
       (click)="handleResetButton($event); setFocusOnSearchInput()"
     >
-      <fa-icon [icon]="['fas', 'times']" />
+      <fa-icon [icon]="['fas', 'times']" class="searchbox-icon" />
     </button>
 
+    <!-- Search button -->
     <button
       #searchInputSubmit
-      class="btn-search btn btn-primary"
+      class="btn btn-secondary btn-search"
       type="submit"
       name="search"
       [title]="'search.searchbox.button.title' | translate"
@@ -148,7 +149,7 @@
     >
       <!-- search button with icon -->
       <ng-container *ngIf="!configuration?.buttonText; else textBlock">
-        <fa-icon [icon]="['fas', 'search']" />
+        <fa-icon [icon]="['fas', 'search']" class="searchbox-icon" />
       </ng-container>
       <!-- search button with text -->
       <ng-template #textBlock> {{ configuration?.buttonText }} </ng-template>

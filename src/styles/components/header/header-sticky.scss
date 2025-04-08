@@ -94,6 +94,15 @@
         }
       }
 
+      .sticky-header-icon {
+        align-content: center;
+
+        .ng-fa-icon:not(.searchbox-icon) {
+          padding: 0 10px;
+          color: $text-color-tertiary;
+        }
+      }
+
       .mini-cart {
         top: -2px !important;
       }

@@ -33,42 +33,11 @@
       background: rgb(238 238 238 / 0.8);
     }
 
-    input {
-      &.form-control {
-        height: $search-container-height;
-        border: $border-width-default solid $border-color-light;
-
-        &:focus {
-          color: $text-color-primary;
-          background: $color-inverse;
-          box-shadow: none;
-
-          + .buttons {
-            button {
-              color: $text-color-corporate;
-
-              .ng-fa-icon {
-                color: $text-color-corporate;
-              }
-
-              &.btn-reset {
-                color: $text-color-quaternary;
-
-                .ng-fa-icon {
-                  color: $text-color-quaternary;
-                }
-              }
-            }
-          }
-        }
+    .error-search-container {
+      .buttons {
+        position: relative;
+        top: -($search-container-height);
       }
-    }
-
-    .btn-primary {
-      right: 0;
-      bottom: 0;
-      margin-bottom: 0;
-      font-weight: normal;
     }
   }
 }
