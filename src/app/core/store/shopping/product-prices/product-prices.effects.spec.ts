@@ -1,12 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of } from 'rxjs';
 import { anything, capture, instance, mock, when } from 'ts-mockito';
 
 import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { PricesService } from 'ish-core/services/prices/prices.service';
+import { getSparqueConfig } from 'ish-core/store/core/configuration/configuration.selectors';
 
 import { loadProductPrices, loadProductPricesSuccess } from '.';
 import { ProductPricesEffects } from './product-prices.effects';
@@ -25,10 +27,25 @@ describe('Product Prices Effects', () => {
         { provide: PricesService, useFactory: () => instance(pricesServiceMock) },
         ProductPricesEffects,
         provideMockActions(() => actions$),
+        provideMockStore({
+          selectors: [
+            {
+              selector: getSparqueConfig,
+              value: {
+                serverUrl: 'http://fancy:0815',
+                wrapperApi: 'infinity',
+                apiName: 'foo',
+                workspaceName: 'bar',
+                channelId: 'aura',
+              },
+            },
+          ],
+        }),
       ],
     });
 
     effects = TestBed.inject(ProductPricesEffects);
+    TestBed.inject(Store);
   });
 
   describe('loadProductPrices$', () => {

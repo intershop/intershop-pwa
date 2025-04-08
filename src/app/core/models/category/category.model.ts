@@ -16,6 +16,8 @@ export interface Category {
   completenessLevel: number;
 
   seoAttributes?: SeoAttributes;
+
+  productCount?: number;
 }
 
 export * from './category.helper';

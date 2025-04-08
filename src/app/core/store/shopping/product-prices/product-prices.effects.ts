@@ -1,21 +1,26 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Store, select } from '@ngrx/store';
 import { debounceTime, filter, map, mergeMap, toArray, window } from 'rxjs/operators';
 
 import { PricesService } from 'ish-core/services/prices/prices.service';
+import { getSparqueConfig } from 'ish-core/store/core/configuration';
 import { mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { loadProductPrices, loadProductPricesSuccess } from '.';
 
 @Injectable()
 export class ProductPricesEffects {
-  constructor(private actions$: Actions, private pricesService: PricesService) {}
+  constructor(private actions$: Actions, private pricesService: PricesService, private store: Store) {}
 
   loadProductPrices$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadProductPrices),
       mapToPayloadProperty('skus'),
       whenTruthy(),
+      concatLatestFrom(() => this.store.pipe(select(getSparqueConfig))),
+      filter(([, sparqueConfig]) => sparqueConfig?.enablePrices === undefined || !sparqueConfig.enablePrices),
+      map(([skus]) => skus),
       window(this.actions$.pipe(ofType(loadProductPrices), debounceTime(SSR ? 20 : 500))),
       mergeMap(window$ =>
         window$.pipe(
