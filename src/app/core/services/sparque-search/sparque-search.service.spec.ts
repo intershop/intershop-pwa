@@ -15,12 +15,13 @@ describe('Sparque Search Service', () => {
   let searchService: SparqueSearchService;
   let sparqueSearchMapper: SparqueSearchMapper;
   let sparqueSuggestionMapper: SparqueSuggestionMapper;
+  const apiVersion = 'v2';
 
   beforeEach(() => {
     sparqueApiService = mock(SparqueApiService);
     sparqueSearchMapper = mock(SparqueSearchMapper);
     sparqueSuggestionMapper = mock(SparqueSuggestionMapper);
-    when(sparqueApiService.get(anything(), anything())).thenReturn(
+    when(sparqueApiService.get(anything(), apiVersion, anything())).thenReturn(
       of<SparqueSearchResponse>({ products: [], total: 0, sortings: [] })
     );
     TestBed.configureTestingModule({
@@ -34,15 +35,15 @@ describe('Sparque Search Service', () => {
   });
 
   it('should always delegate to sparque api service when called', () => {
-    verify(sparqueApiService.get(anything(), anything())).never();
+    verify(sparqueApiService.get(anything(), apiVersion, anything())).never();
 
     searchService.searchProducts({ searchTerm: 'test', amount: 1, offset: 0 });
-    verify(sparqueApiService.get(anything(), anything())).once();
+    verify(sparqueApiService.get(anything(), apiVersion, anything())).once();
   });
 
   it('should map the response using SparqueSuggestionMapper', done => {
     const suggestions = { keywordSuggestions: [{ keyword: 'test' }] } as SparqueSuggestions;
-    when(sparqueApiService.get(anything(), anything())).thenReturn(of<SparqueSuggestions>(suggestions));
+    when(sparqueApiService.get(anything(), apiVersion, anything())).thenReturn(of<SparqueSuggestions>(suggestions));
 
     searchService.searchSuggestions('test').subscribe(() => {
       verify(sparqueSuggestionMapper.fromData(suggestions)).once();
@@ -58,7 +59,9 @@ describe('Sparque Search Service', () => {
       facets: [{ id: 'blubber', title: 'blubber', options: [] }],
     } as SparqueSearchResponse;
 
-    when(sparqueApiService.get(anything(), anything())).thenReturn(of<SparqueSearchResponse>(searchResponse));
+    when(sparqueApiService.get(anything(), apiVersion, anything())).thenReturn(
+      of<SparqueSearchResponse>(searchResponse)
+    );
 
     searchService.searchProducts({ searchTerm: 'test', amount: 1, offset: 0 }).subscribe(() => {
       verify(sparqueSearchMapper.fromData(searchResponse, anything())).once();
@@ -67,10 +70,10 @@ describe('Sparque Search Service', () => {
   });
 
   it('should call sparque api service for getFilteredProducts', () => {
-    verify(sparqueApiService.get(anything(), anything())).never();
+    verify(sparqueApiService.get(anything(), apiVersion, anything())).never();
 
     searchService.getFilteredProducts({ category: ['electronics'] }, 10, 'price', 0);
-    verify(sparqueApiService.get(anything(), anything())).once();
+    verify(sparqueApiService.get(anything(), apiVersion, anything())).once();
   });
 
   it('should map the response using SparqueSearchMapper for getFilteredProducts', done => {
@@ -81,7 +84,9 @@ describe('Sparque Search Service', () => {
       facets: [{ id: 'facetID', title: 'facetTitle', options: [] }],
     } as SparqueSearchResponse;
 
-    when(sparqueApiService.get(anything(), anything())).thenReturn(of<SparqueSearchResponse>(filteredResponse));
+    when(sparqueApiService.get(anything(), apiVersion, anything())).thenReturn(
+      of<SparqueSearchResponse>(filteredResponse)
+    );
 
     searchService.getFilteredProducts({ category: ['electronics'] }, 10, 'price', 0).subscribe(() => {
       verify(sparqueSearchMapper.fromData(filteredResponse, anything())).once();

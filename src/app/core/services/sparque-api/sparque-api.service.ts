@@ -28,7 +28,7 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 // sparque config keys that should not be appended to the query params
-const SPARQUE_CONFIG_EXCLUDE_PARAMS = ['serverUrl', 'wrapperApi', 'enablePrices'];
+const SPARQUE_CONFIG_EXCLUDE_PARAMS = ['serverUrl', 'enablePrices'];
 
 /**
  * Service for interacting with the Sparque API.
@@ -56,10 +56,11 @@ export class SparqueApiService {
 
   private constructHttpClientParams(
     path: string,
+    apiVersion: string,
     options?: AvailableOptions
   ): Observable<[string, { headers: HttpHeaders; params: HttpParams }]> {
     return forkJoin([
-      this.constructUrlForPath(path),
+      this.constructUrlForPath(path, apiVersion),
       defer(() =>
         this.constructHeaders(options).pipe(
           map(headers => ({
@@ -165,7 +166,7 @@ export class SparqueApiService {
     );
   }
 
-  private constructUrlForPath(path: string): Observable<string> {
+  private constructUrlForPath(path: string, apiVersion: string): Observable<string> {
     if (path.startsWith('http://') || path.startsWith('https://')) {
       return of(path);
     }
@@ -173,7 +174,7 @@ export class SparqueApiService {
       this.store.pipe(
         select(getSparqueConfig),
         whenTruthy(),
-        map(config => config.serverUrl.concat('/api/', config.wrapperApi))
+        map(config => config.serverUrl.concat('/api/', apiVersion))
       ),
       of(`/${path}`),
     ]).pipe(
@@ -206,9 +207,9 @@ export class SparqueApiService {
   /**
    * http get request
    */
-  get<T>(path: string, options?: AvailableOptions): Observable<T> {
+  get<T>(path: string, apiVersion: string, options?: AvailableOptions): Observable<T> {
     return this.execute(
-      this.constructHttpClientParams(path, options).pipe(
+      this.constructHttpClientParams(path, apiVersion, options).pipe(
         concatMap(([url, httpOptions]) => this.httpClient.get<T>(url, httpOptions))
       )
     );

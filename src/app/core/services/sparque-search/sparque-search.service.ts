@@ -15,6 +15,8 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 @Injectable({ providedIn: 'root' })
 export class SparqueSearchService extends SearchService {
+  readonly apiVersion = 'v2';
+
   constructor(
     private sparqueApiService: SparqueApiService,
     private sparqueSuggestionMapper: SparqueSuggestionMapper,
@@ -33,7 +35,7 @@ export class SparqueSearchService extends SearchService {
     // count: maximum number of suggestions which is used individually for each type of suggestion
     const params = new HttpParams().set('Keyword', searchTerm).set('count', '8');
     return this.sparqueApiService
-      .get<SparqueSuggestions>(`suggestions`, { params, skipApiErrorHandling: true })
+      .get<SparqueSuggestions>(`suggestions`, this.apiVersion, { params, skipApiErrorHandling: true })
       .pipe(map(suggestions => this.sparqueSuggestionMapper.fromData(suggestions)));
   }
 
@@ -50,7 +52,7 @@ export class SparqueSearchService extends SearchService {
     }
 
     return this.sparqueApiService
-      .get<SparqueSearchResponse>(`search`, { params, skipApiErrorHandling: true })
+      .get<SparqueSearchResponse>(`search`, this.apiVersion, { params, skipApiErrorHandling: true })
       .pipe(map(result => this.sparqueSearchMapper.fromData(result, { searchTerm: [searchParams.searchTerm] })));
   }
 
@@ -71,7 +73,7 @@ export class SparqueSearchService extends SearchService {
     params = params.append('selectedFacets', selectedFacets(omit(searchParameter, 'searchTerm')));
 
     return this.sparqueApiService
-      .get<SparqueSearchResponse>(`search`, { params, skipApiErrorHandling: true })
+      .get<SparqueSearchResponse>(`search`, this.apiVersion, { params, skipApiErrorHandling: true })
       .pipe(map(result => this.sparqueSearchMapper.fromData(result, searchParameter)));
   }
 
@@ -95,7 +97,7 @@ export class SparqueSearchService extends SearchService {
     }
 
     return this.sparqueApiService
-      .get<SparqueSearchResponse>(`products`, { params })
+      .get<SparqueSearchResponse>(`products`, this.apiVersion, { params })
       .pipe(map(result => this.sparqueSearchMapper.fromData(result, { ['category']: [categoryUniqueId] })));
   }
 }
