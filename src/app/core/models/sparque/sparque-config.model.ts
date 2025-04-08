@@ -4,8 +4,6 @@
 export interface SparqueConfig {
   // base url of the sparque wrapper server
   serverUrl: string;
-  // version of the sparque wrapper REST API
-  wrapperApi: string;
   // sparque workspace name
   workspaceName: string;
   // sparque API name
@@ -23,7 +21,6 @@ export interface SparqueConfig {
 export function getEmptySparqueConfig(): SparqueConfig {
   return {
     serverUrl: '',
-    wrapperApi: '',
     workspaceName: '',
     apiName: '',
     channelId: '',

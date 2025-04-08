@@ -25,7 +25,6 @@ import { SparqueApiService } from './sparque-api.service';
 
 const sparqueConfig = {
   serverUrl: 'http://fancy:0815',
-  wrapperApi: 'infinity',
   apiName: 'foo',
   workspaceName: 'bar',
   channelId: 'aura',
@@ -33,7 +32,7 @@ const sparqueConfig = {
 
 function getRestURL(endpoint: string): string {
   return sparqueConfig.serverUrl
-    .concat('/api/', sparqueConfig.wrapperApi)
+    .concat('/api/v2')
     .concat(endpoint)
     .concat('?apiName=')
     .concat(sparqueConfig.apiName)
@@ -92,7 +91,7 @@ describe('Sparque Api Service', () => {
     });
 
     it('should call the httpClient.get method when sparqueApiService.get method is called.', done => {
-      sparqueApiService.get('data').subscribe({
+      sparqueApiService.get('data', 'v2').subscribe({
         next: data => {
           expect(data).toBeTruthy();
         },
@@ -105,7 +104,7 @@ describe('Sparque Api Service', () => {
     });
 
     it('should create Error Action if httpClient.get throws Error.', done => {
-      sparqueApiService.get('data').subscribe({
+      sparqueApiService.get('data', 'v2').subscribe({
         next: fail,
         error: err => {
           expect(err).toBeInstanceOf(HttpErrorResponse);
@@ -167,13 +166,13 @@ describe('Sparque Api Service', () => {
     });
 
     it('should bypass URL construction when path is an external link', () => {
-      sparqueApiService.get('http://google.de').subscribe({ next: fail, error: fail, complete: fail });
+      sparqueApiService.get('http://google.de', 'v2').subscribe({ next: fail, error: fail, complete: fail });
 
       httpTestingController.expectOne('http://google.de');
     });
 
     it('should bypass URL construction when path is an external secure link', () => {
-      sparqueApiService.get('https://google.de').subscribe({ next: fail, error: fail, complete: fail });
+      sparqueApiService.get('https://google.de', 'v2').subscribe({ next: fail, error: fail, complete: fail });
 
       httpTestingController.expectOne('https://google.de');
     });
@@ -218,7 +217,7 @@ describe('Sparque Api Service', () => {
     });
 
     it('should always have default headers', () => {
-      sparqueApiService.get('dummy').subscribe({ next: fail, error: fail, complete: fail });
+      sparqueApiService.get('dummy', 'v2').subscribe({ next: fail, error: fail, complete: fail });
 
       const req = httpTestingController.expectOne(getRestURL('/dummy'));
       expect(req.request.headers.keys()).not.toBeEmpty();
@@ -228,7 +227,7 @@ describe('Sparque Api Service', () => {
 
     it('should always append additional headers', () => {
       sparqueApiService
-        .get('dummy', {
+        .get('dummy', 'v2', {
           headers: new HttpHeaders({
             dummy: 'test',
           }),
@@ -244,7 +243,7 @@ describe('Sparque Api Service', () => {
 
     it('should always have overridable default headers', () => {
       sparqueApiService
-        .get('dummy', {
+        .get('dummy', 'v2', {
           headers: new HttpHeaders({
             Accept: 'application/xml',
             'content-type': 'application/xml',
@@ -259,14 +258,16 @@ describe('Sparque Api Service', () => {
     });
 
     it('should have default response type of "json" if no other is provided', () => {
-      sparqueApiService.get('dummy').subscribe({ next: fail, error: fail, complete: fail });
+      sparqueApiService.get('dummy', 'v2').subscribe({ next: fail, error: fail, complete: fail });
 
       const req = httpTestingController.expectOne(getRestURL('/dummy'));
       expect(req.request.responseType).toEqual('json');
     });
 
     it('should append specific response type of "text" if provided', () => {
-      sparqueApiService.get('dummy', { responseType: 'text' }).subscribe({ next: fail, error: fail, complete: fail });
+      sparqueApiService
+        .get('dummy', 'v2', { responseType: 'text' })
+        .subscribe({ next: fail, error: fail, complete: fail });
 
       const req = httpTestingController.expectOne(getRestURL('/dummy'));
       expect(req.request.responseType).toEqual('text');
@@ -311,7 +312,7 @@ describe('Sparque Api Service', () => {
     });
 
     it('should dispatch communication timeout errors when getting status 0', done => {
-      sparqueApiService.get('data').subscribe({
+      sparqueApiService.get('data', 'v2').subscribe({
         next: fail,
         error: err => {
           expect(err).toBeInstanceOf(HttpErrorResponse);
@@ -333,7 +334,7 @@ describe('Sparque Api Service', () => {
     });
 
     it('should dispatch general errors when getting status 500', done => {
-      sparqueApiService.get('data').subscribe({
+      sparqueApiService.get('data', 'v2').subscribe({
         next: fail,
         error: err => {
           expect(err).toBeInstanceOf(HttpErrorResponse);
@@ -355,7 +356,7 @@ describe('Sparque Api Service', () => {
     });
 
     it('should not dispatch errors when getting status 404', done => {
-      sparqueApiService.get('route').subscribe({
+      sparqueApiService.get('route', 'v2').subscribe({
         next: fail,
         error: err => {
           expect(err).toBeInstanceOf(HttpErrorResponse);

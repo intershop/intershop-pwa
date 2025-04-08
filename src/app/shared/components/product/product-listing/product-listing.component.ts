@@ -5,7 +5,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { concatMap, map, take, withLatestFrom } from 'rxjs/operators';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ProductListingID, ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
@@ -31,7 +30,6 @@ export class ProductListingComponent implements OnInit {
   listingLoading$: Observable<boolean>;
   currentPage$: Observable<number>;
   sortBy$: Observable<string>;
-  searchError$: Observable<HttpError>;
 
   private productListingId$ = new BehaviorSubject<ProductListingID>(undefined);
 
@@ -56,7 +54,6 @@ export class ProductListingComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(view => this.changeViewType(view));
-    this.searchError$ = this.shoppingFacade.searchSearchError$;
   }
 
   /**
