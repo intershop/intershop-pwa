@@ -2,8 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { Product } from 'ish-core/models/product/product.model';
-import { SparqueProduct } from 'ish-core/models/sparque/sparque.interface';
-import { SparqueMapper } from 'ish-core/models/sparque/sparque.mapper';
+import { SparqueOfferMapper } from 'ish-core/models/sparque-offer/sparque-offer.mapper';
+import { SparqueProduct } from 'ish-core/models/sparque-product/sparque-product.interface';
+import { SparqueProductMapper } from 'ish-core/models/sparque-product/sparque-product.mapper';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 import { FixedFacetGroupResult, SparqueSearchResponse, SparqueSortingOptionResponse } from './sparque-search.interface';
@@ -20,6 +21,13 @@ const sparqueProduct = {
   attributes,
   sku: 'SKU1',
   defaultcategoryId: 'cat1',
+  offers: [
+    {
+      priceIncVat: 100,
+      priceExclVat: 80,
+      currency: 'USD',
+    },
+  ],
 } as SparqueProduct;
 
 const product = {
@@ -50,14 +58,24 @@ const searchParams: URLFormParams = { searchTerm: ['fancyProduct'] };
 
 describe('Sparque Search Mapper', () => {
   let sparqueSearchMapper: SparqueSearchMapper;
-  let sparqueMapperMock: SparqueMapper;
+  let sparqueProductMapperMock: SparqueProductMapper;
+  let sparqueOfferMapperMock: SparqueOfferMapper;
 
   beforeEach(() => {
-    sparqueMapperMock = mock(SparqueMapper);
-    when(sparqueMapperMock.mapProducts(anything())).thenReturn([]);
-
+    sparqueProductMapperMock = mock(SparqueProductMapper);
+    when(sparqueProductMapperMock.mapProducts(anything())).thenReturn([]);
+    sparqueOfferMapperMock = mock(SparqueOfferMapper);
+    when(sparqueOfferMapperMock.mapOffers(anything())).thenReturn([
+      {
+        sku: product.sku,
+        prices: {
+          salePrice: { type: 'PriceItem', gross: 100, net: 80, currency: 'USD' },
+          listPrice: { type: 'PriceItem', gross: 100, net: 80, currency: 'USD' },
+        },
+      },
+    ]);
     TestBed.configureTestingModule({
-      providers: [{ provide: SparqueMapper, useFactory: () => instance(sparqueMapperMock) }],
+      providers: [{ provide: SparqueProductMapper, useFactory: () => instance(sparqueProductMapperMock) }],
     });
 
     sparqueSearchMapper = TestBed.inject(SparqueSearchMapper);
@@ -65,7 +83,7 @@ describe('Sparque Search Mapper', () => {
 
   describe('fromData', () => {
     it('should map search response correctly', () => {
-      when(sparqueMapperMock.mapProducts(anything())).thenReturn([product]);
+      when(sparqueProductMapperMock.mapProducts(anything())).thenReturn([product]);
       const sparqueSearchResonse: SparqueSearchResponse = {
         products: [sparqueProduct],
         total: 1,

@@ -85,7 +85,7 @@ describe('Products Service', () => {
   it('should return the matched terms when search term is executed', done => {
     when(apiServiceMock.get(anything(), anything())).thenReturn(of({ elements: [{ type: undefined, term: 'Goods' }] }));
 
-    productsService.search('g').subscribe(res => {
+    productsService.searchSuggestions('g').subscribe(res => {
       expect(res).toMatchInlineSnapshot(`
         {
           "keywordSuggestions": [

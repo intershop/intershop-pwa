@@ -33,7 +33,7 @@ describe('Search Effects', () => {
   beforeEach(() => {
     searchServiceProviderMock = mock(SearchServiceProvider);
     productsServiceMock = mock(ProductsService);
-    when(productsServiceMock.search(anyString())).thenReturn(of<Suggestion>(suggests));
+    when(productsServiceMock.searchSuggestions(anyString())).thenReturn(of<Suggestion>(suggests));
     when(searchServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
     const skus = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
     when(productsServiceMock.searchProducts(anything())).thenCall(
@@ -99,18 +99,20 @@ describe('Search Effects', () => {
       const action = suggestSearch({ searchTerm: 'g' });
       store$.dispatch(action);
 
-      verify(productsServiceMock.search('g')).once();
+      verify(productsServiceMock.searchSuggestions('g')).once();
     }));
 
     it('should not fire action when error is encountered at service level', fakeAsync(() => {
-      when(productsServiceMock.search(anyString())).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
+      when(productsServiceMock.searchSuggestions(anyString())).thenReturn(
+        throwError(() => makeHttpError({ message: 'ERROR' }))
+      );
 
       store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(4000);
 
       effects.suggestSearch$.subscribe({ next: fail, error: fail });
 
-      verify(productsServiceMock.search('good')).once();
+      verify(productsServiceMock.searchSuggestions('good')).once();
     }));
 
     it('should fire all necessary actions for suggest-search', fakeAsync(() => {

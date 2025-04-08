@@ -1,7 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { spy, when } from 'ts-mockito';
+import { of } from 'rxjs';
+import { instance, mock, spy, when } from 'ts-mockito';
+
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { Product } from 'ish-core/models/product/product.model';
 
 import { SuggestProductsTileComponent } from './suggest-products-tile.component';
 
@@ -9,9 +13,14 @@ describe('Suggest Products Tile Component', () => {
   let component: SuggestProductsTileComponent;
   let fixture: ComponentFixture<SuggestProductsTileComponent>;
   let element: HTMLElement;
+  let appFacade: AppFacade;
+  const staticURL = 'http://static.domain.com';
 
   beforeEach(async () => {
+    appFacade = mock(AppFacade);
+    when(appFacade.getStaticEndpoint$).thenReturn(of(staticURL));
     await TestBed.configureTestingModule({
+      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
@@ -88,7 +97,9 @@ describe('Suggest Products Tile Component', () => {
 
   it('should display the image', () => {
     const componentSpy = spy(component);
-    when(componentSpy.getImageEffectiveUrl(component.products[0])).thenReturn('http://domain.com/M/3538322-4095.jpg');
+    when(componentSpy.getImageEffectiveUrl(component.products[0] as Product)).thenReturn(
+      'http://domain.com/M/3538322-4095.jpg'
+    );
 
     fixture.detectChanges();
     const imageElement = element.querySelector('img');
@@ -98,6 +109,6 @@ describe('Suggest Products Tile Component', () => {
   it('should display the image not available image', () => {
     fixture.detectChanges();
     const imageElement = element.querySelector('img');
-    expect(imageElement.getAttribute('src')).toBe('/assets/img/not-available.svg');
+    expect(imageElement.getAttribute('src')).toBe(staticURL.concat('/assets/img/not-available.svg'));
   });
 });

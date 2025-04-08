@@ -4,29 +4,31 @@ import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { SortableAttributesType } from 'ish-core/models/product-listing/product-listing.model';
 import { SearchResponse } from 'ish-core/models/search/search.model';
-import { SparqueMapper } from 'ish-core/models/sparque/sparque.mapper';
+import { SparqueOfferMapper } from 'ish-core/models/sparque-offer/sparque-offer.mapper';
+import { SparqueProductMapper } from 'ish-core/models/sparque-product/sparque-product.mapper';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 import { FixedFacetGroupResult, SparqueSearchResponse, SparqueSortingOptionResponse } from './sparque-search.interface';
 
 @Injectable({ providedIn: 'root' })
 export class SparqueSearchMapper {
-  constructor(private sparqueMapper: SparqueMapper) {}
+  constructor(private sparqueProductMapper: SparqueProductMapper, private sparqueOfferMapper: SparqueOfferMapper) {}
 
   fromData(search: SparqueSearchResponse, searchParameter: URLFormParams): SearchResponse {
     return {
-      products: this.sparqueMapper.mapProducts(search.products),
+      products: this.sparqueProductMapper.mapProducts(search.products),
       sortableAttributes: this.mapSortableAttributes(search.sortings),
       total: search.total,
       filter: this.mapFilter(search.facets, searchParameter),
+      prices: this.sparqueOfferMapper.mapOffers(search.products),
     };
   }
 
   private mapSortableAttributes(sortableAttributes: SparqueSortingOptionResponse[]): SortableAttributesType[] {
     return sortableAttributes
-      ? sortableAttributes.map(sortings => ({
-          name: sortings.identifier,
-          displayName: sortings.title,
+      ? sortableAttributes.map(sorting => ({
+          name: sorting.identifier,
+          displayName: sorting.title,
         }))
       : [];
   }

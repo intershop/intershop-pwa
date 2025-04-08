@@ -22,9 +22,9 @@ describe('Suggest Brands Tile Component', () => {
     element = fixture.nativeElement;
 
     component.brands = [
-      { name: 'Branda', productCount: 10, imageUrl: 'urla' },
-      { name: 'Brandb', productCount: 20, imageUrl: 'urlb' },
-      { name: 'Brandc', productCount: 30, imageUrl: 'urlc' },
+      { brandName: 'Branda', totalCount: 10 },
+      { brandName: 'Brandb', totalCount: 20 },
+      { brandName: 'Brandc', totalCount: 30 },
     ];
     component.maxAutoSuggests = 2;
     component.inputTerms$ = new ReplaySubject<string>(1);
