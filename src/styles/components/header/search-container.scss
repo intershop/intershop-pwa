@@ -4,12 +4,18 @@
 .search-container {
   position: relative;
 
-  .btn-reset:active,
-  .btn-search:active {
-    background-color: transparent !important;
-    border-color: transparent !important;
+  // general styling for search input field
+  input {
+    &.search-input {
+      height: $search-container-height;
+      padding-right: $space-default * 5.5;
+      padding-left: ($search-container-height * 0.5);
+      color: $text-color-primary;
+      background: $color-inverse;
+    }
   }
 
+  // clear input and search buttons
   button {
     margin-right: 0 !important;
 
@@ -21,13 +27,9 @@
     &.btn-reset,
     &.btn-search {
       position: absolute;
-      right: 0;
       width: auto;
       height: $search-container-height;
       font-size: $font-size-lg;
-      color: $text-color-corporate;
-      background: $color-inverse;
-      border: $border-width-default solid $button-default-border;
 
       span::before {
         font-size: $font-size-lg;
@@ -35,37 +37,24 @@
       }
     }
 
+    &.btn-search {
+      right: 0;
+    }
+
     &.btn-reset {
+      &:hover {
+        color: $text-color-secondary;
+      }
+
       right: $space-default * 3;
       color: $text-color-quaternary;
-      border: none;
-      border-top: $border-width-default solid $border-color-light;
-      border-bottom: $border-width-default solid $border-color-light;
+      background: transparent !important;
+      border: none !important;
       opacity: 1;
-    }
-  }
 
-  input {
-    &:focus {
-      color: $text-color-primary;
-      background: $color-inverse;
-
-      + .buttons {
-        button {
-          color: $text-color-corporate;
-
-          .ng-fa-icon {
-            color: $text-color-corporate;
-          }
-
-          &.btn-reset {
-            color: $text-color-quaternary;
-
-            .ng-fa-icon {
-              color: $text-color-quaternary;
-            }
-          }
-        }
+      .ng-fa-icon {
+        position: relative;
+        top: 0.5px;
       }
     }
   }
@@ -75,6 +64,14 @@
 .header-search-container {
   @include media-breakpoint-only(xs) {
     height: $search-container-height;
+  }
+
+  .search-input {
+    float: right;
+
+    @include media-breakpoint-down(sm) {
+      font-size: 16px !important; // prevent page zoom on mobile devices
+    }
   }
 
   .search {
@@ -310,45 +307,6 @@
       }
     }
   }
-
-  input {
-    &.form-control {
-      float: right;
-      height: $search-container-height;
-      padding-right: $space-default * 5;
-      padding-left: ($search-container-height * 0.5);
-      font-size: 14px;
-      color: $text-color-primary;
-      background: $color-inverse;
-      border: $border-width-default solid $border-color-light;
-
-      &::placeholder {
-        // specific lighter color to have a better contrast
-        color: $text-color-quinary;
-      }
-
-      @include media-breakpoint-down(sm) {
-        font-size: 16px !important; // prevent page zoom on mobile devices
-        border: $border-width-default solid $border-color-light;
-
-        &:focus {
-          background: $color-inverse;
-        }
-      }
-    }
-
-    &:focus {
-      font-size: 14px;
-      color: $text-color-primary;
-      background: $color-inverse;
-      border: $border-width-default solid $border-color-light;
-      box-shadow: none;
-
-      &::placeholder {
-        color: $input-placeholder-color;
-      }
-    }
-  }
 }
 
 // search container with toggle icon (mobile, desktop fixed header)
@@ -381,6 +339,7 @@
 
   .search-toggler {
     position: relative;
+    padding: 0;
 
     @include media-breakpoint-down(md) {
       position: static;

@@ -29,19 +29,31 @@
   </ul>
 
   <div class="header-utility">
-    <a *ngIf="isSticky && deviceType !== 'mobile'; else mobileSearch">
-      <fa-icon
-        class="header-icon"
-        [icon]="['fas', 'search']"
-        (click)="scrollTopAndFocusSearch()"
-        (keydown.enter)="scrollTopAndFocusSearch()"
-        tabindex="0"
-      />
+    <!-- Sticky Header Search Button -->
+    <a
+      *ngIf="isSticky && deviceType !== 'mobile'; else mobileSearch"
+      role="button"
+      class="btn btn-link search-toggler sticky-header-icon"
+      (click)="scrollTopAndFocusSearch()"
+      (keydown.enter)="scrollTopAndFocusSearch()"
+      tabindex="0"
+      [attr.aria-label]="'search.searchbox.button.sticky_header.aria_label' | translate"
+    >
+      <fa-icon [icon]="['fas', 'search']" class="header-icon" />
     </a>
 
+    <!-- Sticky Header Mobile Search -->
     <ng-template #mobileSearch>
-      <a class="search-toggler" [ngClass]="{ 'active-search': showSearch }">
-        <fa-icon *ngIf="isSticky" class="header-icon" [icon]="['fas', 'search']" (click)="scrollTopAndFocusSearch()" />
+      <a
+        role="button"
+        class="btn btn-link search-toggler sticky-header-icon"
+        [ngClass]="{ 'active-search': showSearch }"
+        (click)="scrollTopAndFocusSearch()"
+        (keydown.enter)="scrollTopAndFocusSearch()"
+        [tabindex]="isSticky ? 0 : -1"
+        [attr.aria-label]="'search.searchbox.button.sticky_header.aria_label' | translate"
+      >
+        <fa-icon *ngIf="isSticky" [icon]="['fas', 'search']" class="header-icon" />
         <div
           *ngIf="isSticky || showSearch"
           class="search-container header-search-container"

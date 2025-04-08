@@ -13,7 +13,7 @@
   <ng-container *ngIf="user$ | async as user; else notLoggedIn">
     <a
       routerLink="/account"
-      class="my-account-link"
+      class="my-account-link sticky-header-icon"
       data-testing-id="link-myaccount"
       [attr.aria-label]="'account.go_to_account.aria_label' | translate"
     >
@@ -43,7 +43,7 @@
     <a
       routerLink="/login"
       [queryParams]="{ returnUrl: '/account' }"
-      class="my-account-link my-account-login"
+      class="my-account-link my-account-login sticky-header-icon"
       rel="nofollow"
       [attr.aria-label]="'account.login.link' | translate"
     >
