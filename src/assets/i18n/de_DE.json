@@ -1306,7 +1306,7 @@
   "shopping_cart.total.heading": "Gesamt",
   "shopping_cart.transaction.text": "Alle Transaktionen sind vollkommen sicher.",
   "shopping_cart.variation.save.button.label": "Speichern",
-  "sparque.suggest.server.error.text": "Der Service ist derzeit nicht verfügbar. Bitte versuchen Sie es später erneut.",
+  "sparque.server.error.text": "Der Service ist derzeit nicht verfügbar. Bitte versuchen Sie es später erneut.",
   "store.dialog.button.ok": "OK",
   "store_locator.description": "Der Filialfinder soll Ihnen helfen, die nächstgelegene Filiale zu finden. Besuchen Sie noch heute eine unserer Filialen und überzeugen Sie sich selbst von Qualität, Wert und Service.",
   "store_locator.form.city.label": "Stadt",

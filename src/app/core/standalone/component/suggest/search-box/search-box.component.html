@@ -17,8 +17,8 @@
   <div *ngIf="searchSuggestError$ | async as error" class="search-suggest-container" aria-live="polite">
     <div class="col-12">
       <div class="headline">{{ 'suggest.error.headline' | translate }}</div>
-      <p *ngIf="error.message.includes('sparque.suggest.server.error.text'); else generalError">
-        {{ 'sparque.suggest.server.error.text' | translate }}
+      <p *ngIf="error.message.includes('sparque.server.error.text'); else generalError">
+        {{ 'sparque.server.error.text' | translate }}
       </p>
       <ng-template #generalError>
         <p #generalError>{{ 'suggest.error.text' | translate }}</p>

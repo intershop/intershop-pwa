@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ReplaySubject, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 
@@ -13,15 +14,20 @@ describe('Suggest Categories Tile Component', () => {
   let component: SuggestCategoriesTileComponent;
   let fixture: ComponentFixture<SuggestCategoriesTileComponent>;
   let element: HTMLElement;
+  let appFacade: AppFacade;
   let activatedRoute: ActivatedRoute;
+  const staticURL = 'http://static.domain.com';
   const shoppingFacade = mock(ShoppingFacade);
 
   beforeEach(async () => {
     activatedRoute = mock(ActivatedRoute);
+    appFacade = mock(AppFacade);
+    when(appFacade.getStaticEndpoint$).thenReturn(of(staticURL));
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       providers: [
         { provide: ActivatedRoute, useFactory: () => instance(activatedRoute) },
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
       ],
       declarations: [],

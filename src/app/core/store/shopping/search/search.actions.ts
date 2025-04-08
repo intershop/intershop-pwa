@@ -25,6 +25,7 @@ export const suggestSearchSuccess = createAction(
 export const suggestSearchFail = createAction('[Suggest Search API] Load Search Suggestions Fail', httpError());
 
 export const sparqueSuggestServerError = createAction('[Error Internal] Sparque Suggestion Server Error', httpError());
+export const sparqueSearchServerError = createAction('[Error Internal] Sparque Search Server Error', httpError());
 
 export const addSearchTermToSuggestion = createAction(
   '[Suggest Search Term Internal] Add Search Terms to Suggestion',

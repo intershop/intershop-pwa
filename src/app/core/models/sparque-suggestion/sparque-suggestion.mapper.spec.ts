@@ -1,22 +1,20 @@
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { Category } from 'ish-core/models/category/category.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { SparqueMapper } from 'ish-core/models/sparque/sparque.mapper';
+import { SparqueOfferMapper } from 'ish-core/models/sparque-offer/sparque-offer.mapper';
+import { SparqueProduct } from 'ish-core/models/sparque-product/sparque-product.interface';
+import { SparqueProductMapper } from 'ish-core/models/sparque-product/sparque-product.mapper';
 import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
 
-import { SparqueProduct, SparqueSuggestions } from './sparque-suggestion.interface';
+import { SparqueSuggestions } from './sparque-suggestion.interface';
 import { SparqueSuggestionMapper } from './sparque-suggestion.mapper';
 
 describe('Sparque Suggestion Mapper', () => {
   let sparqueSuggestionMapper: SparqueSuggestionMapper;
-  let shoppingFacadeMock: ShoppingFacade;
-  let sparqueMapperMock: SparqueMapper;
+  let sparqueProductMapperMock: SparqueProductMapper;
+  let sparqueOfferMapperMock: SparqueOfferMapper;
 
-  const category = { name: 'Category 1', uniqueId: 'root.cat1' } as Category;
   const attributes = [{ name: 'Color', value: 'Red' }];
   const sparqueProduct = {
     name: 'Product 1',
@@ -27,6 +25,13 @@ describe('Sparque Suggestion Mapper', () => {
     attributes,
     sku: 'SKU1',
     defaultcategoryId: 'cat1',
+    offers: [
+      {
+        priceIncVat: 100,
+        priceExclVat: 80,
+        currency: 'USD',
+      },
+    ],
   } as SparqueProduct;
 
   const product = {
@@ -54,15 +59,23 @@ describe('Sparque Suggestion Mapper', () => {
   } as Product;
 
   beforeEach(() => {
-    shoppingFacadeMock = mock(ShoppingFacade);
-    when(shoppingFacadeMock.categoryNodes$).thenReturn(of({ 'root.cat1': category }));
-    sparqueMapperMock = mock(SparqueMapper);
-    when(sparqueMapperMock.mapProducts(anything())).thenReturn([product]);
-    when(sparqueMapperMock.mapAttributes(anything())).thenReturn(attributes);
+    sparqueProductMapperMock = mock(SparqueProductMapper);
+    when(sparqueProductMapperMock.mapProducts(anything())).thenReturn([product]);
+    sparqueOfferMapperMock = mock(SparqueOfferMapper);
+    when(sparqueOfferMapperMock.mapOffers(anything())).thenReturn([
+      {
+        sku: product.sku,
+        prices: {
+          salePrice: { type: 'PriceItem', gross: 100, net: 80, currency: 'USD' },
+          listPrice: { type: 'PriceItem', gross: 100, net: 80, currency: 'USD' },
+        },
+      },
+    ]);
+
     TestBed.configureTestingModule({
       providers: [
-        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacadeMock) },
-        { provide: SparqueMapper, useFactory: () => instance(sparqueMapperMock) },
+        { provide: SparqueOfferMapper, useFactory: () => instance(sparqueOfferMapperMock) },
+        { provide: SparqueProductMapper, useFactory: () => instance(sparqueProductMapperMock) },
       ],
     });
     sparqueSuggestionMapper = TestBed.inject(SparqueSuggestionMapper);
@@ -92,7 +105,6 @@ describe('Sparque Suggestion Mapper', () => {
     });
 
     it('should map categories correctly', () => {
-      when(sparqueMapperMock.mapAttributes(anything())).thenReturn([{ name: 'Type', value: 'Electronics' }]);
       const sparqueSuggestions: SparqueSuggestions = {
         products: [],
         categories: [
@@ -114,7 +126,7 @@ describe('Sparque Suggestion Mapper', () => {
 
       expect(result.categories).toHaveLength(1);
       expect(result.categories[0].name).toBe(sparqueSuggestions.categories[0].categoryName);
-      expect(result.categories[0].uniqueId).toBe('root.cat1');
+      expect(result.categories[0].uniqueId).toBe('parentCat.cat1');
       expect(result.categories[0].categoryRef).toBe(sparqueSuggestions.categories[0].categoryURL);
       expect(result.categories[0].categoryPath).toEqual([
         sparqueSuggestions.categories[0].parentCategoryId,
@@ -133,7 +145,6 @@ describe('Sparque Suggestion Mapper', () => {
         brands: [
           {
             brandName: 'Brand 1',
-            imageUrl: 'http://brand.image.url',
             totalCount: 5,
           },
         ],
@@ -144,9 +155,8 @@ describe('Sparque Suggestion Mapper', () => {
       const result: Suggestion = sparqueSuggestionMapper.fromData(sparqueSuggestions);
 
       expect(result.brands).toHaveLength(1);
-      expect(result.brands[0].name).toBe(sparqueSuggestions.brands[0].brandName);
-      expect(result.brands[0].imageUrl).toBe(sparqueSuggestions.brands[0].imageUrl);
-      expect(result.brands[0].productCount).toBe(5);
+      expect(result.brands[0].brandName).toBe(sparqueSuggestions.brands[0].brandName);
+      expect(result.brands[0].totalCount).toBe(5);
     });
 
     it('should map keyword suggestions correctly', () => {
@@ -197,9 +207,14 @@ describe('Sparque Suggestion Mapper', () => {
       expect(result.contentSuggestions[0].articleDate).toBe(date);
     });
 
-    it('should return undefined for undefined input', () => {
+    it('should return empty object for undefined input', () => {
       const result: Suggestion = sparqueSuggestionMapper.fromData(undefined);
-      expect(result).toBeUndefined();
+      expect(result.brands).toBeEmpty();
+      expect(result.categories).toBeEmpty();
+      expect(result.keywordSuggestions).toBeEmpty();
+      expect(result.products).toBeEmpty();
+      expect(result.contentSuggestions).toBeEmpty();
+      expect(result.prices).toBeEmpty();
     });
   });
 });

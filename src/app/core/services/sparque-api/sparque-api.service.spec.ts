@@ -324,7 +324,7 @@ describe('Sparque Api Service', () => {
         .expectOne(() => true)
         .flush('', {
           status: 0,
-          statusText: 'Error',
+          statusText: '/suggestions Error',
         });
 
       verify(store.dispatch(anything())).once();
@@ -346,7 +346,7 @@ describe('Sparque Api Service', () => {
         .expectOne(() => true)
         .flush('', {
           status: 500,
-          statusText: 'Error',
+          statusText: '/suggestions Error',
         });
 
       verify(store.dispatch(anything())).once();

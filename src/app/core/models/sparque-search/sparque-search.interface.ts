@@ -1,4 +1,5 @@
-import { SparqueAttribute, SparqueProduct } from 'ish-core/models/sparque/sparque.interface';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
+import { SparqueProduct } from 'ish-core/models/sparque-product/sparque-product.interface';
 
 /**
  * Interface for Sparque Search API response object
@@ -14,7 +15,7 @@ export interface FixedFacetGroupResult {
   id: string;
   title: string;
   options: FixedFacetOption[];
-  attributes?: SparqueAttribute[];
+  attributes?: Attribute[];
 }
 
 interface FixedFacetOption {

@@ -44,7 +44,7 @@ export class ProductsService extends SearchService {
    * @param searchTerm  The search term to get suggestions for.
    * @returns           List of suggested search terms.
    */
-  search(searchTerm: string): Observable<Suggestion> {
+  searchSuggestions(searchTerm: string): Observable<Suggestion> {
     const params = new HttpParams().set('SearchTerm', searchTerm);
     return this.apiService.get('suggest', { params }).pipe(
       unpackEnvelope<{ term: string }>(),

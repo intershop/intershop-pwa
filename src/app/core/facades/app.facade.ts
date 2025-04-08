@@ -13,6 +13,7 @@ import {
   getICMBaseURL,
   getPipelineEndpoint,
   getRestEndpoint,
+  getStaticEndpoint,
 } from 'ish-core/store/core/configuration';
 import { businessError, getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
 import { selectPath } from 'ish-core/store/core/router';
@@ -46,6 +47,7 @@ export class AppFacade {
 
   getRestEndpoint$ = this.store.pipe(select(getRestEndpoint));
   getPipelineEndpoint$ = this.store.pipe(select(getPipelineEndpoint));
+  getStaticEndpoint$ = this.store.pipe(select(getStaticEndpoint));
 
   getRestEndpointWithContext$ = combineLatest([
     this.store.pipe(select(getRestEndpoint)),

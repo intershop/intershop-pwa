@@ -132,7 +132,9 @@ describe('Shopping Store', () => {
     when(productsServiceMock.searchProducts(anything())).thenReturn(
       of({ products: [{ sku: 'P1' }, { sku: 'P2' }] as Product[], sortableAttributes: [], total: 2 })
     );
-    when(productsServiceMock.search('some')).thenReturn(of<Suggestion>({ keywordSuggestions: ['something'] }));
+    when(productsServiceMock.searchSuggestions('some')).thenReturn(
+      of<Suggestion>({ keywordSuggestions: ['something'] })
+    );
 
     promotionsServiceMock = mock(PromotionsService);
     when(promotionsServiceMock.getPromotion(anything())).thenReturn(of(promotion));
@@ -324,7 +326,6 @@ describe('Shopping Store', () => {
             id: {"type":"search","value":"something"}
             itemCount: 2
             sortableAttributes: []
-          NO_ACTION
           [Filter API] Load Filter Success:
             filterNavigation: {}
         `);
@@ -557,7 +558,6 @@ describe('Shopping Store', () => {
             id: {"type":"search","value":"something"}
             itemCount: 2
             sortableAttributes: []
-          NO_ACTION
           [Filter API] Load Filter Success:
             filterNavigation: {}
         `);
@@ -937,7 +937,6 @@ describe('Shopping Store', () => {
           id: {"type":"search","value":"something"}
           itemCount: 2
           sortableAttributes: []
-        NO_ACTION
         [Filter API] Load Filter Success:
           filterNavigation: {}
       `);

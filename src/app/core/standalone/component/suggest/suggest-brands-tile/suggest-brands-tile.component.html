@@ -4,8 +4,8 @@
     <li *ngFor="let result of brands | slice : 0 : maxAutoSuggests">
       <a
         [routerLink]="['/search/*']"
-        [queryParams]="{ filters: 'ManufacturerName=' + result.name }"
-        [innerHTML]="result.name | ishHighlight : (inputTerms$ | async)"
+        [queryParams]="{ filters: 'ManufacturerName=' + result.brandName }"
+        [innerHTML]="result.brandName | ishHighlight : (inputTerms$ | async)"
         (click)="handleInputFocus()"
       ></a>
     </li>
