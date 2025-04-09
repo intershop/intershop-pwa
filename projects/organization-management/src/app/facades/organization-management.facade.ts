@@ -26,6 +26,7 @@ import {
   getCostCenters,
   getCostCentersError,
   getCostCentersLoading,
+  getCostCentersPagingData,
   getSelectedCostCenter,
   loadCostCenters,
   updateCostCenter,
@@ -67,6 +68,7 @@ export class OrganizationManagementFacade {
   costCentersError$ = this.store.pipe(select(getCostCentersError));
   costCentersLoading$ = this.store.pipe(select(getCostCentersLoading));
   selectedCostCenter$ = this.store.pipe(select(getSelectedCostCenter));
+  costCentersPagingData$ = this.store.pipe(select(getCostCentersPagingData));
 
   /**
    * user methods
