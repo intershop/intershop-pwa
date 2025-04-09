@@ -1,4 +1,4 @@
-import { fillFormField, waitLoadingEnd } from '../../framework';
+import { fillFormField, selectNgSelectOption, waitLoadingEnd } from '../../framework';
 import { Registration } from '../account/registration.page';
 
 export type AddressDetailsTypes = Partial<
@@ -55,11 +55,10 @@ export class CheckoutAddressesPage {
     cy.get(`[data-testing-id="edit-invoice-address-link"]`).click();
   }
 
-  changeInvoiceAddressRegion(regionCode) {
+  changeInvoiceAddressRegion(region) {
     this.editInvoiceAddress();
-    cy.get(`[data-testing-id="invoice-address-form"]`)
-      .find('select[data-testing-id="mainDivisionCode"]')
-      .select(regionCode);
+    selectNgSelectOption('mainDivisionCode', region);
+
     cy.get(`[data-testing-id="invoice-address-form"]`).find('button.btn-primary').first().click();
     waitLoadingEnd(1000);
   }

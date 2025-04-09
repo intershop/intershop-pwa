@@ -5,7 +5,7 @@
     [field]="field"
     [showError]="showError"
     [ngClass]="{
-      'validation-offset': field.type === 'ish-select-field',
+      'validation-offset': field.type === 'ish-select-field' || field.type === 'ish-search-select-field',
       'd-none': field.type === 'ish-captcha-field' || field.type === 'ish-number-field',
       'validation-offset-date-picker': field.type === 'ish-date-picker-field'
     }"

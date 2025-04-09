@@ -8,6 +8,7 @@ const _ = {
   productSku: '201807171',
   user: {
     ...sensibleDefaults,
+    countryCode: 'Austria',
     login: `testuser${new Date().getTime()}@test.intershop.de`,
   } as Registration,
 };

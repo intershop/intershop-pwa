@@ -26,6 +26,7 @@ const _ = {
   user: {
     ...sensibleDefaults,
     login: `testuser${new Date().getTime()}@test.intershop.de`,
+    countryCode: 'Austria',
   } as Registration,
 };
 

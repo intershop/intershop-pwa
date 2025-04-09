@@ -1,4 +1,4 @@
-import { fillFormField } from '../../framework';
+import { fillFormField, selectNgSelectOption } from '../../framework';
 import { Registration } from '../account/registration.page';
 import { HeaderModule } from '../header.module';
 
@@ -53,12 +53,12 @@ export class AddressesPage {
     cy.get('button').contains('Save address').click();
   }
 
-  selectShippingAddress() {
-    cy.get('select[placeholder="Change preferred shipping address"]').select(1);
+  selectShippingAddress(keyword: string) {
+    selectNgSelectOption('preferredShippingAddressUrn', keyword);
   }
 
-  selectInvoiceAddress() {
-    cy.get('select[placeholder="Change preferred invoice address"]').select(2);
+  selectInvoiceAddress(keyword: string) {
+    selectNgSelectOption('preferredInvoiceAddressUrn', keyword);
   }
 
   updateAddress() {
