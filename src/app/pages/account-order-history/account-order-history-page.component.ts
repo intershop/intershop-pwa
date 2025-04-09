@@ -53,7 +53,7 @@ export class AccountOrderHistoryPageComponent implements OnInit {
     this.getOrdersForPage();
   }
 
-  getOrdersForPage() {
+  private getOrdersForPage() {
     this.ordersForPage$ = combineLatest([this.orders$, this.pageNumber$]).pipe(
       map(([orders, pageNumber]) => {
         const start = (pageNumber - 1) * this.pageSize;
