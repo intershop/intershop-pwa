@@ -39,6 +39,7 @@ export interface CostCenter extends CostCenterBase {
     Order,
     'documentNo' | 'creationDate' | 'status' | 'attributes' | 'user' | 'totalProductQuantity' | 'totals'
   >[];
+  paginationPosition?: number;
 }
 
 export interface CostCenterInformation {

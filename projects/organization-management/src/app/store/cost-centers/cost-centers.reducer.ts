@@ -88,8 +88,15 @@ export const costCentersReducer = createReducer(
   on(loadCostCentersSuccess, (state, action) => {
     const { costCenters, paging } = action.payload;
 
+    const updatedCostCenters = costCenters.map((costCenter, index) => ({
+      ...costCenter,
+      paginationPosition: (paging.offset ? paging.offset : 0) + index,
+    }));
+
     return {
-      ...costCentersAdapter.upsertMany(costCenters, state),
+      ...(paging.offset
+        ? costCentersAdapter.addMany(updatedCostCenters, state)
+        : costCentersAdapter.setAll(updatedCostCenters, state)),
       paging,
     };
   }),
