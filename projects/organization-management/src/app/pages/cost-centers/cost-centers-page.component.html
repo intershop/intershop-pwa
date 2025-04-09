@@ -7,7 +7,7 @@
   </div>
   <div class="ml-auto py-2">
     <a
-      *ngIf="!!(error$ | async) === false"
+      *ngIf="!!(costCentersError$ | async) === false"
       routerLink="create"
       class="btn btn-secondary"
       data-testing-id="add-cost-center-link"
@@ -17,7 +17,7 @@
 </div>
 
 <div class="loading-container">
-  <ng-container *ngIf="costCenters$ | async as costCenters">
+  <ng-container *ngIf="costCentersForPage$ | async as costCenters">
     <ng-container *ngIf="costCenters.length > 0; else emptyList">
       <table
         cdk-table
@@ -139,13 +139,26 @@
       </table>
     </ng-container>
 
+    <ng-container *ngIf="pagingData$ | async as paging">
+      <div class="row" *ngIf="paging.total > pageSize">
+        <div class="d-flex w-100 grey-panel align-items-center flex-wrap justify-content-between px-3 py-2 mb-3">
+          <span class="text-nowrap">{{ 'shopping_cart.paging.items.label' | translate : { '0': paging.total } }}</span>
+          <ish-paging
+            [currentPage]="pageNumber$ | async"
+            [lastPage]="getTotalPages(paging.total)"
+            (goToPage)="loadMoreCostCenters($event)"
+          />
+        </div>
+      </div>
+    </ng-container>
+
     <!-- Empty List -->
     <ng-template #emptyList>
       <p data-testing-id="emptyList">{{ 'account.costcenter.list.noitems' | translate }}</p>
     </ng-template>
   </ng-container>
 
-  <ish-loading *ngIf="loading$ | async" />
+  <ish-loading *ngIf="costCentersLoading$ | async" />
 </div>
 
 <!--  dialogs -->
