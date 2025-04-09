@@ -77,7 +77,7 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit {
     this.fields = [
       {
         key: 'id',
-        type: 'ish-select-field',
+        type: 'ish-search-select-field',
         props: {
           fieldClass: 'col-12',
           options: FormsService.getAddressOptions(this.addresses$),
