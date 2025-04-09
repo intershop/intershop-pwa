@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Order } from 'ish-core/models/order/order.model';
+import { PagingData } from 'ish-core/models/paging/paging.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
@@ -43,6 +44,11 @@ describe('Orders Selectors', () => {
       lineItems: [{ id: 'test2', productSKU: 'sku', quantity: { value: 5 } }] as LineItem[],
     },
   ] as Order[];
+  const paging = {
+    offset: 0,
+    limit: 30,
+    total: 2,
+  } as PagingData;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -67,7 +73,7 @@ describe('Orders Selectors', () => {
 
   describe('select order', () => {
     beforeEach(() => {
-      store$.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 } }));
+      store$.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 }, paging }));
       store$.dispatch(selectOrder({ orderId: orders[1].id }));
     });
     it('should get a certain order if they are loaded orders', () => {
@@ -93,7 +99,7 @@ describe('Orders Selectors', () => {
 
     describe('and reporting success', () => {
       beforeEach(() => {
-        store$.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 } }));
+        store$.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 }, paging }));
       });
 
       it('should set loading to false', () => {
