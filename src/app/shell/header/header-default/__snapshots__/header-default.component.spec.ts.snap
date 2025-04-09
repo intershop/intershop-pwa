@@ -11,7 +11,11 @@ exports[`Header Default Component should render normal header adequately for des
     </li>
   </ul>
   <div class="header-utility">
-    <a class="search-toggler"></a>
+    <button
+      type="button"
+      class="btn btn-link search-toggler sticky-header-icon"
+      aria-label="search.searchbox.button.sticky_header.aria_label"
+    ></button>
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
     </div>
@@ -80,13 +84,18 @@ exports[`Header Default Component should render normal header adequately for mob
     </li>
   </ul>
   <div class="header-utility">
-    <a class="search-toggler active-search"
-      ><div class="search-container header-search-container show" ng-reflect-collapsed="false">
+    <button
+      type="button"
+      class="btn btn-link search-toggler sticky-header-icon active-search"
+      aria-label="search.searchbox.button.sticky_header.aria_label"
+    >
+      <div class="search-container header-search-container show" ng-reflect-collapsed="false">
         <ish-search-box
           data-testing-id="search-box-desktop"
           ng-reflect-device-type="mobile"
-        ></ish-search-box></div
-    ></a>
+        ></ish-search-box>
+      </div>
+    </button>
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
     </div>
@@ -150,7 +159,11 @@ exports[`Header Default Component should render normal header adequately for tab
     </li>
   </ul>
   <div class="header-utility">
-    <a class="search-toggler"></a>
+    <button
+      type="button"
+      class="btn btn-link search-toggler sticky-header-icon"
+      aria-label="search.searchbox.button.sticky_header.aria_label"
+    ></button>
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
     </div>
@@ -212,7 +225,13 @@ exports[`Header Default Component should render normal header adequately for tab
 exports[`Header Default Component should render sticky header adequately for desktop 1`] = `
 <div class="header container desktop" ng-reflect-ng-class="desktop">
   <div class="header-utility">
-    <a><fa-icon tabindex="0" class="header-icon" ng-reflect-icon="fas,search"></fa-icon></a>
+    <button
+      type="button"
+      class="btn btn-link search-toggler sticky-header-icon"
+      aria-label="search.searchbox.button.sticky_header.aria_label"
+    >
+      <fa-icon tabindex="0" class="header-icon" ng-reflect-icon="fas,search"></fa-icon>
+    </button>
     <div class="language-switch-container d-none d-md-block"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
     ><ish-mini-basket
@@ -273,14 +292,19 @@ exports[`Header Default Component should render sticky header adequately for des
 exports[`Header Default Component should render sticky header adequately for mobile devices 1`] = `
 <div class="header container mobile" ng-reflect-ng-class="mobile">
   <div class="header-utility">
-    <a class="search-toggler active-search"
-      ><fa-icon class="header-icon" ng-reflect-icon="fas,search"></fa-icon>
+    <button
+      type="button"
+      class="btn btn-link search-toggler sticky-header-icon active-search"
+      aria-label="search.searchbox.button.sticky_header.aria_label"
+    >
+      <fa-icon class="header-icon" ng-reflect-icon="fas,search"></fa-icon>
       <div class="search-container header-search-container" ng-reflect-collapsed="false">
         <ish-search-box
           data-testing-id="search-box-desktop"
           ng-reflect-device-type="mobile"
-        ></ish-search-box></div
-    ></a>
+        ></ish-search-box>
+      </div>
+    </button>
     <div class="language-switch-container d-none d-md-block"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
     ><ish-mini-basket
@@ -334,7 +358,13 @@ exports[`Header Default Component should render sticky header adequately for mob
 exports[`Header Default Component should render sticky header adequately for tablet devices 1`] = `
 <div class="header container tablet" ng-reflect-ng-class="tablet">
   <div class="header-utility">
-    <a><fa-icon tabindex="0" class="header-icon" ng-reflect-icon="fas,search"></fa-icon></a>
+    <button
+      type="button"
+      class="btn btn-link search-toggler sticky-header-icon"
+      aria-label="search.searchbox.button.sticky_header.aria_label"
+    >
+      <fa-icon tabindex="0" class="header-icon" ng-reflect-icon="fas,search"></fa-icon>
+    </button>
     <div class="language-switch-container d-none d-md-block"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
     ><ish-mini-basket
