@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
+import { PagingData } from 'ish-core/models/paging/paging.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
@@ -70,7 +71,7 @@ describe('Cost Centers Selectors', () => {
   });
 
   describe('LoadCostCenters', () => {
-    const action = loadCostCenters();
+    const action = loadCostCenters({});
 
     beforeEach(() => {
       store$.dispatch(action);
@@ -86,7 +87,12 @@ describe('Cost Centers Selectors', () => {
         { id: '2', costCenterId: '100402' },
         { id: '3', costCenterId: '100403' },
       ] as CostCenter[];
-      const successAction = loadCostCentersSuccess({ costCenters });
+      const paging = {
+        offset: 0,
+        limit: 30,
+        total: 3,
+      } as PagingData;
+      const successAction = loadCostCentersSuccess({ costCenters, paging });
 
       beforeEach(() => {
         store$.dispatch(successAction);
@@ -133,7 +139,12 @@ describe('Cost Centers Selectors', () => {
         { id: '1', costCenterId: '100400' },
         { id: '2', costCenterId: '100401' },
       ] as CostCenter[];
-      const successAction = loadCostCentersSuccess({ costCenters });
+      const paging = {
+        offset: 0,
+        limit: 30,
+        total: 2,
+      } as PagingData;
+      const successAction = loadCostCentersSuccess({ costCenters, paging });
       store$.dispatch(successAction);
     });
 
