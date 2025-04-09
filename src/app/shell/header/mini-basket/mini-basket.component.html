@@ -25,12 +25,11 @@
   </div>
 </div>
 
-<!-- Mobile -->
 <ng-container *ngIf="view === 'small'">
   <a
     *ngIf="itemCount$ | async as itemCount; else emptyMobileCart"
     routerLink="/basket"
-    class="item-count-container position-relative sticky-header-icon"
+    class="item-count-container position-relative"
     [attr.aria-label]="'shopping_cart.ministatus.label' | translate : { '0': itemCount$ | async }"
   >
     <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
@@ -38,7 +37,7 @@
   </a>
   <ng-template #emptyMobileCart>
     <a
-      class="item-count-container position-relative sticky-header-icon"
+      class="item-count-container position-relative"
       [autoClose]="'outside'"
       [ngbPopover]="'shopping_cart.ministatus.empty_cart.text' | translate"
       placement="bottom"
