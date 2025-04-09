@@ -29,7 +29,11 @@
   </ul>
 
   <div class="header-utility">
-    <a *ngIf="isSticky && deviceType !== 'mobile'; else mobileSearch">
+    <!-- Sticky Header Search Button -->
+    <a
+      *ngIf="isSticky && deviceType !== 'mobile'; else mobileSearch"
+      [attr.aria-label]="'search.searchbox.button.sticky_header.aria_label' | translate"
+    >
       <fa-icon
         class="header-icon"
         [icon]="['fas', 'search']"
@@ -39,8 +43,13 @@
       />
     </a>
 
+    <!-- Sticky Header Mobile Search -->
     <ng-template #mobileSearch>
-      <a class="search-toggler" [ngClass]="{ 'active-search': showSearch }">
+      <a
+        class="search-toggler"
+        [ngClass]="{ 'active-search': showSearch }"
+        [attr.aria-label]="'search.searchbox.button.sticky_header.aria_label' | translate"
+      >
         <fa-icon *ngIf="isSticky" class="header-icon" [icon]="['fas', 'search']" (click)="scrollTopAndFocusSearch()" />
         <div
           *ngIf="isSticky || showSearch"

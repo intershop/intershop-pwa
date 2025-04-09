@@ -94,6 +94,20 @@
         }
       }
 
+      .sticky-header-icon {
+        display: block;
+
+        .ng-fa-icon:not(.searchbox-icon) {
+          padding: 0 10px;
+          color: $text-color-tertiary;
+        }
+
+        // Mini cart pill
+        .badge-pill {
+          top: 10px;
+        }
+      }
+
       .mini-cart {
         top: -2px !important;
       }
