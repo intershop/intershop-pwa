@@ -57,7 +57,7 @@ export class CostCentersPageComponent implements OnInit {
     modal.show();
   }
 
-  getCostCentersForPage() {
+  private getCostCentersForPage() {
     this.costCentersForPage$ = combineLatest([this.costCenters$, this.pageNumber$]).pipe(
       map(([costCenters, pageNumber]) => {
         const start = (pageNumber - 1) * this.pageSize;

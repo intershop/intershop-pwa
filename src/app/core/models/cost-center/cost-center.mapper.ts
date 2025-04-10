@@ -57,7 +57,14 @@ export class CostCenterMapper {
     }
   }
 
-  static fromInfo(payload: CostCenterBaseData): PagingData {
+  static fromBaseData(payload: CostCenterBaseData): CostCenterInformation {
+    return {
+      costCenters: CostCenterMapper.fromListData(payload.data),
+      paging: CostCenterMapper.fromInfo(payload),
+    };
+  }
+
+  private static fromInfo(payload: CostCenterBaseData): PagingData {
     if (payload.info) {
       const { info } = payload;
       return {
@@ -66,12 +73,5 @@ export class CostCenterMapper {
         total: info.total,
       };
     }
-  }
-
-  static fromBaseData(payload: CostCenterBaseData): CostCenterInformation {
-    return {
-      costCenters: CostCenterMapper.fromListData(payload.data),
-      paging: CostCenterMapper.fromInfo(payload),
-    };
   }
 }
