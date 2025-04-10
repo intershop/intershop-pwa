@@ -221,7 +221,6 @@
   "account.notifications.table.notification": "Notification",
   "account.notifications.table.product": "Product",
   "account.option.select.text": "Please select",
-  "account.order.load_more": "Load more",
   "account.order.most_recent.heading": "Most recent orders",
   "account.order.questions.note": "Please visit the <a href=\"{{0}}\">help</a> area of our website for comprehensive order and shipping information or <a href=\"{{1}}\">contact us</a> 24 hours a day.",
   "account.order.questions.title": "Questions?",
