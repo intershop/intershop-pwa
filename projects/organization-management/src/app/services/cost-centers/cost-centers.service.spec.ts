@@ -53,6 +53,8 @@ describe('Cost Centers Service', () => {
   });
 
   it('should call the getCostCenter of customer API when fetching a costCenter', done => {
+    when(apiService.get(anything())).thenReturn(of([]));
+
     costCentersService.getCostCenter('100400').subscribe(() => {
       verify(apiService.get(anything())).once();
       expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
