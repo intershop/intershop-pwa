@@ -26,6 +26,7 @@ import {
   getCostCenters,
   getCostCentersError,
   getCostCentersLoading,
+  getCostCentersPagingData,
   getSelectedCostCenter,
   loadCostCenters,
   updateCostCenter,
@@ -67,6 +68,7 @@ export class OrganizationManagementFacade {
   costCentersError$ = this.store.pipe(select(getCostCentersError));
   costCentersLoading$ = this.store.pipe(select(getCostCentersLoading));
   selectedCostCenter$ = this.store.pipe(select(getSelectedCostCenter));
+  costCentersPagingData$ = this.store.pipe(select(getCostCentersPagingData));
 
   /**
    * user methods
@@ -134,6 +136,11 @@ export class OrganizationManagementFacade {
   /**
    * cost center methods
    */
+
+  loadCostCenters(offset?: number, limit?: number) {
+    this.store.dispatch(loadCostCenters({ offset, limit }));
+  }
+
   private costCenterManagerSelectOptionsForAccountAdmin$() {
     this.store.dispatch(loadUsers());
     return this.store.pipe(
@@ -164,7 +171,7 @@ export class OrganizationManagementFacade {
   }
 
   costCentersOfCurrentUser$() {
-    this.store.dispatch(loadCostCenters());
+    this.store.dispatch(loadCostCenters({}));
     return this.costCenters$.pipe(
       withLatestFrom(this.store.pipe(select(getLoggedInUser))),
       map(([costCenters, currentUser]) => costCenters.filter(cc => cc.costCenterOwner.login === currentUser.login))
