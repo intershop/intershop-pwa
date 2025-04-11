@@ -876,7 +876,6 @@
   "checkout.tax.text": "Tax",
   "checkout.termsandconditions.details.title": "Terms & conditions",
   "checkout.update.buyer.title": "Edit {{0}}",
-  "checkout.update.label": "Edit {{0}}",
   "checkout.variation.edit.button.label": "Edit variation",
   "checkout.widget.billing-address.heading": "Invoice address",
   "checkout.widget.buyer.TaxationID": "Taxation ID:",
