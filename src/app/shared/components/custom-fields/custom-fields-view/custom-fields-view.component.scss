@@ -1,0 +1,24 @@
+@import 'variables';
+@import 'bootstrap/scss/functions';
+
+.custom-fields-view {
+  .custom-field {
+    &:last-of-type {
+      margin-bottom: divide($space-default * 2, 3);
+    }
+  }
+
+  label {
+    padding-right: divide($space-default, 3);
+    margin: 0;
+
+    &::after {
+      content: ':';
+    }
+  }
+
+  span.no-value {
+    font-style: italic;
+    color: $text-color-quaternary;
+  }
+}

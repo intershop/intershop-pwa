@@ -4,6 +4,7 @@ import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
+import { CustomFields } from 'ish-core/models/custom-field/custom-field.model';
 import { LineItem, LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
@@ -36,6 +37,7 @@ export interface AbstractBasket<T> {
   };
   externalOrderReference?: string;
   messageToMerchant?: string;
+  customFields?: CustomFields;
 }
 
 export type Basket = AbstractBasket<LineItem>;
