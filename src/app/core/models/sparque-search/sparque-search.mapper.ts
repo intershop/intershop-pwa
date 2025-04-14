@@ -54,7 +54,7 @@ export class SparqueSearchMapper {
         id: facetGroup.id,
         facets,
         selectionType: 'single',
-        limitCount: 10,
+        limitCount: 5,
       };
     });
   }

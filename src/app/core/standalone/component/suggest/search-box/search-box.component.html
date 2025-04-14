@@ -14,7 +14,7 @@
     [attr.aria-expanded]="(searchBoxResults$ | async) && hasMinimumCharCount && searchBoxFocus ? 'true' : 'false'"
   />
 
-  <div *ngIf="searchSuggestError$ | async as error" class="search-suggest-container" aria-live="polite">
+  <div *ngIf="searchSuggestError$ | async as error" class="search-suggest-container">
     <div class="col-12">
       <div class="headline">{{ 'suggest.error.headline' | translate }}</div>
       <p *ngIf="error.message.includes('sparque.server.error.text'); else generalError">
@@ -25,7 +25,6 @@
       </ng-template>
     </div>
   </div>
-
   <ng-container *ngIf="configuration?.autoSuggest && searchResults$ | async as results; else initialState">
     <div
       *ngIf="(searchBoxResults$ | async) && hasMinimumCharCount; else noResults"

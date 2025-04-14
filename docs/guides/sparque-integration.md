@@ -11,12 +11,12 @@ kb_sync_latest_only
   - [Configuration](#configuration)
     - [Multi-Site Configurations](#multi-site-configurations)
     - [Pricing](#pricing)
-    - [Versioning of SPARQUE service requests](#versioning-of-sparque-service-requests)
+    - [Versioning of SPARQUE Service Requests](#versioning-of-sparque-service-requests)
   - [Provider Concept](#provider-concept)
-  - [Suggestion feature](#suggestion-feature)
-    - [New standalone components](#new-standalone-components)
-    - [Recent search terms](#recent-search-terms)
-  - [Search feature](#search-feature)
+  - [Suggestion Feature](#suggestion-feature)
+    - [New Standalone Components](#new-standalone-components)
+    - [Recent Search Terms](#recent-search-terms)
+  - [Search Feature](#search-feature)
 
 SPARQUE.AI works as an AI-powered search engine and delivers various information, like keyword suggestions, search results, filter options, and category navigation.
 
@@ -82,7 +82,7 @@ If this parameter is set to TRUE than the product prices provided by SPARQUE wil
 Otherwise the product prices are taken from the ICM.
 In case the ICM prices will used than pricing facet provided by SPARQUE may not work properly.
 
-### Versioning of SPARQUE service requests
+### Versioning of SPARQUE Service Requests
 
 It is possible to specify the request API version to be used for each individual SPARQUE REST call.
 To change to another api version the affected get method api parameter has to adapt.
@@ -151,7 +151,7 @@ loadFilteredProducts$ = createEffect(() =>
 );
 ```
 
-## Suggestion feature
+## Suggestion Feature
 
 The SPARQUE.AI suggestion response contains beside the keywords further data like suggested products, categories, brands and content.
 The suggestion as part of the [Search Box Component](../../src/app/core/standalone/component/suggest/search-box/search-box.component.ts).
@@ -159,7 +159,7 @@ As soon as the search term has a length of at least 3 characters, a suggestion r
 If no hits are found for the used search term, the recently used search terms appear.
 Otherwise, the search results are displayed.
 
-### New standalone components
+### New Standalone Components
 
 - _Search Box Component_: This component is responsible for providing auto-suggestions for search queries. When a user starts typing in the search box, the component interacts with the SPARQUE.AI search engine to fetch and display relevant keyword suggestions, products, catalogs and brands in real-time. This enhances the user experience by helping users quickly find what they are looking for and reducing the effort required to type full search queries.
 
@@ -182,7 +182,7 @@ Otherwise, the search results are displayed.
 
   The default settings are 5 elements for keywords and recent search terms, 3 elements each for categories and brands and 8 elements for products.
 
-### Recent search terms
+### Recent Search Terms
 
 The recent search terms are words that would be used in the past for a search for this shop domain in the currently used browser.
 The last 10 search terms are stored in the browser's local storage.
@@ -190,7 +190,7 @@ This functionality is independent of SPARQUE, but was implemented as part of the
 This functionality is also available for customers who continue to use the ICM/Solr search.
 To customize the number of search terms stored in the browser's local storage, modify the _MAX_NUMBER_OF_STORED_SEARCH_TERMS_ constant in the [Search reducer](../../src/app/core/store/shopping/search/search.reducer.ts) to suit your requirements.
 
-## Search feature
+## Search Feature
 
 The SPARQUE.AI search response not only delivers product results but also includes relevant filters, sorting options, and product pricing.
 This eliminates the need for additional requests to gather all the data required for the search page.
