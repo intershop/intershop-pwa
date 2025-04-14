@@ -63,6 +63,7 @@ services:
       CACHE: 0
       # LOG_ALL: 0
       # SSL: 1
+      # SSL_MKCERT_OFF: 1
       # SSR: 0
       # DEBUG: 1
       # PROMETHEUS: 1
@@ -108,6 +109,11 @@ services:
     # Logging to an External Device (see logging.md)
     # volumes:
     #   - d:/pwa/logs:/var/log/
+
+    # Provide own SSL certificate files with SSL and SSL_MKCERT_OFF (see nginx-startup.md)
+    # volumes:
+    #   - <LOCAL_PATH>/fullchain.pem:/var/nginx/certs/cert.pem
+    #   - <LOCAL_PATH>/privkey.pem:/var/nginx/certs/key.pem
 
     # Uncomment this if you want the containers CA to be available on your local machine
     # 1.) provide below adjusted volume mapping
