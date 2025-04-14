@@ -24,7 +24,7 @@ export class SparqueSearchService extends SearchService {
   // Maximum number of suggestions to request from the Sparque API.
   private readonly maxNumberOfRequestedSuggestions = '8';
   // Maximum number of facet options to request from the Sparque API.
-  private readonly facetOptionsCount = '5';
+  private readonly facetOptionsCount = '10';
 
   /**
    * Constructs the SparqueSearchService.

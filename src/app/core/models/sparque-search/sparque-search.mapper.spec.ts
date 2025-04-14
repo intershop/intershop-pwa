@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { anything, mock, when } from 'ts-mockito';
 
 import { Product } from 'ish-core/models/product/product.model';
 import { SparqueOfferMapper } from 'ish-core/models/sparque-offer/sparque-offer.mapper';
@@ -74,9 +74,7 @@ describe('Sparque Search Mapper', () => {
         },
       },
     ]);
-    TestBed.configureTestingModule({
-      providers: [{ provide: SparqueProductMapper, useFactory: () => instance(sparqueProductMapperMock) }],
-    });
+    TestBed.configureTestingModule({});
 
     sparqueSearchMapper = TestBed.inject(SparqueSearchMapper);
   });

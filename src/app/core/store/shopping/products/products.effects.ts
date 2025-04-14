@@ -452,31 +452,13 @@ export class ProductsEffects {
           : currentCategoryFacetOption.count,
       };
 
-      const predecessorCategoryFacetOptions = storedCategoryFacet.facets.filter(
-        facetOption =>
-          facetOption.level <= currentCategoryFacetOption.level && facetOption.name !== currentCategoryFacetOption.name
-      );
-
-      // if facet option already selected on the same level => remove selection of this facet option
-      const selectedFacetOptionOnSameLevel = predecessorCategoryFacetOptions.find(
-        facetOption => facetOption.level === currentCategoryFacetOption.level && facetOption.selected
-      );
-      if (selectedFacetOptionOnSameLevel) {
-        predecessorCategoryFacetOptions.splice(
-          predecessorCategoryFacetOptions.findIndex(
-            facetOption => facetOption.name === selectedFacetOptionOnSameLevel.name
-          ),
-          1,
-          {
-            ...selectedFacetOptionOnSameLevel,
-            selected: false,
-            searchParameter: {
-              ...searchParameter,
-              [storedCategoryFacet.id]: [selectedFacetOptionOnSameLevel.name],
-            },
-          }
-        );
-      }
+      // get predecessor category facet options and change count regarding the selected facet option count
+      const predecessorCategoryFacetOptions = storedCategoryFacet.facets
+        .filter(facetOption => facetOption.level < currentCategoryFacetOption.level)
+        .map(facetOption => ({
+          ...facetOption,
+          count: selectedFacetOption.count,
+        }));
 
       // increase level of founded facets
       let foundedCategoryFacetOptions: Facet[] = [];
