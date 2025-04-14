@@ -25,10 +25,10 @@
   </ul>
 
   <div class="header-utility">
-    <a
+    <button
+      type="button"
       class="search-toggler"
       [ngClass]="{ 'active-search': showSearch }"
-      role="button"
       [attr.aria-label]="'search.searchbox.button.sticky_header.aria_label' | translate"
     >
       <fa-icon
@@ -47,7 +47,7 @@
       >
         <ng-container *ngTemplateOutlet="searchBoxTemplate; context: { icon: 'angle-right' }" />
       </div>
-    </a>
+    </button>
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch *ngIf="!isSticky" data-testing-id="language-switch-desktop" />
     </div>
