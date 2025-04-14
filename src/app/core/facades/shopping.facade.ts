@@ -48,7 +48,6 @@ import {
   getProductParts,
   getProductVariationCount,
   getProductVariations,
-  getSearchError,
   loadProduct,
   loadProductIfNotLoaded,
   loadProductLinks,
@@ -271,7 +270,6 @@ export class ShoppingFacade {
 
   searchSuggestLoading$ = this.store.pipe(select(getSuggestSearchLoading));
   searchSuggestError$ = this.store.pipe(select(getSuggestSearchError));
-  searchSearchError$ = this.store.pipe(select(getSearchError));
 
   searchLoading$ = this.store.pipe(select(getProductListingLoading));
 
