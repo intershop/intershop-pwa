@@ -27,6 +27,8 @@ const initialState: SuggestState = {
   error: undefined,
 };
 
+const MAX_NUMBER_OF_STORED_SEARCH_TERMS = 5;
+
 export const searchReducer = createReducer(
   initialState,
   setLoadingOn(suggestSearch),
@@ -43,7 +45,7 @@ export const searchReducer = createReducer(
   on(addSearchTermToSuggestion, (state, action): SuggestState => {
     const newSearchTerms = state._searchTerms.includes(action.payload.searchTerm)
       ? [...state._searchTerms]
-      : [action.payload.searchTerm, ...state._searchTerms].slice(0, 10);
+      : [action.payload.searchTerm, ...state._searchTerms].slice(0, MAX_NUMBER_OF_STORED_SEARCH_TERMS);
     const newState = { ...state, _searchTerms: newSearchTerms };
     if (!SSR) {
       localStorage.setItem('_searchTerms', JSON.stringify(newState._searchTerms));

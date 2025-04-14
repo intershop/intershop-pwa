@@ -1,11 +1,8 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 import { AllProductTypes, ProductHelper, SkuQuantityType } from 'ish-core/models/product/product.model';
-import { sparqueSearchServerError } from 'ish-core/store/shopping/search';
-import { setErrorOn } from 'ish-core/utils/ngrx-creators';
 
 import {
   loadProductFail,
@@ -27,7 +24,6 @@ export interface ProductsState extends EntityState<AllProductTypes> {
   parts: { [sku: string]: SkuQuantityType[] };
   variations: { [sku: string]: string[] };
   defaultVariation: { [sku: string]: string };
-  error: HttpError;
 }
 
 const initialState: ProductsState = productAdapter.getInitialState({
@@ -36,7 +32,6 @@ const initialState: ProductsState = productAdapter.getInitialState({
   parts: {},
   variations: {},
   defaultVariation: {},
-  error: undefined,
 });
 
 function addFailed(failed: string[], sku: string): string[] {
@@ -49,7 +44,7 @@ function removeFailed(failed: string[], sku: string): string[] {
 
 export const productsReducer = createReducer(
   initialState,
-  setErrorOn(sparqueSearchServerError),
+
   on(loadProductFail, loadProductVariationsFail, (state, action) => ({
     ...state,
     failed: addFailed(state.failed, action.payload.sku),

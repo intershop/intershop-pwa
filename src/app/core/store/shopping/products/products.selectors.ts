@@ -105,8 +105,6 @@ export const getProductParts = (sku: string) => createSelector(getProductsState,
 
 export const getFailedProducts = createSelector(getProductsState, state => state.failed);
 
-export const getSearchError = createSelector(getProductsState, state => state.error);
-
 export const getBreadcrumbForProductPage = createSelectorFactory<object, BreadcrumbItem[]>(projector =>
   resultMemoize(projector, isEqual)
 )(
