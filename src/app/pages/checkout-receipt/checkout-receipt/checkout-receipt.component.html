@@ -8,11 +8,24 @@
       <ish-basket-merchant-message-view [data]="order" />
     </ng-container>
 
-    <div *ishFeature="'businessCustomerRegistration'" class="row">
+    <div class="row">
       <!-- Buyer-->
-      <ish-info-box heading="checkout.widget.buyer.heading" class="infobox-wrapper col-md-6">
-        <ish-basket-buyer [object]="order" />
-      </ish-info-box>
+      <ng-container *ishFeature="'businessCustomerRegistration'">
+        <ish-info-box heading="checkout.widget.buyer.heading" class="infobox-wrapper col-md-6">
+          <ish-basket-buyer [object]="order" />
+        </ish-info-box>
+      </ng-container>
+
+      <!-- Additional Information -->
+      <ng-container *ngIf="order.recurrence">
+        <ish-info-box
+          heading="checkout.widget.additional-information.heading"
+          class="infobox-wrapper col-md-6"
+          cssClass="pb-3"
+        >
+          <ish-order-recurrence [recurrence]="order.recurrence" labelCssClass="col-4" valueCssClass="col-8" />
+        </ish-info-box>
+      </ng-container>
     </div>
 
     <div class="row d-flex">

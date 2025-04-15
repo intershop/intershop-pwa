@@ -11,6 +11,7 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketErrorMessageComponent } from 'ish-shared/components/basket/basket-error-message/basket-error-message.component';
 import { BasketItemsSummaryComponent } from 'ish-shared/components/basket/basket-items-summary/basket-items-summary.component';
+import { BasketRecurrenceSummaryComponent } from 'ish-shared/components/basket/basket-recurrence-summary/basket-recurrence-summary.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { BasketInvoiceAddressWidgetComponent } from 'ish-shared/components/checkout/basket-invoice-address-widget/basket-invoice-address-widget.component';
 import { BasketShippingAddressWidgetComponent } from 'ish-shared/components/checkout/basket-shipping-address-widget/basket-shipping-address-widget.component';
@@ -33,6 +34,7 @@ describe('Checkout Address Component', () => {
         MockComponent(BasketErrorMessageComponent),
         MockComponent(BasketInvoiceAddressWidgetComponent),
         MockComponent(BasketItemsSummaryComponent),
+        MockComponent(BasketRecurrenceSummaryComponent),
         MockComponent(BasketShippingAddressWidgetComponent),
         MockComponent(BasketValidationResultsComponent),
         MockComponent(ErrorMessageComponent),
