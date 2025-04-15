@@ -54,7 +54,7 @@ export class AddressFormUSConfiguration extends AddressFormConfiguration {
         },
         {
           key: 'mainDivisionCode',
-          type: 'ish-select-field',
+          type: 'ish-search-select-field',
           props: {
             label: 'account.address.state.label',
             required: true,

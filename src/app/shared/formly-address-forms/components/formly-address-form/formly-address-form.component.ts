@@ -107,7 +107,7 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
           fieldGroup: [
             {
               key: 'countryCode',
-              type: 'ish-select-field',
+              type: 'ish-search-select-field',
               props: {
                 required: true,
                 label: 'account.address.country.label',
