@@ -289,6 +289,7 @@ const exportedComponents = [
   ModalDialogLinkComponent,
   OrderListComponent,
   OrderWidgetComponent,
+  PagingComponent,
   ProductAddToBasketComponent,
   ProductAttachmentsComponent,
   ProductAttributesComponent,
@@ -315,7 +316,6 @@ const exportedComponents = [
   PromotionDetailsComponent,
   PromotionRemoveComponent,
   SuccessMessageComponent,
-  PagingComponent,
 ];
 
 @NgModule({

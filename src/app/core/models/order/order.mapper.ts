@@ -2,7 +2,7 @@ import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
-import { PagingData } from 'ish-core/models/paging/paging.model';
+import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { PaymentMapper } from 'ish-core/models/payment/payment.mapper';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
 
@@ -13,7 +13,7 @@ export class OrderMapper {
   // eslint-disable-next-line complexity
   static fromData(payload: OrderData): Order {
     if (!Array.isArray(payload.data)) {
-      const { data, included } = payload;
+      const { data, included, infos } = payload;
       const totals = BasketMapper.getTotals(data, included ? included.discounts : undefined);
 
       return {
@@ -86,6 +86,7 @@ export class OrderMapper {
               )
             : undefined,
         totals,
+        infos,
         attributes: data.attributes,
         taxationId: data.taxIdentificationNumber,
         user: data.buyer,
@@ -95,22 +96,22 @@ export class OrderMapper {
     }
   }
 
-  static fromInfo(payload: OrderData): PagingData {
+  static fromListData(payload: OrderData): OrdersInformation {
+    if (Array.isArray(payload.data)) {
+      return {
+        orders: payload.data.map(data => OrderMapper.fromData({ ...payload, data })),
+        paging: OrderMapper.fromInfo(payload),
+      };
+    }
+  }
+
+  static fromInfo(payload: OrderData): PagingInfo {
     if (payload.info) {
       const { info } = payload;
       return {
         limit: info.limit,
         offset: info.offset,
         total: info.total,
-      };
-    }
-  }
-
-  static fromListData(payload: OrderData): OrdersInformation {
-    if (Array.isArray(payload.data)) {
-      return {
-        orders: payload.data.map(data => OrderMapper.fromData({ ...payload, data })),
-        paging: OrderMapper.fromInfo(payload),
       };
     }
   }

@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Order } from 'ish-core/models/order/order.model';
-import { PagingData } from 'ish-core/models/paging/paging.model';
+import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
@@ -48,7 +48,7 @@ describe('Orders Selectors', () => {
     offset: 0,
     limit: 30,
     total: 2,
-  } as PagingData;
+  } as PagingInfo;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

@@ -1,9 +1,11 @@
 import { AddressData } from 'ish-core/models/address/address.interface';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
+import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
 import { BasketWarrantyData } from 'ish-core/models/basket-warranty/basket-warranty.interface';
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
 import { OrderItemData } from 'ish-core/models/order-item/order-item.interface';
+import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
 import { PaymentData } from 'ish-core/models/payment/payment.interface';
@@ -42,5 +44,6 @@ export interface OrderData {
     payments_paymentMethod?: { [id: string]: PaymentMethodBaseData };
     payments_paymentInstrument?: { [id: string]: PaymentInstrument };
   };
-  info?: { limit: number; offset: number; total: number };
+  infos?: BasketInfo[];
+  info?: PagingInfo;
 }
