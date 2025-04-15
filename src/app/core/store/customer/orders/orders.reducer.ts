@@ -4,7 +4,7 @@ import { createReducer, on } from '@ngrx/store';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { Order } from 'ish-core/models/order/order.model';
-import { PagingData } from 'ish-core/models/paging/paging.model';
+import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
 import {
@@ -30,7 +30,7 @@ export interface OrdersState extends EntityState<Order> {
   selected: string;
   query: OrderListQuery;
   error: HttpError;
-  paging: PagingData;
+  paging: PagingInfo;
 }
 
 const initialState: OrdersState = orderAdapter.getInitialState({

@@ -3,7 +3,7 @@ import { createAction } from '@ngrx/store';
 
 import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { Order } from 'ish-core/models/order/order.model';
-import { PagingData } from 'ish-core/models/paging/paging.model';
+import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 export const createOrder = createAction('[Orders Internal] Create Order');
@@ -23,7 +23,7 @@ export const loadOrdersFail = createAction('[Orders API] Load Orders Fail', http
 
 export const loadOrdersSuccess = createAction(
   '[Orders API] Load Orders Success',
-  payload<{ orders: Order[]; query: OrderListQuery; paging: PagingData }>()
+  payload<{ orders: Order[]; query: OrderListQuery; paging: PagingInfo }>()
 );
 
 export const loadOrder = createAction('[Orders Internal] Load Order', payload<{ orderId: string }>());

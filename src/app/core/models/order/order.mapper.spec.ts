@@ -136,6 +136,12 @@ describe('Order Mapper', () => {
         },
       },
     },
+    infos: [
+      {
+        message: 'infoMessage',
+        code: 'infoCode',
+      },
+    ],
     info: {
       limit: 10,
       offset: 0,
@@ -157,6 +163,7 @@ describe('Order Mapper', () => {
       expect(order.commonShipToAddress.urn).toBe('urn_commonShipToAddress_123');
       expect(order.commonShippingMethod.id).toBe('shipping_method_123');
       expect(order.lineItems).toBeArrayOfSize(1);
+      expect(order.infos).toBeArrayOfSize(1);
 
       expect(order.approval.approverFirstName).toBe('Patricia');
       expect(order.requisitionNo).toBe(orderBaseData.requisitionDocumentNo);
