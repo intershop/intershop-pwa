@@ -46,3 +46,8 @@ export interface CostCenters {
   costCenters: CostCenter[];
   paging: PagingInfo;
 }
+
+export type CostCenterImportResult = {
+  costCenter: CostCenterBase;
+  status: string;
+};

@@ -1,0 +1,3 @@
+costCenterId,name,budgetCurrency,budgetValue,budgetPeriod,costCenterOwnerLogin,active
+CC001,Cost Center 1,USD,10000,monthly,bboldner@test.intershop.de,true
+CC002,Cost Center 2,EUR,200000,yearly,bboldner@test.intershop.de,false

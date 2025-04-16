@@ -101,6 +101,12 @@ export const routes: Routes = [
     canActivate: [redirectFirstToParentGuard],
   },
   {
+    path: 'cost-centers/import',
+    loadChildren: () =>
+      import('./cost-center-import/cost-center-import-page.module').then(m => m.CostCenterImportPageModule),
+    canActivate: [redirectFirstToParentGuard],
+  },
+  {
     path: 'cost-centers/:CostCenterId',
     loadChildren: () =>
       import('./cost-center-detail/cost-center-detail-page.module').then(m => m.CostCenterDetailPageModule),

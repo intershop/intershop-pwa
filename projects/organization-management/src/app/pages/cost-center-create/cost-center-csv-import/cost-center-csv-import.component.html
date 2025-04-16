@@ -1,0 +1,49 @@
+<div class="row mt-4">
+  <div class="col-md-12">
+    <h2 class="h3">{{ 'costcenter.csv.import.title' | translate }}</h2>
+    <p>{{ 'costcenter.csv.import.subtitle' | translate }}</p>
+    <form
+      [formGroup]="csvForm"
+      (ngSubmit)="submitCostCenters()"
+      [attr.aria-label]="'costcenter.csv.import.form.label' | translate"
+    >
+      <div class="form-group section">
+        <input
+          #fileInput
+          type="file"
+          name="csvFile"
+          size="35"
+          accept=".csv"
+          (change)="onFileChange($event)"
+          [attr.aria-label]="'costcenter.csv.import.file.upload.aria_label' | translate"
+        />
+        <div [ngSwitch]="status">
+          <small *ngSwitchCase="'InvalidHeader'" class="has-error"
+            ><span class="validation-message">{{ 'costcenter.csv.import.file.invalid.input' | translate }}</span></small
+          >
+          <small *ngSwitchCase="'InvalidFormat'" class="has-error"
+            ><span class="validation-message">{{
+              'costcenter.csv.import.file.invalid.format' | translate
+            }}</span></small
+          >
+          <small *ngSwitchCase="'Valid'" class="has-success"
+            ><span class="validation-message">{{ 'costcenter.csv.import.file.uploaded' | translate }}</span></small
+          >
+          <small *ngSwitchDefault></small>
+        </div>
+        <small
+          class="form-text"
+          [innerHTML]="'costcenter.csv.import.file.sample' | translate : { '0': 'assets/sample-data/costcenters.csv' }"
+        ></small>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary" name="importCostCenters" [disabled]="isCsvDisabled">
+          {{ 'costcenter.csv.import.create.button.label' | translate }}
+        </button>
+        <button type="reset" class="btn btn-link" name="reset" (click)="resetInput()">
+          {{ 'costcenter.csv.import.reset.button.label' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
