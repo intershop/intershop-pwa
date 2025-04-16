@@ -22,10 +22,13 @@ import {
 import {
   addCostCenter,
   addCostCenterBuyers,
+  addCostCentersFromCsv,
   deleteCostCenter,
   deleteCostCenterBuyer,
   getCostCenters,
   getCostCentersError,
+  getCostCentersImportResults,
+  getCostCentersImportTotal,
   getCostCentersLoading,
   getCostCentersPagingInfo,
   getSelectedCostCenter,
@@ -70,6 +73,8 @@ export class OrganizationManagementFacade {
   costCentersLoading$ = this.store.pipe(select(getCostCentersLoading));
   selectedCostCenter$ = this.store.pipe(select(getSelectedCostCenter));
   costCentersPagingInfo$ = this.store.pipe(select(getCostCentersPagingInfo));
+  costCentersImportResults$ = this.store.pipe(select(getCostCentersImportResults));
+  costCentersImportTotal$ = this.store.pipe(select(getCostCentersImportTotal));
 
   /**
    * user methods
@@ -196,6 +201,10 @@ export class OrganizationManagementFacade {
         costCenter,
       })
     );
+  }
+
+  addCostCentersFromCsv(costCenters: CostCenterBase[]) {
+    this.store.dispatch(addCostCentersFromCsv({ costCenters }));
   }
 
   updateCostCenter(costCenter: CostCenterBase) {

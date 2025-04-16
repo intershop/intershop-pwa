@@ -252,7 +252,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
       new PurgeCSSPlugin({
         paths: glob.sync('./**/src/app/**/!(*.spec.ts)*', { nodir: true }),
         safelist: {
-          standard: [/(m|p)(t|b|s|e|x|y)?(-(sm|md|lg|xl))?-([0-5]|auto)/],
+          standard: [/(?:((m|p)(t|b|s|e|x|y)?(-(sm|md|lg|xl))?-([0-5]|auto))|((w|h)-(25|50|75|100|auto)))/],
           greedy: [
             /\bfa\b/,
             /\bmodal\b/,

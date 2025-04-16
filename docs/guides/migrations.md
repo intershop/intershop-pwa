@@ -9,7 +9,7 @@ kb_sync_latest_only
 
 ## From 9.0.0 to 9.1.0
 
-Catalogs (root-level categories in ICM terminology) with _Show In Menu_ disabled are now hidden from the main header navigation.
+Catalogs (root-level categories in ICM terminology) with _Show In Menu_ being disabled are now hidden from the main header navigation.
 
 Intershop PWA 9.1.0 contains a fix to display warranties at recurring order line items.
 This fix requires ICM 14.1.0 with the Recurring Order Extension 2.3.0 (`icm-as-customization-recurringorders:2.3.0`).
@@ -17,6 +17,8 @@ This fix requires ICM 14.1.0 with the Recurring Order Extension 2.3.0 (`icm-as-c
 The Server Side Rendering (SSR) responses now contain a `Cache-Control: no-cache` header by default.
 This `Cache-Control` header is ignored by the NGINX cache, but it ensures that browsers do not cache SSR responses.
 Having `Cache-Control: no-cache` is a requirement for the Payment Card Industry Data Security Standard (PCI DSS).
+
+With Intershop PWA 9.1.0, cost center import functionality via CSV files was introduced.
 
 ## From 8.0.0 to 9.0.0
 

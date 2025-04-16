@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { from } from 'rxjs';
-import { concatMap, exhaustMap, map, mergeMap, switchMap } from 'rxjs/operators';
+import { from, of } from 'rxjs';
+import { catchError, concatMap, endWith, exhaustMap, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages/messages.actions';
 import { selectRouteParam } from 'ish-core/store/core/router';
@@ -17,7 +17,11 @@ import {
   addCostCenterBuyersFail,
   addCostCenterBuyersSuccess,
   addCostCenterFail,
+  addCostCenterFromCsvSingleResult,
   addCostCenterSuccess,
+  addCostCentersFromCsv,
+  addCostCentersFromCsvComplete,
+  addCostCentersFromCsvImportTotal,
   deleteCostCenter,
   deleteCostCenterBuyer,
   deleteCostCenterBuyerFail,
@@ -101,6 +105,52 @@ export class CostCentersEffects {
             )
           ),
           mapErrorToAction(addCostCenterFail)
+        )
+      )
+    )
+  );
+
+  addCostCentersFromCsv$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addCostCentersFromCsv),
+      mapToPayload(),
+      concatMap(payload =>
+        this.navigateTo('../import').pipe(
+          switchMap(() => {
+            const costCenters = payload.costCenters;
+
+            if (!costCenters?.length) {
+              return of(addCostCentersFromCsvComplete());
+            }
+
+            addCostCentersFromCsvImportTotal({ totalCostCenters: costCenters.length });
+
+            return from(costCenters).pipe(
+              concatMap(costCenter =>
+                this.costCentersService.addCostCenter(costCenter).pipe(
+                  map(addedCostCenter =>
+                    addCostCenterFromCsvSingleResult({
+                      importResult: {
+                        costCenter: addedCostCenter,
+                        status: 'success',
+                      },
+                    })
+                  ),
+                  catchError(error =>
+                    of(
+                      addCostCenterFromCsvSingleResult({
+                        importResult: {
+                          costCenter,
+                          status: error?.errors?.[0]?.message ?? 'Error: Unknown',
+                        },
+                      })
+                    )
+                  )
+                )
+              ),
+              endWith(addCostCentersFromCsvComplete())
+            );
+          })
         )
       )
     )

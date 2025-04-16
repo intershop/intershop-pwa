@@ -1,0 +1,130 @@
+<h1>{{ 'account.costcenter.import.heading' | translate }}</h1>
+<p>{{ 'account.costcenter.import.info' | translate }}</p>
+
+<div class="loading-container" *ngIf="importedCostCenters$ | async as importedCostCenters">
+  <ng-container *ngIf="importedCostCenters.length > 0; else loading">
+    <!-- cost center import progress bar -->
+    <ng-container *ngIf="importProgress$ | async as progress">
+      <div *ngIf="progress.total > 0" class="mb-3">
+        <div class="progress">
+          <div
+            class="progress-bar"
+            role="progressbar"
+            [style.width.%]="progress.percentage"
+            [attr.aria-valuemin]="0"
+            [attr.aria-valuenow]="progress.current"
+            [attr.aria-valuemax]="progress.total"
+          >
+            <span class="progress-display">
+              {{
+                'account.costcenter.import.progress'
+                  | translate
+                    : {
+                        total: progress.total,
+                        processed: progress.current,
+                        percentage: progress.percentage
+                      }
+              }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- imported cost centers table -->
+    <table cdk-table [dataSource]="importedCostCenters" class="table table-lg mobile-optimized">
+      <!-- Cost Center Id -->
+      <ng-container cdkColumnDef="costCenterId">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef>
+          {{ 'account.costcenter.list.header.no' | translate }}
+        </th>
+        <td cdk-cell *cdkCellDef="let imported" [attr.data-label]="'account.costcenter.list.header.no' | translate">
+          <ng-container *ngIf="imported.costCenter.id; else failedImportId">
+            <a [routerLink]="['..', imported.costCenter.id]">{{ imported.costCenter.costCenterId }}</a>
+          </ng-container>
+          <ng-template #failedImportId>
+            {{ imported.costCenter.costCenterId }}
+          </ng-template>
+          <span *ngIf="imported.costCenter.active === false" class="input-help">
+            {{ 'account.costCenter.status.inactive' | translate }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Cost Center Name -->
+      <ng-container cdkColumnDef="costCenterName">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef>
+          {{ 'account.costcenter.list.header.name' | translate }}
+        </th>
+        <td cdk-cell *cdkCellDef="let imported" [attr.data-label]="'account.costcenter.list.header.name' | translate">
+          <ng-container *ngIf="imported.costCenter.id; else failedImportName">
+            <a [routerLink]="['..', imported.costCenter.id]">{{ imported.costCenter.name }}</a>
+          </ng-container>
+          <ng-template #failedImportName>
+            {{ imported.costCenter.name }}
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <!-- Cost Center Manager -->
+      <ng-container cdkColumnDef="costCenterManager">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef>
+          {{ 'account.costcenter.list.header.manager' | translate }}
+        </th>
+        <td
+          cdk-cell
+          *cdkCellDef="let imported"
+          [attr.data-label]="'account.costcenter.list.header.manager' | translate"
+        >
+          {{ imported.costCenter.costCenterOwner?.login }}
+        </td>
+      </ng-container>
+
+      <!-- Cost Center Budget -->
+      <ng-container cdkColumnDef="costCenterBudget">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef>
+          {{ 'account.costcenter.list.header.budgetspent' | translate }}
+        </th>
+        <td
+          cdk-cell
+          *cdkCellDef="let imported"
+          [attr.data-label]="'account.costcenter.list.header.budgetspent' | translate"
+        >
+          {{ imported.costCenter.budget?.value }}
+          {{ imported.costCenter.budget?.currency }}
+          ({{ imported.costCenter.budgetPeriod }})
+        </td>
+      </ng-container>
+
+      <!-- Import Status -->
+      <ng-container cdkColumnDef="status">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef class="w-25">
+          {{ 'account.costcenter.list.header.status' | translate }}
+        </th>
+        <td cdk-cell *cdkCellDef="let imported" [attr.data-label]="'account.costcenter.list.header.status' | translate">
+          <span [ngClass]="imported.status === 'success' ? 'text-success' : 'text-error'">
+            {{
+              imported.status === 'success' ? ('account.costcenter.import.status.success' | translate) : imported.status
+            }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Header and Row Declarations -->
+      <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
+      <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay"></tr>
+    </table>
+
+    <a [routerLink]="['/account/organization/cost-centers']">
+      {{ 'account.costcenter.import.back' | translate }}
+    </a>
+  </ng-container>
+
+  <ng-template #loading>
+    <ish-loading *ngIf="loading$ | async; else emptyMessage" />
+  </ng-template>
+
+  <ng-template #emptyMessage>
+    <p>{{ 'account.costcenter.import.empty' | translate }}</p>
+  </ng-template>
+</div>

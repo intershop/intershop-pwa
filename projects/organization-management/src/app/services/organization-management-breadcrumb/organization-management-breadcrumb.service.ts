@@ -67,6 +67,11 @@ export class OrganizationManagementBreadcrumbService {
             { key: 'account.organization.cost_center_management', link: `${prefix}/cost-centers` },
             { key: 'account.costcenter.create.heading' },
           ]);
+        } else if (path.endsWith('cost-centers/import')) {
+          return of([
+            { key: 'account.organization.cost_center_management', link: `${prefix}/cost-centers` },
+            { key: 'account.costcenter.import.breadcrumb' },
+          ]);
         } else if (/cost-centers\/:CostCenterId(\/(edit|buyers))?$/.test(path)) {
           return this.organizationManagementFacade.selectedCostCenter$.pipe(
             whenTruthy(),
