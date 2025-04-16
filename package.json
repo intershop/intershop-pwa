@@ -16,7 +16,6 @@
     "update-dockerignore": "node scripts/update-dockerignore",
     "init-development-environment": "node scripts/init-development-environment",
     "check-file-synchronization": "node scripts/check-file-synchronization",
-    "postinstall": "npm-run-all --silent build:eslint-rules build:schematics synchronize-lazy-components init-development-environment",
     "build:eslint-rules": "cd eslint-rules && npm run build",
     "build:schematics": "cd schematics && npm run build",
     "ng": "ng",
@@ -73,7 +72,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@googlemaps/js-api-loader": "^1.16.8",
-    "@ng-bootstrap/ng-bootstrap": "^11.0.1",
+    "@ng-bootstrap/ng-bootstrap": "^18.0.0",
     "@ng-select/ng-select": "^11.2.0",
     "@ngrx/effects": "^16.3.0",
     "@ngrx/entity": "^16.3.0",
@@ -181,7 +180,7 @@
     "ts-mockito": "^2.6.1",
     "ts-morph": "^21.0.1",
     "ts-node": "~10.9.2",
-    "typescript": "~5.1.6",
+    "typescript": "~5.3.0",
     "xliff": "^6.2.1"
   },
   "overrides": {
