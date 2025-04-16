@@ -121,7 +121,6 @@
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
     "@ngrx/eslint-plugin": "^17.2.0",
-    "@nguniversal/builders": "^16.2.0",
     "@phenomnomnominal/tsquery": "^6.1.3",
     "@schematics/angular": "^16.2.16",
     "@types/eslint": "^8.56.12",
