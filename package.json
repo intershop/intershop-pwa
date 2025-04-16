@@ -72,7 +72,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@googlemaps/js-api-loader": "^1.16.8",
-    "@ng-bootstrap/ng-bootstrap": "^13.1.1",
+    "@ng-bootstrap/ng-bootstrap": "^16.0.0",
     "@ng-select/ng-select": "^11.2.0",
     "@ngrx/effects": "^16.3.0",
     "@ngrx/entity": "^16.3.0",
