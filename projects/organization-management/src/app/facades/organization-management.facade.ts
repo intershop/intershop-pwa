@@ -12,6 +12,7 @@ import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { B2bUser } from '../models/b2b-user/b2b-user.model';
 import { UserBudget } from '../models/user-budget/user-budget.model';
+import { CostCentersService } from '../services/cost-centers/cost-centers.service';
 import {
   getCurrentUserBudget,
   getCurrentUserBudgetError,
@@ -51,7 +52,7 @@ import {
 /* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class OrganizationManagementFacade {
-  constructor(private store: Store) {}
+  constructor(private store: Store, private costCenterService: CostCentersService) {}
 
   usersError$ = this.store.pipe(select(getUsersError));
   usersLoading$ = this.store.pipe(select(getUsersLoading));
@@ -188,6 +189,10 @@ export class OrganizationManagementFacade {
         costCenter,
       })
     );
+  }
+
+  addCostCenterFromCSV(costCenter: CostCenterBase) {
+    return this.costCenterService.addCostCenter(costCenter);
   }
 
   updateCostCenter(costCenter: CostCenterBase) {
