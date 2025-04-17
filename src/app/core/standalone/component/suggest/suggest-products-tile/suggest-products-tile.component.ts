@@ -15,18 +15,15 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ReplaySubject } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { Product } from 'ish-core/models/product/product.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { PipesModule } from 'ish-core/pipes.module';
-import { SharedModule } from 'ish-shared/shared.module';
 
 @Component({
   selector: 'ish-suggest-products-tile',
   templateUrl: './suggest-products-tile.component.html',
   standalone: true,
-  imports: [CommonModule, PipesModule, TranslateModule, RouterModule, SharedModule],
-  providers: [ProductContextFacade],
+  imports: [CommonModule, PipesModule, TranslateModule, RouterModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestProductsTileComponent implements OnInit {

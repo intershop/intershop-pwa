@@ -12,7 +12,6 @@
         [innerHTML]="truncate(result.name, 38) | ishHighlight : (inputTerms$ | async)"
         (click)="handleInputFocus()"
       ></a>
-      <ish-product-price *ngIf="deviceType === 'desktop'" ishProductContext [sku]="result.sku" />
       <ng-template #mobileTablet>
         <a
           [routerLink]="'/prd' + result.sku"
