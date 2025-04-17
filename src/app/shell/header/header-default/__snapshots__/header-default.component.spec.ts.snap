@@ -13,7 +13,8 @@ exports[`Header Default Component should render normal header adequately for des
   <div class="header-utility">
     <a
       role="button"
-      class="search-toggler"
+      class="btn btn-link search-toggler sticky-header-icon"
+      tabindex="-1"
       aria-label="search.searchbox.button.sticky_header.aria_label"
     ></a>
     <div class="language-switch-container d-none d-md-block">
@@ -34,7 +35,7 @@ exports[`Header Default Component should render normal header adequately for des
       class="d-md-none"
     ></ish-mini-basket>
   </div>
-  <div class="mid-header row align-items-center">
+  <div class="mid-header row align-items-center justify-content-between">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
@@ -46,10 +47,12 @@ exports[`Header Default Component should render normal header adequately for des
         ></a>
       </div>
     </div>
-    <div class="col-md-5 text-right"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
     <div class="col-md-4">
       <div class="search-container header-search-container">
-        <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box>
+        <ish-search-box
+          data-testing-id="search-box-desktop"
+          ng-reflect-device-type="desktop"
+        ></ish-search-box>
       </div>
     </div>
   </div>
@@ -84,10 +87,14 @@ exports[`Header Default Component should render normal header adequately for mob
   <div class="header-utility">
     <a
       role="button"
-      class="search-toggler active-search"
+      class="btn btn-link search-toggler sticky-header-icon active-search"
+      tabindex="-1"
       aria-label="search.searchbox.button.sticky_header.aria_label"
       ><div class="search-container header-search-container show" ng-reflect-collapsed="false">
-        <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box></div
+        <ish-search-box
+          data-testing-id="search-box-desktop"
+          ng-reflect-device-type="mobile"
+        ></ish-search-box></div
     ></a>
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
@@ -108,7 +115,7 @@ exports[`Header Default Component should render normal header adequately for mob
       class="d-md-none"
     ></ish-mini-basket>
   </div>
-  <div class="mid-header row align-items-center">
+  <div class="mid-header row align-items-center justify-content-between">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
@@ -120,7 +127,6 @@ exports[`Header Default Component should render normal header adequately for mob
         ></a>
       </div>
     </div>
-    <div class="col-md-5 text-right"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
     <div class="col-md-4"></div>
   </div>
   <button type="button" class="navbar-toggler">
@@ -155,7 +161,8 @@ exports[`Header Default Component should render normal header adequately for tab
   <div class="header-utility">
     <a
       role="button"
-      class="search-toggler"
+      class="btn btn-link search-toggler sticky-header-icon"
+      tabindex="-1"
       aria-label="search.searchbox.button.sticky_header.aria_label"
     ></a>
     <div class="language-switch-container d-none d-md-block">
@@ -176,7 +183,7 @@ exports[`Header Default Component should render normal header adequately for tab
       class="d-md-none"
     ></ish-mini-basket>
   </div>
-  <div class="mid-header row align-items-center">
+  <div class="mid-header row align-items-center justify-content-between">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
@@ -188,10 +195,12 @@ exports[`Header Default Component should render normal header adequately for tab
         ></a>
       </div>
     </div>
-    <div class="col-md-5 text-right"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
     <div class="col-md-4">
       <div class="search-container header-search-container">
-        <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box>
+        <ish-search-box
+          data-testing-id="search-box-desktop"
+          ng-reflect-device-type="tablet"
+        ></ish-search-box>
       </div>
     </div>
   </div>
@@ -219,11 +228,10 @@ exports[`Header Default Component should render sticky header adequately for des
   <div class="header-utility">
     <a
       role="button"
-      class="search-toggler active-search"
+      tabindex="0"
+      class="btn btn-link search-toggler sticky-header-icon"
       aria-label="search.searchbox.button.sticky_header.aria_label"
-      ><fa-icon tabindex="0" class="header-icon" ng-reflect-icon="fas,search"></fa-icon>
-      <div class="search-container header-search-container" ng-reflect-collapsed="false">
-        <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box></div
+      ><fa-icon class="header-icon" ng-reflect-icon="fas,search"></fa-icon
     ></a>
     <div class="language-switch-container d-none d-md-block"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
@@ -242,7 +250,7 @@ exports[`Header Default Component should render sticky header adequately for des
       class="d-lg-none"
     ></ish-mini-basket>
   </div>
-  <div class="mid-header row align-items-center">
+  <div class="mid-header row align-items-center justify-content-between">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
@@ -254,8 +262,14 @@ exports[`Header Default Component should render sticky header adequately for des
         ></a>
       </div>
     </div>
-    <div class="col-md-5 text-right"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
-    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <div class="search-container header-search-container">
+        <ish-search-box
+          data-testing-id="search-box-desktop"
+          ng-reflect-device-type="desktop"
+        ></ish-search-box>
+      </div>
+    </div>
   </div>
   <button type="button" class="navbar-toggler">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
@@ -281,11 +295,15 @@ exports[`Header Default Component should render sticky header adequately for mob
   <div class="header-utility">
     <a
       role="button"
-      class="search-toggler active-search"
+      class="btn btn-link search-toggler sticky-header-icon active-search"
+      tabindex="0"
       aria-label="search.searchbox.button.sticky_header.aria_label"
-      ><fa-icon tabindex="0" class="header-icon" ng-reflect-icon="fas,search"></fa-icon>
+      ><fa-icon class="header-icon" ng-reflect-icon="fas,search"></fa-icon>
       <div class="search-container header-search-container" ng-reflect-collapsed="false">
-        <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box></div
+        <ish-search-box
+          data-testing-id="search-box-desktop"
+          ng-reflect-device-type="mobile"
+        ></ish-search-box></div
     ></a>
     <div class="language-switch-container d-none d-md-block"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
@@ -304,7 +322,7 @@ exports[`Header Default Component should render sticky header adequately for mob
       class="d-lg-none"
     ></ish-mini-basket>
   </div>
-  <div class="mid-header row align-items-center">
+  <div class="mid-header row align-items-center justify-content-between">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
@@ -316,7 +334,6 @@ exports[`Header Default Component should render sticky header adequately for mob
         ></a>
       </div>
     </div>
-    <div class="col-md-5 text-right"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
     <div class="col-md-4"></div>
   </div>
   <button type="button" class="navbar-toggler">
@@ -343,11 +360,10 @@ exports[`Header Default Component should render sticky header adequately for tab
   <div class="header-utility">
     <a
       role="button"
-      class="search-toggler active-search"
+      tabindex="0"
+      class="btn btn-link search-toggler sticky-header-icon"
       aria-label="search.searchbox.button.sticky_header.aria_label"
-      ><fa-icon tabindex="0" class="header-icon" ng-reflect-icon="fas,search"></fa-icon>
-      <div class="search-container header-search-container" ng-reflect-collapsed="false">
-        <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box></div
+      ><fa-icon class="header-icon" ng-reflect-icon="fas,search"></fa-icon
     ></a>
     <div class="language-switch-container d-none d-md-block"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
@@ -366,7 +382,7 @@ exports[`Header Default Component should render sticky header adequately for tab
       class="d-lg-none"
     ></ish-mini-basket>
   </div>
-  <div class="mid-header row align-items-center">
+  <div class="mid-header row align-items-center justify-content-between">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
@@ -378,8 +394,14 @@ exports[`Header Default Component should render sticky header adequately for tab
         ></a>
       </div>
     </div>
-    <div class="col-md-5 text-right"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
-    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <div class="search-container header-search-container">
+        <ish-search-box
+          data-testing-id="search-box-desktop"
+          ng-reflect-device-type="tablet"
+        ></ish-search-box>
+      </div>
+    </div>
   </div>
   <button type="button" class="navbar-toggler">
     <span class="sr-only">common.button.navbarCollapsed.text</span>

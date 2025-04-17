@@ -44,6 +44,7 @@ function removeFailed(failed: string[], sku: string): string[] {
 
 export const productsReducer = createReducer(
   initialState,
+
   on(loadProductFail, loadProductVariationsFail, (state, action) => ({
     ...state,
     failed: addFailed(state.failed, action.payload.sku),
