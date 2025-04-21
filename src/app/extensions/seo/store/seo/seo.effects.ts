@@ -4,7 +4,6 @@ import { Meta, MetaDefinition, Title } from '@angular/platform-browser';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction, routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { REQUEST } from '@nguniversal/express-engine/tokens';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
 import { Subject, combineLatest, merge, race } from 'rxjs';
@@ -26,6 +25,7 @@ import { getSelectedProduct } from 'ish-core/store/shopping/products';
 import { DomService } from 'ish-core/utils/dom/dom.service';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
+import { REQUEST } from 'src/express.tokens';
 
 @Injectable()
 export class SeoEffects {

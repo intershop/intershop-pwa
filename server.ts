@@ -7,18 +7,18 @@ import * as robots from 'express-robots-txt';
 import * as fs from 'fs';
 import * as proxy from 'express-http-proxy';
 import {
-  AppServerModule,
   ICM_WEB_URL,
   HYBRID_MAPPING_TABLE,
   environment,
   APP_BASE_HREF,
   ICM_CONFIG_MATCH,
+  AppServerModule,
 } from './src/main.server';
-import { ngExpressEngine } from '@nguniversal/express-engine';
 import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
 import * as client from 'prom-client';
 import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level';
 import { METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
+import { CommonEngine } from '@angular/ssr';
 
 const collectDefaultMetrics = client.collectDefaultMetrics;
 
@@ -206,22 +206,15 @@ export function app() {
 
   const prometheusRest: { endpoint: string; duration: number }[] = [];
 
-  // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
-  server.engine(
-    'html',
-    ngExpressEngine({
-      bootstrap: AppServerModule,
-      providers: [
-        { provide: 'SSR_HYBRID', useValue: !!process.env.SSR_HYBRID },
-        { provide: 'PROMETHEUS_REST', useValue: prometheusRest },
-        { provide: METRICS_DETAIL_LEVEL, useValue: metricsDetailLevel },
-      ],
-      inlineCriticalCss: false,
-    })
-  );
-
-  server.set('view engine', 'html');
-  server.set('views', BROWSER_FOLDER);
+  // setup new angular common engine SSR rather than using nguniversal
+  const commonEngine = new CommonEngine({
+    bootstrap: AppServerModule,
+    providers: [
+      { provide: 'SSR_HYBRID', useValue: !!process.env.SSR_HYBRID },
+      { provide: 'PROMETHEUS_REST', useValue: prometheusRest },
+      { provide: METRICS_DETAIL_LEVEL, useValue: metricsDetailLevel },
+    ],
+  });
 
   if (logging) {
     const morgan = require('morgan');
@@ -428,14 +421,11 @@ export function app() {
     })
   );
 
-  const angularUniversal = (req: express.Request, res: express.Response) => {
-    if (logging && logAll) {
-      console.log(`SSR ${req.originalUrl}`);
-    }
-
+  // complete setup and usage of new angular commong engine for Angular 17+ SSR
+  const angularCommonEngine = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     if (req.originalUrl.startsWith('/assets/')) {
       if (logging) {
-        console.log(`RES 404 ${req.originalUrl} - cannot serve static assets with Angular Universal`);
+        console.log(`RES 404 ${req.originalUrl} - cannot serve static assets with Angular SSR`);
       }
       return res.sendStatus(404);
     }
@@ -450,47 +440,37 @@ export function app() {
       }
     }
 
-    // find last baseHref parameter
     const regex = /baseHref=([^;\?\#]*)/g;
     let baseHref = '/';
     for (let match: RegExpExecArray; (match = regex.exec(req.originalUrl)); ) {
       baseHref = match[1].replace(/%25/g, '%').replace(/%2F/g, '/');
     }
 
-    res.render(
-      'index',
-      {
-        req,
-        res,
+    commonEngine
+      .render({
+        url: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+        documentFilePath: join(BROWSER_FOLDER, 'index.html'),
+        publicPath: BROWSER_FOLDER,
         providers: [{ provide: APP_BASE_HREF, useValue: baseHref }],
-      },
-      (err, html) => {
-        if (html) {
-          let newHtml = html;
-          if (process.env.PROXY_ICM && req.get('host')) {
-            newHtml = newHtml.replace(
-              new RegExp(ICM_BASE_URL, 'g'),
-              process.env.PROXY_ICM.startsWith('http') ? process.env.PROXY_ICM : `${req.protocol}://${req.get('host')}`
-            );
-          }
-          newHtml = newHtml.replace(/<base href="[^>]*>/, `<base href="${baseHref}" />`);
+      })
+      .then(html => {
+        let newHtml = html;
 
-          newHtml = setDeployUrlInFile(DEPLOY_URL, req.originalUrl, newHtml);
+        if (process.env.PROXY_ICM && req.get('host')) {
+          newHtml = newHtml.replace(
+            new RegExp(ICM_BASE_URL, 'g'),
+            process.env.PROXY_ICM.startsWith('http') ? process.env.PROXY_ICM : `${req.protocol}://${req.get('host')}`
+          );
+        }
 
-          res.status(res.statusCode).send(newHtml);
-        } else {
-          res.status(500).send(err.message);
-        }
-        if (logging) {
-          if (logAll || res.statusCode >= 400) {
-            console.log(`RES ${res.statusCode} ${req.originalUrl}`);
-          }
-          if (err) {
-            console.log(err);
-          }
-        }
-      }
-    );
+        newHtml = newHtml.replace(/<base href="[^>]*>/, `<base href="${baseHref}" />`);
+        newHtml = setDeployUrlInFile(DEPLOY_URL, req.originalUrl, newHtml);
+
+        res.send(newHtml);
+      })
+      .catch(err => {
+        next(err);
+      });
   };
 
   if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
@@ -524,8 +504,7 @@ export function app() {
     });
   }
 
-  // All regular routes use the Universal engine
-  server.use('*', angularUniversal);
+  server.use('*', angularCommonEngine);
 
   console.log('ICM_BASE_URL is', ICM_BASE_URL);
 
