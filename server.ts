@@ -12,6 +12,7 @@ import 'zone.js/node';
 
 import { METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
 import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level';
+import { REQUEST, RESPONSE } from 'ish-core/utils/ssr/ssr.tokens';
 
 import { icmCallsCache } from './src/app/core/interceptors/universal-cache.interceptor';
 import {
@@ -475,7 +476,11 @@ export function app() {
         documentFilePath: join(BROWSER_FOLDER, 'index.html'),
         publicPath: BROWSER_FOLDER,
         inlineCriticalCss: false,
-        providers: [{ provide: APP_BASE_HREF, useValue: baseHref }],
+        providers: [
+          { provide: APP_BASE_HREF, useValue: baseHref },
+          { provide: REQUEST, useValue: req },
+          { provide: RESPONSE, useValue: res },
+        ],
       })
       .then(html => {
         if (html) {
