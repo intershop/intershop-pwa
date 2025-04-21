@@ -1,9 +1,10 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { noop } from 'rxjs';
 import { anyNumber, spy, verify } from 'ts-mockito';
+
+import { RESPONSE } from 'ish-core/utils/ssr/ssr.tokens';
 
 import { HttpStatusCodeService } from './http-status-code.service';
 
