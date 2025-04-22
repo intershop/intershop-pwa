@@ -15,7 +15,7 @@ kb_sync_latest_only
 
 The Intershop PWA provides an integration with Intershop Copilot for Buyers.
 
-Official Intershop Documentation: [Intershop Copilot - AI Purchase and Service Assistant](https://knowledge.intershop.com/kb/index.php/Display/31N345)
+Official Intershop Documentation: [Overview - Intershop Copilot for Buyers](https://knowledge.intershop.com/kb/index.php/Display/31N345)
 
 The Intershop Copilot system consists of:
 
