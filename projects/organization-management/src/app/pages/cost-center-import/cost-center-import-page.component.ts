@@ -67,6 +67,11 @@ export class CostCenterImportPageComponent implements OnInit {
 
   parseCSV(csvText: string) {
     this.loading$ = true;
+    if (!csvText) {
+      this.csvData$ = of([]);
+      this.loading$ = false;
+      return;
+    }
     const lines = csvText.split('\n').filter(Boolean);
     const headers = lines[0].split(',').map(h => h.trim());
 
