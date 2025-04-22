@@ -72,9 +72,8 @@ describe('Content Design View Wrapper Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <div class="design-view-wrapper pagelet" ng-reflect-ng-class="pagelet">
         <div class="design-view-wrapper-actions">
-          <div class="name">Pagelet Name xyz</div>
-          <button type="button" class="btn" title="designview.edit.link.title">
-            <fa-icon ng-reflect-icon="fas,pencil-alt"></fa-icon>
+          <button type="button" class="btn" title="designview.edit.link.title Pagelet Name xyz">
+            Pagelet Name xyz <fa-icon ng-reflect-icon="fas,pencil-alt"></fa-icon>
           </button>
         </div>
       </div>
