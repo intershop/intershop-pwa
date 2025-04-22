@@ -35,7 +35,7 @@ $design-view-color-include: #ce5399;
      * Highlight only the last .pagelet element in the hierarchy and highlight neither slot nor include.
      * The class .last-design-view-wrapper is applied in TypeScript because &.pagelet:not(:has(.design-view-wrapper))
      * does not work in Firefox yet. So it cannot be done in CSS only.
-    */
+     */
 
     &:hover {
       &::before {
@@ -92,4 +92,11 @@ $design-view-color-include: #ce5399;
       }
     }
   }
+}
+
+// Design View Wrapper storefront styling adaptions
+// to fix styling issues that result from the additional wrapper div elements
+:host-context(.main-navigation-list) :host {
+  display: inline-flex;
+  align-items: center;
 }
