@@ -14,10 +14,7 @@ export const createOrderSuccess = createAction('[Orders API] Create Order Succes
 
 export const loadOrders = createAction('[Orders] Load Orders', payload<{ query: OrderListQuery }>());
 
-export const loadMoreOrders = createAction(
-  '[Orders] Load More Orders',
-  payload<{ data: { offset: number; limit: number } }>()
-);
+export const loadMoreOrders = createAction('[Orders] Load More Orders', payload<{ offset: number; limit: number }>());
 
 export const loadOrdersFail = createAction('[Orders API] Load Orders Fail', httpError());
 

@@ -7,7 +7,7 @@ import { PaymentMapper } from 'ish-core/models/payment/payment.mapper';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
 
 import { OrderData } from './order.interface';
-import { Order, OrdersInformation } from './order.model';
+import { Order, Orders } from './order.model';
 
 export class OrderMapper {
   // eslint-disable-next-line complexity
@@ -96,7 +96,7 @@ export class OrderMapper {
     }
   }
 
-  static fromListData(payload: OrderData): OrdersInformation {
+  static fromListData(payload: OrderData): Orders {
     if (Array.isArray(payload.data)) {
       return {
         orders: payload.data.map(data => OrderMapper.fromData({ ...payload, data })),

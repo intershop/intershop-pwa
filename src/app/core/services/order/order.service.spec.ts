@@ -80,7 +80,7 @@ describe('Order Service', () => {
       orderService.getOrders({ limit: 30 }).subscribe(() => {
         verify(apiService.get('orders', anything())).once();
         const options: AvailableOptions = capture(apiService.get).last()[1];
-        expect(options.params?.toString()).toMatchInlineSnapshot(`"limit=30&page%5Blimit%5D=30"`);
+        expect(options.params?.toString()).toMatchInlineSnapshot(`"limit=30"`);
         done();
       });
     });

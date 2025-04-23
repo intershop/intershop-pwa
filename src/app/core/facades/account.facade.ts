@@ -183,11 +183,11 @@ export class AccountFacade {
   ordersPagingInfo$ = this.store.pipe(select(getOrdersPagingInfo));
 
   loadOrders(query?: OrderListQuery) {
-    this.store.dispatch(loadOrders({ query: query || { limit: 30 } }));
+    this.store.dispatch(loadOrders({ query: query || { limit: 25 } }));
   }
 
   loadMoreOrders(offset: number, limit: number) {
-    this.store.dispatch(loadMoreOrders({ data: { offset, limit } }));
+    this.store.dispatch(loadMoreOrders({ offset, limit }));
   }
 
   selectedOrder$ = this.store.pipe(select(getSelectedOrder));

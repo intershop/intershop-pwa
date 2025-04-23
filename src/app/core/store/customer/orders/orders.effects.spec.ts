@@ -12,7 +12,7 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { Order, OrdersInformation } from 'ish-core/models/order/order.model';
+import { Order, Orders } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -51,7 +51,7 @@ describe('Orders Effects', () => {
 
   const order = { id: '1', documentNo: '00000001', lineItems: [] } as Order;
   const orders = [order, { id: '2', documentNo: '00000002' }] as Order[];
-  const ordersInfo = { orders, paging: { offset: 0, limit: 15, total: 100 } } as OrdersInformation;
+  const ordersInfo = { orders, paging: { offset: 0, limit: 15, total: 100 } } as Orders;
 
   beforeEach(() => {
     orderServiceMock = mock(OrderService);
@@ -235,7 +235,7 @@ describe('Orders Effects', () => {
     it('should load more orders', () => {
       store.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 }, paging: ordersInfo.paging }));
 
-      const action = loadMoreOrders({ data: { limit: 30, offset: 30 } });
+      const action = loadMoreOrders({ limit: 30, offset: 30 });
       const completion = loadOrders({ query: { limit: 30, offset: 30 } });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

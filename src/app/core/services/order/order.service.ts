@@ -8,7 +8,7 @@ import { catchError, concatMap, map, withLatestFrom } from 'rxjs/operators';
 import { OrderIncludeType, OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { OrderData } from 'ish-core/models/order/order.interface';
 import { OrderMapper } from 'ish-core/models/order/order.mapper';
-import { Order, OrdersInformation } from 'ish-core/models/order/order.model';
+import { Order, Orders } from 'ish-core/models/order/order.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 
@@ -130,19 +130,15 @@ export class OrderService {
    * @param query   Additional query parameters
    *                - the number of items that should be fetched
    *                - which data should be included.
-   * @returns       A list of the user's orders
+   * @returns       An object with the list of the user's orders and paging information
    */
-  getOrders(query: OrderListQuery): Observable<OrdersInformation> {
+  getOrders(query: OrderListQuery): Observable<Orders> {
     const q = query?.buyer === 'all' ? { ...query, buyer: undefined as string, allBuyers: 'true' } : query;
-
-    let params = orderListQueryToHttpParams(q);
-    // for 7.10 compliance - ToDo: will be removed in PWA 6.0
-    params = params.set('page[limit]', query.limit);
 
     return this.apiService
       .get<OrderData>('orders', {
         headers: this.orderHeaders,
-        params,
+        params: orderListQueryToHttpParams(q),
       })
       .pipe(map(OrderMapper.fromListData));
   }

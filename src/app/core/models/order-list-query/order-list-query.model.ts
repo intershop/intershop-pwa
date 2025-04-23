@@ -22,8 +22,8 @@ export type OrderIncludeType =
 
 export interface OrderListQuery {
   limit: number;
-  include?: OrderIncludeType[];
   offset?: number;
+  include?: OrderIncludeType[];
   documentNumber?: string[];
   customerOrderID?: string[];
   creationDateFrom?: string;
