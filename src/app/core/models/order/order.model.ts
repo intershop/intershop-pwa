@@ -32,7 +32,7 @@ export interface Order extends OrderBasket {
   paginationPosition?: number;
 }
 
-export interface OrdersInformation {
+export interface Orders {
   orders: Order[];
   paging: PagingInfo;
 }
