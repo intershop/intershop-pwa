@@ -3,7 +3,6 @@
 .main-container {
   position: relative;
   min-height: 200px;
-  overflow-y: auto;
   background: $color-inverse;
   outline: none; // remove focus outline from container when using "skip to main content link"
 }
