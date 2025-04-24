@@ -7,15 +7,14 @@ kb_sync_latest_only
 
 # Multi-Site Configurations
 
-- [Multi-Site Configurations](#multi-site-configurations)
-  - [Syntax](#syntax)
-  - [Examples](#examples)
-    - [One Domain, One Channel, Multiple Locales](#one-domain-one-channel-multiple-locales)
-    - [Multiple Domains, Multiple Channels, Multiple Locales](#multiple-domains-multiple-channels-multiple-locales)
-    - [Multiple Subdomains, Multiple Channels, Multiple Locales](#multiple-subdomains-multiple-channels-multiple-locales)
-    - [Extended Example with Many Different Configurations](#extended-example-with-many-different-configurations)
-    - [Extended Example with Two Domains, One with Basic Auth (Except /fr), the Other Without](#extended-example-with-two-domains-one-with-basic-auth-except-fr-the-other-without)
-  - [Integrate Your Multi-Site Configuration with the Language Switch](#integrate-your-multi-site-configuration-with-the-language-switch)
+- [Syntax](#syntax)
+- [Examples](#examples)
+  - [One Domain, One Channel, Multiple Locales](#one-domain-one-channel-multiple-locales)
+  - [Multiple Domains, Multiple Channels, Multiple Locales](#multiple-domains-multiple-channels-multiple-locales)
+  - [Multiple Subdomains, Multiple Channels, Multiple Locales](#multiple-subdomains-multiple-channels-multiple-locales)
+  - [Extended Example with Many Different Configurations](#extended-example-with-many-different-configurations)
+  - [Extended Example with Two Domains, One with Basic Auth (Except /fr), the Other Without](#extended-example-with-two-domains-one-with-basic-auth-except-fr-the-other-without)
+- [Integrate Your Multi-Site Configuration with the Language Switch](#integrate-your-multi-site-configuration-with-the-language-switch)
 - [Further References](#further-references)
 
 As explained in [Multi-Site Handling](../concepts/multi-site-handling.md), the PWA supports dynamic configurations of a single PWA container deployment.

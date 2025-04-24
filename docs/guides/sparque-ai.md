@@ -5,18 +5,17 @@ kb_everyone
 kb_sync_latest_only
 -->
 
-# SPARQUE.AI Integration
+# SPARQUE.AI
 
-- [SPARQUE.AI Integration](#sparqueai-integration)
-  - [Configuration](#configuration)
-    - [Multi-Site Configurations](#multi-site-configurations)
-    - [Pricing](#pricing)
-    - [Versioning of SPARQUE Service Requests](#versioning-of-sparque-service-requests)
-  - [Provider Concept](#provider-concept)
-  - [Suggestion Feature](#suggestion-feature)
-    - [New Standalone Components](#new-standalone-components)
-    - [Recent Search Terms](#recent-search-terms)
-  - [Search Feature](#search-feature)
+- [Configuration](#configuration)
+  - [Multi-Site Configurations](#multi-site-configurations)
+  - [Prices](#prices)
+  - [Versioning of SPARQUE Service Requests](#versioning-of-sparque-service-requests)
+- [Provider Concept](#provider-concept)
+- [Suggestion Feature](#suggestion-feature)
+  - [New Standalone Components](#new-standalone-components)
+  - [Recent Search Terms](#recent-search-terms)
+- [Search Feature](#search-feature)
 
 SPARQUE.AI works as an AI-powered search engine and delivers various information, like keyword suggestions, search results, filter options, and category navigation.
 
@@ -25,12 +24,13 @@ SPARQUE.AI works as an AI-powered search engine and delivers various information
 To use the SPARQUE search engine, the PWA must be configured accordingly.
 The configuration data is described in the [SPARQUE Config Model](../../src/app/core/models/sparque/sparque-config.model.ts) and contains values required for the interaction with the SPARQUE server.
 Depending on the PWA setup, you have various options for storing the SPARQUE configuration.
-In any case, the name of the configuration parameters must correspond exactly to the names of the parameters in the SPARQUE config model.
+In any case, the names of the configuration parameters must correspond exactly to the names of the parameters in the SPARQUE config model.
 
 > [!NOTE]
-> If the SPARQUE configuration data is not stored, the Solr search engine is used by default.
+> If the SPARQUE configuration is not provided, the Solr search engine is used by default.
+> The SPARQUE configuration itself works as a feature toggle to enable the SPARQUE integration.
 
-Example for the specification of the SPARQUE configuration in an environment file:
+Example for the specification of the SPARQUE configuration via `environment` file:
 
 ```ts
 sparque: {
@@ -43,18 +43,36 @@ sparque: {
 },
 ```
 
-Example for the specification of the SPARQUE configuration in a Docker compose file:
+Example for the specification of the SPARQUE configuration via `docker-compose.yaml` file:
 
 ```yaml
 # PWA container settings
 pwa:
   environment:
-    SPARQUE: '{"serverUrl": "<sparque connection url>", "wrapperApi": "<wrapper api version>", "workspaceName": "<name of the workspace>", "apiName": "<used sparque api>", "channelId": <in sparque workspace configured channel>, "enablePrices": <true|false>}'
+    SPARQUE: |
+      serverUrl: "<sparque connection url>"
+      wrapperApi: "<wrapper api version>"
+      workspaceName: "<name of the workspace>"
+      apiName: "<used sparque api>"
+      channelId: "<in sparque workspace configured channel>"
+      enablePrices: "<true|false>"
 ```
 
-> [!NOTE]
-> The specification of the SPARQUE configuration data in the Kubernetes deployment file uses the same key/value syntax.
-> The value of the SPARQUE key is a string that must be specified in JSON format. See the example above.
+Example for the specification of the SPARQUE configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+
+```yaml
+environment:
+  - name: SPARQUE
+    value: |
+      {
+        "serverUrl": "<sparque connection url>"
+        "wrapperApi": "<wrapper api version>"
+        "workspaceName": "<name of the workspace>"
+        "apiName": "<used sparque api>"
+        "channelId": "<in sparque workspace configured channel>"
+        "enablePrices": "<true|false>"
+      }
+```
 
 ### Multi-Site Configurations
 
@@ -75,12 +93,12 @@ Example for the specification of multiple domain configuration in a NGINX docker
   ...
 ```
 
-### Pricing
+### Prices
 
-The PWA SPARQUE configuration also contains a parameter _enablePrices_.
-If this parameter is set to TRUE than the product prices provided by SPARQUE will used.
-Otherwise the product prices are taken from the ICM.
-In case the ICM prices will used than pricing facet provided by SPARQUE may not work properly.
+The PWA SPARQUE configuration also contains a parameter `enablePrices`.
+If this parameter is set to `true` than the product prices provided by SPARQUE will be used.
+Otherwise the product prices are fetched from ICM.
+In case the ICM prices will be used the pricing facet provided by SPARQUE may not work properly.
 
 ### Versioning of SPARQUE Service Requests
 
@@ -128,6 +146,7 @@ export abstract class SearchService {
   ...
   abstract search(searchTerm: string): Observable<Suggestion>;
 }
+
 // example SearchService implementation
 @Injectable({ providedIn: 'root' })
 export class SparqueSearchService extends SearchService {
@@ -188,12 +207,12 @@ The recent search terms are words that would be used in the past for a search fo
 The last 10 search terms are stored in the browser's local storage.
 This functionality is independent of SPARQUE, but was implemented as part of the PWA SPARQUE integration.
 This functionality is also available for customers who continue to use the ICM/Solr search.
-To customize the number of search terms stored in the browser's local storage, modify the _MAX_NUMBER_OF_STORED_SEARCH_TERMS_ constant in the [Search reducer](../../src/app/core/store/shopping/search/search.reducer.ts) to suit your requirements.
+To customize the number of search terms stored in the browser's local storage, modify the `MAX_NUMBER_OF_STORED_SEARCH_TERMS` constant in the [Search reducer](../../src/app/core/store/shopping/search/search.reducer.ts) to suit your requirements.
 
 ## Search Feature
 
 The SPARQUE.AI search response not only delivers product results but also includes relevant filters, sorting options, and product pricing.
 This eliminates the need for additional requests to gather all the data required for the search page.
-As outlined in the [Pricing](#pricing) section, prices are only considered if the PWA SPARQUE configuration parameter _enablePrices_ is set to TRUE.
+As outlined in the [Pricing](#pricing) section, prices are only considered if the PWA SPARQUE configuration parameter `enablePrices` is set to `true`.
 Otherwise, an ICM price list request is required to manage prices in the PWA.
 The SPARQUE response data is mapped to the existing data models used by the PWA, ensuring that no modifications are needed for the components utilized on the search page.

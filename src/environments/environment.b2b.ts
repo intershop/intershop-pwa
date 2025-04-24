@@ -3,7 +3,7 @@ import { ENVIRONMENT_DEFAULTS, Environment } from './environment.model';
 
 export const environment: Environment = {
   ...ENVIRONMENT_DEFAULTS,
-  icmBaseURL: 'https://localhost:8443',
+
   icmChannel: 'inSPIRED-inTRONICS_Business-Site',
 
   themeColor: '#006b99',
@@ -27,6 +27,6 @@ export const environment: Environment = {
     workspaceName: 'intershop-project-base-v2-team2',
     apiName: 'PWA',
     channelId: 'ish',
-    enablePrices: true,
+    enablePrices: false,
   },
 };

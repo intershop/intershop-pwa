@@ -41,11 +41,8 @@ import { LazyMiniBasketContentComponent } from './shared/lazy-mini-basket-conten
 
 const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderComponent];
 
-const importStandaloneComponents = [SearchBoxComponent];
-
 @NgModule({
   imports: [
-    ...importStandaloneComponents,
     AuthorizationToggleModule,
     CommonModule,
     CompareExportsModule,
@@ -59,6 +56,7 @@ const importStandaloneComponents = [SearchBoxComponent];
     QuickorderExportsModule,
     RoleToggleModule,
     RouterModule,
+    SearchBoxComponent,
     SentryExportsModule,
     SeoExportsModule,
     StoreLocatorExportsModule,
