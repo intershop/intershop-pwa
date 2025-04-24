@@ -85,6 +85,7 @@ kb_sync_latest_only
 
 ### Third-party Integrations
 
+- [Guide - SPARQUE.AI](./guides/sparque-ai.md)
 - [Guide - Intershop Copilot for Buyers](./guides/copilot.md)
 - [Guide - Tracking with Google Tag Manager](./guides/google-tag-manager.md)
 - [Guide - Client-Side Error Monitoring with Sentry](./guides/sentry-error-monitoring.md)
@@ -93,4 +94,3 @@ kb_sync_latest_only
 - [Guide - Store Locator with Google Maps](./guides/store-locator.md)
 - [Guide - Address Check with Address Doctor](./guides/address-doctor.md)
 - [Guide - E-Mail Marketing/Newsletter Subscription](./guides/newsletter-subscription.md)
-- [Guide - Sparque.AI Integration](./guides/sparque-integration.md)

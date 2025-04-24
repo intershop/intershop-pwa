@@ -7,10 +7,10 @@ kb_sync_latest_only
 
 # Migrations
 
-## From 6.0 to 7.0
+## From 6.0.0 to 7.0.0
 
-The Intershop PWA 7.0 release contains the **Sparque suggest** and **Sparque search** functionality to improve the searching of products in the PWA.
-To prevent compiling issues you have to consider following changes:
+The Intershop PWA 7.0.0 release contains the **Sparque suggest** and **Sparque search** functionality to improve the searching of products in the PWA.
+To prevent compiling issues you have to consider the following changes:
 
 | Description              | API Changes                 | How to Migrate                                                                                                                                                                                                                    |
 | :----------------------- | :-------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
