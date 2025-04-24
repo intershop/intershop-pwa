@@ -7,16 +7,15 @@ kb_sync_latest_only
 
 # Accessibility Easy Check
 
-- [Accessibility Easy Check](#accessibility-easy-check)
-  - [Introduction](#introduction)
-  - [Development Accessibility Checklist](#development-accessibility-checklist)
-    - [Common](#common)
-    - [Keyboard](#keyboard)
-    - [Visual Requirements](#visual-requirements)
-    - [Proper Semantics](#proper-semantics)
-    - [Images](#images)
-    - [Forms](#forms)
-  - [Project Accessibility Checklist](#project-accessibility-checklist)
+- [Introduction](#introduction)
+- [Development Accessibility Checklist](#development-accessibility-checklist)
+  - [Common](#common)
+  - [Keyboard](#keyboard)
+  - [Visual Requirements](#visual-requirements)
+  - [Proper Semantics](#proper-semantics)
+  - [Images](#images)
+  - [Forms](#forms)
+- [Project Accessibility Checklist](#project-accessibility-checklist)
 
 ## Introduction
 
@@ -172,7 +171,7 @@ Performing any of the following checks on a web page will give you a basic under
 
 ## Project Accessibility Checklist
 
-If projects are migrating to the PWA 6.0 or customizing the PWA, the following additional checks may be helpful.
+If projects are migrating to the PWA 6.0.0 or customizing the PWA, the following additional checks may be helpful.
 
 Note: Project customizations such as styling adaptions, new or changed components, etc., may require additional checks to ensure WCAG 2.2 compliance.
 
