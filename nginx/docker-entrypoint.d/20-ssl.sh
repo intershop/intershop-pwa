@@ -2,7 +2,7 @@
 
 set -e
 
-if env | grep -iqE "^SSL=(on|1|true|yes)$"
+if env | grep -iqE "^SSL=(on|1|true|yes)$" && [ -z "$SSL_MKCERT_OFF" ]
 then
   mkdir -p /var/nginx/certs
   mkcert -install
