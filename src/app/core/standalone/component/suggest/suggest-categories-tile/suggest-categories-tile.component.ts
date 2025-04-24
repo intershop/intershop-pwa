@@ -12,10 +12,11 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, first, map, switchMap } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
 import { PipesModule } from 'ish-core/pipes.module';
@@ -34,8 +35,9 @@ export class SuggestCategoriesTileComponent implements OnInit {
   @Output() routeChange = new EventEmitter<void>();
 
   private staticURL: string;
-  private noImageImageUrl = '/assets/img/not-available.svg';
+  private noImageImageUrl = '/not_available.png';
   private destroyRef = inject(DestroyRef);
+  private categoryTree$: Observable<CategoryTree>;
 
   constructor(private appFacade: AppFacade, private shoppingFacade: ShoppingFacade) {}
 
@@ -44,10 +46,11 @@ export class SuggestCategoriesTileComponent implements OnInit {
       this.staticURL = staticURL;
       this.noImageImageUrl = `${this.staticURL}${this.noImageImageUrl}`;
     });
+    this.categoryTree$ = this.shoppingFacade.getCategoryTree();
   }
 
   getCategoryImageUrl(images: { effectiveUrl?: string }[]): string {
-    let image = `${this.staticURL}${this.noImageImageUrl}`;
+    let image = this.noImageImageUrl;
     if (images && images.length > 0) {
       image = !images[0].effectiveUrl.match('^(https?|file):')
         ? `${this.staticURL}/${images[0].effectiveUrl}`
@@ -58,7 +61,12 @@ export class SuggestCategoriesTileComponent implements OnInit {
   }
 
   getCategoryView(uniqueId: string): Observable<CategoryView> {
-    return this.shoppingFacade.category$(uniqueId);
+    return this.categoryTree$.pipe(
+      map(tree => Object.keys(tree.nodes)),
+      map(nodes => nodes.filter(node => node.includes(uniqueId))),
+      first(),
+      switchMap(ids => this.shoppingFacade.category$(ids[0]))
+    );
   }
 
   handleInputFocus(): void {

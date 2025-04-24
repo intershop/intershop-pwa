@@ -19,8 +19,10 @@ export class SparqueOfferMapper {
    */
   mapOffers(products: SparqueProduct[]): ProductPriceDetails[] {
     return products
-      .filter(product => product.offers?.length > 0)
-      .map(product => this.mapOffer(product.offers, product.sku));
+      ? products
+          .filter(product => product.offers?.length > 0)
+          .map(product => this.mapOffer(product.offers, product.sku))
+      : undefined;
   }
 
   private mapOffer(offers: SparqueOffer[], sku: string): ProductPriceDetails {

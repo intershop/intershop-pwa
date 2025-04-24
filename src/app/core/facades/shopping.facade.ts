@@ -25,6 +25,7 @@ import { getPriceDisplayType } from 'ish-core/store/customer/user';
 import {
   getCategory,
   getCategoryIdByRefId,
+  getCategoryTree,
   getNavigationCategories,
   getNavigationCategoryTree,
   getSelectedCategory,
@@ -78,6 +79,10 @@ export class ShoppingFacade {
 
   selectedCategory$ = this.store.pipe(select(getSelectedCategory));
   selectedCategoryId$ = this.store.pipe(select(selectRouteParam('categoryUniqueId')));
+
+  getCategoryTree() {
+    return this.store.pipe(select(getCategoryTree));
+  }
 
   category$(uniqueId: string) {
     return this.store.pipe(select(getCategory(uniqueId)));

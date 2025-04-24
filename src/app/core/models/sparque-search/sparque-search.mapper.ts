@@ -30,33 +30,35 @@ export class SparqueSearchMapper {
           name: sorting.identifier,
           displayName: sorting.title,
         }))
-      : [];
+      : undefined;
   }
 
   private mapFilter(filter: FixedFacetGroupResult[], searchParameter: URLFormParams): Filter[] {
-    return filter.map(facetGroup => {
-      const facets: Facet[] = facetGroup.options.map(facet => ({
-        name: facet.id ? facet.id : facet.value,
-        displayName: facet.value,
-        count: facet.score,
-        selected: searchParameter[facetGroup.id] ? searchParameter[facetGroup.id]?.includes(facet.id) : false,
-        level: 0,
-        searchParameter: calculateSearchParams(
-          searchParameter,
-          searchParameter[facetGroup.id]?.includes(facet.id),
-          facetGroup.id,
-          facet.id
-        ),
-      }));
-      return {
-        name: facetGroup.title,
-        displayType: 'text_clear',
-        id: facetGroup.id,
-        facets,
-        selectionType: 'single',
-        limitCount: 5,
-      };
-    });
+    return filter
+      ? filter.map(facetGroup => {
+          const facets: Facet[] = facetGroup.options.map(facet => ({
+            name: facet.id ? facet.id : facet.value,
+            displayName: facet.value,
+            count: facet.score,
+            selected: searchParameter[facetGroup.id] ? searchParameter[facetGroup.id]?.includes(facet.id) : false,
+            level: 0,
+            searchParameter: calculateSearchParams(
+              searchParameter,
+              searchParameter[facetGroup.id]?.includes(facet.id),
+              facetGroup.id,
+              facet.id
+            ),
+          }));
+          return {
+            name: facetGroup.title,
+            displayType: 'text_clear',
+            id: facetGroup.id,
+            facets,
+            selectionType: 'single',
+            limitCount: 5,
+          };
+        })
+      : undefined;
   }
 }
 
