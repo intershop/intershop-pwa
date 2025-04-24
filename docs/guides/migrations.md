@@ -28,9 +28,9 @@ To prevent compiling issues you have to consider the following changes:
 | remove lazy component    | _shell.module.ts_           | The old _LazySearchBoxComponent_ is removed from _declarations_.                                                                                                                                                                  |
 | change suggest behavior  | _shopping.facade.ts_        | The method _searchResults$_ behavior is changed. Now the suggestSearch will dispatched if the search term has at least 3 letters.                                                                                                 |
 
-## From 5.3 to 6.0
+## From 5.3 to 6.0.0
 
-The Intershop PWA 6.0 release contains functionality to improve the **accessibility** of the PWA.
+The Intershop PWA 6.0.0 release contains functionality to improve the **accessibility** of the PWA.
 
 To get an impression of the numerous adaptions needed to make the PWA more accessible, please check the [according pull request](https://github.com/intershop/intershop-pwa/pull/1694) and read the extended accessibility documentation available in the [Accessibility Guide](./accessibility.md) and the [Accessibility Easy Check](./accessibility-easy-check.md).
 These changes will result in migration efforts and require PWA projects to adapt their customization as well.

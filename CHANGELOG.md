@@ -57,7 +57,7 @@ kb_everyone
 
 ### BREAKING CHANGES
 
-- The used Cybersource Microform v1 was replaced by Microform v2, see [Migrations / From 5.3 to 6.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-53-to-60) for more details.
+- The used Cybersource Microform v1 was replaced by Microform v2, see [Migrations / From 5.3 to 6.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-53-to-600) for more details.
 - The signature of the `ScriptLoaderService`'s `load` method was changed. The optional second parameter was changed from type `string` to `ScriptLoaderOption`.
 
 ## [5.3.0](https://github.com/intershop/intershop-pwa/releases/tag/5.3.0) (2025-03-05)
