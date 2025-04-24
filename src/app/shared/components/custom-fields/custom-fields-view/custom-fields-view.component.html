@@ -1,8 +1,8 @@
-<div class="custom-fields-view">
+<dl class="custom-fields-view">
   <div *ngFor="let field of data$ | async" class="custom-field">
-    <label [for]="'basket-custom-attribute-' + field.name">{{ field.displayName }}</label>
-    <span [class.no-value]="!field.value" [id]="'basket-custom-attribute-' + field.name">
+    <dt>{{ field.displayName }}</dt>
+    <dd [class.no-value]="!field.value">
       {{ field.value || ('checkout.custom-field.no-value' | translate) }}
-    </span>
+    </dd>
   </div>
-</div>
+</dl>

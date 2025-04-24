@@ -135,33 +135,30 @@
   <ish-line-item-warranty [pli]="pli" [editable]="editable" class="col-12" />
 
   <!-- line item action and edit panel -->
-  <div class="col-12">
-    <div class="row">
-      <div class="offset-2 col-10 list-item-actions">
-        <ish-line-item-information-edit [lineItem]="pli" (updateItem)="onUpdateItem($event)" [editable]="editable" />
-      </div>
-    </div>
+  <ish-line-item-information-edit
+    [lineItem]="pli"
+    (updateItem)="onUpdateItem($event)"
+    [editable]="editable"
+    class="col-12"
+  />
 
-    <div class="row">
-      <div class="offset-2 col-10 d-flex align-items-end list-item-actions">
-        <ish-lazy-product-add-to-order-template
-          *ngIf="editable"
-          [cssClass]="'btn-link btn-tool pl-0 add-to-order-template'"
-          displayType="icon"
-        />
-        <ish-lazy-product-add-to-wishlist *ngIf="editable" [cssClass]="'btn-link btn-tool'" displayType="icon" />
-        <button
-          *ngIf="!pli.isFreeGift && editable"
-          type="button"
-          class="btn-tool btn-link"
-          [attr.data-testing-id]="'remove-line-item'"
-          [attr.data-id]="pli.id"
-          title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
-          (click)="onDeleteItem(pli.id)"
-        >
-          <fa-icon [icon]="['fas', 'trash-alt']" />
-        </button>
-      </div>
-    </div>
+  <div class="offset-2 col-10 d-flex align-items-end list-item-actions">
+    <ish-lazy-product-add-to-order-template
+      *ngIf="editable"
+      [cssClass]="'btn-link btn-tool pl-0 add-to-order-template'"
+      displayType="icon"
+    />
+    <ish-lazy-product-add-to-wishlist *ngIf="editable" [cssClass]="'btn-link btn-tool'" displayType="icon" />
+    <button
+      *ngIf="!pli.isFreeGift && editable"
+      type="button"
+      class="btn-tool btn-link"
+      [attr.data-testing-id]="'remove-line-item'"
+      [attr.data-id]="pli.id"
+      title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
+      (click)="onDeleteItem(pli.id)"
+    >
+      <fa-icon [icon]="['fas', 'trash-alt']" />
+    </button>
   </div>
 </div>

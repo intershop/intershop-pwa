@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, Self } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { RxState } from '@rx-angular/state';
 import { combineLatest } from 'rxjs';
 
@@ -14,11 +14,11 @@ interface ComponentState {
   loading: boolean;
   visible: boolean;
   customFields: CustomFieldsComponentInput[];
-  editableFieldsMode: 'edit' | 'add'; // 'edit' for editable custom fields with existing values, else 'add' new values (relevant for translations)
+  editMode: 'edit' | 'add'; // 'edit' for editable custom fields with existing values, else 'add' new values (relevant for translations)
 }
 
 /**
- * The Line Item Edit Component displays an edit-link and edit-dialog.
+ * The Line Item Information Edit Component displays the basket line item attribute values. If editable it shows a link to add/edit these attributes.
  */
 @Component({
   selector: 'ish-line-item-information-edit',
@@ -31,12 +31,12 @@ export class LineItemInformationEditComponent extends RxState<ComponentState> im
     this.set({ lineItem });
     this.resetContext();
   }
-  @Input() editable = true;
+  @Input() editable = false;
 
   @Output() updateItem = new EventEmitter<LineItemUpdate>();
 
-  customFieldsForm = new UntypedFormGroup({});
-  editMode = false;
+  customFieldsForm = new FormGroup({});
+  collapsed = true;
 
   constructor(@Self() private context: ProductContextFacade, private appFacade: AppFacade) {
     super();
@@ -62,9 +62,13 @@ export class LineItemInformationEditComponent extends RxState<ComponentState> im
         }))
     );
 
-    this.connect('editableFieldsMode', this.select('lineItem', 'customFields'), (_, customFieldsData) =>
+    this.connect('editMode', this.select('lineItem', 'customFields'), (_, customFieldsData) =>
       Object.keys(customFieldsData).length > 0 ? 'edit' : 'add'
     );
+  }
+
+  get lineItemId() {
+    return this.get('lineItem')?.id;
   }
 
   private resetContext() {
@@ -81,11 +85,7 @@ export class LineItemInformationEditComponent extends RxState<ComponentState> im
     });
   }
   cancel() {
-    this.editMode = false;
+    this.collapsed = true;
     this.resetContext();
-  }
-
-  edit() {
-    this.editMode = !this.editMode;
   }
 }

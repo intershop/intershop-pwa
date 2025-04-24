@@ -5,6 +5,9 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { CustomFieldsComponentInput } from 'ish-core/models/custom-field/custom-field.model';
 import { CustomFieldDefinition } from 'ish-core/models/server-config/server-config.model';
 
+/**
+ * Custom Fields View Component for displaying (basket) custom fields with their values.
+ */
 @Component({
   selector: 'ish-custom-fields-view',
   templateUrl: './custom-fields-view.component.html',

@@ -2,19 +2,24 @@
 @import 'bootstrap/scss/functions';
 
 .custom-fields-view {
+  margin: divide($space-default, 2) 0;
+
   .custom-field {
-    &:last-of-type {
-      margin-bottom: divide($space-default * 2, 3);
-    }
+    display: flex;
   }
 
-  label {
+  dt {
     padding-right: divide($space-default, 3);
     margin: 0;
+    font-weight: 400;
 
     &::after {
       content: ':';
     }
+  }
+
+  dd {
+    margin-bottom: 0;
   }
 
   span.no-value {
