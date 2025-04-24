@@ -6,6 +6,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 
 import { SuggestCategoriesTileComponent } from './suggest-categories-tile.component';
@@ -89,8 +90,18 @@ describe('Suggest Categories Tile Component', () => {
     component.inputTerms$ = new ReplaySubject<string>(1);
     component.inputTerms$.next('cat');
 
+    const categoryTree: CategoryTree = {
+      nodes: {
+        catA: component.categories[0],
+        catB: component.categories[1],
+      },
+      rootIds: [],
+      edges: {},
+      categoryRefs: {},
+    };
     when(shoppingFacade.category$('catA')).thenReturn(of({ uniqueId: 'catA', name: 'Categorya' } as CategoryView));
     when(shoppingFacade.category$('catB')).thenReturn(of({ uniqueId: 'catB', name: 'Categoryb' } as CategoryView));
+    when(shoppingFacade.getCategoryTree).thenReturn(() => of(categoryTree));
   });
 
   it('should be created', () => {
