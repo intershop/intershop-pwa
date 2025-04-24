@@ -1,0 +1,8 @@
+costCenterId,name,budgetValue,budgetCurrency,budgetPeriod,costCenterOwnerLogin,active
+CC001,Marketing,10000,EUR,monthly,bboldner@test.intershop.de,True
+CC002,Vertrieb,15000,USD,yearly,bboldner@test.intershop.de,False
+CC003,IT,20000,EUR,quaterly,bboldner@test.intershop.de,True
+CC004,HR,8000,USD,fixed,bboldner@test.intershop.de,True
+CC005,Finanzen,12000,EUR,half-yearly,bboldner@test.intershop.de,False
+CC006,Logistik,11000,GBP,monthly,bboldner@test.intershop.de,True
+CC007,Support,9500,EUR,yearly,j.smith@intershop.net,True
