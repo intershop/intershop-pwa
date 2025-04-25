@@ -24,11 +24,11 @@ import { SearchBoxConfiguration } from 'ish-core/models/search-box-configuration
 import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { PipesModule } from 'ish-core/pipes.module';
-import { SuggestBrandsTileComponent } from 'ish-core/standalone/component/suggest/suggest-brands-tile/suggest-brands-tile.component';
-import { SuggestCategoriesTileComponent } from 'ish-core/standalone/component/suggest/suggest-categories-tile/suggest-categories-tile.component';
-import { SuggestKeywordsTileComponent } from 'ish-core/standalone/component/suggest/suggest-keywords-tile/suggest-keywords-tile.component';
-import { SuggestProductsTileComponent } from 'ish-core/standalone/component/suggest/suggest-products-tile/suggest-products-tile.component';
-import { SuggestSearchTermsTileComponent } from 'ish-core/standalone/component/suggest/suggest-search-terms-tile/suggest-search-terms-tile.component';
+import { SuggestBrandsTileComponent } from 'ish-shared/components/search/suggest-brands-tile/suggest-brands-tile.component';
+import { SuggestCategoriesTileComponent } from 'ish-shared/components/search/suggest-categories-tile/suggest-categories-tile.component';
+import { SuggestKeywordsTileComponent } from 'ish-shared/components/search/suggest-keywords-tile/suggest-keywords-tile.component';
+import { SuggestProductsTileComponent } from 'ish-shared/components/search/suggest-products-tile/suggest-products-tile.component';
+import { SuggestSearchTermsTileComponent } from 'ish-shared/components/search/suggest-search-terms-tile/suggest-search-terms-tile.component';
 
 /**
  * The SearchBoxComponent is responsible for handling the search box functionality,
