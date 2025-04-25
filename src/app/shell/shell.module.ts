@@ -10,9 +10,9 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
-import { SearchBoxComponent } from 'ish-core/standalone/component/suggest/search-box/search-box.component';
 import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
+import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
 
 import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';

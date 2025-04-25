@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SearchBoxComponent } from 'ish-core/standalone/component/suggest/search-box/search-box.component';
+import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { ErrorPageComponent } from './error-page.component';

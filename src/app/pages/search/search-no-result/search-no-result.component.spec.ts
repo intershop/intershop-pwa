@@ -3,9 +3,9 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { HtmlEncodePipe } from 'ish-core/pipes/html-encode.pipe';
-import { SearchBoxComponent } from 'ish-core/standalone/component/suggest/search-box/search-box.component';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
+import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
 
 import { SearchNoResultComponent } from './search-no-result.component';
 

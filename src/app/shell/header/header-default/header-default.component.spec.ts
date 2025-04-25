@@ -5,8 +5,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { SearchBoxComponent } from 'ish-core/standalone/component/suggest/search-box/search-box.component';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
+import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
 import { HeaderNavigationComponent } from 'ish-shell/header/header-navigation/header-navigation.component';
 import { LanguageSwitchComponent } from 'ish-shell/header/language-switch/language-switch.component';
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
