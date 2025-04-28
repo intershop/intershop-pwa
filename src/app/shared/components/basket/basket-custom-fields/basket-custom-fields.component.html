@@ -1,24 +1,40 @@
-<ng-container *ngIf="visible$ | async">
-  <div class="d-flex">
-    <ish-custom-fields-view [fields]="customFields$ | async" />
-    <button type="button" class="btn btn-link mr-auto ml-4" (click)="dialog.show()">
-      <ng-container *ngIf="noValues$ | async">{{ 'checkout.custom-fields.define-cta' | translate }}&nbsp;</ng-container>
-      <fa-icon [icon]="['fas', 'pencil-alt']" [title]="'product.notification.edit.link.title' | translate" />
-    </button>
-  </div>
-
-  <ish-modal-dialog
-    #dialog
-    [options]="{
-      confirmText: 'checkout.custom-fields.basket.dialog.confirm' | translate,
-      rejectText: 'checkout.custom-fields.basket.dialog.reject' | translate,
-      titleText: 'checkout.custom-fields.basket.dialog.title' | translate,
-      size: 'lg'
-    }"
-    (confirmed)="submit()"
+<ng-container *ngIf="(visible$ | async) && (editMode$ | async) as editMode">
+  <ish-custom-fields-view *ngIf="collapsed" [fields]="customFields$ | async" />
+  <button
+    type="button"
+    class="btn btn-link btn-link-action btn-collapse-link"
+    [attr.aria-expanded]="!collapsed"
+    aria-controls="basket-custom-fields-input"
+    (click)="collapsed = !collapsed"
   >
+    {{
+      (editMode === 'edit'
+        ? 'checkout.custom-fields.basket.edit.link.label'
+        : 'checkout.custom-fields.basket.add.link.label'
+      ) | translate
+    }}
+    <fa-icon [icon]="['fas', collapsed ? 'angle-down' : 'angle-up']" class="pl-2" />
+  </button>
+
+  <div id="basket-custom-fields-input" [ngbCollapse]="collapsed">
     <form [formGroup]="form" (ngSubmit)="submit()">
       <ish-custom-fields-formly [form]="form" [fields]="customFields$ | async" />
+
+      <div class="row">
+        <div class="col-12 offset-md-4 col-md-8">
+          <button type="submit" class="btn btn-primary">
+            {{
+              (editMode === 'edit'
+                ? 'checkout.custom-fields.save.button.label'
+                : 'checkout.custom-fields.add.button.label'
+              ) | translate
+            }}
+          </button>
+          <button (click)="cancel()" type="button" class="btn btn-secondary">
+            {{ 'checkout.custom-fields.cancel.button.label' | translate }}
+          </button>
+        </div>
+      </div>
     </form>
-  </ish-modal-dialog>
+  </div>
 </ng-container>

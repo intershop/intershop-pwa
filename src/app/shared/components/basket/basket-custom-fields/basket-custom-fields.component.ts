@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Observable, combineLatest, debounce, map } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -7,6 +7,9 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { CustomFieldsComponentInput } from 'ish-core/models/custom-field/custom-field.model';
 import { whenFalsy } from 'ish-core/utils/operators';
 
+/**
+ * The Basket Custom Fields Component displays the basket attribute values. If editable it shows a link to add/edit these attributes.
+ */
 @Component({
   selector: 'ish-basket-custom-fields',
   templateUrl: './basket-custom-fields.component.html',
@@ -16,11 +19,13 @@ export class BasketCustomFieldsComponent implements OnInit {
   customFields$: Observable<CustomFieldsComponentInput[]>;
 
   visible$: Observable<boolean>;
-  noValues$: Observable<boolean>;
+  editMode$: Observable<'edit' | 'add'>;
 
   constructor(private appFacade: AppFacade, private checkoutFacade: CheckoutFacade) {}
 
-  form = new UntypedFormGroup({});
+  collapsed = true;
+
+  form = new FormGroup({});
 
   ngOnInit(): void {
     this.customFields$ = combineLatest([
@@ -34,14 +39,21 @@ export class BasketCustomFieldsComponent implements OnInit {
 
     this.visible$ = this.customFields$.pipe(map(fields => fields.length > 0));
 
-    this.noValues$ = this.customFields$.pipe(map(fields => fields.length > 0 && fields.every(field => !field.value)));
+    this.editMode$ = this.customFields$.pipe(
+      map(fields => (fields.length > 0 && fields.every(field => !field.value) ? 'add' : 'edit'))
+    );
   }
 
   submit() {
     this.checkoutFacade.setBasketCustomFields(this.form.value);
+    this.collapsed = true;
   }
 
   submitDisabled(): boolean {
     return !this.form.valid || this.form.pristine;
+  }
+
+  cancel() {
+    this.collapsed = true;
   }
 }

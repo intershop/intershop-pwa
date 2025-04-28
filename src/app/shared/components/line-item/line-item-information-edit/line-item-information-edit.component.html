@@ -1,7 +1,7 @@
 <ng-container *ngIf="select('visible') | async">
   <div *ngIf="select('editMode') | async as editMode" class="row">
     <div class="offset-2 col-10 list-item-actions pt-0">
-      <ish-line-item-custom-fields [lineItem]="select('lineItem') | async" [editable]="editable" />
+      <ish-line-item-custom-fields *ngIf="collapsed" [lineItem]="select('lineItem') | async" [editable]="editable" />
 
       <button
         *ngIf="editable"

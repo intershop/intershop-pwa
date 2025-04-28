@@ -11,11 +11,11 @@ import { CustomFields, CustomFieldsComponentInput } from 'ish-core/models/custom
 })
 export class BasketCustomFieldsViewComponent implements OnInit {
   @Input() set data(val: { customFields?: CustomFields }) {
-    this._customFields.next(val.customFields || {});
+    this.customFields$.next(val.customFields || {});
   }
   @Input() editRouterLink: string;
 
-  private _customFields = new ReplaySubject<CustomFields>(1);
+  private customFields$ = new ReplaySubject<CustomFields>(1);
 
   fields$: Observable<CustomFieldsComponentInput[]>;
   visible$: Observable<boolean>;
@@ -24,7 +24,7 @@ export class BasketCustomFieldsViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.fields$ = combineLatest([
-      this._customFields.asObservable(),
+      this.customFields$.asObservable(),
       this.appFacade.customFieldsForScope$('Basket'),
     ]).pipe(
       map(([customFields, customFieldsForScope]) =>

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Observable, ReplaySubject, combineLatest, map, switchMap } from 'rxjs';
+import { Observable, ReplaySubject, combineLatest, filter, map, switchMap } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CustomFieldsComponentInput } from 'ish-core/models/custom-field/custom-field.model';
@@ -30,6 +30,7 @@ export class CustomFieldsViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.data$ = this.fields$.pipe(
+      filter(fields => fields?.length > 0),
       switchMap(fields =>
         combineLatest(
           fields
