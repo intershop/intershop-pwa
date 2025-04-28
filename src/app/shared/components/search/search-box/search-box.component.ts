@@ -98,7 +98,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     // suggests are triggered solely via stream
     this.searchResults$ = this.shoppingFacade
-      .searchResults$(this.inputSearchTerms$)
+      .suggestResults$(this.inputSearchTerms$)
       .pipe(shareReplay(1)) as Observable<Suggestion>;
 
     // check if there are results to show the suggest layer AND to add aria attributes

@@ -28,7 +28,7 @@ describe('Search Box Component', () => {
           provide: ShoppingFacade,
           useFactory: () =>
             ({
-              searchResults$: () => searchResults$,
+              suggestResults$: () => searchResults$,
               searchTerm$,
               recentSearchTerms$: new ReplaySubject<string[]>(1),
             } as Partial<ShoppingFacade>),
