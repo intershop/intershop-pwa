@@ -1,0 +1,48 @@
+<ng-container *ngIf="select('visible') | async">
+  <div *ngIf="select('editMode') | async as editMode" class="row">
+    <div class="offset-2 col-10 list-item-actions pt-0">
+      <ish-line-item-custom-fields *ngIf="collapsed" [lineItem]="select('lineItem') | async" [editable]="editable" />
+
+      <button
+        *ngIf="editable"
+        (click)="collapsed = !collapsed"
+        type="button"
+        class="line-item-edit-link btn btn-link btn-link-action btn-collapse-link"
+        [attr.aria-expanded]="!collapsed"
+        [attr.aria-controls]="'line-item-information-input_' + lineItemId"
+      >
+        {{
+          (editMode === 'edit' ? 'checkout.custom-fields.edit.link.label' : 'checkout.custom-fields.add.link.label')
+            | translate
+        }}
+        <fa-icon [icon]="['fas', collapsed ? 'angle-down' : 'angle-up']" class="pl-2" />
+      </button>
+
+      <div [id]="'line-item-information-input_' + lineItemId" [ngbCollapse]="collapsed">
+        <form [formGroup]="customFieldsForm" ishFormSubmit (ngSubmit)="save()">
+          <ish-custom-fields-formly
+            [form]="customFieldsForm"
+            [fields]="select('customFields') | async"
+            fieldClass="col-md-8 col-xl-6"
+          />
+
+          <div class="row">
+            <div class="col-12 offset-md-4 col-md-8">
+              <button type="submit" class="btn btn-primary">
+                {{
+                  (editMode === 'edit'
+                    ? 'checkout.custom-fields.save.button.label'
+                    : 'checkout.custom-fields.add.button.label'
+                  ) | translate
+                }}
+              </button>
+              <button (click)="cancel()" type="button" class="btn btn-secondary">
+                {{ 'checkout.custom-fields.cancel.button.label' | translate }}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-container>

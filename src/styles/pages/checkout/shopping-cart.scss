@@ -11,6 +11,11 @@
   }
 }
 
+.cart-items-collapse-link,
+.btn-collapse-link {
+  text-decoration: none !important;
+}
+
 .cart-summary {
   padding: ($space-default * 1.5);
   border: $border-width-default solid $border-color-light;
@@ -54,16 +59,13 @@
   }
 
   .cart-items-collapse-link,
-  .promo-collapse-link {
+  .btn-collapse-link {
     width: 100%;
-    color: $color-primary;
     text-align: left;
-    text-decoration: none !important;
 
     .ng-fa-icon {
       position: relative;
       top: 2px;
-      color: $text-color-corporate;
     }
   }
 
@@ -218,5 +220,13 @@
     display: inline-block;
     width: auto;
     max-width: 100%;
+  }
+}
+
+.list-item-actions {
+  padding: $table-cell-padding * 0.2 0 $table-cell-padding * 0.9 0;
+
+  .btn-tool.btn-link {
+    padding: 0 divide($space-default, 3);
   }
 }

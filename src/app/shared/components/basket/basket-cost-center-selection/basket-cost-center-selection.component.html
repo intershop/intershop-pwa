@@ -1,6 +1,6 @@
 <ng-container *ngIf="fields$ | async as fields" data-testing-id="cost-center-select">
   <h2 class="h3">{{ 'checkout.cost_center.select.heading' | translate }}</h2>
-  <form [formGroup]="form">
+  <form [formGroup]="form" class="mb-2">
     <formly-form [form]="form" [fields]="fields" [model]="model" />
   </form>
 </ng-container>
