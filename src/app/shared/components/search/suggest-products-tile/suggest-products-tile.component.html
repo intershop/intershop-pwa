@@ -1,5 +1,5 @@
 <div class="search-suggest-products">
-  <div class="headline">{{ 'suggest.products.headline' | translate }}</div>
+  <div class="d-flex justify-content-start headline">{{ 'suggest.products.headline' | translate }}</div>
   <ul>
     <li *ngFor="let result of products | slice : 0 : maxAutoSuggests">
       <a class="product-image" [routerLink]="'/prd' + result.sku" (click)="handleInputFocus()" tabindex="-1">

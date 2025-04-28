@@ -95,8 +95,8 @@
     <ng-template #noResults>
       <div *ngIf="hasMinimumCharCount || hasSearchedTerms()" class="search-suggest-container" aria-live="polite">
         <div *ngIf="hasMinimumCharCount" class="col-12">
-          <div class="headline">{{ 'suggest.no_results.headline' | translate }}</div>
-          <p>{{ 'suggest.no_results.text' | translate }}</p>
+          <div class="d-flex justify-content-start headline">{{ 'suggest.no_results.headline' | translate }}</div>
+          <p align="left">{{ 'suggest.no_results.text' | translate }}</p>
         </div>
         <div *ngIf="hasSearchedTerms()" class="col-12" #searchSuggestLayer>
           <ish-suggest-search-terms-tile

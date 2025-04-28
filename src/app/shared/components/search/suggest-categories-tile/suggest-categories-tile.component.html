@@ -1,5 +1,5 @@
 <div class="search-suggest-categories">
-  <div class="headline">{{ 'suggest.categories.headline' | translate }}</div>
+  <div class="d-flex justify-content-start headline">{{ 'suggest.categories.headline' | translate }}</div>
   <ul>
     <li *ngFor="let result of categories | slice : 0 : maxAutoSuggests">
       <ng-container *ngIf="getCategoryView(result.uniqueId) | async as category">
