@@ -1,6 +1,6 @@
 import { createAction } from '@ngrx/store';
 
-import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
+import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 export const searchProducts = createAction(
@@ -19,7 +19,7 @@ export const suggestSearch = createAction(
 
 export const suggestSearchSuccess = createAction(
   '[Suggest Search API] Return Search Suggestions',
-  payload<{ suggests: Suggestion }>()
+  payload<{ suggests: Suggestions }>()
 );
 
 export const suggestSearchFail = createAction('[Suggest Search API] Load Search Suggestions Fail', httpError());

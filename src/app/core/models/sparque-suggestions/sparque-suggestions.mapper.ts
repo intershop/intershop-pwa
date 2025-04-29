@@ -6,26 +6,25 @@ import { SparqueCategory } from 'ish-core/models/sparque-category/sparque-catego
 import { SparqueImageMapper } from 'ish-core/models/sparque-image/sparque-image.mapper';
 import { SparqueOfferMapper } from 'ish-core/models/sparque-offer/sparque-offer.mapper';
 import { SparqueProductMapper } from 'ish-core/models/sparque-product/sparque-product.mapper';
-import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
+import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 
-import { SparqueKeywordSuggestions, SparqueSuggestions } from './sparque-suggestion.interface';
+import { SparqueSuggestions } from './sparque-suggestions.interface';
 
 @Injectable({ providedIn: 'root' })
-export class SparqueSuggestionMapper {
+export class SparqueSuggestionsMapper {
   constructor(
     private sparqueProductMapper: SparqueProductMapper,
     private sparqueImageMapper: SparqueImageMapper,
     private sparqueOfferMapper: SparqueOfferMapper
   ) {}
 
-  fromData(suggestion: SparqueSuggestions): Suggestion {
+  fromData(suggestions: SparqueSuggestions): Suggestions {
     return {
-      products: suggestion?.products ? this.sparqueProductMapper.mapProducts(suggestion.products) : [],
-      categories: suggestion?.categories ? this.mapCategories(suggestion.categories) : [],
-      brands: suggestion?.brands ? suggestion.brands : [],
-      keywordSuggestions: suggestion?.keywordSuggestions ? this.mapKeywords(suggestion.keywordSuggestions) : [],
-      contentSuggestions: suggestion?.contentSuggestions ? suggestion.contentSuggestions : [],
-      prices: suggestion?.products ? this.sparqueOfferMapper.mapOffers(suggestion.products) : [],
+      products: suggestions?.products ? this.sparqueProductMapper.mapProducts(suggestions.products) : [],
+      categories: suggestions?.categories ? this.mapCategories(suggestions.categories) : [],
+      brands: suggestions?.brands ? suggestions.brands : [],
+      keywords: suggestions?.keywordSuggestions ? suggestions.keywordSuggestions : [],
+      prices: suggestions?.products ? this.sparqueOfferMapper.mapOffers(suggestions.products) : [],
     };
   }
 
@@ -50,9 +49,5 @@ export class SparqueSuggestionMapper {
           productCount: category.totalCount ? category.totalCount : undefined,
         }))
       : [];
-  }
-
-  private mapKeywords(keywords: SparqueKeywordSuggestions[]): string[] {
-    return keywords ? keywords.map(entry => entry.keyword) : [];
   }
 }

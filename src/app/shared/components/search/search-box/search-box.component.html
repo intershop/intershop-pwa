@@ -24,7 +24,7 @@
       </ng-template>
     </div>
   </div>
-  <ng-container *ngIf="configuration?.autoSuggest && searchResults$ | async as results; else initialState">
+  <ng-container *ngIf="configuration?.autoSuggest && suggestions$ | async as results; else initialState">
     <div
       *ngIf="(searchBoxResults$ | async) && hasMinimumCharCount; else noResults"
       id="search-suggest-layer"
@@ -38,9 +38,9 @@
           'col-md-5': results.products?.length
         }"
       >
-        <div *ngIf="results.keywordSuggestions.length">
+        <div *ngIf="results.keywords.length">
           <ish-suggest-keywords-tile
-            [keywords]="results.keywordSuggestions"
+            [keywords]="results.keywords"
             [inputTerms$]="inputSearchTerms$"
             (submitSearch)="submitSearch($event)"
             [maxAutoSuggests]="5"
@@ -66,8 +66,8 @@
       <div
         *ngIf="results.products?.length"
         [ngClass]="{
-          'col-md-7': results.keywordSuggestions.length || results.brands.length || results.categories.length,
-          'products-only': !results.keywordSuggestions.length && !results.brands.length && !results.categories.length
+          'col-md-7': results.keywords.length || results.brands.length || results.categories.length,
+          'products-only': !results.keywords.length && !results.brands.length && !results.categories.length
         }"
         class="col-12"
       >
@@ -96,7 +96,7 @@
       <div *ngIf="hasMinimumCharCount || hasSearchedTerms()" class="search-suggest-container" aria-live="polite">
         <div *ngIf="hasMinimumCharCount" class="col-12">
           <div class="d-flex justify-content-start headline">{{ 'suggest.no_results.headline' | translate }}</div>
-          <p align="left">{{ 'suggest.no_results.text' | translate }}</p>
+          <p>{{ 'suggest.no_results.text' | translate }}</p>
         </div>
         <div *ngIf="hasSearchedTerms()" class="col-12" #searchSuggestLayer>
           <ish-suggest-search-terms-tile

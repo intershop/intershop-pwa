@@ -5,13 +5,13 @@ import { Product } from 'ish-core/models/product/product.model';
 import { SparqueOfferMapper } from 'ish-core/models/sparque-offer/sparque-offer.mapper';
 import { SparqueProduct } from 'ish-core/models/sparque-product/sparque-product.interface';
 import { SparqueProductMapper } from 'ish-core/models/sparque-product/sparque-product.mapper';
-import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
+import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 
-import { SparqueSuggestions } from './sparque-suggestion.interface';
-import { SparqueSuggestionMapper } from './sparque-suggestion.mapper';
+import { SparqueSuggestions } from './sparque-suggestions.interface';
+import { SparqueSuggestionsMapper } from './sparque-suggestions.mapper';
 
-describe('Sparque Suggestion Mapper', () => {
-  let sparqueSuggestionMapper: SparqueSuggestionMapper;
+describe('Sparque Suggestions Mapper', () => {
+  let sparqueSuggestionsMapper: SparqueSuggestionsMapper;
   let sparqueProductMapperMock: SparqueProductMapper;
   let sparqueOfferMapperMock: SparqueOfferMapper;
 
@@ -73,7 +73,7 @@ describe('Sparque Suggestion Mapper', () => {
     ]);
 
     TestBed.configureTestingModule({});
-    sparqueSuggestionMapper = TestBed.inject(SparqueSuggestionMapper);
+    sparqueSuggestionsMapper = TestBed.inject(SparqueSuggestionsMapper);
   });
 
   describe('fromData', () => {
@@ -83,10 +83,9 @@ describe('Sparque Suggestion Mapper', () => {
         categories: [],
         brands: [],
         keywordSuggestions: [],
-        contentSuggestions: [],
       };
 
-      const result: Suggestion = sparqueSuggestionMapper.fromData(sparqueSuggestions);
+      const result: Suggestions = sparqueSuggestionsMapper.fromData(sparqueSuggestions);
       expect(result.products).toHaveLength(1);
       expect(result.products[0].name).toBe(sparqueProduct.name);
       expect(result.products[0].shortDescription).toBe(sparqueProduct.shortDescription);
@@ -114,10 +113,9 @@ describe('Sparque Suggestion Mapper', () => {
         ],
         brands: [],
         keywordSuggestions: [],
-        contentSuggestions: [],
       };
 
-      const result: Suggestion = sparqueSuggestionMapper.fromData(sparqueSuggestions);
+      const result: Suggestions = sparqueSuggestionsMapper.fromData(sparqueSuggestions);
 
       expect(result.categories).toHaveLength(1);
       expect(result.categories[0].name).toBe(sparqueSuggestions.categories[0].categoryName);
@@ -144,10 +142,9 @@ describe('Sparque Suggestion Mapper', () => {
           },
         ],
         keywordSuggestions: [],
-        contentSuggestions: [],
       };
 
-      const result: Suggestion = sparqueSuggestionMapper.fromData(sparqueSuggestions);
+      const result: Suggestions = sparqueSuggestionsMapper.fromData(sparqueSuggestions);
 
       expect(result.brands).toHaveLength(1);
       expect(result.brands[0].brandName).toBe(sparqueSuggestions.brands[0].brandName);
@@ -160,55 +157,21 @@ describe('Sparque Suggestion Mapper', () => {
         categories: [],
         brands: [],
         keywordSuggestions: [{ keyword: 'keyword1' }, { keyword: 'keyword2' }],
-        contentSuggestions: [],
       };
 
-      const result: Suggestion = sparqueSuggestionMapper.fromData(sparqueSuggestions);
+      const result: Suggestions = sparqueSuggestionsMapper.fromData(sparqueSuggestions);
 
-      expect(result.keywordSuggestions).toHaveLength(2);
-      expect(result.keywordSuggestions).toContain(sparqueSuggestions.keywordSuggestions[0].keyword);
-      expect(result.keywordSuggestions).toContain(sparqueSuggestions.keywordSuggestions[1].keyword);
-    });
-
-    it('should map content suggestions correctly', () => {
-      const date = new Date('2023-10-01');
-      const sparqueSuggestions: SparqueSuggestions = {
-        products: [],
-        categories: [],
-        brands: [],
-        keywordSuggestions: [],
-        contentSuggestions: [
-          {
-            newsType: 'News',
-            paragraph: 'Paragraph',
-            slug: 'slug',
-            summary: 'Summary',
-            title: 'Title',
-            type: 'Type',
-            articleDate: date,
-          },
-        ],
-      };
-
-      const result: Suggestion = sparqueSuggestionMapper.fromData(sparqueSuggestions);
-
-      expect(result.contentSuggestions).toHaveLength(1);
-      expect(result.contentSuggestions[0].newsType).toBe(sparqueSuggestions.contentSuggestions[0].newsType);
-      expect(result.contentSuggestions[0].paragraph).toBe(sparqueSuggestions.contentSuggestions[0].paragraph);
-      expect(result.contentSuggestions[0].slug).toBe(sparqueSuggestions.contentSuggestions[0].slug);
-      expect(result.contentSuggestions[0].summary).toBe(sparqueSuggestions.contentSuggestions[0].summary);
-      expect(result.contentSuggestions[0].title).toBe(sparqueSuggestions.contentSuggestions[0].title);
-      expect(result.contentSuggestions[0].type).toBe(sparqueSuggestions.contentSuggestions[0].type);
-      expect(result.contentSuggestions[0].articleDate).toBe(date);
+      expect(result.keywords).toHaveLength(2);
+      expect(result.keywords).toContain(sparqueSuggestions.keywordSuggestions[0].keyword);
+      expect(result.keywords).toContain(sparqueSuggestions.keywordSuggestions[1].keyword);
     });
 
     it('should return empty object for undefined input', () => {
-      const result: Suggestion = sparqueSuggestionMapper.fromData(undefined);
+      const result: Suggestions = sparqueSuggestionsMapper.fromData(undefined);
       expect(result.brands).toBeEmpty();
       expect(result.categories).toBeEmpty();
-      expect(result.keywordSuggestions).toBeEmpty();
+      expect(result.keywords).toBeEmpty();
       expect(result.products).toBeEmpty();
-      expect(result.contentSuggestions).toBeEmpty();
       expect(result.prices).toBeEmpty();
     });
   });

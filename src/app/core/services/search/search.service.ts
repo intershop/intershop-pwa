@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
-import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
+import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 /**
@@ -19,7 +19,7 @@ export abstract class SearchService {
    * @param searchTerm - The term to search for suggestions.
    * @returns An observable that emits the search suggestions.
    */
-  abstract searchSuggestions(searchTerm: string): Observable<Suggestion>;
+  abstract searchSuggestions(searchTerm: string): Observable<Suggestions>;
 
   /**
    * Searches for products based on the provided search parameters.

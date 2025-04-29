@@ -1,11 +1,11 @@
 <div class="search-suggest-brands">
   <div class="d-flex justify-content-start headline">{{ 'suggest.brands.headline' | translate }}</div>
   <ul>
-    <li *ngFor="let result of brands | slice : 0 : maxAutoSuggests">
+    <li *ngFor="let brand of brands | slice : 0 : maxAutoSuggests">
       <a
         [routerLink]="['/search/*']"
-        [queryParams]="{ filters: 'ManufacturerName=' + result.brandName }"
-        [innerHTML]="result.brandName | ishHighlight : (inputTerms$ | async)"
+        [queryParams]="{ filters: 'ManufacturerName=' + brand.brandName }"
+        [innerHTML]="brand.brandName | ishHighlight : (inputTerms$ | async)"
         (click)="handleInputFocus()"
       ></a>
     </li>
