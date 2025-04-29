@@ -3,18 +3,24 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
+import { instance, mock, verify } from 'ts-mockito';
 
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 
+import { RequisitionContextFacade } from '../../facades/requisition-context.facade';
 import { Requisition } from '../../models/requisition/requisition.model';
+import { RequisitionRejectDialogComponent } from '../requisition-reject-dialog/requisition-reject-dialog.component';
 
 import { RequisitionsListComponent } from './requisitions-list.component';
+import { RequisitionsListModule } from './requisitions-list.module';
 
 describe('Requisitions List Component', () => {
   let component: RequisitionsListComponent;
   let fixture: ComponentFixture<RequisitionsListComponent>;
   let element: HTMLElement;
   let translate: TranslateService;
+  let context: RequisitionContextFacade;
+
   const requisitions = [
     {
       id: '0123',
@@ -41,9 +47,11 @@ describe('Requisitions List Component', () => {
   ] as Requisition[];
 
   beforeEach(async () => {
+    context = mock(RequisitionContextFacade);
     await TestBed.configureTestingModule({
-      imports: [CdkTableModule, RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [MockPipe(PricePipe), RequisitionsListComponent],
+      imports: [CdkTableModule, RequisitionsListModule, RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [MockPipe(PricePipe)],
+      providers: [{ provide: RequisitionContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
 
@@ -128,5 +136,38 @@ describe('Requisitions List Component', () => {
     expect(element.querySelector('[data-testing-id=th-rejection-date]')).toBeTruthy();
     expect(element.querySelector('[data-testing-id=th-line-items]')).toBeTruthy();
     expect(element.querySelector('[data-testing-id=th-order-total]')).toBeTruthy();
+  });
+
+  it('should approve a requisition using the facade', () => {
+    component.requisitions = requisitions;
+    fixture.detectChanges();
+
+    component.approveRequisition('0001');
+
+    verify(context.updateRequisitionStatusFromApprovalList$('0123', 'APPROVED')).once();
+  });
+
+  it('should reject a requisition using the facade with comment', () => {
+    const rejectDialogMock = mock(RequisitionRejectDialogComponent);
+    component.requisitions = requisitions;
+    component.rejectDialog = instance(rejectDialogMock);
+    fixture.detectChanges();
+
+    component.openRejectDialog('0001');
+
+    component.rejectRequisition('Not needed');
+
+    verify(context.updateRequisitionStatusFromApprovalList$('0123', 'REJECTED', 'Not needed')).once();
+  });
+
+  it('should open the reject dialog for a requisition', () => {
+    const dialogMock = mock(RequisitionRejectDialogComponent);
+    component.rejectDialog = instance(dialogMock);
+
+    component.requisitions = requisitions;
+
+    component.openRejectDialog('0001');
+
+    verify(dialogMock.show()).once();
   });
 });

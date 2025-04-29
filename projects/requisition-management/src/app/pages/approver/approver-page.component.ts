@@ -55,7 +55,7 @@ export class ApproverPageComponent implements OnInit {
           ];
           break;
         default:
-          this.columnsToDisplay = ['requisitionNo', 'creationDate', 'buyer', 'lineItems', 'orderTotal'];
+          this.columnsToDisplay = ['requisitionNo', 'creationDate', 'buyer', 'lineItems', 'orderTotal', 'approval'];
           break;
       }
     });
