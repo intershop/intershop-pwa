@@ -38,6 +38,9 @@ sparque: {
   wrapperApi: '<wrapper api version>',
   workspaceName: '<name of the workspace>',
   apiName: '<used sparque api>',
+  // config <= optional parameter
+  // in case this parameter is empty the wrapper will use default as fallback
+  config: 'production'
   channelId: '<in sparque workspace configured channel>',
   enablePrices: true | false,
 },
@@ -54,6 +57,7 @@ pwa:
       wrapperApi: "<wrapper api version>"
       workspaceName: "<name of the workspace>"
       apiName: "<used sparque api>"
+      config: "production"
       channelId: "<in sparque workspace configured channel>"
       enablePrices: "<true|false>"
 ```
@@ -69,6 +73,7 @@ environment:
         "wrapperApi": "<wrapper api version>"
         "workspaceName": "<name of the workspace>"
         "apiName": "<used sparque api>"
+        "config": "production"
         "channelId": "<in sparque workspace configured channel>"
         "enablePrices": "<true|false>"
       }
@@ -173,7 +178,7 @@ loadFilteredProducts$ = createEffect(() =>
 ## Suggestion Feature
 
 The SPARQUE.AI suggestion response contains beside the keywords further data like suggested products, categories, brands and content.
-The suggestion as part of the [Search Box Component](../../src/app/core/standalone/component/suggest/search-box/search-box.component.ts).
+The suggestion as part of the [Search Box Component](../../src/app/shared/components/search/search-box/search-box.component.ts).
 As soon as the search term has a length of at least 3 characters, a suggestion request is triggered.
 If no hits are found for the used search term, the recently used search terms appear.
 Otherwise, the search results are displayed.
@@ -187,11 +192,11 @@ Otherwise, the search results are displayed.
 
   The Search Box Component consists of several components that work together to provide a seamless search experience:
 
-  - **[ish-suggest-keywords-tile](../../src/app/core/standalone/component/suggest/suggest-keywords-tile/suggest-keywords-tile.component.ts)**: Displays real-time keyword suggestions
-  - **[ish-suggest-categories-tile](../../src/app/core/standalone/component/suggest/suggest-categories-tile/suggest-categories-tile.component.ts)**: Displays the real-time suggested categories
-  - **[ish-suggest-products-tile](../../src/app/core/standalone/component/suggest/suggest-products-tile/suggest-products-tile.component.ts)**: Shows relevant product suggestions based on the user's input
-  - **[ish-suggest-brands-tile](../../src/app/core/standalone/component/suggest/suggest-brands-tile/suggest-brands-tile.component.ts)**: Provides brand suggestions related to the search terms
-  - **[ish-suggest-search-terms-tile](../../src/app/core/standalone/component/suggest/suggest-search-terms-tile/suggest-search-terms-tile.component.ts)**: Shows the search terms the user has already searched for in the past.
+  - **[ish-suggest-keywords-tile](../../src/app/shared/components/search/suggest-keywords-tile/suggest-keywords-tile.component.ts)**: Displays real-time keyword suggestions
+  - **[ish-suggest-categories-tile](../../src/app/shared/components/search/suggest-categories-tile/suggest-categories-tile.component.ts)**: Displays the real-time suggested categories
+  - **[ish-suggest-products-tile](../../src/app/shared/components/search/suggest-products-tile/suggest-products-tile.component.ts)**: Shows relevant product suggestions based on the user's input
+  - **[ish-suggest-brands-tile](../../src/app/shared/components/search/suggest-brands-tile/suggest-brands-tile.component.ts)**: Provides brand suggestions related to the search terms
+  - **[ish-suggest-search-terms-tile](../../src/app/shared/components/search/suggest-search-terms-tile/suggest-search-terms-tile.component.ts)**: Shows the search terms the user has already searched for in the past.
 
   The number of objects to be displayed can be configured individually for each component:
 

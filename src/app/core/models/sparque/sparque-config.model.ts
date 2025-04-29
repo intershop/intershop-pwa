@@ -24,6 +24,7 @@ export function getEmptySparqueConfig(): SparqueConfig {
     workspaceName: '',
     apiName: '',
     channelId: '',
+    config: '',
     enablePrices: true,
   };
 }
