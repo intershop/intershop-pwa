@@ -27,6 +27,7 @@ export const environment: Environment = {
     workspaceName: 'intershop-project-base-v2-team2',
     apiName: 'PWA',
     channelId: 'ish',
+    config: 'default',
     enablePrices: false,
   },
 };
