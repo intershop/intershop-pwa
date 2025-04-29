@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { TranslateModule } from '@ngx-translate/core';
 import { ReplaySubject } from 'rxjs';
 
+import { Keyword } from 'ish-core/models/keyword/keyword.model';
 import { PipesModule } from 'ish-core/pipes.module';
 
 @Component({
@@ -13,7 +14,7 @@ import { PipesModule } from 'ish-core/pipes.module';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestKeywordsTileComponent {
-  @Input() keywords: string[];
+  @Input() keywords: Keyword[];
   @Input() maxAutoSuggests: number;
   @Input() inputTerms$ = new ReplaySubject<string>(1);
   @Output() submitSearch = new EventEmitter<string>();

@@ -24,7 +24,7 @@ export class SearchServiceProvider {
     let isSparque = false;
     this.store
       .pipe(select(getSparqueConfig), take(1))
-      .subscribe(state => (state ? (isSparque = true) : (isSparque = false)));
+      .subscribe(sparqueConfig => (sparqueConfig ? (isSparque = true) : (isSparque = false)));
     return isSparque ? this.sparqueSearchService : this.productsService;
   }
 

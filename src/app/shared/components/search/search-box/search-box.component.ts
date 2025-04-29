@@ -21,7 +21,7 @@ import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { IconModule } from 'ish-core/icon.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SearchBoxConfiguration } from 'ish-core/models/search-box-configuration/search-box-configuration.model';
-import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
+import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { PipesModule } from 'ish-core/pipes.module';
 import { SuggestBrandsTileComponent } from 'ish-shared/components/search/suggest-brands-tile/suggest-brands-tile.component';
@@ -75,7 +75,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('searchInputSubmit') searchInputSubmit: ElementRef;
   @ViewChild('searchSuggestLayer') searchSuggestLayer: ElementRef;
 
-  searchResults$: Observable<Suggestion>;
+  suggestions$: Observable<Suggestions>;
   inputSearchTerms$ = new ReplaySubject<string>(1);
   searchSuggestLoading$: Observable<boolean>;
   searchSuggestError$: Observable<HttpError>;
@@ -97,17 +97,17 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     // suggests are triggered solely via stream
-    this.searchResults$ = this.shoppingFacade
+    this.suggestions$ = this.shoppingFacade
       .suggestResults$(this.inputSearchTerms$)
-      .pipe(shareReplay(1)) as Observable<Suggestion>;
+      .pipe(shareReplay(1)) as Observable<Suggestions>;
 
     // check if there are results to show the suggest layer AND to add aria attributes
-    this.searchBoxResults$ = this.searchResults$.pipe(
+    this.searchBoxResults$ = this.suggestions$.pipe(
       map(
         results =>
           !!(
             results &&
-            (results.keywordSuggestions?.length ||
+            (results.keywords?.length ||
               results.categories?.length ||
               results.brands?.length ||
               results.products?.length)

@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
+import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
 import {
@@ -14,7 +14,7 @@ import {
 } from './search.actions';
 
 export interface SuggestState {
-  suggests: Suggestion;
+  suggests: Suggestions;
   _searchTerms: string[];
   loading: boolean;
   error: HttpError;

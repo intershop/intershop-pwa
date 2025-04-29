@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ReplaySubject } from 'rxjs';
 
-import { Brand } from 'ish-core/models/suggestion/suggestion.model';
+import { Brand } from 'ish-core/models/brand/brand.model';
 import { PipesModule } from 'ish-core/pipes.module';
 
 @Component({

@@ -20,7 +20,7 @@ import {
   VariationProductMaster,
 } from 'ish-core/models/product/product.model';
 import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
-import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
+import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { SearchService } from 'ish-core/services/search/search.service';
 import { omit } from 'ish-core/utils/functions';
@@ -44,12 +44,14 @@ export class ProductsService extends SearchService {
    * @param searchTerm  The search term to get suggestions for.
    * @returns           List of suggested search terms.
    */
-  searchSuggestions(searchTerm: string): Observable<Suggestion> {
+  searchSuggestions(searchTerm: string): Observable<Suggestions> {
     const params = new HttpParams().set('SearchTerm', searchTerm);
     return this.apiService.get('suggest', { params }).pipe(
       unpackEnvelope<{ term: string }>(),
       map(suggestTerms => ({
-        keywordSuggestions: suggestTerms.map(term => term.term),
+        keywords: suggestTerms.map(term => ({
+          keyword: term.term,
+        })),
       }))
     );
   }
