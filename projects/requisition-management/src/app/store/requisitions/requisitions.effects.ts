@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { from } from 'rxjs';
-import { concatMap, map, switchMap } from 'rxjs/operators';
+import { Action } from '@ngrx/store';
+import { from, of } from 'rxjs';
+import { catchError, concatMap, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
-import { displayInfoMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
+import { displayErrorMessage, displayInfoMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
 import { loadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 
@@ -20,6 +21,7 @@ import {
   loadRequisitionsSuccess,
   updateRequisitionStatus,
   updateRequisitionStatusFail,
+  updateRequisitionStatusFromApprovalList,
   updateRequisitionStatusSuccess,
 } from './requisitions.actions';
 
@@ -101,6 +103,41 @@ export class RequisitionsEffects {
             ),
             mapErrorToAction(updateRequisitionStatusFail)
           )
+      )
+    )
+  );
+
+  updateRequisitionStatusFromApprovalList$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateRequisitionStatusFromApprovalList),
+      mapToPayload(),
+      concatMap(({ requisitionId, status, approvalComment }) =>
+        this.requisitionsService.updateRequisitionStatus(requisitionId, status, approvalComment).pipe(
+          mergeMap(requisition => {
+            const baseActions: Action[] = [
+              updateRequisitionStatusSuccess({ requisition }),
+              loadRequisitions({ view: 'approver', status: 'PENDING' }),
+              displaySuccessMessage({
+                message: `approval.order_${requisition.approval.statusCode.toLowerCase()}.text`,
+              }),
+            ];
+            const infoActions =
+              requisition.approval.statusCode === 'PENDING'
+                ? [displayInfoMessage({ message: 'approval.order_partially_approved.text' })]
+                : [];
+
+            if (infoActions.length > 0) {
+              return infoActions;
+            }
+            return baseActions;
+          }),
+          catchError(error =>
+            of(
+              updateRequisitionStatusFail({ error }),
+              displayErrorMessage({ message: error.errors?.[0]?.message ?? error.message })
+            )
+          )
+        )
       )
     )
   );

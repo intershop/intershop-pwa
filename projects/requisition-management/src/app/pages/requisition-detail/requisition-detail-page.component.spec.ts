@@ -16,12 +16,12 @@ import { BasketShippingMethodComponent } from 'ish-shared/components/basket/bask
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 
+import { RequisitionRejectDialogComponent } from '../../components/requisition-reject-dialog/requisition-reject-dialog.component';
 import { RequisitionContextFacade } from '../../facades/requisition-context.facade';
 import { Requisition } from '../../models/requisition/requisition.model';
 
 import { RequisitionCostCenterApprovalComponent } from './requisition-cost-center-approval/requisition-cost-center-approval.component';
 import { RequisitionDetailPageComponent } from './requisition-detail-page.component';
-import { RequisitionRejectDialogComponent } from './requisition-reject-dialog/requisition-reject-dialog.component';
 import { RequisitionSummaryComponent } from './requisition-summary/requisition-summary.component';
 
 describe('Requisition Detail Page Component', () => {

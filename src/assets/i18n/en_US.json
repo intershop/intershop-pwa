@@ -455,7 +455,7 @@
   "account.requisitions.approvals.navtab.approved": "Approved requisitions",
   "account.requisitions.approvals.navtab.rejected": "Rejected requisitions",
   "account.requisitions.approvals.navtab.waiting": "Waiting for your approval",
-  "account.requisitions.approvals.text": "This list shows all order requests that need to be approved by you. You can also view all requests that have already been approved or rejected. Click the number of the requisition to navigate to the details page to approve the requisition.",
+  "account.requisitions.approvals.text": "This list shows all order requests that need to be approved by you. You can also view all requests that have already been approved or rejected.",
   "account.requisitions.management": "Requisition management",
   "account.requisitions.myapprovals": "My approvals",
   "account.requisitions.organization": "My organization",
