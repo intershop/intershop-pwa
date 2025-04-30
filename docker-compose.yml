@@ -120,6 +120,7 @@ services:
              workspaceName: intershop-project-base-v2-team2
              apiName: PWA
              channelId: ish
+             config: default
              enablePrices: true
           - baseHref: /de
             channel: default
@@ -129,6 +130,7 @@ services:
              workspaceName: intershop-project-base-v2-team2
              apiName: PWA
              channelId: ish
+             config: default
              enablePrices: true
           - baseHref: /fr
             channel: default
@@ -138,6 +140,7 @@ services:
              workspaceName: intershop-project-base-v2-team2
              apiName: PWA
              channelId: ish
+             config: default
              enablePrices: true
           - baseHref: /b2c
             channel: default
