@@ -20,9 +20,8 @@ import {
   VariationProductMaster,
 } from 'ish-core/models/product/product.model';
 import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
-import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
+import { SearchService } from 'ish-core/service-provider/search.service-provider';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { SearchService } from 'ish-core/services/search/search.service';
 import { omit } from 'ish-core/utils/functions';
 import { mapToProperty } from 'ish-core/utils/operators';
 import { URLFormParams, appendFormParamsToHttpParams } from 'ish-core/utils/url-form-params';
@@ -33,28 +32,8 @@ import STUB_ATTRS from './products-list-attributes';
  * The Products Service handles the interaction with the 'products' REST API.
  */
 @Injectable({ providedIn: 'root' })
-export class ProductsService extends SearchService {
-  constructor(private apiService: ApiService, private productMapper: ProductMapper, private appFacade: AppFacade) {
-    super();
-  }
-
-  /**
-   * Returns a list of suggested search terms matching the given search term.
-   *
-   * @param searchTerm  The search term to get suggestions for.
-   * @returns           List of suggested search terms.
-   */
-  searchSuggestions(searchTerm: string): Observable<Suggestions> {
-    const params = new HttpParams().set('SearchTerm', searchTerm);
-    return this.apiService.get('suggest', { params }).pipe(
-      unpackEnvelope<{ term: string }>(),
-      map(suggestTerms => ({
-        keywords: suggestTerms.map(term => ({
-          keyword: term.term,
-        })),
-      }))
-    );
-  }
+export class ProductsService implements SearchService {
+  constructor(private apiService: ApiService, private productMapper: ProductMapper, private appFacade: AppFacade) {}
 
   /**
    * Get the full Product data for the given Product SKU.

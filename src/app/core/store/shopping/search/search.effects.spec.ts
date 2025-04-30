@@ -5,9 +5,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
-import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
+import { Suggestion } from 'ish-core/models/suggestions/suggestions.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { SearchServiceProvider } from 'ish-core/services/search/provider/search.service.provider';
+import { SearchServiceProvider } from 'ish-core/service-provider/search.service-provider';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadMoreProducts, setProductListingPageSize } from 'ish-core/store/shopping/product-listing';

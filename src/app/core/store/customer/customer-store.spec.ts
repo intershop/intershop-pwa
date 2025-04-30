@@ -27,7 +27,7 @@ import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { PricesService } from 'ish-core/services/prices/prices.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
-import { SearchServiceProvider } from 'ish-core/services/search/provider/search.service.provider';
+import { SearchServiceProvider } from 'ish-core/service-provider/search.service-provider';
 import { TokenService } from 'ish-core/services/token/token.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { WarrantyService } from 'ish-core/services/warranty/warranty.service';

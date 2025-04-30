@@ -11,7 +11,7 @@ import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, w
 import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { SearchServiceProvider } from 'ish-core/services/search/provider/search.service.provider';
+import { SearchServiceProvider } from 'ish-core/service-provider/search.service-provider';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user/user.actions';
 import { loadCategory } from 'ish-core/store/shopping/categories';

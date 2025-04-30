@@ -10,7 +10,8 @@ import { concatMap, map, sample, switchMap, withLatestFrom } from 'rxjs/operator
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
-import { SearchServiceProvider } from 'ish-core/services/search/provider/search.service.provider';
+import { SearchServiceProvider } from 'ish-core/service-provider/search.service-provider';
+import { SuggestionsServiceProvider } from 'ish-core/service-provider/suggestions.service-provider';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
@@ -45,6 +46,7 @@ export class SearchEffects {
   constructor(
     private actions$: Actions,
     private store: Store,
+    private suggestionsServiceProvider: SuggestionsServiceProvider,
     private searchServiceProvider: SearchServiceProvider,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
@@ -121,7 +123,7 @@ export class SearchEffects {
         ofType(suggestSearch),
         mapToPayloadProperty('searchTerm'),
         concatMap(searchTerm =>
-          this.searchServiceProvider
+          this.suggestionsServiceProvider
             .get()
             .searchSuggestions(searchTerm)
             .pipe(

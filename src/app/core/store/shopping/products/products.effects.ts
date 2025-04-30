@@ -25,7 +25,7 @@ import { ProductListingMapper } from 'ish-core/models/product-listing/product-li
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { SearchServiceProvider } from 'ish-core/services/search/provider/search.service.provider';
+import { SearchServiceProvider } from 'ish-core/service-provider/search.service-provider';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
