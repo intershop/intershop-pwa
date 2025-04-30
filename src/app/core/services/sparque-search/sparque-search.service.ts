@@ -5,10 +5,7 @@ import { Observable, map, throwError } from 'rxjs';
 import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
 import { SparqueSearchResponse } from 'ish-core/models/sparque-search/sparque-search.interface';
 import { SparqueSearchMapper } from 'ish-core/models/sparque-search/sparque-search.mapper';
-import { SparqueSuggestions } from 'ish-core/models/sparque-suggestions/sparque-suggestions.interface';
-import { SparqueSuggestionsMapper } from 'ish-core/models/sparque-suggestions/sparque-suggestions.mapper';
-import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
-import { SearchService } from 'ish-core/services/search/search.service';
+import { SearchService } from 'ish-core/service-provider/search.service-provider';
 import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.service';
 import { omit } from 'ish-core/utils/functions';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
@@ -18,34 +15,13 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  * Extends the base `SearchService` to provide specific implementations for Sparque.
  */
 @Injectable({ providedIn: 'root' })
-export class SparqueSearchService extends SearchService {
+export class SparqueSearchService implements SearchService {
   // API version for Sparque API.
   private readonly apiVersion = 'v2';
-  // Maximum number of suggestions to request from the Sparque API.
-  private readonly maxNumberOfRequestedSuggestions = '8';
   // Maximum number of facet options to request from the Sparque API.
   private readonly facetOptionsCount = '10';
 
-  constructor(
-    private sparqueApiService: SparqueApiService,
-    private sparqueSuggestionsMapper: SparqueSuggestionsMapper,
-    private sparqueSearchMapper: SparqueSearchMapper
-  ) {
-    super();
-  }
-
-  /**
-   * Retrieves search suggestions based on the provided search term.
-   *
-   * @param searchTerm - The term to search for suggestions.
-   * @returns An observable emitting the mapped search suggestions.
-   */
-  searchSuggestions(searchTerm: string): Observable<Suggestions> {
-    const params = new HttpParams().set('Keyword', searchTerm).set('count', this.maxNumberOfRequestedSuggestions);
-    return this.sparqueApiService
-      .get<SparqueSuggestions>(`suggestions`, this.apiVersion, { params, skipApiErrorHandling: true })
-      .pipe(map(suggestions => this.sparqueSuggestionsMapper.fromData(suggestions)));
-  }
+  constructor(private sparqueApiService: SparqueApiService, private sparqueSearchMapper: SparqueSearchMapper) {}
 
   /**
    * Searches for products based on the provided search parameters.
