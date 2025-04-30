@@ -6,15 +6,14 @@ import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
+import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
 import { HeaderNavigationComponent } from 'ish-shell/header/header-navigation/header-navigation.component';
 import { LanguageSwitchComponent } from 'ish-shell/header/language-switch/language-switch.component';
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
 import { MiniBasketComponent } from 'ish-shell/header/mini-basket/mini-basket.component';
 import { UserInformationMobileComponent } from 'ish-shell/header/user-information-mobile/user-information-mobile.component';
-import { LazySearchBoxComponent } from 'ish-shell/shared/lazy-search-box/lazy-search-box.component';
 
 import { LazyProductCompareStatusComponent } from '../../../extensions/compare/exports/lazy-product-compare-status/lazy-product-compare-status.component';
-import { LazyQuickorderLinkComponent } from '../../../extensions/quickorder/exports/lazy-quickorder-link/lazy-quickorder-link.component';
 
 import { HeaderDefaultComponent } from './header-default.component';
 
@@ -32,10 +31,9 @@ describe('Header Default Component', () => {
         MockComponent(HeaderNavigationComponent),
         MockComponent(LanguageSwitchComponent),
         MockComponent(LazyProductCompareStatusComponent),
-        MockComponent(LazyQuickorderLinkComponent),
-        MockComponent(LazySearchBoxComponent),
         MockComponent(LoginStatusComponent),
         MockComponent(MiniBasketComponent),
+        MockComponent(SearchBoxComponent),
         MockComponent(UserInformationMobileComponent),
         MockDirective(NgbCollapse),
       ],
@@ -66,7 +64,7 @@ describe('Header Default Component', () => {
 
   it('should render Search Box on template', () => {
     fixture.detectChanges();
-    expect(findAllCustomElements(element)).toContain('ish-lazy-search-box');
+    expect(findAllCustomElements(element)).toContain('ish-search-box');
   });
 
   it('should render Header Navigation on template', () => {

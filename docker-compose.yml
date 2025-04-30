@@ -115,12 +115,33 @@ services:
           - baseHref: /en
             channel: default
             lang: en_US
+            sparque:
+             serverUrl: https://policy.test.intershop.com
+             workspaceName: intershop-project-base-v2-team2
+             apiName: PWA
+             channelId: ish
+             config: default
+             enablePrices: true
           - baseHref: /de
             channel: default
             lang: de_DE
+            sparque:
+             serverUrl: https://policy.test.intershop.com
+             workspaceName: intershop-project-base-v2-team2
+             apiName: PWA
+             channelId: ish
+             config: default
+             enablePrices: true
           - baseHref: /fr
             channel: default
             lang: fr_FR
+            sparque:
+             serverUrl: https://policy.test.intershop.com
+             workspaceName: intershop-project-base-v2-team2
+             apiName: PWA
+             channelId: ish
+             config: default
+             enablePrices: true
           - baseHref: /b2c
             channel: default
             theme: b2c

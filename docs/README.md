@@ -85,6 +85,7 @@ kb_sync_latest_only
 
 ### Third-party Integrations
 
+- [Guide - SPARQUE.AI](./guides/sparque-ai.md)
 - [Guide - Intershop Copilot for Buyers](./guides/copilot.md)
 - [Guide - Tracking with Google Tag Manager](./guides/google-tag-manager.md)
 - [Guide - Client-Side Error Monitoring with Sentry](./guides/sentry-error-monitoring.md)

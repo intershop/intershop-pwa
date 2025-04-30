@@ -11,6 +11,7 @@ import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/ca
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
+import { Suggestion } from 'ish-core/models/suggestions/suggestions.model';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { CountryService } from 'ish-core/services/country/country.service';
@@ -18,7 +19,7 @@ import { FilterService } from 'ish-core/services/filter/filter.service';
 import { PricesService } from 'ish-core/services/prices/prices.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
-import { SuggestService } from 'ish-core/services/suggest/suggest.service';
+import { SearchServiceProvider } from 'ish-core/service-provider/search.service-provider';
 import { WarrantyService } from 'ish-core/services/warranty/warranty.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
@@ -41,8 +42,8 @@ describe('Shopping Store', () => {
   let router: Router;
   let categoriesServiceMock: CategoriesService;
   let productsServiceMock: ProductsService;
+  let searchServiceProviderMock: SearchServiceProvider;
   let promotionsServiceMock: PromotionsService;
-  let suggestServiceMock: SuggestService;
   let filterServiceMock: FilterService;
   let priceServiceMock: PricesService;
   let warrantyServiceMock: WarrantyService;
@@ -111,7 +112,9 @@ describe('Shopping Store', () => {
     const countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(EMPTY);
 
+    searchServiceProviderMock = mock(SearchServiceProvider);
     productsServiceMock = mock(ProductsService);
+    when(searchServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
     when(productsServiceMock.getProduct(anyString())).thenCall(sku => {
       if (['P1', 'P2'].find(x => x === sku)) {
         return of({ sku, name: `n${sku}` });
@@ -126,15 +129,15 @@ describe('Shopping Store', () => {
         total: 2,
       })
     );
-    when(productsServiceMock.searchProducts('something', anyNumber(), anything(), anyNumber())).thenReturn(
+    when(productsServiceMock.searchProducts(anything())).thenReturn(
       of({ products: [{ sku: 'P1' }, { sku: 'P2' }] as Product[], sortableAttributes: [], total: 2 })
+    );
+    when(productsServiceMock.searchSuggestions('some')).thenReturn(
+      of<Suggestion>({ keywordSuggestions: ['something'] })
     );
 
     promotionsServiceMock = mock(PromotionsService);
     when(promotionsServiceMock.getPromotion(anything())).thenReturn(of(promotion));
-
-    suggestServiceMock = mock(SuggestService);
-    when(suggestServiceMock.search('some')).thenReturn(of([{ term: 'something' }]));
 
     filterServiceMock = mock(FilterService);
     when(filterServiceMock.getFilterForSearch(anything())).thenReturn(of({} as FilterNavigation));
@@ -189,7 +192,7 @@ describe('Shopping Store', () => {
         { provide: PricesService, useFactory: () => instance(priceServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
-        { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
+        { provide: SearchServiceProvider, useFactory: () => instance(searchServiceProviderMock) },
         { provide: WarrantyService, useFactory: () => instance(warrantyServiceMock) },
         provideStoreSnapshots(),
         SelectedProductContextFacade,
@@ -274,8 +277,7 @@ describe('Shopping Store', () => {
           [Suggest Search] Load Search Suggestions:
             searchTerm: "some"
           [Suggest Search API] Return Search Suggestions:
-            searchTerm: "some"
-            suggests: [{"term":"something"}]
+            suggests: {"keywordSuggestions":[1]}
         `);
       });
     });
@@ -298,6 +300,8 @@ describe('Shopping Store', () => {
           [Viewconf Internal] Set Breadcrumb Data:
             breadcrumbData: [{"text":"search.breadcrumbs.your_search.label something"}]
           @ngrx/router-store/navigated: /search/something
+          [Suggest Search Term Internal] Add Search Terms to Suggestion:
+            searchTerm: "something"
           [Product Listing] Load More Products:
             id: {"type":"search","value":"something"}
           [Viewconf Internal] Set Breadcrumb Data:
@@ -528,6 +532,8 @@ describe('Shopping Store', () => {
           [Viewconf Internal] Set Breadcrumb Data:
             breadcrumbData: [{"text":"search.breadcrumbs.your_search.label something"}]
           @ngrx/router-store/navigated: /search/something
+          [Suggest Search Term Internal] Add Search Terms to Suggestion:
+            searchTerm: "something"
           [Product Listing] Load More Products:
             id: {"type":"search","value":"something"}
           [Viewconf Internal] Set Breadcrumb Data:
@@ -905,6 +911,8 @@ describe('Shopping Store', () => {
         @ngrx/router-store/request: /search/something
         @ngrx/router-store/navigation: /search/something
         @ngrx/router-store/navigated: /search/something
+        [Suggest Search Term Internal] Add Search Terms to Suggestion:
+          searchTerm: "something"
         [Product Listing] Load More Products:
           id: {"type":"search","value":"something"}
         [Viewconf Internal] Set Breadcrumb Data:

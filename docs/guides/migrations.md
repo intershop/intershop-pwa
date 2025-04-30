@@ -7,9 +7,30 @@ kb_sync_latest_only
 
 # Migrations
 
-## From 5.3 to 6.0
+## From 6.0.0 to 7.0.0
 
-The Intershop PWA 6.0 release contains functionality to improve the **accessibility** of the PWA.
+The Intershop PWA 7.0.0 release contains the **Sparque suggest** and **Sparque search** functionality to improve the searching of products in the PWA.
+To prevent compiling issues you have to consider the following changes:
+
+| Description              | API Changes                 | How to Migrate                                                                                                                                                                                                                    |
+| :----------------------- | :-------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| remove model             | _suggest-term.model.ts_     | Use the _keywordSuggestions_ parameter of the _suggestion.model.ts_ instead.                                                                                                                                                      |
+| remove service           | _suggest.service.ts_        | Method _search_ is renamed to _searchSuggestions_ and is now part of the _products.service.ts_. Method method <br> signature has changed to. The new return parameter is an Observable of <br> Suggestion(_suggestion.model.ts_). |
+| add param to constructor | _product-prices.effects.ts_ | Constructor is extended with the Store object.                                                                                                                                                                                    |
+| exchange service         | _products.effects.ts_       | Constructor is extended with the SearchServiceProvider (_search.service.provider.ts_) <br> object.                                                                                                                                |
+| change method signature  | _search.actions.ts_         | The payload object of the _suggestSearchSuccess_ action is changed from <br> `{ searchTerm: string; suggests: SuggestTerm[] }` to `{ suggests: Suggestion }`                                                                      |
+| exchange service         | _search.effects.ts_         | The _SearchServiceProvider_ (_search.service.provider.ts_) <br> object is added to the constructor.<br> The _SuggestService_ and the _ProductsService_ is removed.                                                                |
+| change state parameters  | _search.reducer.ts_         | _SearchState_ is removed and _SuggestState_ is introduced.                                                                                                                                                                        |
+| exchange selectors       | _search.selectors.ts_       | Selectors _getSearchTerm_ and _getSuggestSearchResults_ are removed. The selectors <br> _getSuggestSearchResults_, _getSuggestSearchLoading_, _getSuggestSearchError_ and _getSearchedTerms_<br> are added.                       |
+| new type                 | _shopping-store.ts_         | The type of the ShoppingState parameter search is changed from SearchState to SuggestState.                                                                                                                                       |
+| deletion of component    | _search-box.component.ts_   | This component is deleted. Use the new standalone _SearchBoxComponent_ <br> (_src/app/core/standalone/component/suggest/search-box/search-box.component.ts_) instead.                                                             |
+| remove component         | _shared.module.ts_          | The old _SearchBoxComponent_ is removed from _exportedComponents_.                                                                                                                                                                |
+| remove lazy component    | _shell.module.ts_           | The old _LazySearchBoxComponent_ is removed from _declarations_.                                                                                                                                                                  |
+| change suggest behavior  | _shopping.facade.ts_        | The method _searchResults$_ behavior is changed. Now the suggestSearch will dispatched if the search term has at least 3 letters.                                                                                                 |
+
+## From 5.3 to 6.0.0
+
+The Intershop PWA 6.0.0 release contains functionality to improve the **accessibility** of the PWA.
 
 To get an impression of the numerous adaptions needed to make the PWA more accessible, please check the [according pull request](https://github.com/intershop/intershop-pwa/pull/1694) and read the extended accessibility documentation available in the [Accessibility Guide](./accessibility.md) and the [Accessibility Easy Check](./accessibility-easy-check.md).
 These changes will result in migration efforts and require PWA projects to adapt their customization as well.

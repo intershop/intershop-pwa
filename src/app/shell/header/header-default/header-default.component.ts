@@ -81,6 +81,27 @@ export class HeaderDefaultComponent implements OnChanges {
       this.activeComponent = !this.isSticky ? 'search' : undefined;
     } else {
       this.activeComponent = component;
+
+      if (component === 'search') {
+        this.focusSearch();
+      }
     }
+  }
+
+  // scroll to the top and set focus to search input
+  scrollTopAndFocusSearch() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const checkInterval = setInterval(() => {
+      if (window.scrollY === 0) {
+        // wait until page has scrolled to top
+        clearInterval(checkInterval);
+        this.focusSearch();
+      }
+    }, 500);
+  }
+
+  private focusSearch() {
+    const searchInput = document.getElementById('header-search-input');
+    (searchInput as HTMLElement).focus();
   }
 }

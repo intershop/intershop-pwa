@@ -4,30 +4,24 @@ import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { EMPTY, from } from 'rxjs';
-import {
-  catchError,
-  concatMap,
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  sample,
-  switchMap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { from, iif, of } from 'rxjs';
+import { concatMap, map, sample, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
+import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
-import { ProductsService } from 'ish-core/services/products/products.service';
-import { SuggestService } from 'ish-core/services/suggest/suggest.service';
+import { SearchServiceProvider } from 'ish-core/service-provider/search.service-provider';
+import { SuggestionsServiceProvider } from 'ish-core/service-provider/suggestions.service-provider';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
+import { loadFilterSuccess } from 'ish-core/store/shopping/filter';
 import {
   getProductListingItemsPerPage,
   loadMoreProducts,
   setProductListingPages,
 } from 'ish-core/store/shopping/product-listing';
+import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
@@ -38,15 +32,22 @@ import {
   whenTruthy,
 } from 'ish-core/utils/operators';
 
-import { searchProducts, searchProductsFail, suggestSearch, suggestSearchSuccess } from './search.actions';
+import {
+  addSearchTermToSuggestion,
+  searchProducts,
+  searchProductsFail,
+  suggestSearch,
+  suggestSearchFail,
+  suggestSearchSuccess,
+} from './search.actions';
 
 @Injectable()
 export class SearchEffects {
   constructor(
     private actions$: Actions,
     private store: Store,
-    private productsService: ProductsService,
-    private suggestService: SuggestService,
+    private suggestionsServiceProvider: SuggestionsServiceProvider,
+    private searchServiceProvider: SearchServiceProvider,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
     private translateService: TranslateService,
@@ -70,7 +71,10 @@ export class SearchEffects {
       withLatestFrom(this.store.pipe(select(selectRouteParam('searchTerm')))),
       map(([, searchTerm]) => searchTerm),
       whenTruthy(),
-      map(searchTerm => loadMoreProducts({ id: { type: 'search', value: searchTerm } }))
+      concatMap(searchTerm => [
+        addSearchTermToSuggestion({ searchTerm }),
+        loadMoreProducts({ id: { type: 'search', value: searchTerm } }),
+      ])
     )
   );
 
@@ -80,35 +84,34 @@ export class SearchEffects {
       mapToPayload(),
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
       concatLatestFrom(() => this.store.pipe(select(getProductListingItemsPerPage('search')))),
-      map(([payload, pageSize]) => ({ ...payload, amount: pageSize, offset: (payload.page - 1) * pageSize })),
-      concatMap(({ searchTerm, amount, sorting, offset, page }) =>
-        this.productsService.searchProducts(searchTerm, amount, sorting, offset).pipe(
-          concatMap(({ total, products, sortableAttributes }) => {
-            // route to product detail page if only one product was found
-            if (total === 1) {
-              this.router.navigate([generateProductUrl(products[0])]);
-            }
-            // provide the data for the search result page
-            return [
-              ...products.map(product => loadProductSuccess({ product })),
-              setProductListingPages(
-                this.productListingMapper.createPages(
-                  products.map(p => p.sku),
-                  'search',
-                  searchTerm,
-                  amount,
-                  {
-                    startPage: page,
-                    sorting,
-                    sortableAttributes,
-                    itemCount: total,
-                  }
-                )
-              ),
-            ];
-          }),
-          mapErrorToAction(searchProductsFail)
-        )
+      map(
+        ([payload, pageSize]) =>
+          <SearchParameter>{
+            searchTerm: payload.searchTerm,
+            offset: (payload.page - 1) * pageSize,
+            amount: pageSize,
+            page: payload.page,
+            sorting: payload.sorting,
+          }
+      ),
+      concatMap(searchParameter =>
+        this.searchServiceProvider
+          .get()
+          .searchProducts(searchParameter)
+          .pipe(
+            concatMap(searchResponse =>
+              iif(
+                () => searchResponse.filter?.length > 0,
+                of(
+                  ...this.handleSearchResponse(searchResponse, searchParameter),
+                  loadFilterSuccess({ filterNavigation: { filter: searchResponse.filter } }),
+                  loadProductPricesSuccess({ prices: searchResponse.prices })
+                ),
+                of(...this.handleSearchResponse(searchResponse, searchParameter))
+              )
+            ),
+            mapErrorToAction(searchProductsFail)
+          )
       )
     )
   );
@@ -119,14 +122,20 @@ export class SearchEffects {
       this.actions$.pipe(
         ofType(suggestSearch),
         mapToPayloadProperty('searchTerm'),
-        debounceTime(400),
-        distinctUntilChanged(),
-        whenTruthy(),
-        switchMap(searchTerm =>
-          this.suggestService.search(searchTerm).pipe(
-            map(suggests => suggestSearchSuccess({ searchTerm, suggests })),
-            catchError(() => EMPTY)
-          )
+        concatMap(searchTerm =>
+          this.suggestionsServiceProvider
+            .get()
+            .searchSuggestions(searchTerm)
+            .pipe(
+              concatMap(suggests =>
+                iif(
+                  () => suggests.prices !== undefined,
+                  [suggestSearchSuccess({ suggests }), loadProductPricesSuccess({ prices: suggests.prices })],
+                  [suggestSearchSuccess({ suggests })]
+                )
+              ),
+              mapErrorToAction(suggestSearchFail)
+            )
         )
       )
     );
@@ -159,4 +168,29 @@ export class SearchEffects {
       )
     )
   );
+
+  private handleSearchResponse(searchResponse: SearchResponse, searchParameter: SearchParameter) {
+    // route to product detail page if only one product was found
+    if (searchResponse.total === 1) {
+      this.router.navigate([generateProductUrl(searchResponse.products[0])]);
+    }
+    // provide the data for the search result page
+    return [
+      ...searchResponse.products.map(product => loadProductSuccess({ product })),
+      setProductListingPages(
+        this.productListingMapper.createPages(
+          searchResponse.products.map(p => p.sku),
+          'search',
+          searchParameter.searchTerm,
+          searchParameter.amount,
+          {
+            startPage: searchParameter.page,
+            sorting: searchParameter.sorting,
+            sortableAttributes: searchResponse.sortableAttributes,
+            itemCount: searchResponse.total,
+          }
+        )
+      ),
+    ];
+  }
 }
