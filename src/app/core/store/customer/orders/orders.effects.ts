@@ -117,7 +117,7 @@ export class OrdersEffects {
       mapToPayloadProperty('query'),
       switchMap(query =>
         this.orderService.getOrders(query).pipe(
-          map(orders => loadOrdersSuccess({ orders, query, allRetrieved: orders.length < query.limit })),
+          map(orders => loadOrdersSuccess({ orders: orders.orders, query, paging: orders.paging })),
           mapErrorToAction(loadOrdersFail)
         )
       )
@@ -127,8 +127,9 @@ export class OrdersEffects {
   loadMoreOrders$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadMoreOrders),
+      mapToPayload(),
       concatLatestFrom(() => this.store.pipe(select(getOrderListQuery))),
-      map(([, query]) => loadOrders({ query: { ...query, offset: (query?.offset ?? 0) + query.limit } }))
+      map(([payload, query]) => loadOrders({ query: { ...query, offset: payload.offset, limit: payload.limit } }))
     )
   );
 
