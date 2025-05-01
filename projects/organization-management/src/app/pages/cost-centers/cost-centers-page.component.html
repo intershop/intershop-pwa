@@ -17,6 +17,8 @@
 </div>
 
 <div class="loading-container">
+  <ish-cost-centers-filter (modelChange)="loadFilteredCostCenters($event)" />
+
   <ng-container *ngIf="costCentersForPage$ | async as costCenters">
     <ng-container *ngIf="costCenters.length > 0; else emptyList">
       <table

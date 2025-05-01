@@ -1,0 +1,12 @@
+<ng-container *ngIf="managers$ | async as managers">
+  <select [formControl]="control" class="form-control" data-testing-id="managers-select-box">
+    <option value="all">
+      {{ 'account.costcenter.filter.all_managers' | translate }}
+    </option>
+    <ng-container *ngIf="managers.length">
+      <ng-container *ngFor="let manager of managers">
+        <option [value]="manager.businessPartnerNo">{{ manager.firstName }} {{ manager.lastName }}</option>
+      </ng-container>
+    </ng-container>
+  </select>
+</ng-container>
