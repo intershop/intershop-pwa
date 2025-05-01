@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, combineLatest, map, of, take } from 'rxjs';
 
+import { CostCenterQuery } from 'ish-core/models/cost-center-query/cost-center-query.model';
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PagingData } from 'ish-core/models/paging/paging.model';
@@ -44,7 +45,7 @@ export class CostCentersPageComponent implements OnInit {
   constructor(private organizationManagementFacade: OrganizationManagementFacade) {}
 
   ngOnInit() {
-    this.organizationManagementFacade.loadCostCenters(0, this.pageSize);
+    this.organizationManagementFacade.loadCostCenters({ limit: this.pageSize, offset: 0 });
     this.costCenters$ = this.organizationManagementFacade.costCenters$;
     this.costCentersError$ = this.organizationManagementFacade.costCentersError$;
     this.costCentersLoading$ = this.organizationManagementFacade.costCentersLoading$;
@@ -74,13 +75,27 @@ export class CostCentersPageComponent implements OnInit {
 
     this.costCenters$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(costCenters => {
       if (!costCenters.find(costCenter => costCenter.paginationPosition === (pageNumber - 1) * this.pageSize)) {
-        this.organizationManagementFacade.loadCostCenters((pageNumber - 1) * this.pageSize, this.pageSize);
+        this.organizationManagementFacade.loadCostCenters({
+          offset: (pageNumber - 1) * this.pageSize,
+          limit: this.pageSize,
+        });
       }
     });
   }
 
   getTotalPages(totalCostCenters: number) {
     return Math.ceil(totalCostCenters / this.pageSize);
+  }
+
+  loadFilteredCostCenters(filters: Partial<CostCenterQuery>) {
+    if (!filters.costCenterId) {
+      return;
+    }
+    this.organizationManagementFacade.loadCostCenters({
+      offset: 0,
+      limit: this.pageSize,
+      costCenterId: filters.costCenterId,
+    });
   }
 
   /** Deletes the cost center */

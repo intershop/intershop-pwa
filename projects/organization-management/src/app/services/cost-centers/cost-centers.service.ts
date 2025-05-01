@@ -4,6 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, forkJoin, throwError } from 'rxjs';
 import { concatMap, map, switchMap, take } from 'rxjs/operators';
 
+import { CostCenterQuery } from 'ish-core/models/cost-center-query/cost-center-query.model';
 import { CostCenterBaseData, CostCenterData } from 'ish-core/models/cost-center/cost-center.interface';
 import { CostCenterMapper } from 'ish-core/models/cost-center/cost-center.mapper';
 import {
@@ -35,8 +36,11 @@ export class CostCentersService {
    *
    * @returns               All cost centers of the customer.
    */
-  getCostCenters(offset?: number, limit?: number): Observable<CostCenterInformation> {
-    const params = new HttpParams().set('offset', offset ? offset : 0).set('limit', limit ? limit : 30);
+  getCostCenters(query: CostCenterQuery): Observable<CostCenterInformation> {
+    const params = new HttpParams()
+      .set('offset', query.offset ? query.offset : 0)
+      .set('limit', query.limit ? query.limit : 25)
+      .set('costCenterId', query.costCenterId ? query.costCenterId : '');
 
     return this.currentCustomer$.pipe(
       switchMap(customer =>

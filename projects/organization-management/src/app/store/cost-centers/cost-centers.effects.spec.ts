@@ -62,7 +62,7 @@ describe('Cost Centers Effects', () => {
     apiService = mock(ApiService);
     costCentersService = mock(CostCentersService);
     when(apiService.get(anything())).thenReturn(of([]));
-    when(costCentersService.getCostCenters()).thenReturn(of({ costCenters, paging }));
+    when(costCentersService.getCostCenters({})).thenReturn(of({ costCenters, paging }));
     when(costCentersService.getCostCenter(anyString())).thenReturn(of(costCenters[0]));
     when(costCentersService.addCostCenter(anything())).thenReturn(of(costCenters[0]));
     when(costCentersService.updateCostCenter(anything())).thenReturn(of(costCenters[0]));
@@ -94,24 +94,24 @@ describe('Cost Centers Effects', () => {
 
   describe('loadCostCenters$', () => {
     it('should call the service for retrieving costCenters', done => {
-      when(costCentersService.getCostCenters(anything(), anything())).thenReturn(
+      when(costCentersService.getCostCenters(anything())).thenReturn(
         of({ costCenters, paging: { limit: 30, offset: 0, total: 100 } })
       );
 
-      actions$ = of(loadCostCenters({ offset: 0, limit: 30 }));
+      actions$ = of(loadCostCenters({ query: { limit: 30, offset: 0 } }));
 
       effects.loadCostCenters$.subscribe(() => {
-        verify(costCentersService.getCostCenters(0, 30)).once();
+        verify(costCentersService.getCostCenters(anything())).once();
         done();
       });
     });
 
     it('should retrieve costCenters when triggered', done => {
-      when(costCentersService.getCostCenters(anything(), anything())).thenReturn(
+      when(costCentersService.getCostCenters(anything())).thenReturn(
         of({ costCenters, paging: { limit: 30, offset: 0, total: 100 } })
       );
 
-      actions$ = of(loadCostCenters({ offset: 0, limit: 30 }));
+      actions$ = of(loadCostCenters({ query: { limit: 30, offset: 0 } }));
 
       effects.loadCostCenters$.subscribe(action => {
         expect(action.type).toMatchInlineSnapshot(`"[CostCenters API] Load Cost Centers Success"`);
@@ -145,9 +145,9 @@ describe('Cost Centers Effects', () => {
 
     it('should dispatch a loadCostCentersFail action on failed cost centers load', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(costCentersService.getCostCenters(anything(), anything())).thenReturn(throwError(() => error));
+      when(costCentersService.getCostCenters(anything())).thenReturn(throwError(() => error));
 
-      const action = loadCostCenters({});
+      const action = loadCostCenters({ query: {} });
       const completion = loadCostCentersFail({ error });
 
       actions$ = hot('-a', { a: action });

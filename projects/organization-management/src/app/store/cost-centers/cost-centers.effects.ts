@@ -52,7 +52,7 @@ export class CostCentersEffects {
       ofType(loadCostCenters),
       mapToPayload(),
       mergeMap(payload =>
-        this.costCentersService.getCostCenters(payload.offset, payload.limit).pipe(
+        this.costCentersService.getCostCenters(payload.query).pipe(
           map(info => loadCostCentersSuccess({ costCenters: info.costCenters, paging: info.paging })),
           mapErrorToAction(loadCostCentersFail)
         )
