@@ -44,10 +44,10 @@ describe('Cost Centers Service', () => {
   it('should call the getCostCenters of customer API when fetching costCenters', done => {
     when(apiService.get(anything(), anything())).thenReturn(of([]));
 
-    costCentersService.getCostCenters(0, 30).subscribe(() => {
+    costCentersService.getCostCenters({ offset: 0, limit: 25 }).subscribe(() => {
       verify(apiService.get(anything(), anything())).once();
       const options: AvailableOptions = capture(apiService.get).last()[1];
-      expect(options.params?.toString()).toMatchInlineSnapshot(`"offset=0&limit=30"`);
+      expect(options.params?.toString()).toMatchInlineSnapshot(`"offset=0&limit=25&costCenterId="`);
       done();
     });
   });
