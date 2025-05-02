@@ -133,8 +133,6 @@
   "account.costcenter.filter.apply": "Find Cost Center",
   "account.costcenter.filter.hide": "Hide all filters",
   "account.costcenter.filter.label.center_id": "Search for ID or name",
-  "account.costcenter.filter.label.manager": "All cost center owners",
-  "account.costcenter.filter.label.status": "All status",
   "account.costcenter.filter.show": "Show all filters",
   "account.costcenter.id.error.required": "Please enter a cost center ID.",
   "account.costcenter.id.label": "ID",
