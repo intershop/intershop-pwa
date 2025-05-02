@@ -45,7 +45,6 @@ export class CostCentersPageComponent implements OnInit {
   constructor(private organizationManagementFacade: OrganizationManagementFacade) {}
 
   ngOnInit() {
-    this.organizationManagementFacade.loadCostCenters({ limit: this.pageSize, offset: 0 });
     this.costCenters$ = this.organizationManagementFacade.costCenters$;
     this.costCentersError$ = this.organizationManagementFacade.costCentersError$;
     this.costCentersLoading$ = this.organizationManagementFacade.costCentersLoading$;
@@ -88,9 +87,6 @@ export class CostCentersPageComponent implements OnInit {
   }
 
   loadFilteredCostCenters(filters: Partial<CostCenterQuery>) {
-    if (!filters.costCenterId) {
-      return;
-    }
     this.organizationManagementFacade.loadCostCenters({
       offset: 0,
       limit: this.pageSize,
