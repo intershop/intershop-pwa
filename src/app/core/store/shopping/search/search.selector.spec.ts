@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
+import { Suggestion } from 'ish-core/models/suggestions/suggestions.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';

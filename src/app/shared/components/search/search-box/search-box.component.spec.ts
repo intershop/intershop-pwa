@@ -4,7 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ReplaySubject, Subject } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { Suggestion } from 'ish-core/models/suggestion/suggestion.model';
+import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 
 import { SearchBoxComponent } from './search-box.component';
 
@@ -12,7 +12,7 @@ describe('Search Box Component', () => {
   let component: SearchBoxComponent;
   let fixture: ComponentFixture<SearchBoxComponent>;
   let element: HTMLElement;
-  let searchResults$: Subject<Suggestion>;
+  let searchResults$: Subject<Suggestions>;
   let searchTerm$: Subject<string>;
 
   beforeEach(async () => {
@@ -70,12 +70,12 @@ describe('Search Box Component', () => {
   describe('with results', () => {
     beforeEach(() => {
       searchResults$.next({
-        keywordSuggestions: ['Cameras', 'Camcorders'],
+        keywords: [{ keyword: 'Cameras' }, { keyword: 'Camcorders' }],
         products: [],
         categories: [],
         brands: [],
         contentSuggestions: [],
-      } as Suggestion);
+      } as Suggestions);
     });
 
     it('should show results when suggestions are available', () => {

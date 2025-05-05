@@ -162,8 +162,16 @@ describe('Sparque Suggestions Mapper', () => {
       const result: Suggestions = sparqueSuggestionsMapper.fromData(sparqueSuggestions);
 
       expect(result.keywords).toHaveLength(2);
-      expect(result.keywords).toContain(sparqueSuggestions.keywordSuggestions[0].keyword);
-      expect(result.keywords).toContain(sparqueSuggestions.keywordSuggestions[1].keyword);
+      expect(result.keywords).toMatchInlineSnapshot(`
+        [
+          {
+            "keyword": "keyword1",
+          },
+          {
+            "keyword": "keyword2",
+          },
+        ]
+      `);
     });
 
     it('should return empty object for undefined input', () => {

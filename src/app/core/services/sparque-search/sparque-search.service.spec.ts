@@ -4,8 +4,6 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { SparqueSearchResponse } from 'ish-core/models/sparque-search/sparque-search.interface';
 import { SparqueSearchMapper } from 'ish-core/models/sparque-search/sparque-search.mapper';
-import { SparqueSuggestions } from 'ish-core/models/sparque-suggestions/sparque-suggestions.interface';
-import { SparqueSuggestionsMapper } from 'ish-core/models/sparque-suggestions/sparque-suggestions.mapper';
 import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.service';
 
 import { SparqueSearchService } from './sparque-search.service';
@@ -14,13 +12,11 @@ describe('Sparque Search Service', () => {
   let sparqueApiService: SparqueApiService;
   let searchService: SparqueSearchService;
   let sparqueSearchMapper: SparqueSearchMapper;
-  let sparqueSuggestionsMapper: SparqueSuggestionsMapper;
   const apiVersion = 'v2';
 
   beforeEach(() => {
     sparqueApiService = mock(SparqueApiService);
     sparqueSearchMapper = mock(SparqueSearchMapper);
-    sparqueSuggestionsMapper = mock(SparqueSuggestionsMapper);
     when(sparqueApiService.get(anything(), apiVersion, anything())).thenReturn(
       of<SparqueSearchResponse>({ products: [], total: 0, sortings: [] })
     );
@@ -28,7 +24,6 @@ describe('Sparque Search Service', () => {
       providers: [
         { provide: SparqueApiService, useFactory: () => instance(sparqueApiService) },
         { provide: SparqueSearchMapper, useFactory: () => instance(sparqueSearchMapper) },
-        { provide: SparqueSuggestionsMapper, useFactory: () => instance(sparqueSuggestionsMapper) },
       ],
     });
     searchService = TestBed.inject(SparqueSearchService);
@@ -39,16 +34,6 @@ describe('Sparque Search Service', () => {
 
     searchService.searchProducts({ searchTerm: 'test', amount: 1, offset: 0 });
     verify(sparqueApiService.get(anything(), apiVersion, anything())).once();
-  });
-
-  it('should map the response using SparqueSuggestionMapper', done => {
-    const suggestions = { keywordSuggestions: [{ keyword: 'test' }] } as SparqueSuggestions;
-    when(sparqueApiService.get(anything(), apiVersion, anything())).thenReturn(of<SparqueSuggestions>(suggestions));
-
-    searchService.searchSuggestions('test').subscribe(() => {
-      verify(sparqueSuggestionsMapper.fromData(suggestions)).once();
-      done();
-    });
   });
 
   it('should map the response using SparqueSearchMapper', done => {

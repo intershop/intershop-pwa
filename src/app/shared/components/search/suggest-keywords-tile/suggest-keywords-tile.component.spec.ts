@@ -19,7 +19,7 @@ describe('Suggest Keywords Tile Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    component.keywords = ['Test1', 'Test2', 'Test3'];
+    component.keywords = [{ keyword: 'Test1' }, { keyword: 'Test2' }, { keyword: 'Test3' }];
     component.maxAutoSuggests = 2;
   });
 
