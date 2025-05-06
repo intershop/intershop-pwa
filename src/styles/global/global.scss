@@ -409,6 +409,10 @@ img.marketing {
   clear: both;
 }
 
+.hidden {
+  visibility: hidden;
+}
+
 @mixin focus-visible-reset() {
   &:focus-visible {
     // accessibility: revert to browser default focus style

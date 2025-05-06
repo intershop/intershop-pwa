@@ -7,11 +7,19 @@ export const navigationItems: NavigationItem[] = [
     localizationKey: 'account.requisitions.purchases',
     faIcon: 'cart-shopping',
     isCollapsed: true,
+    notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
     children: [
       {
         id: 'orders',
         localizationKey: 'account.order_history.link',
         routerLink: '/account/orders',
+        notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
+      },
+      {
+        id: 'recurring-orders',
+        localizationKey: 'account.recurring_orders.navigation.link',
+        routerLink: '/account/recurring-orders',
+        serverSetting: 'recurringOrder.enabled',
         notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
       },
       {
@@ -34,6 +42,7 @@ export const navigationItems: NavigationItem[] = [
         localizationKey: 'account.ordertemplates.link',
         routerLink: '/account/order-templates',
         feature: 'orderTemplates',
+        notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
       },
       {
         id: 'wishlists',
@@ -66,6 +75,7 @@ export const navigationItems: NavigationItem[] = [
     localizationKey: 'account.requisitions.organization',
     faIcon: 'briefcase',
     isCollapsed: true,
+    notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
     children: [
       {
         id: 'addresses',
@@ -130,10 +140,16 @@ export const navigationItems: NavigationItem[] = [
     ],
   },
   {
+    id: 'order-templates',
+    localizationKey: 'account.ordertemplates.link',
+    routerLink: '/account/order-templates',
+    feature: 'orderTemplates',
+    permission: 'APP_B2B_SEND_PUNCHOUT_BASKET',
+  },
+  {
     id: 'logout',
     localizationKey: 'account.navigation.logout.link',
     faIcon: 'right-from-bracket',
     routerLink: '/logout',
-    notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
   },
 ];
