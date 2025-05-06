@@ -26,7 +26,7 @@
         <!-- prettier-ignore -->
         <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.approver.label' | translate: { '0': customerApproverCount } }}</dt>
         <dd class="col-6 col-sm-8 col-md-9">
-          <ng-container *ngFor="let approver of requisition.approval?.approvers; let i = index"
+          <ng-container *ngFor="let approver of uniqueApprovers; let i = index"
             ><ng-container *ngIf="i > 0">, </ng-container>{{ approver.firstName }} {{ approver.lastName }}</ng-container
           >
         </dd>
