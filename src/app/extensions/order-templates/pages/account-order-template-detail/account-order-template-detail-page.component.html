@@ -2,19 +2,48 @@
 <ish-error-message [error]="orderTemplateError$ | async" />
 
 <ng-container *ngIf="orderTemplate$ | async as orderTemplate" ishProductContext>
-  <div class="d-flex align-items-center justify-content-between flex-wrap">
-    <h1 class="clearfix">
-      {{ orderTemplate?.title }}
-    </h1>
-    <button
-      type="button"
-      (click)="editOrderTemplateDialog.show()"
-      class="btn btn-secondary float-right m-0"
-      [title]="'account.order_template.edit.heading' | translate"
-      data-testing-id="order-template-details-edit"
-    >
-      {{ 'account.order_template.order_template.edit.rename' | translate }}
-    </button>
+  <div class="d-flex align-items-center justify-content-start flex-wrap" style="gap: 0.3rem">
+    <ng-container *ngIf="!editingTitle; else editTitleTpl">
+      <h1 class="clearfix">
+        {{ orderTemplate?.title }}
+      </h1>
+      <a
+        class="btn-tool"
+        [title]="'account.order_template.edit.heading' | translate"
+        [routerLink]="'/account/order-templates/' + orderTemplate.id"
+        data-testing-id="order-template-details-edit"
+        (click)="startEditTitle()"
+        ><fa-icon [icon]="['fas', 'pencil-alt']"
+      /></a>
+    </ng-container>
+
+    <!-- Edit-Mode -->
+    <ng-template #editTitleTpl>
+      <form class="d-flex align-items-center">
+        <input
+          type="text"
+          class="input-title-like-h1"
+          [formControl]="titleControl"
+          data-testing-id="order-template-title-input"
+        />
+        <button
+          type="button"
+          class="btn btn-sm btn-primary ml-2 btn-title-edit"
+          (click)="saveTitle()"
+          data-testing-id="order-template-title-save"
+        >
+          <fa-icon [icon]="['fas', 'check']" />
+        </button>
+        <button
+          type="button"
+          class="btn btn-sm btn-secondary ml-1 btn-title-edit"
+          (click)="cancelEditTitle()"
+          data-testing-id="order-template-title-cancel"
+        >
+          <fa-icon [icon]="['fas', 'times']" />
+        </button>
+      </form>
+    </ng-template>
   </div>
 
   <p
@@ -60,12 +89,6 @@
   <ng-template #noItems>
     <p>{{ 'account.order_template.no_entries' | translate }}</p>
   </ng-template>
-
-  <ish-order-template-preferences-dialog
-    #editOrderTemplateDialog
-    [orderTemplate]="orderTemplate"
-    (submitOrderTemplate)="editPreferences($event, orderTemplate.id)"
-  />
 </ng-container>
 
 <a routerLink="/account/order-templates">{{ 'account.order_template.list.link.back' | translate }}</a>

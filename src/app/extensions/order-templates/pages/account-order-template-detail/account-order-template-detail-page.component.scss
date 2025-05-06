@@ -1,0 +1,29 @@
+.input-title-like-h1 {
+  height: 2.2rem;
+  padding: 0;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font-family: 'roboto_condensedbold', 'Helvetica Neue', 'helvetica', 'Arial', sans-serif;
+  font-size: 1.8812rem;
+  font-weight: normal;
+  line-height: 1.1;
+  color: #222;
+  text-transform: uppercase;
+}
+
+.btn-title-edit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.3rem;
+  height: 1.3rem;
+  padding: 0;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  line-height: 1.1;
+
+  fa-icon {
+    display: block;
+  }
+}
