@@ -83,7 +83,7 @@
       <div class="d-flex align-items-end">
         <ish-lazy-product-add-to-order-template
           *ngIf="editable"
-          [cssClass]="'btn-link btn-tool pl-0 add-to-order-template'"
+          [cssClass]="'btn-link btn-tool ps-0 add-to-order-template'"
           displayType="icon"
         />
         <ish-lazy-product-add-to-wishlist *ngIf="editable" [cssClass]="'btn-link btn-tool'" displayType="icon" />
@@ -117,7 +117,7 @@
 
   <!-- desktop quantity -->
   <div class="quantity col-xl-2 list-item d-none d-xl-flex">
-    <div class="form-group w-100 text-right" [ngClass]="{ 'pr-2': !editable }">
+    <div class="form-group w-100 text-end" [ngClass]="{ 'pe-2': !editable }">
       <ish-product-quantity *ngIf="editable; else readonly" [elementId]="'pli-quantity_' + pli.position" />
       <ng-template #readonly>{{ pli.quantity.value | number }}</ng-template>
     </div>

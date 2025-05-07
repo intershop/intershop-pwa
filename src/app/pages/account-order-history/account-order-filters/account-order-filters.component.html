@@ -9,7 +9,7 @@
     <div class="col-md-4 d-flex align-items-center">
       <button
         type="button"
-        class="btn btn-link pl-0 text-decoration-none"
+        class="btn btn-link ps-0 text-decoration-none"
         (click)="expandForm()"
         [attr.aria-expanded]="!formIsCollapsed"
       >
@@ -24,11 +24,11 @@
         </ng-template>
       </button>
     </div>
-    <div class="col-md-8 text-right">
+    <div class="col-md-8 text-end">
       <button type="reset" class="btn btn-link" [hidden]="!showResetButton()" (click)="resetForm()">
         {{ 'account.order_history.filter.clear' | translate }}
       </button>
-      <button type="submit" class="btn btn-primary mr-0">
+      <button type="submit" class="btn btn-primary me-0">
         {{ 'account.order_history.filter.apply' | translate }}
       </button>
     </div>

@@ -1,12 +1,12 @@
 <div class="infobox" [ngClass]="cssClass">
   <a
     *ngIf="editRouterLink"
-    class="float-right btn-tool"
+    class="float-end btn-tool"
     [routerLink]="editRouterLink"
     [title]="'infobox.update.title' | translate : { '0': heading | translate }"
   >
     <fa-icon [icon]="['fas', 'pencil-alt']" />
   </a>
   <h2 class="h3" *ngIf="heading">{{ heading | translate }}</h2>
-  <ng-content></ng-content>
+  <ng-content />
 </div>

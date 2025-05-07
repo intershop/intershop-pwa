@@ -1,4 +1,4 @@
-<div class="float-right">
+<div class="float-end">
   <ul class="share-tools">
     <li>
       <a
@@ -41,7 +41,7 @@
     <dd class="col-6 col-sm-8 col-md-9" data-testing-id="order-date">{{ order.creationDate | ishDate }}</dd>
     <dt class="col-6 col-sm-4 col-md-3">{{ 'account.orderdetails.order_status.label' | translate }}</dt>
     <dd class="col-6 col-sm-8 col-md-9" data-testing-id="order-status">
-      <span class="badge badge-info">{{ order.status }}</span>
+      <span class="badge text-bg-info">{{ order.status }}</span>
     </dd>
   </dl>
 </div>
@@ -87,8 +87,8 @@
     <!-- Payment -->
     <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper col-md-6">
       <ng-container *ngIf="order.payment">
-        <div class="float-right">
-          <p class="badge badge-info">{{ order.payment.status }}</p>
+        <div class="float-end">
+          <p class="badge text-bg-info">{{ order.payment.status }}</p>
         </div>
         <p>
           {{ order.payment.displayName }}<br />{{ order.payment.paymentInstrument.accountIdentifier }}

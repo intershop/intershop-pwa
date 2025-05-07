@@ -1,8 +1,8 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { RESPONSE } from 'ish-core/models/express-tokens/express.tokens';
 import { InjectSingle } from 'ish-core/utils/injection';
-import { RESPONSE } from 'src/express.tokens';
 
 @Injectable({ providedIn: 'root' })
 export class HttpStatusCodeService {

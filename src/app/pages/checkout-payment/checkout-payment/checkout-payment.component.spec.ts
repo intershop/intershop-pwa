@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
@@ -57,7 +57,7 @@ describe('Checkout Payment Component', () => {
       ],
       imports: [
         ReactiveFormsModule,
-        RouterTestingModule.withRoutes([{ path: 'checkout/review', children: [] }]),
+        RouterModule.forRoot([{ path: 'checkout/review', children: [] }]),
         TranslateModule.forRoot(),
       ],
     })

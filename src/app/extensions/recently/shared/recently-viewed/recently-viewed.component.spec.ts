@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe, ngMocks } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -28,7 +28,7 @@ describe('Recently Viewed Component', () => {
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([{ path: 'recently', component: RecentlyViewedComponent }])],
+      imports: [RouterModule.forRoot([{ path: 'recently', component: RecentlyViewedComponent }])],
       declarations: [
         MockComponent(ProductsListComponent),
         MockDirective(BrowserLazyViewDirective),

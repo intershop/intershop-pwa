@@ -3,7 +3,7 @@
     <div class="col-md-6 list-header-item">{{ 'checkout.pli.desc.heading' | translate }}</div>
     <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.qty.heading' | translate }}</div>
     <div class="col-md-2 list-header-item column-price">{{ 'checkout.pli.price.heading' | translate }}</div>
-    <div class="col-md-2 list-header-item text-right">{{ 'shopping_cart.total.heading' | translate }}</div>
+    <div class="col-md-2 list-header-item text-end">{{ 'shopping_cart.total.heading' | translate }}</div>
   </div>
   <div class="list-body">
     <div *ngFor="let pli of lineItems" class="list-item-row list-item-row-big">
@@ -30,7 +30,7 @@
         </div>
 
         <!--- Total --->
-        <div class="col-3 col-md-2 list-item text-right">
+        <div class="col-3 col-md-2 list-item text-end">
           <p>{{ pli.totals.total | ishPrice }}</p>
 
           <div class="d-none d-lg-block">
@@ -45,7 +45,7 @@
           </div>
         </div>
       </div>
-      <div class="d-lg-none text-right">
+      <div class="d-lg-none text-end">
         <button type="button" class="btn btn-secondary" (click)="onDeleteItem(pli.id)">
           {{ 'restricted-items.Remove.button' | translate }}
         </button>

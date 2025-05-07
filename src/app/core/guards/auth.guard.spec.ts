@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito';
 
@@ -21,7 +20,7 @@ describe('Auth Guard', () => {
       imports: [
         CoreStoreModule.forTesting(),
         CustomerStoreModule.forTesting('user'),
-        RouterTestingModule.withRoutes([
+        RouterModule.forRoot([
           {
             path: 'account',
             canActivate: [authGuard],

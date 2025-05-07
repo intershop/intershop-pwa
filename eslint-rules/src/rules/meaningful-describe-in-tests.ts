@@ -12,7 +12,7 @@ const meaningfulDescribeInTestsRule: TSESLint.RuleModule<keyof typeof messages> 
     docs: {
       description:
         'A rule making sure the top-level describes match the file name. This is good for hiding tests that came into life with copy&paste.',
-      recommended: 'warn',
+      recommended: 'recommended',
       url: '',
     },
     messages,

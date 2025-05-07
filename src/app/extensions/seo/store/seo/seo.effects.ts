@@ -11,6 +11,7 @@ import { delay, distinctUntilChanged, filter, map, switchMap, takeWhile, tap } f
 
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
+import { REQUEST } from 'ish-core/models/express-tokens/express.tokens';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.model';
@@ -25,7 +26,6 @@ import { getSelectedProduct } from 'ish-core/store/shopping/products';
 import { DomService } from 'ish-core/utils/dom/dom.service';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
-import { REQUEST } from 'src/express.tokens';
 
 @Injectable()
 export class SeoEffects {

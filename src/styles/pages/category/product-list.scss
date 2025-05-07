@@ -24,7 +24,7 @@
         width: 60%;
         text-align: left;
 
-        @include media-breakpoint-down(sm) {
+        @include media-breakpoint-down(md) {
           width: 100%;
         }
 
@@ -67,7 +67,7 @@
         width: 100%;
         text-align: right;
 
-        @include media-breakpoint-down(sm) {
+        @include media-breakpoint-down(md) {
           text-align: left;
         }
 
@@ -305,7 +305,7 @@
   }
 
   .product-quantity .form-group {
-    @include media-breakpoint-down(lg) {
+    @include media-breakpoint-down(xl) {
       margin-bottom: 0;
     }
   }

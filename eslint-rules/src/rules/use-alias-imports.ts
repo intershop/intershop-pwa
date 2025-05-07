@@ -20,7 +20,7 @@ const useAliasImportsRule: TSESLint.RuleModule<keyof typeof messages> = {
     schema: [],
   },
   create: context => {
-    const filePath = normalizePath(context.getFilename());
+    const filePath = normalizePath(context.filename);
     const basePath = filePath.substring(0, filePath.lastIndexOf('/'));
     return {
       ImportDeclaration(node: TSESTree.ImportDeclaration) {

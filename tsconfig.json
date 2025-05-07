@@ -25,7 +25,9 @@
       "requisition-management": [
         "projects/requisition-management/src/app/exports"
       ],
-      "swiper_angular": ["node_modules/swiper/angular"]
+      "swiper_angular": [
+        "node_modules/swiper/angular/esm2020/swiper_angular.mjs"
+      ]
     },
     "lib": ["ES2022", "dom"],
     "noUnusedLocals": true,

@@ -1,11 +1,12 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { RESPONSE } from '../../../../express.tokens';
+import { RouterModule } from '@angular/router';
 import { noop } from 'rxjs';
 import { anyNumber, spy, verify } from 'ts-mockito';
 
+import { RESPONSE } from 'ish-core/models/express-tokens/express.tokens';
+
 import { HttpStatusCodeService } from './http-status-code.service';
-import { provideRouter } from '@angular/router';
 
 describe('Http Status Code Service', () => {
   let httpStatusCodeService: HttpStatusCodeService;
@@ -26,7 +27,7 @@ describe('Http Status Code Service', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
-          provideRouter([
+          RouterModule.forRoot([
             { path: 'error', children: [] },
             { path: 'maintenance', children: [] },
           ]),
@@ -75,7 +76,7 @@ describe('Http Status Code Service', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
-          provideRouter([
+          RouterModule.forRoot([
             { path: 'error', children: [] },
             { path: 'maintenance', children: [] },
           ]),

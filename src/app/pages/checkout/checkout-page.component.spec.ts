@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -16,7 +16,7 @@ describe('Checkout Page Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CheckoutPageComponent, MockComponent(CheckoutProgressBarComponent)],
-      imports: [RouterTestingModule],
+      imports: [RouterModule.forRoot([])],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }],
     }).compileComponents();
   });

@@ -94,7 +94,7 @@ describe('Budget Bar Component', () => {
       <div
         role="progressbar"
         aria-hidden="true"
-        class="budget-bar-used budget-bar-used-additional border-left bg-danger"
+        class="budget-bar-used budget-bar-used-additional border-start bg-danger"
         title="$300.00"
         ng-reflect-ng-class="bg-danger"
         style="width: 30%"

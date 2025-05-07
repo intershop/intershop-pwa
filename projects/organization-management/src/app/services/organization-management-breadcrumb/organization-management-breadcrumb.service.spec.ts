@@ -1,7 +1,6 @@
 import { Type } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Route, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Route, Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -40,10 +39,7 @@ describe('Organization Management Breadcrumb Service', () => {
         CoreStoreModule.forTesting(['router', 'configuration']),
         FeatureToggleModule.forTesting('costCenters'),
         OrganizationManagementStoreModule.forTesting('users', 'costCenters'),
-        RouterTestingModule.withRoutes([
-          ...adaptRoutes(routes, DummyComponent),
-          { path: '**', component: DummyComponent },
-        ]),
+        RouterModule.forRoot([...adaptRoutes(routes, DummyComponent), { path: '**', component: DummyComponent }]),
         TranslateModule.forRoot(),
       ],
     });

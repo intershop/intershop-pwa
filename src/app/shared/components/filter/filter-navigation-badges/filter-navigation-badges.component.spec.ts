@@ -76,7 +76,7 @@ describe('Filter Navigation Badges Component', () => {
             </button>
           </div>
         </div>
-        <div class="col-md-2 text-right">
+        <div class="col-md-2 text-end">
           <button type="button" class="btn btn-link btn-link-action">
             product.remove_all_product_filters.text
           </button>

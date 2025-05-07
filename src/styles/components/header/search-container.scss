@@ -145,7 +145,7 @@
         color: $text-color-quinary;
       }
 
-      @include media-breakpoint-down(sm) {
+      @include media-breakpoint-down(md) {
         border: $border-width-default solid $border-color-default;
 
         &:focus {
@@ -184,7 +184,7 @@
     box-shadow: 0 4px 7px rgb(0 0 0 / 0.23);
 
     .btn-search {
-      @include media-breakpoint-down(md) {
+      @include media-breakpoint-down(lg) {
         right: divide($space-default * 2, 3);
         margin-right: 0;
       }
@@ -208,7 +208,7 @@
     }
   }
 
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(lg) {
     .search-container.header-search-container {
       top: $header-height-mobile;
       display: block;

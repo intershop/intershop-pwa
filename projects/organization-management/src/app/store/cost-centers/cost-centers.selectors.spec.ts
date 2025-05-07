@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, RouterModule } from '@angular/router';
 
 import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -46,7 +45,7 @@ describe('Cost Centers Selectors', () => {
       imports: [
         CoreStoreModule.forTesting(['router']),
         OrganizationManagementStoreModule.forTesting('costCenters'),
-        RouterTestingModule.withRoutes([{ path: 'cost-centers/:CostCenterId', children: [] }]),
+        RouterModule.forRoot([{ path: 'cost-centers/:CostCenterId', children: [] }]),
       ],
       providers: [provideStoreSnapshots()],
     });

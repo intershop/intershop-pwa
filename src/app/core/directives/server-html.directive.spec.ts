@@ -1,7 +1,7 @@
 import { APP_BASE_HREF, Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -147,10 +147,7 @@ describe('Server Html Directive', () => {
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [
-          RouterTestingModule.withRoutes([{ path: '**', component: TestComponent }]),
-          TranslateModule.forRoot(),
-        ],
+        imports: [RouterModule.forRoot([{ path: '**', component: TestComponent }]), TranslateModule.forRoot()],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/' },
           { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
@@ -195,10 +192,7 @@ describe('Server Html Directive', () => {
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [
-          RouterTestingModule.withRoutes([{ path: '**', component: TestComponent }]),
-          TranslateModule.forRoot(),
-        ],
+        imports: [RouterModule.forRoot([{ path: '**', component: TestComponent }]), TranslateModule.forRoot()],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/americas' },
           { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },

@@ -1,7 +1,7 @@
 import { execSync, spawnSync } from 'child_process';
 import { copyFileSync, existsSync, statSync } from 'fs';
-import { sync } from 'glob';
-import minimatch from 'minimatch';
+import globModule from 'glob';
+import { minimatch } from 'minimatch';
 import runAll from 'npm-run-all';
 import { cpus } from 'os';
 import { basename, dirname, join, normalize, sep } from 'path';
@@ -15,6 +15,8 @@ const args = process.argv.splice(2).filter(a => !a.startsWith('--'));
 const isHelp = args.includes('--help') || args.includes('-h');
 
 const isRelated = args.includes('--related') || process.env.npm_config_related === 'true';
+
+const { sync } = globModule;
 
 if (isHelp) {
   process.stderr.write(`  Utility for removing unused TestBed declarations.
