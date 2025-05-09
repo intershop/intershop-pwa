@@ -3,6 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { PagingData } from 'ish-core/models/paging/paging.model';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
 import {
@@ -43,11 +44,13 @@ export const costCentersAdapter = createEntityAdapter<CostCenter>({
 export interface CostCentersState extends EntityState<CostCenter> {
   loading: boolean;
   error: HttpError;
+  paging: PagingData;
 }
 
 const initialState: CostCentersState = costCentersAdapter.getInitialState({
   loading: false,
   error: undefined,
+  paging: undefined,
 });
 
 export const costCentersReducer = createReducer(
@@ -83,10 +86,18 @@ export const costCentersReducer = createReducer(
     deleteCostCenterBuyerFail
   ),
   on(loadCostCentersSuccess, (state, action) => {
-    const { costCenters } = action.payload;
+    const { costCenters, paging } = action.payload;
+
+    const updatedCostCenters = costCenters.map((costCenter, index) => ({
+      ...costCenter,
+      paginationPosition: (paging.offset ? paging.offset : 0) + index,
+    }));
 
     return {
-      ...costCentersAdapter.upsertMany(costCenters, state),
+      ...(paging.offset
+        ? costCentersAdapter.addMany(updatedCostCenters, state)
+        : costCentersAdapter.setAll(updatedCostCenters, state)),
+      paging,
     };
   }),
   on(loadCostCenterSuccess, (state, action) => {

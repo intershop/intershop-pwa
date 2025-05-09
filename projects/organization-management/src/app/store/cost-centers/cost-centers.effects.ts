@@ -50,9 +50,10 @@ export class CostCentersEffects {
   loadCostCenters$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadCostCenters),
-      exhaustMap(() =>
-        this.costCentersService.getCostCenters().pipe(
-          map(costCenters => loadCostCentersSuccess({ costCenters })),
+      mapToPayload(),
+      mergeMap(payload =>
+        this.costCentersService.getCostCenters(payload.query).pipe(
+          map(info => loadCostCentersSuccess({ costCenters: info.costCenters, paging: info.paging })),
           mapErrorToAction(loadCostCentersFail)
         )
       )
