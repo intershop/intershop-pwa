@@ -47,7 +47,7 @@ describe('Cost Centers Service', () => {
     costCentersService.getCostCenters({ offset: 0, limit: 25 }).subscribe(() => {
       verify(apiService.get(anything(), anything())).once();
       const options: AvailableOptions = capture(apiService.get).last()[1];
-      expect(options.params?.toString()).toMatchInlineSnapshot(`"offset=0&limit=25&costCenterId="`);
+      expect(options.params?.toString()).toMatchInlineSnapshot(`"offset=0&limit=25&costCenterId=&name="`);
       done();
     });
   });
