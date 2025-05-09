@@ -91,6 +91,7 @@ export class CostCentersPageComponent implements OnInit {
       offset: 0,
       limit: this.pageSize,
       costCenterId: filters.costCenterId,
+      name: filters.name,
     });
   }
 

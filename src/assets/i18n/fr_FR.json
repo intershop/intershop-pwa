@@ -133,6 +133,7 @@
   "account.costcenter.filter.apply": "Find Cost Center",
   "account.costcenter.filter.hide": "Hide all filters",
   "account.costcenter.filter.label.center_id": "Search for ID or name",
+  "account.costcenter.filter.label.name": "Search for name",
   "account.costcenter.filter.show": "Show all filters",
   "account.costcenter.id.error.required": "Veuillez saisir un ID du centre de coûts.",
   "account.costcenter.id.label": "ID",
