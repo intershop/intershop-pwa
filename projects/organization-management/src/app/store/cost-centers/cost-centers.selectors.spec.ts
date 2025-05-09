@@ -71,7 +71,7 @@ describe('Cost Centers Selectors', () => {
   });
 
   describe('LoadCostCenters', () => {
-    const action = loadCostCenters({});
+    const action = loadCostCenters({ query: {} });
 
     beforeEach(() => {
       store$.dispatch(action);
