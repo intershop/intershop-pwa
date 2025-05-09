@@ -1,5 +1,3 @@
-import { Injectable } from '@angular/core';
-
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { SparqueProduct } from 'ish-core/models/sparque-product/sparque-product.interface';
@@ -9,7 +7,6 @@ import { SparqueOffer } from './sparque-offer.interface';
 /**
  * Class responsible for mapping Sparque offers to product price details.
  */
-@Injectable({ providedIn: 'root' })
 export class SparqueOfferMapper {
   /**
    * Maps an array of Sparque products to an array of `ProductPriceDetails` object for a given SKU array.
@@ -17,16 +14,16 @@ export class SparqueOfferMapper {
    * @param products - The array of sparque products for which the offers are being mapped.
    * @returns An array `ProductPriceDetails` object containing the mapped price details.
    */
-  mapOffers(products: SparqueProduct[]): ProductPriceDetails[] {
+  static mapOffers(products: SparqueProduct[]): ProductPriceDetails[] {
     return products
       ? products
           .filter(product => product.offers?.length > 0)
-          .map(product => this.mapOffer(product.offers, product.sku))
-      : undefined;
+          .map(product => SparqueOfferMapper.mapOffer(product.offers, product.sku))
+      : [];
   }
 
-  private mapOffer(offers: SparqueOffer[], sku: string): ProductPriceDetails {
-    const priceItems = this.mapOffersToPriceItems(offers).sort((a, b) => a.gross - b.gross);
+  private static mapOffer(offers: SparqueOffer[], sku: string): ProductPriceDetails {
+    const priceItems = SparqueOfferMapper.mapOffersToPriceItems(offers).sort((a, b) => a.gross - b.gross);
     const summarizedPriceItem = priceItems.reduce(
       (acc, item) => ({
         type: 'PriceItem',
@@ -52,11 +49,11 @@ export class SparqueOfferMapper {
     };
   }
 
-  private mapOffersToPriceItems(offers: SparqueOffer[]): PriceItem[] {
-    return offers.map(offer => this.mapOfferToPriceItem(offer));
+  private static mapOffersToPriceItems(offers: SparqueOffer[]): PriceItem[] {
+    return offers.map(offer => SparqueOfferMapper.mapOfferToPriceItem(offer));
   }
 
-  private mapOfferToPriceItem(offer: SparqueOffer): PriceItem {
+  private static mapOfferToPriceItem(offer: SparqueOffer): PriceItem {
     return {
       type: 'PriceItem',
       gross: offer.priceIncVat,

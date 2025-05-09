@@ -11,7 +11,8 @@ import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/ca
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
-import { Suggestion } from 'ish-core/models/suggestions/suggestions.model';
+import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
+import { SearchServiceProvider } from 'ish-core/service-provider/search.service-provider';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { CountryService } from 'ish-core/services/country/country.service';
@@ -19,7 +20,8 @@ import { FilterService } from 'ish-core/services/filter/filter.service';
 import { PricesService } from 'ish-core/services/prices/prices.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
-import { SearchServiceProvider } from 'ish-core/service-provider/search.service-provider';
+import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
+import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { WarrantyService } from 'ish-core/services/warranty/warranty.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
@@ -43,6 +45,8 @@ describe('Shopping Store', () => {
   let categoriesServiceMock: CategoriesService;
   let productsServiceMock: ProductsService;
   let searchServiceProviderMock: SearchServiceProvider;
+  let sparqueSuggestionsServiceMock: SparqueSuggestionsService;
+  let suggestServiceMock: SuggestService;
   let promotionsServiceMock: PromotionsService;
   let filterServiceMock: FilterService;
   let priceServiceMock: PricesService;
@@ -113,6 +117,8 @@ describe('Shopping Store', () => {
     when(countryServiceMock.getCountries()).thenReturn(EMPTY);
 
     searchServiceProviderMock = mock(SearchServiceProvider);
+    sparqueSuggestionsServiceMock = mock(SparqueSuggestionsService);
+    suggestServiceMock = mock(SuggestService);
     productsServiceMock = mock(ProductsService);
     when(searchServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
     when(productsServiceMock.getProduct(anyString())).thenCall(sku => {
@@ -132,8 +138,8 @@ describe('Shopping Store', () => {
     when(productsServiceMock.searchProducts(anything())).thenReturn(
       of({ products: [{ sku: 'P1' }, { sku: 'P2' }] as Product[], sortableAttributes: [], total: 2 })
     );
-    when(productsServiceMock.searchSuggestions('some')).thenReturn(
-      of<Suggestion>({ keywordSuggestions: ['something'] })
+    when(suggestServiceMock.searchSuggestions('some')).thenReturn(
+      of<{ suggestions: Suggestions }>({ suggestions: { keywords: [{ keyword: 'something' }] } })
     );
 
     promotionsServiceMock = mock(PromotionsService);
@@ -193,6 +199,8 @@ describe('Shopping Store', () => {
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
         { provide: SearchServiceProvider, useFactory: () => instance(searchServiceProviderMock) },
+        { provide: SparqueSuggestionsService, useFactory: () => instance(sparqueSuggestionsServiceMock) },
+        { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         { provide: WarrantyService, useFactory: () => instance(warrantyServiceMock) },
         provideStoreSnapshots(),
         SelectedProductContextFacade,
@@ -277,7 +285,7 @@ describe('Shopping Store', () => {
           [Suggest Search] Load Search Suggestions:
             searchTerm: "some"
           [Suggest Search API] Return Search Suggestions:
-            suggests: {"keywordSuggestions":[1]}
+            suggestions: {"keywords":[1]}
         `);
       });
     });

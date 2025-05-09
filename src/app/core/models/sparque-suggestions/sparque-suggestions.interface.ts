@@ -8,7 +8,7 @@ import { SparqueProduct } from 'ish-core/models/sparque-product/sparque-product.
  */
 export interface SparqueSuggestions {
   keywordSuggestions?: Keyword[];
-  products?: SparqueProduct[];
-  categories?: SparqueCategory[];
   brands?: Brand[];
+  categories?: SparqueCategory[];
+  products?: SparqueProduct[];
 }

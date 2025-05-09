@@ -25,7 +25,7 @@ import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { PipesModule } from 'ish-core/pipes.module';
 import { SuggestBrandsTileComponent } from 'ish-shared/components/search/suggest-brands-tile/suggest-brands-tile.component';
-import { SuggestCategoriesTileComponent } from 'ish-shared/components/search/suggest-categories-tile/suggest-categories-tile.component';
+import { SuggestCategoriesComponent } from 'ish-shared/components/search/suggest-categories/suggest-categories.component';
 import { SuggestKeywordsTileComponent } from 'ish-shared/components/search/suggest-keywords-tile/suggest-keywords-tile.component';
 import { SuggestProductsTileComponent } from 'ish-shared/components/search/suggest-products-tile/suggest-products-tile.component';
 import { SuggestSearchTermsTileComponent } from 'ish-shared/components/search/suggest-search-terms-tile/suggest-search-terms-tile.component';
@@ -55,7 +55,7 @@ import { SuggestSearchTermsTileComponent } from 'ish-shared/components/search/su
     PipesModule,
     TranslateModule,
     SuggestBrandsTileComponent,
-    SuggestCategoriesTileComponent,
+    SuggestCategoriesComponent,
     SuggestKeywordsTileComponent,
     SuggestProductsTileComponent,
     SuggestSearchTermsTileComponent,

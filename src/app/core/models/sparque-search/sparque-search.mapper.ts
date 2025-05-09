@@ -12,7 +12,7 @@ import { FixedFacetGroupResult, SparqueSearchResponse, SparqueSortingOptionRespo
 
 @Injectable({ providedIn: 'root' })
 export class SparqueSearchMapper {
-  constructor(private sparqueProductMapper: SparqueProductMapper, private sparqueOfferMapper: SparqueOfferMapper) {}
+  constructor(private sparqueProductMapper: SparqueProductMapper) {}
 
   fromData(search: SparqueSearchResponse, searchParameter: URLFormParams): SearchResponse {
     return {
@@ -20,7 +20,7 @@ export class SparqueSearchMapper {
       sortableAttributes: this.mapSortableAttributes(search.sortings),
       total: search.total,
       filter: this.mapFilter(search.facets, searchParameter),
-      prices: this.sparqueOfferMapper.mapOffers(search.products),
+      prices: SparqueOfferMapper.mapOffers(search.products),
     };
   }
 

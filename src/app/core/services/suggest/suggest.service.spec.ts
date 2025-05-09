@@ -33,11 +33,13 @@ describe('Suggest Service', () => {
     suggestService.searchSuggestions('g').subscribe(res => {
       expect(res).toMatchInlineSnapshot(`
         {
-          "keywords": [
-            {
-              "keyword": "Goods",
-            },
-          ],
+          "suggestions": {
+            "keywords": [
+              {
+                "keyword": "Goods",
+              },
+            ],
+          },
         }
       `);
       verify(apiService.get(anything(), anything())).once();

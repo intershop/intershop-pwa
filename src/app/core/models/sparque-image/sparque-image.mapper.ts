@@ -1,37 +1,41 @@
 import { Injectable } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
-import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Image } from 'ish-core/models/image/image.model';
+import { getStaticEndpoint } from 'ish-core/store/core/configuration';
 
 import { SparqueImage } from './sparque-image.interface';
 
 @Injectable({ providedIn: 'root' })
 export class SparqueImageMapper {
-  mapProductImages(images: SparqueImage[]): Image[] {
-    return images ? images.map(image => this.mapImage(image)) : [];
+  private staticURL: string;
+
+  constructor(store: Store) {
+    store.pipe(select(getStaticEndpoint)).subscribe(staticURL => (this.staticURL = staticURL));
   }
 
-  mapCategoryImage(attributes: Attribute[]): Image[] {
-    const imageUrl = AttributeHelper.getAttributeValueByAttributeName(attributes, 'image') as string;
+  fromImageUrl(imageUrl: string): Image {
     if (!imageUrl) {
-      return [];
+      return;
     }
     const typeID =
       imageUrl.split('/').length > 1 ? (imageUrl.split('/')[0].length > 1 ? 'S' : imageUrl.split('/')[0]) : 'S';
     const viewID = 'front';
-    return [
-      {
-        effectiveUrl: imageUrl,
-        viewID,
-        typeID,
-        type: 'Image',
-        name: viewID.concat(' ').concat(typeID),
-        imageActualHeight: typeID === 'S' ? 110 : 270,
-        imageActualWidth: typeID === 'S' ? 110 : 270,
-        primaryImage: true,
-      },
-    ];
+    return {
+      effectiveUrl: `${this.staticURL}/${imageUrl}`,
+      viewID,
+      typeID,
+      type: 'Image',
+      name: `${viewID} ${typeID}`,
+      imageActualHeight: typeID === 'S' ? 110 : 270,
+      imageActualWidth: typeID === 'S' ? 110 : 270,
+      primaryImage: true,
+    };
+  }
+
+  mapProductImages(images: SparqueImage[]): Image[] {
+    return images ? images.map(image => this.mapImage(image)) : [];
   }
 
   private mapImage(image: SparqueImage): Image {
@@ -43,7 +47,7 @@ export class SparqueImageMapper {
       type: 'Image',
       typeID,
       viewID,
-      name: viewID.concat(' ').concat(typeID),
+      name: `${viewID} ${typeID}`,
       imageActualHeight: typeID === 'S' ? 110 : 270,
       imageActualWidth: typeID === 'S' ? 110 : 270,
     };

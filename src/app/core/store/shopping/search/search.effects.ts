@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
+import { Action } from '@ngrx/store/src/models';
 import { TranslateService } from '@ngx-translate/core';
 import { from, iif, of } from 'rxjs';
 import { concatMap, map, sample, switchMap, withLatestFrom } from 'rxjs/operators';
@@ -15,6 +16,7 @@ import { SuggestionsServiceProvider } from 'ish-core/service-provider/suggestion
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
+import { loadCategorySuccess } from 'ish-core/store/shopping/categories';
 import { loadFilterSuccess } from 'ish-core/store/shopping/filter';
 import {
   getProductListingItemsPerPage,
@@ -127,13 +129,17 @@ export class SearchEffects {
             .get()
             .searchSuggestions(searchTerm)
             .pipe(
-              concatMap(suggests =>
-                iif(
-                  () => suggests.prices !== undefined,
-                  [suggestSearchSuccess({ suggests }), loadProductPricesSuccess({ prices: suggests.prices })],
-                  [suggestSearchSuccess({ suggests })]
-                )
-              ),
+              concatMap(({ suggestions, categories }) => {
+                const actions: Action[] = [suggestSearchSuccess({ suggestions })];
+                if (categories) {
+                  actions.push(loadCategorySuccess({ categories }));
+                }
+                // TODO: handle prices from suggestions differently
+                if (suggestions.prices) {
+                  actions.push(loadProductPricesSuccess({ prices: suggestions.prices }));
+                }
+                return actions;
+              }),
               mapErrorToAction(suggestSearchFail)
             )
         )

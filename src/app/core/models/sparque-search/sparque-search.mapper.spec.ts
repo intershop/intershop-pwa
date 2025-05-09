@@ -1,8 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { anything, mock, when } from 'ts-mockito';
+import { anything, instance, mock, when } from 'ts-mockito';
 
 import { Product } from 'ish-core/models/product/product.model';
-import { SparqueOfferMapper } from 'ish-core/models/sparque-offer/sparque-offer.mapper';
 import { SparqueProduct } from 'ish-core/models/sparque-product/sparque-product.interface';
 import { SparqueProductMapper } from 'ish-core/models/sparque-product/sparque-product.mapper';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
@@ -58,30 +57,19 @@ const searchParams: URLFormParams = { searchTerm: ['fancyProduct'] };
 
 describe('Sparque Search Mapper', () => {
   let sparqueSearchMapper: SparqueSearchMapper;
-  let sparqueProductMapperMock: SparqueProductMapper;
-  let sparqueOfferMapperMock: SparqueOfferMapper;
+  const sparqueProductMapper = mock(SparqueProductMapper);
 
   beforeEach(() => {
-    sparqueProductMapperMock = mock(SparqueProductMapper);
-    when(sparqueProductMapperMock.mapProducts(anything())).thenReturn([]);
-    sparqueOfferMapperMock = mock(SparqueOfferMapper);
-    when(sparqueOfferMapperMock.mapOffers(anything())).thenReturn([
-      {
-        sku: product.sku,
-        prices: {
-          salePrice: { type: 'PriceItem', gross: 100, net: 80, currency: 'USD' },
-          listPrice: { type: 'PriceItem', gross: 100, net: 80, currency: 'USD' },
-        },
-      },
-    ]);
-    TestBed.configureTestingModule({});
-
+    TestBed.configureTestingModule({
+      providers: [{ provide: SparqueProductMapper, useFactory: () => instance(sparqueProductMapper) }],
+    });
     sparqueSearchMapper = TestBed.inject(SparqueSearchMapper);
+    when(sparqueProductMapper.mapProducts(anything())).thenReturn([]);
   });
 
   describe('fromData', () => {
     it('should map search response correctly', () => {
-      when(sparqueProductMapperMock.mapProducts(anything())).thenReturn([product]);
+      when(sparqueProductMapper.mapProducts(anything())).thenReturn([product]);
       const sparqueSearchResonse: SparqueSearchResponse = {
         products: [sparqueProduct],
         total: 1,

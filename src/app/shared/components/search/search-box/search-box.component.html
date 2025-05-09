@@ -38,30 +38,27 @@
           'col-md-5': results.products?.length
         }"
       >
-        <div *ngIf="results.keywords.length">
-          <ish-suggest-keywords-tile
-            [keywords]="results.keywords"
-            [inputTerms$]="inputSearchTerms$"
-            (submitSearch)="submitSearch($event)"
-            [maxAutoSuggests]="5"
-          />
-        </div>
-        <div *ngIf="results.categories?.length">
-          <ish-suggest-categories-tile
-            [categories]="results.categories"
-            [inputTerms$]="inputSearchTerms$"
-            (routeChange)="resetInput()"
-            [maxAutoSuggests]="3"
-          />
-        </div>
-        <div *ngIf="results.brands?.length">
-          <ish-suggest-brands-tile
-            [brands]="results.brands"
-            [inputTerms$]="inputSearchTerms$"
-            (routeChange)="resetInput()"
-            [maxAutoSuggests]="3"
-          />
-        </div>
+        <ish-suggest-keywords-tile
+          *ngIf="results.keywords.length"
+          [keywords]="results.keywords"
+          [inputTerms$]="inputSearchTerms$"
+          (submitSearch)="submitSearch($event)"
+          [maxAutoSuggests]="5"
+        />
+        <ish-suggest-categories
+          *ngIf="results.categories?.length"
+          [categories]="results.categories"
+          [inputTerms$]="inputSearchTerms$"
+          (routeChange)="resetInput()"
+          [maxAutoSuggests]="3"
+        />
+        <ish-suggest-brands-tile
+          *ngIf="results.brands?.length"
+          [brands]="results.brands"
+          [inputTerms$]="inputSearchTerms$"
+          (routeChange)="resetInput()"
+          [maxAutoSuggests]="3"
+        />
       </div>
       <div
         *ngIf="results.products?.length"

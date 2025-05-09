@@ -19,7 +19,7 @@ export const suggestSearch = createAction(
 
 export const suggestSearchSuccess = createAction(
   '[Suggest Search API] Return Search Suggestions',
-  payload<{ suggests: Suggestions }>()
+  payload<{ suggestions: Suggestions }>()
 );
 
 export const suggestSearchFail = createAction('[Suggest Search API] Load Search Suggestions Fail', httpError());

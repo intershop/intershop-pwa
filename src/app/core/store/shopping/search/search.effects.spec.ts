@@ -5,9 +5,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
-import { Suggestion } from 'ish-core/models/suggestions/suggestions.model';
-import { ProductsService } from 'ish-core/services/products/products.service';
 import { SearchServiceProvider } from 'ish-core/service-provider/search.service-provider';
+import { ProductsService } from 'ish-core/services/products/products.service';
+import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
+import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadMoreProducts, setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
@@ -25,15 +26,19 @@ describe('Search Effects', () => {
   let effects: SearchEffects;
   let router: Router;
   let productsServiceMock: ProductsService;
+  let suggestServiceMock: SuggestService;
+  let sparqueSuggestionsServiceMock: SparqueSuggestionsService;
   let searchServiceProviderMock: SearchServiceProvider;
   let httpStatusCodeService: HttpStatusCodeService;
 
-  const suggests = [{ keywordSuggestions: ['Goods'] }] as Suggestion;
+  const suggests = { suggestions: { keywords: [{ keyword: 'Goods' }] } };
 
   beforeEach(() => {
-    searchServiceProviderMock = mock(SearchServiceProvider);
+    sparqueSuggestionsServiceMock = mock(SparqueSuggestionsService);
+    suggestServiceMock = mock(SuggestService);
+    when(suggestServiceMock.searchSuggestions(anyString())).thenReturn(of(suggests));
     productsServiceMock = mock(ProductsService);
-    when(productsServiceMock.searchSuggestions(anyString())).thenReturn(of<Suggestion>(suggests));
+    searchServiceProviderMock = mock(SearchServiceProvider);
     when(searchServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
     const skus = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
     when(productsServiceMock.searchProducts(anything())).thenCall(
@@ -62,7 +67,10 @@ describe('Search Effects', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
+        { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: SearchServiceProvider, useFactory: () => instance(searchServiceProviderMock) },
+        { provide: SparqueSuggestionsService, useFactory: () => instance(sparqueSuggestionsServiceMock) },
+        { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         provideStoreSnapshots(),
       ],
     });
@@ -99,11 +107,11 @@ describe('Search Effects', () => {
       const action = suggestSearch({ searchTerm: 'g' });
       store$.dispatch(action);
 
-      verify(productsServiceMock.searchSuggestions('g')).once();
+      verify(suggestServiceMock.searchSuggestions('g')).once();
     }));
 
     it('should not fire action when error is encountered at service level', fakeAsync(() => {
-      when(productsServiceMock.searchSuggestions(anyString())).thenReturn(
+      when(suggestServiceMock.searchSuggestions(anyString())).thenReturn(
         throwError(() => makeHttpError({ message: 'ERROR' }))
       );
 
@@ -112,7 +120,7 @@ describe('Search Effects', () => {
 
       effects.suggestSearch$.subscribe({ next: fail, error: fail });
 
-      verify(productsServiceMock.searchSuggestions('good')).once();
+      verify(suggestServiceMock.searchSuggestions('good')).once();
     }));
 
     it('should fire all necessary actions for suggest-search', fakeAsync(() => {
@@ -122,7 +130,7 @@ describe('Search Effects', () => {
         [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
-          suggests: [{"keywordSuggestions":["Goods"]}]
+          suggestions: {"keywords":[1]}
       `);
 
       // 2nd term to because distinctUntilChanged
@@ -132,11 +140,11 @@ describe('Search Effects', () => {
         [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
-          suggests: [{"keywordSuggestions":["Goods"]}]
+          suggestions: {"keywords":[1]}
         [Suggest Search] Load Search Suggestions:
           searchTerm: "goo"
         [Suggest Search API] Return Search Suggestions:
-          suggests: [{"keywordSuggestions":["Goods"]}]
+          suggestions: {"keywords":[1]}
       `);
 
       // test cache: search->api->success & search->success->api->success
@@ -146,15 +154,15 @@ describe('Search Effects', () => {
         [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
-          suggests: [{"keywordSuggestions":["Goods"]}]
+          suggestions: {"keywords":[1]}
         [Suggest Search] Load Search Suggestions:
           searchTerm: "goo"
         [Suggest Search API] Return Search Suggestions:
-          suggests: [{"keywordSuggestions":["Goods"]}]
+          suggestions: {"keywords":[1]}
         [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
-          suggests: [{"keywordSuggestions":["Goods"]}]
+          suggestions: {"keywords":[1]}
       `);
     }));
   });

@@ -1,5 +1,3 @@
-import { TestBed } from '@angular/core/testing';
-
 import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { SparqueProduct } from 'ish-core/models/sparque-product/sparque-product.interface';
 
@@ -95,28 +93,22 @@ const sparqueProductRangedOffer = {
 } as SparqueProduct;
 
 describe('Sparque Offer Mapper', () => {
-  let sparqueOfferMapper: SparqueOfferMapper;
-
-  beforeEach(() => {
-    sparqueOfferMapper = TestBed.inject(SparqueOfferMapper);
-  });
-
   describe('mapOffers', () => {
     it('should map single offer response correctly', () => {
-      const result = sparqueOfferMapper.mapOffers([sparqueProductSingleOffer]);
+      const result = SparqueOfferMapper.mapOffers([sparqueProductSingleOffer]);
       expect(result).toHaveLength(1);
       expect(result[0].sku).toEqual(sparqueProductSingleOffer.sku);
       expect(result[0]).toEqual(productPriceDetails[0]);
     });
     it('should map range offer response correctly', () => {
-      const result = sparqueOfferMapper.mapOffers([sparqueProductRangedOffer]);
+      const result = SparqueOfferMapper.mapOffers([sparqueProductRangedOffer]);
       expect(result).toHaveLength(1);
       expect(result[0].sku).toEqual(sparqueProductRangedOffer.sku);
       expect(result[0]).toEqual(productPriceDetails[1]);
     });
 
     it('should map array of products response correctly', () => {
-      const result = sparqueOfferMapper.mapOffers([sparqueProductSingleOffer, sparqueProductRangedOffer]);
+      const result = SparqueOfferMapper.mapOffers([sparqueProductSingleOffer, sparqueProductRangedOffer]);
       expect(result).toHaveLength(2);
       expect(result[0].sku).toEqual(sparqueProductSingleOffer.sku);
       expect(result[0]).toEqual(productPriceDetails[0]);
@@ -125,7 +117,7 @@ describe('Sparque Offer Mapper', () => {
     });
 
     it('should return only product price details for product with offer', () => {
-      const result = sparqueOfferMapper.mapOffers([
+      const result = SparqueOfferMapper.mapOffers([
         { ...sparqueProductSingleOffer, offers: [] },
         sparqueProductRangedOffer,
       ]);
@@ -135,7 +127,7 @@ describe('Sparque Offer Mapper', () => {
     });
 
     it('should return empty array if offers are empty', () => {
-      const result = sparqueOfferMapper.mapOffers([{ ...sparqueProductSingleOffer, offers: [] }]);
+      const result = SparqueOfferMapper.mapOffers([{ ...sparqueProductSingleOffer, offers: [] }]);
       expect(result).toBeEmpty();
     });
   });

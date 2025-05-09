@@ -2,6 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
+import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
 import { SparqueSuggestions } from 'ish-core/models/sparque-suggestions/sparque-suggestions.interface';
 import { SparqueSuggestionsMapper } from 'ish-core/models/sparque-suggestions/sparque-suggestions.mapper';
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
@@ -30,10 +31,14 @@ export class SparqueSuggestionsService implements SuggestionsService {
    * @param searchTerm - The term to search for suggestions.
    * @returns An observable emitting the mapped search suggestions.
    */
-  searchSuggestions(searchTerm: string): Observable<Suggestions> {
+  searchSuggestions(searchTerm: string): Observable<{ suggestions: Suggestions; categories?: CategoryTree }> {
     const params = new HttpParams().set('Keyword', searchTerm).set('count', this.maxNumberOfRequestedSuggestions);
+
     return this.sparqueApiService
       .get<SparqueSuggestions>(`suggestions`, this.apiVersion, { params, skipApiErrorHandling: true })
-      .pipe(map(suggestions => this.sparqueSuggestionsMapper.fromData(suggestions)));
+      .pipe(
+        map(suggestions => this.sparqueSuggestionsMapper.fromData(suggestions)),
+        map(([suggestions, categories]) => ({ suggestions, categories }))
+      );
   }
 }

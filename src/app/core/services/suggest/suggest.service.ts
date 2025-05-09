@@ -19,7 +19,7 @@ export class SuggestService implements SuggestionsService {
    * @param searchTerm  The search term to get suggestions for.
    * @returns           Suggestions with keywords section containing the suggested search terms.
    */
-  searchSuggestions(searchTerm: string): Observable<Suggestions> {
+  searchSuggestions(searchTerm: string): Observable<{ suggestions: Suggestions }> {
     const params = new HttpParams().set('SearchTerm', searchTerm);
     return this.apiService.get('suggest', { params }).pipe(
       unpackEnvelope<{ term: string }>(),
@@ -27,7 +27,8 @@ export class SuggestService implements SuggestionsService {
         keywords: suggestTerms.map(term => ({
           keyword: term.term,
         })),
-      }))
+      })),
+      map(suggestions => ({ suggestions }))
     );
   }
 }

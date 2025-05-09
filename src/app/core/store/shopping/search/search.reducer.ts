@@ -14,14 +14,14 @@ import {
 } from './search.actions';
 
 export interface SuggestState {
-  suggests: Suggestions;
+  suggestions: Suggestions;
   _searchTerms: string[];
   loading: boolean;
   error: HttpError;
 }
 
 const initialState: SuggestState = {
-  suggests: undefined,
+  suggestions: undefined,
   _searchTerms: SSR ? [] : localStorage.getItem('_searchTerms') ? JSON.parse(localStorage.getItem('_searchTerms')) : [],
   loading: false,
   error: undefined,
@@ -34,12 +34,12 @@ export const searchReducer = createReducer(
   setLoadingOn(suggestSearch),
   unsetLoadingAndErrorOn(suggestSearchSuccess),
   setErrorOn(suggestSearchFail, sparqueSuggestServerError),
-  on(removeSuggestions, (state): SuggestState => ({ ...state, suggests: undefined })),
+  on(removeSuggestions, (state): SuggestState => ({ ...state, suggestions: undefined })),
   on(
     suggestSearchSuccess,
     (state, action): SuggestState => ({
       ...state,
-      suggests: action.payload.suggests,
+      suggestions: action.payload.suggestions,
     })
   ),
   on(addSearchTermToSuggestion, (state, action): SuggestState => {

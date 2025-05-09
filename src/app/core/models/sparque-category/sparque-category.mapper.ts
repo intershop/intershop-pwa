@@ -1,130 +1,102 @@
 import { Injectable } from '@angular/core';
 
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
-import { CategoryTree, CategoryTreeHelper } from 'ish-core/models/category-tree/category-tree.model';
-import { Category } from 'ish-core/models/category/category.model';
+import { CategoryTreeHelper } from 'ish-core/models/category-tree/category-tree.helper';
+import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
+import { Category, CategoryHelper } from 'ish-core/models/category/category.model';
 import { SparqueImageMapper } from 'ish-core/models/sparque-image/sparque-image.mapper';
 
-import { SparqueCategory, SparqueCategoryTree } from './sparque-category.interface';
+import { SparqueCategory, SparqueParentCategory } from './sparque-category.interface';
 
-// not-dead-code
 @Injectable({ providedIn: 'root' })
 export class SparqueCategoryMapper {
   constructor(private sparqueImageMapper: SparqueImageMapper) {}
-  private path: { [key: string]: string[] } = {};
 
-  // not-dead-code
-  fromData(treeData: SparqueCategoryTree): CategoryTree {
-    if (!treeData?.categories) {
-      return CategoryTreeHelper.empty();
+  fromSuggestionsData(categories: SparqueCategory[]): { categoryIds: string[]; categoryTree: CategoryTree } {
+    let categoryTree = CategoryTreeHelper.empty();
+    const categoryIds: string[] = [];
+
+    if (categories?.length) {
+      categories.forEach(category => {
+        const result = this.fromData(category);
+        categoryTree = CategoryTreeHelper.merge(categoryTree, result.categoryTree);
+        categoryIds.push(result.category.uniqueId);
+      });
     }
-    const allCategories = this.flatCategories(treeData.categories);
-    allCategories.forEach(category => {
-      let path = [category.categoryID];
-      if (category.parentCategoryId) {
-        path = [...this.path[category.parentCategoryId], ...path];
-      }
-      this.path[category.categoryID] = path;
-    });
 
-    return allCategories.reduce((acc, category) => {
-      const categoryTree = this.fromCategoryData(category);
-
-      acc.rootIds = [...acc.rootIds, ...categoryTree.rootIds];
-      acc.nodes = { ...acc.nodes, ...categoryTree.nodes };
-      acc.edges =
-        categoryTree.edges && categoryTree.edges[category.categoryID]?.length > 0
-          ? { ...acc.edges, ...categoryTree.edges }
-          : acc.edges;
-      acc.categoryRefs = { ...acc.categoryRefs, ...categoryTree.categoryRefs };
-      return acc;
-    }, CategoryTreeHelper.empty());
+    return { categoryIds, categoryTree };
   }
 
-  private fromCategoryData(categoryData: SparqueCategory): CategoryTree {
-    const category = this.mapData(categoryData);
-    return {
-      rootIds: categoryData.deep === 0 ? [category.uniqueId] : [],
-      nodes: { [category.uniqueId]: category },
-      edges: categoryData.subCategories
-        ? {
-            [category.uniqueId]: categoryData.subCategories.map(sub => this.createUniqueId(this.path[sub.categoryID])),
-          }
-        : {},
-      categoryRefs: { [category.categoryRef]: category.uniqueId },
+  private fromData(data: SparqueCategory): { category: Category; categoryTree: CategoryTree } {
+    let parentCategory: Category = undefined;
+    let categoryTree = CategoryTreeHelper.empty();
+    let uniqueId = data.categoryID;
+
+    const parentsData = AttributeHelper.getAttributeValueByAttributeName<SparqueParentCategory[]>(
+      data?.attributes,
+      'hasParent'
+    );
+
+    if (parentsData) {
+      const result = this.mapHierarchyFromParentsData(parentsData?.[0]);
+      parentCategory = result.parentCategory;
+      categoryTree = result.categoryTree;
+      uniqueId = parentCategory.uniqueId + CategoryHelper.uniqueIdSeparator + data.categoryID;
+    }
+
+    const category: Category = {
+      uniqueId,
+      name: data.categoryName,
+      categoryRef: undefined, // categoryRef not available in Sparque data
+      categoryPath: parentCategory ? [...parentCategory.categoryPath, uniqueId] : [uniqueId],
+      description: AttributeHelper.getAttributeValueByAttributeName<string>(data.attributes, 'description'),
+      images: [
+        this.sparqueImageMapper.fromImageUrl(
+          AttributeHelper.getAttributeValueByAttributeName(data.attributes, 'image')
+        ),
+      ],
+      hasOnlineProducts: !!data.totalCount,
+      productCount: data.totalCount,
+      completenessLevel: 0,
     };
+
+    return { category, categoryTree: CategoryTreeHelper.add(categoryTree, category) };
   }
 
-  private mapData(categoryData: SparqueCategory): Category {
-    if (categoryData) {
-      const categoryPath = this.path[categoryData.categoryID];
-      const uniqueId = this.createUniqueId(categoryPath);
+  // recursively map the hierarchy of categories from the parent data
+  private mapHierarchyFromParentsData(data: SparqueParentCategory): {
+    parentCategory: Category;
+    categoryTree: CategoryTree;
+  } {
+    let category: Category = undefined;
+    let parentCategory: Category = undefined;
+    let categoryTree = CategoryTreeHelper.empty();
+    let uniqueId = data.identifier;
 
-      return {
-        uniqueId,
-        categoryRef: categoryData.categoryID,
-        categoryPath,
-        name: categoryData.categoryName,
-        hasOnlineProducts: AttributeHelper.getAttributeValueByAttributeName(categoryData.attributes, 'online')
-          ? AttributeHelper.getAttributeValueByAttributeName(categoryData.attributes, 'online') === '1'
-          : false,
-        productCount: categoryData.totalCount,
-        description: AttributeHelper.getAttributeValueByAttributeName(categoryData.attributes, 'description'),
-        images: categoryData.attributes ? this.sparqueImageMapper.mapCategoryImage(categoryData.attributes) : [],
-        attributes: categoryData.attributes,
-        completenessLevel: this.computeCompleteness(categoryData, categoryPath.length),
-      };
-    } else {
-      throw new Error(`'categoryData' is required`);
-    }
-  }
+    if (data) {
+      const parentsData = data.hasParent?.[0];
 
-  private createUniqueId(path: string[]): string {
-    return path.length > 1 ? path[path.length - 2].concat('.').concat(path[path.length - 1]) : path[0];
-  }
-
-  private flatCategories(
-    treeData: SparqueCategory[],
-    result: SparqueCategory[] = [],
-    deep: number = 0
-  ): SparqueCategory[] {
-    treeData.forEach(category => {
-      category.deep = deep;
-      result.push(category);
-      if (category.subCategories?.length) {
-        this.flatCategories(category.subCategories, result, deep + 1);
+      if (parentsData) {
+        // recursively map the parent categories
+        const result = this.mapHierarchyFromParentsData(parentsData);
+        parentCategory = result.parentCategory;
+        categoryTree = result.categoryTree;
+        uniqueId = parentCategory.uniqueId + CategoryHelper.uniqueIdSeparator + data.identifier;
       }
-    });
 
-    return result.sort((a, b) => a.deep - b.deep);
-  }
+      category = {
+        uniqueId,
+        name: data.name['en-US'], // TODO: implement locale specific value access
+        categoryRef: undefined, // categoryRef not available in Sparque data
+        categoryPath: parentCategory ? [...parentCategory.categoryPath, uniqueId] : [uniqueId],
+        description: undefined, // TODO: do we need a description for parent categories?
+        images: [this.sparqueImageMapper.fromImageUrl(data.image)],
+        hasOnlineProducts: true,
+        completenessLevel: 0,
+      };
 
-  /**
-   * Compute completeness level of incoming raw data.
-   */
-  private computeCompleteness(categoryData: SparqueCategory, pathLength: number): number {
-    if (!categoryData) {
-      return -1;
+      categoryTree = CategoryTreeHelper.add(categoryTree, category);
     }
-
-    // adjust CategoryCompletenessLevel.Max accordingly
-    let count = 0;
-
-    if (pathLength > 0) {
-      // root categories have no images but a single-entry categoryPath
-      count++;
-    }
-    if (categoryData.attributes?.find(attr => attr.name === 'image')) {
-      // images are supplied for sub categories in the category details call
-      count++;
-    }
-    if (categoryData.categoryName) {
-      count++;
-    }
-    if (categoryData.attributes?.find(attr => attr.name === 'description')) {
-      count++;
-    }
-
-    return count;
+    return { parentCategory: category, categoryTree };
   }
 }

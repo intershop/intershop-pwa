@@ -9,8 +9,7 @@ import { createCategoryView } from 'ish-core/models/category-view/category-view.
 import { Category } from 'ish-core/models/category/category.model';
 import { CategoryRoutePipe } from 'ish-core/routing/category/category-route.pipe';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
-
-import { CategoryImageComponent } from '../category-image/category-image.component';
+import { CategoryImageComponent } from 'ish-shared/components/category/category-image/category-image.component';
 
 import { CategoryTileComponent } from './category-tile.component';
 

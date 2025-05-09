@@ -25,7 +25,7 @@ export class SparqueProductMapper {
           defaultCategoryId: product.defaultcategoryId ? product.defaultcategoryId : undefined,
           completenessLevel: 0,
         }))
-      : undefined;
+      : [];
   }
 
   private mapAttachments(attachments: SparqueAttachment[]): Attachment[] {

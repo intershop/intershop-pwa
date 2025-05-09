@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { ReplaySubject, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
+import { CategoryImageComponent } from 'ish-shared/components/category/category-image/category-image.component';
 
 import { SuggestCategoriesTileComponent } from './suggest-categories-tile.component';
 
@@ -15,23 +15,13 @@ describe('Suggest Categories Tile Component', () => {
   let component: SuggestCategoriesTileComponent;
   let fixture: ComponentFixture<SuggestCategoriesTileComponent>;
   let element: HTMLElement;
-  let appFacade: AppFacade;
-  let activatedRoute: ActivatedRoute;
-  const staticURL = 'http://static.domain.com';
   const shoppingFacade = mock(ShoppingFacade);
 
   beforeEach(async () => {
-    activatedRoute = mock(ActivatedRoute);
-    appFacade = mock(AppFacade);
-    when(appFacade.getStaticEndpoint$).thenReturn(of(staticURL));
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      providers: [
-        { provide: ActivatedRoute, useFactory: () => instance(activatedRoute) },
-        { provide: AppFacade, useFactory: () => instance(appFacade) },
-        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
-      ],
-      declarations: [],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+      declarations: [MockComponent(CategoryImageComponent), SuggestCategoriesTileComponent],
     }).compileComponents();
   });
 
@@ -40,68 +30,11 @@ describe('Suggest Categories Tile Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    component.categories = [
-      {
-        uniqueId: 'catA',
-        name: 'Categorya',
-        images: [
-          {
-            effectiveUrl: 'http://domain.com/M/123.jpg',
-            name: 'front M',
-            primaryImage: true,
-            type: 'Image',
-            typeID: 'M',
-            viewID: 'front',
-            imageActualHeight: 270,
-            imageActualWidth: 270,
-          },
-        ],
-        categoryRef: '',
-        categoryPath: [],
-        hasOnlineProducts: false,
-        description: '',
-        attributes: [],
-        completenessLevel: 0,
-      },
-      {
-        uniqueId: 'catB',
-        name: 'Categoryb',
-        images: [
-          {
-            effectiveUrl: 'http://domain.com/M/456.jpg',
-            name: 'front M',
-            primaryImage: true,
-            type: 'Image',
-            typeID: 'M',
-            viewID: 'front',
-            imageActualHeight: 270,
-            imageActualWidth: 270,
-          },
-        ],
-        categoryRef: '',
-        categoryPath: [],
-        hasOnlineProducts: false,
-        description: '',
-        attributes: [],
-        completenessLevel: 0,
-      },
-    ];
-    component.maxAutoSuggests = 2;
+    component.categoryUniqueId = 'catA';
     component.inputTerms$ = new ReplaySubject<string>(1);
     component.inputTerms$.next('cat');
 
-    const categoryTree: CategoryTree = {
-      nodes: {
-        catA: component.categories[0],
-        catB: component.categories[1],
-      },
-      rootIds: [],
-      edges: {},
-      categoryRefs: {},
-    };
-    when(shoppingFacade.category$('catA')).thenReturn(of({ uniqueId: 'catA', name: 'Categorya' } as CategoryView));
-    when(shoppingFacade.category$('catB')).thenReturn(of({ uniqueId: 'catB', name: 'Categoryb' } as CategoryView));
-    when(shoppingFacade.getCategoryTree).thenReturn(() => of(categoryTree));
+    when(shoppingFacade.category$('catA')).thenReturn(of({ uniqueId: 'catA', name: 'Category A' } as CategoryView));
   });
 
   it('should be created', () => {
@@ -110,22 +43,9 @@ describe('Suggest Categories Tile Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display the correct number of category suggestions', () => {
-    fixture.detectChanges();
-    expect(element.querySelectorAll('ul li')).toHaveLength(2);
-  });
-
   it('should display category names correctly', () => {
     fixture.detectChanges();
-    const categoryElements = element.querySelectorAll('ul li a');
-    expect(categoryElements[1].textContent).toContain('Categorya');
-    expect(categoryElements[3].textContent).toContain('Categoryb');
-  });
-
-  it('should display category images correctly', () => {
-    fixture.detectChanges();
-    const imgElements = element.querySelectorAll('ul li img');
-    expect(imgElements[0].getAttribute('src')).toBe('http://domain.com/M/123.jpg');
-    expect(imgElements[1].getAttribute('src')).toBe('http://domain.com/M/456.jpg');
+    const categoryElements = element.querySelectorAll('li a');
+    expect(categoryElements[1].textContent).toMatchInlineSnapshot(`"Category A"`);
   });
 });

@@ -1,4 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+
+import { getStaticEndpoint } from 'ish-core/store/core/configuration';
 
 import { SparqueImageMapper } from './sparque-image.mapper';
 
@@ -45,12 +48,17 @@ const images = [
   },
 ];
 
-const categoryAttributes = [{ name: 'image', value: 'images/img3.jpg' }];
+const imageUrl = 'images/img3.jpg';
+
+const staticEndpoint = 'https://icm.com/INTERSHOP/static/WFS/inSPIRED-inTRONICS_Business-Site/-/inSPIRED/en_US';
 
 describe('Sparque Image Mapper', () => {
   let sparqueImageMapper: SparqueImageMapper;
 
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideMockStore({ selectors: [{ selector: getStaticEndpoint, value: staticEndpoint }] })],
+    });
     sparqueImageMapper = TestBed.inject(SparqueImageMapper);
   });
 
@@ -74,21 +82,20 @@ describe('Sparque Image Mapper', () => {
     });
   });
 
-  describe('mapCategoryImage', () => {
+  describe('fromImageUrl', () => {
     it('should map single category image correctly', () => {
-      const result = sparqueImageMapper.mapCategoryImage(categoryAttributes);
-      expect(result).toHaveLength(1);
-      expect(result[0].effectiveUrl).toEqual(categoryAttributes[0].value);
-      expect(result[0].viewID).toEqual('front');
-      expect(result[0].typeID).toEqual('S');
-      expect(result[0].name).toEqual('front S');
-      expect(result[0].imageActualHeight).toEqual(110);
-      expect(result[0].imageActualWidth).toEqual(110);
-      expect(result[0].primaryImage).toBeTrue();
+      const image = sparqueImageMapper.fromImageUrl(imageUrl);
+      expect(image.effectiveUrl).toEqual(`${staticEndpoint}/${imageUrl}`);
+      expect(image.viewID).toEqual('front');
+      expect(image.typeID).toEqual('S');
+      expect(image.name).toEqual('front S');
+      expect(image.imageActualHeight).toEqual(110);
+      expect(image.imageActualWidth).toEqual(110);
+      expect(image.primaryImage).toBeTrue();
     });
-    it('should return empty array if called with undefined', () => {
-      const result = sparqueImageMapper.mapCategoryImage(undefined);
-      expect(result).toBeEmpty();
+    it('should return undefined if called with undefined', () => {
+      const result = sparqueImageMapper.fromImageUrl(undefined);
+      expect(result).toBeUndefined();
     });
   });
 });

@@ -10,26 +10,23 @@ import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.ser
 import { SparqueSuggestionsService } from './sparque-suggestions.service';
 
 describe('Sparque Suggestions Service', () => {
-  let sparqueApiService: SparqueApiService;
   let sparqueSuggestionsService: SparqueSuggestionsService;
-  let sparqueSuggestionsMapper: SparqueSuggestionsMapper;
+  const sparqueApiService = mock(SparqueApiService);
+  const sparqueSuggestionsMapper = mock(SparqueSuggestionsMapper);
   const apiVersion = 'v2';
 
   beforeEach(() => {
-    sparqueApiService = mock(SparqueApiService);
-    sparqueSuggestionsService = mock(SparqueSuggestionsService);
-    sparqueSuggestionsMapper = mock(SparqueSuggestionsMapper);
-    when(sparqueApiService.get(anything(), apiVersion, anything())).thenReturn(
-      of<SparqueSearchResponse>({ products: [], total: 0, sortings: [] })
-    );
     TestBed.configureTestingModule({
       providers: [
         { provide: SparqueApiService, useFactory: () => instance(sparqueApiService) },
         { provide: SparqueSuggestionsMapper, useFactory: () => instance(sparqueSuggestionsMapper) },
-        { provide: SparqueSuggestionsService, useFactory: () => instance(sparqueSuggestionsService) },
       ],
     });
     sparqueSuggestionsService = TestBed.inject(SparqueSuggestionsService);
+    when(sparqueApiService.get(anything(), apiVersion, anything())).thenReturn(
+      of<SparqueSearchResponse>({ products: [], total: 0, sortings: [] })
+    );
+    when(sparqueSuggestionsMapper.fromData(anything())).thenReturn([undefined, undefined]);
   });
 
   it('should map the response using SparqueSuggestionsMapper', done => {

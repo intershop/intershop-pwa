@@ -7,7 +7,7 @@ const getSearchState = createSelector(getShoppingState, (state: ShoppingState) =
 
 export const getSearchTerm = selectRouteParam('searchTerm');
 
-export const getSuggestSearchResults = createSelector(getSearchState, state => state.suggests);
+export const getSuggestSearchResults = createSelector(getSearchState, state => state.suggestions);
 
 export const getSuggestSearchLoading = createSelector(getSearchState, state => state.loading);
 
