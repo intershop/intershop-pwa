@@ -181,8 +181,7 @@ a {
     }
 
     &[role='tab'] {
-      // tabs are never underlined
-      text-decoration: none !important;
+      @include hover-none-underline();
     }
   }
 
@@ -353,10 +352,6 @@ img.marketing {
   font-size: 90%;
   text-transform: none;
   white-space: nowrap;
-}
-
-.details-tooltip {
-  text-decoration: none !important;
 }
 
 .download-link {

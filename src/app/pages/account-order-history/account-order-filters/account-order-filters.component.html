@@ -7,12 +7,7 @@
   </div>
   <div class="row mb-4">
     <div class="col-md-4 d-flex align-items-center">
-      <button
-        type="button"
-        class="btn btn-link pl-0 text-decoration-none"
-        (click)="expandForm()"
-        [attr.aria-expanded]="!formIsCollapsed"
-      >
+      <button type="button" class="btn btn-link pl-0" (click)="expandForm()" [attr.aria-expanded]="!formIsCollapsed">
         <ng-container *ngIf="formIsCollapsed; else hide_filters">
           {{ 'account.order_history.filter.show' | translate }}&nbsp;
           <fa-icon [icon]="['fas', 'angle-down']" />
