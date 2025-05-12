@@ -8,7 +8,14 @@ const routes: Routes = [
     path: 'quick-order',
     loadChildren: () => import('./quickorder/quickorder-page.module').then(m => m.QuickorderPageModule),
     canActivate: [featureToggleGuard],
-    data: { feature: 'quickorder', breadcrumbData: [{ key: 'quickorder.page.breadcrumb' }] },
+    data: {
+      feature: 'quickorder',
+      breadcrumbData: [{ key: 'quickorder.page.breadcrumb' }],
+      meta: {
+        title: 'quickorder.page.breadcrumb',
+        robots: 'noindex, nofollow',
+      },
+    },
   },
 ];
 

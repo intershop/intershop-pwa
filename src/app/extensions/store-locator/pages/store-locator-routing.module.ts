@@ -10,7 +10,13 @@ const routes: Routes = [
     path: 'store-finder',
     loadChildren: () => import('./store-locator/store-locator-page.module').then(m => m.StoreLocatorPageModule),
     canActivate: [featureToggleGuard],
-    data: { feature: 'storeLocator' },
+    data: {
+      feature: 'storeLocator',
+      meta: {
+        title: 'store_locator.title',
+        robots: 'noindex, nofollow',
+      },
+    },
   },
 ];
 
