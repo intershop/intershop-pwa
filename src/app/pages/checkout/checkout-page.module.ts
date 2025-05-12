@@ -23,30 +23,60 @@ const checkoutPageRoutes: Routes = [
       {
         path: 'address',
         canActivate: [checkoutPageGuard],
-        data: { checkoutStep: 1 },
+        data: {
+          checkoutStep: 1,
+          meta: {
+            title: 'checkout.addresses.heading',
+            robots: 'noindex, nofollow',
+          },
+        },
         component: CheckoutAddressPageModule.component,
       },
       {
         path: 'shipping',
         canActivate: [checkoutPageGuard],
-        data: { checkoutStep: 2 },
+        data: {
+          checkoutStep: 2,
+          meta: {
+            title: 'checkout.shipping.pagetitle',
+            robots: 'noindex, nofollow',
+          },
+        },
         component: CheckoutShippingPageModule.component,
       },
       {
         path: 'payment',
         canActivate: [checkoutPageGuard],
-        data: { checkoutStep: 3 },
+        data: {
+          checkoutStep: 3,
+          meta: {
+            title: 'checkout.payment.pagetitle',
+            robots: 'noindex, nofollow',
+          },
+        },
         component: CheckoutPaymentPageModule.component,
       },
       {
         path: 'review',
         canActivate: [checkoutPageGuard],
-        data: { checkoutStep: 4 },
+        data: {
+          checkoutStep: 4,
+          meta: {
+            title: 'checkout.progress.review.label',
+            robots: 'noindex, nofollow',
+          },
+        },
         component: CheckoutReviewPageModule.component,
       },
       {
         path: 'receipt',
-        data: { checkoutStep: 5 },
+        data: {
+          checkoutStep: 5,
+          meta: {
+            title: 'checkout.progress.receipt.label',
+            robots: 'noindex, nofollow',
+          },
+        },
         component: CheckoutReceiptPageModule.component,
       },
       {

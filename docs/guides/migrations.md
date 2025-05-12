@@ -15,6 +15,9 @@ Since this functionality can and was currently not yet used by any project, disa
 The structure of the elements that contained the `ngbNav` directive was updated to ensure compliance with accessibility standards.
 It was previously based on `<ul>` with `<li role="presentation">` elements, now it uses `<nav>` with `<ng-container>` elements.
 
+Page titles for the checkout and account pages have been added to every single page for accessibility reasons.
+The context _Checkout_ or _My Account_ is automatically appended to the relevant page titles in the `seo.effects`.
+
 ## From 6.0.0 to 7.0.0
 
 The Intershop PWA 7.0.0 release contains the **SPARQUE suggest** and **SPARQUE search** functionality to improve the product search in the PWA.

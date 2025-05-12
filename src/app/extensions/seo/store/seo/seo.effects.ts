@@ -20,7 +20,7 @@ import { ofContentPageUrl } from 'ish-core/routing/content-page/content-page.rou
 import { generateProductUrl, ofProductUrl } from 'ish-core/routing/product/product.route';
 import { getSelectedContentPage } from 'ish-core/store/content/pages';
 import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/configuration';
-import { ofUrl, selectRouteData, selectRouteParam } from 'ish-core/store/core/router';
+import { ofUrl, selectPath, selectRouteData, selectRouteParam } from 'ish-core/store/core/router';
 import { getSelectedCategory } from 'ish-core/store/shopping/categories/categories.selectors';
 import { getSelectedProduct } from 'ish-core/store/shopping/products';
 import { DomService } from 'ish-core/utils/dom/dom.service';
@@ -164,7 +164,14 @@ export class SeoEffects {
     () =>
       this.pageTitle$.pipe(
         delay(0), // ensures asynchronous stream processing to prevent "missing translation" issues
-        switchMap(title => combineLatest([this.translate.get(title), this.translate.get('seo.applicationName')])),
+        switchMap(title =>
+          combineLatest([
+            this.translate.get(title),
+            this.store.pipe(select(selectPath)),
+            this.translate.get('seo.applicationName'),
+          ])
+        ),
+        map(([title, path, application]) => [this.enhancePageTitle(title, path), application]),
         map(([title, application]) => `${title} | ${application}`),
         tap(title => {
           this.titleService.setTitle(title);
@@ -233,5 +240,17 @@ export class SeoEffects {
     if (!this.metaService.updateTag(tag)) {
       this.metaService.addTag(tag);
     }
+  }
+
+  // Adapt the page title for specific pages
+  private enhancePageTitle(title: string, path: string): string {
+    let pageSuffix = '';
+    if (path?.startsWith('account/')) {
+      pageSuffix = `${this.translate.instant('account.my_account.heading')}`;
+    }
+    if (path?.startsWith('checkout/')) {
+      pageSuffix = `${this.translate.instant('seo.title.checkout')}`;
+    }
+    return pageSuffix && pageSuffix !== title ? `${title} - ${pageSuffix}` : title;
   }
 }
