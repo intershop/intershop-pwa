@@ -19,7 +19,13 @@ export const routes: Routes = [
     path: 'settings',
     loadChildren: () =>
       import('./organization-settings/organization-settings-page.module').then(m => m.OrganizationSettingsPageModule),
-    data: { permission: 'APP_B2B_MANAGE_USERS' },
+    data: {
+      meta: {
+        title: 'account.organization.org_settings',
+        robots: 'noindex, nofollow',
+      },
+      permission: 'APP_B2B_MANAGE_USERS',
+    },
     canActivate: [authorizationToggleGuard],
   },
   {
@@ -34,7 +40,13 @@ export const routes: Routes = [
   {
     path: 'users',
     loadChildren: () => import('./users/users-page.module').then(m => m.UsersPageModule),
-    data: { permission: 'APP_B2B_MANAGE_USERS' },
+    data: {
+      meta: {
+        title: 'account.organization.user_management',
+        robots: 'noindex, nofollow',
+      },
+      permission: 'APP_B2B_MANAGE_USERS',
+    },
     canActivate: [fetchUsersGuard, authorizationToggleGuard],
   },
   {
@@ -74,7 +86,13 @@ export const routes: Routes = [
   {
     path: 'cost-centers',
     canActivate: [featureToggleGuard, fetchCostCentersGuard],
-    data: { feature: 'costCenters' },
+    data: {
+      meta: {
+        title: 'account.organization.cost_center_management',
+        robots: 'noindex, nofollow',
+      },
+      feature: 'costCenters',
+    },
     loadChildren: () => import('./cost-centers/cost-centers-page.module').then(m => m.CostCentersPageModule),
   },
   {

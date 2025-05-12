@@ -7,10 +7,25 @@ import { RouterModule, Routes } from '@angular/router';
  * visible for testing
  */
 export const routes: Routes = [
-  { path: 'approver', loadChildren: () => import('./approver/approver-page.module').then(m => m.ApproverPageModule) },
+  {
+    path: 'approver',
+    data: {
+      meta: {
+        title: 'account.requisitions.approvals',
+        robots: 'noindex, nofollow',
+      },
+    },
+    loadChildren: () => import('./approver/approver-page.module').then(m => m.ApproverPageModule),
+  },
   { path: 'buyer', loadChildren: () => import('./buyer/buyer-page.module').then(m => m.BuyerPageModule) },
   {
     path: 'approver/:requisitionId',
+    data: {
+      meta: {
+        title: 'account.requisitions.approvals',
+        robots: 'noindex, nofollow',
+      },
+    },
     loadChildren: () =>
       import('./requisition-detail/requisition-detail-page.module').then(m => m.RequisitionDetailPageModule),
   },
