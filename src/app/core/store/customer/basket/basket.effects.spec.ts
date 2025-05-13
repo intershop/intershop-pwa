@@ -9,6 +9,7 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
+import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
 import { BasketItemsService } from 'ish-core/services/basket-items/basket-items.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -50,6 +51,7 @@ import {
   updateBasket,
   updateBasketCostCenter,
   updateBasketFail,
+  updateBasketRecurrence,
   updateBasketShippingMethod,
 } from './basket.actions';
 import { BasketEffects } from './basket.effects';
@@ -400,6 +402,23 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.updateBasketCostCenter$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateBasketRecurrence$', () => {
+    it('should trigger the updateBasket action if called', () => {
+      const recurrence = {
+        interval: 'P1D',
+        startDate: '2024-01-26T09:52:16Z',
+      } as Recurrence;
+      const action = updateBasketRecurrence({ recurrence });
+      const completion = updateBasket({
+        update: { recurrence },
+      });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasketRecurrence$).toBeObservable(expected$);
     });
   });
 
