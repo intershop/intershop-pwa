@@ -1,6 +1,7 @@
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
+import { CustomFieldMapper } from 'ish-core/models/custom-field/custom-field.mapper';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
 import { PaymentMapper } from 'ish-core/models/payment/payment.mapper';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
@@ -91,6 +92,7 @@ export class OrderMapper {
         user: data.buyer,
         messageToMerchant: data.messageToMerchant,
         externalOrderReference: data.externalOrderReference,
+        customFields: CustomFieldMapper.fromData(data.customFields),
       };
     }
   }
