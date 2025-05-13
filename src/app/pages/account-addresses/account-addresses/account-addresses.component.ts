@@ -98,7 +98,7 @@ export class AccountAddressesComponent implements OnInit {
     // Selectbox formly configurations
     this.selectInvoiceConfig = {
       key: 'preferredInvoiceAddressUrn',
-      type: 'ish-select-field',
+      type: 'ish-search-select-field',
       props: {
         fieldClass: 'w-100',
         options: addressesAndUser$.pipe(
@@ -119,7 +119,7 @@ export class AccountAddressesComponent implements OnInit {
 
     this.selectShippingConfig = {
       key: 'preferredShippingAddressUrn',
-      type: 'ish-select-field',
+      type: 'ish-search-select-field',
       props: {
         fieldClass: 'w-100',
         options: addressesAndUser$.pipe(

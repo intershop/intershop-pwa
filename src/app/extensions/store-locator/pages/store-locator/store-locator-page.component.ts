@@ -46,7 +46,7 @@ export class StoreLocatorPageComponent implements OnInit {
     return [
       {
         key: 'countryCode',
-        type: 'ish-select-field',
+        type: 'ish-search-select-field',
         wrappers: ['form-field-horizontal'],
         props: {
           required: false,
