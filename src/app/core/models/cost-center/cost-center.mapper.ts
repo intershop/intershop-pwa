@@ -1,8 +1,9 @@
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Link } from 'ish-core/models/link/link.model';
+import { PagingData } from 'ish-core/models/paging/paging.model';
 
-import { CostCenterData } from './cost-center.interface';
-import { CostCenter } from './cost-center.model';
+import { CostCenterBaseData, CostCenterData } from './cost-center.interface';
+import { CostCenter, CostCenterInformation } from './cost-center.model';
 
 export class CostCenterMapper {
   /* map cost center data from link list attributes,
@@ -53,6 +54,24 @@ export class CostCenterMapper {
       };
     } else {
       throw new Error(`'costCenterData' is required for the mapping`);
+    }
+  }
+
+  static fromBaseData(payload: CostCenterBaseData): CostCenterInformation {
+    return {
+      costCenters: CostCenterMapper.fromListData(payload.data),
+      paging: CostCenterMapper.fromInfo(payload),
+    };
+  }
+
+  private static fromInfo(payload: CostCenterBaseData): PagingData {
+    if (payload.info) {
+      const { info } = payload;
+      return {
+        limit: info.limit,
+        offset: info.offset,
+        total: info.total,
+      };
     }
   }
 }

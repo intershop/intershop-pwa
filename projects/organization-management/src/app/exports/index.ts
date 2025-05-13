@@ -1,3 +1,7 @@
+export { LazyManagersSelectComponent } from './lazy-managers-select/lazy-managers-select.component';
+// Export for testing
+export { ManagersSelectComponent } from '../components/managers-select/managers-select.component';
+
 export { LazyBudgetInfoComponent } from './lazy-budget-info/lazy-budget-info.component';
 
 export { OrganizationManagementRoutingModule } from '../pages/organization-management-routing.module';
