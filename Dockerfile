@@ -1,5 +1,5 @@
 # synchronize-marker:docker-cache-share:begin
-FROM node:18.16.0-alpine as buildstep
+FROM node:18.16.0-alpine AS buildstep
 ENV CI=true
 WORKDIR /workspace
 COPY package.json package-lock.json /workspace/
