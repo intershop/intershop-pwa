@@ -13,6 +13,7 @@
       data-testing-id="add-cost-center-link"
       >{{ 'account.costcenter.list.link.add' | translate }}</a
     >
+    <a class="btn btn-secondary" routerLink="import">import cost center</a>
   </div>
 </div>
 
@@ -132,6 +133,10 @@
             </ng-container>
           </td>
         </ng-container>
+
+        <ul *ngIf="csvData$ | async as csv">
+          <li *ngFor="let row of csv">{{ row.costCenterId }} – {{ row.name }}</li>
+        </ul>
 
         <!-- Header and Row Declarations -->
         <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
