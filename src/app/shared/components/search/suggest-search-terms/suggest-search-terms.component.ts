@@ -8,13 +8,13 @@ import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { PipesModule } from 'ish-core/pipes.module';
 
 @Component({
-  selector: 'ish-suggest-search-terms-tile',
-  templateUrl: './suggest-search-terms-tile.component.html',
+  selector: 'ish-suggest-search-terms',
+  templateUrl: './suggest-search-terms.component.html',
   standalone: true,
   imports: [CommonModule, PipesModule, TranslateModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SuggestSearchTermsTileComponent {
+export class SuggestSearchTermsComponent {
   @Input() maxRecentlySearchedWords: number;
   @Input() inputTerms$ = new ReplaySubject<string>(1);
   @Output() submitSearch = new EventEmitter<string>();

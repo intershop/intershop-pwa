@@ -38,7 +38,7 @@
           'col-md-5': results.products?.length
         }"
       >
-        <ish-suggest-keywords-tile
+        <ish-suggest-keywords
           *ngIf="results.keywords.length"
           [keywords]="results.keywords"
           [inputTerms$]="inputSearchTerms$"
@@ -52,7 +52,7 @@
           (routeChange)="resetInput()"
           [maxAutoSuggests]="3"
         />
-        <ish-suggest-brands-tile
+        <ish-suggest-brands
           *ngIf="results.brands?.length"
           [brands]="results.brands"
           [inputTerms$]="inputSearchTerms$"
@@ -96,7 +96,7 @@
           <p>{{ 'suggest.no_results.text' | translate }}</p>
         </div>
         <div *ngIf="hasSearchedTerms()" class="col-12" #searchSuggestLayer>
-          <ish-suggest-search-terms-tile
+          <ish-suggest-search-terms
             [maxRecentlySearchedWords]="5"
             [inputTerms$]="inputSearchTerms$"
             (submitSearch)="submitSearch($event)"
@@ -108,7 +108,7 @@
   <ng-template #initialState
     ><div *ngIf="hasSearchedTerms() && configuration?.autoSuggest" class="search-suggest-container" #searchSuggestLayer>
       <div class="col-12">
-        <ish-suggest-search-terms-tile
+        <ish-suggest-search-terms
           [maxRecentlySearchedWords]="5"
           [inputTerms$]="inputSearchTerms$"
           (submitSearch)="submitSearch($event)"

@@ -1,26 +1,25 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ReplaySubject } from 'rxjs';
 
-import { Brand } from 'ish-core/models/brand/brand.model';
+import { Keyword } from 'ish-core/models/keyword/keyword.model';
 import { PipesModule } from 'ish-core/pipes.module';
 
 @Component({
-  selector: 'ish-suggest-brands-tile',
-  templateUrl: './suggest-brands-tile.component.html',
+  selector: 'ish-suggest-keywords',
+  templateUrl: './suggest-keywords.component.html',
   standalone: true,
-  imports: [CommonModule, PipesModule, TranslateModule, RouterModule],
+  imports: [CommonModule, PipesModule, TranslateModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SuggestBrandsTileComponent {
-  @Input() brands: Brand[];
+export class SuggestKeywordsComponent {
+  @Input() keywords: Keyword[];
   @Input() maxAutoSuggests: number;
   @Input() inputTerms$ = new ReplaySubject<string>(1);
-  @Output() routeChange = new EventEmitter<void>();
+  @Output() submitSearch = new EventEmitter<string>();
 
-  handleInputFocus(): void {
-    this.routeChange.emit();
+  submit(term: string) {
+    this.submitSearch.emit(term);
   }
 }

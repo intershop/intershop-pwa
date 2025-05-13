@@ -21,6 +21,6 @@ export interface SparqueParentCategory {
   root?: number;
 }
 
-export interface SparqueLocalizedValue {
+interface SparqueLocalizedValue {
   [localeId: string]: string;
 }

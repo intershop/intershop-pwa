@@ -24,11 +24,11 @@ import { SearchBoxConfiguration } from 'ish-core/models/search-box-configuration
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { PipesModule } from 'ish-core/pipes.module';
-import { SuggestBrandsTileComponent } from 'ish-shared/components/search/suggest-brands-tile/suggest-brands-tile.component';
+import { SuggestBrandsComponent } from 'ish-shared/components/search/suggest-brands/suggest-brands.component';
 import { SuggestCategoriesComponent } from 'ish-shared/components/search/suggest-categories/suggest-categories.component';
-import { SuggestKeywordsTileComponent } from 'ish-shared/components/search/suggest-keywords-tile/suggest-keywords-tile.component';
+import { SuggestKeywordsComponent } from 'ish-shared/components/search/suggest-keywords/suggest-keywords.component';
 import { SuggestProductsTileComponent } from 'ish-shared/components/search/suggest-products-tile/suggest-products-tile.component';
-import { SuggestSearchTermsTileComponent } from 'ish-shared/components/search/suggest-search-terms-tile/suggest-search-terms-tile.component';
+import { SuggestSearchTermsComponent } from 'ish-shared/components/search/suggest-search-terms/suggest-search-terms.component';
 
 /**
  * The SearchBoxComponent is responsible for handling the search box functionality,
@@ -54,11 +54,11 @@ import { SuggestSearchTermsTileComponent } from 'ish-shared/components/search/su
     IconModule,
     PipesModule,
     TranslateModule,
-    SuggestBrandsTileComponent,
+    SuggestBrandsComponent,
     SuggestCategoriesComponent,
-    SuggestKeywordsTileComponent,
+    SuggestKeywordsComponent,
     SuggestProductsTileComponent,
-    SuggestSearchTermsTileComponent,
+    SuggestSearchTermsComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

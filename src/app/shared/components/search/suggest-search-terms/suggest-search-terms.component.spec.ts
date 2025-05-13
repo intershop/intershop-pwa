@@ -5,11 +5,11 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 
-import { SuggestSearchTermsTileComponent } from './suggest-search-terms-tile.component';
+import { SuggestSearchTermsComponent } from './suggest-search-terms.component';
 
-describe('Suggest Search Terms Tile Component', () => {
-  let component: SuggestSearchTermsTileComponent;
-  let fixture: ComponentFixture<SuggestSearchTermsTileComponent>;
+describe('Suggest Search Terms Component', () => {
+  let component: SuggestSearchTermsComponent;
+  let fixture: ComponentFixture<SuggestSearchTermsComponent>;
   let element: HTMLElement;
   const shoppingFacade = mock(ShoppingFacade);
   const recentSearchTerms$ = new BehaviorSubject<string[]>([]);
@@ -24,7 +24,7 @@ describe('Suggest Search Terms Tile Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SuggestSearchTermsTileComponent);
+    fixture = TestBed.createComponent(SuggestSearchTermsComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 

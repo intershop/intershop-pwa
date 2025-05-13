@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { SuggestKeywordsTileComponent } from './suggest-keywords-tile.component';
+import { SuggestKeywordsComponent } from './suggest-keywords.component';
 
-describe('Suggest Keywords Tile Component', () => {
-  let component: SuggestKeywordsTileComponent;
-  let fixture: ComponentFixture<SuggestKeywordsTileComponent>;
+describe('Suggest Keywords Component', () => {
+  let component: SuggestKeywordsComponent;
+  let fixture: ComponentFixture<SuggestKeywordsComponent>;
   let element: HTMLElement;
 
   beforeEach(async () => {
@@ -15,7 +15,7 @@ describe('Suggest Keywords Tile Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SuggestKeywordsTileComponent);
+    fixture = TestBed.createComponent(SuggestKeywordsComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 

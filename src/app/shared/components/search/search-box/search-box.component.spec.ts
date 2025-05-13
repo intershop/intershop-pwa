@@ -83,7 +83,7 @@ describe('Search Box Component', () => {
       component.inputSearchTerms$.next('cam');
       fixture.detectChanges();
 
-      expect(element.querySelector('ish-suggest-keywords-tile')).toBeTruthy();
+      expect(element.querySelector('ish-suggest-keywords')).toBeTruthy();
     });
 
     it('should show no results when suggestions are available', () => {

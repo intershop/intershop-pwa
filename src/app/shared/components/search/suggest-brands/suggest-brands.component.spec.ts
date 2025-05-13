@@ -3,11 +3,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { ReplaySubject } from 'rxjs';
 
-import { SuggestBrandsTileComponent } from './suggest-brands-tile.component';
+import { SuggestBrandsComponent } from './suggest-brands.component';
 
-describe('Suggest Brands Tile Component', () => {
-  let component: SuggestBrandsTileComponent;
-  let fixture: ComponentFixture<SuggestBrandsTileComponent>;
+describe('Suggest Brands Component', () => {
+  let component: SuggestBrandsComponent;
+  let fixture: ComponentFixture<SuggestBrandsComponent>;
   let element: HTMLElement;
 
   beforeEach(async () => {
@@ -17,7 +17,7 @@ describe('Suggest Brands Tile Component', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SuggestBrandsTileComponent);
+    fixture = TestBed.createComponent(SuggestBrandsComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
