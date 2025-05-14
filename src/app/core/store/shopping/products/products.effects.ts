@@ -409,7 +409,7 @@ export class ProductsEffects {
     const newFacets = repliedFacets;
 
     // processing of the category facet only necessary if a category facet is applied in the current search
-    if (searchParameter[storedCategoryFacet.id]) {
+    if (storedCategoryFacet && searchParameter[storedCategoryFacet.id]) {
       const currentCategoryFacetOption = storedCategoryFacet.facets.find(
         facetOption => facetOption.name === searchParameter[storedCategoryFacet.id][0]
       );

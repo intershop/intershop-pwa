@@ -7,4 +7,4 @@ const getFilterState = createSelector(getShoppingState, (state: ShoppingState) =
 export const getAvailableFilter = createSelector(getFilterState, state => state.availableFilter);
 
 export const getFilterById = (filterId: string) =>
-  createSelector(getAvailableFilter, state => state.filter.find(element => element.id === filterId));
+  createSelector(getAvailableFilter, state => state?.filter?.find(element => element.id === filterId));
