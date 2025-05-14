@@ -1,6 +1,5 @@
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { SparqueImage } from 'ish-core/models/sparque-image/sparque-image.interface';
-import { SparqueOffer } from 'ish-core/models/sparque-offer/sparque-offer.interface';
 
 export interface SparqueProduct {
   sku: string;
@@ -13,7 +12,6 @@ export interface SparqueProduct {
   manufacturer?: string;
   type?: string;
   rank?: number;
-  offers?: SparqueOffer[];
   productVariants?: string[];
   productMaster?: string;
   attributes?: Attribute[];

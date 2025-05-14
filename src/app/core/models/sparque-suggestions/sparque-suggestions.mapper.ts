@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { SparqueCategoryMapper } from 'ish-core/models/sparque-category/sparque-category.mapper';
-import { SparqueOfferMapper } from 'ish-core/models/sparque-offer/sparque-offer.mapper';
 import { SparqueProductMapper } from 'ish-core/models/sparque-product/sparque-product.mapper';
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 
@@ -34,7 +33,6 @@ export class SparqueSuggestionsMapper {
       brands: data.brands ?? [],
       categories,
       products,
-      prices: SparqueOfferMapper.mapOffers(data.products),
     };
 
     return [suggestions, categoryTree, productsArray];

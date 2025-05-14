@@ -28,6 +28,5 @@ export const environment: Environment = {
     apiName: 'PWA',
     channelId: 'ish',
     config: 'default',
-    enablePrices: false,
   },
 };

@@ -9,7 +9,6 @@ kb_sync_latest_only
 
 - [Configuration](#configuration)
   - [Multi-Site Configurations](#multi-site-configurations)
-  - [Prices](#prices)
   - [Versioning of SPARQUE Service Requests](#versioning-of-sparque-service-requests)
 - [Provider Concept](#provider-concept)
 - [Suggestion Feature](#suggestion-feature)
@@ -41,7 +40,6 @@ sparque: {
   // in case this parameter is empty, the wrapper will use default as fallback
   config: '<sparque REST configuration e.g. production>'
   channelId: '<in sparque workspace configured channel>',
-  enablePrices: true | false,
 },
 ```
 
@@ -57,7 +55,6 @@ pwa:
       apiName: <used sparque api>
       config: <sparque REST configuration e.g. production>
       channelId: <in sparque workspace configured channel>
-      enablePrices: <true|false>
 ```
 
 Example for the specification of the SPARQUE configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
@@ -72,7 +69,6 @@ environment:
         "apiName": "<used sparque api>"
         "config": "<sparque REST configuration e.g. production>"
         "channelId": "<in sparque workspace configured channel>"
-        "enablePrices": "<true|false>"
       }
 ```
 
@@ -91,16 +87,8 @@ Example for the specification of multiple domain configuration in a NGINX Docker
     apiName: <used sparque api>
     config: <sparque REST configuration e.g. production>
     channelId: <in sparque workspace configured channel>
-    enablePrices: true | false
   ...
 ```
-
-### Prices
-
-The PWA SPARQUE configuration also contains a parameter `enablePrices`.
-If this parameter is set to `true`, the product prices provided by SPARQUE will be used.
-Otherwise, the product prices are fetched from ICM.
-If the ICM prices will be used, the pricing facet provided by SPARQUE may not work properly.
 
 ### Versioning of SPARQUE Service Requests
 
@@ -216,8 +204,6 @@ To customize the number of search terms stored in the browser's local storage, m
 
 ## Search Feature
 
-The SPARQUE.AI search response not only delivers product results but also includes relevant filters, sorting options, and product pricing.
+The SPARQUE.AI search response not only delivers product results but also includes relevant filters and sorting options.
 This eliminates the need for additional requests to gather all the data required for the search page.
-As outlined in the [Pricing](#pricing) section, prices are only considered if the PWA SPARQUE configuration parameter `enablePrices` is set to `true`.
-Otherwise, an ICM price list request is required to manage prices in the PWA.
 The SPARQUE response data is mapped to the existing data models used by the PWA, ensuring that no modifications are needed for the components utilized on the search page.
