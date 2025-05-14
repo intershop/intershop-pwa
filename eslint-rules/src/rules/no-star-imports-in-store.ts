@@ -39,7 +39,7 @@ const noStarImportsInStoreRule: TSESLint.RuleModule<keyof typeof messages> = {
 
       const getUsageFixes = (fixer: TSESLint.RuleFixer) => [
         ...starImportUsageMap[importSpecifier]?.map(usage =>
-          fixer.replaceText(usage, context.getSourceCode().getText(usage.property))
+          fixer.replaceText(usage, context.sourceCode.getText(usage.property))
         ),
       ];
 
@@ -58,7 +58,7 @@ const noStarImportsInStoreRule: TSESLint.RuleModule<keyof typeof messages> = {
       });
     }
 
-    if (!/^.*\.(effects|reducer|actions|selectors)\.(ts|spec\.ts)$/.test(normalizePath(context.getFilename()))) {
+    if (!/^.*\.(effects|reducer|actions|selectors)\.(ts|spec\.ts)$/.test(normalizePath(context.filename))) {
       return {};
     }
     const starImports: TSESTree.ImportDeclaration[] = [];

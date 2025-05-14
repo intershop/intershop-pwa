@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
-import { Actions, concatLatestFrom, createEffect } from '@ngrx/effects';
+import { Actions, createEffect } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { Angulartics2GoogleTagManager } from 'angulartics2';
 import { filter, map, take, takeWhile } from 'rxjs/operators';

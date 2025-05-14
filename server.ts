@@ -544,7 +544,7 @@ function run() {
 // '__non_webpack_require__' is a proxy to Node 'require'
 // The below code is to ensure that the server is run only when not requiring the bundle.
 // eslint-disable-next-line @typescript-eslint/naming-convention
-declare const __non_webpack_require__: NodeRequire;
+declare const __non_webpack_require__: NodeJS.Require;
 
 const mainModule = __non_webpack_require__.main;
 
