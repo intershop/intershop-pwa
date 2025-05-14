@@ -7,6 +7,14 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 6.0.0 to 7.0.0
+
+The Intershop PWA 7.0.0 release contains the **Sparque suggest** and **Sparque search** functionality to improve the product search in the PWA.
+
+To introduce the optional Sparque integration in the PWA the following changes were necessary that need to be considered when migrating the PWA.
+
+The `ProductImageComponent` was changed to an Angular standalone component that can be used independent from the `SharedModule` but it is also available via the `SharedModule` in the same way as before.
+
 ## From 5.3 to 6.0.0
 
 The Intershop PWA 6.0.0 release contains functionality to improve the **accessibility** of the PWA.
