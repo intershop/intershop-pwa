@@ -4,6 +4,7 @@ import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { SortableAttributesType } from 'ish-core/models/product-listing/product-listing.model';
 import { SearchResponse } from 'ish-core/models/search/search.model';
+import { SparqueOfferMapper } from 'ish-core/models/sparque-offer/sparque-offer.mapper';
 import { SparqueProductMapper } from 'ish-core/models/sparque-product/sparque-product.mapper';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
@@ -19,6 +20,7 @@ export class SparqueSearchMapper {
       total: search.total,
       sortableAttributes: this.mapSortableAttributes(search.sortings),
       filter: this.mapFilter(search.facets, searchParameter),
+      prices: SparqueOfferMapper.mapOffers(search.products),
     };
   }
 

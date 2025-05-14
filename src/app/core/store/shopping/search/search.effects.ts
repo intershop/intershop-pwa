@@ -22,6 +22,7 @@ import {
   loadMoreProducts,
   setProductListingPages,
 } from 'ish-core/store/shopping/product-listing';
+import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
@@ -112,6 +113,7 @@ export class SearchEffects {
                     }
                   )
                 ),
+                // loadProductPricesSuccess({ prices: searchResponse.prices }),
                 filter?.length ? loadFilterSuccess({ filterNavigation: { filter } }) : { type: 'no_filter_action' },
               ];
             }),
@@ -139,6 +141,10 @@ export class SearchEffects {
                 }
                 if (products) {
                   products.map(product => actions.push(loadProductSuccess({ product })));
+                }
+                // TODO: handle prices from suggestions differently
+                if (suggestions.prices) {
+                  actions.push(loadProductPricesSuccess({ prices: suggestions.prices }));
                 }
                 return actions;
               }),

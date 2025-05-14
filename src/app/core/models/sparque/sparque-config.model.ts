@@ -12,6 +12,8 @@ export interface SparqueConfig {
   config?: string;
   // id of channel where sparque product data are assigned to
   channelId?: string;
+  // flag to enable/disable sparque prices
+  enablePrices?: boolean;
 
   [key: string]: unknown;
 }
