@@ -196,6 +196,8 @@ const importExportModules = [
   WishlistsExportsModule,
 ];
 
+const standaloneComponents = [ProductImageComponent];
+
 const declaredComponents = [
   Auth0SignInComponent,
   BasketValidationItemsComponent,
@@ -294,7 +296,6 @@ const exportedComponents = [
   ProductAttributesComponent,
   ProductBundleDisplayComponent,
   ProductIdComponent,
-  ProductImageComponent,
   ProductInventoryComponent,
   ProductItemComponent,
   ProductLabelComponent,
@@ -320,9 +321,9 @@ const exportedComponents = [
 ];
 
 @NgModule({
-  imports: [...importExportModules],
+  imports: [...importExportModules, ...standaloneComponents],
   declarations: [...declaredComponents, ...exportedComponents],
-  exports: [...exportedComponents, ...importExportModules],
+  exports: [...exportedComponents, ...importExportModules, ...standaloneComponents],
 })
 export class SharedModule {
   constructor(moduleLoader: ModuleLoaderService, featureEventNotifier: FeatureEventService, injector: Injector) {
