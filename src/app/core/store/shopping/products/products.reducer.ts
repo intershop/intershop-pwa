@@ -11,6 +11,7 @@ import {
   loadProductSuccess,
   loadProductVariationsFail,
   loadProductVariationsSuccess,
+  loadProductsSuccess,
   productSpecialUpdate,
 } from './products.actions';
 
@@ -38,8 +39,8 @@ function addFailed(failed: string[], sku: string): string[] {
   return [...failed, sku].filter((val, idx, arr) => arr.indexOf(val) === idx);
 }
 
-function removeFailed(failed: string[], sku: string): string[] {
-  return failed.filter(val => val !== sku);
+function removeFailed(failed: string[], skus: string[]): string[] {
+  return failed.filter(val => !skus.includes(val));
 }
 
 export const productsReducer = createReducer(
@@ -53,8 +54,21 @@ export const productsReducer = createReducer(
     const product = action.payload.product;
     return productAdapter.upsertOne(ProductHelper.updateProductInformation(state.entities[product.sku], product), {
       ...state,
-      failed: removeFailed(state.failed, product.sku),
+      failed: removeFailed(state.failed, [product.sku]),
     });
+  }),
+  on(loadProductsSuccess, (state, action) => {
+    const products = action.payload.products;
+    return productAdapter.upsertMany(
+      products.map(product => ProductHelper.updateProductInformation(state.entities[product.sku], product)),
+      {
+        ...state,
+        failed: removeFailed(
+          state.failed,
+          products.map(product => product.sku)
+        ),
+      }
+    );
   }),
   on(
     loadProductVariationsSuccess,

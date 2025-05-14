@@ -27,7 +27,7 @@ import { PipesModule } from 'ish-core/pipes.module';
 import { SuggestBrandsComponent } from 'ish-shared/components/search/suggest-brands/suggest-brands.component';
 import { SuggestCategoriesComponent } from 'ish-shared/components/search/suggest-categories/suggest-categories.component';
 import { SuggestKeywordsComponent } from 'ish-shared/components/search/suggest-keywords/suggest-keywords.component';
-import { SuggestProductsTileComponent } from 'ish-shared/components/search/suggest-products-tile/suggest-products-tile.component';
+import { SuggestProductsComponent } from 'ish-shared/components/search/suggest-products/suggest-products.component';
 import { SuggestSearchTermsComponent } from 'ish-shared/components/search/suggest-search-terms/suggest-search-terms.component';
 
 /**
@@ -57,7 +57,7 @@ import { SuggestSearchTermsComponent } from 'ish-shared/components/search/sugges
     SuggestBrandsComponent,
     SuggestCategoriesComponent,
     SuggestKeywordsComponent,
-    SuggestProductsTileComponent,
+    SuggestProductsComponent,
     SuggestSearchTermsComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

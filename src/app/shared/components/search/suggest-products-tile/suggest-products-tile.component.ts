@@ -1,61 +1,37 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  inject,
-} from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 
-import { AppFacade } from 'ish-core/facades/app.facade';
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { PipesModule } from 'ish-core/pipes.module';
+import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 
 @Component({
   selector: 'ish-suggest-products-tile',
   templateUrl: './suggest-products-tile.component.html',
   standalone: true,
-  imports: [CommonModule, PipesModule, TranslateModule, RouterModule],
+  imports: [CommonModule, PipesModule, TranslateModule, RouterModule, ProductImageComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestProductsTileComponent implements OnInit {
-  @Input() products: Partial<Product>[];
-  @Input() maxAutoSuggests: number;
   @Input() inputTerms$ = new ReplaySubject<string>(1);
   @Input() deviceType: DeviceType;
   @Output() routeChange = new EventEmitter<void>();
 
-  private staticURL: string;
-  private noImageImageUrl = '/assets/img/not-available.svg';
-  private destroyRef = inject(DestroyRef);
+  product$: Observable<ProductView>;
 
-  constructor(private appFacade: AppFacade) {}
+  constructor(private context: ProductContextFacade) {}
 
-  ngOnInit(): void {
-    this.appFacade.getStaticEndpoint$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(staticURL => {
-      this.staticURL = staticURL;
-      this.noImageImageUrl = `${this.staticURL}${this.noImageImageUrl}`;
-    });
+  ngOnInit() {
+    this.product$ = this.context.select('product');
   }
 
   handleInputFocus(): void {
     this.routeChange.emit();
-  }
-
-  getImageEffectiveUrl(product: Partial<Product>): string {
-    let imageUrl = product.images?.find(img => img.typeID === 'S')?.effectiveUrl;
-    if (imageUrl && !imageUrl.match('^(https?|file):')) {
-      imageUrl = `${this.staticURL}/${imageUrl}`;
-    }
-    return imageUrl ? imageUrl : this.noImageImageUrl;
   }
 
   truncate(text: string, limit: number): string {

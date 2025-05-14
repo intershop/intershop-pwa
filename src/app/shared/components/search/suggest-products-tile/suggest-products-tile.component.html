@@ -1,24 +1,19 @@
-<div class="search-suggest-products">
-  <div class="d-flex justify-content-start headline">{{ 'suggest.products.headline' | translate }}</div>
-  <ul>
-    <li *ngFor="let result of products | slice : 0 : maxAutoSuggests">
-      <a class="product-image" [routerLink]="'/prd' + result.sku" (click)="handleInputFocus()" tabindex="-1">
-        <img [src]="getImageEffectiveUrl(result)" alt="{{ result.name }}" />
-      </a>
-      <!-- truncate product name on desktop only -->
-      <a
-        *ngIf="deviceType === 'desktop'; else mobileTablet"
-        [routerLink]="'/prd' + result.sku"
-        [innerHTML]="truncate(result.name, 38) | ishHighlight : (inputTerms$ | async)"
-        (click)="handleInputFocus()"
-      ></a>
-      <ng-template #mobileTablet>
-        <a
-          [routerLink]="'/prd' + result.sku"
-          [innerHTML]="result.name | ishHighlight : (inputTerms$ | async)"
-          (click)="handleInputFocus()"
-        ></a>
-      </ng-template>
-    </li>
-  </ul>
-</div>
+<ng-container *ngIf="product$ | async as product">
+  <a class="product-image" [routerLink]="'/prd' + product.sku" (click)="handleInputFocus()" tabindex="-1">
+    <ish-product-image imageType="S" />
+  </a>
+  <!-- truncate product name on desktop only -->
+  <a
+    *ngIf="deviceType === 'desktop'; else mobileTablet"
+    [routerLink]="'/prd' + product.sku"
+    [innerHTML]="truncate(product.name, 38) | ishHighlight : (inputTerms$ | async)"
+    (click)="handleInputFocus()"
+  ></a>
+  <ng-template #mobileTablet>
+    <a
+      [routerLink]="'/prd' + product.sku"
+      [innerHTML]="product.name | ishHighlight : (inputTerms$ | async)"
+      (click)="handleInputFocus()"
+    ></a>
+  </ng-template>
+</ng-container>

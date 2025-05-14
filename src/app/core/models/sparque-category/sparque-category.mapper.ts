@@ -13,8 +13,8 @@ export class SparqueCategoryMapper {
   constructor(private sparqueImageMapper: SparqueImageMapper) {}
 
   fromSuggestionsData(categories: SparqueCategory[]): { categoryIds: string[]; categoryTree: CategoryTree } {
-    let categoryTree = CategoryTreeHelper.empty();
     const categoryIds: string[] = [];
+    let categoryTree = CategoryTreeHelper.empty();
 
     if (categories?.length) {
       categories.forEach(category => {

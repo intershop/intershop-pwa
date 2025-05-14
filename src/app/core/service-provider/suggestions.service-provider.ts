@@ -3,6 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, take } from 'rxjs';
 
 import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
@@ -41,5 +42,7 @@ export interface SuggestionsService {
    * @param searchTerm - The term to search for suggestions.
    * @returns An observable that emits the search suggestions.
    */
-  searchSuggestions(searchTerm: string): Observable<{ suggestions: Suggestions; categories?: CategoryTree }>;
+  searchSuggestions(
+    searchTerm: string
+  ): Observable<{ suggestions: Suggestions; categories?: CategoryTree; products?: Partial<Product>[] }>;
 }

@@ -28,28 +28,43 @@ export class SparqueImageMapper {
       typeID,
       type: 'Image',
       name: `${viewID} ${typeID}`,
-      imageActualHeight: typeID === 'S' ? 110 : 270,
-      imageActualWidth: typeID === 'S' ? 110 : 270,
+      imageActualHeight: this.mapImageSize(typeID),
+      imageActualWidth: this.mapImageSize(typeID),
       primaryImage: true,
     };
   }
 
-  mapProductImages(images: SparqueImage[]): Image[] {
-    return images ? images.map(image => this.mapImage(image)) : [];
+  fromImages(images: SparqueImage[]): Image[] {
+    return images?.length ? images.map(image => this.fromImage(image)) : [];
   }
 
-  private mapImage(image: SparqueImage): Image {
-    const viewID = AttributeHelper.getAttributeValueByAttributeName(image.attributes, 'image-view') as string;
-    const typeID = AttributeHelper.getAttributeValueByAttributeName(image.attributes, 'image-type') as string;
+  private fromImage(image: SparqueImage): Image {
+    const viewID = AttributeHelper.getAttributeValueByAttributeName<string>(image.attributes, 'image-view');
+    const typeID = AttributeHelper.getAttributeValueByAttributeName<string>(image.attributes, 'image-type');
     return {
-      effectiveUrl: image.id,
-      primaryImage: image.isPrimaryImage,
-      type: 'Image',
+      effectiveUrl: `${this.staticURL}/${image.id}`,
       typeID,
       viewID,
+      type: 'Image',
       name: `${viewID} ${typeID}`,
-      imageActualHeight: typeID === 'S' ? 110 : 270,
-      imageActualWidth: typeID === 'S' ? 110 : 270,
+      imageActualHeight: this.mapImageSize(typeID),
+      imageActualWidth: this.mapImageSize(typeID),
+      primaryImage: viewID === 'front',
     };
+  }
+
+  private mapImageSize(typeID: string): number {
+    switch (typeID) {
+      case 'S':
+        return 110;
+      case 'M':
+        return 270;
+      case 'L':
+        return 500;
+      case 'ZOOM':
+        return 1500;
+      default:
+        return 270;
+    }
   }
 }

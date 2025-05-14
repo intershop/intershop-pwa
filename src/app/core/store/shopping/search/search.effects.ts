@@ -24,7 +24,7 @@ import {
   setProductListingPages,
 } from 'ish-core/store/shopping/product-listing';
 import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
-import { loadProductSuccess } from 'ish-core/store/shopping/products';
+import { loadProductSuccess, loadProductsSuccess } from 'ish-core/store/shopping/products';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
   mapErrorToAction,
@@ -129,10 +129,13 @@ export class SearchEffects {
             .get()
             .searchSuggestions(searchTerm)
             .pipe(
-              concatMap(({ suggestions, categories }) => {
+              concatMap(({ suggestions, categories, products }) => {
                 const actions: Action[] = [suggestSearchSuccess({ suggestions })];
                 if (categories) {
                   actions.push(loadCategorySuccess({ categories }));
+                }
+                if (products) {
+                  actions.push(loadProductsSuccess({ products }));
                 }
                 // TODO: handle prices from suggestions differently
                 if (suggestions.prices) {

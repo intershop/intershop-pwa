@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { SparqueCategoryMapper } from 'ish-core/models/sparque-category/sparque-category.mapper';
 import { SparqueOfferMapper } from 'ish-core/models/sparque-offer/sparque-offer.mapper';
 import { SparqueProductMapper } from 'ish-core/models/sparque-product/sparque-product.mapper';
@@ -15,23 +16,27 @@ export class SparqueSuggestionsMapper {
     private sparqueProductMapper: SparqueProductMapper
   ) {}
 
-  fromData(data: SparqueSuggestions): [Suggestions, CategoryTree] {
+  fromData(data: SparqueSuggestions): [Suggestions?, CategoryTree?, Partial<Product>[]?] {
     if (!data) {
-      return [undefined, undefined];
+      return [];
     }
 
-    const result = this.sparqueCategoryMapper.fromSuggestionsData(data.categories);
-    const categories = result.categoryIds;
-    const categoryTree = result.categoryTree;
+    const mappedCategories = this.sparqueCategoryMapper.fromSuggestionsData(data.categories);
+    const categories = mappedCategories.categoryIds;
+    const categoryTree = mappedCategories.categoryTree;
+
+    const mappedProducts = this.sparqueProductMapper.fromSuggestionsData(data.products);
+    const products = mappedProducts.productSkus;
+    const productsArray = mappedProducts.products;
 
     const suggestions = {
       keywords: data.keywordSuggestions ?? [],
       brands: data.brands ?? [],
       categories,
-      products: this.sparqueProductMapper.mapProducts(data.products),
+      products,
       prices: SparqueOfferMapper.mapOffers(data.products),
     };
 
-    return [suggestions, categoryTree];
+    return [suggestions, categoryTree, productsArray];
   }
 }
