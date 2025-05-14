@@ -38,7 +38,7 @@ sparque: {
   workspaceName: '<name of the workspace>',
   apiName: '<used sparque api>',
   // config <= optional parameter
-  // in case this parameter is empty the wrapper will use default as fallback
+  // in case this parameter is empty, the wrapper will use default as fallback
   config: '<sparque REST configuration e.g. production>'
   channelId: '<in sparque workspace configured channel>',
   enablePrices: true | false,
@@ -78,9 +78,9 @@ environment:
 
 ### Multi-Site Configurations
 
-The SPARQUE integration also supports dynamic configurations of a single PWA container deployment in regards of a multi-site scenario. (see [Guide - Multi-Site Configurations](./multi-site-configurations.md))
+The SPARQUE integration also supports dynamic configurations of a single PWA container deployment in regards of a multi-site scenario, see [Guide - Multi-Site Configurations](./multi-site-configurations.md).
 
-Example for the specification of multiple domain configuration in a NGINX docker yaml:
+Example for the specification of multiple domain configuration in a NGINX Docker yaml:
 
 ```yaml
 'domain1':
@@ -98,17 +98,17 @@ Example for the specification of multiple domain configuration in a NGINX docker
 ### Prices
 
 The PWA SPARQUE configuration also contains a parameter `enablePrices`.
-If this parameter is set to `true` than the product prices provided by SPARQUE will be used.
-Otherwise the product prices are fetched from ICM.
-In case the ICM prices will be used the pricing facet provided by SPARQUE may not work properly.
+If this parameter is set to `true`, the product prices provided by SPARQUE will be used.
+Otherwise, the product prices are fetched from ICM.
+If the ICM prices will be used, the pricing facet provided by SPARQUE may not work properly.
 
 ### Versioning of SPARQUE Service Requests
 
 It is possible to specify the request API version to be used for each individual SPARQUE REST call.
-To change to another api version the affected get method api parameter has to adapt.
+To change to another API version, the affected get method API parameter has to be adapted.
 If a version other than the recommended PWA version is used, the interfaces and mapper used for the request may have to be adapted.
 
-Example shows the provided _SparqueSearchService_ which uses the v2 api version in the _searchSuggestions_ method:
+The following example shows the provided _SparqueSearchService_ which uses the v2 API version in the _searchSuggestions_ method:
 
 ```ts
 export class SparqueSearchService extends SearchService {
@@ -125,7 +125,7 @@ export class SparqueSearchService extends SearchService {
 
 ## Provider Concept
 
-To exchange services without changing the corresponding effects method the provider concept is introduced.
+To exchange services without changing the corresponding effects method, the provider concept was introduced.
 The provider contains a _get()_ method which returns the proper service instance regarding the predefined criteria.
 Each provider is bound to an interface.
 The actual service has to implement this interface.
@@ -177,8 +177,8 @@ suggestSearch$ =
 
 ## Suggestion Feature
 
-The SPARQUE.AI suggestion response contains beside the keywords further data like suggested products, categories, brands and content.
-The suggestion as part of the [Search Box Component](../../src/app/shared/components/search/search-box/search-box.component.ts).
+Beside the keywords, the SPARQUE.AI suggestion response contains further data like suggested products, categories, brands, and content.
+The suggestion is part of the [Search Box Component](../../src/app/shared/components/search/search-box/search-box.component.ts).
 As soon as the search term has a length of at least 3 characters, a suggestion request is triggered.
 If no hits are found for the used search term, the recently used search terms appear.
 Otherwise, the search results are displayed.
