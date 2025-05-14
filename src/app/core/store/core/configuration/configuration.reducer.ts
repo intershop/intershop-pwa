@@ -51,7 +51,7 @@ const initialState: ConfigurationState = {
   serverTranslations: {},
   multiSiteLocaleMap: undefined,
   _deviceType: environment.defaultDeviceType,
-  sparque: environment.sparque,
+  sparque: undefined,
 };
 
 function addSingleTranslation(

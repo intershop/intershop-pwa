@@ -17,14 +17,3 @@ export interface SparqueConfig {
 
   [key: string]: unknown;
 }
-
-export function getEmptySparqueConfig(): SparqueConfig {
-  return {
-    serverUrl: '',
-    workspaceName: '',
-    apiName: '',
-    channelId: '',
-    config: '',
-    enablePrices: true,
-  };
-}

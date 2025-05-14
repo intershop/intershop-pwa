@@ -35,12 +35,11 @@ Example for the specification of the SPARQUE configuration via `environment` fil
 ```ts
 sparque: {
   serverUrl: '<sparque connection url>',
-  wrapperApi: '<wrapper api version>',
   workspaceName: '<name of the workspace>',
   apiName: '<used sparque api>',
   // config <= optional parameter
   // in case this parameter is empty the wrapper will use default as fallback
-  config: 'production'
+  config: '<sparque REST configuration e.g. production>'
   channelId: '<in sparque workspace configured channel>',
   enablePrices: true | false,
 },
@@ -53,13 +52,12 @@ Example for the specification of the SPARQUE configuration via `docker-compose.y
 pwa:
   environment:
     SPARQUE: |
-      serverUrl: "<sparque connection url>"
-      wrapperApi: "<wrapper api version>"
-      workspaceName: "<name of the workspace>"
-      apiName: "<used sparque api>"
-      config: "production"
-      channelId: "<in sparque workspace configured channel>"
-      enablePrices: "<true|false>"
+      serverUrl: <sparque connection url>
+      workspaceName: <name of the workspace>
+      apiName: <used sparque api>
+      config: <sparque REST configuration e.g. production>
+      channelId: <in sparque workspace configured channel>
+      enablePrices: <true|false>
 ```
 
 Example for the specification of the SPARQUE configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
@@ -70,10 +68,9 @@ environment:
     value: |
       {
         "serverUrl": "<sparque connection url>"
-        "wrapperApi": "<wrapper api version>"
         "workspaceName": "<name of the workspace>"
         "apiName": "<used sparque api>"
-        "config": "production"
+        "config": "<sparque REST configuration e.g. production>"
         "channelId": "<in sparque workspace configured channel>"
         "enablePrices": "<true|false>"
       }
@@ -90,9 +87,9 @@ Example for the specification of multiple domain configuration in a NGINX docker
   channel: channel1
   sparque:
     serverUrl: <sparque connection url>
-    wrapperApi: <wrapper api version>
     workspaceName: <name of the workspace>
     apiName: <used sparque api>
+    config: <sparque REST configuration e.g. production>
     channelId: <in sparque workspace configured channel>
     enablePrices: true | false
   ...
@@ -130,45 +127,48 @@ export class SparqueSearchService extends SearchService {
 
 To exchange services without changing the corresponding effects method the provider concept is introduced.
 The provider contains a _get()_ method which returns the proper service instance regarding the predefined criteria.
-Each provider is bound to an abstract service class.
-The actual service is then an extension of the abstract class.
-The service must implement the methods defined in the abstract class.
+Each provider is bound to an interface.
+The actual service has to implement this interface.
+The service must implement the methods defined in the interface.
 
 ```ts
-// example SearchServiceProvider
+// example SuggestionsServiceProvider
 @Injectable({ providedIn: 'root' })
-export class SearchServiceProvider {
+export class SuggestionsServiceProvider {
   ...
-  get(): SearchService {
+  get(): SuggestionsService {
     ...
     return isSparque ? this.sparqueSearchService : this.productsService;
   }
 }
 
-// example abstract SearchService
+// example SuggestionsService interface
 @Injectable({ providedIn: 'root' })
-export abstract class SearchService {
+export interface SuggestionsService {
   ...
-  abstract search(searchTerm: string): Observable<Suggestion>;
+  searchSuggestions(searchTerm: string): Observable<{ suggestions: Suggestions; categories?: CategoryTree }>;
 }
 
-// example SearchService implementation
+// example SparqueSuggestionsService implementation
 @Injectable({ providedIn: 'root' })
-export class SparqueSearchService extends SearchService {
+export class SparqueSuggestionsService implements SuggestionsService {
   ...
-  search(searchTerm: string): Observable<Suggestion> {
+  searchSuggestions(searchTerm: string): Observable<{ suggestions: Suggestions; categories?: CategoryTree }> {
     ...
   }
 }
 
-// usage in the products.effects.ts effect
-loadFilteredProducts$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadProductsForFilter),
-      ...
-      switchMap(pageSize =>
-            this.searchServiceProvider
-              .get()
+// usage in the search.effects.ts effect
+suggestSearch$ =
+    !SSR &&
+    createEffect(() =>
+      this.actions$.pipe(
+        ofType(suggestSearch),
+        mapToPayloadProperty('searchTerm'),
+        concatMap(searchTerm =>
+          this.suggestionsServiceProvider
+            .get()
+            .searchSuggestions(searchTerm)
               ....
       )
   ...
@@ -192,11 +192,11 @@ Otherwise, the search results are displayed.
 
   The Search Box Component consists of several components that work together to provide a seamless search experience:
 
-  - **[ish-suggest-keywords-tile](../../src/app/shared/components/search/suggest-keywords-tile/suggest-keywords-tile.component.ts)**: Displays real-time keyword suggestions
-  - **[ish-suggest-categories-tile](../../src/app/shared/components/search/suggest-categories-tile/suggest-categories-tile.component.ts)**: Displays the real-time suggested categories
-  - **[ish-suggest-products-tile](../../src/app/shared/components/search/suggest-products-tile/suggest-products-tile.component.ts)**: Shows relevant product suggestions based on the user's input
-  - **[ish-suggest-brands-tile](../../src/app/shared/components/search/suggest-brands-tile/suggest-brands-tile.component.ts)**: Provides brand suggestions related to the search terms
-  - **[ish-suggest-search-terms-tile](../../src/app/shared/components/search/suggest-search-terms-tile/suggest-search-terms-tile.component.ts)**: Shows the search terms the user has already searched for in the past.
+  - **[ish-suggest-keywords](../../src/app/shared/components/search/suggest-keywords/suggest-keywords.component.ts)**: Displays real-time keyword suggestions
+  - **[ish-suggest-categories](../../src/app/shared/components/search/suggest-categories/suggest-categories.component.ts)**: Displays the real-time suggested categories
+  - **[ish-suggest-products](../../src/app/shared/components/search/suggest-products-tile/suggest-products-tile.component.ts)**: Shows relevant product suggestions based on the user's input
+  - **[ish-suggest-brands](../../src/app/shared/components/search/suggest-brands/suggest-brands.component.ts)**: Provides brand suggestions related to the search terms
+  - **[ish-suggest-search-terms](../../src/app/shared/components/search/suggest-search-terms/suggest-search-terms.component.ts)**: Shows the search terms the user has already searched for in the past.
 
   The number of objects to be displayed can be configured individually for each component:
 
@@ -209,7 +209,7 @@ Otherwise, the search results are displayed.
 ### Recent Search Terms
 
 The recent search terms are words that would be used in the past for a search for this shop domain in the currently used browser.
-The last 10 search terms are stored in the browser's local storage.
+The last 5 search terms are stored in the browser's local storage.
 This functionality is independent of SPARQUE, but was implemented as part of the PWA SPARQUE integration.
 This functionality is also available for customers who continue to use the ICM/Solr search.
 To customize the number of search terms stored in the browser's local storage, modify the `MAX_NUMBER_OF_STORED_SEARCH_TERMS` constant in the [Search reducer](../../src/app/core/store/shopping/search/search.reducer.ts) to suit your requirements.
