@@ -53,8 +53,8 @@ pwa:
       serverUrl: <sparque connection url>
       workspaceName: <name of the workspace>
       apiName: <used sparque api>
-      config: <sparque REST configuration e.g. production>
-      channelId: <in sparque workspace configured channel>
+      config: <sparque REST configuration, e.g., production>
+      channelId: <channel configured in sparque workspace>
 ```
 
 Example for the specification of the SPARQUE configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
@@ -67,14 +67,14 @@ environment:
         "serverUrl": "<sparque connection url>"
         "workspaceName": "<name of the workspace>"
         "apiName": "<used sparque api>"
-        "config": "<sparque REST configuration e.g. production>"
-        "channelId": "<in sparque workspace configured channel>"
+        "config": "<sparque REST configuration, e.g., production>"
+        "channelId": "<channel configured in sparque workspace>"
       }
 ```
 
 ### Multi-Site Configurations
 
-The SPARQUE integration also supports dynamic configurations of a single PWA container deployment in regards of a multi-site scenario, see [Guide - Multi-Site Configurations](./multi-site-configurations.md).
+The SPARQUE integration also supports dynamic configurations of a single PWA container deployment with regard to a multi-site scenario, see [Guide - Multi-Site Configurations](./multi-site-configurations.md).
 
 Example for the specification of multiple domain configuration in a NGINX Docker yaml:
 
@@ -86,7 +86,7 @@ Example for the specification of multiple domain configuration in a NGINX Docker
     workspaceName: <name of the workspace>
     apiName: <used sparque api>
     config: <sparque REST configuration e.g. production>
-    channelId: <in sparque workspace configured channel>
+    channelId: <channel configured in sparque workspace>
   ...
 ```
 
@@ -173,7 +173,7 @@ Otherwise, the search results are displayed.
 
 ### New Standalone Components
 
-- _Search Box Component_: This component is responsible for providing auto-suggestions for search queries. When a user starts typing in the search box, the component interacts with the SPARQUE.AI search engine to fetch and display relevant keyword suggestions, products, catalogs and brands in real-time. This enhances the user experience by helping users quickly find what they are looking for and reducing the effort required to type full search queries.
+- _Search Box Component_: This component is responsible for providing auto-suggestions for search queries. When a user starts typing in the search box, the component interacts with the SPARQUE.AI search engine to fetch and display relevant keyword suggestions, products, catalogs, and brands in real-time. This enhances the user experience by helping users quickly find what they are looking for and reducing the effort required to type full search queries.
 
   > [!NOTE]
   > This component is used for the Solr suggestion too, in case SPARQUE is not configured.
@@ -192,11 +192,11 @@ Otherwise, the search results are displayed.
   @Input() maxAutoSuggests: number;
   ```
 
-  The default settings are 5 elements for keywords and recent search terms, 3 elements each for categories and brands and 8 elements for products.
+  The default settings are 5 elements for keywords and recent search terms, 3 elements each for categories and brands, and 8 elements for products.
 
 ### Recent Search Terms
 
-The recent search terms are words that would be used in the past for a search for this shop domain in the currently used browser.
+The recent search terms are words that were used in the past for a search for this shop domain in the currently used browser.
 The last 5 search terms are stored in the browser's local storage.
 This functionality is independent of SPARQUE, but was implemented as part of the PWA SPARQUE integration.
 This functionality is also available for customers who continue to use the ICM/Solr search.
