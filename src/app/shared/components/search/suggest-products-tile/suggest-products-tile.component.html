@@ -1,4 +1,4 @@
-<ng-container *ngIf="product$ | async as product">
+<li *ngIf="product$ | async as product">
   <a class="product-image" [routerLink]="'/prd' + product.sku" (click)="handleInputFocus()" tabindex="-1">
     <ish-product-image imageType="S" />
   </a>
@@ -16,4 +16,4 @@
       (click)="handleInputFocus()"
     ></a>
   </ng-template>
-</ng-container>
+</li>

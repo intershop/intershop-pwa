@@ -204,8 +204,8 @@
       .search-suggest-products {
         ul {
           @media (min-width: $screen-md) {
-            display: flex;
-            flex-flow: row wrap;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             gap: $space-default;
           }
 
@@ -216,7 +216,6 @@
 
             @media (min-width: $screen-md) {
               flex-direction: column;
-              width: calc((100% - 45px) / 4);
             }
 
             a {
@@ -248,16 +247,7 @@
       .products-only {
         .search-suggest-products {
           ul {
-            li {
-              // more items per line on larger screens
-              @media (min-width: $screen-sm) {
-                flex: 0 1 14%;
-              }
-
-              @media (min-width: $screen-md) {
-                flex: 0 1 12%;
-              }
-            }
+            grid-template-columns: repeat(7, 1fr);
           }
         }
       }
