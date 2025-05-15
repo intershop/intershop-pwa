@@ -5,6 +5,8 @@ import useAliasImportsRule from '../src/rules/use-alias-imports';
 
 import testRule from './rule-tester';
 
+jest.mock('fs');
+
 jest.spyOn(fs, 'readFileSync').mockImplementation(
   () => `{
   "compilerOptions": {
