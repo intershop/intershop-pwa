@@ -138,6 +138,7 @@
     "@types/webpack": "^5.28.5",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
+    "@typescript-eslint/rule-tester": "^7.2.0",
     "better-npm-audit": "^3.11.0",
     "browser-sync": "^3.0.0",
     "comment-json": "^4.2.5",
