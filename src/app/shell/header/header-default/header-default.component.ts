@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
@@ -30,6 +31,8 @@ export class HeaderDefaultComponent implements OnChanges {
   @Input() reset: unknown;
 
   private activeComponent: CollapsibleComponent = 'search';
+
+  constructor(@Inject(DOCUMENT) private document: Document) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.reset) {
@@ -101,7 +104,6 @@ export class HeaderDefaultComponent implements OnChanges {
   }
 
   private focusSearch() {
-    const searchInput = document.getElementById('header-search-input');
-    (searchInput as HTMLElement).focus();
+    this.document.getElementById('header-search-input').focus();
   }
 }

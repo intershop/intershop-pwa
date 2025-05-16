@@ -26,11 +26,11 @@ export interface ConfigurationState {
   localeCurrencyOverride?: { [locale: string]: string | string[] };
   lang?: string;
   currency?: string;
-  serverTranslations: { [lang: string]: Translations };
-  multiSiteLocaleMap: Record<string, unknown>;
+  serverTranslations?: { [lang: string]: Translations };
+  multiSiteLocaleMap?: Record<string, unknown>;
+  sparque?: SparqueConfig;
   // not synced via state transfer
   _deviceType?: DeviceType;
-  sparque?: SparqueConfig;
 }
 
 const initialState: ConfigurationState = {
@@ -50,8 +50,8 @@ const initialState: ConfigurationState = {
   currency: undefined,
   serverTranslations: {},
   multiSiteLocaleMap: undefined,
-  _deviceType: environment.defaultDeviceType,
   sparque: undefined,
+  _deviceType: environment.defaultDeviceType,
 };
 
 function addSingleTranslation(

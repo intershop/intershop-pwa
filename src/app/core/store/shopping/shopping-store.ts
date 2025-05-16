@@ -6,13 +6,13 @@ import { ProductListingState } from './product-listing/product-listing.reducer';
 import { ProductPricesState } from './product-prices/product-prices.reducer';
 import { ProductsState } from './products/products.reducer';
 import { PromotionsState } from './promotions/promotions.reducer';
-import { SuggestState } from './search/search.reducer';
+import { SearchState } from './search/search.reducer';
 import { WarrantiesState } from './warranties/warranties.reducer';
 
 export interface ShoppingState {
   categories: CategoriesState;
   products: ProductsState;
-  search: SuggestState;
+  search: SearchState;
   filter: FilterState;
   promotions: PromotionsState;
   productListing: ProductListingState;

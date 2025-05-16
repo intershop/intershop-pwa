@@ -29,7 +29,6 @@ const categoryPageRoutes: Routes = [
   imports: [RouterModule.forChild(categoryPageRoutes), CategoryImageComponent, SharedModule],
   declarations: [
     CategoryCategoriesComponent,
-
     CategoryListComponent,
     CategoryNavigationComponent,
     CategoryPageComponent,

@@ -1,10 +1,11 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   HostListener,
+  Inject,
   Input,
   OnDestroy,
   OnInit,
@@ -93,7 +94,11 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   // search suggest layer height
   private resizeTimeout: ReturnType<typeof setTimeout>;
 
-  constructor(private shoppingFacade: ShoppingFacade, private router: Router) {}
+  constructor(
+    private shoppingFacade: ShoppingFacade,
+    private router: Router,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
 
   get usedIcon(): IconName {
     return this.configuration?.icon || 'search';
@@ -265,7 +270,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
       // timeout to wait for keyboard animation to finish
       this.resizeTimeout = setTimeout(() => {
         const remainingHeight = window.visualViewport?.height || window.innerHeight;
-        document.documentElement.style.setProperty('--viewport-remaining-height', `${remainingHeight}px`);
+        this.document.documentElement.style.setProperty('--viewport-remaining-height', `${remainingHeight}px`);
       }, 300);
     }
   };

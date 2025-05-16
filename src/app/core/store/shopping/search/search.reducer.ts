@@ -13,14 +13,14 @@ import {
   suggestSearchSuccess,
 } from './search.actions';
 
-export interface SuggestState {
+export interface SearchState {
   suggestions: Suggestions;
   _searchTerms: string[];
   loading: boolean;
   error: HttpError;
 }
 
-const initialState: SuggestState = {
+const initialState: SearchState = {
   suggestions: undefined,
   _searchTerms: SSR ? [] : localStorage.getItem('_searchTerms') ? JSON.parse(localStorage.getItem('_searchTerms')) : [],
   loading: false,
@@ -34,15 +34,15 @@ export const searchReducer = createReducer(
   setLoadingOn(suggestSearch),
   unsetLoadingAndErrorOn(suggestSearchSuccess),
   setErrorOn(suggestSearchFail, sparqueSuggestServerError),
-  on(removeSuggestions, (state): SuggestState => ({ ...state, suggestions: undefined })),
+  on(removeSuggestions, (state): SearchState => ({ ...state, suggestions: undefined })),
   on(
     suggestSearchSuccess,
-    (state, action): SuggestState => ({
+    (state, action): SearchState => ({
       ...state,
       suggestions: action.payload.suggestions,
     })
   ),
-  on(addSearchTermToSuggestion, (state, action): SuggestState => {
+  on(addSearchTermToSuggestion, (state, action): SearchState => {
     const newSearchTerms = state._searchTerms.includes(action.payload.searchTerm)
       ? [...state._searchTerms]
       : [action.payload.searchTerm, ...state._searchTerms].slice(0, MAX_NUMBER_OF_STORED_SEARCH_TERMS);

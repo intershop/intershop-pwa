@@ -24,7 +24,7 @@ export class SparqueProductMapper {
     return { productSkus, products };
   }
 
-  fromSuggestion(data: SparqueProduct): Partial<Product> {
+  private fromSuggestion(data: SparqueProduct): Partial<Product> {
     return {
       sku: data.sku,
       name: data.name,
