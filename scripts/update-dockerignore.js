@@ -7,7 +7,9 @@ function countFolders(pathName) {
 }
 
 const content = glob
-  .sync('**/.gitignore')
+  .sync('**/.gitignore', {
+    ignore: ['**/node_modules/**'],
+  })
   .sort((a, b) => countFolders(a) - countFolders(b))
   .sort()
   .map(gitignore => {
