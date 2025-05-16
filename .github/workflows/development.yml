@@ -158,6 +158,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
 
       - name: Production Build PWA Image
         run: docker compose build pwa
@@ -168,6 +173,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
 
       - name: Build Nginx Image
         run: docker compose build nginx
