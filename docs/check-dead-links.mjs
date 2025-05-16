@@ -59,9 +59,9 @@ let gitChanged =
     .split('\n')
     .filter(path => path.endsWith('.md'));
 
-const files = glob
-  .sync('**/*.md')
-  .filter(file => !file.includes(`node_modules${path.sep}`) && !file.includes(`dist${path.sep}`));
+const files = glob.sync('**/*.md', {
+  ignore: ['**/node_modules/**', '**/dist/**'],
+});
 
 const externalLinks = [];
 let isError = false;
