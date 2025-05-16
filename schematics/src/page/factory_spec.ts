@@ -13,42 +13,6 @@ describe('Page Schematic', () => {
     appTree = await lastValueFrom(appTree$);
 
     appTree.create(
-      '/src/app/app.module.ts',
-      `import { NgModule } from '@angular/core';
-    import { AppRoutingModule } from './pages/app-routing.module';
-
-    @NgModule({
-      imports: [AppRoutingModule],
-      declarations: []
-    })
-    export class AppModule { }`
-    );
-
-    appTree.create(
-      '/src/app/extensions/feature/feature.module.ts',
-      `import { NgModule } from '@angular/core';
-    import { FeatureRoutingModule } from './pages/feature-routing.module';
-
-    @NgModule({
-      imports: [FeatureRoutingModule],
-      declarations: []
-    })
-    export class FeatureModule { }`
-    );
-
-    appTree.create(
-      '/src/app/extensions/feature2/feature2.module.ts',
-      `import { NgModule } from '@angular/core';
-    import { Feature2RoutingModule } from './pages/feature2-routing.module';
-
-    @NgModule({
-      imports: [Feature2RoutingModule],
-      declarations: []
-    })
-    export class Feature2Module { }`
-    );
-
-    appTree.create(
       '/src/app/pages/app-routing.module.ts',
       `
       import { NgModule } from '@angular/core';
