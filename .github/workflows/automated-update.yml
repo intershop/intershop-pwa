@@ -10,7 +10,7 @@ on:
   #   - cron: '0 0 * * 1'
 
 env:
-  NODE_VERSION: 18.16.0
+  NODE_VERSION: 20.19.1
 
 jobs:
   CancelPrevious:
@@ -39,7 +39,7 @@ jobs:
         with:
           ref: develop
 
-      - name: Use Node.js 16
+      - name: Use Node.js 20
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
