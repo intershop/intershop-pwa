@@ -15,7 +15,7 @@
   "jest": {
     "testRunner": "jest-jasmine2",
     "transform": {
-      "^.+\\.tsx?$": "ts-jest"
+      "^.+\\.tsx?$": ["ts-jest", { "tsconfig": "tsconfig.spec.json" }]
     },
     "testRegex": ".*\\.spec\\.ts$",
     "testPathIgnorePatterns": [
