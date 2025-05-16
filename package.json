@@ -12,7 +12,7 @@
   },
   "private": true,
   "scripts": {
-    "postinstall": "npm-run-all --silent build:eslint-rules build:schematics synchronize-lazy-components init-development-environment",
+    "postinstall": "",
     "prepare": "husky install",
     "update-dockerignore": "node scripts/update-dockerignore",
     "init-development-environment": "node scripts/init-development-environment",
