@@ -1,5 +1,5 @@
 <div *ngIf="stepConfig$ | async as config" class="d-flex flex-nowrap justify-content-between tacton-button-bar">
-  <div class="d-inline-block mr-auto">
+  <div class="d-inline-block me-auto">
     <button
       type="button"
       class="btn btn-secondary no-wrap text-nowrap"
@@ -9,7 +9,7 @@
       {{ 'tacton.step_buttons.reset.label' | translate }}
     </button>
   </div>
-  <div *ngIf="config.previousStep" class="d-inline-block ml-2">
+  <div *ngIf="config.previousStep" class="d-inline-block ms-2">
     <button
       type="button"
       class="btn btn-secondary text-nowrap"
@@ -19,7 +19,7 @@
       {{ 'tacton.step_buttons.previous.label' | translate }}
     </button>
   </div>
-  <div *ngIf="config.nextStep" class="d-inline-block ml-2">
+  <div *ngIf="config.nextStep" class="d-inline-block ms-2">
     <button
       type="button"
       class="btn btn-primary text-nowrap"
@@ -29,7 +29,7 @@
       {{ 'tacton.step_buttons.next.label' | translate }}
     </button>
   </div>
-  <div *ngIf="!config.nextStep" class="d-inline-block ml-2">
+  <div *ngIf="!config.nextStep" class="d-inline-block ms-2">
     <button type="submit" class="btn btn-primary text-nowrap" (click)="submit()" data-testing-id="submit-button">
       {{ 'tacton.step_buttons.submit.label' | translate }}
     </button>

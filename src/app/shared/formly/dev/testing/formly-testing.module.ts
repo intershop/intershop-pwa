@@ -108,7 +108,7 @@ class TextareaFieldComponent extends FieldType {}
 @Component({ template: 'DummyLibraryFieldComponent: {{ field.key }}' })
 class DummyLibraryFieldComponent extends FieldType {}
 
-@Component({ template: `<ng-template #fieldComponent> </ng-template>` })
+@Component({ template: `<ng-template #fieldComponent />` })
 class DummyWrapperComponent extends FieldWrapper {}
 
 @Component({

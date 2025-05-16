@@ -50,9 +50,9 @@ export class CMSContainerComponent implements CMSComponent, OnChanges {
         gridCSS += gridObject.Large !== -1 ? `col-xl-${gridObject.Large} ` : 'd-xl-none ';
       }
 
-      // 'float-left' is added to get the similar styling as with Bootstrap 3
+      // 'float-start' is added to get the similar styling as with Bootstrap 5
       if (gridCSS !== '') {
-        gridCSS += 'float-left ';
+        gridCSS += 'float-start ';
       }
     }
 

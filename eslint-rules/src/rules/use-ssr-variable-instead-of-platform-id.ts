@@ -6,7 +6,7 @@ const useSsrVariableInsteadOfPlatformIdRule: TSESLint.RuleModule<string> = {
     docs: {
       description:
         'Instead of using `isPlatformBrowser` and `isPlatformServer` together with the injected `PLATFORM_ID`, the Intershop PWA provides a `SSR` variable that can be used for this.',
-      recommended: 'warn',
+      recommended: 'recommended',
       url: '',
     },
     messages: {

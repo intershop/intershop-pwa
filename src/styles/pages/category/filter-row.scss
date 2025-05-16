@@ -9,14 +9,14 @@
   .sort-by {
     float: right;
 
-    @include media-breakpoint-down(xs) {
+    @include media-breakpoint-down(sm) {
       float: none;
     }
 
     a {
       float: left;
 
-      @include media-breakpoint-down(xs) {
+      @include media-breakpoint-down(sm) {
         float: none;
       }
 
@@ -32,14 +32,14 @@
       &.grid-view-link {
         margin-right: $space-default;
 
-        @include media-breakpoint-down(xs) {
+        @include media-breakpoint-down(sm) {
           margin-right: 0;
           margin-left: $space-default;
         }
       }
 
       &.list-view-link {
-        @include media-breakpoint-down(xs) {
+        @include media-breakpoint-down(sm) {
           margin-left: $space-default;
         }
       }

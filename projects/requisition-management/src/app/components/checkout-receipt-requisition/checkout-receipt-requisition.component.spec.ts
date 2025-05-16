@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -21,7 +21,7 @@ describe('Checkout Receipt Requisition Component', () => {
     reqFacade = mock(RequisitionManagementFacade);
     await TestBed.configureTestingModule({
       declarations: [CheckoutReceiptRequisitionComponent],
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [RouterModule.forRoot([]), TranslateModule.forRoot()],
       providers: [{ provide: RequisitionManagementFacade, useFactory: () => instance(reqFacade) }],
     }).compileComponents();
   });

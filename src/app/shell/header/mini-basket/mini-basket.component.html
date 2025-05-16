@@ -34,7 +34,7 @@
     [attr.aria-label]="'shopping_cart.ministatus.label' | translate : { '0': itemCount$ | async }"
   >
     <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
-    <span class="badge badge-pill" [ngClass]="basketAnimation$ | async">{{ itemCount }}</span>
+    <span class="badge rounded-pill" [ngClass]="basketAnimation$ | async">{{ itemCount }}</span>
   </a>
   <ng-template #emptyMobileCart>
     <a
@@ -50,7 +50,7 @@
       [attr.aria-label]="'shopping_cart.ministatus.label' | translate : { '0': itemCount$ | async }"
     >
       <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
-      <span class="badge badge-pill" [ngClass]="basketAnimation$ | async">0</span>
+      <span class="badge rounded-pill" [ngClass]="basketAnimation$ | async">0</span>
     </a>
   </ng-template>
 </ng-container>

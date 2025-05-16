@@ -56,7 +56,7 @@ const useJestExtendedMatchersInTestsRule: TSESLint.RuleModule<keyof typeof messa
     ],
   },
   create: context => {
-    if (!normalizePath(context.getFilename()).endsWith('.spec.ts')) {
+    if (!normalizePath(context.filename).endsWith('.spec.ts')) {
       return {};
     }
     const [options] = context.options;
@@ -66,27 +66,30 @@ const useJestExtendedMatchersInTestsRule: TSESLint.RuleModule<keyof typeof messa
     ];
     return {
       'MemberExpression > Identifier'(node: TSESTree.Identifier) {
-        const callExpression = getClosestAncestorByKind(context, AST_NODE_TYPES.CallExpression);
-        const callExpressionText = context.getSourceCode().getText(callExpression);
-        if (callExpressionText.includes('expect')) {
-          mergedReplacements.forEach(rep => {
-            const match = callExpressionText.match(rep.pattern)?.[0];
-            if (match) {
-              context.report({
-                node,
-                messageId: 'alternative',
-                data: {
-                  alternative: rep.text,
-                },
-                fix: fixer =>
-                  fixer.replaceTextRange(
-                    callExpression.range,
-                    callExpressionText.replace(rep.pattern, rep.replacement)
-                  ),
-              });
-            }
-          });
+        const callExpression = getClosestAncestorByKind(context, node, AST_NODE_TYPES.CallExpression);
+        if (!callExpression) {
+          return;
         }
+
+        const callExpressionText = context.sourceCode.getText(callExpression);
+        if (!callExpressionText.includes('expect')) {
+          return;
+        }
+
+        mergedReplacements.forEach(rep => {
+          const match = callExpressionText.match(rep.pattern)?.[0];
+          if (match) {
+            context.report({
+              node,
+              messageId: 'alternative',
+              data: {
+                alternative: rep.text,
+              },
+              fix: fixer =>
+                fixer.replaceTextRange(callExpression.range, callExpressionText.replace(rep.pattern, rep.replacement)),
+            });
+          }
+        });
       },
     };
   },

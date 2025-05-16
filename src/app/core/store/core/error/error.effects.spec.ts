@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -17,7 +17,7 @@ describe('Error Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['error'], [ErrorEffects]),
-        RouterTestingModule.withRoutes([{ path: 'error', children: [] }]),
+        RouterModule.forRoot([{ path: 'error', children: [] }]),
       ],
     });
 

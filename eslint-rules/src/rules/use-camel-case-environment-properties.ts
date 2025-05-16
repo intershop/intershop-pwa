@@ -18,7 +18,7 @@ const useCamelCaseEnvironmentPropertiesRule: TSESLint.RuleModule<keyof typeof me
     schema: [],
   },
   create(context) {
-    if (normalizePath(context.getFilename()).match(/[\\\/\w\-\:]*\/environment[\.\w]*\.ts$/)) {
+    if (normalizePath(context.filename).match(/[\\\/\w\-\:]*\/environment[\.\w]*\.ts$/)) {
       return {
         Identifier(node) {
           if (

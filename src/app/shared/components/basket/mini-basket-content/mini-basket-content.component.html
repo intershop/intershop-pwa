@@ -28,9 +28,11 @@
     </div>
   </div>
 
-  <a class="view-cart btn btn-primary btn-lg btn-block" routerLink="/basket">
-    {{ 'shopping_cart.ministatus.view_cart.link' | translate }}
-  </a>
+  <div class="d-grid">
+    <a class="view-cart btn btn-primary btn-lg btn-block" routerLink="/basket">
+      {{ 'shopping_cart.ministatus.view_cart.link' | translate }}
+    </a>
+  </div>
 </ng-container>
 
 <ng-template #emptyBlock>

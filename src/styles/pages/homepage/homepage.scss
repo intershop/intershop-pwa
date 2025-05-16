@@ -10,7 +10,7 @@
     padding: $space-default 0 0 0;
     background: none;
 
-    @include media-breakpoint-down(sm) {
+    @include media-breakpoint-down(md) {
       padding-top: $search-container-height;
     }
 

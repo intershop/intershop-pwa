@@ -49,7 +49,7 @@ const banImportsFilePatternRule: TSESLint.RuleModule<keyof typeof messages, [Rul
       const rules = context.options[0];
       rules.forEach(rule => {
         if (
-          new RegExp(rule.filePattern).test(normalizePath(context.getFilename())) &&
+          new RegExp(rule.filePattern).test(normalizePath(context.filename)) &&
           new RegExp(rule.name).test(node.source.value) &&
           checkValidityOfSpecifiers(node.specifiers, rule.importNamePattern, rule.starImport)
         ) {

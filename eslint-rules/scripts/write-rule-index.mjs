@@ -1,8 +1,9 @@
 import { writeFileSync } from 'fs';
-import { sync } from 'glob';
+import globModule from 'glob';
 import { basename, extname } from 'path';
 
 const rules = {};
+const { sync } = globModule;
 
 sync('src/rules/**/*.ts').forEach(file => {
   const ruleName = basename(file).replace(extname(file), '');

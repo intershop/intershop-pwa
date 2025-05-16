@@ -8,6 +8,6 @@
     }}<span *ngIf="props.required && !props.hideRequiredMarker" class="required" aria-hidden="true">*</span>
   </label>
   <div [ngClass]="props.fieldClass ? props.fieldClass : dprops.fieldClass">
-    <ng-template #fieldComponent></ng-template>
+    <ng-template #fieldComponent />
   </div>
 </div>

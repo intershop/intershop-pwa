@@ -40,7 +40,7 @@ export interface ModalOptions extends NgbModalOptions {
    */
   icon?: IconProp;
   /**
-   * Optional icon styling classes, e.g. faIconClass: 'text-warning pr-2'
+   * Optional icon styling classes, e.g. faIconClass: 'text-warning pe-2'
    */
   iconClass?: string;
 }

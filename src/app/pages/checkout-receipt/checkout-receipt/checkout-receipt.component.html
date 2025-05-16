@@ -1,7 +1,7 @@
 <div *ngIf="order" class="row">
   <div class="col-md-12 col-lg-8">
     <!-- header as content -->
-    <ng-content></ng-content>
+    <ng-content />
 
     <ng-container *ngIf="'shipping.messageToMerchant' | ishServerSetting">
       <!-- MessageToMerchant-->
@@ -55,7 +55,7 @@
 
   <!-- order summary -->
   <div class="col-md-12 col-lg-4">
-    <div class="text-right pt-3 pb-3">
+    <div class="text-end pt-3 pb-3">
       <ul class="share-tools">
         <li>
           <a

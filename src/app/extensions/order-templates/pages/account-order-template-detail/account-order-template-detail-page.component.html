@@ -9,7 +9,7 @@
     <button
       type="button"
       (click)="editOrderTemplateDialog.show()"
-      class="btn btn-secondary float-right m-0"
+      class="btn btn-secondary float-end m-0"
       [title]="'account.order_template.edit.heading' | translate"
       data-testing-id="order-template-details-edit"
     >
@@ -29,13 +29,13 @@
     <ng-container *ngIf="orderTemplate.itemsCount && orderTemplate.itemsCount > 0; else noItems" class="section">
       <div class="list-header d-md-flex">
         <div class="col-6 list-header-item">{{ 'account.order_template.table.header.item' | translate }}</div>
-        <div class="col-2 list-header-item text-right">
+        <div class="col-2 list-header-item text-end">
           {{ 'shopping_cart.qty.heading' | translate }}
         </div>
-        <div class="col-2 list-header-item text-right">
+        <div class="col-2 list-header-item text-end">
           {{ 'account.order_template.table.header.date_added' | translate }}
         </div>
-        <div class="col-2 list-header-item column-price text-right">
+        <div class="col-2 list-header-item column-price text-end">
           {{ 'account.order_template.table.header.price' | translate }}
         </div>
       </div>
@@ -55,7 +55,7 @@
       </div>
     </ng-container>
   </div>
-  <ish-product-add-to-basket *ngIf="orderTemplate.itemsCount" [cssClass]="'btn btn-primary float-right'" />
+  <ish-product-add-to-basket *ngIf="orderTemplate.itemsCount" [cssClass]="'btn btn-primary float-end'" />
 
   <ng-template #noItems>
     <p>{{ 'account.order_template.no_entries' | translate }}</p>

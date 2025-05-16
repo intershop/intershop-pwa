@@ -17,7 +17,7 @@ const noAssignmentToInputsRule: TSESLint.RuleModule<keyof typeof messages> = {
   },
   create: context => {
     // only apply to component files
-    if (normalizePath(context.getFilename()).search(/.(component|container).ts/) < 0) {
+    if (normalizePath(context.filename).search(/.(component|container).ts/) < 0) {
       return {};
     }
 

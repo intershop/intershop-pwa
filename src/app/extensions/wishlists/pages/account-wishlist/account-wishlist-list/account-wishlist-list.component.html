@@ -15,20 +15,20 @@
       <a [routerLink]="'/account/wishlists/' + wishlist.id" data-testing-id="wishlist-list-title">{{
         wishlist.title
       }}</a
-      ><span *ngIf="wishlist.preferred" class="input-help pl-3">{{
+      ><span *ngIf="wishlist.preferred" class="input-help ps-3">{{
         'account.wishlists.table.preferred' | translate
       }}</span>
       <span
         *ngIf="wishlist.shared"
         class="input-help"
-        [ngClass]="{ 'link-separator': wishlist.preferred && wishlist.shared, 'pl-3': !wishlist.preferred }"
+        [ngClass]="{ 'link-separator': wishlist.preferred && wishlist.shared, 'ps-3': !wishlist.preferred }"
         >{{ 'account.wishlists.table.shared' | translate }}</span
       >
     </div>
     <div class="col-2 list-item">
       {{ 'account.wishlists.items' | translate : { '0': wishlist.itemsCount } }}
     </div>
-    <div class="col-3 list-item text-right">
+    <div class="col-3 list-item text-end">
       <button
         type="button"
         class="btn-tool btn-link"

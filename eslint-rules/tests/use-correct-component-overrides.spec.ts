@@ -5,6 +5,8 @@ import useCorrectComponentOverridesRule from '../src/rules/use-correct-component
 
 import testRule from './rule-tester';
 
+jest.mock('fs');
+
 jest.spyOn(fs, 'existsSync').mockImplementation(() => true);
 
 testRule(useCorrectComponentOverridesRule, {

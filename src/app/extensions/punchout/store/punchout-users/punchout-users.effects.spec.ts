@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, RouterModule } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
@@ -53,7 +52,7 @@ describe('Punchout Users Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['router']),
         PunchoutStoreModule.forTesting('punchoutUsers'),
-        RouterTestingModule.withRoutes([
+        RouterModule.forRoot([
           { path: 'account/punchout', children: [] },
           { path: 'account/punchout/:PunchoutLogin', children: [] },
           { path: '**', children: [] },

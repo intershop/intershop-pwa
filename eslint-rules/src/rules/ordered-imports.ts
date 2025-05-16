@@ -27,12 +27,12 @@ const orderedImportsRule: TSESLint.RuleModule<keyof typeof messages> = {
     // helpers
 
     function getSortedImportAsString(node: TSESTree.ImportDeclaration): string {
-      const nodeText = context.getSourceCode().getText(node);
+      const nodeText = context.sourceCode.getText(node);
       if (isDefaultOrNamespaceOrSideeffectImport(node)) {
         return nodeText;
       }
       const sortedNamedImports = (node.specifiers as TSESTree.ImportSpecifier[])
-        .map(imp => context.getSourceCode().getText(imp))
+        .map(imp => context.sourceCode.getText(imp))
         .sort();
 
       if (/\{.*\}/.test(nodeText)) {
@@ -80,8 +80,7 @@ const orderedImportsRule: TSESLint.RuleModule<keyof typeof messages> = {
           .join(`${lineEnding}${lineEnding}`);
 
         // remove old imports and insert new ones
-        const originalImports: string = context
-          .getSourceCode()
+        const originalImports: string = context.sourceCode
           .getLines()
           .filter((_, index) => index >= importSourceLocation.start.line - 1 && index < importSourceLocation.end.line)
           .join(lineEnding);

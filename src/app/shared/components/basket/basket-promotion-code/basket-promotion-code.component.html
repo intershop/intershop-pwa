@@ -9,7 +9,7 @@
     data-testing-id="promo-collapse-link"
   >
     {{ 'shopping_cart.promotional_code.heading' | translate }}
-    <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" class="float-right" />
+    <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" class="float-end" />
   </button>
 
   <ish-error-message [error]="promotionError$ | async" [toast]="toast" />

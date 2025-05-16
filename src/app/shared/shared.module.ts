@@ -11,7 +11,7 @@ import {
   NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { SwiperModule } from 'swiper/angular';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
@@ -172,7 +172,7 @@ const importExportModules = [
   FormlyModule,
   FormsSharedModule,
   IconModule,
-  InfiniteScrollModule,
+  InfiniteScrollDirective,
   NgbCarouselModule,
   NgbCollapseModule,
   NgbDropdownModule,

@@ -51,10 +51,7 @@ const privateDestroyRefFieldRule: TSESLint.RuleModule<keyof typeof messages> = {
       ) {
         if (usesInjectDependency()) {
           // replace access modifier or lack thereof with private
-          const replaceText = context
-            .getSourceCode()
-            .getText(node)
-            .replace(/^(.*)(?=destroyRef)/, 'private ');
+          const replaceText = context.sourceCode.getText(node).replace(/^(.*)(?=destroyRef)/, 'private ');
           context.report({
             node,
             messageId: usesDestroyRefArg()

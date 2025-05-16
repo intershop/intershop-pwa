@@ -2,7 +2,7 @@
   .wrapper {
     margin-top: 185px;
 
-    @include media-breakpoint-down(md) {
+    @include media-breakpoint-down(lg) {
       padding-top: 0;
       margin-top: $header-height-mobile + $search-container-height;
     }
@@ -25,7 +25,7 @@
       position: relative;
       display: flex;
 
-      @include media-breakpoint-down(md) {
+      @include media-breakpoint-down(lg) {
         max-width: 100%;
         padding-right: 0;
         padding-left: 0;
@@ -56,7 +56,7 @@
       }
 
       .navbar-toggler {
-        @include media-breakpoint-down(md) {
+        @include media-breakpoint-down(lg) {
           display: block;
         }
       }
@@ -64,7 +64,7 @@
       .main-navigation {
         position: static;
 
-        @include media-breakpoint-down(md) {
+        @include media-breakpoint-down(lg) {
           height: calc(100vh - #{$header-height-mobile});
           overflow: auto;
           -webkit-overflow-scrolling: touch;
@@ -87,7 +87,7 @@
         order: 10;
         background: $color-inverse;
 
-        @include media-breakpoint-down(md) {
+        @include media-breakpoint-down(lg) {
           line-height: $header-height-mobile;
         }
 
@@ -158,7 +158,7 @@
     }
   }
 
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(lg) {
     @include mobile-navigation;
   }
 }
@@ -171,7 +171,7 @@
   .wrapper {
     margin-top: 172px;
 
-    @include media-breakpoint-down(md) {
+    @include media-breakpoint-down(lg) {
       padding-top: $space-default;
       margin-top: $header-height-mobile + $search-container-height;
     }

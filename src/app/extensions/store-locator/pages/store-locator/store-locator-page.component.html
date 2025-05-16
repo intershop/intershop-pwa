@@ -40,7 +40,7 @@
     </ng-container>
     <div *ishFeature="'maps'">
       <div class="row">
-        <div class="col-3 pr-0 overflow-auto d-none d-lg-block map-height">
+        <div class="col-3 pe-0 overflow-auto d-none d-lg-block map-height">
           <div
             *ngFor="let store of stores$ | async"
             class="store-entry"
@@ -55,7 +55,7 @@
             <ish-store-address [store]="store" />
           </div>
         </div>
-        <div class="col-12 col-lg-9 pl-lg-0 map-height">
+        <div class="col-12 col-lg-9 ps-lg-0 map-height">
           <ish-stores-map #map />
         </div>
         <div class="col-12 d-lg-none">

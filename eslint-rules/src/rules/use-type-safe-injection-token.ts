@@ -20,9 +20,8 @@ const useTypeSafeInjectionTokenRule: TSESLint.RuleModule<keyof typeof messages> 
     docs: {
       description:
         'Injection tokens in angular should inherit type information from the token itself to prevent using a wrong type where it is injected. By using `InjectSingle` or `InjectMultiple` the type of the token is inferred and can be used to type the injected value.',
-      recommended: 'warn',
+      recommended: 'recommended',
       url: '',
-      suggestion: true,
     },
     messages,
     type: 'problem',
@@ -47,7 +46,7 @@ const useTypeSafeInjectionTokenRule: TSESLint.RuleModule<keyof typeof messages> 
 
         const identifier = node.type === TSESTree.AST_NODE_TYPES.TSParameterProperty ? node.parameter : node;
 
-        const typeText = context.getSourceCode().getText(identifier.typeAnnotation.typeAnnotation);
+        const typeText = context.sourceCode.getText(identifier.typeAnnotation.typeAnnotation);
 
         if (standardTokens[token]) {
           const expected = standardTokens[token];

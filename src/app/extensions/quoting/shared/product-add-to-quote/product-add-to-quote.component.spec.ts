@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -27,7 +27,7 @@ describe('Product Add To Quote Component', () => {
     when(accountFacade.isLoggedIn$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([{ path: '**', children: [] }]), TranslateModule.forRoot()],
+      imports: [RouterModule.forRoot([{ path: '**', children: [] }]), TranslateModule.forRoot()],
       declarations: [MockComponent(FaIconComponent), ProductAddToQuoteComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();

@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
@@ -62,7 +62,7 @@ describe('Requisitions Effects', () => {
     );
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([{ path: '**', children: [] }])],
+      imports: [RouterModule.forRoot([{ path: '**', children: [] }])],
       providers: [
         { provide: RequisitionsService, useFactory: () => instance(requisitionsService) },
         provideMockActions(() => actions$),

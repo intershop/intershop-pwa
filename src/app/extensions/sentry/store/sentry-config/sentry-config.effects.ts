@@ -1,7 +1,8 @@
 import { Injectable, TransferState } from '@angular/core';
-import { Actions, concatLatestFrom, createEffect } from '@ngrx/effects';
+import { Actions, createEffect } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Action, Store, select } from '@ngrx/store';
-import { addBreadcrumb, captureEvent, configureScope, init } from '@sentry/browser';
+import { addBreadcrumb, captureEvent, getCurrentScope, init } from '@sentry/browser';
 import { EMPTY, iif } from 'rxjs';
 import { distinctUntilChanged, filter, map, take, takeWhile, tap } from 'rxjs/operators';
 
@@ -63,7 +64,7 @@ export class SentryConfigEffects {
         mapToProperty('email'),
         distinctUntilChanged(),
         // eslint-disable-next-line etc/no-deprecated
-        tap(email => configureScope(scope => scope.setUser(email ? { email } : undefined)))
+        tap(email => getCurrentScope().setUser(email ? { email } : undefined))
       ),
     { dispatch: false }
   );

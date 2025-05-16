@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { spawnSync } from 'child_process';
 import * as fs from 'fs';
-import { sync } from 'glob';
+import globModule from 'glob';
 import * as path from 'path';
+
+const { sync } = globModule;
 
 async function mapSeries(iterable, action) {
   for (const x of iterable) {

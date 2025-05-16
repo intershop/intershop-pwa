@@ -9,7 +9,7 @@
       {{ mainItem.description }}
     </button>
     <ng-container *ngIf="mainItem.children">
-      <ul class="list-unstyled pl-3">
+      <ul class="list-unstyled ps-3">
         <ng-container *ngFor="let subItem of mainItem.children">
           <li *ngIf="subItem.hasVisibleParameters" class="pt-1 pb-1">
             <button

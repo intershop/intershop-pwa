@@ -42,7 +42,7 @@ describe('Tacton Step Buttons Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <div class="d-flex flex-nowrap justify-content-between tacton-button-bar">
-        <div class="d-inline-block mr-auto">
+        <div class="d-inline-block me-auto">
           <button
             type="button"
             data-testing-id="reset-configuration-button"
@@ -51,12 +51,12 @@ describe('Tacton Step Buttons Component', () => {
             tacton.step_buttons.reset.label
           </button>
         </div>
-        <div class="d-inline-block ml-2">
+        <div class="d-inline-block ms-2">
           <button type="button" data-testing-id="previous-button" class="btn btn-secondary text-nowrap">
             tacton.step_buttons.previous.label
           </button>
         </div>
-        <div class="d-inline-block ml-2">
+        <div class="d-inline-block ms-2">
           <button type="button" data-testing-id="next-button" class="btn btn-primary text-nowrap">
             tacton.step_buttons.next.label
           </button>

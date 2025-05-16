@@ -154,7 +154,7 @@ button.btn-link {
 .btn:not(:only-child):not(.btn-link) {
   margin-bottom: divide($space-default, 3);
 
-  &:not(.float-right) {
+  &:not(.float-end) {
     margin-right: divide($space-default, 3);
 
     @media (max-width: $screen-xs-max) {
@@ -162,7 +162,7 @@ button.btn-link {
     }
   }
 
-  &.float-right {
+  &.float-end {
     margin-left: divide($space-default, 3);
 
     @media (max-width: $screen-xs-max) {

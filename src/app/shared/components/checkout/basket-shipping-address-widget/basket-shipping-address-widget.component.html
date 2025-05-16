@@ -2,7 +2,7 @@
 <ng-container *ngIf="shippingAddress$ | async as address">
   <div class="address-box">
     <ng-container *ngIf="(basketInvoiceAndShippingAddressEqual$ | async) === false">
-      <div class="float-right">
+      <div class="float-end">
         <!-- edit shipping address -->
         <button
           *ngIf="collapseChange | async"

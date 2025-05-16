@@ -57,7 +57,7 @@ describe('Tacton Configure Navigation Component', () => {
           <button type="button" class="btn btn-link btn-link-action font-weight-bold">
             step 1 description
           </button>
-          <ul class="list-unstyled pl-3">
+          <ul class="list-unstyled ps-3">
             <li class="pt-1 pb-1">
               <button type="button" class="btn btn-link btn-link-action">step 1.1 description</button>
             </li>

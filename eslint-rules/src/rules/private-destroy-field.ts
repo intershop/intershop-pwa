@@ -32,7 +32,7 @@ const privateDestroyFieldRule: TSESLint.RuleModule<keyof typeof messages> = {
       const usesVoidTypeParam = once(
         () =>
           node.value.type === AST_NODE_TYPES.NewExpression &&
-          node.value.typeParameters?.params[0].type === AST_NODE_TYPES.TSVoidKeyword
+          node.value.typeArguments?.params[0].type === AST_NODE_TYPES.TSVoidKeyword
       );
 
       const usesSubjectType = once(
@@ -49,8 +49,7 @@ const privateDestroyFieldRule: TSESLint.RuleModule<keyof typeof messages> = {
       ) {
         if (usesSubjectType()) {
           // replace access modifier or lack thereof with private
-          const replaceText = context
-            .getSourceCode()
+          const replaceText = context.sourceCode
             .getText(node)
             .replace(/^(.*)(?=destroy\$)/, 'private ')
             .replace(/Subject(<.*?>|)/, 'Subject<void>');

@@ -65,6 +65,9 @@ describe('Copilot Component', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (component as any).loadCopilot();
+
     // check whether the Copilot was initialized
     expect(copilotSpy).toHaveBeenCalledOnce();
     expect(copilotSpy).toHaveBeenCalledWith(

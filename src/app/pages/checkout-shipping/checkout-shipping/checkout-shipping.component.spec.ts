@@ -70,5 +70,5 @@ describe('Checkout Shipping Component', () => {
   });
 });
 
-@Component({ template: '<ng-template #fieldComponent></ng-template>' })
+@Component({ template: '<ng-template #fieldComponent />' })
 class DummyWrapperComponent extends FieldWrapper {}

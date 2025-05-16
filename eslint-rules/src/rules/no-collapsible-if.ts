@@ -25,7 +25,7 @@ const noCollapsibleIfRule: TSESLint.RuleModule<keyof typeof messages> = {
           fix: fixer =>
             fixer.replaceText(
               node,
-              collapseIf({ sourceCode: context.getSourceCode(), node, condition1: node.test, condition2 })
+              collapseIf({ sourceCode: context.sourceCode, node, condition1: node.test, condition2 })
             ),
         });
       }

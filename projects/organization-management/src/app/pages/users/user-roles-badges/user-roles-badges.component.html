@@ -1,5 +1,7 @@
 <dd *ngFor="let role of roles$ | async">
-  <span class="border border-primary badge" [ngClass]="{ 'badge-light': role.fixed, 'badge-primary': !role.fixed }">{{
-    role.displayName
-  }}</span>
+  <span
+    class="border border-primary badge"
+    [ngClass]="{ 'bg-light text-dark': role.fixed, 'bg-primary': !role.fixed }"
+    >{{ role.displayName }}</span
+  >
 </dd>

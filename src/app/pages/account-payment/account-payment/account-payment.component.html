@@ -70,7 +70,7 @@
       <div class="col-sm-7 col-md-5" [ngClass]="{ 'pt-2': !isPreferred }">
         <button
           type="button"
-          class="float-right btn btn-link btn-link-action"
+          class="float-end btn btn-link btn-link-action"
           (click)="deleteUserPayment(pi.id)"
           data-testing-id="delete-payment-link"
         >
@@ -84,7 +84,7 @@
           [id]="'paymentOption_' + pi.id"
           [value]="pi.id"
         />
-        <label class="form-check-label" [ngClass]="{ 'ml-0': isPreferred }" [for]="'paymentOption_' + pi.id">
+        <label class="form-check-label" [ngClass]="{ 'ms-0': isPreferred }" [for]="'paymentOption_' + pi.id">
           {{ pi.accountIdentifier }}
         </label>
 

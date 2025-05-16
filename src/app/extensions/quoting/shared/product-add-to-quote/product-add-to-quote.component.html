@@ -1,18 +1,20 @@
-<button
-  *ngIf="visible$ | async"
-  type="submit"
-  class="btn"
-  [ngClass]="cssClass"
-  [disabled]="disabled$ | async"
-  [title]="displayType === 'icon' ? ('quote.add_product_to_quote.button.add_to_quote.label' | translate) : ''"
-  [tabindex]="ariaHidden ? -1 : 0"
-  [attr.aria-hidden]="ariaHidden"
-  (click)="addToQuote()"
-  data-testing-id="addToQuoteButton"
->
-  <ng-container *ngIf="displayType === 'icon'; else defaultButton">
-    <fa-icon [icon]="['fas', 'inbox']" />
-  </ng-container>
+<div class="d-grid">
+  <button
+    *ngIf="visible$ | async"
+    type="submit"
+    class="btn"
+    [ngClass]="cssClass"
+    [disabled]="disabled$ | async"
+    [title]="displayType === 'icon' ? ('quote.add_product_to_quote.button.add_to_quote.label' | translate) : ''"
+    [tabindex]="ariaHidden ? -1 : 0"
+    [attr.aria-hidden]="ariaHidden"
+    (click)="addToQuote()"
+    data-testing-id="addToQuoteButton"
+  >
+    <ng-container *ngIf="displayType === 'icon'; else defaultButton">
+      <fa-icon [icon]="['fas', 'inbox']" />
+    </ng-container>
 
-  <ng-template #defaultButton> {{ 'quote.add_product_to_quote.button.add_to_quote.label' | translate }} </ng-template>
-</button>
+    <ng-template #defaultButton> {{ 'quote.add_product_to_quote.button.add_to_quote.label' | translate }} </ng-template>
+  </button>
+</div>

@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, RouterModule } from '@angular/router';
 
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -26,7 +25,7 @@ describe('Punchout Users Selectors', () => {
       imports: [
         CoreStoreModule.forTesting(['router']),
         PunchoutStoreModule.forTesting('punchoutUsers'),
-        RouterTestingModule.withRoutes([{ path: 'account/punchout/:PunchoutLogin', children: [] }]),
+        RouterModule.forRoot([{ path: 'account/punchout/:PunchoutLogin', children: [] }]),
       ],
       providers: [provideStoreSnapshots()],
     });

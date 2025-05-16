@@ -59,7 +59,7 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
             props: {
               postWrappers: [{ wrapper: 'input-addon', index: -1 }],
               labelClass: 'col-md-4',
-              fieldClass: 'col-md-8  pr-0',
+              fieldClass: 'col-md-8  pe-0',
               label: 'account.costcenter.details.buyers.dialog.editbudget.budget.label',
               addonLeft: {
                 text: this.appFacade.currencySymbol$(this.buyer?.budget?.currency),

@@ -28,7 +28,7 @@
   <div class="col-md-12 col-lg-8">
     <div class="row">
       <p class="col-md-9">{{ 'checkout.order_review.heading.text' | translate }}</p>
-      <p class="col-md-3 text-right">
+      <p class="col-md-3 text-end">
         <a routerLink="/basket">{{ 'checkout.widget.return_to_cart.link' | translate }}</a>
       </p>
     </div>
@@ -108,7 +108,7 @@
           [disabled]="(form.invalid && tcForm.submitted) || multipleBuckets || submitting"
         >
           <ng-container *ngIf="submitting">
-            <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pr-3" />
+            <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pe-3" />
           </ng-container>
           {{ 'checkout.order_review.send.button' | translate }}
         </button>

@@ -16,11 +16,11 @@ const requireFormlyCodeDocumentationRule: TSESLint.RuleModule<keyof typeof messa
   create: context => {
     function hasPrecedingComment(node: TSESTree.ClassDeclaration) {
       return (
-        context.getSourceCode().getCommentsBefore(node)?.length > 0 ||
-        (node.decorators?.[0] && context.getSourceCode().getCommentsBefore(node.decorators[0])?.length > 0)
+        context.sourceCode.getCommentsBefore(node)?.length > 0 ||
+        (node.decorators?.[0] && context.sourceCode.getCommentsBefore(node.decorators[0])?.length > 0)
       );
     }
-    if (!context.getFilename().includes('formly')) {
+    if (!context.filename.includes('formly')) {
       return {};
     }
     return {
@@ -40,9 +40,9 @@ const requireFormlyCodeDocumentationRule: TSESLint.RuleModule<keyof typeof messa
           node.typeAnnotation?.typeAnnotation?.type === AST_NODE_TYPES.TSTypeReference &&
           node.typeAnnotation.typeAnnotation.typeName.type === AST_NODE_TYPES.Identifier &&
           node.typeAnnotation.typeAnnotation.typeName.name === 'FormlyExtension' &&
-          context
-            .getSourceCode()
-            .getCommentsBefore(getClosestAncestorByKind(context, AST_NODE_TYPES.ExportNamedDeclaration)).length === 0
+          context.sourceCode.getCommentsBefore(
+            getClosestAncestorByKind(context, node, AST_NODE_TYPES.ExportNamedDeclaration)
+          ).length === 0
         ) {
           context.report({
             node,
