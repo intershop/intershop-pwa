@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, Input, Output, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, map } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { PipesModule } from 'ish-core/pipes.module';
@@ -14,18 +13,19 @@ import { PipesModule } from 'ish-core/pipes.module';
   imports: [CommonModule, PipesModule, TranslateModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SuggestSearchTermsComponent {
+export class SuggestSearchTermsComponent implements OnInit {
   @Input() maxRecentlySearchedWords: number;
   @Input() inputTerms$ = new ReplaySubject<string>(1);
   @Output() submitSearch = new EventEmitter<string>();
 
-  private destroyRef = inject(DestroyRef);
-  keywords: string[];
+  searchTerms$: Observable<string[]>;
 
-  constructor(shoppingFacade: ShoppingFacade) {
-    shoppingFacade.recentSearchTerms$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(terms => {
-      this.keywords = terms;
-    });
+  constructor(private shoppingFacade: ShoppingFacade) {}
+
+  ngOnInit() {
+    this.searchTerms$ = this.shoppingFacade.recentSearchTerms$.pipe(
+      map(terms => terms.slice(0, this.maxRecentlySearchedWords))
+    );
   }
 
   submit(term: string) {

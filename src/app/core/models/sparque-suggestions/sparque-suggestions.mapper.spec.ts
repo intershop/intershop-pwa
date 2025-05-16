@@ -5,56 +5,11 @@ import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model'
 import { Category } from 'ish-core/models/category/category.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { SparqueCategoryMapper } from 'ish-core/models/sparque-category/sparque-category.mapper';
-import { SparqueProduct } from 'ish-core/models/sparque-product/sparque-product.interface';
 import { SparqueProductMapper } from 'ish-core/models/sparque-product/sparque-product.mapper';
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 
 import { SparqueSuggestions } from './sparque-suggestions.interface';
 import { SparqueSuggestionsMapper } from './sparque-suggestions.mapper';
-
-const attributes = [{ name: 'Color', value: 'Red' }];
-
-const sparqueProduct = {
-  name: 'Product 1',
-  shortDescription: 'Short description',
-  longDescription: 'Long description',
-  manufacturer: 'Manufacturer',
-  images: [],
-  attributes,
-  sku: 'SKU1',
-  defaultcategoryId: 'cat1',
-  offers: [
-    {
-      priceIncVat: 100,
-      priceExclVat: 80,
-      currency: 'USD',
-    },
-  ],
-} as SparqueProduct;
-
-const product = {
-  name: sparqueProduct.name,
-  shortDescription: sparqueProduct.shortDescription,
-  longDescription: sparqueProduct.longDescription,
-  available: true,
-  manufacturer: sparqueProduct.manufacturer,
-  images: anything(),
-  attributes,
-  sku: sparqueProduct.sku,
-  defaultCategoryId: sparqueProduct.defaultcategoryId,
-  completenessLevel: 0,
-  maxOrderQuantity: anything(),
-  minOrderQuantity: anything(),
-  stepQuantity: anything(),
-  roundedAverageRating: anything(),
-  numberOfReviews: anything(),
-  readyForShipmentMin: anything(),
-  readyForShipmentMax: anything(),
-  packingUnit: anything(),
-  type: anything(),
-  promotionIds: anything(),
-  failed: false,
-} as Product;
 
 const categoryIds = ['cat1', 'cat2'];
 
@@ -64,6 +19,29 @@ const categoryTree = {
   edges: {},
   categoryRefs: {},
 };
+
+const productSkus = ['sku1', 'sku2'];
+
+const products: Partial<Product>[] = [
+  {
+    sku: 'sku1',
+    name: 'Product 1',
+    shortDescription: 'Product 1 shortDescription',
+    available: true,
+    type: 'Product',
+    images: [],
+    completenessLevel: 2,
+  },
+  {
+    sku: 'sku2',
+    name: 'Product 2',
+    shortDescription: 'Product 2 shortDescription',
+    available: true,
+    type: 'Product',
+    images: [],
+    completenessLevel: 2,
+  },
+];
 
 describe('Sparque Suggestions Mapper', () => {
   let sparqueSuggestionsMapper: SparqueSuggestionsMapper;
@@ -79,37 +57,16 @@ describe('Sparque Suggestions Mapper', () => {
     });
     sparqueSuggestionsMapper = TestBed.inject(SparqueSuggestionsMapper);
     when(sparqueCategoryMapper.fromSuggestionsData(anything())).thenReturn({ categoryIds, categoryTree });
-    when(sparqueProductMapper.mapProducts(anything())).thenReturn([product]);
+    when(sparqueProductMapper.fromSuggestionsData(anything())).thenReturn({ productSkus, products });
   });
 
   describe('fromData', () => {
-    it('should map products correctly', () => {
-      const sparqueSuggestions: SparqueSuggestions = {
-        products: [sparqueProduct],
-        categories: [],
-        brands: [],
-        keywordSuggestions: [],
-      };
-
-      const result = sparqueSuggestionsMapper.fromData(sparqueSuggestions);
-      const suggestions: Suggestions = result[0];
-      expect(suggestions.products).toHaveLength(1);
-      expect(suggestions.products[0].name).toBe(sparqueProduct.name);
-      expect(suggestions.products[0].shortDescription).toBe(sparqueProduct.shortDescription);
-      expect(suggestions.products[0].longDescription).toBe(sparqueProduct.longDescription);
-      expect(suggestions.products[0].manufacturer).toBe(sparqueProduct.manufacturer);
-      expect(suggestions.products[0].attributes).toHaveLength(1);
-      expect(suggestions.products[0].attributes[0].name).toBe(sparqueProduct.attributes[0].name);
-      expect(suggestions.products[0].attributes[0].value).toBe(sparqueProduct.attributes[0].value);
-      expect(suggestions.products[0].sku).toBe(sparqueProduct.sku);
-      expect(suggestions.products[0].defaultCategoryId).toBe(sparqueProduct.defaultcategoryId);
-    });
-
-    it('should map categories correctly', () => {
+    it('should map categories and products correctly', () => {
       const sparqueSuggestions: SparqueSuggestions = {} as SparqueSuggestions;
       const result = sparqueSuggestionsMapper.fromData(sparqueSuggestions);
       const suggestions: Suggestions = result[0];
       const categoryTree: CategoryTree = result[1];
+      const productsArray: Partial<Product>[] = result[2];
       expect(suggestions.categories).toMatchInlineSnapshot(`
         [
           "cat1",
@@ -120,6 +77,34 @@ describe('Sparque Suggestions Mapper', () => {
         ├─ cat1
         └─ cat2
 
+      `);
+      expect(suggestions.products).toMatchInlineSnapshot(`
+        [
+          "sku1",
+          "sku2",
+        ]
+      `);
+      expect(productsArray).toMatchInlineSnapshot(`
+        [
+          {
+            "available": true,
+            "completenessLevel": 2,
+            "images": [],
+            "name": "Product 1",
+            "shortDescription": "Product 1 shortDescription",
+            "sku": "sku1",
+            "type": "Product",
+          },
+          {
+            "available": true,
+            "completenessLevel": 2,
+            "images": [],
+            "name": "Product 2",
+            "shortDescription": "Product 2 shortDescription",
+            "sku": "sku2",
+            "type": "Product",
+          },
+        ]
       `);
     });
 
@@ -171,7 +156,7 @@ describe('Sparque Suggestions Mapper', () => {
     it('should return empty object for undefined input', () => {
       const result = sparqueSuggestionsMapper.fromData(undefined);
       const suggestions: Suggestions = result[0];
-      expect(suggestions).toMatchInlineSnapshot(`undefined`);
+      expect(suggestions).toBeUndefined();
     });
   });
 });

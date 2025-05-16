@@ -1,19 +1,10 @@
-<li *ngIf="product$ | async as product">
-  <a class="product-image" [routerLink]="'/prd' + product.sku" (click)="handleInputFocus()" tabindex="-1">
+<li *ngIf="productURL$ | async as productURL">
+  <a class="product-image" [routerLink]="productURL" (click)="handleInputFocus()" tabindex="-1">
     <ish-product-image imageType="S" />
   </a>
-  <!-- truncate product name on desktop only -->
   <a
-    *ngIf="deviceType === 'desktop'; else mobileTablet"
-    [routerLink]="'/prd' + product.sku"
-    [innerHTML]="truncate(product.name, 38) | ishHighlight : (inputTerms$ | async)"
+    [routerLink]="productURL"
+    [innerHTML]="productName$ | async | ishHighlight : (inputTerms$ | async)"
     (click)="handleInputFocus()"
   ></a>
-  <ng-template #mobileTablet>
-    <a
-      [routerLink]="'/prd' + product.sku"
-      [innerHTML]="product.name | ishHighlight : (inputTerms$ | async)"
-      (click)="handleInputFocus()"
-    ></a>
-  </ng-template>
 </li>

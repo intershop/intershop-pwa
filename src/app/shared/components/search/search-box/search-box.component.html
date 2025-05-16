@@ -24,13 +24,13 @@
       </ng-template>
     </div>
   </div>
+
   <ng-container *ngIf="configuration?.autoSuggest && suggestions$ | async as results; else initialState">
     <div
-      *ngIf="(searchBoxResults$ | async) && hasMinimumCharCount; else noResults"
+      *ngIf="(searchBoxResults$ | async) && (hasMinimumCharCount$ | async); else noResults"
       id="search-suggest-layer"
       class="search-suggest-container"
       aria-labelledby="header-search-input"
-      #searchSuggestLayer
     >
       <div
         class="col-12 d-flex flex-column"
@@ -39,11 +39,11 @@
         }"
       >
         <ish-suggest-keywords
-          *ngIf="results.keywords.length"
+          *ngIf="results.keywords?.length"
           [keywords]="results.keywords"
           [inputTerms$]="inputSearchTerms$"
           (submitSearch)="submitSearch($event)"
-          [maxAutoSuggests]="5"
+          [maxAutoSuggests]="configuration?.maxAutoSuggests"
         />
         <ish-suggest-categories
           *ngIf="results.categories?.length"
@@ -89,13 +89,18 @@
         </div>
       </div>
     </div>
+
     <ng-template #noResults>
-      <div *ngIf="hasMinimumCharCount || hasSearchedTerms()" class="search-suggest-container" aria-live="polite">
-        <div *ngIf="hasMinimumCharCount" class="col-12">
+      <div
+        *ngIf="(hasMinimumCharCount$ | async) || (searchedTerms$ | async)"
+        class="search-suggest-container"
+        aria-live="polite"
+      >
+        <div *ngIf="hasMinimumCharCount$ | async" class="col-12">
           <div class="d-flex justify-content-start headline">{{ 'suggest.no_results.headline' | translate }}</div>
           <p>{{ 'suggest.no_results.text' | translate }}</p>
         </div>
-        <div *ngIf="hasSearchedTerms()" class="col-12" #searchSuggestLayer>
+        <div *ngIf="searchedTerms$ | async" class="col-12">
           <ish-suggest-search-terms
             [maxRecentlySearchedWords]="5"
             [inputTerms$]="inputSearchTerms$"
@@ -105,8 +110,9 @@
       </div>
     </ng-template>
   </ng-container>
+
   <ng-template #initialState
-    ><div *ngIf="hasSearchedTerms() && configuration?.autoSuggest" class="search-suggest-container" #searchSuggestLayer>
+    ><div *ngIf="(searchedTerms$ | async) && configuration?.autoSuggest" class="search-suggest-container">
       <div class="col-12">
         <ish-suggest-search-terms
           [maxRecentlySearchedWords]="5"
@@ -122,7 +128,6 @@
   <div class="buttons">
     <!-- Clear input button -->
     <button
-      #searchInputReset
       *ngIf="inputSearchTerms$ | async"
       class="btn btn-reset"
       type="reset"
@@ -136,7 +141,6 @@
 
     <!-- Search button -->
     <button
-      #searchInputSubmit
       class="btn btn-secondary btn-search"
       type="submit"
       name="search"
@@ -146,11 +150,13 @@
     >
       <!-- search button with icon -->
       <ng-container *ngIf="!configuration?.buttonText; else textBlock">
-        <fa-icon [icon]="['fas', 'search']" class="searchbox-icon" />
+        <fa-icon [icon]="['fas', usedIcon]" class="searchbox-icon" />
       </ng-container>
+
       <!-- search button with text -->
       <ng-template #textBlock> {{ configuration?.buttonText }} </ng-template>
     </button>
   </div>
 </div>
+
 <div class="search-suggest-backdrop" [ngClass]="{ show: searchBoxFocus }"></div>

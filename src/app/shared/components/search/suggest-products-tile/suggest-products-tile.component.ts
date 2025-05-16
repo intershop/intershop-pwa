@@ -2,10 +2,9 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, map } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { PipesModule } from 'ish-core/pipes.module';
 import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
@@ -22,19 +21,24 @@ export class SuggestProductsTileComponent implements OnInit {
   @Input() deviceType: DeviceType;
   @Output() routeChange = new EventEmitter<void>();
 
-  product$: Observable<ProductView>;
+  productURL$: Observable<string>;
+  productName$: Observable<string>;
 
   constructor(private context: ProductContextFacade) {}
 
   ngOnInit() {
-    this.product$ = this.context.select('product');
+    this.productURL$ = this.context.select('productURL');
+    this.productName$ = this.context
+      .select('product', 'name')
+      // truncate product name on desktop only
+      .pipe(map(name => (this.deviceType === 'desktop' ? this.truncate(name, 38) : name)));
+  }
+
+  truncate(text: string, limit: number): string {
+    return text.length > limit + 3 ? `${text.substring(0, limit)}...` : text;
   }
 
   handleInputFocus(): void {
     this.routeChange.emit();
-  }
-
-  truncate(text: string, limit: number): string {
-    return text.length > limit ? `${text.substring(0, limit)}...` : text;
   }
 }

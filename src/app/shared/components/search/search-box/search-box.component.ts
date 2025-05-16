@@ -3,17 +3,15 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   ElementRef,
   HostListener,
   Input,
   OnDestroy,
   OnInit,
   ViewChild,
-  inject,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { IconName } from '@fortawesome/fontawesome-svg-core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, ReplaySubject, map, shareReplay } from 'rxjs';
 
@@ -71,37 +69,45 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('searchBox') searchBox: ElementRef;
   @ViewChild('searchInput') searchInput: ElementRef;
-  @ViewChild('searchInputReset') searchInputReset: ElementRef;
-  @ViewChild('searchInputSubmit') searchInputSubmit: ElementRef;
-  @ViewChild('searchSuggestLayer') searchSuggestLayer: ElementRef;
 
-  suggestions$: Observable<Suggestions>;
-  inputSearchTerms$ = new ReplaySubject<string>(1);
   searchSuggestLoading$: Observable<boolean>;
   searchSuggestError$: Observable<HttpError>;
 
+  inputSearchTerms$ = new ReplaySubject<string>(1);
+  suggestions$: Observable<Suggestions>;
+
+  // check if suggest has results to show the suggest layer
+  searchBoxResults$: Observable<boolean>;
+
+  // check if there are recent searched terms
+  searchedTerms$: Observable<boolean>;
+
+  // check if the input search term has more than 3 characters
+  hasMinimumCharCount$: Observable<boolean>;
+
   // searchbox focus handling
   searchBoxFocus = false;
-  private searchBoxInitialWidth: number;
   searchBoxScaledUp = false;
-
-  // check if suggest has results
-  searchBoxResults$: Observable<boolean>;
+  private searchBoxInitialWidth: number;
 
   // search suggest layer height
   private resizeTimeout: ReturnType<typeof setTimeout>;
 
-  private destroyRef = inject(DestroyRef);
-
   constructor(private shoppingFacade: ShoppingFacade, private router: Router) {}
 
+  get usedIcon(): IconName {
+    return this.configuration?.icon || 'search';
+  }
+
   ngOnInit() {
+    this.searchSuggestLoading$ = this.shoppingFacade.searchSuggestLoading$;
+    this.searchSuggestError$ = this.shoppingFacade.searchSuggestError$;
+
     // suggests are triggered solely via stream
     this.suggestions$ = this.shoppingFacade
       .suggestResults$(this.inputSearchTerms$)
       .pipe(shareReplay(1)) as Observable<Suggestions>;
 
-    // check if there are results to show the suggest layer AND to add aria attributes
     this.searchBoxResults$ = this.suggestions$.pipe(
       map(
         results =>
@@ -116,8 +122,15 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
       shareReplay(1)
     );
 
-    this.searchSuggestLoading$ = this.shoppingFacade.searchSuggestLoading$;
-    this.searchSuggestError$ = this.shoppingFacade.searchSuggestError$;
+    this.searchedTerms$ = this.shoppingFacade.recentSearchTerms$.pipe(
+      map(terms => terms.length > 0),
+      shareReplay(1)
+    );
+
+    this.hasMinimumCharCount$ = this.inputSearchTerms$.pipe(
+      map(value => value.length > 2),
+      shareReplay(1)
+    );
   }
 
   ngAfterViewInit() {
@@ -242,19 +255,6 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigate(['/search', suggestedTerm]);
     this.blur();
     return false; // prevent form submission
-  }
-
-  // getter method to check if the input search term has more than 3 characters
-  get hasMinimumCharCount(): boolean {
-    let term = '';
-    this.inputSearchTerms$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => (term = value));
-    return term.length > 2;
-  }
-
-  hasSearchedTerms(): boolean {
-    let terms = [];
-    this.shoppingFacade.recentSearchTerms$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => (terms = data));
-    return terms.length > 0;
   }
 
   // set CSS variable for suggest layer height on mobile devices to prevent keyboard overlay issues

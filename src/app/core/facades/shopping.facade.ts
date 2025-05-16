@@ -255,6 +255,7 @@ export class ShoppingFacade {
   // SEARCH
   recentSearchTerms$ = this.store.pipe(select(getSearchedTerms));
   searchTerm$ = this.store.pipe(select(getSearchTerm));
+
   suggestResults$(searchTerm: Observable<string>) {
     return searchTerm.pipe(
       debounceTime(400),

@@ -16,67 +16,27 @@ describe('Suggest Products Tile Component', () => {
   let fixture: ComponentFixture<SuggestProductsTileComponent>;
   let element: HTMLElement;
 
-  beforeEach(async () => {
-    const context = mock(ProductContextFacade);
-    when(context.select('product')).thenReturn(of(undefined));
+  const productName = 'Product 12 345 (very long so it will be truncated)';
+  const productName41 = 'Product 12 345 (excactly "41" characters)';
+  const productURL = '/product-12-345-prd12345';
 
+  const context = mock(ProductContextFacade);
+
+  beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [MockComponent(ProductImageComponent), SuggestProductsTileComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
+
+    when(context.select('productURL')).thenReturn(of(productURL));
+    when(context.select('product', 'name')).thenReturn(of(productName));
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SuggestProductsTileComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-
-    component.deviceType = 'desktop';
-    // component.products = [
-    //   {
-    //     name: 'Product 1',
-    //     shortDescription: 'Product 1 short desc',
-    //     longDescription: 'Product 1 long desc',
-    //     minOrderQuantity: 1,
-    //     maxOrderQuantity: 10,
-    //     stepQuantity: 1,
-    //     manufacturer: 'Manufacturer 1',
-    //     roundedAverageRating: 0,
-    //     numberOfReviews: 0,
-    //     readyForShipmentMax: 0,
-    //     readyForShipmentMin: 0,
-    //     packingUnit: 'piece',
-    //     type: 'Product',
-    //     available: true,
-    //     images: [
-    //       {
-    //         effectiveUrl: 'http://domain.com/M/3538322-4095.jpg',
-    //         name: 'front M',
-    //         primaryImage: true,
-    //         type: 'Image',
-    //         typeID: 'M',
-    //         viewID: 'front',
-    //         imageActualHeight: 270,
-    //         imageActualWidth: 270,
-    //       },
-    //     ],
-    //     attributes: [
-    //       {
-    //         name: 'primaryImageId',
-    //         value: 'M/3538322-4095.jpg',
-    //       },
-    //       {
-    //         name: 'supplier-sku',
-    //         value: '12345',
-    //       },
-    //     ],
-    //     sku: '3538322',
-    //     completenessLevel: 0,
-    //     failed: false,
-    //     promotionIds: [],
-    //   },
-    // ];
   });
 
   it('should be created', () => {
@@ -85,30 +45,37 @@ describe('Suggest Products Tile Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display keyword names correctly', () => {
+  it('should display relevent product tile elements', () => {
     fixture.detectChanges();
-    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`[]`);
 
-    expect(element).toMatchInlineSnapshot(`N/A`);
-
-    // const keywordElements = element.querySelectorAll('ul li a');
-    // expect(keywordElements[1].textContent).toContain('Product 1');
+    const keywordElements = element.querySelectorAll('a');
+    expect(keywordElements).toHaveLength(2);
+    expect(keywordElements[0].attributes.getNamedItem('href').value).toEqual(productURL);
+    expect(keywordElements[1].attributes.getNamedItem('href').value).toEqual(productURL);
+    expect(keywordElements[1].textContent).toMatchInlineSnapshot(
+      `"Product 12 345 (very long so it will be truncated)"`
+    );
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
+      [
+        "ish-product-image",
+      ]
+    `);
   });
 
-  // it('should display the image', () => {
-  //   const componentSpy = spy(component);
-  //   when(componentSpy.getImageEffectiveUrl(component.products[0] as Product)).thenReturn(
-  //     'http://domain.com/M/3538322-4095.jpg'
-  //   );
+  it('should display product name for desktop truncated', () => {
+    component.deviceType = 'desktop';
+    fixture.detectChanges();
 
-  //   fixture.detectChanges();
-  //   const imageElement = element.querySelector('img');
-  //   expect(imageElement.getAttribute('src')).toBe('http://domain.com/M/3538322-4095.jpg');
-  // });
+    const keywordElements = element.querySelectorAll('a');
+    expect(keywordElements[1].textContent).toMatchInlineSnapshot(`"Product 12 345 (very long so it will b..."`);
+  });
 
-  // it('should display the image not available image', () => {
-  //   fixture.detectChanges();
-  //   const imageElement = element.querySelector('img');
-  //   expect(imageElement.getAttribute('src')).toBe(staticURL.concat('/assets/img/not-available.svg'));
-  // });
+  it('should display product name for desktop truncated', () => {
+    when(context.select('product', 'name')).thenReturn(of(productName41));
+    component.deviceType = 'desktop';
+    fixture.detectChanges();
+
+    const keywordElements = element.querySelectorAll('a');
+    expect(keywordElements[1].textContent).toMatchInlineSnapshot(`"Product 12 345 (excactly "41" characters)"`);
+  });
 });

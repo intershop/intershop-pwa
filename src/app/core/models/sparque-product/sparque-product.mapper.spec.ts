@@ -32,12 +32,12 @@ const sparqueProduct = {
 } as SparqueProduct;
 
 const image = {
-  effectiveUrl: 'baseUrl/M/123.jpg',
+  effectiveUrl: 'baseUrl/S/123.jpg',
   primaryImage: true,
   type: 'Image',
   typeID: 'S',
   viewID: 'front',
-  name: 'M front',
+  name: 'S front',
   imageActualHeight: 110,
   imageActualWidth: 110,
 };
@@ -73,7 +73,7 @@ describe('Sparque Product Mapper', () => {
 
   beforeEach(() => {
     sparqueImageMapper = mock(SparqueImageMapper);
-    when(sparqueImageMapper.mapProductImages(anything())).thenReturn([image]);
+    when(sparqueImageMapper.fromImages(anything())).thenReturn([image]);
 
     TestBed.configureTestingModule({
       providers: [{ provide: SparqueImageMapper, useFactory: () => instance(sparqueImageMapper) }],
