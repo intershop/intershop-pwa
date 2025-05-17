@@ -7,31 +7,31 @@ import { SearchResponse } from 'ish-core/models/search/search.model';
 import { SparqueProductMapper } from 'ish-core/models/sparque-product/sparque-product.mapper';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
-import { FixedFacetGroupResult, SparqueSearchResponse, SparqueSortingOptionResponse } from './sparque-search.interface';
+import { SparqueFixedFacetGroup, SparqueSearch, SparqueSortingOption } from './sparque-search.interface';
 
 @Injectable({ providedIn: 'root' })
 export class SparqueSearchMapper {
   constructor(private sparqueProductMapper: SparqueProductMapper) {}
 
-  fromData(search: SparqueSearchResponse, searchParameter: URLFormParams): SearchResponse {
+  fromData(search: SparqueSearch, searchParameter: URLFormParams): SearchResponse {
     return {
-      products: this.sparqueProductMapper.mapProducts(search.products),
-      sortableAttributes: this.mapSortableAttributes(search.sortings),
+      products: this.sparqueProductMapper.fromListData(search.products),
       total: search.total,
+      sortableAttributes: this.mapSortableAttributes(search.sortings),
       filter: this.mapFilter(search.facets, searchParameter),
     };
   }
 
-  private mapSortableAttributes(sortableAttributes: SparqueSortingOptionResponse[]): SortableAttributesType[] {
-    return sortableAttributes
-      ? sortableAttributes.map(sorting => ({
+  private mapSortableAttributes(sortingOptions: SparqueSortingOption[]): SortableAttributesType[] {
+    return sortingOptions
+      ? sortingOptions.map(sorting => ({
           name: sorting.identifier,
           displayName: sorting.title,
         }))
       : undefined;
   }
 
-  private mapFilter(filter: FixedFacetGroupResult[], searchParameter: URLFormParams): Filter[] {
+  private mapFilter(filter: SparqueFixedFacetGroup[], searchParameter: URLFormParams): Filter[] {
     return filter
       ? filter.map(facetGroup => {
           const facets: Facet[] = facetGroup.options.map(facet => ({

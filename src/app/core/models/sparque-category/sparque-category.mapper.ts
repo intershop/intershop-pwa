@@ -12,12 +12,12 @@ import { SparqueCategory, SparqueParentCategory } from './sparque-category.inter
 export class SparqueCategoryMapper {
   constructor(private sparqueImageMapper: SparqueImageMapper) {}
 
-  fromSuggestionsData(categories: SparqueCategory[]): { categoryIds: string[]; categoryTree: CategoryTree } {
+  fromSuggestionsData(categoriesData: SparqueCategory[]): { categoryIds: string[]; categoryTree: CategoryTree } {
     const categoryIds: string[] = [];
     let categoryTree = CategoryTreeHelper.empty();
 
-    if (categories?.length) {
-      categories.forEach(category => {
+    if (categoriesData?.length) {
+      categoriesData.forEach(category => {
         const result = this.fromData(category);
         categoryTree = CategoryTreeHelper.merge(categoryTree, result.categoryTree);
         categoryIds.push(result.category.uniqueId);

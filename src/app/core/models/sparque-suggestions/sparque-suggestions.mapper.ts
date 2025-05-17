@@ -15,26 +15,30 @@ export class SparqueSuggestionsMapper {
     private sparqueProductMapper: SparqueProductMapper
   ) {}
 
-  fromData(data: SparqueSuggestions): [Suggestions?, CategoryTree?, Partial<Product>[]?] {
+  fromData(data: SparqueSuggestions): {
+    suggestions: Suggestions;
+    categories?: CategoryTree;
+    products?: Partial<Product>[];
+  } {
     if (!data) {
-      return [];
+      return;
     }
 
     const mappedCategories = this.sparqueCategoryMapper.fromSuggestionsData(data.categories);
-    const categories = mappedCategories.categoryIds;
-    const categoryTree = mappedCategories.categoryTree;
+    const categoryIds = mappedCategories.categoryIds;
+    const categories = mappedCategories.categoryTree;
 
     const mappedProducts = this.sparqueProductMapper.fromSuggestionsData(data.products);
-    const products = mappedProducts.productSkus;
-    const productsArray = mappedProducts.products;
+    const productSkus = mappedProducts.productSkus;
+    const products = mappedProducts.products;
 
     const suggestions = {
       keywords: data.keywordSuggestions ?? [],
       brands: data.brands ?? [],
-      categories,
-      products,
+      categories: categoryIds,
+      products: productSkus,
     };
 
-    return [suggestions, categoryTree, productsArray];
+    return { suggestions, categories, products };
   }
 }

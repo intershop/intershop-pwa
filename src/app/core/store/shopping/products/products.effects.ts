@@ -24,7 +24,7 @@ import { Filter } from 'ish-core/models/filter/filter.model';
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { ofProductUrl } from 'ish-core/routing/product/product.route';
-import { SearchServiceProvider } from 'ish-core/service-provider/search.service-provider';
+import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
@@ -76,7 +76,7 @@ export class ProductsEffects {
     private actions$: Actions,
     private store: Store,
     private productsService: ProductsService,
-    private searchServiceProvider: SearchServiceProvider,
+    private productsServiceProvider: ProductsServiceProvider,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
     private router: Router
@@ -193,7 +193,7 @@ export class ProductsEffects {
           whenTruthy(),
           first(),
           switchMap(pageSize =>
-            this.searchServiceProvider
+            this.productsServiceProvider
               .get()
               .getFilteredProducts(searchParameter, pageSize, sorting, ((page || 1) - 1) * pageSize)
               .pipe(

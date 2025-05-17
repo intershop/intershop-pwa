@@ -18,11 +18,6 @@ export const loadProductSuccess = createAction(
   payload<{ product: Partial<AllProductTypes> }>()
 );
 
-export const loadProductsSuccess = createAction(
-  '[Products API] Load Products Success',
-  payload<{ products: Partial<AllProductTypes>[] }>()
-);
-
 export const loadProductsForCategory = createAction(
   '[Products Internal] Load Products for Category',
   payload<{ categoryId: string; page?: number; sorting?: string }>()

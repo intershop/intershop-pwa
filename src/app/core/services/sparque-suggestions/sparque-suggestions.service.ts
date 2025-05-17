@@ -7,7 +7,7 @@ import { Product } from 'ish-core/models/product/product.model';
 import { SparqueSuggestions } from 'ish-core/models/sparque-suggestions/sparque-suggestions.interface';
 import { SparqueSuggestionsMapper } from 'ish-core/models/sparque-suggestions/sparque-suggestions.mapper';
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
-import { SuggestionsService } from 'ish-core/service-provider/suggestions.service-provider';
+import { SuggestionsServiceInterface } from 'ish-core/service-provider/suggestions.service-provider';
 import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.service';
 
 /**
@@ -15,7 +15,7 @@ import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.ser
  * Extends the base `SuggestionsService` to provide specific implementations for Sparque.
  */
 @Injectable({ providedIn: 'root' })
-export class SparqueSuggestionsService implements SuggestionsService {
+export class SparqueSuggestionsService implements SuggestionsServiceInterface {
   // API version for Sparque API.
   private readonly apiVersion = 'v2';
   // Maximum number of suggestions to request from the Sparque API.
@@ -39,9 +39,6 @@ export class SparqueSuggestionsService implements SuggestionsService {
 
     return this.sparqueApiService
       .get<SparqueSuggestions>(`suggestions`, this.apiVersion, { params, skipApiErrorHandling: true })
-      .pipe(
-        map(suggestions => this.sparqueSuggestionsMapper.fromData(suggestions)),
-        map(([suggestions, categories, products]) => ({ suggestions, categories, products }))
-      );
+      .pipe(map(suggestions => this.sparqueSuggestionsMapper.fromData(suggestions)));
   }
 }

@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
 import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
-import { SparqueSearchResponse } from 'ish-core/models/sparque-search/sparque-search.interface';
+import { SparqueSearch } from 'ish-core/models/sparque-search/sparque-search.interface';
 import { SparqueSearchMapper } from 'ish-core/models/sparque-search/sparque-search.mapper';
-import { SearchService } from 'ish-core/service-provider/search.service-provider';
+import { ProductsServiceInterface } from 'ish-core/service-provider/products.service-provider';
 import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.service';
 import { omit } from 'ish-core/utils/functions';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
@@ -15,7 +15,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  * Extends the base `SearchService` to provide specific implementations for Sparque.
  */
 @Injectable({ providedIn: 'root' })
-export class SparqueSearchService implements SearchService {
+export class SparqueProductsService implements ProductsServiceInterface {
   // API version for Sparque API.
   private readonly apiVersion = 'v2';
   // Maximum number of facet options to request from the Sparque API.
@@ -42,8 +42,10 @@ export class SparqueSearchService implements SearchService {
     }
 
     return this.sparqueApiService
-      .get<SparqueSearchResponse>(`search`, this.apiVersion, { params, skipApiErrorHandling: true })
-      .pipe(map(result => this.sparqueSearchMapper.fromData(result, { searchTerm: [searchParams.searchTerm] })));
+      .get<SparqueSearch>(`search`, this.apiVersion, { params, skipApiErrorHandling: true })
+      .pipe(
+        map(result => this.sparqueSearchMapper.fromData(result, { searchTerm: [searchParams.searchTerm] })),
+      );
   }
 
   /**
@@ -72,8 +74,10 @@ export class SparqueSearchService implements SearchService {
     params = params.append('selectedFacets', selectedFacets(omit(searchParameter, 'searchTerm')));
 
     return this.sparqueApiService
-      .get<SparqueSearchResponse>(`search`, this.apiVersion, { params, skipApiErrorHandling: true })
-      .pipe(map(result => this.sparqueSearchMapper.fromData(result, searchParameter)));
+      .get<SparqueSearch>(`search`, this.apiVersion, { params, skipApiErrorHandling: true })
+      .pipe(
+        map(result => this.sparqueSearchMapper.fromData(result, searchParameter)),
+      );
   }
 }
 

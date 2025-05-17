@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
-import { SearchServiceProvider } from 'ish-core/service-provider/search.service-provider';
+import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
@@ -28,7 +28,7 @@ describe('Search Effects', () => {
   let productsServiceMock: ProductsService;
   let suggestServiceMock: SuggestService;
   let sparqueSuggestionsServiceMock: SparqueSuggestionsService;
-  let searchServiceProviderMock: SearchServiceProvider;
+  let productsServiceProviderMock: ProductsServiceProvider;
   let httpStatusCodeService: HttpStatusCodeService;
 
   const suggests = { suggestions: { keywords: [{ keyword: 'Goods' }] } };
@@ -38,8 +38,8 @@ describe('Search Effects', () => {
     suggestServiceMock = mock(SuggestService);
     when(suggestServiceMock.searchSuggestions(anyString())).thenReturn(of(suggests));
     productsServiceMock = mock(ProductsService);
-    searchServiceProviderMock = mock(SearchServiceProvider);
-    when(searchServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
+    productsServiceProviderMock = mock(ProductsServiceProvider);
+    when(productsServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
     const skus = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
     when(productsServiceMock.searchProducts(anything())).thenCall(
       (searchTerm: string, amount: number, _, offset: number) => {
@@ -68,7 +68,7 @@ describe('Search Effects', () => {
       ],
       providers: [
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
-        { provide: SearchServiceProvider, useFactory: () => instance(searchServiceProviderMock) },
+        { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
         { provide: SparqueSuggestionsService, useFactory: () => instance(sparqueSuggestionsServiceMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         provideStoreSnapshots(),
@@ -194,7 +194,6 @@ describe('Search Effects', () => {
           {
             "amount": 12,
             "offset": 0,
-            "page": 1,
             "searchTerm": "123",
             "sorting": undefined,
           },
@@ -210,7 +209,6 @@ describe('Search Effects', () => {
           {
             "amount": 12,
             "offset": 12,
-            "page": 2,
             "searchTerm": "123",
             "sorting": undefined,
           },
@@ -225,7 +223,6 @@ describe('Search Effects', () => {
           {
             "amount": 12,
             "offset": 24,
-            "page": 3,
             "searchTerm": "123",
             "sorting": undefined,
           },

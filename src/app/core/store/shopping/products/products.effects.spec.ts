@@ -10,7 +10,7 @@ import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, w
 
 import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { SearchServiceProvider } from 'ish-core/service-provider/search.service-provider';
+import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user/user.actions';
@@ -42,14 +42,14 @@ describe('Products Effects', () => {
   let effects: ProductsEffects;
   let store: Store;
   let productsServiceMock: ProductsService;
-  let searchServiceProviderMock: SearchServiceProvider;
+  let productsServiceProviderMock: ProductsServiceProvider;
   let router: Router;
   let httpStatusCodeService: HttpStatusCodeService;
 
   beforeEach(() => {
-    searchServiceProviderMock = mock(SearchServiceProvider);
+    productsServiceProviderMock = mock(ProductsServiceProvider);
     productsServiceMock = mock(ProductsService);
-    when(searchServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
+    when(productsServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
     when(productsServiceMock.getProduct(anyString())).thenCall((sku: string) => {
       if (sku === 'invalid') {
         return throwError(() => makeHttpError({ message: 'invalid' }));
@@ -89,7 +89,7 @@ describe('Products Effects', () => {
       ],
       providers: [
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
-        { provide: SearchServiceProvider, useFactory: () => instance(searchServiceProviderMock) },
+        { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
         ProductsEffects,
         provideMockActions(() => actions$),
       ],

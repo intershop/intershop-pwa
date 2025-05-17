@@ -1,12 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { anything, instance, mock, when } from 'ts-mockito';
 
-import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
 import { Category } from 'ish-core/models/category/category.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { SparqueCategoryMapper } from 'ish-core/models/sparque-category/sparque-category.mapper';
 import { SparqueProductMapper } from 'ish-core/models/sparque-product/sparque-product.mapper';
-import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 
 import { SparqueSuggestions } from './sparque-suggestions.interface';
 import { SparqueSuggestionsMapper } from './sparque-suggestions.mapper';
@@ -64,27 +62,24 @@ describe('Sparque Suggestions Mapper', () => {
     it('should map categories and products correctly', () => {
       const sparqueSuggestions: SparqueSuggestions = {} as SparqueSuggestions;
       const result = sparqueSuggestionsMapper.fromData(sparqueSuggestions);
-      const suggestions: Suggestions = result[0];
-      const categoryTree: CategoryTree = result[1];
-      const productsArray: Partial<Product>[] = result[2];
-      expect(suggestions.categories).toMatchInlineSnapshot(`
+      expect(result.suggestions.categories).toMatchInlineSnapshot(`
         [
           "cat1",
           "cat2",
         ]
       `);
-      expect(categoryTree).toMatchInlineSnapshot(`
+      expect(result.categories).toMatchInlineSnapshot(`
         ├─ cat1
         └─ cat2
 
       `);
-      expect(suggestions.products).toMatchInlineSnapshot(`
+      expect(result.suggestions.products).toMatchInlineSnapshot(`
         [
           "sku1",
           "sku2",
         ]
       `);
-      expect(productsArray).toMatchInlineSnapshot(`
+      expect(result.products).toMatchInlineSnapshot(`
         [
           {
             "available": true,
@@ -122,8 +117,7 @@ describe('Sparque Suggestions Mapper', () => {
       };
 
       const result = sparqueSuggestionsMapper.fromData(sparqueSuggestions);
-      const suggestions: Suggestions = result[0];
-      expect(suggestions.brands[0]).toMatchInlineSnapshot(`
+      expect(result.suggestions.brands[0]).toMatchInlineSnapshot(`
         {
           "brandName": "Brand 1",
           "totalCount": 5,
@@ -140,8 +134,7 @@ describe('Sparque Suggestions Mapper', () => {
       };
 
       const result = sparqueSuggestionsMapper.fromData(sparqueSuggestions);
-      const suggestions: Suggestions = result[0];
-      expect(suggestions.keywords).toMatchInlineSnapshot(`
+      expect(result.suggestions.keywords).toMatchInlineSnapshot(`
         [
           {
             "keyword": "keyword1",
@@ -155,8 +148,7 @@ describe('Sparque Suggestions Mapper', () => {
 
     it('should return empty object for undefined input', () => {
       const result = sparqueSuggestionsMapper.fromData(undefined);
-      const suggestions: Suggestions = result[0];
-      expect(suggestions).toBeUndefined();
+      expect(result).toBeUndefined();
     });
   });
 });

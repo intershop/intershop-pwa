@@ -22,7 +22,7 @@ export class SuggestionsServiceProvider {
    *
    * @returns An instance of either SparqueSuggestionsService or SuggestService (ICM/Solr).
    */
-  get(): SuggestionsService {
+  get(): SuggestionsServiceInterface {
     let isSparque = false;
     this.store
       .pipe(select(getSparqueConfig), take(1))
@@ -35,7 +35,7 @@ export class SuggestionsServiceProvider {
  * Abstract service class that defines methods for search suggestions.
  * Implementations of this service should define the behavior for these suggestions functionalities.
  */
-export interface SuggestionsService {
+export interface SuggestionsServiceInterface {
   /**
    * Searches for suggestions based on the provided search term.
    *

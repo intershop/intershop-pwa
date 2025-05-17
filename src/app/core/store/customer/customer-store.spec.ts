@@ -12,7 +12,7 @@ import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { User } from 'ish-core/models/user/user.model';
-import { SearchServiceProvider } from 'ish-core/service-provider/search.service-provider';
+import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { AddressService } from 'ish-core/services/address/address.service';
 import { AuthorizationService } from 'ish-core/services/authorization/authorization.service';
 import { BasketItemsService } from 'ish-core/services/basket-items/basket-items.service';
@@ -187,8 +187,8 @@ describe('Customer Store', () => {
         { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
         { provide: PricesService, useFactory: () => instance(productPriceServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
+        { provide: ProductsServiceProvider, useFactory: () => instance(mock(ProductsServiceProvider)) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
-        { provide: SearchServiceProvider, useFactory: () => instance(mock(SearchServiceProvider)) },
         { provide: SparqueSuggestionsService, useFactory: () => instance(mock(SparqueSuggestionsService)) },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: TokenService, useFactory: () => instance(mock(TokenService)) },

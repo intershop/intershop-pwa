@@ -4,29 +4,29 @@ import { SparqueProduct } from 'ish-core/models/sparque-product/sparque-product.
 /**
  * Interface for Sparque Search API response object
  */
-export interface SparqueSearchResponse {
+export interface SparqueSearch {
   products?: SparqueProduct[];
   total?: number;
-  facets?: FixedFacetGroupResult[];
-  sortings: SparqueSortingOptionResponse[];
+  sortings?: SparqueSortingOption[];
+  facets?: SparqueFixedFacetGroup[];
 }
 
-export interface FixedFacetGroupResult {
+export interface SparqueSortingOption {
+  identifier: string;
+  title: string;
+}
+
+export interface SparqueFixedFacetGroup {
   id: string;
   title: string;
-  options: FixedFacetOption[];
+  options: SparqueFixedFacetOption[];
   attributes?: Attribute[];
 }
 
-interface FixedFacetOption {
+interface SparqueFixedFacetOption {
   id: string;
   identifier: string;
   score: number;
   value: string;
   childFacets?: string[];
-}
-
-export interface SparqueSortingOptionResponse {
-  identifier: string;
-  title: string;
 }

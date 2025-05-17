@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { SparqueSearchResponse } from 'ish-core/models/sparque-search/sparque-search.interface';
 import { SparqueSuggestions } from 'ish-core/models/sparque-suggestions/sparque-suggestions.interface';
 import { SparqueSuggestionsMapper } from 'ish-core/models/sparque-suggestions/sparque-suggestions.mapper';
 import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.service';
@@ -23,10 +22,7 @@ describe('Sparque Suggestions Service', () => {
       ],
     });
     sparqueSuggestionsService = TestBed.inject(SparqueSuggestionsService);
-    when(sparqueApiService.get(anything(), apiVersion, anything())).thenReturn(
-      of<SparqueSearchResponse>({ products: [], total: 0, sortings: [] })
-    );
-    when(sparqueSuggestionsMapper.fromData(anything())).thenReturn([undefined, undefined]);
+    when(sparqueSuggestionsMapper.fromData(anything())).thenReturn(undefined);
   });
 
   it('should map the response using SparqueSuggestionsMapper', done => {

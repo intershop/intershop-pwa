@@ -4,29 +4,29 @@ import { Observable, take } from 'rxjs';
 
 import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { SparqueSearchService } from 'ish-core/services/sparque-search/sparque-search.service';
+import { SparqueProductsService } from 'ish-core/services/sparque-products/sparque-products.service';
 import { getSparqueConfig } from 'ish-core/store/core/configuration';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 @Injectable({ providedIn: 'root' })
-export class SearchServiceProvider {
+export class ProductsServiceProvider {
   constructor(
     private productsService: ProductsService,
-    private sparqueSearchService: SparqueSearchService,
+    private sparqueProductsService: SparqueProductsService,
     private store: Store
   ) {}
 
   /**
-   * Gets the appropriate search service based on the store configuration.
+   * Gets the appropriate products service based on the store configuration.
    *
-   * @returns An instance of either SparqueSearchService or ProductsService.
+   * @returns An instance of either SparqueProductsService or ProductsService.
    */
-  get(): SearchService {
+  get(): ProductsServiceInterface {
     let isSparque = false;
     this.store
       .pipe(select(getSparqueConfig), take(1))
       .subscribe(sparqueConfig => (sparqueConfig ? (isSparque = true) : (isSparque = false)));
-    return isSparque ? this.sparqueSearchService : this.productsService;
+    return isSparque ? this.sparqueProductsService : this.productsService;
   }
 }
 
@@ -36,7 +36,7 @@ export class SearchServiceProvider {
  * and filtered products. Implementations of this service should define the
  * behavior for these search functionalities.
  */
-export interface SearchService {
+export interface ProductsServiceInterface {
   /**
    * Searches for products based on the provided search parameters.
    *
