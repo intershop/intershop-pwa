@@ -114,7 +114,7 @@ describe('Products Service', () => {
     const searchTerm = 'aaa';
 
     when(apiServiceMock.get(anything(), anything())).thenReturn(of(productsMockData));
-    productsService.searchProducts(searchTerm, 0);
+    productsService.searchProducts({ searchTerm, amount: 12, offset: 0 });
 
     verify(apiServiceMock.get(anything(), anything())).once();
   });

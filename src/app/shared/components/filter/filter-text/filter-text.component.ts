@@ -56,7 +56,7 @@ export class FilterTextComponent implements OnInit {
   getFacets() {
     const facets = [...this.facets];
 
-    if (this.showAll || this.maxLevel >= 1 || this.filterElement.limitCount === -1) {
+    if (this.showAll || this.filterElement.limitCount === -1) {
       return facets;
     }
 

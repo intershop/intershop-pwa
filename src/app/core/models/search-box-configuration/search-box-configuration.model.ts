@@ -14,15 +14,11 @@ export interface SearchBoxConfiguration {
    */
   autoSuggest?: boolean;
   /**
-   * configures the number of suggestions if auto suggestion is provided
+   * configures the number of keyword suggestions if auto suggestion is provided
    */
   maxAutoSuggests?: number;
   /**
    * configure search box icon
    */
   icon?: IconName;
-  /**
-   * show last search term as search box value
-   */
-  showLastSearchTerm?: boolean;
 }

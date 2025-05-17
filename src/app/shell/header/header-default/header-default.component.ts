@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
@@ -30,6 +31,8 @@ export class HeaderDefaultComponent implements OnChanges {
   @Input() reset: unknown;
 
   private activeComponent: CollapsibleComponent = 'search';
+
+  constructor(@Inject(DOCUMENT) private document: Document) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.reset) {
@@ -81,6 +84,26 @@ export class HeaderDefaultComponent implements OnChanges {
       this.activeComponent = !this.isSticky ? 'search' : undefined;
     } else {
       this.activeComponent = component;
+
+      if (component === 'search') {
+        this.focusSearch();
+      }
     }
+  }
+
+  // scroll to the top and set focus to search input
+  scrollTopAndFocusSearch() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const checkInterval = setInterval(() => {
+      if (window.scrollY === 0) {
+        // wait until page has scrolled to top
+        clearInterval(checkInterval);
+        this.focusSearch();
+      }
+    }, 500);
+  }
+
+  private focusSearch() {
+    this.document.getElementById('header-search-input').focus();
   }
 }

@@ -152,7 +152,6 @@ import { ProductsListComponent } from './components/product/products-list/produc
 import { PromotionDetailsComponent } from './components/promotion/promotion-details/promotion-details.component';
 import { PromotionRemoveComponent } from './components/promotion/promotion-remove/promotion-remove.component';
 import { ConfirmLeaveModalComponent } from './components/registration/confirm-leave-modal/confirm-leave-modal.component';
-import { SearchBoxComponent } from './components/search/search-box/search-box.component';
 import { FormlyAddressFormsModule } from './formly-address-forms/formly-address-forms.module';
 import { FormlyModule } from './formly/formly.module';
 import { FormsSharedModule } from './forms/forms.module';
@@ -195,6 +194,8 @@ const importExportModules = [
   TranslateModule,
   WishlistsExportsModule,
 ];
+
+const standaloneComponents = [ProductImageComponent];
 
 const declaredComponents = [
   Auth0SignInComponent,
@@ -294,7 +295,6 @@ const exportedComponents = [
   ProductAttributesComponent,
   ProductBundleDisplayComponent,
   ProductIdComponent,
-  ProductImageComponent,
   ProductInventoryComponent,
   ProductItemComponent,
   ProductLabelComponent,
@@ -315,14 +315,13 @@ const exportedComponents = [
   ProductWarrantyDetailsComponent,
   PromotionDetailsComponent,
   PromotionRemoveComponent,
-  SearchBoxComponent,
   SuccessMessageComponent,
 ];
 
 @NgModule({
-  imports: [...importExportModules],
+  imports: [...importExportModules, ...standaloneComponents],
   declarations: [...declaredComponents, ...exportedComponents],
-  exports: [...exportedComponents, ...importExportModules],
+  exports: [...exportedComponents, ...importExportModules, ...standaloneComponents],
 })
 export class SharedModule {
   constructor(moduleLoader: ModuleLoaderService, featureEventNotifier: FeatureEventService, injector: Injector) {

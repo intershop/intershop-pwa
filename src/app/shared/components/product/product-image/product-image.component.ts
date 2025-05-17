@@ -1,6 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit, Optional } from '@angular/core';
-import { QueryParamsHandling } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { QueryParamsHandling, RouterModule } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable, combineLatest, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -17,6 +18,8 @@ import { Image } from 'ish-core/models/image/image.model';
 @Component({
   selector: 'ish-product-image',
   templateUrl: './product-image.component.html',
+  standalone: true,
+  imports: [CommonModule, RouterModule, TranslateModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductImageComponent implements OnInit {

@@ -11,11 +11,13 @@ export interface Category {
   hasOnlineProducts: boolean;
   description: string;
   images: Image[];
-  attributes: Attribute[];
+  attributes?: Attribute[];
 
   completenessLevel: number;
 
   seoAttributes?: SeoAttributes;
+
+  productCount?: number;
 }
 
 export * from './category.helper';
