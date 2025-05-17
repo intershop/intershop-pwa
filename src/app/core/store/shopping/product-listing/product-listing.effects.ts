@@ -164,6 +164,7 @@ export class ProductListingEffects {
       mapToPayload(),
       map(({ id, filters }) => ({ type: id.type, value: id.value, filters })),
       distinctUntilChanged(isEqual),
+      // load filters only in non Sparque environments
       concatLatestFrom(() => this.store.pipe(select(getSparqueConfig))),
       filter(([, sparqueConfig]) => !sparqueConfig),
       map(([{ type, value, filters }]) => {

@@ -96,8 +96,8 @@ export class SearchEffects {
                 this.router.navigate([generateProductUrl(products[0])]);
               }
               // provide the data for the search result page
-              const actions: Action[] = [...products.map(product => loadProductSuccess({ product }))];
-              actions.push(
+              return [
+                ...products.map(product => loadProductSuccess({ product })),
                 setProductListingPages(
                   this.productListingMapper.createPages(
                     products.map(p => p.sku),
@@ -111,12 +111,9 @@ export class SearchEffects {
                       itemCount: total,
                     }
                   )
-                )
-              );
-              if (filter?.length) {
-                actions.push(loadFilterSuccess({ filterNavigation: { filter } }));
-              }
-              return actions;
+                ),
+                filter?.length ? loadFilterSuccess({ filterNavigation: { filter } }) : { type: 'no_filter_action' },
+              ];
             }),
             mapErrorToAction(searchProductsFail)
           )

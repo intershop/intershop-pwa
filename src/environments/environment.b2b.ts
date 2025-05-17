@@ -20,13 +20,4 @@ export const environment: Environment = {
   ],
 
   ...overrides,
-
-  sparque: {
-    serverUrl: 'https://policy-int.cloud.intershop.com',
-    wrapperApi: 'v2',
-    workspaceName: 'intershop-project-base-v2-team2',
-    apiName: 'PWA',
-    channelId: 'ish',
-    config: 'default',
-  },
 };

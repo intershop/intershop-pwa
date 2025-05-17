@@ -197,35 +197,31 @@ export class ProductsEffects {
               .get()
               .getFilteredProducts(searchParameter, pageSize, sorting, ((page || 1) - 1) * pageSize)
               .pipe(
-                mergeMap(searchResponse => [
-                  ...searchResponse.products.map((product: Product) => loadProductSuccess({ product })),
+                mergeMap(({ products, total, sortableAttributes, filter }) => [
+                  ...products.map((product: Product) => loadProductSuccess({ product })),
                   setProductListingPages(
                     this.productListingMapper.createPages(
-                      searchResponse.products.map(p => p.sku),
+                      products.map(p => p.sku),
                       id.type,
                       id.value,
                       pageSize,
                       {
                         filters: id.filters,
-                        itemCount: searchResponse.total,
+                        itemCount: total,
                         startPage: page,
-                        sortableAttributes: searchResponse.sortableAttributes,
+                        sortableAttributes,
                         sorting,
                       }
                     )
                   ),
-                  searchResponse.filter
-                    ? (() =>
-                        loadFilterSuccess({
-                          filterNavigation: {
-                            filter: this.handleSparqueCategoryFilter(
-                              searchResponse.filter,
-                              categoryFilter,
-                              searchParameter
-                            ),
-                          },
-                        }))()
-                    : { type: 'NO_ACTION' },
+                  filter?.length
+                    ? // handle Sparque filter
+                      loadFilterSuccess({
+                        filterNavigation: {
+                          filter: this.handleSparqueCategoryFilter(filter, categoryFilter, searchParameter),
+                        },
+                      })
+                    : { type: 'no_filter_action' },
                 ]),
                 mapErrorToAction(loadProductFail)
               )

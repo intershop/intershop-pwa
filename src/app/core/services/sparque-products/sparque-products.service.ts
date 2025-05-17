@@ -43,9 +43,7 @@ export class SparqueProductsService implements ProductsServiceInterface {
 
     return this.sparqueApiService
       .get<SparqueSearch>(`search`, this.apiVersion, { params, skipApiErrorHandling: true })
-      .pipe(
-        map(result => this.sparqueSearchMapper.fromData(result, { searchTerm: [searchParams.searchTerm] })),
-      );
+      .pipe(map(result => this.sparqueSearchMapper.fromData(result, { searchTerm: [searchParams.searchTerm] })));
   }
 
   /**
@@ -71,20 +69,18 @@ export class SparqueProductsService implements ProductsServiceInterface {
     if (sortKey) {
       params = params.set('sorting', sortKey);
     }
-    params = params.append('selectedFacets', selectedFacets(omit(searchParameter, 'searchTerm')));
+    params = params.append('selectedFacets', this.selectedFacets(omit(searchParameter, 'searchTerm')));
 
     return this.sparqueApiService
       .get<SparqueSearch>(`search`, this.apiVersion, { params, skipApiErrorHandling: true })
-      .pipe(
-        map(result => this.sparqueSearchMapper.fromData(result, searchParameter)),
-      );
+      .pipe(map(result => this.sparqueSearchMapper.fromData(result, searchParameter)));
   }
-}
 
-function selectedFacets(object: URLFormParams): string {
-  let params = '';
-  Object.entries(object).forEach(([key, val]) => {
-    params = params + key.concat('|').concat(val[0]).concat(',');
-  });
-  return params.substring(0, params.length - 1);
+  private selectedFacets(object: URLFormParams): string {
+    let params = '';
+    Object.entries(object).forEach(([key, val]) => {
+      params = params + key.concat('|').concat(val[0]).concat(',');
+    });
+    return params.substring(0, params.length - 1);
+  }
 }

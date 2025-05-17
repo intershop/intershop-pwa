@@ -298,7 +298,7 @@ describe('Products Effects', () => {
             id: {"type":"search","value":"test","filters":{"searchTerm":[1]}}
             itemCount: 2
             sortableAttributes: []
-          NO_ACTION
+          no_filter_action
         `);
         done();
       });
