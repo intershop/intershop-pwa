@@ -47,6 +47,7 @@ All other properties are optional:
 - **lang**: the default language as defined in the Angular CLI environment
 - **currency**: the default currency for this channel
 - **theme**: the theme used for the channel (see [Guide - Themes](./themes.md))
+- **sparque**: the SPARQUE connection configuration (see [Guide - SPARQUE.AI](./sparque-ai.md))
 - **protected**: Selectively disable basic auth for a given domain and/or baseHref. Only applies in combination with globally activated nginx basic authentication.
 
 Dynamically directing the PWA to different ICM installations can be done by using:
@@ -220,8 +221,8 @@ ca.+\.com:
 ## Integrate Your Multi-Site Configuration with the Language Switch
 
 To construct new multi-site URLs when switching between languages, the PWA uses the `multi-site.service.ts`.
-The `getLangUpdatedUrl` is called with the desired locale string, current url, and current baseHref.
-From this it constructs a new URL, conforming to our multi-site setup (see [One Domain, One Channel, Multiple Locales](#one-domain-one-channel-multiple-locales)).
+The `getLangUpdatedUrl` is called with the desired locale string, current URL, and current baseHref.
+From this, it constructs a new URL, conforming to our multi-site setup (see [One Domain, One Channel, Multiple Locales](#one-domain-one-channel-multiple-locales)).
 
 To control the transformation of URLs, the `multiSiteLocaleMap` environment variable is used.
 Depending on your needs, `multiSiteLocaleMap` can be set in either the `environment.ts` or as an environment variable (`MULTI_SITE_LOCALE_MAP`).

@@ -133,6 +133,8 @@ export const getMultiSiteLocaleMap = createSelector(
   (state: ConfigurationState) => state.multiSiteLocaleMap
 );
 
+export const getSparqueConfig = createSelector(getConfigurationState, state => state.sparque);
+
 export const getRestEndpoint = createSelector(
   getICMServerURL,
   getConfigurationState,
@@ -149,4 +151,16 @@ export const getPipelineEndpoint = createSelector(
   getCurrentCurrency,
   (serverUrl, state, locale, application, currency) =>
     serverUrl && state.channel ? `${serverUrl}/${state.channel}/${locale}/${application}/${currency}` : undefined
+);
+
+export const getStaticEndpoint = createSelector(
+  getConfigurationState,
+  getICMApplication,
+  getCurrentLocale,
+  (state, application, locale) =>
+    state.baseURL && state.serverStatic && state.channel
+      ? `${state.baseURL}/${state.serverStatic}/${state.channel}/${application}/${
+          state.channel.split('-')[0]
+        }/${locale}`
+      : undefined
 );
