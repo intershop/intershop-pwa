@@ -2,18 +2,19 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
-import { Store, select } from '@ngrx/store';
+import { Action, Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { from } from 'rxjs';
 import { concatMap, map, sample, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
+import { SuggestionsServiceProvider } from 'ish-core/service-provider/suggestions.service-provider';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
+import { loadCategorySuccess } from 'ish-core/store/shopping/categories';
 import {
   getProductListingItemsPerPage,
   loadMoreProducts,
@@ -44,7 +45,7 @@ export class SearchEffects {
     private actions$: Actions,
     private store: Store,
     private productsService: ProductsService,
-    private suggestService: SuggestService,
+    private suggestionsServiceProvider: SuggestionsServiceProvider,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
     private translateService: TranslateService,
@@ -121,10 +122,22 @@ export class SearchEffects {
         ofType(suggestSearch),
         mapToPayloadProperty('searchTerm'),
         switchMap(searchTerm =>
-          this.suggestService.searchSuggestions(searchTerm).pipe(
-            map(({ suggestions }) => suggestSearchSuccess({ suggestions })),
-            mapErrorToAction(suggestSearchFail)
-          )
+          this.suggestionsServiceProvider
+            .get()
+            .searchSuggestions(searchTerm)
+            .pipe(
+              concatMap(({ suggestions, categories, products }) => {
+                const actions: Action[] = [suggestSearchSuccess({ suggestions })];
+                if (categories) {
+                  actions.push(loadCategorySuccess({ categories }));
+                }
+                if (products) {
+                  products.map(product => actions.push(loadProductSuccess({ product })));
+                }
+                return actions;
+              }),
+              mapErrorToAction(suggestSearchFail)
+            )
         )
       )
     );

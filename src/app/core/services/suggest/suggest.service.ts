@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
+import { SuggestionsServiceInterface } from 'ish-core/service-provider/suggestions.service-provider';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
 /**
  * The Suggest Service handles the interaction with the 'suggest' REST API.
  */
 @Injectable({ providedIn: 'root' })
-export class SuggestService {
+export class SuggestService implements SuggestionsServiceInterface {
   constructor(private apiService: ApiService) {}
 
   /**
