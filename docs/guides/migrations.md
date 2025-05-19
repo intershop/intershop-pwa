@@ -15,6 +15,8 @@ To introduce the optional Sparque integration in the PWA the following changes w
 
 The `ProductImageComponent` was changed to an Angular standalone component that can be used independent from the `SharedModule` but it is also available via the `SharedModule` in the same way as before.
 
+The `CategoryImageComponent` was moved to the shared components folder and changed to an Angular standalone component.
+
 ## From 5.3 to 6.0.0
 
 The Intershop PWA 6.0.0 release contains functionality to improve the **accessibility** of the PWA.
