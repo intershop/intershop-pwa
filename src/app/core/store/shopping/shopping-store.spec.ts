@@ -12,6 +12,7 @@ import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navig
 import { Product } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
+import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { CountryService } from 'ish-core/services/country/country.service';
@@ -43,6 +44,7 @@ describe('Shopping Store', () => {
   let router: Router;
   let categoriesServiceMock: CategoriesService;
   let productsServiceMock: ProductsService;
+  let productsServiceProviderMock: ProductsServiceProvider;
   let sparqueSuggestionsServiceMock: SparqueSuggestionsService;
   let suggestServiceMock: SuggestService;
   let promotionsServiceMock: PromotionsService;
@@ -114,9 +116,11 @@ describe('Shopping Store', () => {
     const countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(EMPTY);
 
+    productsServiceProviderMock = mock(ProductsServiceProvider);
     sparqueSuggestionsServiceMock = mock(SparqueSuggestionsService);
     suggestServiceMock = mock(SuggestService);
     productsServiceMock = mock(ProductsService);
+    when(productsServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
     when(productsServiceMock.getProduct(anyString())).thenCall(sku => {
       if (['P1', 'P2'].find(x => x === sku)) {
         return of({ sku, name: `n${sku}` });
@@ -131,7 +135,7 @@ describe('Shopping Store', () => {
         total: 2,
       })
     );
-    when(productsServiceMock.searchProducts('something', anyNumber(), anything(), anyNumber())).thenReturn(
+    when(productsServiceMock.searchProducts(anything())).thenReturn(
       of({ products: [{ sku: 'P1' }, { sku: 'P2' }] as Product[], sortableAttributes: [], total: 2 })
     );
     when(suggestServiceMock.searchSuggestions('some')).thenReturn(
@@ -193,6 +197,7 @@ describe('Shopping Store', () => {
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: PricesService, useFactory: () => instance(priceServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
+        { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
         { provide: SparqueSuggestionsService, useFactory: () => instance(sparqueSuggestionsServiceMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
@@ -329,6 +334,7 @@ describe('Shopping Store', () => {
             id: {"type":"search","value":"something"}
             itemCount: 2
             sortableAttributes: []
+          no_filter_action
           [Filter API] Load Filter Success:
             filterNavigation: {}
         `);
@@ -561,6 +567,7 @@ describe('Shopping Store', () => {
             id: {"type":"search","value":"something"}
             itemCount: 2
             sortableAttributes: []
+          no_filter_action
           [Filter API] Load Filter Success:
             filterNavigation: {}
         `);
@@ -940,6 +947,7 @@ describe('Shopping Store', () => {
           id: {"type":"search","value":"something"}
           itemCount: 2
           sortableAttributes: []
+        no_filter_action
         [Filter API] Load Filter Success:
           filterNavigation: {}
       `);

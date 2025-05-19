@@ -3,8 +3,9 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
-import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
+import { anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
+import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
@@ -27,6 +28,7 @@ describe('Search Effects', () => {
   let productsServiceMock: ProductsService;
   let suggestServiceMock: SuggestService;
   let sparqueSuggestionsServiceMock: SparqueSuggestionsService;
+  let productsServiceProviderMock: ProductsServiceProvider;
   let httpStatusCodeService: HttpStatusCodeService;
 
   const suggests = { suggestions: { keywords: [{ keyword: 'Goods' }] } };
@@ -36,8 +38,10 @@ describe('Search Effects', () => {
     suggestServiceMock = mock(SuggestService);
     when(suggestServiceMock.searchSuggestions(anyString())).thenReturn(of(suggests));
     productsServiceMock = mock(ProductsService);
+    productsServiceProviderMock = mock(ProductsServiceProvider);
+    when(productsServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
     const skus = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-    when(productsServiceMock.searchProducts(anyString(), anyNumber(), anything(), anyNumber())).thenCall(
+    when(productsServiceMock.searchProducts(anything())).thenCall(
       (searchTerm: string, amount: number, _, offset: number) => {
         if (!searchTerm) {
           return throwError(() => makeHttpError({ message: 'ERROR' }));
@@ -63,7 +67,7 @@ describe('Search Effects', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
-        { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
+        { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
         { provide: SparqueSuggestionsService, useFactory: () => instance(sparqueSuggestionsServiceMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         provideStoreSnapshots(),
@@ -183,15 +187,46 @@ describe('Search Effects', () => {
       router.navigate(['search', searchTerm]);
       tick(500);
 
-      verify(productsServiceMock.searchProducts(searchTerm, 12, anything(), 0)).once();
+      verify(productsServiceMock.searchProducts(anything())).once();
+      expect(capture(productsServiceMock.searchProducts).last()).toMatchInlineSnapshot(`
+        [
+          {
+            "amount": 12,
+            "offset": 0,
+            "searchTerm": "123",
+            "sorting": undefined,
+          },
+        ]
+      `);
 
       store$.dispatch(loadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 2 }));
       tick(5);
-      verify(productsServiceMock.searchProducts(searchTerm, 12, anything(), 12)).once();
+      verify(productsServiceMock.searchProducts(anything())).times(2);
+
+      expect(capture(productsServiceMock.searchProducts).last()).toMatchInlineSnapshot(`
+        [
+          {
+            "amount": 12,
+            "offset": 12,
+            "searchTerm": "123",
+            "sorting": undefined,
+          },
+        ]
+      `);
 
       store$.dispatch(loadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 3 }));
       tick(5);
-      verify(productsServiceMock.searchProducts(searchTerm, 12, anything(), 24)).once();
+      verify(productsServiceMock.searchProducts(anything())).times(3);
+      expect(capture(productsServiceMock.searchProducts).last()).toMatchInlineSnapshot(`
+        [
+          {
+            "amount": 12,
+            "offset": 24,
+            "searchTerm": "123",
+            "sorting": undefined,
+          },
+        ]
+      `);
     }));
   });
 });

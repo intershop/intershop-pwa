@@ -10,11 +10,12 @@ import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, w
 
 import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { Product } from 'ish-core/models/product/product.model';
+import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user/user.actions';
 import { loadCategory } from 'ish-core/store/shopping/categories';
-import { loadProductsForFilter } from 'ish-core/store/shopping/filter';
+import { loadFilterSuccess, loadProductsForFilter } from 'ish-core/store/shopping/filter';
 import { setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
 import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
@@ -41,11 +42,14 @@ describe('Products Effects', () => {
   let effects: ProductsEffects;
   let store: Store;
   let productsServiceMock: ProductsService;
+  let productsServiceProviderMock: ProductsServiceProvider;
   let router: Router;
   let httpStatusCodeService: HttpStatusCodeService;
 
   beforeEach(() => {
+    productsServiceProviderMock = mock(ProductsServiceProvider);
     productsServiceMock = mock(ProductsService);
+    when(productsServiceProviderMock.get(anything())).thenReturn(instance(productsServiceMock));
     when(productsServiceMock.getProduct(anyString())).thenCall((sku: string) => {
       if (sku === 'invalid') {
         return throwError(() => makeHttpError({ message: 'invalid' }));
@@ -81,10 +85,11 @@ describe('Products Effects', () => {
           { path: 'product/:sku', children: [] },
           { path: '**', children: [] },
         ]),
-        ShoppingStoreModule.forTesting('products', 'categories', 'productListing', 'productPrices'),
+        ShoppingStoreModule.forTesting('products', 'categories', 'productListing', 'productPrices', 'filter'),
       ],
       providers: [
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
+        { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
         ProductsEffects,
         provideMockActions(() => actions$),
       ],
@@ -247,6 +252,31 @@ describe('Products Effects', () => {
 
   describe('loadFilteredProducts$', () => {
     it('should trigger product actions for ApplyFilterSuccess action', done => {
+      store.dispatch(
+        loadFilterSuccess({
+          filterNavigation: {
+            filter: [
+              {
+                name: 'Category',
+                displayType: 'text_clear',
+                id: 'category',
+                facets: [
+                  {
+                    name: 'blubber',
+                    count: 10,
+                    selected: false,
+                    displayName: 'blubber',
+                    searchParameter: { param: ['b'] },
+                    level: 0,
+                  },
+                ],
+                selectionType: 'single',
+                limitCount: 10,
+              },
+            ],
+          },
+        })
+      );
       const action = loadProductsForFilter({
         id: {
           type: 'search',
@@ -268,6 +298,7 @@ describe('Products Effects', () => {
             id: {"type":"search","value":"test","filters":{"searchTerm":[1]}}
             itemCount: 2
             sortableAttributes: []
+          no_filter_action
         `);
         done();
       });

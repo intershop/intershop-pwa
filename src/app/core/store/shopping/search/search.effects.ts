@@ -2,19 +2,21 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
-import { Action, Store, select } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
+import { Action } from '@ngrx/store/src/models';
 import { TranslateService } from '@ngx-translate/core';
 import { from } from 'rxjs';
 import { concatMap, map, sample, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
+import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { SuggestionsServiceProvider } from 'ish-core/service-provider/suggestions.service-provider';
-import { ProductsService } from 'ish-core/services/products/products.service';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadCategorySuccess } from 'ish-core/store/shopping/categories';
+import { loadFilterSuccess } from 'ish-core/store/shopping/filter';
 import {
   getProductListingItemsPerPage,
   loadMoreProducts,
@@ -44,8 +46,8 @@ export class SearchEffects {
   constructor(
     private actions$: Actions,
     private store: Store,
-    private productsService: ProductsService,
     private suggestionsServiceProvider: SuggestionsServiceProvider,
+    private productsServiceProvider: ProductsServiceProvider,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
     private translateService: TranslateService,
@@ -83,34 +85,38 @@ export class SearchEffects {
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
       concatLatestFrom(() => this.store.pipe(select(getProductListingItemsPerPage('search')))),
       map(([payload, pageSize]) => ({ ...payload, amount: pageSize, offset: (payload.page - 1) * pageSize })),
-      concatMap(({ searchTerm, amount, sorting, offset, page }) =>
-        this.productsService.searchProducts(searchTerm, amount, sorting, offset).pipe(
-          concatMap(({ total, products, sortableAttributes }) => {
-            // route to product detail page if only one product was found
-            if (total === 1) {
-              this.router.navigate([generateProductUrl(products[0])]);
-            }
-            // provide the data for the search result page
-            return [
-              ...products.map(product => loadProductSuccess({ product })),
-              setProductListingPages(
-                this.productListingMapper.createPages(
-                  products.map(p => p.sku),
-                  'search',
-                  searchTerm,
-                  amount,
-                  {
-                    startPage: page,
-                    sorting,
-                    sortableAttributes,
-                    itemCount: total,
-                  }
-                )
-              ),
-            ];
-          }),
-          mapErrorToAction(searchProductsFail)
-        )
+      concatMap(({ searchTerm, amount, offset, sorting, page }) =>
+        this.productsServiceProvider
+          .get()
+          .searchProducts({ searchTerm, amount, offset, sorting })
+          .pipe(
+            concatMap(({ total, products, sortableAttributes, filter }) => {
+              // route to product detail page if only one product was found
+              if (total === 1) {
+                this.router.navigate([generateProductUrl(products[0])]);
+              }
+              // provide the data for the search result page
+              return [
+                ...products.map(product => loadProductSuccess({ product })),
+                setProductListingPages(
+                  this.productListingMapper.createPages(
+                    products.map(p => p.sku),
+                    'search',
+                    searchTerm,
+                    amount,
+                    {
+                      startPage: page,
+                      sorting,
+                      sortableAttributes,
+                      itemCount: total,
+                    }
+                  )
+                ),
+                filter?.length ? loadFilterSuccess({ filterNavigation: { filter } }) : { type: 'no_filter_action' },
+              ];
+            }),
+            mapErrorToAction(searchProductsFail)
+          )
       )
     )
   );

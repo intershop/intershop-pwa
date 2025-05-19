@@ -19,6 +19,8 @@ import {
   VariationProduct,
   VariationProductMaster,
 } from 'ish-core/models/product/product.model';
+import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
+import { ProductsServiceInterface } from 'ish-core/service-provider/products.service-provider';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { omit } from 'ish-core/utils/functions';
 import { mapToProperty } from 'ish-core/utils/operators';
@@ -30,7 +32,7 @@ import STUB_ATTRS from './products-list-attributes';
  * The Products Service handles the interaction with the 'products' REST API.
  */
 @Injectable({ providedIn: 'root' })
-export class ProductsService {
+export class ProductsService implements ProductsServiceInterface {
   constructor(private apiService: ApiService, private productMapper: ProductMapper, private appFacade: AppFacade) {}
 
   /**
@@ -54,7 +56,6 @@ export class ProductsService {
    * Get a sorted list of all products (as SKU list) assigned to a given Category respecting pagination.
    *
    * @param categoryUniqueId  The unique Category ID.
-   * @param page              The page to request (1-based numbering)
    * @param sortKey           The sortKey to sort the list, default value is ''.
    * @returns                 A list of the categories products SKUs [skus], the unique Category ID [categoryUniqueId] and a list of possible sort keys [sortKeys].
    */
@@ -106,30 +107,23 @@ export class ProductsService {
   /**
    * Get products for a given search term respecting pagination.
    *
-   * @param searchTerm    The search term to look for matching products.
-   * @param page          The page to request (1-based numbering)
-   * @param sortKey       The sortKey to sort the list, default value is ''.
+   * @param searchParams  The parameters for the product search, including searchTerm, amount, offset, and sortKey.
    * @returns             A list of matching Product stubs with a list of possible sort keys and the total amount of results.
    */
-  searchProducts(
-    searchTerm: string,
-    amount: number,
-    sortKey?: string,
-    offset = 0
-  ): Observable<{ products: Product[]; sortableAttributes: SortableAttributesType[]; total: number }> {
-    if (!searchTerm) {
+  searchProducts(searchParams: SearchParameter): Observable<SearchResponse> {
+    if (!searchParams.searchTerm) {
       return throwError(() => new Error('searchProducts() called without searchTerm'));
     }
 
     let params = new HttpParams()
-      .set('searchTerm', searchTerm)
-      .set('amount', amount.toString())
-      .set('offset', offset.toString())
+      .set('searchTerm', searchParams.searchTerm)
+      .set('amount', searchParams.amount.toString())
+      .set('offset', searchParams.offset.toString())
       .set('attrs', STUB_ATTRS)
       .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
-    if (sortKey && sortKey !== 'default') {
-      params = params.set('sortKey', sortKey);
+    if (searchParams.sortKey && searchParams.sortKey !== 'default') {
+      params = params.set('sortKey', searchParams.sortKey);
     }
 
     return this.apiService
@@ -197,7 +191,7 @@ export class ProductsService {
     amount: number,
     sortKey?: string,
     offset = 0
-  ): Observable<{ total: number; products: Partial<Product>[]; sortableAttributes: SortableAttributesType[] }> {
+  ): Observable<SearchResponse> {
     let params = new HttpParams()
       .set('amount', amount ? amount.toString() : '')
       .set('offset', offset.toString())
@@ -228,11 +222,16 @@ export class ProductsService {
         withLatestFrom(
           this.appFacade.serverSetting$<boolean>('preferences.ChannelPreferences.EnableAdvancedVariationHandling')
         ),
-        map(([{ products, sortableAttributes, total }, advancedVariationHandling]) => ({
-          products: params.has('MasterSKU') ? products : this.postProcessMasters(products, advancedVariationHandling),
-          sortableAttributes,
-          total,
-        }))
+        map(
+          ([{ products, sortableAttributes, total }, advancedVariationHandling]) =>
+            <SearchResponse>{
+              products: params.has('MasterSKU')
+                ? products
+                : this.postProcessMasters(products, advancedVariationHandling),
+              sortableAttributes,
+              total,
+            }
+        )
       );
   }
 
