@@ -22,6 +22,7 @@ export interface SkuQuantityType {
 export enum ProductCompletenessLevel {
   Detail = 3,
   List = 2,
+  Base = 1,
 }
 
 export class ProductHelper {

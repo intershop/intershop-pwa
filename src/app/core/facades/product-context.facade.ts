@@ -160,7 +160,7 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     super();
 
     this.set({
-      requiredCompletenessLevel: ProductCompletenessLevel.List,
+      requiredCompletenessLevel: ProductCompletenessLevel.Base,
       propagateActive: true,
       allowZeroQuantity: false,
       children: {},

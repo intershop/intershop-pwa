@@ -17,6 +17,8 @@ The `ProductImageComponent` was changed to an Angular standalone component that 
 
 The `CategoryImageComponent` was moved to the shared components folder and changed to an Angular standalone component.
 
+An additional `ProductCompletenessLevel.Base` was introduced that is used as the new default in the `ProductContextFacade` and provides enough product data for the product suggest tiles.
+
 ## From 5.3 to 6.0.0
 
 The Intershop PWA 6.0.0 release contains functionality to improve the **accessibility** of the PWA.
