@@ -26,6 +26,8 @@ Now the suggestion search will be dispatched if the search term has at least 3 l
 
 The `SuggestService` has a changed result format and is now included in the effects via newly introduced `SuggestionsServiceProvider`.
 
+The `ProductsService` has a changed parameter set for its `searchProducts()` method and needs to be integrated via newly introduced `ProductsServiceProvider`.
+
 ## From 5.3 to 6.0.0
 
 The Intershop PWA 6.0.0 release contains functionality to improve the **accessibility** of the PWA.
