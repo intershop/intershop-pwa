@@ -24,6 +24,8 @@ With the introduction of the `SearchBoxComponent` as standalone component it's g
 The behavior of the search box was changed as well.
 Now the suggestion search will be dispatched if the search term has at least 3 letters (not for every character as before).
 
+The `SuggestService` has a changed result format and is now included in the effects via newly introduced `SuggestionsServiceProvider`.
+
 ## From 5.3 to 6.0.0
 
 The Intershop PWA 6.0.0 release contains functionality to improve the **accessibility** of the PWA.

@@ -59,7 +59,11 @@ export class CategoryTreeHelper {
     if (!current || current.completenessLevel <= incoming.completenessLevel) {
       return incoming;
     }
-    return current;
+    return {
+      ...current,
+      // use images from incoming category with lower completeness level if the current category has no images
+      images: current.images?.length ? current.images : incoming.images,
+    };
   }
 
   /**
