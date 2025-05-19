@@ -11,6 +11,7 @@ import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/ca
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
+import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { CountryService } from 'ish-core/services/country/country.service';
@@ -41,8 +42,8 @@ describe('Shopping Store', () => {
   let router: Router;
   let categoriesServiceMock: CategoriesService;
   let productsServiceMock: ProductsService;
-  let promotionsServiceMock: PromotionsService;
   let suggestServiceMock: SuggestService;
+  let promotionsServiceMock: PromotionsService;
   let filterServiceMock: FilterService;
   let priceServiceMock: PricesService;
   let warrantyServiceMock: WarrantyService;
@@ -111,6 +112,7 @@ describe('Shopping Store', () => {
     const countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(EMPTY);
 
+    suggestServiceMock = mock(SuggestService);
     productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anyString())).thenCall(sku => {
       if (['P1', 'P2'].find(x => x === sku)) {
@@ -129,12 +131,12 @@ describe('Shopping Store', () => {
     when(productsServiceMock.searchProducts('something', anyNumber(), anything(), anyNumber())).thenReturn(
       of({ products: [{ sku: 'P1' }, { sku: 'P2' }] as Product[], sortableAttributes: [], total: 2 })
     );
+    when(suggestServiceMock.searchSuggestions('some')).thenReturn(
+      of<{ suggestions: Suggestions }>({ suggestions: { keywords: [{ keyword: 'something' }] } })
+    );
 
     promotionsServiceMock = mock(PromotionsService);
     when(promotionsServiceMock.getPromotion(anything())).thenReturn(of(promotion));
-
-    suggestServiceMock = mock(SuggestService);
-    when(suggestServiceMock.search('some')).thenReturn(of([{ term: 'something' }]));
 
     filterServiceMock = mock(FilterService);
     when(filterServiceMock.getFilterForSearch(anything())).thenReturn(of({} as FilterNavigation));
@@ -274,8 +276,7 @@ describe('Shopping Store', () => {
           [Suggest Search] Load Search Suggestions:
             searchTerm: "some"
           [Suggest Search API] Return Search Suggestions:
-            searchTerm: "some"
-            suggests: [{"term":"something"}]
+            suggestions: {"keywords":[1]}
         `);
       });
     });

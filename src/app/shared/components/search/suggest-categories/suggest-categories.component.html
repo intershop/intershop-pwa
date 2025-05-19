@@ -1,0 +1,12 @@
+<div class="search-suggest-categories">
+  <div class="d-flex justify-content-start headline">{{ 'suggest.categories.headline' | translate }}</div>
+  <ul>
+    <ish-suggest-categories-tile
+      *ngFor="let categoryId of categories | slice : 0 : maxAutoSuggests"
+      [categoryUniqueId]="categoryId"
+      [inputTerms$]="inputTerms$"
+      (routeChange)="routeChange.emit($event)"
+      (click)="handleInputFocus()"
+    />
+  </ul>
+</div>

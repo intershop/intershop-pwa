@@ -19,6 +19,11 @@ The `CategoryImageComponent` was moved to the shared components folder and chang
 
 An additional `ProductCompletenessLevel.Base` was introduced that is used as the new default in the `ProductContextFacade` and provides enough product data for the product suggest tiles.
 
+The `SearchBoxComponent` was re-implemented as an Angular standalone component with the capability to show more suggestions (suggestions for products, categories, brands and keywords).
+With the introduction of the `SearchBoxComponent` as standalone component it's generated `LazySearchBoxComponent` is no longer needed and was therefore removed.
+The behavior of the search box was changed as well.
+Now the suggestion search will be dispatched if the search term has at least 3 letters (not for every character as before).
+
 ## From 5.3 to 6.0.0
 
 The Intershop PWA 6.0.0 release contains functionality to improve the **accessibility** of the PWA.

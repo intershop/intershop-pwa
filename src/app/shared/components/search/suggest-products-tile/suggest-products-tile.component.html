@@ -1,0 +1,10 @@
+<li *ngIf="productURL$ | async as productURL">
+  <a class="product-image" [routerLink]="productURL" (click)="handleInputFocus()" tabindex="-1">
+    <ish-product-image imageType="S" />
+  </a>
+  <a
+    [routerLink]="productURL"
+    [innerHTML]="productName$ | async | ishHighlight : (inputTerms$ | async)"
+    (click)="handleInputFocus()"
+  ></a>
+</li>

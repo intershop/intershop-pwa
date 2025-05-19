@@ -1,12 +1,10 @@
+/* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
 import { ReplaySubject, Subject } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
-import { HighlightPipe } from 'ish-core/pipes/highlight.pipe';
+import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 
 import { SearchBoxComponent } from './search-box.component';
 
@@ -14,22 +12,26 @@ describe('Search Box Component', () => {
   let component: SearchBoxComponent;
   let fixture: ComponentFixture<SearchBoxComponent>;
   let element: HTMLElement;
-  let searchResults$: Subject<SuggestTerm[]>;
+  let searchResults$: Subject<Suggestions>;
   let searchTerm$: Subject<string>;
 
   beforeEach(async () => {
     searchResults$ = new ReplaySubject(1);
     searchTerm$ = new ReplaySubject(1);
-    searchResults$.next([]);
+    searchResults$.next(undefined);
     searchTerm$.next(undefined);
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [MockComponent(FaIconComponent), MockPipe(HighlightPipe), SearchBoxComponent],
       providers: [
         {
           provide: ShoppingFacade,
-          useFactory: () => ({ searchResults$: () => searchResults$, searchTerm$ } as Partial<ShoppingFacade>),
+          useFactory: () =>
+            ({
+              suggestResults$: () => searchResults$,
+              searchTerm$,
+              recentSearchTerms$: new ReplaySubject<string[]>(1),
+            } as Partial<ShoppingFacade>),
         },
       ],
     }).compileComponents();
@@ -41,8 +43,9 @@ describe('Search Box Component', () => {
     element = fixture.nativeElement;
 
     // activate
-    component.inputFocused = true;
+    component.searchBoxFocus = true;
     component.configuration = { maxAutoSuggests: 4 };
+    component.configuration = { autoSuggest: true };
   });
 
   it('should be created', () => {
@@ -53,48 +56,57 @@ describe('Search Box Component', () => {
 
   describe('with no results', () => {
     beforeEach(() => {
-      searchResults$.next([]);
+      searchResults$.next(undefined);
     });
 
     it('should show no results when no suggestions are found', () => {
       fixture.detectChanges();
 
-      const ul = element.querySelector('.search-suggest-results');
+      const ul = element.querySelector('.search-suggest-terms ul');
       expect(ul).toBeFalsy();
     });
   });
 
   describe('with results', () => {
     beforeEach(() => {
-      searchResults$.next([{ term: 'Cameras' }, { term: 'Camcorders' }]);
+      searchResults$.next({
+        keywords: [{ keyword: 'Cameras' }, { keyword: 'Camcorders' }],
+        products: [],
+        categories: [],
+        brands: [],
+        contentSuggestions: [],
+      } as Suggestions);
     });
 
     it('should show results when suggestions are available', () => {
+      component.searchBoxFocus = true;
+      component.inputSearchTerms$.next('cam');
       fixture.detectChanges();
 
-      const ul = element.querySelector('.search-suggest-results');
+      expect(element.querySelector('ish-suggest-keywords')).toBeTruthy();
+    });
+
+    it('should show no results when suggestions are available', () => {
+      component.searchBoxFocus = false;
+      fixture.detectChanges();
+
+      expect(element.querySelector('.search-suggest-container')).toBeFalsy();
+    });
+
+    it('should show results when input is 3 or more characters', () => {
+      component.searchBoxFocus = true;
+      component.inputSearchTerms$.next('cam');
+      fixture.detectChanges();
+
+      const ul = fixture.nativeElement.querySelector('.search-suggest-terms ul');
       expect(ul.querySelectorAll('li')).toHaveLength(2);
-    });
-
-    it('should show no results when suggestions are available but maxAutoSuggests is 0', () => {
-      component.configuration.maxAutoSuggests = 0;
-      fixture.detectChanges();
-
-      const ul = element.querySelector('.search-suggest-results');
-      expect(ul.querySelectorAll('li')).toHaveLength(0);
-    });
-
-    it('should show no results when suggestions are available but input has no focus', () => {
-      component.inputFocused = false;
-      fixture.detectChanges();
-
-      expect(element.querySelector('.search-suggest-results')).toBeFalsy();
     });
   });
 
   describe('with inputs', () => {
     it('should show searchTerm when on search page', () => {
-      searchTerm$.next('search');
+      component.searchBoxFocus = true;
+      component.inputSearchTerms$.next('search');
 
       fixture.detectChanges();
       const input = element.querySelector('input');

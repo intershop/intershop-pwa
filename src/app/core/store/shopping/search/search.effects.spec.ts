@@ -5,7 +5,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
-import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -28,11 +27,11 @@ describe('Search Effects', () => {
   let suggestServiceMock: SuggestService;
   let httpStatusCodeService: HttpStatusCodeService;
 
-  const suggests = [{ term: 'Goods' }] as SuggestTerm[];
+  const suggests = { suggestions: { keywords: [{ keyword: 'Goods' }] } };
 
   beforeEach(() => {
     suggestServiceMock = mock(SuggestService);
-    when(suggestServiceMock.search(anyString())).thenReturn(of<SuggestTerm[]>(suggests));
+    when(suggestServiceMock.searchSuggestions(anyString())).thenReturn(of(suggests));
     productsServiceMock = mock(ProductsService);
     const skus = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
     when(productsServiceMock.searchProducts(anyString(), anyNumber(), anything(), anyNumber())).thenCall(
@@ -95,66 +94,24 @@ describe('Search Effects', () => {
   });
 
   describe('suggestSearch$', () => {
-    it('should not fire when search term is falsy', fakeAsync(() => {
-      const action = suggestSearch({ searchTerm: undefined });
-      store$.dispatch(action);
-
-      tick(5000);
-
-      verify(suggestServiceMock.search(anyString())).never();
-    }));
-
-    it('should not fire when search term is empty', fakeAsync(() => {
-      const action = suggestSearch({ searchTerm: '' });
-      store$.dispatch(action);
-
-      tick(5000);
-
-      verify(suggestServiceMock.search(anyString())).never();
-    }));
-
     it('should return search terms when available', fakeAsync(() => {
       const action = suggestSearch({ searchTerm: 'g' });
       store$.dispatch(action);
 
-      tick(5000);
-
-      verify(suggestServiceMock.search('g')).once();
-    }));
-
-    it('should debounce correctly when search term is entered stepwise', fakeAsync(() => {
-      store$.dispatch(suggestSearch({ searchTerm: 'g' }));
-      tick(50);
-      store$.dispatch(suggestSearch({ searchTerm: 'goo' }));
-      tick(100);
-      store$.dispatch(suggestSearch({ searchTerm: 'good' }));
-      tick(200);
-
-      verify(suggestServiceMock.search(anyString())).never();
-
-      tick(400);
-      verify(suggestServiceMock.search('good')).once();
-    }));
-
-    it('should send only once if search term is entered multiple times', fakeAsync(() => {
-      store$.dispatch(suggestSearch({ searchTerm: 'good' }));
-      tick(2000);
-      verify(suggestServiceMock.search('good')).once();
-      store$.dispatch(suggestSearch({ searchTerm: 'good' }));
-      tick(2000);
-
-      verify(suggestServiceMock.search('good')).once();
+      verify(suggestServiceMock.searchSuggestions('g')).once();
     }));
 
     it('should not fire action when error is encountered at service level', fakeAsync(() => {
-      when(suggestServiceMock.search(anyString())).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
+      when(suggestServiceMock.searchSuggestions(anyString())).thenReturn(
+        throwError(() => makeHttpError({ message: 'ERROR' }))
+      );
 
       store$.dispatch(suggestSearch({ searchTerm: 'good' }));
       tick(4000);
 
       effects.suggestSearch$.subscribe({ next: fail, error: fail });
 
-      verify(suggestServiceMock.search('good')).once();
+      verify(suggestServiceMock.searchSuggestions('good')).once();
     }));
 
     it('should fire all necessary actions for suggest-search', fakeAsync(() => {
@@ -164,8 +121,7 @@ describe('Search Effects', () => {
         [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
-          searchTerm: "good"
-          suggests: [{"term":"Goods"}]
+          suggestions: {"keywords":[1]}
       `);
 
       // 2nd term to because distinctUntilChanged
@@ -175,13 +131,11 @@ describe('Search Effects', () => {
         [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
-          searchTerm: "good"
-          suggests: [{"term":"Goods"}]
+          suggestions: {"keywords":[1]}
         [Suggest Search] Load Search Suggestions:
           searchTerm: "goo"
         [Suggest Search API] Return Search Suggestions:
-          searchTerm: "goo"
-          suggests: [{"term":"Goods"}]
+          suggestions: {"keywords":[1]}
       `);
 
       // test cache: search->api->success & search->success->api->success
@@ -191,18 +145,15 @@ describe('Search Effects', () => {
         [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
-          searchTerm: "good"
-          suggests: [{"term":"Goods"}]
+          suggestions: {"keywords":[1]}
         [Suggest Search] Load Search Suggestions:
           searchTerm: "goo"
         [Suggest Search API] Return Search Suggestions:
-          searchTerm: "goo"
-          suggests: [{"term":"Goods"}]
+          suggestions: {"keywords":[1]}
         [Suggest Search] Load Search Suggestions:
           searchTerm: "good"
         [Suggest Search API] Return Search Suggestions:
-          searchTerm: "good"
-          suggests: [{"term":"Goods"}]
+          suggestions: {"keywords":[1]}
       `);
     }));
   });
