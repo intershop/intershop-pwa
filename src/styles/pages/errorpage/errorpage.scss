@@ -33,35 +33,11 @@
       background: rgb(238 238 238 / 0.8);
     }
 
-    input {
-      &.form-control {
-        height: $search-container-height;
-        color: $white;
-        background: $color-primary;
-        border: $border-width-default solid $border-color-default;
-
-        &:focus {
-          color: $text-color-primary;
-          background: $color-inverse;
-          border: $border-width-default solid $border-color-light;
-          box-shadow: none;
-
-          + button {
-            &.btn-search {
-              span::before {
-                color: $text-color-primary;
-              }
-            }
-          }
-        }
+    .error-search-container {
+      .buttons {
+        position: relative;
+        top: -($search-container-height);
       }
-    }
-
-    .btn-primary {
-      right: 0;
-      bottom: 1px;
-      margin-bottom: 0;
-      font-weight: normal;
     }
   }
 }

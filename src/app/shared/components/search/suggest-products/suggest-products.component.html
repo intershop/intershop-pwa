@@ -1,0 +1,14 @@
+<div class="search-suggest-products">
+  <div class="d-flex justify-content-start headline">{{ 'suggest.products.headline' | translate }}</div>
+  <ul>
+    <ish-suggest-products-tile
+      *ngFor="let productSku of products | slice : 0 : maxAutoSuggests"
+      ishProductContext
+      [sku]="productSku"
+      [completeness]="1"
+      [inputTerms$]="inputTerms$"
+      [deviceType]="deviceType"
+      (routeChange)="handleInputFocus()"
+    />
+  </ul>
+</div>

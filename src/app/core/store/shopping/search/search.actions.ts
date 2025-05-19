@@ -1,6 +1,6 @@
 import { createAction } from '@ngrx/store';
 
-import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
+import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 export const searchProducts = createAction(
@@ -10,6 +10,8 @@ export const searchProducts = createAction(
 
 export const searchProductsFail = createAction('[Search API] Search Products Fail', httpError());
 
+export const removeSuggestions = createAction('[Suggest Search] Clean up of Search Suggestions');
+
 export const suggestSearch = createAction(
   '[Suggest Search] Load Search Suggestions',
   payload<{ searchTerm: string }>()
@@ -17,5 +19,12 @@ export const suggestSearch = createAction(
 
 export const suggestSearchSuccess = createAction(
   '[Suggest Search API] Return Search Suggestions',
-  payload<{ searchTerm: string; suggests: SuggestTerm[] }>()
+  payload<{ suggestions: Suggestions }>()
+);
+
+export const suggestSearchFail = createAction('[Suggest Search API] Load Search Suggestions Fail', httpError());
+
+export const addSearchTermToSuggestion = createAction(
+  '[Suggest Search Term Internal] Add Search Terms to Suggestion',
+  payload<{ searchTerm: string }>()
 );

@@ -24,7 +24,7 @@ export class LoginStatusComponent implements OnInit {
   getViewClasses(): string {
     switch (this.view) {
       case 'auto':
-        return 'd-none d-md-inline';
+        return 'd-none d-lg-inline';
       case 'full':
         return 'd-inline';
       case 'small':

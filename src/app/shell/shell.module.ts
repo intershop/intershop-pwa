@@ -12,6 +12,7 @@ import { PipesModule } from 'ish-core/pipes.module';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
+import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
 
 import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
@@ -37,7 +38,6 @@ import { SubCategoryNavigationComponent } from './header/sub-category-navigation
 import { UserInformationMobileComponent } from './header/user-information-mobile/user-information-mobile.component';
 import { LazyContentIncludeComponent } from './shared/lazy-content-include/lazy-content-include.component';
 import { LazyMiniBasketContentComponent } from './shared/lazy-mini-basket-content/lazy-mini-basket-content.component';
-import { LazySearchBoxComponent } from './shared/lazy-search-box/lazy-search-box.component';
 
 const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderComponent];
 
@@ -56,6 +56,7 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     QuickorderExportsModule,
     RoleToggleModule,
     RouterModule,
+    SearchBoxComponent,
     SentryExportsModule,
     SeoExportsModule,
     StoreLocatorExportsModule,
@@ -75,7 +76,6 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     LanguageSwitchComponent,
     LazyContentIncludeComponent,
     LazyMiniBasketContentComponent,
-    LazySearchBoxComponent,
     LoginStatusComponent,
     MiniBasketComponent,
     SubCategoryNavigationComponent,
