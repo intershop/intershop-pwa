@@ -23,7 +23,7 @@ export class CostCentersPageComponent implements OnInit {
   costCentersLoading$: Observable<boolean>;
   costCentersForPage$: Observable<CostCenter[]>;
   pagingData$: Observable<PagingData>;
-  pageSize = 25;
+  pageSize = 5;
 
   private destroyRef = inject(DestroyRef);
   private pageNumberSubject = new BehaviorSubject<number>(1);
