@@ -27,7 +27,7 @@ export class AccountOrderHistoryPageComponent implements OnInit {
   pagingInfo$: Observable<PagingInfo>;
   columnsToDisplay$: Observable<OrderColumnsType[]>;
   filtersActive: boolean;
-  pageSize = 25;
+  pageSize = 5;
 
   private isOrderManager = false;
   private destroyRef = inject(DestroyRef);
