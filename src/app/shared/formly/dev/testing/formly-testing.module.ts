@@ -94,6 +94,12 @@ class PasswordFieldComponent extends FieldType {}
 class SelectFieldComponent extends FieldType {}
 
 @Component({
+  selector: 'ish-search-select-test-field',
+  template: 'SearchSelectFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
+})
+class SearchSelectFieldComponent extends FieldType {}
+
+@Component({
   selector: 'ish-textarea-test-field',
   template: 'TextareaFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
@@ -138,6 +144,7 @@ class RepeatFieldComponent extends FieldArrayType {}
     RadioFieldComponent,
     RadioGroupFieldComponent,
     RepeatFieldComponent,
+    SearchSelectFieldComponent,
     SelectFieldComponent,
     TextareaFieldComponent,
     TextInputFieldComponent,
@@ -190,6 +197,10 @@ class RepeatFieldComponent extends FieldArrayType {}
         {
           name: 'ish-select-field',
           component: SelectFieldComponent,
+        },
+        {
+          name: 'ish-search-select-field',
+          component: SearchSelectFieldComponent,
         },
         {
           name: 'ish-textarea-field',

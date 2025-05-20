@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { CategoryImageComponent } from 'ish-shared/components/category/category-image/category-image.component';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { CategoryCategoriesComponent } from './category-categories/category-categories.component';
-import { CategoryImageComponent } from './category-image/category-image.component';
 import { CategoryListComponent } from './category-list/category-list.component';
 import { CategoryNavigationComponent } from './category-navigation/category-navigation.component';
 import { CategoryPageComponent } from './category-page.component';
@@ -26,10 +26,9 @@ const categoryPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(categoryPageRoutes), SharedModule],
+  imports: [RouterModule.forChild(categoryPageRoutes), CategoryImageComponent, SharedModule],
   declarations: [
     CategoryCategoriesComponent,
-    CategoryImageComponent,
     CategoryListComponent,
     CategoryNavigationComponent,
     CategoryPageComponent,

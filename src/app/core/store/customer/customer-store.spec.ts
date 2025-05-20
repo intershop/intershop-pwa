@@ -12,6 +12,7 @@ import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { User } from 'ish-core/models/user/user.model';
+import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { AddressService } from 'ish-core/services/address/address.service';
 import { AuthorizationService } from 'ish-core/services/authorization/authorization.service';
 import { BasketItemsService } from 'ish-core/services/basket-items/basket-items.service';
@@ -27,6 +28,7 @@ import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { PricesService } from 'ish-core/services/prices/prices.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
+import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { TokenService } from 'ish-core/services/token/token.service';
 import { UserService } from 'ish-core/services/user/user.service';
@@ -185,7 +187,9 @@ describe('Customer Store', () => {
         { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
         { provide: PricesService, useFactory: () => instance(productPriceServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
+        { provide: ProductsServiceProvider, useFactory: () => instance(mock(ProductsServiceProvider)) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
+        { provide: SparqueSuggestionsService, useFactory: () => instance(mock(SparqueSuggestionsService)) },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: TokenService, useFactory: () => instance(mock(TokenService)) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },

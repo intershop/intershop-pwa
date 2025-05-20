@@ -7,9 +7,15 @@ kb_sync_latest_only
 
 # Intershop Copilot for Buyers
 
+- [Configuration](#configuration)
+- [Additional `chatflowConfig` Variables](#additional-chatflowconfig-variables)
+- [Customize Chatbot](#customize-chatbot)
+- [Override Chatbot Styling](#override-chatbot-styling)
+- [`handleToolCall` Actions](#handletoolcall-actions)
+
 The Intershop PWA provides an integration with Intershop Copilot for Buyers.
 
-Official Intershop Documentation: [Intershop Copilot - AI Purchase and Service Assistant](https://knowledge.intershop.com/kb/index.php/Display/31N345)
+Official Intershop Documentation: [Overview - Intershop Copilot for Buyers](https://knowledge.intershop.com/kb/index.php/Display/31N345)
 
 The Intershop Copilot system consists of:
 
@@ -26,8 +32,8 @@ For the integration of the Intershop Copilot for Buyers, the feature toggle `cop
 Additionally, a project- or deployment-specific configuration is needed that provides the following values:
 
 - `copilotUIFile` - URL to the Javascript file that contains the compiled version of the Intershop Copilot embedded chatbot
-- `chatflowid` - project-specific ID
-- `apiHost`- URL to the specific Flowise REST API
+- `chatflowid` - project specific Flowise chat ID
+- `apiHost`- URL to the project specific Flowise API host
 
 Example via `environment.ts` file:
 
@@ -35,8 +41,8 @@ Example via `environment.ts` file:
 features: ['copilot'],
 copilot: {
   copilotUIFile: 'https://cdn.jsdelivr.net/gh/intershop/ai-flowise-chat-embed@website/demo-store/dist/web.js',
-  chatflowid: '431cecbc-47fe-4e20-b37e-b4ba0ceedff9',
-  apiHost: 'https://ish-flowise-app.azurewebsites.net',
+  chatflowid: 'xxxx-xxxx-xxxx-xxxx-xxxx',
+  apiHost: 'https://<FLOWISE-API-HOST>',
 },
 ```
 
@@ -49,8 +55,8 @@ pwa:
       - copilot
     COPILOT: |
       copilotUIFile: "https://cdn.jsdelivr.net/gh/intershop/ai-flowise-chat-embed@website/demo-store/dist/web.js"
-      chatflowid: "431cecbc-47fe-4e20-b37e-b4ba0ceedff9"
-      apiHost: "https://ish-flowise-app.azurewebsites.net"
+      chatflowid: "xxxx-xxxx-xxxx-xxxx-xxxx"
+      apiHost: "https://<FLOWISE-API-HOST>"
 ```
 
 Example via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
@@ -63,8 +69,8 @@ environment:
     value: |
       {
         "copilotUIFile": "https://cdn.jsdelivr.net/gh/intershop/ai-flowise-chat-embed@website/demo-store/dist/web.js",
-        "chatflowid": "431cecbc-47fe-4e20-b37e-b4ba0ceedff9",
-        "apiHost": "https://ish-flowise-app.azurewebsites.net"
+        "chatflowid": "xxxx-xxxx-xxxx-xxxx-xxxx",
+        "apiHost": "https://<FLOWISE-API-HOST>"
       }
 ```
 

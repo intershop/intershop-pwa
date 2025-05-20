@@ -7,6 +7,13 @@ kb_sync_latest_only
 
 # Logging
 
+- [Server-Side Rendering (SSR)](#server-side-rendering-ssr)
+- [NGINX](#nginx)
+- [Logging to an External Device](#logging-to-an-external-device)
+  - [PWA (SSR with PM2)](#pwa-ssr-with-pm2)
+  - [NGINX](#nginx-1)
+- [Further References](#further-references)
+
 ## Server-Side Rendering (SSR)
 
 The _express.js_ image serving the Angular Universal Server-Side Rendering can be provisioned to log extended information to the console by supplying the environment variable `LOGGING=true`.

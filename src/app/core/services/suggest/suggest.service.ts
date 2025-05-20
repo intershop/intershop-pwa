@@ -1,25 +1,34 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
-import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
+import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
+import { SuggestionsServiceInterface } from 'ish-core/service-provider/suggestions.service-provider';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
 /**
  * The Suggest Service handles the interaction with the 'suggest' REST API.
  */
 @Injectable({ providedIn: 'root' })
-export class SuggestService {
+export class SuggestService implements SuggestionsServiceInterface {
   constructor(private apiService: ApiService) {}
 
   /**
    * Returns a list of suggested search terms matching the given search term.
    *
    * @param searchTerm  The search term to get suggestions for.
-   * @returns           List of suggested search terms.
+   * @returns           Suggestions with keywords section containing the suggested search terms.
    */
-  search(searchTerm: string): Observable<SuggestTerm[]> {
+  searchSuggestions(searchTerm: string): Observable<{ suggestions: Suggestions }> {
     const params = new HttpParams().set('SearchTerm', searchTerm);
-    return this.apiService.get('suggest', { params }).pipe(unpackEnvelope<SuggestTerm>());
+    return this.apiService.get('suggest', { params }).pipe(
+      unpackEnvelope<{ term: string }>(),
+      map(suggestTerms => ({
+        keywords: suggestTerms.map(term => ({
+          keyword: term.term,
+        })),
+      })),
+      map(suggestions => ({ suggestions }))
+    );
   }
 }

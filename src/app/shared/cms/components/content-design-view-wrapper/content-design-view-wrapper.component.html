@@ -5,13 +5,15 @@
         <!-- pagelet -->
         <ng-template [ngSwitchCase]="'pagelet'">
           <ng-container *ngIf="pagelet$ | async as pagelet">
-            <div class="name">{{ pagelet.displayName ? pagelet.displayName : '(Language missing)' }}</div>
             <button
               type="button"
               (click)="triggerAction(pagelet.id, 'pageletEdit')"
               class="btn"
-              title="{{ 'designview.edit.link.title' | translate }}"
+              title="{{
+                ('designview.edit.link.title' | translate) + (pagelet.displayName ? ' ' + pagelet.displayName : '')
+              }}"
             >
+              {{ pagelet.displayName ? pagelet.displayName : '(Language missing)' }}
               <fa-icon [icon]="['fas', 'pencil-alt']" />
             </button>
             <!--

@@ -63,7 +63,7 @@ describe('Product Context Facade', () => {
         "children": {},
         "displayProperties": {},
         "propagateActive": true,
-        "requiredCompletenessLevel": 2,
+        "requiredCompletenessLevel": 1,
       }
     `);
     verify(shoppingFacade.productLinks$(anything())).never();
@@ -118,7 +118,7 @@ describe('Product Context Facade', () => {
           "propagateActive": true,
           "quantity": 10,
           "quantityError": undefined,
-          "requiredCompletenessLevel": 2,
+          "requiredCompletenessLevel": 1,
           "sku": "123",
           "stepQuantity": 10,
         }
@@ -189,7 +189,7 @@ describe('Product Context Facade', () => {
           "propagateActive": true,
           "quantity": 10,
           "quantityError": undefined,
-          "requiredCompletenessLevel": 2,
+          "requiredCompletenessLevel": 1,
           "sku": "123",
           "stepQuantity": 10,
         }
@@ -197,7 +197,7 @@ describe('Product Context Facade', () => {
     });
 
     it('should not adapt required completeness level for normal product', () => {
-      expect(context.get('requiredCompletenessLevel')).toEqual(ProductCompletenessLevel.List);
+      expect(context.get('requiredCompletenessLevel')).toEqual(ProductCompletenessLevel.Base);
     });
 
     describe('quantity handling', () => {

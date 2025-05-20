@@ -7,6 +7,11 @@ kb_sync_latest_only
 
 # Extended Product Configurations with Tacton
 
+- [Setup](#setup)
+- [Product Mappings](#product-mappings)
+- [Workflow](#workflow)
+- [Further References](#further-references)
+
 We integrated [Tacton CPQ](https://www.tacton.com/solutions/tacton-cpq) for handling complex product configuration scenarios.
 
 The PWA uses the self-service API to interactively configure a product and submit a firm proposal to Tacton CPQ.

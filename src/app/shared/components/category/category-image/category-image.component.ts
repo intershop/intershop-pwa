@@ -8,6 +8,8 @@ import { Category } from 'ish-core/models/category/category.model';
 @Component({
   selector: 'ish-category-image',
   templateUrl: './category-image.component.html',
+  standalone: true,
+  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryImageComponent implements OnChanges {

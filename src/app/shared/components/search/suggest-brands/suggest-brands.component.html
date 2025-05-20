@@ -1,0 +1,13 @@
+<div class="search-suggest-brands">
+  <div class="d-flex justify-content-start headline">{{ 'suggest.brands.headline' | translate }}</div>
+  <ul>
+    <li *ngFor="let brand of brands | slice : 0 : maxAutoSuggests">
+      <a
+        [routerLink]="['search', inputTerms$ | async]"
+        [queryParams]="{ filters: 'ManufacturerName=' + brand.brandName }"
+        [innerHTML]="brand.brandName | ishHighlight : (inputTerms$ | async)"
+        (click)="handleInputFocus()"
+      ></a>
+    </li>
+  </ul>
+</div>

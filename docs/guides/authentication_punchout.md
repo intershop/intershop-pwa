@@ -7,6 +7,12 @@ kb_sync_latest_only
 
 # Authentication with the Punchout Identity Provider
 
+- [Configuration](#configuration)
+- [Login](#login)
+- [Registration](#registration)
+- [Token Lifetime](#token-lifetime)
+- [Logout](#logout)
+
 This document describes the authentication mechanism if punchout is used as identity provider.
 If you need an introduction to this topic, read the [Authentication Concept](../concepts/authentication.md) first.
 

@@ -119,7 +119,6 @@
 .main-navigation {
   z-index: 2;
   align-self: center;
-  height: $top-header-height;
   transition: height 500ms ease-in-out;
 
   ul li ul {
@@ -136,8 +135,6 @@
   }
 
   .main-navigation-list {
-    display: block;
-
     a {
       font-size: $font-size-navbar-item;
       color: $text-color-primary;
@@ -148,7 +145,6 @@
 
       &.dropdown {
         position: static;
-        float: left;
         padding: 0 10px;
 
         &.first {

@@ -7,6 +7,20 @@ kb_sync_latest_only
 
 # Updating Dependencies
 
+- [Customer Projects](#customer-projects)
+- [PWA Development](#pwa-development)
+  - [Recommendations for the Process of Updating](#recommendations-for-the-process-of-updating)
+  - [0. Before the Update](#0-before-the-update)
+  - [1. Updating Angular Dependencies](#1-updating-angular-dependencies)
+  - [2. Updating Third-Party Project Dependencies](#2-updating-third-party-project-dependencies)
+  - [3. Update Project Utilities for Testing, Reporting and Linting](#3-update-project-utilities-for-testing-reporting-and-linting)
+  - [4. Cleanup Dependencies](#4-cleanup-dependencies)
+  - [5. Update Utilities for Formatting](#5-update-utilities-for-formatting)
+  - [6. Refactoring and Deprecations](#6-refactoring-and-deprecations)
+  - [7. Restructuring the Update and Documentation](#7-restructuring-the-update-and-documentation)
+  - [8. Rewrite package-lock.json](#8-rewrite-package-lockjson)
+- [Security Vulnerabilities](#security-vulnerabilities)
+
 This guide provides a brief overview of how to update PWA dependencies.
 
 ## Customer Projects

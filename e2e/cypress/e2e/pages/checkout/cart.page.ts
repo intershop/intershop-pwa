@@ -42,11 +42,21 @@ export class CartPage {
   }
 
   get costCenterSelection() {
-    return cy.get('select[data-testing-id="costCenter"]');
+    return cy.get('[data-testing-id="costCenter"]');
   }
 
   selectCostCenter(id: string) {
-    this.costCenterSelection.select(id);
+    this.costCenterSelection.then(selects => {
+      const select = selects[0];
+      cy.wrap(select)
+        .click()
+        .get('ng-dropdown-panel')
+        .get('.ng-option')
+        .contains(id)
+        .then(item => {
+          cy.wrap(item).click();
+        });
+    });
   }
 
   addProductToWishlist() {

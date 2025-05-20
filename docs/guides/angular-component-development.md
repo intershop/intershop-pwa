@@ -7,6 +7,19 @@ kb_sync_latest_only
 
 # Angular Component Development
 
+- [Declare Components in the Right NgModule](#declare-components-in-the-right-ngmodule)
+- [Do not use NgRx or Services in Components](#do-not-use-ngrx-or-services-in-components)
+- [Delegate Complex Component Logic to Services](#delegate-complex-component-logic-to-services)
+- [Put as Little Logic Into `constructor` as Possible - Use `ngOnInit`](#put-as-little-logic-into-constructor-as-possible---use-ngoninit)
+- [Use Property Binding to Bind Dynamic Values to Attributes or Properties](#use-property-binding-to-bind-dynamic-values-to-attributes-or-properties)
+- [Pattern for Conditions (ngIf) with Alternative Template (else) in Component Templates](#pattern-for-conditions-ngif-with-alternative-template-else-in-component-templates)
+- [Pattern for Loops (ngFor) with Changing Data in Component Templates](#pattern-for-loops-ngfor-with-changing-data-in-component-templates)
+- [Do Not Unsubscribe, Use the takeUntilDestroyed Operator Instead](#do-not-unsubscribe-use-the-takeuntildestroyed-operator-instead)
+- [Use `OnPush` Change Detection if Possible](#use-onpush-change-detection-if-possible)
+- [DOM Manipulations](#dom-manipulations)
+- [Split Components When Necessary](#split-components-when-necessary)
+- [Mock Facades in Tests](#mock-facades-in-tests)
+
 ## Declare Components in the Right NgModule
 
 Angular requires you to declare a component in one and only one NgModule.

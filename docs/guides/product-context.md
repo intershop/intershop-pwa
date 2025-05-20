@@ -7,6 +7,18 @@ kb_sync_latest_only
 
 # Product Context
 
+- [What is a Product Context?](#what-is-a-product-context)
+- [How to Introduce Product Context?](#how-to-introduce-product-context)
+  - [By Using `ProductContextDirective`](#by-using-productcontextdirective)
+  - [By Providing `ProductContextFacade`](#by-providing-productcontextfacade)
+  - [By Providing `SelectedProductContextFacade`](#by-providing-selectedproductcontextfacade)
+- [Retrieving Data from the Product Context](#retrieving-data-from-the-product-context)
+  - [Inject `ProductContextFacade`](#inject-productcontextfacade)
+  - [Use `ProductContextAccessDirective`](#use-productcontextaccessdirective)
+- [Linking Embedded Contexts](#linking-embedded-contexts)
+- [Customizing Display Properties](#customizing-display-properties)
+- [Further References](#further-references)
+
 Product Contexts were introduced in PWA version [0.27](https://github.com/intershop/intershop-pwa/releases/tag/0.27.0).
 
 ## What is a Product Context?
@@ -151,7 +163,7 @@ This functionality can be customized by changing the [`defaultDisplayProperties`
 A more elaborate way would be to provide an [`ExternalDisplayPropertiesProvider`][src-product-context-facade].
 Have a look at [`PunchoutProductContextDisplayPropertiesService`](../../src/app/extensions/punchout/exports/punchout-product-context-display-properties/punchout-product-context-display-properties.service.ts) or [`TactonProductContextDisplayPropertiesService`](../../src/app/extensions/tacton/exports/tacton-product-context-display-properties/tacton-product-context-display-properties.service.ts) for examples.
 
-# Further References
+## Further References
 
 - Product Context Artifacts
   - [`ProductContext`][src-product-context-facade]

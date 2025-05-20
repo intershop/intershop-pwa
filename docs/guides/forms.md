@@ -7,19 +7,17 @@ kb_sync_latest_only
 
 # Forms
 
-- [Forms](#forms)
-  - [File and Naming Conventions](#file-and-naming-conventions)
-    - [Reusable Form Components](#reusable-form-components)
-    - [Page Specific Form Components](#page-specific-form-components)
-    - [Data Models](#data-models)
-    - [Services](#services)
-    - [Extensions](#extensions)
-  - [Form Behavior](#form-behavior)
-  - [General Rules](#general-rules)
-    - [Usage of Formly, Template Driven and Reactive Forms](#usage-of-formly-template-driven-and-reactive-forms)
-    - [Validators](#validators)
-    - [Keep Templates Simple](#keep-templates-simple)
-- [Further References](#further-references)
+- [File and Naming Conventions](#file-and-naming-conventions)
+  - [Reusable Form Components](#reusable-form-components)
+  - [Page Specific Form Components](#page-specific-form-components)
+  - [Data Models](#data-models)
+  - [Services](#services)
+  - [Extensions](#extensions)
+- [Form Behavior](#form-behavior)
+- [General Rules](#general-rules)
+  - [Usage of Formly, Template Driven and Reactive Forms](#usage-of-formly-template-driven-and-reactive-forms)
+  - [Validators](#validators)
+  - [Keep Templates Simple](#keep-templates-simple)
 
 The Intershop PWA has switched to using [formly](https://formly.dev) to define and build forms.
 Refer to our [Formly Documentation](./formly.md) for information.
@@ -76,7 +74,7 @@ If functionality is implemented as an extension, the form models and services ca
 - Form validation:
   - If a form is shown, there should not be any validation error messages.
   - If a user starts to enter data in an input field, this field will be validated immediately.
-  - If the user presses the submit button, all form controls of the form are validated and in case of validation errors the focus is set to the first invalid form field; the submit button will be disabled as long as there is any unhandled form error.
+  - If the user presses the submit button, all form controls of the form are validated. In case of validation errors, the focus is set to the first invalid form field. The submit button will be disabled as long as there is any unhandled form error.
 
 ## General Rules
 

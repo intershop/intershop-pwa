@@ -10,7 +10,7 @@ kb_sync_latest_only
 To enable Store Locator, add `storeLocator` to the feature list in your environment file.
 This will enable a page where users can search for stores based on a country, city and/or postal code.
 
-# Google Maps Integration
+## Google Maps Integration
 
 Store Locator provides an optional Google Maps integration using the Google Maps JavaScript API.
 

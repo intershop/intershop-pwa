@@ -7,6 +7,14 @@ kb_sync_latest_only
 
 # Continuous Integration
 
+- [Code Integrity](#code-integrity)
+- [Dependencies](#dependencies)
+- [Code Formatting](#code-formatting)
+- [Unit Testing](#unit-testing)
+- [UI Testing](#ui-testing)
+- [Universal Testing](#universal-testing)
+- [Static Code Analysis](#static-code-analysis)
+
 This section provides an overview of required continuous integration steps to verify the validity of code contributions.
 
 > All mentioned tools provide feedback on success or failure via exit code.

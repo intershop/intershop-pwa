@@ -8,6 +8,7 @@ import {
   NgbDatepickerI18n,
   NgbDatepickerModule,
 } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -30,6 +31,7 @@ import { PasswordFieldComponent } from './password-field/password-field.componen
 import { PlainTextFieldComponent } from './plain-text-field/plain-text-field.component';
 import { RadioFieldComponent } from './radio-field/radio-field.component';
 import { RadioGroupFieldComponent } from './radio-group-field/radio-group-field.component';
+import { SearchSelectFieldComponent } from './search-select-field/search-select-field.component';
 import { SelectFieldComponent } from './select-field/select-field.component';
 import { TextInputFieldComponent } from './text-input-field/text-input-field.component';
 import { TextareaFieldComponent } from './textarea-field/textarea-field.component';
@@ -48,6 +50,7 @@ const fieldComponents = [
   SelectFieldComponent,
   TextareaFieldComponent,
   TextInputFieldComponent,
+  SearchSelectFieldComponent,
 ];
 
 @NgModule({
@@ -58,6 +61,7 @@ const fieldComponents = [
     FormlySelectModule,
     IconModule,
     NgbDatepickerModule,
+    NgSelectModule,
     NgxMaskDirective,
     NgxMaskPipe,
     ReactiveFormsModule,
@@ -185,6 +189,11 @@ const fieldComponents = [
           name: 'ish-date-range-picker-field',
           component: DateRangePickerFieldComponent,
           wrappers: ['form-field-horizontal', 'validation'],
+        },
+        {
+          name: 'ish-search-select-field',
+          component: SearchSelectFieldComponent,
+          wrappers: ['form-field-horizontal'],
         },
       ],
     }),

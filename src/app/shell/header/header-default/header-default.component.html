@@ -1,12 +1,12 @@
 <ng-template #searchBoxTemplate let-icon="icon">
-  <ish-lazy-search-box
+  <ish-search-box
     data-testing-id="search-box-desktop"
+    [deviceType]="deviceType"
     [configuration]="{
       placeholder: 'search.searchbox.instructional_text' | translate,
       autoSuggest: true,
-      maxAutoSuggests: 10,
-      icon: icon,
-      showLastSearchTerm: true
+      maxAutoSuggests: 5,
+      icon: icon
     }"
   />
 </ng-template>
@@ -19,35 +19,51 @@
     <li *ishFeature="'compare'" class="d-none d-md-block">
       <ish-lazy-product-compare-status data-testing-id="compare-status-desktop" />
     </li>
+    <li *ishFeature="'quickorder'" class="d-none d-md-block">
+      <ish-lazy-quickorder-link />
+    </li>
     <li *ishFeature="'wishlists'" class="d-none d-md-block">
       <ish-lazy-wishlists-link />
     </li>
   </ul>
 
   <div class="header-utility">
+    <!-- Sticky Header Search Button -->
     <a
-      class="search-toggler"
-      [ngClass]="{ 'active-search': showSearch }"
+      *ngIf="isSticky && deviceType !== 'mobile'; else mobileSearch"
       role="button"
+      class="btn btn-link search-toggler sticky-header-icon"
+      (click)="scrollTopAndFocusSearch()"
+      (keydown.enter)="scrollTopAndFocusSearch()"
+      tabindex="0"
       [attr.aria-label]="'search.searchbox.button.sticky_header.aria_label' | translate"
     >
-      <fa-icon
-        *ngIf="isSticky"
-        class="header-icon"
-        [icon]="['fas', 'search']"
-        (click)="toggle('search')"
-        (keydown.enter)="toggle('search')"
-        tabindex="0"
-      />
-      <div
-        *ngIf="isSticky || showSearch"
-        class="search-container header-search-container"
-        [ngbCollapse]="!showSearch"
-        [ngClass]="{ show: !isSticky }"
-      >
-        <ng-container *ngTemplateOutlet="searchBoxTemplate; context: { icon: 'angle-right' }" />
-      </div>
+      <fa-icon [icon]="['fas', 'search']" class="header-icon" />
     </a>
+
+    <!-- Sticky Header Mobile Search -->
+    <ng-template #mobileSearch>
+      <a
+        role="button"
+        class="btn btn-link search-toggler sticky-header-icon"
+        [ngClass]="{ 'active-search': showSearch }"
+        (click)="scrollTopAndFocusSearch()"
+        (keydown.enter)="scrollTopAndFocusSearch()"
+        [tabindex]="isSticky ? 0 : -1"
+        [attr.aria-label]="'search.searchbox.button.sticky_header.aria_label' | translate"
+      >
+        <fa-icon *ngIf="isSticky" [icon]="['fas', 'search']" class="header-icon" />
+        <div
+          *ngIf="isSticky || showSearch"
+          class="search-container header-search-container"
+          [ngbCollapse]="!showSearch"
+          [ngClass]="{ show: !isSticky }"
+        >
+          <ng-container *ngTemplateOutlet="searchBoxTemplate" />
+        </div>
+      </a>
+    </ng-template>
+
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch *ngIf="!isSticky" data-testing-id="language-switch-desktop" />
     </div>
@@ -65,7 +81,7 @@
       [ngClass]="isSticky ? 'd-lg-none' : 'd-md-none'"
     />
   </div>
-  <div class="mid-header row align-items-center">
+  <div class="mid-header row align-items-center justify-content-between">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
@@ -86,11 +102,8 @@
         ></a>
       </div>
     </div>
-    <div class="col-md-5 text-right">
-      <ish-lazy-quickorder-link />
-    </div>
     <div class="col-md-4">
-      <div *ngIf="!isSticky && deviceType !== 'mobile'" class="search-container header-search-container">
+      <div *ngIf="deviceType !== 'mobile'" class="search-container header-search-container">
         <ng-container *ngTemplateOutlet="searchBoxTemplate" />
       </div>
     </div>

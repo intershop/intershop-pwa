@@ -99,6 +99,7 @@ maxlength
 mergeable
 minibasket
 minlength
+mkcert
 mockito
 mousedown
 mouseout
@@ -192,6 +193,7 @@ silktide
 sitekey
 sku
 skus
+sparque
 spgid
 srcache
 sslmode

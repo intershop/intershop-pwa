@@ -7,6 +7,14 @@ kb_sync_latest_only
 
 # Themes
 
+- [Multiple Themes](#multiple-themes)
+- [Developing the PWA with Several Themes](#developing-the-pwa-with-several-themes)
+- [Configurable Theme](#configurable-theme)
+  - [ICM Requirements](#icm-requirements)
+  - [Configuration Parameters](#configuration-parameters)
+  - [Configuration JSON](#configuration-json)
+  - [Developing with the Configurable Theme](#developing-with-the-configurable-theme)
+
 ## Multiple Themes
 
 It is possible to create multiple themes for the PWA, and the Intershop Progressive Web App currently uses multi-theming to provide different features, configurations, and styles for the B2B and the B2C application.
@@ -144,6 +152,11 @@ Also the used feature set can be changed with the _Features_ and _Additional Fea
 | Features            | comma separated list | Enabled PWA features, a comma separated features list, if empty, all default features of the theme will be enabled                                                                                                     |
 | Additional Features | comma separated list | Additional PWA features, a comma separated list of features added to the default feature set of the used theme                                                                                                         |
 | Configuration JSON  | JSON                 | Additional Configuration data in JSON notation, will be available in the PWA state, accessible via `appFacade.extraSetting$(path)`                                                                                     |
+
+> [!NOTE]
+> The `Features` or `Additional Features` configuration might not work for all features as expected or without problems in development environments.
+> In these cases, use the `features` configuration in `environment.development.ts` to enable a wanted feature.
+> In production-like environments with SSR and state transfer, the configured feature set will be initialized correctly.
 
 ### Configuration JSON
 

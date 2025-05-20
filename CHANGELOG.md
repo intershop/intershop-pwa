@@ -7,6 +7,57 @@ kb_everyone
 
 # Changelog
 
+## [7.0.0](https://github.com/intershop/intershop-pwa/releases/tag/7.0.0) (2025-05-20)
+
+> [!NOTE]
+> The Intershop PWA 7.0.0 has been developed and tested with Intershop Commerce Management (ICM) version 12.3.0.
+> It will work with all versions from ICM 12.3.0 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> _The PWA 7.0.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
+>
+> The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
+>
+> Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.9.3 for PWA 7.0.0 deployments.
+
+### Features
+
+- re-implementation of the search box with suggestions (#1760) ([0af1efa](https://github.com/intershop/intershop-pwa/commit/0af1efa))
+- use provided certificate files for NGINX container with SSL for development ([5338cc0](https://github.com/intershop/intershop-pwa/commit/5338cc0))
+- introduce ng-select box for cost center / cost center manager selection (#1785) ([425903e](https://github.com/intershop/intershop-pwa/commit/425903e))
+- **Design View:** make whole Design View wrapper action bar clickable (#1802) ([829d96a](https://github.com/intershop/intershop-pwa/commit/829d96a))
+- **Sparque:** add Sparque products search service and data mapper (#1760) ([e26683e](https://github.com/intershop/intershop-pwa/commit/e26683e))
+- **Sparque:** add Sparque suggestions service and data mapper (#1760) ([11ab5b5](https://github.com/intershop/intershop-pwa/commit/11ab5b5))
+- **Sparque:** introduce Sparque configuration and Sparque API Service (#1760) ([9e00f42](https://github.com/intershop/intershop-pwa/commit/9e00f42))
+
+### Bug Fixes
+
+- fixed positioning of the mini basket drop down to the bottom right (#1789) ([d788288](https://github.com/intershop/intershop-pwa/commit/d788288))
+- products list carousel paging buttons not working after accessibility improvements (#1786) ([d8462e6](https://github.com/intershop/intershop-pwa/commit/d8462e6))
+- **Design View:** make components in main navigation Design View compatible (#1802) ([40f21a7](https://github.com/intershop/intershop-pwa/commit/40f21a7))
+
+### Documentation
+
+- adjust Copilot configuration examples (#1801) ([1be13e2](https://github.com/intershop/intershop-pwa/commit/1be13e2))
+- add note regarding configurable theme feature configuration short coming ([3a879d2](https://github.com/intershop/intershop-pwa/commit/3a879d2))
+- add table of contents (ToC) to all concepts and guides (#1783) ([96d9590](https://github.com/intershop/intershop-pwa/commit/96d9590))
+- use lists in tables for multiple entries in Formly documentation (#1782) ([c4c004f](https://github.com/intershop/intershop-pwa/commit/c4c004f))
+
+### Code Refactoring
+
+- introduce new 'ProductCompletenessLevel.Base' for product suggest tiles ([23ee86e](https://github.com/intershop/intershop-pwa/commit/23ee86e))
+- make the CategoryImageComponent a standalone component ([a388f86](https://github.com/intershop/intershop-pwa/commit/a388f86))
+- make the ProductImageComponent a standalone component ([828bad5](https://github.com/intershop/intershop-pwa/commit/828bad5))
+
+### BREAKING CHANGES
+
+- **Sparque:** The `ProductsService` has a changed parameter set for its `searchProducts()` method and needs to be integrated via newly introduced `ProductsServiceProvider`.
+- **Sparque:** The `SuggestService` has a changed result format and is now included in the effects via newly introduced `SuggestionsServiceProvider`.
+- The `SearchBoxComponent` was re-implemented as an Angular standalone component with the capability to show more suggestions.
+- An additional `ProductCompletenessLevel.Base` was introduced that is used as the new default in the `ProductContextFacade`.
+- The `CategoryImageComponent` was changed to an Angular standalone component.
+- The `ProductImageComponent` was changed to an Angular standalone component.
+
 ## [6.0.0](https://github.com/intershop/intershop-pwa/releases/tag/6.0.0) (2025-03-27)
 
 > [!NOTE]
@@ -19,6 +70,8 @@ kb_everyone
 > The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
 >
 > Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.9.3 for PWA 6.0.0 deployments.
+
+From PWA 6.0.0, we support semantic versioning.
 
 ### Features
 
@@ -57,7 +110,7 @@ kb_everyone
 
 ### BREAKING CHANGES
 
-- The used Cybersource Microform v1 was replaced by Microform v2, see [Migrations / From 5.3 to 6.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-53-to-60) for more details.
+- The used Cybersource Microform v1 was replaced by Microform v2, see [Migrations / From 5.3 to 6.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-53-to-600) for more details.
 - The signature of the `ScriptLoaderService`'s `load` method was changed. The optional second parameter was changed from type `string` to `ScriptLoaderOption`.
 
 ## [5.3.0](https://github.com/intershop/intershop-pwa/releases/tag/5.3.0) (2025-03-05)

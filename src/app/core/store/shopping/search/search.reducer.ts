@@ -1,24 +1,55 @@
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
-import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
+import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
-import { suggestSearchSuccess } from './search.actions';
+import {
+  addSearchTermToSuggestion,
+  removeSuggestions,
+  suggestSearch,
+  suggestSearchFail,
+  suggestSearchSuccess,
+} from './search.actions';
 
-interface SuggestSearch {
-  searchTerm: string;
-  suggests: SuggestTerm[];
+export interface SearchState {
+  suggestions: Suggestions;
+  _searchTerms: string[];
+  loading: boolean;
+  error: HttpError;
 }
 
-export const searchAdapter = createEntityAdapter<SuggestSearch>({
-  selectId: search => search.searchTerm,
-});
+const initialState: SearchState = {
+  suggestions: undefined,
+  _searchTerms: SSR ? [] : localStorage.getItem('_searchTerms') ? JSON.parse(localStorage.getItem('_searchTerms')) : [],
+  loading: false,
+  error: undefined,
+};
 
-export type SearchState = EntityState<SuggestSearch>;
-
-const initialState: SearchState = searchAdapter.getInitialState({});
+const MAX_NUMBER_OF_STORED_SEARCH_TERMS = 5;
 
 export const searchReducer = createReducer(
   initialState,
-  on(suggestSearchSuccess, (state, action) => searchAdapter.upsertOne(action.payload, state))
+  setLoadingOn(suggestSearch),
+  unsetLoadingAndErrorOn(suggestSearchSuccess),
+  setErrorOn(suggestSearchFail),
+  on(removeSuggestions, (state): SearchState => ({ ...state, suggestions: undefined })),
+  on(
+    suggestSearchSuccess,
+    (state, action): SearchState => ({
+      ...state,
+      suggestions: action.payload.suggestions,
+    })
+  ),
+  on(addSearchTermToSuggestion, (state, action): SearchState => {
+    const newSearchTerms = state._searchTerms.includes(action.payload.searchTerm)
+      ? [...state._searchTerms]
+      : [action.payload.searchTerm, ...state._searchTerms].slice(0, MAX_NUMBER_OF_STORED_SEARCH_TERMS);
+    const newState = { ...state, _searchTerms: newSearchTerms };
+    if (!SSR) {
+      localStorage.setItem('_searchTerms', JSON.stringify(newState._searchTerms));
+    }
+
+    return newState;
+  })
 );

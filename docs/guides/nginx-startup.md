@@ -7,6 +7,27 @@ kb_sync_latest_only
 
 # Building and Running NGINX Docker Image
 
+- [Building](#building)
+- [Configuration](#configuration)
+  - [HTTPS or SSL](#https-or-ssl)
+  - [Basic Auth](#basic-auth)
+  - [Multi-Site](#multi-site)
+  - [Ignore Parameters During Caching](#ignore-parameters-during-caching)
+  - [Access ICM Sitemap](#access-icm-sitemap)
+  - [Override Identity Providers by Path](#override-identity-providers-by-path)
+  - [Add Additional Headers](#add-additional-headers)
+    - [Content Security Policy](#content-security-policy)
+  - [Other](#other)
+- [Features](#features)
+  - [Cache](#cache)
+  - [Shared Redis Cache](#shared-redis-cache)
+    - [Cache Timing](#cache-timing)
+    - [Clearing the Redis Cache](#clearing-the-redis-cache)
+    - [Redis for Development](#redis-for-development)
+  - [Brotli Configuration](#brotli-configuration)
+- [Environment Variables](#environment-variables)
+- [Further References](#further-references)
+
 We provide an [NGINX](https://nginx.org/) Docker image based on [OpenResty](https://openresty.org/en/) for the [PWA deployment](../concepts/pwa-building-blocks.md#pwa---nginx).
 
 ## Building
@@ -30,19 +51,32 @@ For further information, please refer to [the official OpenResty Docker image pa
 
 You can switch on HTTPS for the NGINX container to execute a production-like setup locally, or for demo purposes by changing `ENV SSL=0` to `ENV SSL=1` and adjusting the port mapping in `docker-compose.yml`.
 No need to supply a certificate and a key.
-They are automatically generated inside the running container.
+They are automatically generated inside the running container with [mkcert](https://github.com/FiloSottile/mkcert).
 The certificate is self-signed and will not work in your browser.
 You have to confirm the security exception.
 As developer convenience, you can volume mount an internal folder to your host system to effectively trust the generated certificate.
 Please check the NGINX logs for the following output.
 
-<!-- cSpell: disable -->
-
 ```
 You can now export the local CA by adjusting your docker-compose.yml /home/your-user/ca-dir:/root/.local/share/mkcert/rootCA.pem
 ```
 
-<!-- cSpell: enable -->
+If you want to run your NGINX container with HTTPS but want to use your own certificates, e.g., the same certificates that are used for a local ICM deployment for the Hybrid Approach, you can enable `SSL` but need to disable mkcert with `SSL_MKCERT_OFF`.
+Besides this, you need to map the certificate files you want to use in the NGINX container.
+
+```yaml
+nginx:
+    ...
+    ports:
+      - '443:443'
+    environment:
+      ...
+      SSL: 1
+      SSL_MKCERT_OFF: 1
+    volumes:
+      - <LOCAL_PATH>/fullchain.pem:/var/nginx/certs/cert.pem
+      - <LOCAL_PATH>/privkey.pem:/var/nginx/certs/key.pem
+```
 
 ### Basic Auth
 

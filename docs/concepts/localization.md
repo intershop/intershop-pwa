@@ -7,6 +7,20 @@ kb_sync_latest_only
 
 # Localization
 
+- [Usage Examples](#usage-examples)
+  - [Localization of Simple Text](#localization-of-simple-text)
+  - [Localization with Parameters](#localization-with-parameters)
+  - [Localization with Pluralization](#localization-with-pluralization)
+  - [Localization with Formatted Dates](#localization-with-formatted-dates)
+  - [Localization of Text with HTML Tags](#localization-of-text-with-html-tags)
+  - [Localization in the component(.ts) File](#localization-in-the-componentts-file)
+  - [Localization of Text with HTML-Anchors (Links) \& OnClickHandlers (Callback-Functions)](#localization-of-text-with-html-anchors-links--onclickhandlers-callback-functions)
+- [Localization Files Generation](#localization-files-generation)
+- [ICM Localization Management](#icm-localization-management)
+- [External Localization Sources](#external-localization-sources)
+- [Localization File Clean Up Process](#localization-file-clean-up-process)
+- [Extend Locales](#extend-locales)
+
 Intershop Progressive Web App uses the internationalization library ngx-translate for localization.
 In addition the dependency to Angular's internationalization tools (i18n) is needed as a dependency for ng-bootstrap.
 

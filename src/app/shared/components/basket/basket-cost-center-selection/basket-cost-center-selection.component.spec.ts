@@ -73,7 +73,7 @@ describe('Basket Cost Center Selection Component', () => {
 
       expect(element.querySelectorAll('formly-group formly-field')).toHaveLength(1);
       expect(element.querySelector('formly-group formly-field').textContent).toMatchInlineSnapshot(`
-        "SelectFieldComponent: costCenter ish-select-field {
+        "SearchSelectFieldComponent: costCenter ish-search-select-field {
           "label": "checkout.cost_center.select.label",
           "required": true,
           "hideRequiredMarker": true,
@@ -94,7 +94,7 @@ describe('Basket Cost Center Selection Component', () => {
       fixture.detectChanges();
       expect(element.querySelectorAll('formly-group formly-field')).toHaveLength(1);
       expect(element.querySelector('formly-group formly-field').textContent).toMatchInlineSnapshot(`
-        "SelectFieldComponent: costCenter ish-select-field {
+        "SearchSelectFieldComponent: costCenter ish-search-select-field {
           "label": "checkout.cost_center.select.label",
           "required": true,
           "hideRequiredMarker": true,
@@ -125,7 +125,7 @@ describe('Basket Cost Center Selection Component', () => {
 
       expect(element.querySelectorAll('formly-group formly-field')).toHaveLength(1);
       expect(element.querySelector('formly-group formly-field').textContent).toMatchInlineSnapshot(`
-        "SelectFieldComponent: costCenter ish-select-field {
+        "SearchSelectFieldComponent: costCenter ish-search-select-field {
           "label": "checkout.cost_center.select.label",
           "required": true,
           "hideRequiredMarker": true,

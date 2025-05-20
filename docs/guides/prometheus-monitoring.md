@@ -53,7 +53,7 @@ To get started, you can import our example [Grafana Dashboard][grafana-pwa-dashb
 > [!WARNING]
 > We recommend to switch off the SSR container health-check and define alerts in Grafana instead.
 
-# Further References
+## Further References
 
 - [Nginx](../../nginx/README.md)
 - [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md)

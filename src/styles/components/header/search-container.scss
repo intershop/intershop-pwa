@@ -1,14 +1,21 @@
 /*********** SEARCH CONTAINER **********/
 
+// general search container (used in header and main content)
 .search-container {
   position: relative;
 
-  .btn-reset:active,
-  .btn-search:active {
-    background-color: transparent !important;
-    border-color: transparent !important;
+  // general styling for search input field
+  input {
+    &.search-input {
+      height: $search-container-height;
+      padding-right: $space-default * 5.5;
+      padding-left: ($search-container-height * 0.5);
+      color: $text-color-primary;
+      background: $color-inverse;
+    }
   }
 
+  // clear input and search buttons
   button {
     margin-right: 0 !important;
 
@@ -17,161 +24,282 @@
       box-shadow: none !important;
     }
 
-    &.btn-reset {
-      opacity: 0.6;
-    }
-
     &.btn-reset,
     &.btn-search {
       position: absolute;
-      right: 0;
       width: auto;
+      height: $search-container-height;
       font-size: $font-size-lg;
-      background: 0;
-      border: 0;
 
       span::before {
         font-size: $font-size-lg;
         color: $text-color-inverse;
       }
     }
-  }
 
-  ul.search-suggest-results {
-    position: absolute;
-    top: 37px;
-    z-index: 9999;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    background: $color-inverse;
-    border: $border-width-default solid $border-color-light;
-
-    li {
-      width: 100%;
-      padding: 0 $space-default;
-
-      &:hover {
-        color: $text-color-inverse;
-        background: $border-color-corporate;
-        border-bottom: $border-width-default solid $border-color-default;
-
-        button {
-          color: $text-color-inverse;
-          border-top: $border-width-default solid transparent;
-        }
-
-        + li button {
-          border: none;
-        }
-      }
-
-      &.active-suggestion {
-        color: $text-color-inverse;
-        background: $color-corporate;
-        border-bottom: $border-width-default solid $border-color-corporate;
-
-        button {
-          color: $text-color-inverse;
-          border-top: $border-width-default solid transparent;
-        }
-
-        + li button {
-          border: none;
-        }
-      }
-
-      &:first-child button {
-        border: 0;
-      }
-
-      button {
-        width: 100%;
-        font-family: $font-family-regular;
-        font-size: 13px;
-        line-height: 47px;
-        color: $text-color-tertiary;
-        text-align: left;
-        background: none;
-        border: 0;
-        border-top: $border-width-default solid $border-color-light;
-
-        span {
-          font-weight: bold;
-        }
-      }
+    &.btn-search {
+      right: 0;
     }
-  }
 
-  input {
-    &:focus {
-      color: $text-color-primary;
-      background: $color-inverse;
+    &.btn-reset {
+      &:hover {
+        color: $text-color-secondary;
+      }
 
-      + .buttons {
-        button {
-          color: $text-color-primary;
+      right: $space-default * 3;
+      color: $text-color-quaternary;
+      background: transparent !important;
+      border: none !important;
+      opacity: 1;
 
-          .ng-fa-icon {
-            color: $text-color-primary;
-          }
-        }
+      .ng-fa-icon {
+        position: relative;
+        top: 0.5px;
       }
     }
   }
 }
 
+// header search container
 .header-search-container {
   @include media-breakpoint-only(xs) {
     height: $search-container-height;
   }
 
-  @include media-breakpoint-only(md) {
-    height: 0;
+  .search-input {
+    float: right;
+
+    @include media-breakpoint-down(sm) {
+      font-size: 16px !important; // prevent page zoom on mobile devices
+    }
   }
 
-  input {
-    &.form-control {
-      float: right;
-      height: $search-container-height;
-      padding-left: ($search-container-height * 0.5);
-      font-size: 14px;
-      color: $white;
-      background: $color-primary;
-      border: $border-width-default solid $border-color-default;
-
-      &::placeholder {
-        // specific lighter color to have a better contrast
-        color: $text-color-quinary;
-      }
-
-      @include media-breakpoint-down(sm) {
-        border: $border-width-default solid $border-color-default;
-
-        &:focus {
-          background: $color-tertiary;
+  .search {
+    @media (max-width: $screen-xs-max) {
+      &.focus {
+        .search-suggest-container {
+          // mobile: suggest layer is only shown when search box has focus
+          display: block;
         }
       }
     }
 
-    &:focus {
-      font-size: 14px;
-      color: $text-color-primary;
-      background: $color-inverse;
-      border: $border-width-default solid $border-color-light;
-      box-shadow: none;
+    @media (min-width: $screen-sm) {
+      position: absolute;
+      top: calc($search-container-height / -2);
+      right: 0;
+      width: 100%;
+      transition: width 0.3s ease 0.1s;
 
-      &::placeholder {
-        color: $input-placeholder-color;
+      &.focus {
+        width: 250%;
       }
+
+      &.scaled-up {
+        .search-suggest-container {
+          // tablet and desktop: suggest layer is only shown when search box is scaled up to expanded width
+          display: flex;
+          flex-wrap: wrap;
+        }
+      }
+    }
+
+    .search-suggest-container {
+      position: absolute;
+      top: 38px;
+      z-index: 9999;
+      // suggest layer is not shown by default
+      display: none;
+      width: 100%;
+      // preserve space for onscreen keyboard on mobile devices
+      // use --viewport-remaining-height which is set and calculated in TypeScript
+      // if not set, fall back to 60vh
+      // subtract the fixed header and search container height from remaining viewport height to ensure proper spacing
+      max-height: calc(var(--viewport-remaining-height, 60vh) - #{$header-height-mobile + $search-container-height});
+      padding: $space-default;
+      margin: 0;
+      overflow-y: auto;
+      line-height: normal;
+      color: $text-color-primary;
+      list-style: none;
+      background-color: $color-inverse;
+      border: $border-width-default solid $border-color-light;
+
+      @media (min-width: $screen-sm) {
+        max-height: calc(100vh - (#{$space-default} * 5));
+      }
+
+      .headline {
+        margin-bottom: $space-default * 0.5;
+        font-family: $font-family-condensedregular;
+        font-size: $h3-font-size;
+        line-height: $line-height-base;
+        color: $text-color-primary;
+        text-transform: uppercase;
+      }
+
+      p {
+        padding: ($space-default * 0.5) 0;
+        line-height: $line-height-base;
+      }
+
+      ul {
+        padding: 0;
+        margin: 0 0 ($space-default * 2);
+        list-style: none;
+
+        li {
+          display: block;
+          padding: 0;
+          margin: 0;
+          line-height: $line-height-base;
+
+          a,
+          button {
+            display: block;
+            width: 100%;
+            padding: ($space-default * 0.5) 0;
+            font-family: $font-family-regular;
+            font-size: $font-size-corporate;
+            line-height: $line-height-base;
+            color: $text-color-primary;
+            text-align: left;
+            word-break: break-word;
+            background: none;
+            border: 0;
+
+            &:hover {
+              text-decoration: underline;
+
+              span {
+                text-decoration: underline;
+              }
+            }
+
+            span {
+              color: $text-color-corporate;
+            }
+          }
+        }
+      }
+
+      .search-suggest-categories {
+        li {
+          display: flex;
+          align-items: center;
+
+          a {
+            &.category-image {
+              width: $space-default * 4;
+              padding: 0 $space-default 0 0;
+
+              img {
+                max-width: $space-default * 3;
+              }
+            }
+          }
+        }
+      }
+
+      .search-suggest-products {
+        ul {
+          @media (min-width: $screen-md) {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: $space-default;
+          }
+
+          li {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            @media (min-width: $screen-md) {
+              flex-direction: column;
+            }
+
+            a {
+              &.product-image {
+                width: $space-default * 4;
+                padding: 0 $space-default 0 0;
+
+                @media (min-width: $screen-md) {
+                  display: block;
+                  width: 100%;
+                  padding: 0;
+                  margin: ($space-default * 0.5) 0;
+                }
+
+                img {
+                  max-width: $space-default * 3;
+
+                  @media (min-width: $screen-md) {
+                    max-width: 100%;
+                    border: $border-width-default solid $border-color-light;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .products-only {
+        .search-suggest-products {
+          ul {
+            grid-template-columns: repeat(7, 1fr);
+          }
+        }
+      }
+
+      .show-all {
+        padding: ($space-default * 0.5) 0;
+        background: $color-tertiary;
+      }
+    }
+
+    .loading {
+      position: absolute;
+      top: 10px;
+      right: 85px;
+      width: 20px;
+      height: 20px;
+      background: #fff url('/assets/img/loading.gif') center center no-repeat;
+      background-size: contain;
     }
   }
 
-  ul.search-suggest-results {
+  .search-suggest-backdrop {
+    position: fixed;
+    top: calc($header-height-mobile + $search-container-height);
+    right: 0;
+    z-index: 2;
     width: 100%;
+    width: 100vw;
+    height: 0; // prevent overlaying any other elements
+    visibility: hidden; // combined with opacity
+    background: $color-dark;
+    opacity: 0;
+    transition: opacity 0.15s linear, visibility 0.15s linear; // similar to bootstrap modal
+
+    @media (min-width: $screen-sm) {
+      top: 170px;
+      height: calc(100vh - 170px);
+    }
+
+    &.show {
+      height: calc(100vh - #{$header-height-mobile + $search-container-height});
+      visibility: visible;
+      opacity: 0.5;
+
+      @media (min-width: $screen-sm) {
+        height: calc(100vh - 170px);
+      }
+    }
   }
 }
 
+// search container with toggle icon (mobile, desktop fixed header)
 .header-utility {
   .search-container {
     position: absolute;
@@ -183,62 +311,37 @@
     background: $color-inverse;
     box-shadow: 0 4px 7px rgb(0 0 0 / 0.23);
 
-    .btn-search {
+    &.header-search-container {
       @include media-breakpoint-down(md) {
-        right: divide($space-default * 2, 3);
-        margin-right: 0;
+        top: $header-height-mobile;
+        width: 100%;
+        padding: 0;
       }
     }
 
-    @include media-breakpoint-up(lg) {
-      height: 0;
-      overflow: hidden;
+    .btn-search {
+      @include media-breakpoint-down(md) {
+        right: 0;
+        margin-right: 0;
+      }
     }
   }
 
   .search-toggler {
     position: relative;
+    padding: 0;
+
+    @include media-breakpoint-down(md) {
+      position: static;
+    }
 
     &.active-search {
-      background-color: $color-primary;
+      color: $text-color-quaternary;
+      background-color: $color-inverse;
 
       > .ng-fa-icon {
         color: $text-color-inverse !important;
       }
-    }
-  }
-
-  @include media-breakpoint-down(md) {
-    .search-container.header-search-container {
-      top: $header-height-mobile;
-      display: block;
-      width: 100%;
-      padding: 0;
-      overflow: hidden;
-      transition: height 500ms ease-in-out;
-    }
-
-    .search-toggler {
-      position: static;
-    }
-  }
-}
-
-.main-search-container ul.search-suggest-results {
-  width: 100%;
-}
-
-.error-search-container {
-  ul.search-suggest-results {
-    top: 33px;
-    width: 100%;
-  }
-}
-
-.no-search-result {
-  + .search-container {
-    .buttons button {
-      color: $text-color-primary !important;
     }
   }
 }

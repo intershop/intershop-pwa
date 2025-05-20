@@ -7,6 +7,9 @@ kb_sync_latest_only
 
 # Code Documentation
 
+- [JSDoc Tags](#jsdoc-tags)
+- [Document Only When Needed!](#document-only-when-needed)
+
 The JSDoc comment format is used for general information.
 
 Examples for the comment styling pattern can be found here: [TypeDoc - DocComments](https://typedoc.org/documents/Doc_Comments.html).

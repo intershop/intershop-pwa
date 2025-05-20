@@ -16,7 +16,7 @@ declare type IdType = number | string;
   exportAs: 'ishProductContext',
 })
 export class ProductContextDirective implements OnInit {
-  @Input() completeness: 'List' | 'Detail' = 'List';
+  @Input() completeness: ProductCompletenessLevel = ProductCompletenessLevel.List;
   @Output() skuChange = this.context.select('sku');
   @Output() quantityChange = this.context.select('quantity');
 
@@ -113,8 +113,6 @@ export class ProductContextDirective implements OnInit {
   }
 
   ngOnInit() {
-    this.context.set('requiredCompletenessLevel', () =>
-      this.completeness === 'List' ? ProductCompletenessLevel.List : ProductCompletenessLevel.Detail
-    );
+    this.context.set('requiredCompletenessLevel', () => this.completeness);
   }
 }
