@@ -61,8 +61,8 @@ Please check the NGINX logs for the following output.
 You can now export the local CA by adjusting your docker-compose.yml /home/your-user/ca-dir:/root/.local/share/mkcert/rootCA.pem
 ```
 
-If you want to run your NGINX container with HTTPS but want to use your own certificates, e.g. the same certificates that are used for a local ICM deployment for the Hybrid Approach, you can enable `SSL` but need to disable mkcert with `SSL_MKCERT_OFF`.
-Besides this you need to map the certificate files you want to use in the NGINX container.
+If you want to run your NGINX container with HTTPS but want to use your own certificates, e.g., the same certificates that are used for a local ICM deployment for the Hybrid Approach, you can enable `SSL` but need to disable mkcert with `SSL_MKCERT_OFF`.
+Besides this, you need to map the certificate files you want to use in the NGINX container.
 
 ```yaml
 nginx:

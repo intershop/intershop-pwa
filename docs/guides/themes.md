@@ -155,8 +155,8 @@ Also the used feature set can be changed with the _Features_ and _Additional Fea
 
 > [!NOTE]
 > The `Features` or `Additional Features` configuration might not work for all features as expected or without problems in development environments.
-> In these cases the `features` configuration in `environment.development.ts` should be used to enable a wanted feature.
-> In production like environments with SSR and state transfer the configured feature set will be initialized correctly.
+> In these cases, use the `features` configuration in `environment.development.ts` to enable a wanted feature.
+> In production-like environments with SSR and state transfer, the configured feature set will be initialized correctly.
 
 ### Configuration JSON
 
