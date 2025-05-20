@@ -31,6 +31,7 @@ export function createApplication(schematicRunner: SchematicTestRunner) {
             skipPackageJson: false,
             prefix: 'ish',
             projectRoot: '',
+            standalone: false,
           },
           workspace
         )

@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
@@ -54,7 +54,7 @@ describe('Basket Items Effects', () => {
       imports: [
         CoreStoreModule.forTesting(),
         CustomerStoreModule.forTesting('basket'),
-        RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
+        RouterModule.forRoot([{ path: '**', children: [] }]),
         ShoppingStoreModule.forTesting('products', 'categories'),
       ],
       providers: [

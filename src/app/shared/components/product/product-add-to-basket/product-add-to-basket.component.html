@@ -1,4 +1,4 @@
-<div *ngIf="visible$ | async" class="add-to-cart">
+<div *ngIf="visible$ | async" class="add-to-cart d-grid">
   <button
     type="submit"
     name="addProduct"
@@ -22,7 +22,7 @@
     </ng-container>
     <!-- button with spinning animation after Add to Cart -->
     <ng-template #spinning>
-      <fa-icon [icon]="['fas', 'spinner']" [spin]="true" [ngClass]="{ 'pr-3': !displayIcon }" />
+      <fa-icon [icon]="['fas', 'spinner']" [spin]="true" [ngClass]="{ 'pe-3': !displayIcon }" />
       <span *ngIf="!displayIcon">{{ 'common.button.spinning.label' | translate }}</span>
     </ng-template>
   </button>

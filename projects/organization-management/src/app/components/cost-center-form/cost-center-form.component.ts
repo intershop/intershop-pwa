@@ -125,7 +125,7 @@ export class CostCenterFormComponent implements OnInit {
                 props: {
                   postWrappers: [{ wrapper: 'input-addon', index: -1 }],
                   labelClass: 'col-md-6',
-                  fieldClass: 'col-md-6 pr-0',
+                  fieldClass: 'col-md-6 pe-0',
                   label: 'account.costcenter.budget.label',
                   required: true,
                   hideRequiredMarker: true,

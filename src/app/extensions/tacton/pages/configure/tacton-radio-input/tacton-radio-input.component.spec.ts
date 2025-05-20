@@ -80,7 +80,7 @@ describe('Tacton Radio Input Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <div class="form-group pl-2">
+      <div class="form-group ps-2">
         <div>
           <label><input type="radio" name="paramID" value="opt1" /> Number1 </label>
         </div>

@@ -128,6 +128,10 @@ $swatch-image-diameter: 28px;
 $swatch-image-border-radius: 50%;
 $swatch-image-padding-to-border: 2px;
 
+// tables
+$table-cell-padding: 0.75rem;
+$table-bg: transparent;
+
 // toasts
 $toastViewBox: '0 0 512 512';
 $toast-error-icon: '<path d="M256,0C114.6,0,0,114.6,0,256s114.6,256,256,256s256-114.6,256-256S397.4,0,256,0z M377,343c9.4,9.4,9.4,24.6,0,33.9c-4.7,4.7-10.8,7-17,7s-12.3-2.3-17-7l-87-87l-87,87c-4.7,4.7-10.8,7-17,7s-12.3-2.3-17-7c-9.4-9.4-9.4-24.6,0-33.9l87-87l-87-87c-9.4-9.4-9.4-24.6,0-33.9c9.4-9.4,24.6-9.4,33.9,0l87,87l87-87c9.4-9.4,24.6-9.4,33.9,0c9.4,9.4,9.4,24.6,0,33.9l-87,87L377,343z"/>';
@@ -160,11 +164,16 @@ $gray-800: #343a40;
 $gray-900: #212529;
 $black: #000;
 
-// NOTE: these two variables cannot be set with CSS custom properties
+// NOTE: these few variables cannot be set with CSS custom properties
 // since they are used for Bootstrap internal color calculations
 // if necessary such Bootstrap generated styles need to be overridden in project styles (e.g. see buttons.scss)
 $primary: #006f6f;
 $secondary: color.adjust($primary, $lightness: -10%);
+$body-color: #222;
+// Links
+// Style anchor elements.
+$link-color: #e22222;
+$link-hover-color: #006464;
 // ------------------------------
 
 $danger: $color-special-primary;
@@ -176,13 +185,6 @@ $success: $color-special-quaternary;
 // Settings for the `<body>` element.
 
 $body-bg: $white;
-$body-color: $color-primary;
-
-// Links
-// Style anchor elements.
-
-$link-color: $CORPORATE-PRIMARY;
-$link-hover-color: $CORPORATE-SECONDARY;
 
 // Components
 // Define common padding and border radius sizes and more.

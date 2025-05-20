@@ -53,7 +53,7 @@ describe('Cms Container Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`
       <div
-        class="content-container col-12 col-md-6 col-lg-4 float-left foo-class"
+        class="content-container col-12 col-md-6 col-lg-4 float-start foo-class"
         ng-reflect-ng-class="col-12 col-md-6 col-lg-4 float"
       >
         <ish-content-slot ng-reflect-wrapper="true" ng-reflect-slot="app_sf_base_cm:slot.container."

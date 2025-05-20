@@ -13,14 +13,9 @@
     "test": "jest -i"
   },
   "jest": {
-    "globals": {
-      "ts-jest": {
-        "isolatedModules": true
-      }
-    },
     "testRunner": "jest-jasmine2",
     "transform": {
-      "^.+\\.tsx?$": "ts-jest"
+      "^.+\\.tsx?$": ["ts-jest", { "tsconfig": "tsconfig.spec.json" }]
     },
     "testRegex": ".*\\.spec\\.ts$",
     "testPathIgnorePatterns": [
@@ -31,5 +26,6 @@
       "js",
       "json"
     ]
-  }
+  },
+  "isolatedModules": true
 }

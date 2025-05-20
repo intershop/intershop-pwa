@@ -1,6 +1,6 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -32,7 +32,7 @@ describe('Cost Centers Page Component', () => {
   beforeEach(async () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
     await TestBed.configureTestingModule({
-      imports: [CdkTableModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [CdkTableModule, RouterModule.forRoot([]), TranslateModule.forRoot()],
       declarations: [
         CostCentersPageComponent,
         MockComponent(BudgetInfoComponent),

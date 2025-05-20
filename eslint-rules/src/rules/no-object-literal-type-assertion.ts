@@ -18,7 +18,7 @@ const noObjectLiteralTypeAssertionRule: TSESLint.RuleModule<keyof typeof message
   },
   create: context => {
     const filePattern = /^((?!(\/dev\/|\/eslint-rules\/|spec.ts$)).)*$/;
-    if (filePattern.test(normalizePath(context.getFilename()))) {
+    if (filePattern.test(normalizePath(context.filename))) {
       return {
         TSAsExpression(node: TSESTree.TSAsExpression) {
           if (node.expression.type === AST_NODE_TYPES.ObjectExpression) {

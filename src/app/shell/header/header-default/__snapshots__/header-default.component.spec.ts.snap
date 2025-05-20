@@ -46,7 +46,7 @@ exports[`Header Default Component should render normal header adequately for des
         ></a>
       </div>
     </div>
-    <div class="col-md-5 text-right"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
+    <div class="col-md-5 text-end"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
     <div class="col-md-4">
       <div class="search-container header-search-container">
         <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box>
@@ -120,7 +120,7 @@ exports[`Header Default Component should render normal header adequately for mob
         ></a>
       </div>
     </div>
-    <div class="col-md-5 text-right"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
+    <div class="col-md-5 text-end"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
     <div class="col-md-4"></div>
   </div>
   <button type="button" class="navbar-toggler">
@@ -188,7 +188,7 @@ exports[`Header Default Component should render normal header adequately for tab
         ></a>
       </div>
     </div>
-    <div class="col-md-5 text-right"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
+    <div class="col-md-5 text-end"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
     <div class="col-md-4">
       <div class="search-container header-search-container">
         <ish-lazy-search-box data-testing-id="search-box-desktop"></ish-lazy-search-box>
@@ -254,7 +254,7 @@ exports[`Header Default Component should render sticky header adequately for des
         ></a>
       </div>
     </div>
-    <div class="col-md-5 text-right"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
+    <div class="col-md-5 text-end"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
     <div class="col-md-4"></div>
   </div>
   <button type="button" class="navbar-toggler">
@@ -316,7 +316,7 @@ exports[`Header Default Component should render sticky header adequately for mob
         ></a>
       </div>
     </div>
-    <div class="col-md-5 text-right"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
+    <div class="col-md-5 text-end"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
     <div class="col-md-4"></div>
   </div>
   <button type="button" class="navbar-toggler">
@@ -378,7 +378,7 @@ exports[`Header Default Component should render sticky header adequately for tab
         ></a>
       </div>
     </div>
-    <div class="col-md-5 text-right"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
+    <div class="col-md-5 text-end"><ish-lazy-quickorder-link></ish-lazy-quickorder-link></div>
     <div class="col-md-4"></div>
   </div>
   <button type="button" class="navbar-toggler">

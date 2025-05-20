@@ -104,6 +104,7 @@ a:not([href]):not([tabindex]) {
 }
 
 a {
+  text-decoration: none;
   cursor: pointer;
 
   &:hover {
@@ -248,7 +249,7 @@ a {
 .wrapper {
   padding: 0 0 50px;
 
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-down(md) {
     padding-top: $search-container-height;
   }
 }

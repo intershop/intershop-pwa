@@ -13,7 +13,7 @@ on:
       - 'docs/**'
 
 env:
-  NODE_VERSION: 18.16.0
+  NODE_VERSION: 20.19.1
   ICM_BASE_URL: https://review.icm.intershop.de
 
 jobs:
@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js 18
+      - name: Use Node.js 20
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -80,7 +80,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js 18
+      - name: Use Node.js 20
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -110,7 +110,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Use Node.js 18
+      - name: Use Node.js 20
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -138,7 +138,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js 18
+      - name: Use Node.js 20
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -158,6 +158,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
 
       - name: Production Build PWA Image
         run: docker compose build pwa
@@ -168,6 +173,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
 
       - name: Build Nginx Image
         run: docker compose build nginx

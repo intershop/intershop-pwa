@@ -82,9 +82,9 @@ export class DateRangePickerFieldComponent extends FieldType<FieldTypeConfig> im
   onDateSelection(date: NgbDate) {
     if (!this.fromDate) {
       this.fromDate = date;
-    } else if (!this.toDate && date && date.equals(this.fromDate)) {
+    } else if (!this.toDate && date?.equals(this.fromDate)) {
       this.toDate = date;
-    } else if (this.fromDate && !this.toDate && date && date.after(this.fromDate)) {
+    } else if (this.fromDate && !this.toDate && date?.after(this.fromDate)) {
       this.toDate = date;
     } else {
       this.toDate = undefined;

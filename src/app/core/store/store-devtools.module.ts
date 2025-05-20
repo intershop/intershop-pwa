@@ -12,5 +12,6 @@ export const storeDevtoolsModule = [
     maxAge: PRODUCTION_MODE ? 25 : 200,
     logOnly: PRODUCTION_MODE, // restrict extension to log-only mode
     actionsBlocklist: [loadPromotion.type, loadProductIfNotLoaded.type, setStickyHeader.type, suggestSearch.type],
+    connectInZone: true,
   }),
 ];

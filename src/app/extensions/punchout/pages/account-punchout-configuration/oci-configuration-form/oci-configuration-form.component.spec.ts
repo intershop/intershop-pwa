@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigOption, FormlyModule } from '@ngx-formly/core';
@@ -39,7 +39,7 @@ describe('Oci Configuration Form Component', () => {
         FormlyModule.forChild(formlyConfig),
         FormlyTestingModule,
         NgbPopoverModule,
-        RouterTestingModule,
+        RouterModule.forRoot([]),
         TranslateModule.forRoot(),
       ],
       declarations: [

@@ -44,7 +44,12 @@
               "includePaths": ["src/styles/themes/theme_placeholder"]
             },
             "sourceMap": true,
-            "allowedCommonJsDependencies": ["localforage"]
+            "allowedCommonJsDependencies": ["localforage"],
+            "optimization": {
+              "styles": {
+                "inlineCritical": false
+              }
+            }
           },
           "defaultConfiguration": "b2b,production",
           "configurations": {
@@ -128,7 +133,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "intershop-pwa:build"
+            "buildTarget": "intershop-pwa:build"
           }
         },
         "lint": {
@@ -162,7 +167,7 @@
           }
         },
         "serve-ssr": {
-          "builder": "@nguniversal/builders:ssr-dev-server",
+          "builder": "@angular-devkit/build-angular:ssr-dev-server",
           "options": {
             "browserTarget": "intershop-pwa:build",
             "serverTarget": "intershop-pwa:server"

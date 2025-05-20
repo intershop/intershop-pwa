@@ -29,8 +29,8 @@
               }}</span>
             </p>
           </div>
-          <div class="col-2 list-item text-right">
-            <div class="float-right">
+          <div class="col-2 list-item text-end">
+            <div class="float-end">
               <a
                 *ngIf="selectedType === 'cxml' && ('punchout.cxmlUserConfigurationEnabled' | ishServerSetting)"
                 [routerLink]="['cxmlConfiguration', user.id]"

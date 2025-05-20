@@ -1,17 +1,19 @@
-<button
-  type="button"
-  class="btn btn-secondary btn-block"
-  [ngClass]="cssClass"
-  [disabled]="displaySpinner()"
-  (click)="addOrderToBasket()"
-  data-testing-id="addOrderToBasketButton"
->
-  <ng-container *ngIf="displaySpinner() !== true; else spinning">
-    {{ 'account.orderdetails.add_to_cart.button.label' | translate }}
-  </ng-container>
-  <!-- spinning animation after clicking button -->
-  <ng-template #spinning>
-    <fa-icon [icon]="['fas', 'spinner']" [spin]="true" ngClass="pr-3" />
-    <span>{{ 'common.button.spinning.label' | translate }}</span></ng-template
-  >&nbsp;
-</button>
+<div class="d-grid">
+  <button
+    type="button"
+    class="btn btn-secondary btn-block"
+    [ngClass]="cssClass"
+    [disabled]="displaySpinner()"
+    (click)="addOrderToBasket()"
+    data-testing-id="addOrderToBasketButton"
+  >
+    <ng-container *ngIf="displaySpinner() !== true; else spinning">
+      {{ 'account.orderdetails.add_to_cart.button.label' | translate }}
+    </ng-container>
+    <!-- spinning animation after clicking button -->
+    <ng-template #spinning>
+      <fa-icon [icon]="['fas', 'spinner']" [spin]="true" ngClass="pe-3" />
+      <span>{{ 'common.button.spinning.label' | translate }}</span></ng-template
+    >&nbsp;
+  </button>
+</div>

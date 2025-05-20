@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, RouterModule } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -62,7 +61,7 @@ describe('Orders Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user', 'orders', 'basket'),
-        RouterTestingModule.withRoutes([
+        RouterModule.forRoot([
           {
             path: 'checkout',
             children: [

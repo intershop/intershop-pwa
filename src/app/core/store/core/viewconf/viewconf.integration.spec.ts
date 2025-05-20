@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, RouterModule } from '@angular/router';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -22,7 +21,7 @@ describe('Viewconf Integration', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'viewconf'], [ViewconfEffects]),
-        RouterTestingModule.withRoutes([
+        RouterModule.forRoot([
           {
             path: 'some',
             children: [],

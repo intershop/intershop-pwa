@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { EMPTY, of } from 'rxjs';
@@ -158,7 +158,7 @@ describe('Customer Store', () => {
       imports: [
         CoreStoreModule.forTesting(['configuration', 'serverConfig'], true),
         CustomerStoreModule,
-        RouterTestingModule.withRoutes([
+        RouterModule.forRoot([
           {
             path: 'account',
             children: [],

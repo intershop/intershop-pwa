@@ -1,8 +1,14 @@
-require('jest-preset-angular/setup-jest');
+// These two imports MUST stay at the top of the file, otherwise tests fail for zone.js errors
+// eslint-disable-next-line ish-custom-rules/ordered-imports
+import 'zone.js';
+import 'zone.js/testing';
 
 import { CompilerOptions } from '@angular/core';
 import { getTestBed } from '@angular/core/testing';
 import '@angular/localize/init';
+import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
+
+setupZoneTestEnv();
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 expect.extend(require('jest-extended'));

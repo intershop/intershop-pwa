@@ -258,3 +258,8 @@ optgroup {
     margin-right: $space-default;
   }
 }
+
+// form-group replacement in BS5
+.form-group {
+  margin-bottom: 1rem;
+}

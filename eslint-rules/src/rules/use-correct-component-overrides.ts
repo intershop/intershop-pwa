@@ -19,9 +19,8 @@ const useCorrectComponentOverridesRule: TSESLint.RuleModule<keyof typeof message
     docs: {
       description:
         'For component overrides to work correctly, every Component decorator has to point its URLs to the component base files for HTML and SCSS. This rule checks if this is the case. Additionally, if a test is composed for a component override, this rule checks if the correct component files are used (because the override mechanism does not work with jest).',
-      recommended: 'warn',
+      recommended: 'recommended',
       url: '',
-      suggestion: true,
     },
     messages,
     type: 'problem',
@@ -29,7 +28,7 @@ const useCorrectComponentOverridesRule: TSESLint.RuleModule<keyof typeof message
     hasSuggestions: true,
   },
   create(context) {
-    const fileName = path.basename(normalizePath(context.getFilename()));
+    const fileName = path.basename(normalizePath(context.filename));
     const fileBaseName = fileName.replace(/component.*/, 'component');
     if (/\.component\.(?!spec)([a-z]+\.)?ts$/.test(fileName)) {
       return {
@@ -69,14 +68,14 @@ const useCorrectComponentOverridesRule: TSESLint.RuleModule<keyof typeof message
       };
     } else if (/\.component\.[a-z]+\.spec\.ts$/.test(fileName)) {
       function getText(node) {
-        return context.getSourceCode().getText(node);
+        return context.sourceCode.getText(node);
       }
 
-      const expectTemplateOverride = fs.existsSync(context.getFilename().replace(/\.spec\.ts$/, '.html'));
+      const expectTemplateOverride = fs.existsSync(context.filename.replace(/\.spec\.ts$/, '.html'));
       let hasCorrectTemplateOverride = false;
       const expectedTemplate = fileName.replace('.spec.ts', '.html');
 
-      const expectTSOverride = fs.existsSync(context.getFilename().replace(/\.spec\.ts$/, '.ts'));
+      const expectTSOverride = fs.existsSync(context.filename.replace(/\.spec\.ts$/, '.ts'));
       let hasCorrectTSOverride = false;
       const expectedTS = fileName.replace('.spec.ts', '');
 

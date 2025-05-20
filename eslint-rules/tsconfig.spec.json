@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "declaration": false,
+    "experimentalDecorators": true,
+    "lib": ["dom", "es2022", "es6"],
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "noImplicitAny": false,
+    "noLib": false,
+    "outDir": "./dist",
+    "removeComments": true,
+    "target": "es2022",
+    "types": ["node", "jest"],
+    "isolatedModules": true
+  },
+  "include": ["src/**/*.ts"]
+}

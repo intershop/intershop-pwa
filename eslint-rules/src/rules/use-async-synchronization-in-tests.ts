@@ -19,7 +19,7 @@ const useAsyncSynchronizationInTestsRule: TSESLint.RuleModule<keyof typeof messa
   create: context => {
     // helper functions
     function isDoneCallback(arg: TSESTree.Node): boolean {
-      const text = context.getSourceCode().getText(arg);
+      const text = context.sourceCode.getText(arg);
       return text === 'done' || text.search(/\sdone\(\)/) >= 0;
     }
 
@@ -28,9 +28,7 @@ const useAsyncSynchronizationInTestsRule: TSESLint.RuleModule<keyof typeof messa
         arg.type === AST_NODE_TYPES.ObjectExpression &&
         arg.properties
           .filter(p => p.type === AST_NODE_TYPES.Property)
-          .filter((p: TSESTree.Property) =>
-            ['complete', 'error', 'next'].includes(context.getSourceCode().getText(p.key))
-          )
+          .filter((p: TSESTree.Property) => ['complete', 'error', 'next'].includes(context.sourceCode.getText(p.key)))
           .some((p: TSESTree.Property) => isDoneCallback(p.value))
       );
     }
@@ -61,18 +59,18 @@ const useAsyncSynchronizationInTestsRule: TSESLint.RuleModule<keyof typeof messa
       );
     }
 
-    if (!normalizePath(context.getFilename()).endsWith('.spec.ts')) {
+    if (!normalizePath(context.filename).endsWith('.spec.ts')) {
       return {};
     }
     return {
-      'CallExpression > MemberExpression[property.name="subscribe"]'(memberExpNode: TSESTree.MemberExpression) {
+      'CallExpression > MemberExpression[property.name="subscribe"]'(node: TSESTree.PropertyDefinition) {
         // check if arguments contain done callback or partial subscriber with done callback
-        const callExp = memberExpNode.parent as TSESTree.CallExpression;
+        const callExp = node.parent as TSESTree.CallExpression;
         if (callExp.arguments.some(arg => isDoneCallback(arg) || isDoneCallbackPartialSubscriber(arg))) {
           return;
         }
 
-        const ancestors = context.getAncestors();
+        const ancestors = context.sourceCode.getAncestors(node);
 
         // check if subscribe is contained in fakeAsync
         if (
@@ -90,7 +88,7 @@ const useAsyncSynchronizationInTestsRule: TSESLint.RuleModule<keyof typeof messa
           ancestors.filter(
             a =>
               a.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-              a.params.some(p => context.getSourceCode().getText(p) === 'done') &&
+              a.params.some(p => context.sourceCode.getText(p) === 'done') &&
               arrowFunctionBodyContainsDone(a.body)
           ).length > 0
         ) {

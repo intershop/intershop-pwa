@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
@@ -53,7 +52,7 @@ describe('Search Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration'], [SearchEffects, ProductListingEffects]),
-        RouterTestingModule.withRoutes([
+        RouterModule.forRoot([
           { path: 'error', children: [] },
           { path: 'search/:searchTerm', children: [] },
         ]),
