@@ -23,7 +23,7 @@ import {
 import { AvailableOptions } from 'ish-core/services/api/api.service';
 import { TokenService } from 'ish-core/services/token/token.service';
 import { getCurrentLocale, getSparqueConfig } from 'ish-core/store/core/configuration';
-import { communicationTimeoutError, serverError } from 'ish-core/store/core/error';
+import { sparqueSearchServerError, sparqueSuggestServerError } from 'ish-core/store/shopping/search';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -185,13 +185,15 @@ export class SparqueApiService {
 
   private handleErrors<T>(dispatch: boolean): MonoTypeOperatorFunction<T> {
     return catchError(error => {
-      if (dispatch) {
-        if (error.status === 0) {
-          this.store.dispatch(communicationTimeoutError({ error }));
-          return EMPTY;
-        } else if (error.status >= 500 && error.status < 600) {
-          this.store.dispatch(serverError({ error }));
-          return EMPTY;
+      if (dispatch && (error.status === 0 || (error.status >= 500 && error.status < 600))) {
+        const errorLocalizationKey = 'sparque.server.error.text';
+        if (error.message.includes('/search')) {
+          error.message = errorLocalizationKey;
+          this.store.dispatch(sparqueSearchServerError(error));
+        }
+        if (error.message.includes('/suggestions')) {
+          error.message = errorLocalizationKey;
+          this.store.dispatch(sparqueSuggestServerError(error));
         }
       }
       return throwError(() => error);

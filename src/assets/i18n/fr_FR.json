@@ -1308,6 +1308,7 @@
   "shopping_cart.total.heading": "Total",
   "shopping_cart.transaction.text": "Toutes les transactions sont sûres et sécurisées.",
   "shopping_cart.variation.save.button.label": "Enregistrer",
+  "sparque.server.error.text": "Le service est actuellement indisponible. Veuillez réessayer plus tard.",
   "store.dialog.button.ok": "OK",
   "store_locator.description": "La recherche de magasins est conçue pour vous aider à trouver le magasin le plus proche de chez vous. Visitez l’un de nos magasins aujourd’hui et constatez par vous-même la qualité, la valeur et le service.",
   "store_locator.form.city.label": "Ville",

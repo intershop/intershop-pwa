@@ -28,3 +28,7 @@ export const addSearchTermToSuggestion = createAction(
   '[Suggest Search Term Internal] Add Search Terms to Suggestion',
   payload<{ searchTerm: string }>()
 );
+
+// TODO: sparque specific actions in separate actions file? These actions are currently not used.
+export const sparqueSuggestServerError = createAction('[Error Internal] Sparque Suggestion Server Error', httpError());
+export const sparqueSearchServerError = createAction('[Error Internal] Sparque Search Server Error', httpError());

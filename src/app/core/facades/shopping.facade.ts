@@ -58,6 +58,7 @@ import { getPromotion, getPromotions, loadPromotion } from 'ish-core/store/shopp
 import {
   getSearchTerm,
   getSearchedTerms,
+  getSuggestSearchError,
   getSuggestSearchLoading,
   getSuggestSearchResults,
   removeSuggestions,
@@ -269,6 +270,7 @@ export class ShoppingFacade {
   }
 
   searchSuggestLoading$ = this.store.pipe(select(getSuggestSearchLoading));
+  searchSuggestError$ = this.store.pipe(select(getSuggestSearchError));
 
   searchLoading$ = this.store.pipe(select(getProductListingLoading));
 

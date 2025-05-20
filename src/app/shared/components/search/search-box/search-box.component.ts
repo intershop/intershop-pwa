@@ -18,6 +18,7 @@ import { Observable, ReplaySubject, map, shareReplay } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { IconModule } from 'ish-core/icon.module';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SearchBoxConfiguration } from 'ish-core/models/search-box-configuration/search-box-configuration.model';
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
@@ -71,6 +72,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('searchInput') searchInput: ElementRef;
 
   searchSuggestLoading$: Observable<boolean>;
+  searchSuggestError$: Observable<HttpError>;
 
   inputSearchTerms$ = new ReplaySubject<string>(1);
   suggestions$: Observable<Suggestions>;
@@ -104,6 +106,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.searchSuggestLoading$ = this.shoppingFacade.searchSuggestLoading$;
+    this.searchSuggestError$ = this.shoppingFacade.searchSuggestError$;
 
     // suggests are triggered solely via stream
     this.suggestions$ = this.shoppingFacade

@@ -1308,6 +1308,7 @@
   "shopping_cart.total.heading": "Total",
   "shopping_cart.transaction.text": "All transactions are safe and secure.",
   "shopping_cart.variation.save.button.label": "Save",
+  "sparque.server.error.text": "The service is currently unavailable. Please try again later.",
   "store.dialog.button.ok": "OK",
   "store_locator.description": "The store finder is designed to help you find your nearest store. Visit one of our stores today and see quality, value and service for yourself.",
   "store_locator.form.city.label": "City",

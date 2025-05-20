@@ -13,6 +13,18 @@
     [attr.aria-label]="'search.searchbox.label' | translate"
   />
 
+  <div *ngIf="searchSuggestError$ | async as error" class="search-suggest-container">
+    <div class="col-12">
+      <div class="headline">{{ 'suggest.error.headline' | translate }}</div>
+      <p *ngIf="error.message.includes('sparque.server.error.text'); else generalError">
+        {{ 'sparque.server.error.text' | translate }}
+      </p>
+      <ng-template #generalError>
+        <p #generalError>{{ 'suggest.error.text' | translate }}</p>
+      </ng-template>
+    </div>
+  </div>
+
   <ng-container *ngIf="configuration?.autoSuggest && suggestions$ | async as results; else initialState">
     <div
       *ngIf="(searchBoxResults$ | async) && (hasMinimumCharCount$ | async); else noResults"

@@ -4,8 +4,9 @@ import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { BehaviorSubject } from 'rxjs';
-import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
+import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { TokenService } from 'ish-core/services/token/token.service';
 import {
@@ -17,6 +18,7 @@ import {
 } from 'ish-core/store/core/configuration';
 import { isServerConfigurationLoaded } from 'ish-core/store/core/server-config';
 import { getPGID } from 'ish-core/store/customer/user';
+import { sparqueSuggestServerError } from 'ish-core/store/shopping/search';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 
 import { SparqueApiService } from './sparque-api.service';
@@ -307,6 +309,50 @@ describe('Sparque Api Service', () => {
     afterEach(() => {
       // After every test, assert that there are no more pending requests.
       httpTestingController.verify();
+    });
+
+    it('should dispatch communication timeout errors when getting status 0', done => {
+      sparqueApiService.get('data', 'v2').subscribe({
+        next: fail,
+        error: err => {
+          expect(err).toBeInstanceOf(HttpErrorResponse);
+          done();
+        },
+        complete: fail,
+      });
+
+      httpTestingController
+        .expectOne(() => true)
+        .flush('', {
+          status: 0,
+          statusText: '/suggestions Error',
+        });
+
+      verify(store.dispatch(anything())).once();
+      const dispatchedAction = capture(store.dispatch).last()?.[0] as { payload: { error: HttpError }; type: string };
+      expect(dispatchedAction.type).toBe(sparqueSuggestServerError.type);
+    });
+
+    it('should dispatch general errors when getting status 500', done => {
+      sparqueApiService.get('data', 'v2').subscribe({
+        next: fail,
+        error: err => {
+          expect(err).toBeInstanceOf(HttpErrorResponse);
+          done();
+        },
+        complete: fail,
+      });
+
+      httpTestingController
+        .expectOne(() => true)
+        .flush('', {
+          status: 500,
+          statusText: '/suggestions Error',
+        });
+
+      verify(store.dispatch(anything())).once();
+      const dispatchedAction = capture(store.dispatch).last()?.[0] as { payload: { error: HttpError }; type: string };
+      expect(dispatchedAction.type).toBe(sparqueSuggestServerError.type);
     });
 
     it('should not dispatch errors when getting status 404', done => {
