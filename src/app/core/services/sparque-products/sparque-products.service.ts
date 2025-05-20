@@ -1,6 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, throwError } from 'rxjs';
 
 import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
 import { SparqueSearch } from 'ish-core/models/sparque-search/sparque-search.interface';
@@ -74,6 +74,40 @@ export class SparqueProductsService implements ProductsServiceInterface {
     return this.sparqueApiService
       .get<SparqueSearch>(`search`, this.apiVersion, { params, skipApiErrorHandling: true })
       .pipe(map(result => this.sparqueSearchMapper.fromData(result, searchParameter)));
+  }
+
+  /**
+   * Retrieves products for a specific category.
+   *
+   * @param categoryUniqueId - The unique identifier of the category.
+   * @param amount - The number of products to retrieve.
+   * @param sortKey - The key to sort the results by (optional).
+   * @param offset - The offset for pagination (default is 0).
+   * @returns An observable emitting the mapped search response.
+   * @throws An error if the categoryUniqueId is not provided.
+   */
+  getCategoryProducts(
+    categoryUniqueId: string,
+    amount: number,
+    sortKey?: string,
+    offset = 0
+  ): Observable<SearchResponse> {
+    if (!categoryUniqueId) {
+      return throwError(() => new Error('getCategoryProducts() called without categoryUniqueId'));
+    }
+
+    let params = new HttpParams()
+      .set('amount', amount.toString())
+      .set('offset', offset.toString())
+      .set('categoryIds', categoryUniqueId.split('.')[1]);
+
+    if (sortKey) {
+      params = params.set('sorting', sortKey);
+    }
+
+    return this.sparqueApiService
+      .get<SearchResponse>(`products`, this.apiVersion, { params })
+      .pipe(map(result => this.sparqueSearchMapper.fromData(result, { ['category']: [categoryUniqueId] })));
   }
 
   private selectedFacets(object: URLFormParams): string {

@@ -61,4 +61,11 @@ export interface ProductsServiceInterface {
     sortKey?: string,
     offset?: number
   ): Observable<SearchResponse>;
+
+  getCategoryProducts(
+    categoryUniqueId: string,
+    amount: number,
+    sortKey?: string,
+    offset?: number
+  ): Observable<SearchResponse>;
 }
