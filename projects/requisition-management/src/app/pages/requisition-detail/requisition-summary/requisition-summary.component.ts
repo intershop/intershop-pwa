@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
+import { BasketApprover } from 'ish-core/models/basket-approval/basket-approval.model';
 
 import { Requisition, RequisitionViewer } from '../../../models/requisition/requisition.model';
 
@@ -15,6 +16,7 @@ export class RequisitionSummaryComponent implements OnInit {
 
   costCenterName: string;
   customerApproverCount: number;
+  uniqueApprovers: BasketApprover[];
 
   ngOnInit() {
     this.costCenterName = AttributeHelper.getAttributeValueByAttributeName(
@@ -22,12 +24,26 @@ export class RequisitionSummaryComponent implements OnInit {
       'BusinessObjectAttributes#Order_CostCenter_Name'
     );
 
-    this.customerApproverCount = this.getCustomerApproverCount();
+    if (this.requisition) {
+      const rawApprovers =
+        this.requisition.approval.statusCode === 'PENDING'
+          ? this.requisition.approval.customerApproval.approvers || []
+          : this.requisition.approval.approvers || [];
+
+      this.uniqueApprovers = this.uniqueByEmail(rawApprovers);
+
+      this.customerApproverCount = this.uniqueApprovers.length || 1;
+    }
   }
 
-  private getCustomerApproverCount() {
-    return this.requisition?.approval?.statusCode === 'PENDING'
-      ? this.requisition?.approval?.customerApproval.approvers?.length || 1
-      : this.requisition?.approval?.approvers?.length || 1;
+  private uniqueByEmail(list: BasketApprover[]) {
+    const uniqueEmails = new Set<string>();
+    return list.filter(a => {
+      if (uniqueEmails.has(a.email)) {
+        return false;
+      }
+      uniqueEmails.add(a.email);
+      return true;
+    });
   }
 }
