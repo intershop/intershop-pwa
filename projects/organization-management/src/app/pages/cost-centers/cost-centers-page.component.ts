@@ -90,9 +90,9 @@ export class CostCentersPageComponent implements OnInit {
     this.organizationManagementFacade.loadCostCenters({
       offset: 0,
       limit: this.pageSize,
-      costCenterId: filters.costCenterId,
-      name: filters.name,
+      costCenterNameId: filters.costCenterNameId,
     });
+    this.pageNumberSubject.next(1);
   }
 
   /** Deletes the cost center */

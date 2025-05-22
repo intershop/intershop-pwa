@@ -2,19 +2,7 @@
   <div>
     <formly-form [form]="form" [fields]="[fields[0]]" [model]="model$ | async" />
   </div>
-  <!-- <div [ngbCollapse]="formIsCollapsed">
-    <formly-form [form]="form" [fields]="fields.slice(1)" [model]="model$ | async" />
-  </div> -->
   <div class="row mb-4 justify-content-end">
-    <!-- <div class="col-md-4 d-flex align-items-center">
-      <button type="button" class="btn btn-link pl-0" (click)="expandForm()">
-        {{
-          formIsCollapsed
-            ? ('account.costcenter.filter.show' | translate)
-            : ('account.costcenter.filter.hide' | translate)
-        }}
-      </button>
-    </div> -->
     <div class="col-md-8 text-right">
       <button type="submit" class="btn btn-primary mr-0">{{ 'account.costcenter.filter.apply' | translate }}</button>
     </div>
