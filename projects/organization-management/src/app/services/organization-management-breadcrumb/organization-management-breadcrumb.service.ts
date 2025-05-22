@@ -88,6 +88,11 @@ export class OrganizationManagementBreadcrumbService {
                   ]
             )
           );
+        } else if (path.endsWith('import')) {
+          return of([
+            { key: 'account.organization.cost_center_management', link: `${prefix}/cost-centers` },
+            { key: 'account.organization.cost_center_management.cost_center_import' },
+          ]);
         }
         return EMPTY;
       })
