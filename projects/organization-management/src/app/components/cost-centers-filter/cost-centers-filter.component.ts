@@ -19,11 +19,10 @@ import { Observable, of } from 'rxjs';
 import { CostCenterQuery } from 'ish-core/models/cost-center-query/cost-center-query.model';
 
 interface FormModel extends Record<string, unknown> {
-  costCenterId?: string;
-  name?: string;
+  costCenterNameId?: string;
 }
 
-type UrlModel = Partial<Record<'costCenterId' | 'name', string | string[]>>;
+type UrlModel = Partial<Record<'costCenterNameId', string | string[]>>;
 
 function selectFirst(val: string | string[]): string {
   return Array.isArray(val) ? val[0] : val;
@@ -48,22 +47,19 @@ function removeEmpty<T extends Record<string, unknown>>(obj: T): T {
 
 function urlToModel(params: UrlModel): FormModel {
   return removeEmpty<FormModel>({
-    costCenterId: selectAll(params.costCenterId),
-    name: selectAll(params.name),
+    costCenterNameId: selectAll(params.costCenterNameId),
   });
 }
 
 function modelToUrl(model: FormModel): UrlModel {
   return removeEmpty<UrlModel>({
-    costCenterId: model?.costCenterId,
-    name: model?.name,
+    costCenterNameId: model?.costCenterNameId,
   });
 }
 
 function urlToQuery(params: UrlModel): Partial<CostCenterQuery> {
   return removeEmpty<Partial<CostCenterQuery>>({
-    costCenterId: selectFirst(params.costCenterId),
-    name: selectFirst(params.name),
+    costCenterNameId: selectFirst(params.costCenterNameId),
   });
 }
 
@@ -88,27 +84,13 @@ export class CostCentersFilterComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.fields = [
       {
-        fieldGroupClassName: 'row',
-        fieldGroup: [
-          {
-            className: 'col-6',
-            key: 'costCenterId',
-            type: 'ish-text-input-field',
-            props: {
-              placeholder: 'account.costcenter.filter.label.center_id',
-              fieldClass: 'col-12',
-            },
-          },
-          {
-            className: 'col-6',
-            key: 'name',
-            type: 'ish-text-input-field',
-            props: {
-              placeholder: 'account.costcenter.filter.label.name',
-              fieldClass: 'col-12',
-            },
-          },
-        ],
+        className: 'col-12',
+        key: 'costCenterNameId',
+        type: 'ish-text-input-field',
+        props: {
+          placeholder: 'account.costcenter.filter.label.nameOrId',
+          fieldClass: 'col-12',
+        },
       },
     ];
   }
@@ -136,8 +118,7 @@ export class CostCentersFilterComponent implements OnInit, AfterViewInit {
   private getModel(params?: UrlModel): Observable<FormModel> {
     this.modelChange.emit(urlToQuery(params));
     return of({
-      costCenterId: params?.costCenterId ? selectFirst(params.costCenterId) : '',
-      name: params?.name ? selectFirst(params.name) : '',
+      costCenterNameId: params?.costCenterNameId ? selectFirst(params.costCenterNameId) : '',
     });
   }
 }

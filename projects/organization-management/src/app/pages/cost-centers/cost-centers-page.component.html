@@ -144,7 +144,9 @@
     <ng-container *ngIf="pagingData$ | async as paging">
       <div class="row" *ngIf="paging.total > pageSize">
         <div class="d-flex w-100 grey-panel align-items-center flex-wrap justify-content-between px-3 py-2 mb-3">
-          <span class="text-nowrap">{{ 'shopping_cart.paging.items.label' | translate : { '0': paging.total } }}</span>
+          <span class="text-nowrap">{{
+            'account.costcenter.paging.items.label' | translate : { '0': paging.total }
+          }}</span>
           <ish-paging
             [currentPage]="pageNumber$ | async"
             [lastPage]="getTotalPages(paging.total)"

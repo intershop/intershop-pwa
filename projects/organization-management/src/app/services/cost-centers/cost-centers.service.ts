@@ -40,8 +40,7 @@ export class CostCentersService {
     const params = new HttpParams()
       .set('offset', query.offset ? query.offset : 0)
       .set('limit', query.limit ? query.limit : 25)
-      .set('costCenterId', query.costCenterId ? query.costCenterId : '')
-      .set('name', query.name ? query.name : '');
+      .set('nameOrId', query.costCenterNameId ? query.costCenterNameId : '');
 
     return this.currentCustomer$.pipe(
       switchMap(customer =>
