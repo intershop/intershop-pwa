@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
@@ -16,7 +17,12 @@ const accountOrderTemplateDetailPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [OrderTemplatesModule, RouterModule.forChild(accountOrderTemplateDetailPageRoutes), SharedModule],
+  imports: [
+    OrderTemplatesModule,
+    RouterModule.forChild(accountOrderTemplateDetailPageRoutes),
+    ReactiveFormsModule,
+    SharedModule,
+  ],
   declarations: [AccountOrderTemplateDetailLineItemComponent, AccountOrderTemplateDetailPageComponent],
 })
 export class AccountOrderTemplateDetailPageModule {}
