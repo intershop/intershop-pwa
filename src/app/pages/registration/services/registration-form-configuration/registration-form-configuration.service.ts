@@ -107,11 +107,11 @@ export class RegistrationFormConfigurationService {
               required: true,
             },
             validators: {
-              validation: [Validators.pattern('true')],
+              validation: [Validators.requiredTrue],
             },
             validation: {
               messages: {
-                pattern: 'registration.tac.error.tip',
+                required: 'registration.tac.error.tip',
               },
             },
           },
