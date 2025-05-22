@@ -1,0 +1,8 @@
+<dl class="custom-fields-view">
+  <div *ngFor="let field of data$ | async" class="custom-field">
+    <dt>{{ field.displayName }}</dt>
+    <dd [class.no-value]="!field.value">
+      {{ field.value || ('checkout.custom-field.no-value' | translate) }}
+    </dd>
+  </div>
+</dl>

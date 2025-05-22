@@ -68,6 +68,7 @@ import { BasketApprovalInfoComponent } from './components/basket/basket-approval
 import { BasketBuyerComponent } from './components/basket/basket-buyer/basket-buyer.component';
 import { BasketCostCenterSelectionComponent } from './components/basket/basket-cost-center-selection/basket-cost-center-selection.component';
 import { BasketCostSummaryComponent } from './components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketCustomFieldsComponent } from './components/basket/basket-custom-fields/basket-custom-fields.component';
 import { BasketDesiredDeliveryDateComponent } from './components/basket/basket-desired-delivery-date/basket-desired-delivery-date.component';
 import { BasketErrorMessageComponent } from './components/basket/basket-error-message/basket-error-message.component';
 import { BasketInfoComponent } from './components/basket/basket-info/basket-info.component';
@@ -84,6 +85,7 @@ import { BasketValidationProductsComponent } from './components/basket/basket-va
 import { BasketValidationResultsComponent } from './components/basket/basket-validation-results/basket-validation-results.component';
 import { ClearBasketComponent } from './components/basket/clear-basket/clear-basket.component';
 import { MiniBasketContentComponent } from './components/basket/mini-basket-content/mini-basket-content.component';
+import { BasketCustomFieldsViewComponent } from './components/checkout/basket-custom-fields-view/basket-custom-fields-view.component';
 import { BasketInvoiceAddressWidgetComponent } from './components/checkout/basket-invoice-address-widget/basket-invoice-address-widget.component';
 import { BasketShippingAddressWidgetComponent } from './components/checkout/basket-shipping-address-widget/basket-shipping-address-widget.component';
 import { AccordionItemComponent } from './components/common/accordion-item/accordion-item.component';
@@ -98,6 +100,8 @@ import { ModalDialogLinkComponent } from './components/common/modal-dialog-link/
 import { ModalDialogComponent } from './components/common/modal-dialog/modal-dialog.component';
 import { PagingComponent } from './components/common/paging/paging.component';
 import { SuccessMessageComponent } from './components/common/success-message/success-message.component';
+import { CustomFieldsFormlyComponent } from './components/custom-fields/custom-fields-formly/custom-fields-formly.component';
+import { CustomFieldsViewComponent } from './components/custom-fields/custom-fields-view/custom-fields-view.component';
 import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';
 import { FilterCollapsibleComponent } from './components/filter/filter-collapsible/filter-collapsible.component';
 import { FilterDropdownComponent } from './components/filter/filter-dropdown/filter-dropdown.component';
@@ -107,8 +111,10 @@ import { FilterNavigationSidebarComponent } from './components/filter/filter-nav
 import { FilterNavigationComponent } from './components/filter/filter-navigation/filter-navigation.component';
 import { FilterSwatchImagesComponent } from './components/filter/filter-swatch-images/filter-swatch-images.component';
 import { FilterTextComponent } from './components/filter/filter-text/filter-text.component';
+import { LineItemCustomFieldsComponent } from './components/line-item/line-item-custom-fields/line-item-custom-fields.component';
 import { LineItemEditDialogComponent } from './components/line-item/line-item-edit-dialog/line-item-edit-dialog.component';
 import { LineItemEditComponent } from './components/line-item/line-item-edit/line-item-edit.component';
+import { LineItemInformationEditComponent } from './components/line-item/line-item-information-edit/line-item-information-edit.component';
 import { LineItemListElementComponent } from './components/line-item/line-item-list-element/line-item-list-element.component';
 import { LineItemListComponent } from './components/line-item/line-item-list/line-item-list.component';
 import { LineItemWarrantyComponent } from './components/line-item/line-item-warranty/line-item-warranty.component';
@@ -230,6 +236,7 @@ const declaredComponents = [
   FilterTextComponent,
   LineItemEditComponent,
   LineItemEditDialogComponent,
+  LineItemInformationEditComponent,
   LineItemListElementComponent,
   LineItemWarrantyComponent,
   LoginModalComponent,
@@ -249,6 +256,7 @@ const exportedComponents = [
   AccordionComponent,
   AccordionItemComponent,
   AddressComponent,
+  BasketCustomFieldsComponent,
   BasketAddressSummaryComponent,
   BasketApprovalInfoComponent,
   BasketBuyerComponent,
@@ -313,6 +321,10 @@ const exportedComponents = [
   ProductVariationSelectSwatchComponent,
   ProductWarrantyComponent,
   ProductWarrantyDetailsComponent,
+  CustomFieldsFormlyComponent,
+  LineItemCustomFieldsComponent,
+  CustomFieldsViewComponent,
+  BasketCustomFieldsViewComponent,
   PromotionDetailsComponent,
   PromotionRemoveComponent,
   SuccessMessageComponent,

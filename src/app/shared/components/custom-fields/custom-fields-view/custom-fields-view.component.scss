@@ -1,0 +1,29 @@
+@import 'variables';
+@import 'bootstrap/scss/functions';
+
+.custom-fields-view {
+  margin: divide($space-default, 2) 0;
+
+  .custom-field {
+    display: flex;
+  }
+
+  dt {
+    padding-right: divide($space-default, 3);
+    margin: 0;
+    font-weight: 400;
+
+    &::after {
+      content: ':';
+    }
+  }
+
+  dd {
+    margin-bottom: 0;
+  }
+
+  span.no-value {
+    font-style: italic;
+    color: $text-color-quaternary;
+  }
+}

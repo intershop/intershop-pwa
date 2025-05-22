@@ -108,7 +108,7 @@ export class CartPage {
             .clear()
             .wait(1000)
             .type(num.toString())
-            .wait(1000)
+            .wait(500)
             .blur(),
         get: () =>
           cy

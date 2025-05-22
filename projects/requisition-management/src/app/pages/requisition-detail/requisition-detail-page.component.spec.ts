@@ -13,6 +13,7 @@ import { AddressComponent } from 'ish-shared/components/address/address/address.
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket/basket-merchant-message-view/basket-merchant-message-view.component';
 import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
+import { BasketCustomFieldsViewComponent } from 'ish-shared/components/checkout/basket-custom-fields-view/basket-custom-fields-view.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 
@@ -38,6 +39,7 @@ describe('Requisition Detail Page Component', () => {
       declarations: [
         MockComponent(AddressComponent),
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketCustomFieldsViewComponent),
         MockComponent(BasketMerchantMessageViewComponent),
         MockComponent(BasketShippingMethodComponent),
         MockComponent(ErrorMessageComponent),
@@ -81,6 +83,7 @@ describe('Requisition Detail Page Component', () => {
         "ish-requisition-summary",
         "ish-requisition-cost-center-approval",
         "ish-basket-merchant-message-view",
+        "ish-basket-custom-fields-view",
         "ish-info-box",
         "ish-address",
         "ish-info-box",

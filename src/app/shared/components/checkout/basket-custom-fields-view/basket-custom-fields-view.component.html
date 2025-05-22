@@ -1,0 +1,7 @@
+<ng-container *ngIf="visible$ | async">
+  <ish-info-box [editRouterLink]="editRouterLink" heading="checkout.widget.custom_fields" class="infobox-wrapper">
+    <p>
+      <ish-custom-fields-view [fields]="fields$ | async" />
+    </p>
+  </ish-info-box>
+</ng-container>

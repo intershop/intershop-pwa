@@ -7,6 +7,7 @@ import { debounceTime, distinctUntilChanged, filter, map, sample, switchMap, tak
 import { Address } from 'ish-core/models/address/address.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
+import { CustomFields } from 'ish-core/models/custom-field/custom-field.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PriceType } from 'ish-core/models/price/price.model';
@@ -46,6 +47,7 @@ import {
   loadBasketWithId,
   removePromotionCodeFromBasket,
   setBasketAttribute,
+  setBasketCustomFields,
   setBasketDesiredDeliveryDate,
   setBasketPayment,
   startCheckout,
@@ -128,10 +130,10 @@ export class CheckoutFacade {
   }
 
   updateBasketItem(update: LineItemUpdate) {
-    if (update.quantity) {
-      this.store.dispatch(updateBasketItem({ lineItemUpdate: update }));
-    } else {
+    if (update.quantity === 0) {
       this.store.dispatch(deleteBasketItem({ itemId: update.itemId }));
+    } else {
+      this.store.dispatch(updateBasketItem({ lineItemUpdate: update }));
     }
   }
 
@@ -162,6 +164,10 @@ export class CheckoutFacade {
   setBasketMessageToMerchant(messageToMerchant: string) {
     // eslint-disable-next-line unicorn/no-null
     this.store.dispatch(addMessageToMerchant({ messageToMerchant: messageToMerchant || null }));
+  }
+
+  setBasketCustomFields(customFields: CustomFields) {
+    this.store.dispatch(setBasketCustomFields({ customFields }));
   }
 
   // ORDERS
