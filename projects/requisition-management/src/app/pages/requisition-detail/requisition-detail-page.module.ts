@@ -4,13 +4,13 @@ import { OrganizationManagementExportsModule } from 'organization-management';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
+import { RequisitionRejectDialogModule } from '../../components/requisition-reject-dialog/requisition-reject-dialog.module';
 import { RequisitionManagementModule } from '../../requisition-management.module';
 
 import { BudgetBarComponent } from './budget-bar/budget-bar.component';
 import { RequisitionBuyerApprovalComponent } from './requisition-buyer-approval/requisition-buyer-approval.component';
 import { RequisitionCostCenterApprovalComponent } from './requisition-cost-center-approval/requisition-cost-center-approval.component';
 import { RequisitionDetailPageComponent } from './requisition-detail-page.component';
-import { RequisitionRejectDialogComponent } from './requisition-reject-dialog/requisition-reject-dialog.component';
 import { RequisitionSummaryComponent } from './requisition-summary/requisition-summary.component';
 
 const requisitionDetailPageRoutes: Routes = [{ path: '', component: RequisitionDetailPageComponent }];
@@ -20,6 +20,7 @@ const requisitionDetailPageRoutes: Routes = [{ path: '', component: RequisitionD
     OrganizationManagementExportsModule,
     RequisitionManagementModule,
     RouterModule.forChild(requisitionDetailPageRoutes),
+    RequisitionRejectDialogModule,
     SharedModule,
   ],
   declarations: [
@@ -27,7 +28,6 @@ const requisitionDetailPageRoutes: Routes = [{ path: '', component: RequisitionD
     RequisitionBuyerApprovalComponent,
     RequisitionCostCenterApprovalComponent,
     RequisitionDetailPageComponent,
-    RequisitionRejectDialogComponent,
     RequisitionSummaryComponent,
   ],
 })
