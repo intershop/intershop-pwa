@@ -9,20 +9,20 @@ kb_sync_latest_only
 
 ## From 6.0.0 to 7.0.0
 
-The Intershop PWA 7.0.0 release contains the **Sparque suggest** and **Sparque search** functionality to improve the product search in the PWA.
+The Intershop PWA 7.0.0 release contains the **SPARQUE suggest** and **SPARQUE search** functionality to improve the product search in the PWA.
 
-To introduce the optional Sparque integration in the PWA the following changes were necessary that need to be considered when migrating the PWA.
+To introduce the optional SPARQUE integration in the PWA, the following changes were necessary that need to be considered when migrating the PWA.
 
-The `ProductImageComponent` was changed to an Angular standalone component that can be used independent from the `SharedModule` but it is also available via the `SharedModule` in the same way as before.
+The `ProductImageComponent` was changed to an Angular standalone component that can be used independently of the `SharedModule`, but it is also available via the `SharedModule` in the same way as before.
 
 The `CategoryImageComponent` was moved to the shared components folder and changed to an Angular standalone component.
 
 An additional `ProductCompletenessLevel.Base` was introduced that is used as the new default in the `ProductContextFacade` and provides enough product data for the product suggest tiles.
 
-The `SearchBoxComponent` was re-implemented as an Angular standalone component with the capability to show more suggestions (suggestions for products, categories, brands and keywords).
-With the introduction of the `SearchBoxComponent` as standalone component it's generated `LazySearchBoxComponent` is no longer needed and was therefore removed.
+The `SearchBoxComponent` was re-implemented as an Angular standalone component with the capability to show more suggestions (suggestions for products, categories, brands, and keywords).
+With the introduction of the `SearchBoxComponent` as standalone component, its generated `LazySearchBoxComponent` is no longer needed and was therefore removed.
 The behavior of the search box was changed as well.
-Now the suggestion search will be dispatched if the search term has at least 3 letters (not for every character as before).
+Now the suggestion search will be dispatched once the search term has at least 3 letters (not for every character as before).
 
 The `SuggestService` has a changed result format and is now included in the effects via newly introduced `SuggestionsServiceProvider`.
 
