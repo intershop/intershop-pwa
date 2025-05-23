@@ -5,7 +5,7 @@ import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { ApiService } from 'ish-core/services/api/api.service';
+import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
 import { CostCentersService } from './cost-centers.service';
@@ -42,18 +42,19 @@ describe('Cost Centers Service', () => {
   });
 
   it('should call the getCostCenters of customer API when fetching costCenters', done => {
-    costCentersService.getCostCenters().subscribe(() => {
-      verify(apiService.get(anything())).once();
-      expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
-        [
-          "customers/4711/costcenters",
-        ]
-      `);
+    when(apiService.get(anything(), anything())).thenReturn(of([]));
+
+    costCentersService.getCostCenters({ offset: 0, limit: 25 }).subscribe(() => {
+      verify(apiService.get(anything(), anything())).once();
+      const options: AvailableOptions = capture(apiService.get).last()[1];
+      expect(options.params?.toString()).toMatchInlineSnapshot(`"offset=0&limit=25&nameOrId="`);
       done();
     });
   });
 
   it('should call the getCostCenter of customer API when fetching a costCenter', done => {
+    when(apiService.get(anything())).thenReturn(of([]));
+
     costCentersService.getCostCenter('100400').subscribe(() => {
       verify(apiService.get(anything())).once();
       expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
