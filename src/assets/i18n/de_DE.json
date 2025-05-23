@@ -1018,7 +1018,7 @@
   "product.compare.previous.button.label": "Vorherige Seite",
   "product.compare.price.label": "Preis",
   "product.compare.ratings.label": "Bewertungen",
-  "product.compare.remove.link": "Entfernen",
+  "product.compare.remove.link": "Remove {{0}} from comparison",
   "product.compare.selected_product_count.message": "Sie haben {{0, plural, one{# Produkt} other{# Produkte}}} zum Vergleichen markiert.",
   "product.description.heading": "Beschreibung",
   "product.details.company.label": "Im Online-Shop suchen nach: {{0}}",

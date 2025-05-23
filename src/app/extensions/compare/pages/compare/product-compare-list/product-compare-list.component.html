@@ -23,7 +23,7 @@
                 <button
                   type="button"
                   class="btn-tool btn-link"
-                  [title]="'product.compare.remove.link' | translate"
+                  [title]="'product.compare.remove.link' | translate : { '0': product.name }"
                   (click)="removeFromCompare(product.sku)"
                 >
                   <fa-icon [icon]="['fas', 'trash-alt']" />
