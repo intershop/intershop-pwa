@@ -84,7 +84,6 @@ export class CostCentersFilterComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.fields = [
       {
-        className: 'col-12',
         key: 'costCenterNameId',
         type: 'ish-text-input-field',
         props: {
