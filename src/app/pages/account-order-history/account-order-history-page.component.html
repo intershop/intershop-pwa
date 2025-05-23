@@ -10,7 +10,7 @@
 />
 
 <ish-order-list
-  [orders]="orders$ | async"
+  [orders]="ordersForPage$ | async"
   [columnsToDisplay]="columnsToDisplay$ | async"
   [noOrdersMessageKey]="
     !filtersActive
@@ -20,11 +20,20 @@
   [loading]="ordersLoading$ | async"
 />
 
-<div *ngIf="moreOrdersAvailable$ | async" class="d-flex justify-content-center">
-  <button type="button" class="btn btn-secondary" (click)="loadMoreOrders()" [disabled]="ordersLoading$ | async">
-    {{ 'account.order.load_more' | translate }}
-  </button>
-</div>
+<ng-container *ngIf="pagingInfo$ | async as paging">
+  <div class="row" *ngIf="paging.total > pageSize">
+    <div class="d-flex w-100 grey-panel align-items-center flex-wrap justify-content-between px-3 py-2 mb-3 mx-3">
+      <span class="text-nowrap">{{
+        'account.order_history.paging.items.label' | translate : { '0': paging.total }
+      }}</span>
+      <ish-paging
+        [currentPage]="pageNumber$ | async"
+        [lastPage]="getTotalPages(paging.total)"
+        (goToPage)="loadMoreOrders($event)"
+      />
+    </div>
+  </div>
+</ng-container>
 
 <h2 class="h4 form-text">{{ 'account.order.questions.title' | translate }}</h2>
 <p

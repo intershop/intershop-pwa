@@ -12,7 +12,7 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { Order } from 'ish-core/models/order/order.model';
+import { Order, Orders } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -51,10 +51,11 @@ describe('Orders Effects', () => {
 
   const order = { id: '1', documentNo: '00000001', lineItems: [] } as Order;
   const orders = [order, { id: '2', documentNo: '00000002' }] as Order[];
+  const ordersInfo = { orders, paging: { offset: 0, limit: 15, total: 100 } } as Orders;
 
   beforeEach(() => {
     orderServiceMock = mock(OrderService);
-    when(orderServiceMock.getOrders(anything())).thenReturn(of(orders));
+    when(orderServiceMock.getOrders(anything())).thenReturn(of(ordersInfo));
     when(orderServiceMock.getOrder(anyString())).thenReturn(of(order));
     when(orderServiceMock.getOrderByToken(anyString(), anyString())).thenReturn(of(order));
 
@@ -211,17 +212,7 @@ describe('Orders Effects', () => {
     it('should load all orders of a user and dispatch a LoadOrdersSuccess action', () => {
       const query = { limit: 30 };
       const action = loadOrders({ query });
-      const completion = loadOrdersSuccess({ orders, query, allRetrieved: true });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadOrders$).toBeObservable(expected$);
-    });
-
-    it('should report more available if limit was reached', () => {
-      const query = { limit: orders.length };
-      const action = loadOrders({ query });
-      const completion = loadOrdersSuccess({ orders, query, allRetrieved: false });
+      const completion = loadOrdersSuccess({ orders, query, paging: ordersInfo.paging });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -242,9 +233,9 @@ describe('Orders Effects', () => {
 
   describe('loadMoreOrders$', () => {
     it('should load more orders', () => {
-      store.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 } }));
+      store.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 }, paging: ordersInfo.paging }));
 
-      const action = loadMoreOrders();
+      const action = loadMoreOrders({ limit: 30, offset: 30 });
       const completion = loadOrders({ query: { limit: 30, offset: 30 } });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -454,7 +445,7 @@ describe('Orders Effects', () => {
 
   describe('setOrderBreadcrumb$', () => {
     beforeEach(fakeAsync(() => {
-      store.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 } }));
+      store.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 }, paging: ordersInfo.paging }));
       router.navigateByUrl(`/account/orders/${orders[0].id}`);
       tick(500);
       store.dispatch(selectOrder({ orderId: orders[0].id }));

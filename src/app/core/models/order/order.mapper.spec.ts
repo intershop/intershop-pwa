@@ -142,6 +142,11 @@ describe('Order Mapper', () => {
         code: 'infoCode',
       },
     ],
+    info: {
+      limit: 10,
+      offset: 0,
+      total: 100,
+    },
   } as OrderData;
 
   describe('fromData', () => {
@@ -165,6 +170,16 @@ describe('Order Mapper', () => {
 
       expect(order.messageToMerchant).toBe(orderBaseData.messageToMerchant);
       expect(order.externalOrderReference).toBe(orderBaseData.externalOrderReference);
+    });
+  });
+
+  describe('fromInfo', () => {
+    it('should return paging information when getting OrderData', () => {
+      const info = OrderMapper.fromInfo(orderData);
+
+      expect(info.limit).toEqual(orderData.info.limit);
+      expect(info.offset).toEqual(orderData.info.offset);
+      expect(info.total).toEqual(orderData.info.total);
     });
   });
 });

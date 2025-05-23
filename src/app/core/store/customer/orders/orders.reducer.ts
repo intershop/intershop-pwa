@@ -4,6 +4,7 @@ import { createReducer, on } from '@ngrx/store';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { Order } from 'ish-core/models/order/order.model';
+import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
 import {
@@ -28,16 +29,16 @@ export interface OrdersState extends EntityState<Order> {
   loading: boolean;
   selected: string;
   query: OrderListQuery;
-  moreAvailable: boolean;
   error: HttpError;
+  paging: PagingInfo;
 }
 
 const initialState: OrdersState = orderAdapter.getInitialState({
   loading: false,
   selected: undefined,
   query: undefined,
-  moreAvailable: true,
   error: undefined,
+  paging: undefined,
 });
 
 export const ordersReducer = createReducer(
@@ -62,13 +63,18 @@ export const ordersReducer = createReducer(
     };
   }),
   on(loadOrdersSuccess, (state, action) => {
-    const { orders, query, allRetrieved } = action.payload;
-    const newState = { ...state, query, moreAvailable: !allRetrieved };
-    if (!query.offset) {
-      return orderAdapter.setAll(orders, newState);
-    } else {
-      return orderAdapter.addMany(orders, newState);
-    }
+    const { orders, query } = action.payload;
+    const newState = { ...state, query };
+
+    const updatedOrders = orders.map((order, index) => ({
+      ...order,
+      paginationPosition: (query.offset ? query.offset : 0) + index,
+    }));
+
+    return {
+      ...(query.offset ? orderAdapter.addMany(updatedOrders, newState) : orderAdapter.setAll(updatedOrders, newState)),
+      paging: action.payload.paging,
+    };
   }),
 
   on(

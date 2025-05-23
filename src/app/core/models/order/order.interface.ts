@@ -5,6 +5,7 @@ import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.in
 import { BasketWarrantyData } from 'ish-core/models/basket-warranty/basket-warranty.interface';
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
 import { OrderItemData } from 'ish-core/models/order-item/order-item.interface';
+import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
 import { PaymentData } from 'ish-core/models/payment/payment.interface';
@@ -44,4 +45,5 @@ export interface OrderData {
     payments_paymentInstrument?: { [id: string]: PaymentInstrument };
   };
   infos?: BasketInfo[];
+  info?: PagingInfo;
 }
