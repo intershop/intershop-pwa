@@ -2,7 +2,11 @@
   <div class="col-md-12">
     <h2 class="h3">{{ 'quickorder.page.csv.title' | translate }}</h2>
     <p>{{ 'quickorder.page.csv.subtitle' | translate }}</p>
-    <form [formGroup]="csvForm" (ngSubmit)="addCsvToCart()">
+    <form
+      [formGroup]="csvForm"
+      (ngSubmit)="addCsvToCart()"
+      [attr.aria-label]="'quickorder.page.csv.form.label' | translate"
+    >
       <div class="form-group section">
         <input
           type="file"
