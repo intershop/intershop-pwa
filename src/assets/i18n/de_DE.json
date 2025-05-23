@@ -239,6 +239,7 @@
   "account.order_history.filter.show": "Alle Filter anzeigen",
   "account.order_history.heading": "Bestellhistorie",
   "account.order_history.link": "Bestellhistorie",
+  "account.order_history.paging.items.label": "{{0, plural, one{# item} other{# items}}}",
   "account.order_template.add_to_template.button.add_to_template.label": "In Bestellvorlage aufnehmen",
   "account.order_template.add_to_template.checkbox.aria_label": "Artikel für den Warenkorb auswählen",
   "account.order_template.added.confirmation": "{{0}} wurde hinzugefügt zu <a callback=\"callbackHideDialogModal\" href=\"{{2}}\">{{1}}</a>.",
