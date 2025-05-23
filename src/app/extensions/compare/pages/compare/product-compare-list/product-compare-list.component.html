@@ -12,7 +12,10 @@
         <tbody>
           <!-- Product image & name -->
           <tr>
-            <th class="legacy-col-6 legacy-col-md-3 no-border" scope="row">&nbsp;</th>
+            <th class="legacy-col-6 legacy-col-md-3 no-border" scope="row">
+              <span class="sr-only">{{ 'product.compare.table_header.product_image_and_name.text' | translate }}</span>
+              &nbsp;
+            </th>
             <td
               *ngFor="let product of visibleProducts"
               ishProductContext
@@ -38,14 +41,20 @@
           </tr>
           <!-- SKU -->
           <tr>
-            <th class="legacy-col-6 legacy-col-md-3 no-border" scope="row">&nbsp;</th>
+            <th class="legacy-col-6 legacy-col-md-3 no-border" scope="row">
+              <span class="sr-only">{{ 'product.compare.table_header.product_id.text' | translate }}</span>
+              &nbsp;
+            </th>
             <td *ngFor="let product of visibleProducts" class="legacy-col-6 legacy-col-md-3 no-border">
               <ish-product-id ishProductContext [sku]="product?.sku" />
             </td>
           </tr>
-          <!-- Add to basket button -->
+          <!-- Add to cart button -->
           <tr>
-            <th class="legacy-col-6 legacy-col-md-3" scope="row">&nbsp;</th>
+            <th class="legacy-col-6 legacy-col-md-3" scope="row">
+              <span class="sr-only">{{ 'product.compare.table_header.add_to_cart.text' | translate }}</span>
+              &nbsp;
+            </th>
             <td *ngFor="let product of visibleProducts" class="legacy-col-6 legacy-col-md-3">
               <ish-product-add-to-basket ishProductContext [sku]="product?.sku" />
             </td>
@@ -59,7 +68,9 @@
           </tr>
           <!-- Inventory -->
           <tr>
-            <th scope="row"></th>
+            <th scope="row">
+              <span class="sr-only">{{ 'product.compare.table_header.inventory.text' | translate }}</span>
+            </th>
             <td *ngFor="let product of visibleProducts">
               <ish-product-inventory ishProductContext [sku]="product?.sku" />
             </td>
