@@ -10,8 +10,9 @@
     <div class="table-responsive">
       <table class="table" *ngIf="compareProducts | slice : start : end as visibleProducts">
         <tbody>
+          <!-- Product image & name -->
           <tr>
-            <th class="legacy-col-6 legacy-col-md-3 no-border">&nbsp;</th>
+            <th class="legacy-col-6 legacy-col-md-3 no-border" scope="row">&nbsp;</th>
             <td
               *ngFor="let product of visibleProducts"
               ishProductContext
@@ -35,61 +36,63 @@
               </div>
             </td>
           </tr>
+          <!-- SKU -->
           <tr>
-            <th class="legacy-col-6 legacy-col-md-3 no-border">&nbsp;</th>
+            <th class="legacy-col-6 legacy-col-md-3 no-border" scope="row">&nbsp;</th>
             <td *ngFor="let product of visibleProducts" class="legacy-col-6 legacy-col-md-3 no-border">
               <ish-product-id ishProductContext [sku]="product?.sku" />
             </td>
           </tr>
+          <!-- Add to basket button -->
           <tr>
-            <th class="legacy-col-6 legacy-col-md-3">&nbsp;</th>
+            <th class="legacy-col-6 legacy-col-md-3" scope="row">&nbsp;</th>
             <td *ngFor="let product of visibleProducts" class="legacy-col-6 legacy-col-md-3">
               <ish-product-add-to-basket ishProductContext [sku]="product?.sku" />
             </td>
           </tr>
-
+          <!-- Price -->
           <tr>
-            <th>{{ 'product.compare.price.label' | translate }}</th>
+            <th scope="row">{{ 'product.compare.price.label' | translate }}</th>
             <td *ngFor="let product of visibleProducts">
               <ish-product-price ishProductContext [sku]="product?.sku" [showInformationalPrice]="true" />
             </td>
           </tr>
-
+          <!-- Inventory -->
           <tr>
-            <th></th>
+            <th scope="row"></th>
             <td *ngFor="let product of visibleProducts">
               <ish-product-inventory ishProductContext [sku]="product?.sku" />
             </td>
           </tr>
-
+          <!-- Ratings -->
           <tr *ishFeature="'rating'">
-            <th>{{ 'product.compare.ratings.label' | translate }}</th>
+            <th scope="row">{{ 'product.compare.ratings.label' | translate }}</th>
             <td *ngFor="let product of visibleProducts">
               <ish-lazy-product-rating ishProductContext [sku]="product?.sku" />
             </td>
           </tr>
-
+          <!-- Short description -->
           <tr>
-            <th>{{ 'product.short_description.label' | translate }}</th>
+            <th scope="row">{{ 'product.short_description.label' | translate }}</th>
             <td *ngFor="let product of visibleProducts">
               <div [ishServerHtml]="product.shortDescription"></div>
             </td>
           </tr>
-
+          <!-- Manufacturer -->
           <tr>
-            <th>{{ 'product.manufacturer_name.label' | translate }}</th>
+            <th scope="row">{{ 'product.manufacturer_name.label' | translate }}</th>
             <td *ngFor="let product of visibleProducts">{{ product.manufacturer }}</td>
           </tr>
-
+          <!-- Common Attributes -->
           <tr *ngFor="let commonAttributeName of commonAttributeNames$ | async">
-            <th>{{ commonAttributeName }}</th>
+            <th scope="row">{{ commonAttributeName }}</th>
             <td *ngFor="let product of visibleProducts">
               {{ getAttributeByAttributeName(product?.attributes, commonAttributeName) | ishAttribute : '|' }}
             </td>
           </tr>
-
+          <!-- Specific Attributes -->
           <tr>
-            <th>{{ 'product.specific_attributes.label' | translate }}</th>
+            <th scope="row">{{ 'product.specific_attributes.label' | translate }}</th>
             <td *ngFor="let product of visibleProducts">
               <ish-product-attributes [product]="getProductWithoutCommonAttributes(product, visibleProducts)" />
             </td>
