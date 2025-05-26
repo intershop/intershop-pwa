@@ -11,7 +11,6 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { PagingData } from 'ish-core/models/paging/paging.model';
-import { ApiService } from 'ish-core/services/api/api.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
@@ -56,12 +55,9 @@ describe('Cost Centers Effects', () => {
   let costCentersService: CostCentersService;
   let location: Location;
   let router: Router;
-  let apiService: ApiService;
 
   beforeEach(() => {
-    apiService = mock(ApiService);
     costCentersService = mock(CostCentersService);
-    when(apiService.get(anything())).thenReturn(of([]));
     when(costCentersService.getCostCenters({})).thenReturn(of({ costCenters, paging }));
     when(costCentersService.getCostCenter(anyString())).thenReturn(of(costCenters[0]));
     when(costCentersService.addCostCenter(anything())).thenReturn(of(costCenters[0]));
@@ -80,7 +76,6 @@ describe('Cost Centers Effects', () => {
         ]),
       ],
       providers: [
-        { provide: ApiService, useFactory: () => instance(apiService) },
         { provide: CostCentersService, useFactory: () => instance(costCentersService) },
         CostCentersEffects,
         provideMockActions(() => actions$),
