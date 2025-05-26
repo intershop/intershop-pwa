@@ -4,7 +4,6 @@ import { OrganizationManagementExportsModule } from 'organization-management';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { RequisitionRejectDialogModule } from '../../components/requisition-reject-dialog/requisition-reject-dialog.module';
 import { RequisitionManagementModule } from '../../requisition-management.module';
 
 import { BudgetBarComponent } from './budget-bar/budget-bar.component';
@@ -20,7 +19,6 @@ const requisitionDetailPageRoutes: Routes = [{ path: '', component: RequisitionD
     OrganizationManagementExportsModule,
     RequisitionManagementModule,
     RouterModule.forChild(requisitionDetailPageRoutes),
-    RequisitionRejectDialogModule,
     SharedModule,
   ],
   declarations: [

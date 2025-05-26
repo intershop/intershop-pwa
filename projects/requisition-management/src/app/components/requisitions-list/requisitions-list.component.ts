@@ -15,11 +15,12 @@ export type RequisitionColumnsType =
   | 'rejectionDate'
   | 'lineItems'
   | 'orderTotal'
-  | 'approval';
+  | 'actions';
 @Component({
   selector: 'ish-requisitions-list',
   templateUrl: './requisitions-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [RequisitionContextFacade],
 })
 export class RequisitionsListComponent {
   /**

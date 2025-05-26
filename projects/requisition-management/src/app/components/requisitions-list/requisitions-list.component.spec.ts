@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
-import { instance, mock, verify } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 
@@ -12,7 +12,6 @@ import { Requisition } from '../../models/requisition/requisition.model';
 import { RequisitionRejectDialogComponent } from '../requisition-reject-dialog/requisition-reject-dialog.component';
 
 import { RequisitionsListComponent } from './requisitions-list.component';
-import { RequisitionsListModule } from './requisitions-list.module';
 
 describe('Requisitions List Component', () => {
   let component: RequisitionsListComponent;
@@ -49,7 +48,7 @@ describe('Requisitions List Component', () => {
   beforeEach(async () => {
     context = mock(RequisitionContextFacade);
     await TestBed.configureTestingModule({
-      imports: [CdkTableModule, RequisitionsListModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [CdkTableModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [MockPipe(PricePipe)],
       providers: [{ provide: RequisitionContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
@@ -65,6 +64,9 @@ describe('Requisitions List Component', () => {
     translate.setTranslation('en', {
       'account.approvallist.items': '{{0}} items',
     });
+
+    when(context.updateRequisitionStatusFromApprovalList$(anything(), anything())).thenReturn(undefined);
+    when(context.updateRequisitionStatusFromApprovalList$(anything(), anything(), anything())).thenReturn(undefined);
   });
 
   it('should be created', () => {

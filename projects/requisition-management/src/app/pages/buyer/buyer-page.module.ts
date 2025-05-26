@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { RequisitionsListModule } from '../../components/requisitions-list/requisitions-list.module';
 import { RequisitionManagementModule } from '../../requisition-management.module';
 
 import { BuyerPageComponent } from './buyer-page.component';
@@ -11,7 +10,7 @@ import { BuyerPageComponent } from './buyer-page.component';
 const buyerPageRoutes: Routes = [{ path: '', component: BuyerPageComponent }];
 
 @NgModule({
-  imports: [RequisitionManagementModule, RouterModule.forChild(buyerPageRoutes), RequisitionsListModule, SharedModule],
+  imports: [RequisitionManagementModule, RouterModule.forChild(buyerPageRoutes), SharedModule],
   declarations: [BuyerPageComponent],
 })
 export class BuyerPageModule {}
