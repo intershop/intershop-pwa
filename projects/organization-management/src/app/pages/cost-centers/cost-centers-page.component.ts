@@ -24,8 +24,8 @@ export class CostCentersPageComponent implements OnInit {
   costCentersForPage$: Observable<CostCenter[]>;
   pagingData$: Observable<PagingData>;
   pageSize = 25;
-  activeFilters: Partial<CostCenterQuery>;
 
+  private activeFilters: Partial<CostCenterQuery>;
   private destroyRef = inject(DestroyRef);
   private pageNumberSubject = new BehaviorSubject<number>(1);
   pageNumber$ = this.pageNumberSubject.asObservable();
