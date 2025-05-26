@@ -904,6 +904,7 @@
   "cookies.banner.set_preferences": "Set preferences",
   "cookies.banner.set_preferences.tooltip": "Learn more and manage your options",
   "cookies.banner.text": "This website uses cookies and other technologies to keep our site secure, to measure the performance, to personalize the content and to improve your experience on our site. To find out more, read our <a href=\"page://page.privacyPolicy.pagelet2-Page\">privacy policy</a>.",
+  "cookies.banner.title": "Cookie banner",
   "cookies.modal.accept_all": "Accept all",
   "cookies.modal.cancel": "Cancel",
   "cookies.modal.save": "Save settings",
