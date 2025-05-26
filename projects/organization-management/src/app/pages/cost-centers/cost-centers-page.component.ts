@@ -24,6 +24,7 @@ export class CostCentersPageComponent implements OnInit {
   costCentersForPage$: Observable<CostCenter[]>;
   pagingData$: Observable<PagingData>;
   pageSize = 25;
+  activeFilters: Partial<CostCenterQuery>;
 
   private destroyRef = inject(DestroyRef);
   private pageNumberSubject = new BehaviorSubject<number>(1);
@@ -77,6 +78,7 @@ export class CostCentersPageComponent implements OnInit {
         this.organizationManagementFacade.loadCostCenters({
           offset: (pageNumber - 1) * this.pageSize,
           limit: this.pageSize,
+          costCenterNameId: this.activeFilters.costCenterNameId ? this.activeFilters.costCenterNameId : undefined,
         });
       }
     });
@@ -87,6 +89,7 @@ export class CostCentersPageComponent implements OnInit {
   }
 
   loadFilteredCostCenters(filters: Partial<CostCenterQuery>) {
+    this.activeFilters = filters;
     this.organizationManagementFacade.loadCostCenters({
       offset: 0,
       limit: this.pageSize,
