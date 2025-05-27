@@ -7,7 +7,7 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 
-import { RequisitionContextFacade } from '../../facades/requisition-context.facade';
+import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 import { Requisition } from '../../models/requisition/requisition.model';
 import { RequisitionRejectDialogComponent } from '../requisition-reject-dialog/requisition-reject-dialog.component';
 
@@ -18,7 +18,7 @@ describe('Requisitions List Component', () => {
   let fixture: ComponentFixture<RequisitionsListComponent>;
   let element: HTMLElement;
   let translate: TranslateService;
-  let context: RequisitionContextFacade;
+  let facade: RequisitionManagementFacade;
 
   const requisitions = [
     {
@@ -46,11 +46,11 @@ describe('Requisitions List Component', () => {
   ] as Requisition[];
 
   beforeEach(async () => {
-    context = mock(RequisitionContextFacade);
+    facade = mock(RequisitionManagementFacade);
     await TestBed.configureTestingModule({
       imports: [CdkTableModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [MockPipe(PricePipe)],
-      providers: [{ provide: RequisitionContextFacade, useFactory: () => instance(context) }],
+      providers: [{ provide: RequisitionManagementFacade, useFactory: () => instance(facade) }],
     }).compileComponents();
   });
 
@@ -65,8 +65,8 @@ describe('Requisitions List Component', () => {
       'account.approvallist.items': '{{0}} items',
     });
 
-    when(context.updateRequisitionStatusFromApprovalList$(anything(), anything())).thenReturn(undefined);
-    when(context.updateRequisitionStatusFromApprovalList$(anything(), anything(), anything())).thenReturn(undefined);
+    when(facade.updateRequisitionStatusFromApprovalList$(anything(), anything())).thenReturn(undefined);
+    when(facade.updateRequisitionStatusFromApprovalList$(anything(), anything(), anything())).thenReturn(undefined);
   });
 
   it('should be created', () => {
@@ -146,7 +146,7 @@ describe('Requisitions List Component', () => {
 
     component.approveRequisition('0001');
 
-    verify(context.updateRequisitionStatusFromApprovalList$('0123', 'APPROVED')).once();
+    verify(facade.updateRequisitionStatusFromApprovalList$('0123', 'APPROVED')).once();
   });
 
   it('should reject a requisition using the facade with comment', () => {
@@ -159,7 +159,7 @@ describe('Requisitions List Component', () => {
 
     component.rejectRequisition('Not needed');
 
-    verify(context.updateRequisitionStatusFromApprovalList$('0123', 'REJECTED', 'Not needed')).once();
+    verify(facade.updateRequisitionStatusFromApprovalList$('0123', 'REJECTED', 'Not needed')).once();
   });
 
   it('should open the reject dialog for a requisition', () => {

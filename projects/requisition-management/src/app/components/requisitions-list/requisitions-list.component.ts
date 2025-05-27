@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
 
 import { RequisitionContextFacade } from '../../facades/requisition-context.facade';
+import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 import { Requisition, RequisitionStatus } from '../../models/requisition/requisition.model';
 import { RequisitionRejectDialogComponent } from '../requisition-reject-dialog/requisition-reject-dialog.component';
 
@@ -29,44 +30,31 @@ export class RequisitionsListComponent {
   @Input() requisitions: Requisition[];
   @Input() status: RequisitionStatus = 'PENDING';
   @Input() columnsToDisplay: RequisitionColumnsType[];
-  @ViewChild(RequisitionRejectDialogComponent) rejectDialog: RequisitionRejectDialogComponent;
+
+  @ViewChild('rejectDialog') rejectDialog: RequisitionRejectDialogComponent;
 
   private selectedRequisitionId: string;
 
-  constructor(private cdRef: ChangeDetectorRef, private requisitionContextFacade: RequisitionContextFacade) {}
+  constructor(private requisitionManagementFacade: RequisitionManagementFacade) {}
 
-  approveRequisition(requisitionNo: string) {
-    const requisition = this.requisitions.find(r => r.requisitionNo === requisitionNo);
-
-    if (!requisition) {
-      return;
-    }
-
-    this.requisitionContextFacade.updateRequisitionStatusFromApprovalList$(requisition.id, 'APPROVED');
-    this.cdRef.markForCheck();
+  approveRequisition(requisitionId: string) {
+    this.requisitionManagementFacade.updateRequisitionStatusFromApprovalList$(requisitionId, 'APPROVED');
   }
 
-  openRejectDialog(requisitionNo: string) {
-    const requisition = this.requisitions.find(r => r.requisitionNo === requisitionNo);
-
-    if (requisition && this.rejectDialog) {
-      this.selectedRequisitionId = requisition.id;
-      this.rejectDialog.show();
-    }
+  openRejectDialog(requisitionId: string) {
+    this.selectedRequisitionId = requisitionId;
+    this.rejectDialog.show();
   }
 
   rejectRequisition(comment: string) {
     if (!this.selectedRequisitionId) {
       return;
     }
-
-    this.requisitionContextFacade.updateRequisitionStatusFromApprovalList$(
+    this.requisitionManagementFacade.updateRequisitionStatusFromApprovalList$(
       this.selectedRequisitionId,
       'REJECTED',
       comment
     );
-
     this.selectedRequisitionId = undefined;
-    this.cdRef.markForCheck();
   }
 }

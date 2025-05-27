@@ -166,14 +166,14 @@
             [size]="'xl'"
             class="text-success"
             style="cursor: pointer; margin-right: 0.5rem"
-            (click)="approveRequisition(requisition.requisitionNo)"
+            (click)="approveRequisition(requisition.id)"
           />
           <fa-icon
             [icon]="['fas', 'ban']"
             [size]="'xl'"
             class="text-danger"
             style="cursor: pointer"
-            (click)="openRejectDialog(requisition.requisitionNo)"
+            (click)="openRejectDialog(requisition.id)"
           />
         </ng-container>
       </td>
@@ -193,4 +193,4 @@
   <p data-testing-id="emptyList">{{ 'account.approvallist.no_items_message' | translate }}</p>
 </ng-template>
 
-<ish-requisition-reject-dialog (submitRejectRequisition)="rejectRequisition($event)" />
+<ish-requisition-reject-dialog #rejectDialog (submitRejectRequisition)="rejectRequisition($event)" />
