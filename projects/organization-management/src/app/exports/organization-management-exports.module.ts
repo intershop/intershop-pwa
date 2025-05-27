@@ -4,7 +4,6 @@ import { LazyBudgetInfoComponent } from './lazy-budget-info/lazy-budget-info.com
 import { LazyBudgetWidgetComponent } from './lazy-budget-widget/lazy-budget-widget.component';
 import { LazyBuyersSelectComponent } from './lazy-buyers-select/lazy-buyers-select.component';
 import { LazyCostCenterWidgetComponent } from './lazy-cost-center-widget/lazy-cost-center-widget.component';
-import { LazyManagersSelectComponent } from './lazy-managers-select/lazy-managers-select.component';
 
 @NgModule({
   imports: [],
@@ -13,14 +12,12 @@ import { LazyManagersSelectComponent } from './lazy-managers-select/lazy-manager
     LazyBudgetWidgetComponent,
     LazyBuyersSelectComponent,
     LazyCostCenterWidgetComponent,
-    LazyManagersSelectComponent,
   ],
   exports: [
     LazyBudgetInfoComponent,
     LazyBudgetWidgetComponent,
     LazyBuyersSelectComponent,
     LazyCostCenterWidgetComponent,
-    LazyManagersSelectComponent,
   ],
 })
 export class OrganizationManagementExportsModule {}

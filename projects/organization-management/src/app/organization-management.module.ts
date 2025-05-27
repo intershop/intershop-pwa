@@ -11,7 +11,6 @@ import { CostCenterFormComponent } from './components/cost-center-form/cost-cent
 import { CostCenterUsersListComponent } from './components/cost-center-users-list/cost-center-users-list.component';
 import { CostCenterWidgetComponent } from './components/cost-center-widget/cost-center-widget.component';
 import { CostCentersFilterComponent } from './components/cost-centers-filter/cost-centers-filter.component';
-import { ManagersSelectComponent } from './components/managers-select/managers-select.component';
 import { UserBudgetFormComponent } from './components/user-budget-form/user-budget-form.component';
 import { UserBudgetComponent } from './components/user-budget/user-budget.component';
 import { UserProfileFormComponent } from './components/user-profile-form/user-profile-form.component';
@@ -30,7 +29,6 @@ const exportedComponents = [
   UserProfileFormComponent,
   UserRolesSelectionComponent,
   CostCentersFilterComponent,
-  ManagersSelectComponent,
 ];
 
 @NgModule({
