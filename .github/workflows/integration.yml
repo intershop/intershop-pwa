@@ -92,7 +92,7 @@ jobs:
           sh e2e/test-universal.sh
 
   Cypress:
-    needs: [Build, Universal]
+    needs: [Build]
     runs-on: ubuntu-latest
 
     strategy:
