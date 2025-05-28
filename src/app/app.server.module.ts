@@ -1,4 +1,4 @@
-import { HTTP_INTERCEPTORS, HttpErrorResponse } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpErrorResponse, provideHttpClient, withFetch } from '@angular/common/http';
 import { ErrorHandler, NgModule, TransferState } from '@angular/core';
 import { ServerModule } from '@angular/platform-server';
 import { META_REDUCERS } from '@ngrx/store';
@@ -38,6 +38,7 @@ export class UniversalErrorHandler implements ErrorHandler {
 @NgModule({
   imports: [AppModule, ServerModule],
   providers: [
+    provideHttpClient(withFetch()),
     { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: UniversalCacheInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: UniversalLogInterceptor, multi: true },
