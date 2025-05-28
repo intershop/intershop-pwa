@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -23,7 +23,7 @@ describe('Suggest Products Tile Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MockComponent(ProductImageComponent), RouterTestingModule, SuggestProductsTileComponent],
+      imports: [MockComponent(ProductImageComponent), RouterModule.forRoot([]), SuggestProductsTileComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
 
