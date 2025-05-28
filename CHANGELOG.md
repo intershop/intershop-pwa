@@ -12,9 +12,9 @@ kb_everyone
 > [!NOTE]
 > Intershop PWA 7.0.0 was developed and tested with Intershop Commerce Management (ICM) version 12.3.0.
 > It will work with all versions from ICM 12.3.0 and later.
-> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
 >
-> _PWA 7.0.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section lists functionalities that are only available with ICM releases of the noted version or newer._
+> _PWA 7.0.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
 >
 > The PWA was developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
 >
@@ -24,22 +24,22 @@ kb_everyone
 
 - re-implementation of the search box with suggestions (#1760) ([0af1efa](https://github.com/intershop/intershop-pwa/commit/0af1efa))
 - use provided certificate files for NGINX container with SSL for development ([5338cc0](https://github.com/intershop/intershop-pwa/commit/5338cc0))
-- introduce ng-select box for cost center/cost center manager selection (#1785) ([425903e](https://github.com/intershop/intershop-pwa/commit/425903e))
+- introduce ng-select box for cost center / cost center manager selection (#1785) ([425903e](https://github.com/intershop/intershop-pwa/commit/425903e))
 - **Design View:** make whole Design View wrapper action bar clickable (#1802) ([829d96a](https://github.com/intershop/intershop-pwa/commit/829d96a))
-- **SPARQUE:** add SPARQUE products search service and data mapper (#1760) ([e26683e](https://github.com/intershop/intershop-pwa/commit/e26683e))
-- **SPARQUE:** add SPARQUE suggestions service and data mapper (#1760) ([11ab5b5](https://github.com/intershop/intershop-pwa/commit/11ab5b5))
-- **SPARQUE:** introduce SPARQUE configuration and SPARQUE API Service (#1760) ([9e00f42](https://github.com/intershop/intershop-pwa/commit/9e00f42))
+- **Sparque:** add Sparque products search service and data mapper (#1760) ([e26683e](https://github.com/intershop/intershop-pwa/commit/e26683e))
+- **Sparque:** add Sparque suggestions service and data mapper (#1760) ([11ab5b5](https://github.com/intershop/intershop-pwa/commit/11ab5b5))
+- **Sparque:** introduce Sparque configuration and Sparque API Service (#1760) ([9e00f42](https://github.com/intershop/intershop-pwa/commit/9e00f42))
 
 ### Bug Fixes
 
-- fixed positioning of the mini basket drop-down to the bottom right (#1789) ([d788288](https://github.com/intershop/intershop-pwa/commit/d788288))
-- product list carousel paging buttons not working after accessibility improvements (#1786) ([d8462e6](https://github.com/intershop/intershop-pwa/commit/d8462e6))
+- fixed positioning of the mini basket drop down to the bottom right (#1789) ([d788288](https://github.com/intershop/intershop-pwa/commit/d788288))
+- products list carousel paging buttons not working after accessibility improvements (#1786) ([d8462e6](https://github.com/intershop/intershop-pwa/commit/d8462e6))
 - **Design View:** make components in main navigation Design View compatible (#1802) ([40f21a7](https://github.com/intershop/intershop-pwa/commit/40f21a7))
 
 ### Documentation
 
 - adjust Copilot configuration examples (#1801) ([1be13e2](https://github.com/intershop/intershop-pwa/commit/1be13e2))
-- add note regarding configurable theme feature configuration shortcoming ([3a879d2](https://github.com/intershop/intershop-pwa/commit/3a879d2))
+- add note regarding configurable theme feature configuration short coming ([3a879d2](https://github.com/intershop/intershop-pwa/commit/3a879d2))
 - add table of contents (ToC) to all concepts and guides (#1783) ([96d9590](https://github.com/intershop/intershop-pwa/commit/96d9590))
 - use lists in tables for multiple entries in Formly documentation (#1782) ([c4c004f](https://github.com/intershop/intershop-pwa/commit/c4c004f))
 
@@ -51,8 +51,8 @@ kb_everyone
 
 ### BREAKING CHANGES
 
-- **SPARQUE:** The `ProductsService` has a changed parameter set for its `searchProducts()` method and needs to be integrated via newly introduced `ProductsServiceProvider`.
-- **SPARQUE:** The `SuggestService` has a changed result format and is now included in the effects via newly introduced `SuggestionsServiceProvider`.
+- **Sparque:** The `ProductsService` has a changed parameter set for its `searchProducts()` method and needs to be integrated via newly introduced `ProductsServiceProvider`.
+- **Sparque:** The `SuggestService` has a changed result format and is now included in the effects via newly introduced `SuggestionsServiceProvider`.
 - The `SearchBoxComponent` was re-implemented as an Angular standalone component with the capability to show more suggestions.
 - An additional `ProductCompletenessLevel.Base` was introduced that is used as the new default in the `ProductContextFacade`.
 - The `CategoryImageComponent` was changed to an Angular standalone component.
@@ -61,13 +61,13 @@ kb_everyone
 ## [6.0.0](https://github.com/intershop/intershop-pwa/releases/tag/6.0.0) (2025-03-27)
 
 > [!NOTE]
-> Intershop PWA 6.0.0 was developed and tested with Intershop Commerce Management (ICM) version 12.3.0.
+> The Intershop PWA 6.0.0 has been developed and tested with Intershop Commerce Management (ICM) version 12.3.0.
 > It will work with all versions from ICM 12.3.0 and later.
-> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
 >
-> _PWA 6.0.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section lists functionalities that are only available with ICM releases of the noted version or newer._
+> _The PWA 6.0.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
 >
-> The PWA was developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
+> The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
 >
 > Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.9.3 for PWA 6.0.0 deployments.
 
@@ -79,9 +79,9 @@ From PWA 6.0.0, we support semantic versioning.
 - **accessibility:** provide/improve meaningful h1 headings (#1694) ([fac412e](https://github.com/intershop/intershop-pwa/commit/fac412e))
 - **accessibility:** add accessible names for dialogs (#1694) ([93f0f97](https://github.com/intershop/intershop-pwa/commit/93f0f97))
 - **accessibility:** replace animated buttons (#1694) ([165eed6](https://github.com/intershop/intershop-pwa/commit/165eed6))
-- **accessibility:** add/enhance attributes for better screen reader support (#1694) ([b69a259](https://github.com/intershop/intershop-pwa/commit/b69a259))
+- **accessibility:** add/enhances attributes for better screen reader support (#1694) ([b69a259](https://github.com/intershop/intershop-pwa/commit/b69a259))
 - **accessibility:** improve keyboard support (#1694) ([a5dfb8d](https://github.com/intershop/intershop-pwa/commit/a5dfb8d))
-- **accessibility:** add missing `<legend>`-elements to form fieldsets (#1694) ([47bd468](https://github.com/intershop/intershop-pwa/commit/47bd468))
+- **accessibility:** added missing `<legend>`-elements to form fieldsets (#1694) ([47bd468](https://github.com/intershop/intershop-pwa/commit/47bd468))
 - **accessibility:** add "Skip to main content" link (#1694) ([df995ad](https://github.com/intershop/intershop-pwa/commit/df995ad))
 - **accessibility:** ensure links are distinguishable without relying on color alone, update underline behavior (#1694) ([1d0139d](https://github.com/intershop/intershop-pwa/commit/1d0139d))
 - **accessibility:** enlarge touch targets for links (#1694) ([4c4d877](https://github.com/intershop/intershop-pwa/commit/4c4d877))
@@ -97,12 +97,12 @@ From PWA 6.0.0, we support semantic versioning.
 ### Bug Fixes
 
 - missing translation on search result page for page title and description ( #1779) ([0e6e3c0](https://github.com/intershop/intershop-pwa/commit/0e6e3c0))
-- consistent decoded handling of product SKUs with special characters (#1774) ([dcd0bb1](https://github.com/intershop/intershop-pwa/commit/dcd0bb1))
+- consistent decoded handling of product SKUs with specials characters (#1774) ([dcd0bb1](https://github.com/intershop/intershop-pwa/commit/dcd0bb1))
 
 ### Documentation
 
 - update and extend accessibility documentation (#1700) ([206b00a](https://github.com/intershop/intershop-pwa/commit/206b00a))
-- provide some guidance to approach PCI DSS 4 (#1768) ([6a0ebb5](https://github.com/intershop/intershop-pwa/commit/6a0ebb5))
+- provide some guidance to aproach PCI DSS 4 (#1768) ([6a0ebb5](https://github.com/intershop/intershop-pwa/commit/6a0ebb5))
 
 ### Code Refactoring
 
@@ -116,13 +116,13 @@ From PWA 6.0.0, we support semantic versioning.
 ## [5.3.0](https://github.com/intershop/intershop-pwa/releases/tag/5.3.0) (2025-03-05)
 
 > [!NOTE]
-> Intershop PWA 5.3.0 was developed and tested with Intershop Commerce Management (ICM) version 12.3.0.
+> The Intershop PWA 5.3.0 has been developed and tested with Intershop Commerce Management (ICM) version 12.3.0.
 > It will work with all versions from ICM 12.3.0 and later.
-> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
 >
-> _PWA 5.3.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section lists functionalities that are only available with ICM releases of the noted version or newer._
+> _The PWA 5.3.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
 >
-> The PWA was developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
+> The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
 >
 > Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.9.3 for PWA 5.3.0 deployments.
 
@@ -134,7 +134,7 @@ From PWA 6.0.0, we support semantic versioning.
 - change OCI punchout URL to point to an ICM Pipeline (#1702) ([c96b895](https://github.com/intershop/intershop-pwa/commit/c96b895))
 - add icmServerWeb/ICM_SERVER_WEB configuration option for ICM Pipeline URL references ([e6d8ce1](https://github.com/intershop/intershop-pwa/commit/e6d8ce1))
 - save punchout information in session storage instead of in cookies (#1731) ([02051ca](https://github.com/intershop/intershop-pwa/commit/02051ca))
-- provide option to disable the automatic translation of Formly select field options (#1735) ([3eb3e14](https://github.com/intershop/intershop-pwa/commit/3eb3e14))
+- provide option to disable the automatic translation of formly select field options (#1735) ([3eb3e14](https://github.com/intershop/intershop-pwa/commit/3eb3e14))
 - wishlist sharing (#1590) ([e3b4598](https://github.com/intershop/intershop-pwa/commit/e3b4598))
 
 ### Bug Fixes
@@ -143,16 +143,16 @@ From PWA 6.0.0, we support semantic versioning.
 - styling improvement for swatch (image) filters ([fd63a8b](https://github.com/intershop/intershop-pwa/commit/fd63a8b))
 - consider only 'true' product labels and select the first ([7f7299b](https://github.com/intershop/intershop-pwa/commit/7f7299b))
 - use correct punchout REST API headers for cXML and OCI punchout (#1746) ([eb607cc](https://github.com/intershop/intershop-pwa/commit/eb607cc))
-- fetch updated redirect URL before redirecting (#1743) ([ea74674](https://github.com/intershop/intershop-pwa/commit/ea74674))
-- do not send shipping method in POST items request when ICM runs in single-shipment-mode (#1739) ([5b7c997](https://github.com/intershop/intershop-pwa/commit/5b7c997))
+- fetch updated Redirect-URL before redirecting (#1743) ([ea74674](https://github.com/intershop/intershop-pwa/commit/ea74674))
+- don't send shipping method in POST items request when ICM runs in single-shipment-mode (#1739) ([5b7c997](https://github.com/intershop/intershop-pwa/commit/5b7c997))
 - remove evaluation of both punchout type transfers to prevent false error messages (#1737) ([b41b52c](https://github.com/intershop/intershop-pwa/commit/b41b52c))
 - Bootstrap carousel slide content overflow when changing slides ([0c8cf50](https://github.com/intershop/intershop-pwa/commit/0c8cf50))
-- improve styling of loading spinner (loading animation placement for long containers, z-index) ([d10ac9a](https://github.com/intershop/intershop-pwa/commit/d10ac9a))
+- improved styling of loading spinner (loading animation placement for long containers, z-index) ([d10ac9a](https://github.com/intershop/intershop-pwa/commit/d10ac9a))
 - SSR rendered pages with status code 404 or 503 should be returned instead of serving expired pages from the NGINX cache with status 200 (#1732) ([2966ea8](https://github.com/intershop/intershop-pwa/commit/2966ea8))
 - do not shortly display the product image twice on PDP ([16b6afa](https://github.com/intershop/intershop-pwa/commit/16b6afa))
 - display orders on cost center details page ([003413f](https://github.com/intershop/intershop-pwa/commit/003413f))
 - double header display in checkout (SSR) (#1721) ([4fd1165](https://github.com/intershop/intershop-pwa/commit/4fd1165))
-- password check for user e-mail update (#1722) ([4d5e69a](https://github.com/intershop/intershop-pwa/commit/4d5e69a))
+- password check for user email update (#1722) ([4d5e69a](https://github.com/intershop/intershop-pwa/commit/4d5e69a))
 - remove double slashes in cost center REST call (#1723) ([d84dffd](https://github.com/intershop/intershop-pwa/commit/d84dffd))
 - eslint-rule "no-intelligence-in-artifacts" also checks components of different themes (#1716) ([e31a906](https://github.com/intershop/intershop-pwa/commit/e31a906))
 
@@ -163,8 +163,8 @@ From PWA 6.0.0, we support semantic versioning.
 
 ### Documentation
 
-- documentation improvements: Angular CLI version, theme naming, and Copilot theme config examples ([cda1e0a](https://github.com/intershop/intershop-pwa/commit/cda1e0a))
-- add a description of how to configure Content Security Policy with Additional Headers feature (#1751) ([c8c1d99](https://github.com/intershop/intershop-pwa/commit/c8c1d99))
+- documentation improvements: Angular CLI version, theme naming and Copilot theme config examples ([cda1e0a](https://github.com/intershop/intershop-pwa/commit/cda1e0a))
+- add description how to configure Content Security Policy with Additional Headers feature (#1751) ([c8c1d99](https://github.com/intershop/intershop-pwa/commit/c8c1d99))
 - remove compodoc integration from project (#1745) ([da4d015](https://github.com/intershop/intershop-pwa/commit/da4d015))
 
 ### BREAKING CHANGES
@@ -175,20 +175,20 @@ From PWA 6.0.0, we support semantic versioning.
 
 - add tax type settings for budgets (#1715) - ICM 12.3.0
 - change OCI punchout URL to point to an ICM Pipeline (#1702) - ICM 12.2.0, 11.11.1 or 7.10.41.3
-- password check for user e-mail update (#1722) - ICM 13.0.0, 12.3.1 or 7.10.41.7
+- password check for user email update (#1722) - ICM 13.0.0, 12.3.1 or 7.10.41.7
 - use GET request instead of an OPTIONS call for the OCI punchout configuration (#1714) - ICM 12.2.1
 - use GET request instead of an OPTIONS call for the eligible customer payment methods (#1714) - ICM 11.10.0
 
 ## [5.2.0](https://github.com/intershop/intershop-pwa/releases/tag/5.2.0) (2024-08-23)
 
 > [!NOTE]
-> Intershop PWA 5.2.0 was developed and tested with Intershop Commerce Management (ICM) version 12.0.0.
+> The Intershop PWA 5.2.0 has been developed and tested with Intershop Commerce Management (ICM) version 12.0.0.
 > It will work with all versions from ICM 12.0.0 and later.
-> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
 >
-> _PWA 5.2.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section lists functionalities that are only available with ICM releases of the noted version or newer._
+> _The PWA 5.2.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
 >
-> The PWA was developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
+> The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
 >
 > Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.9.1 for PWA 5.2.0 deployments.
 
@@ -196,14 +196,14 @@ From PWA 6.0.0, we support semantic versioning.
 
 - support for cXML punchout self service configuration (#1683) ([74bb9cf](https://github.com/intershop/intershop-pwa/commit/74bb9cf))
 - extend order list filter by buyer selection (#1697) ([28d9846](https://github.com/intershop/intershop-pwa/commit/28d9846))
-- fast checkout payment (e.g., PAYPAL Express) (#1682) ([fb5a0d6](https://github.com/intershop/intershop-pwa/commit/fb5a0d6))
+- fast checkout payment (e.g. PAYPAL Express) (#1682) ([fb5a0d6](https://github.com/intershop/intershop-pwa/commit/fb5a0d6))
 - switch to ICM 12 resource ID encoding and provide a feature toggle for 'legacyEncoding' (#1704) ([f7176c9](https://github.com/intershop/intershop-pwa/commit/f7176c9))
 - extend logging for monitoring by OPS (#1685) ([480447a](https://github.com/intershop/intershop-pwa/commit/480447a))
 - introduce `labelNoTranslate` and `titleNoTranslate` flag to prevent Formly field label translation ([4428c56](https://github.com/intershop/intershop-pwa/commit/4428c56))
 - make recently viewed products display lazy (#1654) ([0a27c17](https://github.com/intershop/intershop-pwa/commit/0a27c17))
 - introduce ishBrowserLazyView directive (#1654) ([dd219e3](https://github.com/intershop/intershop-pwa/commit/dd219e3))
 - set default theme also as default for override schematic (#1637) ([4755c15](https://github.com/intershop/intershop-pwa/commit/4755c15))
-- use optional template for environment.development.ts if available (#1639) ([d3c2249](https://github.com/intershop/intershop-pwa/commit/d3c2249))
+- use optional template for environment.development.ts if avalable (#1639) ([d3c2249](https://github.com/intershop/intershop-pwa/commit/d3c2249))
 - product warranties support (#1368) ([bb952bd](https://github.com/intershop/intershop-pwa/commit/bb952bd))
 - add package ngx-mask ([ddf650f](https://github.com/intershop/intershop-pwa/commit/ddf650f))
 - exclusive ICM URL for SSR process (#1624) ([a324675](https://github.com/intershop/intershop-pwa/commit/a324675))
@@ -221,12 +221,12 @@ From PWA 6.0.0, we support semantic versioning.
 - remove logging data from nginx configuration file (#1696) ([bc6b628](https://github.com/intershop/intershop-pwa/commit/bc6b628))
 - fetch captcha V3 token after first form input (#1693) ([0d69d51](https://github.com/intershop/intershop-pwa/commit/0d69d51))
 - suppress the wrong display of Search-No-Results page after a search (#1679) ([3a92e22](https://github.com/intershop/intershop-pwa/commit/3a92e22))
-- encode product URLs (#1688) ([d2e6c82](https://github.com/intershop/intershop-pwa/commit/d2e6c82))
+- encode product urls (#1688) ([d2e6c82](https://github.com/intershop/intershop-pwa/commit/d2e6c82))
 - remove '%' signs from product slugs (#1687) ([6903fd2](https://github.com/intershop/intershop-pwa/commit/6903fd2))
 - Formly 'ish-select-field' select box does not display updated model value correctly ([847aa97](https://github.com/intershop/intershop-pwa/commit/847aa97))
-- improve `textarea-description` Formly wrapper and rename it to `maxlength-description` ([cb1366c](https://github.com/intershop/intershop-pwa/commit/cb1366c))
+- improved `textarea-description` Formly wrapper and renamed it to `maxlength-description` ([cb1366c](https://github.com/intershop/intershop-pwa/commit/cb1366c))
 - do not display "add to cart" button if product has no price (#1657) ([2732de4](https://github.com/intershop/intershop-pwa/commit/2732de4))
-- wishlist and order template titles with special characters not displayed correctly (#1658) ([42864a7](https://github.com/intershop/intershop-pwa/commit/42864a7))
+- wishlist and order template titles with special characters do not displayed correct (#1658) ([42864a7](https://github.com/intershop/intershop-pwa/commit/42864a7))
 - handle setting price notification for products without a price (#1659) ([112f11e](https://github.com/intershop/intershop-pwa/commit/112f11e))
 - implement input mask for IBAN and BIC (#1655) ([06b5461](https://github.com/intershop/intershop-pwa/commit/06b5461))
 - improve mock data redirection for URLs with matrix parameters (#1324) ([db448ae](https://github.com/intershop/intershop-pwa/commit/db448ae))
@@ -266,30 +266,30 @@ From PWA 6.0.0, we support semantic versioning.
 - The `ish-product-item-variations` component has been refactored (see [Migrations / From 5.1 to 5.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-51-to-52) for more details).
 - The productMaster property on the product view model has been removed. The master product should be individually retrieved.
 - The variations property on the product view interface was removed. Variations can now be retrieved via the product context facade or the shopping facade.
-- The `ExternalDisplayPropertiesProvider` `setup` method was changed to no longer work with product data only but a combination of product and prices (see [Migrations / From 5.1 to 5.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-51-to-52) for more details).
-- Pipes `sanitize`, `makeHref`, and `htmlEncode` are renamed using an `ish` prefix (see Migrations / From 5.1 to 5.2 for more details).
-- The store action and method `addBasketToNewOrderTemplate` of the OrderTemplatesFacade were renamed to `createOrderTemplateFromLineItems` and refactored slightly.
-- In preparation for the cXML punchout self-service configuration, we switched from a hidden route parameter that conveys the punchout type context information to a URL query parameter (e.g., `?format=cxml`). So, customized routing within the punchout area needs to be adapted accordingly.
+- The `ExternalDisplayPropertiesProvider` `setup` method was changed to no longer working with product data only but a combination of product and prices (see [Migrations / From 5.1 to 5.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-51-to-52) for more details).
+- Pipes `sanitize`, `makeHref` and `htmlEncode` are renamed using an `ish` prefix (see Migrations / From 5.1 to 5.2 for more details).
+- The store action and method `addBasketToNewOrderTemplate` of the OrderTemplatesFacade have been renamed to `createOrderTemplateFromLineItems` and refactored slightly.
+- In preparation of the cXML punchout self service configuration, we switched from a hidden route parameter that conveys the punchout type context information to a URL query parameter (e.g., `?format=cxml`). So customized routing within the punchout area needs to be adapted accordingly.
 - With Intershop PWA version 5.2.0, the rendering of our demo/example view contexts was disabled by default (see [Migrations / From 5.1 to 5.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-51-to-52) for more details).
-- A few Stylelint rules changed and the `.scss` files were adapted (see [Migrations / From 5.1 to 5.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-51-to-52) for more details).
+- A few Stylelint rules have been changed and the `.scss` files have been adapted (see [Migrations / From 5.1 to 5.2](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-51-to-52) for more details).
 
 ### CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS
 
-- support for cXML punchout self-service configuration (#1683) - ICM 12.2.0
+- support for cXML punchout self service configuration (#1683) - ICM 12.2.0
 - extend order list filter by buyer selection (#1697) - ICM 12.1.0
-- fast checkout payment (e.g., PAYPAL Express) (#1682) - ICM 12.0.0 or ICM 7.10.41.3
+- fast checkout payment (e.g. PAYPAL Express) (#1682) - ICM 12.0.0 or ICM 7.10.41.3
 - product warranties support (#1368) - ICM 11.7.0
 
 ## [5.1.0](https://github.com/intershop/intershop-pwa/releases/tag/5.1.0) (2024-03-28)
 
 > [!NOTE]
-> Intershop PWA 5.1.0 was developed and tested with Intershop Commerce Management (ICM) version 11.7.0.
+> The Intershop PWA 5.1.0 has been developed and tested with Intershop Commerce Management (ICM) version 11.7.0.
 > It will work with all versions from ICM 11.7.0 and later.
-> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
 >
-> _The PWA should work as well with the latest ICM 7.10.38.28-LTS release and newer ICM 7.10.x versions. The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section lists functionalities that are only available with ICM releases of the noted version or newer._
+> _The PWA should work as well with the latest ICM 7.10.38.28-LTS release and newer ICM 7.10.x versions. The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
 >
-> The PWA was developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
+> The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
 >
 > Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.8.0 for PWA 5.1.0 deployments.
 
@@ -315,18 +315,18 @@ From PWA 6.0.0, we support semantic versioning.
 
 - scrolling to basket validation messages (#1615) ([25c2c3f](https://github.com/intershop/intershop-pwa/commit/25c2c3f))
 - confirming cookie preferences removes punchout related cookies (#1619) ([d929606](https://github.com/intershop/intershop-pwa/commit/d929606))
-- content page tree calculation improvements (#1555) ([2e84cb7](https://github.com/intershop/intershop-pwa/commit/2e84cb7))
+- content page tree calculation improvments (#1555) ([2e84cb7](https://github.com/intershop/intershop-pwa/commit/2e84cb7))
 - prevent validation error when closing dialogs (#1617) ([f14f8aa](https://github.com/intershop/intershop-pwa/commit/f14f8aa))
 - product variation availability if the products have more than 2 variation attributes (#1613) ([4e06b47](https://github.com/intershop/intershop-pwa/commit/4e06b47))
 - render CMS content based on component templates correctly (#1608) ([ff21e54](https://github.com/intershop/intershop-pwa/commit/ff21e54))
-- paging bar UI issues on cart ([cc23804](https://github.com/intershop/intershop-pwa/commit/cc23804))
+- paging bar ui issues on cart ([cc23804](https://github.com/intershop/intershop-pwa/commit/cc23804))
 - missing translation for edit address button (#1596) ([6a0f9e3](https://github.com/intershop/intershop-pwa/commit/6a0f9e3))
 - use a prefix (icm\_) for internal token oauth storage (#1601) ([f3e940f](https://github.com/intershop/intershop-pwa/commit/f3e940f))
 - display variations when there are no variation attributes at the master product (#1599) ([b230a93](https://github.com/intershop/intershop-pwa/commit/b230a93))
 - small UI issues (#1604) ([7643c5f](https://github.com/intershop/intershop-pwa/commit/7643c5f))
 - support hyphens in translation case variables (#1539) ([9487fc3](https://github.com/intershop/intershop-pwa/commit/9487fc3))
-- improve NGINX route rewrite handling for '/home' and '/loading' (#1566) ([052a4ec](https://github.com/intershop/intershop-pwa/commit/052a4ec))
-- remove default search input field-specific elements in Chrome (#1589) ([1903d09](https://github.com/intershop/intershop-pwa/commit/1903d09))
+- improved NGINX route rewrite handling for '/home' and '/loading' (#1566) ([052a4ec](https://github.com/intershop/intershop-pwa/commit/052a4ec))
+- remove default search input field specific elements in Chrome (#1589) ([1903d09](https://github.com/intershop/intershop-pwa/commit/1903d09))
 - display of duplicated headers for special logins with activated hydration (#1585) ([75bf2d2](https://github.com/intershop/intershop-pwa/commit/75bf2d2))
 - prevent rendering errors for text on enhanced image teaser caused by Angular hydration (#1583) ([6b8256e](https://github.com/intershop/intershop-pwa/commit/6b8256e))
 - display dates in the user's timezone, if no timezone is given (#1582) ([33ff2fc](https://github.com/intershop/intershop-pwa/commit/33ff2fc))
@@ -337,7 +337,7 @@ From PWA 6.0.0, we support semantic versioning.
 ### Performance Improvements
 
 - improve the performance of 'Static Content Page' component (#1603) ([a6189fe](https://github.com/intershop/intershop-pwa/commit/a6189fe))
-- in SSR, load only top level categories; on client side, load and render the configured level of sub-categories (#1586) ([b589113](https://github.com/intershop/intershop-pwa/commit/b589113))
+- in SSR load only top level categories, on client side load and render the configured level of sub categories (#1586) ([b589113](https://github.com/intershop/intershop-pwa/commit/b589113))
 - lazily fetch products for CMS carousels (#1581) ([cbe9072](https://github.com/intershop/intershop-pwa/commit/cbe9072))
 - prevent unnecessary actions (#1580) ([093f1ec](https://github.com/intershop/intershop-pwa/commit/093f1ec))
 - fetching eligible basket addresses (#1567) ([71a93ad](https://github.com/intershop/intershop-pwa/commit/71a93ad))
@@ -347,14 +347,14 @@ From PWA 6.0.0, we support semantic versioning.
 
 - documentation improvements (Redis, Address Doctor) (#1605) ([194d4d4](https://github.com/intershop/intershop-pwa/commit/194d4d4))
 - improve Google Tag Manager integration documentation ([b68ab76](https://github.com/intershop/intershop-pwa/commit/b68ab76))
-- clarify documentation for required ICM version (#1574) ([afab8cf](https://github.com/intershop/intershop-pwa/commit/afab8cf))
+- clarify ICM required version documentation (#1574) ([afab8cf](https://github.com/intershop/intershop-pwa/commit/afab8cf))
 
 ### BREAKING CHANGES
 
-- An empty 'NavigationDepth' value of the 'Static Content Page' component now defaults to '0' instead of no depth limitation that resulted in the whole content page tree being fetched and saved to the state (see [Migrations / From 5.0 to 5.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-50-to-51) for more details).
-- Header rendering was changed and header type was introduced (see [Migrations / From 5.0 to 5.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-50-to-51) for more details).
-- The feature toggle `messageToMerchant` was removed, since the feature is controlled via back office configuration in ICM 11 (see [Migrations / From 5.0 to 5.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-50-to-51) for more details and ICM 7.10 compatibility).
-- The orders API call now additionally uses the `limit` parameter (requires ICM 11.6), the deprecated `page[limit]` parameter will be removed soon.
+- An empty 'NavigationDepth' value of the 'Static Content Page' component now defaults to '0' instead of no depth limitation, that resulted in the whole content page tree being fetched and saved to the state (see [Migrations / From 5.0 to 5.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-50-to-51) for more details).
+- Header rendering was changed and introduced header type (see [Migrations / From 5.0 to 5.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-50-to-51) for more details).
+- The feature toggle `messageToMerchant` was removed since the feature is controlled via back office configuration in ICM 11 (see [Migrations / From 5.0 to 5.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-50-to-51) for more details and ICM 7.10 compatibility).
+- The orders API call now uses additionally the `limit` parameter (requires ICM 11.6), the deprecated `page[limit]` parameter will be removed soon.
 
 ### CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS
 
@@ -366,13 +366,13 @@ From PWA 6.0.0, we support semantic versioning.
 ## [5.0.0](https://github.com/intershop/intershop-pwa/releases/tag/5.0.0) (2023-12-31)
 
 > [!NOTE]
-> Intershop PWA 5.0.0 was developed and tested with Intershop Commerce Management (ICM) version 11.7.0.
+> The Intershop PWA 5.0.0 has been developed and tested with Intershop Commerce Management (ICM) version 11.7.0.
 > It will work with all versions from ICM 11.7.0 and later.
-> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
 >
-> _The PWA should work as well with the latest ICM 7.10.38.28-LTS release and newer ICM 7.10.x versions. The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section lists functionalities that are only available with ICM releases of the noted version or newer._
+> _The PWA should work as well with the latest ICM 7.10.38.28-LTS release and newer ICM 7.10.x versions. The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
 >
-> The PWA was developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
+> The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
 >
 > Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.8.0 for PWA 5.0.0 deployments.
 
@@ -384,25 +384,25 @@ From PWA 6.0.0, we support semantic versioning.
 - use OpenResty image instead of NGINX ([7d7c8ec](https://github.com/intershop/intershop-pwa/commit/7d7c8ec))
 - **ICM 11:** experimental Design View support for the PWA (within the Intershop Administration Portal) (#1462) ([8452343](https://github.com/intershop/intershop-pwa/commit/8452343))
 - **ICM 11:** co-browsing support via Customer Engagement Center (#1475) ([e7346b5](https://github.com/intershop/intershop-pwa/commit/e7346b5))
-- **ICM 11:** switch to ICM 11 as project dependency and configuration for develop, demo, and review servers ([0594bcc](https://github.com/intershop/intershop-pwa/commit/0594bcc))
+- **ICM 11:** switch to ICM 11 as project dependency and configuration for develop, demo and review servers ([0594bcc](https://github.com/intershop/intershop-pwa/commit/0594bcc))
 
 ### Bug Fixes
 
 - console error after saving user roles selection ([cbb77f5](https://github.com/intershop/intershop-pwa/commit/cbb77f5))
 - avoid scrolling up after show/hide permissions ([6263074](https://github.com/intershop/intershop-pwa/commit/6263074))
-- use 'take' instead of 'first' to prevent EmptyError on missing translation (#1554) ([0904c9e](https://github.com/intershop/intershop-pwa/commit/0904c9e))
+- use take instead of first to prevent EmptyError on missing translation (#1554) ([0904c9e](https://github.com/intershop/intershop-pwa/commit/0904c9e))
 - sanitize potentially malicious values in order template and wishlist titles (#1551) ([4602463](https://github.com/intershop/intershop-pwa/commit/4602463))
 - remove sortkey 'default' from product list REST calls to prevent inconsistent results (#1550) ([cf7541c](https://github.com/intershop/intershop-pwa/commit/cf7541c))
-- trailing '/' in path results in an incorrect multi-channel configuration (#1553) ([c500625](https://github.com/intershop/intershop-pwa/commit/c500625))
+- trailing '/' in path results to a wrong multi channel configuration (#1553) ([c500625](https://github.com/intershop/intershop-pwa/commit/c500625))
 - handle static ICM content links in CMS content (#1543) ([eb03fde](https://github.com/intershop/intershop-pwa/commit/eb03fde))
 - respect cache settings for static files from PWA ([cc2057a](https://github.com/intershop/intershop-pwa/commit/cc2057a))
 - navigate to anchor on master filter selection (#1534) ([f1e8947](https://github.com/intershop/intershop-pwa/commit/f1e8947))
 - include rewriting for scripts artifact in deploy-url handling (#1532) ([4304cf2](https://github.com/intershop/intershop-pwa/commit/4304cf2))
 - revert irrelevant changes of "wrong ICM is used with errors on SSR" (#1533) ([a48c7ae](https://github.com/intershop/intershop-pwa/commit/a48c7ae))
 - forward protocol correctly from reverse proxy (#1524) ([eca77f9](https://github.com/intershop/intershop-pwa/commit/eca77f9))
-- deploy URL not set correctly for all CSS 'url' references (e.g., fonts) (#1521) ([e6d4dfb](https://github.com/intershop/intershop-pwa/commit/e6d4dfb))
+- deploy URL not set right for all CSS 'url' references (e.g. fonts) (#1521) ([e6d4dfb](https://github.com/intershop/intershop-pwa/commit/e6d4dfb))
 - wrong ICM is used when configured ICM throws errors on SSR (#1519) ([8c2c203](https://github.com/intershop/intershop-pwa/commit/8c2c203))
-- display salutations on registration page rendering (#1518) ([51b52ad](https://github.com/intershop/intershop-pwa/commit/51b52ad))
+- display salutions on registration page rendering (#1518) ([51b52ad](https://github.com/intershop/intershop-pwa/commit/51b52ad))
 - **ICM 11:** sort basket line items by position - missing in ICM 11 REST API ([67bba20](https://github.com/intershop/intershop-pwa/commit/67bba20))
 
 ### Documentation
@@ -410,7 +410,7 @@ From PWA 6.0.0, we support semantic versioning.
 - rename 'upgrade' to 'update' as suggested ([367fe70](https://github.com/intershop/intershop-pwa/commit/367fe70))
 - documentation review adjustments ([7123e81](https://github.com/intershop/intershop-pwa/commit/7123e81))
 - use new GitHub blockquote highlighting options ([6423534](https://github.com/intershop/intershop-pwa/commit/6423534))
-- improve getting started guide ([39f1ba4](https://github.com/intershop/intershop-pwa/commit/39f1ba4))
+- improved getting started guide ([39f1ba4](https://github.com/intershop/intershop-pwa/commit/39f1ba4))
 - punchout identity provider documentation improvement ([bb21aab](https://github.com/intershop/intershop-pwa/commit/bb21aab))
 
 ### BREAKING CHANGES
@@ -426,20 +426,20 @@ From PWA 6.0.0, we support semantic versioning.
 ## [4.2.0](https://github.com/intershop/intershop-pwa/releases/tag/4.2.0) (2023-09-11)
 
 > [!NOTE]
-> Intershop PWA 4.2.0 was developed and tested with Intershop Commerce Management (ICM) version 7.10.39.2.
+> The Intershop PWA 4.2.0 has been developed and tested with Intershop Commerce Management (ICM) version 7.10.39.2.
 > It will work with all versions from ICM 7.10.39.2 and later.
-> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
 >
-> The PWA was developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
+> The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
 
 ### Features
 
 - save language selection as cookie (#1447) ([c2e43bb](https://github.com/intershop/intershop-pwa/commit/c2e43bb))
 - logging restriction to errors (#1472) ([2d0bf20](https://github.com/intershop/intershop-pwa/commit/2d0bf20))
 - save orderReferenceId as native basket attribute (#1499) ([7c160ce](https://github.com/intershop/intershop-pwa/commit/7c160ce))
-- export REST metrics ([d49262d](https://github.com/intershop/intershop-pwa/commit/d49262d))
-- report SSR max memory in Prometheus ([0127488](https://github.com/intershop/intershop-pwa/commit/0127488))
-- report memory per PM2 process ([9c7d0cb](https://github.com/intershop/intershop-pwa/commit/9c7d0cb))
+- export rest metrics ([d49262d](https://github.com/intershop/intershop-pwa/commit/d49262d))
+- report ssr max memory in prometheus ([0127488](https://github.com/intershop/intershop-pwa/commit/0127488))
+- report memory per pm2 process ([9c7d0cb](https://github.com/intershop/intershop-pwa/commit/9c7d0cb))
 - introduce simple browser detection to fix Safari 14 cookies issue ([94b25d5](https://github.com/intershop/intershop-pwa/commit/94b25d5))
 - implement better handling for cookie 'SameSite' and 'secure' settings (#1485) ([0d28fae](https://github.com/intershop/intershop-pwa/commit/0d28fae))
 - use aria-labels in forms ([2a895a2](https://github.com/intershop/intershop-pwa/commit/2a895a2))
@@ -453,12 +453,12 @@ From PWA 6.0.0, we support semantic versioning.
 - make use of new cookies.service defaults when setting cookies (#1485) ([22944bc](https://github.com/intershop/intershop-pwa/commit/22944bc))
 - replace translate.instant in product-list-toolbar.component (#1482) ([191788a](https://github.com/intershop/intershop-pwa/commit/191788a))
 - prevent setting values on uninitialized field of the cms-carousel.component (#1492) ([8d3f6a1](https://github.com/intershop/intershop-pwa/commit/8d3f6a1))
-- handle multi-tab browsing (#1465) ([d5f749c](https://github.com/intershop/intershop-pwa/commit/d5f749c))
-- remove token information from local storage after successful logout (#1488) ([1c0bf6e](https://github.com/intershop/intershop-pwa/commit/1c0bf6e))
+- handle multitab browsing (#1465) ([d5f749c](https://github.com/intershop/intershop-pwa/commit/d5f749c))
+- remove token informations from local storage after succesful logout (#1488) ([1c0bf6e](https://github.com/intershop/intershop-pwa/commit/1c0bf6e))
 - remove api-token cookie from root '/' path (#1487) ([9ce4cf6](https://github.com/intershop/intershop-pwa/commit/9ce4cf6))
-- complete current localization call when a new language is requested ([4724fda](https://github.com/intershop/intershop-pwa/commit/4724fda))
+- complete current localization call, when a new language is requested ([4724fda](https://github.com/intershop/intershop-pwa/commit/4724fda))
 - remove interfering query parameter "page" for product detail page routes (#1481) ([28ba5f0](https://github.com/intershop/intershop-pwa/commit/28ba5f0))
-- properly handle system signals in PWA Docker container (#1471) ([2b9d8ea](https://github.com/intershop/intershop-pwa/commit/2b9d8ea))
+- properly handle system signals in pwa docker container (#1471) ([2b9d8ea](https://github.com/intershop/intershop-pwa/commit/2b9d8ea))
 - reload the application after the pgid changed (#1461) ([d0984ce](https://github.com/intershop/intershop-pwa/commit/d0984ce))
 - display first product image after switching products on product detail page (#1474) ([96737be](https://github.com/intershop/intershop-pwa/commit/96737be))
 - repair caching for output-hashed files (#1473) ([721b26a](https://github.com/intershop/intershop-pwa/commit/721b26a))
@@ -473,13 +473,13 @@ From PWA 6.0.0, we support semantic versioning.
 
 - reduce product price call aggregation delay in SSR (#1493) ([2c10245](https://github.com/intershop/intershop-pwa/commit/2c10245))
 - reduce number of distributors (#1496) ([12a8ca6](https://github.com/intershop/intershop-pwa/commit/12a8ca6))
-- increase PM2 SSR max memory (#1494) ([a081c94](https://github.com/intershop/intershop-pwa/commit/a081c94))
+- increase pm2 SSR max memory (#1494) ([a081c94](https://github.com/intershop/intershop-pwa/commit/a081c94))
 - use better suited operators for REST requests (#1491) ([e54f611](https://github.com/intershop/intershop-pwa/commit/e54f611))
 - remove 3 sec SSR delay by enabling PreviewContextID listening only in browser (#1455) ([65c8c9a](https://github.com/intershop/intershop-pwa/commit/65c8c9a))
 
 ### Documentation
 
-- change migration note headings for better Knowledge Base syncing (#1506) ([dc4ed04](https://github.com/intershop/intershop-pwa/commit/dc4ed04))
+- change migration notes headings for better Knowledge Base syncing (#1506) ([dc4ed04](https://github.com/intershop/intershop-pwa/commit/dc4ed04))
 - concept for CAPTCHA in the PWA (#1453) ([38d8662](https://github.com/intershop/intershop-pwa/commit/38d8662))
 
 ### BREAKING CHANGES
@@ -489,11 +489,11 @@ From PWA 6.0.0, we support semantic versioning.
 ## [4.1.0](https://github.com/intershop/intershop-pwa/releases/tag/4.1.0) (2023-06-22)
 
 > [!NOTE]
-> Intershop PWA 4.1.0 was developed and tested with Intershop Commerce Management (ICM) version 7.10.39.2.
+> The Intershop PWA 4.1.0 has been developed and tested with Intershop Commerce Management (ICM) version 7.10.39.2.
 > It will work with all versions from ICM 7.10.39.2 and later.
-> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
 >
-> The PWA was developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
+> The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
 
 ### Features
 
@@ -516,64 +516,64 @@ From PWA 6.0.0, we support semantic versioning.
 - save company name(s) at address after b2b customer registration (#1444) ([4d81e6b](https://github.com/intershop/intershop-pwa/commit/4d81e6b))
 - force a name attribute on radio inputs (#1435) ([a8f0817](https://github.com/intershop/intershop-pwa/commit/a8f0817))
 - 'ishIntersectionObserver' emits 'NotVisible' events when target element moves out of viewport (#1433) ([237a1a8](https://github.com/intershop/intershop-pwa/commit/237a1a8))
-- use 'stepQuantity' instead of 'stepOrderQuantity' to fetch the correct data in product listings (#1432) ([bd20419](https://github.com/intershop/intershop-pwa/commit/bd20419))
+- use 'stepQuantitiy' instead of 'stepOrderQuantity' to fetch the correct data in product listings (#1432) ([bd20419](https://github.com/intershop/intershop-pwa/commit/bd20419))
 - add promotion code encoding to the REST call for promotion code removal (#1428) ([db1860d](https://github.com/intershop/intershop-pwa/commit/db1860d))
 - adapt 'addGlobalGuard' function to work with functional guards (#1425) ([2bf9828](https://github.com/intershop/intershop-pwa/commit/2bf9828))
 - add items to basket with common shipping method (#1419) ([6ee9909](https://github.com/intershop/intershop-pwa/commit/6ee9909))
-- identity provider init() should be triggered async (#1415) ([61c4b0f](https://github.com/intershop/intershop-pwa/commit/61c4b0f))
+- identity Provider init() should be triggered async (#1415) ([61c4b0f](https://github.com/intershop/intershop-pwa/commit/61c4b0f))
 
 ### Performance Improvements
 
-- textarea description wrapper triggers too many changes (#1438) ([7cd3933](https://github.com/intershop/intershop-pwa/commit/7cd3933))
+- textarea description wrapper trigger to much changes (#1438) ([7cd3933](https://github.com/intershop/intershop-pwa/commit/7cd3933))
 
 ### Documentation
 
 - add Configurable Theme documentation (#1427) ([7a48e20](https://github.com/intershop/intershop-pwa/commit/7a48e20))
-- add "Disabling the Integrated Cookie Consent Handling" documentation ([38f3751](https://github.com/intershop/intershop-pwa/commit/38f3751))
+- added "Disabling the Integrated Cookie Consent Handling" documentation ([38f3751](https://github.com/intershop/intershop-pwa/commit/38f3751))
 - extend logging documentation for logging to an external device (#1417) ([20f75a2](https://github.com/intershop/intershop-pwa/commit/20f75a2))
 
 ### BREAKING CHANGES
 
 - The `/token` endpoint handling was improved (see [Migrations / From 4.0 to 4.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-40-to-41) for more details).
 - The `ishIntersectionObserver` returns `NotVisible` status now too (see [Migrations / From 4.0 to 4.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-40-to-41) for more details).
-- The two standard themes `b2b` and `b2c` were refactored in such a way that the `b2c` theme could be changed into a configurable theme (see [Migrations / From 4.0 to 4.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-40-to-41) for more details).
+- The two standard themes `b2b` and `b2c` where refactored in such a way that the `b2c` theme could be changed into a configurable theme (see [Migrations / From 4.0 to 4.1](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-40-to-41) for more details).
 
 ## [4.0.0](https://github.com/intershop/intershop-pwa/releases/tag/4.0.0) (2023-04-06)
 
 > [!NOTE]
-> Intershop PWA 4.0.0 was developed and tested with Intershop Commerce Management (ICM) version 7.10.39.2.
+> The Intershop PWA 4.0.0 has been developed and tested with Intershop Commerce Management (ICM) version 7.10.39.2.
 > It will work with all versions from ICM 7.10.39.2 and later.
-> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" section.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
 >
-> The PWA was developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
+> The PWA has been developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
 
 ### Features
 
-- introduce a general print styling, e.g., to nicely print to PDF (#1376) ([94be193](https://github.com/intershop/intershop-pwa/commit/94be193))
+- introduce a general print styling, e.g. to nicely print to PDF (#1376) ([94be193](https://github.com/intershop/intershop-pwa/commit/94be193))
 - add product zoom functionality in fullscreen dialog (#1011, #1350) ([c839353](https://github.com/intershop/intershop-pwa/commit/c839353))
 - enhance modal dialog component with fullscreen and scrolling (#1350) ([1de7672](https://github.com/intershop/intershop-pwa/commit/1de7672))
 - product notifications (price, in stock) (#1327) ([c07edca](https://github.com/intershop/intershop-pwa/commit/c07edca))
 - add "Product List (REST)" CMS component (#1397) ([dc5c9dc](https://github.com/intershop/intershop-pwa/commit/dc5c9dc))
 - add title for (status) checkboxes (#1383) ([9dafd3f](https://github.com/intershop/intershop-pwa/commit/9dafd3f))
-- add schematic to apply migration changes for Formly 6 update ([932cafa](https://github.com/intershop/intershop-pwa/commit/932cafa))
+- add schematic to apply migration changes for formly 6 update ([932cafa](https://github.com/intershop/intershop-pwa/commit/932cafa))
 - introduce account navigation grouping - used in b2b theme (#1331) ([3334e77](https://github.com/intershop/intershop-pwa/commit/3334e77))
 
 ### Bug Fixes
 
 - use ProductsListComponent for wishlist widget component (#1408) ([3486687](https://github.com/intershop/intershop-pwa/commit/3486687))
 - use ProductsListComponent for recently viewed items on PDP and recently viewed page (#1408) ([5fbdfb6](https://github.com/intershop/intershop-pwa/commit/5fbdfb6))
-- adapt Products List component so it does not display failed products (#1408) ([ff4f2e7](https://github.com/intershop/intershop-pwa/commit/ff4f2e7))
+- adapt Products List component to not display failed products (#1408) ([ff4f2e7](https://github.com/intershop/intershop-pwa/commit/ff4f2e7))
 - improve matcher routing for SEO URLs (#1387, #1409) ([f952dc9](https://github.com/intershop/intershop-pwa/commit/f952dc9))
 - encode canonical link to match actual link URLs ([0fd2766](https://github.com/intershop/intershop-pwa/commit/0fd2766))
-- basket loaded in SSR results in error and a toast message that cannot be closed (#1406) ([8e3b038](https://github.com/intershop/intershop-pwa/commit/8e3b038))
+- basket loaded in SSR results in error and a toast message that can't be closed (#1406) ([8e3b038](https://github.com/intershop/intershop-pwa/commit/8e3b038))
 - refresh the search page with query parameter 'view' ([4e7f9d7](https://github.com/intershop/intershop-pwa/commit/4e7f9d7))
 - quick quantity change on item lists (#1391) ([b019bb2](https://github.com/intershop/intershop-pwa/commit/b019bb2))
-- server-validation-extension prePropulate() method should not fail on execution ([30a6178](https://github.com/intershop/intershop-pwa/commit/30a6178))
+- server-validation-extension prePropulate() method should not error on execution ([30a6178](https://github.com/intershop/intershop-pwa/commit/30a6178))
 - change templateOptions to props using the formly-migrate schematic (#1393) ([17f7b66](https://github.com/intershop/intershop-pwa/commit/17f7b66))
-- adapt Hybrid Approach mapping table for new SEO-optimized URLs (#1392) ([81cf2b4](https://github.com/intershop/intershop-pwa/commit/81cf2b4))
-- return a unique ID in the line item list's trackBy function (#1390) ([78d99d0](https://github.com/intershop/intershop-pwa/commit/78d99d0))
-- add missing translation key ([8a7fc5e](https://github.com/intershop/intershop-pwa/commit/8a7fc5e))
-- e-mail and password confirmation fields should only validate the equality with their related input field ([58aa313](https://github.com/intershop/intershop-pwa/commit/58aa313))
+- adapt Hybrid Approach mapping table for new SEO optimized URLs (#1392) ([81cf2b4](https://github.com/intershop/intershop-pwa/commit/81cf2b4))
+- return a unique id in the line item list's trackBy function (#1390) ([78d99d0](https://github.com/intershop/intershop-pwa/commit/78d99d0))
+- added missing translation key ([8a7fc5e](https://github.com/intershop/intershop-pwa/commit/8a7fc5e))
+- email and password confirmation fields should only validate the equality with its related input field ([58aa313](https://github.com/intershop/intershop-pwa/commit/58aa313))
 - correct names and comments with spelling errors, update spell check dictionary with missing words (#1382) ([8f36209](https://github.com/intershop/intershop-pwa/commit/8f36209))
 - prevent HTML input in the form field "name" for order templates and wishlists (#1385) ([b990b3b](https://github.com/intershop/intershop-pwa/commit/b990b3b))
 - load basket information on basket page when personalization status is determined ([45f67c8](https://github.com/intershop/intershop-pwa/commit/45f67c8))
@@ -587,23 +587,23 @@ From PWA 6.0.0, we support semantic versioning.
 
 ### Code Refactoring
 
-- cleanup, remove obsolete, and update TODO comments ([e43c432](https://github.com/intershop/intershop-pwa/commit/e43c432))
-- replace deprecated Formly field configuration properties ([fad6075](https://github.com/intershop/intershop-pwa/commit/fad6075))
+- cleanup/remove obsolete/update TODO comments ([e43c432](https://github.com/intershop/intershop-pwa/commit/e43c432))
+- replace deprecated formly field configuration properties ([fad6075](https://github.com/intershop/intershop-pwa/commit/fad6075))
 - **Angular 15:** replace class-based route guards by functional guards ([289e161](https://github.com/intershop/intershop-pwa/commit/289e161))
 - **Angular 15:** rework translate loader on SSR after Angular 15 update ([292d559](https://github.com/intershop/intershop-pwa/commit/292d559))
 
 ### BREAKING CHANGES
 
 - The `TODO` code cleanup removed some implementation fixes to work with ICM versions prior to 7.10.39.2.
-- **Angular 15:** Class-based route guards were replaced by functional guards (see [Migrations / From 3.3 to 4.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-33-to-40) for more details).
+- **Angular 15:** Class-based route guards are replaced by functional guards (see [Migrations / From 3.3 to 4.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-33-to-40) for more details).
 - **Angular 15:** ICM Translate Loader needs new configuration for `LOCAL_TRANSLATIONS` (see [Migrations / From 3.3 to 4.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-33-to-40) for more details).
-- **Angular 15:** Angular 15 and dependencies update (removed Browserslist configuration, update TypeScript compiler `target`, Stylelint adaptations, Jest tests adaptations).
+- **Angular 15:** Angular 15 and dependencies update (removed Browserslist configuration, update TypeScript compiler `target`, Stylelint adaptions, Jest tests adaptions).
 - Intershop PWA development is now based on Node.js 18.15.0 with npm 9.5.0 and the `"lockfileVersion": 3,`.
-- All deprecated Formly field configuration properties are replaced.
+- All deprecated formly field configuration properties are replaced.
 
 ### CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS
 
-- product notifications (price, in stock) (#1327) - 7.10.40.1 (for adapted e-mail templates only, REST functionality is already available in earlier versions)
+- product notifications (price, in stock) (#1327) - 7.10.40.1 (for adapted email templates only, REST functionality is already available in earlier versions)
 - product zoom functionality (#1350) - 7.10.40.1 (for 'ZOOM' image demo data, this is not required to use the functionality)
 - add "Product List (REST)" CMS component (#1397) - 7.10.40.1 (requires additional CMS Content Model `component.common.productListRest.pagelet2` that could be copied to earlier versions as well)
 
@@ -674,8 +674,8 @@ From PWA 6.0.0, we support semantic versioning.
 - replace the empty cart image with pure CSS and remove the image file (#1319) ([eebebec](https://github.com/intershop/intershop-pwa/commit/eebebec))
 - remove active_catalog.png and budget-bar-indicator.png and replace with CSS styling (#1319) ([9aeafaf](https://github.com/intershop/intershop-pwa/commit/9aeafaf))
 - display company input fields for anonymous b2b users on checkout edit address form (#1312) ([23a9257](https://github.com/intershop/intershop-pwa/commit/23a9257))
-- change and display an anonymous user`s e-mail during the checkout process (#1312) ([b2c265b](https://github.com/intershop/intershop-pwa/commit/b2c265b))
-- validate e-mail during the checkout process of an anonymous user (#1312) ([5ba41ec](https://github.com/intershop/intershop-pwa/commit/5ba41ec))
+- change and display an anonymous user`s email during the checkout process (#1312) ([b2c265b](https://github.com/intershop/intershop-pwa/commit/b2c265b))
+- validate email during the checkout process of an anonymous user (#1312) ([5ba41ec](https://github.com/intershop/intershop-pwa/commit/5ba41ec))
 - apiToken cookie should be shared between same host (#1321) ([80d5f9d](https://github.com/intershop/intershop-pwa/commit/80d5f9d))
 - add promotion scope to the validation of the first basket checkout step (#1322) ([8da52d6](https://github.com/intershop/intershop-pwa/commit/8da52d6))
 - keep the footer at the bottom of the page (#1318) ([feb1648](https://github.com/intershop/intershop-pwa/commit/feb1648))
@@ -803,7 +803,7 @@ From PWA 6.0.0, we support semantic versioning.
 - display the order confirmation page when returning from redirect after checkout (#1227) ([3ea3b8c](https://github.com/intershop/intershop-pwa/commit/3ea3b8c))
 - revert selector-not-notation behavior to overload Bootstrap standard styles (#1218) ([6bf7e47](https://github.com/intershop/intershop-pwa/commit/6bf7e47))
 - static page component needs to load the content page tree for the breadcrumb even if the navigation is not shown (#1215) ([51275d5](https://github.com/intershop/intershop-pwa/commit/51275d5))
-- use double encoded resource ids to support special characters in e-mail address as user login (#939, #940) ([2e8f7e4](https://github.com/intershop/intershop-pwa/commit/2e8f7e4))
+- use double encoded resource ids to support special characters in email address as user login (#939, #940) ([2e8f7e4](https://github.com/intershop/intershop-pwa/commit/2e8f7e4))
 - repair jest optimization for Angular 14 upgrade (#1210) ([491d78b](https://github.com/intershop/intershop-pwa/commit/491d78b))
 - repair cleanup testbed ([c824159](https://github.com/intershop/intershop-pwa/commit/c824159))
 - Invite page in ssr is not working (#1200) ([215525e](https://github.com/intershop/intershop-pwa/commit/215525e))
@@ -1288,7 +1288,7 @@ From PWA 6.0.0, we support semantic versioning.
 
 ### Features
 
-- add readiness and liveness probe for PM2 (#818) ([8a21fb1](https://github.com/intershop/intershop-pwa/commit/8a21fb1))
+- add readiness and liveness probe for pm2 (#818) ([8a21fb1](https://github.com/intershop/intershop-pwa/commit/8a21fb1))
 - multi-PWA container build with runtime theme switching (#775) ([b4c6060](https://github.com/intershop/intershop-pwa/commit/b4c6060))
 - payone creditcard payment (#717) ([1b6190e](https://github.com/intershop/intershop-pwa/commit/1b6190e))
 - provide deploy-url as runtime property (#630) ([03911e1](https://github.com/intershop/intershop-pwa/commit/03911e1))
@@ -1426,13 +1426,13 @@ From PWA 6.0.0, we support semantic versioning.
 - support for new OCI Punchout REST API v2 including product validation and background search ([a5226f7](https://github.com/intershop/intershop-pwa/commit/a5226f7))
 - extend the role-toggle service and not-role-toggle directive to check against multiple roles if one is included ([4a8f7e3](https://github.com/intershop/intershop-pwa/commit/4a8f7e3))
 - extend basket handling to work with a specific basket id instead of 'current' ([edd1d0a](https://github.com/intershop/intershop-pwa/commit/edd1d0a))
-- login user with given token (e.g., from URL) ([107aff9](https://github.com/intershop/intershop-pwa/commit/107aff9))
+- login user with given token (e.g. from URL) ([107aff9](https://github.com/intershop/intershop-pwa/commit/107aff9))
 - add support for setting 'responseType' header for REST calls ([e73343e](https://github.com/intershop/intershop-pwa/commit/e73343e))
 - add support for providing options for the 'resolveLink/resolveLinks' functionality ([f8b2be6](https://github.com/intershop/intershop-pwa/commit/f8b2be6))
 - SSO with Auth0 for B2B (#597) ([b8ada93](https://github.com/intershop/intershop-pwa/commit/b8ada93))
 - replace any typescript file by configuration (#616) ([7b39473](https://github.com/intershop/intershop-pwa/commit/7b39473))
 - parameterized user/customer related success messages ([f739c45](https://github.com/intershop/intershop-pwa/commit/f739c45))
-- inquire password for user e-mail/login update (#599) ([9980e21](https://github.com/intershop/intershop-pwa/commit/9980e21))
+- inquire password for user email/login update (#599) ([9980e21](https://github.com/intershop/intershop-pwa/commit/9980e21))
 - same-site property for cookies service ([adc1ec6](https://github.com/intershop/intershop-pwa/commit/adc1ec6))
 - product context access directive (#605) ([fedbc59](https://github.com/intershop/intershop-pwa/commit/fedbc59))
 - show available stock if available (#598) ([57bf890](https://github.com/intershop/intershop-pwa/commit/57bf890))
@@ -1697,7 +1697,7 @@ From PWA 6.0.0, we support semantic versioning.
 
 ### BREAKING CHANGES
 
-- The quoting feature was completely reworked to provide a better performance with growing numbers of users quotes and quote requests. It was changed to work with less necessary REST requests (e.g., by relying on improvements in the quoting REST API) and several known issues were fixed. Besides that the whole implementation was reworked with newer, improved implementation patterns of the PWA.
+- The quoting feature was completely reworked to provide a better performance with growing numbers of users quotes and quote requests. It was changed to work with less necessary REST requests (e.g. by relying on improvements in the quoting REST API) and several known issues were fixed. Besides that the whole implementation was reworked with newer, improved implementation patterns of the PWA.
 
 ## [0.23.0](https://github.com/intershop/intershop-pwa/releases/tag/0.23.0) (2020-08-27)
 
@@ -1975,7 +1975,7 @@ From PWA 6.0.0, we support semantic versioning.
 - dynamic breadcrumb for quote-edit and quote-request-edit ([5769cba](https://github.com/intershop/intershop-pwa/commit/5769cba))
 - provide preview image for social media sharing - add og:image to meta tags (#126) ([52a1907](https://github.com/intershop/intershop-pwa/commit/52a1907))
 - display product labels in product lists (#73, #131) ([7314bf0](https://github.com/intershop/intershop-pwa/commit/7314bf0))
-- extended multiple theme support to control system icons (e.g., favicon), manifest.webmanifest and theme-color as well (#88, #100) ([46e84ba](https://github.com/intershop/intershop-pwa/commit/46e84ba))
+- extended multiple theme support to control system icons (e.g. favicon), manifest.webmanifest and theme-color as well (#88, #100) ([46e84ba](https://github.com/intershop/intershop-pwa/commit/46e84ba))
 - **schematics:** create facade skeleton when creating an extension ([c02d4d2](https://github.com/intershop/intershop-pwa/commit/c02d4d2))
 
 ### Bug Fixes
@@ -1991,7 +1991,7 @@ From PWA 6.0.0, we support semantic versioning.
 - add user friendly error message for "Forbidden (QuoteRequest is not editable)" with reload link (ISREST-943) ([671aad3](https://github.com/intershop/intershop-pwa/commit/671aad3))
 - correct "Thank you for your quote" page heading to "Thank you for your quote request" (ISREST-945) ([5067f93](https://github.com/intershop/intershop-pwa/commit/5067f93))
 - remove duplicated content on "Thank you for your quote request" page (ISREST-944) ([5efa993](https://github.com/intershop/intershop-pwa/commit/5efa993), [d506c8e](https://github.com/intershop/intershop-pwa/commit/d506c8e))
-- set correct URL for sharing product page via e-mail (#128, #138) ([a338c22](https://github.com/intershop/intershop-pwa/commit/a338c22))
+- set correct URL for sharing product page via email (#128, #138) ([a338c22](https://github.com/intershop/intershop-pwa/commit/a338c22))
 - respect selected category when switching variations on product detail page ([3a806f3](https://github.com/intershop/intershop-pwa/commit/3a806f3))
 - display localized product attribute names (#91, #107) ([3205ba5](https://github.com/intershop/intershop-pwa/commit/3205ba5))
 - display product labels on search result pages (#134) ([0062272](https://github.com/intershop/intershop-pwa/commit/0062272))
@@ -2023,7 +2023,7 @@ From PWA 6.0.0, we support semantic versioning.
 - add move-component schematic ([6b1523b](https://github.com/intershop/intershop-pwa/commit/6b1523b))
 - basket validation with adjustments on checkout shipping, review & payment page ([b04fadf](https://github.com/intershop/intershop-pwa/commit/b04fadf))
 - run Cypress e2e tests with GitHub actions ([996b5c1](https://github.com/intershop/intershop-pwa/commit/996b5c1))
-- extend ishServerHtml directive to handle links with callbacks, e.g., to open dialogs (#8) ([08416f7](https://github.com/intershop/intershop-pwa/commit/08416f7))
+- extend ishServerHtml directive to handle links with callbacks, e.g. to open dialogs (#8) ([08416f7](https://github.com/intershop/intershop-pwa/commit/08416f7))
 
 ### Bug Fixes
 
@@ -2095,7 +2095,7 @@ From PWA 6.0.0, we support semantic versioning.
 - add page meta information for SEO with ngx-meta (ISREST-913)
 - Open Source preparation (change license, add contributing information, update readme)
 - add confirmation for terms and conditions to registration page (ISREST-888)
-- add update password functionality (from generated e-mail link) to the forgot password handling
+- add update password functionality (from generated email link) to the forgot password handling
 - Google reCaptcha V3 support (ISREST-859)
 - fill contact us form with user details if user is logged in
 - tuning for nginx responses and caching
@@ -2178,7 +2178,7 @@ From PWA 6.0.0, we support semantic versioning.
 ### Features
 
 - show ratings for products (ISREST-817)
-- add forgot password functionality to request an e-mail with a password reset link (ISREST-844)
+- add forgot password functionality to request an email with a password reset link (ISREST-844)
 - improved searchbox with search suggest handling (ISREST-229)
 - enable a customer to redeem a promotion code in shopping cart and checkout (ISREST-697)
 - require old password when updating the user password
@@ -2189,7 +2189,7 @@ From PWA 6.0.0, we support semantic versioning.
 - add support for product links (ISREST-733)
 - provide visual feedback after adding a product to cart (ISREST-618)
 - display cms content in the modal dialogs 'Privacy Policy' and 'Safe & Secure' (ISREST-341)
-- enable captcha via feature toggle, e.g., for user registration (ISREST-77)
+- enable captcha via feature toggle, e.g. for user registration (ISREST-77)
 - server-side basket merging after login using a REST request (ISREST-276)
 - add support for retail sets (ISREST-689)
 - add support for product bundles (ISREST-683)
