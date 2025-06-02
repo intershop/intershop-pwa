@@ -10,6 +10,7 @@ kb_sync_latest_only
 ## From 6.0.0 to 7.0.0
 
 The Intershop PWA 7.0.0 release contains the **SPARQUE suggest** and **SPARQUE search** functionality to improve the product search in the PWA.
+The SPARQUE integration is disabled by default and requires a fitting SPARQUE configuration to enable it (for more details see the [SPARQUE.AI guide](./sparque-ai.md)).
 
 To introduce the optional SPARQUE integration in the PWA, the following changes were necessary that need to be considered when migrating the PWA.
 
@@ -23,6 +24,12 @@ The `SearchBoxComponent` was re-implemented as an Angular standalone component w
 With the introduction of the `SearchBoxComponent` as standalone component, its generated `LazySearchBoxComponent` is no longer needed and was therefore removed.
 The behavior of the search box was changed as well.
 Now the suggestion search will be dispatched once the search term has at least 3 letters (not for every character as before).
+
+The previously used `SuggestTerm` model was replaced by the `Keyword` model.
+
+| Previous                        | Current                                              |
+| ------------------------------- | ---------------------------------------------------- |
+| `SuggestTerm { term: string; }` | `Keyword { keyword: string;  totalCount?: number; }` |
 
 The `SuggestService` has a changed result format and is now included in the effects via newly introduced `SuggestionsServiceProvider`.
 
