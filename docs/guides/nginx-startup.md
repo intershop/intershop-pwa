@@ -332,6 +332,10 @@ The value supplied must be in the `time` format that is supported by [NGINX prox
 
 ### Shared Redis Cache
 
+> [!IMPORTANT]
+> The Shared Redis Cache functionality can currently not be used because of a `luarocks` installation issue (see [#1825](https://github.com/intershop/intershop-pwa/pull/1825)).
+> In addition the current connection with username and password needs to be changed to a token to actually work.
+
 Each NGINX has its own cache, so in a deployment with multiple NGINX (for redundancy) the cache hit rate is significantly lower than it could be.
 With the shared Redis cache the different NGINX instances push the cache to a shared Redis service and retrieve it from there.
 This way each NGINX profits from already rendered SSR results and the overall performance of such a deployment increases.

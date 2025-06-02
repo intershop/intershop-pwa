@@ -7,6 +7,11 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 7.0.0 to 7.1.0
+
+Because of installation problems with the used `luarocks` package manager we disabled the installation of the `lua-resty-redis-connector` that provides the functionality to connect to a shared Redis cache.
+Since this functionality can and was currently not yet used by any project, disabling it is not regarded to as a breaking change.
+
 ## From 6.0.0 to 7.0.0
 
 The Intershop PWA 7.0.0 release contains the **Sparque suggest** and **Sparque search** functionality to improve the product search in the PWA.
