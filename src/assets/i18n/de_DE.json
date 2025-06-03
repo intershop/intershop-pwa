@@ -904,6 +904,7 @@
   "cookies.banner.set_preferences": "Einstellungen anpassen",
   "cookies.banner.set_preferences.tooltip": "Mehr erfahren und Einstellungen anpassen",
   "cookies.banner.text": "Diese Website verwendet Cookies und andere Technologien, um unsere Website sicher zu halten, ihre Leistung zu messen, den Inhalt zu personalisieren und Ihre Nutzung unserer Website zu verbessern. Erfahren Sie mehr in unseren <a href=\"page://page.privacyPolicy.pagelet2-Page\">Datenschutzhinweisen</a>.",
+  "cookies.banner.title": "Cookie-Banner",
   "cookies.modal.accept_all": "Alle akzeptieren",
   "cookies.modal.cancel": "Abbrechen",
   "cookies.modal.save": "Einstellungen speichern",
