@@ -33,7 +33,16 @@
   </ng-container>
   <!-- show all/less -->
   <li class="filter-item" *ngIf="filterElement.limitCount !== -1 && facets.length > filterElement.limitCount">
-    <button type="button" class="btn btn-link btn-link-action" (click)="showAll = !showAll">
+    <button
+      type="button"
+      class="btn btn-link btn-link-action"
+      (click)="showAll = !showAll"
+      [attr.aria-label]="
+        showAll
+          ? ('search.filter.show_less.link.aria_label' | translate : { filterGroupName: filterElement.name })
+          : ('search.filter.show_all.link.aria_label' | translate : { filterGroupName: filterElement.name })
+      "
+    >
       {{ (showAll ? 'search.filter.show_less.link' : 'search.filter.show_all.link') | translate }}
     </button>
   </li>
