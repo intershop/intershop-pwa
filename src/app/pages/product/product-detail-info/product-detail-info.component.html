@@ -1,35 +1,47 @@
 <div *ngIf="product$ | async as product" class="section">
-  <ul ngbNav #nav="ngbNav" class="nav-tabs w-100" [(activeId)]="active" tabindex="-1">
-    <li [ngbNavItem]="'DESCRIPTION'" data-testing-id="product-description-tab" role="presentation">
-      <a ngbNavLink>{{ 'product.description.heading' | translate }}</a>
+  <nav
+    ngbNav
+    #nav="ngbNav"
+    class="nav-tabs w-100"
+    [(activeId)]="active"
+    [attr.aria-label]="'product.detail.infos.aria_label' | translate"
+  >
+    <!-- Description -->
+    <ng-container [ngbNavItem]="'DESCRIPTION'">
+      <a ngbNavLink data-testing-id="product-description-tab">{{ 'product.description.heading' | translate }}</a>
       <ng-template ngbNavContent>
         <div [ishServerHtml]="product.longDescription"></div>
       </ng-template>
-    </li>
+    </ng-container>
 
-    <li *ngIf="product.attributes?.length" [ngbNavItem]="'DETAILS'" role="presentation">
+    <!-- Details -->
+    <ng-container *ngIf="product.attributes?.length" [ngbNavItem]="'DETAILS'">
       <a ngbNavLink>{{ 'product.details.heading' | translate }}</a>
       <ng-template ngbNavContent>
         <ish-product-attributes [product]="product" />
       </ng-template>
-    </li>
+    </ng-container>
 
-    <li *ngIf="product.attachments?.length" [ngbNavItem]="'ATTACHMENTS'" role="presentation">
+    <!-- Documents -->
+    <ng-container *ngIf="product.attachments?.length" [ngbNavItem]="'ATTACHMENTS'">
       <a ngbNavLink>{{ 'product.attachments.heading' | translate }}</a>
       <ng-template ngbNavContent>
         <ish-product-attachments />
       </ng-template>
-    </li>
+    </ng-container>
 
+    <!-- Reviews -->
     <ng-container *ngIf="(isVariationMaster$ | async) === false">
-      <li *ishFeature="'rating'" [ngbNavItem]="'REVIEWS'" role="presentation">
-        <a ngbNavLink>{{ 'product.reviews.heading' | translate }} ({{ product.numberOfReviews }})</a>
+      <ng-container *ishFeature="'rating'" [ngbNavItem]="'REVIEWS'">
+        <a ngbNavLink data-testing-id="product-reviews-tab"
+          >{{ 'product.reviews.heading' | translate }} ({{ product.numberOfReviews }})</a
+        >
         <ng-template ngbNavContent>
           <ish-lazy-product-reviews />
         </ng-template>
-      </li>
+      </ng-container>
     </ng-container>
-  </ul>
+  </nav>
 
   <div [ngbNavOutlet]="nav"></div>
 </div>

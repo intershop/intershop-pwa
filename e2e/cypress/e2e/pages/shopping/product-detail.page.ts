@@ -116,7 +116,7 @@ export class ProductDetailPage {
   }
 
   infoNav(id: string) {
-    return cy.get('ish-product-detail-info li.nav-item').contains(id);
+    return cy.get('ish-product-detail-info .nav-item').contains(id);
   }
   changeVariationWithSelect(id: string, value: string) {
     cy.get(`[data-testing-id="${id}"]`).select(value);
