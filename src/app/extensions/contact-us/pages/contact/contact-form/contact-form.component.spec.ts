@@ -65,6 +65,7 @@ describe('Contact Form Component', () => {
     component.contactForm.get('order').setValue('456789');
     component.contactForm.get('subject').setValue('Return');
     component.contactForm.get('comment').setValue('want to return stuff');
+    component.contactForm.get('captcha').setValue(anything());
     component.submitForm();
     verify(emitter.emit(anything())).once();
   });

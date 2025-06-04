@@ -113,8 +113,16 @@ export class ContactFormComponent implements OnInit {
       },
       {
         type: 'ish-captcha-field',
+        key: 'captcha',
         props: {
           topic: 'contactUs',
+          required: true,
+          fieldClass: 'offset-md-4 col-md-8',
+        },
+        validation: {
+          messages: {
+            required: 'recaptcha.v2.incorrect.error',
+          },
         },
       },
     ];

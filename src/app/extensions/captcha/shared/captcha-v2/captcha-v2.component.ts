@@ -42,10 +42,6 @@ export class CaptchaV2Component implements OnInit {
   private get formControl(): AbstractControl {
     return this.parentForm?.get('captcha');
   }
-
-  get hasError(): boolean {
-    return this.formControl?.invalid && this?.formControl.dirty;
-  }
 }
 
 @NgModule({

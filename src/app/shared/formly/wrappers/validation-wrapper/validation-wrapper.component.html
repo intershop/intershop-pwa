@@ -1,4 +1,4 @@
-<div [class.has-error]="showError">
+<div *ngIf="field.type !== 'ish-captcha-field'; else captchaWrapper" [class.has-error]="showError">
   <ng-template #fieldComponent></ng-template>
   <ish-validation-icons
     *ngIf="showValidationIcons()"
@@ -13,3 +13,14 @@
     <ish-validation-message [field]="field" class="validation-message" />
   </ng-container>
 </div>
+<!-- wrapper for captcha deviates from the standard, has no label and doesn't need the validation icon -->
+<ng-template #captchaWrapper>
+  <div class="row form-group" [class.has-error]="showError">
+    <div [ngClass]="field.props?.fieldClass">
+      <ng-template #fieldComponent></ng-template>
+      <ng-container *ngIf="showError" class="invalid-feedback d-block">
+        <ish-validation-message [field]="field" class="validation-message" />
+      </ng-container>
+    </div>
+  </div>
+</ng-template>

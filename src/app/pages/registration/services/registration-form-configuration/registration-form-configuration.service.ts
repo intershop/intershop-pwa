@@ -130,8 +130,16 @@ export class RegistrationFormConfigurationService {
           },
           {
             type: 'ish-captcha-field',
+            key: 'captcha',
             props: {
               topic: 'register',
+              required: true,
+              fieldClass: 'offset-md-4 col-md-8',
+            },
+            validation: {
+              messages: {
+                required: 'recaptcha.v2.incorrect.error',
+              },
             },
           },
         ],
