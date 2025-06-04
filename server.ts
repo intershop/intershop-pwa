@@ -20,14 +20,27 @@ import * as client from 'prom-client';
 import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level';
 import { METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
 import { icmCallsCache } from './src/app/core/interceptors/universal-cache.interceptor';
-import { setGlobalDispatcher, Agent } from 'undici';
 
-// set undici as http client for HTTP/2 support
-setGlobalDispatcher(
-  new Agent({
-    allowH2: true,
-  })
-);
+// for HTTPClient withFetch() and allowing HTTP/2
+// undici global symbol are lazy loaded, so we need to trigger it first
+try {
+  fetch('data:;base64,');
+} catch (e) {}
+
+// Get the global agent
+const unidiciGlobalDispatcherSymbol = Symbol.for('undici.globalDispatcher.1');
+
+const agent = globalThis[unidiciGlobalDispatcherSymbol];
+
+// get the agent internal options
+const symbols = Object.getOwnPropertySymbols(agent);
+
+const [kOption] = symbols.filter(predicate => predicate.toString().includes('options'));
+
+const agentOptions = agent[kOption];
+
+// enable h2
+agentOptions.allowH2 = true;
 
 const collectDefaultMetrics = client.collectDefaultMetrics;
 
