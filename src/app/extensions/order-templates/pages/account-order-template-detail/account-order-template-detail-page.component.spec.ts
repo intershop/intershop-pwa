@@ -1,11 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
-import { anything, instance, mock, objectContaining, verify, when } from 'ts-mockito';
+import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
@@ -24,19 +21,17 @@ describe('Account Order Template Detail Page Component', () => {
   let fixture: ComponentFixture<AccountOrderTemplateDetailPageComponent>;
   let element: HTMLElement;
   let orderTemplatesFacade: OrderTemplatesFacade;
-  let initial: OrderTemplate;
 
   beforeEach(async () => {
     orderTemplatesFacade = mock(OrderTemplatesFacade);
     when(orderTemplatesFacade.currentOrderTemplateOutOfStockItems$).thenReturn(of([]));
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [
         AccountOrderTemplateDetailPageComponent,
         MockComponent(AccountOrderTemplateDetailLineItemComponent),
         MockComponent(ErrorMessageComponent),
-        MockComponent(FaIconComponent),
         MockComponent(OrderTemplatePreferencesDialogComponent),
         MockComponent(ProductAddToBasketComponent),
         MockDirective(ProductContextDirective),
@@ -49,13 +44,6 @@ describe('Account Order Template Detail Page Component', () => {
     fixture = TestBed.createComponent(AccountOrderTemplateDetailPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    initial = {
-      title: 'Order Template',
-      items: [{ sku: '123', desiredQuantity: { value: 1 } }],
-      itemsCount: 1,
-    } as OrderTemplate;
-
-    when(orderTemplatesFacade.currentOrderTemplate$).thenReturn(of(initial));
   });
 
   it('should be created', () => {
@@ -86,11 +74,11 @@ describe('Account Order Template Detail Page Component', () => {
       fixture.detectChanges();
 
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-        [
-          "ish-error-message",
-          "fa-icon",
-        ]
-      `);
+          [
+            "ish-error-message",
+            "ish-order-template-preferences-dialog",
+          ]
+        `);
     });
   });
 
@@ -111,9 +99,9 @@ describe('Account Order Template Detail Page Component', () => {
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
         [
           "ish-error-message",
-          "fa-icon",
           "ish-account-order-template-detail-line-item",
           "ish-product-add-to-basket",
+          "ish-order-template-preferences-dialog",
         ]
       `);
     });
@@ -129,58 +117,6 @@ describe('Account Order Template Detail Page Component', () => {
       fixture.detectChanges();
 
       expect(element.querySelector('[data-testing-id="out-of-stock-warning"]')).toBeTruthy();
-    });
-
-    it('should set the title of the order template', () => {
-      fixture.detectChanges();
-
-      expect(component.titleControl.value).toEqual('Order Template');
-    });
-
-    it('should display title input when edit mode is triggered', async () => {
-      component.startEditTitle();
-      fixture.detectChanges();
-      await fixture.whenStable();
-      fixture.detectChanges();
-      expect(element.querySelector('[data-testing-id="order-template-title-input"]')).toBeTruthy();
-    });
-
-    it('should cancel editing and reset titleControl on cancel', async () => {
-      component.startEditTitle();
-      fixture.detectChanges();
-      await fixture.whenStable();
-      fixture.detectChanges();
-
-      component.titleControl.setValue('Changed');
-      const cancelButton: HTMLElement = element.querySelector('[data-testing-id="order-template-title-cancel"]');
-      cancelButton.click();
-      fixture.detectChanges();
-
-      expect(component.editingTitle).toBeFalse();
-      expect(component.titleControl.value).toEqual('Order Template');
-    });
-
-    it('should dispatch updateOrderTemplate on save (direct)', () => {
-      fixture.detectChanges();
-
-      component.startEditTitle();
-
-      component.titleControl.setValue('New Title');
-
-      component.saveTitle();
-
-      verify(orderTemplatesFacade.updateOrderTemplate(anything())).once();
-      verify(
-        orderTemplatesFacade.updateOrderTemplate(
-          objectContaining({
-            title: 'New Title',
-            items: initial.items,
-            itemsCount: initial.itemsCount,
-          })
-        )
-      ).once();
-
-      expect(component.editingTitle).toBeFalse();
     });
   });
 });
