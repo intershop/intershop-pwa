@@ -10,7 +10,7 @@ import { toArray } from 'rxjs/operators';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
-import { PagingData } from 'ish-core/models/paging/paging.model';
+import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
@@ -47,7 +47,7 @@ const costCenters = [
   { costCenterId: '2' },
 ] as CostCenter[];
 
-const paging = { offset: 0, limit: 30, total: 100 } as PagingData;
+const paging = { offset: 0, limit: 30, total: 100 } as PagingInfo;
 
 describe('Cost Centers Effects', () => {
   let actions$: Observable<Action>;

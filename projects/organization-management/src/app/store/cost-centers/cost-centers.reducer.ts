@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { PagingData } from 'ish-core/models/paging/paging.model';
+import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
 import {
@@ -44,7 +44,7 @@ export const costCentersAdapter = createEntityAdapter<CostCenter>({
 export interface CostCentersState extends EntityState<CostCenter> {
   loading: boolean;
   error: HttpError;
-  paging: PagingData;
+  paging: PagingInfo;
 }
 
 const initialState: CostCentersState = costCentersAdapter.getInitialState({

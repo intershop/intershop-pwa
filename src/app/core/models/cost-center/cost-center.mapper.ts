@@ -1,30 +1,36 @@
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
-import { Link } from 'ish-core/models/link/link.model';
-import { PagingData } from 'ish-core/models/paging/paging.model';
 
-import { CostCenterBaseData, CostCenterData } from './cost-center.interface';
-import { CostCenter, CostCenterInformation } from './cost-center.model';
+import { CostCenterData, CostCenterListData } from './cost-center.interface';
+import { CostCenter, CostCenters } from './cost-center.model';
 
 export class CostCenterMapper {
-  /* map cost center data from link list attributes,
-  some data are missing like orders or buyer assignments that have to be fetched with the details call */
-  static fromListData(data: Link[]): CostCenter[] {
-    if (!data?.length) {
-      return [];
+  /**
+   * map cost center data from link list attributes,
+   * some data are missing like orders or buyer assignments that have to be fetched with the details call
+   */
+  static fromListData(data: CostCenterListData): CostCenters {
+    let costCenters: CostCenter[] = [];
+
+    if (data.data?.length) {
+      costCenters = data.data.map(cc => ({
+        id: cc.itemId,
+        costCenterId: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'costCenterId'),
+        name: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'name'),
+        active: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'active'),
+        costCenterOwner: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'costCenterOwner'),
+        budget: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'budget'),
+        budgetPeriod: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'budgetPeriod'),
+        pendingOrders: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'pendingOrders'),
+        approvedOrders: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'approvedOrders'),
+        spentBudget: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'spentBudget'),
+        remainingBudget: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'remainingBudget'),
+      }));
     }
-    return data.map(cc => ({
-      id: cc.itemId,
-      costCenterId: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'costCenterId'),
-      name: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'name'),
-      active: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'active'),
-      costCenterOwner: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'costCenterOwner'),
-      budget: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'budget'),
-      budgetPeriod: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'budgetPeriod'),
-      pendingOrders: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'pendingOrders'),
-      approvedOrders: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'approvedOrders'),
-      spentBudget: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'spentBudget'),
-      remainingBudget: AttributeHelper.getAttributeValueByAttributeName(cc.attributes, 'remainingBudget'),
-    }));
+
+    return {
+      costCenters,
+      paging: data.info,
+    };
   }
 
   static fromData(data: CostCenterData): CostCenter {
@@ -54,24 +60,6 @@ export class CostCenterMapper {
       };
     } else {
       throw new Error(`'costCenterData' is required for the mapping`);
-    }
-  }
-
-  static fromBaseData(payload: CostCenterBaseData): CostCenterInformation {
-    return {
-      costCenters: CostCenterMapper.fromListData(payload.data),
-      paging: CostCenterMapper.fromInfo(payload),
-    };
-  }
-
-  private static fromInfo(payload: CostCenterBaseData): PagingData {
-    if (payload.info) {
-      const { info } = payload;
-      return {
-        limit: info.limit,
-        offset: info.offset,
-        total: info.total,
-      };
     }
   }
 }

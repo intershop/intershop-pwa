@@ -8,15 +8,15 @@ import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
-import { PagingData } from 'ish-core/models/paging/paging.model';
+import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { BudgetInfoComponent } from '../../components/budget-info/budget-info.component';
 import { CostCenterBudgetComponent } from '../../components/cost-center-budget/cost-center-budget.component';
-import { CostCentersFilterComponent } from '../../components/cost-centers-filter/cost-centers-filter.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
+import { CostCentersFilterComponent } from './cost-centers-filter/cost-centers-filter.component';
 import { CostCentersPageComponent } from './cost-centers-page.component';
 
 describe('Cost Centers Page Component', () => {
@@ -31,11 +31,11 @@ describe('Cost Centers Page Component', () => {
     { id: '678', name: 'cost center 3', active: true, paginationPosition: 3 },
   ] as CostCenter[];
 
-  const pagingData = {
+  const pagingInfo = {
     offset: 0,
     limit: 30,
     total: 3,
-  } as PagingData;
+  } as PagingInfo;
 
   beforeEach(async () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
@@ -54,7 +54,7 @@ describe('Cost Centers Page Component', () => {
     }).compileComponents();
 
     when(organizationManagementFacade.costCenters$).thenReturn(of(costCenters));
-    when(organizationManagementFacade.costCentersPagingData$).thenReturn(of(pagingData));
+    when(organizationManagementFacade.costCentersPagingInfo$).thenReturn(of(pagingInfo));
     when(organizationManagementFacade.isCostCenterEditable(anything())).thenReturn(of(true));
   });
 

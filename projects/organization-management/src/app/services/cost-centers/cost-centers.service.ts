@@ -4,18 +4,19 @@ import { Store, select } from '@ngrx/store';
 import { Observable, forkJoin, throwError } from 'rxjs';
 import { concatMap, map, switchMap, take } from 'rxjs/operators';
 
-import { CostCenterQuery } from 'ish-core/models/cost-center-query/cost-center-query.model';
-import { CostCenterBaseData, CostCenterData } from 'ish-core/models/cost-center/cost-center.interface';
+import { CostCenterData, CostCenterListData } from 'ish-core/models/cost-center/cost-center.interface';
 import { CostCenterMapper } from 'ish-core/models/cost-center/cost-center.mapper';
 import {
   CostCenter,
   CostCenterBase,
   CostCenterBuyer,
-  CostCenterInformation,
+  CostCenters,
 } from 'ish-core/models/cost-center/cost-center.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
+
+import { CostCenterQuery } from '../../models/cost-center-query/cost-center-query.model';
 
 @Injectable({ providedIn: 'root' })
 export class CostCentersService {
@@ -34,9 +35,10 @@ export class CostCentersService {
   /**
    * Get all cost centers of a customer. The current user is expected to have permission APP_B2B_VIEW_COSTCENTER.
    *
-   * @returns               All cost centers of the customer.
+   * @param     query  The cost center query.
+   * @returns          Cost centers of the customer for the given query including paging information.
    */
-  getCostCenters(query: CostCenterQuery): Observable<CostCenterInformation> {
+  getCostCenters(query: CostCenterQuery): Observable<CostCenters> {
     const params = new HttpParams()
       .set('offset', query.offset ? query.offset : 0)
       .set('limit', query.limit ? query.limit : 25)
@@ -45,11 +47,11 @@ export class CostCentersService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .get<CostCenterBaseData>(`customers/${this.apiService.encodeResourceId(customer.customerNo)}/costcenters`, {
+          .get<CostCenterListData>(`customers/${this.apiService.encodeResourceId(customer.customerNo)}/costcenters`, {
             headers: this.costCenterHeaders,
             params,
           })
-          .pipe(map(CostCenterMapper.fromBaseData))
+          .pipe(map(CostCenterMapper.fromListData))
       )
     );
   }

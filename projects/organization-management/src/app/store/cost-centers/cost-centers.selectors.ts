@@ -12,7 +12,7 @@ export const getCostCentersLoading = createSelector(getCostCentersState, state =
 
 export const getCostCentersError = createSelector(getCostCentersState, state => state.error);
 
-export const getCostCentersPagingData = createSelector(getCostCentersState, state => state.paging);
+export const getCostCentersPagingInfo = createSelector(getCostCentersState, state => state.paging);
 
 const { selectAll, selectEntities } = costCentersAdapter.getSelectors(getCostCentersState);
 

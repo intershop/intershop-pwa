@@ -4,7 +4,6 @@ import { differenceBy } from 'lodash-es';
 import { Observable, combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
-import { CostCenterQuery } from 'ish-core/models/cost-center-query/cost-center-query.model';
 import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { getUserPermissions, getUserRoles } from 'ish-core/store/customer/authorization';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
@@ -12,6 +11,7 @@ import { toObservable } from 'ish-core/utils/functions';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { B2bUser } from '../models/b2b-user/b2b-user.model';
+import { CostCenterQuery } from '../models/cost-center-query/cost-center-query.model';
 import { UserBudget } from '../models/user-budget/user-budget.model';
 import {
   getCurrentUserBudget,
@@ -27,7 +27,7 @@ import {
   getCostCenters,
   getCostCentersError,
   getCostCentersLoading,
-  getCostCentersPagingData,
+  getCostCentersPagingInfo,
   getSelectedCostCenter,
   loadCostCenters,
   updateCostCenter,
@@ -69,7 +69,7 @@ export class OrganizationManagementFacade {
   costCentersError$ = this.store.pipe(select(getCostCentersError));
   costCentersLoading$ = this.store.pipe(select(getCostCentersLoading));
   selectedCostCenter$ = this.store.pipe(select(getSelectedCostCenter));
-  costCentersPagingData$ = this.store.pipe(select(getCostCentersPagingData));
+  costCentersPagingInfo$ = this.store.pipe(select(getCostCentersPagingInfo));
 
   /**
    * user methods

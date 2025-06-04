@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
-import { concatMap, exhaustMap, map, mergeMap } from 'rxjs/operators';
+import { concatMap, exhaustMap, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages/messages.actions';
 import { selectRouteParam } from 'ish-core/store/core/router';
@@ -51,9 +51,11 @@ export class CostCentersEffects {
     this.actions$.pipe(
       ofType(loadCostCenters),
       mapToPayload(),
-      mergeMap(payload =>
+      switchMap(payload =>
         this.costCentersService.getCostCenters(payload.query).pipe(
-          map(info => loadCostCentersSuccess({ costCenters: info.costCenters, paging: info.paging })),
+          map(costCenters =>
+            loadCostCentersSuccess({ costCenters: costCenters.costCenters, paging: costCenters.paging })
+          ),
           mapErrorToAction(loadCostCentersFail)
         )
       )

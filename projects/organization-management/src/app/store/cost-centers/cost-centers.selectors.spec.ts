@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
-import { PagingData } from 'ish-core/models/paging/paging.model';
+import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
@@ -91,7 +91,7 @@ describe('Cost Centers Selectors', () => {
         offset: 0,
         limit: 30,
         total: 3,
-      } as PagingData;
+      } as PagingInfo;
       const successAction = loadCostCentersSuccess({ costCenters, paging });
 
       beforeEach(() => {
@@ -143,7 +143,7 @@ describe('Cost Centers Selectors', () => {
         offset: 0,
         limit: 30,
         total: 2,
-      } as PagingData;
+      } as PagingInfo;
       const successAction = loadCostCentersSuccess({ costCenters, paging });
       store$.dispatch(successAction);
     });

@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, combineLatest, map, of, take } from 'rxjs';
 
-import { CostCenterQuery } from 'ish-core/models/cost-center-query/cost-center-query.model';
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { PagingData } from 'ish-core/models/paging/paging.model';
+import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
+import { CostCenterQuery } from '../../models/cost-center-query/cost-center-query.model';
 
 type CostCenterColumnsType = 'costCenterId' | 'costCenterName' | 'costCenterManager' | 'costCenterBudget' | 'actions';
 
@@ -22,7 +22,7 @@ export class CostCentersPageComponent implements OnInit {
   costCentersError$: Observable<HttpError>;
   costCentersLoading$: Observable<boolean>;
   costCentersForPage$: Observable<CostCenter[]>;
-  pagingData$: Observable<PagingData>;
+  pagingInfo$: Observable<PagingInfo>;
   pageSize = 25;
 
   private activeFilters: Partial<CostCenterQuery> = {};
@@ -49,7 +49,7 @@ export class CostCentersPageComponent implements OnInit {
     this.costCenters$ = this.organizationManagementFacade.costCenters$;
     this.costCentersError$ = this.organizationManagementFacade.costCentersError$;
     this.costCentersLoading$ = this.organizationManagementFacade.costCentersLoading$;
-    this.pagingData$ = this.organizationManagementFacade.costCentersPagingData$;
+    this.pagingInfo$ = this.organizationManagementFacade.costCentersPagingInfo$;
     this.getCostCentersForPage();
   }
 

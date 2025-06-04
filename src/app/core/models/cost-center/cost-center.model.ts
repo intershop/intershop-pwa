@@ -1,5 +1,5 @@
 import { Order } from 'ish-core/models/order/order.model';
-import { PagingData } from 'ish-core/models/paging/paging.model';
+import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { Price } from 'ish-core/models/price/price.model';
 
 export interface CostCenterBuyer {
@@ -42,7 +42,7 @@ export interface CostCenter extends CostCenterBase {
   paginationPosition?: number;
 }
 
-export interface CostCenterInformation {
+export interface CostCenters {
   costCenters: CostCenter[];
-  paging: PagingData;
+  paging: PagingInfo;
 }
