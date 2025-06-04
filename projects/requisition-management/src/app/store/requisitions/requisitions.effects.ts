@@ -114,22 +114,20 @@ export class RequisitionsEffects {
       concatMap(({ requisitionId, status, approvalComment }) =>
         this.requisitionsService.updateRequisitionStatus(requisitionId, status, approvalComment).pipe(
           mergeMap(requisition => {
-            const baseActions: Action[] = [
+            const actions: Action[] = [
               updateRequisitionStatusSuccess({ requisition }),
               loadRequisitions({ view: 'approver', status: 'PENDING' }),
-              displaySuccessMessage({
-                message: `approval.order_${requisition.approval.statusCode.toLowerCase()}.text`,
-              }),
             ];
-            const infoActions =
-              requisition.approval.statusCode === 'PENDING'
-                ? [displayInfoMessage({ message: 'approval.order_partially_approved.text' })]
-                : [];
-
-            if (infoActions.length > 0) {
-              return infoActions;
+            if (requisition.approval.statusCode === 'PENDING') {
+              actions.push(displayInfoMessage({ message: 'approval.order_partially_approved.text' }));
+            } else {
+              actions.push(
+                displaySuccessMessage({
+                  message: `approval.order${requisition.approval.statusCode.toLowerCase()}.text`,
+                })
+              );
             }
-            return baseActions;
+            return actions;
           }),
           catchError(error =>
             of(

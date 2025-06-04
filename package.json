@@ -71,6 +71,7 @@
     "@angular/service-worker": "^16.2.12",
     "@fortawesome/angular-fontawesome": "^0.13.0",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@googlemaps/js-api-loader": "^1.16.8",
     "@ng-bootstrap/ng-bootstrap": "^11.0.1",

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { config } from '@fortawesome/fontawesome-svg-core';
+import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import {
   faAddressBook,
   faAngleDown,
@@ -125,7 +126,8 @@ export class IconModule {
       faTriangleExclamation,
       faUndo,
       faUser,
-      faUserCheck
+      faUserCheck,
+      faCircleXmark
     );
   }
 }
