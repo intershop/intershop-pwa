@@ -955,6 +955,7 @@
   "form.password.error.invalid": "Das Kennwort muss sowohl Buchstaben als auch Ziffern enthalten. Leerzeichen sind nicht erlaubt.",
   "form.password.error.required": "Bitte geben Sie ein Kennwort ein.",
   "form.password.show.button.label": "Kennwort anzeigen",
+  "form.password.show.button.label.hide": "Kennwort ausblenden",
   "form.phone.error.invalid": "Bitte geben Sie eine gültige Telefonnummer an.",
   "form.phone.error.required": "Bitte geben Sie Ihre Telefonnummer an.",
   "header.navigation.collapse_category.aria_label": "Kategorie {{0}} zuklappen",
