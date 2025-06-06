@@ -21,7 +21,11 @@ export class UniversalErrorHandler implements ErrorHandler {
     if (error instanceof HttpErrorResponse) {
       console.error('ERROR', error.message);
     } else if (error instanceof Error) {
-      console.error('ERROR', error.name, error.message, error.stack?.split('\n')?.[1]?.trim());
+      if (error.message.startsWith('Uncaught (in promise): AbortError')) {
+        console.log('Ignoring AbortError');
+      } else {
+        console.error('ERROR', error.name, error.message, error.stack?.split('\n')?.[1]?.trim());
+      }
     } else if (typeof error === 'object') {
       try {
         console.error('ERROR', JSON.stringify(error));
