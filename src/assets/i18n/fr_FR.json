@@ -1026,7 +1026,7 @@
   "product.compare.table_header.product_id.text": "ID de produit",
   "product.compare.table_header.product_image_and_name.text": "Image et nom du produit",
   "product.description.heading": "Description",
-  "product.detail.infos.aria_label": "Product detail infos",
+  "product.detail.infos.aria_label": "Informations détaillées sur le produit",
   "product.details.company.label": "Rechercher dans la boutique en ligne : {{0}}",
   "product.details.heading": "Détails",
   "product.email_a_friend.link": "Envoyer un courriel à un(e) ami(e)",
