@@ -1,10 +1,15 @@
 <div class="product-notifications">
-  <h1 id="product-notifications-heading">{{ 'account.notifications.heading' | translate }}</h1>
+  <h1>{{ 'account.notifications.heading' | translate }}</h1>
 
   <!-- Error message -->
   <ish-error-message [error]="productNotificationsError$ | async" />
 
-  <nav ngbNav class="nav-tabs" [(activeId)]="active" aria-labelledby="product-notifications-heading">
+  <nav
+    ngbNav
+    class="nav-tabs"
+    [(activeId)]="active"
+    [attr.aria-label]="'account.notifications.tabs.aria_label' | translate"
+  >
     <!-- Price notifications -->
     <ng-container ngbNavItem="price">
       <a

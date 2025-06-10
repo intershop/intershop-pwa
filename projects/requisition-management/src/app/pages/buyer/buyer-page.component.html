@@ -1,8 +1,13 @@
-<h1 id="requisitions-heading">{{ 'account.requisitions.requisitions' | translate }}</h1>
+<h1>{{ 'account.requisitions.requisitions' | translate }}</h1>
 
 <p>{{ 'account.requisitions.requisitions.text' | translate }}</p>
 
-<nav ngbNav class="nav-tabs" [(activeId)]="status" aria-labelledby="requisitions-heading">
+<nav
+  ngbNav
+  class="nav-tabs"
+  [(activeId)]="status"
+  [attr.aria-label]="'account.requisitions.requisitions.tabs.aria_label' | translate"
+>
   <!-- Pending Requisitions -->
   <ng-container ngbNavItem="PENDING" role="presentation">
     <a ngbNavLink [routerLink]="['../buyer', { status: 'PENDING' }]" data-testing-id="tab-link-pending">{{

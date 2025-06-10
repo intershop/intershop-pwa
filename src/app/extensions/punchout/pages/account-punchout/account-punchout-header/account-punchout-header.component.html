@@ -1,5 +1,5 @@
 <div class="d-flex align-items-center justify-content-between flex-wrap">
-  <h1 id="punchout-heading">{{ 'account.punchout.heading' | translate }}</h1>
+  <h1>{{ 'account.punchout.heading' | translate }}</h1>
 
   <a *ngIf="selectedType === 'oci'" routerLink="configuration" class="btn btn-secondary m-0">{{
     'account.punchout.configuration.button.label' | translate
@@ -15,7 +15,12 @@
 </ng-template>
 
 <div *ngIf="punchoutTypes?.length > 1">
-  <nav ngbNav class="nav-tabs section" [(activeId)]="selectedType" aria-labelledby="punchout-heading">
+  <nav
+    ngbNav
+    class="nav-tabs section"
+    [(activeId)]="selectedType"
+    [attr.aria-label]="'account.punchout.type.tabs.aria_label' | translate"
+  >
     <ng-container *ngFor="let type of punchoutTypes" [ngbNavItem]="type">
       <a
         ngbNavLink
