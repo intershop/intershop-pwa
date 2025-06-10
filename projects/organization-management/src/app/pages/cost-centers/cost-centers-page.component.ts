@@ -25,7 +25,7 @@ export class CostCentersPageComponent implements OnInit {
   pagingData$: Observable<PagingData>;
   pageSize = 25;
 
-  private activeFilters: Partial<CostCenterQuery>;
+  private activeFilters: Partial<CostCenterQuery> = {};
   private destroyRef = inject(DestroyRef);
   private pageNumberSubject = new BehaviorSubject<number>(1);
   pageNumber$ = this.pageNumberSubject.asObservable();
@@ -113,5 +113,9 @@ export class CostCentersPageComponent implements OnInit {
 
   isDeletable(costCenter: CostCenter): Observable<boolean> {
     return this.organizationManagementFacade.isCostCenterEditable(of(costCenter));
+  }
+
+  get filtersActive(): boolean {
+    return Object.keys(this.activeFilters).length > 0;
   }
 }

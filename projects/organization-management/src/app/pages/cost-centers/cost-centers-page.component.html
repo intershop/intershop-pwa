@@ -158,7 +158,13 @@
 
     <!-- Empty List -->
     <ng-template #emptyList>
-      <p data-testing-id="emptyList">{{ 'account.costcenter.list.noitems' | translate }}</p>
+      <p data-testing-id="emptyList">
+        {{
+          !filtersActive
+            ? ('account.costcenter.list.noitems' | translate)
+            : ('account.costcenter.filter.no_results_found_message' | translate)
+        }}
+      </p>
     </ng-template>
   </ng-container>
 
