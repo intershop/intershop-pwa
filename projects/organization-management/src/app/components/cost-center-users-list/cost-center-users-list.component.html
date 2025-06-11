@@ -8,7 +8,7 @@
     >
       <!-- Buyer Name -->
       <ng-container cdkColumnDef="buyerName">
-        <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-buyer-name">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-buyer-name">
           {{ 'account.costcenter.details.buyers.list.header.name' | translate }}
         </th>
         <td
@@ -30,7 +30,7 @@
 
       <!-- Orders -->
       <ng-container cdkColumnDef="orders">
-        <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-orders">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-orders">
           {{ 'account.costcenter.details.buyers.list.header.approvedorders' | translate }}
         </th>
         <td
@@ -44,7 +44,7 @@
 
       <!-- Pending Orders -->
       <ng-container cdkColumnDef="pendingOrders">
-        <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-pending-orders">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-pending-orders">
           {{ 'account.costcenter.details.buyers.list.header.pendingorders' | translate }}
         </th>
         <td
@@ -58,7 +58,7 @@
 
       <!-- Budget -->
       <ng-container cdkColumnDef="budget">
-        <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-user-budget">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-user-budget">
           {{ 'account.costcenter.details.buyers.list.header.orderspendlimit' | translate }}
         </th>
         <td
@@ -73,7 +73,7 @@
       </ng-container>
 
       <ng-container cdkColumnDef="actions">
-        <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-cost-center-buyers-actions"></th>
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-cost-center-buyers-actions"></th>
         <td cdk-cell *cdkCellDef="let buyer" class="column-price">
           <!-- Edit buyer -->
           <button

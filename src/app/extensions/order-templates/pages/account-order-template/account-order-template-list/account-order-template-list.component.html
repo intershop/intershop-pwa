@@ -7,7 +7,7 @@
   >
     <!-- Order template name -->
     <ng-container cdkColumnDef="title">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-title">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-title">
         {{ 'account.order_template.list.table.template' | translate }}
       </th>
       <td
@@ -23,7 +23,7 @@
 
     <!-- Creation date -->
     <ng-container cdkColumnDef="creationDate">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-creation-date">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-creation-date">
         {{ 'account.order_template.list.table.created' | translate }}
       </th>
       <td
@@ -37,7 +37,7 @@
 
     <!-- Number of line items -->
     <ng-container cdkColumnDef="lineItems">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-line-items">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-line-items">
         {{ 'account.order_template.list.table.item' | translate }}
       </th>
       <td
@@ -51,7 +51,7 @@
 
     <!-- Actions -->
     <ng-container cdkColumnDef="actions">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-actions"></th>
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-actions"></th>
       <td cdk-cell *cdkCellDef="let orderTemplate" class="column-price">
         <a *ngIf="orderTemplate.items?.length" class="btn-tool d-inline-flex align-top">
           <ish-product-add-to-basket

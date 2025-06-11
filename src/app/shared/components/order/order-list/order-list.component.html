@@ -3,7 +3,7 @@
     <table cdk-table [dataSource]="orders" class="table table-lg mobile-optimized">
       <!-- Order creation date -->
       <ng-container cdkColumnDef="creationDate">
-        <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-creation-date">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-creation-date">
           {{ 'account.orderlist.table.date_of_order' | translate }}
         </th>
         <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.date_of_order' | translate">
@@ -13,7 +13,7 @@
 
       <!-- Order number -->
       <ng-container cdkColumnDef="orderNo">
-        <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-number">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-number">
           <span aria-hidden="true">{{ 'account.orderlist.table.order_number' | translate }}</span>
           <span class="sr-only">{{ 'account.orderlist.table.order_number.title' | translate }}</span>
         </th>
@@ -27,7 +27,7 @@
       </ng-container>
 
       <ng-container cdkColumnDef="orderNoWithLink">
-        <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-number">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-number">
           <span aria-hidden="true">{{ 'account.orderlist.table.order_number' | translate }}</span>
           <span class="sr-only">{{ 'account.orderlist.table.order_number.title' | translate }}</span>
         </th>
@@ -42,7 +42,7 @@
 
       <!-- Buyer -->
       <ng-container cdkColumnDef="buyer">
-        <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-buyer">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-buyer">
           {{ 'account.orderlist.table.buyer' | translate }}
         </th>
         <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.buyer' | translate">
@@ -52,7 +52,7 @@
 
       <!-- Number of Items  -->
       <ng-container cdkColumnDef="lineItems">
-        <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-items">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-items">
           {{ 'account.orderlist.table.items' | translate }}
         </th>
         <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.items' | translate">
@@ -62,7 +62,7 @@
 
       <!-- Status  -->
       <ng-container cdkColumnDef="status">
-        <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-status">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-status">
           {{ 'account.orderlist.table.order_status' | translate }}
         </th>
         <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.order_status' | translate">
@@ -72,7 +72,7 @@
 
       <!-- Destination  -->
       <ng-container cdkColumnDef="destination">
-        <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-destination">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-destination">
           {{ 'account.orderlist.table.destination' | translate }}
         </th>
         <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.destination' | translate">
@@ -82,7 +82,7 @@
 
       <!-- Order total  -->
       <ng-container cdkColumnDef="orderTotal">
-        <th cdk-header-cell *cdkHeaderCellDef class="text-right" data-testing-id="th-order-total">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef class="text-right" data-testing-id="th-order-total">
           {{ 'account.orderlist.table.order_total' | translate }}
         </th>
         <td
