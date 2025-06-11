@@ -112,21 +112,21 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "intershop-pwa:build"
+            "buildTarget": "intershop-pwa:build"
           },
           "defaultConfiguration": "b2b,development",
           "configurations": {
             "production": {
-              "browserTarget": "intershop-pwa:build:production"
+              "buildTarget": "intershop-pwa:build:production"
             },
             "development": {
-              "browserTarget": "intershop-pwa:build:development"
+              "buildTarget": "intershop-pwa:build:development"
             },
             "b2b": {
-              "browserTarget": "intershop-pwa:build:b2b"
+              "buildTarget": "intershop-pwa:build:b2b"
             },
             "b2c": {
-              "browserTarget": "intershop-pwa:build:b2c"
+              "buildTarget": "intershop-pwa:build:b2c"
             }
           }
         },
@@ -169,17 +169,17 @@
         "serve-ssr": {
           "builder": "@angular-devkit/build-angular:ssr-dev-server",
           "options": {
-            "browserTarget": "intershop-pwa:build",
+            "buildTarget": "intershop-pwa:build",
             "serverTarget": "intershop-pwa:server"
           },
           "defaultConfiguration": "b2b",
           "configurations": {
             "b2b": {
-              "browserTarget": "intershop-pwa:build:b2b,development",
+              "buildTarget": "intershop-pwa:build:b2b,development",
               "serverTarget": "intershop-pwa:server:b2b,development"
             },
             "b2c": {
-              "browserTarget": "intershop-pwa:build:b2c,development",
+              "buildTarget": "intershop-pwa:build:b2c,development",
               "serverTarget": "intershop-pwa:server:b2c,development"
             }
           }
@@ -228,7 +228,7 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "organization-management:build"
+            "buildTarget": "organization-management:build"
           }
         }
       }
@@ -275,7 +275,7 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "requisition-management:build"
+            "buildTarget": "requisition-management:build"
           }
         }
       }

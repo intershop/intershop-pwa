@@ -29,11 +29,11 @@ for (const project in angularJson.projects) {
 const architect = angularJson.projects[project].architect;
 architect.build.configurations[theme] = {};
 architect.serve.configurations[theme] = {
-  browserTarget: 'intershop-pwa:build:' + theme,
+  buildTarget: 'intershop-pwa:build:' + theme,
 };
 architect.server.configurations[theme] = {};
 architect['serve-ssr'].configurations[theme] = {
-  browserTarget: `intershop-pwa:build:${theme},development`,
+  buildTarget: `intershop-pwa:build:${theme},development`,
   serverTarget: `intershop-pwa:server:${theme},development`,
 };
 
