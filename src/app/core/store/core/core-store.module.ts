@@ -13,6 +13,7 @@ import { CoreState } from './core-store';
 import { ErrorEffects } from './error/error.effects';
 import { errorReducer } from './error/error.reducer';
 import { MessagesEffects } from './messages/messages.effects';
+import { RouterEffects } from './router/router.effects';
 import { CustomRouterSerializer } from './router/router.serializer';
 import { ServerConfigEffects } from './server-config/server-config.effects';
 import { serverConfigReducer } from './server-config/server-config.reducer';
@@ -27,7 +28,14 @@ const coreReducers: ActionReducerMap<CoreState> = {
   serverConfig: serverConfigReducer,
 };
 
-const coreEffects = [ErrorEffects, ViewconfEffects, ConfigurationEffects, MessagesEffects, ServerConfigEffects];
+const coreEffects = [
+  ErrorEffects,
+  ViewconfEffects,
+  ConfigurationEffects,
+  MessagesEffects,
+  ServerConfigEffects,
+  RouterEffects,
+];
 
 const coreMetaReducers: MetaReducer<CoreState>[] = [
   ngrxStateTransferMeta,
