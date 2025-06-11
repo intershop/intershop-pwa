@@ -22,11 +22,16 @@
           >{{ 'quote.edit.unsubmitted.name.label' | translate }}:</label
         >
         <div class="col-8 col-md-9 col-xl-10">
-          <ish-in-place-edit (edited)="update()" (aborted)="reset()" ariaLabelName="quote.edit.unsubmitted.name.label">
-            <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('displayName').value }">
+          <ish-in-place-edit
+            (edited)="update()"
+            (aborted)="reset()"
+            ariaLabelName="quote.edit.unsubmitted.name.label"
+            alignment="baseline"
+          >
+            <p viewModeContent class="w-auto" [ngClass]="{ 'font-italic': !form.get('displayName').value }">
               {{ form.get('displayName').value || 'quote.edit.unsubmitted.enter_an_optional_name.text' | translate }}
             </p>
-            <input type="text" formControlName="displayName" class="form-control" id="quote-displayname" />
+            <input editModeForm type="text" formControlName="displayName" class="form-control" id="quote-displayname" />
           </ish-in-place-edit>
         </div>
       </div>
@@ -41,11 +46,13 @@
             (edited)="update()"
             (aborted)="reset()"
             ariaLabelName="quote.edit.unsubmitted.comment.label"
+            alignment="baseline"
           >
-            <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('description').value }">
+            <p viewModeContent class="w-auto" [ngClass]="{ 'font-italic': !form.get('description').value }">
               {{ form.get('description').value || 'quote.edit.unsubmitted.provide_comment.text' | translate }}
             </p>
-            <textarea formControlName="description" class="form-control" id="quote-description"> </textarea>
+            <textarea editModeForm formControlName="description" class="form-control" id="quote-description">
+            </textarea>
           </ish-in-place-edit>
         </div>
       </div>

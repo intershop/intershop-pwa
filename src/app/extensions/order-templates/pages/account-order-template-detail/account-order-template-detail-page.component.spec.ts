@@ -1,12 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { anything, instance, mock, objectContaining, verify, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { InPlaceEditComponent } from 'ish-shared/components/common/in-place-edit/in-place-edit.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
@@ -19,31 +21,43 @@ import { AccountOrderTemplateDetailPageComponent } from './account-order-templat
 describe('Account Order Template Detail Page Component', () => {
   let component: AccountOrderTemplateDetailPageComponent;
   let fixture: ComponentFixture<AccountOrderTemplateDetailPageComponent>;
+  let facadeMock: OrderTemplatesFacade;
+  let initial: OrderTemplate;
   let element: HTMLElement;
-  let orderTemplatesFacade: OrderTemplatesFacade;
 
   beforeEach(async () => {
-    orderTemplatesFacade = mock(OrderTemplatesFacade);
-    when(orderTemplatesFacade.currentOrderTemplateOutOfStockItems$).thenReturn(of([]));
+    facadeMock = mock(OrderTemplatesFacade);
+    when(facadeMock.currentOrderTemplateOutOfStockItems$).thenReturn(of([]));
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
         AccountOrderTemplateDetailPageComponent,
+        InPlaceEditComponent, // echtes Component, nicht gemockt!
         MockComponent(AccountOrderTemplateDetailLineItemComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(OrderTemplatePreferencesDialogComponent),
         MockComponent(ProductAddToBasketComponent),
         MockDirective(ProductContextDirective),
       ],
-      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) }],
+      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(facadeMock) }],
     }).compileComponents();
   });
 
   beforeEach(() => {
+    initial = {
+      title: 'Order Template',
+      items: [{ sku: '123', desiredQuantity: { value: 1 } }],
+      itemsCount: 1,
+    } as OrderTemplate;
+
+    when(facadeMock.currentOrderTemplate$).thenReturn(of(initial));
+
     fixture = TestBed.createComponent(AccountOrderTemplateDetailPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+
+    fixture.detectChanges();
   });
 
   it('should be created', () => {
@@ -52,71 +66,94 @@ describe('Account Order Template Detail Page Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  describe('template without items', () => {
-    beforeEach(() => {
-      when(orderTemplatesFacade.currentOrderTemplate$).thenReturn(
-        of({
-          title: 'Order Template',
-          items: [],
-          itemsCount: 0,
-        } as OrderTemplate)
-      );
-    });
+  it('should display standard elements when template is empty', () => {
+    when(facadeMock.currentOrderTemplate$).thenReturn(
+      of({ title: 'Order Template', items: [], itemsCount: 0 } as OrderTemplate)
+    );
 
-    it('should display standard elements when rendering empty template', () => {
-      when(orderTemplatesFacade.currentOrderTemplate$).thenReturn(
-        of({
-          title: 'Order Template',
-          items: [],
-          itemsCount: 0,
-        } as OrderTemplate)
-      );
-      fixture.detectChanges();
+    fixture = TestBed.createComponent(AccountOrderTemplateDetailPageComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
 
-      expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-          [
-            "ish-error-message",
-            "ish-order-template-preferences-dialog",
-          ]
-        `);
-    });
+    expect(findAllCustomElements(fixture.nativeElement)).toMatchInlineSnapshot(`
+      [
+        "ish-error-message",
+        "ish-in-place-edit",
+        "fa-icon",
+      ]
+  `);
   });
 
-  describe('template with item', () => {
-    beforeEach(() => {
-      when(orderTemplatesFacade.currentOrderTemplate$).thenReturn(
-        of({
-          title: 'Order Template',
-          items: [{ sku: '123', desiredQuantity: { value: 1 } }],
-          itemsCount: 1,
-        } as OrderTemplate)
-      );
-    });
+  it('should display line items and add-to-basket when items exist', () => {
+    expect(findAllCustomElements(fixture.nativeElement)).toMatchInlineSnapshot(`
+      [
+        "ish-error-message",
+        "ish-in-place-edit",
+        "fa-icon",
+        "ish-account-order-template-detail-line-item",
+        "ish-product-add-to-basket",
+      ]
+    `);
+  });
 
-    it('should display line item elements when rendering template with item', () => {
-      fixture.detectChanges();
+  it('should call facade.updateOrderTemplate when in-place-edit emits edited', () => {
+    component.titleControl.setValue('New Title');
+    fixture.detectChanges();
 
-      expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-        [
-          "ish-error-message",
-          "ish-account-order-template-detail-line-item",
-          "ish-product-add-to-basket",
-          "ish-order-template-preferences-dialog",
-        ]
-      `);
-    });
+    const ipedeDE = fixture.debugElement.query(By.directive(InPlaceEditComponent));
+    ipedeDE.triggerEventHandler('edited', undefined);
+    fixture.detectChanges();
 
-    it('should not display out of stock warning by default', () => {
-      fixture.detectChanges();
+    verify(
+      facadeMock.updateOrderTemplate(
+        objectContaining({
+          title: 'New Title',
+          items: initial.items,
+          itemsCount: initial.itemsCount,
+        })
+      )
+    ).once();
+  });
 
-      expect(element.querySelector('[data-testing-id="out-of-stock-warning"]')).toBeFalsy();
-    });
+  it('should not call updateOrderTemplate when title is unchanged', () => {
+    component.titleControl.setValue(initial.title);
+    fixture.detectChanges();
 
-    it('should display out of stock warning when items are unavailable', () => {
-      when(orderTemplatesFacade.currentOrderTemplateOutOfStockItems$).thenReturn(of(['123']));
-      fixture.detectChanges();
+    const ipedeDE = fixture.debugElement.query(By.directive(InPlaceEditComponent));
+    ipedeDE.triggerEventHandler('edited', undefined);
+    fixture.detectChanges();
 
-      expect(element.querySelector('[data-testing-id="out-of-stock-warning"]')).toBeTruthy();
-    });
+    verify(facadeMock.updateOrderTemplate(anything())).never();
+  });
+
+  it('should reset titleControl when in-place-edit emits aborted', () => {
+    component.titleControl.setValue('Some Other');
+    fixture.detectChanges();
+    expect(component.titleControl.value).toBe('Some Other');
+
+    const ipedeDE = fixture.debugElement.query(By.directive(InPlaceEditComponent));
+    ipedeDE.triggerEventHandler('aborted', undefined);
+    fixture.detectChanges();
+
+    expect(component.titleControl.value).toBe(initial.title);
+    verify(facadeMock.updateOrderTemplate(anything())).never();
+  });
+
+  it('should not display out-of-stock warning by default', () => {
+    expect(fixture.nativeElement.querySelector('[data-testing-id="out-of-stock-warning"]')).toBeFalsy();
+  });
+
+  it('should display out-of-stock warning when unavailable products exist', async () => {
+    when(facadeMock.currentOrderTemplateOutOfStockItems$).thenReturn(of(['', '', '', '', '']));
+
+    fixture = TestBed.createComponent(AccountOrderTemplateDetailPageComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const warningEl = fixture.nativeElement.querySelector('[data-testing-id="out-of-stock-warning"]');
+    expect(warningEl).toBeTruthy();
   });
 });
