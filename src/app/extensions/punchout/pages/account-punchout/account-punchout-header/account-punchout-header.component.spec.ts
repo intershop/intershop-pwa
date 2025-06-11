@@ -47,7 +47,7 @@ describe('Account Punchout Header Component', () => {
   it('should display tabs for all punchoutTypes', () => {
     fixture.detectChanges();
 
-    expect(element.querySelectorAll('.nav-tabs li')).toHaveLength(2);
+    expect(element.querySelectorAll('.nav-tabs a.nav-link')).toHaveLength(2);
   });
 
   it('should display the selected type as active after init', () => {
