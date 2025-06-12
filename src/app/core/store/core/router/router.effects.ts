@@ -2,7 +2,7 @@ import { ApplicationRef, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { EMPTY, Observable } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
+import { delay, switchMap, take } from 'rxjs/operators';
 
 import { log } from 'ish-core/utils/dev/operators';
 import { DomService } from 'ish-core/utils/dom/dom.service';
@@ -18,14 +18,27 @@ export class RouterEffects {
       () =>
         this.actions$.pipe(
           ofType(routerNavigatedAction),
-          switchMap(() =>
-            this.appRef.isStable.pipe(
-              log('App is stable, setting focus to main content'),
+          delay(50),
+          switchMap(() => {
+            const h1Element = this.domService.querySelector('h1');
+
+            // focus h1 immediately if it is already available
+            if (h1Element) {
+              console.log('h1 found, setting focus:', h1Element);
+              this.domService.setAttribute(h1Element, 'tabindex', '-1');
+              h1Element.focus();
+
+              return EMPTY;
+            }
+
+            // If no h1 found, wait for the app to be stable and try again
+            return this.appRef.isStable.pipe(
+              log('app is stable'),
               whenTruthy(),
               take(1),
               switchMap(() => this.setFocusToHeading())
-            )
-          )
+            );
+          })
         ),
       { dispatch: false }
     );
