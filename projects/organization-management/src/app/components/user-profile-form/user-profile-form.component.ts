@@ -47,11 +47,6 @@ export class UserProfileFormComponent implements OnInit {
           {
             type: '#lastName',
           },
-        ],
-      },
-      {
-        type: 'ish-fieldset-field',
-        fieldGroup: [
           !this.user
             ? {
                 key: 'email',

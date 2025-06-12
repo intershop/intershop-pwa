@@ -100,6 +100,17 @@ export class RegistrationFormConfigurationService {
               businessCustomer: registrationConfig.businessCustomer,
             },
           },
+        ],
+      },
+      {
+        type: 'ish-fieldset-field',
+        props: {
+          fieldsetClass: 'row',
+          childClass: 'col-md-10 col-lg-8 col-xl-6',
+          legend: 'account.register.agreements.legend',
+          legendClass: 'sr-only',
+        },
+        fieldGroup: [
           {
             type: 'ish-registration-tac-field',
             key: 'termsAndConditions',
@@ -382,6 +393,8 @@ export class RegistrationFormConfigurationService {
             props: {
               fieldsetClass: 'row',
               childClass: 'col-md-10 col-lg-8 col-xl-6',
+              legend: 'account.register.budget_preferences.legend',
+              legendClass: 'sr-only',
             },
             fieldGroup: [
               {

@@ -27,7 +27,6 @@ export function addressesFieldConfiguration(
     .map(key =>
       Array.isArray(key)
         ? key?.length && {
-            type: 'ish-fieldset-field',
             fieldGroup: addressesFieldConfiguration(key),
           }
         : typeof key === 'string'
