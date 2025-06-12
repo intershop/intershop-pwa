@@ -8,9 +8,13 @@
   }
 }
 
-.carousel,
-.carousel-inner {
-  outline: none;
+.carousel {
+  margin: -2px;
+
+  .carousel-inner {
+    // necessary to make the tab focus on the content inside the carousel visible
+    padding: 2px;
+  }
 }
 
 .carousel-indicators {
