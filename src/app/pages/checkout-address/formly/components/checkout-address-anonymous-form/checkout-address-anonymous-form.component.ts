@@ -40,7 +40,6 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit {
         type: 'ish-fieldset-field',
         props: {
           legend: 'checkout.addresses.shipping_address.selection.legend',
-          legendClass: 'sr-only',
         },
         fieldGroup: [
           {

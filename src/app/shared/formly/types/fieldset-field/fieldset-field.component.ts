@@ -6,8 +6,8 @@ import { FieldType } from '@ngx-formly/core';
  *
  * @props **fieldsetClass** - used to add styles to the ``<fieldset>`` tag.
  * @props **childClass** - used to add styles to a child ``<div>``.
- * @props **legend** - used to add a legend to the ``<fieldset>`` tag, the value is displayed as the legend text and will also be translated.
- * @props **legendClass** - used to add styles to the ``<legend>`` tag.
+ * @props **legend** - used to add a legend to the ``<fieldset>`` tag, the legend text will be translated, if a translation key is given
+ * @props **legendClass** - used to add styles to the ``<legend>`` tag, default value: 'sr-only'
  *
  * @usageNotes
  * Control the rendered children via the ``fieldGroup`` attribute.
