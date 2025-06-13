@@ -9,39 +9,43 @@ const configurations = (
   .map((theme, index) => ({ theme, port: 4000 + index }));
 
 const builds = [];
-
 const processArgs = process.argv.slice(2);
 const extraArgs = processArgs.filter(a => a !== 'client' && a !== 'server').join(' ');
 
-if (processArgs.includes('client') || !processArgs.includes('server'))
+if (processArgs.includes('client') || !processArgs.includes('server')) {
   builds.push(
     ...configurations.map(({ theme }) =>
-      `build client --configuration=${theme},production -- --output-path=dist/${theme}/browser --progress=false ${extraArgs}`.trim()
+      `ng run intershop-pwa:build:${theme},production --output-path=dist/${theme}/browser ${extraArgs}`.trim()
     )
   );
-
-if (processArgs.includes('server') || !processArgs.includes('client'))
-  builds.push(
-    ...configurations.map(({ theme }) =>
-      `build server --configuration=${theme},production -- --output-path=dist/${theme}/server --progress=false ${extraArgs}`.trim()
-    )
-  );
-
-const cores = +process.env.PWA_BUILD_MAX_WORKERS || Math.round(require('os').cpus().length / 3) || 1;
-const parallel = cores === 1 ? [] : ['--max-parallel', cores, '--parallel'];
-if (parallel) {
-  console.log(`Using ${cores} cores for multi compile.`);
 }
 
-const result = cp.spawnSync(
-  path.join('node_modules', '.bin', 'npm-run-all' + (process.platform === 'win32' ? '.cmd' : '')),
-  ['--silent', ...parallel, ...builds],
-  {
+if (processArgs.includes('server') || !processArgs.includes('client')) {
+  builds.push(
+    ...configurations.map(({ theme }) =>
+      `ng run intershop-pwa:server:${theme},production --output-path=dist/${theme}/server ${extraArgs}`.trim()
+    )
+  );
+}
+
+console.log('Executing builds...');
+for (const build of builds) {
+  console.log(`Running: ${build}`);
+
+  const parts = build.split(' ');
+  const command = parts[0];
+  const args = parts.slice(1);
+
+  const result = cp.spawnSync('npx', [command, ...args], {
     stdio: 'inherit',
+    shell: true,
+    windowsHide: true,
+  });
+
+  if (result.status !== 0) {
+    console.error(`Build failed: ${build}`);
+    process.exit(result.status);
   }
-);
-if (result.status !== 0) {
-  process.exit(result.status);
 }
 
 fs.writeFileSync(
@@ -54,11 +58,19 @@ fs.writeFileSync(
 );
 
 configurations.forEach(({ theme }) => {
+  const serverDir = path.join('dist', theme, 'server');
+  const browserDir = path.join('dist', theme, 'browser');
+
+  if (!fs.existsSync(serverDir)) fs.mkdirSync(serverDir, { recursive: true });
+  if (!fs.existsSync(browserDir)) fs.mkdirSync(browserDir, { recursive: true });
+
   fs.writeFileSync(
-    `dist/${theme}/run-standalone.js`,
+    path.join('dist', theme, 'run-standalone.js'),
     `const path = require('path');
 process.env.BROWSER_FOLDER = path.join(__dirname, 'browser');
-require('child_process').fork(path.join(__dirname, 'server', 'main'));
+require('child_process').fork(path.join(__dirname, 'server', 'main.js'));
 `
   );
 });
+
+console.log('Build process completed successfully.');
