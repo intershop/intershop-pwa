@@ -292,6 +292,7 @@ img {
   .nav-link:hover,
   .nav-link:focus {
     border-color: transparent;
+    box-shadow: 0 2px $CORPORATE-SECONDARY;
   }
 
   .nav-link.active,
