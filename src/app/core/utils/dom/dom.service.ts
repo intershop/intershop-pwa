@@ -152,14 +152,4 @@ export class DomService {
       this.renderer.removeClass(el, cssClass);
     }
   }
-
-  /**
-   * Returns the first element within the document that matches the specified selector.
-   *
-   * @param selector  A valid CSS selector string.
-   * @returns         The first matching element, or null if no matches are found.
-   */
-  querySelector(selector: string): HTMLElement {
-    return this.document.querySelector(selector) as HTMLElement;
-  }
 }
