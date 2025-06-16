@@ -191,12 +191,12 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
         ...(isAdmin
           ? [
               {
-                fieldGroupClassName: 'row justify-content-start',
-                type: 'ish-fieldset-field',
+                fieldGroupClassName: 'row',
                 fieldGroup: [
                   {
                     type: 'ish-account-order-select-buyer-field',
                     key: 'buyer',
+                    className: 'col-12 col-md-6',
                     props: {
                       label: 'account.order_history.filter.label.buyer',
                       labelClass: 'col-md-12',

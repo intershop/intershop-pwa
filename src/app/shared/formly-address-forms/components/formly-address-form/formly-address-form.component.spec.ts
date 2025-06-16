@@ -10,9 +10,7 @@ import {
   AddressFormConfigurationProvider,
 } from 'ish-shared/formly-address-forms/configurations/address-form-configuration.provider';
 import { AddressFormConfiguration } from 'ish-shared/formly-address-forms/configurations/address-form.configuration';
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingExampleComponent } from 'ish-shared/formly/dev/testing/formly-testing-example/formly-testing-example.component';
-import { FormlyTestingFieldgroupExampleComponent } from 'ish-shared/formly/dev/testing/formly-testing-fieldgroup-example/formly-testing-fieldgroup-example.component';
 
 import { FormlyAddressFormComponent } from './formly-address-form.component';
 
@@ -112,10 +110,6 @@ describe('Formly Address Form Component', () => {
         FormlyBaseModule.forRoot({
           types: [
             {
-              name: 'ish-fieldset-field',
-              component: FormlyTestingFieldgroupExampleComponent,
-            },
-            {
               name: 'ish-text-input-field',
               component: FormlyTestingExampleComponent,
             },
@@ -125,7 +119,6 @@ describe('Formly Address Form Component', () => {
             },
           ],
         }),
-        FormlyTestingComponentsModule,
       ],
       providers: [
         { provide: ADDRESS_FORM_CONFIGURATION, useClass: AddressFormDefaultConfigurationMock, multi: true },

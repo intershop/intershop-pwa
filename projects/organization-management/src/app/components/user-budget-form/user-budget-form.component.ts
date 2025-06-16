@@ -70,7 +70,6 @@ export class UserBudgetFormComponent implements OnInit {
         type: 'ish-fieldset-field',
         props: {
           legend: 'account.user.update_budget.heading',
-          legendClass: 'sr-only',
         },
         fieldGroup: [
           {

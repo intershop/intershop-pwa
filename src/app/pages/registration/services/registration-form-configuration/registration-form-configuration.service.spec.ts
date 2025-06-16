@@ -90,6 +90,7 @@ describe('Registration Form Configuration Service', () => {
             "lastName",
             "phoneHome",
           ],
+          [],
           [
             "termsAndConditions",
             "newsletterSubscription",
@@ -127,6 +128,7 @@ describe('Registration Form Configuration Service', () => {
               "lastName",
               "phoneHome",
             ],
+            [],
             [
               "termsAndConditions",
               "newsletterSubscription",
@@ -154,6 +156,7 @@ describe('Registration Form Configuration Service', () => {
               "lastName",
               "phoneHome",
             ],
+            [],
             [
               "termsAndConditions",
               "newsletterSubscription",

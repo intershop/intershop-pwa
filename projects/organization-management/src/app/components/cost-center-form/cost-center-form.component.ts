@@ -71,7 +71,6 @@ export class CostCenterFormComponent implements OnInit {
         type: 'ish-fieldset-field',
         props: {
           legend: this.costCenter ? 'account.costcenter.details.edit.heading' : 'account.costcenter.create.heading',
-          legendClass: 'sr-only',
         },
         fieldGroup: [
           {
@@ -176,7 +175,6 @@ export class CostCenterFormComponent implements OnInit {
           fieldsetClass: !this.costCenter ? 'd-none' : undefined,
           props: {
             legend: this.costCenter ? 'account.costCenter.active.label' : undefined,
-            legendClass: 'sr-only',
           },
         },
         fieldGroup: [

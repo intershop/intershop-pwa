@@ -103,7 +103,6 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
     return this.addressModel.countryCode !== undefined && countryFormFieldConfig
       ? countryFormFieldConfig
       : {
-          type: 'ish-fieldset-field',
           fieldGroup: [
             {
               key: 'countryCode',

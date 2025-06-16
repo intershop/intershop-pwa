@@ -44,7 +44,6 @@ export class PunchoutUserFormComponent implements OnInit {
   private setFields() {
     return [
       {
-        type: 'ish-fieldset-field',
         fieldGroup: [
           {
             key: 'login',
@@ -68,7 +67,6 @@ export class PunchoutUserFormComponent implements OnInit {
         ],
       },
       {
-        type: 'ish-fieldset-field',
         validators: {
           validation: [SpecialValidators.equalTo('passwordConfirmation', 'password')],
         },

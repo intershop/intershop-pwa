@@ -14,6 +14,7 @@
     <div class="form-check" [attr.data-testing-id]="keyString + '-wrapper'">
       <ng-template #fieldComponent></ng-template>
       <label
+        *ngIf="props.label || props.tooltip"
         [attr.for]="id"
         class="form-check-label"
         [ngClass]="props.labelClass ? props.labelClass : dprops.labelClass"
