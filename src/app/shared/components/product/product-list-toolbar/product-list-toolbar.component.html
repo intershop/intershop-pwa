@@ -2,7 +2,7 @@
   <div class="col-md-7 col-sm-10">
     <div class="row align-items-center">
       <div class="col-sm-3 col-4">
-        <div *ngIf="itemCount >= 0" class="pagination-total text-nowrap">
+        <div *ngIf="itemCount >= 0" class="pagination-total text-nowrap" aria-live="polite">
           {{ 'product.items.label' | translate : { '0': itemCount } }}
         </div>
       </div>
