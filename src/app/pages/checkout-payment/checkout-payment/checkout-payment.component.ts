@@ -1,3 +1,4 @@
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,6 +14,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { filter, take } from 'rxjs/operators';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
@@ -64,7 +66,11 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private liveAnnouncer: LiveAnnouncer,
+    private translateService: TranslateService
+  ) {}
 
   /**
    * create payment form
@@ -122,7 +128,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     }
 
     this.paymentForm.get('name').setValue(this.getBasketPayment(), { emitEvent: false });
-    this.openFormIndex = -1; // close parameter form after successfully basket changed
+    this.closeNewPaymentInstrumentForm(true); // close parameter form after successfully basket changed
     this.parameterForm.reset();
   }
 
@@ -149,6 +155,14 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
   openPaymentParameterForm(index: number) {
     this.formSubmitted = false;
     this.openFormIndex = index;
+
+    this.liveAnnouncer.announce(
+      this.translateService.instant('checkout.payment.parameter_form.open.announcement', {
+        formName: this.filteredPaymentMethods[index].displayName,
+      }),
+      'polite'
+    );
+
     // enable / disable the appropriate parameter form controls
     Object.keys(this.parameterForm.controls).forEach(key => {
       this.filteredPaymentMethods[index].parameters.find(param => param.key === key)
@@ -160,7 +174,22 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
   /**
    * cancel new payment instrument, hides parameter form
    */
-  cancelNewPaymentInstrument() {
+  closeNewPaymentInstrumentForm(isSubmit: boolean = false) {
+    // prevents multiple announcements
+    if (this.isParameterFormOpen) {
+      if (isSubmit && !this.error) {
+        this.liveAnnouncer.announce(
+          this.translateService.instant('checkout.payment.parameter_form.save.announcement'),
+          'polite'
+        );
+      } else {
+        this.liveAnnouncer.announce(
+          this.translateService.instant('checkout.payment.parameter_form.close.announcement'),
+          'polite'
+        );
+      }
+    }
+
     this.openFormIndex = -1;
   }
 
@@ -188,9 +217,10 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
       return;
     }
 
-    if (this.openFormIndex === -1) {
+    if (!this.isParameterFormOpen) {
       return;
     }
+
     const paymentMethod = this.filteredPaymentMethods[this.openFormIndex];
     const parameters = Object.entries(this.parameterForm.controls)
       .filter(([, control]) => control.enabled && control.value)
@@ -211,6 +241,13 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
   deleteBasketPayment(paymentInstrument: PaymentInstrument) {
     if (paymentInstrument) {
       this.deletePaymentInstrument.emit(paymentInstrument);
+
+      this.liveAnnouncer.announce(
+        this.translateService.instant('checkout.payment.method.delete.announcement', {
+          accountIdentifier: paymentInstrument.accountIdentifier,
+        }),
+        'polite'
+      );
     }
   }
 
@@ -228,5 +265,9 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
 
   get submitDisabled() {
     return this.paymentForm.invalid && this.formSubmitted;
+  }
+
+  get isParameterFormOpen() {
+    return this.openFormIndex !== -1;
   }
 }

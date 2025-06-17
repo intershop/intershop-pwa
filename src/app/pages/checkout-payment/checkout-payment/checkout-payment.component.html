@@ -73,6 +73,14 @@
                       class="btn btn-link btn-link-action float-right"
                       (click)="deleteBasketPayment(paymentInstrument)"
                       data-testing-id="delete-payment-link"
+                      [attr.aria-label]="
+                        'checkout.payment.method.delete.aria_label'
+                          | translate
+                            : {
+                                paymentMethodName: paymentMethod.displayName,
+                                accountIdentifier: paymentInstrument.accountIdentifier
+                              }
+                      "
                     >
                       {{ 'checkout.payment.method.delete.link' | translate }}
                     </button>
@@ -123,7 +131,7 @@
                         [paymentMethod]="paymentMethod"
                         [activated]="formIsOpen(i)"
                         (submitPayment)="createNewPaymentInstrument($event)"
-                        (cancelPayment)="cancelNewPaymentInstrument()"
+                        (cancelPayment)="closeNewPaymentInstrumentForm()"
                       />
                     </ng-template>
 
@@ -132,7 +140,7 @@
                         [paymentMethod]="paymentMethod"
                         [activated]="formIsOpen(i)"
                         (submitPayment)="createNewPaymentInstrument($event)"
-                        (cancelPayment)="cancelNewPaymentInstrument()"
+                        (cancelPayment)="closeNewPaymentInstrumentForm()"
                       />
                     </ng-template>
 
@@ -141,7 +149,7 @@
                         [paymentMethod]="paymentMethod"
                         [activated]="formIsOpen(i)"
                         (submitPayment)="createNewPaymentInstrument($event)"
-                        (cancelPayment)="cancelNewPaymentInstrument()"
+                        (cancelPayment)="closeNewPaymentInstrumentForm()"
                       />
                     </ng-template>
 
@@ -150,7 +158,7 @@
                         [paymentMethod]="paymentMethod"
                         [activated]="formIsOpen(i)"
                         (submitPayment)="createNewPaymentInstrument($event)"
-                        (cancelPayment)="cancelNewPaymentInstrument()"
+                        (cancelPayment)="closeNewPaymentInstrumentForm()"
                       />
                     </ng-template>
 
@@ -160,7 +168,7 @@
                         [parentForm]="paymentForm"
                         [submitDisabled]="submitDisabled"
                         [activated]="formIsOpen(i)"
-                        (cancelPayment)="cancelNewPaymentInstrument()"
+                        (cancelPayment)="closeNewPaymentInstrumentForm()"
                         (submitPayment)="submitParameterForm()"
                       />
                     </ng-template>

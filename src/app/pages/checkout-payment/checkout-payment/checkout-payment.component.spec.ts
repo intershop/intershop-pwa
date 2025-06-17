@@ -187,7 +187,7 @@ describe('Checkout Payment Component', () => {
       component.openPaymentParameterForm(2);
       expect(component.formIsOpen(2)).toBeTruthy();
 
-      component.cancelNewPaymentInstrument();
+      component.closeNewPaymentInstrumentForm();
       expect(component.formIsOpen(-1)).toBeTruthy();
     });
 
