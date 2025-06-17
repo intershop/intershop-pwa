@@ -26,8 +26,8 @@ import { filter, map } from 'rxjs/operators';
 export class InPlaceEditComponent implements AfterViewInit {
   // localization key, can be used to give the edit-pen icon a more descriptive aria label that describes what will be edited when clicking it
   @Input() ariaLabelName = '';
-  @Input() alignment: 'center' | 'baseline' = 'center';
-  @Input() iconSize: 'xs' | 'sm' | 'lg' | '1x' | '2x' | '3x' | SizeProp = '1x';
+  @Input() alignment: 'baseline' | 'center' = 'baseline';
+  @Input() iconSize: SizeProp = '1x';
   @Output() edited = new EventEmitter<void>();
   @Output() aborted = new EventEmitter<void>();
 

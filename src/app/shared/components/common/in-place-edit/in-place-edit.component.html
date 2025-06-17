@@ -1,8 +1,5 @@
 <ng-container *ngIf="viewMode; else edit">
-  <div
-    class="d-flex flex-row"
-    [ngClass]="{ 'align-items-center': alignment === 'center', 'align-items-baseline': alignment === 'baseline' }"
-  >
+  <div class="d-flex flex-row" [ngClass]="alignment === 'center' ? 'align-items-center' : 'align-items-baseline'">
     <ng-content select="[viewModeContent]"></ng-content>
     <button
       type="button"
@@ -14,10 +11,11 @@
       "
       (click)="changeEditMode()"
     >
-      <fa-icon [size]="iconSize" class="pl-2 mr-auto btn-tool" [icon]="['fas', 'pencil-alt']" />
+      <fa-icon [size]="iconSize" class="pl-2 mr-auto btn-link" [icon]="['fas', 'pencil-alt']" />
     </button>
   </div>
 </ng-container>
+
 <ng-template #edit>
   <div class="d-flex flex-row align-items-baseline">
     <ng-content select="[editModeForm]"></ng-content>

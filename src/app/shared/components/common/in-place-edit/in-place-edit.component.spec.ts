@@ -10,7 +10,7 @@ import { InPlaceEditComponent } from './in-place-edit.component';
 
 @Component({
   template: `
-    <ish-in-place-edit [alignment]="'baseline'">
+    <ish-in-place-edit>
       <p viewModeContent class="form-control-plaintext">VIEW</p>
       <input editModeForm class="form-control" />
     </ish-in-place-edit>
@@ -56,12 +56,12 @@ describe('In Place Edit Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <ish-in-place-edit ng-reflect-alignment="baseline"
-        ><div class="d-flex flex-row align-items-baseline">
+      <ish-in-place-edit
+        ><div class="d-flex flex-row align-items-baseline" ng-reflect-ng-class="align-items-baseline">
           <p viewmodecontent="" class="form-control-plaintext">VIEW</p>
           <button type="button" class="btn btn-link" title="inplace_edit.click_to_edit">
             <fa-icon
-              class="pl-2 mr-auto btn-tool"
+              class="pl-2 mr-auto btn-link"
               ng-reflect-size="1x"
               ng-reflect-icon="fas,pencil-alt"
             ></fa-icon>
@@ -75,7 +75,7 @@ describe('In Place Edit Component', () => {
     mousedown({ target: element.querySelector('p') });
 
     expect(element).toMatchInlineSnapshot(`
-      <ish-in-place-edit ng-reflect-alignment="baseline"
+      <ish-in-place-edit
         ><div class="d-flex flex-row align-items-baseline">
           <input editmodeform="" class="form-control" /><button
             type="button"

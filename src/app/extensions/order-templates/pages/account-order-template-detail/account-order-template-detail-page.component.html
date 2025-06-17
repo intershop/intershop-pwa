@@ -3,21 +3,25 @@
 
 <ng-container *ngIf="orderTemplate$ | async as orderTemplate" ishProductContext>
   <ish-in-place-edit
-    (edited)="saveTitle()"
-    (aborted)="cancelEditTitle()"
+    #inPlaceEdit
+    (edited)="updateTitle()"
+    (aborted)="resetTitle()"
     ariaLabelName="quote.edit.unsubmitted.name.label"
     alignment="center"
-    [iconSize]="'lg'"
+    iconSize="lg"
   >
-    <h1 viewModeContent class="clearfix">
+    <h1 viewModeContent>
       {{ orderTemplate?.title }}
     </h1>
     <input
       editModeForm
       type="text"
       [formControl]="titleControl"
-      class="mt-2 form-control-h1"
+      class="mt-3 form-control"
+      style="margin-bottom: 12px"
       id="order-template-title"
+      (keydown.enter)="inPlaceEdit.confirm()"
+      (keydown.esc)="inPlaceEdit.cancel()"
     />
   </ish-in-place-edit>
 

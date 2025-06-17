@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -30,12 +31,13 @@ describe('Account Order Template Detail Page Component', () => {
     when(facadeMock.currentOrderTemplateOutOfStockItems$).thenReturn(of([]));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
         AccountOrderTemplateDetailPageComponent,
         InPlaceEditComponent, // echtes Component, nicht gemockt!
         MockComponent(AccountOrderTemplateDetailLineItemComponent),
         MockComponent(ErrorMessageComponent),
+        MockComponent(InPlaceEditComponent),
         MockComponent(OrderTemplatePreferencesDialogComponent),
         MockComponent(ProductAddToBasketComponent),
         MockDirective(ProductContextDirective),
@@ -79,9 +81,8 @@ describe('Account Order Template Detail Page Component', () => {
       [
         "ish-error-message",
         "ish-in-place-edit",
-        "fa-icon",
       ]
-  `);
+    `);
   });
 
   it('should display line items and add-to-basket when items exist', () => {
@@ -89,7 +90,6 @@ describe('Account Order Template Detail Page Component', () => {
       [
         "ish-error-message",
         "ish-in-place-edit",
-        "fa-icon",
         "ish-account-order-template-detail-line-item",
         "ish-product-add-to-basket",
       ]

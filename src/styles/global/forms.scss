@@ -140,24 +140,6 @@ input.form-check-input {
   @include focus-visible-reset();
 }
 
-.form-control-h1 {
-  width: 100%;
-  margin-bottom: $space-default;
-  font-family: $headings-font-family;
-  font-size: $h1-font-size;
-  font-weight: $headings-font-weight;
-  line-height: $headings-line-height;
-  color: $text-color-primary;
-  text-transform: uppercase;
-
-  &:focus {
-    border-color: $CORPORATE-PRIMARY;
-    box-shadow: none;
-  }
-
-  @include focus-visible-reset();
-}
-
 .input-help {
   color: $text-color-tertiary;
 }

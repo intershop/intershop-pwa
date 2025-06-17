@@ -21,8 +21,10 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit, OnDestro
   noOfUnavailableProducts$: Observable<number>;
 
   titleControl = new FormControl('');
-  private destroy$ = new Subject<void>();
   private currentOrderTemplate: OrderTemplate;
+
+  private destroy$ = new Subject<void>();
+
   constructor(private orderTemplatesFacade: OrderTemplatesFacade) {}
 
   ngOnInit() {
@@ -46,16 +48,22 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit, OnDestro
     this.destroy$.complete();
   }
 
-  saveTitle() {
-    if (this.currentOrderTemplate && this.titleControl.value !== this.currentOrderTemplate.title) {
-      const updated: OrderTemplate = { ...this.currentOrderTemplate, title: this.titleControl.value };
-      this.orderTemplatesFacade.updateOrderTemplate(updated);
+  updateTitle() {
+    if (
+      this.currentOrderTemplate &&
+      this.titleControl.value &&
+      this.currentOrderTemplate.title !== this.titleControl.value
+    ) {
+      this.orderTemplatesFacade.updateOrderTemplate({
+        ...this.currentOrderTemplate,
+        title: this.titleControl.value,
+      });
     }
   }
 
-  cancelEditTitle() {
-    this.orderTemplate$.pipe(takeUntil(this.destroy$)).subscribe(ot => {
-      this.titleControl.setValue(ot.title);
+  resetTitle() {
+    this.orderTemplate$.pipe(takeUntil(this.destroy$)).subscribe(orderTemplate => {
+      this.titleControl.setValue(orderTemplate.title);
     });
   }
 
