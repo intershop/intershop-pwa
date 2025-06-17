@@ -798,6 +798,7 @@
   "checkout.order_review.heading.title": "Ihre Bestelldaten prüfen",
   "checkout.order_review.send.button": "Bestellung absenden",
   "checkout.order_summary.heading": "Bestellübersicht",
+  "checkout.payment.addPayment.form.region": "Formular um Zahlungsmittel hinzuzufügen",
   "checkout.payment.addPayment.link": "Zahlungsmittel hinzufügen",
   "checkout.payment.canceled.text": "Ihre Bezahlung wurde abgebrochen. Wählen Sie eine andere Zahlungsart aus.",
   "checkout.payment.debit.transfer.account.bankcode.maxlength.error": "Der BIC darf nicht länger als 35 Zeichen sein.",

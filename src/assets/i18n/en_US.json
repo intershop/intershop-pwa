@@ -798,6 +798,7 @@
   "checkout.order_review.heading.title": "Review your order information",
   "checkout.order_review.send.button": "Submit order",
   "checkout.order_summary.heading": "Order summary",
+  "checkout.payment.addPayment.form.region": "Add payment instrument form",
   "checkout.payment.addPayment.link": "Add payment instrument",
   "checkout.payment.canceled.text": "Your payment was canceled. Please select another payment method.",
   "checkout.payment.debit.transfer.account.bankcode.maxlength.error": "The BIC must not exceed 35 characters.",

@@ -798,6 +798,7 @@
   "checkout.order_review.heading.title": "Vérifier vos informations de commande",
   "checkout.order_review.send.button": "Soumettre la commande",
   "checkout.order_summary.heading": "Récapitulatif de la commande",
+  "checkout.payment.addPayment.form.region": "Formulaire d’ajout d’un instrument de paiement",
   "checkout.payment.addPayment.link": "Ajouter un moyen de paiement",
   "checkout.payment.canceled.text": "Votre paiement a été annulé. Veuillez sélectionner un autre mode de paiement.",
   "checkout.payment.debit.transfer.account.bankcode.maxlength.error": "Le BIC ne doit pas dépasser 35 caractères.",
