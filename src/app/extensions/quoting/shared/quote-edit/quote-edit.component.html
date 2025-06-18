@@ -30,14 +30,7 @@
             >
               {{ form.get('displayName').value || 'quote.edit.unsubmitted.enter_an_optional_name.text' | translate }}
             </p>
-            <input
-              editModeForm
-              type="text"
-              formControlName="displayName"
-              class="form-control"
-              style="margin-bottom: 9px"
-              id="quote-displayname"
-            />
+            <input editModeForm type="text" formControlName="displayName" class="form-control" id="quote-displayname" />
           </ish-in-place-edit>
         </div>
       </div>
