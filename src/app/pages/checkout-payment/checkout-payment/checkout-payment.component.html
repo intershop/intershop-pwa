@@ -106,73 +106,88 @@
                     type="button"
                     class="btn btn-link btn-link-action"
                     (click)="openPaymentParameterForm(i)"
-                    data-testing-id="add-payment-link"
                     [attr.aria-expanded]="formIsOpen(i)"
                     [attr.aria-controls]="'payment-form-' + paymentMethod.id"
+                    data-testing-id="add-payment-link"
                   >
                     {{ 'checkout.payment.addPayment.link' | translate }}
                   </button>
                 </div>
 
+                <!-- Screen reader announcement for form open/close -->
+                <div class="sr-only" aria-live="polite">
+                  {{
+                    formIsOpen(i)
+                      ? ('checkout.payment.parameter_form.open.announcement'
+                        | translate
+                          : {
+                              paymentMethodName: paymentMethod.displayName
+                            })
+                      : ('checkout.payment.parameter_form.close.announcement' | translate)
+                  }}
+                </div>
                 <!-- Payment instrument form -->
-                <div
-                  [ngbCollapse]="!formIsOpen(i)"
-                  [id]="'payment-form-' + paymentMethod.id"
-                  [hidden]="!formIsOpen(i)"
-                  role="region"
-                  [attr.aria-label]="'checkout.payment.addPayment.form.region' | translate"
-                >
-                  <p class="indicates-required" aria-hidden="true">
-                    <span class="required">*</span>{{ 'account.required_field.message' | translate }}
-                  </p>
-                  <ng-container [ngSwitch]="paymentMethod.serviceId">
-                    <ng-template [ngSwitchCase]="'Concardis_CreditCard'">
-                      <ish-payment-concardis-creditcard
-                        [paymentMethod]="paymentMethod"
-                        [activated]="formIsOpen(i)"
-                        (submitPayment)="createNewPaymentInstrument($event)"
-                        (cancelPayment)="closeNewPaymentInstrumentForm()"
-                      />
-                    </ng-template>
+                <div [ngbCollapse]="!formIsOpen(i)" [id]="'payment-form-' + paymentMethod.id" [hidden]="!formIsOpen(i)">
+                  <fieldset class="mb-0">
+                    <legend class="sr-only">
+                      {{
+                        'checkout.payment.addPayment.form.legend'
+                          | translate : { paymentMethodName: paymentMethod.displayName }
+                      }}
+                    </legend>
 
-                    <ng-template [ngSwitchCase]="'Concardis_DirectDebit'">
-                      <ish-payment-concardis-directdebit
-                        [paymentMethod]="paymentMethod"
-                        [activated]="formIsOpen(i)"
-                        (submitPayment)="createNewPaymentInstrument($event)"
-                        (cancelPayment)="closeNewPaymentInstrumentForm()"
-                      />
-                    </ng-template>
+                    <p class="indicates-required" aria-hidden="true">
+                      <span class="required">*</span>{{ 'account.required_field.message' | translate }}
+                    </p>
+                    <ng-container [ngSwitch]="paymentMethod.serviceId">
+                      <ng-template [ngSwitchCase]="'Concardis_CreditCard'">
+                        <ish-payment-concardis-creditcard
+                          [paymentMethod]="paymentMethod"
+                          [activated]="formIsOpen(i)"
+                          (submitPayment)="createNewPaymentInstrument($event)"
+                          (cancelPayment)="closePaymentInstrumentForm()"
+                        />
+                      </ng-template>
 
-                    <ng-template [ngSwitchCase]="'CyberSource_CreditCard'">
-                      <ish-payment-cybersource-creditcard
-                        [paymentMethod]="paymentMethod"
-                        [activated]="formIsOpen(i)"
-                        (submitPayment)="createNewPaymentInstrument($event)"
-                        (cancelPayment)="closeNewPaymentInstrumentForm()"
-                      />
-                    </ng-template>
+                      <ng-template [ngSwitchCase]="'Concardis_DirectDebit'">
+                        <ish-payment-concardis-directdebit
+                          [paymentMethod]="paymentMethod"
+                          [activated]="formIsOpen(i)"
+                          (submitPayment)="createNewPaymentInstrument($event)"
+                          (cancelPayment)="closePaymentInstrumentForm()"
+                        />
+                      </ng-template>
 
-                    <ng-template [ngSwitchCase]="'Payone_CreditCard'">
-                      <ish-payment-payone-creditcard
-                        [paymentMethod]="paymentMethod"
-                        [activated]="formIsOpen(i)"
-                        (submitPayment)="createNewPaymentInstrument($event)"
-                        (cancelPayment)="closeNewPaymentInstrumentForm()"
-                      />
-                    </ng-template>
+                      <ng-template [ngSwitchCase]="'CyberSource_CreditCard'">
+                        <ish-payment-cybersource-creditcard
+                          [paymentMethod]="paymentMethod"
+                          [activated]="formIsOpen(i)"
+                          (submitPayment)="createNewPaymentInstrument($event)"
+                          (cancelPayment)="closePaymentInstrumentForm()"
+                        />
+                      </ng-template>
 
-                    <ng-template ngSwitchDefault>
-                      <ish-payment-parameter-form
-                        [paymentMethod]="paymentMethod"
-                        [parentForm]="paymentForm"
-                        [submitDisabled]="submitDisabled"
-                        [activated]="formIsOpen(i)"
-                        (cancelPayment)="closeNewPaymentInstrumentForm()"
-                        (submitPayment)="submitParameterForm()"
-                      />
-                    </ng-template>
-                  </ng-container>
+                      <ng-template [ngSwitchCase]="'Payone_CreditCard'">
+                        <ish-payment-payone-creditcard
+                          [paymentMethod]="paymentMethod"
+                          [activated]="formIsOpen(i)"
+                          (submitPayment)="createNewPaymentInstrument($event)"
+                          (cancelPayment)="closePaymentInstrumentForm()"
+                        />
+                      </ng-template>
+
+                      <ng-template ngSwitchDefault>
+                        <ish-payment-parameter-form
+                          [paymentMethod]="paymentMethod"
+                          [parentForm]="paymentForm"
+                          [submitDisabled]="submitDisabled"
+                          [activated]="formIsOpen(i)"
+                          (cancelPayment)="closePaymentInstrumentForm()"
+                          (submitPayment)="submitParameterForm()"
+                        />
+                      </ng-template>
+                    </ng-container>
+                  </fieldset>
                 </div>
               </div>
             </li>
