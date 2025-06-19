@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
 
-import { RequisitionContextFacade } from '../../facades/requisition-context.facade';
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 import { Requisition, RequisitionStatus } from '../../models/requisition/requisition.model';
 import { RequisitionRejectDialogComponent } from '../requisition-reject-dialog/requisition-reject-dialog.component';
@@ -21,7 +20,6 @@ export type RequisitionColumnsType =
   selector: 'ish-requisitions-list',
   templateUrl: './requisitions-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [RequisitionContextFacade],
 })
 export class RequisitionsListComponent {
   /**
@@ -38,7 +36,7 @@ export class RequisitionsListComponent {
   constructor(private requisitionManagementFacade: RequisitionManagementFacade) {}
 
   approveRequisition(requisitionId: string) {
-    this.requisitionManagementFacade.updateRequisitionStatusFromApprovalList$(requisitionId, 'APPROVED');
+    this.requisitionManagementFacade.updateRequisitionStatusFromList$(requisitionId, 'APPROVED');
   }
 
   openRejectDialog(requisitionId: string) {
@@ -50,11 +48,7 @@ export class RequisitionsListComponent {
     if (!this.selectedRequisitionId) {
       return;
     }
-    this.requisitionManagementFacade.updateRequisitionStatusFromApprovalList$(
-      this.selectedRequisitionId,
-      'REJECTED',
-      comment
-    );
+    this.requisitionManagementFacade.updateRequisitionStatusFromList$(this.selectedRequisitionId, 'REJECTED', comment);
     this.selectedRequisitionId = undefined;
   }
 }

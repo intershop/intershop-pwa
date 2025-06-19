@@ -21,7 +21,7 @@ import {
   loadRequisitionsSuccess,
   updateRequisitionStatus,
   updateRequisitionStatusFail,
-  updateRequisitionStatusFromApprovalList,
+  updateRequisitionStatusFromList,
   updateRequisitionStatusSuccess,
 } from './requisitions.actions';
 
@@ -107,9 +107,9 @@ export class RequisitionsEffects {
     )
   );
 
-  updateRequisitionStatusFromApprovalList$ = createEffect(() =>
+  updateRequisitionStatusFromList$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateRequisitionStatusFromApprovalList),
+      ofType(updateRequisitionStatusFromList),
       mapToPayload(),
       concatMap(({ requisitionId, status, approvalComment }) =>
         this.requisitionsService.updateRequisitionStatus(requisitionId, status, approvalComment).pipe(
@@ -121,9 +121,10 @@ export class RequisitionsEffects {
             if (requisition.approval.statusCode === 'PENDING') {
               actions.push(displayInfoMessage({ message: 'approval.order_partially_approved.text' }));
             } else {
+              // keep-localization-pattern: ^approval\.order_.*\.text$
               actions.push(
                 displaySuccessMessage({
-                  message: `approval.order${requisition.approval.statusCode.toLowerCase()}.text`,
+                  message: `approval.order_${requisition.approval.statusCode.toLowerCase()}.text`,
                 })
               );
             }

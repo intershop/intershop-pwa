@@ -2,7 +2,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockPipe } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { PricePipe } from 'ish-core/models/price/price.pipe';
@@ -49,7 +49,7 @@ describe('Requisitions List Component', () => {
     facade = mock(RequisitionManagementFacade);
     await TestBed.configureTestingModule({
       imports: [CdkTableModule, RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [MockPipe(PricePipe)],
+      declarations: [MockComponent(RequisitionRejectDialogComponent), MockPipe(PricePipe), RequisitionsListComponent],
       providers: [{ provide: RequisitionManagementFacade, useFactory: () => instance(facade) }],
     }).compileComponents();
   });
@@ -65,8 +65,8 @@ describe('Requisitions List Component', () => {
       'account.approvallist.items': '{{0}} items',
     });
 
-    when(facade.updateRequisitionStatusFromApprovalList$(anything(), anything())).thenReturn(undefined);
-    when(facade.updateRequisitionStatusFromApprovalList$(anything(), anything(), anything())).thenReturn(undefined);
+    when(facade.updateRequisitionStatusFromList$(anything(), anything())).thenReturn(undefined);
+    when(facade.updateRequisitionStatusFromList$(anything(), anything(), anything())).thenReturn(undefined);
   });
 
   it('should be created', () => {
@@ -126,6 +126,7 @@ describe('Requisitions List Component', () => {
       'rejectionDate',
       'lineItems',
       'orderTotal',
+      'actions',
     ];
     fixture.detectChanges();
 
@@ -138,15 +139,15 @@ describe('Requisitions List Component', () => {
     expect(element.querySelector('[data-testing-id=th-rejection-date]')).toBeTruthy();
     expect(element.querySelector('[data-testing-id=th-line-items]')).toBeTruthy();
     expect(element.querySelector('[data-testing-id=th-order-total]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=th-actions]')).toBeTruthy();
   });
 
   it('should approve a requisition using the facade', () => {
     component.requisitions = requisitions;
     fixture.detectChanges();
-
     component.approveRequisition('0001');
 
-    verify(facade.updateRequisitionStatusFromApprovalList$('0123', 'APPROVED')).once();
+    verify(facade.updateRequisitionStatusFromList$('0001', 'APPROVED')).once();
   });
 
   it('should reject a requisition using the facade with comment', () => {
@@ -154,20 +155,16 @@ describe('Requisitions List Component', () => {
     component.requisitions = requisitions;
     component.rejectDialog = instance(rejectDialogMock);
     fixture.detectChanges();
-
     component.openRejectDialog('0001');
-
     component.rejectRequisition('Not needed');
 
-    verify(facade.updateRequisitionStatusFromApprovalList$('0123', 'REJECTED', 'Not needed')).once();
+    verify(facade.updateRequisitionStatusFromList$('0001', 'REJECTED', 'Not needed')).once();
   });
 
   it('should open the reject dialog for a requisition', () => {
     const dialogMock = mock(RequisitionRejectDialogComponent);
     component.rejectDialog = instance(dialogMock);
-
     component.requisitions = requisitions;
-
     component.openRejectDialog('0001');
 
     verify(dialogMock.show()).once();

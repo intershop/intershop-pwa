@@ -149,16 +149,20 @@
       </td>
     </ng-container>
 
-    <!-- Approval -->
+    <!-- Approval Actions -->
     <ng-container cdkColumnDef="actions">
-      <th cdk-header-cell *cdkHeaderCellDef></th>
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-actions">
+        <span class="sr-only">{{ 'account.approvallist.table.actions' | translate }}</span>
+      </th>
       <td cdk-cell *cdkCellDef="let requisition" class="column-price">
         <ng-container *ngIf="status === 'PENDING'">
           <button
             type="button"
             class="btn-tool btn-link"
             (click)="approveRequisition(requisition.id)"
-            title="{{ 'account.requisitions.approvals.approve' | translate }}"
+            title="{{
+              'account.requisitions.approvals.approve' | translate : { requisitionNo: requisition.requisitionNo }
+            }}"
           >
             <fa-icon [icon]="['fas', 'check']" />
           </button>
@@ -166,7 +170,9 @@
             type="button"
             class="btn-tool btn-link"
             (click)="openRejectDialog(requisition.id)"
-            title="{{ 'account.requisitions.approvals.reject' | translate }}"
+            title="{{
+              'account.requisitions.approvals.reject' | translate : { requisitionNo: requisition.requisitionNo }
+            }}"
           >
             <fa-icon [icon]="['fas', 'times']" />
           </button>

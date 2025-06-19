@@ -15,7 +15,7 @@ import {
   getRequisitionsLoading,
   loadRequisition,
   loadRequisitions,
-  updateRequisitionStatusFromApprovalList,
+  updateRequisitionStatusFromList,
 } from '../store/requisitions';
 
 /* eslint-disable @typescript-eslint/member-ordering */
@@ -68,9 +68,9 @@ export class RequisitionManagementFacade {
     )
   );
 
-  updateRequisitionStatusFromApprovalList$(requisitionId: string, status: RequisitionStatus, approvalComment?: string) {
+  updateRequisitionStatusFromList$(requisitionId: string, status: RequisitionStatus, approvalComment?: string) {
     this.store.dispatch(
-      updateRequisitionStatusFromApprovalList({
+      updateRequisitionStatusFromList({
         requisitionId,
         status,
         approvalComment,
