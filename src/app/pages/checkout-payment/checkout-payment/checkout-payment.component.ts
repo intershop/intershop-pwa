@@ -232,7 +232,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     return this.paymentForm.invalid && this.formSubmitted;
   }
 
-  get isParameterFormOpen() {
+  private isParameterFormOpen() {
     return this.openFormIndex !== -1;
   }
 }
