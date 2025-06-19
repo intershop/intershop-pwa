@@ -17,7 +17,7 @@ import {
 import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
 import * as client from 'prom-client';
 import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level';
-import { METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
+import { CANONICAL_URL, METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
 import { CommonEngine } from '@angular/ssr';
 import { icmCallsCache } from './src/app/core/interceptors/universal-cache.interceptor';
 import { Agent, install, setGlobalDispatcher, interceptors } from 'undici';
@@ -481,12 +481,17 @@ export function app() {
       baseHref = match[1].replace(/%25/g, '%').replace(/%2F/g, '/');
     }
 
+    const url = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+
     commonEngine
       .render({
-        url: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+        url,
         documentFilePath: join(BROWSER_FOLDER, 'index.html'),
         publicPath: BROWSER_FOLDER,
-        providers: [{ provide: APP_BASE_HREF, useValue: baseHref }],
+        providers: [
+          { provide: APP_BASE_HREF, useValue: baseHref },
+          { provide: CANONICAL_URL, useValue: url },
+        ],
       })
       .then(html => {
         let newHtml = html;

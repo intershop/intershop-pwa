@@ -1,13 +1,12 @@
 import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
-import { Inject, Injectable, Optional } from '@angular/core';
+import { ApplicationRef, Inject, Injectable, Optional } from '@angular/core';
 import { Meta, MetaDefinition, Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction, routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
-import { Subject, combineLatest, merge, of, race } from 'rxjs';
+import { Subject, combineLatest, merge, race } from 'rxjs';
 import { delay, distinctUntilChanged, filter, map, switchMap, takeWhile, tap } from 'rxjs/operators';
 
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
@@ -37,10 +36,10 @@ export class SeoEffects {
     private metaService: Meta,
     private titleService: Title,
     private translate: TranslateService,
-    private router: Router,
     @Inject(DOCUMENT) private doc: Document,
     @Optional() @Inject(REQUEST) private request: InjectSingle<typeof REQUEST>,
-    @Inject(APP_BASE_HREF) private baseHref: string
+    @Inject(APP_BASE_HREF) private baseHref: string,
+    private appRef: ApplicationRef
   ) {}
 
   private pageTitle$ = new Subject<string>();
@@ -74,7 +73,10 @@ export class SeoEffects {
               map((category: CategoryView) => this.baseURL + generateCategoryUrl(category).substring(1))
             ),
             // DEFAULT
-            of(this.baseURL + this.router.url.replace(/[;?].*/g, '')),
+            this.appRef.isStable.pipe(
+              whenTruthy(),
+              map(() => this.doc.URL.replace(/[;?].*/g, ''))
+            ),
           ])
         ),
         distinctUntilChanged(),

@@ -4,6 +4,11 @@ import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level
 import { createEnvironmentInjectionToken } from 'ish-core/utils/injection';
 
 /**
+ * Injection Token for Canonical URL during SSR serving
+ */
+export const CANONICAL_URL = new InjectionToken<string>('CANONICAL_URL');
+
+/**
  * Array of paths that always use mocked data
  */
 export const API_MOCK_PATHS = createEnvironmentInjectionToken('apiMockPaths');
