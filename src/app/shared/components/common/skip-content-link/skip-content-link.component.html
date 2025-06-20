@@ -1,0 +1,20 @@
+<!-- The `href` just provides context for screen readers. The focus functionality is handled by a custom click listener in the ts file. -->
+<!-- only visible on desktop -->
+<a
+  #skipContentLink
+  data-nosnippet
+  [href]="skipToElementId || generatedElementAfterListingId"
+  class="d-none d-lg-block skip-content-link"
+  >{{ linkText | translate }}</a
+>
+
+<ng-content></ng-content>
+
+<!-- only visible on desktop -->
+<span
+  *ngIf="generatedElementAfterListingId"
+  [id]="generatedElementAfterListingId"
+  class="sr-only d-none d-lg-block"
+  tabindex="-1"
+  >{{ 'common.skip_listing.announcement.default' | translate }}</span
+>

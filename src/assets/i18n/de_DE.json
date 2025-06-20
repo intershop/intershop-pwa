@@ -901,6 +901,8 @@
   "common.date_format.letters.d": "t",
   "common.date_format.letters.y": "j",
   "common.home.link": "Home",
+  "common.skip_content.link.text.default": "Auflistung überspringen",
+  "common.skip_listing.announcement.default": "Auflistung übersprungen",
   "common.skip_to_main.link": "Zum Hauptinhalt der Seite springen",
   "common.view_all.link": "Alle anzeigen",
   "common.view_all.link.label": "Alle zuletzt betrachteten Artikel anzeigen",
