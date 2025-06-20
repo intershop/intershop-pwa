@@ -122,7 +122,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     }
 
     this.paymentForm.get('name').setValue(this.getBasketPayment(), { emitEvent: false });
-    this.openFormIndex = -1; // close parameter form after successfully basket changed
+    this.closePaymentInstrumentForm(); // close parameter form after successfully basket changed
     this.parameterForm.reset();
   }
 
@@ -149,6 +149,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
   openPaymentParameterForm(index: number) {
     this.formSubmitted = false;
     this.openFormIndex = index;
+
     // enable / disable the appropriate parameter form controls
     Object.keys(this.parameterForm.controls).forEach(key => {
       this.filteredPaymentMethods[index].parameters.find(param => param.key === key)
@@ -160,7 +161,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
   /**
    * cancel new payment instrument, hides parameter form
    */
-  cancelNewPaymentInstrument() {
+  closePaymentInstrumentForm() {
     this.openFormIndex = -1;
   }
 
@@ -188,9 +189,10 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
       return;
     }
 
-    if (this.openFormIndex === -1) {
+    if (!this.isParameterFormOpen) {
       return;
     }
+
     const paymentMethod = this.filteredPaymentMethods[this.openFormIndex];
     const parameters = Object.entries(this.parameterForm.controls)
       .filter(([, control]) => control.enabled && control.value)
@@ -228,5 +230,9 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
 
   get submitDisabled() {
     return this.paymentForm.invalid && this.formSubmitted;
+  }
+
+  private isParameterFormOpen() {
+    return this.openFormIndex !== -1;
   }
 }
