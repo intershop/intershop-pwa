@@ -9,6 +9,7 @@ import { Category } from 'ish-core/models/category/category.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
+import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 import { FilterNavigationComponent } from 'ish-shared/components/filter/filter-navigation/filter-navigation.component';
 import { ProductListingComponent } from 'ish-shared/components/product/product-listing/product-listing.component';
 
@@ -31,6 +32,7 @@ describe('Category Products Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(FilterNavigationComponent),
         MockComponent(ProductListingComponent),
+        MockComponent(SkipContentLinkComponent),
         MockDirective(NgbCollapse),
       ],
     }).compileComponents();

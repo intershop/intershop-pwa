@@ -91,7 +91,9 @@
     </div>
 
     <!-- Line Items -->
-    <ish-line-item-list *ngIf="basket.lineItems?.length > 0" [lineItems]="basket.lineItems" [editable]="false" />
+    <ish-skip-content-link *ngIf="basket.lineItems?.length > 0">
+      <ish-line-item-list [lineItems]="basket.lineItems" [editable]="false" />
+    </ish-skip-content-link>
   </div>
 
   <!-- basket summary -->

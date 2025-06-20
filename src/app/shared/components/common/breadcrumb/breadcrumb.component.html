@@ -1,4 +1,10 @@
-<nav class="breadcrumbs row" [attr.aria-label]="'breadcrumbs.aria_label' | translate">
+<!-- tabindex is necessary to be a valid focus target for the <ish-skip-content-link> component -->
+<nav
+  id="nav-breadcrumbs"
+  class="breadcrumbs row"
+  [attr.aria-label]="'breadcrumbs.aria_label' | translate"
+  tabindex="-1"
+>
   <ol class="breadcrumbs-list">
     <li *ngIf="showHome" class="breadcrumbs-list breadcrumbs-list-home">
       <a class="breadcrumbs-list-link breadcrumbs-list-link-home" rel="home" routerLink="/home">{{

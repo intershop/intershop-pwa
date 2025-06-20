@@ -22,6 +22,7 @@ import { BasketValidationResultsComponent } from 'ish-shared/components/basket/b
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
+import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
 import { CheckoutReviewTacFieldComponent } from '../formly/checkout-review-tac-field/checkout-review-tac-field.component';
@@ -49,6 +50,7 @@ describe('Checkout Review Component', () => {
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
         MockComponent(ModalDialogLinkComponent),
+        MockComponent(SkipContentLinkComponent),
         MockDirective(ServerHtmlDirective),
         MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
       ],
@@ -125,6 +127,7 @@ describe('Checkout Review Component', () => {
         "ish-info-box",
         "ish-basket-shipping-method",
         "ish-info-box",
+        "ish-skip-content-link",
         "ish-line-item-list",
         "ish-basket-cost-summary",
         "formly-form",
