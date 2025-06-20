@@ -41,6 +41,7 @@
     <div *ishFeature="'maps'">
       <div class="row">
         <div class="col-3 pr-0 overflow-auto d-none d-lg-block map-height">
+          <ish-skip-content-link skipToElementId="store-locator-map" />
           <div
             *ngFor="let store of stores$ | async"
             class="store-entry"
@@ -58,6 +59,7 @@
         <div class="col-12 col-lg-9 pl-lg-0 map-height">
           <ish-stores-map #map />
         </div>
+        <!-- Tablet/Mobile -->
         <div class="col-12 d-lg-none">
           <div class="row container p-0">
             <div

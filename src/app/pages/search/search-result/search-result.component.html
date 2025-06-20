@@ -5,7 +5,9 @@
 
   <div class="col-md-3">
     <div class="navigation-panel" [ngbCollapse]="isCollapsed">
+      <ish-skip-content-link skipToElementId="nav-breadcrumbs" linkText="common.skip_content.link.text.filter" />
       <ish-filter-navigation />
+
       <div class="marketing-area">
         <ish-content-include includeId="include.searchresult.navigation.pagelet2-Include" />
       </div>

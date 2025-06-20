@@ -9,7 +9,9 @@
     <div class="col-md-8">
       <h2 class="h3">{{ 'quickorder.page.subtitle' | translate }}</h2>
       <p>{{ 'quickorder.page.subtitle.description' | translate }}</p>
-      <ish-quickorder-add-products-form />
+      <ish-skip-content-link linkText="common.skip_content.link.text.form">
+        <ish-quickorder-add-products-form />
+      </ish-skip-content-link>
       <ish-quickorder-csv-form />
     </div>
   </div>

@@ -1,6 +1,10 @@
 <ng-container *ngIf="hasVariations$ | async">
   <a id="variation-list-top" title="top"></a>
-  <ish-filter-navigation orientation="horizontal" fragmentOnRouting="variation-list-top" />
+
+  <ish-skip-content-link linkText="common.skip_content.link.text.filter">
+    <ish-filter-navigation orientation="horizontal" fragmentOnRouting="variation-list-top" />
+  </ish-skip-content-link>
+
   <ish-product-listing
     mode="paging"
     [categoryId]="categoryId$ | async"

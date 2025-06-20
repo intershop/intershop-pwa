@@ -44,13 +44,16 @@
         </div>
 
         <ish-basket-cost-center-selection />
+
         <div class="section">
-          <ng-container *ishFeature="'quoting'; else elseTemplate">
-            <ish-lazy-quoting-basket-line-items />
-          </ng-container>
-          <ng-template #elseTemplate>
-            <ish-line-item-list *ngIf="basket" [lineItems]="basket.lineItems" />
-          </ng-template>
+          <ish-skip-content-link>
+            <ng-container *ishFeature="'quoting'; else elseTemplate">
+              <ish-lazy-quoting-basket-line-items />
+            </ng-container>
+            <ng-template #elseTemplate>
+              <ish-line-item-list *ngIf="basket" [lineItems]="basket.lineItems" />
+            </ng-template>
+          </ish-skip-content-link>
 
           <ish-loading *ngIf="loading" />
 

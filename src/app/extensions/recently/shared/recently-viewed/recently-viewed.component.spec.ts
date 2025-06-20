@@ -9,6 +9,7 @@ import { anything, instance, mock, when } from 'ts-mockito';
 import { BrowserLazyViewDirective } from 'ish-core/directives/browser-lazy-view.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
+import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
 
 import { RecentlyFacade } from '../../facades/recently.facade';
@@ -31,6 +32,7 @@ describe('Recently Viewed Component', () => {
       imports: [RouterTestingModule.withRoutes([{ path: 'recently', component: RecentlyViewedComponent }])],
       declarations: [
         MockComponent(ProductsListComponent),
+        MockComponent(SkipContentLinkComponent),
         MockDirective(BrowserLazyViewDirective),
         MockPipe(TranslatePipe),
         RecentlyViewedComponent,

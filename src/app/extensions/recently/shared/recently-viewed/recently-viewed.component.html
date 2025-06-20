@@ -3,9 +3,11 @@
     <div *ngIf="products.length" class="product-list-container" data-testing-id="recently-viewed">
       <h2>{{ 'recentlyViewed.component.heading' | translate }}</h2>
 
+      <ish-skip-content-link skipToElementId="pdp-view-all-link" />
       <ish-products-list [productSKUs]="products" listStyle="carousel" listItemStyle="tile" />
 
       <a
+        id="pdp-view-all-link"
         [routerLink]="['/recently']"
         class="view-all"
         data-testing-id="view-all"
