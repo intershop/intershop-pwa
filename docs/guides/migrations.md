@@ -23,6 +23,9 @@ The link is only visible when it receives keyboard tab focus, similar to the "Sk
 The component can accept an HTML element ID as input parameter to specify which element should receive focus when the skip link is clicked.
 If no valid HTML element ID is specified, the component generates an element after the listing that receives the focus.
 
+The `RequisitionRejectDialogComponent` was moved from a `RequisitionDetailPageModule` specific component to a shared `RequisitionManagementModule` component.
+This was necessary because it is now used not only on the requisition detail page, but also on the requisition approval list.
+
 ## From 6.0.0 to 7.0.0
 
 The Intershop PWA 7.0.0 release contains the **SPARQUE suggest** and **SPARQUE search** functionality to improve the product search in the PWA.
