@@ -37,6 +37,7 @@ The following steps outline a structured method for evaluating accessibility, in
 
 - Use the [Accessibility Easy Check Checklist](accessibility-easy-check.md).
 - ESLint Rules: Keep the ESLint accessibility rules enabled in your IDE to ensure compliance during development.
+- For design-related accessibility decisions and interaction patterns, see [Accessibility in UX: Patterns and Rationale](accessibility-ux-pattern.md).
 
 **Use Appropriate Tools**
 
