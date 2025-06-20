@@ -691,6 +691,7 @@
   "basket.validation.general.error": "Votre panier n’est plus valide. Veuillez corriger les erreurs indiquées ci-dessous.",
   "breadcrumbs.aria_label": "Breadcrumbs",
   "captcha.incorrect": "Échec de la vérification de sécurité. Veuillez corriger l’erreur indiquée ci-dessous.",
+  "category.navigation.aria_label": "Navigation par catégories",
   "category.navigation.skip_content.link.text": "Ignorer la navigation de catégorie",
   "checkout.account.confirm.button.label": "Confirmer",
   "checkout.account.email.registered.heading": "Compte",

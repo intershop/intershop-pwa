@@ -12,7 +12,9 @@
     <div class="col-md-3">
       <ish-skip-content-link skipToElementId="nav-breadcrumbs" linkText="category.navigation.skip_content.link.text" />
       <div class="navigation-panel" [ngbCollapse]="isCollapsed">
-        <ish-category-navigation [uniqueId]="category.categoryPath[0]" />
+        <nav [attr.aria-label]="'category.navigation.aria_label' | translate">
+          <ish-category-navigation [uniqueId]="category.categoryPath[0]" />
+        </nav>
         <!-- DISABLED VIEW CONTEXT --
         <div class="marketing-area">
           <ish-content-viewcontext
