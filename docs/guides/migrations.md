@@ -18,6 +18,11 @@ It was previously based on `<ul>` with `<li role="presentation">` elements, now 
 Page titles for the checkout and account pages were added to every single page for accessibility reasons.
 The context _Checkout_ or _My Account_ is automatically appended to the relevant page titles in the `seo.effects`.
 
+The `<ish-skip-content-link>` component was introduced to improve accessibility for listings by generating a skip link before the listing enclosed by the component.
+The link is only visible when it receives keyboard tab focus, similar to the "Skip to main content" link.
+The component can accept an HTML element ID as input parameter to specify which element should receive focus when the skip link is clicked.
+If no valid HTML element ID is specified, the component generates an element after the listing that receives the focus.
+
 ## From 6.0.0 to 7.0.0
 
 The Intershop PWA 7.0.0 release contains the **SPARQUE suggest** and **SPARQUE search** functionality to improve the product search in the PWA.

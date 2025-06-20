@@ -97,6 +97,7 @@ import { LoadingComponent } from './components/common/loading/loading.component'
 import { ModalDialogLinkComponent } from './components/common/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from './components/common/modal-dialog/modal-dialog.component';
 import { PagingComponent } from './components/common/paging/paging.component';
+import { SkipContentLinkComponent } from './components/common/skip-content-link/skip-content-link.component';
 import { SuccessMessageComponent } from './components/common/success-message/success-message.component';
 import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';
 import { FilterCollapsibleComponent } from './components/filter/filter-collapsible/filter-collapsible.component';
@@ -315,6 +316,7 @@ const exportedComponents = [
   ProductWarrantyDetailsComponent,
   PromotionDetailsComponent,
   PromotionRemoveComponent,
+  SkipContentLinkComponent,
   SuccessMessageComponent,
 ];
 
