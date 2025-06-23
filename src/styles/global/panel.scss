@@ -34,6 +34,20 @@
   padding: ($space-default * 0.5) 0;
   border-bottom: $border-width-default solid transparent;
 
+  &.btn-accordion-toggle {
+    width: 100%;
+    padding: 0;
+    text-align: left;
+    text-decoration: none;
+    background-color: transparent;
+    border: 0;
+
+    .ng-fa-icon {
+      float: right;
+      color: $text-color-corporate;
+    }
+  }
+
   a:hover {
     text-decoration: none;
   }
