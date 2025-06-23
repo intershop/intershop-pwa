@@ -149,6 +149,19 @@ button.btn-link {
   }
 }
 
+.details-tooltip,
+.btn-link-with-icon {
+  .ng-fa-icon {
+    padding-left: 6px;
+  }
+
+  @include hover-none-underline();
+}
+
+.btn-link-with-icon {
+  padding-left: 0;
+}
+
 // multiple buttons margin handling (use "button-group" in case the buttons are not direct siblings)
 .button-group .btn,
 .btn:not(:only-child):not(.btn-link) {
@@ -171,7 +184,7 @@ button.btn-link {
   }
 }
 
-// TODO: refactor button toggles with toggle icon (filter, promo, accordion) into a single class
+// toggle link with width 100%
 .btn-content-toggle {
   display: flex;
   align-items: center;

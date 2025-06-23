@@ -42,11 +42,12 @@ describe('Filter Collapsible Component', () => {
         <button
           type="button"
           data-testing-id="filter-toggle-button"
-          class="btn-filter-toggle"
+          class="btn btn-link btn-content-toggle p-0 mb-3"
           aria-expanded="true"
           aria-controls="PriceFilterId"
         >
-          <h3>Price <fa-icon ng-reflect-icon="fas,angle-up"></fa-icon></h3>
+          <h3 class="m-0">Price</h3>
+          <fa-icon ng-reflect-icon="fas,angle-up"></fa-icon>
         </button>
       </div>
     `);
@@ -62,11 +63,12 @@ describe('Filter Collapsible Component', () => {
         <button
           type="button"
           data-testing-id="filter-toggle-button"
-          class="btn-filter-toggle"
+          class="btn btn-link btn-content-toggle p-0 mb-3"
           aria-expanded="false"
           aria-controls="PriceFilterId"
         >
-          <h3>Price <fa-icon ng-reflect-icon="fas,angle-down"></fa-icon></h3>
+          <h3 class="m-0">Price</h3>
+          <fa-icon ng-reflect-icon="fas,angle-down"></fa-icon>
         </button>
       </div>
     `);
