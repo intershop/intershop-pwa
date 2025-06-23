@@ -61,6 +61,7 @@ describe('Category Navigation Component', () => {
         <a
         class="filter-item-name link-decoration-hover filter-selected"
         ng-reflect-router-link="/c/A/A.1"
+        aria-current="true"
         href="/c/A/A.1"
       >
         nA.1
@@ -83,6 +84,7 @@ describe('Category Navigation Component', () => {
         <a
         class="filter-item-name link-decoration-hover filter-selected"
         ng-reflect-router-link="/c/A/A.1"
+        aria-current="true"
         href="/c/A/A.1"
       >
         nA.1

@@ -18,6 +18,7 @@ exports[`Filter Swatch Images Component should be created 1`] = `
       class="filter-swatch btn btn-link btn-link-action"
       title="Red (5)"
       data-testing-id="filter-link-Red"
+      aria-current="true"
     >
       <span style="background-color: red"></span>
     </button>
