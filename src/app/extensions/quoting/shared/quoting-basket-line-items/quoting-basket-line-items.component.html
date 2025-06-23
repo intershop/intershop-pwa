@@ -1,17 +1,16 @@
 <ng-container *ngFor="let item of lineItems$ | async; trackBy: trackByFn">
-  <div class="row" *ngIf="item[0] !== 'undefined'">
-    <h2 class="col-12">
+  <div class="d-flex align-items-center justify-content-between flex-wrap" *ngIf="item[0] !== 'undefined'">
+    <h2>
       {{ 'quote.basket_items.label' | translate : { '0': getName(item[0]) | async } }}
-      <button
-        type="button"
-        class="float-md-right pt-2 d-block d-md-inline header-note btn btn-link btn-link-action"
-        title="{{ 'quote.basket_items.remove.button.label' | translate }}"
-        (click)="onDeleteQuote(item[0])"
-      >
-        <fa-icon [icon]="['fas', 'trash-alt']" />
-        <span class="pl-1">{{ 'quote.basket_items.remove.button.label' | translate }}</span>
-      </button>
     </h2>
+    <button
+      type="button"
+      class="float-md-right px-2 mx-1 d-block d-md-inline btn btn-link btn-link-action"
+      title="{{ 'quote.basket_items.remove.button.label' | translate }}"
+      (click)="onDeleteQuote(item[0])"
+    >
+      {{ 'quote.basket_items.remove.button.label' | translate }}
+    </button>
   </div>
   <ish-line-item-list [lineItems]="item[1]" />
 </ng-container>
