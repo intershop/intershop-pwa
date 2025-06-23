@@ -61,18 +61,18 @@ describe('Filter Navigation Badges Component', () => {
       <div class="row">
         <div class="col-md-10">
           <div class="filter-navigation-badges">
-            <button type="button" class="btn btn-link btn-link-action">
-              Color: blue <fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon>
+            <button type="button" class="btn btn-link btn-link-action btn-link-with-icon">
+              Color: blue<fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon>
             </button>
           </div>
           <div class="filter-navigation-badges">
-            <button type="button" class="btn btn-link btn-link-action">
-              Color: black <fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon>
+            <button type="button" class="btn btn-link btn-link-action btn-link-with-icon">
+              Color: black<fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon>
             </button>
           </div>
           <div class="filter-navigation-badges">
-            <button type="button" class="btn btn-link btn-link-action">
-              HDD: 456 <fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon>
+            <button type="button" class="btn btn-link btn-link-action btn-link-with-icon">
+              HDD: 456<fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon>
             </button>
           </div>
         </div>

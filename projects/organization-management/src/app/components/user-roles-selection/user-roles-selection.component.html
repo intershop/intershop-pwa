@@ -26,19 +26,15 @@
             </ul>
             <p>
               <!-- Expand/Collapse user permissions -->
-              <button
-                type="button"
-                (click)="toggleExpanded(i)"
-                class="btn btn-link btn-link-action text-decoration-none"
-              >
+              <button type="button" (click)="toggleExpanded(i)" class="btn btn-link btn-link-with-icon btn-link-action">
                 <ng-container *ngIf="isExpanded[i]; else show_permissions_link">
-                  {{ 'account.user.details.profile.role.hide_permissions.link' | translate }}&nbsp;
-                  <fa-icon [icon]="['fas', 'angle-up']" />
+                  {{ 'account.user.details.profile.role.hide_permissions.link' | translate
+                  }}<fa-icon [icon]="['fas', 'angle-up']" />
                 </ng-container>
 
                 <ng-template #show_permissions_link>
-                  {{ 'account.user.details.profile.role.show_permissions.link' | translate }}&nbsp;
-                  <fa-icon [icon]="['fas', 'angle-down']" />
+                  {{ 'account.user.details.profile.role.show_permissions.link' | translate
+                  }}<fa-icon [icon]="['fas', 'angle-down']" />
                 </ng-template>
               </button>
             </p>
