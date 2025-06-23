@@ -149,6 +149,37 @@
       </td>
     </ng-container>
 
+    <!-- Approval Actions -->
+    <ng-container cdkColumnDef="actions">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-actions">
+        <span class="sr-only">{{ 'account.approvallist.table.actions' | translate }}</span>
+      </th>
+      <td cdk-cell *cdkCellDef="let requisition" class="column-price">
+        <ng-container *ngIf="status === 'PENDING'">
+          <button
+            type="button"
+            class="btn-tool btn-link"
+            (click)="approveRequisition(requisition.id)"
+            title="{{
+              'account.requisitions.approvals.approve' | translate : { requisitionNo: requisition.requisitionNo }
+            }}"
+          >
+            <fa-icon [icon]="['fas', 'check']" />
+          </button>
+          <button
+            type="button"
+            class="btn-tool btn-link"
+            (click)="openRejectDialog(requisition.id)"
+            title="{{
+              'account.requisitions.approvals.reject' | translate : { requisitionNo: requisition.requisitionNo }
+            }}"
+          >
+            <fa-icon [icon]="['fas', 'times']" />
+          </button>
+        </ng-container>
+      </td>
+    </ng-container>
+
     <!-- Header and Row Declarations -->
     <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
     <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay"></tr>
@@ -162,3 +193,5 @@
 <ng-template #emptyList>
   <p data-testing-id="emptyList">{{ 'account.approvallist.no_items_message' | translate }}</p>
 </ng-template>
+
+<ish-requisition-reject-dialog #rejectDialog (submitRejectRequisition)="rejectRequisition($event)" />

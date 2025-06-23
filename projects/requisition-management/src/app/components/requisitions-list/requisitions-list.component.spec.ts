@@ -2,11 +2,14 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockPipe } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 
+import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 import { Requisition } from '../../models/requisition/requisition.model';
+import { RequisitionRejectDialogComponent } from '../requisition-reject-dialog/requisition-reject-dialog.component';
 
 import { RequisitionsListComponent } from './requisitions-list.component';
 
@@ -15,6 +18,8 @@ describe('Requisitions List Component', () => {
   let fixture: ComponentFixture<RequisitionsListComponent>;
   let element: HTMLElement;
   let translate: TranslateService;
+  let facade: RequisitionManagementFacade;
+
   const requisitions = [
     {
       id: '0123',
@@ -41,9 +46,11 @@ describe('Requisitions List Component', () => {
   ] as Requisition[];
 
   beforeEach(async () => {
+    facade = mock(RequisitionManagementFacade);
     await TestBed.configureTestingModule({
       imports: [CdkTableModule, RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [MockPipe(PricePipe), RequisitionsListComponent],
+      declarations: [MockComponent(RequisitionRejectDialogComponent), MockPipe(PricePipe), RequisitionsListComponent],
+      providers: [{ provide: RequisitionManagementFacade, useFactory: () => instance(facade) }],
     }).compileComponents();
   });
 
@@ -57,6 +64,9 @@ describe('Requisitions List Component', () => {
     translate.setTranslation('en', {
       'account.approvallist.items': '{{0}} items',
     });
+
+    when(facade.updateRequisitionStatusFromList$(anything(), anything())).thenReturn(undefined);
+    when(facade.updateRequisitionStatusFromList$(anything(), anything(), anything())).thenReturn(undefined);
   });
 
   it('should be created', () => {
@@ -116,6 +126,7 @@ describe('Requisitions List Component', () => {
       'rejectionDate',
       'lineItems',
       'orderTotal',
+      'actions',
     ];
     fixture.detectChanges();
 
@@ -128,5 +139,34 @@ describe('Requisitions List Component', () => {
     expect(element.querySelector('[data-testing-id=th-rejection-date]')).toBeTruthy();
     expect(element.querySelector('[data-testing-id=th-line-items]')).toBeTruthy();
     expect(element.querySelector('[data-testing-id=th-order-total]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=th-actions]')).toBeTruthy();
+  });
+
+  it('should approve a requisition using the facade', () => {
+    component.requisitions = requisitions;
+    fixture.detectChanges();
+    component.approveRequisition('0001');
+
+    verify(facade.updateRequisitionStatusFromList$('0001', 'APPROVED')).once();
+  });
+
+  it('should reject a requisition using the facade with comment', () => {
+    const rejectDialogMock = mock(RequisitionRejectDialogComponent);
+    component.requisitions = requisitions;
+    component.rejectDialog = instance(rejectDialogMock);
+    fixture.detectChanges();
+    component.openRejectDialog('0001');
+    component.rejectRequisition('Not needed');
+
+    verify(facade.updateRequisitionStatusFromList$('0001', 'REJECTED', 'Not needed')).once();
+  });
+
+  it('should open the reject dialog for a requisition', () => {
+    const dialogMock = mock(RequisitionRejectDialogComponent);
+    component.rejectDialog = instance(dialogMock);
+    component.requisitions = requisitions;
+    component.openRejectDialog('0001');
+
+    verify(dialogMock.show()).once();
   });
 });

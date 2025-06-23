@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
 
+import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 import { Requisition, RequisitionStatus } from '../../models/requisition/requisition.model';
+import { RequisitionRejectDialogComponent } from '../requisition-reject-dialog/requisition-reject-dialog.component';
 
 export type RequisitionColumnsType =
   | 'requisitionNo'
@@ -12,8 +14,8 @@ export type RequisitionColumnsType =
   | 'approvalDate'
   | 'rejectionDate'
   | 'lineItems'
-  | 'orderTotal';
-
+  | 'orderTotal'
+  | 'actions';
 @Component({
   selector: 'ish-requisitions-list',
   templateUrl: './requisitions-list.component.html',
@@ -26,4 +28,27 @@ export class RequisitionsListComponent {
   @Input() requisitions: Requisition[];
   @Input() status: RequisitionStatus = 'PENDING';
   @Input() columnsToDisplay: RequisitionColumnsType[];
+
+  @ViewChild('rejectDialog') rejectDialog: RequisitionRejectDialogComponent;
+
+  private selectedRequisitionId: string;
+
+  constructor(private requisitionManagementFacade: RequisitionManagementFacade) {}
+
+  approveRequisition(requisitionId: string) {
+    this.requisitionManagementFacade.updateRequisitionStatusFromList$(requisitionId, 'APPROVED');
+  }
+
+  openRejectDialog(requisitionId: string) {
+    this.selectedRequisitionId = requisitionId;
+    this.rejectDialog.show();
+  }
+
+  rejectRequisition(comment: string) {
+    if (!this.selectedRequisitionId) {
+      return;
+    }
+    this.requisitionManagementFacade.updateRequisitionStatusFromList$(this.selectedRequisitionId, 'REJECTED', comment);
+    this.selectedRequisitionId = undefined;
+  }
 }
