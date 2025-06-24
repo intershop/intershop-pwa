@@ -55,6 +55,19 @@ If no valid HTML element ID is specified, the component generates an element aft
 The `RequisitionRejectDialogComponent` was moved from a `RequisitionDetailPageModule` specific component to a shared `RequisitionManagementModule` component.
 This was necessary because it is now used not only on the requisition detail page, but also on the requisition approval list.
 
+The class based selector in the `in-place-edit.component.html` was changed to an attribute selector.
+To project content into the component's `viewMode`, use the `viewModeContent` attribute instead of the `form-control-plaintext` class:
+
+| Previous                            | Current               |
+| ----------------------------------- | --------------------- |
+| `<p class="form-control-plaintext>` | `<p viewModeContent>` |
+
+To project an input into the component's `editMode`, use the `editModeForm ` attribute instead of the `form-control-plaintext` class:
+
+| Previous                                | Current                |
+| --------------------------------------- | ---------------------- |
+| `<input class="form-control-plaintext>` | `<input editModeForm>` |
+
 ## From 6.0.0 to 7.0.0
 
 The Intershop PWA 7.0.0 release contains the **SPARQUE suggest** and **SPARQUE search** functionality to improve the product search in the PWA.

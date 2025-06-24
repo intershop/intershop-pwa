@@ -8,21 +8,21 @@
     (aborted)="resetTitle()"
     ariaLabelName="quote.edit.unsubmitted.name.label"
     alignment="center"
-    iconClass="btn-lg"
+    iconSize="lg"
+    [confirmDisabled]="!form.valid"
   >
     <h1 viewModeContent>
       {{ orderTemplate?.title }}
     </h1>
-    <input
-      editModeForm
-      type="text"
-      [formControl]="titleControl"
-      class="mt-3 form-control"
-      style="margin-bottom: 12px"
-      id="order-template-title"
-      (keydown.enter)="inPlaceEdit.confirm()"
-      (keydown.esc)="inPlaceEdit.cancel()"
-    />
+    <div editModeForm class="flex-grow-1" style="margin-top: 12px">
+      <formly-form
+        [form]="form"
+        [model]="model"
+        [fields]="fields"
+        (keydown.enter)="inPlaceEdit.confirm()"
+        (keydown.esc)="inPlaceEdit.cancel()"
+      />
+    </div>
   </ish-in-place-edit>
 
   <p

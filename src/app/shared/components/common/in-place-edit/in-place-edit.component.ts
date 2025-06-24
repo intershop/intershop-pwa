@@ -27,6 +27,7 @@ export class InPlaceEditComponent implements AfterViewInit {
   @Input() ariaLabelName = '';
   @Input() alignment: 'baseline' | 'center' = 'baseline';
   @Input() iconClass: string;
+  @Input() confirmDisabled = false;
   @Output() edited = new EventEmitter<void>();
   @Output() aborted = new EventEmitter<void>();
 
@@ -63,27 +64,26 @@ export class InPlaceEditComponent implements AfterViewInit {
       });
   }
 
-  // change into edit mode by clicking the pen
-  changeEditMode() {
-    if (this.mode === 'edit') {
-      setTimeout(() => {
-        this.host.nativeElement.querySelector('.form-control')?.focus();
-      }, 200);
-    }
-    if (this.mode === 'view') {
-      this.confirm();
-      this.mode = 'edit';
-    }
-  }
-
   confirm() {
-    this.mode = 'view';
+    if (this.confirmDisabled) {
+      return;
+    }
+
     this.edited.emit();
+
+    setTimeout(() => {
+      this.mode = 'view';
+      this.cdRef.detectChanges();
+    });
   }
 
   cancel() {
-    this.mode = 'view';
     this.aborted.emit();
+
+    setTimeout(() => {
+      this.mode = 'view';
+      this.cdRef.detectChanges();
+    });
   }
 
   get viewMode() {

@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -20,7 +21,11 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit, OnDestro
 
   noOfUnavailableProducts$: Observable<number>;
 
-  titleControl = new FormControl('');
+  form = new FormGroup({});
+  model: { title: string };
+  fields: FormlyFieldConfig[];
+
+  titleControl = new FormControl('', { validators: [Validators.required] });
   private currentOrderTemplate: OrderTemplate;
 
   private destroy$ = new Subject<void>();
@@ -37,10 +42,30 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit, OnDestro
 
     this.orderTemplate$.pipe(takeUntil(this.destroy$)).subscribe(orderTemplate => {
       if (orderTemplate) {
-        this.titleControl.setValue(orderTemplate.title);
         this.currentOrderTemplate = orderTemplate;
+        this.model = { title: orderTemplate.title };
+        this.fields = this.getFields();
       }
     });
+  }
+
+  private getFields(): FormlyFieldConfig[] {
+    return [
+      {
+        key: 'title',
+        type: 'ish-text-input-field',
+        wrappers: ['inline-validation'],
+        props: {
+          required: true,
+          label: 'account.order_template.edit.input.label',
+        },
+        validation: {
+          messages: {
+            required: 'account.order_template.edit.name.error.required',
+          },
+        },
+      },
+    ];
   }
 
   ngOnDestroy() {
@@ -49,21 +74,17 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit, OnDestro
   }
 
   updateTitle() {
-    if (
-      this.currentOrderTemplate &&
-      this.titleControl.value &&
-      this.currentOrderTemplate.title !== this.titleControl.value
-    ) {
+    if (this.currentOrderTemplate && this.model.title && this.currentOrderTemplate.title !== this.model.title) {
       this.orderTemplatesFacade.updateOrderTemplate({
         ...this.currentOrderTemplate,
-        title: this.titleControl.value,
+        title: this.model.title,
       });
     }
   }
 
   resetTitle() {
     this.orderTemplate$.pipe(takeUntil(this.destroy$)).subscribe(orderTemplate => {
-      this.titleControl.setValue(orderTemplate.title);
+      this.model = { ...this.model, title: orderTemplate.title };
     });
   }
 

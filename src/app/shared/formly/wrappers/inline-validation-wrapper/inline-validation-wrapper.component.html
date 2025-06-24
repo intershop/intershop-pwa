@@ -1,0 +1,17 @@
+<label [for]="field.id" class="sr-only">{{ to.label | translate }}</label>
+
+<div class="position-relative" [class.has-error]="showError">
+  <ng-template #fieldComponent></ng-template>
+  <ish-validation-icons
+    *ngIf="showValidationIcons()"
+    [field]="field"
+    [showError]="showError"
+    [ngClass]="{
+      'validation-offset': field.type === 'ish-select-field',
+      'validation-offset-date-picker': field.type === 'ish-date-picker-field'
+    }"
+  />
+  <ng-container *ngIf="showError" class="invalid-feedback d-block">
+    <ish-validation-message [field]="field" class="validation-message" />
+  </ng-container>
+</div>

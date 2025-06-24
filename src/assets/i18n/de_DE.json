@@ -266,6 +266,8 @@
   "account.order_template.list.table.template": "Name der Vorlage",
   "account.order_template.move.added.text": "{{0}} wurde zu Bestellvorlage <a callback=\"callbackHideDialogModal\" href=\"{{2}}\">{{1}}</a> hinzugefügt.",
   "account.order_template.name.error.required": "Zum Erstellen einer neuen Bestellvorlage geben Sie bitte einen Namen ein.",
+  "account.order_template.edit.name.error.required": "If you want to edit this order template, please enter a title.",
+  "account.order_template.edit.input.label": "Order template title",
   "account.order_template.new_from_basket.heading": "Aus Warenkorb Bestellvorlage anlegen",
   "account.order_template.new_from_basket_confirm.heading": "Die Bestellvorlage \"{{0}}\" wurde angelegt und alle Artikel wurden übertragen.",
   "account.order_template.new_from_order.button.create.label": "Anlegen",

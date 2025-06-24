@@ -1,7 +1,9 @@
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { TranslateModule } from '@ngx-translate/core';
+import { FormlyModule } from '@ngx-formly/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, objectContaining, verify, when } from 'ts-mockito';
@@ -11,6 +13,8 @@ import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InPlaceEditComponent } from 'ish-shared/components/common/in-place-edit/in-place-edit.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
+import { TextInputFieldComponent } from 'ish-shared/formly/types/text-input-field/text-input-field.component';
+import { WrappersModule } from 'ish-shared/formly/wrappers/wrappers.module';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate } from '../../models/order-template/order-template.model';
@@ -18,6 +22,12 @@ import { OrderTemplatePreferencesDialogComponent } from '../../shared/order-temp
 
 import { AccountOrderTemplateDetailLineItemComponent } from './account-order-template-detail-line-item/account-order-template-detail-line-item.component';
 import { AccountOrderTemplateDetailPageComponent } from './account-order-template-detail-page.component';
+
+@Component({
+  selector: 'ish-text-input-field',
+  template: '<input [formControl]="formControl" [required]="to.required">',
+})
+class MockTextInputFieldComponent extends TextInputFieldComponent {}
 
 describe('Account Order Template Detail Page Component', () => {
   let component: AccountOrderTemplateDetailPageComponent;
@@ -31,18 +41,26 @@ describe('Account Order Template Detail Page Component', () => {
     when(facadeMock.currentOrderTemplateOutOfStockItems$).thenReturn(of([]));
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [
+        FormlyModule.forRoot({
+          types: [{ name: 'ish-text-input-field', component: MockTextInputFieldComponent }],
+        }),
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+        WrappersModule,
+      ],
       declarations: [
         AccountOrderTemplateDetailPageComponent,
-        InPlaceEditComponent, // echtes Component, nicht gemockt!
+        InPlaceEditComponent,
         MockComponent(AccountOrderTemplateDetailLineItemComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(InPlaceEditComponent),
         MockComponent(OrderTemplatePreferencesDialogComponent),
         MockComponent(ProductAddToBasketComponent),
         MockDirective(ProductContextDirective),
+        MockTextInputFieldComponent,
       ],
-      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(facadeMock) }],
+      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(facadeMock) }, TranslateService],
     }).compileComponents();
   });
 
@@ -77,19 +95,33 @@ describe('Account Order Template Detail Page Component', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-    expect(findAllCustomElements(fixture.nativeElement)).toMatchInlineSnapshot(`
+    const all = findAllCustomElements(fixture.nativeElement);
+
+    const filtered = all.filter(tag => !tag.startsWith('formly-'));
+
+    expect(filtered).toMatchInlineSnapshot(`
       [
         "ish-error-message",
         "ish-in-place-edit",
+        "ish-inline-validation-wrapper",
+        "ish-text-input-field",
+        "ish-validation-icons",
       ]
     `);
   });
 
   it('should display line items and add-to-basket when items exist', () => {
-    expect(findAllCustomElements(fixture.nativeElement)).toMatchInlineSnapshot(`
+    const all = findAllCustomElements(fixture.nativeElement);
+
+    const filtered = all.filter(tag => !tag.startsWith('formly-'));
+
+    expect(filtered).toMatchInlineSnapshot(`
       [
         "ish-error-message",
         "ish-in-place-edit",
+        "ish-inline-validation-wrapper",
+        "ish-text-input-field",
+        "ish-validation-icons",
         "ish-account-order-template-detail-line-item",
         "ish-product-add-to-basket",
       ]
@@ -97,7 +129,7 @@ describe('Account Order Template Detail Page Component', () => {
   });
 
   it('should call facade.updateOrderTemplate when in-place-edit emits edited', () => {
-    component.titleControl.setValue('New Title');
+    component.model.title = 'New Title';
     fixture.detectChanges();
 
     const ipedeDE = fixture.debugElement.query(By.directive(InPlaceEditComponent));
@@ -127,15 +159,15 @@ describe('Account Order Template Detail Page Component', () => {
   });
 
   it('should reset titleControl when in-place-edit emits aborted', () => {
-    component.titleControl.setValue('Some Other');
+    component.model.title = 'Some Other';
     fixture.detectChanges();
-    expect(component.titleControl.value).toBe('Some Other');
+    expect(component.model.title).toBe('Some Other');
 
     const ipedeDE = fixture.debugElement.query(By.directive(InPlaceEditComponent));
     ipedeDE.triggerEventHandler('aborted', undefined);
     fixture.detectChanges();
 
-    expect(component.titleControl.value).toBe(initial.title);
+    expect(component.model.title).toBe(initial.title);
     verify(facadeMock.updateOrderTemplate(anything())).never();
   });
 

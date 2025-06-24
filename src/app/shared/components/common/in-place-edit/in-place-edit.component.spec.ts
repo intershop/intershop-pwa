@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Component } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
@@ -120,13 +120,12 @@ describe('In Place Edit Component', () => {
       mousedown({ target: element });
     });
 
-    it('should switch to view mode when clicked on confirm', () => {
+    it('should switch to view mode when clicked on confirm', fakeAsync(() => {
       (element.querySelector('[data-testing-id="confirm"]') as HTMLButtonElement).click();
-
+      tick();
       fixture.detectChanges();
-
       expect(element.querySelector('input')).toBeFalsy();
-    });
+    }));
 
     it('should emit edited event when clicked on confirm', done => {
       inplaceEdit().edited.subscribe(() => {
@@ -136,13 +135,13 @@ describe('In Place Edit Component', () => {
       (element.querySelector('[data-testing-id="confirm"]') as HTMLButtonElement).click();
     });
 
-    it('should switch to view mode when clicked on cancel', () => {
+    it('should switch to view mode when clicked on cancel', fakeAsync(() => {
       (element.querySelector('[data-testing-id="cancel"]') as HTMLButtonElement).click();
-
+      tick();
       fixture.detectChanges();
-
-      expect(element.querySelector('.form-control-plaintext').textContent).toContain('VIEW');
-    });
+      const view = element.querySelector('[viewModeContent]') as HTMLElement;
+      expect(view.textContent).toContain('VIEW');
+    }));
 
     it('should emit aborted event when clicked on cancel', done => {
       inplaceEdit().aborted.subscribe(() => {
