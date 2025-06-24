@@ -10,9 +10,9 @@ export class AccordionItemComponent {
   @Input() heading: string;
   @Input() dataTestingId: string;
 
-  isCollapsed = false;
+  isCollapsed = true;
 
-  ariaControlsId = `aria-controls-${uuid()}`;
+  accordionId = uuid();
 
   toggleCollapse() {
     this.isCollapsed = !this.isCollapsed;
