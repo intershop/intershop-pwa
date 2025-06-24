@@ -15,13 +15,20 @@ import { FormlySelectModule } from '@ngx-formly/core/select';
 /* eslint-disable ish-custom-rules/project-structure */
 /* eslint-disable ish-custom-rules/require-formly-code-documentation */
 
-@Component({ selector: 'ish-captcha-test-field', template: 'CaptchaFieldComponent: {{ field.key }} {{ to | json }}' })
+@Component({
+  selector: 'ish-captcha-test-field',
+  template: 'CaptchaFieldComponent: {{ field.key }} {{ to | json }}',
+})
 class CaptchaFieldComponent extends FieldType {}
 
-@Component({ selector: 'ish-checkbox-test-field', template: 'CheckboxFieldComponent: {{ field.key }} {{ to | json }}' })
+@Component({
+  selector: 'ish-checkbox-test-field',
+  template: 'CheckboxFieldComponent: {{ field.key }} {{ to | json }}',
+})
 class CheckboxFieldComponent extends FieldType {}
 
 @Component({
+  selector: 'ish-fieldset-test-field',
   template: `FieldsetFieldComponent:
     <div *ngFor="let f of field.fieldGroup">
       {{ getFieldSummary(f) }}
@@ -105,10 +112,16 @@ class SearchSelectFieldComponent extends FieldType {}
 })
 class TextareaFieldComponent extends FieldType {}
 
-@Component({ template: 'DummyLibraryFieldComponent: {{ field.key }}' })
+@Component({
+  selector: 'ish-library-test-field',
+  template: 'DummyLibraryFieldComponent: {{ field.key }}',
+})
 class DummyLibraryFieldComponent extends FieldType {}
 
-@Component({ template: `<ng-template #fieldComponent> </ng-template>` })
+@Component({
+  selector: 'ish-default-field-test-field',
+  template: `<ng-template #fieldComponent> </ng-template>`,
+})
 class DummyWrapperComponent extends FieldWrapper {}
 
 @Component({
