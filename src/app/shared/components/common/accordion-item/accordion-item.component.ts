@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'ish-accordion-item',
@@ -9,7 +10,9 @@ export class AccordionItemComponent {
   @Input() heading: string;
   @Input() dataTestingId: string;
 
-  isCollapsed = false;
+  isCollapsed = true;
+
+  accordionId = uuid();
 
   toggleCollapse() {
     this.isCollapsed = !this.isCollapsed;

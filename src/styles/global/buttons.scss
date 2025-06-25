@@ -171,6 +171,16 @@ button.btn-link {
   }
 }
 
+// TODO: refactor button toggles with toggle icon (filter, promo, accordion) into a single class
+.btn-content-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
+  @include hover-none-underline();
+}
+
 .justify-content-end {
   .btn.btn-secondary {
     margin-right: 0;

@@ -30,18 +30,24 @@ describe('Accordion Item Component', () => {
 
   it('should show panel body when click on panel header', () => {
     const headingLinks = element.querySelectorAll('.panel-heading');
+
     (headingLinks[0] as HTMLElement).click();
+
     fixture.detectChanges();
+
     expect(element.querySelector('fa-icon[ng-reflect-icon="fas,minus"]')).toBeTruthy();
-    expect(component.isCollapsed).toBeTruthy();
+    expect(component.isCollapsed).toBeFalse();
   });
 
   it('should hide panel body when click on panel header again', () => {
     const headingLinks = element.querySelectorAll('.panel-heading');
+
     (headingLinks[0] as HTMLElement).click();
     (headingLinks[0] as HTMLElement).click();
+
     fixture.detectChanges();
+
     expect(element.querySelector('fa-icon[ng-reflect-icon="fas,plus"]')).toBeTruthy();
-    expect(component.isCollapsed).toBeFalsy();
+    expect(component.isCollapsed).toBeTrue();
   });
 });
