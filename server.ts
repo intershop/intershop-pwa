@@ -21,26 +21,22 @@ import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level
 import { METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
 import { icmCallsCache } from './src/app/core/interceptors/universal-cache.interceptor';
 
-// for HTTPClient withFetch() and allowing HTTP/2
-// undici global symbol are lazy loaded, so we need to trigger it first
-try {
-  fetch('data:;base64,');
-} catch (e) {}
-
-// Get the global agent
-const unidiciGlobalDispatcherSymbol = Symbol.for('undici.globalDispatcher.1');
-
-const agent = globalThis[unidiciGlobalDispatcherSymbol];
-
-// get the agent internal options
-const symbols = Object.getOwnPropertySymbols(agent);
-
-const [kOption] = symbols.filter(predicate => predicate.toString().includes('options'));
-
-const agentOptions = agent[kOption];
-
-// enable h2
-agentOptions.allowH2 = true;
+// allowing HTTP/2 uses HTTPClient withFetch() and undici agent allowH2 option
+if (/on|1|true|yes/.test(process.env.ALLOW_H2?.toLowerCase())) {
+  // undici global symbol are lazy loaded, so we need to trigger it first
+  try {
+    fetch('data:;base64,');
+  } catch (e) {}
+  // Get the global agent
+  const unidiciGlobalDispatcherSymbol = Symbol.for('undici.globalDispatcher.1');
+  const agent = globalThis[unidiciGlobalDispatcherSymbol];
+  // get the agent internal options
+  const symbols = Object.getOwnPropertySymbols(agent);
+  const [kOption] = symbols.filter(predicate => predicate.toString().includes('options'));
+  const agentOptions = agent[kOption];
+  // enable h2
+  agentOptions.allowH2 = true;
+}
 
 const collectDefaultMetrics = client.collectDefaultMetrics;
 
@@ -153,6 +149,7 @@ global['navigator'] = win.navigator;
 export function app() {
   const logging = /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase());
   const logAll = /on|1|true|yes/.test(process.env.LOG_ALL?.toLowerCase());
+
   const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
 
   const SSR_HYBRID_BACKEND = process.env.SSR_HYBRID_BACKEND || ICM_BASE_URL;
@@ -248,7 +245,7 @@ export function app() {
   if (logging) {
     const morgan = require('morgan');
     // see https://github.com/expressjs/morgan#predefined-formats
-    let logFormat = morgan.short;
+    let logFormat = morgan.tiny;
     if (PM2) {
       logFormat = `${PM2} ${logFormat}`;
     }

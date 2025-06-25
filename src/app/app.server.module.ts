@@ -17,12 +17,18 @@ import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
 export class UniversalErrorHandler implements ErrorHandler {
+  private logAll = /on|1|true|yes/.test(process.env.LOG_ALL?.toLowerCase());
+
   handleError(error: unknown): void {
     if (error instanceof HttpErrorResponse) {
       console.error('ERROR', error.message);
     } else if (error instanceof Error) {
       if (error.message.startsWith('Uncaught (in promise): AbortError')) {
-        console.log('Ignoring AbortError');
+        //AbortErrors may happen with FetchAPI, log only if logAll is enabled
+        if (this.logAll) {
+          // eslint-disable-next-line no-console
+          console.log('Ignored AbortError', error.name, error.message, error.stack?.split('\n')?.[1]?.trim());
+        }
       } else {
         console.error('ERROR', error.name, error.message, error.stack?.split('\n')?.[1]?.trim());
       }
@@ -39,19 +45,22 @@ export class UniversalErrorHandler implements ErrorHandler {
   }
 }
 
+const providers = [
+  // Conditionally add provideHttpClient(withFetch()) based on environment variable
+  ...(/on|1|true|yes/.test(process.env.ALLOW_H2?.toLowerCase()) ? [provideHttpClient(withFetch())] : []),
+  { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: UniversalCacheInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: UniversalLogInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: UniversalPrometheusInterceptor, multi: true },
+  { provide: ErrorHandler, useClass: UniversalErrorHandler },
+  { provide: META_REDUCERS, useValue: configurationMeta, multi: true },
+  // disable data retention for SSR
+  { provide: DATA_RETENTION_POLICY, useValue: {} },
+];
+
 @NgModule({
   imports: [AppModule, ServerModule],
-  providers: [
-    provideHttpClient(withFetch()),
-    { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: UniversalCacheInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: UniversalLogInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: UniversalPrometheusInterceptor, multi: true },
-    { provide: ErrorHandler, useClass: UniversalErrorHandler },
-    { provide: META_REDUCERS, useValue: configurationMeta, multi: true },
-    // disable data retention for SSR
-    { provide: DATA_RETENTION_POLICY, useValue: {} },
-  ],
+  providers,
   bootstrap: [AppComponent],
 })
 export class AppServerModule {
