@@ -1,13 +1,16 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
+import { Filter } from 'ish-core/models/filter/filter.model';
+
 @Component({
   selector: 'ish-filter-collapsible',
   templateUrl: './filter-collapsible.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilterCollapsibleComponent implements OnInit {
-  @Input({ required: true }) title: string;
+  @Input({ required: true }) filterElement: Filter;
   @Input() collapsed: boolean;
+
   @Output() collapsedChange = new EventEmitter<boolean>();
 
   isCollapsed = false;
@@ -19,9 +22,5 @@ export class FilterCollapsibleComponent implements OnInit {
   toggle() {
     this.isCollapsed = !this.isCollapsed;
     this.collapsedChange.emit(this.isCollapsed);
-  }
-
-  get ariaControlsId(): string {
-    return `filter-list_${this.title.replace(/\s+/g, '-')}`;
   }
 }

@@ -9,8 +9,8 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  *
  * @example
  * <ish-filter-dropdown
- *               [filterElement]="element"
- *               (applyFilter)="applyFilter($event)"
+ *   [filterElement]="element"
+ *   (applyFilter)="applyFilter($event)">
  * </ish-filter-dropdown>
  */
 @Component({
