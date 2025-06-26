@@ -19,6 +19,7 @@ import * as client from 'prom-client';
 import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level';
 import { CANONICAL_URL, METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
 import { CommonEngine } from '@angular/ssr';
+import { REQUEST } from 'ish-core/models/express-tokens/express.tokens';
 import { icmCallsCache } from './src/app/core/interceptors/universal-cache.interceptor';
 import { Agent, install, setGlobalDispatcher, interceptors } from 'undici';
 import { writeHeapSnapshot } from 'v8';
@@ -491,6 +492,7 @@ export function app() {
         providers: [
           { provide: APP_BASE_HREF, useValue: baseHref },
           { provide: CANONICAL_URL, useValue: url },
+          { provide: REQUEST, useValue: req },
         ],
       })
       .then(html => {

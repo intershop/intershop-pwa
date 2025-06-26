@@ -3,12 +3,11 @@ import { Inject, Injectable, Optional } from '@angular/core';
 import { Meta, MetaDefinition } from '@angular/platform-browser';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subject, delay, filter, firstValueFrom, map, of, race, take } from 'rxjs';
+import { Observable, Subject, delay, filter, firstValueFrom, map, of, race } from 'rxjs';
 
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { CategoryHelper } from 'ish-core/models/category/category.helper';
 import { REQUEST } from 'ish-core/models/express-tokens/express.tokens';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.helper';
 import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.model';
 import { generateCategoryUrl, ofCategoryUrl } from 'ish-core/routing/category/category.route';
@@ -48,18 +47,31 @@ export class SeoService {
 
   get baseURL() {
     let url: string;
-    if (this.request) {
+
+    if (!!SSR && this.request) {
+      // Server-side with request info
       url = `${this.request.protocol}://${this.request.get('host')}${this.baseHref}`;
-    } else {
+      console.log('in SSR');
+    } else if (!SSR) {
+      // Browser-side
       url = this.doc.baseURI;
+    } else {
+      // Fallback for server without request
+      url = this.baseHref;
+      console.log('in fallback');
     }
+    console.log('base url: ', url);
     return url.endsWith('/') ? url : `${url}/`;
   }
 
   setCanonicalLink(url: string) {
     // the canonical URL of a production system should always be with 'https:'
     // even though the PWA SSR container itself is usually not deployed in an SSL environment so the URLs need manual adaption
+    console.log(url);
+
     const canonicalUrl = encodeURI(url.replace('http:', 'https:'));
+
+    console.log(canonicalUrl);
     const canonicalLink = this.domService.getOrCreateElement('link[rel="canonical"]', 'link', this.doc.head);
 
     this.domService.setAttribute(canonicalLink, 'rel', 'canonical');
@@ -107,24 +119,6 @@ export class SeoService {
   }
 
   resolveCanonicalUrl(): Observable<string> {
-    let product: ProductView;
-
-    console.log('we are checking canonical url');
-    this.productPage$.pipe(take(1)).subscribe(p => {
-      product = p;
-    });
-    this.categoryPage$.pipe(take(1)).subscribe(category => {
-      if (category) {
-        console.log('there is a category');
-      }
-    });
-
-    if (product) {
-      console.log('there is a product');
-      console.log(product.sku);
-      console.log(this.baseURL);
-    }
-
     return race([
       this.productPage$.pipe(map(product => this.baseURL + generateProductUrl(product).substring(1))),
       this.categoryPage$.pipe(

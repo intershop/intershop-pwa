@@ -169,17 +169,17 @@
         "serve-ssr": {
           "builder": "@angular-devkit/build-angular:ssr-dev-server",
           "options": {
-            "buildTarget": "intershop-pwa:build",
+            "browserTarget": "intershop-pwa:build",
             "serverTarget": "intershop-pwa:server"
           },
           "defaultConfiguration": "b2b",
           "configurations": {
             "b2b": {
-              "buildTarget": "intershop-pwa:build:b2b,development",
+              "browserTarget": "intershop-pwa:build:b2b,development",
               "serverTarget": "intershop-pwa:server:b2b,development"
             },
             "b2c": {
-              "buildTarget": "intershop-pwa:build:b2c,development",
+              "browserTarget": "intershop-pwa:build:b2c,development",
               "serverTarget": "intershop-pwa:server:b2c,development"
             }
           }
