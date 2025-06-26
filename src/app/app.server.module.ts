@@ -1,11 +1,10 @@
 import { HTTP_INTERCEPTORS, HttpErrorResponse, provideHttpClient, withFetch } from '@angular/common/http';
 import { APP_INITIALIZER, ErrorHandler, NgModule, TransferState } from '@angular/core';
-import { Meta } from '@angular/platform-browser';
 import { ServerModule } from '@angular/platform-server';
 import { META_REDUCERS } from '@ngrx/store';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
-import { CANONICAL_URL, DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
+import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
 import { COOKIE_CONSENT_VERSION, DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
 import { UniversalCacheInterceptor } from 'ish-core/interceptors/universal-cache.interceptor';
 import { UniversalLogInterceptor } from 'ish-core/interceptors/universal-log.interceptor';
@@ -16,6 +15,7 @@ import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
+import { SeoService } from './extensions/seo/services/seo/seo.service';
 
 class UniversalErrorHandler implements ErrorHandler {
   handleError(error: unknown): void {
@@ -36,11 +36,8 @@ class UniversalErrorHandler implements ErrorHandler {
   }
 }
 
-export function setCanonicalFactory(meta: Meta, canonicalUrl: string) {
-  return () => {
-    meta.addTag({ rel: 'canonical', href: canonicalUrl });
-    meta.addTag({ property: 'og:url', content: canonicalUrl });
-  };
+export function setCanonicalFactory(seoService: SeoService) {
+  return () => seoService.resolveAndSetCanonicalUrl();
 }
 
 const providers = [
@@ -57,7 +54,7 @@ const providers = [
   {
     provide: APP_INITIALIZER,
     useFactory: setCanonicalFactory,
-    deps: [Meta, CANONICAL_URL],
+    deps: [SeoService],
     multi: true,
   },
 ];
