@@ -694,6 +694,7 @@
   "basket.validation.general.error": "Your shopping cart is not valid anymore. Please correct the errors indicated below.",
   "breadcrumbs.aria_label": "Breadcrumbs",
   "captcha.incorrect": "The security verification failed. Please correct the error indicated below.",
+  "category.navigation.aria_label": "Category navigation",
   "category.navigation.skip_content.link.text": "Skip category navigation",
   "checkout.account.confirm.button.label": "Confirm",
   "checkout.account.email.registered.heading": "Account",

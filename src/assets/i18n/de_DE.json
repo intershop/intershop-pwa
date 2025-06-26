@@ -694,6 +694,7 @@
   "basket.validation.general.error": "Ihr Warenkorb ist nicht mehr gültig. Bitte korrigieren Sie die unten angegebenen Fehler.",
   "breadcrumbs.aria_label": "Breadcrumbs",
   "captcha.incorrect": "Die Sicherheitsprüfung ist fehlgeschlagen. Korrigieren Sie den unten angegebenen Fehler.",
+  "category.navigation.aria_label": "Kategorie-Navigation",
   "category.navigation.skip_content.link.text": "Kategorie-Navigation überspringen",
   "checkout.account.confirm.button.label": "Bestätigen",
   "checkout.account.email.registered.heading": "Benutzerkonto",
