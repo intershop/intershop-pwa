@@ -8,6 +8,7 @@
           class="btn btn-link btn-link-action link-decoration-hover"
           (click)="filter(facet)"
           [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
+          aria-current="true"
         >
           <span class="filter-item-name"> {{ facet.displayName }} </span>
           <span class="count"> ({{ facet.count }}) </span>
