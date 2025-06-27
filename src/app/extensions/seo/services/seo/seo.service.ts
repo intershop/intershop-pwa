@@ -45,7 +45,7 @@ export class SeoService {
     filter(CategoryHelper.isCategoryCompletelyLoaded)
   );
 
-  get baseURL() {
+  private baseURL(): string {
     let url: string;
 
     if (!!SSR && this.request) {
@@ -112,9 +112,9 @@ export class SeoService {
 
   resolveCanonicalUrl(): Observable<string> {
     return race([
-      this.productPage$.pipe(map(product => this.baseURL + generateProductUrl(product).substring(1))),
+      this.productPage$.pipe(map(product => this.baseURL() + generateProductUrl(product).substring(1))),
       this.categoryPage$.pipe(
-        map((category: CategoryView) => this.baseURL + generateCategoryUrl(category).substring(1))
+        map((category: CategoryView) => this.baseURL() + generateCategoryUrl(category).substring(1))
       ),
       of(this.doc.URL.replace(/[;?].*/g, '')).pipe(delay(0)),
     ]);
