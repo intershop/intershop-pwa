@@ -25,18 +25,22 @@ describe('Filter Text Component', () => {
         { name: 'LogitechName', level: 0, count: 5, displayName: 'Logitech', selected: true },
       ],
     } as Filter;
+
     fixture = TestBed.createComponent(FilterTextComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+
     component.filterElement = filterElement;
+    component.filterElement.id = 'TextboxFilter';
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+
     expect(element).toMatchInlineSnapshot(`
-      <ul class="filter-list" id="filter-list_Brands">
+      <ul class="filter-list" id="TextboxFilter">
         <li class="filter-item filter-layer0">
           <button
             type="button"

@@ -2,13 +2,13 @@
   <button
     type="button"
     (click)="toggle()"
-    [attr.aria-expanded]="!isCollapsed"
-    [attr.aria-controls]="ariaControlsId"
     class="btn-filter-toggle"
+    [attr.aria-expanded]="!isCollapsed"
+    [attr.aria-controls]="filterElement.id"
     data-testing-id="filter-toggle-button"
   >
     <h3>
-      {{ title }}
+      {{ filterElement.name }}
       <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" />
     </h3>
   </button>

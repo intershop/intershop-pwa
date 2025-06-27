@@ -4,6 +4,16 @@ import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
+/**
+ * The Filter Dropdown Component displays a filter group. The items of the filter group are presented as a dropdown menu.
+ *
+ * @example
+ * <ish-filter-dropdown
+ *   [filterElement]="element"
+ *   [placeholderType]="'selectedFacets'"
+ *   (applyFilter)="applyFilter($event)">
+ * </ish-filter-dropdown>
+ */
 @Component({
   selector: 'ish-filter-dropdown',
   templateUrl: './filter-dropdown.component.html',

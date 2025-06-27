@@ -24,16 +24,39 @@ describe('Filter Checkbox Component', () => {
         { name: 'LogitechName', count: 5, displayName: 'Logitech', selected: true },
       ],
     } as Filter;
+
     fixture = TestBed.createComponent(FilterCheckboxComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+
     component.filterElement = filterElement;
+    component.filterElement.id = 'CheckboxFilter';
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
+
+    expect(element).toMatchInlineSnapshot(`
+      <ul class="filter-list" id="CheckboxFilter">
+        <li class="filter-item filter-layer">
+          <div>
+            <label class="filter-item-checkbox-label-native"
+              ><input type="checkbox" /><span class="filter-item-name"> Asus </span
+              ><span class="count"> (4) </span></label
+            >
+          </div>
+        </li>
+        <li class="filter-item filter-layer filter-selected">
+          <div>
+            <label class="filter-item-checkbox-label-native"
+              ><input type="checkbox" /><span class="filter-item-name"> Logitech </span
+              ><span class="count"> (5) </span></label
+            >
+          </div>
+        </li>
+      </ul>
+    `);
   });
 });
