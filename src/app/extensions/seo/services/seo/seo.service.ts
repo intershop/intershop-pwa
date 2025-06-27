@@ -49,29 +49,21 @@ export class SeoService {
     let url: string;
 
     if (!!SSR && this.request) {
-      // Server-side with request info
       url = `${this.request.protocol}://${this.request.get('host')}${this.baseHref}`;
-      console.log('in SSR');
     } else if (!SSR) {
-      // Browser-side
       url = this.doc.baseURI;
     } else {
-      // Fallback for server without request
       url = this.baseHref;
-      console.log('in fallback');
     }
-    console.log('base url: ', url);
     return url.endsWith('/') ? url : `${url}/`;
   }
 
   setCanonicalLink(url: string) {
     // the canonical URL of a production system should always be with 'https:'
     // even though the PWA SSR container itself is usually not deployed in an SSL environment so the URLs need manual adaption
-    console.log(url);
 
     const canonicalUrl = encodeURI(url.replace('http:', 'https:'));
 
-    console.log(canonicalUrl);
     const canonicalLink = this.domService.getOrCreateElement('link[rel="canonical"]', 'link', this.doc.head);
 
     this.domService.setAttribute(canonicalLink, 'rel', 'canonical');

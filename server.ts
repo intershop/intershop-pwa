@@ -17,7 +17,7 @@ import {
 import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
 import * as client from 'prom-client';
 import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level';
-import { CANONICAL_URL, METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
+import { METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
 import { CommonEngine } from '@angular/ssr';
 import { REQUEST } from 'ish-core/models/express-tokens/express.tokens';
 import { icmCallsCache } from './src/app/core/interceptors/universal-cache.interceptor';
@@ -491,7 +491,6 @@ export function app() {
         publicPath: BROWSER_FOLDER,
         providers: [
           { provide: APP_BASE_HREF, useValue: baseHref },
-          { provide: CANONICAL_URL, useValue: url },
           { provide: REQUEST, useValue: req },
         ],
       })
