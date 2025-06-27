@@ -34,6 +34,8 @@ The checklist covers essential aspects of web accessibility and should be used:
 
 For more general information about accessibility in the PWA, see [Accessibility](accessibility.md).
 
+For design-specific patterns and decisions, refer to [Accessibility in UX: Patterns and Rationale](accessibility-ux-pattern.md).
+
 ## Development Accessibility Checklist
 
 Performing any of the following checks on a web page will give you a basic understanding of its accessibility.
