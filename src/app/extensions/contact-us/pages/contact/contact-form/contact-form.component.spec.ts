@@ -18,6 +18,7 @@ describe('Contact Form Component', () => {
   beforeEach(async () => {
     const accountFacade = mock(AccountFacade);
     when(accountFacade.user$).thenReturn(EMPTY);
+    when(accountFacade.isLoggedIn$).thenReturn(of(true));
 
     const contactUsFacade = mock(ContactUsFacade);
     when(contactUsFacade.contactSubjects$()).thenReturn(of(['subject1', 'subject2']));
