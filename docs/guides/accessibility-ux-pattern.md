@@ -23,6 +23,8 @@ kb_sync_latest_only
 This document outlines key UX patterns used in our Intershop Progressive Web App, with a focus on accessibility and user guidance.
 The goal is to provide a consistent and inclusive experience across all user journeys, while supporting users with a wide range of needs — including those who rely on screen readers, keyboard navigation, or other assistive technologies.
 
+TEST
+
 This guide focuses on **design-level decisions** and **interaction patterns** that go beyond technical compliance, aiming to improve clarity, predictability, and efficiency in the user experience.
 
 Fundamental accessibility rules for development — such as color contrast, focus handling, semantic structure, and keyboard operability — are already covered in our [Accessibility Easy Check Checklist](accessibility-easy-check.md) and aligned with the [Web Content Accessibility Guidelines (WCAG 2.2.)](https://wcagcom.wpenginepowered.com/resource/what-is-wcag/).
