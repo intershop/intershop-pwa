@@ -27,7 +27,7 @@ export class ContactFormComponent implements OnInit {
   /** The form for customer message to the shop. */
   contactForm = new UntypedFormGroup({});
   model$: Observable<Partial<Contact>>;
-  fields: FormlyFieldConfig[];
+  fields$: Observable<FormlyFieldConfig[]>;
 
   constructor(private accountFacade: AccountFacade, private contactUsFacade: ContactUsFacade) {}
 
@@ -40,84 +40,87 @@ export class ContactFormComponent implements OnInit {
       }))
     );
 
-    this.fields = [
-      {
-        key: 'name',
-        type: 'ish-text-input-field',
-        props: {
-          label: 'helpdesk.contactus.name.label',
-          required: true,
-        },
-        validation: {
-          messages: {
-            required: 'helpdesk.contactus.name.error',
+    this.fields$ = this.accountFacade.isLoggedIn$.pipe(
+      map(isLoggedIn => [
+        {
+          key: 'name',
+          type: 'ish-text-input-field',
+          props: {
+            label: 'helpdesk.contactus.name.label',
+            required: true,
+          },
+          validation: {
+            messages: {
+              required: 'helpdesk.contactus.name.error',
+            },
           },
         },
-      },
-      {
-        key: 'email',
-        type: 'ish-email-field',
-        props: {
-          label: 'helpdesk.contactus.email.label',
-          required: true,
-        },
-      },
-      {
-        key: 'phone',
-        type: 'ish-phone-field',
-        props: {
-          label: 'helpdesk.contactus.phone.label',
-          required: true,
-        },
-      },
-      {
-        key: 'order',
-        type: 'ish-text-input-field',
-        props: {
-          label: 'helpdesk.contactus.order.label',
-        },
-      },
-      {
-        key: 'subject',
-        type: 'ish-select-field',
-        props: {
-          label: 'helpdesk.contactus.subject.label',
-          required: true,
-          options: this.contactUsFacade.contactSubjects$().pipe(
-            startWith([] as string[]),
-            map(subjects => subjects.map(subject => ({ value: subject, label: subject }))),
-            shareReplay(1)
-          ),
-          placeholder: 'account.option.select.text',
-        },
-        validation: {
-          messages: {
-            required: 'helpdesk.contactus.subject.error',
+        {
+          key: 'email',
+          type: 'ish-email-field',
+          props: {
+            label: 'helpdesk.contactus.email.label',
+            required: true,
+            readonly: isLoggedIn,
           },
         },
-      },
-      {
-        key: 'comment',
-        type: 'ish-textarea-field',
-        props: {
-          label: 'helpdesk.contactus.comments.label',
-          required: true,
-          maxLength: 30000,
-          rows: 5,
-        },
-        validation: {
-          messages: {
-            required: 'helpdesk.contactus.comments.error',
+        {
+          key: 'phone',
+          type: 'ish-phone-field',
+          props: {
+            label: 'helpdesk.contactus.phone.label',
+            required: true,
           },
         },
-      },
-      {
-        type: 'ish-captcha-field',
-        props: {
-          topic: 'contactUs',
+        {
+          key: 'order',
+          type: 'ish-text-input-field',
+          props: {
+            label: 'helpdesk.contactus.order.label',
+          },
         },
-      },
-    ];
+        {
+          key: 'subject',
+          type: 'ish-select-field',
+          props: {
+            label: 'helpdesk.contactus.subject.label',
+            required: true,
+            options: this.contactUsFacade.contactSubjects$().pipe(
+              startWith([] as string[]),
+              map(subjects => subjects.map(subject => ({ value: subject, label: subject }))),
+              shareReplay(1)
+            ),
+            placeholder: 'account.option.select.text',
+          },
+          validation: {
+            messages: {
+              required: 'helpdesk.contactus.subject.error',
+            },
+          },
+        },
+        {
+          key: 'comment',
+          type: 'ish-textarea-field',
+          props: {
+            label: 'helpdesk.contactus.comments.label',
+            required: true,
+            maxLength: 30000,
+            rows: 5,
+          },
+          validation: {
+            messages: {
+              required: 'helpdesk.contactus.comments.error',
+            },
+          },
+        },
+        {
+          type: 'ish-captcha-field',
+          props: {
+            topic: 'contactUs',
+          },
+        },
+      ])
+    );
   }
 
   /** emit contact request on submit */
