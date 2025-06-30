@@ -112,15 +112,17 @@ export class RegistrationFormConfigurationService {
           {
             type: 'ish-registration-tac-field',
             key: 'termsAndConditions',
+            defaultValue: false,
             props: {
               required: true,
+              validation: { show: true },
             },
             validators: {
-              validation: [Validators.requiredTrue],
+              validation: [Validators.pattern('true')],
             },
             validation: {
               messages: {
-                required: 'registration.tac.error.tip',
+                pattern: 'registration.tac.error.tip',
               },
             },
           },
