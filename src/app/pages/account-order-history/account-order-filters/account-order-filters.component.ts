@@ -15,7 +15,7 @@ import { UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, distinctUntilChanged, map, shareReplay, takeUntil } from 'rxjs';
+import { Observable, distinctUntilChanged, map, shareReplay, take, takeUntil } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
@@ -72,8 +72,9 @@ function selectArray(val: string | string[]): string[] {
 function removeEmpty<T extends Record<string, unknown>>(obj: T): T {
   return Object.keys(obj).reduce<Record<string, unknown>>((acc, key) => {
     if (Array.isArray(obj[key])) {
-      if ((obj[key] as unknown[]).length > 0) {
-        acc[key] = obj[key];
+      const filtered = (obj[key] as unknown[]).filter(v => v !== undefined && v !== '');
+      if (filtered.length > 0) {
+        acc[key] = filtered;
       }
     } else if (obj[key]) {
       acc[key] = obj[key];
@@ -126,6 +127,7 @@ function urlToQuery(params: UrlModel): Partial<OrderListQuery> {
   providers: [{ provide: NgbDateAdapter, useClass: OrderDateFilterAdapter }],
 })
 export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
+  private paramThreshold: number;
   @Input() fragmentOnRouting: string;
 
   form = new UntypedFormGroup({});
@@ -147,6 +149,11 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
       takeUntil(this.accountFacade.isLoggedIn$.pipe(whenFalsy())),
       shareReplay(1)
     );
+
+    this.isAdmin$
+      .pipe(take(1), takeUntilDestroyed(this.destroyRef))
+      .subscribe(isAdmin => (this.paramThreshold = isAdmin ? 2 : 1));
+
     this.fields$ = this.isAdmin$.pipe(
       map(isAdmin => [
         {
@@ -213,14 +220,19 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
-      if (
-        Object.keys(params).length > 1 ||
-        (Object.keys(params).length === 1 && Object.keys(params)[0] !== 'orderNo')
-      ) {
+      const hasRelevantFilters =
+        !!params.sku || !!params.from || !!params.to || (!!params.buyer && params.buyer !== 'all');
+
+      const hasOnlyOrderNo =
+        Object.keys(params)[0] === 'orderNo' &&
+        Object.keys(params).length <= this.paramThreshold &&
+        params.buyer === 'all';
+
+      if (hasRelevantFilters || (Object.keys(params).length > this.paramThreshold && !hasOnlyOrderNo)) {
         this.formIsCollapsed = false;
       }
-      this.form.patchValue(urlToModel(params));
 
+      this.form.patchValue(urlToModel(params));
       this.model$ = this.getModel(params);
     });
   }
