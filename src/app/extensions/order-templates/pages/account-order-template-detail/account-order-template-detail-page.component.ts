@@ -54,10 +54,10 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit, OnDestro
       {
         key: 'title',
         type: 'ish-text-input-field',
-        wrappers: ['inline-validation'],
+        wrappers: ['validation'],
         props: {
           required: true,
-          label: 'account.order_template.edit.input.label',
+          ariaLabel: 'account.order_template.edit.name.label',
         },
         validation: {
           messages: {
