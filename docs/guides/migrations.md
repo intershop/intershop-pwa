@@ -45,6 +45,21 @@ This allows content managers to configure product lists with relative endpoints 
 The Copilot integration was updated to work with a newer version of the Intershop Copilot for Buyers that returns different tool calls.
 When migrating a PWA project that uses the Copilot integration, either use a new compatible configuration or skip this commit and continue with the previous implementation.
 
+With Intershop PWA 9.0.0 the PWA is migrated to Bootstrap 5.
+This includes updating dependencies, refactoring HTML, and adapting SCSS to align with Bootstrap 5's new features and breaking changes.
+
+The following steps must be taken to migrate your custom code:
+
+1. Review and update all custom styles and components for Bootstrap 5 compatibility.
+2. Replace deprecated Bootstrap 4 classes and utilities.
+3. Test the user interface for layout or behavior changes.
+4. Handle differences in dependencies between Bootstrap 4 and 5.
+
+Detailed information on the individual migration steps and breaking changes can be found in the official [Bootstrap 5 Migration Guide](https://getbootstrap.com/docs/5.3/migration).
+It is recommended to perform the migration step by step through each version (version 5.0.0, 5.1.0, 5.2.0, 5.3.0).
+Especially for the [migration to version 5.0.0](https://getbootstrap.com/docs/5.3/migration/#v500), it is advised to divide that into smaller tasks (SCSS, Typescript, form layout, buttons, etc.).
+AI (like Github Copilot) can be a great help with these individual migration tasks.
+
 ## From 7.1.0 to 8.0.0
 
 The Intershop PWA now uses Node.js 22.17.1 LTS with the corresponding npm version 10.9.2.

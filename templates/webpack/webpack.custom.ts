@@ -252,7 +252,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
       new PurgeCSSPlugin({
         paths: glob.sync('./**/src/app/**/!(*.spec.ts)*', { nodir: true }),
         safelist: {
-          standard: [/(p|m)(l|r|x|y|t|b)?-[0-5]/],
+          standard: [/(m|p)(t|b|s|e|x|y)?(-(sm|md|lg|xl))?-([0-5]|auto)/],
           greedy: [
             /\bfa\b/,
             /\bmodal\b/,
@@ -260,12 +260,13 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
             /\bswiper\b/,
             /\bcarousel\b/,
             /\bslide\b/,
-            /\btoast-close-button\b/,
             /\bnav-tabs\b/,
             /\bnav-link\b/,
             /\bpopover\b/,
             /\btable\b/,
             /\bng-select\b/,
+            /\btoast\b/,
+            /\btext-\b/,
           ],
         },
       })

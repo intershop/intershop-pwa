@@ -59,25 +59,25 @@
 
 .toast-error {
   width: 1.25rem;
-  background-color: theme-color-level('danger', $alert-border-level);
+  background-color: shift-color($danger, $alert-color-scale) !important;
   background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="#{$toastViewBox}" fill="#{$toast-error-color}">#{$toast-error-icon}</svg>');
   fill: #ff0;
 }
 
 .toast-warning {
-  background-color: theme-color-level('warning', $alert-border-level);
+  background-color: shift-color($warning, $alert-color-scale) !important;
   background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="#{$toastViewBox}" fill="#{$toast-warning-color}">#{$toast-warning-icon}</svg>');
 }
 
 .toast-success {
   width: 100%;
-  background-color: theme-color-level('success', $alert-border-level);
+  background-color: shift-color($success, $alert-color-scale) !important;
   background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="#{$toastViewBox}" fill="#{$toast-success-color}">#{$toast-success-icon}</svg>');
 }
 
 .toast-info {
   width: 100%;
-  background-color: theme-color-level('info', $alert-border-level);
+  background-color: shift-color($info, $alert-color-scale) !important;
   background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="#{$toastViewBox}" fill="#{$toast-info-color}">#{$toast-info-icon}</svg>');
 }
 
