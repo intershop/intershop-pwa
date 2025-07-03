@@ -2,7 +2,7 @@
 <ng-container *ngIf="shippingAddress$ | async as address">
   <div class="address-box">
     <ng-container *ngIf="(basketInvoiceAndShippingAddressEqual$ | async) === false">
-      <div class="float-right">
+      <div class="float-end">
         <!-- edit shipping address -->
         <button
           *ngIf="collapseChange | async"
@@ -36,7 +36,9 @@
           (confirmed)="deleteAddress($event)"
         >
           <p>{{ 'checkout.address.delete.confirmation.text' | translate }}</p>
-          <small class="text-muted">{{ 'checkout.address.delete.confirmation.deletionhint' | translate }}</small>
+          <small class="text-body-secondary">{{
+            'checkout.address.delete.confirmation.deletionhint' | translate
+          }}</small>
         </ish-modal-dialog>
       </div>
 
@@ -67,7 +69,7 @@
 <div *ngIf="displayAddAddressLink$ | async" class="row">
   <button
     type="button"
-    class="btn btn-link"
+    class="btn btn-link w-auto"
     (click)="showAddressForm()"
     [attr.aria-expanded]="(collapseChange | async) === false"
     aria-controls="shipping-address-panel"

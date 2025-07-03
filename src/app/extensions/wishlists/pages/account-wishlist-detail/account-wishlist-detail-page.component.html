@@ -6,7 +6,7 @@
     <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
   </ng-template>
 
-  <div class="float-right pt-3">
+  <div class="float-end pt-3">
     <button
       type="button"
       class="btn-tool btn-link"
@@ -19,7 +19,7 @@
     <button
       *ngIf="wishlist.shared"
       type="button"
-      class="btn-tool btn-link ml-3"
+      class="btn-tool btn-link ms-3"
       title="{{ 'account.wishlist.header.stop_wishlist_sharing.label' | translate }}"
       (click)="unshareWishlist(wishlist.id)"
       data-testing-id="wishlist-stop-sharing"
@@ -29,7 +29,7 @@
     <button
       type="button"
       (click)="editWishlistDialog.show()"
-      class="btn-tool btn-link ml-3"
+      class="btn-tool btn-link ms-3"
       [title]="'account.wishlist.header.edit_wishlist.label' | translate"
       data-testing-id="wishlist-details-edit"
     >

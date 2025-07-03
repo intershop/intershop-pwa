@@ -57,7 +57,7 @@ exports[`Header Default Component should render normal header adequately for des
     </div>
   </div>
   <button type="button" class="navbar-toggler">
-    <span class="sr-only">common.button.navbarCollapsed.text</span>
+    <span class="visually-hidden">common.button.navbarCollapsed.text</span>
     <div class="hamburger-menu open"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
@@ -131,7 +131,7 @@ exports[`Header Default Component should render normal header adequately for mob
     <div class="col-md-4"></div>
   </div>
   <button type="button" class="navbar-toggler">
-    <span class="sr-only">common.button.navbarCollapsed.text</span>
+    <span class="visually-hidden">common.button.navbarCollapsed.text</span>
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
@@ -206,7 +206,7 @@ exports[`Header Default Component should render normal header adequately for tab
     </div>
   </div>
   <button type="button" class="navbar-toggler">
-    <span class="sr-only">common.button.navbarCollapsed.text</span>
+    <span class="visually-hidden">common.button.navbarCollapsed.text</span>
     <div class="hamburger-menu open"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
@@ -273,7 +273,7 @@ exports[`Header Default Component should render sticky header adequately for des
     </div>
   </div>
   <button type="button" class="navbar-toggler">
-    <span class="sr-only">common.button.navbarCollapsed.text</span>
+    <span class="visually-hidden">common.button.navbarCollapsed.text</span>
     <div class="hamburger-menu open"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
@@ -339,7 +339,7 @@ exports[`Header Default Component should render sticky header adequately for mob
     <div class="col-md-4"></div>
   </div>
   <button type="button" class="navbar-toggler">
-    <span class="sr-only">common.button.navbarCollapsed.text</span>
+    <span class="visually-hidden">common.button.navbarCollapsed.text</span>
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
@@ -406,7 +406,7 @@ exports[`Header Default Component should render sticky header adequately for tab
     </div>
   </div>
   <button type="button" class="navbar-toggler">
-    <span class="sr-only">common.button.navbarCollapsed.text</span>
+    <span class="visually-hidden">common.button.navbarCollapsed.text</span>
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">

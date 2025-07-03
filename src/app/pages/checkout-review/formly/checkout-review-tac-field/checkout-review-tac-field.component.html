@@ -1,8 +1,9 @@
 <div class="form-control-checkbox" [class.has-error]="showError">
   <div class="form-check form-control" [attr.data-testing-id]="'checkout-review-wrapper'">
-    <label [attr.for]="id">
+    <label class="mb-2" [attr.for]="id">
       <input
         type="checkbox"
+        class="form-check-input"
         [formControl]="formControl"
         [formlyAttributes]="field"
         [attr.data-testing-id]="field.key"

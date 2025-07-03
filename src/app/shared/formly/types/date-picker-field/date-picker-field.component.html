@@ -19,18 +19,16 @@
     [attr.aria-describedby]="props.ariaDescribedByIds"
   />
 
-  <div class="input-group-append">
-    <button
-      (click)="d.toggle()"
-      type="button"
-      class="btn btn-secondary"
-      title="{{ 'checkout.shipping.calendar.title' | translate }}"
-      [disabled]="props.disabled"
-      aria-haspopup="dialog"
-      aria-expanded="false"
-      data-testing-id="btn-date-picker"
-    >
-      <fa-icon class="text-primary" icon="calendar-day" />
-    </button>
-  </div>
+  <button
+    (click)="d.toggle()"
+    type="button"
+    class="input-group-text btn btn-secondary mb-0 me-0"
+    title="{{ 'checkout.shipping.calendar.title' | translate }}"
+    [disabled]="props.disabled"
+    aria-haspopup="dialog"
+    aria-expanded="false"
+    data-testing-id="btn-date-picker"
+  >
+    <fa-icon class="text-primary" icon="calendar-day" />
+  </button>
 </div>

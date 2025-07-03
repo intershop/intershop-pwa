@@ -13,7 +13,7 @@ header {
     content: '';
     background-color: $color-primary;
 
-    @include media-breakpoint-down(sm) {
+    @include media-breakpoint-down(md) {
       background-color: $color-inverse;
     }
   }
@@ -22,7 +22,7 @@ header {
     padding-top: ($space-default * 2);
     padding-bottom: 20px;
 
-    @include media-breakpoint-down(sm) {
+    @include media-breakpoint-down(md) {
       align-self: center;
       padding-top: 0;
       padding-bottom: 0;
@@ -36,7 +36,7 @@ header {
   .navbar-toggler {
     display: none;
 
-    @include media-breakpoint-down(sm) {
+    @include media-breakpoint-down(md) {
       display: block;
     }
   }
@@ -47,7 +47,7 @@ header {
       display: none;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include media-breakpoint-down(md) {
       &.small {
         display: block;
       }
@@ -62,7 +62,7 @@ header {
     position: relative;
 
     .navbar-nav {
-      @include media-breakpoint-down(sm) {
+      @include media-breakpoint-down(md) {
         display: flex;
         background-color: $color-inverse;
       }
@@ -85,13 +85,13 @@ header {
     margin-bottom: 0;
   }
 
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-down(md) {
     margin-bottom: 0;
   }
 }
 
 .header {
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-down(md) {
     display: flex;
     flex-wrap: wrap;
     padding-right: 0;
@@ -113,7 +113,7 @@ header {
   justify-content: flex-end;
   line-height: $top-header-height;
 
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-down(md) {
     order: 10;
     line-height: $header-height-mobile;
   }
@@ -124,7 +124,7 @@ header {
   margin: 0;
   line-height: $top-header-height;
 
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-down(md) {
     align-self: center;
   }
 
@@ -171,7 +171,7 @@ header {
   font-size: 17px;
   color: $text-color-quinary;
 
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-down(md) {
     color: $text-color-primary;
   }
 }
@@ -207,7 +207,7 @@ header .header-checkout {
     padding-left: 0;
   }
 
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-down(md) {
     .mid-header {
       float: left;
 

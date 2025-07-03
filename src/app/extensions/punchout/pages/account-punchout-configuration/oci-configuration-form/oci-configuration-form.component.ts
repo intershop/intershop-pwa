@@ -121,7 +121,7 @@ export class OciConfigurationFormComponent implements OnInit {
                       type: 'ish-text-input-field',
                       wrappers: ['oci-configuration-mapping-wrapper', 'validation'],
                       props: {
-                        fieldClass: 'ml-1',
+                        fieldClass: 'ms-1',
                         arrowRight: true,
                         ariaLabel: 'account.punchout.oci.map_to.aria_label',
                       },

@@ -21,7 +21,7 @@
     <div *ngIf="users.length; else emptyList" class="list-body" data-testing-id="user-list">
       <ng-container *ngFor="let user of users">
         <div *ngIf="user" class="list-item-row row mx-0">
-          <div class="col-10 list-item">
+          <div class="col-9 col-sm-10 list-item">
             <p>
               <span class="d-block">{{ user.login }}</span>
               <span *ngIf="user.active === false" class="input-help">{{
@@ -29,8 +29,8 @@
               }}</span>
             </p>
           </div>
-          <div class="col-2 list-item text-right">
-            <div class="float-right">
+          <div class="col-3 col-sm-2 list-item text-end">
+            <div class="float-end">
               <a
                 *ngIf="selectedType === 'cxml' && ('punchout.cxmlUserConfigurationEnabled' | ishServerSetting)"
                 [routerLink]="['cxmlConfiguration', user.id]"

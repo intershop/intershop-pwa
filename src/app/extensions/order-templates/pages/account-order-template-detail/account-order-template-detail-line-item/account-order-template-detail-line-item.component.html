@@ -2,6 +2,7 @@
   <div class="col-1 col-md-2 list-item d-flex">
     <input
       type="checkbox"
+      class="form-check-input"
       data-testing-id="productCheckbox"
       [formControl]="checkBox"
       [attr.aria-label]="'account.order_template.add_to_template.checkbox.aria_label' | translate"
@@ -11,7 +12,7 @@
     </div>
   </div>
   <div class="col-8 col-md-6 list-item d-block d-md-flex">
-    <div class="col-12 col-md-9 pli-description">
+    <div class="col-12 col-md-9 pli-description px-3">
       <ish-product-name />
       <ish-product-id />
       <ish-product-variation-display />
@@ -38,11 +39,11 @@
         </button>
       </div>
     </div>
-    <div class="col-6 col-md-3 p-md-0 text-right">
+    <div class="col-6 col-md-3 p-md-0 text-end">
       <ish-product-quantity />
     </div>
   </div>
-  <div class="col-2 list-item d-none d-md-block text-right">
+  <div class="col-2 list-item d-none d-md-block text-end">
     {{ orderTemplateItemData?.creationDate | ishDate : 'shortDate' }}
   </div>
   <div class="col-4 col-md-2 list-item column-price">

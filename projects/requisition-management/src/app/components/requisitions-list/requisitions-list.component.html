@@ -9,7 +9,7 @@
     <ng-container cdkColumnDef="requisitionNo">
       <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-requisition-no">
         <span aria-hidden="true">{{ 'account.approvallist.table.id_of_order' | translate }}</span>
-        <span class="sr-only">{{ 'account.approvallist.table.id_of_order.title' | translate }}</span>
+        <span class="visually-hidden">{{ 'account.approvallist.table.id_of_order.title' | translate }}</span>
       </th>
       <td
         cdk-cell
@@ -30,7 +30,7 @@
               ? ('account.approvallist.table.id_of_order.recurring_approved' | translate)
               : ('account.approvallist.table.id_of_order.recurring_not_approved' | translate)
           "
-          class="ml-1"
+          class="ms-1"
         />
       </td>
     </ng-container>
@@ -39,7 +39,7 @@
     <ng-container cdkColumnDef="orderNo">
       <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-no">
         <span aria-hidden="true">{{ 'account.approvallist.table.no_of_order' | translate }}</span>
-        <span class="sr-only">{{ 'account.approvallist.table.no_of_order.title' | translate }}</span>
+        <span class="visually-hidden">{{ 'account.approvallist.table.no_of_order.title' | translate }}</span>
       </th>
       <td
         cdk-cell
@@ -56,7 +56,7 @@
     <ng-container cdkColumnDef="orderNoSimple">
       <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-no-simple">
         <span aria-hidden="true">{{ 'account.approvallist.table.no_of_order' | translate }}</span>
-        <span class="sr-only">{{ 'account.approvallist.table.no_of_order.title' | translate }}</span>
+        <span class="visually-hidden">{{ 'account.approvallist.table.no_of_order.title' | translate }}</span>
       </th>
       <td
         cdk-cell
@@ -148,7 +148,7 @@
 
     <!-- Total -->
     <ng-container cdkColumnDef="orderTotal">
-      <th scope="col" cdk-header-cell *cdkHeaderCellDef class="text-right" data-testing-id="th-order-total">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef class="text-end" data-testing-id="th-order-total">
         {{ 'account.approvallist.table.line_item_total' | translate }}
       </th>
       <td
@@ -164,7 +164,7 @@
     <!-- Approval Actions -->
     <ng-container cdkColumnDef="actions">
       <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-actions">
-        <span class="sr-only">{{ 'account.approvallist.table.actions' | translate }}</span>
+        <span class="visually-hidden">{{ 'account.approvallist.table.actions' | translate }}</span>
       </th>
       <td cdk-cell *cdkCellDef="let requisition" class="column-price">
         <ng-container *ngIf="status === 'PENDING'">

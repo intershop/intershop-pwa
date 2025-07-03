@@ -9,7 +9,7 @@
     data-testing-id="promo-collapse-link"
   >
     {{ 'shopping_cart.promotional_code.heading' | translate
-    }}<fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" class="float-right" />
+    }}<fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" class="float-end" />
   </button>
 
   <ish-error-message [error]="promotionError$ | async" [toast]="toast" />
@@ -20,11 +20,11 @@
     [toast]="toast"
   />
 
-  <div id="promo-code-input" class="form-inline" [ngbCollapse]="isCollapsed" data-testing-id="promo-code-form">
+  <div id="promo-code-input" class="promo-code-input" [ngbCollapse]="isCollapsed" data-testing-id="promo-code-form">
     <input
       [formControl]="codeInput"
       (keyup.enter)="submitPromotionCode()"
-      class="form-control"
+      class="form-control w-auto"
       type="text"
       [maxlength]="codeMaxLength"
       [attr.aria-label]="'shopping_cart.promotional_code.label' | translate"

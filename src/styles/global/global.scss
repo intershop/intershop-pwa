@@ -156,9 +156,11 @@ a:not([href]):not([tabindex]) {
 }
 
 a {
+  text-decoration: none;
   cursor: pointer;
 
   &:hover {
+    color: $CORPORATE-SECONDARY;
     // global link behavior
     text-decoration: underline;
   }
@@ -281,7 +283,7 @@ a {
 .wrapper {
   padding: 0 0 50px;
 
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-down(md) {
     padding-top: $search-container-height;
   }
 }
@@ -326,6 +328,7 @@ img {
   .nav-link.active,
   .nav-link.active:hover,
   .nav-link.active:focus {
+    color: $text-color-primary;
     border-color: transparent;
     box-shadow: 0 2px $CORPORATE-PRIMARY;
   }
@@ -337,14 +340,21 @@ img {
 
 // Help Text
 .form-text {
+  display: block;
   margin: divide($space-default, 3) 0 $space-default * 0.5;
+  font-size: 0.875rem;
   color: $text-color-tertiary;
 }
 
 h2.form-text {
   font-family: $font-family-regular;
+  font-size: $h4-font-size;
   color: $text-color-tertiary;
   text-transform: none;
+}
+
+small.form-text {
+  font-size: 0.875em;
 }
 
 .form-text-inline {
@@ -364,7 +374,7 @@ img.marketing {
 }
 
 // Detail links and tooltips
-[data-toggle='popover'] {
+[data-bs-toggle='popover'] {
   .ng-fa-icon {
     padding-left: $space-default * 0.25;
     font-size: 120%;
@@ -403,7 +413,6 @@ img.marketing {
     left: 16px;
     font-size: 75%;
     font-weight: inherit;
-    line-height: 1.4;
     color: $text-color-inverse;
     background: $CORPORATE-PRIMARY;
 
@@ -419,8 +428,8 @@ img.marketing {
   font-weight: normal;
 }
 
-.badge-primary {
-  background-color: $color-special-tertiary;
+.badge.bg-primary {
+  background-color: $color-special-tertiary !important;
 }
 
 .badge.border-primary {

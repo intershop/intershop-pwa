@@ -8,7 +8,7 @@
       <div class="panel">
         <ng-container *ngIf="preferredPaymentInstrument; else noPreferredPayment">
           <div
-            [ngClass]="{ 'font-weight-bold': preferredPaymentInstrument.accountIdentifier }"
+            [ngClass]="{ 'fw-bold': preferredPaymentInstrument.accountIdentifier }"
             data-testing-id="preferred-payment-method"
           >
             {{ getPreferredPaymentMethod()?.displayName }}
@@ -31,7 +31,7 @@
     <div *ngIf="savedPaymentMethods?.length || standardPaymentMethods?.length" class="payment-methods">
       <h2 class="h3">{{ 'account.payment.further_payments.heading' | translate }}</h2>
       <div *ngFor="let method of savedPaymentMethods" class="panel section" data-testing-id="paymentMethodList">
-        <div class="font-weight-bold">
+        <div class="fw-bold">
           {{ method.displayName }}
         </div>
 
@@ -41,7 +41,7 @@
       </div>
 
       <div *ngIf="standardPaymentMethods?.length" class="panel" data-testing-id="standardPaymentMethodList">
-        <p class="font-weight-bold">
+        <p class="fw-bold">
           {{ 'account.payment.standard_methods' | translate }}
         </p>
         <div *ngFor="let method of standardPaymentMethods" class="pb-2">
@@ -70,7 +70,7 @@
       <div class="col-sm-7 col-md-5" [ngClass]="{ 'pt-2': !isPreferred }">
         <button
           type="button"
-          class="float-right btn btn-link btn-link-action"
+          class="float-end btn btn-link btn-link-action"
           (click)="deleteUserPayment(pi.id)"
           data-testing-id="delete-payment-link"
         >
@@ -84,7 +84,7 @@
           [id]="'paymentOption_' + pi.id"
           [value]="pi.id"
         />
-        <label class="form-check-label" [ngClass]="{ 'ml-0': isPreferred }" [for]="'paymentOption_' + pi.id">
+        <label class="form-check-label" [ngClass]="{ 'ms-0': isPreferred }" [for]="'paymentOption_' + pi.id">
           {{ pi.accountIdentifier }}
         </label>
 

@@ -2,13 +2,13 @@
   <!-- Invoice Address -->
   <div class="clearfix">
     <a
-      class="float-right btn-tool"
+      class="float-end btn-tool"
       routerLink="/checkout/address"
       [title]="'checkout.address.update.title' | translate : { '0': 'checkout.address.billing.label' | translate }"
     >
       <fa-icon [icon]="['fas', 'pencil-alt']" />
     </a>
-    <h3 class="h5 float-left">{{ 'checkout.address.billing.label' | translate }}</h3>
+    <h3 class="h5 float-start">{{ 'checkout.address.billing.label' | translate }}</h3>
   </div>
   <div data-testing-id="address-summary-invoice-to-address">
     <ish-address [address]="basket.invoiceToAddress" [displayEmail]="true" />
@@ -17,7 +17,7 @@
   <!-- Shipping Address -->
   <div class="clearfix">
     <a
-      class="float-right btn-tool"
+      class="float-end btn-tool"
       routerLink="/checkout/address"
       [title]="'checkout.address.update.title' | translate : { '0': 'checkout.address.shipping.label' | translate }"
     >

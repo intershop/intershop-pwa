@@ -1,6 +1,6 @@
 <div *ngIf="showRecurrenceOptions$ | async" id="order-recurrence">
   <fieldset class="mt-1">
-    <legend class="sr-only">{{ 'order.recurrence.form.legend' | translate }}</legend>
+    <legend class="visually-hidden">{{ 'order.recurrence.form.legend' | translate }}</legend>
     <input
       type="radio"
       id="order_recurrence_single"
@@ -31,7 +31,7 @@
     </div>
     <ish-content-include includeId="include.basket.recurringorder.ordersummary.pagelet2-Include" />
   </fieldset>
-  <div class="sr-only" aria-live="polite" role="text">
+  <div class="visually-hidden" aria-live="polite" role="text">
     {{
       (!!recurrence ? 'order.recurrence.form.announcement.open' : 'order.recurrence.form.announcement.close')
         | translate

@@ -52,8 +52,8 @@
         <formly-form [model]="model$ | async" [fields]="fields$ | async" [form]="form" class="pt-1" />
       </div>
       <div class="row">
-        <div class="button-group w-100 clearfix">
-          <div class="float-md-right">
+        <div class="button-group w-100 gx-0 clearfix">
+          <div class="float-md-end">
             <button
               type="submit"
               class="btn btn-primary"
@@ -67,7 +67,7 @@
             }}</a>
           </div>
           <div class="float-md-left">
-            <a class="btn btn-link pl-md-0" [routerLink]="['/account/punchout']" [queryParams]="{ format: 'oci' }">{{
+            <a class="btn btn-link ps-md-0" [routerLink]="['/account/punchout']" [queryParams]="{ format: 'oci' }">{{
               'account.punchout.configuration.back_to_list' | translate
             }}</a>
           </div>

@@ -13,7 +13,9 @@
           <!-- Product image & name -->
           <tr>
             <th class="legacy-col-6 legacy-col-md-3 no-border" scope="row">
-              <span class="sr-only">{{ 'product.compare.table_header.product_image_and_name.text' | translate }}</span>
+              <span class="visually-hidden">{{
+                'product.compare.table_header.product_image_and_name.text' | translate
+              }}</span>
               &nbsp;
             </th>
             <td
@@ -42,7 +44,7 @@
           <!-- SKU -->
           <tr>
             <th class="legacy-col-6 legacy-col-md-3 no-border" scope="row">
-              <span class="sr-only">{{ 'product.compare.table_header.product_id.text' | translate }}</span>
+              <span class="visually-hidden">{{ 'product.compare.table_header.product_id.text' | translate }}</span>
               &nbsp;
             </th>
             <td *ngFor="let product of visibleProducts" class="legacy-col-6 legacy-col-md-3 no-border">
@@ -52,7 +54,7 @@
           <!-- Add to cart button -->
           <tr>
             <th class="legacy-col-6 legacy-col-md-3" scope="row">
-              <span class="sr-only">{{ 'product.compare.table_header.action_row.text' | translate }}</span>
+              <span class="visually-hidden">{{ 'product.compare.table_header.action_row.text' | translate }}</span>
               &nbsp;
             </th>
             <td *ngFor="let product of visibleProducts" class="legacy-col-6 legacy-col-md-3">
@@ -69,7 +71,7 @@
           <!-- Inventory -->
           <tr>
             <th scope="row">
-              <span class="sr-only">{{ 'product.compare.table_header.inventory.text' | translate }}</span>
+              <span class="visually-hidden">{{ 'product.compare.table_header.inventory.text' | translate }}</span>
             </th>
             <td *ngFor="let product of visibleProducts">
               <ish-product-inventory ishProductContext [sku]="product?.sku" />

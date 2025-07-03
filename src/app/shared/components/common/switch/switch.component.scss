@@ -1,27 +1,42 @@
 @import 'variables';
 
-.custom-control-input {
+.form-check-input {
+  height: 1.2em;
+  margin-top: 0;
+  margin-right: $space-default * 0.5;
+
+  // Override Bootstrap 5 switch handle color to always be white
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+
+  &:hover {
+    cursor: pointer;
+  }
+
   // OFF
   // default
-  & ~ .custom-control-label::before {
+  &:not(:checked) {
     background-color: $text-color-tertiary;
     border-color: $text-color-tertiary;
 
     // remove the transition halo effect
     box-shadow: none;
   }
+
   // hover
-  &:hover ~ .custom-control-label::before {
+  &:not(:checked):hover {
     background-color: $gray-600;
     border-color: $gray-600;
   }
+
   // active
-  &:active ~ .custom-control-label::before {
+  &:not(:checked):active {
     background-color: $gray-900;
     border-color: $gray-900;
+    filter: none;
   }
+
   // disabled
-  &:disabled ~ .custom-control-label::before {
+  &:not(:checked):disabled {
     background-color: $gray-300;
     border-color: $gray-300;
   }
@@ -29,29 +44,32 @@
   // ON
   // default
   &:checked {
-    & ~ .custom-control-label::before {
-      background-color: $CORPORATE-PRIMARY;
-      border-color: $CORPORATE-PRIMARY;
-    }
+    background-color: $CORPORATE-PRIMARY;
+    border-color: $CORPORATE-PRIMARY;
+
     // hover
-    &:hover ~ .custom-control-label::before {
+    &:hover {
       background-color: $CORPORATE-SECONDARY;
       border-color: $CORPORATE-SECONDARY;
-    } // active
-    &:active ~ .custom-control-label::before {
+    }
+
+    // active
+    &:active {
       background-color: $CORPORATE-DARK;
       border-color: $CORPORATE-DARK;
+      filter: none;
     }
+
     // disabled
-    &:disabled ~ .custom-control-label::before {
+    &:disabled {
       background-color: $gray-300;
       border-color: $gray-300;
     }
   }
 
-  // GENERAL STYLES
-  // set the handle color
-  & ~ .custom-control-label::after {
-    background-color: $white;
+  // Focus styles (Bootstrap 5 uses focus-visible)
+  &:focus-visible,
+  &:focus {
+    box-shadow: none;
   }
 }

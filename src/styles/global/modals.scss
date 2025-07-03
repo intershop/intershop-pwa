@@ -2,12 +2,15 @@
 // --------------------------------------------------
 
 .modal-dialog {
-  .close {
-    opacity: 1;
+  .btn-close {
+    &:focus {
+      box-shadow: none;
+    }
   }
 
   .modal-header {
     align-items: center;
+    justify-content: space-between;
     min-height: 50px;
 
     h2 {

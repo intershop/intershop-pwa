@@ -6,7 +6,7 @@
   <div *ngIf="!paymentMethod.isRestricted; else displayRestrictions">
     <p *ngIf="paymentMethod.paymentCosts?.[priceType]">
       {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{ paymentMethod.paymentCosts | ishPrice }}&nbsp;
-      <span *ngIf="paymentMethod.paymentCostsThreshold" class="text-muted">
+      <span *ngIf="paymentMethod.paymentCostsThreshold" class="text-body-secondary">
         <span>-&nbsp;</span>{{ 'checkout.payment.payment_cost_threshold.text' | translate }}
         <span class="text-nowrap" data-testing-id="basket-payment-cost">{{
           paymentMethod.paymentCostsThreshold | ishPrice

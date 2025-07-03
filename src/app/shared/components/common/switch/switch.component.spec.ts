@@ -38,9 +38,7 @@ describe('Switch Component', () => {
     component.ariaLabel = 'test aria label';
     fixture.detectChanges();
 
-    expect(element.getElementsByClassName('custom-control-input')[0].getAttribute('aria-label')).toBe(
-      'test aria label'
-    );
+    expect(element.getElementsByClassName('form-check-input')[0].getAttribute('aria-label')).toBe('test aria label');
   });
 
   it('should display correct label when active', () => {
@@ -50,7 +48,7 @@ describe('Switch Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
 
-    expect(element.querySelector('[data-testing-id="customControlLabel"]').innerHTML).toContain('test label active');
+    expect(element.querySelector('[data-testing-id="formCheckLabel"]').innerHTML).toContain('test label active');
   });
 
   it('should display correct label when set to inactive', () => {
@@ -60,7 +58,7 @@ describe('Switch Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
 
-    expect(element.querySelector('[data-testing-id="customControlLabel"]').innerHTML).toContain('test label inactive');
+    expect(element.querySelector('[data-testing-id="formCheckLabel"]').innerHTML).toContain('test label inactive');
   });
 
   it('should update activeState when active input changes', () => {

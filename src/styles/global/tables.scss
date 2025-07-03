@@ -244,6 +244,7 @@
         }
 
         > th {
+          padding: $table-cell-padding;
           border: none;
           border-bottom: 1px solid $border-color-lighter;
         }

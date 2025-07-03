@@ -29,7 +29,6 @@
 
 .infobox-wrapper {
   display: flex;
-  width: 100%;
 
   .infobox {
     width: 100%;
@@ -89,10 +88,6 @@
     &.infobox-widget {
       min-height: 175px;
       padding-bottom: $space-default;
-
-      .row:last-of-type {
-        margin-top: $space-default;
-      }
     }
   }
 }

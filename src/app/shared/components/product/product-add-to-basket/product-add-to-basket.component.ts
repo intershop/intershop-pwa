@@ -14,7 +14,7 @@ import { whenFalsy } from 'ish-core/utils/operators';
  *
  * @example
  * <ish-product-add-to-basket
-    [cssClass]="'btn-lg btn-block'"
+    [cssClass]="'btn-lg'"
   ></ish-product-add-to-basket>
  */
 @Component({

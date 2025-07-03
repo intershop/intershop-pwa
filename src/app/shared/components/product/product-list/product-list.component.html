@@ -1,5 +1,5 @@
 <div class="product-list row">
-  <div *ngIf="!products.length">
+  <div *ngIf="!products.length" class="gx-0">
     <ng-container *ngIf="(listingLoading$ | async) !== true">
       {{ 'search.noresult.filtered_products.message' | translate }}
     </ng-container>

@@ -115,7 +115,7 @@
       </ish-info-box>
     </div>
 
-    <p class="text-right">
+    <p class="text-end">
       <a routerLink="/basket">{{ 'checkout.widget.return_to_cart.link' | translate }}</a>
     </p>
 
@@ -133,19 +133,21 @@
       <ish-basket-cost-summary [totals]="basket.totals" />
       <form [formGroup]="form" ishFormSubmit #tcForm="ngForm" (ngSubmit)="submitOrder()">
         <formly-form [form]="form" [model]="model" [fields]="fields" [options]="options" />
-        <button
-          class="btn btn-lg btn-block btn-primary"
-          type="submit"
-          [disabled]="(form.invalid && tcForm.submitted) || multipleBuckets || submitting"
-        >
-          <ng-container *ngIf="submitting">
-            <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pr-3" />
-          </ng-container>
-          {{
-            (basket.recurrence ? 'checkout.order_review.recurring.send.button' : 'checkout.order_review.send.button')
-              | translate
-          }}
-        </button>
+        <div class="d-grid">
+          <button
+            class="btn btn-lg btn-block btn-primary"
+            type="submit"
+            [disabled]="(form.invalid && tcForm.submitted) || multipleBuckets || submitting"
+          >
+            <ng-container *ngIf="submitting">
+              <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pe-3" />
+            </ng-container>
+            {{
+              (basket.recurrence ? 'checkout.order_review.recurring.send.button' : 'checkout.order_review.send.button')
+                | translate
+            }}
+          </button>
+        </div>
       </form>
     </div>
   </div>

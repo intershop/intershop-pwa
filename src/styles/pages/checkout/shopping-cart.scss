@@ -16,7 +16,14 @@
   border: $border-width-default solid $border-color-light;
   border-width: 1px 1px 0;
 
-  .form-inline {
+  .promo-code-input {
+    display: flex;
+    flex-wrap: wrap;
+
+    &.collapse:not(.show) {
+      display: none;
+    }
+
     * {
       margin-top: $space-default;
 

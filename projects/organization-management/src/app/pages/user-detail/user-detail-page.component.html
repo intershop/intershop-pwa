@@ -47,7 +47,7 @@
           <dl *ngFor="let role of roles$ | async" class="row dl-horizontal dl-separator">
             <dt class="col-md-4">{{ role.displayName }}</dt>
             <dd class="col-md-8">
-              <ul class="pl-3">
+              <ul class="ps-3">
                 <li *ngFor="let p of role.permissionDisplayNames">{{ p }}</li>
               </ul>
             </dd>

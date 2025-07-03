@@ -34,7 +34,7 @@
     &.btn-reset,
     &.btn-search {
       position: absolute;
-      width: 42px;
+      width: 42px !important;
       height: $search-container-height;
       font-size: $font-size-lg;
 
