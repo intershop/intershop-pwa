@@ -1,29 +1,33 @@
 <!-- display notification button / icon -->
 <ng-container *ngIf="visible$ | async" [ngSwitch]="displayType">
   <!-- edit icon -->
-  <button
-    *ngSwitchCase="'icon'"
-    type="button"
-    class="btn"
-    [ngClass]="cssClass"
-    [title]="'product.notification.edit.link.title' | translate"
-    (click)="openModal(modal)"
-    data-testing-id="product-notification-edit"
-  >
-    <fa-icon [icon]="['fas', 'pencil-alt']" />
-  </button>
-
-  <ng-container *ngSwitchCase="'button'">
-    <!-- button -->
+  <div class="d-grid">
     <button
+      *ngSwitchCase="'icon'"
       type="button"
+      class="btn"
       [ngClass]="cssClass"
-      [title]="buttonKey('title') | async | translate"
+      [title]="'product.notification.edit.link.title' | translate"
       (click)="openModal(modal)"
       data-testing-id="product-notification-edit"
     >
-      {{ buttonKey('label') | async | translate }}
+      <fa-icon [icon]="['fas', 'pencil-alt']" />
     </button>
+  </div>
+
+  <ng-container *ngSwitchCase="'button'">
+    <!-- button -->
+    <div class="d-grid">
+      <button
+        type="button"
+        [ngClass]="cssClass"
+        [title]="buttonKey('title') | async | translate"
+        (click)="openModal(modal)"
+        data-testing-id="product-notification-edit"
+      >
+        {{ buttonKey('label') | async | translate }}
+      </button>
+    </div>
   </ng-container>
 </ng-container>
 

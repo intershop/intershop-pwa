@@ -41,7 +41,7 @@ describe('Fieldset Field Component', () => {
           type: 'ish-fieldset-field',
           props: {
             legend: 'Legend text',
-            legendClass: 'text-muted',
+            legendClass: 'text-body-secondary',
           },
           fieldGroup: [
             {
@@ -94,11 +94,11 @@ describe('Fieldset Field Component', () => {
 
   it('should contain a legend class in a fieldset', () => {
     fixture.detectChanges();
-    expect(element.querySelector('legend.text-muted')).toBeTruthy();
+    expect(element.querySelector('legend.text-body-secondary')).toBeTruthy();
   });
 
   it('should contain a legend text in a fieldset', () => {
     fixture.detectChanges();
-    expect(element.querySelector('legend.text-muted').textContent).toMatchInlineSnapshot(`"Legend text"`);
+    expect(element.querySelector('legend.text-body-secondary').textContent).toMatchInlineSnapshot(`"Legend text"`);
   });
 });

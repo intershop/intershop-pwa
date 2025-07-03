@@ -32,18 +32,22 @@
         <div class="list-body">
           <formly-form [model]="model" [fields]="fields" [form]="form" class="pt-1" />
         </div>
-        <div class="row justify-content-end">
-          <button
-            type="submit"
-            class="btn btn-primary"
-            [disabled]="formDisabled || (buyersForm.submitted && form.invalid)"
-            data-testing-id="add-buyers-submit"
-          >
-            {{ 'account.costcenter.details.buyers.action.add' | translate }}
-          </button>
-          <a routerLink="../" class="btn btn-secondary" data-testing-id="add-cost-center-buyers-cancel">{{
-            'account.cancel.link' | translate
-          }}</a>
+        <div class="row">
+          <div class="button-group w-100 gx-0 clearfix">
+            <div class="float-md-end">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="formDisabled || (buyersForm.submitted && form.invalid)"
+                data-testing-id="add-buyers-submit"
+              >
+                {{ 'account.costcenter.details.buyers.action.add' | translate }}
+              </button>
+              <a routerLink="../" class="btn btn-secondary" data-testing-id="add-cost-center-buyers-cancel">{{
+                'account.cancel.link' | translate
+              }}</a>
+            </div>
+          </div>
         </div>
       </form>
     </div>
@@ -54,7 +58,7 @@
     {{ 'account.costcenter.details.add.buyers.list.empty' | translate }}
   </p>
 
-  <div class="section text-right">
+  <div class="section text-end">
     <a routerLink="../" class="btn btn-secondary" data-testing-id="add-cost-center-buyers-cancel">{{
       'account.cancel.link' | translate
     }}</a>

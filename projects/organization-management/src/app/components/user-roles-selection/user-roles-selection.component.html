@@ -1,5 +1,5 @@
 <fieldset>
-  <legend class="sr-only">{{ 'account.user.details.profile.role_permissions.heading' | translate }}</legend>
+  <legend class="visually-hidden">{{ 'account.user.details.profile.role_permissions.heading' | translate }}</legend>
   <div class="row">
     <div class="col-md-4 col-form-label">{{ 'account.user.details.profile.role_permissions.heading' | translate }}</div>
     <div class="col-md-8">
@@ -12,8 +12,8 @@
           >
             <div class="form-control-checkbox">
               <div class="form-check form-control">
-                <label [for]="item.key">
-                  <input type="checkbox" [id]="item.key" [formControlName]="item.key" />
+                <label [for]="item.key" class="mb-2">
+                  <input type="checkbox" [id]="item.key" [formControlName]="item.key" class="form-check-input" />
                   <span>{{ role.displayName }}</span
                   ><br />
                   <span *ngIf="role.description" class="input-help">{{ role.description }}</span>

@@ -6,7 +6,7 @@
 <form [formGroup]="form" (ngSubmit)="submitForm()">
   <div class="row">
     <fieldset class="col-sm-8">
-      <legend class="sr-only">{{ 'store_locator.title' | translate }}</legend>
+      <legend class="visually-hidden">{{ 'store_locator.title' | translate }}</legend>
       <formly-form [form]="form" [fields]="fields" [model]="model" />
       <div class="form-group row align-items-baseline">
         <div class="col-sm-4"></div>
@@ -40,7 +40,7 @@
     </ng-container>
     <div *ishFeature="'maps'">
       <div class="row">
-        <div class="col-3 pr-0 overflow-auto d-none d-lg-block map-height">
+        <div class="col-3 pe-0 overflow-auto d-none d-lg-block map-height">
           <ish-skip-content-link skipToElementId="store-locator-map" />
           <div
             *ngFor="let store of stores$ | async"
@@ -56,7 +56,7 @@
             <ish-store-address [store]="store" />
           </div>
         </div>
-        <div class="col-12 col-lg-9 pl-lg-0 map-height">
+        <div class="col-12 col-lg-9 ps-lg-0 map-height">
           <ish-stores-map #map />
         </div>
         <!-- Tablet/Mobile -->

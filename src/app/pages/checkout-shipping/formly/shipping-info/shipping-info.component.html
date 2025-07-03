@@ -1,7 +1,10 @@
 <ng-container *ngIf="shippingMethod$ | async as shippingMethod">
   <span>{{ shippingMethod.name }}:</span>&nbsp;
   <strong *ngIf="shippingMethod.shippingCosts">{{ shippingMethod.shippingCosts | ishPrice }}&nbsp;</strong>
-  <span *ngIf="shippingMethod.shippingTimeMin && shippingMethod.shippingTimeMax" class="form-text form-text-inline">
+  <span
+    *ngIf="shippingMethod.shippingTimeMin && shippingMethod.shippingTimeMax"
+    class="form-text form-text-inline d-block"
+  >
     {{ 'checkout.shipping.delivery_time.description' | translate }}
     <span *ngIf="shippingMethod.shippingTimeMin === 0 && shippingMethod.shippingTimeMax === 1">
       {{ 'checkout.shipping.delivery_time.within24' | translate }}

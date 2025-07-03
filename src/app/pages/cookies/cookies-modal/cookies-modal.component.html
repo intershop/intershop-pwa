@@ -1,9 +1,7 @@
 <div class="cookies-modal">
   <div class="modal-header">
     <h2>{{ 'cookie.preferences.heading' | translate }}</h2>
-    <button type="button" class="close" [title]="'dialog.close.text' | translate" (click)="hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
   </div>
 
   <div class="modal-body">
@@ -11,6 +9,7 @@
       <label>
         <input
           type="checkbox"
+          class="form-check-input"
           [checked]="option.value.required || cookieConsentSettings?.enabledOptions.includes(option.key)"
           [disabled]="option.value.required"
           (change)="selectedIds[option.key] = !selectedIds[option.key]"

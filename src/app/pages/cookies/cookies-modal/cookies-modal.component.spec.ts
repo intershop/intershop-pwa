@@ -64,17 +64,19 @@ describe('Cookies Modal Component', () => {
       <div class="cookies-modal">
         <div class="modal-header">
           <h2>cookie.preferences.heading</h2>
-          <button type="button" class="close" title="dialog.close.text">
-            <span aria-hidden="true">×</span>
-          </button>
+          <button type="button" class="btn-close" title="dialog.close.text"></button>
         </div>
         <div class="modal-body">
           <div class="cookie-option">
-            <label><input type="checkbox" disabled="" /><span>required.name</span></label>
+            <label
+              ><input type="checkbox" class="form-check-input" disabled="" /><span
+                >required.name</span
+              ></label
+            >
             <p>required.description</p>
           </div>
           <div class="cookie-option">
-            <label><input type="checkbox" /><span>functional.name</span></label>
+            <label><input type="checkbox" class="form-check-input" /><span>functional.name</span></label>
             <p>functional.description</p>
           </div>
         </div>

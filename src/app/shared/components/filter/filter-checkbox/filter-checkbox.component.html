@@ -3,7 +3,7 @@
     <li class="filter-item filter-layer{{ facet.level }}" [ngClass]="{ 'filter-selected': facet.selected }">
       <div>
         <label class="filter-item-checkbox-label-native">
-          <input type="checkbox" [checked]="facet.selected" (change)="filter(facet)" />
+          <input type="checkbox" class="form-check-input" [checked]="facet.selected" (change)="filter(facet)" />
           <span class="filter-item-name"> {{ facet.displayName }} </span>
           <span class="count"> ({{ facet.count }}) </span>
         </label>

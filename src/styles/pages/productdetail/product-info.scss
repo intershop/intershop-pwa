@@ -78,12 +78,17 @@ a.product-title {
   }
 
   .add-to-cart {
-    margin-top: $space-default;
-    margin-bottom: $space-default;
+    margin-bottom: calc($space-default);
   }
 
-  .btn.btn-block {
-    margin-bottom: $space-default * 0.5;
+  .d-grid:has(> .btn:not(.btn-link)) {
+    .btn {
+      margin-bottom: 7.5px;
+    }
+
+    .btn:not(.float-end) {
+      margin-right: 0;
+    }
   }
 
   .promotion-list {

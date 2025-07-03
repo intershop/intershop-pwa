@@ -1,33 +1,35 @@
 <!-- display addToOrderTemplate Icon/animated Icon or link-->
-<button
-  *ngIf="visible$ | async"
-  type="button"
-  name="addProduct"
-  class="btn"
-  [disabled]="disabled$ | async"
-  [ngClass]="cssClass"
-  [title]="
-    displayType === 'icon' ? ('account.order_template.add_to_template.button.add_to_template.label' | translate) : ''
-  "
-  [tabindex]="ariaHidden ? -1 : 0"
-  [attr.aria-hidden]="ariaHidden"
-  (click)="openModal(modal)"
-  data-testing-id="addToOrderTemplateButton"
->
-  <ng-container [ngSwitch]="displayType">
-    <ng-template [ngSwitchCase]="'animated'">
-      <fa-icon [icon]="['fas', 'list']" />
-      <span class="share-label">{{
-        'account.order_template.add_to_template.button.add_to_template.label' | translate
-      }}</span>
-    </ng-template>
-    <ng-template [ngSwitchCase]="'icon'">
-      <fa-icon [icon]="['fas', 'list']" />
-    </ng-template>
-    <ng-template ngSwitchDefault>
-      {{ 'account.order_template.add_to_template.button.add_to_template.label' | translate }}
-    </ng-template>
-  </ng-container>
-</button>
+<div class="d-grid">
+  <button
+    *ngIf="visible$ | async"
+    type="button"
+    name="addProduct"
+    class="btn"
+    [disabled]="disabled$ | async"
+    [ngClass]="cssClass"
+    [title]="
+      displayType === 'icon' ? ('account.order_template.add_to_template.button.add_to_template.label' | translate) : ''
+    "
+    [tabindex]="ariaHidden ? -1 : 0"
+    [attr.aria-hidden]="ariaHidden"
+    (click)="openModal(modal)"
+    data-testing-id="addToOrderTemplateButton"
+  >
+    <ng-container [ngSwitch]="displayType">
+      <ng-template [ngSwitchCase]="'animated'">
+        <fa-icon [icon]="['fas', 'list']" />
+        <span class="share-label">{{
+          'account.order_template.add_to_template.button.add_to_template.label' | translate
+        }}</span>
+      </ng-template>
+      <ng-template [ngSwitchCase]="'icon'">
+        <fa-icon [icon]="['fas', 'list']" />
+      </ng-template>
+      <ng-template ngSwitchDefault>
+        {{ 'account.order_template.add_to_template.button.add_to_template.label' | translate }}
+      </ng-template>
+    </ng-container>
+  </button>
+</div>
 
 <ish-select-order-template-modal #modal (submitEmitter)="addProductToOrderTemplate($event)" />

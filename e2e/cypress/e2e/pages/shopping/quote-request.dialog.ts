@@ -6,7 +6,7 @@ export class QuoteRequestDialog {
   private submitQuoteRequestButton = () => cy.get('[data-testing-id="submit-quote-request"]');
   private copyQuoteRequestButton = () => cy.get('[data-testing-id="copy-quote-request"]');
 
-  private hideButton = () => cy.get('.close');
+  private hideButton = () => cy.get('.btn-close');
   private quantityInput = () => cy.get('[data-testing-id="quantity"]');
 
   submitQuoteRequest() {

@@ -33,7 +33,7 @@ describe('Home Page Component', () => {
   it('should render home page include when rendered', () => {
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
-      <h1 class="sr-only">seo.title.home</h1>
+      <h1 class="visually-hidden">seo.title.home</h1>
       <ish-content-include
         includeid="include.homepage.content.pagelet2-Include"
         ng-reflect-include-id="include.homepage.content.pagel"

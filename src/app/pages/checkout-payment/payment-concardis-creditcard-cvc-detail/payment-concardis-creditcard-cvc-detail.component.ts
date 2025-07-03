@@ -43,7 +43,7 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
         props: {
           required: true,
           label: 'checkout.credit_card.cvc.label',
-          labelClass: 'col-5 col-md-7 pl-4',
+          labelClass: 'col-5 col-md-7 ps-4',
           maxLength: 35,
           fieldClass: 'col-7 col-md-5',
         },

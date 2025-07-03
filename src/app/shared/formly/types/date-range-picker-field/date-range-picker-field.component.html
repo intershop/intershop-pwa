@@ -48,22 +48,20 @@
         [attr.aria-invalid]="showError ? 'true' : undefined"
         [attr.aria-describedby]="props.ariaDescribedByIds"
       />
-      <div class="input-group-append">
-        <button
-          type="button"
-          class="btn btn-secondary"
-          (click)="d.toggle()"
-          title="{{ 'account.date.title' | translate }}"
-          data-testing-id="btn-date-picker"
-          aria-haspopup="dialog"
-          aria-expanded="false"
-        >
-          <fa-icon class="text-secondary" icon="calendar-day" />
-        </button>
-      </div>
+      <button
+        type="button"
+        class="btn btn-secondary input-group-text mb-0 me-0"
+        (click)="d.toggle()"
+        title="{{ 'account.date.title' | translate }}"
+        data-testing-id="btn-date-picker"
+        aria-haspopup="dialog"
+        aria-expanded="false"
+      >
+        <fa-icon class="text-secondary" icon="calendar-day" />
+      </button>
     </div>
   </div>
-  <div class="col-6 input-group">
+  <div class="input-group col-6 w-50">
     <input
       #dpToDate
       class="form-control"
@@ -76,17 +74,15 @@
       [attr.aria-invalid]="showError ? 'true' : undefined"
       [attr.aria-describedby]="props.ariaDescribedByIds"
     />
-    <div class="input-group-append">
-      <button
-        type="button"
-        class="btn btn-secondary"
-        (click)="d.toggle()"
-        title="{{ 'account.date.title' | translate }}"
-        aria-haspopup="dialog"
-        aria-expanded="false"
-      >
-        <fa-icon class="text-secondary" icon="calendar-day" />
-      </button>
-    </div>
+    <button
+      type="button"
+      class="btn btn-secondary input-group-text mb-0 me-0"
+      (click)="d.toggle()"
+      title="{{ 'account.date.title' | translate }}"
+      aria-haspopup="dialog"
+      aria-expanded="false"
+    >
+      <fa-icon class="text-secondary" icon="calendar-day" />
+    </button>
   </div>
 </div>
