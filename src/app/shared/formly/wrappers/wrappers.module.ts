@@ -9,6 +9,7 @@ import { ComponentsModule } from 'ish-shared/formly/components/components.module
 import { DescriptionWrapperComponent } from './description-wrapper/description-wrapper.component';
 import { HorizontalCheckboxWrapperComponent } from './horizontal-checkbox-wrapper/horizontal-checkbox-wrapper.component';
 import { HorizontalWrapperComponent } from './horizontal-wrapper/horizontal-wrapper.component';
+import { InformationWrapperComponent } from './information-wrapper/information-wrapper.component';
 import { InputAddonWrapperComponent } from './input-addon-wrapper/input-addon-wrapper.component';
 import { MaxlengthDescriptionWrapperComponent } from './maxlength-description-wrapper/maxlength-description-wrapper.component';
 import { TooltipWrapperComponent } from './tooltip-wrapper/tooltip-wrapper.component';
@@ -18,6 +19,7 @@ const wrapperComponents = [
   DescriptionWrapperComponent,
   HorizontalCheckboxWrapperComponent,
   HorizontalWrapperComponent,
+  InformationWrapperComponent,
   InputAddonWrapperComponent,
   MaxlengthDescriptionWrapperComponent,
   TooltipWrapperComponent,
@@ -39,6 +41,7 @@ const wrapperComponents = [
         { name: 'tooltip', component: TooltipWrapperComponent },
         { name: 'validation', component: ValidationWrapperComponent },
         { name: 'description', component: DescriptionWrapperComponent },
+        { name: 'information', component: InformationWrapperComponent },
       ],
     }),
   ],

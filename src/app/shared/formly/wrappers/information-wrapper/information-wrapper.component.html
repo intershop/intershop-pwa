@@ -1,0 +1,12 @@
+<div *ngIf="props.customInformation" class="d-flex align-items-center">
+  <ng-template #fieldComponent></ng-template>
+  <span
+    [id]="id + '-information'"
+    class="ml-2"
+    [ngClass]="props.customInformation.class"
+    [attr.aria-hidden]="props.customInformation.ariaHidden"
+    data-testing-id="custom-information"
+  >
+    {{ information | translate : args }}
+  </span>
+</div>
