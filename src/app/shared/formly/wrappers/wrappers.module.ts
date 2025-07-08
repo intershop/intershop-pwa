@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { ComponentsModule } from 'ish-shared/formly/components/components.module';
 
+import { CaptchaWrapperComponent } from './captcha-wrapper/captcha-wrapper.component';
 import { DescriptionWrapperComponent } from './description-wrapper/description-wrapper.component';
 import { HorizontalCheckboxWrapperComponent } from './horizontal-checkbox-wrapper/horizontal-checkbox-wrapper.component';
 import { HorizontalWrapperComponent } from './horizontal-wrapper/horizontal-wrapper.component';
@@ -15,6 +16,7 @@ import { TooltipWrapperComponent } from './tooltip-wrapper/tooltip-wrapper.compo
 import { ValidationWrapperComponent } from './validation-wrapper/validation-wrapper.component';
 
 const wrapperComponents = [
+  CaptchaWrapperComponent,
   DescriptionWrapperComponent,
   HorizontalCheckboxWrapperComponent,
   HorizontalWrapperComponent,
@@ -39,6 +41,7 @@ const wrapperComponents = [
         { name: 'tooltip', component: TooltipWrapperComponent },
         { name: 'validation', component: ValidationWrapperComponent },
         { name: 'description', component: DescriptionWrapperComponent },
+        { name: 'captcha', component: CaptchaWrapperComponent },
       ],
     }),
   ],
