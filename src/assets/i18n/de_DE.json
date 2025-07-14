@@ -1056,6 +1056,7 @@
   "form.password.show.button.label.hide": "Kennwort ausblenden",
   "form.phone.error.invalid": "Bitte geben Sie eine gültige Telefonnummer an.",
   "form.phone.error.required": "Bitte geben Sie Ihre Telefonnummer an.",
+  "forms.required.button.label.disabled": "Bitte füllen Sie alle erforderlichen Felder aus",
   "header.navigation.collapse_category.aria_label": "Kategorie {{0}} zuklappen",
   "header.navigation.expand_category.aria_label": "Kategorie {{0}} aufklappen",
   "header.welcome.text": "Willkommen bei inSPIRED",
