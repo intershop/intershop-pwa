@@ -1,8 +1,10 @@
-<div [class.has-error]="hasCaptchaError()" [ngClass]="field.props?.fieldClass" class="form-group">
-  <ng-template #fieldComponent></ng-template>
-  <div *ngIf="hasCaptchaError()" class="row form-group">
-    <div class="offset-md-4 col-md-8">
-      <ish-validation-message [field]="captchaField" class="validation-message" />
+<ng-container *ngIf="hasCaptchaError() as error">
+  <div [class.has-error]="error" [ngClass]="field.props?.fieldClass" class="form-group">
+    <ng-template #fieldComponent></ng-template>
+    <div *ngIf="error" class="row form-group">
+      <div class="offset-md-4 col-md-8">
+        <ish-validation-message [field]="captchaField" class="validation-message" />
+      </div>
     </div>
   </div>
-</div>
+</ng-container>
