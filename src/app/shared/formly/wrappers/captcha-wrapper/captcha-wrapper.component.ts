@@ -7,7 +7,7 @@ import { FieldWrapper, FormlyFieldConfig } from '@ngx-formly/core';
  *  @props **required** - special validation case that is considered.
  *
  * @usageNotes
- * This wrapper uses the ``<ish-validation-message>``components to display validation messages
+ * This wrapper uses the ``<ish-validation-message>`` components to display validation messages
  * depending on the fields validity as well as provide some necessary styling.
  * Refer to the components' documentation for more information.
  */

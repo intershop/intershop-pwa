@@ -78,4 +78,10 @@ describe('Captcha Wrapper Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('ish-validation-message')).toBeTruthy();
   });
+
+  it('should not display message if a showError condition is not met', () => {
+    fixture.detectChanges();
+    component.options.parentForm = { submitted: true } as unknown;
+    expect(element.querySelector('ish-validation-message')).toBeFalsy();
+  });
 });
