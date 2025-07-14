@@ -39,6 +39,7 @@ export class RequestReminderFormComponent implements OnInit {
       },
       {
         type: 'ish-captcha-field',
+        key: 'captcha',
         props: {
           topic: 'forgotPassword',
         },

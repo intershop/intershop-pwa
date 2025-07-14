@@ -115,6 +115,7 @@ export class ContactFormComponent implements OnInit {
         },
         {
           type: 'ish-captcha-field',
+          key: 'captcha',
           props: {
             topic: 'contactUs',
           },

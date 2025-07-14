@@ -132,6 +132,7 @@ export class RegistrationFormConfigurationService {
           },
           {
             type: 'ish-captcha-field',
+            key: 'captcha',
             props: {
               topic: 'register',
             },

@@ -33,6 +33,7 @@ describe('Captcha Field Component', () => {
       fields: [
         {
           type: 'ish-captcha-field',
+          key: 'captcha',
           props: {
             topic: 'test',
           },

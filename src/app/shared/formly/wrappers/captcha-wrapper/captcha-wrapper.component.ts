@@ -22,12 +22,12 @@ export class CaptchaWrapperComponent extends FieldWrapper {
   hasCaptchaError() {
     if (
       this.field.type === 'ish-captcha-field' &&
-      this.field?.form?.get('captcha')?.errors &&
+      this.field?.form?.get(this.field.key as string)?.errors &&
       this.field.options.parentForm?.submitted
     ) {
       this.captchaField = {
         ...this.field,
-        formControl: this.field.form.get('captcha'),
+        formControl: this.field.form.get(this.field.key as string),
         validation: {
           messages: { required: 'recaptcha.v2.incorrect.error' },
         },

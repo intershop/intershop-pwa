@@ -94,6 +94,7 @@ describe('Registration Form Configuration Service', () => {
           [
             "termsAndConditions",
             "newsletterSubscription",
+            "captcha",
           ],
         ]
       `);
@@ -132,6 +133,7 @@ describe('Registration Form Configuration Service', () => {
             [
               "termsAndConditions",
               "newsletterSubscription",
+              "captcha",
             ],
           ]
         `);
@@ -160,6 +162,7 @@ describe('Registration Form Configuration Service', () => {
             [
               "termsAndConditions",
               "newsletterSubscription",
+              "captcha",
             ],
           ]
         `);
