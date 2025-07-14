@@ -8,6 +8,7 @@ kb_sync_latest_only
 # SPARQUE.AI
 
 - [Configuration](#configuration)
+  - [Explanation of the configuration parameters](#explanation-of-the-configuration-parameters)
   - [Multi-Site Configurations](#multi-site-configurations)
   - [Versioning of SPARQUE Service Requests](#versioning-of-sparque-service-requests)
 - [Provider Concept](#provider-concept)
@@ -36,8 +37,7 @@ sparque: {
   serverUrl: '<sparque connection url>',
   workspaceName: '<name of the workspace>',
   apiName: '<used sparque api>',
-  // config <= optional parameter
-  // in case this parameter is empty, the wrapper will use default as fallback
+  config: '<optional parameter => default>'
   config: '<sparque REST configuration e.g. production>'
   channelId: '<in sparque workspace configured channel>',
 },
@@ -71,6 +71,19 @@ environment:
         "channelId": "<channel configured in sparque workspace>"
       }
 ```
+
+### Explanation of the configuration parameters:
+
+- **serverUrl**: The URL of the SPARQUE server that the PWA will connect to.
+  - PROD: https://api.search.sparque.ai
+  - INT+UAT can use https://uat.api.search.sparque.ai (this is the UAT instance - new API releases will be available here ~ 1 week earlier; you can use the PROD API as well)
+- **workspaceName**: The name of the workspace configured in SPARQUE Desk.
+- **apiName**: The name of the API to be used for SPARQUE requests. If based on the ISH project template use **PWA**, other if defined otherwise in SPARQUE Desk.
+- **config**: Optional parameter specifying the SPARQUE REST configuration (defaults to "default" if not provided).
+  - default: ‘default’ (used usually for INT and UAT)
+  - other option: ‘production’ (used for PROD)
+  - more configurations can be created in the project - but then you know that they exist
+- **channelId**: The channel ID configured in the SPARQUE workspace. Default is **ish**, please adapt to your own channelId in your data mapping.
 
 ### Multi-Site Configurations
 
