@@ -100,12 +100,12 @@ function modelToUrl(model: FormModel): UrlModel {
     from: model.date?.fromDate,
     to: model.date?.toDate,
     orderNo: model.orderNo?.split(',').map(s => s.trim()),
-    sku: model.sku?.split(',').map(s => s.trim()),
+    sku: model.sku ? model.sku.split(',').map(s => s.trim()) : undefined,
     state: model.state
       ?.split(',')
       .map(s => s.trim())
       .filter(x => !!x),
-    buyer: model.buyer,
+    buyer: model.buyer === 'all' || !model.buyer ? undefined : model.buyer,
   });
 }
 
