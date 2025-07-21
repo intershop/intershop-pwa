@@ -8,7 +8,7 @@ kb_sync_latest_only
 # SPARQUE.AI
 
 - [Configuration](#configuration)
-  - [Explanation of the configuration parameters](#explanation-of-the-configuration-parameters)
+  - [Configuration Parameters Explained](#configuration-parameters-explained)
   - [Multi-Site Configurations](#multi-site-configurations)
   - [Versioning of SPARQUE Service Requests](#versioning-of-sparque-service-requests)
 - [Provider Concept](#provider-concept)
@@ -72,18 +72,18 @@ environment:
       }
 ```
 
-### Explanation of the configuration parameters:
+### Configuration Parameters Explained
 
 - **serverUrl**: The URL of the SPARQUE server that the PWA will connect to.
   - PROD: https://api.search.sparque.ai
-  - INT+UAT can use https://uat.api.search.sparque.ai (this is the UAT instance - new API releases will be available here ~ 1 week earlier; you can use the PROD API as well)
+  - INT and UAT can use https://uat.api.search.sparque.ai (This is the UAT instance. New API releases will be available here approximately one week earlier. You can also use the PROD API if needed.)
 - **workspaceName**: The name of the workspace configured in SPARQUE Desk.
-- **apiName**: The name of the API to be used for SPARQUE requests. If based on the ISH project template use **PWA**, other if defined otherwise in SPARQUE Desk.
-- **config**: Optional parameter specifying the SPARQUE REST configuration (defaults to "default" if not provided).
-  - default: ‘default’ (used usually for INT and UAT)
-  - other option: ‘production’ (used for PROD)
-  - more configurations can be created in the project - but then you know that they exist
-- **channelId**: The channel ID configured in the SPARQUE workspace. Default is **ish**, please adapt to your own channelId in your data mapping.
+- **apiName**: The name of the API to be used for SPARQUE requests. If your project is based on the ISH project template, use `PWA`. Otherwise, use the name defined in SPARQUE Desk.
+- **config**: Optional parameter specifying the SPARQUE REST configuration (defaults to `default` if not provided).
+  - Default: `default` (typically used for INT and UAT)
+  - Other option: `production` (used for PROD)
+  - Additional configurations can be created in the project as needed.
+- **channelId**: The channel ID configured in the SPARQUE workspace. The default is `ish`. Please adjust this to match your own channelId in your data mapping.
 
 ### Multi-Site Configurations
 
