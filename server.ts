@@ -19,6 +19,7 @@ import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
 import * as client from 'prom-client';
 import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level';
 import { METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
+import { icmCallsCache } from './src/app/core/interceptors/universal-cache.interceptor';
 
 const collectDefaultMetrics = client.collectDefaultMetrics;
 
@@ -398,6 +399,12 @@ export function app() {
       res.sendStatus(404);
     }
   });
+
+  server.purge(/\/PURGE_CACHE_ICM_CALLS$/, (_req, res) => {
+    icmCallsCache.clear();
+    res.sendStatus(200);
+  });
+
   server.get(/\/ngsw\.json/, (_, res) => {
     fs.readFile(join(BROWSER_FOLDER, 'ngsw.json'), { encoding: 'utf-8' }, (err, data) => {
       if (err) {

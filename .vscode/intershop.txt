@@ -234,6 +234,7 @@ viewcontexts
 viewports
 viewtype
 walkthrough
+wastatistics
 wcag
 webserver
 webserversecureurl
