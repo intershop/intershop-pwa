@@ -38,7 +38,6 @@ sparque: {
   workspaceName: '<name of the workspace>',
   apiName: '<used sparque api>',
   config: '<optional parameter => default>'
-  config: '<sparque REST configuration e.g. production>'
   channelId: '<in sparque workspace configured channel>',
 },
 ```
@@ -53,7 +52,7 @@ pwa:
       serverUrl: <sparque connection url>
       workspaceName: <name of the workspace>
       apiName: <used sparque api>
-      config: <sparque REST configuration, e.g., production>
+      config: '<optional parameter => default>'
       channelId: <channel configured in sparque workspace>
 ```
 
@@ -67,7 +66,7 @@ environment:
         "serverUrl": "<sparque connection url>"
         "workspaceName": "<name of the workspace>"
         "apiName": "<used sparque api>"
-        "config": "<sparque REST configuration, e.g., production>"
+        config: '<optional parameter => default>'
         "channelId": "<channel configured in sparque workspace>"
       }
 ```
