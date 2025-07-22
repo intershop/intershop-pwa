@@ -9,8 +9,8 @@ kb_sync_latest_only
 
 ## From 7.0.0 to 7.1.0
 
-Because of installation problems with the used `luarocks` package manager we disabled the installation of the `lua-resty-redis-connector` that provides the functionality to connect to a shared Redis cache.
-Since this functionality can and was currently not yet used by any project, disabling it is not regarded to as a breaking change.
+Due to installation issues with the used `luarocks` package manager, we have disabled the installation of the `lua-resty-redis-connector` that provides the functionality to connect to a shared Redis cache.
+Since this functionality cannot be used and has not been used by any project, disabling it is not considered a breaking change.
 
 The structure of the elements that contained the `ngbNav` directive was updated to ensure compliance with accessibility standards.
 It was previously based on `<ul>` with `<li role="presentation">` elements, now it uses `<nav>` with `<ng-container>` elements.
