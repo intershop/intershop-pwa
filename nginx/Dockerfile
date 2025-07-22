@@ -31,7 +31,7 @@ COPY templates /etc/nginx/templates/
 COPY docker-entrypoint.d/*.sh /docker-entrypoint.d/
 COPY *.yaml /
 COPY 50x.html /usr/share/nginx/html/
-ADD https://github.com/hairyhenderson/gomplate/releases/download/v3.8.0/gomplate_linux-amd64-slim /gomplate
+COPY --from=hairyhenderson/gomplate:v4.3.3 /gomplate /gomplate 
 RUN chmod 700 /gomplate
 ADD https://github.com/FiloSottile/mkcert/releases/download/v1.4.4/mkcert-v1.4.4-linux-amd64 /usr/bin/mkcert
 RUN chmod 700 /usr/bin/mkcert
