@@ -398,9 +398,7 @@ it('should be created', () => {
 
 - When working mainly with stubs for specific services that mock dependencies of services under test, you should mainly use spies to check whether the correct methods of the stub are called.
 - When working mainly with fully configured services, it is best to check return values.
-- When testing complex scenarios (e.g., when the test has to handle multiple pages), it may be better to implement a Geb+Spock end-to-end test.
-
-See [Three Ways to Test Angular Components](https://vsavkin.com/three-ways-to-test-angular-2-components-dcea8e90bd8d) for more information.
+- When testing complex scenarios (e.g., when the test has to handle multiple pages), it may be better to implement an end-to-end test.
 
 ## Be Aware of Common Pitfalls
 
