@@ -165,7 +165,11 @@ const fieldComponents = [
           component: CheckboxFieldComponent,
           wrappers: ['form-field-checkbox-horizontal'],
         },
-        { name: 'ish-captcha-field', component: CaptchaFieldComponent, wrappers: ['captcha'] },
+        {
+          name: 'ish-captcha-field',
+          component: CaptchaFieldComponent,
+          wrappers: ['form-field-horizontal', 'validation'],
+        },
         {
           name: 'ish-fieldset-field',
           component: FieldsetFieldComponent,

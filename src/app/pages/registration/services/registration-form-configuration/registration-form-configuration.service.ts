@@ -6,7 +6,7 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { Observable, combineLatest, from, iif, merge, noop, of, race } from 'rxjs';
-import { filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -31,6 +31,7 @@ export interface RegistrationConfigType {
 // eslint-disable-next-line ish-custom-rules/project-structure
 export class RegistrationFormConfigurationService {
   private isApprovalServiceRunning = true;
+  private isCaptchaRequired = false;
 
   constructor(
     private accountFacade: AccountFacade,
@@ -41,9 +42,18 @@ export class RegistrationFormConfigurationService {
     private fieldLibrary: FieldLibrary
   ) {
     this.appFacade
-      .serverSetting$('services.OrderApprovalServiceDefinition.runnable')
-      .pipe(takeUntilDestroyed())
-      .subscribe((enabled: boolean) => (this.isApprovalServiceRunning = enabled));
+      .serverSetting$<boolean>('services.OrderApprovalServiceDefinition.runnable')
+      .pipe(
+        withLatestFrom(
+          this.appFacade.serverSetting$<boolean>('services.ReCaptchaV2ServiceDefinition.runnable'),
+          this.appFacade.serverSetting$<boolean>('captcha.register')
+        ),
+        takeUntilDestroyed()
+      )
+      .subscribe(([isApprovalServiceRunning, isCaptchaV2, isCaptchaTopicEnabled]) => {
+        this.isApprovalServiceRunning = isApprovalServiceRunning as boolean;
+        this.isCaptchaRequired = isCaptchaV2 && isCaptchaTopicEnabled;
+      });
   }
 
   extractConfig(route: ActivatedRouteSnapshot) {
@@ -132,9 +142,14 @@ export class RegistrationFormConfigurationService {
           },
           {
             type: 'ish-captcha-field',
-            key: 'captcha',
+
             props: {
               topic: 'register',
+              required: this.isCaptchaRequired,
+              fieldClass: 'offset-md-4 col-md-8',
+            },
+            validation: {
+              messages: { required: 'recaptcha.v2.incorrect.error' },
             },
           },
         ],

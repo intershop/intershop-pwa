@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
@@ -22,7 +22,7 @@ export class RequestReminderFormComponent implements OnInit {
    * Submit the form data to trigger the request for a password reminder.
    */
   @Output() submitPasswordReminder = new EventEmitter<PasswordReminder>();
-
+  @Input() isCaptchaRequired = false;
   requestReminderForm = new UntypedFormGroup({});
   fields: FormlyFieldConfig[];
 
@@ -39,9 +39,13 @@ export class RequestReminderFormComponent implements OnInit {
       },
       {
         type: 'ish-captcha-field',
-        key: 'captcha',
         props: {
           topic: 'forgotPassword',
+          required: this.isCaptchaRequired,
+          fieldClass: 'offset-md-4 col-md-8',
+        },
+        validation: {
+          messages: { required: 'recaptcha.v2.incorrect.error' },
         },
       },
     ];

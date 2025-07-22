@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
+import { of } from 'rxjs';
+import { anyString, instance, mock, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
 import { RequestReminderFormComponent } from '../request-reminder-form/request-reminder-form.component';
@@ -17,6 +19,9 @@ describe('Request Reminder Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
+    const mockAppFacade = mock(AppFacade);
+    when(mockAppFacade.serverSetting$<boolean>(anyString())).thenReturn(of(false));
+
     await TestBed.configureTestingModule({
       declarations: [
         MockComponent(ErrorMessageComponent),
@@ -25,7 +30,10 @@ describe('Request Reminder Component', () => {
         RequestReminderComponent,
       ],
       imports: [TranslateModule.forRoot()],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+        { provide: AppFacade, useFactory: () => instance(mockAppFacade) },
+      ],
     }).compileComponents();
   });
 
