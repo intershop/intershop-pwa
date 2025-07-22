@@ -28,6 +28,10 @@
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $thescheme;
 
+      {{- if (getenv "CACHE_CLEARER" | strings.ToLower | regexp.Match "on|1|true|yes") }}
+        proxy_cache {{ $channel }};
+      {{- end -}}
+
         add_header X-icm-channel {{ $channel }} always;
         add_header X-icm-default-lang {{ $lang }} always;
         add_header X-ua-device $ua_device always;
@@ -75,6 +79,27 @@
       {{- else }}
       rewrite ^{{ $baseHref }}/sitemap.*$ {{ $baseHref }}/;
       {{- end -}}
+{{- end }}
+
+{{- if (getenv "CACHE_CLEARER" | strings.ToLower | regexp.Match "on|1|true|yes") }}
+{{- $channels := dict -}}
+{{- range $domain, $mapping := (ds "domains") }}
+  {{- if (has $mapping "channel") }}
+    {{- $channel := $mapping.channel }}
+    {{- $channels := set $channel true $channels }}
+  {{- else }}
+    {{- range $mapping }}
+      {{- if (has . "channel") }}
+        {{- $channel := .channel }}
+        {{- $channels := set $channel true $channels}}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{- $uniqueChannels := keys $channels }}
+{{- range $uniqueChannels }}
+proxy_cache_path /tmp/cache/{{ . }} levels=1:2 keys_zone={{ . }}:1m max_size=1g inactive=60m use_temp_path=off;
+{{- end }}
 {{- end }}
 
 {{- range $domain, $mapping := (ds "domains") }}

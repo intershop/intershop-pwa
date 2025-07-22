@@ -61,6 +61,7 @@ services:
       ICM_BASE_URL: 'https://develop.icm.intershop.de'
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
       CACHE: 0
+      # CACHE_CLEARER: 0 # Set to 1 to enable cache clearer based on ICM webadapter statistics
       # LOG_ALL: 0
       # SSL: 1
       # SSL_MKCERT_OFF: 1
@@ -89,16 +90,16 @@ services:
       MULTI_CHANNEL: |
         .+:
           - baseHref: /en
-            channel: default
+            channel: inSPIRED-inTRONICS_Business-Site
             lang: en_US
           - baseHref: /de
-            channel: default
+            channel: inSPIRED-inTRONICS_Business-Site
             lang: de_DE
           - baseHref: /fr
-            channel: default
+            channel: inSPIRED-inTRONICS_Business-Site
             lang: fr_FR
           - baseHref: /b2c
-            channel: default
+            channel: inSPIRED-inTRONICS-Site
             theme: b2c
       # ADDITIONAL_HEADERS: |
       #   headers:

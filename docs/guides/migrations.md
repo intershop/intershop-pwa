@@ -73,6 +73,9 @@ To keep the Tacton functionality in a PWA project, the removal commit should be 
 With the Intershop PWA 8.0.0 release the Sentry integration to client-side error monitoring was removed.
 To keep the Sentry functionality in a PWA project, the removal commit should be skipped when migrating to PWA 8.0.0.
 
+Intershop PWA 8.0.0 introduces means to invalidate the [NGINX cache](./nginx-startup.md#cache) and the [Local ICM Cache](./ssr-startup.md#local-icm-cache) based on ICM page cache invalidation.
+For further instructions on how to enable this functionality, see the [Cache Clearing](./nginx-startup.md#cache-clearing) section in the NGINX guide.
+
 ## From 7.0.0 to 7.1.0
 
 Due to installation issues with the used `luarocks` package manager, we have disabled the installation of the `lua-resty-redis-connector` that provides the functionality to connect to a shared Redis cache.
