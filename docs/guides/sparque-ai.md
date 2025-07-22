@@ -52,7 +52,7 @@ pwa:
       serverUrl: <sparque connection url>
       workspaceName: <name of the workspace>
       apiName: <used sparque api>
-      config: '<optional parameter => default>'
+      config: <optional parameter => default>
       channelId: <channel configured in sparque workspace>
 ```
 
@@ -63,10 +63,10 @@ environment:
   - name: SPARQUE
     value: |
       {
-        "serverUrl": "<sparque connection url>"
-        "workspaceName": "<name of the workspace>"
-        "apiName": "<used sparque api>"
-        "config": "<optional parameter => default>"
+        "serverUrl": "<sparque connection url>",
+        "workspaceName": "<name of the workspace>",
+        "apiName": "<used sparque api>",
+        "config": "<optional parameter => default>",
         "channelId": "<channel configured in sparque workspace>"
       }
 ```
