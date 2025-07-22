@@ -37,7 +37,7 @@ sparque: {
   serverUrl: '<sparque connection url>',
   workspaceName: '<name of the workspace>',
   apiName: '<used sparque api>',
-  config: '<optional parameter => default>'
+  config: '<optional parameter => default>',
   channelId: '<in sparque workspace configured channel>',
 },
 ```
@@ -66,7 +66,7 @@ environment:
         "serverUrl": "<sparque connection url>"
         "workspaceName": "<name of the workspace>"
         "apiName": "<used sparque api>"
-        config: '<optional parameter => default>'
+        "config": "<optional parameter => default>"
         "channelId": "<channel configured in sparque workspace>"
       }
 ```
