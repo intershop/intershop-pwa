@@ -1,17 +1,19 @@
+# multi-channel.conf
+
 {{ $UPSTREAM_PWA := getenv "UPSTREAM_PWA" }}
 
 {{ define "LOCATION_TEMPLATE" }}
         {{- $channel := .channel }}
-        {{- $application := "" }}{{ if (has . "application") }}{{ $application = join ( slice ";application" .application ) "=" }}{{ end }}
+        {{- $application := "" }}{{ if (has . "application") }}{{ $application = join ( coll.Slice ";application" .application ) "=" }}{{ end }}
         {{- $identityProvider := "" }}{{ if (has . "identityProvider") }}{{ $identityProvider = .identityProvider }}{{ end }}
         {{- $lang := "default" }}{{ if (has . "lang") }}{{ $lang = .lang }}{{ end }}
         {{- $currency := "" }}{{ if (has . "currency") }}{{ $currency = .currency }}{{ end }}
-        {{- $features := "" }}{{ if (has . "features") }}{{ $features = join ( slice ";features" .features ) "=" }}{{ end }}
-        {{- $addFeatures := "" }}{{ if (has . "addFeatures") }}{{ $addFeatures = join ( slice ";addFeatures" .addFeatures ) "=" }}{{ end }}
-        {{- $theme := "" }}{{ if (has . "theme") }}{{ $theme = join ( slice ";theme" .theme ) "=" }}{{ end }}
+        {{- $features := "" }}{{ if (has . "features") }}{{ $features = join ( coll.Slice ";features" .features ) "=" }}{{ end }}
+        {{- $addFeatures := "" }}{{ if (has . "addFeatures") }}{{ $addFeatures = join ( coll.Slice ";addFeatures" .addFeatures ) "=" }}{{ end }}
+        {{- $theme := "" }}{{ if (has . "theme") }}{{ $theme = join ( coll.Slice ";theme" .theme ) "=" }}{{ end }}
         {{- $baseHref := "/" }}{{ if (has . "baseHref") }}{{ $baseHref = .baseHref }}{{ end }}
-        {{- $icmScheme := "" }}{{ if (has . "icmScheme") }}{{ $icmScheme = join ( slice "icmScheme" .icmScheme ) "=" }}{{ end }}
-        {{- $icmPort := "" }}{{ if (has . "icmPort") }}{{ $icmPort = join ( slice "icmPort" .icmPort ) "=" }}{{ end }}
+        {{- $icmScheme := "" }}{{ if (has . "icmScheme") }}{{ $icmScheme = join ( coll.Slice "icmScheme" .icmScheme ) "=" }}{{ end }}
+        {{- $icmPort := "" }}{{ if (has . "icmPort") }}{{ $icmPort = join ( coll.Slice "icmPort" .icmPort ) "=" }}{{ end }}
         {{- $icmHost := "default" }}{{ if (has . "icmHost") }}{{ $icmHost = .icmHost }}{{ end }}
         {{- $sparque := "" }}{{ if (has . "sparque") }}{{ range $key, $value := .sparque }}{{ $sparque = print $sparque $key "=" ($value | urlquery) "," }}{{ end }}{{ end }}
 
@@ -58,7 +60,7 @@
 {{- end }}
 
 {{- define "OVERRIDE_IDENTITY_PROVIDER_TEMPLATE" }}
-    {{- $identityProvider := join ( slice ";identityProvider" .type ) "=" }}
+    {{- $identityProvider := join ( coll.Slice ";identityProvider" .type ) "=" }}
     rewrite '^((.*){{ .path }})$' '$1{{$identityProvider}}';
 {{- end}}
 

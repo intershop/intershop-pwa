@@ -1,3 +1,5 @@
+# cache-locations.conf
+
 {{- if and (getenv "CACHE" | strings.ToLower | regexp.Match "on|1|true|yes") (getenv "REDIS_URI") -}}
 location /redis-fetch {
     internal;
