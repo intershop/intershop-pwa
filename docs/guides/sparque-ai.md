@@ -75,11 +75,11 @@ environment:
 
 - **serverUrl**: The URL of the SPARQUE server that the PWA will connect to.
   - PROD: https://api.search.sparque.ai
-  - INT and UAT can use https://uat.api.search.sparque.ai (This is the UAT instance. New API releases will be available here approximately one week earlier. You can also use the PROD API if needed.)
+  - Early adopters can use our UAT: https://uat.api.search.sparque.ai (New API releases will be available here approximately one week earlier.)
 - **workspaceName**: The name of the workspace configured in SPARQUE Desk.
 - **apiName**: The name of the API to be used for SPARQUE requests. If your project is based on the ISH project template, use `PWA`. Otherwise, use the name defined in SPARQUE Desk.
 - **config**: Optional parameter specifying the SPARQUE REST configuration (defaults to `default` if not provided).
-  - Default: `default` (typically used for INT and UAT)
+  - Default: `default` (typically used for UAT)
   - Other option: `production` (used for PROD)
   - Additional configurations can be created in the project as needed.
 - **channelId**: The channel ID configured in the SPARQUE workspace. The default is `ish`. Please adjust this to match your own channelId in your data mapping.
