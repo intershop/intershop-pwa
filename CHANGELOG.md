@@ -7,7 +7,7 @@ kb_everyone
 
 # Changelog
 
-## [7.1.0](https://github.com/intershop/intershop-pwa/releases/tag/7.1.0) (2025-07-22)
+## [7.1.0](https://github.com/intershop/intershop-pwa/releases/tag/7.1.0) (2025-07-23)
 
 > [!NOTE]
 > Intershop PWA 7.1.0 was developed and tested with Intershop Commerce Management (ICM) version 13.0.0.
@@ -63,7 +63,7 @@ kb_everyone
 
 - improve SPARQUE.AI documentation (#1871) ([d39a380](https://github.com/intershop/intershop-pwa/commit/d39a380))
 - migration guide to PWA 7.0.0 improvements (#1813) ([68a9790](https://github.com/intershop/intershop-pwa/commit/68a9790))
-- **accessibility:** add accessibility UX pattern doc (#1855) ([34be965](https://github.com/intershop/intershop-pwa/commit/34be965))
+- **accessibility:** add accessibility UX pattern documentation (#1855) ([34be965](https://github.com/intershop/intershop-pwa/commit/34be965))
 
 ## [7.0.0](https://github.com/intershop/intershop-pwa/releases/tag/7.0.0) (2025-05-20)
 
