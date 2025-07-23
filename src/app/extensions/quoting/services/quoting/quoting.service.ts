@@ -1,8 +1,8 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { pick } from 'lodash-es';
-import { EMPTY, Observable, concat, defer, forkJoin, iif, of, throwError } from 'rxjs';
-import { concatMap, defaultIfEmpty, expand, filter, last, map, take } from 'rxjs/operators';
+import { Observable, concat, defer, forkJoin, iif, of, throwError } from 'rxjs';
+import { concatMap, defaultIfEmpty, last, map, take } from 'rxjs/operators';
 
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
@@ -11,13 +11,7 @@ import { QuoteRequestUpdate } from '../../models/quote-request-update/quote-requ
 import { QuotingHelper } from '../../models/quoting/quoting.helper';
 import { QuoteData } from '../../models/quoting/quoting.interface';
 import { QuotingMapper } from '../../models/quoting/quoting.mapper';
-import {
-  QuoteCompletenessLevel,
-  QuoteRequest,
-  QuoteStub,
-  QuoteStubFromAttributes,
-  QuotingEntity,
-} from '../../models/quoting/quoting.model';
+import { QuoteCompletenessLevel, QuoteRequest, QuoteStub, QuotingEntity } from '../../models/quoting/quoting.model';
 
 @Injectable({ providedIn: 'root' })
 export class QuotingService {
@@ -130,34 +124,25 @@ export class QuotingService {
       .pipe(map(link => this.quoteMapper.fromData(link, 'QuoteRequest')));
   }
 
-  private expansion(stubs: (QuoteStub | QuoteStubFromAttributes)[]) {
-    return stubs?.length
-      ? (stubs[0].completenessLevel === 'List'
-          ? of(stubs[0])
-          : this.getQuoteDetails(stubs[0].id, stubs[0].type, 'List')
-        ).pipe(
-          map(quoteRequest => ({
-            quoteRequest,
-            next: stubs.slice(1),
-          }))
-        )
-      : EMPTY;
-  }
-
   private getOrCreateActiveQuoteRequest() {
     return this.apiService
       .b2bUserEndpoint()
       .get('quoterequests', {
-        params: new HttpParams().set('attrs', 'submittedDate,editable'),
+        params: new HttpParams().set('attrs', 'submittedDate,creationDate'),
       })
       .pipe(
         unpackEnvelope<Link>(),
-        map(qrs => qrs.reverse()),
-        map(links => links.map(link => this.quoteMapper.fromData(link, 'QuoteRequest'))),
-        concatMap(stubs => this.expansion(stubs)),
-        expand(({ next }) => this.expansion(next)),
-        map(({ quoteRequest }) => quoteRequest),
-        filter(quoteRequest => QuotingHelper.state(quoteRequest) === 'New'),
+        map(links =>
+          links
+            // map Link data to QuoteRequest
+            .map(link => this.quoteMapper.fromData(link, 'QuoteRequest') as QuoteRequest)
+            // filter out submitted quote requests, keep only "New" ones
+            .filter(quoteRequest => !quoteRequest.submittedDate)
+            // sort by creationDate descending
+            .sort((qr1, qr2) => qr2.creationDate - qr1.creationDate)
+        ),
+        // take the most recent "New" quote request
+        map(quoteRequests => quoteRequests[0]),
         take(1),
         defaultIfEmpty(undefined as QuoteRequest)
       )
