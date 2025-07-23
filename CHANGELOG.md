@@ -7,6 +7,64 @@ kb_everyone
 
 # Changelog
 
+## [7.1.0](https://github.com/intershop/intershop-pwa/releases/tag/7.1.0) (2025-07-24)
+
+> [!NOTE]
+> Intershop PWA 7.1.0 was developed and tested with Intershop Commerce Management (ICM) version 13.0.0.
+> It will work with all versions from ICM 13.0.0 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> _PWA 7.1.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
+>
+> The PWA was developed and tested using Node.js version 18.16.0 LTS (including npm 9.5.1), which is the recommended version.
+>
+> Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.9.3 for PWA 7.1.0 deployments.
+
+### Features
+
+- add "Approve" and "Reject" action buttons to approvals list (#1665, #1814) ([1735145](https://github.com/intershop/intershop-pwa/commit/1735145))
+- **accessibility:** indicate which categories/filters are selected (#1832, #1858) ([b457427](https://github.com/intershop/intershop-pwa/commit/b457427))
+- **accessibility:** wrap category navigation into `<nav>` element (#1834, #1853) ([31a78ae](https://github.com/intershop/intershop-pwa/commit/31a78ae))
+- **accessibility:** use skip content link component (#1824, #1838) ([8c37714](https://github.com/intershop/intershop-pwa/commit/8c37714))
+- **accessibility:** add skip content link component (#1824, #1838) ([09bb77e](https://github.com/intershop/intershop-pwa/commit/09bb77e))
+- **accessibility:** screenreader announcements for checkout payment instrument form (#1846, #1851) (#1851) ([dd75e41](https://github.com/intershop/intershop-pwa/commit/dd75e41))
+- **accessibility:** add scope="col" to necessary table headers ([a313cee](https://github.com/intershop/intershop-pwa/commit/a313cee))
+- **accessibility:** enhance myAccount and checkout page titles ([fa2aadd](https://github.com/intershop/intershop-pwa/commit/fa2aadd))
+- **accessibility:** handle focus change after navigation (#1831, #1841) ([63bd4d1](https://github.com/intershop/intershop-pwa/commit/63bd4d1))
+- **accessibility:** announce number of search results (#1839, #1847) ([958d888](https://github.com/intershop/intershop-pwa/commit/958d888))
+
+### Bug Fixes
+
+- Order history filters open unintended (#1866) ([319a5ea](https://github.com/intershop/intershop-pwa/commit/319a5ea))
+- no error message for unchecked terms & conditions in registration form (#1809) ([57f7e09](https://github.com/intershop/intershop-pwa/commit/57f7e09))
+- checkout "add payment instrument" submit is called twice (#1850, #1852) ([2495dc0](https://github.com/intershop/intershop-pwa/commit/2495dc0))
+- disable luarocks `lua-resty-redis-connector` installation (#1825) ([479728a](https://github.com/intershop/intershop-pwa/commit/479728a))
+- keep the focus after changing a payment method (#1840) ([ef2270a](https://github.com/intershop/intershop-pwa/commit/ef2270a))
+- same approver name is displayed twice on requisition detail page (#1805) ([264c1fe](https://github.com/intershop/intershop-pwa/commit/264c1fe))
+- **accessibility:** underlining for text links with icons (#1849) ([1e1cd4c](https://github.com/intershop/intershop-pwa/commit/1e1cd4c))
+- **accessibility:** "Remove quote items” button on cart (#1849) ([95a55bf](https://github.com/intershop/intershop-pwa/commit/95a55bf))
+- **accessibility:** add underlining to tabs when hovered (#1849) ([ce40505](https://github.com/intershop/intershop-pwa/commit/ce40505))
+- **accessibility:** skip content link on my account menu (#1869) ([8407d5b](https://github.com/intershop/intershop-pwa/commit/8407d5b))
+- **accessibility:** `aria-controls`-id's for collapsible filters (#1837, #1860) ([40179ea](https://github.com/intershop/intershop-pwa/commit/40179ea))
+- **accessibility:** move colon from localization key to html ([260394a](https://github.com/intershop/intershop-pwa/commit/260394a))
+- **accessibility:** add password reveal button title ([6099637](https://github.com/intershop/intershop-pwa/commit/6099637))
+- **accessibility:** add budget info title & more descriptive button titles ([110eb23](https://github.com/intershop/intershop-pwa/commit/110eb23))
+- **accessibility:** add title for product list display type buttons ([a7fc31f](https://github.com/intershop/intershop-pwa/commit/a7fc31f))
+- **accessibility:** provide legends for fieldsets in forms (#1835, #1844) ([320ff16](https://github.com/intershop/intershop-pwa/commit/320ff16))
+- **accessibility:** tab focus outline for cms carousel (#1826, #1843) ([2b330d1](https://github.com/intershop/intershop-pwa/commit/2b330d1))
+- **accessibility:** plp filter groups - add aria label for "show all" button (#1822, #1827) ([d4d53ae](https://github.com/intershop/intershop-pwa/commit/d4d53ae))
+- **accessibility:** make cookie banner more accessible (#1817, #1818) ([67a0779](https://github.com/intershop/intershop-pwa/commit/67a0779))
+- **accessibility:** quickorder page - added missing labels for forms (#1815, #1816) ([d9d5c0e](https://github.com/intershop/intershop-pwa/commit/d9d5c0e))
+- **accessibility:** compare page - added missing table headers for screen reader (#1815, #1816) ([3027488](https://github.com/intershop/intershop-pwa/commit/3027488))
+- **accessibility:** compare page - add scope to table headers (#1815, #1816) ([700a2a8](https://github.com/intershop/intershop-pwa/commit/700a2a8))
+- **accessibility:** compare page - more meaningful remove-product button title (#1815, #1816) ([5c1765e](https://github.com/intershop/intershop-pwa/commit/5c1765e))
+
+### Documentation
+
+- improve SPARQUE.AI documentation (#1871) ([d39a380](https://github.com/intershop/intershop-pwa/commit/d39a380))
+- migration guide to PWA 7.0.0 improvements (#1813) ([68a9790](https://github.com/intershop/intershop-pwa/commit/68a9790))
+- **accessibility:** add accessibility UX pattern documentation (#1855) ([34be965](https://github.com/intershop/intershop-pwa/commit/34be965))
+
 ## [7.0.0](https://github.com/intershop/intershop-pwa/releases/tag/7.0.0) (2025-05-20)
 
 > [!NOTE]
