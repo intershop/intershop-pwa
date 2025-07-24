@@ -1,15 +1,15 @@
-FROM openresty/openresty:1.21.4.3-1-jammy AS buildstep
+FROM openresty/openresty:1.27.1.2-2-jammy AS buildstep
 RUN apt-get update \
   && apt-get install --no-install-recommends --no-install-suggests -y libpcre3 libpcre3-dev zlib1g zlib1g-dev openssl libssl-dev wget git gcc make
 
 WORKDIR /app
-RUN wget -q https://nginx.org/download/nginx-1.21.4.tar.gz && tar -zxf nginx-1.21.4.tar.gz \
+RUN wget -q https://nginx.org/download/nginx-1.27.1.tar.gz && tar -zxf nginx-1.27.1.tar.gz \
   && git clone --recurse-submodules -j8 https://github.com/google/ngx_brotli \
-  && cd nginx-1.21.4 \
+  && cd nginx-1.27.1 \
   && ./configure --prefix=/usr/local/openresty/nginx --with-cc-opt='-O2 -DNGX_LUA_ABORT_AT_PANIC -I/usr/local/openresty/pcre/include -I/usr/local/openresty/openssl/include' --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L/usr/local/openresty/pcre/lib -L/usr/local/openresty/openssl/lib -Wl,-rpath,/usr/local/openresty/pcre/lib:/usr/local/openresty/openssl/lib' --with-pcre --with-file-aio --with-http_addition_module --with-http_auth_request_module --with-http_dav_module --with-http_flv_module --with-http_geoip_module=dynamic --with-http_gunzip_module --with-http_gzip_static_module --with-http_image_filter_module=dynamic --with-http_mp4_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-http_xslt_module=dynamic --with-ipv6 --with-mail --with-mail_ssl_module --with-md5-asm --with-sha1-asm --with-stream --with-stream_ssl_module --with-threads --with-pcre-jit --with-stream --with-stream_ssl_preread_module --with-compat --add-dynamic-module=../ngx_brotli \
   && make modules
 
-FROM openresty/openresty:1.21.4.3-1-jammy
+FROM openresty/openresty:1.27.1.2-2-jammy
 COPY --from=nginx:mainline /docker-entrypoint.sh /
 COPY --from=nginx:mainline /docker-entrypoint.d/*.sh /docker-entrypoint.d/
 # COPY lua/*.lua /usr/local/openresty/lualib/
@@ -36,8 +36,8 @@ RUN chmod 700 /gomplate
 ADD https://github.com/FiloSottile/mkcert/releases/download/v1.4.4/mkcert-v1.4.4-linux-amd64 /usr/bin/mkcert
 RUN chmod 700 /usr/bin/mkcert
 COPY --from=nginx/nginx-prometheus-exporter:1.0.0 /usr/bin/nginx-prometheus-exporter /nginx-prometheus-exporter
-COPY --from=buildstep /app/nginx-1.21.4/objs/ngx_http_brotli_static_module.so /etc/nginx/modules/
-COPY --from=buildstep /app/nginx-1.21.4/objs/ngx_http_brotli_filter_module.so /etc/nginx/modules/
+COPY --from=buildstep /app/nginx-1.27.1/objs/ngx_http_brotli_static_module.so /etc/nginx/modules/
+COPY --from=buildstep /app/nginx-1.27.1/objs/ngx_http_brotli_filter_module.so /etc/nginx/modules/
 ENV CACHE=on
 ENV COMPRESSION=on
 ENV DEVICE_DETECTION=on
