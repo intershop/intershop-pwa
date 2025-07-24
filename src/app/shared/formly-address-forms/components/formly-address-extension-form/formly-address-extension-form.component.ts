@@ -20,21 +20,16 @@ export class FormlyAddressExtensionFormComponent implements OnInit {
   ngOnInit() {
     this.fields = [
       {
-        type: 'ish-fieldset-field',
-        fieldGroup: [
-          {
-            key: 'email',
-            type: 'ish-email-field',
-            props: {
-              required: true,
-              label: 'checkout.addresses.email.label',
-              customDescription: {
-                key: 'account.address.email.hint',
-              },
-              postWrappers: [{ wrapper: 'description', index: -1 }],
-            },
+        key: 'email',
+        type: 'ish-email-field',
+        props: {
+          required: true,
+          label: 'checkout.addresses.email.label',
+          customDescription: {
+            key: 'account.address.email.hint',
           },
-        ],
+          postWrappers: [{ wrapper: 'description', index: -1 }],
+        },
       },
     ];
     if (this.businessCustomer) {
@@ -44,12 +39,7 @@ export class FormlyAddressExtensionFormComponent implements OnInit {
 
   private createTaxationIDField(): FormlyFieldConfig {
     return {
-      type: 'ish-fieldset-field',
-      fieldGroup: [
-        {
-          type: '#taxationID',
-        },
-      ],
+      type: '#taxationID',
     };
   }
 }

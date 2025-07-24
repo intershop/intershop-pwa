@@ -100,12 +100,12 @@ function modelToUrl(model: FormModel): UrlModel {
     from: model.date?.fromDate,
     to: model.date?.toDate,
     orderNo: model.orderNo?.split(',').map(s => s.trim()),
-    sku: model.sku?.split(',').map(s => s.trim()),
+    sku: model.sku ? model.sku.split(',').map(s => s.trim()) : undefined,
     state: model.state
       ?.split(',')
       .map(s => s.trim())
       .filter(x => !!x),
-    buyer: model.buyer,
+    buyer: model.buyer === 'all' || !model.buyer ? undefined : model.buyer,
   });
 }
 
@@ -191,12 +191,12 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
         ...(isAdmin
           ? [
               {
-                fieldGroupClassName: 'row justify-content-start',
-                type: 'ish-fieldset-field',
+                fieldGroupClassName: 'row',
                 fieldGroup: [
                   {
                     type: 'ish-account-order-select-buyer-field',
                     key: 'buyer',
+                    className: 'col-12 col-md-6',
                     props: {
                       label: 'account.order_history.filter.label.buyer',
                       labelClass: 'col-md-12',

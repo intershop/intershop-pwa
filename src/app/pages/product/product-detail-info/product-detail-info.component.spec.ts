@@ -46,8 +46,8 @@ describe('Product Detail Info Component', () => {
   it('should display the product description tab with status active', () => {
     fixture.detectChanges();
 
-    expect(element.querySelectorAll('ul.nav-tabs li')).toHaveLength(2);
-    expect(element.querySelector('ul.nav-tabs li[data-testing-id=product-description-tab] a.active')).toBeTruthy();
+    expect(element.querySelectorAll('.nav-tabs a.nav-link')).toHaveLength(2);
+    expect(element.querySelector('.nav-tabs [data-testing-id=product-description-tab].active')).toBeTruthy();
   });
 
   it('should not display the product rating tab for variation master', () => {
@@ -55,6 +55,7 @@ describe('Product Detail Info Component', () => {
 
     fixture.detectChanges();
 
-    expect(element.querySelectorAll('ul.nav-tabs li')).toHaveLength(1);
+    expect(element.querySelectorAll('.nav-tabs a.nav-link')).toHaveLength(1);
+    expect(element.querySelectorAll('.nav-tabs [data-testing-id=product-reviews-tab]')).toBeEmpty();
   });
 });

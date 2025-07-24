@@ -35,7 +35,6 @@ export class UserProfileFormComponent implements OnInit {
         type: 'ish-fieldset-field',
         props: {
           legend: 'account.register.personal_information.heading',
-          legendClass: 'sr-only',
         },
         fieldGroup: [
           {
@@ -47,11 +46,6 @@ export class UserProfileFormComponent implements OnInit {
           {
             type: '#lastName',
           },
-        ],
-      },
-      {
-        type: 'ish-fieldset-field',
-        fieldGroup: [
           !this.user
             ? {
                 key: 'email',

@@ -23,13 +23,25 @@ const accountPageRoutes: Routes = [
       },
       {
         path: 'addresses',
-        data: { breadcrumbData: [{ key: 'account.saved_addresses.link' }] },
+        data: {
+          meta: {
+            title: 'account.addresses.saved_address.heading',
+            robots: 'noindex, nofollow',
+          },
+          breadcrumbData: [{ key: 'account.saved_addresses.link' }],
+        },
         loadChildren: () =>
           import('../account-addresses/account-addresses-page.module').then(m => m.AccountAddressesPageModule),
       },
       {
         path: 'orders',
-        data: { breadcrumbData: [{ key: 'account.order_history.link' }] },
+        data: {
+          meta: {
+            title: 'account.order_history.heading',
+            robots: 'noindex, nofollow',
+          },
+          breadcrumbData: [{ key: 'account.order_history.link' }],
+        },
         loadChildren: () =>
           import('../account-order-history/account-order-history-page.module').then(
             m => m.AccountOrderHistoryPageModule
@@ -37,19 +49,37 @@ const accountPageRoutes: Routes = [
       },
       {
         path: 'payment',
-        data: { breadcrumbData: [{ key: 'account.payment.link' }] },
+        data: {
+          meta: {
+            title: 'account.payment.heading',
+            robots: 'noindex, nofollow',
+          },
+          breadcrumbData: [{ key: 'account.payment.link' }],
+        },
         loadChildren: () =>
           import('../account-payment/account-payment-page.module').then(m => m.AccountPaymentPageModule),
       },
       {
         path: 'profile',
-        data: { breadcrumbData: [{ key: 'account.profile.link' }] },
+        data: {
+          meta: {
+            title: 'account.profile.heading',
+            robots: 'noindex, nofollow',
+          },
+          breadcrumbData: [{ key: 'account.profile.link' }],
+        },
         loadChildren: () =>
           import('../account-profile/account-profile-page.module').then(m => m.AccountProfilePageModule),
       },
       {
         path: 'order-templates',
-        data: { breadcrumbData: [{ key: 'account.ordertemplates.link' }] },
+        data: {
+          meta: {
+            title: 'account.ordertemplates.heading',
+            robots: 'noindex, nofollow',
+          },
+          breadcrumbData: [{ key: 'account.ordertemplates.link' }],
+        },
         loadChildren: () =>
           import('../../extensions/order-templates/pages/order-templates-routing.module').then(
             m => m.OrderTemplatesRoutingModule
@@ -59,6 +89,10 @@ const accountPageRoutes: Routes = [
         path: 'punchout',
         canActivate: [featureToggleGuard, authorizationToggleGuard],
         data: {
+          meta: {
+            title: 'account.punchout.heading',
+            robots: 'noindex, nofollow',
+          },
           feature: 'punchout',
           permission: 'APP_B2B_MANAGE_PUNCHOUT',
           breadcrumbData: [{ key: 'account.punchout.link' }],
@@ -70,19 +104,37 @@ const accountPageRoutes: Routes = [
       },
       {
         path: 'quotes',
-        data: { breadcrumbData: [{ key: 'quote.quotes.link' }] },
+        data: {
+          meta: {
+            title: 'quote.list.heading',
+            robots: 'noindex, nofollow',
+          },
+          breadcrumbData: [{ key: 'quote.quotes.link' }],
+        },
         loadChildren: () =>
           import('../../extensions/quoting/pages/quote-list/quote-list-page.module').then(m => m.QuoteListPageModule),
       },
       {
         path: 'wishlists',
-        data: { breadcrumbData: [{ key: 'account.wishlists.breadcrumb_link' }] },
+        data: {
+          meta: {
+            title: 'account.wishlists.heading',
+            robots: 'noindex, nofollow',
+          },
+          breadcrumbData: [{ key: 'account.wishlists.breadcrumb_link' }],
+        },
         loadChildren: () =>
           import('../../extensions/wishlists/pages/wishlists-routing.module').then(m => m.WishlistsRoutingModule),
       },
       {
         path: 'notifications',
-        data: { breadcrumbData: [{ key: 'account.notifications.breadcrumb_link' }] },
+        data: {
+          meta: {
+            title: 'account.notifications.heading',
+            robots: 'noindex, nofollow',
+          },
+          breadcrumbData: [{ key: 'account.notifications.breadcrumb_link' }],
+        },
         loadChildren: () =>
           import('../../extensions/product-notifications/pages/product-notifications-routing.module').then(
             m => m.ProductNotificationsRoutingModule
@@ -91,13 +143,21 @@ const accountPageRoutes: Routes = [
       {
         path: 'organization',
         canActivate: [authorizationToggleGuard],
-        data: { permission: 'APP_B2B_MANAGE_COSTCENTER' },
+        data: {
+          permission: 'APP_B2B_MANAGE_COSTCENTER',
+        },
         loadChildren: () => import('organization-management').then(m => m.OrganizationManagementRoutingModule),
       },
       {
         path: 'requisitions',
         canActivate: [authorizationToggleGuard],
-        data: { permission: 'APP_B2B_PURCHASE' },
+        data: {
+          meta: {
+            title: 'account.requisitions.requisitions',
+            robots: 'noindex, nofollow',
+          },
+          permission: 'APP_B2B_PURCHASE',
+        },
         loadChildren: () => import('requisition-management').then(m => m.RequisitionManagementRoutingModule),
       },
     ],

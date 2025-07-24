@@ -1,28 +1,28 @@
-<div ngbDropdown autoClose="outside">
+<div ngbDropdown autoClose="outside" [id]="filterElement.id">
   <button
     ngbDropdownToggle
     type="button"
+    [id]="'dropdownMenuLink-' + filterElement.id"
     class="form-control"
-    role="button"
-    id="dropdownMenuLink"
     data-toggle="dropdown"
-    aria-haspopup="true"
-    aria-expanded="false"
     [title]="placeholder !== filterElement.name ? placeholder : ''"
   >
     <span>{{ placeholder }}</span>
   </button>
-  <div ngbDropdownMenu aria-labelledby="dropdownMenuLink">
+
+  <div ngbDropdownMenu [attr.aria-labelledby]="'dropdownMenuLink-' + filterElement.id">
     <button
       *ngFor="let facet of filterElement.facets; trackBy: trackByFn"
+      ngbDropdownItem
       type="button"
       class="dropdown-item btn btn-link btn-link-action"
       [ngClass]="{ selected: facet.selected }"
       (click)="apply(facet)"
+      [attr.aria-current]="facet.selected ? 'true' : undefined"
     >
       {{ facet.displayName }}
       <ng-container *ngIf="facet.count"> ({{ facet.count }})</ng-container>
-      <fa-icon *ngIf="facet.selected" [icon]="['fas', 'check']" class="icon-checked" />
+      <fa-icon *ngIf="facet.selected" [icon]="['fas', 'check']" class="icon-checked pl-1" />
     </button>
   </div>
 </div>

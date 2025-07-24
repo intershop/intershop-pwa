@@ -91,7 +91,6 @@ export class RegistrationFormConfigurationService {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
           legend: 'account.register.address.headding',
-          legendClass: 'sr-only',
         },
         fieldGroup: [
           {
@@ -100,11 +99,23 @@ export class RegistrationFormConfigurationService {
               businessCustomer: registrationConfig.businessCustomer,
             },
           },
+        ],
+      },
+      {
+        type: 'ish-fieldset-field',
+        props: {
+          fieldsetClass: 'row',
+          childClass: 'col-md-10 col-lg-8 col-xl-6',
+          legend: 'account.register.agreements.legend',
+        },
+        fieldGroup: [
           {
             type: 'ish-registration-tac-field',
             key: 'termsAndConditions',
+            defaultValue: false,
             props: {
               required: true,
+              validation: { show: true },
             },
             validators: {
               validation: [Validators.pattern('true')],
@@ -256,7 +267,6 @@ export class RegistrationFormConfigurationService {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
           legend: 'account.register.email_password.heading',
-          legendClass: 'sr-only',
         },
         validators: {
           validation: [
@@ -337,7 +347,6 @@ export class RegistrationFormConfigurationService {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
           legend: 'account.register.personal_information.heading',
-          legendClass: 'sr-only',
         },
         fieldGroup: this.fieldLibrary.getConfigurationGroup('personalInfo'),
       },
@@ -360,7 +369,6 @@ export class RegistrationFormConfigurationService {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
           legend: 'account.register.company_information.heading',
-          legendClass: 'sr-only',
         },
         fieldGroup: this.fieldLibrary.getConfigurationGroup('companyInfo'),
       },
@@ -382,6 +390,7 @@ export class RegistrationFormConfigurationService {
             props: {
               fieldsetClass: 'row',
               childClass: 'col-md-10 col-lg-8 col-xl-6',
+              legend: 'account.register.budget_preferences.legend',
             },
             fieldGroup: [
               {

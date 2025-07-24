@@ -1,7 +1,6 @@
 <div class="d-flex align-items-center justify-content-between flex-wrap">
-  <h1>
-    {{ 'account.punchout.heading' | translate }}
-  </h1>
+  <h1>{{ 'account.punchout.heading' | translate }}</h1>
+
   <a *ngIf="selectedType === 'oci'" routerLink="configuration" class="btn btn-secondary m-0">{{
     'account.punchout.configuration.button.label' | translate
   }}</a>
@@ -16,11 +15,21 @@
 </ng-template>
 
 <div *ngIf="punchoutTypes?.length > 1">
-  <ul ngbNav class="nav-tabs section" [(activeId)]="selectedType">
-    <li *ngFor="let type of punchoutTypes" [ngbNavItem]="type" role="presentation">
-      <a ngbNavLink [routerLink]="['../punchout']" [queryParams]="{ format: type }" class="mb-0">{{
-        'account.punchout.type.text' | translate : { '0': type }
-      }}</a>
-    </li>
-  </ul>
+  <nav
+    ngbNav
+    class="nav-tabs section"
+    [(activeId)]="selectedType"
+    [attr.aria-label]="'account.punchout.type.tabs.aria_label' | translate"
+  >
+    <ng-container *ngFor="let type of punchoutTypes" [ngbNavItem]="type">
+      <a
+        ngbNavLink
+        [routerLink]="['../punchout']"
+        [queryParams]="{ format: type }"
+        class="mb-0"
+        [attr.data-testing-id]="'account-punchout-tab-' + type"
+        >{{ 'account.punchout.type.text' | translate : { '0': type } }}</a
+      >
+    </ng-container>
+  </nav>
 </div>

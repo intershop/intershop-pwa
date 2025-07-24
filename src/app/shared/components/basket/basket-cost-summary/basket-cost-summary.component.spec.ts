@@ -49,7 +49,7 @@ describe('Basket Cost Summary Component', () => {
     tick(500);
 
     expect(element.textContent.replace(/^\s*[\r\n]*/gm, '')).toMatchInlineSnapshot(
-      `"checkout.cart.subtotal.heading$141,796.98-$11.90checkout.order.shipping.labelproduct.price.na.text Battery Deposit Surcharge  shopping_cart.detail.text $595.00checkout.cart.payment_cost.label$3.57checkout.tax.TaxesLabel.TotalOrderVat$22,747.55checkout.order.total_cost.label$142,470.71"`
+      `"checkout.cart.subtotal.heading$141,796.98-$11.90checkout.order.shipping.labelproduct.price.na.text Battery Deposit Surcharge  shopping_cart.detail.text$595.00checkout.cart.payment_cost.label$3.57checkout.tax.TaxesLabel.TotalOrderVat$22,747.55checkout.order.total_cost.label$142,470.71"`
     );
   }));
 

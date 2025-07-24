@@ -24,10 +24,14 @@ describe('Filter Swatch Images Component', () => {
         { name: 'Red', count: 5, displayName: 'Red', mappedValue: 'red', mappedType: 'colorcode', selected: true },
       ],
     } as Filter;
+
     fixture = TestBed.createComponent(FilterSwatchImagesComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+
     component.filterElement = filterElement;
+    component.filterElement.id = 'ColorFilters';
+
     fixture.detectChanges();
   });
 
@@ -35,6 +39,31 @@ describe('Filter Swatch Images Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
+
+    expect(element).toMatchInlineSnapshot(`
+      <ul class="filter-list clearfix" id="ColorFilters">
+        <li class="filter-item filter-color">
+          <button
+            type="button"
+            class="filter-swatch btn btn-link btn-link-action"
+            title="Black (4)"
+            data-testing-id="filter-link-Black"
+          >
+            <span style="background-color: black"></span>
+          </button>
+        </li>
+        <li class="filter-item filter-color filter-selected">
+          <button
+            type="button"
+            class="filter-swatch btn btn-link btn-link-action"
+            title="Red (5)"
+            data-testing-id="filter-link-Red"
+            aria-current="true"
+          >
+            <span style="background-color: red"></span>
+          </button>
+        </li>
+      </ul>
+    `);
   });
 });

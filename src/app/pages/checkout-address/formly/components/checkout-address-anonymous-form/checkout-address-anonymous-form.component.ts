@@ -37,22 +37,30 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit {
 
     this.shipOptionFields = [
       {
-        type: 'ish-radio-field',
-        key: 'shipOption',
-        defaultValue: 'shipToInvoiceAddress',
+        type: 'ish-fieldset-field',
         props: {
-          label: 'checkout.addresses.shipping_address.option1.text',
-          value: 'shipToInvoiceAddress',
+          legend: 'checkout.addresses.shipping_address.selection.legend',
         },
-      },
-      {
-        type: 'ish-radio-field',
-        key: 'shipOption',
-        defaultValue: 'shipToInvoiceAddress',
-        props: {
-          label: 'checkout.addresses.shipping_address.option2.text',
-          value: 'shipToDifferentAddress',
-        },
+        fieldGroup: [
+          {
+            type: 'ish-radio-field',
+            key: 'shipOption',
+            defaultValue: 'shipToInvoiceAddress',
+            props: {
+              label: 'checkout.addresses.shipping_address.option1.text',
+              value: 'shipToInvoiceAddress',
+            },
+          },
+          {
+            type: 'ish-radio-field',
+            key: 'shipOption',
+            defaultValue: 'shipToInvoiceAddress',
+            props: {
+              label: 'checkout.addresses.shipping_address.option2.text',
+              value: 'shipToDifferentAddress',
+            },
+          },
+        ],
       },
     ];
     this.parentForm.setControl('invoiceAddress', this.invoiceAddressForm);

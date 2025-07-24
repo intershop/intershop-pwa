@@ -30,6 +30,11 @@ export const updateRequisitionStatus = createAction(
   payload<{ requisitionId: string; status: RequisitionStatus; approvalComment?: string }>()
 );
 
+export const updateRequisitionStatusFromList = createAction(
+  '[Requisitions] Update Requisition Status From List',
+  payload<{ requisitionId: string; status: RequisitionStatus; approvalComment?: string }>()
+);
+
 export const updateRequisitionStatusFail = createAction(
   '[Requisitions API] Update Requisition Status Fail',
   httpError()

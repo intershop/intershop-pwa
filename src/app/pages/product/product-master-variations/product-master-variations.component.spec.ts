@@ -7,6 +7,7 @@ import { instance, mock, when } from 'ts-mockito';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { VariationProduct } from 'ish-core/models/product/product.model';
+import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 import { FilterNavigationComponent } from 'ish-shared/components/filter/filter-navigation/filter-navigation.component';
 import { ProductListingComponent } from 'ish-shared/components/product/product-listing/product-listing.component';
 
@@ -27,6 +28,7 @@ describe('Product Master Variations Component', () => {
       declarations: [
         MockComponent(FilterNavigationComponent),
         MockComponent(ProductListingComponent),
+        MockComponent(SkipContentLinkComponent),
         ProductMasterVariationsComponent,
       ],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
@@ -45,12 +47,15 @@ describe('Product Master Variations Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`
       <a id="variation-list-top" title="top"></a
-      ><ish-filter-navigation
-        orientation="horizontal"
-        fragmentonrouting="variation-list-top"
-        ng-reflect-orientation="horizontal"
-        ng-reflect-fragment-on-routing="variation-list-top"
-      ></ish-filter-navigation
+      ><ish-skip-content-link
+        linktext="common.skip_content.link.text.filter"
+        ng-reflect-link-text="common.skip_content.link.text."
+        ><ish-filter-navigation
+          orientation="horizontal"
+          fragmentonrouting="variation-list-top"
+          ng-reflect-orientation="horizontal"
+          ng-reflect-fragment-on-routing="variation-list-top"
+        ></ish-filter-navigation></ish-skip-content-link
       ><ish-product-listing
         mode="paging"
         fragmentonrouting="variation-list-top"

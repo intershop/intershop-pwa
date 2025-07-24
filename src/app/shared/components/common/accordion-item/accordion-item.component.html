@@ -1,17 +1,23 @@
-<div
-  class="panel-heading"
-  [attr.data-testing-id]="dataTestingId"
-  role="tab"
+<button
+  [id]="'toggle-' + accordionId"
+  type="button"
   (click)="toggleCollapse()"
-  (keydown.enter)="toggleCollapse()"
-  tabindex="0"
+  class="panel-heading btn btn-link btn-content-toggle"
+  [attr.aria-expanded]="!isCollapsed"
+  [attr.aria-controls]="'panel-' + accordionId"
+  [attr.data-testing-id]="dataTestingId"
 >
-  <a class="accordion-toggle" [attr.aria-expanded]="isCollapsed">
-    {{ heading }}
-    <fa-icon *ngIf="!isCollapsed; else collapsed" class="float-right" [icon]="['fas', 'plus']" />
-    <ng-template #collapsed> <fa-icon class="float-right" [icon]="['fas', 'minus']" /> </ng-template>
-  </a>
-</div>
-<div class="panel-collapse collapse" role="tabpanel" [ngbCollapse]="!isCollapsed">
-  <div class="panel-body"><ng-content></ng-content></div>
+  {{ heading }}
+  <fa-icon [icon]="['fas', isCollapsed ? 'plus' : 'minus']" />
+</button>
+
+<div
+  [ngbCollapse]="isCollapsed"
+  class="panel-collapse collapse"
+  role="region"
+  [attr.aria-labelledby]="'toggle-' + accordionId"
+>
+  <div [id]="'panel-' + accordionId" class="panel-body">
+    <ng-content></ng-content>
+  </div>
 </div>

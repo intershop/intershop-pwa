@@ -1,6 +1,6 @@
-<span data-nosnippet class="skip-to-main-content"
-  ><a [routerLink]="[]" fragment="main-content">{{ 'common.skip_to_main.link' | translate }}</a></span
->
+<a data-nosnippet class="skip-content-link skip-to-main-content" [routerLink]="[]" fragment="main-content">{{
+  'common.skip_to_main.link' | translate
+}}</a>
 
 <div [ngClass]="wrapperClasses$ | async" class="d-flex flex-column min-vh-100">
   <header data-testing-id="page-header" class="top"><ish-header /></header>

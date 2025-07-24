@@ -30,7 +30,7 @@ describe('Requisition Summary Component', () => {
       id: '4711',
       requisitionNo: '4712',
       approval: {
-        status: 'Approval Pending',
+        status: 'pending',
         statusCode: 'PENDING',
         customerApproval: {
           approvers: [
@@ -71,7 +71,40 @@ describe('Requisition Summary Component', () => {
         <span
           class="border border-secondary badge badge-secondary text-capitalize border-warning badge-warning"
         >
-          Approval Pending
+          pending
+        </span>
+      </dd>,
+      ]
+    `);
+  });
+
+  it('should display buyer view with a given rejected requisition', () => {
+    component.requisition = {
+      id: '4711_R',
+      requisitionNo: '4712_R',
+      approval: {
+        status: 'rejected',
+        statusCode: 'REJECTED',
+        approvers: [
+          { firstName: 'Bernhhard', lastName: 'Boldner', email: 'bboldner@test.intershop.de' },
+          { firstName: 'Bernhhard', lastName: 'Boldner', email: 'bboldner@test.intershop.de' },
+        ],
+      },
+    } as Requisition;
+
+    fixture.detectChanges();
+    expect(element.querySelectorAll('dd')).toMatchInlineSnapshot(`
+      NodeList [
+        <dd class="col-6 col-sm-8 col-md-9">4712_R</dd>,
+        <dd class="col-6 col-sm-8 col-md-9"></dd>,
+        <dd class="col-6 col-sm-8 col-md-9">Bernhhard Boldner</dd>,
+        <dd class="col-6 col-sm-8 col-md-9"></dd>,
+        <dd class="col-6 col-sm-8 col-md-9"></dd>,
+        <dd class="col-6 col-sm-8 col-md-9">
+        <span
+          class="border border-secondary badge badge-secondary text-capitalize border-danger badge-danger"
+        >
+          rejected
         </span>
       </dd>,
       ]
@@ -92,7 +125,7 @@ describe('Requisition Summary Component', () => {
         <span
           class="border border-secondary badge badge-secondary text-capitalize border-warning badge-warning"
         >
-          Approval Pending
+          pending
         </span>
       </dd>,
       ]

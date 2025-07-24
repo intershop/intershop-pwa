@@ -9,18 +9,16 @@
     <div class="col-md-4 d-flex align-items-center">
       <button
         type="button"
-        class="btn btn-link pl-0 text-decoration-none"
+        class="btn btn-link btn-link-with-icon"
         (click)="expandForm()"
         [attr.aria-expanded]="!formIsCollapsed"
       >
         <ng-container *ngIf="formIsCollapsed; else hide_filters">
-          {{ 'account.order_history.filter.show' | translate }}&nbsp;
-          <fa-icon [icon]="['fas', 'angle-down']" />
+          {{ 'account.order_history.filter.show' | translate }}<fa-icon [icon]="['fas', 'angle-down']" />
         </ng-container>
 
         <ng-template #hide_filters>
-          {{ 'account.order_history.filter.hide' | translate }}&nbsp;
-          <fa-icon [icon]="['fas', 'angle-up']" />
+          {{ 'account.order_history.filter.hide' | translate }}<fa-icon [icon]="['fas', 'angle-up']" />
         </ng-template>
       </button>
     </div>

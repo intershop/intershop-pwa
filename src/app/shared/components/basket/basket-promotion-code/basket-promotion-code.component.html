@@ -2,14 +2,14 @@
   <button
     type="button"
     id="promotion-code-button"
-    class="btn btn-link btn-link-action promo-collapse-link"
+    class="btn btn-link btn-content-toggle p-0"
     (click)="isCollapsed = !isCollapsed"
     [attr.aria-expanded]="!isCollapsed"
     aria-controls="promo-code-input"
     data-testing-id="promo-collapse-link"
   >
-    {{ 'shopping_cart.promotional_code.heading' | translate }}
-    <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" class="float-right" />
+    {{ 'shopping_cart.promotional_code.heading' | translate
+    }}<fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" class="float-right" />
   </button>
 
   <ish-error-message [error]="promotionError$ | async" [toast]="toast" />

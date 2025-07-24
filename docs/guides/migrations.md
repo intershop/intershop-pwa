@@ -7,22 +7,48 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 7.0.0 to 7.1.0
+
+Due to installation issues with the used `luarocks` package manager, we have disabled the installation of the `lua-resty-redis-connector` that provides the functionality to connect to a shared Redis cache.
+Since this functionality cannot be used and has not been used by any project, disabling it is not considered a breaking change.
+
+The structure of the elements that contained the `ngbNav` directive was updated to ensure compliance with accessibility standards.
+It was previously based on `<ul>` with `<li role="presentation">` elements, now it uses `<nav>` with `<ng-container>` elements.
+
+Page titles for the checkout and account pages were added to every single page for accessibility reasons.
+The context _Checkout_ or _My Account_ is automatically appended to the relevant page titles in the `seo.effects`.
+
+The `<ish-skip-content-link>` component was introduced to improve accessibility for listings by generating a skip link before the listing enclosed by the component.
+The link is only visible when it receives keyboard tab focus, similar to the "Skip to main content" link.
+The component can accept an HTML element ID as input parameter to specify which element should receive focus when the skip link is clicked.
+If no valid HTML element ID is specified, the component generates an element after the listing that receives the focus.
+
+The `RequisitionRejectDialogComponent` was moved from a `RequisitionDetailPageModule` specific component to a shared `RequisitionManagementModule` component.
+This was necessary because it is now used not only on the requisition detail page, but also on the requisition approval list.
+
 ## From 6.0.0 to 7.0.0
 
-The Intershop PWA 7.0.0 release contains the **Sparque suggest** and **Sparque search** functionality to improve the product search in the PWA.
+The Intershop PWA 7.0.0 release contains the **SPARQUE suggest** and **SPARQUE search** functionality to improve the product search in the PWA.
+The SPARQUE integration is disabled by default and requires a fitting SPARQUE configuration to enable it (for more details see the [SPARQUE.AI guide](./sparque-ai.md)).
 
-To introduce the optional Sparque integration in the PWA the following changes were necessary that need to be considered when migrating the PWA.
+To introduce the optional SPARQUE integration in the PWA, the following changes were necessary that need to be considered when migrating the PWA.
 
-The `ProductImageComponent` was changed to an Angular standalone component that can be used independent from the `SharedModule` but it is also available via the `SharedModule` in the same way as before.
+The `ProductImageComponent` was changed to an Angular standalone component that can be used independently of the `SharedModule`, but it is also available via the `SharedModule` in the same way as before.
 
 The `CategoryImageComponent` was moved to the shared components folder and changed to an Angular standalone component.
 
 An additional `ProductCompletenessLevel.Base` was introduced that is used as the new default in the `ProductContextFacade` and provides enough product data for the product suggest tiles.
 
-The `SearchBoxComponent` was re-implemented as an Angular standalone component with the capability to show more suggestions (suggestions for products, categories, brands and keywords).
-With the introduction of the `SearchBoxComponent` as standalone component it's generated `LazySearchBoxComponent` is no longer needed and was therefore removed.
+The `SearchBoxComponent` was re-implemented as an Angular standalone component with the capability to show more suggestions (suggestions for products, categories, brands, and keywords).
+With the introduction of the `SearchBoxComponent` as standalone component, its generated `LazySearchBoxComponent` is no longer needed and was therefore removed.
 The behavior of the search box was changed as well.
-Now the suggestion search will be dispatched if the search term has at least 3 letters (not for every character as before).
+Now the suggestion search will be dispatched once the search term has at least 3 letters (not for every character as before).
+
+The previously used `SuggestTerm` model was replaced by the `Keyword` model.
+
+| Previous                        | Current                                              |
+| ------------------------------- | ---------------------------------------------------- |
+| `SuggestTerm { term: string; }` | `Keyword { keyword: string;  totalCount?: number; }` |
 
 The `SuggestService` has a changed result format and is now included in the effects via newly introduced `SuggestionsServiceProvider`.
 

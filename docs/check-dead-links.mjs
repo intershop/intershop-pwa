@@ -109,7 +109,8 @@ const filtered = externalLinks
       !link.includes('support.intershop.') &&
       !link.includes('docs.intershop.') &&
       !link.includes('azurewebsites.net') &&
-      !link.includes('github.com')
+      !link.includes('github.com') &&
+      !link.includes('gnu.org')
   );
 
 mapSeries(filtered, checkExternalLinkError).catch(error => {

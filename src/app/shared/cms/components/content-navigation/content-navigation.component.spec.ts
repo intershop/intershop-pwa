@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -8,6 +9,7 @@ import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/cont
 import { ContentPageTreeElement } from 'ish-core/models/content-page-tree/content-page-tree.model';
 import { ContentPageletEntryPointView } from 'ish-core/models/content-view/content-view.model';
 import { ContentPageRoutePipe } from 'ish-core/routing/content-page/content-page-route.pipe';
+import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 
 import { ContentNavigationComponent } from './content-navigation.component';
 
@@ -22,7 +24,7 @@ describe('Content Navigation Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [ContentNavigationComponent, ContentPageRoutePipe],
+      declarations: [ContentNavigationComponent, ContentPageRoutePipe, MockComponent(SkipContentLinkComponent)],
       providers: [{ provide: CMSFacade, useFactory: () => instance(cmsFacade) }],
     }).compileComponents();
   });

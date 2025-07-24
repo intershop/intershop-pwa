@@ -5,6 +5,7 @@ import { instance, mock } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
+import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 
 import { QuickorderAddProductsFormComponent } from '../../shared/quickorder-add-products-form/quickorder-add-products-form.component';
 import { QuickorderCsvFormComponent } from '../../shared/quickorder-csv-form/quickorder-csv-form.component';
@@ -23,6 +24,7 @@ describe('Quickorder Page Component', () => {
         MockComponent(BreadcrumbComponent),
         MockComponent(QuickorderAddProductsFormComponent),
         MockComponent(QuickorderCsvFormComponent),
+        MockComponent(SkipContentLinkComponent),
         QuickorderPageComponent,
       ],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }],

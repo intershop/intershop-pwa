@@ -2,15 +2,13 @@
   <button
     type="button"
     (click)="toggle()"
+    class="btn btn-link btn-content-toggle p-0 mb-3"
     [attr.aria-expanded]="!isCollapsed"
-    [attr.aria-controls]="ariaControlsId"
-    class="btn-filter-toggle"
+    [attr.aria-controls]="filterElement.id"
     data-testing-id="filter-toggle-button"
   >
-    <h3>
-      {{ title }}
-      <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" />
-    </h3>
+    <h3 class="m-0">{{ filterElement.name }}</h3>
+    <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" />
   </button>
 
   <ng-content></ng-content>

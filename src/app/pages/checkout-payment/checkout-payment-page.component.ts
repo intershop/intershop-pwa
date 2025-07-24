@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { isEqual } from 'lodash-es';
 import { Observable } from 'rxjs';
-import { filter, first, map, shareReplay, tap, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, filter, first, map, shareReplay, tap, withLatestFrom } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
@@ -49,6 +50,7 @@ export class CheckoutPaymentPageComponent implements OnInit {
               basket.payment.paymentInstrument.id === pm.id)
         )
       ),
+      distinctUntilChanged(isEqual),
       shareReplay(1)
     );
 

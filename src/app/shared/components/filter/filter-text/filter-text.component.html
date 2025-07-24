@@ -1,4 +1,4 @@
-<ul class="filter-list" [id]="filterListElementId">
+<ul class="filter-list" [id]="filterElement.id">
   <ng-container *ngFor="let facet of getFacets()">
     <li class="filter-item filter-layer{{ facet.level }}" [ngClass]="{ 'filter-selected': facet.selected }">
       <!-- selected -->
@@ -8,6 +8,7 @@
           class="btn btn-link btn-link-action link-decoration-hover"
           (click)="filter(facet)"
           [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
+          aria-current="true"
         >
           <span class="filter-item-name"> {{ facet.displayName }} </span>
           <span class="count"> ({{ facet.count }}) </span>
@@ -33,7 +34,16 @@
   </ng-container>
   <!-- show all/less -->
   <li class="filter-item" *ngIf="filterElement.limitCount !== -1 && facets.length > filterElement.limitCount">
-    <button type="button" class="btn btn-link btn-link-action" (click)="showAll = !showAll">
+    <button
+      type="button"
+      class="btn btn-link btn-link-action"
+      (click)="showAll = !showAll"
+      [attr.aria-label]="
+        showAll
+          ? ('search.filter.show_less.link.aria_label' | translate : { filterGroupName: filterElement.name })
+          : ('search.filter.show_all.link.aria_label' | translate : { filterGroupName: filterElement.name })
+      "
+    >
       {{ (showAll ? 'search.filter.show_less.link' : 'search.filter.show_all.link') | translate }}
     </button>
   </li>

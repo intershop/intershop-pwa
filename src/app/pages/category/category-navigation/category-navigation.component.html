@@ -6,6 +6,7 @@
           class="filter-item-name link-decoration-hover"
           [ngClass]="{ 'filter-selected': category.uniqueId === currentCategoryId }"
           [routerLink]="category.url"
+          [attr.aria-current]="category.uniqueId === currentCategoryId ? 'true' : undefined"
         >
           {{ category.name }}
         </a>

@@ -17,6 +17,7 @@ import { BasketValidationResultsComponent } from 'ish-shared/components/basket/b
 import { ClearBasketComponent } from 'ish-shared/components/basket/clear-basket/clear-basket.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
+import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
 import { LazyBasketCreateOrderTemplateComponent } from '../../../extensions/order-templates/exports/lazy-basket-create-order-template/lazy-basket-create-order-template.component';
@@ -49,6 +50,7 @@ describe('Shopping Basket Component', () => {
         MockComponent(LineItemListComponent),
         MockComponent(ModalDialogLinkComponent),
         MockComponent(ShoppingBasketPaymentComponent),
+        MockComponent(SkipContentLinkComponent),
         ShoppingBasketComponent,
       ],
       imports: [

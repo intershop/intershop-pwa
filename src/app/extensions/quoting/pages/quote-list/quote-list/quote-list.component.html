@@ -2,7 +2,7 @@
   <table cdk-table [dataSource]="quotes" class="table table-lg mobile-optimized" data-testing-id="quote-list">
     <!-- Quote Number -->
     <ng-container cdkColumnDef="quoteNo">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-number">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-number">
         <span aria-hidden="true">{{ 'quote.list.table.quote_no' | translate }}</span>
         <span class="sr-only">{{ 'quote.list.table.quote_no.title' | translate }}</span>
       </th>
@@ -13,7 +13,7 @@
 
     <!-- Display name -->
     <ng-container cdkColumnDef="displayName">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-name">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-name">
         {{ 'quote.list.table.name' | translate }}
       </th>
       <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.name' | translate">
@@ -23,7 +23,7 @@
 
     <!-- Number of line items -->
     <ng-container cdkColumnDef="lineItems">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-line-items">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-line-items">
         {{ 'quote.list.table.line_items' | translate }}
       </th>
       <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.line_items' | translate">
@@ -33,7 +33,7 @@
 
     <!-- Creation date -->
     <ng-container cdkColumnDef="creationDate">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-creation-date">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-creation-date">
         {{ 'quote.list.table.creation_date' | translate }}
       </th>
       <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.creation_date' | translate">
@@ -43,7 +43,7 @@
 
     <!-- Expiration date -->
     <ng-container cdkColumnDef="expirationDate">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-expiration-date">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-expiration-date">
         {{ 'quote.list.table.expiration_date' | translate }}
       </th>
       <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.expiration_date' | translate">
@@ -53,7 +53,7 @@
 
     <!-- Status -->
     <ng-container cdkColumnDef="status">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-status">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-status">
         {{ 'quote.list.table.status' | translate }}
       </th>
       <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.status' | translate">
@@ -63,7 +63,7 @@
 
     <!-- Actions -->
     <ng-container cdkColumnDef="actions">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-actions"></th>
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-actions"></th>
       <td cdk-cell *cdkCellDef="let quote" class="column-price">
         <button
           type="button"

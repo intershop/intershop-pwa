@@ -12,12 +12,12 @@ RUN wget -q https://nginx.org/download/nginx-1.21.4.tar.gz && tar -zxf nginx-1.2
 FROM openresty/openresty:1.21.4.3-1-jammy
 COPY --from=nginx:mainline /docker-entrypoint.sh /
 COPY --from=nginx:mainline /docker-entrypoint.d/*.sh /docker-entrypoint.d/
-COPY lua/*.lua /usr/local/openresty/lualib/
+# COPY lua/*.lua /usr/local/openresty/lualib/
 RUN ln -s /usr/local/openresty/nginx/conf/mime.types /etc/nginx/ \
-  && useradd -Ms /bin/false nginx \
-  && mkdir -p /etc/resolvconf/resolv.conf.d \
-  && echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/tail \
-  && luarocks install lua-resty-redis-connector
+  && useradd -Ms /bin/false nginx
+  # && mkdir -p /etc/resolvconf/resolv.conf.d \
+  # && echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/tail \
+  # && luarocks install lua-resty-redis-connector
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-c", "/etc/nginx/nginx.conf", "-g", "daemon off;"]
 

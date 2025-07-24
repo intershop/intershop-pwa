@@ -3,32 +3,38 @@
   [@bottomOut]="transitionBanner"
   (@bottomOut.done)="setCookiesConsent($event)"
   class="cookies-banner"
+  role="region"
+  [attr.aria-label]="'cookies.banner.title' | translate"
 >
   <div class="d-lg-flex justify-content-between align-items-center">
     <div [ishServerHtml]="'cookies.banner.text' | translate" class="cookies-banner-text"></div>
 
     <div class="d-md-flex flex-nowrap justify-content-end">
+      <!-- Accept All -->
       <button
         type="button"
-        class="btn btn-light text-nowrap mr-lg-0 order-md-2"
+        class="btn btn-light text-nowrap ml-lg-2"
         [title]="'cookies.banner.accept_all.tooltip' | translate"
         (click)="acceptAll()"
         data-testing-id="acceptAllButton"
       >
         {{ 'cookies.banner.accept_all' | translate }}
       </button>
+
+      <!-- Accept Essential -->
       <button
         type="button"
-        class="btn btn-outline-light text-nowrap order-md-1"
+        class="btn btn-outline-light text-nowrap mr-lg-0"
         [title]="'cookies.banner.accept_only_required.tooltip' | translate"
         (click)="acceptOnlyRequired()"
       >
         {{ 'cookies.banner.accept_only_required' | translate }}
       </button>
 
+      <!-- Set Preferences -->
       <button
         type="button"
-        class="btn btn-link order-md-0 text-nowrap ml-lg-2"
+        class="btn btn-link text-nowrap mr-lg-0"
         routerLink="/cookies"
         [title]="'cookies.banner.set_preferences.tooltip' | translate"
       >

@@ -27,7 +27,7 @@
       >
         <!-- Cost Center Id -->
         <ng-container cdkColumnDef="costCenterId">
-          <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-id">
+          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-id">
             {{ 'account.costcenter.list.header.no' | translate }}
           </th>
           <td cdk-cell *cdkCellDef="let costCenter" [attr.data-label]="'account.costcenter.list.header.no' | translate">
@@ -40,7 +40,7 @@
 
         <!-- Cost Center Name -->
         <ng-container cdkColumnDef="costCenterName">
-          <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-name">
+          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-name">
             {{ 'account.costcenter.list.header.name' | translate }}
           </th>
           <td
@@ -54,7 +54,7 @@
 
         <!-- Cost Center Manager -->
         <ng-container cdkColumnDef="costCenterManager">
-          <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-manager">
+          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-manager">
             {{ 'account.costcenter.list.header.manager' | translate }}
           </th>
           <td
@@ -68,7 +68,7 @@
 
         <!-- Cost Center Budget -->
         <ng-container cdkColumnDef="costCenterBudget">
-          <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-budget">
+          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-budget">
             {{ 'account.costcenter.list.header.budgetspent' | translate }}
           </th>
           <td
@@ -82,7 +82,7 @@
 
         <!-- Actions -->
         <ng-container cdkColumnDef="actions">
-          <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-actions"></th>
+          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-actions"></th>
           <td cdk-cell *cdkCellDef="let costCenter" class="column-price">
             <ng-container *ngIf="isDeletable(costCenter) | async">
               <!-- Deactivate -->

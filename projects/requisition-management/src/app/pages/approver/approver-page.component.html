@@ -2,23 +2,33 @@
 
 <p>{{ 'account.requisitions.approvals.text' | translate }}</p>
 
-<ul ngbNav class="nav-tabs" [(activeId)]="status">
-  <li ngbNavItem="PENDING" role="presentation">
+<nav
+  ngbNav
+  class="nav-tabs"
+  [(activeId)]="status"
+  [attr.aria-label]="'account.requisitions.approvals.tabs.aria_label' | translate"
+>
+  <!-- Pending Requisitions -->
+  <ng-container ngbNavItem="PENDING">
     <a ngbNavLink [routerLink]="['../approver', { status: 'PENDING' }]" data-testing-id="tab-link-pending">{{
       'account.requisitions.approvals.navtab.waiting' | translate
     }}</a>
-  </li>
-  <li ngbNavItem="APPROVED" role="presentation">
+  </ng-container>
+
+  <!-- Approved Requisitions -->
+  <ng-container ngbNavItem="APPROVED">
     <a ngbNavLink [routerLink]="['../approver', { status: 'APPROVED' }]" data-testing-id="tab-link-approved">{{
       'account.requisitions.approvals.navtab.approved' | translate
     }}</a>
-  </li>
-  <li ngbNavItem="REJECTED" role="presentation">
+  </ng-container>
+
+  <!-- Rejected Requisitions -->
+  <ng-container ngbNavItem="REJECTED">
     <a ngbNavLink [routerLink]="['../approver', { status: 'REJECTED' }]" data-testing-id="tab-link-rejected">{{
       'account.requisitions.approvals.navtab.rejected' | translate
     }}</a>
-  </li>
-</ul>
+  </ng-container>
+</nav>
 
 <div class="section loading-container">
   <ish-error-message [error]="error$ | async" />

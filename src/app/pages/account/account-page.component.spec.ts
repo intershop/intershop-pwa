@@ -5,6 +5,7 @@ import { instance, mock } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
+import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 
 import { AccountNavigationComponent } from './account-navigation/account-navigation.component';
 import { AccountPageComponent } from './account-page.component';
@@ -20,6 +21,7 @@ describe('Account Page Component', () => {
         AccountPageComponent,
         MockComponent(AccountNavigationComponent),
         MockComponent(BreadcrumbComponent),
+        MockComponent(SkipContentLinkComponent),
       ],
       imports: [RouterTestingModule],
       providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],

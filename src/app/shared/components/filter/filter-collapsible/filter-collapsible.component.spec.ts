@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { MockComponent } from 'ng-mocks';
 
+import { Filter } from 'ish-core/models/filter/filter.model';
+
 import { FilterCollapsibleComponent } from './filter-collapsible.component';
 
 describe('Filter Collapsible Component', () => {
@@ -20,7 +22,10 @@ describe('Filter Collapsible Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    component.title = 'Price';
+    component.filterElement = {
+      name: 'Price',
+      id: 'PriceFilterId',
+    } as Filter;
   });
 
   it('should be created', () => {
@@ -31,22 +36,26 @@ describe('Filter Collapsible Component', () => {
 
   it('should hide content when toggle button is clicked', fakeAsync(() => {
     fixture.detectChanges();
+
     expect(element).toMatchInlineSnapshot(`
       <div class="filter-group">
         <button
           type="button"
           data-testing-id="filter-toggle-button"
-          class="btn-filter-toggle"
+          class="btn btn-link btn-content-toggle p-0 mb-3"
           aria-expanded="true"
-          aria-controls="filter-list_Price"
+          aria-controls="PriceFilterId"
         >
-          <h3>Price <fa-icon ng-reflect-icon="fas,angle-up"></fa-icon></h3>
+          <h3 class="m-0">Price</h3>
+          <fa-icon ng-reflect-icon="fas,angle-up"></fa-icon>
         </button>
       </div>
     `);
+
     const filterGroupToggleButton = fixture.nativeElement.querySelector('[data-testing-id=filter-toggle-button]');
     filterGroupToggleButton.click();
     tick(500);
+
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
@@ -54,11 +63,12 @@ describe('Filter Collapsible Component', () => {
         <button
           type="button"
           data-testing-id="filter-toggle-button"
-          class="btn-filter-toggle"
+          class="btn btn-link btn-content-toggle p-0 mb-3"
           aria-expanded="false"
-          aria-controls="filter-list_Price"
+          aria-controls="PriceFilterId"
         >
-          <h3>Price <fa-icon ng-reflect-icon="fas,angle-down"></fa-icon></h3>
+          <h3 class="m-0">Price</h3>
+          <fa-icon ng-reflect-icon="fas,angle-down"></fa-icon>
         </button>
       </div>
     `);

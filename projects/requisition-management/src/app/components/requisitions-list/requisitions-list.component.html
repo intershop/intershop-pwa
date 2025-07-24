@@ -7,7 +7,7 @@
   >
     <!-- Requisition No -->
     <ng-container cdkColumnDef="requisitionNo">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-requisition-no">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-requisition-no">
         <span aria-hidden="true">{{ 'account.approvallist.table.id_of_order' | translate }}</span>
         <span class="sr-only">{{ 'account.approvallist.table.id_of_order.title' | translate }}</span>
       </th>
@@ -27,7 +27,7 @@
 
     <!-- Order No -->
     <ng-container cdkColumnDef="orderNo">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-no">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-no">
         <span aria-hidden="true">{{ 'account.approvallist.table.no_of_order' | translate }}</span>
         <span class="sr-only">{{ 'account.approvallist.table.no_of_order.title' | translate }}</span>
       </th>
@@ -42,7 +42,7 @@
 
     <!-- Order No - No link -->
     <ng-container cdkColumnDef="orderNoSimple">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-no-simple">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-no-simple">
         <span aria-hidden="true">{{ 'account.approvallist.table.no_of_order' | translate }}</span>
         <span class="sr-only">{{ 'account.approvallist.table.no_of_order.title' | translate }}</span>
       </th>
@@ -57,7 +57,7 @@
 
     <!-- Creation Date -->
     <ng-container cdkColumnDef="creationDate">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-creation-date">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-creation-date">
         {{ 'account.approvallist.table.date_of_order' | translate }}
       </th>
       <td
@@ -71,7 +71,7 @@
 
     <!-- Approver -->
     <ng-container cdkColumnDef="approver">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-approver">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-approver">
         {{ 'account.approvallist.table.approver' | translate }}
       </th>
       <td cdk-cell *cdkCellDef="let requisition" [attr.data-label]="'account.approvallist.table.approver' | translate">
@@ -84,7 +84,7 @@
 
     <!-- Buyer -->
     <ng-container cdkColumnDef="buyer">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-buyer">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-buyer">
         {{ 'account.approvallist.table.buyer' | translate }}
       </th>
       <td cdk-cell *cdkCellDef="let requisition" [attr.data-label]="'account.approvallist.table.buyer' | translate">
@@ -94,7 +94,7 @@
 
     <!-- Approval Date -->
     <ng-container cdkColumnDef="approvalDate">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-approval-date">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-approval-date">
         {{ 'account.approvallist.table.approval_date' | translate }}
       </th>
       <td
@@ -108,7 +108,7 @@
 
     <!-- Rejection Date -->
     <ng-container cdkColumnDef="rejectionDate">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-rejection-date">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-rejection-date">
         {{ 'account.approvallist.table.reject_date' | translate }}
       </th>
       <td
@@ -122,7 +122,7 @@
 
     <!-- Items count -->
     <ng-container cdkColumnDef="lineItems">
-      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-line-items">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-line-items">
         {{ 'account.approvallist.table.line_items' | translate }}
       </th>
       <td
@@ -136,7 +136,7 @@
 
     <!-- Total -->
     <ng-container cdkColumnDef="orderTotal">
-      <th cdk-header-cell *cdkHeaderCellDef class="text-right" data-testing-id="th-order-total">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef class="text-right" data-testing-id="th-order-total">
         {{ 'account.approvallist.table.line_item_total' | translate }}
       </th>
       <td
@@ -146,6 +146,37 @@
         class="column-price"
       >
         {{ requisition.totals.total | ishPrice : 'gross' }}
+      </td>
+    </ng-container>
+
+    <!-- Approval Actions -->
+    <ng-container cdkColumnDef="actions">
+      <th cdk-header-cell *cdkHeaderCellDef data-testing-id="th-actions">
+        <span class="sr-only">{{ 'account.approvallist.table.actions' | translate }}</span>
+      </th>
+      <td cdk-cell *cdkCellDef="let requisition" class="column-price">
+        <ng-container *ngIf="status === 'PENDING'">
+          <button
+            type="button"
+            class="btn-tool btn-link"
+            (click)="approveRequisition(requisition.id)"
+            title="{{
+              'account.requisitions.approvals.approve' | translate : { requisitionNo: requisition.requisitionNo }
+            }}"
+          >
+            <fa-icon [icon]="['fas', 'check']" />
+          </button>
+          <button
+            type="button"
+            class="btn-tool btn-link"
+            (click)="openRejectDialog(requisition.id)"
+            title="{{
+              'account.requisitions.approvals.reject' | translate : { requisitionNo: requisition.requisitionNo }
+            }}"
+          >
+            <fa-icon [icon]="['fas', 'times']" />
+          </button>
+        </ng-container>
       </td>
     </ng-container>
 
@@ -162,3 +193,5 @@
 <ng-template #emptyList>
   <p data-testing-id="emptyList">{{ 'account.approvallist.no_items_message' | translate }}</p>
 </ng-template>
+
+<ish-requisition-reject-dialog #rejectDialog (submitRejectRequisition)="rejectRequisition($event)" />

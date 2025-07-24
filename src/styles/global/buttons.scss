@@ -149,6 +149,19 @@ button.btn-link {
   }
 }
 
+.details-tooltip,
+.btn-link-with-icon {
+  .ng-fa-icon {
+    padding-left: 6px;
+  }
+
+  @include hover-none-underline();
+}
+
+.btn-link-with-icon {
+  padding-left: 0;
+}
+
 // multiple buttons margin handling (use "button-group" in case the buttons are not direct siblings)
 .button-group .btn,
 .btn:not(:only-child):not(.btn-link) {
@@ -169,6 +182,16 @@ button.btn-link {
       margin-left: 0;
     }
   }
+}
+
+// toggle link with width 100%
+.btn-content-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
+  @include hover-none-underline();
 }
 
 .justify-content-end {

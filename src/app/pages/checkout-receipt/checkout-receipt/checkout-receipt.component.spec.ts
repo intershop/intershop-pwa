@@ -12,6 +12,7 @@ import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-
 import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket/basket-merchant-message-view/basket-merchant-message-view.component';
 import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
+import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
 import { CheckoutReceiptComponent } from './checkout-receipt.component';
@@ -32,6 +33,7 @@ describe('Checkout Receipt Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
+        MockComponent(SkipContentLinkComponent),
         MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
       ],
       imports: [FeatureToggleModule.forTesting(), TranslateModule.forRoot()],
@@ -73,6 +75,7 @@ describe('Checkout Receipt Component', () => {
         "ish-info-box",
         "ish-basket-shipping-method",
         "ish-info-box",
+        "ish-skip-content-link",
         "ish-line-item-list",
         "fa-icon",
         "ish-basket-cost-summary",

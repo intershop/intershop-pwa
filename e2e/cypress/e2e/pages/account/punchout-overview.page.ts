@@ -13,7 +13,7 @@ export class PunchoutOverviewPage {
   }
 
   get headerNavigation() {
-    return cy.get('ish-account-punchout-header').find('ul.nav-tabs');
+    return cy.get('ish-account-punchout-header').find('.nav-tabs');
   }
 
   get userList() {
@@ -31,11 +31,11 @@ export class PunchoutOverviewPage {
   }
 
   selectcXMLTab() {
-    this.headerNavigation.find('li:first-child a').click();
+    this.headerNavigation.find('[data-testing-id="account-punchout-tab-cxml"]').click();
   }
 
   selectOciTab() {
-    this.headerNavigation.find('li:last-child a').click();
+    this.headerNavigation.find('[data-testing-id="account-punchout-tab-oci"]').click();
   }
 
   addUser() {
