@@ -7,6 +7,14 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 7.1.0 to 8.0.0
+
+The Intershop PWA now uses Node.js 22.17.1 LTS with the corresponding npm version 10.9.2.
+This addresses the fact that Node.js 18 is already out of maintenance and should no longer be used even though Angular 16 was officially only tested to work with Node.js versions up to Node.js 18.
+In the standard Intershop PWA only the the following warning needed to be addressed:
+
+> `NodeRequire` is deprecated: Use `NodeJS.Require` instead
+
 ## From 7.0.0 to 7.1.0
 
 Due to installation issues with the used `luarocks` package manager, we have disabled the installation of the `lua-resty-redis-connector` that provides the functionality to connect to a shared Redis cache.

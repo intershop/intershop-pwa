@@ -7,7 +7,7 @@ on:
   #   - cron: '0 0 * * 0'
 
 env:
-  NODE_VERSION: 18.16.0
+  NODE_VERSION: 22.17.1
 
 jobs:
   TestBed:
@@ -18,7 +18,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Use Node.js 18
+      - name: Use Node.js 22
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}

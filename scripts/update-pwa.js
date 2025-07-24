@@ -4,7 +4,7 @@ const fs = require('fs');
 const pinned = {
   bootstrap: '4', // pinned
   '@ng-bootstrap/ng-bootstrap': '11', // 12 requires Bootstrap 5
-  '@types/node': '18', // LTS
+  '@types/node': '22', // LTS
   swiper: 8, // 9 requires integration rework
   jest: '29',
   '@types/jest': '29',
