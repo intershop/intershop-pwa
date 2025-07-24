@@ -55,6 +55,9 @@ npx stylelint "**/*.{css,scss}" --fix
 ng lint --fix
 ```
 
+The Intershop PWA now contains [custom instructions for GitHub Copilot](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions).
+These instructions provide additional project specific context to Copilot to optimize the code suggestions for the Intershop PWA and its customizations.
+
 ## From 7.0.0 to 7.1.0
 
 Due to installation issues with the used `luarocks` package manager, we have disabled the installation of the `lua-resty-redis-connector` that provides the functionality to connect to a shared Redis cache.
