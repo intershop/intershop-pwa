@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
+import { anyString, instance, mock, when } from 'ts-mockito';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { RequestReminderFormComponent } from './request-reminder-form.component';
@@ -11,9 +14,13 @@ describe('Request Reminder Form Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
+    const mockAppFacade = mock(AppFacade);
+    when(mockAppFacade.serverSetting$<boolean>(anyString())).thenReturn(of(false));
+
     await TestBed.configureTestingModule({
       declarations: [RequestReminderFormComponent],
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      providers: [{ provide: AppFacade, useFactory: () => instance(mockAppFacade) }],
     }).compileComponents();
   });
 

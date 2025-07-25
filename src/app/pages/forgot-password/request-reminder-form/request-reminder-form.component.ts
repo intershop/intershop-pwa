@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Observable, combineLatest, map } from 'rxjs';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 
 /**
@@ -22,33 +24,36 @@ export class RequestReminderFormComponent implements OnInit {
    * Submit the form data to trigger the request for a password reminder.
    */
   @Output() submitPasswordReminder = new EventEmitter<PasswordReminder>();
-  @Input() isCaptchaRequired = false;
   requestReminderForm = new UntypedFormGroup({});
-  fields: FormlyFieldConfig[];
+  fields$: Observable<FormlyFieldConfig[]>;
 
-  ngOnInit() {
-    this.fields = [
-      {
-        key: 'email',
-        type: 'ish-email-field',
-        props: {
-          label: 'account.forgotdata.email.label',
-          hideRequiredMarker: true,
-          required: true,
+  constructor(private appFacade: AppFacade) {}
+
+  ngOnInit(): void {
+    this.fields$ = combineLatest([
+      this.appFacade.serverSetting$<boolean>('captcha.forgotPassword'),
+      this.appFacade.serverSetting$<boolean>('services.ReCaptchaV2ServiceDefinition.runnable'),
+    ]).pipe(
+      map(([isCaptchaV2, isCaptchaTopicEnabled]) => [
+        {
+          key: 'email',
+          type: 'ish-email-field',
+          props: {
+            label: 'account.forgotdata.email.label',
+            hideRequiredMarker: true,
+            required: true,
+          },
         },
-      },
-      {
-        type: 'ish-captcha-field',
-        props: {
-          topic: 'forgotPassword',
-          required: this.isCaptchaRequired,
-          fieldClass: 'offset-md-4 col-md-8',
+        {
+          type: 'ish-captcha-field',
+          props: {
+            topic: 'forgotPassword',
+            required: isCaptchaV2 && isCaptchaTopicEnabled,
+            fieldClass: 'offset-md-4 col-md-8',
+          },
         },
-        validation: {
-          messages: { required: 'recaptcha.v2.incorrect.error' },
-        },
-      },
-    ];
+      ])
+    );
   }
 
   submitForm() {

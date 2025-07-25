@@ -168,6 +168,13 @@ const fieldComponents = [
         {
           name: 'ish-captcha-field',
           component: CaptchaFieldComponent,
+          defaultOptions: {
+            validation: {
+              messages: {
+                required: 'recaptcha.v2.incorrect.error',
+              },
+            },
+          },
           wrappers: ['form-field-horizontal', 'validation'],
         },
         {
