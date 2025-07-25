@@ -1,43 +1,39 @@
-<!--
-## PR Checklist
-Please check if your PR fulfills the following requirements:
+### 🚀 Description
 
-[ ] The commit message follows our guidelines: https://github.com/intershop/intershop-pwa/blob/develop/CONTRIBUTING.md
-[ ] Tests for the changes have been added (for bug fixes / features)
-[ ] Docs have been added / updated (for bug fixes / features)
-[ ] Visual changes have been approved by VD / IAD (if applicable)
--->
+Please include a summary of the change and which issue is fixed. Also include relevant motivation and context.
 
-## PR Type
+Fixes: #<issue-number>
 
-<!--
-What kind of change does this PR introduce?
-Please check the one that applies to this PR using "x".
--->
+---
 
-[ ] Bugfix
-[ ] Feature
-[ ] Code style update (formatting, local variables)
-[ ] Refactoring (no functional changes, no API changes)
-[ ] Build-related changes
-[ ] CI-related changes
-[ ] Documentation content changes
-[ ] Application / infrastructure changes
-[ ] Other: <!--Please describe.-->
+### ✅ Checklist
 
-## What Is the Current Behavior?
+- [ ] I have run `npm run lint` and fixed any issues
+- [ ] Tests for the changes have been added (for bug fixes / features)
+- [ ] I have run `npm test` and verified tests pass
+- [ ] I followed the component/facade/service design pattern
+- [ ] I added/updated documentation or relevant guides if needed
+- [ ] My code adheres to the architecture and code standards
+- [ ] Visual changes have been approved by VD / IAD (if applicable)
+- [ ] The commit message follows our [guidelines](https://github.com/intershop/intershop-pwa/blob/develop/CONTRIBUTING.md)
 
-<!-- Please describe the current behavior that you are modifying, or link to a relevant issue. -->
+---
 
-Issue Number: Closes #
+### 📸 Screenshots (if applicable)
 
-## What Is the New Behavior?
+_Add screenshots or GIFs to help explain your changes visually._
 
-## Does this PR Introduce a Breaking Change?
+---
 
-<!-- If this PR contains a breaking change, please describe the impact and migration path for existing applications below. -->
+### Breaking Changes
 
-[ ] Yes
-[ ] No
+---
 
-## Other Information
+_If this PR contains a breaking change, please describe the impact and migration path for existing applications below._
+
+- [ ] Yes
+- [ ] No
+
+---
+
+### Other Information
