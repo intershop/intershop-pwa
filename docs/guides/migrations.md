@@ -15,6 +15,10 @@ In the standard Intershop PWA only the the following warning needed to be addres
 
 > `NodeRequire` is deprecated: Use `NodeJS.Require` instead
 
+The OpenResty/NGINX image was updated to `openresty/openresty:1.27.1.2-2-jammy` that includes the update to LuaRocks 3.12.0.
+This update resolves the issue with the `luarocks` package manager (see [#1825](https://github.com/intershop/intershop-pwa/pull/1825)).
+With the working `luarocks` package manager, the installation of the `lua-resty-redis-connector` was re-enabeld again.
+
 ## From 7.0.0 to 7.1.0
 
 Due to installation issues with the used `luarocks` package manager, we have disabled the installation of the `lua-resty-redis-connector` that provides the functionality to connect to a shared Redis cache.
