@@ -10,6 +10,7 @@ import { toArray } from 'rxjs/operators';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
+import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
@@ -46,6 +47,8 @@ const costCenters = [
   { costCenterId: '2' },
 ] as CostCenter[];
 
+const paging = { offset: 0, limit: 30, total: 100 } as PagingInfo;
+
 describe('Cost Centers Effects', () => {
   let actions$: Observable<Action>;
   let effects: CostCentersEffects;
@@ -55,7 +58,7 @@ describe('Cost Centers Effects', () => {
 
   beforeEach(() => {
     costCentersService = mock(CostCentersService);
-    when(costCentersService.getCostCenters()).thenReturn(of(costCenters));
+    when(costCentersService.getCostCenters({})).thenReturn(of({ costCenters, paging }));
     when(costCentersService.getCostCenter(anyString())).thenReturn(of(costCenters[0]));
     when(costCentersService.addCostCenter(anything())).thenReturn(of(costCenters[0]));
     when(costCentersService.updateCostCenter(anything())).thenReturn(of(costCenters[0]));
@@ -86,16 +89,24 @@ describe('Cost Centers Effects', () => {
 
   describe('loadCostCenters$', () => {
     it('should call the service for retrieving costCenters', done => {
-      actions$ = of(loadCostCenters());
+      when(costCentersService.getCostCenters(anything())).thenReturn(
+        of({ costCenters, paging: { limit: 30, offset: 0, total: 100 } })
+      );
+
+      actions$ = of(loadCostCenters({ query: { limit: 30, offset: 0 } }));
 
       effects.loadCostCenters$.subscribe(() => {
-        verify(costCentersService.getCostCenters()).once();
+        verify(costCentersService.getCostCenters(anything())).once();
         done();
       });
     });
 
     it('should retrieve costCenters when triggered', done => {
-      actions$ = of(loadCostCenters());
+      when(costCentersService.getCostCenters(anything())).thenReturn(
+        of({ costCenters, paging: { limit: 30, offset: 0, total: 100 } })
+      );
+
+      actions$ = of(loadCostCenters({ query: { limit: 30, offset: 0 } }));
 
       effects.loadCostCenters$.subscribe(action => {
         expect(action.type).toMatchInlineSnapshot(`"[CostCenters API] Load Cost Centers Success"`);
@@ -116,6 +127,11 @@ describe('Cost Centers Effects', () => {
                 "costCenterId": "2",
               },
             ],
+            "paging": {
+              "limit": 30,
+              "offset": 0,
+              "total": 100,
+            },
           }
         `);
         done();
@@ -124,9 +140,9 @@ describe('Cost Centers Effects', () => {
 
     it('should dispatch a loadCostCentersFail action on failed cost centers load', () => {
       const error = makeHttpError({ status: 401, code: 'feld' });
-      when(costCentersService.getCostCenters()).thenReturn(throwError(() => error));
+      when(costCentersService.getCostCenters(anything())).thenReturn(throwError(() => error));
 
-      const action = loadCostCenters();
+      const action = loadCostCenters({ query: {} });
       const completion = loadCostCentersFail({ error });
 
       actions$ = hot('-a', { a: action });

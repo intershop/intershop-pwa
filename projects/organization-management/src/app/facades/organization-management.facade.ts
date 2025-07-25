@@ -11,6 +11,7 @@ import { toObservable } from 'ish-core/utils/functions';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { B2bUser } from '../models/b2b-user/b2b-user.model';
+import { CostCenterQuery } from '../models/cost-center-query/cost-center-query.model';
 import { UserBudget } from '../models/user-budget/user-budget.model';
 import {
   getCurrentUserBudget,
@@ -26,6 +27,7 @@ import {
   getCostCenters,
   getCostCentersError,
   getCostCentersLoading,
+  getCostCentersPagingInfo,
   getSelectedCostCenter,
   loadCostCenters,
   updateCostCenter,
@@ -67,6 +69,7 @@ export class OrganizationManagementFacade {
   costCentersError$ = this.store.pipe(select(getCostCentersError));
   costCentersLoading$ = this.store.pipe(select(getCostCentersLoading));
   selectedCostCenter$ = this.store.pipe(select(getSelectedCostCenter));
+  costCentersPagingInfo$ = this.store.pipe(select(getCostCentersPagingInfo));
 
   /**
    * user methods
@@ -134,6 +137,11 @@ export class OrganizationManagementFacade {
   /**
    * cost center methods
    */
+
+  loadCostCenters(query: CostCenterQuery) {
+    this.store.dispatch(loadCostCenters({ query }));
+  }
+
   private costCenterManagerSelectOptionsForAccountAdmin$() {
     this.store.dispatch(loadUsers());
     return this.store.pipe(
@@ -164,7 +172,7 @@ export class OrganizationManagementFacade {
   }
 
   costCentersOfCurrentUser$() {
-    this.store.dispatch(loadCostCenters());
+    this.store.dispatch(loadCostCenters({ query: {} }));
     return this.costCenters$.pipe(
       withLatestFrom(this.store.pipe(select(getLoggedInUser))),
       map(([costCenters, currentUser]) => costCenters.filter(cc => cc.costCenterOwner.login === currentUser.login))

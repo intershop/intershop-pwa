@@ -138,78 +138,88 @@ describe('Cost Center Mapper', () => {
           itemId: 'XopA8AVnEKUAAAGR0OAADVoP',
         },
       ] as Link[];
-      const costCenters = CostCenterMapper.fromListData(costCenterListData);
+      const costCenters = CostCenterMapper.fromListData({
+        data: costCenterListData,
+        info: { limit: 5, offset: 0, total: 10 },
+      });
 
       expect(costCenters).toBeTruthy();
       expect(costCenters).toMatchInlineSnapshot(`
-        [
-          {
-            "active": true,
-            "approvedOrders": 0,
-            "budget": {
-              "currency": "USD",
-              "currencyMnemonic": "USD",
-              "type": "Money",
-              "value": 20000,
+        {
+          "costCenters": [
+            {
+              "active": true,
+              "approvedOrders": 0,
+              "budget": {
+                "currency": "USD",
+                "currencyMnemonic": "USD",
+                "type": "Money",
+                "value": 20000,
+              },
+              "budgetPeriod": "monthly",
+              "costCenterId": "100400",
+              "costCenterOwner": {
+                "email": "jlink@test.intershop.de",
+                "firstName": "Jack",
+                "lastName": "Link",
+                "login": "jlink@test.intershop.de",
+              },
+              "id": "LmpA8AVnGzEAAAGRxuAADVoP",
+              "name": "Oil Corp Headquarter",
+              "pendingOrders": 0,
+              "remainingBudget": {
+                "currency": "USD",
+                "currencyMnemonic": "USD",
+                "type": "Money",
+                "value": 20000,
+              },
+              "spentBudget": {
+                "currency": "USD",
+                "currencyMnemonic": "USD",
+                "type": "Money",
+                "value": 0,
+              },
             },
-            "budgetPeriod": "monthly",
-            "costCenterId": "100400",
-            "costCenterOwner": {
-              "email": "jlink@test.intershop.de",
-              "firstName": "Jack",
-              "lastName": "Link",
-              "login": "jlink@test.intershop.de",
+            {
+              "active": true,
+              "approvedOrders": 4,
+              "budget": {
+                "currency": "USD",
+                "currencyMnemonic": "USD",
+                "type": "Money",
+                "value": 5000,
+              },
+              "budgetPeriod": "monthly",
+              "costCenterId": "100401",
+              "costCenterOwner": {
+                "email": "bboldner@test.intershop.de",
+                "firstName": "Bernhard",
+                "lastName": "Boldner",
+                "login": "bboldner@test.intershop.de",
+              },
+              "id": "XopA8AVnEKUAAAGR0OAADVoP",
+              "name": "Oil Corp Subsidiary 1",
+              "pendingOrders": 1,
+              "remainingBudget": {
+                "currency": "USD",
+                "currencyMnemonic": "USD",
+                "type": "Money",
+                "value": -151759.02,
+              },
+              "spentBudget": {
+                "currency": "USD",
+                "currencyMnemonic": "USD",
+                "type": "Money",
+                "value": 156759.02,
+              },
             },
-            "id": "LmpA8AVnGzEAAAGRxuAADVoP",
-            "name": "Oil Corp Headquarter",
-            "pendingOrders": 0,
-            "remainingBudget": {
-              "currency": "USD",
-              "currencyMnemonic": "USD",
-              "type": "Money",
-              "value": 20000,
-            },
-            "spentBudget": {
-              "currency": "USD",
-              "currencyMnemonic": "USD",
-              "type": "Money",
-              "value": 0,
-            },
+          ],
+          "paging": {
+            "limit": 5,
+            "offset": 0,
+            "total": 10,
           },
-          {
-            "active": true,
-            "approvedOrders": 4,
-            "budget": {
-              "currency": "USD",
-              "currencyMnemonic": "USD",
-              "type": "Money",
-              "value": 5000,
-            },
-            "budgetPeriod": "monthly",
-            "costCenterId": "100401",
-            "costCenterOwner": {
-              "email": "bboldner@test.intershop.de",
-              "firstName": "Bernhard",
-              "lastName": "Boldner",
-              "login": "bboldner@test.intershop.de",
-            },
-            "id": "XopA8AVnEKUAAAGR0OAADVoP",
-            "name": "Oil Corp Subsidiary 1",
-            "pendingOrders": 1,
-            "remainingBudget": {
-              "currency": "USD",
-              "currencyMnemonic": "USD",
-              "type": "Money",
-              "value": -151759.02,
-            },
-            "spentBudget": {
-              "currency": "USD",
-              "currencyMnemonic": "USD",
-              "type": "Money",
-              "value": 156759.02,
-            },
-          },
-        ]
+        }
       `);
     });
   });

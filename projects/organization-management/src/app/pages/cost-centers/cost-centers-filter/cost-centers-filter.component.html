@@ -1,0 +1,10 @@
+<form *ngIf="fields" [formGroup]="form" (ngSubmit)="submitForm()">
+  <div>
+    <formly-form [form]="form" [fields]="[fields[0]]" [model]="model$ | async" />
+  </div>
+  <div class="row mb-4 justify-content-end">
+    <div class="col-md-8 text-right">
+      <button type="submit" class="btn btn-primary mr-0">{{ 'account.costcenter.filter.apply' | translate }}</button>
+    </div>
+  </div>
+</form>
