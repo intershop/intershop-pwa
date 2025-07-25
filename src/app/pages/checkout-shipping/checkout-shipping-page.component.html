@@ -55,7 +55,14 @@
         <ish-basket-cost-summary [totals]="basket.totals" />
 
         <div class="d-grid">
-          <button class="btn btn-lg btn-primary" type="button" [disabled]="nextDisabled" (click)="goToNextStep()">
+          <button
+            class="btn btn-lg btn-block btn-primary"
+            [ngClass]="{ disabled: nextDisabled }"
+            type="button"
+            [attr.aria-disabled]="nextDisabled"
+            [attr.aria-label]="(!nextDisabled ? 'checkout.button.label' : 'checkout.button.label.disabled') | translate"
+            (click)="goToNextStep()"
+          >
             {{ 'checkout.button.label' | translate }}
           </button>
         </div>

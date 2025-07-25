@@ -135,9 +135,16 @@
         <formly-form [form]="form" [model]="model" [fields]="fields" [options]="options" />
         <div class="d-grid">
           <button
-            class="btn btn-lg btn-block btn-primary"
             type="submit"
-            [disabled]="(form.invalid && tcForm.submitted) || multipleBuckets || submitting"
+            class="btn btn-lg btn-block btn-primary"
+            [ngClass]="{ disabled: (form.invalid && tcForm.submitted) || multipleBuckets || submitting }"
+            [attr.aria-disabled]="(form.invalid && tcForm.submitted) || multipleBuckets || submitting"
+            [attr.aria-label]="
+              (!(form.invalid && tcForm.submitted) && !multipleBuckets && !submitting
+                ? 'checkout.order_review.send.button'
+                : 'checkout.order_review.send.button.disabled'
+              ) | translate
+            "
           >
             <ng-container *ngIf="submitting">
               <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pe-3" />

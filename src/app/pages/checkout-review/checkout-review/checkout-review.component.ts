@@ -47,7 +47,7 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
    * sends an event to submit order
    */
   submitOrder() {
-    if (this.form.valid) {
+    if (this.form.valid && !this.multipleBuckets && !this.submitting) {
       this.createOrder.emit();
     }
   }

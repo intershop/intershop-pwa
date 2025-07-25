@@ -159,7 +159,7 @@ describe('Checkout Payment Component', () => {
       component.basket.payment = undefined;
       component.goToNextStep();
       fixture.detectChanges();
-      expect(element.querySelector('button').hasAttribute('disabled')).toBeTruthy();
+      expect(element.querySelector('button').getAttribute('aria-disabled')).toBe('true');
     });
   });
 
