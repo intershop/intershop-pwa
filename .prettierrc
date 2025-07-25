@@ -3,8 +3,11 @@
   "arrowParens": "avoid",
   "singleQuote": true,
   "trailingComma": "es5",
-  "parser": "flow",
   "endOfLine": "auto",
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "bracketSpacing": true,
   "overrides": [
     {
       "files": ["*.ts", "*.mjs", "*.mts"],
