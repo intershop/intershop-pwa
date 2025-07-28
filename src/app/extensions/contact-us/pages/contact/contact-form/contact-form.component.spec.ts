@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { ContactUsFacade } from '../../../facades/contact-us.facade';
@@ -23,11 +24,15 @@ describe('Contact Form Component', () => {
     const contactUsFacade = mock(ContactUsFacade);
     when(contactUsFacade.contactSubjects$()).thenReturn(of(['subject1', 'subject2']));
 
+    const mockAppFacade = mock(AppFacade);
+    when(mockAppFacade.serverSetting$<boolean>(anyString())).thenReturn(of(false));
+
     await TestBed.configureTestingModule({
       declarations: [ContactFormComponent],
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: AppFacade, useFactory: () => instance(mockAppFacade) },
         { provide: ContactUsFacade, useFactory: () => instance(contactUsFacade) },
       ],
     }).compileComponents();
