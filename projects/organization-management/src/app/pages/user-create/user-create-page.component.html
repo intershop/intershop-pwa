@@ -20,7 +20,14 @@
           <button
             type="submit"
             class="btn btn-primary"
-            [disabled]="form.invalid && userForm.submitted"
+            [ngClass]="{ disabled: form.invalid && userForm.submitted }"
+            [attr.aria-disabled]="form.invalid && userForm.submitted"
+            [attr.aria-label]="
+              (!form.invalid || !userForm.submitted
+                ? 'account.user.new.button.create.label'
+                : 'forms.required.button.label.disabled'
+              ) | translate
+            "
             data-testing-id="create-user-submit"
           >
             {{ 'account.user.new.button.create.label' | translate }}
