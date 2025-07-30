@@ -53,15 +53,15 @@
         [attr.aria-label]="'search.searchbox.button.sticky_header.aria_label' | translate"
       >
         <fa-icon *ngIf="isSticky" [icon]="['fas', 'search']" class="header-icon" />
-        <div
-          *ngIf="isSticky || showSearch"
-          class="search-container header-search-container"
-          [ngbCollapse]="!showSearch"
-          [ngClass]="{ show: !isSticky }"
-        >
-          <ng-container *ngTemplateOutlet="searchBoxTemplate" />
-        </div>
       </a>
+      <div
+        *ngIf="isSticky || showSearch"
+        class="search-container header-search-container"
+        [ngbCollapse]="!showSearch"
+        [ngClass]="{ show: !isSticky }"
+      >
+        <ng-container *ngTemplateOutlet="searchBoxTemplate" />
+      </div>
     </ng-template>
 
     <div class="language-switch-container d-none d-md-block">
