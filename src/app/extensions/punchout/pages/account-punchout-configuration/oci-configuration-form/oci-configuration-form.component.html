@@ -57,7 +57,14 @@
             <button
               type="submit"
               class="btn btn-primary"
-              [disabled]="form.invalid && configForm.submitted"
+              [ngClass]="{ disabled: form.invalid && configForm.submitted }"
+              [attr.aria-disabled]="form.invalid && configForm.submitted"
+              [attr.aria-label]="
+                (!form.invalid || !configForm.submitted
+                  ? 'account.update.button.label'
+                  : 'forms.required.button.label.disabled'
+                ) | translate
+              "
               data-testing-id="update-oci-configuration"
             >
               {{ 'account.update.button.label' | translate }}
