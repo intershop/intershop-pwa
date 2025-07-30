@@ -19,7 +19,15 @@
 
   <div class="row">
     <div class="offset-md-4 col-md-8 offset-lg-0 col-lg-12 offset-lg-4 col-xl-8">
-      <button type="submit" [disabled]="form.invalid && addressForm.submitted" class="btn btn-primary">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [ngClass]="{ disabled: form.invalid && addressForm.submitted }"
+        [attr.aria-disabled]="form.invalid && addressForm.submitted"
+        [attr.aria-label]="
+          (!form.invalid || !addressForm.submitted ? buttonLabel : 'forms.required.button.label.disabled') | translate
+        "
+      >
         {{ buttonLabel | translate }}
       </button>
       <button (click)="cancelForm()" type="reset" class="btn btn-secondary">
