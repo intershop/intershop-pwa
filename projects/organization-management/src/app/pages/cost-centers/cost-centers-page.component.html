@@ -126,6 +126,9 @@
               <ng-template #deleteButtonDisabled>
                 <span
                   class="btn-tool btn-link inactive"
+                  tabindex="0"
+                  aria-disabled="true"
+                  role="button"
                   title="{{ 'account.costcenter.delete.disabled.icon' | translate }}"
                 >
                   <fa-icon [icon]="['fas', 'trash-alt']" />
