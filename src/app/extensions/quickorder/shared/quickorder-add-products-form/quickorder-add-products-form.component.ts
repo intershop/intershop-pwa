@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 
+import { MessageFacade } from 'ish-core/facades/message.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { SkuQuantityType } from 'ish-core/models/product/product.helper';
 
@@ -22,7 +23,11 @@ export class QuickorderAddProductsFormComponent implements OnInit {
 
   private numberOfRows = 5;
 
-  constructor(private translate: TranslateService, private shoppingFacade: ShoppingFacade) {}
+  constructor(
+    private translate: TranslateService,
+    private shoppingFacade: ShoppingFacade,
+    private messageFacade: MessageFacade
+  ) {}
 
   ngOnInit() {
     this.initModel();
@@ -36,12 +41,34 @@ export class QuickorderAddProductsFormComponent implements OnInit {
 
   onAddProducts() {
     const products = this.model.addProducts.filter((p: SkuQuantityType) => !!p.sku && !!p.quantity);
-    if (products.length > 0) {
-      products.forEach(product => {
-        this.shoppingFacade.addProductToBasket(product.sku, product.quantity);
-      });
+    if (products.length === 0) {
+      this.messageFacade.error({ message: 'quickorder.page.add.cart.no_id' });
+      return;
     }
+    if (this.quickOrderForm.pending) {
+      return;
+    }
+    if (this.hasValidationError()) {
+      this.messageFacade.error({ message: 'quickorder.page.add.cart.disabled' });
+      return;
+    }
+    products.forEach(product => {
+      this.shoppingFacade.addProductToBasket(product.sku, product.quantity);
+    });
     this.reset();
+  }
+
+  private hasValidationError(): boolean {
+    if (this.quickOrderForm.valid) {
+      return false;
+    }
+    for (let i = 0; i < this.model.addProducts.length; i++) {
+      const skuControl = this.quickOrderForm.get(`addProducts.${i}.sku`);
+      if (skuControl?.errors) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private initModel() {
@@ -79,7 +106,14 @@ export class QuickorderAddProductsFormComponent implements OnInit {
                 ariaLabel: 'shopping_cart.direct_order.item_placeholder',
               },
               expressions: {
-                'props.required': conf => !!conf.model.quantity,
+                'props.required': (field: FormlyFieldConfig) => {
+                  const currentIndex = parseInt(field?.parent?.key?.toString() || '-1', 10);
+                  if (currentIndex !== 0) {
+                    return false;
+                  }
+                  const products = this.model.addProducts.filter((p: SkuQuantityType) => !!p.sku && !!p.quantity);
+                  return products.length === 0;
+                },
               },
               validation: {
                 messages: {

@@ -1289,6 +1289,8 @@
   "punchout.error.missing.parameters": "Error connecting to the Punchout catalog. Required start parameters are missing.",
   "punchout.login_already_exists.error": "A Punchout user with that user name already exists. Please check the information for accuracy or enter a different name.",
   "quickorder.page.add.cart": "Add to cart",
+  "quickorder.page.add.cart.disabled": "Please check whether product IDs or quantities are invalid.",
+  "quickorder.page.add.cart.no_id": "Please add at least one product by ID.",
   "quickorder.page.add.row": "Add another row",
   "quickorder.page.add.row.multiple": "Add {{0}} more rows",
   "quickorder.page.breadcrumb": "Quick order",

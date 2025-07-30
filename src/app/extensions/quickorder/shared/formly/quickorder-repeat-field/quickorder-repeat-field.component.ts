@@ -55,7 +55,9 @@ export class QuickorderRepeatFieldComponent extends FieldArrayType implements Af
         context.context.select('product').pipe(
           map(product => {
             this.cdRef.markForCheck();
-            return product.failed && formControl.value.trim !== '' ? { validProduct: false } : undefined;
+            return product.failed && formControl.value && formControl.value.trim !== ''
+              ? { validProduct: false }
+              : undefined;
           })
         )
       );

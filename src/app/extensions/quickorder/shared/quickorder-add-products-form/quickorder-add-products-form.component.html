@@ -1,5 +1,7 @@
 <form
   [formGroup]="quickOrderForm"
+  ishFormSubmit
+  #quickOrderIDForm="ngForm"
   (ngSubmit)="onAddProducts()"
   [attr.aria-label]="'quickorder.page.form.label' | translate"
 >
@@ -9,8 +11,27 @@
   </div>
 
   <formly-form [model]="model" [fields]="fields" [options]="options" [form]="quickOrderForm" class="pt-1" />
-
-  <button type="submit" class="btn btn-primary" [disabled]="quickOrderForm.pristine" data-testing-id="add-form-to-cart">
+  <div
+    id="submit-button-help"
+    aria-live="polite"
+    class="sr-only"
+    *ngIf="(quickOrderForm.pristine || quickOrderForm.invalid || quickOrderForm.pending) && quickOrderIDForm.submitted"
+  >
+    {{ 'quickorder.page.add.cart.disabled' | translate }}
+  </div>
+  <button
+    type="submit"
+    class="btn btn-primary"
+    [attr.aria-disabled]="
+      (quickOrderForm.pristine || quickOrderForm.invalid || quickOrderForm.pending) && quickOrderIDForm.submitted
+    "
+    [attr.aria-describedby]="
+      (quickOrderForm.pristine || quickOrderForm.invalid || quickOrderForm.pending) && quickOrderIDForm.submitted
+        ? 'submit-button-help'
+        : null
+    "
+    data-testing-id="add-form-to-cart"
+  >
     {{ 'quickorder.page.add.cart' | translate }}
   </button>
 

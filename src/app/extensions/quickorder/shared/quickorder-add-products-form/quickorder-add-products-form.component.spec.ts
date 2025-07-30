@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { anyNumber, anyString, instance, mock, verify, when } from 'ts-mockito';
 
+import { MessageFacade } from 'ish-core/facades/message.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
@@ -12,12 +13,16 @@ describe('Quickorder Add Products Form Component', () => {
   let fixture: ComponentFixture<QuickorderAddProductsFormComponent>;
   let element: HTMLElement;
   const shoppingFacade = mock(ShoppingFacade);
+  const messageFacade = mock(MessageFacade);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [QuickorderAddProductsFormComponent],
       imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+      providers: [
+        { provide: MessageFacade, useFactory: () => instance(messageFacade) },
+        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
+      ],
     }).compileComponents();
   });
 
@@ -73,6 +78,7 @@ describe('Quickorder Add Products Form Component', () => {
     component.model = {
       addProducts: [validProducts[0], invalidProducts[0], invalidProducts[1], validProducts[1], invalidProducts[2]],
     };
+    component.quickOrderForm.patchValue(component.model);
     component.onAddProducts();
 
     verify(shoppingFacade.addProductToBasket(validProducts[0].sku, validProducts[0].quantity)).once();
