@@ -55,6 +55,12 @@ export const routes: Routes = [
     canActivate: [redirectFirstToParentGuard, authorizationToggleGuard],
   },
   {
+    path: 'users/import',
+    loadChildren: () => import('./user-import/user-import-page.module').then(m => m.UserImportPageModule),
+    data: { permission: 'APP_B2B_MANAGE_USERS' },
+    canActivate: [redirectFirstToParentGuard, authorizationToggleGuard],
+  },
+  {
     path: 'users/:B2BCustomerLogin',
     loadChildren: () => import('./user-detail/user-detail-page.module').then(m => m.UserDetailPageModule),
     canActivate: [fetchUsersGuard, authorizationToggleGuard],

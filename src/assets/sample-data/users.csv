@@ -1,0 +1,3 @@
+title,firstName,lastName,email,phone,active,budgetCurrency,budgetValue,budgetPeriod,orderSpentLimitCurrency,orderSpentLimitValue,APP_B2B_BUYER,APP_B2B_ACCOUNT_OWNER,APP_B2B_APPROVER,APP_B2B_COSTCENTER_OWNER,APP_B2B_COSTOBJECT_MANAGER
+Mr.,Max,Mustermann,max.mustermann@example.com,01701234567,true,USD,10000,weekly,USD,500,true,true,true,true,true
+Mr.,John,Doe,john.doe@example.com,0123456789,false,EUR,5000,monthly,EUR,250,true,false,true,false,true

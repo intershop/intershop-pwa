@@ -20,6 +20,8 @@ Having `Cache-Control: no-cache` is a requirement for the Payment Card Industry 
 
 With Intershop PWA 9.1.0, cost center import functionality via CSV files was introduced.
 
+With Intershop PWA 9.1.0, user import functionality via CSV files was introduced.
+
 ## From 8.0.0 to 9.0.0
 
 With Intershop PWA 9.0.0, the SSR container now supports the manual creation of PWA heap dumps for debugging purposes.

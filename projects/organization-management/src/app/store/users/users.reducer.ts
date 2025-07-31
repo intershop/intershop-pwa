@@ -10,7 +10,11 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 import {
   addUser,
   addUserFail,
+  addUserFromCsvSingleResult,
   addUserSuccess,
+  addUsersFromCsv,
+  addUsersFromCsvComplete,
+  addUsersFromCsvImportTotal,
   deleteUser,
   deleteUserFail,
   deleteUserSuccess,
@@ -38,12 +42,16 @@ export interface UsersState extends EntityState<B2bUser> {
   loading: boolean;
   error: HttpError;
   roles: B2bRole[];
+  importResults: { user: B2bUser; status: string }[];
+  importTotal: number;
 }
 
 const initialState: UsersState = usersAdapter.getInitialState({
   loading: false,
   error: undefined,
   roles: [],
+  importResults: [],
+  importTotal: 0,
 });
 
 export const usersReducer = createReducer(
@@ -103,6 +111,45 @@ export const usersReducer = createReducer(
       ...usersAdapter.removeOne(login, state),
     };
   }),
+  on(
+    addUsersFromCsv,
+    (state, action): UsersState => ({
+      ...state,
+      loading: true,
+      importResults: [],
+      importTotal: action.payload.users?.length || 0,
+    })
+  ),
+  on(addUserFromCsvSingleResult, (state, action): UsersState => {
+    const { importResult } = action.payload;
+    const { user } = importResult;
+
+    if (user?.login) {
+      return {
+        ...usersAdapter.upsertOne(user, state),
+        importResults: [...state.importResults, importResult],
+      };
+    }
+
+    return {
+      ...state,
+      importResults: [...state.importResults, importResult],
+    };
+  }),
+  on(
+    addUsersFromCsvComplete,
+    (state): UsersState => ({
+      ...state,
+      loading: false,
+    })
+  ),
+  on(
+    addUsersFromCsvImportTotal,
+    (state, action): UsersState => ({
+      ...state,
+      importTotal: action.payload.totalUsers,
+    })
+  ),
   on(
     loadSystemUserRolesSuccess,
     (state, action): UsersState => ({

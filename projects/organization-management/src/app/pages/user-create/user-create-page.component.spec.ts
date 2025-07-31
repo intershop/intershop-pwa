@@ -11,6 +11,7 @@ import { UserRolesSelectionComponent } from '../../components/user-roles-selecti
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
 import { UserCreatePageComponent } from './user-create-page.component';
+import { UserCsvImportComponent } from './user-csv-import/user-csv-import.component';
 
 describe('User Create Page Component', () => {
   let component: UserCreatePageComponent;
@@ -23,6 +24,7 @@ describe('User Create Page Component', () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
+        MockComponent(UserCsvImportComponent),
         MockComponent(UserProfileFormComponent),
         MockComponent(UserRolesSelectionComponent),
         MockPipe(ServerSettingPipe),

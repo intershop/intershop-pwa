@@ -1,0 +1,121 @@
+<h1>{{ 'account.user.import.heading' | translate }}</h1>
+<p>{{ 'account.user.import.info' | translate }}</p>
+
+<div class="loading-container" *ngIf="importedUsers$ | async as importedUsers">
+  <ng-container *ngIf="importedUsers.length > 0; else loading">
+    <!-- user import progress bar -->
+    <ng-container *ngIf="importProgress$ | async as progress">
+      <div *ngIf="progress.total > 0" class="mb-3">
+        <div class="progress">
+          <div
+            class="progress-bar"
+            role="progressbar"
+            [style.width.%]="progress.percentage"
+            [attr.aria-valuemin]="0"
+            [attr.aria-valuenow]="progress.current"
+            [attr.aria-valuemax]="progress.total"
+          >
+            <span class="progress-display">
+              {{
+                'account.user.import.progress'
+                  | translate
+                    : {
+                        total: progress.total,
+                        processed: progress.current,
+                        percentage: progress.percentage
+                      }
+              }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- imported user table -->
+    <table cdk-table [dataSource]="importedUsers" class="table table-lg mobile-optimized">
+      <!-- User Name -->
+      <ng-container cdkColumnDef="userName">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef>
+          {{ 'account.user.list.header.name' | translate }}
+        </th>
+        <td cdk-cell *cdkCellDef="let imported" [attr.data-label]="'account.user.list.header.name' | translate">
+          <a [routerLink]="['/account/organization/users', imported.user.email]" class="d-block">
+            {{ imported.user.firstName }} {{ imported.user.lastName }}
+          </a>
+          <div *ngIf="!imported.user.active" class="input-help">
+            {{ 'account.user.list.status.inactive' | translate }}
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- User Roles -->
+      <ng-container cdkColumnDef="userRoles">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef>
+          {{ 'account.user.list.header.roles' | translate }}
+        </th>
+        <td cdk-cell *cdkCellDef="let imported" [attr.data-label]="'account.user.list.header.roles' | translate">
+          <ish-user-roles-badges [roleIDs]="imported.user.roleIDs" />
+        </td>
+      </ng-container>
+
+      <!-- User Budget -->
+      <ng-container cdkColumnDef="userBudget">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef>
+          {{ 'account.user.list.header.budget' | translate }}
+        </th>
+        <td cdk-cell *cdkCellDef="let imported" [attr.data-label]="'account.user.list.header.budget' | translate">
+          <dl>
+            <dt>{{ 'account.user.new.order_spend_limit.label' | translate }}</dt>
+            <dd>
+              {{
+                imported.user.userBudget.orderSpentLimit
+                  ? (imported.user.userBudget.orderSpentLimit | ishPrice)
+                  : ('account.budget.unlimited' | translate)
+              }}
+            </dd>
+            <ng-container *ngIf="imported.user.userBudget.budget; else noBudget">
+              <dt>{{ 'account.budget.label' | translate : { '0': imported.user.userBudget.budgetPeriod } }}</dt>
+              <dd>{{ imported.user.userBudget.budget | ishPrice }}</dd>
+            </ng-container>
+            <ng-template #noBudget>
+              <dt>{{ 'account.user.budget.label' | translate }}</dt>
+              <dd>{{ 'account.budget.unlimited' | translate }}</dd>
+            </ng-template>
+          </dl>
+        </td>
+      </ng-container>
+
+      <!-- Import Status -->
+      <ng-container cdkColumnDef="status">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef class="w-25">
+          {{ 'account.user.list.header.status' | translate }}
+        </th>
+        <td cdk-cell *cdkCellDef="let imported" [attr.data-label]="'account.user.list.header.status' | translate">
+          <span [ngClass]="imported.status === 'success' ? 'text-success' : 'text-error'">
+            {{
+              imported.status === 'success'
+                ? ('account.user.import.status.success' | translate)
+                : (imported.status | translate)
+            }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Header and Row Declarations -->
+      <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
+      <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay"></tr>
+    </table>
+
+    <a [routerLink]="['/account/organization/users']">
+      {{ 'account.user.import.back' | translate }}
+    </a>
+  </ng-container>
+
+  <ng-template #loading>
+    <ish-loading *ngIf="loading$ | async; else emptyMessage" />
+  </ng-template>
+
+  <ng-template #emptyMessage>
+    <p>{{ 'account.user.import.empty' | translate }}</p>
+  </ng-template>
+</div>
