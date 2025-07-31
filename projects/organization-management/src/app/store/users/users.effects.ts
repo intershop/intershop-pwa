@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { from } from 'rxjs';
-import { concatMap, exhaustMap, filter, map, mergeMap, switchMap } from 'rxjs/operators';
+import { from, of } from 'rxjs';
+import { catchError, concatMap, endWith, exhaustMap, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectPath, selectRouteParam } from 'ish-core/store/core/router';
@@ -16,7 +16,11 @@ import { UsersService } from '../../services/users/users.service';
 import {
   addUser,
   addUserFail,
+  addUserFromCsvSingleResult,
   addUserSuccess,
+  addUsersFromCsv,
+  addUsersFromCsvComplete,
+  addUsersFromCsvImportTotal,
   deleteUser,
   deleteUserFail,
   deleteUserSuccess,
@@ -99,6 +103,52 @@ export class UsersEffects {
             )
           ),
           mapErrorToAction(addUserFail)
+        )
+      )
+    )
+  );
+
+  addUsersFromCsv$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addUsersFromCsv),
+      mapToPayload(),
+      concatMap(payload =>
+        this.navigateTo('../import').pipe(
+          switchMap(() => {
+            const users = payload.users;
+
+            if (!users?.length) {
+              return of(addUsersFromCsvComplete());
+            }
+
+            addUsersFromCsvImportTotal({ totalUsers: users.length });
+
+            return from(users).pipe(
+              concatMap(user =>
+                this.usersService.addUser(user).pipe(
+                  map(addedUser =>
+                    addUserFromCsvSingleResult({
+                      importResult: {
+                        user: addedUser,
+                        status: 'success',
+                      },
+                    })
+                  ),
+                  catchError(error =>
+                    of(
+                      addUserFromCsvSingleResult({
+                        importResult: {
+                          user,
+                          status: error.errors ? error.errors[0].message : error.code,
+                        },
+                      })
+                    )
+                  )
+                )
+              ),
+              endWith(addUsersFromCsvComplete())
+            );
+          })
         )
       )
     )
