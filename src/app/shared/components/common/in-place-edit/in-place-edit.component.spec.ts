@@ -62,8 +62,8 @@ describe('In Place Edit Component', () => {
           <button type="button" class="btn btn-link" title="inplace_edit.click_to_edit">
             <fa-icon
               class="pl-2 mr-auto btn-link"
-              ng-reflect-size="1x"
               ng-reflect-icon="fas,pencil-alt"
+              ng-reflect-size="1x"
             ></fa-icon>
           </button></div
       ></ish-in-place-edit>

@@ -103,7 +103,7 @@ describe('Account Order Template Detail Page Component', () => {
       [
         "ish-error-message",
         "ish-in-place-edit",
-        "ish-inline-validation-wrapper",
+        "ish-validation-wrapper",
         "ish-text-input-field",
         "ish-validation-icons",
       ]
@@ -119,7 +119,7 @@ describe('Account Order Template Detail Page Component', () => {
       [
         "ish-error-message",
         "ish-in-place-edit",
-        "ish-inline-validation-wrapper",
+        "ish-validation-wrapper",
         "ish-text-input-field",
         "ish-validation-icons",
         "ish-account-order-template-detail-line-item",
