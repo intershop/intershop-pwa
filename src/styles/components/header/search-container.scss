@@ -75,12 +75,27 @@
   }
 
   .search {
-    @media (max-width: $screen-xs-max) {
-      &.focus {
+    &.focus {
+      @media (max-width: $screen-xs-max) {
         .search-suggest-container {
           // mobile: suggest layer is only shown when search box has focus
           display: block;
         }
+      }
+
+      @media (min-width: $screen-sm) {
+        // fully expanded width for suggest layer to overlay the logo
+        width: 327%;
+      }
+
+      @media (min-width: $screen-md) {
+        // expand but leave space for the logo
+        width: 230%;
+      }
+
+      @media (min-width: $screen-lg) {
+        // more space to expand and leave space for the logo
+        width: 240%;
       }
     }
 
@@ -90,10 +105,6 @@
       right: 0;
       width: 100%;
       transition: width 0.3s ease 0.1s;
-
-      &.focus {
-        width: 250%;
-      }
 
       &.scaled-up {
         .search-suggest-container {
