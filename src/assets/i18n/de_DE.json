@@ -1366,7 +1366,7 @@
   "subscriptions.recipient.already_subscribed.error": "Der Newsletter wurde bereits abonniert.",
   "subscriptions.subscribed": "abonniert",
   "subscriptions.subscription_not_found.error": "Es wurde kein Newsletter-Abonnement gefunden.",
-  "suggest.brands.headline": "Marken",
+  "suggest.brands.headline": "Suche in Marken",
   "suggest.categories.headline": "Kategorien",
   "suggest.error.headline": "Etwas ist schiefgegangen",
   "suggest.error.text": "Es können keine Vorschläge angezeigt werden.",
