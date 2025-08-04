@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { mapToProperty } from 'ish-core/utils/operators';
+import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate, OrderTemplateItem } from '../../models/order-template/order-template.model';
@@ -14,7 +15,7 @@ import { OrderTemplate, OrderTemplateItem } from '../../models/order-template/or
   templateUrl: './account-order-template-detail-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountOrderTemplateDetailPageComponent implements OnInit, OnDestroy {
+export class AccountOrderTemplateDetailPageComponent implements OnInit {
   orderTemplate$: Observable<OrderTemplate>;
   orderTemplateError$: Observable<HttpError>;
   orderTemplateLoading$: Observable<boolean>;
@@ -25,10 +26,9 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit, OnDestro
   model: { title: string };
   fields: FormlyFieldConfig[];
 
-  titleControl = new FormControl('', { validators: [Validators.required] });
   private currentOrderTemplate: OrderTemplate;
 
-  private destroy$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private orderTemplatesFacade: OrderTemplatesFacade) {}
 
@@ -40,12 +40,10 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit, OnDestro
       mapToProperty('length')
     );
 
-    this.orderTemplate$.pipe(takeUntil(this.destroy$)).subscribe(orderTemplate => {
-      if (orderTemplate) {
-        this.currentOrderTemplate = orderTemplate;
-        this.model = { title: orderTemplate.title };
-        this.fields = this.getFields();
-      }
+    this.orderTemplate$.pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef)).subscribe(orderTemplate => {
+      this.currentOrderTemplate = orderTemplate;
+      this.model = { title: orderTemplate.title };
+      this.fields = this.getFields();
     });
   }
 
@@ -58,6 +56,7 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit, OnDestro
         props: {
           required: true,
           ariaLabel: 'account.order_template.edit.name.label',
+          showValidation: () => false,
         },
         validation: {
           messages: {
@@ -66,11 +65,6 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit, OnDestro
         },
       },
     ];
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   updateTitle() {
@@ -83,9 +77,9 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit, OnDestro
   }
 
   resetTitle() {
-    this.orderTemplate$.pipe(takeUntil(this.destroy$)).subscribe(orderTemplate => {
-      this.model = { ...this.model, title: orderTemplate.title };
-    });
+    this.orderTemplate$
+      .pipe(whenTruthy(), take(1), takeUntilDestroyed(this.destroyRef))
+      .subscribe(orderTemplate => (this.model = { ...this.model, title: orderTemplate.title }));
   }
 
   trackByFn(_: number, item: OrderTemplateItem) {

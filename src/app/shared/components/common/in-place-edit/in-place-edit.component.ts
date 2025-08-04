@@ -13,7 +13,6 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { SizeProp } from '@fortawesome/fontawesome-svg-core';
 import { fromEvent } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -26,8 +25,7 @@ import { filter, map } from 'rxjs/operators';
 export class InPlaceEditComponent implements AfterViewInit {
   // localization key, can be used to give the edit-pen icon a more descriptive aria label that describes what will be edited when clicking it
   @Input() ariaLabelName = '';
-  @Input() alignment: 'baseline' | 'center' = 'baseline';
-  @Input() iconSize: SizeProp = '1x';
+  @Input() buttonClass: string;
   @Input() confirmDisabled = false;
   @Output() edited = new EventEmitter<void>();
   @Output() aborted = new EventEmitter<void>();
@@ -45,46 +43,39 @@ export class InPlaceEditComponent implements AfterViewInit {
   ngAfterViewInit() {
     fromEvent(this.document, 'mousedown')
       .pipe(
-        // only main button clicks
+        // toggle edit mode only on main button click
         filter((event: MouseEvent) => !event.button),
         map(({ target }) => this.host.nativeElement.contains(target)),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(click => {
-        const newMode = click ? 'edit' : 'view';
-        if (newMode === 'view' && newMode !== this.mode) {
-          this.confirm();
-        }
-        this.mode = newMode;
-        this.cdRef.detectChanges();
-        if (this.mode === 'edit') {
-          setTimeout(() => {
-            this.host.nativeElement.querySelector('.form-control')?.focus();
-          }, 200);
-        }
-      });
+      .subscribe(click => this.toggleEditMode(click));
+  }
+
+  toggleEditMode(edit: boolean) {
+    const newMode = edit ? 'edit' : 'view';
+    if (newMode === 'view' && newMode !== this.mode) {
+      this.confirm();
+    }
+    this.mode = newMode;
+    this.cdRef.detectChanges();
+    if (this.mode === 'edit') {
+      setTimeout(() => {
+        this.host.nativeElement.querySelector('.form-control')?.focus();
+      }, 200);
+    }
   }
 
   confirm() {
     if (this.confirmDisabled) {
       return;
     }
-
+    this.mode = 'view';
     this.edited.emit();
-
-    setTimeout(() => {
-      this.mode = 'view';
-      this.cdRef.detectChanges();
-    });
   }
 
   cancel() {
+    this.mode = 'view';
     this.aborted.emit();
-
-    setTimeout(() => {
-      this.mode = 'view';
-      this.cdRef.detectChanges();
-    });
   }
 
   get viewMode() {

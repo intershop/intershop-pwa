@@ -1,16 +1,18 @@
 <ng-container *ngIf="viewMode; else edit">
-  <div class="d-flex flex-row" [ngClass]="alignment === 'center' ? 'align-items-center' : 'align-items-baseline'">
+  <div class="d-flex flex-row align-items-center">
     <ng-content select="[viewModeContent]"></ng-content>
     <button
       type="button"
       class="btn btn-link"
+      [ngClass]="buttonClass"
       [title]="
         ariaLabelName === ''
           ? ('inplace_edit.click_to_edit' | translate)
           : ('inplace_edit.label' | translate : { '0': ariaLabelName | translate })
       "
+      (click)="toggleEditMode(true)"
     >
-      <fa-icon [icon]="['fas', 'pencil-alt']" class="pl-2 mr-auto btn-link" [size]="iconSize" />
+      <fa-icon [icon]="['fas', 'pencil-alt']" class="mr-auto" />
     </button>
   </div>
 </ng-container>
@@ -21,6 +23,7 @@
     <button
       type="button"
       class="btn btn-link"
+      [ngClass]="buttonClass"
       [title]="'inplace_edit.save' | translate"
       (click)="confirm()"
       data-testing-id="confirm"
@@ -31,6 +34,7 @@
     <button
       type="button"
       class="btn btn-link"
+      [ngClass]="buttonClass"
       [title]="'inplace_edit.cancel' | translate"
       (click)="cancel()"
       data-testing-id="cancel"

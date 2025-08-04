@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Component } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
@@ -11,8 +11,8 @@ import { InPlaceEditComponent } from './in-place-edit.component';
 @Component({
   template: `
     <ish-in-place-edit>
-      <p viewModeContent class="form-control-plaintext">VIEW</p>
-      <input editModeForm class="form-control" />
+      <p viewModeContent>VIEW</p>
+      <input editModeForm />
     </ish-in-place-edit>
   `,
 })
@@ -57,14 +57,10 @@ describe('In Place Edit Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <ish-in-place-edit
-        ><div class="d-flex flex-row align-items-baseline" ng-reflect-ng-class="align-items-baseline">
-          <p viewmodecontent="" class="form-control-plaintext">VIEW</p>
+        ><div class="d-flex flex-row align-items-center">
+          <p viewmodecontent="">VIEW</p>
           <button type="button" class="btn btn-link" title="inplace_edit.click_to_edit">
-            <fa-icon
-              class="pl-2 mr-auto btn-link"
-              ng-reflect-icon="fas,pencil-alt"
-              ng-reflect-size="1x"
-            ></fa-icon>
+            <fa-icon class="mr-auto" ng-reflect-icon="fas,pencil-alt"></fa-icon>
           </button></div
       ></ish-in-place-edit>
     `);
@@ -77,7 +73,7 @@ describe('In Place Edit Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ish-in-place-edit
         ><div class="d-flex flex-row align-items-baseline">
-          <input editmodeform="" class="form-control" /><button
+          <input editmodeform="" /><button
             type="button"
             data-testing-id="confirm"
             class="btn btn-link"
@@ -109,7 +105,7 @@ describe('In Place Edit Component', () => {
     it('should switch to view mode when clicked outside', () => {
       mousedown({ target: element });
 
-      expect(element.querySelector('.form-control-plaintext').textContent).toContain('VIEW');
+      expect(element.querySelector('[viewModeContent]').textContent).toContain('VIEW');
     });
 
     it('should emit edited event when clicked outside', done => {
@@ -120,12 +116,13 @@ describe('In Place Edit Component', () => {
       mousedown({ target: element });
     });
 
-    it('should switch to view mode when clicked on confirm', fakeAsync(() => {
+    it('should switch to view mode when clicked on confirm', () => {
       (element.querySelector('[data-testing-id="confirm"]') as HTMLButtonElement).click();
-      tick();
+
       fixture.detectChanges();
+
       expect(element.querySelector('input')).toBeFalsy();
-    }));
+    });
 
     it('should emit edited event when clicked on confirm', done => {
       inplaceEdit().edited.subscribe(() => {
@@ -135,13 +132,13 @@ describe('In Place Edit Component', () => {
       (element.querySelector('[data-testing-id="confirm"]') as HTMLButtonElement).click();
     });
 
-    it('should switch to view mode when clicked on cancel', fakeAsync(() => {
+    it('should switch to view mode when clicked on cancel', () => {
       (element.querySelector('[data-testing-id="cancel"]') as HTMLButtonElement).click();
-      tick();
+
       fixture.detectChanges();
-      const view = element.querySelector('[viewModeContent]') as HTMLElement;
-      expect(view.textContent).toContain('VIEW');
-    }));
+
+      expect(element.querySelector('[viewModeContent]').textContent).toContain('VIEW');
+    });
 
     it('should emit aborted event when clicked on cancel', done => {
       inplaceEdit().aborted.subscribe(() => {

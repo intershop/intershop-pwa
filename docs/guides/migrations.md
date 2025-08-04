@@ -36,6 +36,17 @@ This functionality requires ICM 13.1.0 or newer that provides the new [Cost Cent
 PWA projects that do not use ICM 13.1.0 or newer yet will get error responses from the old REST API version.
 For such projects, it is probably best to skip the cost center paging and search commit when migrating to PWA 8.0.0 until they have also migrated to ICM 13.1.0.
 
+The `InPlaceEditComponent` content projection selectors were changed from CSS class based selectors to HTML attribute selectors.
+To project content into the component's `viewMode`, use the `viewModeContent` attribute instead of the `form-control-plaintext` CSS class.
+To project an input into the component's `editMode`, use the `editModeForm` attribute instead of the `form-control` CSS class.
+
+| Previous                            | Current                |
+| ----------------------------------- | ---------------------- |
+| `<p class="form-control-plaintext>` | `<p viewModeContent>`  |
+| `<input class="form-control>`       | `<input editModeForm>` |
+
+Search for the usage of `ish-in-place-edit` in your projects customizations and change the used selectors.
+
 ## From 7.0.0 to 7.1.0
 
 Due to installation issues with the used `luarocks` package manager, we have disabled the installation of the `lua-resty-redis-connector` that provides the functionality to connect to a shared Redis cache.
@@ -54,19 +65,6 @@ If no valid HTML element ID is specified, the component generates an element aft
 
 The `RequisitionRejectDialogComponent` was moved from a `RequisitionDetailPageModule` specific component to a shared `RequisitionManagementModule` component.
 This was necessary because it is now used not only on the requisition detail page, but also on the requisition approval list.
-
-The class based selector in the `in-place-edit.component.html` was changed to an attribute selector.
-To project content into the component's `viewMode`, use the `viewModeContent` attribute instead of the `form-control-plaintext` class:
-
-| Previous                            | Current               |
-| ----------------------------------- | --------------------- |
-| `<p class="form-control-plaintext>` | `<p viewModeContent>` |
-
-To project an input into the component's `editMode`, use the `editModeForm ` attribute instead of the `form-control-plaintext` class:
-
-| Previous                                | Current                |
-| --------------------------------------- | ---------------------- |
-| `<input class="form-control-plaintext>` | `<input editModeForm>` |
 
 ## From 6.0.0 to 7.0.0
 
