@@ -6,6 +6,7 @@ import { pick } from 'lodash-es';
 import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
 
 import { ContentState } from './content-store';
+import { designViewReducer } from './design-view/design-view.reducer';
 import { IncludesEffects } from './includes/includes.effects';
 import { includesReducer } from './includes/includes.reducer';
 import { PageTreeEffects } from './page-tree/page-tree.effects';
@@ -25,6 +26,7 @@ const contentReducers: ActionReducerMap<ContentState> = {
   viewcontexts: viewcontextsReducer,
   pagetree: pageTreeReducer,
   parameters: parametersReducer,
+  designView: designViewReducer,
 };
 
 const contentEffects = [IncludesEffects, PagesEffects, ViewcontextsEffects, PageTreeEffects, ParametersEffects];

@@ -5,6 +5,7 @@ import { delay, switchMap, tap } from 'rxjs/operators';
 
 import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
 import { CategoryHelper } from 'ish-core/models/category/category.helper';
+import { getDesignViewSelectedPageletId } from 'ish-core/store/content/design-view';
 import { getContentInclude, loadContentInclude } from 'ish-core/store/content/includes';
 import { getCompleteContentPageTree, getContentPageTree, loadContentPageTree } from 'ish-core/store/content/page-tree';
 import { getContentPagelet } from 'ish-core/store/content/pagelets';
@@ -25,6 +26,7 @@ export class CMSFacade {
 
   contentPage$ = this.store.pipe(select(getSelectedContentPage));
   contentPageLoading$ = this.store.pipe(select(getContentPageLoading));
+  designViewSelectedPageletId$ = this.store.pipe(select(getDesignViewSelectedPageletId));
 
   contentInclude$(includeId$: Observable<string>) {
     return combineLatest([includeId$.pipe(whenTruthy()), this.store.pipe(select(getPGID))]).pipe(

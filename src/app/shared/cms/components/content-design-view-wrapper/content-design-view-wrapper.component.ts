@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageletEntryPointView, ContentPageletView } from 'ish-core/models/content-view/content-view.model';
@@ -26,6 +26,8 @@ export class ContentDesignViewWrapperComponent implements OnInit {
 
   isDesignViewMode = false; // temporary activation switch
 
+  isPageletSelected$: Observable<boolean>;
+
   constructor(
     private cmsFacade: CMSFacade,
     private previewService: PreviewService,
@@ -33,16 +35,20 @@ export class ContentDesignViewWrapperComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.isDesignViewMode = this.previewService.isDesignViewMode;
+
     if (this.pageletId) {
       this.type = 'pagelet';
       this.pagelet$ = this.cmsFacade.pagelet$(this.pageletId);
+
+      this.isPageletSelected$ = this.cmsFacade.designViewSelectedPageletId$.pipe(
+        map(id => (this.isDesignViewMode ? this.pageletId === id : false))
+      );
     } else if (this.slotId) {
       this.type = 'slot';
     } else if (this.include) {
       this.type = 'include';
     }
-
-    this.isDesignViewMode = this.previewService.isDesignViewMode;
   }
 
   triggerAction(id: string, action: string) {
