@@ -7,11 +7,15 @@
   // general styling for search input field
   input {
     &.search-input {
+      position: relative;
+      z-index: 2; // a11y: ensure input is above buttons for correct focus outline
       height: $search-container-height;
-      padding-right: $space-default * 5.5;
+      padding-right: 42px; // a11y: space for reset button for correct focus outline
       padding-left: ($search-container-height * 0.5);
+      margin-right: 42px; // a11y: space for search button for correct focus outline
       color: $text-color-primary;
       background: $color-inverse;
+      border-right: 1px transparent solid; // a11y: transparent border for correct focus outline
     }
   }
 
@@ -27,7 +31,7 @@
     &.btn-reset,
     &.btn-search {
       position: absolute;
-      width: auto;
+      width: 42px;
       height: $search-container-height;
       font-size: $font-size-lg;
 
@@ -39,18 +43,24 @@
 
     &.btn-search {
       right: 0;
+      z-index: 1; // a11y: set behind other elements for their correct focus outline
+
+      &:focus-visible {
+        z-index: 3; // a11y: overlay other elements for correct focus outline
+      }
     }
 
     &.btn-reset {
+      right: 42px; // a11y: space for correct focus outline
+      z-index: 2; // a11y: overlay other elements for correct focus outline
+      color: $text-color-quaternary;
+      background: transparent !important;
+      border: 1px transparent solid; // a11y: transparent border for correct focus outline
+      opacity: 1;
+
       &:hover {
         color: $text-color-secondary;
       }
-
-      right: $space-default * 3;
-      color: $text-color-quaternary;
-      background: transparent !important;
-      border: none !important;
-      opacity: 1;
 
       .ng-fa-icon {
         position: relative;
@@ -68,6 +78,7 @@
 
   .search-input {
     float: right;
+    width: calc(100% - 42px); // full width minus search button space
 
     @include media-breakpoint-down(sm) {
       font-size: 16px !important; // prevent page zoom on mobile devices
@@ -101,7 +112,7 @@
 
     @media (min-width: $screen-sm) {
       position: absolute;
-      top: calc($search-container-height / -2);
+      top: -$space-default; // align vertically with logo
       right: 0;
       width: 100%;
       transition: width 0.3s ease 0.1s;
@@ -287,7 +298,6 @@
     right: 0;
     z-index: 2;
     visibility: hidden; // combined with opacity
-    width: 100%;
     width: 100vw;
     height: 0; // prevent overlaying any other elements
     background: $color-dark;
