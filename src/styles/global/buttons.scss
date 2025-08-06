@@ -37,14 +37,16 @@
     }
 
     &.disabled,
-    &:disabled {
+    &:disabled,
+    &[aria-disabled='true'] {
       color: $text-color-secondary;
       background-color: $color-tertiary;
       border-color: $border-color-light;
+      opacity: 0.65;
     }
 
-    &:not(:disabled):not(.disabled):active,
-    &:not(:disabled):not(.disabled).active {
+    &:not(:disabled):not(.disabled):not([aria-disabled='true']):active,
+    &:not(:disabled):not(.disabled):not([aria-disabled='true']).active {
       background-color: $input-accent-color;
       border-color: $input-accent-color;
       box-shadow: none;
@@ -74,14 +76,16 @@
     }
 
     &.disabled,
-    &:disabled {
+    &:disabled,
+    &[aria-disabled='true'] {
       color: $text-color-secondary;
       background-color: $button-default-bg;
       border-color: $border-color-light;
+      opacity: 0.65;
     }
 
-    &:not(:disabled):not(.disabled):active,
-    &:not(:disabled):not(.disabled).active {
+    &:not(:disabled):not(.disabled):not([aria-disabled='true']):active,
+    &:not(:disabled):not(.disabled):not([aria-disabled='true']).active {
       color: $input-accent-color;
       background-color: $color-quaternary;
       border-color: $input-accent-color;
