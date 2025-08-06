@@ -14,15 +14,14 @@
 
   <div class="row form-group">
     <div class="offset-md-4 col-md-8">
+      <div id="submit-button-help" aria-live="polite" class="sr-only" *ngIf="form.submitted && form.invalid">
+        {{ 'forms.required.button.label.disabled' | translate }}
+      </div>
       <input
         type="submit"
         class="btn btn-primary"
-        [ngClass]="{ disabled: form.submitted && form.invalid }"
         [attr.aria-disabled]="form.submitted && form.invalid"
-        [attr.aria-label]="
-          (!form.submitted || !form.invalid ? 'helpdesk.contactus.submit' : 'forms.required.button.label.disabled')
-            | translate
-        "
+        [attr.aria-describedby]="form.submitted && form.invalid ? 'submit-button-help' : null"
         value="{{ 'helpdesk.contactus.submit' | translate }}"
         data-testing-id="submitContact"
       />
