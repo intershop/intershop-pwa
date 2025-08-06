@@ -66,17 +66,19 @@
             <ish-checkout-address-anonymous-form [parentForm]="form" />
             <div [ngClass]="{ 'row form-group': isShippingAddressFormExpanded }">
               <div [ngClass]="{ 'offset-md-4 col-md-8': isShippingAddressFormExpanded }">
+                <div
+                  id="checkout-button-help"
+                  aria-live="polite"
+                  class="sr-only"
+                  *ngIf="form.invalid && addressForm.submitted"
+                >
+                  {{ 'checkout.button.label.disabled' | translate }}
+                </div>
                 <button
                   class="btn btn-primary"
-                  [ngClass]="{ disabled: form.invalid && addressForm.submitted }"
                   type="submit"
                   [attr.aria-disabled]="form.invalid && addressForm.submitted"
-                  [attr.aria-label]="
-                    (!form.invalid || !addressForm.submitted
-                      ? 'checkout.button.label'
-                      : 'checkout.button.label.disabled'
-                    ) | translate
-                  "
+                  [attr.aria-describedby]="form.invalid && addressForm.submitted ? 'checkout-button-help' : null"
                 >
                   {{ 'checkout.button.label' | translate }}
                 </button>
