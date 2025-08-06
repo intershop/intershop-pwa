@@ -19,14 +19,14 @@
 
   <div class="row">
     <div class="offset-md-4 col-md-8 offset-lg-0 col-lg-12 offset-lg-4 col-xl-8">
+      <div id="submit-button-help" aria-live="polite" class="sr-only" *ngIf="form.invalid && addressForm.submitted">
+        {{ 'forms.required.button.label.disabled' | translate }}
+      </div>
       <button
         type="submit"
         class="btn btn-primary"
-        [ngClass]="{ disabled: form.invalid && addressForm.submitted }"
         [attr.aria-disabled]="form.invalid && addressForm.submitted"
-        [attr.aria-label]="
-          (!form.invalid || !addressForm.submitted ? buttonLabel : 'forms.required.button.label.disabled') | translate
-        "
+        [attr.aria-describedby]="form.invalid && addressForm.submitted ? 'submit-button-help' : null"
       >
         {{ buttonLabel | translate }}
       </button>
