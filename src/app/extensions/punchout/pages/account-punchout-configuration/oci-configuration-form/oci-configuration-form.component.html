@@ -53,18 +53,20 @@
       </div>
       <div class="row">
         <div class="button-group w-100 gx-0 clearfix">
-          <div class="float-md-end">
+          <div class="float-md-right">
+            <div
+              id="submit-button-help"
+              aria-live="polite"
+              class="sr-only"
+              *ngIf="form.invalid && configForm.submitted"
+            >
+              {{ 'forms.required.button.label.disabled' | translate }}
+            </div>
             <button
               type="submit"
               class="btn btn-primary"
-              [ngClass]="{ disabled: form.invalid && configForm.submitted }"
               [attr.aria-disabled]="form.invalid && configForm.submitted"
-              [attr.aria-label]="
-                (!form.invalid || !configForm.submitted
-                  ? 'account.update.button.label'
-                  : 'forms.required.button.label.disabled'
-                ) | translate
-              "
+              [attr.aria-describedby]="form.invalid && configForm.submitted ? 'submit-button-help' : null"
               data-testing-id="update-oci-configuration"
             >
               {{ 'account.update.button.label' | translate }}
