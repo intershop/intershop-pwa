@@ -40,10 +40,10 @@ The `InPlaceEditComponent` content projection selectors were changed from CSS cl
 To project content into the component's `viewMode`, use the `viewModeContent` attribute instead of the `form-control-plaintext` CSS class.
 To project an input into the component's `editMode`, use the `editModeForm` attribute instead of the `form-control` CSS class.
 
-| Previous                            | Current                |
-| ----------------------------------- | ---------------------- |
-| `<p class="form-control-plaintext>` | `<p viewModeContent>`  |
-| `<input class="form-control>`       | `<input editModeForm>` |
+| Previous                             | Current                |
+| ------------------------------------ | ---------------------- |
+| `<p class="form-control-plaintext">` | `<p viewModeContent>`  |
+| `<input class="form-control">`       | `<input editModeForm>` |
 
 Search for the usage of `ish-in-place-edit` in your project's customizations and change the used selectors.
 
