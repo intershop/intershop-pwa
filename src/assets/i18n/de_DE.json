@@ -255,7 +255,7 @@
   "account.order_template.delete_order_template.confirmation": "Ihre Bestellvorlage \"{{0}}\" wurde gelöscht.",
   "account.order_template.edit.heading": "Bestellvorlage bearbeiten",
   "account.order_template.edit.name.error.required": "Geben Sie einen Namen für die Bestellvorlage an.",
-  "account.order_template.edit.name.label": "Order template name",
+  "account.order_template.edit.name.label": "Name der Bestellvorlage",
   "account.order_template.form.name.error.required": "Geben Sie einen Namen für die Bestellvorlage an.",
   "account.order_template.form.name.label": "Name der Bestellvorlage",
   "account.order_template.items": "{{0}} Artikel",

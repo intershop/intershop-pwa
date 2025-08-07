@@ -255,7 +255,7 @@
   "account.order_template.delete_order_template.confirmation": "Votre modèle de commande \"{{0}}\" a été supprimé.",
   "account.order_template.edit.heading": "Modifier le modèle de commande",
   "account.order_template.edit.name.error.required": "Veuillez saisir un nom pour le modèle de commande.",
-  "account.order_template.edit.name.label": "Order template name",
+  "account.order_template.edit.name.label": "Nom du modèle de commande",
   "account.order_template.form.name.error.required": "Veuillez saisir un nom pour le modèle de commande.",
   "account.order_template.form.name.label": "Nom du modèle de commande",
   "account.order_template.items": "{{0, plural, one{# Article} other{# Articles}}}",
