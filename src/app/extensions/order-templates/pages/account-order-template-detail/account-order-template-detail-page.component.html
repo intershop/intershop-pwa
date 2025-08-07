@@ -2,20 +2,27 @@
 <ish-error-message [error]="orderTemplateError$ | async" />
 
 <ng-container *ngIf="orderTemplate$ | async as orderTemplate" ishProductContext>
-  <div class="d-flex align-items-center justify-content-between flex-wrap">
-    <h1 class="clearfix">
+  <ish-in-place-edit
+    #inPlaceEdit
+    (edited)="updateTitle()"
+    (aborted)="resetTitle()"
+    ariaLabelName="account.order_template.edit.name.label"
+    buttonClass="btn-lg"
+    [confirmDisabled]="!form.valid"
+  >
+    <h1 viewModeContent>
       {{ orderTemplate?.title }}
     </h1>
-    <button
-      type="button"
-      (click)="editOrderTemplateDialog.show()"
-      class="btn btn-secondary float-right m-0"
-      [title]="'account.order_template.edit.heading' | translate"
-      data-testing-id="order-template-details-edit"
-    >
-      {{ 'account.order_template.order_template.edit.rename' | translate }}
-    </button>
-  </div>
+    <div editModeForm class="flex-grow-1 position-relative" style="margin-top: 12px; margin-bottom: 16px">
+      <formly-form
+        [form]="form"
+        [model]="model"
+        [fields]="fields"
+        (keydown.enter)="inPlaceEdit.confirm()"
+        (keydown.esc)="inPlaceEdit.cancel()"
+      />
+    </div>
+  </ish-in-place-edit>
 
   <p
     *ngIf="noOfUnavailableProducts$ | async as noOfUnavailableProducts"
@@ -60,12 +67,6 @@
   <ng-template #noItems>
     <p>{{ 'account.order_template.no_entries' | translate }}</p>
   </ng-template>
-
-  <ish-order-template-preferences-dialog
-    #editOrderTemplateDialog
-    [orderTemplate]="orderTemplate"
-    (submitOrderTemplate)="editPreferences($event, orderTemplate.id)"
-  />
 </ng-container>
 
 <a routerLink="/account/order-templates">{{ 'account.order_template.list.link.back' | translate }}</a>
