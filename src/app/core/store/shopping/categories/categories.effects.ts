@@ -8,6 +8,7 @@ import { concatMap, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { ofCategoryUrl } from 'ish-core/routing/category/category.route';
+import { CategoriesServiceProvider } from 'ish-core/service-provider/categories.service-provider';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
@@ -47,6 +48,7 @@ export class CategoriesEffects {
     private actions$: Actions,
     private store: Store,
     private categoryService: CategoriesService,
+    private categoriesServiceProvider: CategoriesServiceProvider,
     @Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH)
     private mainNavigationMaxSubCategoriesDepth: InjectSingle<typeof MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH>,
     private httpStatusCodeService: HttpStatusCodeService
@@ -112,7 +114,8 @@ export class CategoriesEffects {
         personalizationStatusDetermined
       ),
       switchMap(() =>
-        this.categoryService.getTopLevelCategories(SSR ? 0 : this.mainNavigationMaxSubCategoriesDepth).pipe(
+        this.categoriesServiceProvider.get().pipe(
+          switchMap(service => service.getTopLevelCategories(SSR ? 0 : this.mainNavigationMaxSubCategoriesDepth)),
           map(categories => loadTopLevelCategoriesSuccess({ categories })),
           mapErrorToAction(loadTopLevelCategoriesFail)
         )

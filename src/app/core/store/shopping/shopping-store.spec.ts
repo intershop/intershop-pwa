@@ -12,6 +12,7 @@ import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/ca
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
+import { CategoriesServiceProvider } from 'ish-core/service-provider/categories.service-provider';
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
@@ -44,6 +45,7 @@ describe('Shopping Store', () => {
   let productsServiceMock: ProductsService;
   let productsServiceProviderMock: ProductsServiceProvider;
   let sparqueRecommendationsServiceMock: SparqueRecommendationsService;
+  let categoriesServiceProviderMock: CategoriesServiceProvider;
   let sparqueSuggestionsServiceMock: SparqueSuggestionsService;
   let suggestServiceMock: SuggestService;
   let filterServiceMock: FilterService;
@@ -100,6 +102,7 @@ describe('Shopping Store', () => {
 
     productsServiceProviderMock = mock(ProductsServiceProvider);
     sparqueRecommendationsServiceMock = mock(SparqueRecommendationsService);
+    categoriesServiceProviderMock = mock(CategoriesServiceProvider);
     sparqueSuggestionsServiceMock = mock(SparqueSuggestionsService);
     suggestServiceMock = mock(SuggestService);
     productsServiceMock = mock(ProductsService);
@@ -108,6 +111,7 @@ describe('Shopping Store', () => {
     when(sparqueRecommendationsServiceMock.getRecommendations(anything())).thenReturn(
       of({ recommendations: { strategy: 'test', count: 5, productSKUs: [] }, products: [] })
     );
+    when(categoriesServiceProviderMock.get()).thenReturn(of(instance(categoriesServiceMock)));
     when(productsServiceMock.getProduct(anyString())).thenCall(sku => {
       if (['P1', 'P2'].find(x => x === sku)) {
         return of({ sku, name: `n${sku}` });
@@ -173,6 +177,7 @@ describe('Shopping Store', () => {
       ],
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
+        { provide: CategoriesServiceProvider, useFactory: () => instance(categoriesServiceProviderMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },

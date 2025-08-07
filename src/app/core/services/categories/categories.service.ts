@@ -7,13 +7,14 @@ import { CategoryTree, CategoryTreeHelper } from 'ish-core/models/category-tree/
 import { CategoryData } from 'ish-core/models/category/category.interface';
 import { CategoryMapper } from 'ish-core/models/category/category.mapper';
 import { CategoryCompletenessLevel, CategoryHelper } from 'ish-core/models/category/category.model';
+import { CategoriesServiceInterface } from 'ish-core/service-provider/categories.service-provider';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
 /**
  * The Categories Service handles the interaction with the 'categories' REST API.
  */
 @Injectable({ providedIn: 'root' })
-export class CategoriesService {
+export class CategoriesService implements CategoriesServiceInterface {
   constructor(private apiService: ApiService, private categoryMapper: CategoryMapper) {}
 
   /**

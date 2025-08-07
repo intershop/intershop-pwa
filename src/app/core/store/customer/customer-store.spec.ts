@@ -2,18 +2,25 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { EMPTY, of } from 'rxjs';
+import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
+import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { User } from 'ish-core/models/user/user.model';
+import { CategoriesServiceProvider } from 'ish-core/service-provider/categories.service-provider';
 import { BasketService } from 'ish-core/services/basket/basket.service';
+import { CategoriesService } from 'ish-core/services/categories/categories.service';
+import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
+import { CountryService } from 'ish-core/services/country/country.service';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
+import { ProductsService } from 'ish-core/services/products/products.service';
+import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { TokenService } from 'ish-core/services/token/token.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -22,6 +29,7 @@ import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
+import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { addProductToBasket, loadBasketSuccess, startCheckout } from './basket';
 import { loginUser, personalizationStatusDetermined } from './user';
@@ -65,6 +73,9 @@ describe('Customer Store', () => {
 
   const pgid = 'spgid';
 
+  const product = { sku: 'test' } as Product;
+  const promotion = { id: 'test' } as Promotion;
+
   beforeEach(() => {
     const basketServiceMock = mock(BasketService);
     when(basketServiceMock.getBasket()).thenReturn(of(basket));
@@ -80,6 +91,23 @@ describe('Customer Store', () => {
         },
       })
     );
+
+    const categoriesServiceProviderMock = mock(CategoriesServiceProvider);
+    const categoriesServiceMock = mock(CategoriesService);
+    when(categoriesServiceProviderMock.get()).thenReturn(of(instance(categoriesServiceMock)));
+    when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(of(categoryTree()));
+
+    const configurationServiceMock = mock(ConfigurationService);
+    when(configurationServiceMock.getServerConfiguration()).thenReturn(EMPTY);
+
+    const countryServiceMock = mock(CountryService);
+    when(countryServiceMock.getCountries()).thenReturn(of([{ countryCode: 'DE', name: 'Germany' }]));
+
+    const productsServiceMock = mock(ProductsService);
+    when(productsServiceMock.getProduct(anything())).thenReturn(of(product));
+
+    const promotionsServiceMock = mock(PromotionsService);
+    when(promotionsServiceMock.getPromotion(anything())).thenReturn(of(promotion));
 
     const userServiceMock = mock(UserService);
     when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user, pgid }));
@@ -104,6 +132,8 @@ describe('Customer Store', () => {
       ],
       providers: [
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
+        { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
+        { provide: CategoriesServiceProvider, useFactory: () => instance(categoriesServiceProviderMock) },
         { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
         { provide: OrderService, useFactory: () => instance(mock(OrderService)) },
         { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },

@@ -10,6 +10,7 @@ import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, w
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category, CategoryCompletenessLevel, CategoryHelper } from 'ish-core/models/category/category.model';
+import { CategoriesServiceProvider } from 'ish-core/service-provider/categories.service-provider';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
@@ -37,7 +38,7 @@ describe('Categories Effects', () => {
   let store: Store;
   let router: Router;
   let httpStatusCodeService: HttpStatusCodeService;
-
+  let categoryServiceProviderMock: CategoriesServiceProvider;
   let categoriesServiceMock: CategoriesService;
 
   const TOP_LEVEL_CATEGORIES = categoryTree([
@@ -52,7 +53,9 @@ describe('Categories Effects', () => {
   ] as Category[]);
 
   beforeEach(() => {
+    categoryServiceProviderMock = mock(CategoriesServiceProvider);
     categoriesServiceMock = mock(CategoriesService);
+    when(categoryServiceProviderMock.get()).thenReturn(of(instance(categoriesServiceMock)));
     when(categoriesServiceMock.getCategory('123')).thenReturn(
       of(categoryTree([{ uniqueId: '123', categoryPath: ['123'] } as Category]))
     );
@@ -78,6 +81,7 @@ describe('Categories Effects', () => {
       ],
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
+        { provide: CategoriesServiceProvider, useFactory: () => instance(categoryServiceProviderMock) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         CategoriesEffects,
         provideMockActions(() => actions$),
