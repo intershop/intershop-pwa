@@ -8,7 +8,6 @@
   input {
     &.search-input {
       position: relative;
-      z-index: 2; // a11y: ensure input is above buttons for correct focus outline
       height: $search-container-height;
       padding-right: 42px; // a11y: space for reset button for correct focus outline
       padding-left: ($search-container-height * 0.5);
@@ -16,6 +15,10 @@
       color: $text-color-primary;
       background: $color-inverse;
       border-right: 1px transparent solid; // a11y: transparent border for correct focus outline
+
+      &:focus-visible {
+        z-index: 1; // a11y: overlay other search elements for correct focus outline
+      }
     }
   }
 
@@ -43,16 +46,15 @@
 
     &.btn-search {
       right: 0;
-      z-index: 1; // a11y: set behind other elements for their correct focus outline
 
       &:focus-visible {
-        z-index: 3; // a11y: overlay other elements for correct focus outline
+        z-index: 1; // a11y: overlay other search elements for correct focus outline
       }
     }
 
     &.btn-reset {
       right: 42px; // a11y: space for correct focus outline
-      z-index: 2; // a11y: overlay other elements for correct focus outline
+      z-index: 1; // a11y: overlay other search elements for correct focus outline
       color: $text-color-quaternary;
       background: transparent !important;
       border: 1px transparent solid; // a11y: transparent border for correct focus outline
