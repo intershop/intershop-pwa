@@ -38,10 +38,14 @@
 
     &.disabled,
     &:disabled,
-    &[aria-disabled='true'] {
+    &[aria-disabled='true'],
+    &[aria-disabled='true']:not(:disabled):not(.disabled):active, // to override bootstrap styles
+    &[aria-disabled='true']:not(:disabled):not(.disabled).active,
+    &[aria-disabled='true']:not(:disabled):not(.disabled):focus {
       color: $text-color-secondary;
       background-color: $color-tertiary;
       border-color: $border-color-light;
+      box-shadow: none;
       opacity: 0.65;
     }
 
@@ -77,10 +81,14 @@
 
     &.disabled,
     &:disabled,
-    &[aria-disabled='true'] {
+    &[aria-disabled='true'],
+    &[aria-disabled='true']:not(:disabled):not(.disabled):active, // to override bootstrap styles
+    &[aria-disabled='true']:not(:disabled):not(.disabled).active,
+    &[aria-disabled='true']:not(:disabled):not(.disabled):focus {
       color: $text-color-secondary;
       background-color: $button-default-bg;
       border-color: $border-color-light;
+      box-shadow: none;
       opacity: 0.65;
     }
 
