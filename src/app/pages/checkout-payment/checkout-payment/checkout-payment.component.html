@@ -18,6 +18,9 @@
   <div class="col-md-12 col-lg-8">
     <h2 class="h3">{{ 'checkout.payment.method.select.heading' | translate }}</h2>
 
+    <!-- ToDo: add a condition here -->
+    <ish-payment-paypal />
+
     <!-- display all payment methods -->
     <ng-container *ngIf="basket.totals?.total?.net > 0 || !basket.payment; else zeroTotalInfo">
       <form [formGroup]="paymentForm" class="form-horizontal" (ngSubmit)="submitParameterForm()">
