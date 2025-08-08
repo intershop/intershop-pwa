@@ -60,6 +60,35 @@ On form submission, the focus automatically jumps to the **first invalid field**
 - Reduces cognitive load and improves error recovery.
 - Assist screen reader users in identifying errors efficiently.
 
+#### Avoid Disabled Buttons
+
+**What we do:**
+
+In stead of disabling buttons they should stay focusable, get an individual managed action and descriptions.
+
+large forms (8 form fields and more, e.g. registration form):
+
+- button gets visibly disabled after the fist invalid submission attempt
+- remains interactive and focusable for focus management
+- description via aria-disabled and aria-describedby
+
+primary page button (e.g. continue checkout)
+
+- button gets visibly disabled
+- remains focusable and if useful interactive for focus and validation management
+- description via aria-disabled and aria-describedby
+
+buttons disabled due to roles, rights or rules (cost center trash icon)
+
+- visibly disabled, mimicking a button
+- remains focusable
+- description via aria-disabled and title (for icons)/ aria-describedby
+
+**Why we do it:**
+
+- Reduces cognitive load and improves error recovery through repeatability.
+- screen reader users stay informed that a button is disabled and why.
+
 ### Component Behavior
 
 #### Links with Icons Do Not Require Underlines
