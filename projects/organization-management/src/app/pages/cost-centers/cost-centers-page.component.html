@@ -86,7 +86,7 @@
         <ng-container cdkColumnDef="actions">
           <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-actions"></th>
           <td cdk-cell *cdkCellDef="let costCenter" class="column-price">
-            <ng-container *ngIf="isDeletable(costCenter) | async">
+            <ng-container *ngIf="isEditable(costCenter) | async">
               <!-- Deactivate -->
               <button
                 *ngIf="costCenter.active; else activateCostCenter"
@@ -114,26 +114,19 @@
 
               <!-- Delete -->
               <button
-                *ngIf="!(costCenter.pendingOrders + costCenter.approvedOrders); else deleteButtonDisabled"
                 type="button"
                 class="btn-tool btn-link"
-                title="{{ 'account.costcenter.delete.link' | translate }}"
+                [ngClass]="{ inactive: !isDeletable(costCenter) }"
+                title="{{
+                  isDeletable(costCenter)
+                    ? ('account.costcenter.delete.link' | translate)
+                    : ('account.costcenter.delete.disabled.icon' | translate)
+                }}"
                 (click)="openConfirmationDialog(costCenter, deleteDialog)"
                 data-testing-id="delete-cost-center"
               >
                 <fa-icon [icon]="['fas', 'trash-alt']" />
               </button>
-              <ng-template #deleteButtonDisabled>
-                <span
-                  class="btn-tool btn-link inactive"
-                  tabindex="0"
-                  aria-disabled="true"
-                  role="button"
-                  title="{{ 'account.costcenter.delete.disabled.icon' | translate }}"
-                >
-                  <fa-icon [icon]="['fas', 'trash-alt']" />
-                </span>
-              </ng-template>
             </ng-container>
           </td>
         </ng-container>

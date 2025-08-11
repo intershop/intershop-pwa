@@ -55,7 +55,9 @@ export class CostCentersPageComponent implements OnInit {
 
   openConfirmationDialog(costCenter: CostCenter, modal: ModalDialogComponent<string>) {
     this.selectedCostCenter = costCenter;
-    modal.show();
+    if (this.isDeletable(costCenter)) {
+      modal.show();
+    }
   }
 
   private getCostCentersForPage() {
@@ -111,8 +113,12 @@ export class CostCentersPageComponent implements OnInit {
     this.organizationManagementFacade.updateCostCenter({ ...costCenter, active: true });
   }
 
-  isDeletable(costCenter: CostCenter): Observable<boolean> {
+  isEditable(costCenter: CostCenter): Observable<boolean> {
     return this.organizationManagementFacade.isCostCenterEditable(of(costCenter));
+  }
+
+  isDeletable(cc: CostCenter): boolean {
+    return !(cc.pendingOrders + cc.approvedOrders);
   }
 
   get filtersActive(): boolean {
