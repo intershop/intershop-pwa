@@ -2,6 +2,7 @@ import { createFeatureSelector } from '@ngrx/store';
 
 import { CategoriesState } from './categories/categories.reducer';
 import { FilterState } from './filter/filter.reducer';
+import { ProductInventoryState } from './product-inventories/product-inventories.reducer';
 import { ProductListingState } from './product-listing/product-listing.reducer';
 import { ProductPricesState } from './product-prices/product-prices.reducer';
 import { ProductsState } from './products/products.reducer';
@@ -20,6 +21,7 @@ export interface ShoppingState {
   productPrices: ProductPricesState;
   warranties: WarrantiesState;
   productRecommendations: RecommendationsState;
+  productInventory: ProductInventoryState;
 }
 
 export const getShoppingState = createFeatureSelector<ShoppingState>('shopping');

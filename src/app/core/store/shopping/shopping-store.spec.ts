@@ -17,6 +17,7 @@ import { CategoriesService } from 'ish-core/services/categories/categories.servi
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { CountryService } from 'ish-core/services/country/country.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
+import { InventoriesService } from 'ish-core/services/inventories/inventories.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SparqueRecommendationsService } from 'ish-core/services/sparque-recommendations/sparque-recommendations.service';
 import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
@@ -47,6 +48,8 @@ describe('Shopping Store', () => {
   let sparqueSuggestionsServiceMock: SparqueSuggestionsService;
   let suggestServiceMock: SuggestService;
   let filterServiceMock: FilterService;
+
+  let inventoriesServiceMock: InventoriesService;
 
   beforeEach(() => {
     const catA = { uniqueId: 'A', categoryPath: ['A'], name: 'nA' } as Category;
@@ -133,6 +136,9 @@ describe('Shopping Store', () => {
     when(filterServiceMock.getFilterForSearch(anything())).thenReturn(of({} as FilterNavigation));
     when(filterServiceMock.getFilterForCategory(anything())).thenReturn(of({} as FilterNavigation));
 
+    inventoriesServiceMock = mock(InventoriesService);
+    when(inventoriesServiceMock.getProductInventory(anything())).thenReturn(of([]));
+
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], true),
@@ -174,6 +180,7 @@ describe('Shopping Store', () => {
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
+        { provide: InventoriesService, useFactory: () => instance(inventoriesServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
         { provide: SparqueRecommendationsService, useFactory: () => instance(sparqueRecommendationsServiceMock) },
@@ -310,6 +317,12 @@ describe('Shopping Store', () => {
           no_filter_action
           [Filter API] Load Filter Success:
             filterNavigation: {}
+          [Product Inventory] Load Product Inventory:
+            skus: ["P1"]
+          [Product Inventory] Load Product Inventory:
+            skus: ["P2"]
+          [Products API] Load Product Inventory Success:
+            inventory: []
         `);
       }));
 
@@ -326,9 +339,15 @@ describe('Shopping Store', () => {
             @ngrx/router-store/navigation: /product/P2
             [Products] Load Product:
               sku: "P2"
+            [Product Inventory] Load Product Inventory:
+              skus: ["P2"]
             [Products API] Load Product Success:
               product: {"sku":"P2","name":"nP2"}
+            [Product Inventory] Load Product Inventory:
+              skus: ["P2"]
             @ngrx/router-store/navigated: /product/P2
+            [Products API] Load Product Inventory Success:
+              inventory: []
           `);
         }));
       });
@@ -453,6 +472,12 @@ describe('Shopping Store', () => {
           sortableAttributes: []
         [Filter API] Load Filter Success:
           filterNavigation: {}
+        [Product Inventory] Load Product Inventory:
+          skus: ["P1"]
+        [Product Inventory] Load Product Inventory:
+          skus: ["P2"]
+        [Products API] Load Product Inventory Success:
+          inventory: []
       `);
     }));
 
@@ -469,9 +494,15 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation: /category/A.123.456/product/P1
           [Products] Load Product:
             sku: "P1"
+          [Product Inventory] Load Product Inventory:
+            skus: ["P1"]
           [Products API] Load Product Success:
             product: {"sku":"P1","name":"nP1"}
+          [Product Inventory] Load Product Inventory:
+            skus: ["P1"]
           @ngrx/router-store/navigated: /category/A.123.456/product/P1
+          [Products API] Load Product Inventory Success:
+            inventory: []
         `);
       }));
 
@@ -539,6 +570,12 @@ describe('Shopping Store', () => {
           no_filter_action
           [Filter API] Load Filter Success:
             filterNavigation: {}
+          [Product Inventory] Load Product Inventory:
+            skus: ["P1"]
+          [Product Inventory] Load Product Inventory:
+            skus: ["P2"]
+          [Products API] Load Product Inventory Success:
+            inventory: []
         `);
       }));
 
@@ -584,6 +621,12 @@ describe('Shopping Store', () => {
               sortableAttributes: []
             [Filter API] Load Filter Success:
               filterNavigation: {}
+            [Product Inventory] Load Product Inventory:
+              skus: ["P1"]
+            [Product Inventory] Load Product Inventory:
+              skus: ["P2"]
+            [Products API] Load Product Inventory Success:
+              inventory: []
           `);
         }));
       });
@@ -650,9 +693,15 @@ describe('Shopping Store', () => {
           categories: tree(A,A.123,A.123.456)
         [Products] Load Product:
           sku: "P1"
+        [Product Inventory] Load Product Inventory:
+          skus: ["P1"]
         [Products API] Load Product Success:
           product: {"sku":"P1","name":"nP1"}
+        [Product Inventory] Load Product Inventory:
+          skus: ["P1"]
         @ngrx/router-store/navigated: /category/A.123.456/product/P1
+        [Products API] Load Product Inventory Success:
+          inventory: []
       `);
     }));
 
@@ -709,6 +758,12 @@ describe('Shopping Store', () => {
             sortableAttributes: []
           [Filter API] Load Filter Success:
             filterNavigation: {}
+          [Product Inventory] Load Product Inventory:
+            skus: ["P1"]
+          [Product Inventory] Load Product Inventory:
+            skus: ["P2"]
+          [Products API] Load Product Inventory Success:
+            inventory: []
         `);
       }));
     });
@@ -764,9 +819,15 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation: /product/P1
         [Products] Load Product:
           sku: "P1"
+        [Product Inventory] Load Product Inventory:
+          skus: ["P1"]
         [Products API] Load Product Success:
           product: {"sku":"P1","name":"nP1"}
+        [Product Inventory] Load Product Inventory:
+          skus: ["P1"]
         @ngrx/router-store/navigated: /product/P1
+        [Products API] Load Product Inventory Success:
+          inventory: []
       `);
     }));
 
@@ -825,6 +886,8 @@ describe('Shopping Store', () => {
           categories: tree(A,A.123,A.123.456)
         [Products] Load Product:
           sku: "P3"
+        [Product Inventory] Load Product Inventory:
+          skus: ["P3"]
         [Products API] Load Product Fail:
           error: {"name":"HttpErrorResponse","message":"error loading product...
           sku: "P3"
@@ -832,6 +895,8 @@ describe('Shopping Store', () => {
         @ngrx/router-store/request: /error
         @ngrx/router-store/navigation: /error
         @ngrx/router-store/navigated: /error
+        [Products API] Load Product Inventory Success:
+          inventory: []
       `);
     }));
 
@@ -917,6 +982,12 @@ describe('Shopping Store', () => {
         no_filter_action
         [Filter API] Load Filter Success:
           filterNavigation: {}
+        [Product Inventory] Load Product Inventory:
+          skus: ["P1"]
+        [Product Inventory] Load Product Inventory:
+          skus: ["P2"]
+        [Products API] Load Product Inventory Success:
+          inventory: []
       `);
     }));
   });

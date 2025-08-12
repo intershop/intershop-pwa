@@ -20,6 +20,7 @@ import {
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { Image } from 'ish-core/models/image/image.model';
 import { Pricing } from 'ish-core/models/price/price.model';
+import { ProductInventoryDetails } from 'ish-core/models/product-inventories/product-inventories.model';
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -97,6 +98,7 @@ export interface ProductContext {
   requiredCompletenessLevel: ProductCompletenessLevel | true;
   product: ProductView;
   prices: Pricing;
+  inventory: ProductInventoryDetails;
   hasProductError: boolean;
   productURL: string;
   loading: boolean;
@@ -415,6 +417,15 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
               addToBasket: state.displayProperties.addToBasket ?? true,
             }
           : state.displayProperties
+    );
+
+    this.connect(
+      'inventory',
+      this.select('sku').pipe(
+        whenTruthy(),
+        distinctUntilChanged(),
+        switchMap(sku => this.shoppingFacade.productInventory$(sku))
+      )
     );
   }
 

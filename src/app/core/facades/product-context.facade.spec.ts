@@ -10,6 +10,7 @@ import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-g
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
 import { PriceHelper } from 'ish-core/models/price/price.helper';
+import { ProductInventoryDetails } from 'ish-core/models/product-inventories/product-inventories.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 
@@ -38,6 +39,9 @@ describe('Product Context Facade', () => {
     shoppingFacade = mock(ShoppingFacade);
     when(shoppingFacade.category$(anything())).thenReturn(of(undefined));
     when(shoppingFacade.productVariationCount$(anything())).thenReturn(of(undefined));
+    when(shoppingFacade.productInventory$(anything())).thenReturn(
+      of({ sku: '123', inStock: true } as ProductInventoryDetails)
+    );
 
     const appFacade = mock(AppFacade);
     when(appFacade.serverSetting$(anything())).thenReturn(of(undefined));
@@ -97,6 +101,7 @@ describe('Product Context Facade', () => {
 
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
 
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of(undefined));
       context.set('sku', () => '123');
     });
 
@@ -110,6 +115,7 @@ describe('Product Context Facade', () => {
           "children": {},
           "hasProductError": true,
           "hasQuantityError": false,
+          "inventory": undefined,
           "label": null,
           "loading": false,
           "maxQuantity": 100,
@@ -181,6 +187,10 @@ describe('Product Context Facade', () => {
           "children": {},
           "hasProductError": false,
           "hasQuantityError": false,
+          "inventory": {
+            "inStock": true,
+            "sku": "123",
+          },
           "label": null,
           "loading": false,
           "maxQuantity": 100,
@@ -812,6 +822,7 @@ describe('Product Context Facade', () => {
       shoppingFacade = mock(ShoppingFacade);
       when(shoppingFacade.category$(anything())).thenReturn(EMPTY);
       when(shoppingFacade.productVariationCount$(anything())).thenReturn(of(undefined));
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of(undefined));
 
       product = {
         completenessLevel: ProductCompletenessLevel.Detail,
