@@ -1209,6 +1209,7 @@
   "quote.edit.button.add_quote_to_cart.label": "Ajouter le devis au panier",
   "quote.edit.button.create_new_from_quote.label": "Créer une nouvelle demande à partir du devis",
   "quote.edit.button.submit.label": "Envoyer la demande de devis",
+  "quote.edit.empty.title": "Il n'y a aucun article dans votre demande de devis.",
   "quote.edit.reject.button.reject.label": "Rejeter le devis",
   "quote.edit.responded.quote_details.text": "Détails du devis",
   "quote.edit.saved.your_quote_request_has_been_saved.text": "Votre demande de devis \"{{0}}\" a été enregistrée.",

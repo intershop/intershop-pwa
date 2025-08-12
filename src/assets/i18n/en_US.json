@@ -1209,6 +1209,7 @@
   "quote.edit.button.add_quote_to_cart.label": "Add quote to cart",
   "quote.edit.button.create_new_from_quote.label": "Create new request from quote",
   "quote.edit.button.submit.label": "Submit quote request",
+  "quote.edit.empty.title": "There are no items in your quote request.",
   "quote.edit.reject.button.reject.label": "Reject quote",
   "quote.edit.responded.quote_details.text": "Quote details",
   "quote.edit.saved.your_quote_request_has_been_saved.text": "Your quote request \"{{0}}\" has been saved.",

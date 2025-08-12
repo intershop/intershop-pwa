@@ -1209,6 +1209,7 @@
   "quote.edit.button.add_quote_to_cart.label": "Preisangebot in Warenkorb legen",
   "quote.edit.button.create_new_from_quote.label": "Neue Preisanfrage aus Preisangebot anlegen",
   "quote.edit.button.submit.label": "Preisanfrage senden",
+  "quote.edit.empty.title": "Ihre Preisanfrage enthält keine Artikel.",
   "quote.edit.reject.button.reject.label": "Preisangebot ablehnen",
   "quote.edit.responded.quote_details.text": "Preisangebot-Details",
   "quote.edit.saved.your_quote_request_has_been_saved.text": "Ihre Preisanfrage \"{{0}}\" wurde gespeichert.",

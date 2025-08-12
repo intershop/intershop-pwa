@@ -6,7 +6,6 @@
         data-testing-id="submit-quote-request"
         type="submit"
         class="btn btn-primary float-right"
-        [disabled]="quote.items.length === 0"
         (click)="submit()"
       >
         {{ 'quote.edit.button.submit.label' | translate }}
