@@ -47,6 +47,14 @@ To project an input into the component's `editMode`, use the `editModeForm` attr
 
 Search for the usage of `ish-in-place-edit` in your project's customizations and change the used selectors.
 
+With version 8.0.0 the projects Stylelint and ESLint dependencies were updated.
+The following commands should be executed after the formatting/linting dependencies updates to adapt the customized project code to changed/new rules.
+
+```
+npx stylelint "**/*.{css,scss}" --fix
+ng lint --fix
+```
+
 ## From 7.0.0 to 7.1.0
 
 Due to installation issues with the used `luarocks` package manager, we have disabled the installation of the `lua-resty-redis-connector` that provides the functionality to connect to a shared Redis cache.

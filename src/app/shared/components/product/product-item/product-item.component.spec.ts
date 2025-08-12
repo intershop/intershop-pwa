@@ -61,6 +61,6 @@ describe('Product Item Component', () => {
     when(context.select('loading')).thenReturn(of(true));
     fixture.detectChanges();
 
-    expect(findAllCustomElements(element)).toInclude('ish-loading');
+    expect(findAllCustomElements(element)).toContain('ish-loading');
   });
 });

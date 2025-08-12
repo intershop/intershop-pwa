@@ -21,21 +21,21 @@ describe('Module Schematic', () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematic('module', options, appTree);
-    expect(tree.files).toInclude('/src/app/foo/foo.module.ts');
+    expect(tree.files).toContain('/src/app/foo/foo.module.ts');
   });
 
   it('should create a module in a sub folder', async () => {
     const options = { ...defaultOptions, name: 'foo/bar/foobar' };
 
     const tree = await schematicRunner.runSchematic('module', options, appTree);
-    expect(tree.files).toInclude('/src/app/foo/bar/foobar/foobar.module.ts');
+    expect(tree.files).toContain('/src/app/foo/bar/foobar/foobar.module.ts');
   });
 
   it('should create a flat module', async () => {
     const options = { ...defaultOptions, flat: true };
 
     const tree = await schematicRunner.runSchematic('module', options, appTree);
-    expect(tree.files).toInclude('/src/app/foo.module.ts');
+    expect(tree.files).toContain('/src/app/foo.module.ts');
   });
 
   it('should dasherize a name', async () => {
