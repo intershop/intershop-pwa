@@ -16,7 +16,7 @@ export class ProductContextDisplayPropertiesService implements ExternalDisplayPr
   ): Observable<Partial<ProductContextDisplayProperties<false>>> {
     return context$.pipe(
       map(({ product, prices, inventory }) => {
-        const canBeOrdered = !ProductHelper.isMasterProduct(product) && inventory?.inStock;
+        const canBeOrdered = !ProductHelper.isMasterProduct(product) && (inventory?.inStock ?? product?.available);
         const canBeOrderedWithPrice = canBeOrdered && (!!prices?.salePrice || ProductHelper.isRetailSet(product));
         const canBeOrderedNotRetail = canBeOrdered && !ProductHelper.isRetailSet(product);
 
