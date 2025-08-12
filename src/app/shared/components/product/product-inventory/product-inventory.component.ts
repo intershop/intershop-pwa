@@ -17,7 +17,7 @@ export class ProductInventoryComponent implements OnInit {
 
   ngOnInit() {
     this.visible$ = this.context.select('displayProperties', 'inventory');
-    this.available$ = this.context.select('product', 'available');
-    this.availableStock$ = this.context.select('product', 'availableStock');
+    this.available$ = this.context.select('inventory', 'inStock');
+    this.availableStock$ = this.context.select('inventory', 'availableStock');
   }
 }
