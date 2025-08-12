@@ -169,7 +169,7 @@ export class PaymentService {
    * @returns                 The payment instrument id.
    */
   private sendRedirectUrlsIfRequired(pm: PaymentMethodBaseData, paymentInstrument: string): Observable<string> {
-    if (!pm?.capabilities || !pm.capabilities.some(data => ['RedirectBeforeCheckout'].includes(data))) {
+    if (!pm?.capabilities?.some(data => ['RedirectBeforeCheckout'].includes(data))) {
       return of(paymentInstrument);
       // send redirect urls if there is a redirect required
     } else {
