@@ -85,7 +85,7 @@ export const getEligibleFastCheckoutPaymentMethods = createSelector(
   getLoggedInCustomer,
   (basket, customer) =>
     basket?.eligiblePaymentMethods
-      ?.filter(pm => pm.capabilities && pm.capabilities.includes('FastCheckout'))
+      ?.filter(pm => pm.capabilities?.includes('FastCheckout'))
       .map(pm => (customer ? pm : { ...pm, saveAllowed: false }))
 );
 
