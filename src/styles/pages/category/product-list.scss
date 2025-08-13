@@ -93,8 +93,8 @@
     padding-right: $space-default;
     padding-bottom: ($space-default * 2);
     padding-left: $space-default;
-    list-style-type: none;
     outline: none;
+    list-style-type: none;
 
     &.grid-view {
       &:nth-child(2n + 1) {
@@ -185,8 +185,8 @@
   padding-bottom: ($space-default * 2);
 
   a.view-all {
-    display: block;
     clear: both;
+    display: block;
   }
 }
 

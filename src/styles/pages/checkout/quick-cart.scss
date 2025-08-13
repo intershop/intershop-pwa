@@ -120,11 +120,11 @@
       padding-bottom: ($space-default * 0.25);
       margin: 0;
       overflow: hidden;
+      text-overflow: ellipsis;
       font-family: $font-family-condensedregular;
       font-size: $font-size-base;
       font-weight: normal;
       color: $text-color-tertiary;
-      text-overflow: ellipsis;
       text-transform: none;
       white-space: nowrap;
     }

@@ -29,8 +29,8 @@ footer {
     }
 
     .ng-fa-icon {
-      display: block;
       float: left;
+      display: block;
       padding: 20px $space-default 20px 0;
       font-size: 40px;
       color: $text-color-inverse;
@@ -43,8 +43,8 @@ footer {
 
     a {
       color: $text-color-inverse;
-      text-decoration: underline;
       text-transform: uppercase;
+      text-decoration: underline;
 
       &:hover {
         text-decoration: none;
@@ -131,8 +131,8 @@ footer {
   }
 
   .ng-fa-icon {
-    display: block;
     float: left;
+    display: block;
     padding: 25px $space-default 0 0;
     font-size: 30px;
     color: $text-color-inverse;

@@ -161,10 +161,10 @@
               position: absolute;
               bottom: 0;
               left: 50%;
+              visibility: hidden;
               width: 0;
               height: 0;
               margin-left: -6px;
-              visibility: hidden;
               content: '';
               border-right: 6px solid transparent;
               border-bottom: 6px solid #2f2f2f;
@@ -250,10 +250,10 @@
       left: 0;
       z-index: 9999;
       display: block;
-      width: 720px;
-      padding: 25px 25px ($grid-gutter-width * 0.5) 25px;
-      margin: 0;
       visibility: hidden;
+      width: 720px;
+      padding: 25px 25px ($grid-gutter-width * 0.5);
+      margin: 0;
       border-top: ($space-default * 0.5) solid $border-color-default;
 
       @media (max-width: $screen-xs-max) {
@@ -282,9 +282,9 @@
 }
 
 .sub-navigation-content {
+  clear: both;
   padding: 0 !important;
   margin: 0 !important;
-  clear: both;
 
   @media (max-width: $screen-xs-max) {
     padding: $space-default !important;

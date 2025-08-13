@@ -236,9 +236,9 @@
   .dropup {
     &.show {
       color: $input-focus-color;
+      outline: 0;
       background-color: $input-focus-bg;
       border-color: $input-focus-border-color;
-      outline: 0;
     }
 
     .dropdown-toggle {
