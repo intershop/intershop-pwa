@@ -141,6 +141,7 @@ a {
   // default link and button link behavior
   text-decoration: underline;
 
+  /* stylelint-disable-next-line nesting-selector-no-missing-scoping-root */
   &:hover {
     // underlined elements are not underlined on hover
     text-decoration: none;
@@ -151,6 +152,7 @@ a {
   // elements which are styled as links with this class are not underlined but underlined on hover
   text-decoration: none !important;
 
+  /* stylelint-disable-next-line nesting-selector-no-missing-scoping-root */
   &:hover {
     text-decoration: underline !important;
   }
@@ -412,6 +414,7 @@ img.marketing {
 }
 
 @mixin focus-visible-reset() {
+  /* stylelint-disable-next-line nesting-selector-no-missing-scoping-root */
   &:focus-visible {
     // accessibility: revert to browser default focus style
     outline: revert !important;
@@ -420,6 +423,7 @@ img.marketing {
 
   // fallback if browser doesn't support :focus-visible
   @supports not selector(:focus-visible) {
+    /* stylelint-disable-next-line nesting-selector-no-missing-scoping-root */
     &:focus {
       outline: revert !important;
       outline-offset: 0 !important;

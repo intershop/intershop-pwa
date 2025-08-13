@@ -2,10 +2,6 @@
 @mixin list-header-mixin() {
   border-top: 0;
   border-bottom: 1px solid $border-color-default;
-
-  &.no-separator {
-    border-bottom: 0;
-  }
 }
 
 @mixin list-header-item() {

@@ -164,7 +164,8 @@
             line-height: $line-height-base;
             color: $text-color-primary;
             text-align: left;
-            word-break: break-word;
+            word-break: normal;
+            overflow-wrap: anywhere;
             background: none;
             border: 0;
 
