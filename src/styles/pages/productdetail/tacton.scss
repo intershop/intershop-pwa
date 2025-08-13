@@ -19,9 +19,9 @@
   span.anchor {
     position: relative;
     display: block;
+    visibility: hidden;
     height: 50px; /* height of nav */
     margin-top: -50px; /* height of nav */
-    visibility: hidden;
   }
 }
 

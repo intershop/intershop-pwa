@@ -16,11 +16,11 @@
     h3 {
       .btn:not(.details-tooltip) {
         @media (max-width: $screen-xs-max) {
+          clear: both;
           display: block;
           width: 100%;
           margin-top: $space-default;
           margin-bottom: $space-default;
-          clear: both;
         }
 
         @media (min-width: $screen-sm-min) {

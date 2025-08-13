@@ -10,7 +10,7 @@
 
   .filter-panel {
     h1 {
-      margin: 0 0 $space-default 0;
+      margin: 0 0 $space-default;
       font-size: 24px;
     }
   }
@@ -18,8 +18,8 @@
 
 ul {
   &.category-list {
-    padding: 0;
     clear: both;
+    padding: 0;
     list-style: none;
 
     @media (max-width: $screen-xs-max) {

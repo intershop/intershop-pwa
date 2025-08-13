@@ -3,8 +3,8 @@
 .main-container {
   position: relative;
   min-height: 200px;
-  background: $color-inverse;
   outline: none; // remove focus outline from container when using "skip to main content link"
+  background: $color-inverse;
 }
 
 .container {
@@ -407,8 +407,8 @@ img.marketing {
 }
 
 .section {
-  margin-bottom: ($space-default * 2);
   clear: both;
+  margin-bottom: ($space-default * 2);
 }
 
 @mixin focus-visible-reset() {

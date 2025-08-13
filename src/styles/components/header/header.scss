@@ -75,8 +75,8 @@ header {
 
       .header-icon {
         font-size: $font-size-corporate;
-        color: $CORPORATE-PRIMARY;
         vertical-align: middle;
+        color: $CORPORATE-PRIMARY;
       }
     }
   }
@@ -225,8 +225,8 @@ header .header-checkout {
     }
 
     .header-utility {
-      justify-content: flex-end;
       float: right;
+      justify-content: flex-end;
       height: $header-height-mobile;
       padding-right: $space-default;
 
