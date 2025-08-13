@@ -12,7 +12,7 @@
   },
   "private": true,
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky",
     "update-dockerignore": "node scripts/update-dockerignore",
     "init-development-environment": "node scripts/init-development-environment",
     "check-file-synchronization": "node scripts/check-file-synchronization",
@@ -157,7 +157,7 @@
     "eslint-plugin-rxjs-angular": "^2.0.1",
     "eslint-plugin-unicorn": "^56.0.1",
     "eslint-plugin-unused-imports": "^4.1.4",
-    "husky": "^8.0.3",
+    "husky": "^9.1.7",
     "intershop-schematics": "file:schematics",
     "jasmine-marbles": "^0.9.2",
     "jest": "^29.7.0",
@@ -220,55 +220,6 @@
     "src/assets/i18n/*.json": [
       "npm run sort-i18n"
     ]
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ],
-    "rules": {
-      "body-leading-blank": [
-        2,
-        "always"
-      ],
-      "body-max-line-length": [
-        2,
-        "always",
-        400
-      ],
-      "footer-leading-blank": [
-        2,
-        "always"
-      ],
-      "footer-max-line-length": [
-        2,
-        "always",
-        400
-      ],
-      "header-max-length": [
-        2,
-        "always",
-        200
-      ],
-      "type-enum": [
-        2,
-        "always",
-        [
-          "feat",
-          "fix",
-          "perf",
-          "docs",
-          "style",
-          "i18n",
-          "refactor",
-          "test",
-          "build",
-          "deps",
-          "ci",
-          "chore",
-          "temp"
-        ]
-      ]
-    }
   },
   "config": {
     "commitizen": {
