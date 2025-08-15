@@ -305,6 +305,11 @@ export class CheckoutFacade {
     this.store.dispatch(loadBasketEligiblePaymentMethods());
   }
 
+  eligiblePaypalPaymentMethod$ = this.store.pipe(select(getBasketEligiblePaymentMethods)).pipe(
+    whenTruthy(),
+    map(methods => methods?.find(method => method.capabilities.includes('PaypalCheckout')))
+  );
+
   setBasketPayment(paymentName: string) {
     this.store.dispatch(setBasketPayment({ id: paymentName }));
   }
