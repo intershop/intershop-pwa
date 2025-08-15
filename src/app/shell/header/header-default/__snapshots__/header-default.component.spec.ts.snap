@@ -90,12 +90,13 @@ exports[`Header Default Component should render normal header adequately for mob
       class="btn btn-link search-toggler sticky-header-icon active-search"
       tabindex="-1"
       aria-label="search.searchbox.button.sticky_header.aria_label"
-      ><div class="search-container header-search-container show" ng-reflect-collapsed="false">
-        <ish-search-box
-          data-testing-id="search-box-desktop"
-          ng-reflect-device-type="mobile"
-        ></ish-search-box></div
     ></a>
+    <div class="search-container header-search-container show" ng-reflect-collapsed="false">
+      <ish-search-box
+        data-testing-id="search-box-desktop"
+        ng-reflect-device-type="mobile"
+      ></ish-search-box>
+    </div>
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
     </div>
@@ -298,13 +299,14 @@ exports[`Header Default Component should render sticky header adequately for mob
       class="btn btn-link search-toggler sticky-header-icon active-search"
       tabindex="0"
       aria-label="search.searchbox.button.sticky_header.aria_label"
-      ><fa-icon class="header-icon" ng-reflect-icon="fas,search"></fa-icon>
-      <div class="search-container header-search-container" ng-reflect-collapsed="false">
-        <ish-search-box
-          data-testing-id="search-box-desktop"
-          ng-reflect-device-type="mobile"
-        ></ish-search-box></div
+      ><fa-icon class="header-icon" ng-reflect-icon="fas,search"></fa-icon
     ></a>
+    <div class="search-container header-search-container" ng-reflect-collapsed="false">
+      <ish-search-box
+        data-testing-id="search-box-desktop"
+        ng-reflect-device-type="mobile"
+      ></ish-search-box>
+    </div>
     <div class="language-switch-container d-none d-md-block"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
     ><ish-mini-basket
