@@ -14,6 +14,20 @@ describe('Category Helper', () => {
     });
   });
 
+  describe('getCategoryID', () => {
+    it.each([
+      [undefined, undefined],
+      [undefined, ''],
+      ['A', 'A'],
+      ['B', 'A.B'],
+      ['C', 'A.B.C'],
+      ['tablets', 'computers.tablets'],
+      ['electronics', 'home.electronics'],
+    ])(`should return '%s' when extracting ID from '%s'`, (result, uniqueId) => {
+      expect(CategoryHelper.getCategoryID(uniqueId)).toEqual(result);
+    });
+  });
+
   describe('Category Helper', () => {
     it.each([
       [false, undefined],

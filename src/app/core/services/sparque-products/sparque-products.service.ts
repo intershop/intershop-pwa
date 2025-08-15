@@ -2,6 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
+import { CategoryHelper } from 'ish-core/models/category/category.helper';
 import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
 import { SparqueSearch } from 'ish-core/models/sparque-search/sparque-search.interface';
 import { SparqueSearchMapper } from 'ish-core/models/sparque-search/sparque-search.mapper';
@@ -17,7 +18,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
 @Injectable({ providedIn: 'root' })
 export class SparqueProductsService implements ProductsServiceInterface {
   // API version for Sparque API.
-  private readonly apiVersion = 'v2';
+  private readonly apiVersion = 'v3';
   // Maximum number of facet options to request from the Sparque API.
   private readonly facetOptionsCount = '10';
 
@@ -61,11 +62,17 @@ export class SparqueProductsService implements ProductsServiceInterface {
     sortKey?: string,
     offset = 0
   ): Observable<SearchResponse> {
+    // If no searchTerm is present, redirect to getFilteredCategoryProducts
+    if (!searchParameter.searchTerm) {
+      return this.getFilteredCategoryProducts(searchParameter, amount, sortKey, offset);
+    }
+
     let params = new HttpParams()
       .set('count', amount ? amount.toString() : '')
       .set('offset', offset.toString())
       .set('facetOptionsCount', this.facetOptionsCount)
       .set('keyword', searchParameter.searchTerm ? searchParameter.searchTerm[0] : '');
+
     if (sortKey) {
       params = params.set('sorting', sortKey);
     }
@@ -73,6 +80,77 @@ export class SparqueProductsService implements ProductsServiceInterface {
 
     return this.sparqueApiService
       .get<SparqueSearch>(`search`, this.apiVersion, { params, skipApiErrorHandling: true })
+      .pipe(map(result => this.sparqueSearchMapper.fromData(result, searchParameter)));
+  }
+
+  getFilteredCategoryProducts(
+    searchParameter: URLFormParams,
+    amount: number,
+    sortKey?: string,
+    offset = 0
+  ): Observable<SearchResponse> {
+    let params = new HttpParams()
+      .set(
+        'categoryIds',
+        CategoryHelper.getCategoryID(
+          CategoryHelper.getCategoryID(
+            Array.isArray(searchParameter.selectedCategory)
+              ? searchParameter.selectedCategory.join(',')
+              : searchParameter.selectedCategory
+          )
+        )
+      )
+      .set('count', amount.toString())
+      .set('offset', offset.toString())
+      .set('facetOptionsCount', this.facetOptionsCount);
+
+    if (sortKey) {
+      params = params.set('sorting', sortKey);
+    }
+
+    if (searchParameter) {
+      params = params.set('selectedFacets', this.selectedFacets(omit(searchParameter, 'selectedCategory')));
+    }
+
+    return this.sparqueApiService
+      .get<SparqueSearch>(`products`, this.apiVersion, { params, skipApiErrorHandling: true })
+      .pipe(map(result => this.sparqueSearchMapper.fromData(result, searchParameter)));
+  }
+
+  /**
+   * Retrieves products for a specific category.
+   *
+   * @param categoryUniqueId - The unique identifier of the category.
+   * @param amount - The number of products to retrieve.
+   * @param sortKey - The key to sort the results by (optional).
+   * @param offset - The offset for pagination (default is 0).
+   * @param selectedFacets - The selected facets to filter by (optional).
+   * @returns An observable emitting the search response containing the products.
+   */
+  getCategoryProducts(
+    categoryUniqueId: string,
+    amount: number,
+    sortKey?: string,
+    offset = 0
+  ): Observable<SearchResponse> {
+    const categoryId = CategoryHelper.getCategoryID(categoryUniqueId);
+    let params = new HttpParams()
+      .set('categoryIds', categoryId)
+      .set('count', amount.toString())
+      .set('offset', offset.toString())
+      .set('facetOptionsCount', this.facetOptionsCount);
+
+    if (sortKey) {
+      params = params.set('sorting', sortKey);
+    }
+
+    // Create URLFormParams with selectedCategory
+    const searchParameter: URLFormParams = {
+      selectedCategory: [categoryId],
+    };
+
+    return this.sparqueApiService
+      .get<SparqueSearch>('products', this.apiVersion, { params, skipApiErrorHandling: true })
       .pipe(map(result => this.sparqueSearchMapper.fromData(result, searchParameter)));
   }
 

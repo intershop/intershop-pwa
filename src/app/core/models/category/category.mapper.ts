@@ -60,37 +60,6 @@ export class CategoryMapper {
   }
 
   /**
-   * Compute completeness level of incoming raw data.
-   */
-  computeCompleteness(categoryData: CategoryData): number {
-    if (!categoryData) {
-      return -1;
-    }
-
-    // adjust CategoryCompletenessLevel.Max accordingly
-    let count = 0;
-
-    if (categoryData.categoryRef) {
-      // category path categories do not contain a categoryRef
-      count++;
-    }
-    if (categoryData.categoryPath && categoryData.categoryPath.length === 1) {
-      // root categories have no images but a single-entry categoryPath
-      count++;
-    }
-    if (categoryData.images) {
-      // images are supplied for sub categories in the category details call
-      count++;
-    }
-    if (categoryData.seoAttributes) {
-      // seo attributes are only supplied with the category details call
-      count++;
-    }
-
-    return count;
-  }
-
-  /**
    * Maps a raw {@link CategoryData} element to a {@link Category} element ignoring subcategories.
    */
   fromDataSingle(categoryData: CategoryData): Category {
@@ -107,7 +76,7 @@ export class CategoryMapper {
         description: categoryData.description,
         images: this.imageMapper.fromImages(categoryData.images),
         attributes: categoryData.attributes,
-        completenessLevel: this.computeCompleteness(categoryData),
+        completenessLevel: CategoryHelper.computeCompleteness(categoryData),
         seoAttributes: SeoAttributesMapper.fromData(categoryData.seoAttributes),
       };
     } else {

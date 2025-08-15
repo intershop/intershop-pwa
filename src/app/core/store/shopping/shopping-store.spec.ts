@@ -14,11 +14,13 @@ import { Product } from 'ish-core/models/product/product.model';
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 import { CategoriesServiceProvider } from 'ish-core/service-provider/categories.service-provider';
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
+import { SuggestionsServiceProvider } from 'ish-core/service-provider/suggestions.service-provider';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { CountryService } from 'ish-core/services/country/country.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
+import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { SparqueRecommendationsService } from 'ish-core/services/sparque-recommendations/sparque-recommendations.service';
 import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
@@ -48,6 +50,8 @@ describe('Shopping Store', () => {
   let categoriesServiceProviderMock: CategoriesServiceProvider;
   let sparqueSuggestionsServiceMock: SparqueSuggestionsService;
   let suggestServiceMock: SuggestService;
+  let suggestionsServiceProviderMock: SuggestionsServiceProvider;
+  let promotionsServiceMock: PromotionsService;
   let filterServiceMock: FilterService;
 
   beforeEach(() => {
@@ -105,13 +109,15 @@ describe('Shopping Store', () => {
     categoriesServiceProviderMock = mock(CategoriesServiceProvider);
     sparqueSuggestionsServiceMock = mock(SparqueSuggestionsService);
     suggestServiceMock = mock(SuggestService);
+    suggestionsServiceProviderMock = mock(SuggestionsServiceProvider);
     productsServiceMock = mock(ProductsService);
-    when(productsServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
+    when(productsServiceProviderMock.get()).thenReturn(of(instance(productsServiceMock)));
     when(productsServiceProviderMock.isSparqueSearchEnabled()).thenReturn(of(false));
     when(sparqueRecommendationsServiceMock.getRecommendations(anything())).thenReturn(
       of({ recommendations: { strategy: 'test', count: 5, productSKUs: [] }, products: [] })
     );
     when(categoriesServiceProviderMock.get()).thenReturn(of(instance(categoriesServiceMock)));
+    when(suggestionsServiceProviderMock.get()).thenReturn(of(instance(suggestServiceMock)));
     when(productsServiceMock.getProduct(anyString())).thenCall(sku => {
       if (['P1', 'P2'].find(x => x === sku)) {
         return of({ sku, name: `n${sku}` });
@@ -183,6 +189,7 @@ describe('Shopping Store', () => {
         { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
         { provide: SparqueRecommendationsService, useFactory: () => instance(sparqueRecommendationsServiceMock) },
         { provide: SparqueSuggestionsService, useFactory: () => instance(sparqueSuggestionsServiceMock) },
+        { provide: SuggestionsServiceProvider, useFactory: () => instance(suggestionsServiceProviderMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         provideStoreSnapshots(),
         SelectedProductContextFacade,
@@ -456,6 +463,7 @@ describe('Shopping Store', () => {
           id: {"type":"category","value":"A.123.456"}
           itemCount: 2
           sortableAttributes: []
+        no_filter_action
         [Filter API] Load Filter Success:
           filterNavigation: {}
       `);
@@ -587,6 +595,7 @@ describe('Shopping Store', () => {
               id: {"type":"category","value":"A.123.456"}
               itemCount: 2
               sortableAttributes: []
+            no_filter_action
             [Filter API] Load Filter Success:
               filterNavigation: {}
           `);
@@ -712,6 +721,7 @@ describe('Shopping Store', () => {
             id: {"type":"category","value":"A.123.456"}
             itemCount: 2
             sortableAttributes: []
+          no_filter_action
           [Filter API] Load Filter Success:
             filterNavigation: {}
         `);

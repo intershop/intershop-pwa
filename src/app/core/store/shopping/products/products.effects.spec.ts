@@ -53,7 +53,7 @@ describe('Products Effects', () => {
     productsServiceProviderMock = mock(ProductsServiceProvider);
     productsServiceMock = mock(ProductsService);
     productListingMapperMock = mock(ProductListingMapper);
-    when(productsServiceProviderMock.get(anything())).thenReturn(instance(productsServiceMock));
+    when(productsServiceProviderMock.get()).thenReturn(of(instance(productsServiceMock)));
     when(productsServiceProviderMock.isSparqueSearchEnabled()).thenReturn(of(true));
     when(productListingMapperMock.createPages(anything(), anything(), anything(), anything(), anything())).thenCall(
       (
@@ -86,6 +86,7 @@ describe('Products Effects', () => {
         sortableAttributes: [{ name: 'name-asc' }, { name: 'name-desc' }],
         products: [{ sku: 'P222' }, { sku: 'P333' }] as Product[],
         total: 2,
+        filter: [],
       })
     );
 
@@ -262,6 +263,7 @@ describe('Products Effects', () => {
       actions$ = of(loadProductsForCategory({ categoryId: '123', sorting: 'name-asc' }));
 
       effects.loadProductsForCategory$.subscribe(() => {
+        verify(productsServiceProviderMock.get()).once();
         verify(productsServiceMock.getCategoryProducts('123', anyNumber(), 'name-asc', anyNumber())).once();
         done();
       });
@@ -281,6 +283,7 @@ describe('Products Effects', () => {
             id: {"type":"category","value":"123"}
             itemCount: 2
             sortableAttributes: [{"name":"name-asc"},{"name":"name-desc"}]
+          no_filter_action
         `);
         done();
       });
@@ -301,6 +304,41 @@ describe('Products Effects', () => {
           }),
         })
       );
+    });
+
+    it('should dispatch loadFilterSuccess when filter data is returned', done => {
+      when(productsServiceMock.getCategoryProducts('123', anyNumber(), anything(), anyNumber())).thenReturn(
+        of({
+          sortableAttributes: [{ name: 'name-asc' }, { name: 'name-desc' }],
+          products: [{ sku: 'P222' }, { sku: 'P333' }] as Product[],
+          total: 2,
+          filter: [
+            {
+              name: 'Category',
+              displayType: 'text_clear',
+              id: 'category',
+              selectionType: 'single',
+              facets: [
+                {
+                  name: 'test-facet',
+                  count: 5,
+                  selected: false,
+                  displayName: 'Test Facet',
+                  searchParameter: { category: ['test-facet'] },
+                  level: 0,
+                },
+              ],
+            },
+          ],
+        })
+      );
+      actions$ = of(loadProductsForCategory({ categoryId: '123' }));
+
+      effects.loadProductsForCategory$.pipe(toArray()).subscribe(actions => {
+        expect(actions).toHaveLength(4); // 2 product success + 1 setProductListingPages + 1 loadFilterSuccess
+        expect(actions[3].type).toContain('Load Filter Success');
+        done();
+      });
     });
   });
 

@@ -42,4 +42,12 @@ export interface CategoriesServiceInterface {
    * @returns      A Sorted list of top level categories with sub categories.
    */
   getTopLevelCategories(limit: number): Observable<CategoryTree>;
+
+  /**
+   * Get a category tree for a specific category with its subcategories.
+   *
+   * @param categoryUniqueId  The unique identifier of the category to retrieve.
+   * @returns                 A category tree containing the specified category and its subcategories.
+   */
+  getCategory(categoryUniqueId: string): Observable<CategoryTree>;
 }

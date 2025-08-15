@@ -120,28 +120,46 @@ export class ProductsEffects {
       ofType(loadProductsForCategory),
       mapToPayload(),
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
+      concatLatestFrom(() => this.store.pipe(select(getFilterById('category')))),
       concatLatestFrom(() => this.store.pipe(select(getProductListingItemsPerPage('category')))),
-      map(([payload, pageSize]) => ({ ...payload, amount: pageSize, offset: (payload.page - 1) * pageSize })),
-      mergeMap(({ categoryId, amount, sorting, offset, page }) =>
-        this.productsService.getCategoryProducts(categoryId, amount, sorting, offset).pipe(
-          concatMap(({ total, products, sortableAttributes }) => [
-            ...products.map(product => loadProductSuccess({ product })),
-            setProductListingPages(
-              this.productListingMapper.createPages(
-                products.map(p => p.sku),
-                'category',
-                categoryId,
-                amount,
-                {
-                  startPage: page,
-                  sortableAttributes,
-                  sorting,
-                  itemCount: total,
-                }
-              )
-            ),
-          ]),
-          mapErrorToAction(loadProductsForCategoryFail, { categoryId })
+      map(([[payload, categoryFilter], pageSize]) => ({
+        ...payload,
+        amount: pageSize,
+        offset: (payload.page - 1) * pageSize,
+        categoryFilter,
+      })),
+      mergeMap(({ categoryId, amount, sorting, offset, page, categoryFilter }) =>
+        this.productsServiceProvider.get().pipe(
+          concatMap(service =>
+            service.getCategoryProducts(categoryId, amount, sorting, offset).pipe(
+              concatMap(({ total, products, sortableAttributes, filter }) => [
+                ...products.map(product => loadProductSuccess({ product })),
+                setProductListingPages(
+                  this.productListingMapper.createPages(
+                    products.map(p => p.sku),
+                    'category',
+                    categoryId,
+                    amount,
+                    {
+                      startPage: page,
+                      sortableAttributes,
+                      sorting,
+                      itemCount: total,
+                    }
+                  )
+                ),
+                filter?.length
+                  ? // handle Sparque filter
+                    loadFilterSuccess({
+                      filterNavigation: {
+                        filter: this.handleSparqueCategoryFilter(filter, categoryFilter, { categoryId: [categoryId] }),
+                      },
+                    })
+                  : { type: 'no_filter_action' },
+              ]),
+              mapErrorToAction(loadProductsForCategoryFail, { categoryId })
+            )
+          )
         )
       )
     )
@@ -193,46 +211,39 @@ export class ProductsEffects {
           whenTruthy(),
           first(),
           switchMap(pageSize =>
-            this.productsServiceProvider
-              // TODO: (Sparque handling) remove this additional parameter once the category navigation will be handled by Sparque
-              .get(Object.keys(searchParameter).includes('productFilter'))
-              .getFilteredProducts(searchParameter, pageSize, sorting, ((page || 1) - 1) * pageSize)
-              .pipe(
-                concatLatestFrom(() => this.productsServiceProvider.isSparqueSearchEnabled()),
-                mergeMap(([{ products, total, filter, sortableAttributes }, isSparque]) => [
-                  ...products.map((product: Product) => loadProductSuccess({ product })),
-                  setProductListingPages(
-                    this.productListingMapper.createPages(
-                      products.map(p => p.sku),
-                      id.type,
-                      id.value,
-                      pageSize,
-                      {
-                        filters: id.filters,
-                        itemCount: total,
-                        startPage: page,
-                        sortableAttributes,
-                        sorting,
-                      }
-                    )
-                  ),
-                  isSparque
-                    ? filter?.length
-                      ? loadFilterSuccess({
+            this.productsServiceProvider.get().pipe(
+              concatMap(service =>
+                service.getFilteredProducts(searchParameter, pageSize, sorting, ((page || 1) - 1) * pageSize).pipe(
+                  mergeMap(({ products, total, sortableAttributes, filter }) => [
+                    ...products.map((product: Product) => loadProductSuccess({ product })),
+                    setProductListingPages(
+                      this.productListingMapper.createPages(
+                        products.map(p => p.sku),
+                        id.type,
+                        id.value,
+                        pageSize,
+                        {
+                          filters: id.filters,
+                          itemCount: total,
+                          startPage: page,
+                          sortableAttributes,
+                          sorting,
+                        }
+                      )
+                    ),
+                    filter?.length
+                      ? // handle Sparque filter
+                        loadFilterSuccess({
                           filterNavigation: {
                             filter: this.handleSparqueCategoryFilter(filter, categoryFilter, searchParameter),
                           },
                         })
-                      : // in case no filter is returned filter state must contain at least the filters from the search parameter
-                        loadFilterSuccess({
-                          filterNavigation: {
-                            filter: this.getSelectedFilter(searchParameter, products?.length || 0),
-                          },
-                        })
-                    : { type: 'no_filter_action' },
-                ]),
-                mapErrorToAction(loadProductFail)
+                      : { type: 'no_filter_action' },
+                  ]),
+                  mapErrorToAction(loadProductFail)
+                )
               )
+            )
           )
         )
       )
@@ -445,7 +456,6 @@ export class ProductsEffects {
     searchParameter: URLFormParams
   ): Filter[] {
     const newFacets = repliedFacets;
-
     // processing of the category facet only necessary if a category facet is applied in the current search
     if (storedCategoryFacet && searchParameter[storedCategoryFacet.id]) {
       const currentCategoryFacetOption = storedCategoryFacet.facets.find(

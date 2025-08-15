@@ -24,6 +24,14 @@ const facets: SparqueFixedFacetGroup[] = [
       { id: 'option_Id2', identifier: 'option_identifier2', score: 10, value: 'value2' },
     ],
   },
+  {
+    id: 'category',
+    title: 'Category',
+    options: [
+      { id: 'cat_Id1', identifier: 'cat_identifier1', score: 5, value: 'Category 1' },
+      { id: 'cat_Id2', identifier: 'cat_identifier2', score: 15, value: 'Category 2' },
+    ],
+  },
 ];
 
 const sparqueSearchResonse: SparqueSearch = {
@@ -92,6 +100,45 @@ describe('Sparque Search Mapper', () => {
               "name": "Color",
               "selectionType": "single",
             },
+            {
+              "displayType": "text_clear",
+              "facets": [
+                {
+                  "count": 5,
+                  "displayName": "Category 1",
+                  "level": 0,
+                  "name": "cat_Id1",
+                  "searchParameter": {
+                    "category": [
+                      "cat_Id1",
+                    ],
+                    "searchTerm": [
+                      "fancyProduct",
+                    ],
+                  },
+                  "selected": false,
+                },
+                {
+                  "count": 15,
+                  "displayName": "Category 2",
+                  "level": 0,
+                  "name": "cat_Id2",
+                  "searchParameter": {
+                    "category": [
+                      "cat_Id2",
+                    ],
+                    "searchTerm": [
+                      "fancyProduct",
+                    ],
+                  },
+                  "selected": false,
+                },
+              ],
+              "id": "CategoryUUIDLevelMulti",
+              "limitCount": 5,
+              "name": "Category",
+              "selectionType": "single",
+            },
           ],
           "products": [
             {
@@ -112,6 +159,119 @@ describe('Sparque Search Mapper', () => {
           "total": 1,
         }
       `);
+    });
+
+    it('should skip category filter mapping when no selectedCategory is present', () => {
+      const result = sparqueSearchMapper.fromData(sparqueSearchResonse, searchParams);
+      expect(result).toMatchInlineSnapshot(`
+        {
+          "filter": [
+            {
+              "displayType": "text_clear",
+              "facets": [
+                {
+                  "count": 1,
+                  "displayName": "value1",
+                  "level": 0,
+                  "name": "option_Id1",
+                  "searchParameter": {
+                    "color": [
+                      "option_Id1",
+                    ],
+                    "searchTerm": [
+                      "fancyProduct",
+                    ],
+                  },
+                  "selected": false,
+                },
+                {
+                  "count": 10,
+                  "displayName": "value2",
+                  "level": 0,
+                  "name": "option_Id2",
+                  "searchParameter": {
+                    "color": [
+                      "option_Id2",
+                    ],
+                    "searchTerm": [
+                      "fancyProduct",
+                    ],
+                  },
+                  "selected": false,
+                },
+              ],
+              "id": "color",
+              "limitCount": 5,
+              "name": "Color",
+              "selectionType": "single",
+            },
+            {
+              "displayType": "text_clear",
+              "facets": [
+                {
+                  "count": 5,
+                  "displayName": "Category 1",
+                  "level": 0,
+                  "name": "cat_Id1",
+                  "searchParameter": {
+                    "category": [
+                      "cat_Id1",
+                    ],
+                    "searchTerm": [
+                      "fancyProduct",
+                    ],
+                  },
+                  "selected": false,
+                },
+                {
+                  "count": 15,
+                  "displayName": "Category 2",
+                  "level": 0,
+                  "name": "cat_Id2",
+                  "searchParameter": {
+                    "category": [
+                      "cat_Id2",
+                    ],
+                    "searchTerm": [
+                      "fancyProduct",
+                    ],
+                  },
+                  "selected": false,
+                },
+              ],
+              "id": "CategoryUUIDLevelMulti",
+              "limitCount": 5,
+              "name": "Category",
+              "selectionType": "single",
+            },
+          ],
+          "products": [
+            {
+              "name": "Product 1",
+              "sku": "SKU1",
+            },
+          ],
+          "sortableAttributes": [
+            {
+              "displayName": "Price",
+              "name": "price",
+            },
+            {
+              "displayName": "Name",
+              "name": "name",
+            },
+          ],
+          "total": 1,
+        }
+      `);
+    });
+
+    it('should use category filter mapping when selectedCategory is present', () => {
+      const categorySearchParams = { searchTerm: ['fancyProduct'], selectedCategory: ['A.B.C'] };
+      const result = sparqueSearchMapper.fromData(sparqueSearchResonse, categorySearchParams);
+      // mapCategoryFilter excludes the category facet group and adds a selectedCategory facet
+      expect(result.filter).toHaveLength(2);
+      expect(result.filter.map(f => f.id)).toEqual(['color', 'selectedCategory']);
     });
 
     it('should handle empty search response gracefully', () => {

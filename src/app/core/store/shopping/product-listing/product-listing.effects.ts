@@ -10,7 +10,7 @@ import {
 } from 'ish-core/configurations/injection-keys';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
-import { getDeviceType } from 'ish-core/store/core/configuration';
+import { getDeviceType, getSparqueConfig } from 'ish-core/store/core/configuration';
 import { selectQueryParam, selectQueryParams } from 'ish-core/store/core/router';
 import {
   applyFilter,
@@ -146,7 +146,12 @@ export class ProductListingEffects {
       map(({ id, sorting, page, filters }) => {
         if (filters) {
           const searchParameter = filters;
-          return loadProductsForFilter({ id: { ...id, filters }, searchParameter, page, sorting });
+          return loadProductsForFilter({
+            id: { ...id, filters },
+            searchParameter,
+            page,
+            sorting,
+          });
         } else {
           switch (id.type) {
             case 'category':
@@ -171,9 +176,8 @@ export class ProductListingEffects {
       mapToPayload(),
       map(({ id, filters }) => ({ type: id.type, value: id.value, filters })),
       distinctUntilChanged(isEqual),
-      // TODO: (Sparque handling) temporary solution until the category navigation will be handled by Sparque
-      concatLatestFrom(() => this.productsServiceProvider.isSparqueSearchEnabled()),
-      filter(([{ type }, isSparqueSearchEnabled]) => !isSparqueSearchEnabled || type !== 'search'),
+      concatLatestFrom(() => this.store.pipe(select(getSparqueConfig))),
+      filter(([_, sparqueConfig]) => !sparqueConfig),
       map(([{ type, value, filters }]) => {
         if (filters) {
           const searchParameter = filters;

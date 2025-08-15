@@ -4,8 +4,9 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
-import { SparqueCategoryTreeResponse } from 'ish-core/models/sparque-category-tree/sparque-category-tree.interface';
-import { SparqueCategoryTreeMapper } from 'ish-core/models/sparque-category-tree/sparque-category-tree.mapper';
+import { CategoryHelper } from 'ish-core/models/category/category.helper';
+import { SparqueCategory } from 'ish-core/models/sparque-category/sparque-category.interface';
+import { SparqueCategoryMapper } from 'ish-core/models/sparque-category/sparque-category.mapper';
 import { CategoriesServiceInterface } from 'ish-core/service-provider/categories.service-provider';
 import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.service';
 
@@ -18,10 +19,7 @@ export class SparqueCategoriesService implements CategoriesServiceInterface {
   // API version for Sparque API
   private readonly apiVersion = 'v3';
 
-  constructor(
-    private sparqueApiService: SparqueApiService,
-    private sparqueCategoryTreeMapper: SparqueCategoryTreeMapper
-  ) {}
+  constructor(private sparqueApiService: SparqueApiService, private sparqueCategoryMapper: SparqueCategoryMapper) {}
 
   /**
    * Get the sorted top level categories (e.g. for main navigation creation) with sorted sub categories up to the given depth.
@@ -37,7 +35,47 @@ export class SparqueCategoriesService implements CategoriesServiceInterface {
     }
 
     return this.sparqueApiService
-      .get<SparqueCategoryTreeResponse>('categorytree', this.apiVersion, { params, skipApiErrorHandling: true })
-      .pipe(map(result => this.sparqueCategoryTreeMapper.fromData(result)));
+      .get<{ categories?: SparqueCategory[] }>('categorytree', this.apiVersion, { params, skipApiErrorHandling: true })
+      .pipe(map(result => this.sparqueCategoryMapper.fromCategoryTreeData(result?.categories || [])));
+  }
+
+  /**
+   * Get a category tree for a specific category with its subcategories.
+   *
+   * @param categoryUniqueId  The unique identifier of the category to retrieve.
+   * @returns                 A category tree containing the specified category and its subcategories.
+   */
+  getCategory(categoryUniqueId: string): Observable<CategoryTree> {
+    const params = new HttpParams()
+      .set('EntryCategoryId', CategoryHelper.getCategoryID(categoryUniqueId))
+      .set('Levels', categoryUniqueId.split(CategoryHelper.uniqueIdSeparator).length.toString());
+
+    return this.sparqueApiService
+      .get<{ categories?: SparqueCategory[] }>('categorytree', this.apiVersion, { params, skipApiErrorHandling: true })
+      .pipe(
+        map(result =>
+          this.sparqueCategoryMapper.fromCategoryTreeData(
+            result?.categories || [],
+            this.getCategoryPath(categoryUniqueId)
+          )
+        )
+      );
+  }
+
+  private getCategoryPath(categoryUniqueId: string): string[] {
+    const path = [];
+    const splittedCategoryId = categoryUniqueId.split(CategoryHelper.uniqueIdSeparator);
+
+    if (splittedCategoryId.length > 0) {
+      let currentPath = splittedCategoryId[0];
+      path.push(currentPath);
+
+      for (let i = 1; i < splittedCategoryId.length; i++) {
+        currentPath = `${currentPath}.${splittedCategoryId[i]}`;
+        path.push(currentPath);
+      }
+    }
+
+    return path;
   }
 }

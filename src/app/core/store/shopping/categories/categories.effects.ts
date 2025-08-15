@@ -99,7 +99,8 @@ export class CategoriesEffects {
       ofType(loadCategory, loadCategoryByRef),
       mapToPayloadProperty('categoryId'),
       mergeMap(id =>
-        this.categoryService.getCategory(id).pipe(
+        this.categoriesServiceProvider.get().pipe(
+          switchMap(service => service.getCategory(id)),
           map(categories => loadCategorySuccess({ categories })),
           mapErrorToAction(loadCategoryFail)
         )

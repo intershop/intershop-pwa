@@ -25,20 +25,16 @@ export class SuggestionsServiceProvider {
   /**
    * Gets the appropriate suggestions service implementation based on current configuration.
    *
-   * @returns The Sparque suggestions service if enabled, otherwise the default ICM suggest service.
+  /**
+   * Gets the appropriate suggestions service implementation based on current configuration.
+   *
+   * @returns An observable emitting either SparqueSuggestionsService or SuggestService (ICM/Solr).
    */
-  get(): SuggestionsServiceInterface {
-    let enabled = false;
-    this.isSparqueSuggestionsEnabled()
-      .pipe(take(1))
-      .subscribe(sparqueSuggestionsEnabled => (enabled = sparqueSuggestionsEnabled));
-    return enabled ? this.sparqueSuggestionsService : this.suggestService;
-  }
-
-  private isSparqueSuggestionsEnabled(): Observable<boolean> {
+  get(): Observable<SuggestionsServiceInterface> {
     return this.store.pipe(
       select(getSparqueConfig),
-      map(sparqueConfig => sparqueConfig?.features?.includes('suggestions'))
+      take(1),
+      map(sparqueConfig => (sparqueConfig ? this.sparqueSuggestionsService : this.suggestService))
     );
   }
 }

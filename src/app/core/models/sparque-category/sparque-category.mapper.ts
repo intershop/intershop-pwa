@@ -27,17 +27,17 @@ export class SparqueCategoryMapper {
     return { categoryIds, categoryTree };
   }
 
-  fromCategoryTreeData(categoriesData: SparqueCategory[]): CategoryTree {
+  fromCategoryTreeData(categoriesData: SparqueCategory[], entryPath: string[] = []): CategoryTree {
     if (!categoriesData?.length) {
       return CategoryTreeHelper.empty();
     }
 
     return categoriesData
-      .map(categoryData => this.fromCategoryTreeDataRecursive(categoryData))
+      .map(categoryData => this.fromCategoryTreeDataRecursive(categoryData, entryPath))
       .reduce((acc, categoryTree) => CategoryTreeHelper.merge(acc, categoryTree), CategoryTreeHelper.empty());
   }
 
-  private fromCategoryTreeDataRecursive(data: SparqueCategory, parentCategoryPath: string[] = []): CategoryTree {
+  private fromCategoryTreeDataRecursive(data: SparqueCategory, parentCategoryPath: string[]): CategoryTree {
     const uniqueId =
       parentCategoryPath.length > 0
         ? `${parentCategoryPath[parentCategoryPath.length - 1]}${CategoryHelper.uniqueIdSeparator}${data.categoryID}`
@@ -57,10 +57,10 @@ export class SparqueCategoryMapper {
           AttributeHelper.getAttributeValueByAttributeName(data.attributes, 'image')
         ),
       ],
-      hasOnlineProducts: !!data.totalCount,
-      productCount: data.totalCount,
-      completenessLevel: 1,
+      hasOnlineProducts: true,
+      completenessLevel: 0,
     };
+    category.completenessLevel = CategoryHelper.computeCompleteness(category);
 
     let categoryTree = CategoryTreeHelper.add(CategoryTreeHelper.empty(), category);
 
@@ -103,10 +103,10 @@ export class SparqueCategoryMapper {
           AttributeHelper.getAttributeValueByAttributeName(data.attributes, 'image')
         ),
       ],
-      hasOnlineProducts: !!data.totalCount,
-      productCount: data.totalCount,
+      hasOnlineProducts: true,
       completenessLevel: 0,
     };
+    category.completenessLevel = CategoryHelper.computeCompleteness(category);
 
     return { category, categoryTree: CategoryTreeHelper.add(categoryTree, category) };
   }
@@ -142,6 +142,7 @@ export class SparqueCategoryMapper {
         hasOnlineProducts: true,
         completenessLevel: 0,
       };
+      category.completenessLevel = CategoryHelper.computeCompleteness(category);
 
       categoryTree = CategoryTreeHelper.add(categoryTree, category);
     }
