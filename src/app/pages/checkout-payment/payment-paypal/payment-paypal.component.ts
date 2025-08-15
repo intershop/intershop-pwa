@@ -4,6 +4,7 @@ import { BehaviorSubject, combineLatest, concatMap, map, take } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
@@ -20,7 +21,7 @@ declare let paypal: any;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentPaypalComponent implements OnInit {
-  readonly paypalClientId = 'AakT4mm7rS4EiUD5sVxzOZRYTxkMqc0D8TeYPYCFu2KmJvt0NkpCz7CX73KBzcAfhiNR0u2k62Hdh_yX';
+  //  readonly paypalClientId = 'AakT4mm7rS4EiUD5sVxzOZRYTxkMqc0D8TeYPYCFu2KmJvt0NkpCz7CX73KBzcAfhiNR0u2k62Hdh_yX';
   readonly paypalButtonsContainerId = '#paypal-buttons-container';
   readonly paypalMessagesContainerId = '#paypal-messages-container';
   readonly paypalButtonStyle = {
@@ -32,6 +33,8 @@ export class PaymentPaypalComponent implements OnInit {
   };
 
   scriptLoaded$ = new BehaviorSubject<boolean>(false);
+
+  paypalClientId$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
 
   private destroyRef = inject(DestroyRef);
 
@@ -53,16 +56,25 @@ export class PaymentPaypalComponent implements OnInit {
       this.appFacade.currentLocale$.pipe(whenTruthy()),
       this.appFacade.currentCurrency$.pipe(whenTruthy()),
       this.checkoutFacade.basket$.pipe(whenTruthy()),
+      this.checkoutFacade.eligiblePaypalPaymentMethod$.pipe(whenTruthy()),
     ])
       .pipe(
         take(1),
-        concatMap(([locale, currency, basket]) =>
-          this.scriptLoader
-            .load(
-              `https://www.paypal.com/sdk/js?client-id=${this.paypalClientId}&components=buttons,messages&locale=${locale}&currency=${currency}`
-            )
-            .pipe(map(() => ({ locale, currency, basket })))
-        ),
+        concatMap(([locale, currency, basket, paypalPaymentMethod]) => {
+          const paypalClientId = AttributeHelper.getAttributeValueByAttributeName<string>(
+            paypalPaymentMethod.hostedPaymentPageParameters,
+            'client-id'
+          );
+
+          if (paypalClientId) {
+            this.paypalClientId$.next(paypalClientId);
+            return this.scriptLoader
+              .load(
+                `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&components=buttons,messages&locale=${locale}&currency=${currency}`
+              )
+              .pipe(map(() => ({ locale, currency, basket })));
+          }
+        }),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
@@ -73,6 +85,15 @@ export class PaymentPaypalComponent implements OnInit {
             paypal
               .Buttons({
                 style: this.paypalButtonStyle,
+                // Call your server to set up the transaction
+                createOrder(data: { paymentSource: string }) {
+                  console.log(data);
+                  return fetch('/demo/checkout/api/paypal/order/create/', {
+                    method: 'post',
+                  })
+                    .then(res => res.json())
+                    .then(orderData => orderData.id);
+                },
               })
               .render(this.paypalButtonsContainerId);
           }
