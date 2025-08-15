@@ -1,3 +1,4 @@
+/* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TranslateModule } from '@ngx-translate/core';
