@@ -1,6 +1,18 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, combineLatest, concatMap, map, take } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  combineLatest,
+  concatMap,
+  filter,
+  firstValueFrom,
+  map,
+  race,
+  shareReplay,
+  take,
+  timer,
+} from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -21,6 +33,8 @@ declare let paypal: any;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentPaypalComponent implements OnInit {
+  @Output() selectPaypalPaymentMethod = new EventEmitter<string>(); // paymentInstrumentId
+
   //  readonly paypalClientId = 'AakT4mm7rS4EiUD5sVxzOZRYTxkMqc0D8TeYPYCFu2KmJvt0NkpCz7CX73KBzcAfhiNR0u2k62Hdh_yX';
   readonly paypalButtonsContainerId = '#paypal-buttons-container';
   readonly paypalMessagesContainerId = '#paypal-messages-container';
@@ -33,8 +47,9 @@ export class PaymentPaypalComponent implements OnInit {
   };
 
   scriptLoaded$ = new BehaviorSubject<boolean>(false);
+  paypalClientId$ = new BehaviorSubject<string>(undefined);
 
-  paypalClientId$: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
+  basket$ = this.checkoutFacade.basket$.pipe(shareReplay(1));
 
   private destroyRef = inject(DestroyRef);
 
@@ -55,7 +70,7 @@ export class PaymentPaypalComponent implements OnInit {
     combineLatest([
       this.appFacade.currentLocale$.pipe(whenTruthy()),
       this.appFacade.currentCurrency$.pipe(whenTruthy()),
-      this.checkoutFacade.basket$.pipe(whenTruthy()),
+      this.basket$.pipe(whenTruthy()),
       this.checkoutFacade.eligiblePaypalPaymentMethod$.pipe(whenTruthy()),
     ])
       .pipe(
@@ -72,27 +87,34 @@ export class PaymentPaypalComponent implements OnInit {
               .load(
                 `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&components=buttons,messages&locale=${locale}&currency=${currency}`
               )
-              .pipe(map(() => ({ locale, currency, basket })));
+              .pipe(map(() => ({ locale, currency, basket, paypalPaymentMethod })));
           }
         }),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
-        next: ({ basket }) => {
+        next: ({ basket, paypalPaymentMethod }) => {
           console.log('script loaded');
           if (paypal?.Buttons) {
             this.scriptLoaded$.next(true);
+
+            const component = this;
+
             paypal
               .Buttons({
                 style: this.paypalButtonStyle,
                 // Call your server to set up the transaction
                 createOrder(data: { paymentSource: string }) {
+                  component.selectPaypalPaymentMethod.emit(
+                    paypalPaymentMethod.paymentInstruments[0]?.id || paypalPaymentMethod.serviceId
+                  );
                   console.log(data);
-                  return fetch('/demo/checkout/api/paypal/order/create/', {
+                  /*    return fetch('/demo/checkout/api/paypal/order/create/', {
                     method: 'post',
                   })
                     .then(res => res.json())
-                    .then(orderData => orderData.id);
+                    .then(orderData => orderData.id); */
+                  return firstValueFrom(component.getPaypalOrderId$().pipe(take(1)));
                 },
               })
               .render(this.paypalButtonsContainerId);
@@ -118,6 +140,21 @@ export class PaymentPaypalComponent implements OnInit {
           console.log(error);
         },
       });
+  }
+
+  getPaypalOrderId$(): Observable<string> {
+    return race(
+      this.checkoutFacade.basket$.pipe(
+        whenTruthy(),
+        filter(
+          basket =>
+            basket.payment?.capabilities?.includes('PaypalCheckout') && basket.payment.redirectUrl?.includes('token=')
+        ),
+        map(basket => basket.payment.redirectUrl.split('token=')[1]),
+        take(1)
+      ),
+      timer(4000).pipe(map(() => ''))
+    );
   }
 
   /**
