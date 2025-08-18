@@ -32,7 +32,7 @@ describe('Suggest Products Component', () => {
     when(shoppingFacade.category$(anything())).thenReturn(of(undefined as unknown as CategoryView));
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, SuggestProductsComponent, TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
