@@ -15,8 +15,7 @@ describe('Suggest Categories Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [MockComponent(SuggestCategoriesTileComponent), SuggestCategoriesComponent],
+      imports: [MockComponent(SuggestCategoriesTileComponent), SuggestCategoriesComponent, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

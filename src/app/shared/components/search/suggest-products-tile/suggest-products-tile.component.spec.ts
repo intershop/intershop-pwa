@@ -23,8 +23,7 @@ describe('Suggest Products Tile Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [MockComponent(ProductImageComponent), SuggestProductsTileComponent],
+      imports: [MockComponent(ProductImageComponent), RouterTestingModule, SuggestProductsTileComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
 
