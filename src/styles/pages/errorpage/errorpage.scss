@@ -34,6 +34,10 @@
     }
 
     .error-search-container {
+      .search-input {
+        width: calc(100% - 42px);
+      }
+
       .buttons {
         position: relative;
         top: -($search-container-height);
