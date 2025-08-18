@@ -83,7 +83,7 @@ export class SparqueProductsService implements ProductsServiceInterface {
       .pipe(map(result => this.sparqueSearchMapper.fromData(result, searchParameter)));
   }
 
-  getFilteredCategoryProducts(
+  private getFilteredCategoryProducts(
     searchParameter: URLFormParams,
     amount: number,
     sortKey?: string,

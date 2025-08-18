@@ -19,14 +19,17 @@ export interface SparqueSortingOption {
 export interface SparqueFixedFacetGroup {
   id: string;
   title: string;
+  rank?: number;
   options: SparqueFixedFacetOption[];
   attributes?: Attribute[];
 }
 
-interface SparqueFixedFacetOption {
+export interface SparqueFixedFacetOption {
   id: string;
   identifier: string;
   score: number;
   value: string;
-  childFacets?: string[];
+  localizedNames?: { [key: string]: string };
+  localizedValues?: { [key: string]: string };
+  childFacets?: SparqueFixedFacetOption[];
 }

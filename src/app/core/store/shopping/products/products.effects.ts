@@ -19,8 +19,6 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { Facet } from 'ish-core/models/facet/facet.model';
-import { Filter } from 'ish-core/models/filter/filter.model';
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { ofProductUrl } from 'ish-core/routing/product/product.route';
@@ -30,7 +28,7 @@ import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadCategory } from 'ish-core/store/shopping/categories';
-import { getFilterById, loadFilterSuccess, loadProductsForFilter } from 'ish-core/store/shopping/filter';
+import { loadFilterSuccess, loadProductsForFilter } from 'ish-core/store/shopping/filter';
 import { getProductListingItemsPerPage, setProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
@@ -41,7 +39,6 @@ import {
   mapToProperty,
   whenTruthy,
 } from 'ish-core/utils/operators';
-import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 import {
   loadProduct,
@@ -120,15 +117,13 @@ export class ProductsEffects {
       ofType(loadProductsForCategory),
       mapToPayload(),
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
-      concatLatestFrom(() => this.store.pipe(select(getFilterById('category')))),
       concatLatestFrom(() => this.store.pipe(select(getProductListingItemsPerPage('category')))),
-      map(([[payload, categoryFilter], pageSize]) => ({
+      map(([payload, pageSize]) => ({
         ...payload,
         amount: pageSize,
         offset: (payload.page - 1) * pageSize,
-        categoryFilter,
       })),
-      mergeMap(({ categoryId, amount, sorting, offset, page, categoryFilter }) =>
+      mergeMap(({ categoryId, amount, sorting, offset, page }) =>
         this.productsServiceProvider.get().pipe(
           concatMap(service =>
             service.getCategoryProducts(categoryId, amount, sorting, offset).pipe(
@@ -152,7 +147,7 @@ export class ProductsEffects {
                   ? // handle Sparque filter
                     loadFilterSuccess({
                       filterNavigation: {
-                        filter: this.handleSparqueCategoryFilter(filter, categoryFilter, { categoryId: [categoryId] }),
+                        filter,
                       },
                     })
                   : { type: 'no_filter_action' },
@@ -204,8 +199,7 @@ export class ProductsEffects {
     this.actions$.pipe(
       ofType(loadProductsForFilter),
       mapToPayload(),
-      concatLatestFrom(() => this.store.pipe(select(getFilterById('category')))),
-      switchMap(([{ id, searchParameter, page, sorting }, categoryFilter]) =>
+      switchMap(({ id, searchParameter, page, sorting }) =>
         this.store.pipe(
           select(getProductListingItemsPerPage(id.type)),
           whenTruthy(),
@@ -235,7 +229,7 @@ export class ProductsEffects {
                       ? // handle Sparque filter
                         loadFilterSuccess({
                           filterNavigation: {
-                            filter: this.handleSparqueCategoryFilter(filter, categoryFilter, searchParameter),
+                            filter,
                           },
                         })
                       : { type: 'no_filter_action' },
@@ -406,144 +400,9 @@ export class ProductsEffects {
     )
   );
 
-  /**
-   * Converts URL search parameters into a structured array of Filter objects.
-   *
-   * @param searchParameter - The URL form parameters to convert into filters.
-   *                          All parameters except 'searchTerm' will be considered as potential filters.
-   * @param count - The count value to assign to each facet within the generated filters.
-   *
-   * @returns An array of Filter objects where each entry in searchParameter (except 'searchTerm')
-   *          becomes a filter with its values converted to facets. Each filter has a display type
-   *          of 'text_clear' and selection type of 'single'.
-   */
-  getSelectedFilter(searchParameter: URLFormParams, count: number): Filter[] {
-    return Object.entries(searchParameter)
-      .filter(([key]) => key !== 'searchTerm')
-      .map(([key, value]) => ({
-        id: key,
-        name: key,
-        facets: Array.isArray(value)
-          ? value.map(v => ({
-              name: v,
-              displayName: v,
-              selected: true,
-              count,
-              searchParameter: Object.fromEntries(
-                Object.entries(searchParameter).filter(([k]) => k !== key && k !== 'searchTerm')
-              ),
-              level: 0,
-            }))
-          : [],
-        displayType: 'text_clear',
-        selectionType: 'single',
-      }));
-  }
 
-  /**
-   * Handles the processing of category facets in a search response, ensuring that the facets are updated
-   * based on the current search parameters and the stored category facet. This function modifies the
-   * replied facets to reflect the selected category facet and its hierarchy.
-   *
-   * @param repliedFacets - The list of facets returned from the search response.
-   * @param storedCategoryFacet - The stored category facet that represents the current category filter.
-   * @param searchParameter - The search parameters used in the current search query.
-   * @returns The updated list of facets with the processed category facet.
-   */
-  private handleSparqueCategoryFilter(
-    repliedFacets: Filter[],
-    storedCategoryFacet: Filter,
-    searchParameter: URLFormParams
-  ): Filter[] {
-    const newFacets = repliedFacets;
-    // processing of the category facet only necessary if a category facet is applied in the current search
-    if (storedCategoryFacet && searchParameter[storedCategoryFacet.id]) {
-      const currentCategoryFacetOption = storedCategoryFacet.facets.find(
-        facetOption => facetOption.name === searchParameter[storedCategoryFacet.id][0]
-      );
 
-      // get predecessor category facet option 0> necessary to calculate the level of the new facets
-      let predecessorCategoryFacetOption: Facet;
-      let rootLevel = currentCategoryFacetOption.level;
-      storedCategoryFacet.facets.forEach(facetOption => {
-        if (facetOption.level < rootLevel) {
-          rootLevel = facetOption.level;
-          predecessorCategoryFacetOption = facetOption;
-        }
-      });
 
-      // change parameter of the selected facet option
-      const selectedFacetOption = {
-        ...currentCategoryFacetOption,
-        selected: true,
-        searchParameter: predecessorCategoryFacetOption
-          ? {
-              ...searchParameter,
-              [storedCategoryFacet.id]: [
-                storedCategoryFacet.facets.find(
-                  facetOption =>
-                    facetOption.level <= currentCategoryFacetOption.level &&
-                    facetOption.name !== currentCategoryFacetOption.name &&
-                    facetOption.selected
-                ).name,
-              ],
-            }
-          : Object.fromEntries(
-              Object.entries(searchParameter).filter(([, value]) => !value.includes(currentCategoryFacetOption.name))
-            ),
-        count: repliedFacets.find(element => element.id === storedCategoryFacet.id)
-          ? repliedFacets
-              .filter(element => element.id === storedCategoryFacet.id)
-              .flatMap(filter => filter.facets)
-              .map(facet => facet.count)
-              .reduce((acc, val) => acc + val, 0)
-          : currentCategoryFacetOption.count,
-      };
-
-      // get predecessor category facet options and change count regarding the selected facet option count
-      const predecessorCategoryFacetOptions = storedCategoryFacet.facets
-        .filter(facetOption => facetOption.level < currentCategoryFacetOption.level)
-        .map(facetOption => ({
-          ...facetOption,
-          count: selectedFacetOption.count,
-        }));
-
-      // increase level of founded facets
-      let foundedCategoryFacetOptions: Facet[] = [];
-
-      if (repliedFacets) {
-        foundedCategoryFacetOptions = repliedFacets
-          .filter(element => element.id === storedCategoryFacet.id)
-          .flatMap(filter => filter.facets)
-          .map(facetOption => ({ ...facetOption, level: currentCategoryFacetOption.level + 1 }));
-      }
-
-      // exchange the updated category facet within the category facet in responded facets if present otherwise add it
-      // category facet in responded facets is not present if the selected facet option is a leaf category
-      if (newFacets.find(f => f.id === storedCategoryFacet.id)) {
-        newFacets.splice(
-          newFacets.findIndex((e: Filter) => e.id === storedCategoryFacet.id),
-          1,
-          {
-            ...storedCategoryFacet,
-            facets: [...predecessorCategoryFacetOptions, selectedFacetOption, ...foundedCategoryFacetOptions].sort(
-              (a, b) => (a.level === b.level ? a.displayName.localeCompare(b.displayName) : a.level - b.level)
-            ),
-          }
-        );
-      } else {
-        newFacets.push({
-          ...storedCategoryFacet,
-          facets: [...predecessorCategoryFacetOptions, selectedFacetOption].sort((a, b) =>
-            a.level === b.level ? a.displayName.localeCompare(b.displayName) : a.level - b.level
-          ),
-        });
-        newFacets.sort((a, b) => a.name.localeCompare(b.name));
-      }
-    }
-
-    return newFacets;
-  }
 
   private throttleOnBrowser<T>() {
     return !SSR && this.router.navigated ? throttleTime<T>(100) : map(identity);
