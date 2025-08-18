@@ -83,8 +83,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(id => {
-        this.redirectStatus = undefined;
-        this.updatePaymentMethod.emit(id);
+        this.setBasketPayment(id);
       });
 
     // if page is shown after cancelled/faulty redirect determine error message variable
@@ -94,14 +93,6 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     });
   }
 
-  get parameterForm(): FormGroup {
-    return this.paymentForm.get('parameters') as FormGroup;
-  }
-
-  private getBasketPayment(): string {
-    return this.basket?.payment ? this.basket.payment.paymentInstrument.id : '';
-  }
-
   ngOnChanges(c: SimpleChanges) {
     this.setPaymentSelectionFromBasket(c);
 
@@ -109,6 +100,10 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
       // copy objects for runtime checks because formly modifies them, TODO: refactor
       this.filteredPaymentMethods = this.paymentMethods?.map(x => JSON.parse(JSON.stringify(x)));
     }
+  }
+
+  get parameterForm(): FormGroup {
+    return this.paymentForm.get('parameters') as FormGroup;
   }
 
   /**
@@ -207,6 +202,11 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     });
   }
 
+  setBasketPayment(paymentInstrumentId: string) {
+    this.redirectStatus = undefined;
+    this.updatePaymentMethod.emit(paymentInstrumentId);
+  }
+
   /**
    * deletes a basket instrument and related payment
    */
@@ -230,6 +230,10 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
 
   get submitDisabled() {
     return this.paymentForm.invalid && this.formSubmitted;
+  }
+
+  private getBasketPayment(): string {
+    return this.basket?.payment ? this.basket.payment.paymentInstrument.id : '';
   }
 
   private isParameterFormOpen() {
