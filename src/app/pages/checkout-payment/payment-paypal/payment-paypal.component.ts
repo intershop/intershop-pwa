@@ -1,5 +1,15 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  EventEmitter,
+  NgZone,
+  Output,
+  inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 import {
   BehaviorSubject,
   Observable,
@@ -32,7 +42,7 @@ declare let paypal: any;
   templateUrl: './payment-paypal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PaymentPaypalComponent implements OnInit {
+export class PaymentPaypalComponent implements AfterViewInit {
   @Output() selectPaypalPaymentMethod = new EventEmitter<string>(); // paymentInstrumentId
 
   //  readonly paypalClientId = 'AakT4mm7rS4EiUD5sVxzOZRYTxkMqc0D8TeYPYCFu2KmJvt0NkpCz7CX73KBzcAfhiNR0u2k62Hdh_yX';
@@ -47,47 +57,56 @@ export class PaymentPaypalComponent implements OnInit {
   };
 
   scriptLoaded$ = new BehaviorSubject<boolean>(false);
-  paypalClientId$ = new BehaviorSubject<string>(undefined);
 
   basket$ = this.checkoutFacade.basket$.pipe(shareReplay(1));
+  paypalPaymentMethod$ = this.checkoutFacade.paypalPaymentMethod$.pipe(shareReplay(1));
 
   private destroyRef = inject(DestroyRef);
 
   constructor(
     private appFacade: AppFacade,
     private checkoutFacade: CheckoutFacade,
+    private ngZone: NgZone,
+    private router: Router,
     private scriptLoader: ScriptLoaderService
   ) {}
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.loadScript();
   }
 
   /**
-   * load concardis script if component is visible
+   * load script if component is visible
    */
   private loadScript() {
     combineLatest([
       this.appFacade.currentLocale$.pipe(whenTruthy()),
-      this.appFacade.currentCurrency$.pipe(whenTruthy()),
       this.basket$.pipe(whenTruthy()),
-      this.checkoutFacade.eligiblePaypalPaymentMethod$.pipe(whenTruthy()),
+      this.paypalPaymentMethod$.pipe(whenTruthy()),
     ])
       .pipe(
         take(1),
-        concatMap(([locale, currency, basket, paypalPaymentMethod]) => {
+        concatMap(([locale, basket, paypalPaymentMethod]) => {
           const paypalClientId = AttributeHelper.getAttributeValueByAttributeName<string>(
             paypalPaymentMethod.hostedPaymentPageParameters,
             'client-id'
           );
+          const merchantId = AttributeHelper.getAttributeValueByAttributeName<string>(
+            paypalPaymentMethod.hostedPaymentPageParameters,
+            'merchant-id'
+          );
+          const intent =
+            AttributeHelper.getAttributeValueByAttributeName<string>(
+              paypalPaymentMethod.hostedPaymentPageParameters,
+              'intent'
+            ) || 'capture';
 
-          if (paypalClientId) {
-            this.paypalClientId$.next(paypalClientId);
+          if (paypalClientId && merchantId) {
+            const scriptParameter = `client-id=${paypalClientId}&merchant-id=${merchantId}&components=buttons,messages&locale=${locale}&currency=${basket.purchaseCurrency}&intent=${intent}&commit=false`; // &debug=true
+
             return this.scriptLoader
-              .load(
-                `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&components=buttons,messages&locale=${locale}&currency=${currency}`
-              )
-              .pipe(map(() => ({ locale, currency, basket, paypalPaymentMethod })));
+              .load(`https://www.paypal.com/sdk/js?${scriptParameter}`)
+              .pipe(map(() => ({ locale, basket, paypalPaymentMethod })));
           }
         }),
         takeUntilDestroyed(this.destroyRef)
@@ -98,23 +117,29 @@ export class PaymentPaypalComponent implements OnInit {
           if (paypal?.Buttons) {
             this.scriptLoaded$.next(true);
 
-            const component = this;
-
             paypal
               .Buttons({
                 style: this.paypalButtonStyle,
                 // Call your server to set up the transaction
-                createOrder(data: { paymentSource: string }) {
-                  component.selectPaypalPaymentMethod.emit(
+                createOrder: (data: { paymentSource: string }) => {
+                  this.selectPaypalPaymentMethod.emit(
                     paypalPaymentMethod.paymentInstruments[0]?.id || paypalPaymentMethod.serviceId
                   );
-                  console.log(data);
-                  /*    return fetch('/demo/checkout/api/paypal/order/create/', {
-                    method: 'post',
-                  })
-                    .then(res => res.json())
-                    .then(orderData => orderData.id); */
-                  return firstValueFrom(component.getPaypalOrderId$().pipe(take(1)));
+                  console.log('createOrder', data);
+                  return firstValueFrom(this.getPaypalOrderId$().pipe(take(1)));
+                },
+                // after the user has submitted the payment in the paypal overlay
+                onApprove: () => {
+                  // ngZone is needed to navigate outside of the Angular zone in a callback function
+                  this.ngZone.run(() => {
+                    this.router.navigate(['/checkout/review'], { queryParams: { redirect: 'success' } });
+                  });
+                },
+                // after the user has cancelled the payment in the paypal overlay
+                onCancel: () => {
+                  this.ngZone.run(() => {
+                    this.router.navigate(['/checkout/payment'], { queryParams: { redirect: 'cancel' } });
+                  });
                 },
               })
               .render(this.paypalButtonsContainerId);
