@@ -1,0 +1,97 @@
+name: LHCI Baseline
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+jobs:
+  lighthouse-baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.17.1
+          cache: npm
+
+      - name: Setup Chrome
+        id: chrome
+        uses: browser-actions/setup-chrome@v2
+        with:
+          chrome-version: stable
+          install-dependencies: true
+
+      - name: Configure npm for reliability
+        run: |
+          npm config set fetch-retries 5
+          npm config set fetch-retry-mintimeout 20000
+          npm config set fetch-retry-maxtimeout 120000
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Setup Chrome path
+        run: |
+          echo "CHROME_PATH=${{ steps.chrome.outputs.chrome-path }}" >> $GITHUB_ENV
+
+      - name: Run Lighthouse CI (desktop + mobile)
+        env:
+          LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LHCI_BASE_ORIGIN: http://localhost:4200
+          LHCI_COLLECT__CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+        run: |
+          set -euo pipefail
+
+          npm run serve -- --host 0.0.0.0 &
+          SERVER_PID=$!
+          trap 'echo "Stopping dev server $SERVER_PID"; kill $SERVER_PID' EXIT
+
+          echo "Waiting for http://localhost:4200/home ..."
+          for i in {1..180}; do
+            curl -fsS http://localhost:4200/home >/dev/null && break || sleep 1
+          done
+
+          echo "LHCI desktop"
+          npx lhci autorun --config=.github/lighthouse/desktop.lighthouserc.json
+          echo "Desktop run completed. Checking directory structure:"
+          ls -la .lighthouseci/ || echo "No .lighthouseci directory found"
+
+          mkdir -p lighthouse-desktop-reports
+          cp -r .lighthouseci/* lighthouse-desktop-reports/ || echo "No files to copy"
+
+          echo "Files in lighthouse-desktop-reports:"
+          ls -la lighthouse-desktop-reports/ || echo "Directory not found"
+
+          echo "LHCI mobile"
+          rm -rf .lighthouseci
+          npx lhci autorun --config=.github/lighthouse/mobile.lighthouserc.json
+          echo "Mobile run completed. Checking directory structure:"
+          ls -la .lighthouseci/ || echo "No .lighthouseci directory found"
+
+          mkdir -p lighthouse-mobile-reports
+          cp -r .lighthouseci/* lighthouse-mobile-reports/ || echo "No files to copy"
+
+          echo "Files in lighthouse-mobile-reports:"
+          ls -la lighthouse-mobile-reports/ || echo "Directory not found"
+
+      - name: Upload Desktop Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-desktop-reports
+          path: lighthouse-desktop-reports/
+          if-no-files-found: warn
+
+      - name: Upload Mobile Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-mobile-reports
+          path: lighthouse-mobile-reports/
+          if-no-files-found: warn

@@ -1,0 +1,175 @@
+name: LHCI Compare
+
+on:
+  push:
+    branches-ignore:
+      - develop
+  pull_request:
+    branches: [develop]
+  workflow_dispatch:
+    inputs:
+      issue-number:
+        description: 'PR number to comment on'
+        required: false
+      baseline_branch:
+        description: 'Branch to fetch baseline artifacts from'
+        required: false
+        default: develop
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: write
+
+jobs:
+  lighthouse-compare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.17.1
+          cache: npm
+
+      - name: Setup Chrome
+        id: chrome
+        uses: browser-actions/setup-chrome@v2
+        with:
+          chrome-version: stable
+          install-dependencies: true
+
+      - name: Debug baseline branch resolution
+        run: |
+          echo "event_name=${{ github.event_name }}"
+          echo "ref_name=${{ github.ref_name }}"
+          echo "base_ref=${{ github.base_ref }}"
+          echo "head_ref=${{ github.head_ref }}"
+          echo "inputs.baseline_branch=${{ inputs.baseline_branch }}"
+
+      - name: Configure npm for reliability
+        run: |
+          npm config set fetch-retries 5
+          npm config set fetch-retry-mintimeout 20000
+          npm config set fetch-retry-maxtimeout 120000
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Run Lighthouse CI (desktop + mobile)
+        env:
+          LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LHCI_BASE_ORIGIN: http://localhost:4200
+          LHCI_COLLECT__CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+        run: |
+          set -euo pipefail
+          export DISABLE_MOCK_DATA=true
+          npm run serve -- --host 0.0.0.0 &
+          SERVER_PID=$!
+          trap 'echo "Stopping dev server $SERVER_PID"; kill $SERVER_PID' EXIT
+          echo "Waiting for http://localhost:4200/home ..."
+          for i in {1..180}; do
+            curl -fsS http://localhost:4200/home >/dev/null && break || sleep 1
+          done
+          npx lhci autorun --config=.github/lighthouse/desktop.lighthouserc.json
+          mkdir -p current-desktop && cp -r .lighthouseci/* current-desktop/ || true
+          rm -rf .lighthouseci
+          npx lhci autorun --config=.github/lighthouse/mobile.lighthouserc.json
+          mkdir -p current-mobile && cp -r .lighthouseci/* current-mobile/ || true
+
+      - name: Download baseline desktop artifact
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          workflow: lhci-baseline.yml
+          branch: ${{ github.event_name == 'workflow_dispatch' && inputs.baseline_branch || (github.event_name == 'pull_request' && github.base_ref) || github.ref_name }}
+          name: lighthouse-desktop-reports
+          path: baseline-desktop
+          if_no_artifact_found: warn
+
+      - name: Download baseline mobile artifact
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          workflow: lhci-baseline.yml
+          branch: ${{ github.event_name == 'workflow_dispatch' && inputs.baseline_branch || (github.event_name == 'pull_request' && github.base_ref) || github.ref_name }}
+          name: lighthouse-mobile-reports
+          path: baseline-mobile
+          if_no_artifact_found: warn
+
+      - name: Fallback download baseline desktop (PR head branch)
+        if: github.event_name == 'pull_request'
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          workflow: lhci-baseline.yml
+          branch: ${{ github.head_ref }}
+          name: lighthouse-desktop-reports
+          path: baseline-desktop-fallback
+          if_no_artifact_found: warn
+
+      - name: Fallback download baseline mobile (PR head branch)
+        if: github.event_name == 'pull_request'
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          workflow: lhci-baseline.yml
+          branch: ${{ github.head_ref }}
+          name: lighthouse-mobile-reports
+          path: baseline-mobile-fallback
+          if_no_artifact_found: warn
+
+      - name: Normalize baseline folders (prefer base branch, fallback to head)
+        run: |
+          set -euo pipefail
+          has_json() { find "$1" -type f -name 'lhr-*.json' | grep -q .; }
+          if ! has_json baseline-desktop && [ -d baseline-desktop-fallback ]; then
+            mkdir -p baseline-desktop
+            cp -R baseline-desktop-fallback/** baseline-desktop/ 2>/dev/null || true
+          fi
+          if ! has_json baseline-mobile && [ -d baseline-mobile-fallback ]; then
+            mkdir -p baseline-mobile
+            cp -R baseline-mobile-fallback/** baseline-mobile/ 2>/dev/null || true
+          fi
+          echo "::group::Inspect baseline-desktop"; ls -laR baseline-desktop || true; echo "::endgroup::"
+          echo "::group::Inspect baseline-mobile";  ls -laR baseline-mobile  || true; echo "::endgroup::"
+
+      - name: Generate comparison markdown
+        run: |
+          node .github/scripts/lighthouse/lhci-compare.js \
+            --aggregate=median \
+            --baseline-desktop baseline-desktop \
+            --current-desktop current-desktop \
+            --baseline-mobile baseline-mobile \
+            --current-mobile current-mobile \
+            --out lhci-comparison.md
+
+      - name: Upload current Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: current-lighthouse-reports
+          path: |
+            current-desktop/
+            current-mobile/
+          if-no-files-found: warn
+
+      - name: Resolve PR number (by input/commit/run)
+        id: resolve-pr
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ inputs['issue-number'] }}
+          COMPARE_COMMIT: ${{ github.sha }}
+          COMPARE_RUN_NUMBER: ''
+        with:
+          script: |
+            const run = require('./.github/scripts/lighthouse/resolve-pr.js');
+            return run({ github, context, core });
+          result-encoding: string
+
+      - name: Comment results on PR
+        if: ${{ steps.resolve-pr.outputs.result != '' }}
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ steps.resolve-pr.outputs.result }}
+          body-file: lhci-comparison.md
