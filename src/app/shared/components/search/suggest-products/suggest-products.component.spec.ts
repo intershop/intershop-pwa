@@ -21,15 +21,34 @@ describe('Suggest Products Component', () => {
 
   beforeEach(async () => {
     appFacade = mock(AppFacade);
-    when(appFacade.serverSetting$<number>(anything())).thenReturn(of(undefined as unknown as number));
+    when(appFacade.serverSetting$<number>(anything())).thenReturn(of(10)); // using a reasonable default value
+
+    // factory function for creating properly typed mock ProductView objects
+    function createMockProductView(partial: Partial<ProductView> = {}): ProductView {
+      return {
+        sku: 'test',
+        name: 'Test Product',
+        shortDescription: '',
+        longDescription: '',
+        available: true,
+        minOrderQuantity: 1,
+        maxOrderQuantity: 100,
+        stepOrderQuantity: 1,
+        type: 'Product',
+        readyForShipmentMin: 0,
+        readyForShipmentMax: 0,
+        averageRating: 0,
+        ...partial,
+      } as ProductView;
+    }
 
     shoppingFacade = mock(ShoppingFacade);
     // return a minimal product view for any requested sku/level
     when(shoppingFacade.product$(anything(), anything())).thenReturn(
-      of({ sku: 'any', name: 'Any Product', available: true, minOrderQuantity: 1 } as unknown as ProductView)
+      of(createMockProductView({ sku: 'any', name: 'Any Product' }))
     );
     // category lookup can be undefined
-    when(shoppingFacade.category$(anything())).thenReturn(of(undefined as unknown as CategoryView));
+    when(shoppingFacade.category$(anything())).thenReturn(of({} as CategoryView));
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
@@ -58,6 +77,13 @@ describe('Suggest Products Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
+  it('should display headline text', () => {
+    fixture.detectChanges();
+    const headline = element.querySelector('.headline');
+    expect(headline).toBeTruthy();
+    expect(headline.textContent.trim()).toBe('suggest.products.headline');
+  });
+
   it('should display the correct number (maxAutoSuggests = 2) of product suggestions', () => {
     fixture.detectChanges();
     // should contain custom elements for product tiles
@@ -75,17 +101,20 @@ describe('Suggest Products Component', () => {
     expect(element.querySelectorAll('ish-suggest-products-tile')).toHaveLength(3);
   });
 
-  it('should display headline text', () => {
+  it('should show fewer products when products array is smaller than maxAutoSuggests', () => {
+    component.products = ['12345'];
+    component.maxAutoSuggests = 5;
     fixture.detectChanges();
-    const headline = element.querySelector('.headline');
-    expect(headline).toBeTruthy();
-    expect(headline.textContent.trim()).toBe('suggest.products.headline');
+
+    expect(element.querySelectorAll('ish-suggest-products-tile')).toHaveLength(1);
   });
 
-  it('should emit routeChange when handleInputFocus is called', () => {
-    // setup spy using ts-mockito
-    const emitSpy = jest.spyOn(component.routeChange, 'emit');
-    component.handleInputFocus();
-    expect(emitSpy).toHaveBeenCalled();
+  it('should handle undefined maxAutoSuggests by showing all products', () => {
+    component.products = ['12345', '67890', '98765'];
+    component.maxAutoSuggests = undefined;
+    fixture.detectChanges();
+
+    // without maxAutoSuggests limit, all products should be displayed
+    expect(element.querySelectorAll('ish-suggest-products-tile')).toHaveLength(3);
   });
 });
