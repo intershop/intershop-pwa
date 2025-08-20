@@ -21,34 +21,11 @@ describe('Suggest Products Component', () => {
 
   beforeEach(async () => {
     appFacade = mock(AppFacade);
-    when(appFacade.serverSetting$<number>(anything())).thenReturn(of(10)); // using a reasonable default value
-
-    // factory function for creating properly typed mock ProductView objects
-    function createMockProductView(partial: Partial<ProductView> = {}): ProductView {
-      return {
-        sku: 'test',
-        name: 'Test Product',
-        shortDescription: '',
-        longDescription: '',
-        available: true,
-        minOrderQuantity: 1,
-        maxOrderQuantity: 100,
-        stepOrderQuantity: 1,
-        type: 'Product',
-        readyForShipmentMin: 0,
-        readyForShipmentMax: 0,
-        averageRating: 0,
-        ...partial,
-      } as ProductView;
-    }
-
     shoppingFacade = mock(ShoppingFacade);
-    // return a minimal product view for any requested sku/level
-    when(shoppingFacade.product$(anything(), anything())).thenReturn(
-      of(createMockProductView({ sku: 'any', name: 'Any Product' }))
-    );
-    // category lookup can be undefined
+
+    when(appFacade.serverSetting$<number>(anything())).thenReturn(of(10));
     when(shoppingFacade.category$(anything())).thenReturn(of({} as CategoryView));
+    when(shoppingFacade.product$(anything(), anything())).thenReturn(of({} as ProductView));
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
