@@ -35,7 +35,7 @@ describe('Product Mapper', () => {
 
   describe('fromData', () => {
     it(`should return Product when getting a ProductData`, () => {
-      const product: Product = productMapper.fromData({ sku: '1' } as ProductData);
+      const product = productMapper.fromData({ sku: '1' } as ProductData) as Product;
       expect(product).toBeTruthy();
       expect(product.type).toEqual('Product');
       verify(imageMapper.fromImages(anything())).once();
@@ -47,7 +47,7 @@ describe('Product Mapper', () => {
         sku: '1',
         mastered: true,
         productMasterSKU: '2',
-      } as ProductData);
+      } as ProductData) as Product;
       expect(product).toBeTruthy();
       expect(product.type).toEqual('VariationProduct');
       expect(ProductHelper.isMasterProduct(product)).toBeFalsy();
@@ -56,7 +56,7 @@ describe('Product Mapper', () => {
     });
 
     it(`should return VariationProductMaster when getting a ProductData with productMaster = true`, () => {
-      const product: Product = productMapper.fromData({ sku: '1', productMaster: true } as ProductData);
+      const product: Product = productMapper.fromData({ sku: '1', productMaster: true } as ProductData) as Product;
       expect(product).toBeTruthy();
       expect(product.type).toEqual('VariationProductMaster');
       expect(ProductHelper.isMasterProduct(product)).toBeTruthy();
@@ -67,7 +67,7 @@ describe('Product Mapper', () => {
         sku: '1',
         productMaster: true,
         variationAttributeValuesExtended: [],
-      } as ProductData);
+      } as ProductData) as Product;
       expect(product).toBeTruthy();
       expect(product.type).toEqual('VariationProductMaster');
       expect(ProductHelper.isMasterProduct(product)).toBeTruthy();
@@ -79,7 +79,7 @@ describe('Product Mapper', () => {
         sku: '1',
         productMaster: false,
         variationAttributeValuesExtended: [],
-      } as ProductData);
+      } as ProductData) as Product;
       expect(product).toBeTruthy();
       expect(product.type).toEqual('Product');
       expect(ProductHelper.isMasterProduct(product)).toBeFalsy();
@@ -90,7 +90,7 @@ describe('Product Mapper', () => {
       const product: Product = productMapper.fromData({
         sku: '1',
         productBundle: true,
-      } as ProductData);
+      } as ProductData) as Product;
       expect(product).toBeTruthy();
       expect(product.type).toEqual('Bundle');
       expect(ProductHelper.isProductBundle(product)).toBeTrue();
@@ -100,7 +100,7 @@ describe('Product Mapper', () => {
       const product: Product = productMapper.fromData({
         sku: '1',
         productTypes: ['BUNDLE'],
-      } as ProductData);
+      } as ProductData) as Product;
       expect(product).toBeTruthy();
       expect(product.type).toEqual('Bundle');
       expect(ProductHelper.isProductBundle(product)).toBeTrue();
@@ -110,7 +110,7 @@ describe('Product Mapper', () => {
       const product: Product = productMapper.fromData({
         sku: '1',
         retailSet: true,
-      } as ProductData);
+      } as ProductData) as Product;
       expect(product).toBeTruthy();
       expect(product.type).toEqual('RetailSet');
       expect(ProductHelper.isRetailSet(product)).toBeTrue();
@@ -120,7 +120,7 @@ describe('Product Mapper', () => {
       const p1: Product = productMapper.fromData({
         sku: '1',
         attributes: [{ name: 'Graphics', type: 'String', value: 'NVIDIA Quadro K2200' }],
-      } as ProductData);
+      } as ProductData) as Product;
       const p2: Product = productMapper.fromData({
         sku: '1',
         attributes: [{ name: 'Graphics', type: 'String', value: 'NVIDIA Quadro K2200' }],
@@ -129,7 +129,7 @@ describe('Product Mapper', () => {
             attributes: [{ name: 'Grafikkarte', type: 'String', value: 'NVIDIA Quadro K2200' }],
           },
         },
-      } as unknown as ProductData);
+      } as unknown as ProductData) as Product;
       expect(p1).toBeTruthy();
       expect(p1.attributes).toEqual([{ name: 'Graphics', type: 'String', value: 'NVIDIA Quadro K2200' }]);
       expect(p2).toBeTruthy();
@@ -140,7 +140,7 @@ describe('Product Mapper', () => {
       const product: Product = productMapper.fromData({
         sku: '1',
         attributes: undefined,
-      } as ProductData);
+      } as ProductData) as Product;
       expect(product).toBeTruthy();
       expect(product.attributes).toBeEmpty();
     });

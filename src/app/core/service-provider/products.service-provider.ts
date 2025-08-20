@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, map, take } from 'rxjs';
 
+import { Product } from 'ish-core/models/product/product.model';
 import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SparqueProductsService } from 'ish-core/services/sparque-products/sparque-products.service';
@@ -53,6 +54,14 @@ export class ProductsServiceProvider {
  * behavior for these search functionalities.
  */
 export interface ProductsServiceInterface {
+  /**
+   * Get the full Product data for the given Product SKU.
+   *
+   * @param sku  The Product SKU for the product of interest.
+   * @returns    The Product data.
+   */
+  getProduct(sku: string): Observable<Partial<Product>>;
+
   /**
    * Searches for products based on the provided search parameters.
    *

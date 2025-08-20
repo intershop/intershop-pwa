@@ -2,6 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { SparqueProduct } from 'ish-core/models/sparque-product/sparque-product.interface';
+import { SparqueProductMapper } from 'ish-core/models/sparque-product/sparque-product.mapper';
 import { SparqueSearch } from 'ish-core/models/sparque-search/sparque-search.interface';
 import { SparqueSearchMapper } from 'ish-core/models/sparque-search/sparque-search.mapper';
 import { AvailableOptions } from 'ish-core/services/api/api.service';
@@ -13,11 +15,13 @@ describe('Sparque Products Service', () => {
   let sparqueApiService: SparqueApiService;
   let sparqueProductsService: SparqueProductsService;
   let sparqueSearchMapper: SparqueSearchMapper;
+  let sparqueProductMapper: SparqueProductMapper;
   const apiVersion = 'v3';
 
   beforeEach(() => {
     sparqueApiService = mock(SparqueApiService);
     sparqueSearchMapper = mock(SparqueSearchMapper);
+    sparqueProductMapper = mock(SparqueProductMapper);
     when(sparqueApiService.get(anything(), apiVersion, anything())).thenReturn(
       of<SparqueSearch>({ products: [], total: 0, sortings: [] })
     );
@@ -33,6 +37,7 @@ describe('Sparque Products Service', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: SparqueApiService, useFactory: () => instance(sparqueApiService) },
+        { provide: SparqueProductMapper, useFactory: () => instance(sparqueProductMapper) },
         { provide: SparqueSearchMapper, useFactory: () => instance(sparqueSearchMapper) },
       ],
     });
@@ -82,6 +87,72 @@ describe('Sparque Products Service', () => {
     sparqueProductsService.getFilteredProducts({ searchTerm: ['test'] }, 10, 'price', 0).subscribe(() => {
       verify(sparqueSearchMapper.fromData(filteredResponse, anything())).once();
       done();
+    });
+  });
+
+  describe('getProduct', () => {
+    const mockSparqueProduct: SparqueProduct = {
+      sku: 'TEST_SKU',
+      name: 'Test Product',
+      shortDescription: 'Test Description',
+      defaultBrandName: 'Test Brand',
+      images: [],
+    };
+
+    const mockProductResponse = {
+      product: mockSparqueProduct,
+    };
+
+    beforeEach(() => {
+      when(sparqueApiService.get('product', apiVersion, anything())).thenReturn(of(mockProductResponse));
+      when(sparqueProductMapper.fromData(mockSparqueProduct)).thenReturn({
+        sku: 'TEST_SKU',
+        name: 'Test Product',
+        completenessLevel: 3,
+      });
+    });
+
+    it('should call sparque api service with product endpoint and correct version', () => {
+      sparqueProductsService.getProduct('TEST_SKU');
+      verify(sparqueApiService.get('product', apiVersion, anything())).once();
+    });
+
+    it('should pass the SKU as a parameter to the API request', () => {
+      sparqueProductsService.getProduct('TEST_SKU');
+
+      const capturedCall = capture<string, string, AvailableOptions>(sparqueApiService.get).last();
+      const [endpoint, version, options] = capturedCall;
+      expect(endpoint).toBe('product');
+      expect(version).toBe(apiVersion);
+      expect(options?.params?.get('sku')).toBe('TEST_SKU');
+    });
+
+    it('should map the response using SparqueProductMapper', done => {
+      sparqueProductsService.getProduct('TEST_SKU').subscribe(() => {
+        verify(sparqueProductMapper.fromData(mockSparqueProduct)).once();
+        done();
+      });
+    });
+
+    it('should return the mapped product data', done => {
+      const expectedMappedProduct = {
+        sku: 'TEST_SKU',
+        name: 'Test Product',
+        completenessLevel: 3,
+      };
+
+      sparqueProductsService.getProduct('TEST_SKU').subscribe(result => {
+        expect(result).toEqual(expectedMappedProduct);
+        done();
+      });
+    });
+
+    it('should handle different SKU values correctly', () => {
+      sparqueProductsService.getProduct('ANOTHER_SKU');
+
+      const capturedCall = capture<string, string, AvailableOptions>(sparqueApiService.get).last();
+      const [, , options] = capturedCall;
+      expect(options?.params?.get('sku')).toBe('ANOTHER_SKU');
     });
   });
 

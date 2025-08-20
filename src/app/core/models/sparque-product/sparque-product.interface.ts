@@ -5,5 +5,7 @@ export interface SparqueProduct {
   name: string;
   defaultBrandName?: string;
   shortDescription?: string;
+  longDescription?: string;
   images?: SparqueImage[];
+  defaultCategoryId?: string;
 }

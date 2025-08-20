@@ -31,11 +31,11 @@ export class SparqueProductMapper {
    *                           The recommendations service sets this value to 2.
    *                           To display recommended products it is not necessary to get information about promotions and ratings.
    */
-  fromListData(data: SparqueProduct[], completenessLevel: number = 1): Partial<Product>[] {
-    return data?.length ? data.map(product => this.fromData(product, completenessLevel)) : [];
+  fromListData(data: SparqueProduct[]): Partial<Product>[] {
+    return data?.length ? data.map(product => this.fromData(product)) : [];
   }
 
-  private fromData(data: SparqueProduct, completenessLevel: number = 1): Partial<Product> {
+  fromData(data: SparqueProduct): Partial<Product> {
     return {
       sku: data.sku,
       name: data.name,
@@ -44,10 +44,14 @@ export class SparqueProductMapper {
       available: true,
       type: 'Product',
       images: this.sparqueImageMapper.fromImages(data.images),
-      // TODO: completenessLevel for product lists should be 2 (otherwise a product details call will be triggered)
-      // the Sparque response is currently missing needed product data to omit the additional REST calls (rating, promotion, etc.)
-      completenessLevel,
+      defaultCategoryId: data.defaultCategoryId,
+      longDescription: data.longDescription,
+      // TODO map quantity value in case sparque wrapper API provides it
       minOrderQuantity: 1,
+      stepQuantity: 1,
+      packingUnit: '',
+      completenessLevel: 2,
+
     };
   }
 }

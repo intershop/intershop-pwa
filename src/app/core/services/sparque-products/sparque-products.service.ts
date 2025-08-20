@@ -3,7 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
 import { CategoryHelper } from 'ish-core/models/category/category.helper';
+import { Product } from 'ish-core/models/product/product.model';
 import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
+import { SparqueProduct } from 'ish-core/models/sparque-product/sparque-product.interface';
+import { SparqueProductMapper } from 'ish-core/models/sparque-product/sparque-product.mapper';
 import { SparqueSearch } from 'ish-core/models/sparque-search/sparque-search.interface';
 import { SparqueSearchMapper } from 'ish-core/models/sparque-search/sparque-search.mapper';
 import { ProductsServiceInterface } from 'ish-core/service-provider/products.service-provider';
@@ -22,7 +25,19 @@ export class SparqueProductsService implements ProductsServiceInterface {
   // Maximum number of facet options to request from the Sparque API.
   private readonly facetOptionsCount = '10';
 
-  constructor(private sparqueApiService: SparqueApiService, private sparqueSearchMapper: SparqueSearchMapper) {}
+  constructor(
+    private sparqueApiService: SparqueApiService,
+    private sparqueProductMapper: SparqueProductMapper,
+    private sparqueSearchMapper: SparqueSearchMapper
+  ) {}
+
+  getProduct(sku: string): Observable<Partial<Product>> {
+    const params = new HttpParams().set('sku', sku);
+
+    return this.sparqueApiService
+      .get<{ product: SparqueProduct }>(`product`, this.apiVersion, { params })
+      .pipe(map(response => this.sparqueProductMapper.fromData(response.product)));
+  }
 
   /**
    * Searches for products based on the provided search parameters.

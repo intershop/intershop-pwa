@@ -8,6 +8,7 @@ import { CategoryHelper } from 'ish-core/models/category/category.helper';
 import { SparqueCategory } from 'ish-core/models/sparque-category/sparque-category.interface';
 import { SparqueCategoryMapper } from 'ish-core/models/sparque-category/sparque-category.mapper';
 import { CategoriesServiceInterface } from 'ish-core/service-provider/categories.service-provider';
+import { unpackEnvelope } from 'ish-core/services/api/api.service';
 import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.service';
 
 /**
@@ -35,8 +36,11 @@ export class SparqueCategoriesService implements CategoriesServiceInterface {
     }
 
     return this.sparqueApiService
-      .get<{ categories?: SparqueCategory[] }>('categorytree', this.apiVersion, { params, skipApiErrorHandling: true })
-      .pipe(map(result => this.sparqueCategoryMapper.fromCategoryTreeData(result?.categories || [])));
+      .get<SparqueCategory[]>('categorytree', this.apiVersion, { params, skipApiErrorHandling: true })
+      .pipe(
+        unpackEnvelope<SparqueCategory>('categories'),
+        map(categories => this.sparqueCategoryMapper.fromCategoryTreeData(categories || []))
+      );
   }
 
   /**
@@ -51,13 +55,11 @@ export class SparqueCategoriesService implements CategoriesServiceInterface {
       .set('Levels', categoryUniqueId.split(CategoryHelper.uniqueIdSeparator).length.toString());
 
     return this.sparqueApiService
-      .get<{ categories?: SparqueCategory[] }>('categorytree', this.apiVersion, { params, skipApiErrorHandling: true })
+      .get<SparqueCategory[]>('categorytree', this.apiVersion, { params, skipApiErrorHandling: true })
       .pipe(
-        map(result =>
-          this.sparqueCategoryMapper.fromCategoryTreeData(
-            result?.categories || [],
-            this.getCategoryPath(categoryUniqueId)
-          )
+        unpackEnvelope<SparqueCategory>('categories'),
+        map(categories =>
+          this.sparqueCategoryMapper.fromCategoryTreeData(categories || [], this.getCategoryPath(categoryUniqueId))
         )
       );
   }

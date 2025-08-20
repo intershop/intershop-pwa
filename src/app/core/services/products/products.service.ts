@@ -41,7 +41,7 @@ export class ProductsService implements ProductsServiceInterface {
    * @param sku  The Product SKU for the product of interest.
    * @returns    The Product data.
    */
-  getProduct(sku: string): Observable<Product> {
+  getProduct(sku: string): Observable<Partial<Product>> {
     if (!sku) {
       return throwError(() => new Error('getProduct() called without a sku'));
     }

@@ -46,17 +46,21 @@ describe('Sparque Product Mapper', () => {
         [
           {
             "available": true,
-            "completenessLevel": 1,
+            "completenessLevel": 2,
+            "defaultCategoryId": undefined,
             "images": [
               {
                 "effectiveUrl": "baseUrl/S/123.jpg",
               },
             ],
+            "longDescription": undefined,
             "manufacturer": "BRAND",
             "minOrderQuantity": 1,
             "name": "Product 1",
+            "packingUnit": "",
             "shortDescription": "Short description",
             "sku": "SKU1",
+            "stepQuantity": 1,
             "type": "Product",
           },
         ]

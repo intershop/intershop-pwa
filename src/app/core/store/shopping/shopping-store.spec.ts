@@ -20,7 +20,6 @@ import { ConfigurationService } from 'ish-core/services/configuration/configurat
 import { CountryService } from 'ish-core/services/country/country.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { SparqueRecommendationsService } from 'ish-core/services/sparque-recommendations/sparque-recommendations.service';
 import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
@@ -48,10 +47,9 @@ describe('Shopping Store', () => {
   let productsServiceProviderMock: ProductsServiceProvider;
   let sparqueRecommendationsServiceMock: SparqueRecommendationsService;
   let categoriesServiceProviderMock: CategoriesServiceProvider;
-  let sparqueSuggestionsServiceMock: SparqueSuggestionsService;
   let suggestServiceMock: SuggestService;
   let suggestionsServiceProviderMock: SuggestionsServiceProvider;
-  let promotionsServiceMock: PromotionsService;
+  let sparqueSuggestionsServiceMock: SparqueSuggestionsService;
   let filterServiceMock: FilterService;
 
   beforeEach(() => {
@@ -105,14 +103,12 @@ describe('Shopping Store', () => {
     when(countryServiceMock.getCountries()).thenReturn(EMPTY);
 
     productsServiceProviderMock = mock(ProductsServiceProvider);
-    sparqueRecommendationsServiceMock = mock(SparqueRecommendationsService);
-    categoriesServiceProviderMock = mock(CategoriesServiceProvider);
     sparqueSuggestionsServiceMock = mock(SparqueSuggestionsService);
+    categoriesServiceProviderMock = mock(CategoriesServiceProvider);
     suggestServiceMock = mock(SuggestService);
     suggestionsServiceProviderMock = mock(SuggestionsServiceProvider);
     productsServiceMock = mock(ProductsService);
     when(productsServiceProviderMock.get()).thenReturn(of(instance(productsServiceMock)));
-    when(productsServiceProviderMock.isSparqueSearchEnabled()).thenReturn(of(false));
     when(sparqueRecommendationsServiceMock.getRecommendations(anything())).thenReturn(
       of({ recommendations: { strategy: 'test', count: 5, productSKUs: [] }, products: [] })
     );

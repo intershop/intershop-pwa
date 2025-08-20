@@ -89,9 +89,13 @@ export class ProductsEffects {
         group$.pipe(
           this.throttleOnBrowser(),
           switchMap(sku =>
-            this.productsService.getProduct(sku).pipe(
-              map(product => loadProductSuccess({ product })),
-              mapErrorToAction(loadProductFail, { sku })
+            this.productsServiceProvider.get().pipe(
+              concatMap(service =>
+                service.getProduct(sku).pipe(
+                  map(product => loadProductSuccess({ product })),
+                  mapErrorToAction(loadProductFail, { sku })
+                )
+              )
             )
           )
         )

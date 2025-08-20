@@ -7,7 +7,6 @@ import { anyString, anything, capture, instance, mock, spy, verify, when } from 
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { SuggestionsServiceProvider } from 'ish-core/service-provider/suggestions.service-provider';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
@@ -71,9 +70,7 @@ describe('Search Effects', () => {
       ],
       providers: [
         { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
-        { provide: SparqueSuggestionsService, useFactory: () => instance(sparqueSuggestionsServiceMock) },
         { provide: SuggestionsServiceProvider, useFactory: () => instance(suggestionsServiceProviderMock) },
-        { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         provideStoreSnapshots(),
       ],
     });
