@@ -8,6 +8,10 @@ on:
       - '**.md'
       - 'docs/**'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop' }}
+
 env:
   NODE_VERSION: 22.17.1
   NODE_OPTIONS: --max_old_space_size=8192
@@ -25,19 +29,8 @@ env:
     npx ng g override src/app/shared/dummy/dummy.component.ts --theme b2b --html --defaults
 
 jobs:
-  CancelPrevious:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Cancel Old Pipeline
-        if: "!startsWith(github.ref, 'refs/tags/') && github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop'"
-        uses: rokroskar/workflow-run-cleanup-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   Check:
     if: github.ref == 'refs/heads/develop'
-    needs: [CancelPrevious]
     runs-on: windows-latest
 
     steps:
@@ -57,7 +50,6 @@ jobs:
         run: npm run check-no-changes
 
   CommandLine:
-    needs: [CancelPrevious]
     runs-on: windows-latest
 
     steps:
@@ -87,7 +79,6 @@ jobs:
         run: script.bat
 
   Powershell:
-    needs: [CancelPrevious]
     runs-on: windows-latest
 
     steps:
@@ -103,7 +94,6 @@ jobs:
         run: ${{ env.SCRIPT }}
 
   GitBash:
-    needs: [CancelPrevious]
     runs-on: windows-latest
 
     steps:

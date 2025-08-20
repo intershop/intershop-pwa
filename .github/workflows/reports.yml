@@ -6,17 +6,12 @@ on:
       - 'reports/**'
       - 'develop'
 
-jobs:
-  CancelPrevious:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cancel Old Pipeline
-        uses: rokroskar/workflow-run-cleanup-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
+jobs:
   BuildNDeployReports:
-    needs: [CancelPrevious]
     if: ${{ github.event.repository.owner.login == 'intershop' }}
     runs-on: ubuntu-latest
     environment:

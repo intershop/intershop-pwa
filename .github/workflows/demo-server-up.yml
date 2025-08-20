@@ -3,6 +3,10 @@ name: DemoServerUp
 on:
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 # CONFIGURATION
 # For help, go to https://github.com/Azure/Actions
 #
@@ -14,15 +18,7 @@ env:
   ICM_BASE_URL: https://review.icm.intershop.de
 
 jobs:
-  CancelPrevious:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cancel Old Pipeline
-        uses: rokroskar/workflow-run-cleanup-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build-and-deploy:
-    needs: [CancelPrevious]
     if: github.event.repository.full_name == 'intershop/intershop-pwa'
     name: Build and Deploy
     runs-on: ubuntu-latest
