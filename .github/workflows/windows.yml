@@ -1,16 +1,20 @@
 name: Windows
 
 on:
+  workflow_dispatch:
   push:
     branches:
-      - '**'
+      - master
+      - develop
+  pull_request:
+    types: [opened, synchronize]
     paths-ignore:
       - '**.md'
       - 'docs/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   NODE_VERSION: 22.17.1
