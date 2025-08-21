@@ -114,7 +114,7 @@ describe('Quote Page Component', () => {
     `);
   });
 
-  it('should show empty template wen quote has no items', () => {
+  it('should show empty template when quote has no items', () => {
     when(context.select('entity')).thenReturn(of({} as QuoteRequest));
     when(context.select('state')).thenReturn(of('New'));
 
