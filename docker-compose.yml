@@ -43,8 +43,9 @@ services:
       #     domain: some-domain.auth0.com
       #     clientID: ASDF12345
       #
-      # allow backend requests to use HTTP/2 with Fetch API
-      ALLOW_H2: 'true'
+      # allow backend requests to use HTTP/2 with Fetch API (experimental)
+      # ALLOW_H2: 'true'
+
     # Logging to an External Device (see logging.md)
     # volumes:
     #   - d:/pwa/logs:/.pm2/logs/

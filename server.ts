@@ -26,10 +26,14 @@ if (/on|1|true|yes/.test(process.env.ALLOW_H2?.toLowerCase())) {
   // undici global symbol are lazy loaded, so we need to trigger it first
   try {
     fetch('data:;base64,');
-  } catch (e) {}
+  } catch (e) {
+    // continue regardless of error
+  }
   // Get the global agent
-  const unidiciGlobalDispatcherSymbol = Symbol.for('undici.globalDispatcher.1');
-  const agent = globalThis[unidiciGlobalDispatcherSymbol];
+  const undiciGlobalDispatcherSymbol = Symbol.for('undici.globalDispatcher.1');
+  // This way of setting default agent options seems to be considered as public API: https://github.com/nodejs/undici/discussions/2167#discussioncomment-9292354
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const agent = (globalThis as any)[undiciGlobalDispatcherSymbol];
   // get the agent internal options
   const symbols = Object.getOwnPropertySymbols(agent);
   const [kOption] = symbols.filter(predicate => predicate.toString().includes('options'));
