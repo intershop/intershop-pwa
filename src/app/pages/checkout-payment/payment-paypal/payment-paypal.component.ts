@@ -26,7 +26,8 @@ import {
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
+import { Basket } from 'ish-core/models/basket/basket.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
@@ -40,6 +41,7 @@ declare let paypal: any;
 @Component({
   selector: 'ish-payment-paypal',
   templateUrl: './payment-paypal.component.html',
+  styleUrls: ['./payment-paypal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentPaypalComponent implements AfterViewInit {
@@ -52,7 +54,7 @@ export class PaymentPaypalComponent implements AfterViewInit {
     layout: 'horizontal',
     shape: 'sharp',
     label: 'paypal',
-    height: 45,
+    height: 40,
     tagline: false,
   };
 
@@ -60,6 +62,10 @@ export class PaymentPaypalComponent implements AfterViewInit {
 
   basket$ = this.checkoutFacade.basket$.pipe(shareReplay(1));
   paypalPaymentMethod$ = this.checkoutFacade.paypalPaymentMethod$.pipe(shareReplay(1));
+  isPaypalPaymentMethodSelected$ = combineLatest([this.paypalPaymentMethod$, this.basket$]).pipe(
+    filter(([method, basket]) => !!method && !!basket?.payment),
+    map(([method, basket]) => method.paymentInstruments[0]?.id === basket.payment.paymentInstrument?.id)
+  );
 
   private destroyRef = inject(DestroyRef);
 
@@ -87,25 +93,15 @@ export class PaymentPaypalComponent implements AfterViewInit {
       .pipe(
         take(1),
         concatMap(([locale, basket, paypalPaymentMethod]) => {
-          const paypalClientId = AttributeHelper.getAttributeValueByAttributeName<string>(
-            paypalPaymentMethod.hostedPaymentPageParameters,
-            'client-id'
-          );
-          const merchantId = AttributeHelper.getAttributeValueByAttributeName<string>(
-            paypalPaymentMethod.hostedPaymentPageParameters,
-            'merchant-id'
-          );
-          const intent =
-            AttributeHelper.getAttributeValueByAttributeName<string>(
-              paypalPaymentMethod.hostedPaymentPageParameters,
-              'intent'
-            ) || 'capture';
-
-          if (paypalClientId && merchantId) {
-            const scriptParameter = `client-id=${paypalClientId}&merchant-id=${merchantId}&components=buttons,messages&locale=${locale}&currency=${basket.purchaseCurrency}&intent=${intent}&commit=false`; // &debug=true
-
+          if (paypalPaymentMethod.hostedPaymentPageParameters?.length) {
             return this.scriptLoader
-              .load(`https://www.paypal.com/sdk/js?${scriptParameter}`)
+              .load(
+                `https://www.paypal.com/sdk/js?${this.getScriptQueryParameters(
+                  paypalPaymentMethod.hostedPaymentPageParameters,
+                  basket,
+                  locale
+                )}`
+              )
               .pipe(map(() => ({ locale, basket, paypalPaymentMethod })));
           }
         }),
@@ -120,7 +116,7 @@ export class PaymentPaypalComponent implements AfterViewInit {
             paypal
               .Buttons({
                 style: this.paypalButtonStyle,
-                // Call your server to set up the transaction
+                // Call your server to set up the transaction after the user has clicked the button
                 createOrder: (data: { paymentSource: string }) => {
                   this.selectPaypalPaymentMethod.emit(
                     paypalPaymentMethod.paymentInstruments[0]?.id || paypalPaymentMethod.serviceId
@@ -129,10 +125,13 @@ export class PaymentPaypalComponent implements AfterViewInit {
                   return firstValueFrom(this.getPaypalOrderId$().pipe(take(1)));
                 },
                 // after the user has submitted the payment in the paypal overlay
-                onApprove: () => {
+                onApprove: (data: { payerID: string; orderID: string }) => {
+                  console.log('onApprove', data);
                   // ngZone is needed to navigate outside of the Angular zone in a callback function
                   this.ngZone.run(() => {
-                    this.router.navigate(['/checkout/review'], { queryParams: { redirect: 'success' } });
+                    this.router.navigate(['/checkout/review'], {
+                      queryParams: { redirect: 'success', token: data.orderID, PayerID: data.payerID },
+                    });
                   });
                 },
                 // after the user has cancelled the payment in the paypal overlay
@@ -167,7 +166,21 @@ export class PaymentPaypalComponent implements AfterViewInit {
       });
   }
 
-  getPaypalOrderId$(): Observable<string> {
+  private getScriptQueryParameters(paymentParameters: Attribute<string>[], basket: Basket, locale: string): string {
+    let params = paymentParameters
+      ?.filter(param => ['client-id', 'merchant-id', 'data-partner-attribution-id', 'intent'].includes(param?.name))
+      .map(param => `${param.name}=${param.value}`)
+      .join('&');
+    params = `${params}&components=buttons,messages`;
+    params = `${params}&currency=${basket.purchaseCurrency}`;
+    params = `${params}&locale=${locale}`;
+    params = `${params}&commit=false`; // do not show the "Pay now" button, but the "Continue to PayPal" button
+    //params = `${params}&debug=false`;
+
+    return params;
+  }
+
+  private getPaypalOrderId$(): Observable<string> {
     return race(
       this.checkoutFacade.basket$.pipe(
         whenTruthy(),
@@ -180,19 +193,5 @@ export class PaymentPaypalComponent implements AfterViewInit {
       ),
       timer(4000).pipe(map(() => ''))
     );
-  }
-
-  /**
-   * call back function to initialize iframes for cardNumber and cvc
-   */
-  // visible-for-testing
-  initCallback() {}
-
-  /**
-   * call back function to submit data, get a response token from provider and send data in case of success
-   */
-  // visible-for-testing
-  submitCallback() {
-    // this.paymentConcardisComponent.submitCallback();
   }
 }
