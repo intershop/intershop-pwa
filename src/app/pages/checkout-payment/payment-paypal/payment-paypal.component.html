@@ -1,7 +1,10 @@
 <div *ngIf="paypalPaymentMethod$ | async" class="row">
-  <div class="col-12 col-md-6">
+  <div class="col-11 col-md-5">
     <div id="paypal-buttons-container"></div>
     <div id="paypal-messages-container"></div>
+  </div>
+  <div *ngIf="isPaypalPaymentMethodSelected$ | async" class="paypal-selected col-1">
+    <fa-icon [icon]="['fas', 'check']" />
   </div>
   <div *ngIf="scriptLoaded$ | async" class="d-flex col-12 align-items-center my-4">
     <div class="flex-fill border-top border-secondary"></div>
