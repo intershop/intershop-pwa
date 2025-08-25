@@ -16,7 +16,7 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
-export class UniversalErrorHandler implements ErrorHandler {
+class UniversalErrorHandler implements ErrorHandler {
   private logAll = /on|1|true|yes/.test(process.env.LOG_ALL?.toLowerCase());
 
   handleError(error: unknown): void {
