@@ -2,6 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
+import { sparqueServerError } from 'ish-core/store/core/error';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
 
 import {
@@ -31,8 +32,8 @@ const MAX_NUMBER_OF_STORED_SEARCH_TERMS = 5;
 export const searchReducer = createReducer(
   initialState,
   setLoadingOn(suggestSearch),
-  unsetLoadingAndErrorOn(suggestSearchSuccess),
-  setErrorOn(suggestSearchFail),
+  unsetLoadingAndErrorOn(suggestSearchSuccess, sparqueServerError),
+  setErrorOn(sparqueServerError, suggestSearchFail),
   on(removeSuggestions, (state): SearchState => ({ ...state, suggestions: undefined })),
   on(
     suggestSearchSuccess,

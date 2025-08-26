@@ -1,10 +1,16 @@
 /* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { ReplaySubject, Subject } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
+import { SuggestBrandsComponent } from 'ish-shared/components/search/suggest-brands/suggest-brands.component';
+import { SuggestCategoriesComponent } from 'ish-shared/components/search/suggest-categories/suggest-categories.component';
+import { SuggestKeywordsComponent } from 'ish-shared/components/search/suggest-keywords/suggest-keywords.component';
+import { SuggestProductsComponent } from 'ish-shared/components/search/suggest-products/suggest-products.component';
+import { SuggestSearchTermsComponent } from 'ish-shared/components/search/suggest-search-terms/suggest-search-terms.component';
 
 import { SearchBoxComponent } from './search-box.component';
 
@@ -14,15 +20,33 @@ describe('Search Box Component', () => {
   let element: HTMLElement;
   let searchResults$: Subject<Suggestions>;
   let searchTerm$: Subject<string>;
+  let searchSuggestLoading$: Subject<boolean>;
+  let searchServerError$: Subject<undefined>;
+  let recentSearchTerms$: Subject<string[]>;
 
   beforeEach(async () => {
     searchResults$ = new ReplaySubject(1);
     searchTerm$ = new ReplaySubject(1);
+    searchSuggestLoading$ = new ReplaySubject(1);
+    searchServerError$ = new ReplaySubject(1);
+    recentSearchTerms$ = new ReplaySubject(1);
+
     searchResults$.next(undefined);
     searchTerm$.next(undefined);
+    searchSuggestLoading$.next(false);
+    searchServerError$.next(undefined);
+    recentSearchTerms$.next([]);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [
+        MockComponent(SuggestBrandsComponent),
+        MockComponent(SuggestCategoriesComponent),
+        MockComponent(SuggestKeywordsComponent),
+        MockComponent(SuggestProductsComponent),
+        MockComponent(SuggestSearchTermsComponent),
+        SearchBoxComponent,
+        TranslateModule.forRoot(),
+      ],
       providers: [
         {
           provide: ShoppingFacade,
@@ -30,7 +54,9 @@ describe('Search Box Component', () => {
             ({
               suggestResults$: () => searchResults$,
               searchTerm$,
-              recentSearchTerms$: new ReplaySubject<string[]>(1),
+              recentSearchTerms$,
+              searchSuggestLoading$,
+              searchServerError$,
             } as Partial<ShoppingFacade>),
         },
       ],
@@ -44,8 +70,7 @@ describe('Search Box Component', () => {
 
     // activate
     component.searchBoxFocus = true;
-    component.configuration = { maxAutoSuggests: 4 };
-    component.configuration = { autoSuggest: true };
+    component.configuration = { maxAutoSuggests: 4, autoSuggest: true };
   });
 
   it('should be created', () => {
@@ -98,8 +123,7 @@ describe('Search Box Component', () => {
       component.inputSearchTerms$.next('cam');
       fixture.detectChanges();
 
-      const ul = fixture.nativeElement.querySelector('.search-suggest-terms ul');
-      expect(ul.querySelectorAll('li')).toHaveLength(2);
+      expect(element.querySelector('ish-suggest-keywords')).toBeTruthy();
     });
   });
 

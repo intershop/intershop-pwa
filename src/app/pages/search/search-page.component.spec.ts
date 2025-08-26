@@ -65,7 +65,7 @@ describe('Search Page Component', () => {
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       [
-        "ish-search-result",
+        "ish-search-no-result",
       ]
     `);
   });

@@ -11,7 +11,8 @@ export const getSuggestSearchResults = createSelector(getSearchState, state => s
 
 export const getSuggestSearchLoading = createSelector(getSearchState, state => state.loading);
 
-// not-dead-code
-export const getSuggestSearchError = createSelector(getSearchState, state => state.error);
+export const getSearchServerError = createSelector(getSearchState, state =>
+  state.error && (state.error.status >= 500 || state.error.status === 0) ? state.error : undefined
+);
 
 export const getSearchedTerms = createSelector(getSearchState, state => state._searchTerms);

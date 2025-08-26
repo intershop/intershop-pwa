@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 @Component({
@@ -18,6 +19,7 @@ export class SearchPageComponent implements OnInit {
   searchLoading$: Observable<boolean>;
   deviceType$: Observable<DeviceType>;
   filterParams$: Observable<string>;
+  searchServerError$: Observable<HttpError>;
 
   constructor(
     private shoppingFacade: ShoppingFacade,
@@ -29,6 +31,7 @@ export class SearchPageComponent implements OnInit {
     this.searchTerm$ = this.shoppingFacade.searchTerm$;
     this.numberOfItems$ = this.shoppingFacade.searchItemsCount$;
     this.searchLoading$ = this.shoppingFacade.searchLoading$;
+    this.searchServerError$ = this.shoppingFacade.searchServerError$;
     this.deviceType$ = this.appFacade.deviceType$;
     this.filterParams$ = this.activatedRoute.queryParamMap.pipe(map(x => x.get('filters')));
   }

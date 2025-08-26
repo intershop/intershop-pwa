@@ -42,7 +42,7 @@ export class SparqueProductsService implements ProductsServiceInterface {
     }
 
     return this.sparqueApiService
-      .get<SparqueSearch>(`search`, this.apiVersion, { params, skipApiErrorHandling: true })
+      .get<SparqueSearch>(`search`, this.apiVersion, { params, skipApiErrorHandling: false })
       .pipe(map(result => this.sparqueSearchMapper.fromData(result, { searchTerm: [searchParams.searchTerm] })));
   }
 

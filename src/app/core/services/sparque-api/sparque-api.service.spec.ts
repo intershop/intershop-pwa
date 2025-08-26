@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { BehaviorSubject } from 'rxjs';
-import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
+import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { TokenService } from 'ish-core/services/token/token.service';
@@ -327,6 +327,57 @@ describe('Sparque Api Service', () => {
         });
 
       verify(store.dispatch(anything())).never();
+    });
+
+    it('should dispatch sparqueServerError when getting status 0', done => {
+      sparqueApiService.get('route', 'v2').subscribe({ next: fail, error: fail, complete: done });
+
+      httpTestingController
+        .expectOne(() => true)
+        .flush('', {
+          status: 0,
+          statusText: 'Network Error',
+        });
+
+      verify(store.dispatch(anything())).once();
+      expect(capture(store.dispatch).last()?.[0]).toMatchInlineSnapshot(`
+        [Error Internal] Sparque Server Error (5xx):
+          error: {"headers":{"normalizedNames":{},"lazyUpdate":null,"headers"...
+      `);
+    });
+
+    it('should dispatch sparqueServerError when getting status 500', done => {
+      sparqueApiService.get('route', 'v2').subscribe({ next: fail, error: fail, complete: done });
+
+      httpTestingController
+        .expectOne(() => true)
+        .flush('', {
+          status: 500,
+          statusText: 'Internal Server Error',
+        });
+
+      verify(store.dispatch(anything())).once();
+      expect(capture(store.dispatch).last()?.[0]).toMatchInlineSnapshot(`
+        [Error Internal] Sparque Server Error (5xx):
+          error: {"headers":{"normalizedNames":{},"lazyUpdate":null,"headers"...
+      `);
+    });
+
+    it('should dispatch sparqueServerError when getting status 503', done => {
+      sparqueApiService.get('route', 'v2').subscribe({ next: fail, error: fail, complete: done });
+
+      httpTestingController
+        .expectOne(() => true)
+        .flush('', {
+          status: 503,
+          statusText: 'Service Unavailable',
+        });
+
+      verify(store.dispatch(anything())).once();
+      expect(capture(store.dispatch).last()?.[0]).toMatchInlineSnapshot(`
+        [Error Internal] Sparque Server Error (5xx):
+          error: {"headers":{"normalizedNames":{},"lazyUpdate":null,"headers"...
+      `);
     });
   });
 });

@@ -3,6 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 
 import { ProductListingID, ProductListingType } from 'ish-core/models/product-listing/product-listing.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
+import { sparqueServerError } from 'ish-core/store/core/error';
 import { loadProductsForFilter } from 'ish-core/store/shopping/filter';
 import {
   loadProductsForCategory,
@@ -88,7 +89,12 @@ export const productListingReducer = createReducer(
   on(setViewType, (state, action): ProductListingState => ({ ...state, viewType: action.payload.viewType })),
   setLoadingOn(searchProducts, loadProductsForCategory, loadProductsForFilter, loadProductsForMaster),
   unsetLoadingOn(setProductListingPages),
-  unsetLoadingAndErrorOn(searchProductsFail, loadProductsForCategoryFail, loadProductsForMasterFail),
+  unsetLoadingAndErrorOn(
+    searchProductsFail,
+    loadProductsForCategoryFail,
+    loadProductsForMasterFail,
+    sparqueServerError
+  ),
   on(setProductListingPages, (state, action) => {
     const pages =
       action.payload.pages ||

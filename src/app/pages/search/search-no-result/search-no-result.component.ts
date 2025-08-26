@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+
 /**
  * The Search No Result Component informs the user that no result has been found for his search and provides an input field for a new search.
  * It uses the {@link SearchBoxComponent}.
@@ -19,4 +21,9 @@ export class SearchNoResultComponent {
    * The search term leading to no result.
    */
   @Input({ required: true }) searchTerm: string;
+
+  /**
+   * Optional server error to display a different message.
+   */
+  @Input() serverError: HttpError;
 }

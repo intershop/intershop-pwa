@@ -6,6 +6,8 @@ export const communicationTimeoutError = createAction('[Error Internal] Communic
 
 export const serverError = createAction('[Error Internal] Server Error (5xx)', httpError());
 
+export const sparqueServerError = createAction('[Error Internal] Sparque Server Error (5xx)', httpError());
+
 export const businessError = createAction('[Error] Business Error', payload<{ error: string }>());
 
 export const serverConfigError = createAction('[Error Internal] Load Server Configuration Error', httpError());

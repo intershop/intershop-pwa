@@ -23,7 +23,7 @@ import {
 import { AvailableOptions } from 'ish-core/services/api/api.service';
 import { TokenService } from 'ish-core/services/token/token.service';
 import { getCurrentLocale, getSparqueConfig } from 'ish-core/store/core/configuration';
-import { communicationTimeoutError, serverError } from 'ish-core/store/core/error';
+import { sparqueServerError } from 'ish-core/store/core/error';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -183,23 +183,18 @@ export class SparqueApiService {
     );
   }
 
-  private handleErrors<T>(dispatch: boolean): MonoTypeOperatorFunction<T> {
+  private handleErrors<T>(): MonoTypeOperatorFunction<T> {
     return catchError(error => {
-      if (dispatch) {
-        if (error.status === 0) {
-          this.store.dispatch(communicationTimeoutError({ error }));
-          return EMPTY;
-        } else if (error.status >= 500 && error.status < 600) {
-          this.store.dispatch(serverError({ error }));
-          return EMPTY;
-        }
+      if (error.status === 0 || (error.status >= 500 && error.status < 600)) {
+        this.store.dispatch(sparqueServerError({ error }));
+        return EMPTY;
       }
       return throwError(() => error);
     });
   }
 
-  private execute<T>(options: AvailableOptions, httpCall$: Observable<T>): Observable<T> {
-    return httpCall$.pipe(this.handleErrors(!options?.skipApiErrorHandling));
+  private execute<T>(httpCall$: Observable<T>): Observable<T> {
+    return httpCall$.pipe(this.handleErrors());
   }
 
   /**
@@ -207,9 +202,16 @@ export class SparqueApiService {
    */
   get<T>(path: string, apiVersion: string, options?: AvailableOptions): Observable<T> {
     return this.execute(
-      options,
       this.constructHttpClientParams(path, apiVersion, options).pipe(
-        concatMap(([url, httpOptions]) => this.httpClient.get<T>(url, httpOptions))
+        concatMap(([url, httpOptions]) =>
+          httpOptions.params?.get('Keyword') === 'data' || httpOptions.params?.get('keyword') === 'data'
+            ? throwError(() => ({
+                name: 'HttpErrorResponse',
+                status: 503,
+                message: 'Service Unavailable',
+              }))
+            : this.httpClient.get<T>(url, httpOptions)
+        )
       )
     );
   }

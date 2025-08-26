@@ -7,14 +7,24 @@
 
   <h1 class="h2">{{ 'search.noResult.heading' | translate }}</h1>
 
+  <div *ngIf="serverError" class="alert alert-warning" role="alert">
+    {{ 'search.server.error.message' | translate }}
+  </div>
+
   <div class="marketing-area">
     <ish-content-include includeId="include.searchnoresult.content.top.pagelet2-Include" />
   </div>
 
-  <p
-    class="no-search-result-title"
-    [innerHTML]="'search.noResult.message' | translate : { '0': searchTerm | ishHtmlEncode }"
-  ></p>
+  <ng-container *ngIf="serverError; else standardTitle">
+    <h3>{{ 'search.server.error.retry' | translate }}</h3>
+  </ng-container>
+
+  <ng-template #standardTitle>
+    <p
+      class="no-search-result-title"
+      [innerHTML]="'search.noResult.message' | translate : { '0': searchTerm | ishHtmlEncode }"
+    ></p>
+  </ng-template>
 
   <div class="search-container main-search-container">
     <ish-search-box
@@ -23,8 +33,17 @@
       }"
     />
   </div>
+  <ng-container *ngIf="serverError; else standardHelp">
+    <div class="search-guidelines" [innerHTML]="'search.server.error.suggestions' | translate"></div>
+    <div>
+      <h3>{{ 'search.server.error.contact.title' | translate }}</h3>
+      <p [ishServerHtml]="'search.server.error.contact.message' | translate"></p>
+    </div>
+  </ng-container>
 
-  <div class="search-guidelines" [innerHTML]="'search.noresult.guidelines' | translate"></div>
+  <ng-template #standardHelp>
+    <div class="search-guidelines" [innerHTML]="'search.noresult.guidelines' | translate"></div>
+  </ng-template>
 
   <div class="marketing-area">
     <ish-content-include includeId="include.searchnoresult.content.bottom.pagelet2-Include" />

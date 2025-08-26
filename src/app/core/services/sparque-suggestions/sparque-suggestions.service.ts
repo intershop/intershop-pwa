@@ -38,7 +38,7 @@ export class SparqueSuggestionsService implements SuggestionsServiceInterface {
     const params = new HttpParams().set('Keyword', searchTerm).set('count', this.maxNumberOfRequestedSuggestions);
 
     return this.sparqueApiService
-      .get<SparqueSuggestions>(`suggestions`, this.apiVersion, { params, skipApiErrorHandling: true })
-      .pipe(map(suggestions => this.sparqueSuggestionsMapper.fromData(suggestions)));
+      .get<SparqueSuggestions>(`suggestions`, this.apiVersion, { params, skipApiErrorHandling: false })
+      .pipe(map(response => this.sparqueSuggestionsMapper.fromData(response)));
   }
 }
