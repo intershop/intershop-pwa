@@ -58,13 +58,13 @@ export class PaymentPaypalComponent implements AfterViewInit {
     tagline: false,
   };
 
-  scriptLoaded$ = new BehaviorSubject<boolean>(false);
+  scriptLoaded$ = new BehaviorSubject<boolean>(undefined);
 
   basket$ = this.checkoutFacade.basket$.pipe(shareReplay(1));
   paypalPaymentMethod$ = this.checkoutFacade.paypalPaymentMethod$.pipe(shareReplay(1));
-  isPaypalPaymentMethodSelected$ = combineLatest([this.paypalPaymentMethod$, this.basket$]).pipe(
-    filter(([method, basket]) => !!method && !!basket?.payment),
-    map(([method, basket]) => method.paymentInstruments[0]?.id === basket.payment.paymentInstrument?.id)
+  isPaypalPaymentMethodSelected$ = combineLatest({ method: this.paypalPaymentMethod$, basket: this.basket$ }).pipe(
+    filter(({ method, basket }) => !!method && !!basket?.payment),
+    map(({ method, basket }) => method.paymentInstruments[0]?.id === basket.payment.paymentInstrument?.id)
   );
 
   private destroyRef = inject(DestroyRef);
@@ -85,14 +85,14 @@ export class PaymentPaypalComponent implements AfterViewInit {
    * load script if component is visible
    */
   private loadScript() {
-    combineLatest([
-      this.appFacade.currentLocale$.pipe(whenTruthy()),
-      this.basket$.pipe(whenTruthy()),
-      this.paypalPaymentMethod$.pipe(whenTruthy()),
-    ])
+    combineLatest({
+      locale: this.appFacade.currentLocale$.pipe(whenTruthy()),
+      basket: this.basket$.pipe(whenTruthy()),
+      paypalPaymentMethod: this.paypalPaymentMethod$.pipe(whenTruthy()),
+    })
       .pipe(
         take(1),
-        concatMap(([locale, basket, paypalPaymentMethod]) => {
+        concatMap(({ locale, basket, paypalPaymentMethod }) => {
           if (paypalPaymentMethod.hostedPaymentPageParameters?.length) {
             return this.scriptLoader
               .load(
@@ -150,7 +150,6 @@ export class PaymentPaypalComponent implements AfterViewInit {
               .render(this.paypalButtonsContainerId);
           }
           if (paypal?.Messages) {
-            this.scriptLoaded$.next(true);
             paypal
               .Messages({
                 amount: basket.totals?.total?.gross,
@@ -166,8 +165,8 @@ export class PaymentPaypalComponent implements AfterViewInit {
               });
           }
         },
-        error: error => {
-          console.log(error);
+        error: () => {
+          this.scriptLoaded$.next(false);
         },
       });
   }
