@@ -901,6 +901,7 @@
   "checkout.payment.payWith.link": "Mit {{0}} bezahlen",
   "checkout.payment.payment_cost_threshold.amount_reached": "kostenlos für diese Bestellung über ",
   "checkout.payment.payment_cost_threshold.text": "kostenlos bei Bestellungen über mindestens ",
+  "checkout.payment.paypal.script.error.message": "PayPal ist vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut oder wählen Sie eine andere Zahlungsmethode aus.",
   "checkout.payment.security_code.missing.error": "Kein Sicherheitscode angegeben.",
   "checkout.payment.sorry_message.text": "Es tut uns leid.",
   "checkout.pli.desc.heading": "Artikelbeschreibung",

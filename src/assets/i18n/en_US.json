@@ -901,6 +901,7 @@
   "checkout.payment.payWith.link": "Pay with {{0}}",
   "checkout.payment.payment_cost_threshold.amount_reached": "Free charge for this order of ",
   "checkout.payment.payment_cost_threshold.text": "free of charge for orders of at least ",
+  "checkout.payment.paypal.script.error.message": "PayPal is temporarily unavailable. Please try again shortly or choose another payment method below.",
   "checkout.payment.security_code.missing.error": "Security code is missing.",
   "checkout.payment.sorry_message.text": "We’re sorry.",
   "checkout.pli.desc.heading": "Item description",
