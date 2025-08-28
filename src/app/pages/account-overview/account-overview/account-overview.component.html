@@ -10,6 +10,10 @@
   <p *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']">
     {{ 'account.overview.message_b2b.text' | translate }}
   </p>
+
+  <div class="marketing-area">
+    <ish-content-include includeId="include.account.overview.content.top.pagelet2-Include" />
+  </div>
 </ng-container>
 
 <ng-template #personalCustomerMessage>
@@ -19,6 +23,10 @@
   ></h1>
 
   <p>{{ 'account.overview.message.text' | translate }}</p>
+
+  <div class="marketing-area">
+    <ish-content-include includeId="include.account.overview.content.top.pagelet2-Include" />
+  </div>
 
   <div class="row account-dashboard">
     <div class="col-6 col-sm-4 col-md-3 dashboard-item">
@@ -86,6 +94,10 @@
     <ish-lazy-order-template-widget class="col-12 col-md-4" />
   </div>
 </ng-container>
+
+<div class="marketing-area">
+  <ish-content-include includeId="include.account.overview.content.bottom.pagelet2-Include" />
+</div>
 
 <p class="form-text">
   {{ 'account.overview.note.heading' | translate }}:

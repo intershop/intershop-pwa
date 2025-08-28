@@ -62,6 +62,11 @@ Intershop PWA 8.0.0 provides functionality to support recurring orders.
 To enable the recurring order support in the PWA, ICM 13.x with the Recurring Orders Extension 2.2.0 (`icm-as-customization-recurringorders:2.2.0`) is required.
 In addition, the "Recurring Orders" feature must be enabled in ICM (go to the channel > _Preferences > Recurring Orders_ and ensure the check box is _Enabled_).
 
+New content includes were added to the My Account area.
+They provide three general places to add content to all account pages and two specific places for the account overview page and two specific ones for the order history page.
+To use these content includes, an ICM with `icm-as-customization-headless:3.1.0.` or newer is needed.
+If the connected ICM does not provide the new content includes it is best to skip/revert these changes to avoid failing CMS REST requests, that will not lead to errors in the application but they will show in the browser console.
+
 ## From 7.0.0 to 7.1.0
 
 Due to installation issues with the used `luarocks` package manager, we have disabled the installation of the `lua-resty-redis-connector` that provides the functionality to connect to a shared Redis cache.
