@@ -257,12 +257,15 @@ export class PaymentService {
     }
 
     // basket payment instrument, payment will be deleted automatically, if necessary
-    return this.apiService.delete(
-      `baskets/${this.apiService.encodeResourceId(basket.id)}/payment-instruments/${this.apiService.encodeResourceId(
-        paymentInstrument.id
-      )}`,
-      { headers: this.basketHeaders }
-    );
+    return paymentInstrument.paymentMethod
+      ? this.apiService.delete(
+          `baskets/${this.apiService.encodeResourceId(
+            basket.id
+          )}/payment-instruments/${this.apiService.encodeResourceId(paymentInstrument.id)}`,
+          { headers: this.basketHeaders }
+        )
+      : // if only an id is given delete only the basket payment and not the instrument
+        this.deleteBasketPayment(basket);
   }
 
   /**
