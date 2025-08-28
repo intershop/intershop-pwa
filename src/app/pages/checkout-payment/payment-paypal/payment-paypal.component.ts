@@ -63,8 +63,7 @@ export class PaymentPaypalComponent implements AfterViewInit {
   basket$ = this.checkoutFacade.basket$.pipe(shareReplay(1));
   paypalPaymentMethod$ = this.checkoutFacade.paypalPaymentMethod$.pipe(shareReplay(1));
   isPaypalPaymentMethodSelected$ = combineLatest({ method: this.paypalPaymentMethod$, basket: this.basket$ }).pipe(
-    filter(({ method, basket }) => !!method && !!basket?.payment),
-    map(({ method, basket }) => method.paymentInstruments[0]?.id === basket.payment.paymentInstrument?.id)
+    map(({ method, basket }) => method?.paymentInstruments[0]?.id === basket?.payment?.paymentInstrument?.id)
   );
 
   private destroyRef = inject(DestroyRef);
@@ -136,6 +135,7 @@ export class PaymentPaypalComponent implements AfterViewInit {
                 },
                 // after the user has cancelled the payment in the paypal overlay
                 onCancel: () => {
+                  this.checkoutFacade.deleteBasketPayment(paypalPaymentMethod.paymentInstruments[0]);
                   this.ngZone.run(() => {
                     this.router.navigate(['/checkout/payment'], { queryParams: { redirect: 'cancel' } });
                   });
@@ -173,7 +173,7 @@ export class PaymentPaypalComponent implements AfterViewInit {
 
   private getScriptQueryParameters(paymentParameters: Attribute<string>[], basket: Basket, locale: string): string {
     let params = paymentParameters
-      ?.filter(param => ['client-id', 'merchant-id', 'data-partner-attribution-id', 'intent'].includes(param?.name))
+      ?.filter(param => ['client-id', 'merchant-id', 'intent'].includes(param?.name)) // 'data-partner-attribution-id'
       .map(param => `${param.name}=${param.value}`)
       .join('&');
     params = `${params}&components=buttons,messages`;
@@ -182,6 +182,7 @@ export class PaymentPaypalComponent implements AfterViewInit {
     params = `${params}&commit=false`; // do not show the "Pay now" button, but the "Continue to PayPal" button
     //params = `${params}&debug=false`;
 
+    console.log(params);
     return params;
   }
 
