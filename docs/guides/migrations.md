@@ -78,6 +78,8 @@ For further instructions on how to enable this functionality, see the [Cache Cle
 
 **Experimental** A new SSR environment switch `ALLOW_H2: 'true'` was introduced to enable the HTTP/2 protocol via Fetch API for REST requests done by the SSR container.
 
+Intershop PWA 8.0.0 introduces the integration of CMS content pages into the My Account area (for further details see the [CMS Integration](../concepts/cms-integration.md#account-content-pages) guide).
+
 ## From 7.0.0 to 7.1.0
 
 Due to installation issues with the used `luarocks` package manager, we have disabled the installation of the `lua-resty-redis-connector` that provides the functionality to connect to a shared Redis cache.
