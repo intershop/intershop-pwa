@@ -13,6 +13,7 @@ kb_sync_latest_only
 - [Design View](#design-view)
 - [Design Preview](#design-preview)
 - [Navigation CMS Components](#navigation-cms-components)
+- [Account Content Pages](#account-content-pages)
 - [Integration with an External CMS](#integration-with-an-external-cms)
 
 ## Introduction
@@ -170,6 +171,38 @@ To fulfill such a requirement the source code needs to be adapted accordingly.
 
 All three component allow the configuration of additional freestyle HTML that is rendered within the sub navigation layer.
 The root element as well as the depth of the sub navigation tree is configurable for the _Navigation Category_ and the _Navigation Page_ component.
+
+## Account Content Pages
+
+Intershop PWA 8.0.0 introduces the integration of CMS content pages into the My Account area.
+This means that content pages that can be created and managed in ICM can be rendered in a My Account context.
+Specifically, these pages are rendered with the standard page layout of the My Account area, including the left navigation and the My Account breadcrumb.
+For CMS content components on such pages, all assignable standard component templates can be used, except for the _Static Content_ component template that would render its own breadcrumb and optional navigation.
+This component template is intended for standalone content pages or content page hierarchies outside the My Account area.
+
+The route to a content page in the My Account area is `/account/content/<PAGE_ID>`.
+
+This way, they can be integrated into the My Account navigation via `account-navigation.items.ts` like this.
+
+```typescript
+{
+  id: 'example-page',
+  localizationKey: 'account.navigation.example_page.link',
+  routerLink: '/account/content/example-page',
+},
+```
+
+It is also possible to use the _Account - General - Navigation Bar_ content include to assign a Freestyle HTML component that contains additional account navigation links to content pages (see the following example).
+
+```html
+<ul class="account-navigation list-unstyled">
+  <li class="account-nav-header"><span>Additional</span></li>
+  <li><a class="link-decoration-hover" href="route://account/content/example-page">Example</a></li>
+  <li>
+    <a class="link-decoration-hover" href="route://account/content/page.termsAndConditions.pagelet2-Page">Terms</a>
+  </li>
+</ul>
+```
 
 ## Integration with an External CMS
 

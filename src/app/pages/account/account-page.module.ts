@@ -173,6 +173,11 @@ const accountPageRoutes: Routes = [
             m => m.AccountRecurringOrdersPageModule
           ),
       },
+      {
+        path: 'content',
+        loadChildren: () =>
+          import('../account-content/account-content-page.module').then(m => m.AccountContentPageModule),
+      },
     ],
   },
 ];
