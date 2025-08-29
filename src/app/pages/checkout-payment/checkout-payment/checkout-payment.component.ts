@@ -13,7 +13,8 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { filter, take } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -58,7 +59,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
   // visible-for-testing
   formSubmitted = false;
 
-  redirectStatus: string;
+  redirectStatus$ = new BehaviorSubject<string>(undefined);
 
   private openFormIndex = -1; // index of the open parameter form
 
@@ -87,9 +88,8 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
       });
 
     // if page is shown after cancelled/faulty redirect determine error message variable
-    this.route.queryParamMap.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(params => {
-      const redirect = params.get('redirect');
-      this.redirectStatus = redirect;
+    this.route.queryParamMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
+      this.redirectStatus$.next(params.get('redirect'));
     });
   }
 
@@ -172,6 +172,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     };
 
     this.createPaymentInstrument.emit({ paymentInstrument, saveForLater: body.saveAllowed });
+    this.redirectStatus$.next(undefined);
   }
 
   /**
@@ -203,7 +204,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
   }
 
   setBasketPayment(paymentInstrumentId: string) {
-    this.redirectStatus = undefined;
+    this.redirectStatus$.next(undefined);
     this.updatePaymentMethod.emit(paymentInstrumentId);
   }
 

@@ -5,7 +5,7 @@
     <ish-basket-error-message [error]="error" />
     <ish-basket-validation-results />
 
-    <div *ngIf="redirectStatus" role="alert" class="alert alert-danger">
+    <div *ngIf="redirectStatus$ | async as redirectStatus" role="alert" class="alert alert-danger">
       {{ 'checkout.payment.sorry_message.text' | translate }}
       <ng-container *ngIf="redirectStatus === 'cancel'">{{
         'checkout.payment.canceled.text' | translate

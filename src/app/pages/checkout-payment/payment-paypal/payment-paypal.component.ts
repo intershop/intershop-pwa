@@ -140,6 +140,12 @@ export class PaymentPaypalComponent implements AfterViewInit {
                     this.router.navigate(['/checkout/payment'], { queryParams: { redirect: 'cancel' } });
                   });
                 },
+                // show a generic error message in case of an error
+                onError: () => {
+                  this.ngZone.run(() => {
+                    this.router.navigate(['/checkout/payment'], { queryParams: { redirect: 'failure' } });
+                  });
+                },
               })
               .render(this.paypalButtonsContainerId);
           }
