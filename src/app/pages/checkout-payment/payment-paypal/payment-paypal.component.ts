@@ -99,7 +99,12 @@ export class PaymentPaypalComponent implements AfterViewInit {
                   paypalPaymentMethod.hostedPaymentPageParameters,
                   basket,
                   locale
-                )}`
+                )}`,
+                {
+                  attributes: paypalPaymentMethod.hostedPaymentPageParameters?.filter(attr =>
+                    attr.name.startsWith('data-')
+                  ),
+                }
               )
               .pipe(map(() => ({ locale, basket, paypalPaymentMethod })));
           }
@@ -180,6 +185,7 @@ export class PaymentPaypalComponent implements AfterViewInit {
     params = `${params}&currency=${basket.purchaseCurrency}`;
     params = `${params}&locale=${locale}`;
     params = `${params}&commit=false`; // do not show the "Pay now" button, but the "Continue to PayPal" button
+    params = `${params}&enable-funding=paylater`;
     //params = `${params}&debug=false`;
 
     console.log(params);
