@@ -57,6 +57,23 @@ describe('Quote Line Item List Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
+  describe('quote list items', () => {
+    it('should render items list if items present', () => {
+      fixture.detectChanges();
+
+      expect(element.querySelectorAll('ish-quote-line-item-list-element')).toHaveLength(1);
+      expect(element.textContent).not.toContain('quote.items.no_items');
+    });
+
+    it('should render no items message if no line items present', () => {
+      when(quoteContext.select('entity', 'items')).thenReturn(of([]));
+      fixture.detectChanges();
+
+      expect(element.textContent).toContain('quote.items.no_items');
+      expect(element.querySelectorAll('ish-quote-line-item-list-element')).toHaveLength(0);
+    });
+  });
+
   describe('totals', () => {
     it('should render totals if set', () => {
       fixture.detectChanges();

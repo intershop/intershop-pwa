@@ -113,17 +113,4 @@ describe('Quote Page Component', () => {
       ]
     `);
   });
-
-  it('should show empty template when quote has no items', () => {
-    when(context.select('entity')).thenReturn(of({} as QuoteRequest));
-    when(context.select('state')).thenReturn(of('New'));
-
-    fixture.detectChanges();
-
-    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-      [
-        "ish-error-message",
-      ]
-    `);
-  });
 });

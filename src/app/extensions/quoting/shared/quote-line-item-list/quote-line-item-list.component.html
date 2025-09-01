@@ -1,35 +1,40 @@
 <div class="section">
   <h2 class="h3">{{ 'quote.items.table.heading' | translate }}</h2>
 </div>
-<div class="container">
-  <!-- Line Items Overview -->
-  <div class="row list-header d-none d-md-flex">
-    <div class="col-md-8 col-xl-6 list-header-item list-header-item-descr">
-      {{ 'shopping_cart.product_description.heading' | translate }}
+<ng-container *ngIf="lineItems$ | async as lineItems; else noItems">
+  <div *ngIf="lineItems.length; else noItems" class="container">
+    <!-- Line Items Overview -->
+    <div class="row list-header d-none d-md-flex">
+      <div class="col-md-8 col-xl-6 list-header-item list-header-item-descr">
+        {{ 'shopping_cart.product_description.heading' | translate }}
+      </div>
+      <div class="col-xl-2 d-none d-xl-flex list-header-item" [ngClass]="{ 'justify-content-end': editable$ | async }">
+        {{ 'shopping_cart.qty.heading' | translate }}
+      </div>
+      <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.price.heading' | translate }}</div>
+      <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.total.heading' | translate }}</div>
     </div>
-    <div class="col-xl-2 d-none d-xl-flex list-header-item" [ngClass]="{ 'justify-content-end': editable$ | async }">
-      {{ 'shopping_cart.qty.heading' | translate }}
+    <div class="list-body">
+      <ish-quote-line-item-list-element
+        *ngFor="let pli of lineItems; trackBy: trackByFn"
+        [lineItem]="pli"
+        ishProductContext
+        [allowZeroQuantity]="true"
+        [sku]="pli.productSKU"
+        [quantity]="pli.quantity?.value"
+      />
     </div>
-    <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.price.heading' | translate }}</div>
-    <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.total.heading' | translate }}</div>
-  </div>
-  <div class="list-body">
-    <ish-quote-line-item-list-element
-      *ngFor="let pli of lineItems$ | async; trackBy: trackByFn"
-      [lineItem]="pli"
-      ishProductContext
-      [allowZeroQuantity]="true"
-      [sku]="pli.productSKU"
-      [quantity]="pli.quantity?.value"
-    />
-  </div>
 
-  <div *ngIf="displayTotal$ | async" class="clearfix section">
-    <div class="row justify-content-end list-body">
-      <div class="col-sm-4 col-md-3 col-lg-2 text-right pr-0">{{ 'quote.items.total.label' | translate }}</div>
-      <div class="col-sm-4 col-md-2 pr-0">
-        <div class="total-price text-right">{{ total$ | async | ishPrice }}</div>
+    <div *ngIf="displayTotal$ | async" class="clearfix section">
+      <div class="row justify-content-end list-body">
+        <div class="col-sm-4 col-md-3 col-lg-2 text-right pr-0">{{ 'quote.items.total.label' | translate }}</div>
+        <div class="col-sm-4 col-md-2 pr-0">
+          <div class="total-price text-right">{{ total$ | async | ishPrice }}</div>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</ng-container>
+<ng-template #noItems>
+  <p class="section">{{ 'quote.items.no_items' | translate }}</p>
+</ng-template>
