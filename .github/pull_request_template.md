@@ -1,35 +1,39 @@
 ### 🚀 Description
 
-Please include a summary of the change and which issue is fixed. Also include relevant motivation and context.
+<!-- Short summary of the changes and/or motivation
+    - What has been changed?
+    - Why was it changed?-->
 
-Fixes: #<issue-number>
+- Related Ticket/Issue: Closes #<issue-number>
+
+---
+
+### 🔍 Detailed Changes
+
+<!-- Describe the changes in detail -->
 
 ---
 
 ### ✅ Checklist
 
-- [ ] I have run `npm run lint` and fixed any issues
-- [ ] Tests for the changes have been added (for bug fixes / features)
-- [ ] I have run `npm test` and verified tests pass
-- [ ] I followed the component/facade/service design pattern
-- [ ] I added/updated documentation or relevant guides if needed
-- [ ] My code adheres to the architecture and code standards
+- [ ] Unit Tests for the changes added/updated (for bug fixes / features)
+- [ ] Integration tests added/updated (for features)
+- [ ] Manual testing performed on a demo system with SSR (several browsers/devices, if necessary)
+- [ ] Documentation or relevant guides added/updated if needed and they have been approved by the docs team
 - [ ] Visual changes have been approved by VD / IAD (if applicable)
-- [ ] The commit message follows our [guidelines](https://github.com/intershop/intershop-pwa/blob/develop/CONTRIBUTING.md)
 
 ---
 
-### 📸 Screenshots (if applicable)
+### ⚠️ Notes
 
-_Add screenshots or GIFs to help explain your changes visually._
+<!-- Anything important that is not obvious from the code itself
+- Breaking changes?
+- Required ICM version?
+- Migrations required?
+- Feature flags / configuration changes?
+- Known limitations?  -->
 
----
-
-### Breaking Changes
-
----
-
-_If this PR contains a breaking change, please describe the impact and migration path for existing applications below._
+**Does this PR Introduce a Breaking Change?**
 
 - [ ] Yes
 - [ ] No
