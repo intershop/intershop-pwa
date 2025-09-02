@@ -1,6 +1,6 @@
 <div *ngIf="basket">
   <h1>
-    {{ 'checkout.cart_for_approval.title' | translate }}
+    <span id="page-main-content" tabindex="-1">{{ 'checkout.cart_for_approval.title' | translate }}</span>
   </h1>
   <div>
     <p *ngIf="requisition$ | async as req">
