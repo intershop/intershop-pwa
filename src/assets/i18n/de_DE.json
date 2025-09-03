@@ -1334,6 +1334,7 @@
   "quote.error.invalid_period": "Ihr Preisangebot hat einen ungültigen Zeitraum.",
   "quote.error.is_rejected": "Ihre Preisanfrage wurde abgelehnt.",
   "quote.error.not_started": "Ihr Preisangebot ist offen. Das Startdatum wurde noch nicht erreicht.",
+  "quote.items.no_items": "Ihre Preisanfrage enthält derzeit keine Artikel.",
   "quote.items.original_price.label": "Original:",
   "quote.items.suggested_price.label": "Vorgeschlagen:",
   "quote.items.table.heading": "Ihre Preisangebotsartikel",

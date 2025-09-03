@@ -1334,6 +1334,7 @@
   "quote.error.invalid_period": "Your quote has an invalid period.",
   "quote.error.is_rejected": "Your quote request has been rejected.",
   "quote.error.not_started": "Your quote is pending. The start date has not been reached yet.",
+  "quote.items.no_items": "There are currently no items in your quote request.",
   "quote.items.original_price.label": "Original:",
   "quote.items.suggested_price.label": "Suggested:",
   "quote.items.table.heading": "Your quote items",

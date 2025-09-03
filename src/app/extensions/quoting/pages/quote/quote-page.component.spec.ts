@@ -22,6 +22,22 @@ describe('Quote Page Component', () => {
   let element: HTMLElement;
   let context: QuoteContextFacade;
 
+  const quoteRequest = {
+    id: 'test-quote-123',
+    items: [
+      { id: 'item1', productSKU: 'PROD-001' },
+      { id: 'item2', productSKU: 'PROD-002' },
+    ],
+  } as QuoteRequest;
+
+  const quote = {
+    id: 'test-quote-123',
+    items: [
+      { id: 'item1', productSKU: 'PROD-001' },
+      { id: 'item2', productSKU: 'PROD-002' },
+    ],
+  } as Quote;
+
   beforeEach(async () => {
     context = mock(QuoteContextFacade);
 
@@ -54,7 +70,7 @@ describe('Quote Page Component', () => {
   });
 
   it('should display edit component for unsubmitted quote requests', () => {
-    when(context.select('entity')).thenReturn(of({} as QuoteRequest));
+    when(context.select('entity')).thenReturn(of(quoteRequest));
     when(context.select('state')).thenReturn(of('New'));
 
     fixture.detectChanges();
@@ -69,7 +85,7 @@ describe('Quote Page Component', () => {
   });
 
   it('should display view component for submitted quote requests', () => {
-    when(context.select('entity')).thenReturn(of({} as QuoteRequest));
+    when(context.select('entity')).thenReturn(of(quoteRequest));
     when(context.select('state')).thenReturn(of('Submitted'));
 
     fixture.detectChanges();
@@ -84,7 +100,7 @@ describe('Quote Page Component', () => {
   });
 
   it('should display view component for quotes', () => {
-    when(context.select('entity')).thenReturn(of({} as Quote));
+    when(context.select('entity')).thenReturn(of(quote));
     when(context.select('state')).thenReturn(of('Responded'));
 
     fixture.detectChanges();

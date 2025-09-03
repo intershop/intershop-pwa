@@ -1334,6 +1334,7 @@
   "quote.error.invalid_period": "Votre devis a une durée non valide.",
   "quote.error.is_rejected": "Votre demande de devis a été rejetée.",
   "quote.error.not_started": "Votre devis est en suspens. La date de début n’est pas encore atteinte.",
+  "quote.items.no_items": "Il n’y a actuellement aucun article dans votre demande de devis.",
   "quote.items.original_price.label": "Original :",
   "quote.items.suggested_price.label": "Proposé :",
   "quote.items.table.heading": "Les articles de votre devis",
