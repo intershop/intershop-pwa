@@ -15,7 +15,7 @@ concurrency:
 #
 # 2. Change these variables for your configuration:
 env:
-  ICM_BASE_URL: https://review.icm.intershop.de
+  ICM_BASE_URL: https://icm-konsum-review-int.icm.intershop.de
 
 jobs:
   build-and-deploy:
