@@ -47,9 +47,9 @@ declare let paypal: any;
 export class PaymentPaypalComponent implements AfterViewInit {
   @Output() selectPaypalPaymentMethod = new EventEmitter<string>(); // paymentInstrumentId
 
-  readonly paypalButtonsContainerId = '#paypal-buttons-container';
-  readonly paypalMessagesContainerId = '#paypal-messages-container';
-  readonly paypalButtonStyle = {
+  private readonly paypalButtonsContainerId = '#paypal-buttons-container';
+  private readonly paypalMessagesContainerId = '#paypal-messages-container';
+  private readonly paypalButtonStyle = {
     layout: 'horizontal',
     shape: 'sharp',
     label: 'paypal',
@@ -59,7 +59,7 @@ export class PaymentPaypalComponent implements AfterViewInit {
 
   scriptLoaded$ = new BehaviorSubject<boolean>(undefined);
 
-  basket$ = this.checkoutFacade.basket$.pipe(shareReplay(1));
+  private basket$ = this.checkoutFacade.basket$.pipe(shareReplay(1));
   paypalPaymentMethod$ = this.checkoutFacade.paypalPaymentMethod$.pipe(shareReplay(1));
   isPaypalPaymentMethodSelected$ = combineLatest({ method: this.paypalPaymentMethod$, basket: this.basket$ }).pipe(
     map(({ method, basket }) => method?.paymentInstruments[0]?.id === basket?.payment?.paymentInstrument?.id)
