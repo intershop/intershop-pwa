@@ -47,7 +47,6 @@ declare let paypal: any;
 export class PaymentPaypalComponent implements AfterViewInit {
   @Output() selectPaypalPaymentMethod = new EventEmitter<string>(); // paymentInstrumentId
 
-  //  readonly paypalClientId = 'AakT4mm7rS4EiUD5sVxzOZRYTxkMqc0D8TeYPYCFu2KmJvt0NkpCz7CX73KBzcAfhiNR0u2k62Hdh_yX';
   readonly paypalButtonsContainerId = '#paypal-buttons-container';
   readonly paypalMessagesContainerId = '#paypal-messages-container';
   readonly paypalButtonStyle = {
@@ -113,7 +112,6 @@ export class PaymentPaypalComponent implements AfterViewInit {
       )
       .subscribe({
         next: ({ basket, paypalPaymentMethod }) => {
-          console.log('script loaded');
           if (paypal?.Buttons) {
             this.scriptLoaded$.next(true);
 
@@ -125,11 +123,13 @@ export class PaymentPaypalComponent implements AfterViewInit {
                   this.selectPaypalPaymentMethod.emit(
                     paypalPaymentMethod.paymentInstruments[0]?.id || paypalPaymentMethod.serviceId
                   );
+                  // eslint-disable-next-line no-console
                   console.log('createOrder', data);
                   return firstValueFrom(this.getPaypalOrderId$().pipe(take(1)));
                 },
                 // after the user has submitted the payment in the paypal overlay
                 onApprove: (data: { payerID: string; orderID: string }) => {
+                  // eslint-disable-next-line no-console
                   console.log('onApprove', data);
                   // ngZone is needed to navigate outside of the Angular zone in a callback function
                   this.ngZone.run(() => {
@@ -183,12 +183,11 @@ export class PaymentPaypalComponent implements AfterViewInit {
       .join('&');
     params = `${params}&components=buttons,messages`;
     params = `${params}&currency=${basket.purchaseCurrency}`;
-    params = `${params}&locale=${locale}`;
+    params = `${params}&locale=${locale}`; // ToDo: decide if paypal should determine locale from browser settings
     params = `${params}&commit=false`; // do not show the "Pay now" button, but the "Continue to PayPal" button
     params = `${params}&enable-funding=paylater`;
-    //params = `${params}&debug=false`;
+    // debug parameter available for sandbox only;
 
-    console.log(params);
     return params;
   }
 
