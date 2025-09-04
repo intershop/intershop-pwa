@@ -37,15 +37,16 @@ if (/on|1|true|yes/.test(process.env.ALLOW_H2?.toLowerCase())) {
   // get the agent internal options
   const symbols = Object.getOwnPropertySymbols(agent);
   const [kOption] = symbols.filter(predicate => predicate.toString().includes('options'));
-  const agentOptions = agent[kOption];
-  // enable h2
   if (!kOption) {
-    console.warn('Could not find undici agent options symbol. HTTP/2 may not be enabled. The undici internal structure may have changed.');
+    console.warn(
+      'Could not find undici agent options symbol. HTTP/2 may not be enabled. The undici internal structure may have changed.'
+    );
   } else {
     const agentOptions = agent[kOption];
     if (agentOptions && typeof agentOptions === 'object') {
       // enable h2
       agentOptions.allowH2 = true;
+      console.log('Enabled HTTP/2 for undici global agent. undici version: %s', process.versions.undici);
     } else {
       console.warn('Could not access undici agent options. HTTP/2 may not be enabled.');
     }
