@@ -39,7 +39,17 @@ if (/on|1|true|yes/.test(process.env.ALLOW_H2?.toLowerCase())) {
   const [kOption] = symbols.filter(predicate => predicate.toString().includes('options'));
   const agentOptions = agent[kOption];
   // enable h2
-  agentOptions.allowH2 = true;
+  if (!kOption) {
+    console.warn('Could not find undici agent options symbol. HTTP/2 may not be enabled. The undici internal structure may have changed.');
+  } else {
+    const agentOptions = agent[kOption];
+    if (agentOptions && typeof agentOptions === 'object') {
+      // enable h2
+      agentOptions.allowH2 = true;
+    } else {
+      console.warn('Could not access undici agent options. HTTP/2 may not be enabled.');
+    }
+  }
 }
 
 const collectDefaultMetrics = client.collectDefaultMetrics;
