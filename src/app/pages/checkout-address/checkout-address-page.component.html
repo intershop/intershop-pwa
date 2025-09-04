@@ -6,7 +6,9 @@
         else anonymousCheckoutStart
       "
     >
-      <h1>{{ 'checkout.addresses.heading' | translate }}</h1>
+      <h1>
+        <span id="page-main-content" tabindex="-1">{{ 'checkout.addresses.heading' | translate }}</span>
+      </h1>
       <ish-checkout-address
         [basket]="basket"
         [error]="(basketError$ | async) || (addressesError$ | async)"
@@ -14,7 +16,9 @@
       />
     </ng-container>
     <ng-template #anonymousCheckoutStart>
-      <h1>{{ 'checkout.addresses.heading.anonymous' | translate }}</h1>
+      <h1>
+        <span id="page-main-content" tabindex="-1">{{ 'checkout.addresses.heading.anonymous' | translate }}</span>
+      </h1>
       <!-- empty h1 to provide space -->
       <ish-checkout-address-anonymous
         [basket]="basket"
