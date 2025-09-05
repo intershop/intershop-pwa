@@ -96,7 +96,10 @@ describe('Auth0 Identity Provider', () => {
       auth0IdentityProvider.init(auth0Config);
       tick(500);
       verify(apiService.post(anything(), anything())).once();
-      expect(capture(storeSpy$.dispatch).first()).toMatchInlineSnapshot(`[User] Load User by API Token`);
+      expect(capture(storeSpy$.dispatch).first()).toMatchInlineSnapshot(`
+        [User] Load User by API Token:
+          
+      `);
       verify(apiTokenService.removeApiToken()).never();
     }));
 
