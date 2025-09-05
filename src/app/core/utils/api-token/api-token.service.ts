@@ -178,7 +178,7 @@ export class ApiTokenService {
                   timer(5000).pipe(map(() => false))
                 );
               } else {
-                this.store.dispatch(loadUserByAPIToken());
+                this.store.dispatch(loadUserByAPIToken({ apiToken: cookie.apiToken }));
                 // wait until user is logged in
                 return race(
                   this.store.pipe(select(getUserAuthorized), whenTruthy(), take(1)),

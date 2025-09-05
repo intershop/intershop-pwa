@@ -688,14 +688,14 @@ describe('User Effects', () => {
 
   describe('loadUserByAPIToken$', () => {
     it('should call the user service on LoadUserByAPIToken action and set pgid on success', done => {
-      when(userServiceMock.signInUserByToken()).thenReturn(
+      when(userServiceMock.signInUserByToken(anything())).thenReturn(
         of({ user: { email: 'test@intershop.de' } } as CustomerUserType)
       );
 
-      actions$ = of(loadUserByAPIToken());
+      actions$ = of(loadUserByAPIToken({ apiToken: 'dummy' }));
 
       effects.loadUserByAPIToken$.subscribe(action => {
-        verify(userServiceMock.signInUserByToken()).once();
+        verify(userServiceMock.signInUserByToken(anything())).once();
         expect(action).toMatchInlineSnapshot(`
           [User API] Login User Success:
             user: {"email":"test@intershop.de"}
@@ -705,9 +705,9 @@ describe('User Effects', () => {
     });
 
     it('should call the user service on LoadUserByAPIToken action and do nothing when failing', () => {
-      when(userServiceMock.signInUserByToken()).thenReturn(EMPTY);
+      when(userServiceMock.signInUserByToken(anything())).thenReturn(EMPTY);
 
-      actions$ = hot('a-a-a-', { a: loadUserByAPIToken() });
+      actions$ = hot('a-a-a-', { a: loadUserByAPIToken({ apiToken: 'dummy' }) });
 
       expect(effects.loadUserByAPIToken$).toBeObservable(cold('------'));
     });

@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, concatMap, map } from 'rxjs/operators';
+import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 
 import { AddressData } from 'ish-core/models/address/address.interface';
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
@@ -23,6 +23,7 @@ import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-m
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { OrderService } from 'ish-core/services/order/order.service';
+import { TokenService } from 'ish-core/services/token/token.service';
 
 export type BasketUpdateType =
   | { commonShippingMethod: string }
@@ -41,7 +42,7 @@ export type BasketUpdateType =
  */
 @Injectable({ providedIn: 'root' })
 export class BasketService {
-  constructor(private apiService: ApiService, private orderService: OrderService) {}
+  constructor(private apiService: ApiService, private orderService: OrderService, private tokenService: TokenService) {}
 
   /**
    * http header for Basket API v1
@@ -135,12 +136,16 @@ export class BasketService {
   getBasketByToken(apiToken: string): Observable<Basket> {
     const params = new HttpParams().set('include', this.allBasketIncludes.join());
 
-    return this.apiService
-      .get<BasketData>(`baskets/current`, {
-        headers: this.basketHeaders.set(ApiService.TOKEN_HEADER_KEY, apiToken),
-        params,
-      })
-      .pipe(map(BasketMapper.fromData));
+    return this.tokenService.fetchToken('refresh_token', { refresh_token: apiToken }).pipe(
+      switchMap(() =>
+        this.apiService
+          .get<BasketData>(`baskets/current`, {
+            headers: this.basketHeaders.set(ApiService.TOKEN_HEADER_KEY, apiToken),
+            params,
+          })
+          .pipe(map(BasketMapper.fromData))
+      )
+    );
   }
 
   /**
