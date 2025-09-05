@@ -7,6 +7,7 @@ import { combineLatest } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
@@ -45,6 +46,7 @@ export class CopilotComponent {
     private router: Router,
     private appFacade: AppFacade,
     private shoppingFacade: ShoppingFacade,
+    private checkoutFacade: CheckoutFacade,
     private compareFacade: CompareFacade
   ) {
     // afterNextRender = only rendered in browser
@@ -191,8 +193,8 @@ export class CopilotComponent {
 
             // Check if the last message is an 'apiMessage' and ensure at least one usedTool exists
             if (lastMessage.type === 'apiMessage' && lastMessage.usedTools?.length > 0) {
-              // Extract the last tool from the usedTools array to handle the according action
-              this.handleToolCall(lastMessage.usedTools[lastMessage.usedTools.length - 1]);
+              // Iterate over all used tools to handle multiple tool calls in one message
+              lastMessage.usedTools.forEach(toolCall => this.handleToolCall(toolCall));
             }
           }
 
@@ -209,36 +211,113 @@ export class CopilotComponent {
    * @param toolCall The chatbot tool call information
    */
   private handleToolCall(toolCall: ChatbotToolCall) {
-    switch (toolCall?.tool) {
-      case 'product_search':
-        if (toolCall.toolInput?.Query) {
-          this.navigate(`/search/${toolCall.toolInput?.Query}`);
-        } else if (toolCall.toolInput?.filter) {
-          this.navigate(`/search/*?filters=${toolCall.toolInput?.filter}`);
-        }
-        break;
-      case 'product_detail_page':
-        this.navigate(`/product/${toolCall.toolInput?.SKU}`);
-        break;
-      case 'get_product_variations':
-        this.navigate(`/product/${toolCall.toolInput?.SKU}`);
-        break;
-      case 'open_basket':
-        this.navigate('/basket');
-        break;
-      case 'add_product_to_basket':
-        this.shoppingFacade.addProductsToBasket(
-          toolCall.toolInput?.Products?.split(';').map(sku => ({ sku, quantity: 1 }))
-        );
-        break;
-      case 'compare_products':
-        // Note: this will only work if the 'compare' feature is enabled in the PWA
-        this.compareFacade.compareProducts(toolCall.toolInput?.SKUs?.split(';'));
-        this.navigate(`/compare`);
-        break;
-      default:
-        break;
-    }
+    /**
+     *
+     * deprecated old tool types - to be removed in future major release
+     */
+    const oldToolTypeCall = (toolCall: ChatbotToolCall) => {
+      switch (toolCall?.tool) {
+        case 'product_search':
+          if (toolCall.toolInput?.Query) {
+            this.navigate(`/search/${toolCall.toolInput?.Query}`);
+          } else if (toolCall.toolInput?.filter) {
+            this.navigate(`/search/*?filters=${toolCall.toolInput?.filter}`);
+          }
+          break;
+        case 'product_detail_page':
+          this.navigate(`/product/${toolCall.toolInput?.SKU}`);
+          break;
+        case 'get_product_variations':
+          this.navigate(`/product/${toolCall.toolInput?.SKU}`);
+          break;
+        case 'open_basket':
+          this.navigate('/basket');
+          break;
+        case 'add_product_to_basket':
+          this.shoppingFacade.addProductsToBasket(
+            toolCall.toolInput?.Products?.split(';').map(sku => ({ sku, quantity: 1 }))
+          );
+          break;
+        case 'compare_products':
+          // Note: this will only work if the 'compare' feature is enabled in the PWA
+          this.compareFacade.compareProducts(toolCall.toolInput?.SKUs?.split(';'));
+          this.navigate(`/compare`);
+          break;
+        default:
+          break;
+      }
+    };
+
+    const newToolTypeCall = (toolCall: ChatbotToolCall) => {
+      switch (toolCall?.tool) {
+        case 'PWA_basket':
+          const operation = toolCall.toolInput?.operation;
+          const skusAndQty = (toolCall.toolInput?.items?.split(';') ?? [])?.map(item => {
+            const [sku, param] = item.split(':');
+            const qty = param?.toLowerCase() === 'all' ? 1 : Number(param) || 1;
+            const isAllQty = param?.toLowerCase() === 'all';
+            return { sku, qty, isAllQty };
+          });
+
+          if (operation === 'add') {
+            this.shoppingFacade.addProductsToBasket(
+              skusAndQty?.map(skuAndQty => ({ sku: skuAndQty?.sku, quantity: skuAndQty?.qty ?? 1 }))
+            );
+          }
+
+          if (operation === 'update') {
+            this.checkoutFacade.basket$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(basket => {
+              skusAndQty?.forEach(({ sku, qty }) => {
+                basket?.lineItems
+                  ?.filter(li => li?.productSKU === sku)
+                  ?.forEach(item => {
+                    this.checkoutFacade.updateBasketItem({
+                      itemId: item.id,
+                      quantity: qty ?? 1,
+                    });
+                  });
+              });
+            });
+          }
+
+          if (operation === 'remove') {
+            this.checkoutFacade.basket$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(basket => {
+              skusAndQty?.forEach(({ sku, qty, isAllQty }) => {
+                basket?.lineItems
+                  ?.filter(li => li?.productSKU === sku)
+                  ?.forEach(item => {
+                    if (isAllQty) {
+                      this.checkoutFacade.deleteBasketItem(item.id);
+                    } else {
+                      const newQty = item?.quantity?.value - (qty ?? 1);
+                      if (newQty >= 0) {
+                        this.checkoutFacade.updateBasketItem({
+                          itemId: item.id,
+                          quantity: newQty,
+                        });
+                      }
+                    }
+                  });
+              });
+            });
+          }
+
+          if (operation === 'clear') {
+            this.checkoutFacade.deleteBasketItems();
+          }
+
+          if (operation === 'view') {
+            this.navigate('/basket');
+          }
+          break;
+        default:
+          break;
+      }
+    };
+
+    // Execute both tool type handlers to ensure compatibility with old and new chatflows
+    oldToolTypeCall(toolCall);
+    newToolTypeCall(toolCall);
   }
 
   /**
