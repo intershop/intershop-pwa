@@ -90,6 +90,7 @@ import { MiniBasketContentComponent } from './components/basket/mini-basket-cont
 import { BasketCustomFieldsViewComponent } from './components/checkout/basket-custom-fields-view/basket-custom-fields-view.component';
 import { BasketInvoiceAddressWidgetComponent } from './components/checkout/basket-invoice-address-widget/basket-invoice-address-widget.component';
 import { BasketShippingAddressWidgetComponent } from './components/checkout/basket-shipping-address-widget/basket-shipping-address-widget.component';
+import { PaymentPaypalComponent } from './components/checkout/payment-paypal/payment-paypal.component';
 import { AccordionItemComponent } from './components/common/accordion-item/accordion-item.component';
 import { AccordionComponent } from './components/common/accordion/accordion.component';
 import { BreadcrumbComponent } from './components/common/breadcrumb/breadcrumb.component';
@@ -244,6 +245,7 @@ const declaredComponents = [
   LineItemListElementComponent,
   LineItemWarrantyComponent,
   LoginModalComponent,
+  PaymentPaypalComponent,
   ProductChooseVariationComponent,
   ProductIdComponent,
   ProductItemVariationsComponent,
@@ -304,6 +306,7 @@ const exportedComponents = [
   OrderListComponent,
   OrderRecurrenceComponent,
   OrderWidgetComponent,
+  PaymentPaypalComponent,
   PagingComponent,
   ProductAddToBasketComponent,
   ProductAttachmentsComponent,

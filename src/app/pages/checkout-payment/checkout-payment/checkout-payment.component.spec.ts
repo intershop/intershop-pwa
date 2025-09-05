@@ -20,13 +20,13 @@ import { BasketPaymentCostInfoComponent } from 'ish-shared/components/basket/bas
 import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketRecurrenceSummaryComponent } from 'ish-shared/components/basket/basket-recurrence-summary/basket-recurrence-summary.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
+import { PaymentPaypalComponent } from 'ish-shared/components/checkout/payment-paypal/payment-paypal.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoMessageComponent } from 'ish-shared/components/common/info-message/info-message.component';
 
 import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
 import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
 import { PaymentParameterFormComponent } from '../payment-parameter-form/payment-parameter-form.component';
-import { PaymentPaypalComponent } from '../payment-paypal/payment-paypal.component';
 
 import { CheckoutPaymentComponent } from './checkout-payment.component';
 

@@ -14,7 +14,7 @@
   <ng-container *ngIf="paymentMethods$ | async as paymentMethods">
     <ng-container *ngIf="paymentMethods.length">
       <li class="d-block text-center pt-2">{{ 'shopping_cart.payment.or.text' | translate }}</li>
-      <li *ngFor="let paymentMethod of paymentMethods" class="d-block">
+      <li *ngFor="let paymentMethod of filteredPaymentMethods$ | async" class="d-block">
         <div class="d-grid">
           <button
             type="button"
@@ -30,7 +30,10 @@
           [basket]="basket"
           [paymentMethod]="paymentMethod"
           [priceType]="priceType$ | async"
-        />
-      </li> </ng-container
+        /></li></ng-container
   ></ng-container>
+
+  <li>
+    <ish-payment-paypal [expressCheckout]="true" (selectPaypalPaymentMethod)="setBasketPayment($event)" />
+  </li>
 </ul>

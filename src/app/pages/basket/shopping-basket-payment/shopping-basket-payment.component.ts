@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, map, shareReplay } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -17,6 +17,7 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: BasketView;
 
   paymentMethods$: Observable<PaymentMethod[]>;
+  filteredPaymentMethods$: Observable<PaymentMethod[]>;
   priceType$: Observable<PriceType>;
   redirectStatus: string;
 
@@ -28,8 +29,11 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.priceType$ = this.checkoutFacade.priceType$;
-
-    this.paymentMethods$ = this.checkoutFacade.eligibleFastCheckoutPaymentMethods$;
+    this.paymentMethods$ = this.checkoutFacade.eligibleFastCheckoutPaymentMethods$.pipe(shareReplay(1));
+    this.checkoutFacade.loadEligiblePaymentMethods();
+    this.filteredPaymentMethods$ = this.paymentMethods$.pipe(
+      map(methods => methods.filter(method => !method.capabilities?.includes('PaypalCheckout')))
+    );
     // if page is shown after cancelled/faulty redirect determine error message variable
     this.redirectStatus = this.route.snapshot.queryParamMap.get('redirect');
   }
@@ -50,5 +54,9 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
 
   isApplicable(): boolean {
     return this.featureToggleService.enabled('guestCheckout') || !!this.basket.user;
+  }
+
+  setBasketPayment(paymentInstrumentId: string) {
+    this.checkoutFacade.setBasketPayment(paymentInstrumentId);
   }
 }
