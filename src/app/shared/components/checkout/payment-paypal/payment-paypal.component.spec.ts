@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { anything, instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -20,7 +20,7 @@ describe('Payment Paypal Component', () => {
 
     const checkoutFacade = mock(CheckoutFacade);
     when(checkoutFacade.basket$).thenReturn(of(BasketMockData.getBasket()));
-    when(checkoutFacade.paypalPaymentMethod$).thenReturn(of(undefined));
+    when(checkoutFacade.paypalPaymentMethod$(anything())).thenReturn(of(undefined));
 
     await TestBed.configureTestingModule({
       declarations: [PaymentPaypalComponent],

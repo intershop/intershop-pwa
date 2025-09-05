@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
 import { formatISO } from 'date-fns';
-import { Subject, combineLatest, iif, merge } from 'rxjs';
+import { Observable, Subject, combineLatest, iif, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, sample, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
@@ -9,6 +9,7 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PriceType } from 'ish-core/models/price/price.model';
 import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
 import { selectQueryParam, selectRouteData } from 'ish-core/store/core/router';
@@ -298,10 +299,16 @@ export class CheckoutFacade {
     this.store.dispatch(loadBasketEligiblePaymentMethods());
   }
 
-  paypalPaymentMethod$ = this.store.pipe(select(getBasketEligiblePaymentMethods)).pipe(
-    whenTruthy(),
-    map(methods => methods?.find(method => method.capabilities?.includes('PaypalCheckout')))
-  );
+  paypalPaymentMethod$(contextCapability: string): Observable<PaymentMethod> {
+    return this.store.pipe(select(getBasketEligiblePaymentMethods)).pipe(
+      whenTruthy(),
+      map(methods =>
+        methods?.find(
+          method => method.capabilities?.includes('PaypalCheckout') && method.capabilities?.includes(contextCapability)
+        )
+      )
+    );
+  }
 
   setBasketPayment(paymentName: string) {
     this.store.dispatch(setBasketPayment({ id: paymentName }));
