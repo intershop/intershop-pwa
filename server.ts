@@ -20,37 +20,14 @@ import * as client from 'prom-client';
 import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level';
 import { METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
 import { icmCallsCache } from './src/app/core/interceptors/universal-cache.interceptor';
+import { Agent, install, setGlobalDispatcher } from 'undici';
 
 // allowing HTTP/2 uses HTTPClient withFetch() and undici agent allowH2 option
 if (/on|1|true|yes/.test(process.env.ALLOW_H2?.toLowerCase())) {
-  // undici global symbol are lazy loaded, so we need to trigger it first
-  try {
-    fetch('data:;base64,');
-  } catch (e) {
-    // continue regardless of error
-  }
-  // Get the global agent
-  const undiciGlobalDispatcherSymbol = Symbol.for('undici.globalDispatcher.1');
-  // This way of setting default agent options seems to be considered as public API: https://github.com/nodejs/undici/discussions/2167#discussioncomment-9292354
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const agent = (globalThis as any)[undiciGlobalDispatcherSymbol];
-  // get the agent internal options
-  const symbols = Object.getOwnPropertySymbols(agent);
-  const [kOption] = symbols.filter(predicate => predicate.toString().includes('options'));
-  if (!kOption) {
-    console.warn(
-      'Could not find undici agent options symbol. HTTP/2 may not be enabled. The undici internal structure may have changed.'
-    );
-  } else {
-    const agentOptions = agent[kOption];
-    if (agentOptions && typeof agentOptions === 'object') {
-      // enable h2
-      agentOptions.allowH2 = true;
-      console.log('Enabled HTTP/2 for undici global agent. undici version: %s', process.versions.undici);
-    } else {
-      console.warn('Could not access undici agent options. HTTP/2 may not be enabled.');
-    }
-  }
+  install();
+  const h2Agent = new Agent({ allowH2: true });
+  setGlobalDispatcher(h2Agent);
+  console.log('installed undici globally, enabled HTTP/2 support for backend requests');
 }
 
 const collectDefaultMetrics = client.collectDefaultMetrics;

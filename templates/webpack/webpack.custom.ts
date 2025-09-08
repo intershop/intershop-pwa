@@ -116,6 +116,32 @@ function determineConfiguration(angularJsonConfig: CustomWebpackBrowserSchema, t
 export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSchema, targetOptions: TargetOptions) => {
   const { theme, production, availableThemes } = determineConfiguration(angularJsonConfig, targetOptions);
 
+  config.target = 'node';
+  // apply babel-loader to undici node module
+  const path = require('path');
+  let undiciDir;
+  try {
+    undiciDir = path.dirname(require.resolve('undici/package.json'));
+  } catch (e) {
+    logger.warn('Could not resolve undici package for babel-loader include:', e);
+    undiciDir = undefined;
+  }
+  if (undiciDir) {
+    config.module = config.module || {};
+    config.module.rules = config.module.rules || [];
+    config.module.rules.unshift({
+      test: /\.(js|ts)$/,
+      include: undiciDir,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+        },
+      },
+    });
+    logger.log('Added babel-loader for undici module:', undiciDir);
+  }
+
   const angularCompilerPlugin = config.plugins.find(
     (pl: AngularPlugin) => pl.options?.directTemplateLoading !== undefined
   ) as AngularPlugin;
