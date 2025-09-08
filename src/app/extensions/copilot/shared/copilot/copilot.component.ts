@@ -6,6 +6,7 @@ import { merge } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -47,7 +48,8 @@ export class CopilotComponent {
     private appFacade: AppFacade,
     private shoppingFacade: ShoppingFacade,
     private checkoutFacade: CheckoutFacade,
-    private compareFacade: CompareFacade
+    private compareFacade: CompareFacade,
+    private accountFacade: AccountFacade
   ) {
     // afterNextRender = only rendered in browser
     afterNextRender(() => {
@@ -211,113 +213,9 @@ export class CopilotComponent {
    * @param toolCall The chatbot tool call information
    */
   private handleToolCall(toolCall: ChatbotToolCall) {
-    /**
-     *
-     * deprecated old tool types - to be removed in future major release
-     */
-    const oldToolTypeCall = (toolCall: ChatbotToolCall) => {
-      switch (toolCall?.tool) {
-        case 'product_search':
-          if (toolCall.toolInput?.Query) {
-            this.navigate(`/search/${toolCall.toolInput?.Query}`);
-          } else if (toolCall.toolInput?.filter) {
-            this.navigate(`/search/*?filters=${toolCall.toolInput?.filter}`);
-          }
-          break;
-        case 'product_detail_page':
-          this.navigate(`/product/${toolCall.toolInput?.SKU}`);
-          break;
-        case 'get_product_variations':
-          this.navigate(`/product/${toolCall.toolInput?.SKU}`);
-          break;
-        case 'open_basket':
-          this.navigate('/basket');
-          break;
-        case 'add_product_to_basket':
-          this.shoppingFacade.addProductsToBasket(
-            toolCall.toolInput?.Products?.split(';').map(sku => ({ sku, quantity: 1 }))
-          );
-          break;
-        case 'compare_products':
-          // Note: this will only work if the 'compare' feature is enabled in the PWA
-          this.compareFacade.compareProducts(toolCall.toolInput?.SKUs?.split(';'));
-          this.navigate(`/compare`);
-          break;
-        default:
-          break;
-      }
-    };
-
-    const newToolTypeCall = (toolCall: ChatbotToolCall) => {
-      switch (toolCall?.tool) {
-        case 'PWA_basket':
-          const operation = toolCall.toolInput?.operation;
-          const skusAndQty = (toolCall.toolInput?.items?.split(';') ?? [])?.map(item => {
-            const [sku, param] = item.split(':');
-            const qty = param?.toLowerCase() === 'all' ? 1 : Number(param) || 1;
-            const isAllQty = param?.toLowerCase() === 'all';
-            return { sku, qty, isAllQty };
-          });
-
-          if (operation === 'add') {
-            this.shoppingFacade.addProductsToBasket(
-              skusAndQty?.map(skuAndQty => ({ sku: skuAndQty?.sku, quantity: skuAndQty?.qty ?? 1 }))
-            );
-          }
-
-          if (operation === 'update') {
-            this.checkoutFacade.basket$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(basket => {
-              skusAndQty?.forEach(({ sku, qty }) => {
-                basket?.lineItems
-                  ?.filter(li => li?.productSKU === sku)
-                  ?.forEach(item => {
-                    this.checkoutFacade.updateBasketItem({
-                      itemId: item.id,
-                      quantity: qty ?? 1,
-                    });
-                  });
-              });
-            });
-          }
-
-          if (operation === 'remove') {
-            this.checkoutFacade.basket$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(basket => {
-              skusAndQty?.forEach(({ sku, qty, isAllQty }) => {
-                basket?.lineItems
-                  ?.filter(li => li?.productSKU === sku)
-                  ?.forEach(item => {
-                    if (isAllQty) {
-                      this.checkoutFacade.deleteBasketItem(item.id);
-                    } else {
-                      const newQty = item?.quantity?.value - (qty ?? 1);
-                      if (newQty >= 0) {
-                        this.checkoutFacade.updateBasketItem({
-                          itemId: item.id,
-                          quantity: newQty,
-                        });
-                      }
-                    }
-                  });
-              });
-            });
-          }
-
-          if (operation === 'clear') {
-            this.checkoutFacade.deleteBasketItems();
-          }
-
-          if (operation === 'view') {
-            this.navigate('/basket');
-          }
-          break;
-        default:
-          break;
-      }
-    };
-
     // Execute both tool type handlers to ensure compatibility with old and new chatflows
-    oldToolTypeCall(toolCall);
-    newToolTypeCall(toolCall);
+    this.oldToolTypeCall(toolCall);
+    this.newToolTypeCall(toolCall);
   }
 
   /**
@@ -338,5 +236,136 @@ export class CopilotComponent {
       getComputedStyle(document.documentElement).getPropertyValue('--corporate-primary') ||
       getComputedStyle(document.documentElement).getPropertyValue('--primary')
     );
+  }
+
+  /**
+   * soon to be deprecated  - to be removed in future major release
+   * Handle the selected tool call from the chatbot and trigger the corresponding action in the PWA for the old flowise blue print.
+   * @param toolCall The chatbot tool call information for new tool types
+   */
+
+  private oldToolTypeCall(toolCall: ChatbotToolCall) {
+    switch (toolCall?.tool) {
+      case 'product_search':
+        if (toolCall.toolInput?.Query) {
+          this.navigate(`/search/${toolCall.toolInput?.Query}`);
+        } else if (toolCall.toolInput?.filter) {
+          this.navigate(`/search/*?filters=${toolCall.toolInput?.filter}`);
+        }
+        break;
+      case 'product_detail_page':
+        this.navigate(`/product/${toolCall.toolInput?.SKU}`);
+        break;
+      case 'get_product_variations':
+        this.navigate(`/product/${toolCall.toolInput?.SKU}`);
+        break;
+      case 'open_basket':
+        this.navigate('/basket');
+        break;
+      case 'add_product_to_basket':
+        this.shoppingFacade.addProductsToBasket(
+          toolCall.toolInput?.Products?.split(';').map(sku => ({ sku, quantity: 1 }))
+        );
+        break;
+      case 'compare_products':
+        // Note: this will only work if the 'compare' feature is enabled in the PWA
+        this.compareFacade.compareProducts(toolCall.toolInput?.SKUs?.split(';'));
+        this.navigate(`/compare`);
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
+   * To completely replace the old tool in future major release
+   * Handle the selected tool call from the chatbot and trigger the corresponding action in the PWA for the new flowise blue print.
+   * @param toolCall The chatbot tool call information for new tool types
+   */
+  private newToolTypeCall(toolCall: ChatbotToolCall) {
+    switch (toolCall?.tool) {
+      case 'PWA_basket':
+        this.handlePWABasketToolCall(toolCall.toolInput);
+        break;
+
+      case 'PWA_compare_products':
+        // Note: this will only work if the 'compare' feature is enabled in the PWA
+        this.compareFacade.compareProducts(toolCall.toolInput?.SKUs?.split(';'));
+        this.navigate(`/compare`);
+        break;
+
+      case 'PWA_navigate_to_page':
+        this.handlePWANavigateToPageToolCall(toolCall.toolInput);
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
+   * Handle the PWA_basket tool call from the chatbot and trigger the corresponding basket action in the PWA.
+   * @param toolInput The chatbot tool call input information for PWA_basket
+   */
+  private handlePWABasketToolCall(toolInput: { [key: string]: string }) {
+    const { operation, items } = toolInput || {};
+    const skusAndQty = (items?.split(';') ?? []).map(item => {
+      const [sku, param] = item.split(':');
+      const isAllQty = param?.toLowerCase() === 'all';
+      return { sku, qty: isAllQty ? 1 : Number(param) || 1, isAllQty };
+    });
+
+    switch (operation) {
+      case 'add':
+        this.shoppingFacade.addProductsToBasket(skusAndQty.map(({ sku, qty }) => ({ sku, quantity: qty })));
+        break;
+      case 'update':
+      case 'remove':
+        this.checkoutFacade.basket$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(basket => {
+          skusAndQty.forEach(({ sku, qty, isAllQty }) => {
+            basket?.lineItems
+              ?.filter(li => li?.productSKU === sku)
+              ?.forEach(item => {
+                if (operation === 'update') {
+                  this.checkoutFacade.updateBasketItem({ itemId: item.id, quantity: qty });
+                } else if (isAllQty) {
+                  this.checkoutFacade.deleteBasketItem(item.id);
+                } else {
+                  const newQty = item?.quantity?.value - qty;
+                  if (newQty >= 0) {
+                    this.checkoutFacade.updateBasketItem({ itemId: item.id, quantity: newQty });
+                  }
+                }
+              });
+          });
+        });
+        break;
+      case 'clear':
+        this.checkoutFacade.deleteBasketItems();
+        break;
+    }
+  }
+
+  /**
+   * Handle the PWA_navigate_to_page tool call from the chatbot and trigger the corresponding navigation route in the PWA.
+   * @param toolInput The chatbot tool call input information  for PWA_navigate_to_page
+   */
+  private handlePWANavigateToPageToolCall(toolInput: { [key: string]: string }) {
+    const { page, identifier, categoryId, orderId } = toolInput || {};
+    const navigationMap: { [key: string]: () => void } = {
+      home: () => this.navigate('/'),
+      basket: () => this.navigate('/basket'),
+      product: () => this.navigate(`/product/${identifier}`),
+      category: () => this.navigate(`${categoryId}`),
+      order: () => this.navigate(`/account/order/${orderId}`),
+      orderHistory: () => this.navigate('/account/orders'),
+      myAccount: () => this.navigate('/account'),
+      contact: () => this.navigate('/contact'),
+      imprint: () => this.navigate('/page/page.legalnotice'),
+      login: () => this.navigate('/login'),
+      logout: () => this.accountFacade.logoutUser(),
+    };
+    if (navigationMap[page]) {
+      navigationMap[page]();
+    }
   }
 }
