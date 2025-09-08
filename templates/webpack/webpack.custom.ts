@@ -116,7 +116,6 @@ function determineConfiguration(angularJsonConfig: CustomWebpackBrowserSchema, t
 export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSchema, targetOptions: TargetOptions) => {
   const { theme, production, availableThemes } = determineConfiguration(angularJsonConfig, targetOptions);
 
-  config.target = 'node';
   // apply babel-loader to undici node module
   const path = require('path');
   let undiciDir;
@@ -130,7 +129,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     config.module = config.module || {};
     config.module.rules = config.module.rules || [];
     config.module.rules.unshift({
-      test: /\.(js|ts)$/,
+      test: /\.js$/,
       include: undiciDir,
       use: {
         loader: 'babel-loader',
