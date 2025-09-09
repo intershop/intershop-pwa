@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { merge } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
+import { OrderTemplatesFacade } from 'src/app/extensions/order-templates/facades/order-templates.facade';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -49,7 +50,8 @@ export class CopilotComponent {
     private shoppingFacade: ShoppingFacade,
     private checkoutFacade: CheckoutFacade,
     private compareFacade: CompareFacade,
-    private accountFacade: AccountFacade
+    private accountFacade: AccountFacade,
+    private orderTemplatesFacade: OrderTemplatesFacade
   ) {
     // afterNextRender = only rendered in browser
     afterNextRender(() => {
@@ -297,6 +299,10 @@ export class CopilotComponent {
       case 'PWA_navigate_to_page':
         this.handlePWANavigateToPageToolCall(toolCall.toolInput);
         break;
+
+      case 'PWA_order_template_actions':
+        this.handlePWAOrderTemplateToolCall(toolCall.toolInput);
+        break;
       default:
         break;
     }
@@ -366,6 +372,36 @@ export class CopilotComponent {
     };
     if (navigationMap[page]) {
       navigationMap[page]();
+    }
+  }
+
+  private handlePWAOrderTemplateToolCall(toolInput: { [key: string]: string }) {
+    const { operation, sku, orderTemplateId, title, quantity } = toolInput || {};
+    console.warn('operation', operation);
+    console.warn('sku', sku);
+    console.warn('wishlistId', orderTemplateId);
+    console.warn('title', title);
+    console.warn('quantity', quantity);
+
+    switch (operation) {
+      case 'create':
+        this.orderTemplatesFacade.addOrderTemplate({ title });
+        break;
+      case 'add':
+        if (sku && orderTemplateId) {
+          this.orderTemplatesFacade.addProductToOrderTemplate(orderTemplateId, sku, quantity ? Number(quantity) : 1);
+        }
+        break;
+      // case 'remove':
+      //   if (sku && orderTemplateId) {
+      //     this.shoppingFacade.removeProductFromWishlist(sku, wishlistId);
+      //   }
+      //   break;
+      // case 'delete':
+      //   if (wishlistId) {
+      //     this.shoppingFacade.deleteWishlist(wishlistId);
+      //   }
+      //   break;
     }
   }
 }

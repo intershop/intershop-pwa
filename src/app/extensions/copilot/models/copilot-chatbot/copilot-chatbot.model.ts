@@ -11,7 +11,11 @@ export interface ChatbotToolCall {
   toolOutput?: string;
 }
 
-export type ChatbotToolTypeNew = 'PWA_basket' | 'PWA_compare_products' | 'PWA_navigate_to_page';
+export type ChatbotToolTypeNew =
+  | 'PWA_basket'
+  | 'PWA_compare_products'
+  | 'PWA_navigate_to_page'
+  | 'PWA_order_template_actions';
 
 export type ChatbotToolTypeOld =
   | 'product_search'
