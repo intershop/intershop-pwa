@@ -13,6 +13,7 @@ import { User } from 'ish-core/models/user/user.model';
 import { HtmlEncodePipe } from 'ish-core/pipes/html-encode.pipe';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { OrderWidgetComponent } from 'ish-shared/components/order/order-widget/order-widget.component';
 
 import { LazyWishlistWidgetComponent } from '../../../extensions/wishlists/exports/lazy-wishlist-widget/lazy-wishlist-widget.component';
@@ -32,6 +33,7 @@ describe('Account Overview Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         AccountOverviewComponent,
+        MockComponent(ContentIncludeComponent),
         MockComponent(FaIconComponent),
         MockComponent(LazyBudgetWidgetComponent),
         MockComponent(LazyRequisitionWidgetComponent),

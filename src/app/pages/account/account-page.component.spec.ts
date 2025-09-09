@@ -4,6 +4,7 @@ import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 
@@ -21,6 +22,7 @@ describe('Account Page Component', () => {
         AccountPageComponent,
         MockComponent(AccountNavigationComponent),
         MockComponent(BreadcrumbComponent),
+        MockComponent(ContentIncludeComponent),
         MockComponent(SkipContentLinkComponent),
       ],
       imports: [RouterTestingModule],
