@@ -20,12 +20,15 @@ import * as client from 'prom-client';
 import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level';
 import { METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
 import { icmCallsCache } from './src/app/core/interceptors/universal-cache.interceptor';
-import { Agent, install, setGlobalDispatcher } from 'undici';
+import { Agent, install, setGlobalDispatcher, interceptors } from 'undici';
 
 // allowing HTTP/2 uses HTTPClient withFetch() and undici agent allowH2 option
 if (/on|1|true|yes/.test(process.env.ALLOW_H2?.toLowerCase())) {
   install();
-  const h2Agent = new Agent({ allowH2: true });
+
+  const { decompress, dns, retry } = interceptors;
+
+  const h2Agent = new Agent({ allowH2: true }).compose(decompress(), dns(), retry());
   setGlobalDispatcher(h2Agent);
   console.log('installed undici globally, enabled HTTP/2 support for backend requests');
 }
