@@ -52,7 +52,6 @@ export interface Environment {
     | 'addressDoctor'
     | 'copilot'
     | 'maps'
-    | 'sentry'
     | 'tracking'
   )[];
 
@@ -63,9 +62,6 @@ export interface Environment {
 
   // track shop interaction via Google Tag Manager (to be used with 'tracking' feature, works with server side rendering only)
   gtmToken?: string;
-
-  // log client-side javascript errors to sentry.io (to be used with 'sentry' feature, works with server side rendering only)
-  sentryDSN?: string;
 
   // address doctor integration
   addressDoctor?: AddressDoctorConfig;

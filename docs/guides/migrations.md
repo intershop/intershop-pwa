@@ -70,6 +70,9 @@ If the connected ICM does not provide the new content includes it is best to ski
 With the Intershop PWA 8.0.0 release the Tacton integration to handle complex product configuration scenarios was removed.
 To keep the Tacton functionality in a PWA project, the removal commit should be skipped when migrating to PWA 8.0.0.
 
+With the Intershop PWA 8.0.0 release the Sentry integration to client-side error monitoring was removed.
+To keep the Sentry functionality in a PWA project, the removal commit should be skipped when migrating to PWA 8.0.0.
+
 ## From 7.0.0 to 7.1.0
 
 Due to installation issues with the used `luarocks` package manager, we have disabled the installation of the `lua-resty-redis-connector` that provides the functionality to connect to a shared Redis cache.

@@ -181,11 +181,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
         name(module: { identifier(): string }) {
           const identifier = module.identifier() as string;
 
-          // embed sentry library in sentry chunk
-          if (/[\\/]node_modules[\\/]@sentry[\\/]/.test(identifier)) {
-            return 'sentry';
-          }
-
           // move translation files into own bundles
           const i18nMatch = /[\\/]assets[\\/]i18n[\\/](.*?)\.json/.exec(identifier);
           const locale = i18nMatch?.[1];

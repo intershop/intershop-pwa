@@ -128,7 +128,6 @@ This feature can also be used to benchmark the SSR render performance locally by
 - [Concept - Hybrid Approach][concept-hybrid]
 - [Concept - Logging](../concepts/logging.md)
 - [Guide - Themes][themes]
-- [Guide - Client-Side Error Monitoring with Sentry](./sentry-error-monitoring.md)
 - [Guide - Google Tag Manager](./google-tag-manager.md)
 - [Guide - Monitoring with Prometheus](./prometheus-monitoring.md)
 - [PM2][pm2]
