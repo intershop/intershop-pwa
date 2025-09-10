@@ -35,7 +35,6 @@ import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-expo
 import { RatingExportsModule } from '../extensions/rating/exports/rating-exports.module';
 import { RecentlyExportsModule } from '../extensions/recently/exports/recently-exports.module';
 import { StoreLocatorExportsModule } from '../extensions/store-locator/exports/store-locator-exports.module';
-import { TactonExportsModule } from '../extensions/tacton/exports/tacton-exports.module';
 import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
 
 import { CMSModule } from './cms/cms.module';
@@ -193,7 +192,6 @@ const importExportModules = [
   RouterModule,
   StoreLocatorExportsModule,
   SwiperModule,
-  TactonExportsModule,
   TranslateModule,
   WishlistsExportsModule,
 ];

@@ -20,7 +20,6 @@ import { LazyProductAddToOrderTemplateComponent } from '../../../extensions/orde
 import { LazyProductNotificationEditComponent } from '../../../extensions/product-notifications/exports/lazy-product-notification-edit/lazy-product-notification-edit.component';
 import { LazyProductAddToQuoteComponent } from '../../../extensions/quoting/exports/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
 import { LazyProductRatingComponent } from '../../../extensions/rating/exports/lazy-product-rating/lazy-product-rating.component';
-import { LazyTactonConfigureProductComponent } from '../../../extensions/tacton/exports/lazy-tacton-configure-product/lazy-tacton-configure-product.component';
 import { ProductBrandComponent } from '../product-brand/product-brand.component';
 import { ProductDetailActionsComponent } from '../product-detail-actions/product-detail-actions.component';
 import { ProductDetailVariationsComponent } from '../product-detail-variations/product-detail-variations.component';
@@ -43,7 +42,6 @@ describe('Product Detail Component', () => {
         MockComponent(LazyProductAddToQuoteComponent),
         MockComponent(LazyProductNotificationEditComponent),
         MockComponent(LazyProductRatingComponent),
-        MockComponent(LazyTactonConfigureProductComponent),
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductBrandComponent),
         MockComponent(ProductDetailActionsComponent),
@@ -91,7 +89,6 @@ describe('Product Detail Component', () => {
         "ish-product-inventory",
         "ish-product-shipment",
         "ish-product-detail-variations",
-        "ish-lazy-tacton-configure-product",
         "ish-product-quantity-label",
         "ish-product-quantity",
         "ish-product-add-to-basket",
