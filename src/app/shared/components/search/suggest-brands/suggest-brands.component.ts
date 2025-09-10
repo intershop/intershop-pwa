@@ -18,9 +18,9 @@ export class SuggestBrandsComponent {
   @Input() brands: Brand[];
   @Input() maxAutoSuggests: number;
   @Input() inputTerms$ = new ReplaySubject<string>(1);
-  @Output() routeChange = new EventEmitter<void>();
+  @Output() routeChange = new EventEmitter<string>();
 
-  handleInputFocus(): void {
-    this.routeChange.emit();
+  handleInputFocus(brandName: string): void {
+    this.routeChange.emit(brandName);
   }
 }

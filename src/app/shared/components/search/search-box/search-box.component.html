@@ -44,7 +44,7 @@
           *ngIf="results.brands?.length"
           [brands]="results.brands"
           [inputTerms$]="inputSearchTerms$"
-          (routeChange)="resetInput()"
+          (routeChange)="resetInput($event)"
           [maxAutoSuggests]="3"
         />
       </div>
