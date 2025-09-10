@@ -24,7 +24,6 @@ import { LazyProductAddToCompareComponent } from '../../../../extensions/compare
 import { LazyProductAddToOrderTemplateComponent } from '../../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
 import { LazyProductAddToQuoteComponent } from '../../../../extensions/quoting/exports/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
 import { LazyProductRatingComponent } from '../../../../extensions/rating/exports/lazy-product-rating/lazy-product-rating.component';
-import { LazyTactonConfigureProductComponent } from '../../../../extensions/tacton/exports/lazy-tacton-configure-product/lazy-tacton-configure-product.component';
 import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
 
 import { ProductRowComponent } from './product-row.component';
@@ -48,7 +47,6 @@ describe('Product Row Component', () => {
         MockComponent(LazyProductAddToQuoteComponent),
         MockComponent(LazyProductAddToWishlistComponent),
         MockComponent(LazyProductRatingComponent),
-        MockComponent(LazyTactonConfigureProductComponent),
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductChooseVariationComponent),
         MockComponent(ProductIdComponent),
@@ -98,7 +96,6 @@ describe('Product Row Component', () => {
         "ish-product-inventory",
         "ish-product-shipment",
         "ish-product-item-variations",
-        "ish-lazy-tacton-configure-product",
         "ish-product-quantity",
         "ish-product-add-to-basket",
         "ish-product-choose-variation",

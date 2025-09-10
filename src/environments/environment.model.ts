@@ -7,7 +7,6 @@ import { MultiSiteLocaleMap } from 'ish-core/utils/multi-site/multi-site.service
 
 import { AddressDoctorConfig } from '../app/extensions/address-doctor/models/address-doctor/address-doctor-config.model';
 import { CopilotConfig } from '../app/extensions/copilot/models/copilot-config/copilot-config.model';
-import { TactonConfig } from '../app/extensions/tacton/models/tacton-config/tacton-config.model';
 
 export interface Environment {
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
@@ -54,7 +53,6 @@ export interface Environment {
     | 'copilot'
     | 'maps'
     | 'sentry'
-    | 'tacton'
     | 'tracking'
   )[];
 
@@ -68,9 +66,6 @@ export interface Environment {
 
   // log client-side javascript errors to sentry.io (to be used with 'sentry' feature, works with server side rendering only)
   sentryDSN?: string;
-
-  // tacton integration
-  tacton?: TactonConfig;
 
   // address doctor integration
   addressDoctor?: AddressDoctorConfig;
@@ -141,7 +136,7 @@ export interface Environment {
       | Auth0Config;
   };
 
-  // enable and configure data persistence for specific stores (compare, recently, tacton)
+  // enable and configure data persistence for specific stores (compare, recently)
   dataRetention: DataRetentionPolicy;
 
   /** Price update mechanism:
@@ -216,7 +211,6 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   dataRetention: {
     compare: 'session',
     recently: 60 * 24 * 7, // 1 week
-    tacton: 'forever',
   },
   priceUpdate: 'always',
 };

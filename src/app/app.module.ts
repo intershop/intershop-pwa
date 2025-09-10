@@ -18,7 +18,6 @@ import { QuickorderRoutingModule } from './extensions/quickorder/pages/quickorde
 import { QuotingRoutingModule } from './extensions/quoting/pages/quoting-routing.module';
 import { RecentlyRoutingModule } from './extensions/recently/pages/recently-routing.module';
 import { StoreLocatorRoutingModule } from './extensions/store-locator/pages/store-locator-routing.module';
-import { TactonRoutingModule } from './extensions/tacton/pages/tacton-routing.module';
 import { WishlistSharingRoutingModule } from './extensions/wishlists/pages/wishlist-sharing-routing.module';
 import { AppLastRoutingModule } from './pages/app-last-routing.module';
 import { AppRoutingModule } from './pages/app-routing.module';
@@ -37,7 +36,6 @@ import { ShellModule } from './shell/shell.module';
     QuickorderRoutingModule,
     QuotingRoutingModule,
     PunchoutRoutingModule,
-    TactonRoutingModule,
     StoreLocatorRoutingModule,
     RecentlyRoutingModule,
     CompareRoutingModule,

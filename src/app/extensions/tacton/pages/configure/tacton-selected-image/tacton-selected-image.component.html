@@ -1,7 +1,0 @@
-<!-- display the selected image -->
-<p *ngIf="parameter?.properties?.tc_component_picture">
-  <img
-    [src]="getImageUrl(parameter.properties.tc_component_picture) | async"
-    [alt]="parameter.properties.tc_component_picture"
-  />
-</p>
