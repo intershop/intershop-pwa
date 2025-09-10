@@ -373,7 +373,7 @@
             {
               "importNamePattern": "tap",
               "name": "rxjs/operators",
-              "filePattern": "^(?!.*/store/(sentry-config/sentry-config|seo/seo|core/messages/messages)\\.effects\\.ts$).*\\.effects\\.ts*$",
+              "filePattern": "^(?!.*/store/(seo/seo|core/messages/messages)\\.effects\\.ts$).*\\.effects\\.ts*$",
               "message": "The usage of \"tap\" in effects, if not related to 3rd party integrations, can usually be transformed properly into RxJS stream code."
             },
             {
@@ -765,11 +765,6 @@
               {
                 "name": "(?!.*environments/environment.model)(.*environments/environment).+",
                 "message": "Importing specific environments is not allowed. Use the default one."
-              },
-              {
-                "name": "@sentry/browser",
-                "importNames": ["User"],
-                "message": "You probably meant to import the ISH PWA user model."
               },
               {
                 "name": "@ngrx/router-store",

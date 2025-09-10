@@ -102,7 +102,7 @@ Its value contains the enabled cookie consent options and the cookie consent ver
 
 To enable certain functionalities based on a given cookie consent of the user, e.g., because they require setting specific cookies or collect user data, the PWA's `CookiesService` provides a method [`cookieConsentFor()`](../../src/app/core/utils/cookies/cookies.service.ts) to check for the required cookie consent.
 
-The default implementation of the Intershop PWA currently requires an enabled `tracking` option for the cookie consent to start the [Google Tag Manager](https://support.google.com/tagmanager) integration and the [Sentry](https://sentry.io) application monitoring and error tracking.
+The default implementation of the Intershop PWA currently requires an enabled `tracking` option for the cookie consent to start the [Google Tag Manager](https://support.google.com/tagmanager) integration.
 In addition, these features must be enabled in the deployment via feature toggle.
 
 ## Displaying the Cookie Consent Options

@@ -84,7 +84,6 @@
     "@ngx-formly/core": "6.2.2",
     "@ngx-translate/core": "^15.0.0",
     "@rx-angular/state": "^16.3.0",
-    "@sentry/browser": "^7.120.4",
     "angular-oauth2-oidc": "^15.0.1",
     "angulartics2": "^12.2.1",
     "bootstrap": "^4.6.2",

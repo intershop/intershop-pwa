@@ -89,7 +89,6 @@ kb_sync_latest_only
 - [Guide - SPARQUE.AI](./guides/sparque-ai.md)
 - [Guide - Intershop Copilot for Buyers](./guides/copilot.md)
 - [Guide - Tracking with Google Tag Manager](./guides/google-tag-manager.md)
-- [Guide - Client-Side Error Monitoring with Sentry](./guides/sentry-error-monitoring.md)
 - [Guide - Monitoring with Prometheus](./guides/prometheus-monitoring.md)
 - [Guide - Store Locator with Google Maps](./guides/store-locator.md)
 - [Guide - Address Check with Address Doctor](./guides/address-doctor.md)
