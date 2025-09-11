@@ -2,6 +2,8 @@
 
 Welcome to the Intershop PWA project!
 
+Hallo Welt
+
 The Intershop PWA is an Angular-based progressive web app storefront for the Intershop Commerce Platform.</br>
 Accompany us on a journey for great cutting-edge e-commerce and take the chance to make it your journey, too.
 
