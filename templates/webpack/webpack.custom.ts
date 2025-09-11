@@ -125,7 +125,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     logger.warn('Could not resolve undici package for babel-loader include:', e);
     undiciDir = undefined;
   }
-  if (undiciDir) {
+  if (undiciDir && targetOptions.target === 'server') {
     config.module = config.module || {};
     config.module.rules = config.module.rules || [];
     config.module.rules.unshift({
