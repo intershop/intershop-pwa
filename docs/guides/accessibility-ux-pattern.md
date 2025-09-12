@@ -65,7 +65,8 @@ On form submission, the focus automatically jumps to the **first invalid field**
 
 **What we do:**
 
-Buttons should generally **remain active and focusable** to improve usability, reduce cognitive load, and provide clear guidance for assistive technology users. However, for small forms or optional secondary actions, it can be appropriate to disable the button until input is valid.
+Buttons should generally **remain active and focusable** to improve usability, reduce cognitive load, and provide clear guidance for assistive technology users.
+However, for small forms or optional secondary actions, it can be appropriate to disable the button until input is valid.
 
 Large forms (8 fields or more, e.g., registration form):
 
