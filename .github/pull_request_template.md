@@ -1,8 +1,24 @@
+<!-- Checklist - Please check if your PR fulfills the following requirements:
+
+  - ✏️ The PR title follows the Conventional Commits specification (https://www.conventionalcommits.org/en/v1.0.0/)
+  - 🏷️ A label indicates the type of the PR (e.g. "bug", "feature", "documentation", etc.)
+  - 🏷️ A label indicates if the PR introduces "BREAKING CHANGES"
+  - Unit Tests for the changes added/updated (for bug fixes / features)
+  - Integration tests added/updated (for features)
+  - Manual testing performed on a demo system with SSR (several browsers/devices, if necessary)
+  - Documentation or relevant guides added/updated if needed and they have been approved by the documentation team
+  - Visual changes have been approved by VD / IAD (if applicable)
+  - Open checklist task are added to the Open Tasks section of the PR
+-->
+
 ### 🚀 Description
 
 <!-- Short summary of the changes and/or motivation
-    - What has been changed?
-    - Why was it changed?-->
+
+  - What has been changed?
+  - Why was it changed?
+  - Reference a related issue if applicable (or remove the "Closes" line)
+-->
 
 - Related Ticket/Issue: Closes #<issue-number>
 
@@ -14,30 +30,28 @@
 
 ---
 
-### ✅ Checklist
-
-- [ ] Unit Tests for the changes added/updated (for bug fixes / features)
-- [ ] Integration tests added/updated (for features)
-- [ ] Manual testing performed on a demo system with SSR (several browsers/devices, if necessary)
-- [ ] Documentation or relevant guides added/updated if needed and they have been approved by the docs team
-- [ ] Visual changes have been approved by VD / IAD (if applicable)
-
----
-
-### ⚠️ Notes
+### 📝 Notes
 
 <!-- Anything important that is not obvious from the code itself
-- Breaking changes?
-- Required ICM version?
-- Migrations required?
-- Feature flags / configuration changes?
-- Known limitations?  -->
 
-**Does this PR Introduce a Breaking Change?**
-
-- [ ] Yes
-- [ ] No
+  - Breaking changes?
+  - Required ICM version?
+  - Migrations required?
+  - Feature flags / configuration changes?
+  - Known limitations?
+-->
 
 ---
 
-### Other Information
+### ✅ Open Tasks
+
+<!-- Add open tasks that need to be resolved before merging the PR (remove what does not apply) -->
+
+- [ ] Documentation reviewed by the documentation team
+- [ ] Visual changes approved by VD / IAD
+
+---
+
+### 🔗 Other Information
+
+<!-- An automatically created ticket in Azure will be linked here (keep this section) -->
