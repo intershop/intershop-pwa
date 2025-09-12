@@ -13,6 +13,7 @@ kb_sync_latest_only
     - [Skip Links for Long Listings](#skip-links-for-long-listings)
   - [Form Patterns](#form-patterns)
     - [Focus Management on Validation Errors](#focus-management-on-validation-errors)
+    - [Avoid Disabled Buttons](#avoid-disabled-buttons)
   - [Component Behavior](#component-behavior)
     - [Links with Icons Do Not Require Underlines](#links-with-icons-do-not-require-underlines)
     - [Popovers Open on Click Instead of Hover](#popovers-open-on-click-instead-of-hover)
@@ -64,30 +65,43 @@ On form submission, the focus automatically jumps to the **first invalid field**
 
 **What we do:**
 
-In stead of disabling buttons they should stay focusable, get an individual managed action and descriptions.
+Buttons should generally **remain active and focusable** to improve usability, reduce cognitive load, and provide clear guidance for assistive technology users. However, for small forms or optional secondary actions, it can be appropriate to disable the button until input is valid.
 
-large forms (8 form fields and more, e.g. registration form):
+Large forms (8 fields or more, e.g., registration form):
 
-- button gets visibly disabled after the fist invalid submission attempt
-- remains interactive and focusable for focus management
-- description via aria-disabled and aria-describedby
+- The submit button remains active, even if some fields are invalid.
+- Focus moves to the first invalid field after submission to guide users in correcting errors.
+- Inline error messages are provided next to each field and announced via `aria-describedby`.
 
-primary page button (e.g. continue checkout)
+Primary page button (e.g., continue checkout):
 
-- button gets visibly disabled
-- remains focusable and if useful interactive for focus and validation management
-- description via aria-disabled and aria-describedby
+- The button remains active at all times.
+- Focus management and validation feedback are provided as needed.
+- Accessible descriptions are provided via `aria-describedby`.
 
-buttons disabled due to roles, rights or rules (cost center trash icon)
+Small forms (e.g., login forms):
 
-- visibly disabled, mimicking a button
-- remains focusable
-- description via aria-disabled and title (for icons)/ aria-describedby
+- The button is disabled if inputs are invalid.
+- Focus moves to the first invalid field when the user attempts submission.
+- Inline error messages are provided and announced via `aria-describedby`.
+
+Optional forms / secondary actions (e.g., upload a CSV file):
+
+- The button remains disabled until the input is valid.
+- Provides inline feedback and accessible description via `aria-describedby`.
+
+Buttons disabled due to roles, rights or rules (e.g., delete cost center):
+
+- Visually styled as disabled to indicate the button is inactive.
+- The button remains focusable.
+- Accessible descriptions are provided via `aria-disabled`, `aria-describedby`, and, for icons, the `title` attribute.
 
 **Why we do it:**
 
-- Reduces cognitive load and improves error recovery through repeatability.
-- screen reader users stay informed that a button is disabled and why.
+- Improves usability and **reduces cognitive load** by allowing repeated attempts on large forms and primary actions.
+- Screen reader users remain informed when a button is inactive and understand **why it cannot be used**.
+- Disabling buttons for small or optional forms ensures users cannot submit invalid data while keeping the experience predictable.
+- Error summaries are recognized as a good accessibility pattern, providing an overview of all errors, but they are **not currently implemented in our forms**.
 
 ### Component Behavior
 
