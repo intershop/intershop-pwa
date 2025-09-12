@@ -1,4 +1,4 @@
 {
   "GHSA-vc8w-jr9v-vj7f": "Ignored since we don't use Bootstrap Javascript (only Bootstrap styling with ng-bootstrap)",
-  "GHSA-x5gf-qvw8-r2rm": "Ignored as long as there is no pm2 release that fixes this issue"
+  "GHSA-68x2-mx4q-78m7": "Ignored since there probably won't be a fix for Angular 16"
 }
