@@ -149,11 +149,14 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
     if (paypal_checkout?.Buttons) {
       this.scriptLoaded$.next(true);
 
+      let isShippingAddressChanged = false;
+
       paypal_checkout
         .Buttons({
           style: this.paypalCheckoutButtonStyle,
           // Call your server to set up the transaction after the user has clicked the button
           createOrder: (data: { paymentSource: string }) => {
+            isShippingAddressChanged = false;
             this.selectPaypalPaymentMethod.emit(
               paypalPaymentMethod.paymentInstruments[0]?.id || paypalPaymentMethod.serviceId
             );
@@ -168,9 +171,31 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
             // ngZone is needed to navigate outside of the Angular zone in a callback function
             this.ngZone.run(() => {
               this.router.navigate(['/checkout/review'], {
-                queryParams: { redirect: 'success', token: data.orderID, PayerID: data.payerID },
+                queryParams: {
+                  redirect: 'success',
+                  token: data.orderID,
+                  PayerID: data.payerID,
+                  shippingAddressChanged: isShippingAddressChanged,
+                },
               });
             });
+          },
+          // in case the shipping address was changed in the paypal overlay
+          onShippingAddressChange: (data: {
+            shippingAddress: { city: string; countryCode: string; postalCode: string; state: string };
+          }) => {
+            // eslint-disable-next-line no-console
+            console.log('onShippingAddressChange', data);
+
+            const normalize = (val: string) => val?.trim()?.toLowerCase();
+            const basketAddress = basket?.commonShipToAddress;
+            const shippingAddress = data?.shippingAddress;
+
+            isShippingAddressChanged =
+              normalize(basketAddress?.country) !== normalize(shippingAddress?.countryCode) &&
+              normalize(basketAddress?.postalCode) !== normalize(shippingAddress?.postalCode) &&
+              normalize(basketAddress?.city) !== normalize(shippingAddress?.city);
+            // no state comparison, because it is not available in the basket and also not always provided by paypal
           },
           // after the user has cancelled the payment in the paypal overlay
           onCancel: () => {
@@ -228,7 +253,12 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
             // ngZone is needed to navigate outside of the Angular zone in a callback function
             this.ngZone.run(() => {
               this.router.navigate(['/checkout/review'], {
-                queryParams: { redirect: 'success', token: data.orderID, PayerID: data.payerID },
+                queryParams: {
+                  redirect: 'success',
+                  token: data.orderID,
+                  PayerID: data.payerID,
+                  shippingAddressChanged: true, // always true, because shipping address is not known before
+                },
               });
             });
           },
