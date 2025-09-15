@@ -169,5 +169,9 @@ describe('Pages Selectors', () => {
         ]
       `);
     }));
+
+    it('should return undefined, if no content page is selected', fakeAsync(() => {
+      expect(getBreadcrumbForContentPage(undefined)(store$.state)).toMatchInlineSnapshot(`undefined`);
+    }));
   });
 });
