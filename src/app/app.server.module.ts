@@ -17,21 +17,11 @@ import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
 class UniversalErrorHandler implements ErrorHandler {
-  private logAll = /on|1|true|yes/.test(process.env.LOG_ALL?.toLowerCase());
-
   handleError(error: unknown): void {
     if (error instanceof HttpErrorResponse) {
       console.error('ERROR', error.message);
     } else if (error instanceof Error) {
-      if (error.message.startsWith('Uncaught (in promise): AbortError')) {
-        //AbortErrors may happen with FetchAPI, log only if logAll is enabled
-        if (this.logAll) {
-          // eslint-disable-next-line no-console
-          console.log('Ignored AbortError', error.name, error.message, error.stack?.split('\n')?.[1]?.trim());
-        }
-      } else {
-        console.error('ERROR', error.name, error.message, error.stack?.split('\n')?.[1]?.trim());
-      }
+      console.error('ERROR', error.name, error.message, error.stack?.split('\n')?.[1]?.trim());
     } else if (typeof error === 'object') {
       try {
         console.error('ERROR', JSON.stringify(error));
