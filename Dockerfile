@@ -22,6 +22,7 @@ ARG activeThemes=
 RUN if [ ! -z "${activeThemes}" ]; then npm pkg set config.active-themes="${activeThemes}"; fi
 RUN npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER
 COPY tsconfig.server.json server.ts /workspace/
+COPY babel.config.js /workspace/
 RUN npm run build:multi server
 RUN node scripts/compile-docker-scripts
 COPY dist/* /workspace/dist/

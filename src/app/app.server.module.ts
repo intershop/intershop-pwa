@@ -1,4 +1,4 @@
-import { HTTP_INTERCEPTORS, HttpErrorResponse } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpErrorResponse, provideHttpClient, withFetch } from '@angular/common/http';
 import { ErrorHandler, NgModule, TransferState } from '@angular/core';
 import { ServerModule } from '@angular/platform-server';
 import { META_REDUCERS } from '@ngrx/store';
@@ -16,7 +16,7 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
-export class UniversalErrorHandler implements ErrorHandler {
+class UniversalErrorHandler implements ErrorHandler {
   handleError(error: unknown): void {
     if (error instanceof HttpErrorResponse) {
       console.error('ERROR', error.message);
@@ -35,18 +35,22 @@ export class UniversalErrorHandler implements ErrorHandler {
   }
 }
 
+const providers = [
+  // Conditionally add provideHttpClient(withFetch()) based on environment variable
+  ...(/on|1|true|yes/.test(process.env.ALLOW_H2?.toLowerCase()) ? [provideHttpClient(withFetch())] : []),
+  { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: UniversalCacheInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: UniversalLogInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: UniversalPrometheusInterceptor, multi: true },
+  { provide: ErrorHandler, useClass: UniversalErrorHandler },
+  { provide: META_REDUCERS, useValue: configurationMeta, multi: true },
+  // disable data retention for SSR
+  { provide: DATA_RETENTION_POLICY, useValue: {} },
+];
+
 @NgModule({
   imports: [AppModule, ServerModule],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: UniversalCacheInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: UniversalLogInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: UniversalPrometheusInterceptor, multi: true },
-    { provide: ErrorHandler, useClass: UniversalErrorHandler },
-    { provide: META_REDUCERS, useValue: configurationMeta, multi: true },
-    // disable data retention for SSR
-    { provide: DATA_RETENTION_POLICY, useValue: {} },
-  ],
+  providers,
   bootstrap: [AppComponent],
 })
 export class AppServerModule {

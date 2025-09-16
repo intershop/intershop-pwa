@@ -20,6 +20,18 @@ import * as client from 'prom-client';
 import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level';
 import { METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
 import { icmCallsCache } from './src/app/core/interceptors/universal-cache.interceptor';
+import { Agent, install, setGlobalDispatcher, interceptors } from 'undici';
+
+// allowing HTTP/2 uses HTTPClient withFetch() and undici agent allowH2 option
+if (/on|1|true|yes/.test(process.env.ALLOW_H2?.toLowerCase())) {
+  install();
+
+  const { decompress, dns, retry } = interceptors;
+
+  const h2Agent = new Agent({ allowH2: true }).compose(decompress(), dns(), retry());
+  setGlobalDispatcher(h2Agent);
+  console.log('installed undici globally, enabled HTTP/2 support for backend requests');
+}
 
 const collectDefaultMetrics = client.collectDefaultMetrics;
 
@@ -132,6 +144,7 @@ global['navigator'] = win.navigator;
 export function app() {
   const logging = /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase());
   const logAll = /on|1|true|yes/.test(process.env.LOG_ALL?.toLowerCase());
+
   const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
 
   const SSR_HYBRID_BACKEND = process.env.SSR_HYBRID_BACKEND || ICM_BASE_URL;
