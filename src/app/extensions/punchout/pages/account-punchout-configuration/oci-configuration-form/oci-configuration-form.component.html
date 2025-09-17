@@ -65,7 +65,6 @@
             <button
               type="submit"
               class="btn btn-primary"
-              [attr.aria-disabled]="form.invalid && configForm.submitted"
               [attr.aria-describedby]="form.invalid && configForm.submitted ? 'submit-button-help' : null"
               data-testing-id="update-oci-configuration"
             >

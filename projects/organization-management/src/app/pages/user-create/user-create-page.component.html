@@ -23,7 +23,6 @@
           <button
             type="submit"
             class="btn btn-primary"
-            [attr.aria-disabled]="form.invalid && userForm.submitted"
             [attr.aria-describedby]="form.invalid && userForm.submitted ? 'submit-button-help' : null"
             data-testing-id="create-user-submit"
           >

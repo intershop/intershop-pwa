@@ -18,7 +18,6 @@
             <input
               class="btn btn-primary"
               type="submit"
-              [attr.aria-disabled]="form.invalid && registrationForm.submitted"
               [attr.aria-describedby]="form.invalid && registrationForm.submitted ? 'submit-button-help' : null"
               value="{{ 'account.create.button.label' | translate }}"
             />

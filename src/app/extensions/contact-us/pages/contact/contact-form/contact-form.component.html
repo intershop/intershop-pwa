@@ -20,7 +20,6 @@
       <input
         type="submit"
         class="btn btn-primary"
-        [attr.aria-disabled]="form.submitted && form.invalid"
         [attr.aria-describedby]="form.submitted && form.invalid ? 'submit-button-help' : null"
         value="{{ 'helpdesk.contactus.submit' | translate }}"
         data-testing-id="submitContact"
