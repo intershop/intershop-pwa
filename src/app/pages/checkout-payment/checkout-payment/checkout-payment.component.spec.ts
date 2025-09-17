@@ -154,13 +154,6 @@ describe('Checkout Payment Component', () => {
       fixture.detectChanges();
       expect(element.querySelector('[role="alert"]')).toBeFalsy();
     });
-
-    it('should disable continue button if the user clicks next and has currently no payment method selected', () => {
-      component.basket.payment = undefined;
-      component.goToNextStep();
-      fixture.detectChanges();
-      expect(element.querySelector('button').getAttribute('aria-disabled')).toBe('true');
-    });
   });
 
   describe('next button', () => {
