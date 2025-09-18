@@ -34,6 +34,21 @@ describe('Sparque Products Service', () => {
     when(sparqueApiService.get('products', apiVersion, anything())).thenReturn(
       of<SparqueSearch>({ products: [], total: 0, sortings: [] })
     );
+
+    // Mock the mappers to return valid SearchResponse objects
+    when(sparqueSearchMapper.fromData(anything(), anything())).thenReturn({
+      products: [],
+      total: 0,
+      sortableAttributes: [],
+      filter: [],
+    });
+
+    when(sparqueProductMapper.fromData(anything())).thenReturn({
+      sku: 'test-sku',
+      name: 'Test Product',
+      completenessLevel: 3,
+    });
+
     TestBed.configureTestingModule({
       providers: [
         { provide: SparqueApiService, useFactory: () => instance(sparqueApiService) },

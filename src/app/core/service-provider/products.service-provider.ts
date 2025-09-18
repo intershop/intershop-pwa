@@ -4,6 +4,7 @@ import { Observable, map, take } from 'rxjs';
 
 import { Product } from 'ish-core/models/product/product.model';
 import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
+import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SparqueProductsService } from 'ish-core/services/sparque-products/sparque-products.service';
 import { getSparqueConfig } from 'ish-core/store/core/configuration';
@@ -36,14 +37,24 @@ export class ProductsServiceProvider {
   /**
    * Gets the appropriate products service implementation based on configuration and parameters.
    *
+   * @param skipSparque Optional parameter to skip Sparque functionality even if configured
    * @returns An observable emitting either SparqueProductsService or ProductsService.
    */
-  get(): Observable<ProductsServiceInterface> {
+  get(skipSparque = false): Observable<ProductsServiceInterface> {
     return this.store.pipe(
       select(getSparqueConfig),
       take(1),
-      map(sparqueConfig => (sparqueConfig ? this.sparqueProductsService : this.productsService))
+      map(config => {
+        if (this.isSparqueSearchEnabled(config) && !skipSparque) {
+          return this.sparqueProductsService;
+        }
+        return this.productsService;
+      })
     );
+  }
+
+  private isSparqueSearchEnabled(config: SparqueConfig | undefined): boolean {
+    return config && Array.isArray(config.features) && config.features.includes('search');
   }
 }
 

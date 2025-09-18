@@ -404,10 +404,6 @@ export class ProductsEffects {
     )
   );
 
-
-
-
-
   private throttleOnBrowser<T>() {
     return !SSR && this.router.navigated ? throttleTime<T>(100) : map(identity);
   }

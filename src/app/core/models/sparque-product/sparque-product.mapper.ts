@@ -51,7 +51,6 @@ export class SparqueProductMapper {
       stepQuantity: 1,
       packingUnit: '',
       completenessLevel: 2,
-
     };
   }
 }

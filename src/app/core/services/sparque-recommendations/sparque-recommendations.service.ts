@@ -69,7 +69,7 @@ export class SparqueRecommendationsService implements RecommendationsServiceInte
             strategy: recommendationsContext.strategy,
             productSKUs: products ? products.map(p => p.sku) : [],
           },
-          products: this.sparqueProductMapper.fromListData(products, 2),
+          products: this.sparqueProductMapper.fromListData(products),
         }))
       );
   }

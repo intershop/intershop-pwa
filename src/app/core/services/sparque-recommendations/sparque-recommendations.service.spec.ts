@@ -53,7 +53,7 @@ describe('Sparque Recommendations Service', () => {
       };
 
       when(sparqueApiServiceMock.get('recommendations', 'v3', anything())).thenReturn(of(mockRecommendationsResponse));
-      when(sparqueProductMapperMock.fromListData(mockSparqueProducts, anything())).thenReturn(mockProducts);
+      when(sparqueProductMapperMock.fromListData(mockSparqueProducts)).thenReturn(mockProducts);
 
       service.getRecommendations(recommendationsContext).subscribe(result => {
         expect(result).toEqual({
@@ -64,7 +64,7 @@ describe('Sparque Recommendations Service', () => {
           products: mockProducts,
         });
         verify(sparqueApiServiceMock.get('recommendations', 'v3', anything())).once();
-        verify(sparqueProductMapperMock.fromListData(mockSparqueProducts, anything())).once();
+        verify(sparqueProductMapperMock.fromListData(mockSparqueProducts)).once();
         done();
       });
     });
@@ -79,7 +79,7 @@ describe('Sparque Recommendations Service', () => {
       };
 
       when(sparqueApiServiceMock.get('recommendations', 'v3', anything())).thenReturn(of(mockRecommendationsResponse));
-      when(sparqueProductMapperMock.fromListData(mockSparqueProducts, anything())).thenReturn(mockProducts);
+      when(sparqueProductMapperMock.fromListData(mockSparqueProducts)).thenReturn(mockProducts);
 
       service.getRecommendations(recommendationsContext).subscribe(result => {
         expect(result).toEqual({
@@ -90,7 +90,7 @@ describe('Sparque Recommendations Service', () => {
           products: mockProducts,
         });
         verify(sparqueApiServiceMock.get('recommendations', 'v3', anything())).once();
-        verify(sparqueProductMapperMock.fromListData(mockSparqueProducts, anything())).once();
+        verify(sparqueProductMapperMock.fromListData(mockSparqueProducts)).once();
         done();
       });
     });
@@ -102,7 +102,7 @@ describe('Sparque Recommendations Service', () => {
       };
 
       when(sparqueApiServiceMock.get('recommendations', 'v3', anything())).thenReturn(of({}));
-      when(sparqueProductMapperMock.fromListData(anything(), anything())).thenReturn([]);
+      when(sparqueProductMapperMock.fromListData(anything())).thenReturn([]);
 
       service.getRecommendations(recommendationsContext).subscribe(result => {
         expect(result).toEqual({
@@ -122,7 +122,7 @@ describe('Sparque Recommendations Service', () => {
       };
 
       when(sparqueApiServiceMock.get('recommendations', 'v3', anything())).thenReturn(of(mockRecommendationsResponse));
-      when(sparqueProductMapperMock.fromListData(mockSparqueProducts, anything())).thenReturn(mockProducts);
+      when(sparqueProductMapperMock.fromListData(mockSparqueProducts)).thenReturn(mockProducts);
 
       service.getRecommendations(recommendationsContext).subscribe(result => {
         expect(result).toEqual({
@@ -133,7 +133,7 @@ describe('Sparque Recommendations Service', () => {
           products: mockProducts,
         });
         verify(sparqueApiServiceMock.get('recommendations', 'v3', anything())).once();
-        verify(sparqueProductMapperMock.fromListData(mockSparqueProducts, anything())).once();
+        verify(sparqueProductMapperMock.fromListData(mockSparqueProducts)).once();
         done();
       });
     });
@@ -164,7 +164,7 @@ describe('Sparque Recommendations Service', () => {
       };
 
       when(sparqueApiServiceMock.get('recommendations', 'v3', anything())).thenReturn(of(mockRecommendationsResponse));
-      when(sparqueProductMapperMock.fromListData(mockSparqueProducts, anything())).thenReturn(mockProducts);
+      when(sparqueProductMapperMock.fromListData(mockSparqueProducts)).thenReturn(mockProducts);
 
       service.getRecommendations(recommendationsContext).subscribe(result => {
         expect(result).toEqual({
@@ -186,7 +186,7 @@ describe('Sparque Recommendations Service', () => {
       };
 
       when(sparqueApiServiceMock.get('recommendations', 'v3', anything())).thenReturn(of(mockRecommendationsResponse));
-      when(sparqueProductMapperMock.fromListData(mockSparqueProducts, anything())).thenReturn(mockProducts);
+      when(sparqueProductMapperMock.fromListData(mockSparqueProducts)).thenReturn(mockProducts);
 
       service.getRecommendations(recommendationsContext).subscribe(result => {
         expect(result).toEqual({
@@ -208,7 +208,7 @@ describe('Sparque Recommendations Service', () => {
       };
 
       when(sparqueApiServiceMock.get('recommendations', 'v3', anything())).thenReturn(of({ products: undefined }));
-      when(sparqueProductMapperMock.fromListData(anything(), anything())).thenReturn([]);
+      when(sparqueProductMapperMock.fromListData(anything())).thenReturn([]);
 
       service.getRecommendations(recommendationsContext).subscribe(result => {
         expect(result).toEqual({

@@ -9,7 +9,6 @@ import {
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
-import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { getDeviceType, getSparqueConfig } from 'ish-core/store/core/configuration';
 import { selectQueryParam, selectQueryParams } from 'ish-core/store/core/router';
 import {
@@ -40,7 +39,6 @@ export class ProductListingEffects {
     @Inject(DEFAULT_PRODUCT_LISTING_VIEW_TYPE)
     private defaultViewType: InjectSingle<typeof DEFAULT_PRODUCT_LISTING_VIEW_TYPE>,
     private actions$: Actions,
-    private productsServiceProvider: ProductsServiceProvider,
     private store: Store
   ) {}
 

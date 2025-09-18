@@ -54,7 +54,6 @@ describe('Products Effects', () => {
     productsServiceMock = mock(ProductsService);
     productListingMapperMock = mock(ProductListingMapper);
     when(productsServiceProviderMock.get()).thenReturn(of(instance(productsServiceMock)));
-    when(productsServiceProviderMock.isSparqueSearchEnabled()).thenReturn(of(true));
     when(productListingMapperMock.createPages(anything(), anything(), anything(), anything(), anything())).thenCall(
       (
         skus: string[],

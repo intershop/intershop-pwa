@@ -82,7 +82,6 @@ describe('Products Service', () => {
     });
     productsService = TestBed.inject(ProductsService);
 
-    when(productsServiceProviderMock.isSparqueSearchEnabled()).thenReturn(of(false));
     when(appFacadeMock.serverSetting$(anyString())).thenReturn(of(false));
     when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
   });

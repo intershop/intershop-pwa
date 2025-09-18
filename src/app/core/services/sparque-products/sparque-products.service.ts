@@ -91,7 +91,10 @@ export class SparqueProductsService implements ProductsServiceInterface {
     if (sortKey) {
       params = params.set('sorting', sortKey);
     }
-    params = params.append('selectedFacets', this.selectedFacets(omit(searchParameter, 'searchTerm')));
+    const selectedFacetParam = this.selectedFacets(omit(searchParameter, 'searchTerm'));
+    if (selectedFacetParam) {
+      params = params.set('selectedFacets', selectedFacetParam);
+    }
 
     return this.sparqueApiService
       .get<SparqueSearch>(`search`, this.apiVersion, { params, skipApiErrorHandling: true })
@@ -122,9 +125,9 @@ export class SparqueProductsService implements ProductsServiceInterface {
     if (sortKey) {
       params = params.set('sorting', sortKey);
     }
-
-    if (searchParameter) {
-      params = params.set('selectedFacets', this.selectedFacets(omit(searchParameter, 'selectedCategory')));
+    const selectedFacetParam = this.selectedFacets(omit(searchParameter, 'selectedCategory'));
+    if (selectedFacetParam) {
+      params = params.set('selectedFacets', selectedFacetParam);
     }
 
     return this.sparqueApiService

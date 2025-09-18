@@ -1,8 +1,7 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { instance, mock } from 'ts-mockito';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
@@ -24,7 +23,6 @@ describe('Product Listing Effects', () => {
 
   beforeEach(() => {
     productsServiceProviderMock = mock(ProductsServiceProvider);
-    when(productsServiceProviderMock.isSparqueSearchEnabled()).thenReturn(of(false));
 
     TestBed.configureTestingModule({
       imports: [

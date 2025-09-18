@@ -28,7 +28,6 @@ describe('Search Effects', () => {
   let suggestServiceMock: SuggestService;
   let productsServiceProviderMock: ProductsServiceProvider;
   let suggestionsServiceProviderMock: SuggestionsServiceProvider;
-  let sparqueSuggestionsServiceMock: SparqueSuggestionsService;
   let httpStatusCodeService: HttpStatusCodeService;
 
   const suggests = { suggestions: { keywords: [{ keyword: 'Goods' }] } };
@@ -41,8 +40,6 @@ describe('Search Effects', () => {
     productsServiceMock = mock(ProductsService);
     productsServiceProviderMock = mock(ProductsServiceProvider);
     when(productsServiceProviderMock.get()).thenReturn(of(instance(productsServiceMock)));
-    when(productsServiceProviderMock.isSparqueSearchEnabled()).thenReturn(of(false));
-    sparqueSuggestionsServiceMock = mock(SparqueSuggestionsService);
     const skus = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
     when(productsServiceMock.searchProducts(anything())).thenCall(
       (searchTerm: string, amount: number, _, offset: number) => {

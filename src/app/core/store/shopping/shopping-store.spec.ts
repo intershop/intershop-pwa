@@ -104,6 +104,7 @@ describe('Shopping Store', () => {
 
     productsServiceProviderMock = mock(ProductsServiceProvider);
     sparqueSuggestionsServiceMock = mock(SparqueSuggestionsService);
+    sparqueRecommendationsServiceMock = mock(SparqueRecommendationsService);
     categoriesServiceProviderMock = mock(CategoriesServiceProvider);
     suggestServiceMock = mock(SuggestService);
     suggestionsServiceProviderMock = mock(SuggestionsServiceProvider);
