@@ -13,7 +13,7 @@ kb_sync_latest_only
   - [Versioning of SPARQUE Service Requests](#versioning-of-sparque-service-requests)
 - [Provider Concept](#provider-concept)
 - [Suggestion Feature](#suggestion-feature)
-  - [New Standalone Components](#new-standalone-components)
+  - [Search Box Component](#search-box-component)
   - [Recent Search Terms](#recent-search-terms)
 - [Search Feature](#search-feature)
 
@@ -191,28 +191,33 @@ As soon as the search term has a length of at least 3 characters, a suggestion r
 If no hits are found for the used search term, the recently used search terms appear.
 Otherwise, the search results are displayed.
 
-### New Standalone Components
+### Search Box Component
 
-- _Search Box Component_: This component is responsible for providing auto-suggestions for search queries. When a user starts typing in the search box, the component interacts with the SPARQUE.AI search engine to fetch and display relevant keyword suggestions, products, catalogs, and brands in real-time. This enhances the user experience by helping users to quickly find what they are looking for and reducing the effort required to type full search queries.
+This component is responsible for providing auto-suggestions for search queries.
+When a user starts typing in the search box, the component interacts with the SPARQUE.AI search engine to fetch and display relevant keyword suggestions, products, catalogs, and brands in real-time.
+This enhances the user experience by helping users to quickly find what they are looking for and reducing the effort required to type full search queries.
 
-  > [!NOTE]
-  > This component is used for the Solr suggestion too, in case SPARQUE is not configured.
+> [!NOTE]
+> This component is used for the Solr suggestion too, in case SPARQUE is not configured.
 
-  The Search Box Component consists of several components that work together to provide a seamless search experience:
+The Search Box Component consists of several components that work together to provide a seamless search experience:
 
-  - **[ish-suggest-keywords](../../src/app/shared/components/search/suggest-keywords/suggest-keywords.component.ts)**: Displays real-time keyword suggestions
-  - **[ish-suggest-categories](../../src/app/shared/components/search/suggest-categories/suggest-categories.component.ts)**: Displays the real-time suggested categories
-  - **[ish-suggest-products](../../src/app/shared/components/search/suggest-products-tile/suggest-products-tile.component.ts)**: Shows relevant product suggestions based on the user's input
-  - **[ish-suggest-brands](../../src/app/shared/components/search/suggest-brands/suggest-brands.component.ts)**: Provides brand suggestions related to the search terms
-  - **[ish-suggest-search-terms](../../src/app/shared/components/search/suggest-search-terms/suggest-search-terms.component.ts)**: Shows the search terms the user has already searched for in the past.
+- **[ish-suggest-keywords](../../src/app/shared/components/search/suggest-keywords/suggest-keywords.component.ts)**: Displays real-time keyword suggestions
+- **[ish-suggest-categories](../../src/app/shared/components/search/suggest-categories/suggest-categories.component.ts)**: Displays the real-time suggested categories
+- **[ish-suggest-products](../../src/app/shared/components/search/suggest-products-tile/suggest-products-tile.component.ts)**: Shows relevant product suggestions based on the user's input
+- **[ish-suggest-brands](../../src/app/shared/components/search/suggest-brands/suggest-brands.component.ts)**: Provides brand suggestions related to the search terms
+- **[ish-suggest-search-terms](../../src/app/shared/components/search/suggest-search-terms/suggest-search-terms.component.ts)**: Shows the search terms the user has already searched for in the past.
 
-  The number of objects to be displayed can be configured individually for each component:
+> [!NOTE]
+> A brand search will search for the selected brand and set the brand filter.
 
-  ```ts
-  @Input() maxAutoSuggests: number;
-  ```
+The number of objects to be displayed can be configured individually for each component:
 
-  The default settings are 5 elements for keywords and recent search terms, 3 elements each for categories and brands, and 8 elements for products.
+```ts
+@Input() maxAutoSuggests: number;
+```
+
+The default settings are 5 elements for keywords and recent search terms, 3 elements each for categories and brands, and 8 elements for products.
 
 ### Recent Search Terms
 

@@ -26,6 +26,7 @@ import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { ProductsService } from 'ish-core/services/products/products.service';
+import { getSparqueConfig } from 'ish-core/store/core/configuration';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
@@ -198,7 +199,8 @@ export class ProductsEffects {
               .get(Object.keys(searchParameter).includes('productFilter'))
               .getFilteredProducts(searchParameter, pageSize, sorting, ((page || 1) - 1) * pageSize)
               .pipe(
-                mergeMap(({ products, total, sortableAttributes, filter }) => [
+                concatLatestFrom(() => this.store.pipe(select(getSparqueConfig))),
+                mergeMap(([{ products, total, filter, sortableAttributes }, isSparque]) => [
                   ...products.map((product: Product) => loadProductSuccess({ product })),
                   setProductListingPages(
                     this.productListingMapper.createPages(
@@ -215,13 +217,19 @@ export class ProductsEffects {
                       }
                     )
                   ),
-                  filter?.length
-                    ? // handle Sparque filter
-                      loadFilterSuccess({
-                        filterNavigation: {
-                          filter: this.handleSparqueCategoryFilter(filter, categoryFilter, searchParameter),
-                        },
-                      })
+                  isSparque
+                    ? filter?.length
+                      ? loadFilterSuccess({
+                          filterNavigation: {
+                            filter: this.handleSparqueCategoryFilter(filter, categoryFilter, searchParameter),
+                          },
+                        })
+                      : // in case no filter is returned filter state must contain at least the filters from the search parameter
+                        loadFilterSuccess({
+                          filterNavigation: {
+                            filter: this.getSelectedFilter(searchParameter, products?.length || 0),
+                          },
+                        })
                     : { type: 'no_filter_action' },
                 ]),
                 mapErrorToAction(loadProductFail)
@@ -387,6 +395,40 @@ export class ProductsEffects {
       )
     )
   );
+
+  /**
+   * Converts URL search parameters into a structured array of Filter objects.
+   *
+   * @param searchParameter - The URL form parameters to convert into filters.
+   *                          All parameters except 'searchTerm' will be considered as potential filters.
+   * @param count - The count value to assign to each facet within the generated filters.
+   *
+   * @returns An array of Filter objects where each entry in searchParameter (except 'searchTerm')
+   *          becomes a filter with its values converted to facets. Each filter has a display type
+   *          of 'text_clear' and selection type of 'single'.
+   */
+  getSelectedFilter(searchParameter: URLFormParams, count: number): Filter[] {
+    return Object.entries(searchParameter)
+      .filter(([key]) => key !== 'searchTerm')
+      .map(([key, value]) => ({
+        id: key,
+        name: key,
+        facets: Array.isArray(value)
+          ? value.map(v => ({
+              name: v,
+              displayName: v,
+              selected: true,
+              count,
+              searchParameter: Object.fromEntries(
+                Object.entries(searchParameter).filter(([k]) => k !== key && k !== 'searchTerm')
+              ),
+              level: 0,
+            }))
+          : [],
+        displayType: 'text_clear',
+        selectionType: 'single',
+      }));
+  }
 
   /**
    * Handles the processing of category facets in a search response, ensuring that the facets are updated
