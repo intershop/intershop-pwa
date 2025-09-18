@@ -29,12 +29,11 @@ export interface Order extends OrderBasket {
     date: number;
   };
   requisitionNo?: string;
-  paginationPosition?: number;
   recurringOrderID?: string;
+  paginationPosition?: number;
 }
 
 export interface Orders {
   orders: Order[];
   paging: PagingInfo;
-  recurringOrderID?: string;
 }
