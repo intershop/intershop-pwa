@@ -1289,8 +1289,6 @@
   "punchout.error.missing.parameters": "Fehler beim Verbinden zum Punchout-Katalog. Benötigte Start-Parameter fehlen.",
   "punchout.login_already_exists.error": "Der angegebene Anmeldename wird bereits verwendet. Prüfen Sie bitte die Richtigkeit der Eingabe oder geben Sie einen anderen Anmeldenamen an.",
   "quickorder.page.add.cart": "In den Warenkorb",
-  "quickorder.page.add.cart.disabled": "Bitte überprüfen Sie, ob Produkt-IDs oder Mengen ungültig sind.",
-  "quickorder.page.add.cart.no_id": "Bitte fügen Sie mindestens ein Produkt anhand der ID hinzu.",
   "quickorder.page.add.row": "Eine weitere Zeile hinzufügen",
   "quickorder.page.add.row.multiple": "{{0}} weitere Zeilen",
   "quickorder.page.breadcrumb": "Schnellbestellung",

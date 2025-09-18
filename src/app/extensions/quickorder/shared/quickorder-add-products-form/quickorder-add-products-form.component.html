@@ -22,9 +22,6 @@
   <button
     type="submit"
     class="btn btn-primary"
-    [attr.aria-disabled]="
-      (quickOrderForm.pristine || quickOrderForm.invalid || quickOrderForm.pending) && quickOrderIDForm.submitted
-    "
     [attr.aria-describedby]="
       (quickOrderForm.pristine || quickOrderForm.invalid || quickOrderForm.pending) && quickOrderIDForm.submitted
         ? 'submit-button-help'

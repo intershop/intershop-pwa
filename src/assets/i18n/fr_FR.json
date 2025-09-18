@@ -1289,8 +1289,6 @@
   "punchout.error.missing.parameters": "Erreur de connexion au catalogue Punchout. Le paramètre ... est manquant.",
   "punchout.login_already_exists.error": "Un utilisateur avec ce nom d’utilisateur existe déjà. Veuillez vérifier l’exactitude des informations ou entrer un nom d’utilisateur différent.",
   "quickorder.page.add.cart": "Ajouter au panier",
-  "quickorder.page.add.cart.disabled": "Veuillez vérifier si les identifiants ou les quantités des produits sont invalides.",
-  "quickorder.page.add.cart.no_id": "Veuillez ajouter au moins un produit par ID.",
   "quickorder.page.add.row": "Ajouter une ligne supplémentaire",
   "quickorder.page.add.row.multiple": "Ajouter {{0}} lignes supplémentaires",
   "quickorder.page.breadcrumb": "Commande rapide",
