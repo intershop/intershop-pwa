@@ -207,7 +207,8 @@ Otherwise, the search results are displayed.
   - **[ish-suggest-search-terms](../../src/app/shared/components/search/suggest-search-terms/suggest-search-terms.component.ts)**: Shows the search terms the user has already searched for in the past.
 
   > [!NOTE]
-  > A brand search will search for the selected brand and set the brand filter. Therefore, it is necessary to have the brand name as part of the product name in order to see search results.
+  > A brand search will search for the selected brand and set the brand filter.
+  > Therefore, it is necessary to have the brand name as part of the product name in order to see search results.
   > If another behavior is desired, you can adapt the SPARQUE strategy or link directly to a dedicated brand content page as an example.
 
   The number of objects to be displayed can be configured individually for each component:
