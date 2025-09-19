@@ -6,20 +6,16 @@
   margin: $space-default 0;
   background-color: $color-tertiary;
 
-  .sort-by {
-    float: right;
+  .item-count {
+    padding-bottom: divide($space-default, 3);
 
-    @include media-breakpoint-down(xs) {
-      float: none;
+    @media (min-width: $screen-sm) {
+      padding-bottom: 0;
     }
+  }
 
+  .switch-layout {
     a {
-      float: left;
-
-      @include media-breakpoint-down(xs) {
-        float: none;
-      }
-
       &.grid-view-link,
       &.grid-view-link:hover,
       &.grid-view-link:focus,
@@ -57,6 +53,12 @@
         font-size: 24px;
       }
     }
+  }
+
+  .sort-by {
+    @media (min-width: $screen-sm) {
+      padding-right: 0;
+    }
 
     label {
       float: right;
@@ -73,10 +75,6 @@
         width: 100%;
       }
     }
-  }
-
-  .switch-layout {
-    padding-left: 0;
   }
 }
 
