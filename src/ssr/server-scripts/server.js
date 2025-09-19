@@ -15,7 +15,13 @@ app.use((req, res, next) => {
 
   if (!match) {
     match = Object.keys(ports).find(config => {
-      const p = path.join(process.cwd(), 'dist', config, 'browser', req.path.substring(1).replace(/[;?&].*$/, ''));
+      const p = path.join(
+        process.cwd(),
+        'dist',
+        config,
+        'browser',
+        req.path.slice(process.env.DEPLOY_URL.length).replace(/[;?&].*$/, '')
+      );
       return fs.existsSync(p);
     });
   }
