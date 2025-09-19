@@ -1,7 +1,6 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
@@ -64,7 +63,6 @@ describe('Search Effects', () => {
           { path: 'search/:searchTerm', children: [] },
         ]),
         ShoppingStoreModule.forTesting('productListing'),
-        TranslateModule.forRoot(),
       ],
       providers: [
         { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },

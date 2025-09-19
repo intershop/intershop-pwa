@@ -4,7 +4,6 @@ import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { Action } from '@ngrx/store/src/models';
-import { TranslateService } from '@ngx-translate/core';
 import { from } from 'rxjs';
 import { concatMap, map, sample, switchMap, withLatestFrom } from 'rxjs/operators';
 
@@ -13,7 +12,6 @@ import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { SuggestionsServiceProvider } from 'ish-core/service-provider/suggestions.service-provider';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
-import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadCategorySuccess } from 'ish-core/store/shopping/categories';
 import { loadFilterSuccess } from 'ish-core/store/shopping/filter';
@@ -50,7 +48,6 @@ export class SearchEffects {
     private productsServiceProvider: ProductsServiceProvider,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper,
-    private translateService: TranslateService,
     private router: Router
   ) {}
 
@@ -155,25 +152,5 @@ export class SearchEffects {
         concatMap(() => from(this.httpStatusCodeService.setStatus(404)))
       ),
     { dispatch: false }
-  );
-
-  setSearchBreadcrumb$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(routerNavigatedAction),
-      switchMap(() =>
-        this.store.pipe(
-          ofUrl(/^\/search.*/),
-          select(selectRouteParam('searchTerm')),
-          whenTruthy(),
-          switchMap(searchTerm =>
-            this.translateService
-              .get('search.breadcrumbs.your_search.label')
-              .pipe(
-                map(translation => setBreadcrumbData({ breadcrumbData: [{ text: `${translation} ${searchTerm}` }] }))
-              )
-          )
-        )
-      )
-    )
   );
 }
