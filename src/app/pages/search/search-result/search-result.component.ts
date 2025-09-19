@@ -7,10 +7,7 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
  * It uses the {@link ProductListToolbarComponent} to provide list actions and {@link ProductListComponent} for the product list.
  *
  * @example
- * <ish-search-result
- *               [searchTerm]="searchTerm"
- *               [totalItems]="totalItems$ | async"
- * ></ish-search-result>
+ * <ish-search-result [searchTerm]="searchTerm"></ish-search-result>
  */
 @Component({
   selector: 'ish-search-result',
@@ -24,9 +21,10 @@ export class SearchResultComponent implements OnInit, OnChanges {
   @Input({ required: true }) searchTerm: string;
 
   /**
-   * The total number of product search results (might be different from products.length if paging is applied).
+   * The total number of product search results (optional, might be different from products.length if paging is applied).
    */
-  @Input({ required: true }) totalItems: number;
+  @Input() totalItems: number;
+
   @Input() deviceType: DeviceType;
 
   isCollapsed = false;

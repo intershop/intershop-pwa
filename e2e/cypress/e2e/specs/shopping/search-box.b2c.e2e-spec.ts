@@ -13,7 +13,6 @@ describe('Search Box', () => {
 
   afterEach(() => {
     at(SearchResultPage, page => {
-      page.title.should('contain', '22 items');
       page.title.should('contain', 'kensington');
       page.header.searchBox.text.should('contain', 'ken');
       page.header.searchBox.assertSuggestionsNoDisplayed();
