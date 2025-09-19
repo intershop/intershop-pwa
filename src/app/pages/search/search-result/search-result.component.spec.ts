@@ -51,15 +51,11 @@ describe('Search Result Component', () => {
 
   it('should render headline with search term on template', () => {
     component.searchTerm = 'Test Search Term';
-    component.totalItems = 111;
-    translate.set('search.title.text', '{{1}} - {{2}}');
+    translate.set('search.title.short.text', '{{1}}');
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id=search-result-page] h1')).toBeTruthy();
     expect(element.querySelector('[data-testing-id=search-result-page] h1').textContent).toContain(
       component.searchTerm
-    );
-    expect(element.querySelector('[data-testing-id=search-result-page] h1').textContent).toContain(
-      component.totalItems.toString()
     );
   });
 });
