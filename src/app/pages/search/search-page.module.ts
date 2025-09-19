@@ -12,6 +12,9 @@ const searchPageRoutes: Routes = [
   {
     path: ':searchTerm',
     component: SearchPageComponent,
+    data: {
+      breadcrumbData: [{ key: 'search.breadcrumbs.your_search.label' }],
+    },
   },
 ];
 

@@ -305,15 +305,11 @@ describe('Shopping Store', () => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
           @ngrx/router-store/request: /search/something
           @ngrx/router-store/navigation: /search/something
-          [Viewconf Internal] Set Breadcrumb Data:
-            breadcrumbData: [{"text":"search.breadcrumbs.your_search.label something"}]
           @ngrx/router-store/navigated: /search/something
           [Suggest Search Term Internal] Add Search Terms to Suggestion:
             searchTerm: "something"
           [Product Listing] Load More Products:
             id: {"type":"search","value":"something"}
-          [Viewconf Internal] Set Breadcrumb Data:
-            breadcrumbData: [{"text":"search.breadcrumbs.your_search.label something"}]
           [Product Listing Internal] Load More Products For Params:
             id: {"type":"search","value":"something"}
             filters: undefined
@@ -538,15 +534,11 @@ describe('Shopping Store', () => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
           @ngrx/router-store/request: /search/something
           @ngrx/router-store/navigation: /search/something
-          [Viewconf Internal] Set Breadcrumb Data:
-            breadcrumbData: [{"text":"search.breadcrumbs.your_search.label something"}]
           @ngrx/router-store/navigated: /search/something
           [Suggest Search Term Internal] Add Search Terms to Suggestion:
             searchTerm: "something"
           [Product Listing] Load More Products:
             id: {"type":"search","value":"something"}
-          [Viewconf Internal] Set Breadcrumb Data:
-            breadcrumbData: [{"text":"search.breadcrumbs.your_search.label something"}]
           [Product Listing Internal] Load More Products For Params:
             id: {"type":"search","value":"something"}
             filters: undefined
@@ -925,8 +917,6 @@ describe('Shopping Store', () => {
           searchTerm: "something"
         [Product Listing] Load More Products:
           id: {"type":"search","value":"something"}
-        [Viewconf Internal] Set Breadcrumb Data:
-          breadcrumbData: [{"text":"search.breadcrumbs.your_search.label something"}]
         [Product Listing Internal] Load More Products For Params:
           id: {"type":"search","value":"something"}
           filters: undefined
