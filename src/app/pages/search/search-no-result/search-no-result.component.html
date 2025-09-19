@@ -28,6 +28,9 @@
     <div class="search-guidelines" [innerHTML]="'search.noresult.guidelines' | translate"></div>
   </div>
 
+  <h2>{{ 'search.noresult.contact.heading' | translate }}</h2>
+  <div [ishServerHtml]="'search.noresult.contact.message' | translate"></div>
+
   <div class="marketing-area">
     <ish-content-include includeId="include.searchnoresult.content.bottom.pagelet2-Include" />
   </div>
