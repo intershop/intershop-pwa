@@ -21,6 +21,14 @@ import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level
 import { METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
 import { icmCallsCache } from './src/app/core/interceptors/universal-cache.interceptor';
 import { Agent, install, setGlobalDispatcher, interceptors } from 'undici';
+import { writeHeapSnapshot } from 'v8';
+
+process.on('SIGUSR2', () => {
+  const pm2Name = process.env.name || 'no-pm2';
+  const filename = `/tmp/Heap.${pm2Name}.${process.pid}.${new Date().toISOString()}.heapsnapshot`;
+  writeHeapSnapshot(filename);
+  console.log(`Heap snapshot written to ${filename}`);
+});
 
 // allowing HTTP/2 uses HTTPClient withFetch() and undici agent allowH2 option
 if (/on|1|true|yes/.test(process.env.ALLOW_H2?.toLowerCase())) {
