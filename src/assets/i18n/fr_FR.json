@@ -1382,6 +1382,7 @@
   "search.noResult.message": "Votre recherche pour <strong>\"{{0}}\"</strong> a retourné 0 résultat.",
   "search.noresult.filtered_products.message": "Nous sommes désolés, nous n’avons pu trouver aucun produit correspondant à votre choix de filtre.",
   "search.noresult.guidelines": "<p>Conseils et directives de recherche</p><ol><li>Vérifiez l’orthographe. Essayez de varier l’orthographe ou parcourez nos listes de catégories de produits qui apparaissent sur notre page d’accueil.</li><li>Limitez la recherche à un ou deux termes.</li><li>Soyez moins précis dans votre terminologie. L’utilisation d’un terme plus général est susceptible de vous mener à des produits similaires et connexes.",
+  "search.noresult.searchbox.heading": "Réessayer ?",
   "search.searchbox.button.reset.title": "Retirer terme de recherche",
   "search.searchbox.button.sticky_header.aria_label": "Ouvrir la recherche",
   "search.searchbox.button.title": "Lancer la recherche.",

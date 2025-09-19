@@ -17,14 +17,16 @@
   ></p>
 
   <div class="search-container main-search-container">
-    <ish-search-box
-      [configuration]="{
+    <div class="search-box-container">
+      <h2>{{ 'search.noresult.searchbox.heading' | translate }}</h2>
+      <ish-search-box
+        [configuration]="{
         placeholder: 'search.searchbox.instructional_text' | translate,
       }"
-    />
+      />
+    </div>
+    <div class="search-guidelines" [innerHTML]="'search.noresult.guidelines' | translate"></div>
   </div>
-
-  <div class="search-guidelines" [innerHTML]="'search.noresult.guidelines' | translate"></div>
 
   <div class="marketing-area">
     <ish-content-include includeId="include.searchnoresult.content.bottom.pagelet2-Include" />
