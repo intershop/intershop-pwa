@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { HtmlEncodePipe } from 'ish-core/pipes/html-encode.pipe';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
@@ -22,6 +23,7 @@ describe('Search No Result Component', () => {
         MockComponent(BreadcrumbComponent),
         MockComponent(ContentIncludeComponent),
         MockComponent(SearchBoxComponent),
+        MockDirective(ServerHtmlDirective),
         MockPipe(HtmlEncodePipe, value => value),
         SearchNoResultComponent,
       ],

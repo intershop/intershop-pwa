@@ -1380,6 +1380,8 @@
   "search.mobile.filter.trigger": "Filters",
   "search.noResult.heading": "No results found:",
   "search.noResult.message": "Your search for <span>\"{{0}}\"</span> returned 0 results.",
+  "search.noresult.contact.heading": "Do you need further assistance?",
+  "search.noresult.contact.message": "<p>Contact our <a href=\"route://contact\">customer service</a>. We are happy to help you find what you're looking for or provide guidance based on your specific needs.</p>",
   "search.noresult.filtered_products.message": "We are sorry, we could not find any products that match your filter choice.",
   "search.noresult.guidelines": "<p>Search tips &amp; guidelines</p><ol><li>Double-check the spelling. Try varying the spelling, or browse our lists of product categories that appear on our homepage.</li><li>Limit the search to one or two terms.</li><li>Be less specific in your terminology. Using (a) more general term(s) is likely to lead you to similar and related products.</li></ol>",
   "search.noresult.searchbox.heading": "Try again?",

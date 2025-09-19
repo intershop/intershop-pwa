@@ -1380,6 +1380,8 @@
   "search.mobile.filter.trigger": "Filtres",
   "search.noResult.heading": "Aucun résultat trouvé :",
   "search.noResult.message": "Votre recherche pour <strong>\"{{0}}\"</strong> a retourné 0 résultat.",
+  "search.noresult.contact.heading": "Avez-vous besoin d’une assistance supplémentaire ?",
+  "search.noresult.contact.message": "<p>Contactez notre <a href=\"route://contact\">service client</a>. Nous sommes heureux de vous aider à trouver ce que vous cherchez ou de vous conseiller en fonction de vos besoins spécifiques.</p>",
   "search.noresult.filtered_products.message": "Nous sommes désolés, nous n’avons pu trouver aucun produit correspondant à votre choix de filtre.",
   "search.noresult.guidelines": "<p>Conseils et directives de recherche</p><ol><li>Vérifiez l’orthographe. Essayez de varier l’orthographe ou parcourez nos listes de catégories de produits qui apparaissent sur notre page d’accueil.</li><li>Limitez la recherche à un ou deux termes.</li><li>Soyez moins précis dans votre terminologie. L’utilisation d’un terme plus général est susceptible de vous mener à des produits similaires et connexes.",
   "search.noresult.searchbox.heading": "Réessayer ?",
