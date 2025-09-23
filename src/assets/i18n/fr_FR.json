@@ -738,7 +738,7 @@
   "approval.detailspage.order_date.label": "Date de création",
   "approval.detailspage.order_details.heading": "Détails de la Commande",
   "approval.detailspage.order_reference_id.label": "{{recurring, select, =true{N° de la commande périodique} =false{N° de la commande}}}",
-  "approval.detailspage.order_reference_id.title": "{{recurring, select, =true{Recurring order number}} =false{Order number}}}",
+  "approval.detailspage.order_reference_id.title": "{{recurring, select, =true{Numéro de la commande périodique}} =false{Numéro de commande}}}",
   "approval.detailspage.order_spend_limit.label": "Limite de dépenses de la commande",
   "approval.detailspage.order_total.label": "Total",
   "approval.detailspage.reject.button.label": "Rejeter",
