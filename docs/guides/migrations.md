@@ -59,12 +59,12 @@ The Intershop PWA now contains [custom instructions for GitHub Copilot](https://
 These instructions provide additional project-specific context to Copilot to optimize the code suggestions for the Intershop PWA and its customizations.
 
 Intershop PWA 8.0.0 provides functionality to support recurring orders.
-To enable the recurring order support in the PWA, ICM 13.x with the Recurring Orders Extension 2.2.0 (`icm-as-customization-recurringorders:2.2.0`) is required.
+To enable the recurring order support in the PWA, ICM 13.x with the Recurring Orders Extension 2.2.1 (`icm-as-customization-recurringorders:2.2.1`) is required.
 In addition, the "Recurring Orders" feature must be enabled in ICM (go to the channel > _Preferences > Recurring Orders_ and ensure the check box is _Enabled_).
 
 New content includes were added to the My Account area.
 They provide three general places to add content to all account pages, two specific places for the account overview page, and two specific ones for the order history page.
-To use these content includes, an ICM with `icm-as-customization-headless:3.1.0.` or newer is required.
+To use these content includes, an ICM with `icm-as-customization-headless:3.1.0` or newer is required.
 If the connected ICM does not provide the new content includes, it is best to skip/revert these changes to avoid failing CMS REST requests (will not lead to errors in the application, but they will appear in the browser console).
 
 With the Intershop PWA 8.0.0 release, the Tacton integration to handle complex product configuration scenarios was removed.

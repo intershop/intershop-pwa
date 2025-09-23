@@ -7,6 +7,77 @@ kb_everyone
 
 # Changelog
 
+## [8.0.0](https://github.com/intershop/intershop-pwa/releases/tag/8.0.0) (2025-09-23)
+
+> [!NOTE]
+> Intershop PWA 8.0.0 was developed and tested with Intershop Commerce Management (ICM) version ICM 13.1.2.
+> It will work with all versions from ICM ICM 13.1.2 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> _PWA 8.0.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
+>
+> The PWA was developed and tested using Node.js version 22.17.1 LTS (including npm 10.9.2), which is the recommended version.
+>
+> Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.9.3 for PWA 8.0.0 deployments.
+
+### Features
+
+- render CMS content pages in account context (#1909) ([3add3bf](https://github.com/intershop/intershop-pwa/commit/3add3bf))
+- add account content includes (#1904) ([6808763](https://github.com/intershop/intershop-pwa/commit/6808763))
+- recurring orders support (#1690) ([c5722e1](https://github.com/intershop/intershop-pwa/commit/c5722e1))
+- introduce Server Setting route guard ([a023c02](https://github.com/intershop/intershop-pwa/commit/a023c02))
+- introduce Switch component (UI element for imidiate status changes) ([c02d3b8](https://github.com/intershop/intershop-pwa/commit/c02d3b8))
+- introduce Formly information wrapper for rendering any freestyle text within generated forms ([c7f8d30](https://github.com/intershop/intershop-pwa/commit/c7f8d30))
+- introduce Formly number field (quantity input with + and - buttons) ([fb77186](https://github.com/intershop/intershop-pwa/commit/fb77186))
+- select a pagelet triggered by design view (#1886) ([81344c8](https://github.com/intershop/intershop-pwa/commit/81344c8))
+- integrate GitHub Copilot instructions for Intershop PWA ([8ec4992](https://github.com/intershop/intershop-pwa/commit/8ec4992))
+- use inline editing for order template renaming (#1804) ([2e02a3d](https://github.com/intershop/intershop-pwa/commit/2e02a3d))
+- cost center management pagination and search (#1794) ([8f198d5](https://github.com/intershop/intershop-pwa/commit/8f198d5))
+- order history pagination instead of "load more" (#1776) ([8176b09](https://github.com/intershop/intershop-pwa/commit/8176b09))
+- Node.js update to version 22.17.1 (including npm 10.9.2) (#1819) ([35d80fd](https://github.com/intershop/intershop-pwa/commit/35d80fd))
+- **NGINX** update OpenResty/NGINX and re-enable `lua-resty-redis-connector` installation (#1876) ([db2f9dd](https://github.com/intershop/intershop-pwa/commit/db2f9dd))
+- **NGINX, SSR:** add NGINX and SSR ICM REST calls cache clearing via ICM page cache invalidation (#1877) ([e1cd76c](https://github.com/intershop/intershop-pwa/commit/e1cd76c))
+- **SSR:** allow back-end requests to use Fetch API with HTTP/2 protocol enabled (experimental) (#1865) ([75dc2ca](https://github.com/intershop/intershop-pwa/commit/75dc2ca))
+- **REMOVED:** remove Sentry client-side error monitoring integration (#1907) ([2abba88](https://github.com/intershop/intershop-pwa/commit/2abba88))
+- **REMOVED:** remove Tacton product configuration integration (#1906) ([7bb47a7](https://github.com/intershop/intershop-pwa/commit/7bb47a7))
+
+### Bug Fixes
+
+- suggested brand link lead to wrong search behavior (#1908) ([6c1edd7](https://github.com/intershop/intershop-pwa/commit/6c1edd7))
+- wrong route based breadcrumb after navigating away from content pages with breadcrumb ([9141b52](https://github.com/intershop/intershop-pwa/commit/9141b52))
+- prevent unnecessary multiple suggestions requests (#1897) ([f8dc45a](https://github.com/intershop/intershop-pwa/commit/f8dc45a))
+- prevent search input overlapping logo on desktop (intended on tablet) and focus styling for a11y (#1887) ([6947e57](https://github.com/intershop/intershop-pwa/commit/6947e57))
+- prevent display of search suggest layer after search was executed on mobile (#1881) ([9e5031f](https://github.com/intershop/intershop-pwa/commit/9e5031f))
+- select the most recently created "New" quote request when adding a product to quote request (#1875) ([0ecf996](https://github.com/intershop/intershop-pwa/commit/0ecf996))
+- display captcha validation errors (#1870) ([6312225](https://github.com/intershop/intershop-pwa/commit/6312225))
+- **accessibility:** add info message if a quote is empty (#1891) ([df59fe5](https://github.com/intershop/intershop-pwa/commit/df59fe5))
+- **Hybrid Approach:** initialize token handling correctly after apiToken cookie reload (#1798) ([fa72884](https://github.com/intershop/intershop-pwa/commit/fa72884))
+- **Hybrid Approach:** apply `hybridApplication` configuration on client side (#1798) ([c0b27df](https://github.com/intershop/intershop-pwa/commit/c0b27df))
+- **Hybrid Approach:** prevent the wrong port from being used in the Responsive Starter Store (#1798) ([f507416](https://github.com/intershop/intershop-pwa/commit/f507416))
+
+### Documentation
+
+- documentation adjustments + punchout header migration note (#1900) ([4107a5f](https://github.com/intershop/intershop-pwa/commit/4107a5f))
+- **Hybrid Approach:** update Hybrid Approach documentation for ICM 13+ and PWA 8+ (#1798) ([6a8d025](https://github.com/intershop/intershop-pwa/commit/6a8d025))
+
+### BREAKING CHANGES
+
+- **Hybrid Approach:** To address token handling issues that occurred in Hybrid Approach scenarios, the `loadUserByAPIToken` action was changed to require a `payload` object with an optional `apiToken` as parameter (see [Migrations / From 7.1.0 to 8.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-710-to-800) for more details).
+- Updated content projection selectors of `InPlaceEditComponent` from CSS classes to HTML attributes for better semantic clarity (see [Migrations / From 7.1.0 to 8.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-710-to-800) for more details).
+- The cost center management enhancements require ICM 13.1.0 or newer that provides the new Cost Center REST API 2.0.0 that supports paging and search (see [Migrations / From 7.1.0 to 8.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-710-to-800) for more details).
+- The order history listing enhancements require ICM 13.1.0 or newer that provides the extended Order REST API 1.8.0 that returns the needed paging info (see [Migrations / From 7.1.0 to 8.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-710-to-800) for more details).
+- **NGINX** The OpenResty/NGINX image was updated to version 1.27.1.2. It includes the fixed LuaRocks package manager (version 3.12.0) so the `lua-resty-redis-connector` installation with `luarocks` was re-enabled.
+- The Intershop PWA now uses Node.js 22.17.1 LTS with the corresponding npm version 10.9.2 (see [Migrations / From 7.1.0 to 8.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-710-to-800) for more details).
+- **REMOVED:** The Sentry client-side error monitoring integration was removed.
+- **REMOVED:** The Tacton product configuration integration was removed.
+
+### CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS
+
+- add account content includes (#1904) - icm-as-customization-headless:3.1.0
+- recurring orders support (#1690) - ICM 13.1.2 + Recurring Orders Extension 2.2.1
+- cost center management pagination and search (#1794) - ICM 13.1.0 (Cost Center REST API 2.0.0)
+- order history pagination instead of "load more" (#1776) - ICM 13.1.0 (Order REST API 1.8.0)
+
 ## [7.1.0](https://github.com/intershop/intershop-pwa/releases/tag/7.1.0) (2025-07-24)
 
 > [!NOTE]
