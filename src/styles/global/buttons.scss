@@ -6,10 +6,10 @@
 
   &:not(.btn-link) {
     @media (max-width: $screen-xs-max) {
+      clear: both;
       display: block;
       width: 100%;
       margin-bottom: $space-default;
-      clear: both;
     }
   }
 
@@ -99,8 +99,8 @@
 
   &.btn-link {
     font-family: $font-family-regular;
-    text-decoration: none;
     text-transform: unset;
+    text-decoration: none;
     border: none;
   }
 
@@ -123,8 +123,8 @@
 
 button.btn-link {
   font-family: $font-family-regular;
-  text-decoration: none;
   text-transform: unset;
+  text-decoration: none;
 
   &.btn-tool {
     padding: 0;

@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, concatMap, map } from 'rxjs/operators';
+import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 
 import { AddressData } from 'ish-core/models/address/address.interface';
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
@@ -17,11 +17,13 @@ import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/bas
 import { BasketBaseData, BasketData } from 'ish-core/models/basket/basket.interface';
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { OrderService } from 'ish-core/services/order/order.service';
+import { TokenService } from 'ish-core/services/token/token.service';
 
 export type BasketUpdateType =
   | { commonShippingMethod: string }
@@ -30,7 +32,8 @@ export type BasketUpdateType =
   | { costCenter: string }
   | { externalOrderReference: string }
   | { invoiceToAddress: string }
-  | { messageToMerchant: string };
+  | { messageToMerchant: string }
+  | { recurrence: Recurrence };
 
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
@@ -39,7 +42,7 @@ export type BasketUpdateType =
  */
 @Injectable({ providedIn: 'root' })
 export class BasketService {
-  constructor(private apiService: ApiService, private orderService: OrderService) {}
+  constructor(private apiService: ApiService, private orderService: OrderService, private tokenService: TokenService) {}
 
   /**
    * http header for Basket API v1
@@ -133,12 +136,16 @@ export class BasketService {
   getBasketByToken(apiToken: string): Observable<Basket> {
     const params = new HttpParams().set('include', this.allBasketIncludes.join());
 
-    return this.apiService
-      .get<BasketData>(`baskets/current`, {
-        headers: this.basketHeaders.set(ApiService.TOKEN_HEADER_KEY, apiToken),
-        params,
-      })
-      .pipe(map(BasketMapper.fromData));
+    return this.tokenService.fetchToken('refresh_token', { refresh_token: apiToken }).pipe(
+      switchMap(() =>
+        this.apiService
+          .get<BasketData>(`baskets/current`, {
+            headers: this.basketHeaders.set(ApiService.TOKEN_HEADER_KEY, apiToken),
+            params,
+          })
+          .pipe(map(BasketMapper.fromData))
+      )
+    );
   }
 
   /**

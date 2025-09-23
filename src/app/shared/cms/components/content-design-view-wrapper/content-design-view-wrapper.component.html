@@ -1,5 +1,5 @@
 <ng-container *ngIf="isDesignViewMode && type; else cmsOutlet">
-  <div class="design-view-wrapper" [ngClass]="type">
+  <div class="design-view-wrapper" [ngClass]="[type, (isPageletSelected$ | async) ? 'pagelet-selected' : '']">
     <div class="design-view-wrapper-actions">
       <ng-container [ngSwitch]="type">
         <!-- pagelet -->
@@ -13,7 +13,6 @@
                 ('designview.edit.link.title' | translate) + (pagelet.displayName ? ' ' + pagelet.displayName : '')
               }}"
             >
-              {{ pagelet.displayName ? pagelet.displayName : '(Language missing)' }}
               <fa-icon [icon]="['fas', 'pencil-alt']" />
             </button>
             <!--

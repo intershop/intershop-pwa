@@ -1,3 +1,5 @@
+# add-header.conf
+
 {{ $headers := (datasource "additionalHeaders").headers -}}
 
 {{- range $headers }}

@@ -1,0 +1,57 @@
+@import 'variables';
+
+.custom-control-input {
+  // OFF
+  // default
+  & ~ .custom-control-label::before {
+    background-color: $text-color-tertiary;
+    border-color: $text-color-tertiary;
+
+    // remove the transition halo effect
+    box-shadow: none;
+  }
+  // hover
+  &:hover ~ .custom-control-label::before {
+    background-color: $gray-600;
+    border-color: $gray-600;
+  }
+  // active
+  &:active ~ .custom-control-label::before {
+    background-color: $gray-900;
+    border-color: $gray-900;
+  }
+  // disabled
+  &:disabled ~ .custom-control-label::before {
+    background-color: $gray-300;
+    border-color: $gray-300;
+  }
+
+  // ON
+  // default
+  &:checked {
+    & ~ .custom-control-label::before {
+      background-color: $CORPORATE-PRIMARY;
+      border-color: $CORPORATE-PRIMARY;
+    }
+    // hover
+    &:hover ~ .custom-control-label::before {
+      background-color: $CORPORATE-SECONDARY;
+      border-color: $CORPORATE-SECONDARY;
+    } // active
+    &:active ~ .custom-control-label::before {
+      background-color: $CORPORATE-DARK;
+      border-color: $CORPORATE-DARK;
+    }
+    // disabled
+    &:disabled ~ .custom-control-label::before {
+      background-color: $gray-300;
+      border-color: $gray-300;
+    }
+  }
+
+  // GENERAL STYLES
+  // set the handle color
+  & ~ .custom-control-label::after {
+    background-color: $white;
+  }
+}

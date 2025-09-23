@@ -52,7 +52,7 @@ export class OrdersEffects {
       concatLatestFrom(() => this.store.pipe(select(getCurrentBasketId))),
       mergeMap(([, basketId]) =>
         this.orderService.createOrder(basketId, true).pipe(
-          map(order => createOrderSuccess({ order })),
+          map(order => createOrderSuccess({ order, basketId })),
           mapErrorToAction(createOrderFail)
         )
       )
@@ -66,9 +66,9 @@ export class OrdersEffects {
     () =>
       this.actions$.pipe(
         ofType(createOrderSuccess),
-        mapToPayloadProperty('order'),
-        filter(order => !order?.orderCreation || order.orderCreation.status !== 'ROLLED_BACK'),
-        concatMap(order => {
+        mapToPayload(),
+        filter(({ order }) => !order?.orderCreation || order.orderCreation.status !== 'ROLLED_BACK'),
+        concatMap(({ order, basketId }) => {
           if (
             order.orderCreation &&
             order.orderCreation.status === 'STOPPED' &&
@@ -77,6 +77,11 @@ export class OrdersEffects {
           ) {
             location.assign(order.orderCreation.stopAction.redirectUrl);
             return EMPTY;
+          } else if (
+            order.orderCreation?.status === 'STOPPED' &&
+            order.orderCreation.stopAction.exitReason === 'recurring.order'
+          ) {
+            return from(this.router.navigate(['/checkout/receipt'], { queryParams: { recurringOrderId: basketId } }));
           } else {
             return from(this.router.navigate(['/checkout/receipt'], { queryParams: { orderId: order.id } }));
           }
@@ -117,7 +122,7 @@ export class OrdersEffects {
       mapToPayloadProperty('query'),
       switchMap(query =>
         this.orderService.getOrders(query).pipe(
-          map(orders => loadOrdersSuccess({ orders, query, allRetrieved: orders.length < query.limit })),
+          map(orders => loadOrdersSuccess({ orders: orders.orders, query, paging: orders.paging })),
           mapErrorToAction(loadOrdersFail)
         )
       )
@@ -127,8 +132,9 @@ export class OrdersEffects {
   loadMoreOrders$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadMoreOrders),
+      mapToPayload(),
       concatLatestFrom(() => this.store.pipe(select(getOrderListQuery))),
-      map(([, query]) => loadOrders({ query: { ...query, offset: (query?.offset ?? 0) + query.limit } }))
+      map(([payload, query]) => loadOrders({ query: { ...query, offset: payload.offset, limit: payload.limit } }))
     )
   );
 

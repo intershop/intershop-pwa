@@ -10,6 +10,7 @@ import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-in
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
 import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { PriceItemData } from 'ish-core/models/price-item/price-item.interface';
+import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 
 export interface BasketBaseData {
@@ -55,6 +56,7 @@ export interface BasketBaseData {
     firstName: string;
     lastName: string;
   };
+  recurrence?: Recurrence;
 }
 
 export interface BasketIncludedData {

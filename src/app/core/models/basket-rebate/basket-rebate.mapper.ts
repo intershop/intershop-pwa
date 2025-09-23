@@ -9,8 +9,6 @@ export class BasketRebateMapper {
       return {
         id: data.id,
         amount: PriceItemMapper.fromPriceItem(data.amount),
-        description: data.description,
-        rebateType: data.promotionType,
         code: data.code,
         promotionId: data.promotion,
       };

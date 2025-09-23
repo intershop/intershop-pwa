@@ -30,6 +30,11 @@ export const getBreadcrumbForContentPage = (rootId: string) =>
     getSelectedContentPage,
     getPageTree,
     (contentPage: ContentPageletEntryPointView, pagetree: ContentPageTree) => {
+      // return undefined if no contentPage is selected (instead of an array with undefined key entry)
+      if (!contentPage) {
+        return;
+      }
+
       // set default breadcrumb data: just the selected content page name
       let breadcrumbData = [{ key: contentPage?.displayName }] as BreadcrumbItem[];
       // initialize root flag (no root yet)

@@ -257,6 +257,7 @@ export class ShoppingFacade {
 
   suggestResults$(searchTerm: Observable<string>) {
     return searchTerm.pipe(
+      distinctUntilChanged(),
       debounceTime(400),
       filter(term => term.length > 2),
       tap(term => this.store.dispatch(suggestSearch({ searchTerm: term }))),

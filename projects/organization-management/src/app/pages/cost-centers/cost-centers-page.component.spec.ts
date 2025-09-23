@@ -8,6 +8,7 @@ import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
+import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
@@ -15,6 +16,7 @@ import { BudgetInfoComponent } from '../../components/budget-info/budget-info.co
 import { CostCenterBudgetComponent } from '../../components/cost-center-budget/cost-center-budget.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
+import { CostCentersFilterComponent } from './cost-centers-filter/cost-centers-filter.component';
 import { CostCentersPageComponent } from './cost-centers-page.component';
 
 describe('Cost Centers Page Component', () => {
@@ -24,10 +26,16 @@ describe('Cost Centers Page Component', () => {
   let organizationManagementFacade: OrganizationManagementFacade;
 
   const costCenters = [
-    { id: '123', name: 'cost center 1', active: true },
-    { id: '345', name: 'cost center 2', active: false },
-    { id: '678', name: 'cost center 3', active: true },
+    { id: '123', name: 'cost center 1', active: true, paginationPosition: 1 },
+    { id: '345', name: 'cost center 2', active: false, paginationPosition: 2 },
+    { id: '678', name: 'cost center 3', active: true, paginationPosition: 3 },
   ] as CostCenter[];
+
+  const pagingInfo = {
+    offset: 0,
+    limit: 30,
+    total: 3,
+  } as PagingInfo;
 
   beforeEach(async () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
@@ -37,6 +45,7 @@ describe('Cost Centers Page Component', () => {
         CostCentersPageComponent,
         MockComponent(BudgetInfoComponent),
         MockComponent(CostCenterBudgetComponent),
+        MockComponent(CostCentersFilterComponent),
         MockComponent(FaIconComponent),
         MockComponent(LoadingComponent),
         MockComponent(ModalDialogComponent),
@@ -45,6 +54,7 @@ describe('Cost Centers Page Component', () => {
     }).compileComponents();
 
     when(organizationManagementFacade.costCenters$).thenReturn(of(costCenters));
+    when(organizationManagementFacade.costCentersPagingInfo$).thenReturn(of(pagingInfo));
     when(organizationManagementFacade.isCostCenterEditable(anything())).thenReturn(of(true));
   });
 

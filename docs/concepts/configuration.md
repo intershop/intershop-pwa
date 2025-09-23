@@ -198,8 +198,6 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 | **Third-party Integrations** |                                                                                                                                                 |
 | copilot                      | Intershop Copilot integration for embedded chatbot (requires an additional `copilot` configuration)                                             |
 | maps                         | Google Maps integration for locating stores (used with the `storeLocator` feature, additional configuration via `gmaKey`)                       |
-| sentry                       | Sentry error tracking and monitoring (additional configuration via `sentryDSN`)                                                                 |
-| tacton                       | Tacton product configuration integration (additional configuration via `tacton` and `dataRetention` configuration options)                      |
 | tracking                     | Google Tag Manager tracking (additional configuration via `gtmToken`)                                                                           |
 | **ICM compatibility**        |                                                                                                                                                 |
 | legacyEncoding               | Use URL resource encoding for ICM 7.10 and ICM 11                                                                                               |

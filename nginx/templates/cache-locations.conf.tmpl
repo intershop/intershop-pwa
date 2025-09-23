@@ -1,3 +1,10 @@
+# cache-locations.conf
+
+location /PURGE_CACHE_ICM_CALLS {
+  allow 127.0.0.1;
+  deny all;
+}
+
 {{- if and (getenv "CACHE" | strings.ToLower | regexp.Match "on|1|true|yes") (getenv "REDIS_URI") -}}
 location /redis-fetch {
     internal;

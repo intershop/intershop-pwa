@@ -1,17 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { anything, instance, mock, objectContaining, verify, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { InPlaceEditComponent } from 'ish-shared/components/common/in-place-edit/in-place-edit.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate } from '../../models/order-template/order-template.model';
-import { OrderTemplatePreferencesDialogComponent } from '../../shared/order-template-preferences-dialog/order-template-preferences-dialog.component';
 
 import { AccountOrderTemplateDetailLineItemComponent } from './account-order-template-detail-line-item/account-order-template-detail-line-item.component';
 import { AccountOrderTemplateDetailPageComponent } from './account-order-template-detail-page.component';
@@ -21,18 +24,25 @@ describe('Account Order Template Detail Page Component', () => {
   let fixture: ComponentFixture<AccountOrderTemplateDetailPageComponent>;
   let element: HTMLElement;
   let orderTemplatesFacade: OrderTemplatesFacade;
+  const initial = {
+    title: 'Order Template',
+    items: [{ sku: '123', desiredQuantity: { value: 1 } }],
+    itemsCount: 1,
+  };
 
   beforeEach(async () => {
     orderTemplatesFacade = mock(OrderTemplatesFacade);
     when(orderTemplatesFacade.currentOrderTemplateOutOfStockItems$).thenReturn(of([]));
+    when(orderTemplatesFacade.currentOrderTemplate$).thenReturn(of(initial as OrderTemplate));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
       declarations: [
         AccountOrderTemplateDetailPageComponent,
+        InPlaceEditComponent,
         MockComponent(AccountOrderTemplateDetailLineItemComponent),
         MockComponent(ErrorMessageComponent),
-        MockComponent(OrderTemplatePreferencesDialogComponent),
+        MockComponent(FaIconComponent),
         MockComponent(ProductAddToBasketComponent),
         MockDirective(ProductContextDirective),
       ],
@@ -52,7 +62,7 @@ describe('Account Order Template Detail Page Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  describe('template without items', () => {
+  describe('order template without items', () => {
     beforeEach(() => {
       when(orderTemplatesFacade.currentOrderTemplate$).thenReturn(
         of({
@@ -64,44 +74,29 @@ describe('Account Order Template Detail Page Component', () => {
     });
 
     it('should display standard elements when rendering empty template', () => {
-      when(orderTemplatesFacade.currentOrderTemplate$).thenReturn(
-        of({
-          title: 'Order Template',
-          items: [],
-          itemsCount: 0,
-        } as OrderTemplate)
-      );
       fixture.detectChanges();
 
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
-          [
-            "ish-error-message",
-            "ish-order-template-preferences-dialog",
-          ]
-        `);
+        [
+          "ish-error-message",
+          "ish-in-place-edit",
+          "fa-icon",
+        ]
+      `);
     });
   });
 
-  describe('template with item', () => {
-    beforeEach(() => {
-      when(orderTemplatesFacade.currentOrderTemplate$).thenReturn(
-        of({
-          title: 'Order Template',
-          items: [{ sku: '123', desiredQuantity: { value: 1 } }],
-          itemsCount: 1,
-        } as OrderTemplate)
-      );
-    });
-
+  describe('order template with item', () => {
     it('should display line item elements when rendering template with item', () => {
       fixture.detectChanges();
 
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
         [
           "ish-error-message",
+          "ish-in-place-edit",
+          "fa-icon",
           "ish-account-order-template-detail-line-item",
           "ish-product-add-to-basket",
-          "ish-order-template-preferences-dialog",
         ]
       `);
     });
@@ -117,6 +112,46 @@ describe('Account Order Template Detail Page Component', () => {
       fixture.detectChanges();
 
       expect(element.querySelector('[data-testing-id="out-of-stock-warning"]')).toBeTruthy();
+    });
+  });
+
+  describe('order template name inline editing', () => {
+    it('should call facade.updateOrderTemplate when in-place-edit emits edited', () => {
+      fixture.detectChanges();
+      component.model.title = 'New Title';
+
+      const ipedeDE = fixture.debugElement.query(By.directive(InPlaceEditComponent));
+      ipedeDE.triggerEventHandler('edited', undefined);
+
+      verify(
+        orderTemplatesFacade.updateOrderTemplate(
+          objectContaining({
+            title: 'New Title',
+          })
+        )
+      ).once();
+    });
+
+    it('should not call updateOrderTemplate when title is unchanged', () => {
+      fixture.detectChanges();
+      component.model.title = initial.title;
+
+      const ipedeDE = fixture.debugElement.query(By.directive(InPlaceEditComponent));
+      ipedeDE.triggerEventHandler('edited', undefined);
+
+      verify(orderTemplatesFacade.updateOrderTemplate(anything())).never();
+    });
+
+    it('should reset title when in-place-edit emits aborted', () => {
+      fixture.detectChanges();
+      component.model.title = 'Some Other';
+      expect(component.model.title).toBe('Some Other');
+
+      const ipedeDE = fixture.debugElement.query(By.directive(InPlaceEditComponent));
+      ipedeDE.triggerEventHandler('aborted', undefined);
+
+      expect(component.model.title).toBe(initial.title);
+      verify(orderTemplatesFacade.updateOrderTemplate(anything())).never();
     });
   });
 });

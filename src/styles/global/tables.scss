@@ -2,10 +2,6 @@
 @mixin list-header-mixin() {
   border-top: 0;
   border-bottom: 1px solid $border-color-default;
-
-  &.no-separator {
-    border-bottom: 0;
-  }
 }
 
 @mixin list-header-item() {
@@ -307,13 +303,13 @@ table.mobile-optimized.table-lg {
       border-bottom: 1px solid $border-color-lighter;
 
       td {
+        float: left;
+        clear: both;
         display: flex;
         align-items: flex-start;
-        float: left;
         width: 100%;
         padding: 0;
         margin-bottom: divide($space-default, 3);
-        clear: both;
         border: none;
 
         &::before {

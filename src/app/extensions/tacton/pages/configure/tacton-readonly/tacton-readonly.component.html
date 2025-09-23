@@ -1,6 +1,0 @@
-<ng-container *ngIf="parameter?.value?.startsWith('http'); else elseTemplate">
-  <a [href]="parameter.value" target="_blank">{{ parameter.valueDescription }}</a>
-</ng-container>
-<ng-template #elseTemplate>
-  <p>{{ parameter.valueDescription }}</p>
-</ng-template>

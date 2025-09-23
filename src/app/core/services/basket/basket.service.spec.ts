@@ -1,5 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { TokenResponse } from 'angular-oauth2-oidc';
 import { noop, of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
@@ -7,6 +8,7 @@ import { Address } from 'ish-core/models/address/address.model';
 import { BasketData } from 'ish-core/models/basket/basket.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { OrderService } from 'ish-core/services/order/order.service';
+import { TokenService } from 'ish-core/services/token/token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
@@ -16,6 +18,7 @@ describe('Basket Service', () => {
   let basketService: BasketService;
   let apiService: ApiService;
   let orderService: OrderService;
+  let tokenService: TokenService;
 
   const basketMockData = {
     data: {
@@ -33,6 +36,7 @@ describe('Basket Service', () => {
   beforeEach(() => {
     apiService = mock(ApiService);
     orderService = mock(OrderService);
+    tokenService = mock(TokenService);
 
     when(apiService.currentBasketEndpoint()).thenReturn(instance(apiService));
     when(apiService.encodeResourceId(anything())).thenCall(id => id);
@@ -41,6 +45,7 @@ describe('Basket Service', () => {
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },
         { provide: OrderService, useFactory: () => instance(orderService) },
+        { provide: TokenService, useFactory: () => instance(tokenService) },
       ],
     });
 
@@ -73,6 +78,9 @@ describe('Basket Service', () => {
 
   it('should load a basket by token when requested and successful', done => {
     when(apiService.get(anything(), anything())).thenReturn(of(basketMockData));
+    when(tokenService.fetchToken('refresh_token', anything())).thenReturn(
+      of({ access_token: 'dummy' } as TokenResponse)
+    );
 
     basketService.getBasketByToken('dummy').subscribe(data => {
       verify(apiService.get(anything(), anything())).once();

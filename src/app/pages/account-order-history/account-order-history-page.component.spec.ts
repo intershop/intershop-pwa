@@ -6,6 +6,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { OrderListComponent } from 'ish-shared/components/order/order-list/order-list.component';
 
@@ -25,6 +26,7 @@ describe('Account Order History Page Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         AccountOrderHistoryPageComponent,
+        MockComponent(ContentIncludeComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(OrderListComponent),
         MockDirective(ServerHtmlDirective),

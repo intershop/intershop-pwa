@@ -231,9 +231,9 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // reset all and blur the input
-  resetInput() {
+  resetInput(term?: string) {
     this.blur();
-    this.inputSearchTerms$.next('');
+    this.inputSearchTerms$.next(term || '');
     this.shoppingFacade.clearSuggestSearchSuggestions();
   }
 

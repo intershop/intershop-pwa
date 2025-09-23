@@ -1,10 +1,50 @@
+// Mixins
+@mixin hover-underline-none() {
+  // default link and button link behavior
+  text-decoration: underline;
+
+  /* stylelint-disable-next-line nesting-selector-no-missing-scoping-root */
+  &:hover {
+    // underlined elements are not underlined on hover
+    text-decoration: none;
+  }
+}
+
+@mixin hover-none-underline() {
+  // elements which are styled as links with this class are not underlined but underlined on hover
+  text-decoration: none !important;
+
+  /* stylelint-disable-next-line nesting-selector-no-missing-scoping-root */
+  &:hover {
+    text-decoration: underline !important;
+  }
+}
+
+@mixin focus-visible-reset() {
+  /* stylelint-disable-next-line nesting-selector-no-missing-scoping-root */
+  &:focus-visible {
+    // accessibility: revert to browser default focus style
+    outline: revert !important;
+    outline-offset: 0 !important;
+  }
+
+  // fallback if browser doesn't support :focus-visible
+  @supports not selector(:focus-visible) {
+    /* stylelint-disable-next-line nesting-selector-no-missing-scoping-root */
+    &:focus {
+      outline: revert !important;
+      outline-offset: 0 !important;
+    }
+  }
+}
+
 // LAYOUT
 // contains layout and presentation classes for the global page structure (header, footer, global navigation, ...)
 .main-container {
   position: relative;
   min-height: 200px;
-  background: $color-inverse;
   outline: none; // remove focus outline from container when using "skip to main content link"
+  background: $color-inverse;
 }
 
 .container {
@@ -97,6 +137,13 @@ h4,
   font-family: $font-family-regular;
 }
 
+h1:focus,
+h1:focus-visible,
+.h1:focus,
+.h1:focus-visible {
+  @include focus-visible-reset();
+}
+
 a,
 a:not([href]):not([tabindex]) {
   color: $CORPORATE-PRIMARY;
@@ -134,25 +181,6 @@ a {
 
   &.teaser-link {
     display: block;
-  }
-}
-
-@mixin hover-underline-none() {
-  // default link and button link behavior
-  text-decoration: underline;
-
-  &:hover {
-    // underlined elements are not underlined on hover
-    text-decoration: none;
-  }
-}
-
-@mixin hover-none-underline() {
-  // elements which are styled as links with this class are not underlined but underlined on hover
-  text-decoration: none !important;
-
-  &:hover {
-    text-decoration: underline !important;
   }
 }
 
@@ -407,22 +435,6 @@ img.marketing {
 }
 
 .section {
-  margin-bottom: ($space-default * 2);
   clear: both;
-}
-
-@mixin focus-visible-reset() {
-  &:focus-visible {
-    // accessibility: revert to browser default focus style
-    outline: revert !important;
-    outline-offset: 0 !important;
-  }
-
-  // fallback if browser doesn't support :focus-visible
-  @supports not selector(:focus-visible) {
-    &:focus {
-      outline: revert !important;
-      outline-offset: 0 !important;
-    }
-  }
+  margin-bottom: ($space-default * 2);
 }

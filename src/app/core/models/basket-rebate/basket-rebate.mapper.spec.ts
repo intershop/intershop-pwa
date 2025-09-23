@@ -30,10 +30,8 @@ describe('Basket Rebate Mapper', () => {
             "type": "PriceItem",
           },
           "code": "CODE5433",
-          "description": "Discount description",
           "id": "basketDiscountId",
           "promotionId": "FreeShippingOnLEDTVs",
-          "rebateType": "Discount",
         }
       `);
     });

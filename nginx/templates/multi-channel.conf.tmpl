@@ -1,17 +1,19 @@
+# multi-channel.conf
+
 {{ $UPSTREAM_PWA := getenv "UPSTREAM_PWA" }}
 
 {{ define "LOCATION_TEMPLATE" }}
         {{- $channel := .channel }}
-        {{- $application := "" }}{{ if (has . "application") }}{{ $application = join ( slice ";application" .application ) "=" }}{{ end }}
+        {{- $application := "" }}{{ if (has . "application") }}{{ $application = join ( coll.Slice ";application" .application ) "=" }}{{ end }}
         {{- $identityProvider := "" }}{{ if (has . "identityProvider") }}{{ $identityProvider = .identityProvider }}{{ end }}
         {{- $lang := "default" }}{{ if (has . "lang") }}{{ $lang = .lang }}{{ end }}
         {{- $currency := "" }}{{ if (has . "currency") }}{{ $currency = .currency }}{{ end }}
-        {{- $features := "" }}{{ if (has . "features") }}{{ $features = join ( slice ";features" .features ) "=" }}{{ end }}
-        {{- $addFeatures := "" }}{{ if (has . "addFeatures") }}{{ $addFeatures = join ( slice ";addFeatures" .addFeatures ) "=" }}{{ end }}
-        {{- $theme := "" }}{{ if (has . "theme") }}{{ $theme = join ( slice ";theme" .theme ) "=" }}{{ end }}
+        {{- $features := "" }}{{ if (has . "features") }}{{ $features = join ( coll.Slice ";features" .features ) "=" }}{{ end }}
+        {{- $addFeatures := "" }}{{ if (has . "addFeatures") }}{{ $addFeatures = join ( coll.Slice ";addFeatures" .addFeatures ) "=" }}{{ end }}
+        {{- $theme := "" }}{{ if (has . "theme") }}{{ $theme = join ( coll.Slice ";theme" .theme ) "=" }}{{ end }}
         {{- $baseHref := "/" }}{{ if (has . "baseHref") }}{{ $baseHref = .baseHref }}{{ end }}
-        {{- $icmScheme := "" }}{{ if (has . "icmScheme") }}{{ $icmScheme = join ( slice "icmScheme" .icmScheme ) "=" }}{{ end }}
-        {{- $icmPort := "" }}{{ if (has . "icmPort") }}{{ $icmPort = join ( slice "icmPort" .icmPort ) "=" }}{{ end }}
+        {{- $icmScheme := "" }}{{ if (has . "icmScheme") }}{{ $icmScheme = join ( coll.Slice "icmScheme" .icmScheme ) "=" }}{{ end }}
+        {{- $icmPort := "" }}{{ if (has . "icmPort") }}{{ $icmPort = join ( coll.Slice "icmPort" .icmPort ) "=" }}{{ end }}
         {{- $icmHost := "default" }}{{ if (has . "icmHost") }}{{ $icmHost = .icmHost }}{{ end }}
         {{- $sparque := "" }}{{ if (has . "sparque") }}{{ range $key, $value := .sparque }}{{ $sparque = print $sparque $key "=" ($value | urlquery) "," }}{{ end }}{{ end }}
 
@@ -25,6 +27,10 @@
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $thescheme;
+
+      {{- if (getenv "CACHE_CLEARER" | strings.ToLower | regexp.Match "on|1|true|yes") }}
+        proxy_cache {{ $channel }};
+      {{- end -}}
 
         add_header X-icm-channel {{ $channel }} always;
         add_header X-icm-default-lang {{ $lang }} always;
@@ -58,7 +64,7 @@
 {{- end }}
 
 {{- define "OVERRIDE_IDENTITY_PROVIDER_TEMPLATE" }}
-    {{- $identityProvider := join ( slice ";identityProvider" .type ) "=" }}
+    {{- $identityProvider := join ( coll.Slice ";identityProvider" .type ) "=" }}
     rewrite '^((.*){{ .path }})$' '$1{{$identityProvider}}';
 {{- end}}
 
@@ -73,6 +79,27 @@
       {{- else }}
       rewrite ^{{ $baseHref }}/sitemap.*$ {{ $baseHref }}/;
       {{- end -}}
+{{- end }}
+
+{{- if (getenv "CACHE_CLEARER" | strings.ToLower | regexp.Match "on|1|true|yes") }}
+{{- $channels := dict -}}
+{{- range $domain, $mapping := (ds "domains") }}
+  {{- if (has $mapping "channel") }}
+    {{- $channel := $mapping.channel }}
+    {{- $channels := set $channel true $channels }}
+  {{- else }}
+    {{- range $mapping }}
+      {{- if (has . "channel") }}
+        {{- $channel := .channel }}
+        {{- $channels := set $channel true $channels}}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{- $uniqueChannels := keys $channels }}
+{{- range $uniqueChannels }}
+proxy_cache_path /tmp/cache/{{ . }} levels=1:2 keys_zone={{ . }}:1m max_size=1g inactive=60m use_temp_path=off;
+{{- end }}
 {{- end }}
 
 {{- range $domain, $mapping := (ds "domains") }}
@@ -132,6 +159,8 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $thescheme;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Port $server_port;
 
         proxy_no_cache true;
         proxy_cache_bypass true;

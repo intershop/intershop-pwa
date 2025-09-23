@@ -2,9 +2,10 @@ import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from
 import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
-import { map, shareReplay, startWith } from 'rxjs/operators';
+import { map, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { Contact } from 'ish-core/models/contact/contact.model';
 
 import { ContactUsFacade } from '../../../facades/contact-us.facade';
@@ -29,7 +30,11 @@ export class ContactFormComponent implements OnInit {
   model$: Observable<Partial<Contact>>;
   fields$: Observable<FormlyFieldConfig[]>;
 
-  constructor(private accountFacade: AccountFacade, private contactUsFacade: ContactUsFacade) {}
+  constructor(
+    private accountFacade: AccountFacade,
+    private appFacade: AppFacade,
+    private contactUsFacade: ContactUsFacade
+  ) {}
 
   ngOnInit() {
     this.model$ = this.accountFacade.user$.pipe(
@@ -41,7 +46,11 @@ export class ContactFormComponent implements OnInit {
     );
 
     this.fields$ = this.accountFacade.isLoggedIn$.pipe(
-      map(isLoggedIn => [
+      withLatestFrom(
+        this.appFacade.serverSetting$<boolean>('services.ReCaptchaV2ServiceDefinition.runnable'),
+        this.appFacade.serverSetting$<boolean>('captcha.contactUs')
+      ),
+      map(([isLoggedIn, isCaptchaV2, isCaptchaTopicEnabled]) => [
         {
           key: 'name',
           type: 'ish-text-input-field',
@@ -117,6 +126,8 @@ export class ContactFormComponent implements OnInit {
           type: 'ish-captcha-field',
           props: {
             topic: 'contactUs',
+            required: isCaptchaV2 && isCaptchaTopicEnabled,
+            fieldClass: 'offset-md-4 col-md-8',
           },
         },
       ])

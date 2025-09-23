@@ -32,6 +32,8 @@
 .gitattributes
 .editorconfig
 .lingua
+.copilotrc
+.prettierrc
 .nvmrc
 .nsprc
 package*.json

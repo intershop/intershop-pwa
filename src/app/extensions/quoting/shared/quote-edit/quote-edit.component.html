@@ -22,11 +22,28 @@
           >{{ 'quote.edit.unsubmitted.name.label' | translate }}:</label
         >
         <div class="col-8 col-md-9 col-xl-10">
-          <ish-in-place-edit (edited)="update()" (aborted)="reset()" ariaLabelName="quote.edit.unsubmitted.name.label">
-            <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('displayName').value }">
+          <ish-in-place-edit
+            #inPlaceEditName
+            (edited)="update()"
+            (aborted)="reset()"
+            ariaLabelName="quote.edit.unsubmitted.name.label"
+          >
+            <p
+              viewModeContent
+              class="form-control-plaintext w-auto"
+              [ngClass]="{ 'font-italic': !form.get('displayName').value }"
+            >
               {{ form.get('displayName').value || 'quote.edit.unsubmitted.enter_an_optional_name.text' | translate }}
             </p>
-            <input type="text" formControlName="displayName" class="form-control" id="quote-displayname" />
+            <input
+              editModeForm
+              type="text"
+              formControlName="displayName"
+              class="form-control"
+              id="quote-displayname"
+              (keydown.enter)="inPlaceEditName.confirm()"
+              (keydown.esc)="inPlaceEditName.cancel()"
+            />
           </ish-in-place-edit>
         </div>
       </div>
@@ -38,23 +55,33 @@
         >
         <div class="col-8 col-md-9 col-xl-10">
           <ish-in-place-edit
+            #inPlaceEditComment
             (edited)="update()"
             (aborted)="reset()"
             ariaLabelName="quote.edit.unsubmitted.comment.label"
           >
-            <p class="form-control-plaintext w-auto" [ngClass]="{ 'font-italic': !form.get('description').value }">
+            <p
+              viewModeContent
+              class="form-control-plaintext w-auto"
+              [ngClass]="{ 'font-italic': !form.get('description').value }"
+            >
               {{ form.get('description').value || 'quote.edit.unsubmitted.provide_comment.text' | translate }}
             </p>
-            <textarea formControlName="description" class="form-control" id="quote-description"> </textarea>
+            <textarea
+              editModeForm
+              formControlName="description"
+              class="form-control"
+              id="quote-description"
+              (keydown.enter)="inPlaceEditComment.confirm()"
+              (keydown.esc)="inPlaceEditComment.cancel()"
+            >
+            </textarea>
           </ish-in-place-edit>
         </div>
       </div>
     </div>
 
     <!-- Quote Item List -->
-    <div class="section">
-      <h3>{{ 'quote.items.table.heading' | translate }}</h3>
-      <ish-quote-line-item-list *ngIf="quote.items" />
-    </div>
+    <ish-quote-line-item-list />
   </form>
 </ng-container>

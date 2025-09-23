@@ -28,6 +28,7 @@ import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { PricesService } from 'ish-core/services/prices/prices.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
+import { RecurringOrdersService } from 'ish-core/services/recurring-orders/recurring-orders.service';
 import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { TokenService } from 'ish-core/services/token/token.service';
@@ -189,6 +190,7 @@ describe('Customer Store', () => {
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: ProductsServiceProvider, useFactory: () => instance(mock(ProductsServiceProvider)) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
+        { provide: RecurringOrdersService, useFactory: () => instance(mock(RecurringOrdersService)) },
         { provide: SparqueSuggestionsService, useFactory: () => instance(mock(SparqueSuggestionsService)) },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: TokenService, useFactory: () => instance(mock(TokenService)) },

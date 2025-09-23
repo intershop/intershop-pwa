@@ -106,9 +106,6 @@
 # from src/app/extensions/store-locator/exports/.gitignore
 /src/app/extensions/store-locator/exports/**/lazy*
 
-# from src/app/extensions/tacton/exports/.gitignore
-/src/app/extensions/tacton/exports/**/lazy*
-
 # from src/app/extensions/wishlists/exports/.gitignore
 /src/app/extensions/wishlists/exports/**/lazy*
 

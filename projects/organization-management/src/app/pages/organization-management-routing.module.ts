@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { authorizationToggleGuard } from 'ish-core/authorization-toggle.module';
 import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 
-import { fetchCostCentersGuard } from '../guards/fetch-cost-centers.guard';
 import { fetchUsersGuard } from '../guards/fetch-users.guard';
 import { redirectFirstToParentGuard } from '../guards/redirect-first-to-parent.guard';
 
@@ -85,7 +84,7 @@ export const routes: Routes = [
   },
   {
     path: 'cost-centers',
-    canActivate: [featureToggleGuard, fetchCostCentersGuard],
+    canActivate: [featureToggleGuard],
     data: {
       meta: {
         title: 'account.organization.cost_center_management',

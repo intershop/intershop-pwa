@@ -1,5 +1,5 @@
 # synchronize-marker:docker-cache-share:begin
-FROM node:18.16.0-alpine AS buildstep
+FROM node:22.17.1-alpine AS buildstep
 ENV CI=true
 WORKDIR /workspace
 COPY package.json package-lock.json /workspace/
@@ -22,11 +22,12 @@ ARG activeThemes=
 RUN if [ ! -z "${activeThemes}" ]; then npm pkg set config.active-themes="${activeThemes}"; fi
 RUN npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER
 COPY tsconfig.server.json server.ts /workspace/
+COPY babel.config.js /workspace/
 RUN npm run build:multi server
 RUN node scripts/compile-docker-scripts
 COPY dist/* /workspace/dist/
 
-FROM node:18.16.0-alpine
+FROM node:22.17.1-alpine
 RUN apk add --no-cache tini
 COPY --from=buildstep /workspace/dist /dist
 RUN cd dist && npm install

@@ -1,8 +1,5 @@
-<div *ngIf="captchaSiteKey$ | async as captchaSiteKey" class="row form-group">
+<div *ngIf="captchaSiteKey$ | async as captchaSiteKey">
   <div [ngClass]="cssClass">
-    <div [ngClass]="{ 'has-error': hasError }">
-      <re-captcha [siteKey]="captchaSiteKey" (resolved)="resolved($event)" class="captcha" />
-      <small *ngIf="hasError" class="validation-message">{{ 'recaptcha.v2.incorrect.error' | translate }}</small>
-    </div>
+    <re-captcha [siteKey]="captchaSiteKey" (resolved)="resolved($event)" class="captcha" />
   </div>
 </div>

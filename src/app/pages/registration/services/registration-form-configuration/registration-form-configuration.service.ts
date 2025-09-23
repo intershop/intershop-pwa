@@ -31,6 +31,7 @@ export interface RegistrationConfigType {
 // eslint-disable-next-line ish-custom-rules/project-structure
 export class RegistrationFormConfigurationService {
   private isApprovalServiceRunning = true;
+  private isCaptchaRequired = true;
 
   constructor(
     private accountFacade: AccountFacade,
@@ -40,10 +41,16 @@ export class RegistrationFormConfigurationService {
     private featureToggle: FeatureToggleService,
     private fieldLibrary: FieldLibrary
   ) {
-    this.appFacade
-      .serverSetting$('services.OrderApprovalServiceDefinition.runnable')
+    combineLatest([
+      this.appFacade.serverSetting$<boolean>('services.OrderApprovalServiceDefinition.runnable'),
+      this.appFacade.serverSetting$<boolean>('services.ReCaptchaV2ServiceDefinition.runnable'),
+      this.appFacade.serverSetting$<boolean>('captcha.register'),
+    ])
       .pipe(takeUntilDestroyed())
-      .subscribe((enabled: boolean) => (this.isApprovalServiceRunning = enabled));
+      .subscribe(([isApprovalServiceRunning, isCaptchaV2, isCaptchaTopicEnabled]) => {
+        this.isApprovalServiceRunning = isApprovalServiceRunning;
+        this.isCaptchaRequired = isCaptchaV2 && isCaptchaTopicEnabled;
+      });
   }
 
   extractConfig(route: ActivatedRouteSnapshot) {
@@ -132,8 +139,11 @@ export class RegistrationFormConfigurationService {
           },
           {
             type: 'ish-captcha-field',
+
             props: {
               topic: 'register',
+              required: this.isCaptchaRequired,
+              fieldClass: 'offset-md-4 col-md-8',
             },
           },
         ],

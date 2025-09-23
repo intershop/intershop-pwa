@@ -40,7 +40,7 @@ const initialState: ConfigurationState = {
   serverWeb: undefined,
   channel: undefined,
   application: undefined,
-  hybridApplication: undefined,
+  hybridApplication: environment.hybridApplication,
   features: undefined,
   addFeatures: [],
   defaultLocale: environment.defaultLocale,

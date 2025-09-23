@@ -35,7 +35,6 @@ import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-expo
 import { RatingExportsModule } from '../extensions/rating/exports/rating-exports.module';
 import { RecentlyExportsModule } from '../extensions/recently/exports/recently-exports.module';
 import { StoreLocatorExportsModule } from '../extensions/store-locator/exports/store-locator-exports.module';
-import { TactonExportsModule } from '../extensions/tacton/exports/tacton-exports.module';
 import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
 
 import { CMSModule } from './cms/cms.module';
@@ -78,6 +77,7 @@ import { BasketOrderReferenceComponent } from './components/basket/basket-order-
 import { BasketPaymentCostInfoComponent } from './components/basket/basket-payment-cost-info/basket-payment-cost-info.component';
 import { BasketPromotionCodeComponent } from './components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketPromotionComponent } from './components/basket/basket-promotion/basket-promotion.component';
+import { BasketRecurrenceSummaryComponent } from './components/basket/basket-recurrence-summary/basket-recurrence-summary.component';
 import { BasketShippingMethodComponent } from './components/basket/basket-shipping-method/basket-shipping-method.component';
 import { BasketValidationItemsComponent } from './components/basket/basket-validation-items/basket-validation-items.component';
 import { BasketValidationProductsComponent } from './components/basket/basket-validation-products/basket-validation-products.component';
@@ -118,6 +118,7 @@ import { IdentityProviderLoginComponent } from './components/login/identity-prov
 import { LoginFormComponent } from './components/login/login-form/login-form.component';
 import { LoginModalComponent } from './components/login/login-modal/login-modal.component';
 import { OrderListComponent } from './components/order/order-list/order-list.component';
+import { OrderRecurrenceComponent } from './components/order/order-recurrence/order-recurrence.component';
 import { OrderWidgetComponent } from './components/order/order-widget/order-widget.component';
 import { ProductAddToBasketComponent } from './components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductAttachmentsComponent } from './components/product/product-attachments/product-attachments.component';
@@ -191,7 +192,6 @@ const importExportModules = [
   RouterModule,
   StoreLocatorExportsModule,
   SwiperModule,
-  TactonExportsModule,
   TranslateModule,
   WishlistsExportsModule,
 ];
@@ -234,7 +234,6 @@ const declaredComponents = [
   LineItemListElementComponent,
   LineItemWarrantyComponent,
   LoginModalComponent,
-  PagingComponent,
   ProductChooseVariationComponent,
   ProductIdComponent,
   ProductItemVariationsComponent,
@@ -262,6 +261,7 @@ const exportedComponents = [
   BasketItemsSummaryComponent,
   BasketMerchantMessageComponent,
   BasketMerchantMessageViewComponent,
+  BasketRecurrenceSummaryComponent,
   BasketOrderReferenceComponent,
   BasketPaymentCostInfoComponent,
   BasketPromotionCodeComponent,
@@ -290,7 +290,9 @@ const exportedComponents = [
   ModalDialogComponent,
   ModalDialogLinkComponent,
   OrderListComponent,
+  OrderRecurrenceComponent,
   OrderWidgetComponent,
+  PagingComponent,
   ProductAddToBasketComponent,
   ProductAttachmentsComponent,
   ProductAttributesComponent,

@@ -10,6 +10,7 @@ import { InfoMessageComponent } from 'ish-shared/components/common/info-message/
 
 import { QuoteContextFacade, isQuoteStarted } from '../../facades/quote-context.facade';
 import { QuoteRequest } from '../../models/quoting/quoting.model';
+import { QuoteLineItemListComponent } from '../quote-line-item-list/quote-line-item-list.component';
 import { QuoteStateComponent } from '../quote-state/quote-state.component';
 
 import { QuoteViewComponent } from './quote-view.component';
@@ -27,6 +28,7 @@ describe('Quote View Component', () => {
       imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(InfoMessageComponent),
+        MockComponent(QuoteLineItemListComponent),
         MockComponent(QuoteStateComponent),
         MockPipe(DatePipe),
         QuoteViewComponent,

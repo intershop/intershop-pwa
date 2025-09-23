@@ -1,3 +1,5 @@
+# cache-settings.conf
+
 {{- if getenv "CACHE" | strings.ToLower | regexp.Match "on|1|true|yes" -}}
   {{- if getenv "REDIS_URI" -}}
 

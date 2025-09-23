@@ -7,6 +7,84 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 7.1.0 to 8.0.0
+
+The Intershop PWA now uses Node.js 22.17.1 LTS with the corresponding npm version 10.9.2.
+This update addresses the fact that Node.js 18 is no longer maintained and should not be used, even though Angular 16 was officially tested only with Node.js versions up to 18.
+In the standard Intershop PWA, only the following warning needed to be addressed:
+
+> `NodeRequire` is deprecated: Use `NodeJS.Require` instead
+
+The OpenResty/NGINX image was updated to `openresty/openresty:1.27.1.2-2-jammy` that includes the update to LuaRocks 3.12.0.
+This update resolves the issue with the `luarocks` package manager (see [#1825](https://github.com/intershop/intershop-pwa/pull/1825)).
+With the working `luarocks` package manager, the installation of the `lua-resty-redis-connector` was re-enabled.
+
+The order history listing for the PWA was improved.
+Previously, there was a "load more" button to extend the order list if there were more orders to display.
+Now, the order list provides a complete paging bar if there are more than 25 orders (by default) to display.
+This functionality requires ICM 13.1.0 or newer, which includes the extended [Order REST API 1.8.0](https://support.intershop.com/kb/index.php/Display/3T1454) that returns the necessary paging information.
+
+PWA projects that are not yet using ICM 13.1.0 or newer will only see the first 25 orders without any indication that additional relevant orders exist.
+Searching and filtering will continue to function as before there, but the "load more" button will no longer be available.
+For such projects, consider skipping the order history paging commit when migrating to PWA 8.0.0, and apply it after migrating to ICM 13.1.0.
+
+The cost center listing for the PWA was improved.
+It now comes with a complete paging bar if there are more than 25 cost centers (by default) to display.
+In addition, search by cost center ID or name is now supported.
+This functionality requires ICM 13.1.0 or newer that provides the new [Cost Center REST API 2.0.0](https://support.intershop.com/kb/index.php/Display/S31453) that supports paging and search.
+
+PWA projects that do not use ICM 13.1.0 or newer yet will receive error responses from the old REST API version.
+For such projects, consider skipping the cost center paging and search commit when migrating to PWA 8.0.0, and apply it after migrating to ICM 13.1.0.
+
+The `InPlaceEditComponent` content projection selectors were changed from CSS class-based selectors to HTML attribute selectors.
+To project content into the component's `viewMode`, use the `viewModeContent` attribute instead of the `form-control-plaintext` CSS class.
+To project an input into the component's `editMode`, use the `editModeForm` attribute instead of the `form-control` CSS class.
+
+| Previous                             | Current                |
+| ------------------------------------ | ---------------------- |
+| `<p class="form-control-plaintext">` | `<p viewModeContent>`  |
+| `<input class="form-control">`       | `<input editModeForm>` |
+
+Search for the usage of `ish-in-place-edit` in your project's customizations and update the selectors accordingly.
+
+In version 8.0.0, the project's Stylelint and ESLint dependencies were updated.
+The following commands should be executed after the formatting/linting dependencies updates to adapt the customized project code to changed/new rules.
+
+```
+npx stylelint "**/*.{css,scss}" --fix
+ng lint --fix
+```
+
+The Intershop PWA now contains [custom instructions for GitHub Copilot](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions).
+These instructions provide additional project-specific context to Copilot to optimize the code suggestions for the Intershop PWA and its customizations.
+
+Intershop PWA 8.0.0 provides functionality to support recurring orders.
+To enable the recurring order support in the PWA, ICM 13.x with the Recurring Orders Extension 2.2.1 (`icm-as-customization-recurringorders:2.2.1`) is required.
+In addition, the "Recurring Orders" feature must be enabled in ICM (go to the channel > _Preferences > Recurring Orders_ and ensure the check box is _Enabled_).
+
+New content includes were added to the My Account area.
+They provide three general places to add content to all account pages, two specific places for the account overview page, and two specific ones for the order history page.
+To use these content includes, an ICM with `icm-as-customization-headless:3.1.0` or newer is required.
+If the connected ICM does not provide the new content includes, it is best to skip/revert these changes to avoid failing CMS REST requests (will not lead to errors in the application, but they will appear in the browser console).
+
+With the Intershop PWA 8.0.0 release, the Tacton integration to handle complex product configuration scenarios was removed.
+To keep the Tacton functionality in a PWA project, skip the removal commit when migrating to PWA 8.0.0.
+
+With the Intershop PWA 8.0.0 release, the Sentry integration to client-side error monitoring was removed.
+To keep the Sentry functionality in a PWA project, skip the removal commit when migrating to PWA 8.0.0.
+
+Intershop PWA 8.0.0 introduces means to invalidate the [NGINX cache](./nginx-startup.md#cache) and the [Local ICM Cache](./ssr-startup.md#local-icm-cache) based on ICM page cache invalidation.
+For further instructions on how to enable this functionality, see the [Cache Clearing](./nginx-startup.md#cache-clearing) section in the NGINX guide.
+
+**Experimental** A new SSR environment switch `ALLOW_H2: 'true'` was introduced to enable the HTTP/2 protocol via Fetch API for REST requests done by the SSR container.
+
+Intershop PWA 8.0.0 introduces the integration of CMS content pages into the My Account area (for further details see the [CMS Integration](../concepts/cms-integration.md#account-content-pages) guide).
+
+To address token handling issues that occurred in Hybrid Approach scenarios, the `loadUserByAPIToken` action was changed to require a payload object with an optional `apiToken` as parameter.
+The easiest way to migrate is to provide an empty object as parameter, e.g., `loadUserByAPIToken({})`.
+To actually fix the Hybrid Approach token handling issues, the `apiToken` that is used to initialize the token handling is now provided with `loadUserByAPIToken({ apiToken: cookie.apiToken })` in the `restore$` functionality of the `ApiTokenService`.
+The provided `apiToken` is now also used in the `getBasketByToken` method of the `BasketService` and the `getOrderByToken` method of the `OrderService` to initialize the token handling correctly by fetching new tokens from ICM in these cases too.
+
 ## From 7.0.0 to 7.1.0
 
 Due to installation issues with the used `luarocks` package manager, we have disabled the installation of the `lua-resty-redis-connector` that provides the functionality to connect to a shared Redis cache.
@@ -89,10 +167,10 @@ Previously, it has been used to determine whether the `privatecustomers` or the 
 Now the `privatecustomers` REST resource is the new standard for B2C users.
 If your ICM does not support the new standard, the method `getCustomerRestResource` of the [`app.facade`](../../src/app/core/facades/app.facade.ts) has to be adapted.
 
-With ICM 12.2.0, 11.11.1 or 7.10.41.3, the ICM server itself provides an OCI punchout URL (pipeline) that works better for the OCI punchout functions `BACKGROUND_SEARCH` and `VALIDATE` than the now-deprecated functionality in the PWA.
+With ICM 12.2.0, 11.11.1 or 7.10.41.3, the ICM server itself provides an OCI Punchout URL (pipeline) that works better for the OCI Punchout functions `BACKGROUND_SEARCH` and `VALIDATE` than the now-deprecated functionality in the PWA.
 For that reason, the provided OCI Punchout URL is now pointing to the ICM pipeline `ViewOCICatalogPWA-Start` that handles the different functionalities and redirects to the PWA (configured as _External Base URL_ in ICM) only for catalog browsing and the detail function.
 
-The OPTION REST call to fetch the OCI punchout configurations has been replaced by a GET REST request to avoid possible CORS errors (requires ICM 12.2.1 or above).
+The OPTION REST call to fetch the OCI Punchout configurations has been replaced by a GET REST request to avoid possible CORS errors (requires ICM 12.2.1 or above).
 
 The OPTION REST call to fetch the eligible customer payment methods has been replaced by a GET REST requests to avoid possible CORS errors (requires ICM 11.10.0 or above).
 
@@ -101,6 +179,10 @@ This setting will apply for both user and cost center budgets and is a setting o
 It requires ICM 12.3.0 and is only visible if the ICM order approval service is running.
 If the customer has not yet set the budget type, the default value **gross** is used.
 In a migration project that uses an ICM before 12.3.0, in the `organization-settings-page.component.html` the `Preferences` section and the used dialog should be removed, and in the `budget-info.component.html` the suffix part `+ (suffix ?? '' | translate)` should be deleted.
+
+We improved the Punchout REST call handling to consistently use the correct `Accept` header version for OCI Punchout (`application/vnd.intershop.punchout.v2+json`) and cXML Punchout (`application/vnd.intershop.punchout.cxml.v3+json`), see [#1746](https://github.com/intershop/intershop-pwa/pull/1746).
+The new cXML Punchout version `v3` was introduced with ICM 12.2.0 for the cXML self-service configuration that was introduced with PWA 5.2.0.
+For projects that use an ICM version before 12.2.0 (or ICM 7.10.x), you need to adapt the cXML Punchout `Accept` header (`punchoutHeaderCXML`) to `application/vnd.intershop.punchout.v2+json` to be compatible with the available cXML Punchout version `v2`.
 
 The configuration parameter `METRICS_DETAIL_LEVEL` for the SSR container has been introduced.
 By default it is set to the value `DEFAULT` which changes the SSR metrics (overall less metrics) compared to version 5.2.
@@ -173,8 +255,8 @@ If so, replace these wrapper configurations with `maxlength-description`.
 B2B users with the permission `APP_B2B_MANAGE_ORDERS` (only available for admin users in ICM 12.1.0 and higher) now see the orders of all users of the company on the My Account order history page.
 They can filter the orders by buyer in order to see, e.g., only their own orders again.
 
-In preparation of the cXML punchout self service configuration, we switched from a hidden route parameter that conveys the punchout type context information to a URL query parameter (e.g., `?format=cxml`).
-So customized routing within the punchout area needs to be adapted accordingly.
+In preparation of the cXML Punchout self service configuration, we switched from a hidden route parameter that conveys the Punchout type context information to a URL query parameter (e.g., `?format=cxml`).
+So customized routing within the Punchout area needs to be adapted accordingly.
 
 ## From 5.0 to 5.1
 
@@ -221,7 +303,7 @@ For ICM deployments with the Responsive Starter Store this probably has to be co
 The project has been updated to work with Angular 16.
 Besides this, a lot of other dependencies (NgRx, Typescript) have also been updated.
 
-The spelling of the OCI punchout actions has changed due to a changed naming schema of the NgRx action creator functions.
+The spelling of the OCI Punchout actions has changed due to a changed naming schema of the NgRx action creator functions.
 
 Since `defaultProject` is no longer a valid option in `angular.json`, it has been removed and the root project (project with an empty root) is used instead.
 

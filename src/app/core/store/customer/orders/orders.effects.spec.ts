@@ -12,7 +12,7 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { Order } from 'ish-core/models/order/order.model';
+import { Order, Orders } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -51,10 +51,11 @@ describe('Orders Effects', () => {
 
   const order = { id: '1', documentNo: '00000001', lineItems: [] } as Order;
   const orders = [order, { id: '2', documentNo: '00000002' }] as Order[];
+  const ordersInfo = { orders, paging: { offset: 0, limit: 15, total: 100 } } as Orders;
 
   beforeEach(() => {
     orderServiceMock = mock(OrderService);
-    when(orderServiceMock.getOrders(anything())).thenReturn(of(orders));
+    when(orderServiceMock.getOrders(anything())).thenReturn(of(ordersInfo));
     when(orderServiceMock.getOrder(anyString())).thenReturn(of(order));
     when(orderServiceMock.getOrderByToken(anyString(), anyString())).thenReturn(of(order));
 
@@ -112,7 +113,7 @@ describe('Orders Effects', () => {
       const basketId = BasketMockData.getBasket().id;
       const newOrder = { id: basketId } as Order;
       const action = createOrder();
-      const completion = createOrderSuccess({ order: newOrder });
+      const completion = createOrderSuccess({ order: newOrder, basketId: 'BID' });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -133,8 +134,8 @@ describe('Orders Effects', () => {
   });
 
   describe('continueAfterOrderCreation', () => {
-    it('should navigate to /checkout/receipt after CreateOrderSuccess if there is no redirect required', fakeAsync(() => {
-      const action = createOrderSuccess({ order: { id: '123' } as Order });
+    it('should navigate to /checkout/receipt with order id as parameter after CreateOrderSuccess if there is no redirect required', fakeAsync(() => {
+      const action = createOrderSuccess({ order: { id: '123' } as Order, basketId: 'BID' });
       actions$ = of(action);
 
       effects.continueAfterOrderCreation$.subscribe({ next: noop, error: fail, complete: noop });
@@ -142,6 +143,26 @@ describe('Orders Effects', () => {
       tick(500);
 
       expect(location.path()).toEqual('/checkout/receipt?orderId=123');
+    }));
+
+    it('should navigate to /checkout/receipt with recurring order id as parameter after CreateOrderSuccess', fakeAsync(() => {
+      const action = createOrderSuccess({
+        order: {
+          id: '123',
+          orderCreation: {
+            status: 'STOPPED',
+            stopAction: { exitReason: 'recurring.order' },
+          },
+        } as Order,
+        basketId: 'BID',
+      });
+      actions$ = of(action);
+
+      effects.continueAfterOrderCreation$.subscribe({ next: noop, error: fail, complete: noop });
+
+      tick(500);
+
+      expect(location.path()).toEqual('/checkout/receipt?recurringOrderId=BID');
     }));
 
     it('should navigate to an external url after CreateOrderSuccess if there is redirect required', fakeAsync(() => {
@@ -156,6 +177,7 @@ describe('Orders Effects', () => {
           id: '123',
           orderCreation: { status: 'STOPPED', stopAction: { type: 'Redirect', redirectUrl: 'http://test' } },
         } as Order,
+        basketId: 'BID',
       });
       actions$ = of(action);
 
@@ -175,6 +197,7 @@ describe('Orders Effects', () => {
           orderCreation: { status: 'ROLLED_BACK' },
           infos: [{ message: 'Info' }],
         } as Order,
+        basketId: 'BID',
       });
       actions$ = of(action);
 
@@ -211,17 +234,7 @@ describe('Orders Effects', () => {
     it('should load all orders of a user and dispatch a LoadOrdersSuccess action', () => {
       const query = { limit: 30 };
       const action = loadOrders({ query });
-      const completion = loadOrdersSuccess({ orders, query, allRetrieved: true });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadOrders$).toBeObservable(expected$);
-    });
-
-    it('should report more available if limit was reached', () => {
-      const query = { limit: orders.length };
-      const action = loadOrders({ query });
-      const completion = loadOrdersSuccess({ orders, query, allRetrieved: false });
+      const completion = loadOrdersSuccess({ orders, query, paging: ordersInfo.paging });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -242,9 +255,9 @@ describe('Orders Effects', () => {
 
   describe('loadMoreOrders$', () => {
     it('should load more orders', () => {
-      store.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 } }));
+      store.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 }, paging: ordersInfo.paging }));
 
-      const action = loadMoreOrders();
+      const action = loadMoreOrders({ limit: 30, offset: 30 });
       const completion = loadOrders({ query: { limit: 30, offset: 30 } });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -383,7 +396,7 @@ describe('Orders Effects', () => {
     });
 
     it('should trigger SelectOrderAfterRedirect action if checkout payment/receipt page is called with query param "redirect" and an order is available', done => {
-      store.dispatch(createOrderSuccess({ order }));
+      store.dispatch(createOrderSuccess({ order, basketId: 'BID' }));
 
       router.navigate(['checkout', 'receipt'], {
         queryParams: { redirect: 'success', param1: 123, orderId: order.id },
@@ -454,7 +467,7 @@ describe('Orders Effects', () => {
 
   describe('setOrderBreadcrumb$', () => {
     beforeEach(fakeAsync(() => {
-      store.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 } }));
+      store.dispatch(loadOrdersSuccess({ orders, query: { limit: 30 }, paging: ordersInfo.paging }));
       router.navigateByUrl(`/account/orders/${orders[0].id}`);
       tick(500);
       store.dispatch(selectOrder({ orderId: orders[0].id }));

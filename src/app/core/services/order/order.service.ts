@@ -3,13 +3,14 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
-import { catchError, concatMap, map, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { OrderIncludeType, OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { OrderData } from 'ish-core/models/order/order.interface';
 import { OrderMapper } from 'ish-core/models/order/order.mapper';
-import { Order } from 'ish-core/models/order/order.model';
+import { Order, Orders } from 'ish-core/models/order/order.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { TokenService } from 'ish-core/services/token/token.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 
 export function orderListQueryToHttpParams(query: OrderListQuery): HttpParams {
@@ -36,7 +37,12 @@ export function orderListQueryToHttpParams(query: OrderListQuery): HttpParams {
  */
 @Injectable({ providedIn: 'root' })
 export class OrderService {
-  constructor(private apiService: ApiService, private store: Store, @Inject(APP_BASE_HREF) private baseHref: string) {}
+  constructor(
+    private apiService: ApiService,
+    private tokenService: TokenService,
+    private store: Store,
+    @Inject(APP_BASE_HREF) private baseHref: string
+  ) {}
 
   private orderHeaders = new HttpHeaders({
     'content-type': 'application/json',
@@ -130,19 +136,15 @@ export class OrderService {
    * @param query   Additional query parameters
    *                - the number of items that should be fetched
    *                - which data should be included.
-   * @returns       A list of the user's orders
+   * @returns       An object with the list of the user's orders and paging information
    */
-  getOrders(query: OrderListQuery): Observable<Order[]> {
+  getOrders(query: OrderListQuery): Observable<Orders> {
     const q = query?.buyer === 'all' ? { ...query, buyer: undefined as string, allBuyers: 'true' } : query;
-
-    let params = orderListQueryToHttpParams(q);
-    // for 7.10 compliance - ToDo: will be removed in PWA 6.0
-    params = params.set('page[limit]', query.limit);
 
     return this.apiService
       .get<OrderData>('orders', {
         headers: this.orderHeaders,
-        params,
+        params: orderListQueryToHttpParams(q),
       })
       .pipe(map(OrderMapper.fromListData));
   }
@@ -186,16 +188,20 @@ export class OrderService {
       return throwError(() => new Error('getOrderByToken() called without apiToken'));
     }
 
-    return this.apiService
-      .get<OrderData>(`orders/${this.apiService.encodeResourceId(orderId)}`, {
-        headers: this.orderHeaders.set(ApiService.TOKEN_HEADER_KEY, apiToken),
-        params,
-        skipApiErrorHandling: true,
-      })
-      .pipe(
-        map(OrderMapper.fromData),
-        catchError(() => EMPTY)
-      );
+    return this.tokenService.fetchToken('refresh_token', { refresh_token: apiToken }).pipe(
+      switchMap(() =>
+        this.apiService
+          .get<OrderData>(`orders/${this.apiService.encodeResourceId(orderId)}`, {
+            headers: this.orderHeaders.set(ApiService.TOKEN_HEADER_KEY, apiToken),
+            params,
+            skipApiErrorHandling: true,
+          })
+          .pipe(
+            map(OrderMapper.fromData),
+            catchError(() => EMPTY)
+          )
+      )
+    );
   }
 
   /**

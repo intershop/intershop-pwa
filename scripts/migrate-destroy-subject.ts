@@ -22,42 +22,6 @@ const project = new Project();
 // Load all TypeScript files from src and projects directory
 const sourceFiles = project.addSourceFilesAtPaths('{src,projects}/**/!(*.spec).ts');
 
-// Process each loaded source file
-for (const sourceFile of sourceFiles) {
-  analyzeFile(sourceFile);
-}
-
-/**
- * Refactor file, add missing imports and save changes
- */
-function analyzeFile(sourceFile: SourceFile) {
-  sourceFile.forEachDescendant(traverseThroughNodes);
-  sourceFile.fixMissingImports();
-  sourceFile.saveSync();
-}
-
-function traverseThroughNodes(node: Node<ts.Node>) {
-  if (node.isKind(SyntaxKind.ClassDeclaration)) {
-    // destroy$ property just relevant for components, directives and pipes with implemented OnDestroy method
-    if (!isType(node, ['Component', 'Directive', 'Pipe']) || !hasClassImplements(node, ['OnDestroy'])) {
-      return;
-    }
-
-    // get destroy PropertyDeclaration node
-    const destroyProperty = getDestroyProperty(node);
-
-    if (destroyProperty) {
-      // replace destroy property with destroyRef = inject(DestroyRef)
-      destroyProperty.getNameNode().replaceWithText('destroyRef');
-      destroyProperty.setInitializer('inject(DestroyRef)');
-    }
-
-    node.getDescendantsOfKind(SyntaxKind.PropertyAccessExpression).forEach(replaceTakeUntilOperator);
-
-    node.getDescendantsOfKind(SyntaxKind.MethodDeclaration).forEach(cleanupOnDestroyImpl);
-  }
-}
-
 /**
  * Checks if a declarated class is of a certain type
  */
@@ -176,3 +140,39 @@ const cleanupOnDestroyImpl = (node: MethodDeclaration) => {
     }
   }
 };
+
+// Process each loaded source file
+for (const sourceFile of sourceFiles) {
+  analyzeFile(sourceFile);
+}
+
+/**
+ * Refactor file, add missing imports and save changes
+ */
+function analyzeFile(sourceFile: SourceFile) {
+  sourceFile.forEachDescendant(traverseThroughNodes);
+  sourceFile.fixMissingImports();
+  sourceFile.saveSync();
+}
+
+function traverseThroughNodes(node: Node<ts.Node>) {
+  if (node.isKind(SyntaxKind.ClassDeclaration)) {
+    // destroy$ property just relevant for components, directives and pipes with implemented OnDestroy method
+    if (!isType(node, ['Component', 'Directive', 'Pipe']) || !hasClassImplements(node, ['OnDestroy'])) {
+      return;
+    }
+
+    // get destroy PropertyDeclaration node
+    const destroyProperty = getDestroyProperty(node);
+
+    if (destroyProperty) {
+      // replace destroy property with destroyRef = inject(DestroyRef)
+      destroyProperty.getNameNode().replaceWithText('destroyRef');
+      destroyProperty.setInitializer('inject(DestroyRef)');
+    }
+
+    node.getDescendantsOfKind(SyntaxKind.PropertyAccessExpression).forEach(replaceTakeUntilOperator);
+
+    node.getDescendantsOfKind(SyntaxKind.MethodDeclaration).forEach(cleanupOnDestroyImpl);
+  }
+}

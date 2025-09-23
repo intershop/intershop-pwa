@@ -33,6 +33,7 @@ describe('Content Design View Wrapper Component', () => {
     when(cmsFacade.pagelet$(anything())).thenReturn(
       of({ id: 'xyz', displayName: 'Pagelet Name xyz' } as ContentPageletView)
     );
+    when(cmsFacade.designViewSelectedPageletId$).thenReturn(of('xyz'));
     when(previewService.isDesignViewMode).thenReturn(true);
 
     await TestBed.configureTestingModule({
@@ -70,10 +71,13 @@ describe('Content Design View Wrapper Component', () => {
 
     expect(component.type).toEqual('pagelet');
     expect(element).toMatchInlineSnapshot(`
-      <div class="design-view-wrapper pagelet" ng-reflect-ng-class="pagelet">
+      <div
+        class="design-view-wrapper pagelet pagelet-selected"
+        ng-reflect-ng-class="pagelet,pagelet-selected"
+      >
         <div class="design-view-wrapper-actions">
           <button type="button" class="btn" title="designview.edit.link.title Pagelet Name xyz">
-            Pagelet Name xyz <fa-icon ng-reflect-icon="fas,pencil-alt"></fa-icon>
+            <fa-icon ng-reflect-icon="fas,pencil-alt"></fa-icon>
           </button>
         </div>
       </div>
@@ -96,7 +100,7 @@ describe('Content Design View Wrapper Component', () => {
 
     expect(component.type).toEqual('slot');
     expect(element).toMatchInlineSnapshot(`
-      <div class="design-view-wrapper slot" ng-reflect-ng-class="slot">
+      <div class="design-view-wrapper slot" ng-reflect-ng-class="slot,">
         <div class="design-view-wrapper-actions">
           <div class="name">Slot Name xyz</div>
           <button type="button" class="btn" title="designview.add.link.title">
@@ -116,7 +120,7 @@ describe('Content Design View Wrapper Component', () => {
 
     expect(component.type).toEqual('include');
     expect(element).toMatchInlineSnapshot(`
-      <div class="design-view-wrapper include" ng-reflect-ng-class="include">
+      <div class="design-view-wrapper include" ng-reflect-ng-class="include,">
         <div class="design-view-wrapper-actions">
           <div class="name">Include Name xyz</div>
           <button type="button" class="btn" title="designview.add.link.title">

@@ -40,7 +40,27 @@ const cacheTime = memoize((url): number => {
   return 0;
 });
 
-const cache: Record<string, HttpResponse<unknown>> = {};
+class IcmCallsCache {
+  private cache: Record<string, HttpResponse<unknown>> = {};
+
+  get(key: string): HttpResponse<unknown> | undefined {
+    return this.cache[key];
+  }
+
+  set(key: string, value: HttpResponse<unknown>): void {
+    this.cache[key] = value;
+  }
+
+  delete(key: string): void {
+    delete this.cache[key];
+  }
+
+  clear(): void {
+    this.cache = {};
+  }
+}
+
+export const icmCallsCache = new IcmCallsCache();
 
 @Injectable()
 export class UniversalCacheInterceptor implements HttpInterceptor {
@@ -49,18 +69,18 @@ export class UniversalCacheInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const seconds = cacheTime(req.urlWithParams);
     if (CACHE_CONFIG && seconds && req.method === 'GET') {
-      const cached = cache[req.urlWithParams];
+      const cached = icmCallsCache.get(req.urlWithParams);
       if (cached) {
         return of(cached);
       } else {
         const cacheFn = (r: HttpEvent<unknown>) => {
           if (r instanceof HttpResponse) {
-            cache[req.urlWithParams] = r;
+            icmCallsCache.set(req.urlWithParams, r);
 
             // schedule deletion
             this.zone.runOutsideAngular(() => {
               setTimeout(() => {
-                delete cache[req.urlWithParams];
+                icmCallsCache.delete(req.urlWithParams);
               }, seconds * 1000);
             });
           }

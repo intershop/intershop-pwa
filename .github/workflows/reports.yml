@@ -6,17 +6,12 @@ on:
       - 'reports/**'
       - 'develop'
 
-jobs:
-  CancelPrevious:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cancel Old Pipeline
-        uses: rokroskar/workflow-run-cleanup-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 
+jobs:
   BuildNDeployReports:
-    needs: [CancelPrevious]
     if: ${{ github.event.repository.owner.login == 'intershop' }}
     runs-on: ubuntu-latest
     environment:
@@ -24,7 +19,7 @@ jobs:
       url: https://pwa-gh-review-reports.azurewebsites.net
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Reset .dockerignore
         run: echo node_modules > .dockerignore

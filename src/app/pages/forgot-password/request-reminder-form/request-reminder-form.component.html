@@ -6,7 +6,7 @@
   class="form-horizontal"
   novalidate
 >
-  <formly-form [form]="requestReminderForm" [fields]="fields" />
+  <formly-form [form]="requestReminderForm" [fields]="fields$ | async" />
 
   <div class="row form-group">
     <div class="offset-md-4 col-md-8">

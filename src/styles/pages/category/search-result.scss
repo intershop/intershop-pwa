@@ -9,8 +9,8 @@
 }
 
 .no-search-result {
-  padding: $space-default 0 $space-default 0;
   clear: both;
+  padding: $space-default 0 $space-default 0;
 }
 
 .no-search-result-title {
@@ -26,10 +26,10 @@
 .main-search-container {
   position: relative;
   display: inline-block;
-  padding: 0 0 ($space-default * 2) 0;
+  padding: 0 0 ($space-default * 2);
 
   .search-input {
     float: left;
-    width: 320px;
+    width: 280px;
   }
 }

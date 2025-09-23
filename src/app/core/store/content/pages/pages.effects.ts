@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
-import { concatMap, map, mergeMap, switchMap } from 'rxjs/operators';
+import { concatMap, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { CMSService } from 'ish-core/services/cms/cms.service';
 import { selectRouteParam } from 'ish-core/store/core/router';
@@ -70,6 +70,7 @@ export class PagesEffects {
       switchMap(rootId =>
         this.store.pipe(
           select(getBreadcrumbForContentPage(rootId)),
+          filter(breadcrumbData => !!breadcrumbData),
           map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
         )
       )

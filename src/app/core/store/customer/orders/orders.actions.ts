@@ -3,23 +3,27 @@ import { createAction } from '@ngrx/store';
 
 import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { Order } from 'ish-core/models/order/order.model';
+import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 export const createOrder = createAction('[Orders Internal] Create Order');
 
 export const createOrderFail = createAction('[Orders API] Create Order Fail', httpError());
 
-export const createOrderSuccess = createAction('[Orders API] Create Order Success', payload<{ order: Order }>());
+export const createOrderSuccess = createAction(
+  '[Orders API] Create Order Success',
+  payload<{ order: Order; basketId: string }>()
+);
 
 export const loadOrders = createAction('[Orders] Load Orders', payload<{ query: OrderListQuery }>());
 
-export const loadMoreOrders = createAction('[Orders] Load More Orders');
+export const loadMoreOrders = createAction('[Orders] Load More Orders', payload<{ offset: number; limit: number }>());
 
 export const loadOrdersFail = createAction('[Orders API] Load Orders Fail', httpError());
 
 export const loadOrdersSuccess = createAction(
   '[Orders API] Load Orders Success',
-  payload<{ orders: Order[]; query: OrderListQuery; allRetrieved?: boolean }>()
+  payload<{ orders: Order[]; query: OrderListQuery; paging: PagingInfo }>()
 );
 
 export const loadOrder = createAction('[Orders Internal] Load Order', payload<{ orderId: string }>());

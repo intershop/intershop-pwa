@@ -3,27 +3,29 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { filter, first, fromEvent, map, switchMap, tap } from 'rxjs';
 
+import { designViewActions } from 'ish-core/store/content/design-view';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { DomService } from 'ish-core/utils/dom/dom.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-interface DesignViewMessage {
-  type:
-    | 'dv-clientAction'
-    | 'dv-clientNavigation'
-    | 'dv-clientReady'
-    | 'dv-clientRefresh'
-    | 'dv-clientLocale'
-    | 'dv-clientStable'
-    | 'dv-clientContentIds';
+interface DesignViewMessage<T = ToDVMessageType> {
+  type: T;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload?: any;
 }
 
+type FromDVMessageType = 'dv-clientRefresh' | 'dv-clientHighlightPagelet';
+
+type ToDVMessageType =
+  | 'dv-clientAction'
+  | 'dv-clientReady'
+  | 'dv-clientNavigation'
+  | 'dv-clientStable'
+  | 'dv-clientLocale'
+  | 'dv-clientContentIds';
+
 @Injectable({ providedIn: 'root' })
 export class DesignViewService {
-  private allowedHostMessageTypes = ['dv-clientRefresh'];
-
   constructor(
     private router: Router,
     private appRef: ApplicationRef,
@@ -78,7 +80,7 @@ export class DesignViewService {
   private listenToHostMessages() {
     fromEvent<MessageEvent>(window, 'message')
       .pipe(
-        filter(e => e.data.hasOwnProperty('type') && this.allowedHostMessageTypes.includes(e.data.type)),
+        filter(e => e.data.hasOwnProperty('type') && e.data.type.startsWith('dv-client')),
         map(message => message.data)
       )
       .subscribe(message => this.handleHostMessage(message));
@@ -134,11 +136,19 @@ export class DesignViewService {
    * Handle incoming message from the host window.
    * Invoked by the event listener in `listenToHostMessages()` when a new message arrives.
    */
-  private handleHostMessage(message: DesignViewMessage) {
+  private handleHostMessage(message: DesignViewMessage<FromDVMessageType>) {
     switch (message.type) {
       case 'dv-clientRefresh': {
         location.reload();
-        return;
+        break;
+      }
+      case 'dv-clientHighlightPagelet': {
+        this.store.dispatch(designViewActions.selectPagelet({ pageletId: message.payload.componentId }));
+        break;
+      }
+      default: {
+        // eslint-disable-next-line no-console
+        console.warn(`Design View Service received unknown message type: ${message.type}`, message);
       }
     }
   }

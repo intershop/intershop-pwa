@@ -40,8 +40,6 @@
           <ish-product-item-variations />
 
           <div class="product-list-actions-container">
-            <ish-lazy-tacton-configure-product displayType="list-button" />
-
             <div class="product-form form-horizontal row">
               <ng-container *ngIf="configuration$('readOnly') | async; else quantityInput">
                 <div class="action-container col-12 col-xl-7">

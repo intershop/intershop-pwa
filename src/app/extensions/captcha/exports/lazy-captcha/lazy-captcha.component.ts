@@ -49,7 +49,7 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit {
   /**
     css Class for rendering the captcha V2 control, default='offset-md-4 col-md-8'
    */
-  @Input() cssClass = 'offset-md-4 col-md-8';
+  @Input() cssClass = '';
 
   private destroyRef = inject(DestroyRef);
 

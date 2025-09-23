@@ -16,11 +16,6 @@
 // import Swiper default theme
 @import 'swiper/scss';
 @import 'swiper/scss/pagination';
-
-// import ng-select default theme
-$ng-select-border: $gray-400;
-$ng-select-border-radius: 0;
-
 @import '@ng-select/ng-select/scss/default.theme';
 
 // STYLING COMPATIBILITY LAYER
@@ -80,6 +75,5 @@ $ng-select-border-radius: 0;
 @import 'pages/content-pages/page-navigation';
 @import 'pages/content-pages/page-content';
 @import 'pages/productdetail/productdetail';
-@import 'pages/productdetail/tacton';
 @import 'pages/productdetail/product-images';
 @import 'pages/productdetail/product-info';

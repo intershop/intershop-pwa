@@ -2,6 +2,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
+import { TokenResponse } from 'angular-oauth2-oidc';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
@@ -9,6 +10,7 @@ import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-quer
 import { OrderBaseData } from 'ish-core/models/order/order.interface';
 import { Order } from 'ish-core/models/order/order.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
+import { TokenService } from 'ish-core/services/token/token.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
@@ -17,6 +19,8 @@ import { OrderService, orderListQueryToHttpParams } from './order.service';
 describe('Order Service', () => {
   let orderService: OrderService;
   let apiService: ApiService;
+  let tokenService: TokenService;
+
   const basketMock = BasketMockData.getBasket();
   const orderMockData = {
     data: {
@@ -29,12 +33,15 @@ describe('Order Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
+    tokenService = mock(TokenService);
+
     when(apiService.encodeResourceId(anything())).thenCall(id => id);
 
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },
         { provide: APP_BASE_HREF, useFactory: () => '/' },
+        { provide: TokenService, useFactory: () => instance(tokenService) },
         provideMockStore({ selectors: [{ selector: getCurrentLocale, value: 'en_US' }] }),
       ],
     });
@@ -80,7 +87,7 @@ describe('Order Service', () => {
       orderService.getOrders({ limit: 30 }).subscribe(() => {
         verify(apiService.get('orders', anything())).once();
         const options: AvailableOptions = capture(apiService.get).last()[1];
-        expect(options.params?.toString()).toMatchInlineSnapshot(`"limit=30&page%5Blimit%5D=30"`);
+        expect(options.params?.toString()).toMatchInlineSnapshot(`"limit=30"`);
         done();
       });
     });
@@ -110,6 +117,9 @@ describe('Order Service', () => {
 
   it('should load an order by token for an anonymous user', done => {
     when(apiService.get(anything(), anything())).thenReturn(of({ data: { id: 'id12345' } as Order }));
+    when(tokenService.fetchToken('refresh_token', anything())).thenReturn(
+      of({ access_token: 'dummy' } as TokenResponse)
+    );
 
     orderService.getOrderByToken('id12345', 'dummy').subscribe(data => {
       verify(apiService.get(anything(), anything())).once();

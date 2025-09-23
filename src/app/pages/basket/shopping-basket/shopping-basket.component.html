@@ -91,6 +91,14 @@
           <!-- Cost Summary Component -->
           <ish-basket-cost-summary [totals]="basket.totals" />
 
+          <ng-container *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']">
+            <ish-loading *ngIf="loading" />
+            <ish-basket-order-recurrence-edit
+              *ngIf="'recurringOrder.enabled' | ishServerSetting"
+              [recurrence]="basket.recurrence"
+            />
+          </ng-container>
+
           <button
             *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']"
             type="submit"

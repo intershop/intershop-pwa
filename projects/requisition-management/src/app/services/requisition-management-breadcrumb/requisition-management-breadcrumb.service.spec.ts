@@ -47,6 +47,7 @@ describe('Requisition Management Breadcrumb Service', () => {
     requisitionManagementBreadcrumbService = TestBed.inject(RequisitionManagementBreadcrumbService);
     router = TestBed.inject(Router);
 
+    // Setup default mock for most tests
     when(reqFacade.selectedRequisition$).thenReturn(of({ id: '65435435', requisitionNo: '12345' } as Requisition));
 
     router.initialNavigation();
@@ -121,7 +122,7 @@ describe('Requisition Management Breadcrumb Service', () => {
       });
     });
 
-    it('should set breadcrumb for requisitions buyer detail view', done => {
+    it('should set breadcrumb for requisitions approver detail view', done => {
       router.navigateByUrl('/requisitions/approver/12345;status=rejected');
       requisitionManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
         expect(breadcrumbData).toMatchInlineSnapshot(`
@@ -137,6 +138,91 @@ describe('Requisition Management Breadcrumb Service', () => {
             },
             {
               "text": "approval.details.breadcrumb.order.label - 12345",
+            },
+          ]
+        `);
+        done();
+      });
+    });
+
+    it('should set breadcrumb for requisitions of buyer detail view', done => {
+      router.navigateByUrl('/requisitions/buyer/12345;status=pending');
+      requisitionManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
+        expect(breadcrumbData).toMatchInlineSnapshot(`
+          [
+            {
+              "key": "account.requisitions.requisitions",
+              "link": [
+                "/my-account/buyer",
+                {
+                  "status": "pending",
+                },
+              ],
+            },
+            {
+              "text": "approval.details.breadcrumb.order.label - 12345",
+            },
+          ]
+        `);
+        done();
+      });
+    });
+
+    it('should set breadcrumb for recurring order requisitions of buyer detail view', done => {
+      when(reqFacade.selectedRequisition$).thenReturn(
+        of({
+          id: '65435435',
+          recurrence: { id: 'recurrence1' },
+          recurringOrderDocumentNo: 'REC-789',
+        } as unknown as Requisition)
+      );
+
+      router.navigateByUrl('/requisitions/buyer/12345;status=pending');
+      requisitionManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
+        expect(breadcrumbData).toMatchInlineSnapshot(`
+          [
+            {
+              "key": "account.requisitions.requisitions",
+              "link": [
+                "/my-account/buyer",
+                {
+                  "status": "pending",
+                },
+              ],
+            },
+            {
+              "text": "approval.details.breadcrumb.order.label - REC-789",
+            },
+          ]
+        `);
+        done();
+      });
+    });
+
+    it('should set breadcrumb for recurring order requisitions of approval detail view', done => {
+      when(reqFacade.selectedRequisition$).thenReturn(
+        of({
+          id: '65435435',
+          recurrence: { id: 'recurrence1' },
+          recurringOrderDocumentNo: 'REC-789',
+        } as unknown as Requisition)
+      );
+
+      router.navigateByUrl('/requisitions/approver/12345;status=rejected');
+      requisitionManagementBreadcrumbService.breadcrumb$('/my-account').subscribe(breadcrumbData => {
+        expect(breadcrumbData).toMatchInlineSnapshot(`
+          [
+            {
+              "key": "account.requisitions.approvals",
+              "link": [
+                "/my-account/approver",
+                {
+                  "status": "rejected",
+                },
+              ],
+            },
+            {
+              "text": "approval.details.breadcrumb.order.label - REC-789",
             },
           ]
         `);

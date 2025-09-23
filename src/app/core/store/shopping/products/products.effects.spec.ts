@@ -12,6 +12,7 @@ import { ProductPriceDetails } from 'ish-core/models/product-prices/product-pric
 import { Product } from 'ish-core/models/product/product.model';
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { ProductsService } from 'ish-core/services/products/products.service';
+import { applyConfiguration } from 'ish-core/store/core/configuration';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user/user.actions';
 import { loadCategory } from 'ish-core/store/shopping/categories';
@@ -79,7 +80,7 @@ describe('Products Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['router', 'serverConfig']),
+        CoreStoreModule.forTesting(['router', 'serverConfig', 'configuration']),
         RouterTestingModule.withRoutes([
           { path: 'category/:categoryUniqueId/product/:sku', children: [] },
           { path: 'product/:sku', children: [] },
@@ -99,6 +100,17 @@ describe('Products Effects', () => {
     store = TestBed.inject(Store);
     router = TestBed.inject(Router);
     httpStatusCodeService = spy(TestBed.inject(HttpStatusCodeService));
+
+    // Set up mock sparque configuration to prevent selector failures
+    store.dispatch(
+      applyConfiguration({
+        sparque: {
+          serverUrl: 'https://mock-sparque.example.com',
+          workspaceName: 'test-workspace',
+          apiName: 'test-api',
+        },
+      })
+    );
 
     store.dispatch(setProductListingPageSize({ itemsPerPage: 9 }));
   });
@@ -298,7 +310,8 @@ describe('Products Effects', () => {
             id: {"type":"search","value":"test","filters":{"searchTerm":[1]}}
             itemCount: 2
             sortableAttributes: []
-          no_filter_action
+          [Filter API] Load Filter Success:
+            filterNavigation: {"filter":[1]}
         `);
         done();
       });

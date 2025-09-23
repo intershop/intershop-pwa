@@ -1,15 +1,23 @@
 name: Windows
 
 on:
+  workflow_dispatch:
   push:
     branches:
-      - '**'
+      - master
+      - develop
+  pull_request:
+    types: [opened, synchronize]
     paths-ignore:
       - '**.md'
       - 'docs/**'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
-  NODE_VERSION: 18.16.0
+  NODE_VERSION: 22.17.1
   NODE_OPTIONS: --max_old_space_size=8192
   JEST_MAX_WORKERS: 1
   CI: false
@@ -25,25 +33,14 @@ env:
     npx ng g override src/app/shared/dummy/dummy.component.ts --theme b2b --html --defaults
 
 jobs:
-  CancelPrevious:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Cancel Old Pipeline
-        if: "!startsWith(github.ref, 'refs/tags/') && github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop'"
-        uses: rokroskar/workflow-run-cleanup-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   Check:
     if: github.ref == 'refs/heads/develop'
-    needs: [CancelPrevious]
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js 18
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -57,13 +54,12 @@ jobs:
         run: npm run check-no-changes
 
   CommandLine:
-    needs: [CancelPrevious]
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js 18
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -87,13 +83,12 @@ jobs:
         run: script.bat
 
   Powershell:
-    needs: [CancelPrevious]
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js 18
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -103,13 +98,12 @@ jobs:
         run: ${{ env.SCRIPT }}
 
   GitBash:
-    needs: [CancelPrevious]
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js 18
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subject, of } from 'rxjs';
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
@@ -13,6 +13,7 @@ import { PasswordReminder } from 'ish-core/models/password-reminder/password-rem
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { User } from 'ish-core/models/user/user.model';
 import { MessagesPayloadType } from 'ish-core/store/core/messages';
+import { selectQueryParam } from 'ish-core/store/core/router';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import {
   createCustomerAddress,
@@ -30,14 +31,21 @@ import {
   getDataRequestLoading,
 } from 'ish-core/store/customer/data-requests';
 import {
-  getMoreOrdersAvailable,
   getOrders,
   getOrdersError,
   getOrdersLoading,
+  getOrdersPagingInfo,
   getSelectedOrder,
   loadMoreOrders,
   loadOrders,
 } from 'ish-core/store/customer/orders';
+import {
+  getRecurringOrders,
+  getRecurringOrdersError,
+  getRecurringOrdersLoading,
+  getSelectedRecurringOrder,
+  recurringOrdersActions,
+} from 'ish-core/store/customer/recurring-orders';
 import {
   cancelRegistration,
   getSsoRegistrationCancelled,
@@ -180,20 +188,41 @@ export class AccountFacade {
   // ORDERS
 
   orders$ = this.store.pipe(select(getOrders));
+  ordersPagingInfo$ = this.store.pipe(select(getOrdersPagingInfo));
 
   loadOrders(query?: OrderListQuery) {
-    this.store.dispatch(loadOrders({ query: query || { limit: 30 } }));
+    this.store.dispatch(loadOrders({ query: query || { limit: 25 } }));
   }
 
-  moreOrdersAvailable$ = this.store.pipe(select(getMoreOrdersAvailable));
-
-  loadMoreOrders() {
-    this.store.dispatch(loadMoreOrders());
+  loadMoreOrders(offset: number, limit: number) {
+    this.store.dispatch(loadMoreOrders({ offset, limit }));
   }
 
   selectedOrder$ = this.store.pipe(select(getSelectedOrder));
   ordersLoading$ = this.store.pipe(select(getOrdersLoading));
   ordersError$ = this.store.pipe(select(getOrdersError));
+
+  // RECURRING ORDERS
+
+  recurringOrdersContext$ = this.store.pipe(select(selectQueryParam('context')), distinctUntilChanged());
+  selectedRecurringOrder$ = this.store.pipe(select(getSelectedRecurringOrder));
+  recurringOrdersLoading$ = this.store.pipe(select(getRecurringOrdersLoading));
+  recurringOrdersError$ = this.store.pipe(select(getRecurringOrdersError));
+
+  recurringOrders$() {
+    return this.recurringOrdersContext$.pipe(
+      tap(context => this.store.dispatch(recurringOrdersActions.loadRecurringOrders({ context }))),
+      switchMap(context => this.store.pipe(select(getRecurringOrders(context))))
+    );
+  }
+
+  deleteRecurringOrder(id: string): void {
+    this.store.dispatch(recurringOrdersActions.deleteRecurringOrder({ recurringOrderId: id }));
+  }
+
+  setActiveRecurringOrder(recurringOrderId: string, active: boolean) {
+    this.store.dispatch(recurringOrdersActions.updateRecurringOrder({ recurringOrderId, active }));
+  }
 
   // PAYMENT
 

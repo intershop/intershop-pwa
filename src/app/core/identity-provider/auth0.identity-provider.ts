@@ -131,7 +131,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
       })
       .pipe(
         tap(() => {
-          this.store.dispatch(loadUserByAPIToken());
+          this.store.dispatch(loadUserByAPIToken({}));
         }),
         switchMap((userData: UserData) =>
           combineLatest([this.store.pipe(select(getLoggedInCustomer)), this.store.pipe(select(getUserLoading))]).pipe(
@@ -156,7 +156,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
                       select(getSsoRegistrationRegistered),
                       whenTruthy(),
                       tap(() => {
-                        this.store.dispatch(loadUserByAPIToken());
+                        this.store.dispatch(loadUserByAPIToken({}));
                       })
                     ),
                     this.store.pipe(
@@ -191,7 +191,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
       })
       .pipe(
         tap(() => {
-          this.store.dispatch(loadUserByAPIToken());
+          this.store.dispatch(loadUserByAPIToken({}));
         }),
         switchMap(() => this.store.pipe(select(getUserAuthorized), whenTruthy(), first())),
         catchError((error: HttpError) => {

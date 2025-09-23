@@ -74,6 +74,7 @@ export class BasketMapper {
       user: data.buyer,
       externalOrderReference: data.externalOrderReference,
       messageToMerchant: data.messageToMerchant,
+      recurrence: data.recurrence,
     };
   }
 
