@@ -63,15 +63,15 @@ To enable the recurring order support in the PWA, ICM 13.x with the Recurring Or
 In addition, the "Recurring Orders" feature must be enabled in ICM (go to the channel > _Preferences > Recurring Orders_ and ensure the check box is _Enabled_).
 
 New content includes were added to the My Account area.
-They provide three general places to add content to all account pages and two specific places for the account overview page and two specific ones for the order history page.
-To use these content includes, an ICM with `icm-as-customization-headless:3.1.0.` or newer is needed.
-If the connected ICM does not provide the new content includes it is best to skip/revert these changes to avoid failing CMS REST requests, that will not lead to errors in the application but they will show in the browser console.
+They provide three general places to add content to all account pages, two specific places for the account overview page, and two specific ones for the order history page.
+To use these content includes, an ICM with `icm-as-customization-headless:3.1.0.` or newer is required.
+If the connected ICM does not provide the new content includes, it is best to skip/revert these changes to avoid failing CMS REST requests (will not lead to errors in the application, but they will appear in the browser console).
 
-With the Intershop PWA 8.0.0 release the Tacton integration to handle complex product configuration scenarios was removed.
-To keep the Tacton functionality in a PWA project, the removal commit should be skipped when migrating to PWA 8.0.0.
+With the Intershop PWA 8.0.0 release, the Tacton integration to handle complex product configuration scenarios was removed.
+To keep the Tacton functionality in a PWA project, skip the removal commit when migrating to PWA 8.0.0.
 
-With the Intershop PWA 8.0.0 release the Sentry integration to client-side error monitoring was removed.
-To keep the Sentry functionality in a PWA project, the removal commit should be skipped when migrating to PWA 8.0.0.
+With the Intershop PWA 8.0.0 release, the Sentry integration to client-side error monitoring was removed.
+To keep the Sentry functionality in a PWA project, skip the removal commit when migrating to PWA 8.0.0.
 
 Intershop PWA 8.0.0 introduces means to invalidate the [NGINX cache](./nginx-startup.md#cache) and the [Local ICM Cache](./ssr-startup.md#local-icm-cache) based on ICM page cache invalidation.
 For further instructions on how to enable this functionality, see the [Cache Clearing](./nginx-startup.md#cache-clearing) section in the NGINX guide.
