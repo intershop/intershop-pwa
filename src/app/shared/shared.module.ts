@@ -99,6 +99,7 @@ import { LoadingComponent } from './components/common/loading/loading.component'
 import { ModalDialogLinkComponent } from './components/common/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from './components/common/modal-dialog/modal-dialog.component';
 import { PagingComponent } from './components/common/paging/paging.component';
+import { PaypalMessagesComponent } from './components/common/paypal-messages/paypal-messages.component';
 import { SkipContentLinkComponent } from './components/common/skip-content-link/skip-content-link.component';
 import { SuccessMessageComponent } from './components/common/success-message/success-message.component';
 import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';
@@ -238,6 +239,7 @@ const declaredComponents = [
   LineItemWarrantyComponent,
   LoginModalComponent,
   PaymentPaypalComponent,
+  PaypalMessagesComponent,
   ProductChooseVariationComponent,
   ProductIdComponent,
   ProductItemVariationsComponent,
@@ -297,6 +299,7 @@ const exportedComponents = [
   OrderRecurrenceComponent,
   OrderWidgetComponent,
   PaymentPaypalComponent,
+  PaypalMessagesComponent,
   PagingComponent,
   ProductAddToBasketComponent,
   ProductAttachmentsComponent,

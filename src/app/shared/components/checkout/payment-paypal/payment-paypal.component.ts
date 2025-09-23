@@ -23,6 +23,7 @@ import {
   race,
   shareReplay,
   take,
+  tap,
   timer,
 } from 'rxjs';
 
@@ -52,6 +53,7 @@ declare let paypal_express: any;
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   @Input() expressCheckout = false;
+  @Input() displayMessage = false;
 
   @Output() selectPaypalPaymentMethod = new EventEmitter<string>(); // paymentInstrumentId
 
@@ -88,6 +90,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('PaymentPaypalComponent ngOnInit');
     this.paypalPaymentMethod$ = this.checkoutFacade
       .paypalPaymentMethod$(this.expressCheckout ? 'FastCheckout' : 'RedirectBeforeCheckout')
       .pipe(shareReplay(1));
@@ -98,6 +101,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    console.log('PaymentPaypalComponent ngAfterViewInit');
     this.loadScript();
   }
 
@@ -111,6 +115,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
       paypalPaymentMethod: this.paypalPaymentMethod$.pipe(whenTruthy()),
     })
       .pipe(
+        tap(() => console.log('PaymentPaypalComponent loadScript combineLatest tap')),
         take(1),
         concatMap(({ locale, basket, paypalPaymentMethod }) => {
           if (paypalPaymentMethod.hostedPaymentPageParameters?.length) {
@@ -126,6 +131,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
                   ...(paypalPaymentMethod.hostedPaymentPageParameters?.filter(attr => attr.name.startsWith('data-')) ??
                     []),
                   { name: 'data-namespace', value: this.expressCheckout ? 'paypal_express' : 'paypal_checkout' }, // <-- fixed parameter here
+                  { name: 'data-page-type', value: 'cart' },
                 ],
               })
               .pipe(map(() => ({ locale, basket, paypalPaymentMethod })));
@@ -213,7 +219,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
         })
         .render(this.paypalButtonsContainerId);
     }
-    if (paypal_checkout?.Messages) {
+    if (paypal_checkout?.Messages && this.displayMessage) {
       paypal_checkout
         .Messages({
           amount: basket.totals?.total?.gross,
@@ -278,7 +284,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
         })
         .render(this.paypalButtonsContainerId);
     }
-    if (paypal_express?.Messages) {
+    if (paypal_express?.Messages && this.displayMessage) {
       paypal_express
         .Messages({
           amount: basket.totals?.total?.gross,
@@ -286,11 +292,14 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
           style: {
             layout: 'text',
             color: 'black',
+            logo: {
+              type: 'inline',
+            },
           },
         })
         .render(this.paypalMessagesContainerId)
         .catch((error: string) => {
-          console.error('PayPal Messages render failed:', error);
+          console.error('PayPal Express Messages render failed:', error);
         });
     }
   }

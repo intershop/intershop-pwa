@@ -18,6 +18,7 @@
 
       <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <ish-product-price [showInformationalPrice]="true" [showPriceSavings]="true" />
+        <ish-paypal-messages [pageType]="'product-details'" [productSKU]="product.sku" />
       </div>
 
       <ish-product-inventory />

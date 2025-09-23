@@ -47,6 +47,18 @@ export class AppFacade {
   getRestEndpoint$ = this.store.pipe(select(getRestEndpoint));
   getPipelineEndpoint$ = this.store.pipe(select(getPipelineEndpoint));
 
+  payPalConfig$ = combineLatest([
+    this.store.pipe(select(getServerConfigParameter<string>(`payment.config.paypal.clientID`))),
+    this.store.pipe(select(getServerConfigParameter<string>(`payment.config.paypal.merchantID`))),
+    this.store.pipe(select(getServerConfigParameter<string>(`payment.config.paypal.intent`))),
+  ]).pipe(
+    map(([clientID, merchantID, intent]) => ({
+      clientID: clientID ?? 'AakT4mm7rS4EiUD5sVxzOZRYTxkMqc0D8TeYPYCFu2KmJvt0NkpCz7CX73KBzcAfhiNR0u2k62Hdh_yX',
+      merchantID: merchantID ?? 'BTFBP2HK3KHBC',
+      intent: intent ?? 'capture',
+    }))
+  );
+
   getRestEndpointWithContext$ = combineLatest([
     this.store.pipe(select(getRestEndpoint)),
     this.store.pipe(

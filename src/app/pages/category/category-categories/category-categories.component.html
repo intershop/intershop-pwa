@@ -14,6 +14,9 @@
       <div class="navigation-panel" [ngbCollapse]="isCollapsed">
         <nav [attr.aria-label]="'category.navigation.aria_label' | translate">
           <ish-category-navigation [uniqueId]="category.categoryPath[0]" />
+          <div class="mt-2">
+            <ish-paypal-messages [pageType]="'product-listing'" />
+          </div>
         </nav>
         <!-- DISABLED VIEW CONTEXT --
         <div class="marketing-area">
