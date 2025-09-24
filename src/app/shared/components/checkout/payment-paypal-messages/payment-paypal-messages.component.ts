@@ -1,12 +1,22 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, Observable, combineLatest, distinctUntilChanged, map, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  combineLatest,
+  distinctUntilChanged,
+  filter,
+  iif,
+  map,
+  of,
+  switchMap,
+} from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
-import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
@@ -14,12 +24,11 @@ import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.
 declare const paypal_messages: any;
 
 @Component({
-  selector: 'ish-paypal-messages',
-  templateUrl: './paypal-messages.component.html',
-  styleUrls: ['./paypal-messages.component.scss'],
+  selector: 'ish-payment-paypal-messages',
+  templateUrl: './payment-paypal-messages.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PaypalMessagesComponent implements OnInit {
+export class PaymentPaypalMessagesComponent implements OnInit {
   @Input() expressCheckout = false;
   @Input() pageType: 'product-details' | 'cart' | 'checkout' | 'product-listing' = 'cart';
   @Input() productSKU: string;
@@ -31,8 +40,7 @@ export class PaypalMessagesComponent implements OnInit {
   private currentLocale: string;
   private currentCurrency: string;
 
-  paypalPaymentMethod$: Observable<PaymentMethod>;
-  amount = 0;
+  private amount$: Observable<number>;
   private destroyRef = inject(DestroyRef);
 
   constructor(
@@ -43,18 +51,16 @@ export class PaypalMessagesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.pageType === 'product-details' && this.productSKU) {
-      this.shoppingFacade
-        .productPrices$(this.productSKU)
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(prices => {
-          this.amount = prices?.salePrice?.value ?? 0;
-        });
-    } else if (this.pageType === 'cart' || this.pageType === 'checkout') {
-      this.checkoutFacade.basket$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(basket => {
-        this.amount = basket?.totals?.total?.gross ?? 0;
-      });
-    }
+    this.amount$ = iif(
+      () => this.pageType === 'product-details' && !!this.productSKU,
+      this.shoppingFacade.productPrices$(this.productSKU).pipe(map(prices => prices?.salePrice?.value ?? 0)),
+      iif(
+        () => this.pageType === 'cart' || this.pageType === 'checkout',
+        this.checkoutFacade.basket$.pipe(map(basket => basket?.totals?.total?.gross ?? 0)),
+        of(0)
+      )
+    );
+
     this.loadScript();
   }
 
@@ -69,17 +75,26 @@ export class PaypalMessagesComponent implements OnInit {
         this.expressCheckout ? 'FastCheckout' : 'RedirectBeforeCheckout'
       ),
       config: this.appFacade.payPalConfig$,
+      amount: this.amount$,
     })
       .pipe(
+        filter(data => this.isFundingEnabled(data.config)),
         distinctUntilChanged(
           (prev, curr) =>
             prev.locale === curr.locale &&
             prev.currency === curr.currency &&
             prev.paymentMethod === curr.paymentMethod &&
-            prev.config === curr.config
+            prev.config === curr.config &&
+            prev.amount === curr.amount
         ),
         switchMap(
-          ({ locale, currency, paymentMethod, config }): Observable<{ locale: string; currency: string }> | [] => {
+          ({
+            locale,
+            currency,
+            paymentMethod,
+            config,
+            amount,
+          }): Observable<{ locale: string; currency: string; amount: number }> | [] => {
             // Check if locale or currency changed and script was already loaded
             const localeOrCurrencyChanged =
               (this.currentLocale && this.currentLocale !== locale) ||
@@ -95,13 +110,7 @@ export class PaypalMessagesComponent implements OnInit {
 
             if (paymentMethod?.hostedPaymentPageParameters?.length || config) {
               this.scriptUrl = `https://www.paypal.com/sdk/js?${this.getScriptQueryParameters(
-                paymentMethod?.hostedPaymentPageParameters
-                  ? paymentMethod.hostedPaymentPageParameters
-                  : [
-                      { name: 'client-id', value: config.clientID },
-                      { name: 'merchant-id', value: config.merchantID },
-                      { name: 'intent', value: config.intent },
-                    ],
+                paymentMethod?.hostedPaymentPageParameters,
                 currency,
                 locale
               )}`;
@@ -117,7 +126,9 @@ export class PaypalMessagesComponent implements OnInit {
                     { name: 'data-page-type', value: this.pageType },
                   ];
 
-              return this.scriptLoader.load(this.scriptUrl, { attributes }).pipe(map(() => ({ locale, currency })));
+              return this.scriptLoader
+                .load(this.scriptUrl, { attributes })
+                .pipe(map(() => ({ locale, currency, amount })));
             } else {
               return [];
             }
@@ -125,11 +136,10 @@ export class PaypalMessagesComponent implements OnInit {
         ),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(() => this.renderPaypalMessages());
+      .subscribe(data => this.renderPaypalMessages(data.amount));
   }
 
-  private renderPaypalMessages() {
-    console.log('AMOUNT: ', this.amount);
+  private renderPaypalMessages(amount: number) {
     this.scriptLoaded$.next(true);
     paypal_messages
       .Messages(
@@ -141,7 +151,7 @@ export class PaypalMessagesComponent implements OnInit {
               },
             }
           : {
-              amount: this.amount,
+              amount,
               style: {
                 layout: 'text',
                 color: 'black',
@@ -158,9 +168,8 @@ export class PaypalMessagesComponent implements OnInit {
   }
 
   private getScriptQueryParameters(paymentParameters: Attribute<string>[], currency: string, locale: string): string {
-    console.log('Generating PayPal script URL with parameters:', paymentParameters, currency, locale);
     let params = paymentParameters
-      ?.filter(param => ['client-id', 'merchant-id', 'intent'].includes(param?.name)) // 'data-partner-attribution-id'
+      ?.filter(param => ['client-id', 'merchant-id', 'intent', 'partner-attribution-id'].includes(param?.name))
       .map(param => `${param.name}=${param.value}`)
       .join('&');
     params = `${params}&components=messages`;
@@ -168,12 +177,17 @@ export class PaypalMessagesComponent implements OnInit {
     params = `${params}&locale=${locale}`; // ToDo: decide if paypal should determine locale from browser settings
     params = `${params}&commit=false`; // do not show the "Pay now" button, but the "Continue to PayPal" button
     params = `${params}&enable-funding=paylater`;
-    // ToDo: make sure the checkout and express scripts are different to load the script twice
-    if (this.expressCheckout) {
-      params = `${params}&disable-funding=card,sepa`;
-    }
-    // debug parameter available for sandbox only;
-
     return params;
+  }
+
+  private isFundingEnabled(config: PaypalConfig): boolean {
+    switch (this.pageType) {
+      case 'product-details':
+        return config.payLaterMessagingProductDetails;
+      case 'product-listing':
+        return config.payLaterMessagingCategory;
+      default:
+        return config.payLaterMessagingCart;
+    }
   }
 }

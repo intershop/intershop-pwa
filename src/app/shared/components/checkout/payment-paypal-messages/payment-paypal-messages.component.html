@@ -1,4 +1,4 @@
-<div id="paypal-only-messages-container"></div>
+<div id="paypal-only-messages-container" class="pt-2"></div>
 <div *ngIf="(scriptLoaded$ | async) === false" class="alert alert-info">
   {{ 'checkout.payment.paypal.script.error.message' | translate }}
 </div>

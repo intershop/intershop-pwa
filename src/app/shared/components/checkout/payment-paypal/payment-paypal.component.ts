@@ -23,7 +23,6 @@ import {
   race,
   shareReplay,
   take,
-  tap,
   timer,
 } from 'rxjs';
 
@@ -32,6 +31,7 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
@@ -53,7 +53,6 @@ declare let paypal_express: any;
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   @Input() expressCheckout = false;
-  @Input() displayMessage = false;
 
   @Output() selectPaypalPaymentMethod = new EventEmitter<string>(); // paymentInstrumentId
 
@@ -72,7 +71,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
     height: 40,
     tagline: false,
   };
-  scriptLoaded$ = new BehaviorSubject<boolean>(undefined);
+  scriptLoaded$ = new BehaviorSubject<boolean>(false);
   scriptUrl: string;
 
   private basket$ = this.checkoutFacade.basket$.pipe(shareReplay(1));
@@ -90,7 +89,6 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('PaymentPaypalComponent ngOnInit');
     this.paypalPaymentMethod$ = this.checkoutFacade
       .paypalPaymentMethod$(this.expressCheckout ? 'FastCheckout' : 'RedirectBeforeCheckout')
       .pipe(shareReplay(1));
@@ -101,7 +99,6 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log('PaymentPaypalComponent ngAfterViewInit');
     this.loadScript();
   }
 
@@ -113,16 +110,17 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
       locale: this.appFacade.currentLocale$.pipe(whenTruthy()),
       basket: this.basket$.pipe(whenTruthy()),
       paypalPaymentMethod: this.paypalPaymentMethod$.pipe(whenTruthy()),
+      config: this.appFacade.payPalConfig$,
     })
       .pipe(
-        tap(() => console.log('PaymentPaypalComponent loadScript combineLatest tap')),
         take(1),
-        concatMap(({ locale, basket, paypalPaymentMethod }) => {
+        concatMap(({ locale, basket, paypalPaymentMethod, config }) => {
           if (paypalPaymentMethod.hostedPaymentPageParameters?.length) {
             this.scriptUrl = `https://www.paypal.com/sdk/js?${this.getScriptQueryParameters(
               paypalPaymentMethod.hostedPaymentPageParameters,
               basket,
-              locale
+              locale,
+              config
             )}`;
 
             return this.scriptLoader
@@ -132,18 +130,24 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
                     []),
                   { name: 'data-namespace', value: this.expressCheckout ? 'paypal_express' : 'paypal_checkout' }, // <-- fixed parameter here
                   { name: 'data-page-type', value: 'cart' },
+                  {
+                    name: 'data-partner-attribution-id',
+                    value: paypalPaymentMethod.hostedPaymentPageParameters?.find(
+                      attr => attr.name === 'data-partner-attribution-id'
+                    )?.value,
+                  },
                 ],
               })
-              .pipe(map(() => ({ locale, basket, paypalPaymentMethod })));
+              .pipe(map(() => ({ locale, basket, paypalPaymentMethod, config })));
           }
         }),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
-        next: ({ basket, paypalPaymentMethod }) => {
+        next: ({ basket, paypalPaymentMethod, config }) => {
           this.expressCheckout
-            ? this.initializePaypalExpressButton(basket, paypalPaymentMethod)
-            : this.initializePaypalCheckoutButton(basket, paypalPaymentMethod);
+            ? this.initializePaypalExpressButton(basket, paypalPaymentMethod, config?.payLaterMessagingPayment)
+            : this.initializePaypalCheckoutButton(basket, paypalPaymentMethod, config?.payLaterMessagingPayment);
         },
         error: () => {
           this.scriptLoaded$.next(false);
@@ -151,7 +155,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
       });
   }
 
-  private initializePaypalCheckoutButton(basket: Basket, paypalPaymentMethod: PaymentMethod) {
+  private initializePaypalCheckoutButton(basket: Basket, paypalPaymentMethod: PaymentMethod, displayMessage: boolean) {
     if (paypal_checkout?.Buttons) {
       this.scriptLoaded$.next(true);
 
@@ -219,7 +223,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
         })
         .render(this.paypalButtonsContainerId);
     }
-    if (paypal_checkout?.Messages && this.displayMessage) {
+    if (paypal_checkout?.Messages && displayMessage) {
       paypal_checkout
         .Messages({
           amount: basket.totals?.total?.gross,
@@ -236,7 +240,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private initializePaypalExpressButton(basket: Basket, paypalPaymentMethod: PaymentMethod) {
+  private initializePaypalExpressButton(basket: Basket, paypalPaymentMethod: PaymentMethod, displayMessage: boolean) {
     if (paypal_express?.Buttons) {
       this.scriptLoaded$.next(true);
 
@@ -284,7 +288,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
         })
         .render(this.paypalButtonsContainerId);
     }
-    if (paypal_express?.Messages && this.displayMessage) {
+    if (paypal_express?.Messages && displayMessage) {
       paypal_express
         .Messages({
           amount: basket.totals?.total?.gross,
@@ -304,16 +308,24 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private getScriptQueryParameters(paymentParameters: Attribute<string>[], basket: Basket, locale: string): string {
+  private getScriptQueryParameters(
+    paymentParameters: Attribute<string>[],
+    basket: Basket,
+    locale: string,
+    config: PaypalConfig
+  ): string {
     let params = paymentParameters
-      ?.filter(param => ['client-id', 'merchant-id', 'intent'].includes(param?.name)) // 'data-partner-attribution-id'
+      ?.filter(param => ['client-id', 'merchant-id', 'intent'].includes(param?.name))
       .map(param => `${param.name}=${param.value}`)
       .join('&');
     params = `${params}&components=buttons,messages`;
     params = `${params}&currency=${basket.purchaseCurrency}`;
     params = `${params}&locale=${locale}`; // ToDo: decide if paypal should determine locale from browser settings
     params = `${params}&commit=false`; // do not show the "Pay now" button, but the "Continue to PayPal" button
-    params = `${params}&enable-funding=paylater`;
+    if (config?.payLaterEnabled) {
+      params = `${params}&enable-funding=paylater`;
+    }
+
     // ToDo: make sure the checkout and express scripts are different to load the script twice
     if (this.expressCheckout) {
       params = `${params}&disable-funding=card,sepa`;

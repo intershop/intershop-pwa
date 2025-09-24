@@ -8,6 +8,7 @@ import { createCategoryView } from 'ish-core/models/category-view/category-view.
 import { Category } from 'ish-core/models/category/category.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
+import { PaymentPaypalMessagesComponent } from 'ish-shared/components/checkout/payment-paypal-messages/payment-paypal-messages.component';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 
@@ -30,6 +31,7 @@ describe('Category Categories Component', () => {
         MockComponent(CategoryListComponent),
         MockComponent(CategoryNavigationComponent),
         MockComponent(FaIconComponent),
+        MockComponent(PaymentPaypalMessagesComponent),
         MockComponent(SkipContentLinkComponent),
         MockDirective(NgbCollapse),
       ],

@@ -87,6 +87,7 @@ import { ClearBasketComponent } from './components/basket/clear-basket/clear-bas
 import { MiniBasketContentComponent } from './components/basket/mini-basket-content/mini-basket-content.component';
 import { BasketInvoiceAddressWidgetComponent } from './components/checkout/basket-invoice-address-widget/basket-invoice-address-widget.component';
 import { BasketShippingAddressWidgetComponent } from './components/checkout/basket-shipping-address-widget/basket-shipping-address-widget.component';
+import { PaymentPaypalMessagesComponent } from './components/checkout/payment-paypal-messages/payment-paypal-messages.component';
 import { PaymentPaypalComponent } from './components/checkout/payment-paypal/payment-paypal.component';
 import { AccordionItemComponent } from './components/common/accordion-item/accordion-item.component';
 import { AccordionComponent } from './components/common/accordion/accordion.component';
@@ -99,7 +100,6 @@ import { LoadingComponent } from './components/common/loading/loading.component'
 import { ModalDialogLinkComponent } from './components/common/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from './components/common/modal-dialog/modal-dialog.component';
 import { PagingComponent } from './components/common/paging/paging.component';
-import { PaypalMessagesComponent } from './components/common/paypal-messages/paypal-messages.component';
 import { SkipContentLinkComponent } from './components/common/skip-content-link/skip-content-link.component';
 import { SuccessMessageComponent } from './components/common/success-message/success-message.component';
 import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';
@@ -239,7 +239,7 @@ const declaredComponents = [
   LineItemWarrantyComponent,
   LoginModalComponent,
   PaymentPaypalComponent,
-  PaypalMessagesComponent,
+  PaymentPaypalMessagesComponent,
   ProductChooseVariationComponent,
   ProductIdComponent,
   ProductItemVariationsComponent,
@@ -299,7 +299,7 @@ const exportedComponents = [
   OrderRecurrenceComponent,
   OrderWidgetComponent,
   PaymentPaypalComponent,
-  PaypalMessagesComponent,
+  PaymentPaypalMessagesComponent,
   PagingComponent,
   ProductAddToBasketComponent,
   ProductAttachmentsComponent,
