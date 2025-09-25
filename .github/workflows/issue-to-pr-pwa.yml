@@ -29,8 +29,8 @@ jobs:
       - name: Check issue eligibility
         id: check
         run: |
-          # For manual dispatch, find the first issue with "ghcp-test-automation" label
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          # For manual dispatch or push events, find the first issue with "ghcp-test-automation" label
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "${{ github.event_name }}" = "push" ]; then
             # Use GitHub GraphQL API for reliable search
             REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
             ISSUE_NUMBER=$(gh api graphql -f query='
