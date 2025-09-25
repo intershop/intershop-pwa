@@ -4,8 +4,9 @@
 # No external API keys required - uses GitHub's search and pattern matching
 
 on:
-  issues:
-    types: [opened]
+  workflow_dispatch: # Manual trigger - processes all issues with "ghcp-test-automation" label
+  # issues:
+  #   types: [opened, labeled]  # Will uncomment when ready for production
 
 jobs:
   process-issue:
@@ -15,24 +16,73 @@ jobs:
       pull-requests: write
       contents: read
     concurrency:
-      group: issue-processing-${{ github.event.issue.number }}
+      group: issue-processing-${{ github.run_id }}
       cancel-in-progress: true
     steps:
       # Check out repository code to make it available for the workflow
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Check if issue should be processed (filter by labels)
+      - name: Check issue eligibility
+        id: check
+        run: |
+          # For manual dispatch, find the first issue with "ghcp-test-automation" label
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            ISSUE_NUMBER=$(gh api "/repos/${{ github.repository }}/issues?labels=ghcp-test-automation&state=open&per_page=1" --jq '.[0].number // empty')
+
+            if [ -z "$ISSUE_NUMBER" ] || [ "$ISSUE_NUMBER" = "null" ]; then
+              echo "should_process=false" >> $GITHUB_OUTPUT
+              echo "❌ No open issues found with 'ghcp-test-automation' label"
+              exit 0
+            fi
+
+            echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+            echo "should_process=true" >> $GITHUB_OUTPUT
+            echo "✅ Found issue #$ISSUE_NUMBER with 'ghcp-test-automation' label, will process"
+            exit 0
+          fi
+
+          # For issue events, use the triggered issue and check labels
+          ISSUE_NUMBER="${{ github.event.issue.number }}"
+          echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+
+          LABELS=$(gh api "/repos/${{ github.repository }}/issues/$ISSUE_NUMBER" --jq '[.labels[].name] | join(",")')
+          echo "Issue labels: $LABELS"
+
+          # Only process issues with specific labels
+          if echo "$LABELS" | grep -q "ghcp-test-automation"; then
+            echo "should_process=true" >> $GITHUB_OUTPUT
+            echo "✅ Issue has eligible labels, will process"
+          else
+            echo "should_process=false" >> $GITHUB_OUTPUT
+            echo "❌ Issue does not have eligible labels, skipping"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       # Extract issue details for processing
       - name: Extract issue details
         id: issue
+        if: steps.check.outputs.should_process == 'true'
         run: |
-          echo "title=${{ github.event.issue.title }}" >> $GITHUB_OUTPUT
-          echo "body=${{ github.event.issue.body }}" >> $GITHUB_OUTPUT
-          echo "number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+          ISSUE_NUMBER="${{ steps.check.outputs.issue_number }}"
+
+          # Get issue details from API (works for both manual and automatic triggers)
+          ISSUE_DATA=$(gh api "/repos/${{ github.repository }}/issues/$ISSUE_NUMBER")
+          TITLE=$(echo "$ISSUE_DATA" | jq -r '.title')
+          BODY=$(echo "$ISSUE_DATA" | jq -r '.body // ""')
+
+          echo "title=$TITLE" >> $GITHUB_OUTPUT
+          echo "body=$BODY" >> $GITHUB_OUTPUT
+          echo "number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # AI-powered code context analysis using GitHub Search API
       - name: AI Context Analysis
         id: context
+        if: steps.check.outputs.should_process == 'true'
         run: |
           # Enhanced GitHub-native analysis inspired by Copilot's understanding patterns
           # Uses GitHub API for reliable data access and advanced pattern matching
@@ -142,6 +192,7 @@ jobs:
 
       # AI-generated context comment (enhanced with advanced pattern analysis)
       - name: Post AI Context Comment
+        if: steps.check.outputs.should_process == 'true'
         run: |
           # Enhanced with advanced pattern analysis inspired by Copilot's understanding
           COMMENT=" **Advanced Pattern Analysis**
@@ -170,6 +221,7 @@ jobs:
 
       # Pattern-based auto-labeling with enhanced classification
       - name: AI Auto-Labeling
+        if: steps.check.outputs.should_process == 'true'
         run: |
           ISSUE_TYPE="${{ steps.context.outputs.issue_type }}"
 
@@ -221,6 +273,7 @@ jobs:
 
       # Pattern-based assignment based on complexity and type
       - name: AI Assignment
+        if: steps.check.outputs.should_process == 'true'
         run: |
           COMPLEXITY="${{ steps.context.outputs.complexity }}"
           ISSUE_TYPE="${{ steps.context.outputs.issue_type }}"
