@@ -1,0 +1,239 @@
+﻿name: Issue to PR Automation for PWA
+
+# Enhanced GitHub-native AI analysis (Copilot-inspired heuristics)
+# No external API keys required - uses GitHub's search and pattern matching
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  process-issue:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    concurrency:
+      group: issue-processing-${{ github.event.issue.number }}
+      cancel-in-progress: true
+    steps:
+      # Check out repository code to make it available for the workflow
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Extract issue details for processing
+      - name: Extract issue details
+        id: issue
+        run: |
+          echo "title=${{ github.event.issue.title }}" >> $GITHUB_OUTPUT
+          echo "body=${{ github.event.issue.body }}" >> $GITHUB_OUTPUT
+          echo "number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+
+      # AI-powered code context analysis using GitHub Search API
+      - name: AI Context Analysis
+        id: context
+        run: |
+          # Enhanced GitHub-native analysis inspired by Copilot's understanding patterns
+          # Uses GitHub API for reliable data access and advanced pattern matching
+
+          # Fetch issue data using GitHub API for more reliable access
+          ISSUE_DATA=$(gh api "/repos/${{ github.repository }}/issues/${{ steps.issue.outputs.number }}" --jq '{title: .title, body: .body, labels: [.labels[].name]}')
+
+          # Extract title and body from API response
+          TITLE=$(echo "$ISSUE_DATA" | jq -r '.title')
+          BODY=$(echo "$ISSUE_DATA" | jq -r '.body // ""')  # Handle null body
+
+          # Combine title and body for analysis
+          FULL_TEXT="$TITLE $BODY"
+
+          # Advanced issue type classification using GitHub API data and pattern matching (Copilot-inspired)
+          ISSUE_TYPE="general"
+          if echo "$FULL_TEXT" | grep -qi "bug\|error\|fix\|broken\|crash\|fail"; then
+            ISSUE_TYPE="bug"
+          elif echo "$FULL_TEXT" | grep -qi "feature\|enhancement\|add\|new.*functionality"; then
+            ISSUE_TYPE="enhancement"
+          elif echo "$FULL_TEXT" | grep -qi "documentation\|docs\|readme\|comment"; then
+            ISSUE_TYPE="documentation"
+          elif echo "$FULL_TEXT" | grep -qi "performance\|speed\|slow\|optimization"; then
+            ISSUE_TYPE="performance"
+          elif echo "$FULL_TEXT" | grep -qi "security\|vulnerability\|auth\|permission"; then
+            ISSUE_TYPE="security"
+          fi
+
+          # Extract technical components with better patterns (Copilot-style analysis)
+          COMPONENTS=$(echo "$FULL_TEXT" | \
+            grep -oE '\b[A-Z][a-zA-Z]*\b|\b[a-z]+[A-Z][a-zA-Z]*\b|\b[a-zA-Z]+Service\b|\b[a-zA-Z]+Component\b|\b[a-zA-Z]+Facade\b|\b[a-zA-Z]+Model\b' | \
+            sort | uniq | head -10 | tr '\n' ' ')
+
+          # Complexity assessment based on keywords and patterns
+          COMPLEXITY="medium"
+          COMPLEXITY_SCORE=0
+
+          # Increase score for complex indicators
+          if echo "$FULL_TEXT" | grep -qi "architect\|refactor\|redesign\|major"; then
+            COMPLEXITY_SCORE=$((COMPLEXITY_SCORE + 3))
+          fi
+          if echo "$FULL_TEXT" | grep -qi "multiple.*file\|several.*component\|system"; then
+            COMPLEXITY_SCORE=$((COMPLEXITY_SCORE + 2))
+          fi
+          if echo "$FULL_TEXT" | grep -qi "test\|spec\|unit.*test"; then
+            COMPLEXITY_SCORE=$((COMPLEXITY_SCORE + 1))
+          fi
+          if echo "$FULL_TEXT" | grep -qi "breaking.*change\|api.*change"; then
+            COMPLEXITY_SCORE=$((COMPLEXITY_SCORE + 2))
+          fi
+
+          # Decrease score for simple indicators
+          if echo "$FULL_TEXT" | grep -qi "typo\|simple.*fix\|one.*line"; then
+            COMPLEXITY_SCORE=$((COMPLEXITY_SCORE - 2))
+          fi
+
+          if [ $COMPLEXITY_SCORE -le 0 ]; then
+            COMPLEXITY="simple"
+          elif [ $COMPLEXITY_SCORE -ge 4 ]; then
+            COMPLEXITY="complex"
+          else
+            COMPLEXITY="medium"
+          fi
+
+          # Enhanced file discovery using GitHub Search API with better queries
+          RELATED_FILES=""
+          for term in $COMPONENTS; do
+            if [ ! -z "$term" ]; then
+              # Use more specific search queries inspired by Copilot's context understanding
+              FILES=$(gh api "/search/code?q=$term+repo:${{ github.repository }}+language:typescript+path:src" --jq '.items[].path' 2>/dev/null | head -2)
+              if [ ! -z "$FILES" ]; then
+                RELATED_FILES="$RELATED_FILES$FILES\n"
+              fi
+
+              # Also search for related patterns (e.g., if we find "BasketService", also look for "Basket")
+              BASE_TERM=$(echo "$term" | sed 's/Service\|Component\|Facade\|Model//g')
+              if [ "$BASE_TERM" != "$term" ]; then
+                FILES=$(gh api "/search/code?q=$BASE_TERM+repo:${{ github.repository }}+language:typescript+path:src" --jq '.items[].path' 2>/dev/null | head -1)
+                if [ ! -z "$FILES" ]; then
+                  RELATED_FILES="$RELATED_FILES$FILES\n"
+                fi
+              fi
+            fi
+          done
+
+          # Fallback to local search with better patterns if API fails
+          if [ -z "$RELATED_FILES" ]; then
+            # Look for files matching component/service patterns
+            for term in $COMPONENTS; do
+              FILES=$(find src -name "*$term*.ts" -type f 2>/dev/null | head -2)
+              if [ ! -z "$FILES" ]; then
+                RELATED_FILES="$RELATED_FILES$FILES\n"
+              fi
+            done
+          fi
+
+          # Final fallback
+          if [ -z "$RELATED_FILES" ]; then
+            RELATED_FILES=$(find src -name "*.ts" -type f | head -5)
+          fi
+
+          echo "related_files<<EOF" >> $GITHUB_OUTPUT
+          echo "$RELATED_FILES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "issue_type=$ISSUE_TYPE" >> $GITHUB_OUTPUT
+          echo "complexity=$COMPLEXITY" >> $GITHUB_OUTPUT
+
+      # AI-generated context comment (enhanced with advanced pattern analysis)
+      - name: Post AI Context Comment
+        run: |
+          # Enhanced with advanced pattern analysis inspired by Copilot's understanding
+          COMMENT=" **Advanced Pattern Analysis**
+
+          **Issue Summary:** ${{ steps.issue.outputs.title }}
+
+          **Classification:** ${{ steps.context.outputs.issue_type }} (${{ steps.context.outputs.complexity }} complexity)
+
+          **Potentially Related Files:**
+          \\\
+          ${{ steps.context.outputs.related_files }}
+          \\\
+
+          **Analysis Recommendations:**
+          - **Type:** ${{ steps.context.outputs.issue_type }}
+          - **Complexity:** ${{ steps.context.outputs.complexity }}
+          - **Suggested Actions:**
+            ${{ steps.context.outputs.complexity == 'simple' && '- Quick fix possible, review related files' || '' }}
+            ${{ steps.context.outputs.complexity == 'medium' && '- May require testing, check for side effects' || '' }}
+            ${{ steps.context.outputs.complexity == 'complex' && '- Architectural review needed, consider breaking down' || '' }}
+          - **Next Steps:** Examine related files, run tests, consider documentation updates
+
+          *Analysis powered by advanced pattern matching for intelligent triage.*"
+
+          gh issue comment ${{ steps.issue.outputs.number }} --body "$COMMENT"
+
+      # Pattern-based auto-labeling with enhanced classification
+      - name: AI Auto-Labeling
+        run: |
+          ISSUE_TYPE="${{ steps.context.outputs.issue_type }}"
+
+          # Apply labels based on pattern classification
+          case "$ISSUE_TYPE" in
+            "bug")
+              gh issue edit ${{ steps.issue.outputs.number }} --add-label "bug"
+              ;;
+            "feature"|"enhancement")
+              gh issue edit ${{ steps.issue.outputs.number }} --add-label "enhancement"
+              ;;
+            "documentation")
+              gh issue edit ${{ steps.issue.outputs.number }} --add-label "documentation"
+              ;;
+            "performance")
+              gh issue edit ${{ steps.issue.outputs.number }} --add-label "performance"
+              ;;
+            "security")
+              gh issue edit ${{ steps.issue.outputs.number }} --add-label "security"
+              ;;
+            *)
+              # Default fallback - fetch fresh data using GitHub API
+              ISSUE_DATA_FALLBACK=$(gh api "/repos/${{ github.repository }}/issues/${{ steps.issue.outputs.number }}" --jq '{title: .title, body: .body}')
+              TITLE_FALLBACK=$(echo "$ISSUE_DATA_FALLBACK" | jq -r '.title')
+              BODY_FALLBACK=$(echo "$ISSUE_DATA_FALLBACK" | jq -r '.body // ""')
+              FULL_TEXT_FALLBACK="$TITLE_FALLBACK $BODY_FALLBACK"
+
+              if echo "$FULL_TEXT_FALLBACK" | grep -qi "bug\|error\|fix\|broken"; then
+                gh issue edit ${{ steps.issue.outputs.number }} --add-label "bug"
+              elif echo "$FULL_TEXT_FALLBACK" | grep -qi "feature\|enhancement\|add"; then
+                gh issue edit ${{ steps.issue.outputs.number }} --add-label "enhancement"
+              fi
+              ;;
+          esac
+
+          # Add complexity-based labels
+          COMPLEXITY="${{ steps.context.outputs.complexity }}"
+          case "$COMPLEXITY" in
+            "simple")
+              gh issue edit ${{ steps.issue.outputs.number }} --add-label "good-first-issue"
+              ;;
+            "complex")
+              gh issue edit ${{ steps.issue.outputs.number }} --add-label "complex"
+              ;;
+          esac
+
+          # Always add needs-triage for workflow management
+          gh issue edit ${{ steps.issue.outputs.number }} --add-label "needs-triage"
+
+      # Pattern-based assignment based on complexity and type
+      - name: AI Assignment
+        run: |
+          COMPLEXITY="${{ steps.context.outputs.complexity }}"
+          ISSUE_TYPE="${{ steps.context.outputs.issue_type }}"
+
+          # Smart assignment based on pattern analysis
+          if [ "$COMPLEXITY" = "simple" ]; then
+            # Assign to junior developers or general team
+            gh issue edit ${{ steps.issue.outputs.number }} --assignee "intershop/pwa-team" || true
+          elif [ "$COMPLEXITY" = "complex" ] || [ "$ISSUE_TYPE" = "security" ]; then
+            # Assign to senior developers or architects
+            gh issue edit ${{ steps.issue.outputs.number }} --assignee "intershop/pwa-senior-devs" || \
+            gh issue edit ${{ steps.issue.outputs.number }} --assignee "intershop/pwa-team" || true
+          else
+            # Medium complexity - general team
+            gh issue edit ${{ steps.issue.outputs.number }} --assignee "intershop/pwa-team" || true
+          fi
