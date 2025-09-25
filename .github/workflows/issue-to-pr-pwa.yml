@@ -31,9 +31,17 @@ jobs:
         run: |
           # For manual dispatch, find the first issue with "ghcp-test-automation" label
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            ISSUE_NUMBER=$(gh api "/repos/${{ github.repository }}/issues?labels=ghcp-test-automation&state=open&per_page=1" --jq '.[0].number // empty')
+            # First try the direct API approach
+            ISSUE_NUMBER=$(gh api "/repos/${{ github.repository }}/issues" --method GET --field labels='ghcp-test-automation' --field state='open' --field per_page='1' --jq '.[0].number // empty' 2>/dev/null)
 
-            if [ -z "$ISSUE_NUMBER" ] || [ "$ISSUE_NUMBER" = "null" ]; then
+            # Fallback: search all open issues and filter by label
+            if [ -z "$ISSUE_NUMBER" ] || [ "$ISSUE_NUMBER" = "null" ] || [ "$ISSUE_NUMBER" = "empty" ]; then
+              echo "🔍 Fallback: Searching all open issues for ghcp-test-automation label..."
+              ISSUE_NUMBER=$(gh api "/repos/${{ github.repository }}/issues?state=open&per_page=100" --jq '.[] | select(.labels[]?.name == "ghcp-test-automation") | .number' | head -1)
+
+            fi
+
+            if [ -z "$ISSUE_NUMBER" ] || [ "$ISSUE_NUMBER" = "null" ] || [ "$ISSUE_NUMBER" = "empty" ]; then
               echo "should_process=false" >> $GITHUB_OUTPUT
               echo "❌ No open issues found with 'ghcp-test-automation' label"
               exit 0
