@@ -215,30 +215,27 @@ jobs:
       - name: Post AI Context Comment
         if: steps.check.outputs.should_process == 'true'
         run: |
-          # Enhanced with advanced pattern analysis inspired by Copilot's understanding
-          COMMENT=" **Advanced Pattern Analysis**
+          # Use heredoc to build comment safely
+          cat << 'COMMENT_EOF' > comment.txt
+          **AI Analysis Result**
 
-          **Issue Summary:** ${{ steps.issue.outputs.title }}
+          **Issue:** ${{ steps.issue.outputs.title }}
 
           **Classification:** ${{ steps.context.outputs.issue_type }} (${{ steps.context.outputs.complexity }} complexity)
 
-          **Potentially Related Files:**
-          \\\
+          **Related Files:**
           ${{ steps.context.outputs.related_files }}
-          \\\
 
-          **Analysis Recommendations:**
-          - **Type:** ${{ steps.context.outputs.issue_type }}
-          - **Complexity:** ${{ steps.context.outputs.complexity }}
-          - **Suggested Actions:**
-            ${{ steps.context.outputs.complexity == 'simple' && '- Quick fix possible, review related files' || '' }}
-            ${{ steps.context.outputs.complexity == 'medium' && '- May require testing, check for side effects' || '' }}
-            ${{ steps.context.outputs.complexity == 'complex' && '- Architectural review needed, consider breaking down' || '' }}
-          - **Next Steps:** Examine related files, run tests, consider documentation updates
+          **Recommendations:**
+          - Review the related files above
+          - Consider the ${{ steps.context.outputs.complexity }} complexity level
+          - Add appropriate labels and assignees
 
-          *Analysis powered by advanced pattern matching for intelligent triage.*"
+          *Automated analysis via GitHub Actions*
+          COMMENT_EOF
 
-          gh issue comment ${{ steps.issue.outputs.number }} --body "$COMMENT"
+          # Post the comment using the file
+          gh issue comment ${{ steps.issue.outputs.number }} --body-file comment.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
