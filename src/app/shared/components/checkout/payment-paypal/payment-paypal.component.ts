@@ -28,21 +28,44 @@ import {
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { PaypalConfigHelper } from 'ish-core/models/paypal-config/paypal-config.helper';
+import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
+import { PayPalStyling } from 'ish-core/models/paypal-config/paypal-styling';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-declare let paypal_checkout: any;
-
-declare let paypal_express: any;
 
 /**
- * The Payment PayPal Component embeds a paypal script so paypal buttons are rendered within an iframe at a given container. See also {@link CheckoutPaymentPageComponent}
- * There are different configurations for standard checkout and express checkout.
+ * PayPal Payment Component for handling PayPal button integration and checkout flow.
  *
+ * This component manages the PayPal SDK integration for both standard checkout and express
+ * checkout flows. It dynamically loads PayPal scripts, renders payment buttons, and handles
+ * the complete payment process including order creation, payment approval, and error handling.
+ *
+ * Key Features:
+ * - Dynamic PayPal script loading using centralized PaypalConfigHelper
+ * - Support for both checkout and express checkout flows
+ * - Consistent styling through PayPalStyling constants
+ * - Dynamic namespace handling for multiple PayPal integrations
+ * - Comprehensive error handling and user feedback
+ * - PayPal Messages integration for payment method promotion
+ *
+ * The component integrates with the checkout process by:
+ * 1. Loading appropriate PayPal scripts based on payment method configuration
+ * 2. Rendering PayPal buttons in designated containers
+ * 3. Handling payment flow through PayPal's hosted checkout
+ * 4. Managing basket updates and navigation upon completion
+ *
+ * @example
+ * ```html
+ * <ish-payment-paypal [pageType]="cart" (selectPaypalPaymentMethod)="onPaymentMethodSelected($event)">
+ * </ish-payment-paypal>
+ * ```
+ *
+ * @see {@link CheckoutPaymentPageComponent} - Main checkout page integration
+ * @see {@link PaymentPaypalMessagesComponent} - PayPal messaging component
+ * @see {@link PaypalConfigHelper} - PayPal configuration and script loading
+ * @see {@link PayPalStyling} - Centralized PayPal styling constants
  */
 @Component({
   selector: 'ish-payment-paypal',
@@ -51,30 +74,34 @@ declare let paypal_express: any;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit {
-  @Input() expressCheckout = false;
+  /**
+   * The type of page where the component is displayed.
+   * Determines which PayPal message styling and configuration to use.
+   */
+  @Input() pageType: 'product-details' | 'cart' | 'checkout' | 'product-listing' = 'cart';
 
-  @Output() selectPaypalPaymentMethod = new EventEmitter<string>(); // paymentInstrumentId
+  /**
+   * Event emitted when a PayPal payment method is selected.
+   * Emits the payment instrument ID for the selected PayPal payment method.
+   */
+  @Output() selectPaypalPaymentMethod = new EventEmitter<string>();
 
+  /** Container selector for PayPal button rendering */
   private readonly paypalButtonsContainerId = '#paypal-buttons-container';
-  private readonly paypalMessagesContainerId = '#paypal-messages-container';
-  private readonly paypalCheckoutButtonStyle = {
-    layout: 'horizontal',
-    shape: 'sharp',
-    label: 'paypal',
-    height: 40,
-    tagline: false,
-  };
-  private readonly paypalExpressButtonStyle = {
-    shape: 'sharp',
-    label: 'paypal',
-    height: 40,
-    tagline: false,
-  };
-  scriptLoaded$ = new BehaviorSubject<boolean>(undefined);
-  scriptUrl: string;
 
+  /** Container selector for PayPal messages rendering */
+  private readonly paypalMessagesContainerId = '#paypal-buttons-messages-container';
+
+  /** BehaviorSubject tracking PayPal script loading status */
+  scriptLoaded$ = new BehaviorSubject<boolean>(false);
+
+  /** Observable stream of the current basket with caching */
   private basket$ = this.checkoutFacade.basket$.pipe(shareReplay(1));
-  paypalPaymentMethod$: Observable<PaymentMethod>;
+
+  /** Observable stream of the PayPal payment method configuration */
+  private paypalPaymentMethod$: Observable<PaymentMethod>;
+
+  /** Observable indicating whether PayPal payment method is currently selected */
   isPaypalPaymentMethodSelected$: Observable<boolean>;
 
   private destroyRef = inject(DestroyRef);
@@ -84,12 +111,12 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
     private checkoutFacade: CheckoutFacade,
     private ngZone: NgZone,
     private router: Router,
-    private scriptLoader: ScriptLoaderService
+    private paypalConfigHelper: PaypalConfigHelper
   ) {}
 
   ngOnInit(): void {
     this.paypalPaymentMethod$ = this.checkoutFacade
-      .paypalPaymentMethod$(this.expressCheckout ? 'FastCheckout' : 'RedirectBeforeCheckout')
+      .paypalPaymentMethod$(this.pageType === 'cart' ? 'FastCheckout' : 'RedirectBeforeCheckout')
       .pipe(shareReplay(1));
     this.isPaypalPaymentMethodSelected$ = combineLatest({
       method: this.paypalPaymentMethod$,
@@ -102,42 +129,56 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * load script if component is visible
+   * Loads PayPal SDK script and initializes payment buttons.
+   *
+   * This method orchestrates the complete PayPal integration process by:
+   * 1. Combining basket, payment method, and configuration data
+   * 2. Loading appropriate PayPal script using PaypalConfigHelper
+   * 3. Setting up dynamic namespace for PayPal object access
+   * 4. Initializing checkout or express checkout buttons based on configuration
+   *
+   * The method uses RxJS operators to handle the asynchronous loading process
+   * and ensures proper cleanup through takeUntilDestroyed.
+   *
+   * @private
    */
   private loadScript() {
     combineLatest({
-      locale: this.appFacade.currentLocale$.pipe(whenTruthy()),
       basket: this.basket$.pipe(whenTruthy()),
       paypalPaymentMethod: this.paypalPaymentMethod$.pipe(whenTruthy()),
+      config: this.appFacade.payPalConfig$,
     })
       .pipe(
         take(1),
-        concatMap(({ locale, basket, paypalPaymentMethod }) => {
-          if (paypalPaymentMethod.hostedPaymentPageParameters?.length) {
-            this.scriptUrl = `https://www.paypal.com/sdk/js?${this.getScriptQueryParameters(
-              paypalPaymentMethod.hostedPaymentPageParameters,
-              basket,
-              locale
-            )}`;
-
-            return this.scriptLoader
-              .load(this.scriptUrl, {
-                attributes: [
-                  ...(paypalPaymentMethod.hostedPaymentPageParameters?.filter(attr => attr.name.startsWith('data-')) ??
-                    []),
-                  { name: 'data-namespace', value: this.expressCheckout ? 'paypal_express' : 'paypal_checkout' }, // <-- fixed parameter here
-                ],
-              })
-              .pipe(map(() => ({ locale, basket, paypalPaymentMethod })));
+        concatMap(
+          ({
+            basket,
+            paypalPaymentMethod,
+            config,
+          }): Observable<{
+            basket: Basket;
+            paypalPaymentMethod: PaymentMethod;
+            config: PaypalConfig;
+          }> => {
+            if (paypalPaymentMethod.hostedPaymentPageParameters?.length) {
+              return this.paypalConfigHelper
+                .loadPayPalScript({
+                  hostedPaymentPageParameters: paypalPaymentMethod.hostedPaymentPageParameters,
+                  page: this.pageType,
+                  type: 'button',
+                })
+                .pipe(map(() => ({ basket, paypalPaymentMethod, config })));
+            }
+            return new Observable(observer => observer.complete());
           }
-        }),
+        ),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
-        next: ({ basket, paypalPaymentMethod }) => {
-          this.expressCheckout
-            ? this.initializePaypalExpressButton(basket, paypalPaymentMethod)
-            : this.initializePaypalCheckoutButton(basket, paypalPaymentMethod);
+        next: ({ basket, paypalPaymentMethod, config }) => {
+          this.pageType === 'cart'
+            ? this.initializePaypalExpressButton(basket, paypalPaymentMethod, config?.payLaterEnabled)
+            : this.initializePaypalCheckoutButton(basket, paypalPaymentMethod, config?.payLaterEnabled);
         },
         error: () => {
           this.scriptLoaded$.next(false);
@@ -145,15 +186,33 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
       });
   }
 
-  private initializePaypalCheckoutButton(basket: Basket, paypalPaymentMethod: PaymentMethod) {
-    if (paypal_checkout?.Buttons) {
+  /**
+   * Initializes PayPal checkout button for standard checkout flow.
+   *
+   * Creates and renders PayPal payment buttons with proper event handlers for:
+   * - Order creation with basket totals
+   * - Payment approval and processing
+   * - Shipping address change handling
+   * - Error and cancellation scenarios
+   *
+   * Also optionally renders PayPal Messages for payment method promotion.
+   *
+   * @param basket - Current shopping basket
+   * @param paypalPaymentMethod - PayPal payment method configuration
+   * @param displayMessage - Whether to show promotional PayPal messages
+   * @private
+   */
+  private initializePaypalCheckoutButton(basket: Basket, paypalPaymentMethod: PaymentMethod, displayMessage: boolean) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const paypalObject = (window as any).PayPal_iframe_button;
+    if (paypalObject?.Buttons) {
       this.scriptLoaded$.next(true);
 
       let isShippingAddressChanged = false;
 
-      paypal_checkout
+      paypalObject
         .Buttons({
-          style: this.paypalCheckoutButtonStyle,
+          style: PayPalStyling.PAYPAL_CHECKOUT_BUTTON_STYLING,
           // Call your server to set up the transaction after the user has clicked the button
           createOrder: (data: { paymentSource: string }) => {
             isShippingAddressChanged = false;
@@ -213,15 +272,12 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
         })
         .render(this.paypalButtonsContainerId);
     }
-    if (paypal_checkout?.Messages) {
-      paypal_checkout
+    if (paypalObject?.Messages && displayMessage) {
+      paypalObject
         .Messages({
           amount: basket.totals?.total?.gross,
           placement: 'cart',
-          style: {
-            layout: 'text',
-            color: 'black',
-          },
+          style: PayPalStyling.BUTTON_MESSAGE_STYLING,
         })
         .render(this.paypalMessagesContainerId)
         .catch((error: string) => {
@@ -230,13 +286,31 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private initializePaypalExpressButton(basket: Basket, paypalPaymentMethod: PaymentMethod) {
-    if (paypal_express?.Buttons) {
+  /**
+   * Initializes PayPal express checkout button for quick payment from product/basket pages.
+   *
+   * Creates and renders PayPal express payment buttons that allow customers to:
+   * - Make payments without going through full checkout process
+   * - Handle order creation and payment approval
+   * - Navigate directly to basket upon completion
+   * - Display appropriate error messages for failures
+   *
+   * Also optionally renders PayPal Messages for cart-specific payment promotion.
+   *
+   * @param basket - Current shopping basket
+   * @param paypalPaymentMethod - PayPal payment method configuration
+   * @param displayMessage - Whether to show promotional PayPal messages
+   * @private
+   */
+  private initializePaypalExpressButton(basket: Basket, paypalPaymentMethod: PaymentMethod, displayMessage: boolean) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const paypalObject = (window as any).PayPal_iframe_button;
+    if (paypalObject?.Buttons) {
       this.scriptLoaded$.next(true);
 
-      paypal_express
+      paypalObject
         .Buttons({
-          style: this.paypalExpressButtonStyle,
+          style: PayPalStyling.PAYPAL_EXPRESS_BUTTON_STYLING,
           // Call your server to set up the transaction after the user has clicked the button
           createOrder: (data: { paymentSource: string }) => {
             this.selectPaypalPaymentMethod.emit(
@@ -278,40 +352,18 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
         })
         .render(this.paypalButtonsContainerId);
     }
-    if (paypal_express?.Messages) {
-      paypal_express
+    if (paypalObject?.Messages && displayMessage) {
+      paypalObject
         .Messages({
           amount: basket.totals?.total?.gross,
           placement: 'cart',
-          style: {
-            layout: 'text',
-            color: 'black',
-          },
+          style: PayPalStyling.CART_CHECKOUT_MESSAGE_STYLING,
         })
         .render(this.paypalMessagesContainerId)
         .catch((error: string) => {
-          console.error('PayPal Messages render failed:', error);
+          console.error('PayPal Express Messages render failed:', error);
         });
     }
-  }
-
-  private getScriptQueryParameters(paymentParameters: Attribute<string>[], basket: Basket, locale: string): string {
-    let params = paymentParameters
-      ?.filter(param => ['client-id', 'merchant-id', 'intent'].includes(param?.name)) // 'data-partner-attribution-id'
-      .map(param => `${param.name}=${param.value}`)
-      .join('&');
-    params = `${params}&components=buttons,messages`;
-    params = `${params}&currency=${basket.purchaseCurrency}`;
-    params = `${params}&locale=${locale}`; // ToDo: decide if paypal should determine locale from browser settings
-    params = `${params}&commit=false`; // do not show the "Pay now" button, but the "Continue to PayPal" button
-    params = `${params}&enable-funding=paylater`;
-    // ToDo: make sure the checkout and express scripts are different to load the script twice
-    if (this.expressCheckout) {
-      params = `${params}&disable-funding=card,sepa`;
-    }
-    // debug parameter available for sandbox only;
-
-    return params;
   }
 
   private getPaypalOrderId$(): Observable<string> {

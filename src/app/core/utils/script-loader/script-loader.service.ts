@@ -97,4 +97,25 @@ export class ScriptLoaderService {
       }
     });
   }
+
+  /**
+   * Remove a script from the DOM and internal cache
+   *
+   * @param url The script URL to remove
+   */
+  // not-dead-code
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  removeScript(url: string): void {
+    // Remove from internal cache
+    const scriptIndex = this.registeredScripts.findIndex(s => s.src === url);
+    if (scriptIndex !== -1) {
+      this.registeredScripts.splice(scriptIndex, 1);
+    }
+
+    // Remove script element from DOM
+    const scriptElement = this.document.querySelector(`script[src="${url}"]`);
+    if (scriptElement) {
+      this.renderer.removeChild(this.document.body, scriptElement);
+    }
+  }
 }

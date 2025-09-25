@@ -1,0 +1,215 @@
+import { Injectable } from '@angular/core';
+import { Observable, combineLatest, map, switchMap } from 'rxjs';
+
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
+import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
+
+import { PaypalConfig } from './paypal-config.model';
+
+/**
+ * Configuration parameters for PayPal script loading.
+ * Used internally by PaypalConfigHelper to customize script loading behavior.
+ */
+interface ScriptParam {
+  /** Optional locale override (normally retrieved from AppFacade) */
+  locale?: string;
+  /** Optional currency override (normally retrieved from AppFacade) */
+  currency?: string;
+  /** Payment method configuration attributes from the backend */
+  hostedPaymentPageParameters: Attribute<string>[];
+  /** Optional PayPal configuration override (normally retrieved from AppFacade) */
+  paypalConfig?: PaypalConfig;
+  /** Page context where the script is being loaded */
+  page: 'product-details' | 'cart' | 'checkout' | 'product-listing';
+  /** Type of PayPal integration (e.g., 'button', 'message') */
+  type?: string;
+}
+
+/**
+ * PayPal Configuration Helper Service
+ *
+ * This service provides centralized PayPal SDK integration functionality, handling
+ * script loading, configuration management, and funding eligibility checks across
+ * different page contexts within the Intershop PWA.
+ *
+ * Key Responsibilities:
+ * - Dynamic PayPal SDK script loading with context-specific parameters
+ * - Configuration of PayPal components (buttons, messages) based on page type
+ * - Management of funding sources (PayLater, cards, etc.) per page context
+ * - Generation of appropriate script URLs with query parameters
+ * - Namespace management for multiple PayPal integrations
+ *
+ * The service integrates with the application's locale, currency, and PayPal
+ * configuration systems to provide a seamless PayPal experience across
+ * product pages, cart, and checkout flows.
+ *
+ * @example
+ * ```typescript
+ * // Load PayPal script for button integration
+ * const scriptParam = {
+ *   hostedPaymentPageParameters: paymentMethod.hostedPaymentPageParameters,
+ *   page: 'cart' as const,
+ *   type: 'button' as const
+ * };
+ *
+ * this.paypalConfigHelper.loadPayPalScript(scriptParam).subscribe(namespace => {
+ *   // PayPal SDK loaded with namespace
+ *   const paypalObject = window[namespace];
+ * });
+ * ```
+ *
+ * @see {@link PaymentPaypalComponent} - Main PayPal button integration
+ * @see {@link PaymentPaypalMessagesComponent} - PayPal messaging integration
+ * @see {@link PaypalConfig} - PayPal configuration model
+ */
+@Injectable({ providedIn: 'root' })
+export class PaypalConfigHelper {
+  /** Base URL for PayPal SDK script loading */
+  static PAYPAL_SCRIPT_URL = 'https://www.paypal.com/sdk/js';
+
+  /** Private script URL property for potential runtime customization */
+  private scriptUrl: string = PaypalConfigHelper.PAYPAL_SCRIPT_URL;
+
+  constructor(private appFacade: AppFacade, private scriptLoader: ScriptLoaderService) {}
+
+  /**
+   * Determines if PayPal funding sources should be enabled for a specific page type.
+   *
+   * This method checks the PayPal configuration to determine whether PayLater
+   * messaging and funding options should be displayed based on the current page context.
+   * Different pages have different messaging strategies and funding availability.
+   *
+   * @param config - PayPal configuration containing messaging settings
+   * @param pageType - The type of page where PayPal integration is being used
+   * @returns True if funding/messaging should be enabled for the given page type
+   *
+   * @example
+   * ```typescript
+   * const shouldShowPayLater = this.paypalConfigHelper.isFundingEnabled(
+   *   paypalConfig,
+   *   'product-details'
+   * );
+   * ```
+   */
+  isFundingEnabled(config: PaypalConfig, pageType: string): boolean {
+    switch (pageType) {
+      case 'product-details':
+        return config.payLaterMessagingProductDetails;
+      case 'product-listing':
+        return config.payLaterMessagingCategory;
+      default:
+        return config.payLaterMessagingCart;
+    }
+  }
+
+  /**
+   * Loads the PayPal SDK script with appropriate configuration and returns the namespace.
+   *
+   * This method orchestrates the complete PayPal SDK loading process by:
+   * 1. Combining current locale, currency, and PayPal configuration from AppFacade
+   * 2. Generating appropriate script URL with query parameters
+   * 3. Loading the script with required data attributes
+   * 4. Returning the generated namespace for PayPal object access
+   *
+   * The method ensures that each script load gets a unique namespace to prevent
+   * conflicts when multiple PayPal integrations exist on the same page.
+   *
+   * @param param - Script loading parameters including page context and payment method config
+   * @returns Observable that emits the PayPal namespace string when script loads successfully
+   *
+   * @example
+   * ```typescript
+   * const scriptParam = {
+   *   hostedPaymentPageParameters: paymentMethod.hostedPaymentPageParameters,
+   *   page: 'checkout' as const,
+   *   type: 'button' as const
+   * };
+   *
+   * this.loadPayPalScript(scriptParam).subscribe({
+   *   next: (namespace) => {
+   *     const paypalSdk = (window as any)[namespace];
+   *     // Initialize PayPal components
+   *   },
+   *   error: (error) => console.error('PayPal script loading failed:', error)
+   * });
+   * ```
+   */
+  loadPayPalScript(param: ScriptParam): Observable<string> {
+    return combineLatest([
+      this.appFacade.currentLocale$,
+      this.appFacade.currentCurrency$,
+      this.appFacade.payPalConfig$,
+    ]).pipe(
+      map(([locale, currency, config]) => ({
+        hostedPaymentPageParameters: param.hostedPaymentPageParameters,
+        page: param.page,
+        locale,
+        currency,
+        paypalConfig: config,
+        type: param.type,
+      })),
+      switchMap(scriptParam =>
+        this.scriptLoader
+          .load(this.scriptUrl.concat(`?${this.getScriptQueryParameters(scriptParam)}`), {
+            attributes: [
+              ...(scriptParam.hostedPaymentPageParameters?.filter(attr => attr.name.startsWith('data-')) ?? []),
+              { name: 'data-namespace', value: 'PayPal_iframe_'.concat(scriptParam.type) },
+              { name: 'data-page-type', value: scriptParam.page },
+              {
+                name: 'data-partner-attribution-id',
+                value: scriptParam.hostedPaymentPageParameters?.find(
+                  attr => attr.name === 'data-partner-attribution-id'
+                )?.value,
+              },
+            ],
+          })
+          .pipe(map(() => 'PayPal_iframe_'.concat(scriptParam.type)))
+      )
+    );
+  }
+
+  /**
+   * Generates query parameters for PayPal SDK script URL.
+   *
+   * This private method constructs the query string for the PayPal SDK script URL
+   * based on the provided parameters, page context, and configuration. It handles:
+   * - Client ID and merchant ID from payment method configuration
+   * - Component selection (buttons, messages) based on integration type
+   * - Locale and currency settings
+   * - Funding source configuration (PayLater, cards, SEPA)
+   * - Page-specific optimizations (e.g., disabling cards on cart page)
+   *
+   * @param param - Script parameters containing configuration and context
+   * @returns Query parameter string for the PayPal SDK script URL
+   * @private
+   */
+  private getScriptQueryParameters(param: ScriptParam): string {
+    let params = param.hostedPaymentPageParameters
+      ?.filter(
+        attr => ['client-id', 'merchant-id'].includes(attr?.name) || (param.type === 'button' && attr.name === 'intent')
+      )
+      .map(attr => `${attr.name}=${attr.value}`)
+      .join('&');
+    if (param.type === 'button') {
+      if (param.paypalConfig.payLaterEnabled) {
+        params = `${params}&components=buttons,messages`;
+      } else {
+        params = `${params}&components=buttons`;
+      }
+    } else {
+      params = `${params}&components=messages`;
+    }
+    params = `${params}&currency=${param.currency}`;
+    params = `${params}&locale=${param.locale}`; // ToDo: decide if paypal should determine locale from browser settings
+    params = `${params}&commit=false`; // do not show the "Pay now" button, but the "Continue to PayPal" button
+    if (param.paypalConfig.payLaterEnabled) {
+      params = `${params}&enable-funding=paylater`;
+    }
+    // ToDo: make sure the checkout and express scripts are different to load the script twice
+    if (param.page === 'cart') {
+      params = `${params}&disable-funding=card,sepa`;
+    }
+    return params;
+  }
+}

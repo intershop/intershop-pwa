@@ -306,12 +306,22 @@ export class CheckoutFacade {
     this.store.dispatch(loadBasketEligiblePaymentMethods());
   }
 
+  /**
+   * If contextCapability is 'FastCheckout', it returns the PayPal payment method with 'FastCheckout' capability.
+   * If contextCapability is 'RedirectBeforeCheckout', it returns the PayPal payment method without 'FastCheckout' capability.
+   * @param contextCapability 'FastCheckout' | 'RedirectBeforeCheckout'
+   * @returns Observable<PaymentMethod> or undefined if no PayPal payment method is available
+   */
   paypalPaymentMethod$(contextCapability: string): Observable<PaymentMethod> {
-    return this.store.pipe(select(getBasketEligiblePaymentMethods)).pipe(
-      whenTruthy(),
+    return this.store.pipe(
+      select(getBasketEligiblePaymentMethods),
       map(methods =>
         methods?.find(
-          method => method.capabilities?.includes('PaypalCheckout') && method.capabilities?.includes(contextCapability)
+          method =>
+            method.capabilities?.includes('PaypalCheckout') &&
+            (contextCapability === 'FastCheckout'
+              ? method.capabilities?.includes(contextCapability)
+              : !method.capabilities?.includes('FastCheckout'))
         )
       )
     );
