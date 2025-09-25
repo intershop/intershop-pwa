@@ -208,6 +208,8 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
           echo "issue_type=$ISSUE_TYPE" >> $GITHUB_OUTPUT
           echo "complexity=$COMPLEXITY" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # AI-generated context comment (enhanced with advanced pattern analysis)
       - name: Post AI Context Comment
@@ -237,6 +239,8 @@ jobs:
           *Analysis powered by advanced pattern matching for intelligent triage.*"
 
           gh issue comment ${{ steps.issue.outputs.number }} --body "$COMMENT"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Pattern-based auto-labeling with enhanced classification
       - name: AI Auto-Labeling
@@ -289,6 +293,8 @@ jobs:
 
           # Always add needs-triage for workflow management
           gh issue edit ${{ steps.issue.outputs.number }} --add-label "needs-triage"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Pattern-based assignment based on complexity and type
       # - name: AI Assignment
