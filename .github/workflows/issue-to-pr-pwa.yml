@@ -1,6 +1,6 @@
 ﻿name: Issue to PR Automation for PWA
 
-# Enhanced GitHub-native AI analysis (Copilot-inspired heuristics)
+# Enhanced GitHub-native AI analysis
 # No external API keys required - uses GitHub's search and pattern matching
 
 on:
