@@ -31,15 +31,18 @@ jobs:
         run: |
           # For manual dispatch, find the first issue with "ghcp-test-automation" label
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            # First try the direct API approach
-            ISSUE_NUMBER=$(gh api "/repos/${{ github.repository }}/issues" --method GET --field labels='ghcp-test-automation' --field state='open' --field per_page='1' --jq '.[0].number // empty' 2>/dev/null)
-
-            # Fallback: search all open issues and filter by label
-            if [ -z "$ISSUE_NUMBER" ] || [ "$ISSUE_NUMBER" = "null" ] || [ "$ISSUE_NUMBER" = "empty" ]; then
-              echo "🔍 Fallback: Searching all open issues for ghcp-test-automation label..."
-              ISSUE_NUMBER=$(gh api "/repos/${{ github.repository }}/issues?state=open&per_page=100" --jq '.[] | select(.labels[]?.name == "ghcp-test-automation") | .number' | head -1)
-
-            fi
+            # Use GitHub GraphQL API for reliable search
+            REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
+            ISSUE_NUMBER=$(gh api graphql -f query='
+              query($owner: String!, $repo: String!) {
+                repository(owner: $owner, name: $repo) {
+                  issues(first: 1, states: OPEN, labels: ["ghcp-test-automation"]) {
+                    nodes {
+                      number
+                    }
+                  }
+                }
+              }' -f owner="${{ github.repository_owner }}" -f repo="$REPO_NAME" --jq '.data.repository.issues.nodes[0].number // empty')
 
             if [ -z "$ISSUE_NUMBER" ] || [ "$ISSUE_NUMBER" = "null" ] || [ "$ISSUE_NUMBER" = "empty" ]; then
               echo "should_process=false" >> $GITHUB_OUTPUT
@@ -51,17 +54,16 @@ jobs:
             echo "should_process=true" >> $GITHUB_OUTPUT
             echo "✅ Found issue #$ISSUE_NUMBER with 'ghcp-test-automation' label, will process"
             exit 0
-          fi
-
-          # For issue events, use the triggered issue and check labels
+          fi          # For issue events, use the triggered issue and check labels
           ISSUE_NUMBER="${{ github.event.issue.number }}"
           echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
 
-          LABELS=$(gh api "/repos/${{ github.repository }}/issues/$ISSUE_NUMBER" --jq '[.labels[].name] | join(",")')
+          # Use GitHub context to check labels (more reliable than API calls)
+          LABELS="${{ toJSON(github.event.issue.labels.*.name) }}"
           echo "Issue labels: $LABELS"
 
-          # Only process issues with specific labels
-          if echo "$LABELS" | grep -q "ghcp-test-automation"; then
+          # Check if the issue has the required label using JSON parsing
+          if echo "$LABELS" | jq -r '.[]' | grep -q "ghcp-test-automation"; then
             echo "should_process=true" >> $GITHUB_OUTPUT
             echo "✅ Issue has eligible labels, will process"
           else
@@ -282,21 +284,21 @@ jobs:
           gh issue edit ${{ steps.issue.outputs.number }} --add-label "needs-triage"
 
       # Pattern-based assignment based on complexity and type
-      - name: AI Assignment
-        if: steps.check.outputs.should_process == 'true'
-        run: |
-          COMPLEXITY="${{ steps.context.outputs.complexity }}"
-          ISSUE_TYPE="${{ steps.context.outputs.issue_type }}"
+      # - name: AI Assignment
+      #   if: steps.check.outputs.should_process == 'true'
+      #   run: |
+      #     COMPLEXITY="${{ steps.context.outputs.complexity }}"
+      #     ISSUE_TYPE="${{ steps.context.outputs.issue_type }}"
 
-          # Smart assignment based on pattern analysis
-          if [ "$COMPLEXITY" = "simple" ]; then
-            # Assign to junior developers or general team
-            gh issue edit ${{ steps.issue.outputs.number }} --assignee "intershop/pwa-team" || true
-          elif [ "$COMPLEXITY" = "complex" ] || [ "$ISSUE_TYPE" = "security" ]; then
-            # Assign to senior developers or architects
-            gh issue edit ${{ steps.issue.outputs.number }} --assignee "intershop/pwa-senior-devs" || \
-            gh issue edit ${{ steps.issue.outputs.number }} --assignee "intershop/pwa-team" || true
-          else
-            # Medium complexity - general team
-            gh issue edit ${{ steps.issue.outputs.number }} --assignee "intershop/pwa-team" || true
-          fi
+      #     # Smart assignment based on pattern analysis
+      #     if [ "$COMPLEXITY" = "simple" ]; then
+      #       # Assign to junior developers or general team
+      #       gh issue edit ${{ steps.issue.outputs.number }} --assignee "intershop/pwa-team" || true
+      #     elif [ "$COMPLEXITY" = "complex" ] || [ "$ISSUE_TYPE" = "security" ]; then
+      #       # Assign to senior developers or architects
+      #       gh issue edit ${{ steps.issue.outputs.number }} --assignee "intershop/pwa-senior-devs" || \
+      #       gh issue edit ${{ steps.issue.outputs.number }} --assignee "intershop/pwa-team" || true
+      #     else
+      #       # Medium complexity - general team
+      #       gh issue edit ${{ steps.issue.outputs.number }} --assignee "intershop/pwa-team" || true
+      #     fi
