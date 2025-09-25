@@ -32,6 +32,6 @@
   ></ng-container>
 
   <li>
-    <ish-payment-paypal [expressCheckout]="true" (selectPaypalPaymentMethod)="setBasketPayment($event)" />
+    <ish-payment-paypal [pageType]="'cart'" (selectPaypalPaymentMethod)="setBasketPayment($event)" />
   </li>
 </ul>

@@ -103,6 +103,8 @@ export class ScriptLoaderService {
    *
    * @param url The script URL to remove
    */
+  // not-dead-code
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   removeScript(url: string): void {
     // Remove from internal cache
     const scriptIndex = this.registeredScripts.findIndex(s => s.src === url);
