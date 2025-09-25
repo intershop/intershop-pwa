@@ -191,7 +191,8 @@ jobs:
           if [ -z "$RELATED_FILES" ]; then
             # Look for files matching component/service patterns
             for term in $COMPONENTS; do
-              FILES=$(find src -name "*$term*.ts" -type f 2>/dev/null | head -2)
+              # Use find with -quit to avoid broken pipe, or use ls with head
+              FILES=$(find src -name "*$term*.ts" -type f 2>/dev/null | { head -2 || true; })
               if [ ! -z "$FILES" ]; then
                 RELATED_FILES="$RELATED_FILES$FILES\n"
               fi
@@ -200,7 +201,7 @@ jobs:
 
           # Final fallback
           if [ -z "$RELATED_FILES" ]; then
-            RELATED_FILES=$(find src -name "*.ts" -type f | head -5)
+            RELATED_FILES=$(find src -name "*.ts" -type f 2>/dev/null | { head -5 || true; })
           fi
 
           echo "related_files<<EOF" >> $GITHUB_OUTPUT
