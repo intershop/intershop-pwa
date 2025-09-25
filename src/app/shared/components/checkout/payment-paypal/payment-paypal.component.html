@@ -2,7 +2,6 @@
   <!-- adding *ngIf="paypalPaymentMethod$ | async lead to time issues-->
   <div [ngClass]="pageType === 'cart' ? 'col-12' : 'col-11'">
     <div id="paypal-buttons-container"></div>
-    <div id="paypal-buttons-messages-container"></div>
   </div>
   <ng-container *ngIf="(scriptLoaded$ | async) && pageType !== 'cart'">
     <div *ngIf="isPaypalPaymentMethodSelected$ | async" class="paypal-selected col-1">

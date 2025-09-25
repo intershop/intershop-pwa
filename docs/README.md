@@ -87,6 +87,7 @@ kb_sync_latest_only
 ### Third-party Integrations
 
 - [Guide - SPARQUE.AI](./guides/sparque-ai.md)
+- [Guide - Paypal Styling](./guides/paypal.md)
 - [Guide - Intershop Copilot for Buyers](./guides/copilot.md)
 - [Guide - Tracking with Google Tag Manager](./guides/google-tag-manager.md)
 - [Guide - Monitoring with Prometheus](./guides/prometheus-monitoring.md)

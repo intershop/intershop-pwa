@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, combineLatest, map, switchMap } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { Attribute } from 'ish-core/models/attribute/attribute.model';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
 import { PaypalConfig } from './paypal-config.model';
@@ -17,7 +17,7 @@ interface ScriptParam {
   /** Optional currency override (normally retrieved from AppFacade) */
   currency?: string;
   /** Payment method configuration attributes from the backend */
-  hostedPaymentPageParameters: Attribute<string>[];
+  paymentMethod: PaymentMethod;
   /** Optional PayPal configuration override (normally retrieved from AppFacade) */
   paypalConfig?: PaypalConfig;
   /** Page context where the script is being loaded */
@@ -142,7 +142,7 @@ export class PaypalConfigHelper {
       this.appFacade.payPalConfig$,
     ]).pipe(
       map(([locale, currency, config]) => ({
-        hostedPaymentPageParameters: param.hostedPaymentPageParameters,
+        paymentMethod: param.paymentMethod,
         page: param.page,
         locale,
         currency,
@@ -151,22 +151,31 @@ export class PaypalConfigHelper {
       })),
       switchMap(scriptParam =>
         this.scriptLoader
-          .load(this.scriptUrl.concat(`?${this.getScriptQueryParameters(scriptParam)}`), {
+          .load(this.calculateURL(scriptParam), {
             attributes: [
-              ...(scriptParam.hostedPaymentPageParameters?.filter(attr => attr.name.startsWith('data-')) ?? []),
-              { name: 'data-namespace', value: 'PayPal_iframe_'.concat(scriptParam.type) },
+              ...(scriptParam.paymentMethod.hostedPaymentPageParameters?.filter(attr =>
+                attr.name.startsWith('data-')
+              ) ?? []),
+              {
+                name: 'data-namespace',
+                value: 'PayPal_iframe_'.concat(scriptParam.paymentMethod.id, '_').concat(scriptParam.type),
+              },
               { name: 'data-page-type', value: scriptParam.page },
               {
                 name: 'data-partner-attribution-id',
-                value: scriptParam.hostedPaymentPageParameters?.find(
+                value: scriptParam.paymentMethod.hostedPaymentPageParameters?.find(
                   attr => attr.name === 'data-partner-attribution-id'
                 )?.value,
               },
             ],
           })
-          .pipe(map(() => 'PayPal_iframe_'.concat(scriptParam.type)))
+          .pipe(map(() => 'PayPal_iframe_'.concat(scriptParam.paymentMethod.id, '_').concat(scriptParam.type)))
       )
     );
+  }
+
+  private calculateURL(param: ScriptParam): string {
+    return this.scriptUrl.concat(`?${this.getScriptQueryParameters(param)}`);
   }
 
   /**
@@ -185,7 +194,7 @@ export class PaypalConfigHelper {
    * @private
    */
   private getScriptQueryParameters(param: ScriptParam): string {
-    let params = param.hostedPaymentPageParameters
+    let params = param.paymentMethod.hostedPaymentPageParameters
       ?.filter(
         attr => ['client-id', 'merchant-id'].includes(attr?.name) || (param.type === 'button' && attr.name === 'intent')
       )

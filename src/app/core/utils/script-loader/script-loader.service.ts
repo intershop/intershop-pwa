@@ -108,6 +108,7 @@ export class ScriptLoaderService {
   removeScript(url: string): void {
     // Remove from internal cache
     const scriptIndex = this.registeredScripts.findIndex(s => s.src === url);
+
     if (scriptIndex !== -1) {
       this.registeredScripts.splice(scriptIndex, 1);
     }

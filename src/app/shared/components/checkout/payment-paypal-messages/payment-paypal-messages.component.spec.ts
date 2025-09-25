@@ -48,7 +48,7 @@ describe('Payment Paypal Messages Component', () => {
 
     const paypalConfigHelper = mock(PaypalConfigHelper);
     when(paypalConfigHelper.isFundingEnabled(anything(), anything())).thenReturn(true);
-    when(paypalConfigHelper.loadPayPalScript(anything())).thenReturn(of('paypal'));
+    when(paypalConfigHelper.loadPayPalScript(anything())).thenReturn(of('https://www.paypal.com/sdk/js'));
 
     await TestBed.configureTestingModule({
       declarations: [PaymentPaypalMessagesComponent],
