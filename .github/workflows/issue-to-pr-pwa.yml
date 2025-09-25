@@ -2,9 +2,12 @@
 
 # Enhanced GitHub-native AI analysis (Copilot-inspired heuristics)
 # No external API keys required - uses GitHub's search and pattern matching
+# Test trigger
 
 on:
   workflow_dispatch: # Manual trigger - processes all issues with "ghcp-test-automation" label
+  push:
+    branches: [chore/issue_automation_test]
   # issues:
   #   types: [opened, labeled]  # Will uncomment when ready for production
 
