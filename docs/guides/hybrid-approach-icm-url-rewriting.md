@@ -18,7 +18,7 @@ In particular we want to focus on the following two examples:
 
 - Product Detail Pages of the ICM
   - URLs are in the form _/Home-Entertainment/SmartHome/google-home-zid201807171_
-  - They should be handled by the PWA in the form _/SmartHome/google-home-sku201807171_
+  - They should be handled by the PWA in the form _/home-entertainment/smart-home/google-home-prd201807171_
 - The help desk of the PWA
   - URLs are in the form _/page/systempage.helpdesk.index.pagelet2-Page_ (generic content page)
   - This URL should be handled by the ICM: _/helpdesk_
@@ -62,7 +62,7 @@ The supplied nginx dynamically adds multi-site configuration parameters to dynam
 The ICM cannot handle them, so traffic to the ICM must be excluded from adding those parameters.
 You can do this by extending the channel configuration:
 
-_nginx/channel.conf.tmpl_:
+_nginx/templates/multi-channel.conf.tmpl_:
 
 ```diff
      # let ICM handle everything ICM related
