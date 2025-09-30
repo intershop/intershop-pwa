@@ -26,7 +26,8 @@ interface HybridMappingEntry {
  *  - application
  *  - currency
  */
-export const ICM_WEB_URL = '/INTERSHOP/web/WFS/$<channel>/$<lang>/$<application>/$<currency>';
+// export const ICM_WEB_URL = '/INTERSHOP/web/WFS/$<channel>/$<lang>/$<application>/$<currency>';
+export const ICM_WEB_URL = '/de-de/store/b2b';
 
 /**
  * Mapping table for running PWA and ICM in parallel
@@ -63,19 +64,19 @@ export const HYBRID_MAPPING_TABLE: HybridMappingEntry[] = [
   },
   {
     id: 'Shopping Basket',
-    icm: `${ICM_CONFIG_MATCH}/.*ViewCart-View$`,
-    pwaBuild: `basket${PWA_CONFIG_BUILD}`,
-    pwa: '^/basket.*$',
+    icm: `^.*/ViewCart-View$`,
+    pwaBuild: `basket`,
+    pwa: '^/basket$',
     icmBuild: 'ViewCart-View',
     handledBy: 'icm',
   },
   {
     id: 'Login',
-    icm: `${ICM_CONFIG_MATCH}/ViewUserAccount-ShowLogin.*$`,
-    pwaBuild: `login${PWA_CONFIG_BUILD}`,
+    icm: `^.*/login.*$`,
+    pwaBuild: `login`,
     pwa: '^/login.*$',
-    icmBuild: 'ViewUserAccount-ShowLogin',
-    handledBy: 'pwa',
+    icmBuild: 'login',
+    handledBy: 'icm',
   },
   {
     id: 'Password Reset',
@@ -95,33 +96,33 @@ export const HYBRID_MAPPING_TABLE: HybridMappingEntry[] = [
   },
   {
     id: 'My Account',
-    icm: `${ICM_CONFIG_MATCH}/ViewUserAccount-Start.*$`,
-    pwaBuild: `account${PWA_CONFIG_BUILD}`,
+    icm: `^.*/account.*$`,
+    pwaBuild: `account`,
     pwa: '^/account.*$',
-    icmBuild: 'ViewUserAccount-Start',
-    handledBy: 'pwa',
+    icmBuild: 'account',
+    handledBy: 'icm',
   },
   {
     id: 'Register',
-    icm: `${ICM_CONFIG_MATCH}/ViewUserAccount-ShowRegister.*$`,
-    pwaBuild: `register${PWA_CONFIG_BUILD}`,
-    pwa: '^/register.*$',
-    icmBuild: 'ViewUserAccount-ShowRegister',
+    icm: `^.*/register.*$`,
+    pwaBuild: `register`,
+    pwa: '^/register$',
+    icmBuild: 'register',
     handledBy: 'pwa',
   },
   {
     id: 'Product Compare',
-    icm: `${ICM_CONFIG_MATCH}/ViewProductCompare-Show.*$`,
-    pwaBuild: `compare${PWA_CONFIG_BUILD}`,
-    pwa: '^/compare.*$',
-    icmBuild: 'ViewProductCompare-Show',
+    icm: `^.*/product-compare.*$`,
+    pwaBuild: `compare`,
+    pwa: '^/compare$',
+    icmBuild: 'product-compare',
     handledBy: 'pwa',
   },
   {
     id: 'Quick Order',
-    icm: `${ICM_CONFIG_MATCH}/ViewQuickorder-Start.*$`,
-    pwaBuild: `quick-order${PWA_CONFIG_BUILD}`,
-    pwa: '^/quick-order.*$',
+    icm: `^.*/ViewQuickorder-Start.*$`,
+    pwaBuild: `quick-order`,
+    pwa: '^/quick-order$',
     icmBuild: 'ViewQuickorder-Start',
     handledBy: 'icm',
   },
