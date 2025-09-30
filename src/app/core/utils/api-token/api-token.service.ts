@@ -106,7 +106,6 @@ export class ApiTokenService {
           this.cookiesService.put('apiToken', cookieContent, {
             expires: this.cookieOptions?.expires ?? new Date(Date.now() + DEFAULT_EXPIRY_TIME),
             secure: this.cookieOptions?.secure,
-            path: '/',
           });
         }
       });
