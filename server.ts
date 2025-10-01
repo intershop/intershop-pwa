@@ -365,19 +365,6 @@ export function app() {
   if (process.env.PROXY_ICM || process.env.SSR_HYBRID) {
     console.log("making ICM available for all requests to '/INTERSHOP'");
     server.use('/INTERSHOP', icmProxy);
-
-    // proxy any route containing any of the specified Responsive Starter Store with URL Re-Writing strings
-    // this needs to be adapted to the actually configured defaul-url-mapping-table.ts
-    const proxyRegex = new RegExp(
-      'ViewQuickorder-Start|ViewCart-View|ViewUserAccount-ProcessLogin|product-compare|login|account'
-    );
-    server.use((req, res, next) => {
-      if (proxyRegex.test(req.originalUrl)) {
-        icmProxy(req, res, next);
-      } else {
-        next();
-      }
-    });
   }
 
   function defaultCacheControl(path: string): string {
