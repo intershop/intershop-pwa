@@ -172,6 +172,29 @@ server {
         proxy_busy_buffers_size 256k;
     }
 
+    # proxy any URL containing any of the specified Responsive Starter Store with URL Re-Writing strings
+    # this needs to be adapted to the actually configured defaul-url-mapping-table.ts
+    location ~* (View|Process) {
+        allow all;
+        auth_basic off;
+
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $thescheme;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+
+        proxy_no_cache true;
+        proxy_cache_bypass true;
+        add_header X-Cache-Status $upstream_cache_status;
+
+        proxy_pass {{ $UPSTREAM_PWA }};
+        proxy_buffer_size 128k;
+        proxy_buffers 4 256k;
+        proxy_busy_buffers_size 256k;
+    }
+
     # respect cache entries of static assets
     location ~* ^/(?!ngsw\.json)(metrics|assets|.*\.(js|css|json|txt|webmanifest|woff|woff2))(.*)$ {
         allow all;

@@ -1,6 +1,6 @@
-export const ICM_CONFIG_MATCH = `^/INTERSHOP/web/WFS/(?<channel>[\\w-]+)/(?<lang>[\\w-]+)/(?<application>[\\w-]+)/(?<currency>[\\w-]+)`;
+export const ICM_CONFIG_MATCH = `^/de-de/store/b2b`;
 
-const PWA_CONFIG_BUILD = ';channel=$<channel>;lang=$<lang>;application=$<application>';
+const PWA_CONFIG_BUILD = '';
 
 interface HybridMappingEntry {
   /** ID for grouping */
@@ -26,7 +26,8 @@ interface HybridMappingEntry {
  *  - application
  *  - currency
  */
-export const ICM_WEB_URL = '/INTERSHOP/web/WFS/$<channel>/$<lang>/$<application>/$<currency>';
+// export const ICM_WEB_URL = '/INTERSHOP/web/WFS/$<channel>/$<lang>/$<application>/$<currency>';
+export const ICM_WEB_URL = '/de-de/store/b2b';
 
 /**
  * Mapping table for running PWA and ICM in parallel
@@ -75,7 +76,7 @@ export const HYBRID_MAPPING_TABLE: HybridMappingEntry[] = [
     pwaBuild: `login${PWA_CONFIG_BUILD}`,
     pwa: '^/login.*$',
     icmBuild: 'ViewUserAccount-ShowLogin',
-    handledBy: 'pwa',
+    handledBy: 'icm',
   },
   {
     id: 'Password Reset',
@@ -99,7 +100,7 @@ export const HYBRID_MAPPING_TABLE: HybridMappingEntry[] = [
     pwaBuild: `account${PWA_CONFIG_BUILD}`,
     pwa: '^/account.*$',
     icmBuild: 'ViewUserAccount-Start',
-    handledBy: 'pwa',
+    handledBy: 'icm',
   },
   {
     id: 'Register',
