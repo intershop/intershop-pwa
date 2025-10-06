@@ -116,4 +116,26 @@ describe('Header Default Component', () => {
 
     expect(element).toMatchSnapshot();
   });
+
+  it('should use button elements for search in sticky header for desktop', () => {
+    component.deviceType = 'desktop';
+    component.isSticky = true;
+    fixture.detectChanges();
+
+    const searchButton = element.querySelector('.search-toggler.sticky-header-icon') as HTMLButtonElement;
+    expect(searchButton).toBeTruthy();
+    expect(searchButton.tagName.toLowerCase()).toBe('button');
+    expect(searchButton.type).toBe('button');
+  });
+
+  it('should use button elements for search in sticky header for mobile', () => {
+    component.deviceType = 'mobile';
+    component.isSticky = true;
+    fixture.detectChanges();
+
+    const searchButton = element.querySelector('.search-toggler.sticky-header-icon') as HTMLButtonElement;
+    expect(searchButton).toBeTruthy();
+    expect(searchButton.tagName.toLowerCase()).toBe('button');
+    expect(searchButton.type).toBe('button');
+  });
 });
