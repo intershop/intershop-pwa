@@ -25,6 +25,7 @@ describe('Shopping User B2B', () => {
     at(LoginPage, page => {
       page.fillForm(_.user.login, _.user.password);
       page.submit().its('response.statusCode').should('equal', 200);
+      cy.wait(1000);
       page.header.miniCart.goToCart();
     });
     at(CartPage, page => {
