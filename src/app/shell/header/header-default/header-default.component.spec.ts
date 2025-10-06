@@ -116,4 +116,56 @@ describe('Header Default Component', () => {
 
     expect(element).toMatchSnapshot();
   });
+
+  describe('Sticky Header Search Button Accessibility', () => {
+    it('should render search button as button element for non-mobile sticky header', () => {
+      component.deviceType = 'desktop';
+      component.isSticky = true;
+      fixture.detectChanges();
+
+      const searchButton = element.querySelector('.search-toggler.sticky-header-icon');
+      expect(searchButton).toBeTruthy();
+      expect(searchButton.tagName.toLowerCase()).toBe('button');
+      expect(searchButton.getAttribute('type')).toBe('button');
+    });
+
+    it('should render search button as button element for mobile sticky header', () => {
+      component.deviceType = 'mobile';
+      component.isSticky = true;
+      fixture.detectChanges();
+
+      const searchButton = element.querySelector('.search-toggler.sticky-header-icon');
+      expect(searchButton).toBeTruthy();
+      expect(searchButton.tagName.toLowerCase()).toBe('button');
+      expect(searchButton.getAttribute('type')).toBe('button');
+    });
+
+    it('should render search button as button element for tablet sticky header', () => {
+      component.deviceType = 'tablet';
+      component.isSticky = true;
+      fixture.detectChanges();
+
+      const searchButton = element.querySelector('.search-toggler.sticky-header-icon');
+      expect(searchButton).toBeTruthy();
+      expect(searchButton.tagName.toLowerCase()).toBe('button');
+      expect(searchButton.getAttribute('type')).toBe('button');
+    });
+
+    it('should call scrollTopAndFocusSearch when search button is clicked', () => {
+      // Mock window.scrollTo to prevent JSDOM "Not implemented" error
+      const mockScrollTo = jest.fn();
+      Object.defineProperty(window, 'scrollTo', { value: mockScrollTo });
+      Object.defineProperty(window, 'scrollY', { value: 0, writable: true });
+
+      const scrollTopAndFocusSearchSpy = jest.spyOn(component, 'scrollTopAndFocusSearch');
+      component.deviceType = 'desktop';
+      component.isSticky = true;
+      fixture.detectChanges();
+
+      const searchButton = element.querySelector('.search-toggler.sticky-header-icon') as HTMLButtonElement;
+      searchButton.click();
+
+      expect(scrollTopAndFocusSearchSpy).toHaveBeenCalled();
+    });
+  });
 });
