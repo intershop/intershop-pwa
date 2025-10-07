@@ -15,6 +15,7 @@ kb_sync_latest_only
 - [Scenarios](#scenarios)
   - [CDN Support](#cdn-support)
   - [Embed PWA with Proxy on Website](#embed-pwa-with-proxy-on-website)
+  - [Serve the PWA from a Sub-Path including static files](#serve-the-pwa-from-a-sub-path-including-static-files)
 - [Further References](#further-references)
 
 This document describes how to provide the Intershop PWA with a dynamic deploy URL to set up client-side retrieval of static assets and JavaScript chunks from a (possibly) different source than the URL from which the pre-rendering is delivered.
@@ -89,6 +90,26 @@ To set this up manually, a lot of rewriting for static PWA assets would have to 
 
 By setting a deployment URL, only the incoming routing for server-side rendering would be targeted at the portal's reverse proxy.
 After parsing the response, the client-side application pulls all necessary static assets and JavaScript chunks directly from the deployment URL.
+
+### Serve the PWA from a Sub-Path including static files
+
+> [!NOTE]
+> This functionality is supported with Intershop PWA 9.0.0 and later.
+
+If you want to serve the PWA from a sub-path (e.g. `https://www.example.com/shop/`) this can easily be achieved with the current possibilities of the `baseHref` [Multi-Site Configurations](../guides/multi-site-configurations.md).
+
+```yaml
+'www\.example\.com':
+  - baseHref: /shop
+    channel: default
+```
+
+In this configuration the PWAs javascript and assets would still be served from the root path (`/`), e.g. `https://www.example.com/runtime.1234567.js`.
+
+To serve these static files like `https://www.example.com/shop/runtime.1234567.js` as well, the `DEPLOY_URL` functionality can be used to configure a common relative URL prefix.
+With the `DEPLOY_URL` set to `/shop/` the intended example static files paths can be achieved.
+
+Such a configuration supports scenarios where the Intershop PWA is responsible for serving requests and files from a specific sub-path while the domain root is handled by a different application.
 
 ## Further References
 
