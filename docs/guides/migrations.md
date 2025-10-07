@@ -7,6 +7,11 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 8.0.0 to 9.0.0
+
+Functionality was added to the SSR container to support the manual creation of PWA heap dumps for debugging purposes.
+For more information on how to use this functionality, see the [Heap Dumps](./ssr-startup.md#heap-dumps) section in the SSR guide.
+
 ## From 7.1.0 to 8.0.0
 
 The Intershop PWA now uses Node.js 22.17.1 LTS with the corresponding npm version 10.9.2.
