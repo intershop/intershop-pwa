@@ -25,7 +25,7 @@ import { writeHeapSnapshot } from 'v8';
 
 process.on('SIGUSR2', () => {
   const pm2Name = process.env.name || 'no-pm2';
-  const filename = `/tmp/Heap.${pm2Name}.${process.pid}.${new Date().toISOString()}.heapsnapshot`;
+  const filename = `/tmp/Heap.${pm2Name}.${process.pid}.${new Date().toISOString().replaceAll(':', '-')}.heapsnapshot`;
   writeHeapSnapshot(filename);
   console.log(`Heap snapshot written to ${filename}`);
 });
