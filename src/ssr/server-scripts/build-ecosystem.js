@@ -14,7 +14,7 @@ if (Object.keys(ports).length === 1) {
   ports[Object.keys(ports)[0]] = process.env.PORT || 4200;
 } else {
   content += `
-  - script: dist/server.js
+  - script: dist/distributor.js
     name: distributor
   `;
 }
