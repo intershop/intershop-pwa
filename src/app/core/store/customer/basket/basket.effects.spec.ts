@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
@@ -75,7 +74,6 @@ describe('Basket Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['router', 'serverConfig', 'configuration']),
         CustomerStoreModule.forTesting('user', 'basket'),
-        RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
       ],
       providers: [
         { provide: ApiTokenService, useFactory: () => instance(apiTokenMock) },
@@ -83,6 +81,7 @@ describe('Basket Effects', () => {
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         BasketEffects,
         provideMockActions(() => actions$),
+        provideRouter([{ path: '**', children: [] }]),
       ],
     });
 

@@ -1,6 +1,6 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule, provideRouter } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -40,7 +40,7 @@ describe('Cost Centers Page Component', () => {
   beforeEach(async () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
     await TestBed.configureTestingModule({
-      imports: [CdkTableModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [CdkTableModule, RouterModule, TranslateModule.forRoot()],
       declarations: [
         CostCentersPageComponent,
         MockComponent(BudgetInfoComponent),
@@ -50,7 +50,10 @@ describe('Cost Centers Page Component', () => {
         MockComponent(LoadingComponent),
         MockComponent(ModalDialogComponent),
       ],
-      providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
+      providers: [
+        { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
+        provideRouter([]),
+      ],
     }).compileComponents();
 
     when(organizationManagementFacade.costCenters$).thenReturn(of(costCenters));

@@ -1,7 +1,7 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -91,16 +91,7 @@ describe('Customer Store', () => {
         CoreStoreModule.forTesting(['configuration', 'serverConfig'], true),
         CustomerStoreModule,
         HttpClientTestingModule,
-        RouterTestingModule.withRoutes([
-          {
-            path: 'account',
-            children: [],
-          },
-          {
-            path: 'checkout/address',
-            children: [],
-          },
-        ]),
+
         ShoppingStoreModule,
         TranslateModule.forRoot(),
       ],
@@ -110,6 +101,16 @@ describe('Customer Store', () => {
         { provide: InventoryService, useFactory: () => instance(inventoryServiceMock) },
         { provide: TokenService, useFactory: () => instance(mock(TokenService)) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
+        provideRouter([
+          {
+            path: 'account',
+            children: [],
+          },
+          {
+            path: 'checkout/address',
+            children: [],
+          },
+        ]),
         provideStoreSnapshots(),
       ],
     });

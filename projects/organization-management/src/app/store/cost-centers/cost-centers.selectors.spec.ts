@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 
 import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
@@ -44,12 +43,8 @@ describe('Cost Centers Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(['router']),
-        OrganizationManagementStoreModule.forTesting('costCenters'),
-        RouterTestingModule.withRoutes([{ path: 'cost-centers/:CostCenterId', children: [] }]),
-      ],
-      providers: [provideStoreSnapshots()],
+      imports: [CoreStoreModule.forTesting(['router']), OrganizationManagementStoreModule.forTesting('costCenters')],
+      providers: [provideRouter([{ path: 'cost-centers/:CostCenterId', children: [] }]), provideStoreSnapshots()],
     });
 
     store$ = TestBed.inject(StoreWithSnapshots);

@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 
 import { User } from 'ish-core/models/user/user.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -27,12 +26,8 @@ describe('Users Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(['router']),
-        OrganizationManagementStoreModule.forTesting('users'),
-        RouterTestingModule.withRoutes([{ path: 'users/:B2BCustomerLogin', children: [] }]),
-      ],
-      providers: [provideStoreSnapshots()],
+      imports: [CoreStoreModule.forTesting(['router']), OrganizationManagementStoreModule.forTesting('users')],
+      providers: [provideRouter([{ path: 'users/:B2BCustomerLogin', children: [] }]), provideStoreSnapshots()],
     });
 
     store$ = TestBed.inject(StoreWithSnapshots);

@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
@@ -66,21 +65,18 @@ describe('Categories Effects', () => {
     when(categoriesServiceMock.getCategoryTree(anything(), anyNumber())).thenReturn(of(CATEGORIES_TREE));
 
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(['router']),
-        RouterTestingModule.withRoutes([
-          { path: 'category/:categoryUniqueId/product/:sku', children: [] },
-          { path: 'category/:categoryUniqueId', children: [] },
-          { path: 'categoryref/:categoryRefId', children: [] },
-          { path: '**', children: [] },
-        ]),
-        ShoppingStoreModule.forTesting('categories'),
-      ],
+      imports: [CoreStoreModule.forTesting(['router']), ShoppingStoreModule.forTesting('categories')],
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         CategoriesEffects,
         provideMockActions(() => actions$),
+        provideRouter([
+          { path: 'category/:categoryUniqueId/product/:sku', children: [] },
+          { path: 'category/:categoryUniqueId', children: [] },
+          { path: 'categoryref/:categoryRefId', children: [] },
+          { path: '**', children: [] },
+        ]),
       ],
     });
 

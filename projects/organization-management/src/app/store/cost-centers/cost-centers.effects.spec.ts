@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
@@ -68,17 +67,15 @@ describe('Cost Centers Effects', () => {
     when(costCentersService.deleteCostCenterBuyer(anyString(), anything())).thenReturn(of(costCenters[0]));
 
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(['router']),
-        RouterTestingModule.withRoutes([
-          { path: 'cost-centers/:CostCenterId', children: [] },
-          { path: '**', children: [] },
-        ]),
-      ],
+      imports: [CoreStoreModule.forTesting(['router'])],
       providers: [
         { provide: CostCentersService, useFactory: () => instance(costCentersService) },
         CostCentersEffects,
         provideMockActions(() => actions$),
+        provideRouter([
+          { path: 'cost-centers/:CostCenterId', children: [] },
+          { path: '**', children: [] },
+        ]),
       ],
     });
 

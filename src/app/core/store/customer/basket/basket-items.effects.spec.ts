@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
@@ -55,7 +55,7 @@ describe('Basket Items Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['serverConfig']),
         CustomerStoreModule.forTesting('basket'),
-        RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
+
         ShoppingStoreModule.forTesting('products', 'categories'),
       ],
       providers: [
@@ -63,6 +63,7 @@ describe('Basket Items Effects', () => {
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         BasketItemsEffects,
         provideMockActions(() => actions$),
+        provideRouter([{ path: '**', children: [] }]),
       ],
     });
 

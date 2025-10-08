@@ -1,7 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { createSelector } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of, throwError } from 'rxjs';
@@ -49,7 +48,6 @@ describe('Shopping Store', () => {
   let sparqueSuggestionsServiceMock: SparqueSuggestionsService;
   let suggestServiceMock: SuggestService;
   let filterServiceMock: FilterService;
-
   let inventoryServiceMock: InventoryService;
 
   beforeEach(() => {
@@ -145,7 +143,20 @@ describe('Shopping Store', () => {
         CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], true),
         CustomerStoreModule.forTesting('user'),
         HttpClientTestingModule,
-        RouterTestingModule.withRoutes([
+
+        ShoppingStoreModule,
+        TranslateModule.forRoot(),
+      ],
+      providers: [
+        { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
+        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
+        { provide: InventoryService, useFactory: () => instance(inventoryServiceMock) },
+        { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
+        { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
+        { provide: SparqueRecommendationsService, useFactory: () => instance(sparqueRecommendationsServiceMock) },
+        { provide: SparqueSuggestionsService, useFactory: () => instance(sparqueSuggestionsServiceMock) },
+        { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
+        provideRouter([
           {
             path: 'home',
             children: [],
@@ -176,18 +187,6 @@ describe('Shopping Store', () => {
             children: [],
           },
         ]),
-        ShoppingStoreModule,
-        TranslateModule.forRoot(),
-      ],
-      providers: [
-        { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
-        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
-        { provide: InventoryService, useFactory: () => instance(inventoryServiceMock) },
-        { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
-        { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
-        { provide: SparqueRecommendationsService, useFactory: () => instance(sparqueRecommendationsServiceMock) },
-        { provide: SparqueSuggestionsService, useFactory: () => instance(sparqueSuggestionsServiceMock) },
-        { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         provideStoreSnapshots(),
         SelectedProductContextFacade,
       ],
