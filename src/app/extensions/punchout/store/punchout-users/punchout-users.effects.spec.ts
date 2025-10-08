@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
@@ -50,18 +49,15 @@ describe('Punchout Users Effects', () => {
     when(punchoutService.deleteUser(anything())).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(['router']),
-        PunchoutStoreModule.forTesting('punchoutUsers'),
-        RouterTestingModule.withRoutes([
+      imports: [CoreStoreModule.forTesting(['router']), PunchoutStoreModule.forTesting('punchoutUsers')],
+      providers: [
+        { provide: PunchoutService, useFactory: () => instance(punchoutService) },
+        provideMockActions(() => actions$),
+        provideRouter([
           { path: 'account/punchout', children: [] },
           { path: 'account/punchout/:PunchoutLogin', children: [] },
           { path: '**', children: [] },
         ]),
-      ],
-      providers: [
-        { provide: PunchoutService, useFactory: () => instance(punchoutService) },
-        provideMockActions(() => actions$),
         PunchoutUsersEffects,
       ],
     });

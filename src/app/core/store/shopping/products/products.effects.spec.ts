@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
@@ -122,11 +121,6 @@ describe('Products Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'serverConfig', 'configuration']),
-        RouterTestingModule.withRoutes([
-          { path: 'category/:categoryUniqueId/product/:sku', children: [] },
-          { path: 'product/:sku', children: [] },
-          { path: '**', children: [] },
-        ]),
         ShoppingStoreModule.forTesting('products', 'categories', 'productListing', 'productPrices', 'filter'),
       ],
       providers: [
@@ -134,6 +128,11 @@ describe('Products Effects', () => {
         { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
         ProductsEffects,
         provideMockActions(() => actions$),
+        provideRouter([
+          { path: 'category/:categoryUniqueId/product/:sku', children: [] },
+          { path: 'product/:sku', children: [] },
+          { path: '**', children: [] },
+        ]),
       ],
     });
 

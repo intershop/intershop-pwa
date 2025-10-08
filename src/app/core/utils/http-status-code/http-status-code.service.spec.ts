@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { noop } from 'rxjs';
 import { anyNumber, spy, verify } from 'ts-mockito';
 
@@ -26,8 +26,8 @@ describe('Http Status Code Service', () => {
   describe('on browser', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([
+        providers: [
+          provideRouter([
             { path: 'error', children: [] },
             { path: 'maintenance', children: [] },
           ]),
@@ -75,13 +75,13 @@ describe('Http Status Code Service', () => {
   describe.onSSREnvironment('on server', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([
+        providers: [
+          { provide: RESPONSE, useValue: RES },
+          provideRouter([
             { path: 'error', children: [] },
             { path: 'maintenance', children: [] },
           ]),
         ],
-        providers: [{ provide: RESPONSE, useValue: RES }],
       });
       httpStatusCodeService = TestBed.inject(HttpStatusCodeService);
       location = TestBed.inject(Location);

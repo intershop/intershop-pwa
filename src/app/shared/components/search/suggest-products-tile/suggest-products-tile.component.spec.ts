@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -23,7 +22,7 @@ describe('Suggest Products Tile Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MockComponent(ProductImageComponent), RouterTestingModule, SuggestProductsTileComponent],
+      imports: [MockComponent(ProductImageComponent), SuggestProductsTileComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
 
@@ -44,15 +43,14 @@ describe('Suggest Products Tile Component', () => {
   });
 
   it('should display relevent product tile elements', () => {
+    component.deviceType = 'desktop';
     fixture.detectChanges();
 
     const keywordElements = element.querySelectorAll('a');
     expect(keywordElements).toHaveLength(2);
-    expect(keywordElements[0].attributes.getNamedItem('href').value).toEqual(productURL);
-    expect(keywordElements[1].attributes.getNamedItem('href').value).toEqual(productURL);
-    expect(keywordElements[1].textContent).toMatchInlineSnapshot(
-      `"Product 12 345 (very long so it will be truncated)"`
-    );
+    expect(keywordElements[0].attributes.getNamedItem('ng-reflect-router-link').value).toEqual(productURL);
+    expect(keywordElements[1].attributes.getNamedItem('ng-reflect-router-link').value).toEqual(productURL);
+    expect(keywordElements[1].textContent).toMatchInlineSnapshot(`"Product 12 345 (very long so it will b..."`);
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       [
         "ish-product-image",

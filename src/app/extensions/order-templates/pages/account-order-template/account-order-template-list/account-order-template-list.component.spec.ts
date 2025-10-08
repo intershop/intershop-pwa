@@ -1,6 +1,6 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule, provideRouter } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
@@ -62,8 +62,11 @@ describe('Account Order Template List Component', () => {
         MockDirective(ProductContextDirective),
         MockPipe(DatePipe),
       ],
-      imports: [CdkTableModule, RouterTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) }],
+      imports: [CdkTableModule, RouterModule, TranslateModule.forRoot()],
+      providers: [
+        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
+        provideRouter([]),
+      ],
     }).compileComponents();
   });
 

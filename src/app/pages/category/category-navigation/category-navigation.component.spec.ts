@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule, provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -32,9 +32,9 @@ describe('Category Navigation Component', () => {
     when(shoppingFacade.navigationCategories$('B')).thenReturn(of([] as NavigationCategory[]));
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterModule],
       declarations: [CategoryNavigationComponent],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }, provideRouter([])],
     }).compileComponents();
   });
 

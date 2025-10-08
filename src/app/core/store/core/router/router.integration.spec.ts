@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -22,9 +21,9 @@ describe('Router Integration', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(['router'], true),
-        RouterTestingModule.withRoutes([
+      imports: [CoreStoreModule.forTesting(['router'], true)],
+      providers: [
+        provideRouter([
           {
             path: 'test',
             data: { level: 1, root: true },
@@ -50,8 +49,8 @@ describe('Router Integration', () => {
           },
           { path: '**', children: [] },
         ]),
+        provideStoreSnapshots(),
       ],
-      providers: [provideStoreSnapshots()],
     });
 
     router = TestBed.inject(Router);

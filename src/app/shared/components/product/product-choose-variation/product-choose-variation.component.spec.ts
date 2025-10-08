@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule, provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -19,9 +19,9 @@ describe('Product Choose Variation Component', () => {
     when(context.select('productURL')).thenReturn(of('/product/MASTER'));
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [RouterModule, TranslateModule.forRoot()],
       declarations: [ProductChooseVariationComponent],
-      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }, provideRouter([])],
     }).compileComponents();
   });
 

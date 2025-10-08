@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -25,7 +25,7 @@ describe('Account Page Component', () => {
         MockComponent(ContentIncludeComponent),
         MockComponent(SkipContentLinkComponent),
       ],
-      imports: [RouterTestingModule],
+      imports: [RouterModule],
       providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
     }).compileComponents();
   });

@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -20,9 +19,10 @@ describe('Viewconf Integration', () => {
     when(featureToggleServiceMock.enabled$(anything())).thenReturn(of(true));
 
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(['router', 'viewconf'], [ViewconfEffects]),
-        RouterTestingModule.withRoutes([
+      imports: [CoreStoreModule.forTesting(['router', 'viewconf'], [ViewconfEffects])],
+      providers: [
+        { provide: FeatureToggleService, useFactory: () => instance(featureToggleServiceMock) },
+        provideRouter([
           {
             path: 'some',
             children: [],
@@ -34,9 +34,6 @@ describe('Viewconf Integration', () => {
           },
           { path: '**', children: [] },
         ]),
-      ],
-      providers: [
-        { provide: FeatureToggleService, useFactory: () => instance(featureToggleServiceMock) },
         provideStoreSnapshots(),
       ],
     });

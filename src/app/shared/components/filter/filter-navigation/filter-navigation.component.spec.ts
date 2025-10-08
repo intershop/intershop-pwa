@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -24,14 +24,13 @@ describe('Filter Navigation Component', () => {
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
       declarations: [
         FilterNavigationComponent,
         MockComponent(FilterNavigationBadgesComponent),
         MockComponent(FilterNavigationHorizontalComponent),
         MockComponent(FilterNavigationSidebarComponent),
       ],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }, provideRouter([])],
     }).compileComponents();
   });
 

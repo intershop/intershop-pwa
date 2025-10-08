@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -25,10 +25,11 @@ describe('Shopping Basket Payment Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [BasketPaymentCostInfoComponent, MockPipe(ServerSettingPipe), ShoppingBasketPaymentComponent],
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: FeatureToggleService, useValue: instance(featureToggleService) },
+        provideRouter([]),
       ],
     }).compileComponents();
 

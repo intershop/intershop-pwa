@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
 
 import { PreviewService } from './preview.service';
@@ -9,8 +9,7 @@ describe('Preview Service', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      providers: [provideMockStore()],
+      providers: [provideMockStore(), provideRouter([])],
     });
     previewService = TestBed.inject(PreviewService);
   });

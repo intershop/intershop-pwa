@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 
@@ -11,9 +10,9 @@ describe('Authorization Toggle Guard', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        AuthorizationToggleModule.forTesting('DO_THIS'),
-        RouterTestingModule.withRoutes([
+      imports: [AuthorizationToggleModule.forTesting('DO_THIS')],
+      providers: [
+        provideRouter([
           {
             path: 'error',
             children: [],

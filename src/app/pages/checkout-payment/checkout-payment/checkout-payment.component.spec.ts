@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
@@ -59,11 +59,8 @@ describe('Checkout Payment Component', () => {
         MockPipe(ServerSettingPipe),
         PaymentParameterFormComponent,
       ],
-      imports: [
-        ReactiveFormsModule,
-        RouterTestingModule.withRoutes([{ path: 'checkout/review', children: [] }]),
-        TranslateModule.forRoot(),
-      ],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      providers: [provideRouter([{ path: 'checkout/review', children: [] }])],
     })
       .overrideComponent(CheckoutPaymentComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },

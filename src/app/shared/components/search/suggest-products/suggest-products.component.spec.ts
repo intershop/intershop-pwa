@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ReplaySubject, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -28,7 +28,7 @@ describe('Suggest Products Component', () => {
     when(shoppingFacade.product$(anything(), anything())).thenReturn(of({} as ProductView));
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [RouterModule.forRoot([]), TranslateModule.forRoot()],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },

@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { selectRouteData, selectRouteParam } from 'ish-core/store/core/router';
@@ -17,15 +16,15 @@ describe('Routing Integration', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(['router']),
-        RouterTestingModule.withRoutes([
+      imports: [CoreStoreModule.forTesting(['router'])],
+      providers: [
+        provideRouter([
           { matcher: matchProductRoute, data: { page: 'product' }, children: [{ path: '**', children: [] }] },
           { matcher: matchCategoryRoute, data: { page: 'category' }, children: [{ path: '**', children: [] }] },
           { path: '**', children: [], data: { page: 'error' } },
         ]),
+        provideStoreSnapshots(),
       ],
-      providers: [provideStoreSnapshots()],
     });
 
     router = TestBed.inject(Router);
