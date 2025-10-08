@@ -5,7 +5,8 @@
       <span *ngIf="view !== 'small'">{{ 'account.logout.link' | translate }}</span>
     </a>
   </ng-container>
-  <ng-template #notLoggedIn> &nbsp; </ng-template>
+  <!-- eslint-disable-next-line @angular-eslint/template/prefer-self-closing-tags -->
+  <ng-template #notLoggedIn>&nbsp;</ng-template>
 </ng-container>
 
 <ng-template #loginStatus>

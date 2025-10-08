@@ -120,7 +120,7 @@ class DummyLibraryFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-default-field-test-field',
-  template: `<ng-template #fieldComponent> </ng-template>`,
+  template: `<ng-template #fieldComponent />`,
 })
 class DummyWrapperComponent extends FieldWrapper {}
 
