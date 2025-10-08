@@ -9,6 +9,9 @@ kb_sync_latest_only
 
 ## From 8.0.0 to 9.0.0
 
+Functionality was added to the SSR container to support the manual creation of PWA heap dumps for debugging purposes.
+For more information on how to use this functionality, see the [Heap Dumps](./ssr-startup.md#heap-dumps) section in the SSR guide.
+
 The `DEPLOY_URL` functionality was adapted to support relative deploy URLs too (for more information see [Serve the PWA from a Sub-Path including static files](../concepts/deploy-url.md#serve-the-pwa-from-a-sub-path-including-static-files)).
 
 Together with the `DEPLOY_URL` changes the file `src/ssr/server-scripts/server.js` needed adaptions and was renamed to `src/ssr/server-scripts/distributor.js` for more clarity.
