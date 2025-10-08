@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
@@ -79,12 +78,12 @@ describe('Order Template Effects', () => {
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
         OrderTemplatesStoreModule.forTesting('orderTemplates'),
-        RouterTestingModule.withRoutes([{ path: 'account/order-templates/:orderTemplateName', children: [] }]),
       ],
       providers: [
         { provide: OrderTemplateService, useFactory: () => instance(orderTemplateServiceMock) },
         OrderTemplateEffects,
         provideMockActions(() => actions$),
+        provideRouter([{ path: 'account/order-templates/:orderTemplateName', children: [] }]),
       ],
     });
 

@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -31,13 +30,13 @@ describe('Product Listing Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration'], [ProductListingEffects]),
         CustomerStoreModule.forTesting('user'),
-        RouterTestingModule.withRoutes([{ path: 'some', children: [] }]),
         ShoppingStoreModule.forTesting('productListing'),
       ],
       providers: [
         { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },
         { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 7 },
         { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
+        provideRouter([{ path: 'some', children: [] }]),
         provideStoreSnapshots(),
       ],
     });

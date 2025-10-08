@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 
 import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -28,12 +27,11 @@ describe('Recurring Orders Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(['router']),
-        CustomerStoreModule.forTesting('recurringOrders'),
-        RouterTestingModule.withRoutes([{ path: 'recurring-orders/:recurringOrderId', children: [] }]),
+      imports: [CoreStoreModule.forTesting(['router']), CustomerStoreModule.forTesting('recurringOrders')],
+      providers: [
+        provideRouter([{ path: 'recurring-orders/:recurringOrderId', children: [] }]),
+        provideStoreSnapshots(),
       ],
-      providers: [provideStoreSnapshots()],
     });
 
     store$ = TestBed.inject(StoreWithSnapshots);

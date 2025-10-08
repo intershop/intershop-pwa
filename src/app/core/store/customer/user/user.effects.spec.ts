@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
@@ -127,17 +126,14 @@ describe('User Effects', () => {
     when(oAuthServiceMock.events).thenReturn(of());
 
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(['router', 'serverConfig']),
-        CustomerStoreModule.forTesting('user'),
-        RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
-      ],
+      imports: [CoreStoreModule.forTesting(['router', 'serverConfig']), CustomerStoreModule.forTesting('user')],
       providers: [
         { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         { provide: TokenService, useFactory: () => instance(tokenServiceMock) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
         provideMockActions(() => actions$),
+        provideRouter([{ path: '**', children: [] }]),
         UserEffects,
       ],
     });

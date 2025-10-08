@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule, provideRouter } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
@@ -34,7 +34,7 @@ describe('Requisition Detail Page Component', () => {
     context = mock(RequisitionContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [RouterModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(AddressComponent),
         MockComponent(BasketCostSummaryComponent),
@@ -50,6 +50,7 @@ describe('Requisition Detail Page Component', () => {
         MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
         RequisitionDetailPageComponent,
       ],
+      providers: [provideRouter([])],
     })
       .overrideComponent(RequisitionDetailPageComponent, {
         set: { providers: [{ provide: RequisitionContextFacade, useFactory: () => instance(context) }] },

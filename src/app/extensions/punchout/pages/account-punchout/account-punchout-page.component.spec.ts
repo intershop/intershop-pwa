@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule, provideRouter } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
@@ -38,7 +38,7 @@ describe('Account Punchout Page Component', () => {
     appFacade = mock(AppFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [RouterModule, TranslateModule.forRoot()],
       declarations: [
         AccountPunchoutPageComponent,
         MockComponent(AccountPunchoutHeaderComponent),
@@ -51,6 +51,7 @@ describe('Account Punchout Page Component', () => {
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) },
+        provideRouter([]),
       ],
     }).compileComponents();
   });

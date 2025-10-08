@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
@@ -38,18 +37,15 @@ describe('Pages Effects', () => {
     cmsServiceMock = mock(CMSService);
 
     TestBed.configureTestingModule({
-      imports: [
-        ContentStoreModule.forTesting('pagetree', 'pages'),
-        CoreStoreModule.forTesting(['router']),
-        RouterTestingModule.withRoutes([
-          { path: 'page/:contentPageId', children: [] },
-          { path: '**', children: [] },
-        ]),
-      ],
+      imports: [ContentStoreModule.forTesting('pagetree', 'pages'), CoreStoreModule.forTesting(['router'])],
       providers: [
         { provide: CMSService, useFactory: () => instance(cmsServiceMock) },
         PagesEffects,
         provideMockActions(() => actions$),
+        provideRouter([
+          { path: 'page/:contentPageId', children: [] },
+          { path: '**', children: [] },
+        ]),
       ],
     });
 

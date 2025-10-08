@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -63,7 +62,14 @@ describe('Orders Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user', 'orders', 'basket'),
-        RouterTestingModule.withRoutes([
+
+        TranslateModule.forRoot(),
+      ],
+      providers: [
+        { provide: OrderService, useFactory: () => instance(orderServiceMock) },
+        OrdersEffects,
+        provideMockActions(() => actions$),
+        provideRouter([
           {
             path: 'checkout',
             children: [
@@ -74,12 +80,6 @@ describe('Orders Effects', () => {
           { path: 'account/orders/:orderId', children: [] },
           { path: '**', children: [] },
         ]),
-        TranslateModule.forRoot(),
-      ],
-      providers: [
-        { provide: OrderService, useFactory: () => instance(orderServiceMock) },
-        OrdersEffects,
-        provideMockActions(() => actions$),
       ],
     });
 

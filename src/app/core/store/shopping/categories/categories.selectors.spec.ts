@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 
 import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/category.model';
 import { Product } from 'ish-core/models/product/product.model';
@@ -52,12 +51,8 @@ describe('Categories Selectors', () => {
     } as Category;
 
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(['router']),
-        RouterTestingModule.withRoutes([{ path: 'category/:categoryUniqueId', children: [] }]),
-        ShoppingStoreModule.forTesting('categories'),
-      ],
-      providers: [provideStoreSnapshots()],
+      imports: [CoreStoreModule.forTesting(['router']), ShoppingStoreModule.forTesting('categories')],
+      providers: [provideRouter([{ path: 'category/:categoryUniqueId', children: [] }]), provideStoreSnapshots()],
     });
 
     store$ = TestBed.inject(StoreWithSnapshots);
