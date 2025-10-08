@@ -1,6 +1,6 @@
 <ng-container *ngIf="viewMode; else edit">
   <div class="d-flex flex-row align-items-center">
-    <ng-content select="[viewModeContent]"></ng-content>
+    <ng-content select="[viewModeContent]" />
     <button
       type="button"
       class="btn btn-link"
@@ -19,7 +19,7 @@
 
 <ng-template #edit>
   <div class="d-flex flex-row align-items-baseline">
-    <ng-content select="[editModeForm]"></ng-content>
+    <ng-content select="[editModeForm]" />
     <button
       type="button"
       class="btn btn-link"

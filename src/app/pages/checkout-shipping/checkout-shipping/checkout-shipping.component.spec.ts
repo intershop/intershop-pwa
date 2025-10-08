@@ -73,6 +73,6 @@ describe('Checkout Shipping Component', () => {
 @Component({
   // custom selector to prevent component ID collision
   selector: 'ish-dummy-shipping-wrapper',
-  template: '<ng-template #fieldComponent></ng-template>',
+  template: '<ng-template #fieldComponent />',
 })
 class DummyWrapperComponent extends FieldWrapper {}
