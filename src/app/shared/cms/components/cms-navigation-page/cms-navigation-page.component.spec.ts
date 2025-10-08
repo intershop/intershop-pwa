@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -76,7 +76,7 @@ describe('Cms Navigation Page Component', () => {
     cmsFacade = mock(CMSFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterModule.forRoot([])],
       declarations: [
         CMSNavigationPageComponent,
         MockComponent(FaIconComponent),

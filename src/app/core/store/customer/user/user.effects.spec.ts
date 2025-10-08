@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, RouterModule } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
@@ -129,7 +128,7 @@ describe('User Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['router', 'serverConfig']),
         CustomerStoreModule.forTesting('user'),
-        RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
+        RouterModule.forRoot([{ path: '**', children: [] }]),
       ],
       providers: [
         { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },

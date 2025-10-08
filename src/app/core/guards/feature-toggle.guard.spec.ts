@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, RouterModule } from '@angular/router';
 
 import { FeatureToggleModule, FeatureToggleType, featureToggleGuard } from 'ish-core/feature-toggle.module';
 
@@ -11,7 +10,7 @@ describe('Feature Toggle Guard', () => {
     TestBed.configureTestingModule({
       imports: [
         FeatureToggleModule.forTesting('feature1' as FeatureToggleType),
-        RouterTestingModule.withRoutes([
+        RouterModule.forRoot([
           {
             path: 'error',
             children: [],

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { MockComponent } from 'ng-mocks';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { of } from 'rxjs';
@@ -35,7 +35,7 @@ describe('Product Listing Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [InfiniteScrollDirective, RouterTestingModule],
+      imports: [InfiniteScrollDirective, RouterModule.forRoot([])],
       declarations: [
         MockComponent(ProductListComponent),
         MockComponent(ProductListPagingComponent),

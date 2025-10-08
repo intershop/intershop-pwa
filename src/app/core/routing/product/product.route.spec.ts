@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router, UrlMatchResult, UrlSegment } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, RouterModule, UrlMatchResult, UrlSegment } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
@@ -316,7 +315,7 @@ describe('Product Route', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router']), RouterTestingModule.withRoutes([{ path: '**', children: [] }])],
+      imports: [CoreStoreModule.forTesting(['router']), RouterModule.forRoot([{ path: '**', children: [] }])],
     });
 
     router = TestBed.inject(Router);

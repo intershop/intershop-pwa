@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router, UrlSerializer } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, RouterModule, UrlSerializer } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -34,7 +33,7 @@ describe('Configuration Integration', () => {
           [ConfigurationEffects],
           [configurationMeta]
         ),
-        RouterTestingModule.withRoutes([{ path: 'home', children: [] }]),
+        RouterModule.forRoot([{ path: 'home', children: [] }]),
         TranslateModule.forRoot(),
       ],
       providers: [

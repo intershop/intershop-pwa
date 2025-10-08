@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
@@ -72,7 +72,7 @@ describe('Account Recurring Order Page Component', () => {
       ],
       imports: [
         FeatureToggleModule.forTesting('businessCustomerRegistration'),
-        RouterTestingModule.withRoutes([{ path: 'account/requisitions/buyer:RecurringOrderId', children: [] }]),
+        RouterModule.forRoot([{ path: 'account/requisitions/buyer:RecurringOrderId', children: [] }]),
         TranslateModule.forRoot(),
       ],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],

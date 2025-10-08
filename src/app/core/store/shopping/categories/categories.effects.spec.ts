@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, RouterModule } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
@@ -68,7 +67,7 @@ describe('Categories Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router']),
-        RouterTestingModule.withRoutes([
+        RouterModule.forRoot([
           { path: 'category/:categoryUniqueId/product/:sku', children: [] },
           { path: 'category/:categoryUniqueId', children: [] },
           { path: 'categoryref/:categoryRefId', children: [] },

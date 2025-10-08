@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, RouterModule } from '@angular/router';
 import { flatten } from 'lodash-es';
 
 import { Product, VariationProduct, VariationProductMaster } from 'ish-core/models/product/product.model';
@@ -24,7 +23,7 @@ describe('Recently Integration', () => {
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], [RecentlyEffects]),
         RecentlyStoreModule.forTesting('_recently'),
-        RouterTestingModule.withRoutes([{ path: 'product/:sku', children: [] }]),
+        RouterModule.forRoot([{ path: 'product/:sku', children: [] }]),
         ShoppingStoreModule.forTesting('categories', 'products', 'productPrices'),
       ],
       providers: [provideStoreSnapshots()],

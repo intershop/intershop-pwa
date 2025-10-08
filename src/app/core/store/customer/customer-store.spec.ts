@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -89,7 +89,7 @@ describe('Customer Store', () => {
         CoreStoreModule.forTesting(['configuration', 'serverConfig'], true),
         CustomerStoreModule,
         HttpClientTestingModule,
-        RouterTestingModule.withRoutes([
+        RouterModule.forRoot([
           {
             path: 'account',
             children: [],

@@ -1,7 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, RouterModule } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -83,7 +82,7 @@ describe('Wishlist Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
-        RouterTestingModule.withRoutes([{ path: 'account/wishlists/:wishlistName', children: [] }]),
+        RouterModule.forRoot([{ path: 'account/wishlists/:wishlistName', children: [] }]),
         TranslateModule.forRoot(),
         WishlistsStoreModule.forTesting('wishlists'),
       ],

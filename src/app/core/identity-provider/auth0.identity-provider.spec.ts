@@ -1,7 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, RouterModule } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { of } from 'rxjs';
@@ -46,7 +45,7 @@ describe('Auth0 Identity Provider', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule.withRoutes([
+        RouterModule.forRoot([
           { path: 'register', children: [] },
           { path: 'register/sso', children: [] },
           { path: 'account', children: [] },

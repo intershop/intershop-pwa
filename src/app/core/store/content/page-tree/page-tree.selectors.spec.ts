@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, RouterModule } from '@angular/router';
 
 import { ContentPageTreeElement } from 'ish-core/models/content-page-tree/content-page-tree.model';
 import { ContentStoreModule } from 'ish-core/store/content/content-store.module';
@@ -38,7 +37,7 @@ describe('Page Tree Selectors', () => {
       imports: [
         ContentStoreModule.forTesting('pagetree'),
         CoreStoreModule.forTesting(['router']),
-        RouterTestingModule.withRoutes([{ path: 'page/:contentPageId', children: [] }]),
+        RouterModule.forRoot([{ path: 'page/:contentPageId', children: [] }]),
       ],
       providers: [provideStoreSnapshots()],
     });
