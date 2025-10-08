@@ -70,6 +70,7 @@ glyphicons
 gomplate
 greaterthan
 grecaptcha
+heapsnapshot
 helpdesk
 hoverable
 iban
