@@ -19,9 +19,8 @@ const useCorrectComponentOverridesRule: TSESLint.RuleModule<keyof typeof message
     docs: {
       description:
         'For component overrides to work correctly, every Component decorator has to point its URLs to the component base files for HTML and SCSS. This rule checks if this is the case. Additionally, if a test is composed for a component override, this rule checks if the correct component files are used (because the override mechanism does not work with jest).',
-      recommended: 'warn',
+      recommended: 'recommended',
       url: '',
-      suggestion: true,
     },
     messages,
     type: 'problem',

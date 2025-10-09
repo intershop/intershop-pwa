@@ -4,7 +4,7 @@ const { pathsToModuleNameMapper } = require('ts-jest');
 const tsConfig = require('comment-json').parse(fs.readFileSync('./tsconfig.json', { encoding: 'utf-8' }));
 
 const esModules = ['lodash-es/.*', 'swiper', 'ssr-window', 'dom7', '.*\\.mjs$'];
-const { defaultTransformerOptions } = require('jest-preset-angular/presets');
+const { createCjsPreset } = require('jest-preset-angular/presets');
 
 /** @type {import('ts-jest/dist/types').JestConfigWithTsJest} */
 module.exports = {
@@ -12,8 +12,8 @@ module.exports = {
     '^.+\\.(ts|js|mjs|html|svg)$': [
       'jest-preset-angular',
       {
-        ...defaultTransformerOptions,
-        isolatedModules: true,
+        ...createCjsPreset(),
+        stringifyContentPathRegex: '\\.(html|svg)$',
       },
     ],
   },

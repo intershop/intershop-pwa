@@ -40,7 +40,7 @@ const projectStructureRule: TSESLint.RuleModule<keyof typeof messages, [RuleSett
     schema: [
       {
         type: 'object',
-        additionalProperties: {
+        properties: {
           warnUnmatched: { type: 'boolean' },
           ignoredFiles: {
             type: 'array',

@@ -13,7 +13,7 @@ const doNotUseThemeIdentifierRule: TSESLint.RuleModule<keyof typeof messages, [s
   meta: {
     docs: {
       description: `Using the THEME variable in Angular artifacts directly bypasses the concept of component overrides and leads to bad practice. This rule warns about the use. The pattern for files can be configured. Default is "${DEFAULT_FILE_PATTERN}"`,
-      recommended: 'warn',
+      recommended: 'recommended',
       url: '',
     },
     messages,
@@ -21,7 +21,6 @@ const doNotUseThemeIdentifierRule: TSESLint.RuleModule<keyof typeof messages, [s
     schema: [
       {
         type: 'string',
-        additionalProperties: false,
       },
     ],
   },

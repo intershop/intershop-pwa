@@ -1,7 +1,9 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
-import { sync } from 'glob';
+import globModule from 'glob';
 import { compileFromFile } from 'json-schema-to-typescript';
 import { dirname, join, normalize } from 'path';
+
+const { sync } = globModule;
 
 const findProjectRoot = () => {
   let projectRoot = normalize(process.cwd());
