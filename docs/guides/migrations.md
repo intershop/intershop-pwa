@@ -151,6 +151,24 @@ Key changes include:
 
 Find more details about the Angular 17 update in the [Angular Update Guide](https://angular.dev/update-guide?v=16.0-17.0&l=3).
 
+**Bootstrap Icons**
+
+With this release, the Intershop PWA migrated from Font Awesome icons to [Bootstrap Icons](https://icons.getbootstrap.com/).
+This change reduces bundle size (size of vendor bundle is reduced by 22%) and aligns the icon library with the Bootstrap framework.
+
+To migrate your custom code, replace Font Awesome `<fa-icon>` components with Bootstrap Icons `<i>` elements:
+
+| Font Awesome (old)                      | Bootstrap Icons (new)                |
+| :-------------------------------------- | :----------------------------------- |
+| `<fa-icon [icon]="['fas', 'print']" />` | `<i class="bi bi-printer-fill"></i>` |
+
+The file `src/app/core/icon.module.ts` is no longer needed and can be removed.
+
+The size of Bootstrap Icons is determined by font size which is inherited from their parent element.
+Therefore, the styling for all icons must be checked.
+
+For additional information on using Bootstrap Icons, see the [Styling & Behavior](../concepts/styling-behavior.md#icons) documentation.
+
 ## From 9.0.0 to 9.1.0
 
 Catalogs (root-level categories in ICM terminology) with _Show In Menu_ being disabled are now hidden from the main header navigation.

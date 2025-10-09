@@ -10,7 +10,7 @@
   > li {
     width: 50px;
     height: 27px;
-    padding: 0 divide($space-default * 2, 3);
+    padding: 2px divide($space-default * 2, 3) 0;
     margin: 0;
     font-size: 18px;
 
@@ -30,9 +30,8 @@
     }
   }
 
-  .ng-fa-icon {
+  .bi {
     font-size: 22px;
-    vertical-align: middle;
     color: $text-color-corporate;
 
     &:hover {

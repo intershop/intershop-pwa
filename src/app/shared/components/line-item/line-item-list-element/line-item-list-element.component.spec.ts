@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
@@ -45,7 +44,6 @@ describe('Line Item List Element Component', () => {
       imports: [MockComponent(ProductImageComponent), TranslateModule.forRoot()],
       declarations: [
         LineItemListElementComponent,
-        MockComponent(FaIconComponent),
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToWishlistComponent),
         MockComponent(LineItemInformationEditComponent),
@@ -100,13 +98,13 @@ describe('Line Item List Element Component', () => {
 
     it('should render item delete button if editable === true', () => {
       fixture.detectChanges();
-      expect(element.querySelector('fa-icon[ng-reflect-icon="fas,trash-alt"]')).toBeTruthy();
+      expect(element.querySelector('i.bi-trash-fill')).toBeTruthy();
     });
 
     it('should not render item delete button if editable === false', () => {
       component.editable = false;
       fixture.detectChanges();
-      expect(element.querySelector('fa-icon[ng-reflect-icon="fas,trash-alt"]')).toBeFalsy();
+      expect(element.querySelector('i.bi-trash-fill')).toBeFalsy();
     });
   });
 
@@ -137,7 +135,6 @@ describe('Line Item List Element Component', () => {
         "ish-product-bundle-display",
         "ish-product-inventory",
         "ish-product-shipment",
-        "fa-icon",
         "ish-product-quantity-label",
         "ish-product-quantity",
         "ish-product-quantity",
@@ -145,7 +142,6 @@ describe('Line Item List Element Component', () => {
         "ish-line-item-information-edit",
         "ish-lazy-product-add-to-order-template",
         "ish-lazy-product-add-to-wishlist",
-        "fa-icon",
       ]
     `);
   });

@@ -323,12 +323,6 @@
               "message": "Do not use \"HttpError\" explicitly, please use \"httpError\" from \"ish-core/utils/action-creators\" instead."
             },
             {
-              "importNamePattern": "^IconModule$",
-              "name": "ish-core/icon.module",
-              "filePattern": "^.*\\.spec\\.ts*$",
-              "message": "Use MockComponent(FaIconComponent) in tests instead."
-            },
-            {
               "importNamePattern": "^FormsSharedModule$",
               "name": "ish-shared/forms/forms.module",
               "filePattern": "^.*\\.spec\\.ts*$",

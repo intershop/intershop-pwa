@@ -1,7 +1,7 @@
 @if (control.dirty && control.validator) { @if (this.control.valid) {
-<fa-icon class="form-control-feedback" [icon]="['fas', 'check']" />
+<i class="bi bi-check-lg form-control-feedback"></i>
 } @else {
-<fa-icon class="form-control-feedback" [icon]="['fas', 'times']" />
+<i class="bi bi-x form-control-feedback"></i>
 } @for (error of errors | slice : 0 : 1; track error) {
 <small class="validation-message">
   {{ error | translate }}

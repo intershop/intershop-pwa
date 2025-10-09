@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 
@@ -33,7 +32,6 @@ describe('Account Order Component', () => {
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketMerchantMessageViewComponent),
         MockComponent(BasketShippingMethodComponent),
-        MockComponent(FaIconComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(LazyOrderCreateOrderTemplateComponent),
         MockComponent(LineItemListComponent),

@@ -13,7 +13,7 @@
     (click)="shareWishlistDialog.show()"
     data-testing-id="wishlist-sharing"
   >
-    <fa-icon [icon]="['fas', 'share-alt']" />
+    <i class="bi bi-share-fill"></i>
   </button>
   @if (wishlist.shared) {
   <button
@@ -23,7 +23,7 @@
     (click)="unshareWishlist(wishlist.id)"
     data-testing-id="wishlist-stop-sharing"
   >
-    <fa-icon [icon]="['fas', 'pause']" />
+    <i class="bi bi-pause-fill"></i>
   </button>
   }
   <button
@@ -33,7 +33,7 @@
     [title]="'account.wishlist.header.edit_wishlist.label' | translate"
     data-testing-id="wishlist-details-edit"
   >
-    <fa-icon [icon]="['fas', 'pencil-alt']" />
+    <i class="bi bi-pencil-fill"></i>
   </button>
 </div>
 <h1>
@@ -45,7 +45,7 @@
     class="btn btn-link details-tooltip header-note mt-1"
     popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
   >
-    {{ 'account.wishlists.heading.tooltip.link' | translate }}<fa-icon [icon]="['fas', 'info-circle']" />
+    {{ 'account.wishlists.heading.tooltip.link' | translate }}<i class="bi bi-info-circle-fill"></i>
   </button>
 </h1>
 @if (wishlist?.preferred) {

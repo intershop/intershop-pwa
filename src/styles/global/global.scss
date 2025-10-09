@@ -274,19 +274,6 @@ a {
   }
 }
 
-.ng-fa-icon {
-  &.footer-icon::before {
-    font-size: 50px;
-    color: $text-color-inverse;
-  }
-}
-
-.top-header {
-  .ng-fa-icon {
-    top: 1px;
-  }
-}
-
 // Main working area
 .wrapper {
   padding: 0 0 50px;
@@ -382,12 +369,6 @@ img.marketing {
 }
 
 // Detail links and tooltips
-[data-bs-toggle='popover'] {
-  .ng-fa-icon {
-    padding-left: $space-default * 0.25;
-    font-size: 120%;
-  }
-}
 
 .popover-header {
   margin-top: 0;

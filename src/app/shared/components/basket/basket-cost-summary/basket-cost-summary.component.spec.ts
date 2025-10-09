@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
@@ -26,7 +25,6 @@ describe('Basket Cost Summary Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         BasketCostSummaryComponent,
-        MockComponent(FaIconComponent),
         MockComponent(PaymentPaypalComponent),
         MockDirective(NgbPopover),
         MockPipe(ServerSettingPipe, () => true),

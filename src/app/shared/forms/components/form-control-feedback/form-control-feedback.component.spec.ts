@@ -1,9 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 
 import { FormControlFeedbackComponent } from './form-control-feedback.component';
 
@@ -15,7 +13,7 @@ describe('Form Control Feedback Component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [FormControlFeedbackComponent, MockComponent(FaIconComponent)],
+      declarations: [FormControlFeedbackComponent],
     }).compileComponents();
   });
 
@@ -72,7 +70,7 @@ describe('Form Control Feedback Component', () => {
   });
 
   function getIcon() {
-    return fixture.debugElement.query(By.css('fa-icon'));
+    return fixture.debugElement.query(By.css('i'));
   }
 
   it('should display contextual icons for control', () => {
@@ -88,15 +86,15 @@ describe('Form Control Feedback Component', () => {
     fixture.detectChanges();
     icon = getIcon();
     expect(icon).toBeTruthy();
-    expect(icon.nativeElement.getAttributeNode('ng-reflect-icon').value).toBe('fas,times');
-    expect(icon.nativeElement.getAttributeNode('ng-reflect-icon').value).not.toBe('fas,check');
+    expect(icon.nativeElement.getAttributeNode('class').value).toContain('bi-x');
+    expect(icon.nativeElement.getAttributeNode('class').value).not.toContain('bi-check-lg');
 
     // form valid and dirty
     component.control.setValue('abcd');
     fixture.detectChanges();
     icon = getIcon();
     expect(icon).toBeTruthy();
-    expect(icon.nativeElement.getAttributeNode('ng-reflect-icon').value).not.toBe('fas,times');
-    expect(icon.nativeElement.getAttributeNode('ng-reflect-icon').value).toBe('fas,check');
+    expect(icon.nativeElement.getAttributeNode('class').value).not.toContain('bi-x');
+    expect(icon.nativeElement.getAttributeNode('class').value).toContain('bi bi-check-lg');
   });
 });

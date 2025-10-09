@@ -63,7 +63,7 @@
         [popoverTitle]="surcharge.displayName"
         placement="top"
       >
-        {{ 'shopping_cart.detail.text' | translate }}<fa-icon [icon]="['fas', 'info-circle']" />
+        <i class="bi bi-info-circle-fill"></i>
       </button>
       } } }
 
@@ -165,7 +165,7 @@
       title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
       (click)="onDeleteItem(pli.id)"
     >
-      <fa-icon [icon]="['fas', 'trash-alt']" />
+      <i class="bi bi-trash-fill"></i>
     </button>
     }
   </div>

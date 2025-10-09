@@ -20,9 +20,9 @@
   @if (showSubMenu(category.children?.length)) {
   <a class="dropdown-toggle" (click)="toggleOpen(category.uniqueId)">
     @if (isOpened(category.uniqueId)) {
-    <fa-icon [icon]="['fas', 'minus']" />
+    <i class="bi bi-dash"></i>
     } @else {
-    <fa-icon [icon]="['fas', 'plus']" />
+    <i class="bi bi-plus"></i>
     }
   </a>
 
@@ -39,9 +39,9 @@
         @if (node.children?.length) {
         <a class="dropdown-toggle" (click)="toggleOpen(node.uniqueId)">
           @if (isOpened(node.uniqueId)) {
-          <fa-icon [icon]="['fas', 'minus']" />
+          <i class="bi bi-dash"></i>
           } @else {
-          <fa-icon [icon]="['fas', 'plus']" />
+          <i class="bi bi-plus"></i>
           }
         </a>
         <ng-container

@@ -1,7 +1,6 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -57,7 +56,6 @@ describe('Account Order Template List Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         AccountOrderTemplateListComponent,
-        MockComponent(FaIconComponent),
         MockComponent(ModalDialogComponent),
         MockDirective(ProductContextDirective),
         MockPipe(DatePipe),

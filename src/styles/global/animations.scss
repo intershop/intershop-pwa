@@ -80,3 +80,9 @@
     animation: mini-basket-animation 2000ms linear;
   }
 }
+
+button .spin-icon {
+  display: inline-block;
+  margin-right: 5px;
+  animation: spinner-border 0.75s linear infinite;
+}

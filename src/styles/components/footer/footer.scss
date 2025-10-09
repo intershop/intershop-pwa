@@ -28,7 +28,7 @@ footer {
       width: 100%;
     }
 
-    .ng-fa-icon {
+    .storefinder-icon {
       float: left;
       display: block;
       padding: 20px $space-default 20px 0;
@@ -37,7 +37,7 @@ footer {
     }
 
     .link-group-heading {
-      margin: 25px 0 0;
+      margin: 34px 0 0;
       line-height: 20px;
     }
 
@@ -121,25 +121,6 @@ footer {
     float: right;
     color: $text-color-corporate;
     cursor: pointer;
-  }
-}
-
-.contact {
-  @media (max-width: $screen-sm-max) {
-    float: none;
-    width: 100%;
-  }
-
-  .ng-fa-icon {
-    float: left;
-    display: block;
-    padding: 25px $space-default 0 0;
-    font-size: 30px;
-    color: $text-color-inverse;
-  }
-
-  span {
-    color: $text-color-inverse;
   }
 }
 

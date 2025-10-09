@@ -241,7 +241,7 @@ exports[`Header Default Component should render sticky header adequately for des
       tabindex="0"
       class="btn btn-link search-toggler sticky-header-icon"
       aria-label="search.searchbox.button.sticky_header.aria_label"
-      ><fa-icon class="header-icon" ng-reflect-icon="fas,search"></fa-icon
+      ><i class="bi bi-search header-icon"></i
     ></a>
     <div class="language-switch-container"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
@@ -308,7 +308,7 @@ exports[`Header Default Component should render sticky header adequately for mob
       class="btn btn-link search-toggler sticky-header-icon active-search"
       tabindex="0"
       aria-label="search.searchbox.button.sticky_header.aria_label"
-      ><fa-icon class="header-icon" ng-reflect-icon="fas,search"></fa-icon
+      ><i class="bi bi-search header-icon"></i
     ></a>
     <div class="search-container header-search-container" ng-reflect-collapsed="false">
       <ish-search-box
@@ -374,7 +374,7 @@ exports[`Header Default Component should render sticky header adequately for tab
       tabindex="0"
       class="btn btn-link search-toggler sticky-header-icon"
       aria-label="search.searchbox.button.sticky_header.aria_label"
-      ><fa-icon class="header-icon" ng-reflect-icon="fas,search"></fa-icon
+      ><i class="bi bi-search header-icon"></i
     ></a>
     <div class="language-switch-container"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status

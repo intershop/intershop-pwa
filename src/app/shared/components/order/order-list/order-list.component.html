@@ -9,11 +9,7 @@
       <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.date_of_order' | translate">
         {{ order.creationDate | ishDate }}
         @if (order.recurringOrderID) {
-        <fa-icon
-          [icon]="['fas', 'repeat']"
-          [title]="'account.orderlist.table.recurring.icon.title' | translate"
-          class="ms-1"
-        />
+        <i class="bi bi-arrow-repeat ms-1" [title]="'account.orderlist.table.recurring.icon.title' | translate"></i>
         }
       </td>
     </ng-container>

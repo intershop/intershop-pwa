@@ -32,9 +32,9 @@
       tabindex="0"
     >
       @if (isOpened(category.uniqueId)) {
-      <fa-icon [icon]="['fas', 'minus']" />
+      <i class="bi bi-dash"></i>
       } @else {
-      <fa-icon [icon]="['fas', 'plus']" />
+      <i class="bi bi-plus"></i>
       }
     </a>
     <ish-sub-category-navigation [categoryUniqueId]="category.uniqueId" [subCategoriesDepth]="1" [view]="view" />

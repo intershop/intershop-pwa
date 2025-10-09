@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -41,7 +40,6 @@ describe('Requisition Detail Page Component', () => {
         MockComponent(BasketMerchantMessageViewComponent),
         MockComponent(BasketShippingMethodComponent),
         MockComponent(ErrorMessageComponent),
-        MockComponent(FaIconComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(RequisitionCostCenterApprovalComponent),
         MockComponent(RequisitionRejectDialogComponent),
@@ -77,7 +75,6 @@ describe('Requisition Detail Page Component', () => {
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       [
-        "fa-icon",
         "ish-error-message",
         "ish-requisition-summary",
         "ish-requisition-cost-center-approval",

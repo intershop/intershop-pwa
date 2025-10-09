@@ -4,7 +4,7 @@
   rel="nofollow"
   class="item-count-container"
 >
-  <fa-icon class="header-icon" [icon]="['fas', 'heart']" />
+  <i class="bi bi-heart-fill header-icon"></i>
 
   @if (preferredWishlist$ | async; as wishlist) {
   <span class="badge rounded-pill">{{ wishlist.itemsCount }}</span>

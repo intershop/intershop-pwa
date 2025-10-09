@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 import { FeatureToggleType } from 'ish-core/feature-toggle.module';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
@@ -11,7 +10,7 @@ export interface NavigationItem {
   id: string;
   localizationKey: string;
   routerLink?: string;
-  faIcon?: IconProp;
+  icon?: string;
   isCollapsed?: boolean;
   feature?: FeatureToggleType;
   serverSetting?: string;

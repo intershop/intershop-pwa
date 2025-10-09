@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigOption, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
@@ -44,7 +43,6 @@ describe('Oci Configuration Form Component', () => {
       ],
       declarations: [
         MockComponent(ErrorMessageComponent),
-        MockComponent(FaIconComponent),
         MockComponent(LoadingComponent),
         OciConfigurationFormComponent,
       ],

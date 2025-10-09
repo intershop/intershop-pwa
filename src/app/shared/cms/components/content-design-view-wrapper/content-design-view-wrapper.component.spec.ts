@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -41,7 +40,7 @@ describe('Content Design View Wrapper Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [ContentDesignViewWrapperComponent, MockComponent(FaIconComponent), MockDirective(ScrollDirective)],
+      declarations: [ContentDesignViewWrapperComponent, MockDirective(ScrollDirective)],
       providers: [
         { provide: CMSFacade, useFactory: () => instance(cmsFacade) },
         { provide: DesignViewService, useFactory: () => instance(designViewService) },
@@ -85,7 +84,7 @@ describe('Content Design View Wrapper Component', () => {
       >
         <div class="design-view-wrapper-actions">
           <button type="button" class="btn" title="designview.edit.link.title Pagelet Name xyz">
-            <fa-icon ng-reflect-icon="fas,pencil-alt"></fa-icon>
+            <i class="bi bi-pencil-fill"></i>
           </button>
         </div>
       </div>
@@ -119,7 +118,7 @@ describe('Content Design View Wrapper Component', () => {
         <div class="design-view-wrapper-actions">
           <div class="name">Slot Name xyz</div>
           <button type="button" class="btn" title="designview.add.link.title">
-            <fa-icon ng-reflect-icon="fas,plus"></fa-icon>
+            <i class="bi bi-plus"></i>
           </button>
         </div>
       </div>
@@ -146,7 +145,7 @@ describe('Content Design View Wrapper Component', () => {
         <div class="design-view-wrapper-actions">
           <div class="name">Include Name xyz</div>
           <button type="button" class="btn" title="designview.add.link.title">
-            <fa-icon ng-reflect-icon="fas,plus"></fa-icon>
+            <i class="bi bi-plus"></i>
           </button>
         </div>
       </div>

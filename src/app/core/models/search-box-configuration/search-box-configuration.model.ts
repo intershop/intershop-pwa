@@ -1,5 +1,3 @@
-import { IconName } from '@fortawesome/fontawesome-common-types';
-
 export interface SearchBoxConfiguration {
   /**
    * text for search button on search box, icon is used if no text is provided
@@ -20,5 +18,5 @@ export interface SearchBoxConfiguration {
   /**
    * configure search box icon
    */
-  icon?: IconName;
+  icon?: string;
 }

@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -20,7 +18,7 @@ describe('Wishlists Link Component', () => {
     when(wishlistFacadeMock.preferredWishlist$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(FaIconComponent), WishlistsLinkComponent],
+      declarations: [WishlistsLinkComponent],
       imports: [RouterModule, TranslateModule.forRoot()],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }, provideRouter([])],
     }).compileComponents();

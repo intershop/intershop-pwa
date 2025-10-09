@@ -1,7 +1,6 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -46,7 +45,6 @@ describe('Cost Centers Page Component', () => {
         MockComponent(BudgetInfoComponent),
         MockComponent(CostCenterBudgetComponent),
         MockComponent(CostCentersFilterComponent),
-        MockComponent(FaIconComponent),
         MockComponent(LoadingComponent),
         MockComponent(ModalDialogComponent),
       ],

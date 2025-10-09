@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 
@@ -34,7 +33,6 @@ describe('Checkout Receipt Component', () => {
         MockComponent(BasketCustomFieldsViewComponent),
         MockComponent(BasketMerchantMessageViewComponent),
         MockComponent(BasketShippingMethodComponent),
-        MockComponent(FaIconComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
         MockComponent(SkipContentLinkComponent),
@@ -84,7 +82,6 @@ describe('Checkout Receipt Component', () => {
         "ish-info-box",
         "ish-skip-content-link",
         "ish-line-item-list",
-        "fa-icon",
         "ish-basket-cost-summary",
       ]
     `);

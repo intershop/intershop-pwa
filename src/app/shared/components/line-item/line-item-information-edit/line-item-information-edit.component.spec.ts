@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -37,7 +36,6 @@ describe('Line Item Information Edit Component', () => {
       declarations: [
         LineItemInformationEditComponent,
         MockComponent(CustomFieldsFormlyComponent),
-        MockComponent(FaIconComponent),
         MockComponent(LineItemCustomFieldsComponent),
         MockDirective(NgbCollapse),
       ],

@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
@@ -29,7 +28,7 @@ describe('Cms Navigation Link Component', () => {
     await TestBed.configureTestingModule({
       imports: [RouterModule],
       providers: [provideRouter([])],
-      declarations: [CMSNavigationLinkComponent, MockComponent(FaIconComponent), MockDirective(ServerHtmlDirective)],
+      declarations: [CMSNavigationLinkComponent, MockDirective(ServerHtmlDirective)],
     }).compileComponents();
   });
 
@@ -71,7 +70,7 @@ describe('Cms Navigation Link Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <li class="dropdown nav-link">
         <a ng-reflect-router-link="/home" href="/home"> Home </a
-        ><a class="dropdown-toggle"><fa-icon ng-reflect-icon="fas,plus"></fa-icon></a>
+        ><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
         <ul class="category-level1 dropdown-menu">
           <li class="sub-navigation-content">
             <div ng-reflect-ish-server-html="<span>Hello World</span>"></div>

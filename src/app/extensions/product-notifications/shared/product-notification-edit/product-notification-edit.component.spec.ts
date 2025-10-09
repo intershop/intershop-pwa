@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -24,11 +23,7 @@ describe('Product Notification Edit Component', () => {
     accountFacade = mock(accountFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(FaIconComponent),
-        MockComponent(ProductNotificationEditDialogComponent),
-        ProductNotificationEditComponent,
-      ],
+      declarations: [MockComponent(ProductNotificationEditDialogComponent), ProductNotificationEditComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
@@ -63,14 +58,14 @@ describe('Product Notification Edit Component', () => {
 
   it('should not show an icon when display type is not icon', () => {
     fixture.detectChanges();
-    expect(element.querySelector('fa-icon')).toBeFalsy();
+    expect(element.querySelector('i.bi')).toBeFalsy();
   });
 
   it('should show icon button when display type is icon', () => {
     when(context.select('displayProperties', 'addToNotification')).thenReturn(of(true));
     component.displayType = 'icon';
     fixture.detectChanges();
-    expect(element.querySelector('fa-icon')).toBeTruthy();
+    expect(element.querySelector('i.bi')).toBeTruthy();
   });
 
   it('should display price notification localization button text if the product is available', () => {

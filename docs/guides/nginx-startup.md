@@ -277,7 +277,7 @@ Explanation of example security policy:
   Inline styles are used at some places in the PWA, and this directive permits them.
 - `font-src data: 'self'`:
   This allows fonts to be loaded from data URIs (`data:`) and the same origin (`'self'`).
-  Due to the usage of “fontawesome”, it is required to define this extra policy to permit these fonts.
+  This is required to load the icon fonts for Bootstrap Icons and other web fonts used by the PWA.
 
 > [!IMPORTANT]
 > The value `https://develop.icm.intershop.de` is used here as an example for the development configuration.

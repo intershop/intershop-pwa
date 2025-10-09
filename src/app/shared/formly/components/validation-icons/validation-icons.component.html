@@ -1,14 +1,10 @@
 <span class="has-feedback">
   @if (showError) {
-  <fa-icon
-    class="form-control-feedback"
-    [icon]="['fas', 'exclamation-triangle']"
-    data-testing-id="exclamation-triangle-icon"
-  />
+  <i class="form-control-feedback bi bi-exclamation-triangle-fill" data-testing-id="exclamation-triangle-icon"></i>
   } @else {
   <span class="has-success">
     @if (field?.props?.showValidation ? field.props.showValidation(field) : defaultShowValidation()) {
-    <fa-icon class="form-control-feedback" [icon]="['fas', 'check']" data-testing-id="check-icon" />
+    <i class="form-control-feedback bi bi-check-lg" data-testing-id="check-icon"></i>
     }
   </span>
   }

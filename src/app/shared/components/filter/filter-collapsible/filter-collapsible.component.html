@@ -8,7 +8,7 @@
     data-testing-id="filter-toggle-button"
   >
     <h3 class="m-0">{{ filterElement.name }}</h3>
-    <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" />
+    <i class="bi" [ngClass]="isCollapsed ? 'bi-chevron-down' : 'bi-chevron-up'"></i>
   </button>
 
   <ng-content />

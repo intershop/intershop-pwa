@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
@@ -16,7 +14,7 @@ describe('Filter Navigation Badges Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [FilterNavigationBadgesComponent, MockComponent(FaIconComponent)],
+      declarations: [FilterNavigationBadgesComponent],
     }).compileComponents();
   });
 
@@ -62,17 +60,17 @@ describe('Filter Navigation Badges Component', () => {
         <div class="col-md-10">
           <div class="filter-navigation-badges">
             <button type="button" class="btn btn-link btn-link-action btn-link-with-icon">
-              Color: blue<fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon>
+              Color: blue<i class="bi bi-x form-control-feedback"></i>
             </button>
           </div>
           <div class="filter-navigation-badges">
             <button type="button" class="btn btn-link btn-link-action btn-link-with-icon">
-              Color: black<fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon>
+              Color: black<i class="bi bi-x form-control-feedback"></i>
             </button>
           </div>
           <div class="filter-navigation-badges">
             <button type="button" class="btn btn-link btn-link-action btn-link-with-icon">
-              HDD: 456<fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon>
+              HDD: 456<i class="bi bi-x form-control-feedback"></i>
             </button>
           </div>
         </div>

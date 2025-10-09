@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -73,7 +72,6 @@ describe('Product Compare List Component', () => {
     await TestBed.configureTestingModule({
       imports: [MockComponent(ProductImageComponent), TranslateModule.forRoot()],
       declarations: [
-        MockComponent(FaIconComponent),
         MockComponent(ProductAttributesComponent),
         MockComponent(ProductComparePagingComponent),
         MockComponent(ProductNameComponent),

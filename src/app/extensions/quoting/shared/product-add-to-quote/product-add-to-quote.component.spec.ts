@@ -1,9 +1,7 @@
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -28,7 +26,7 @@ describe('Product Add To Quote Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [MockComponent(FaIconComponent), ProductAddToQuoteComponent],
+      declarations: [ProductAddToQuoteComponent],
       providers: [
         { provide: ProductContextFacade, useFactory: () => instance(context) },
         provideRouter([{ path: '**', children: [] }]),
@@ -59,7 +57,7 @@ describe('Product Add To Quote Component', () => {
   it('should show icon button when display type is icon', () => {
     component.displayType = 'icon';
     fixture.detectChanges();
-    expect(element.querySelector('fa-icon')).toBeTruthy();
+    expect(element.querySelector('i.bi')).toBeTruthy();
   });
 
   it('should show disable button when product cannot be added to cart', () => {

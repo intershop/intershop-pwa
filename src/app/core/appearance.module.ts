@@ -2,12 +2,10 @@ import { NgModule } from '@angular/core';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
 
-import { IconModule } from './icon.module';
 import { ThemeService } from './utils/theme/theme.service';
 
 @NgModule({
   imports: [
-    IconModule,
     ToastrModule.forRoot({
       closeButton: true,
       timeOut: 3000,

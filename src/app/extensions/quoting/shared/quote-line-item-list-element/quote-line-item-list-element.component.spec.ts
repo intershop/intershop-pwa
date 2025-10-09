@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -44,7 +43,6 @@ describe('Quote Line Item List Element Component', () => {
     await TestBed.configureTestingModule({
       imports: [MockComponent(ProductImageComponent), TranslateModule.forRoot()],
       declarations: [
-        MockComponent(FaIconComponent),
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToWishlistComponent),
         MockComponent(ProductBundleDisplayComponent),
@@ -117,7 +115,6 @@ describe('Quote Line Item List Element Component', () => {
         "ish-product-inventory",
         "ish-lazy-product-add-to-order-template",
         "ish-lazy-product-add-to-wishlist",
-        "fa-icon",
         "ish-product-quantity-label",
         "ish-product-quantity",
         "ish-product-quantity",

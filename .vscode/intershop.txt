@@ -53,17 +53,14 @@ fastpay
 fieldgroup
 flowise
 flushdb
-fontawesome
 foo
 foobar
 foobars
 foos
 formly
-fortawesome
 français
 geolocation
 giftwrap
-glyphicons
 gomplate
 greaterthan
 grecaptcha

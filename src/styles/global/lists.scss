@@ -28,11 +28,11 @@
 
     color: $disabled-link-color;
 
-    .ng-fa-icon {
+    .bi {
       color: $disabled-link-color;
     }
 
-    &:hover &:hover > .ng-fa-icon {
+    &:hover &:hover > .bi {
       color: $CORPORATE-DARK;
     }
   }

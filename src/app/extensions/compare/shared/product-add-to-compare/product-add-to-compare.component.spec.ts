@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -26,11 +25,7 @@ describe('Product Add To Compare Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(FaIconComponent),
-        MockPipe(FeatureTogglePipe, () => true),
-        ProductAddToCompareComponent,
-      ],
+      declarations: [MockPipe(FeatureTogglePipe, () => true), ProductAddToCompareComponent],
       providers: [
         { provide: CompareFacade, useFactory: () => instance(compareFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
@@ -64,13 +59,13 @@ describe('Product Add To Compare Component', () => {
 
   it('should not show an icon when display type is not icon', () => {
     fixture.detectChanges();
-    expect(element.querySelector('fa-icon')).toBeFalsy();
+    expect(element.querySelector('i.bi')).toBeFalsy();
   });
 
   it('should show icon button when display type is icon', () => {
     component.displayType = 'icon';
     fixture.detectChanges();
-    expect(element.querySelector('fa-icon')).toBeTruthy();
+    expect(element.querySelector('i.bi')).toBeTruthy();
   });
 
   it('should detect errors on emitter using spy', () => {

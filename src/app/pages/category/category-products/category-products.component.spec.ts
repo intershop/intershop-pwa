@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -29,7 +28,6 @@ describe('Category Products Component', () => {
         CategoryProductsComponent,
         MockComponent(BreadcrumbComponent),
         MockComponent(CategoryNavigationComponent),
-        MockComponent(FaIconComponent),
         MockComponent(FilterNavigationComponent),
         MockComponent(ProductListingComponent),
         MockComponent(SkipContentLinkComponent),

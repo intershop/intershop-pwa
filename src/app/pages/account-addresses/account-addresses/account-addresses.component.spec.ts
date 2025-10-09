@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -86,7 +85,6 @@ describe('Account Addresses Component', () => {
           AccountAddressesComponent,
           MockComponent(AddressComponent),
           MockComponent(ErrorMessageComponent),
-          MockComponent(FaIconComponent),
           MockComponent(FormlyCustomerAddressFormComponent),
           MockComponent(LazyAddressDoctorComponent),
           MockComponent(ModalDialogComponent),

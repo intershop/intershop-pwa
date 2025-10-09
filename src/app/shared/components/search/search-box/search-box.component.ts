@@ -12,8 +12,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { IconName } from '@fortawesome/fontawesome-svg-core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, ReplaySubject, map, shareReplay } from 'rxjs';
 
@@ -47,7 +45,6 @@ import { SuggestSearchTermsComponent } from 'ish-shared/components/search/sugges
   templateUrl: './search-box.component.html',
   standalone: true,
   imports: [
-    FaIconComponent,
     AsyncPipe,
     NgClass,
     TranslatePipe,
@@ -97,7 +94,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
     @Inject(DOCUMENT) private document: Document
   ) {}
 
-  get usedIcon(): IconName {
+  get usedIcon(): string {
     return this.configuration?.icon || 'search';
   }
 

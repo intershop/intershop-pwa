@@ -2,9 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 
 import { InPlaceEditComponent } from './in-place-edit.component';
 
@@ -29,7 +27,7 @@ describe('In Place Edit Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [DummyComponent, InPlaceEditComponent, MockComponent(FaIconComponent)],
+      declarations: [DummyComponent, InPlaceEditComponent],
     }).compileComponents();
   });
 
@@ -60,7 +58,7 @@ describe('In Place Edit Component', () => {
         ><div class="d-flex flex-row align-items-center">
           <p viewmodecontent="">VIEW</p>
           <button type="button" class="btn btn-link" title="inplace_edit.click_to_edit">
-            <fa-icon class="me-auto" ng-reflect-icon="fas,pencil-alt"></fa-icon>
+            <i class="bi bi-pencil-fill me-auto"></i>
           </button></div
       ></ish-in-place-edit>
     `);
@@ -79,14 +77,14 @@ describe('In Place Edit Component', () => {
             class="btn btn-link"
             title="inplace_edit.save"
           >
-            <fa-icon ng-reflect-icon="fas,check"></fa-icon></button
+            <i class="bi bi-check-lg"></i></button
           ><button
             type="button"
             data-testing-id="cancel"
             class="btn btn-link"
             title="inplace_edit.cancel"
           >
-            <fa-icon ng-reflect-icon="fas,times"></fa-icon>
+            <i class="bi bi-x"></i>
           </button></div
       ></ish-in-place-edit>
     `);

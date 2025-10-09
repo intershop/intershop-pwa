@@ -19,15 +19,14 @@
         {{ requisition.requisitionNo || requisition.recurringOrderDocumentNo }}
       </a>
       @if (requisition.recurringOrderDocumentNo) {
-      <fa-icon
-        [icon]="['fas', 'repeat']"
+      <i
+        class="bi bi-arrow-repeat ms-1"
         [title]="
           requisition.approval.statusCode === 'APPROVED'
             ? ('account.approvallist.table.id_of_order.recurring_approved' | translate)
             : ('account.approvallist.table.id_of_order.recurring_not_approved' | translate)
         "
-        class="ms-1"
-      />
+      ></i>
       }
     </td>
   </ng-container>
@@ -167,7 +166,7 @@
             | translate : { requisitionNo: requisition.requisitionNo || requisition.recurringOrderDocumentNo }
         }}"
       >
-        <fa-icon [icon]="['fas', 'check']" />
+        <i class="bi bi-check-lg"></i>
       </button>
       <button
         type="button"
@@ -178,7 +177,7 @@
             | translate : { requisitionNo: requisition.requisitionNo || requisition.recurringOrderDocumentNo }
         }}"
       >
-        <fa-icon [icon]="['fas', 'times']" />
+        <i class="bi bi-x"></i>
       </button>
 
       }

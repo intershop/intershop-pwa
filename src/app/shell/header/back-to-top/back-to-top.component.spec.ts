@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockPipe } from 'ng-mocks';
 
 import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
 
@@ -15,7 +14,7 @@ describe('Back To Top Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [BackToTopComponent, MockComponent(FaIconComponent), MockPipe(FeatureTogglePipe, () => true)],
+      declarations: [BackToTopComponent, MockPipe(FeatureTogglePipe, () => true)],
     }).compileComponents();
   });
 

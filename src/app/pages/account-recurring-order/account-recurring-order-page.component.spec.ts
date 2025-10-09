@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -62,7 +61,6 @@ describe('Account Recurring Order Page Component', () => {
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketCustomFieldsViewComponent),
         MockComponent(BasketShippingMethodComponent),
-        MockComponent(FaIconComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
         MockComponent(OrderRecurrenceComponent),

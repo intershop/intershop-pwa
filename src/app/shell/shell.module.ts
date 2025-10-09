@@ -7,7 +7,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { DirectivesModule } from 'ish-core/directives.module';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
@@ -47,7 +46,6 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     CompareExportsModule,
     DirectivesModule,
     FeatureToggleModule,
-    IconModule,
     NgbCollapseModule,
     NgbDropdownModule,
     NgbPopoverModule,
