@@ -91,13 +91,13 @@ For live Angular Universal (SSR) development, you have to use means provided by 
 The following command starts an SSR development environment.
 
 ```
-npm run start:ssr-dev
+npm run dev:ssr
 ```
 
 If the SSR development environment needs to run with `https`, this can be achieved like this:
 
 ```
-npm run start:ssr-dev -- --ssl
+npm run dev:ssr -- --ssl
 ```
 
 The following is an example command for how to provide specific certificates that can be valid in your local development environment:
