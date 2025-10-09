@@ -269,7 +269,7 @@ ICM_BASE_URL=https://icm.example.com:8443 TRUST_ICM=true SSR_HYBRID=true LOGGING
 **Via bash with SSR development server with auto compile**
 
 ```bash
-ICM_BASE_URL=https://icm.example.com:8443 TRUST_ICM=true SSR_HYBRID=true LOGGING=true npm run start:ssr-dev
+ICM_BASE_URL=https://icm.example.com:8443 TRUST_ICM=true SSR_HYBRID=true LOGGING=true npm run dev:ssr
 ```
 
 > [!NOTE]
@@ -279,7 +279,7 @@ ICM_BASE_URL=https://icm.example.com:8443 TRUST_ICM=true SSR_HYBRID=true LOGGING
 > The PWA with Hybrid Approach would then be reachable at `https://pwa.example.com:4200`.
 
 ```bash
-ICM_BASE_URL=https://icm.example.com:8443 TRUST_ICM=true SSR_HYBRID=true LOGGING=true npm run start:ssr-dev -- --ssl
+ICM_BASE_URL=https://icm.example.com:8443 TRUST_ICM=true SSR_HYBRID=true LOGGING=true npm run dev:ssr -- --ssl
 ```
 
 ### NGINX
