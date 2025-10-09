@@ -1,5 +1,6 @@
 import { ApplicationRef, Inject, Injectable, TransferState, isDevMode } from '@angular/core';
-import { Actions, ROOT_EFFECTS_INIT, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Actions, ROOT_EFFECTS_INIT, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { EMPTY, defer, fromEvent, iif, merge } from 'rxjs';
