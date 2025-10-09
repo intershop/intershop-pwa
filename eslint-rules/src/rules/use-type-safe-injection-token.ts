@@ -46,7 +46,7 @@ const useTypeSafeInjectionTokenRule: TSESLint.RuleModule<keyof typeof messages> 
 
         const identifier = node.type === TSESTree.AST_NODE_TYPES.TSParameterProperty ? node.parameter : node;
 
-        const typeText = context.getSourceCode().getText(identifier.typeAnnotation.typeAnnotation);
+        const typeText = context.sourceCode.getText(identifier.typeAnnotation.typeAnnotation);
 
         if (standardTokens[token]) {
           const expected = standardTokens[token];

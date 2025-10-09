@@ -228,7 +228,7 @@ export class PaymentService {
 
     return this.apiService
       .currentBasketEndpoint()
-      .patch('payments/open-tender', { redirect }, { headers: this.basketHeaders })
+      .patch<{ data: Payment }>('payments/open-tender', { redirect }, { headers: this.basketHeaders })
       .pipe(map(({ data }) => data));
   }
 

@@ -16,10 +16,10 @@ const sortTestbedMetadataArraysRule: TSESLint.RuleModule<keyof typeof messages> 
   },
   create(context) {
     function getText(node) {
-      return context.getSourceCode().getText(node);
+      return context.sourceCode.getText(node);
     }
 
-    if (!normalizePath(context.getFilename()).endsWith('.spec.ts')) {
+    if (!normalizePath(context.filename).endsWith('.spec.ts')) {
       return {};
     }
 

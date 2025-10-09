@@ -85,7 +85,7 @@ const projectStructureRule: TSESLint.RuleModule<keyof typeof messages, [RuleSett
   },
   create: context => {
     const config = { ...context.options[0] };
-    const filePath = normalizePath(context.getFilename());
+    const filePath = normalizePath(context.filename);
     // make sure arrays exist
     config.ignoredFiles = config.ignoredFiles ?? [];
     config.pathPatterns = config.pathPatterns ?? [];

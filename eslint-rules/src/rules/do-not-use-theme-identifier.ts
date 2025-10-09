@@ -27,7 +27,7 @@ const doNotUseThemeIdentifierRule: TSESLint.RuleModule<keyof typeof messages, [s
   create(context) {
     const config = context.options[0] ?? DEFAULT_FILE_PATTERN;
 
-    if (!new RegExp(config).test(normalizePath(context.getFilename()))) {
+    if (!new RegExp(config).test(normalizePath(context.filename))) {
       return {};
     }
 

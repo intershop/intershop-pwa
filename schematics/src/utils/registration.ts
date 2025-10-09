@@ -1,7 +1,6 @@
 import { strings } from '@angular-devkit/core';
 import { Rule, UpdateRecorder } from '@angular-devkit/schematics';
 import { tsquery } from '@phenomnomnominal/tsquery';
-import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
 import {
   addDeclarationToModule,
   addExportToModule,
@@ -13,6 +12,7 @@ import { buildRelativePath, findModule } from '@schematics/angular/utility/find-
 import * as path from 'path';
 import { ObjectLiteralExpression, SyntaxKind } from 'ts-morph';
 import { ImportKind, findImports, forEachToken } from 'tsutils';
+import * as ts from 'typescript';
 
 import { readIntoSourceFile } from './filesystem';
 import { createTsMorphProject } from './ts-morph';

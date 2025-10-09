@@ -21,12 +21,12 @@ const meaningfulDescribeInTestsRule: TSESLint.RuleModule<keyof typeof messages> 
     schema: [],
   },
   create(context) {
-    if (!context.getFilename().endsWith('.spec.ts')) {
+    if (!context.filename.endsWith('.spec.ts')) {
       return {};
     }
 
     const expected = strings
-      .classify(basename(context.getFilename()).replace('.spec.ts', '').replace(/\W/g, '-'))
+      .classify(basename(context.filename).replace('.spec.ts', '').replace(/\W/g, '-'))
       .replace(/[A-Z]/g, ' $&')
       .trim();
 
