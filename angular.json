@@ -29,7 +29,6 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": true,
             "assets": [
               "src/assets",
               {
@@ -105,28 +104,28 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "intershop-pwa:build"
+            "buildTarget": "intershop-pwa:build"
           },
           "defaultConfiguration": "b2b,development",
           "configurations": {
             "production": {
-              "browserTarget": "intershop-pwa:build:production"
+              "buildTarget": "intershop-pwa:build:production"
             },
             "development": {
-              "browserTarget": "intershop-pwa:build:development"
+              "buildTarget": "intershop-pwa:build:development"
             },
             "b2b": {
-              "browserTarget": "intershop-pwa:build:b2b"
+              "buildTarget": "intershop-pwa:build:b2b"
             },
             "b2c": {
-              "browserTarget": "intershop-pwa:build:b2c"
+              "buildTarget": "intershop-pwa:build:b2c"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "intershop-pwa:build"
+            "buildTarget": "intershop-pwa:build"
           }
         },
         "lint": {
@@ -221,7 +220,7 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "organization-management:build"
+            "buildTarget": "organization-management:build"
           }
         }
       }
@@ -268,7 +267,7 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "requisition-management:build"
+            "buildTarget": "requisition-management:build"
           }
         }
       }

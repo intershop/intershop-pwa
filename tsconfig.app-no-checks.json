@@ -4,10 +4,5 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noImplicitAny": false
-  },
-  "angularCompilerOptions": {
-    "fullTemplateTypeCheck": false,
-    "strictTemplates": false,
-    "strictInjectionParameters": false
   }
 }
