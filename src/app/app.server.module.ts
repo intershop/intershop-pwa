@@ -1,6 +1,6 @@
 import { HTTP_INTERCEPTORS, HttpErrorResponse, provideHttpClient, withFetch } from '@angular/common/http';
 import { ErrorHandler, NgModule, TransferState } from '@angular/core';
-import { ServerModule } from '@angular/platform-server';
+import { ServerModule, provideServerRendering } from '@angular/platform-server';
 import { META_REDUCERS } from '@ngrx/store';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
@@ -36,6 +36,8 @@ class UniversalErrorHandler implements ErrorHandler {
 }
 
 const providers = [
+  // Modern server rendering provider
+  provideServerRendering(),
   // Conditionally add provideHttpClient(withFetch()) based on environment variable
   ...(/on|1|true|yes/.test(process.env.ALLOW_H2?.toLowerCase()) ? [provideHttpClient(withFetch())] : []),
   { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
@@ -46,6 +48,7 @@ const providers = [
   { provide: META_REDUCERS, useValue: configurationMeta, multi: true },
   // disable data retention for SSR
   { provide: DATA_RETENTION_POLICY, useValue: {} },
+  // Canonical URL handling is managed by SEO effects, not APP_INITIALIZER
 ];
 
 @NgModule({
