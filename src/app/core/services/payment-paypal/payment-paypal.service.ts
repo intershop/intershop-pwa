@@ -1,7 +1,7 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { concatLatestFrom } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { concatMap, map, switchMap } from 'rxjs/operators';
