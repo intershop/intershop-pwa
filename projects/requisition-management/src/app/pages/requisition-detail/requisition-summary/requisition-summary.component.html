@@ -49,7 +49,7 @@
           @for (approver of requisition.approval?.customerApproval?.approvers; track approver.email; let i = $index) {
           @if (i > 0) {, }{{ approver.firstName }} {{ approver.lastName }}} @if
           (requisition.approval?.customerApproval?.statusCode === 'APPROVED') {
-          <fa-icon [icon]="['fas', 'check']" class="ps-3 text-success" />
+          <i class="bi bi-check-lg text-success ps-3"></i>
           }
         </dd>
         } @if ( requisition.approval?.costCenterApproval?.approvers?.length && requisition.approval?.statusCode ===
@@ -59,7 +59,7 @@
           {{ requisition.approval?.costCenterApproval?.approvers[0].firstName }}
           {{ requisition.approval?.costCenterApproval?.approvers[0].lastName }}
           @if (requisition.approval?.costCenterApproval?.statusCode === 'APPROVED') {
-          <fa-icon [icon]="['fas', 'check']" class="ps-2 text-success" />
+          <i class="bi bi-check-lg text-success ps-2"></i>
           }
         </dd>
         } } @if (view === 'approver') {

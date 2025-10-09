@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
@@ -34,7 +33,6 @@ describe('Account Order Template Detail Line Item Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         AccountOrderTemplateDetailLineItemComponent,
-        MockComponent(FaIconComponent),
         MockComponent(ProductBundleDisplayComponent),
         MockComponent(ProductIdComponent),
 

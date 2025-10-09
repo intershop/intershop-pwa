@@ -12,10 +12,10 @@
   data-testing-id="addToWishlistButton"
 >
   @switch (displayType) { @case ('animated') {
-  <fa-icon [icon]="['fas', 'heart']" />
+  <i class="bi bi-heart-fill"></i>
   <span class="share-label">{{ 'product.add_to_wishlist.link' | translate }}</span>
   } @case ('icon') {
-  <fa-icon [icon]="['fas', 'heart']" />
+  <i class="bi bi-heart-fill"></i>
   } @default {
   {{ 'product.add_to_wishlist.link' | translate }}
   } }

@@ -16,7 +16,7 @@
         (editMode === 'edit' ? 'checkout.custom-fields.edit.link.label' : 'checkout.custom-fields.add.link.label')
           | translate
       }}
-      <fa-icon [icon]="['fas', collapsed ? 'angle-down' : 'angle-up']" />
+      <i class="bi" [ngClass]="collapsed ? 'bi-chevron-down' : 'bi-chevron-up'"></i>
     </button>
     }
     <div [id]="'line-item-information-input_' + getLineItemId()" [ngbCollapse]="collapsed">

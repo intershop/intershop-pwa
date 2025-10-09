@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -16,7 +15,7 @@ describe('Basket Address Summary Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BasketAddressSummaryComponent, MockComponent(AddressComponent), MockComponent(FaIconComponent)],
+      declarations: [BasketAddressSummaryComponent, MockComponent(AddressComponent)],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
   });

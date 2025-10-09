@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockDirective } from 'ng-mocks';
 
 import { AccordionItemComponent } from './accordion-item.component';
 
@@ -12,7 +11,7 @@ describe('Accordion Item Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccordionItemComponent, MockComponent(FaIconComponent), MockDirective(NgbCollapse)],
+      declarations: [AccordionItemComponent, MockDirective(NgbCollapse)],
     }).compileComponents();
   });
 
@@ -35,7 +34,7 @@ describe('Accordion Item Component', () => {
 
     fixture.detectChanges();
 
-    expect(element.querySelector('fa-icon[ng-reflect-icon="fas,minus"]')).toBeTruthy();
+    expect(element.querySelector('i[class="fs-2 bi bi-dash"]')).toBeTruthy();
     expect(component.isCollapsed).toBeFalse();
   });
 
@@ -47,7 +46,7 @@ describe('Accordion Item Component', () => {
 
     fixture.detectChanges();
 
-    expect(element.querySelector('fa-icon[ng-reflect-icon="fas,plus"]')).toBeTruthy();
+    expect(element.querySelector('i[class="fs-2 bi bi-plus"]')).toBeTruthy();
     expect(component.isCollapsed).toBeTrue();
   });
 });

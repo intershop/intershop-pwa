@@ -16,7 +16,7 @@
       background: $CORPORATE-PRIMARY;
     }
 
-    .ng-fa-icon {
+    .bi {
       display: inline-block;
       min-width: 18px;
       margin-right: ($space-default * 0.5);
@@ -27,6 +27,11 @@
       padding: divide($space-default * 2, 3) divide($space-default * 2, 3) ($space-default * 0.5);
       font-size: 14px;
       color: $CORPORATE-PRIMARY;
+
+      .bi {
+        font-size: 1rem;
+        vertical-align: text-bottom;
+      }
     }
 
     &.active {

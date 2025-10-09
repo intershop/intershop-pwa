@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -50,7 +49,6 @@ describe('Cost Center Detail Page Component', () => {
         MockComponent(CostCenterBudgetComponent),
         MockComponent(CostCenterUsersListComponent),
         MockComponent(ErrorMessageComponent),
-        MockComponent(FaIconComponent),
         MockComponent(OrderListComponent),
         MockPipe(PricePipe, (price: Price) => `${price.currency} ${price.value}`),
       ],

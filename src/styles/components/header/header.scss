@@ -73,7 +73,8 @@ header {
     .quickorder-link {
       padding: ($space-default * 0.5) divide($space-default, 3);
 
-      .header-icon {
+      .header-icon,
+      .bi.header-icon {
         font-size: $font-size-corporate;
         vertical-align: middle;
         color: $CORPORATE-PRIMARY;
@@ -137,7 +138,7 @@ header {
     text-transform: uppercase;
     list-style: none;
 
-    &:first-child .ng-fa-icon.header-icon {
+    &:first-child .bi.header-icon {
       padding-left: 0;
     }
 
@@ -165,15 +166,12 @@ header {
   padding-left: ($space-default * 0.5);
 }
 
-.ng-fa-icon.header-icon {
-  position: relative;
+.bi.header-icon {
   padding: 0 10px 0 4px;
   font-size: 17px;
+  line-height: unset;
+  vertical-align: middle;
   color: $text-color-quinary;
-
-  @include media-breakpoint-down(md) {
-    color: $text-color-primary;
-  }
 }
 
 .logo {

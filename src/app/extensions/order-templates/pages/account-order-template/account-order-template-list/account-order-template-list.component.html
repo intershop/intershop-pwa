@@ -66,8 +66,8 @@
           [title]="'account.order_template.edit.heading' | translate"
           [routerLink]="'/account/order-templates/' + orderTemplate.id"
           data-testing-id="order-template-details-edit"
-          ><fa-icon [icon]="['fas', 'pencil-alt']"
-        /></a>
+          ><i class="bi bi-pencil-fill"></i
+        ></a>
         <button
           type="button"
           class="btn-tool btn-link"
@@ -75,7 +75,7 @@
           (click)="openDeleteConfirmationDialog(orderTemplate, deleteDialog)"
           data-testing-id="delete-order-template"
         >
-          <fa-icon [icon]="['fas', 'trash-alt']" />
+          <i class="bi bi-trash-fill"></i>
         </button>
       </td>
     </ng-container>

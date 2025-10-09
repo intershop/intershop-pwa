@@ -12,7 +12,7 @@
     "
     (click)="toggleEditMode(true)"
   >
-    <fa-icon [icon]="['fas', 'pencil-alt']" class="me-auto" />
+    <i class="bi bi-pencil-fill me-auto"></i>
   </button>
 </div>
 } @else {
@@ -27,7 +27,7 @@
     data-testing-id="confirm"
     [disabled]="confirmDisabled"
   >
-    <fa-icon [icon]="['fas', 'check']" />
+    <i class="bi bi-check-lg"></i>
   </button>
   <button
     type="button"
@@ -37,7 +37,7 @@
     (click)="cancel()"
     data-testing-id="cancel"
   >
-    <fa-icon [icon]="['fas', 'times']" />
+    <i class="bi bi-x"></i>
   </button>
 </div>
 }

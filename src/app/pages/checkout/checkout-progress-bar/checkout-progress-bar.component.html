@@ -9,7 +9,7 @@
     >
       @if (checkoutStepLink(checkoutStep.step)) {
       <a [routerLink]="checkoutStep.link" class="link-decoration-hover">
-        <div class="progress-number"><fa-icon [icon]="['fas', 'check']" /></div>
+        <div class="progress-number"><i class="bi bi-check-lg"></i></div>
         <span class="progress-label">{{ checkoutStep.labelKey | translate }} </span>
       </a>
       } @else {

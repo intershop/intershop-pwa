@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -61,11 +60,7 @@ describe('Cms Navigation Category Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [RouterModule],
-      declarations: [
-        CMSNavigationCategoryComponent,
-        MockComponent(FaIconComponent),
-        MockDirective(ServerHtmlDirective),
-      ],
+      declarations: [CMSNavigationCategoryComponent, MockDirective(ServerHtmlDirective)],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }, provideRouter([])],
     }).compileComponents();
   });
@@ -122,7 +117,7 @@ describe('Cms Navigation Category Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <li class="dropdown">
         <a ng-reflect-router-link="/cat/A" href="/cat/A"> Cat A </a
-        ><a class="dropdown-toggle"><fa-icon ng-reflect-icon="fas,plus"></fa-icon></a>
+        ><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
         <ul class="category-level1 dropdown-menu">
           <li class="sub-navigation-content">
             <div ng-reflect-ish-server-html="<span>Hello Category</span>"></div>
@@ -146,11 +141,11 @@ describe('Cms Navigation Category Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <li class="dropdown">
         <a ng-reflect-router-link="/cat/A" href="/cat/A"> Cat A </a
-        ><a class="dropdown-toggle"><fa-icon ng-reflect-icon="fas,plus"></fa-icon></a>
+        ><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
         <ul class="category-level1 dropdown-menu">
           <li class="main-navigation-level1-item">
             <a ng-reflect-router-link="/cat/A.A_1" href="/cat/A.A_1"> Cat A1 </a
-            ><a class="dropdown-toggle"><fa-icon ng-reflect-icon="fas,plus"></fa-icon></a>
+            ><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
             <ul class="category-level2">
               <li class="main-navigation-level2-item">
                 <a ng-reflect-router-link="/cat/A.A_1.A_1_a" style="width: 100%" href="/cat/A.A_1.A_1_a">
@@ -180,7 +175,7 @@ describe('Cms Navigation Category Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <li class="dropdown">
         <a ng-reflect-router-link="/cat/A" href="/cat/A"> Cat A </a
-        ><a class="dropdown-toggle"><fa-icon ng-reflect-icon="fas,plus"></fa-icon></a>
+        ><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
         <ul class="category-level1 dropdown-menu">
           <li class="main-navigation-level1-item">
             <a ng-reflect-router-link="/cat/A.A_1" style="width: 100%" href="/cat/A.A_1"> Cat A1 </a>
@@ -209,11 +204,11 @@ describe('Cms Navigation Category Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <li class="dropdown">
         <a ng-reflect-router-link="/cat/A" href="/cat/A"> Cat A </a
-        ><a class="dropdown-toggle"><fa-icon ng-reflect-icon="fas,plus"></fa-icon></a>
+        ><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
         <ul class="category-level1 dropdown-menu">
           <li class="main-navigation-level1-item">
             <a ng-reflect-router-link="/cat/A.A_1" href="/cat/A.A_1"> Cat A1 </a
-            ><a class="dropdown-toggle"><fa-icon ng-reflect-icon="fas,plus"></fa-icon></a>
+            ><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
             <ul class="category-level2">
               <li class="main-navigation-level2-item">
                 <a ng-reflect-router-link="/cat/A.A_1.A_1_a" style="width: 100%" href="/cat/A.A_1.A_1_a">

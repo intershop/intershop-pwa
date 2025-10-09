@@ -16,10 +16,10 @@
     @if ((displaySpinner$ | async) !== true) {
     <!-- Add to Cart button -->
     @if (displayIcon) {
-    <fa-icon [icon]="['fas', 'shopping-cart']" />
+    <i class="bi bi-cart-fill"></i>
     } @else {{{ translationKey$ | async | translate }}} } @else {
     <!-- button with spinning animation after Add to Cart -->
-    <fa-icon [icon]="['fas', 'spinner']" [spin]="true" [ngClass]="{ 'pe-3': !displayIcon }" />
+    <i class="bi bi-arrow-clockwise spin-icon"></i>
     @if (!displayIcon) {
     <span>{{ 'common.button.spinning.label' | translate }}</span>
     } }

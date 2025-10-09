@@ -12,7 +12,7 @@
       (click)="showAddressForm(address)"
       data-testing-id="edit-shipping-address-link"
     >
-      <fa-icon [icon]="['fas', 'pencil-alt']" />
+      <i class="bi bi-pencil-fill"></i>
     </button>
     }
     <!-- delete shipping address -->
@@ -23,7 +23,7 @@
       title="{{ 'checkout.address.delete.button.label' | translate }}"
       (click)="modalDialog.show(address)"
     >
-      <fa-icon [icon]="['fas', 'trash-alt']" />
+      <i class="bi bi-trash-fill"></i>
     </button>
     }
     <ish-modal-dialog

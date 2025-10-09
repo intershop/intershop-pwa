@@ -150,7 +150,7 @@
               aria-controls="CollapseBasicEdit"
               data-testing-id="update-address-button"
             >
-              <fa-icon [icon]="['fas', 'pencil-alt']" />
+              <i class="bi bi-pencil-fill"></i>
             </button>
             } @if (deletable) {
             <button
@@ -160,7 +160,7 @@
               (click)="modalDialog.show(address)"
               data-testing-id="delete-address-icon"
             >
-              <fa-icon [icon]="['fas', 'trash-alt']" />
+              <i class="bi bi-trash-fill"></i>
             </button>
             }
             <ish-modal-dialog

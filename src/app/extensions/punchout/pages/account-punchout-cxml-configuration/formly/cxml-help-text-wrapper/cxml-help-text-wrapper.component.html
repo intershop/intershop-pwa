@@ -2,7 +2,7 @@
   @if (helpText) {
   <button
     type="button"
-    class="btn btn-link cxml-text-toggle"
+    class="btn btn-link cxml-text-toggle top-0 mt-2"
     (click)="isCollapsed = !isCollapsed"
     [attr.aria-expanded]="isCollapsed"
     [title]="
@@ -11,7 +11,7 @@
         : ('account.punchout.cxml.toggle.helptext_open.title' | translate)
     "
   >
-    <fa-icon [icon]="['fas', isCollapsed ? 'chevron-up' : 'chevron-down']" />
+    <i class="bi" [ngClass]="isCollapsed ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
   </button>
   }
 

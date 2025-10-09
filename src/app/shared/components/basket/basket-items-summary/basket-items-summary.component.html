@@ -40,12 +40,12 @@
   @if (isShowAllLinkVisible()) {
   <button type="button" class="btn btn-link btn-content-toggle mt-3" (click)="toggleCollapse()">
     {{ 'checkout.show_all.link' | translate : { '0': basket.lineItems.length } }}
-    <fa-icon [icon]="['fas', 'angle-down']" class="float-end" />
+    <i class="bi bi-chevron-down float-end"></i>
   </button>
   } @if (isHideLinkVisible()) {
   <button type="button" class="btn btn-link btn-content-toggle mt-3" (click)="toggleCollapse()">
     {{ 'checkout.hide_all.link' | translate }}
-    <fa-icon [icon]="['fas', 'angle-up']" class="float-end" />
+    <i class="bi bi-chevron-up float-end"></i>
   </button>
   }
 </div>

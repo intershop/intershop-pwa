@@ -35,7 +35,7 @@
       "
       data-testing-id="edit-company"
     >
-      <fa-icon [icon]="['fas', 'pencil-alt']" />
+      <i class="bi bi-pencil-fill"></i>
     </a>
   </div>
 </div>
@@ -64,7 +64,7 @@
     confirmText: 'account.update.button.label' | translate,
     rejectText: 'account.cancel.button.label' | translate,
     titleText: 'account.organization.budget_price_type.notification_modal.header' | translate,
-    icon: ['fas', 'triangle-exclamation'],
+    icon: 'exclamation-triangle-fill',
     iconClass: 'text-warning pe-2'
   }"
   (confirmed)="submit()"

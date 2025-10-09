@@ -138,7 +138,7 @@
             type="submit"
           >
             @if (submitting) {
-            <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pe-3" />
+            <i class="bi bi-arrow-clockwise spin-icon"></i>
             }
             {{
               (basket.recurrence ? 'checkout.order_review.recurring.send.button' : 'checkout.order_review.send.button')

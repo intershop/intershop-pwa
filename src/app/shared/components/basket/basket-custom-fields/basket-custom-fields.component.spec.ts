@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -34,7 +33,6 @@ describe('Basket Custom Fields Component', () => {
         BasketCustomFieldsComponent,
         MockComponent(CustomFieldsFormlyComponent),
         MockComponent(CustomFieldsViewComponent),
-        MockComponent(FaIconComponent),
         MockDirective(NgbCollapse),
       ],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
@@ -80,7 +78,8 @@ describe('Basket Custom Fields Component', () => {
         class="btn btn-link btn-link-with-icon"
         aria-expanded="false"
       >
-        checkout.custom-fields.basket.add.link.label <fa-icon ng-reflect-icon="fas,angle-down"></fa-icon>
+        checkout.custom-fields.basket.add.link.label
+        <i class="bi bi-chevron-down" ng-reflect-ng-class="bi-chevron-down"></i>
       </button>
     `);
   });

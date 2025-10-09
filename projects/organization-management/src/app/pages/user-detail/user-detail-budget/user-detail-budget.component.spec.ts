@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockPipe } from 'ng-mocks';
 
 import { Price } from 'ish-core/models/price/price.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
@@ -17,7 +16,6 @@ describe('User Detail Budget Component', () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
-        MockComponent(FaIconComponent),
         MockPipe(PricePipe, (price: Price) => `${price.currency} ${price.value}`),
         UserDetailBudgetComponent,
       ],
@@ -79,7 +77,7 @@ describe('User Detail Budget Component', () => {
         data-testing-id="edit-budget"
         class="btn-tool"
         title="account.profile.update.link"
-        ><fa-icon ng-reflect-icon="fas,pencil-alt"></fa-icon
+        ><i class="bi bi-pencil-fill"></i
       ></a>
     `);
   });

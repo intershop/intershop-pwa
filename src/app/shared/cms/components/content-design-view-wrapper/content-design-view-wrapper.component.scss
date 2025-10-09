@@ -34,7 +34,8 @@ $design-view-color-pagelet-active: #206060;
       white-space: nowrap;
       border: none;
 
-      fa-icon {
+      .bi {
+        height: 30px;
         font-size: 20px;
         line-height: 1.5;
       }

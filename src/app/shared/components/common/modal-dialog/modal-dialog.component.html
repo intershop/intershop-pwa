@@ -3,7 +3,7 @@
     @if (options.titleText) {
     <h2 [id]="'modal-title-' + uuid" class="modal-title">
       @if (options.icon) {
-      <fa-icon [icon]="options.icon" class="{{ options.iconClass }} " />
+      <i class="bi bi-{{ options.icon }} {{ options.iconClass }} "></i>
       }{{ options.titleText }}
     </h2>
     }

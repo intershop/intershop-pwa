@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCalendar, NgbDate, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
@@ -28,7 +27,7 @@ describe('Date Picker Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DatePickerFieldComponent, MockComponent(FaIconComponent), MockDirective(NgbInputDatepicker)],
+      declarations: [DatePickerFieldComponent, MockDirective(NgbInputDatepicker)],
       imports: [
         FormlyModule.forRoot({
           types: [{ name: 'ish-date-picker-field', component: DatePickerFieldComponent }],

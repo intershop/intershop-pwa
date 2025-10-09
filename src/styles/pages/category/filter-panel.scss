@@ -14,13 +14,6 @@
     margin-top: $space-default;
   }
 
-  h3 {
-    .ng-fa-icon {
-      float: right;
-      color: $text-color-corporate;
-    }
-  }
-
   .filter-group {
     &.collapsed {
       .filter-item:not(.filter-selected) {
@@ -66,7 +59,7 @@
     cursor: pointer;
   }
 
-  .ng-fa-icon {
+  .bi {
     &:hover {
       color: $CORPORATE-SECONDARY;
       cursor: pointer;
@@ -296,7 +289,7 @@ input {
   }
 }
 
-.filter-clear.ng-fa-icon {
+.filter-clear.bi {
   line-height: inherit;
 }
 
@@ -345,8 +338,9 @@ input {
         text-decoration: none;
       }
 
-      .ng-fa-icon {
+      .bi {
         display: block;
+        width: 100%;
       }
     }
   }

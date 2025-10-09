@@ -15,9 +15,9 @@
         [attr.aria-expanded]="!formIsCollapsed"
       >
         @if (formIsCollapsed) {
-        {{ 'account.order_history.filter.show' | translate }}<fa-icon [icon]="['fas', 'angle-down']" />
+        {{ 'account.order_history.filter.show' | translate }}<i class="bi bi-chevron-down"></i>
         } @else {
-        {{ 'account.order_history.filter.hide' | translate }}<fa-icon [icon]="['fas', 'angle-up']" />
+        {{ 'account.order_history.filter.hide' | translate }}<i class="bi bi-chevron-up"></i>
         }
       </button>
     </div>

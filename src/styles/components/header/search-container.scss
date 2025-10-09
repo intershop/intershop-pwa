@@ -63,11 +63,6 @@
       &:hover {
         color: $text-color-secondary;
       }
-
-      .ng-fa-icon {
-        position: relative;
-        top: 0.5px;
-      }
     }
   }
 }
@@ -358,15 +353,6 @@
 
     @include media-breakpoint-down(md) {
       position: static;
-    }
-
-    &.active-search {
-      color: $text-color-quaternary;
-      background-color: $color-inverse;
-
-      > .ng-fa-icon {
-        color: $text-color-inverse !important;
-      }
     }
   }
 }

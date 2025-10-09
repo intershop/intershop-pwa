@@ -38,11 +38,16 @@
         > .dropdown-toggle {
           display: block;
           width: $toggler-width;
+          height: 52px;
           text-align: center;
           border-left: $border-width-default solid $border-color-default;
 
           &::after {
             content: none;
+          }
+
+          i.bi {
+            font-size: 23px;
           }
         }
 

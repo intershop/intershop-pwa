@@ -16,8 +16,8 @@
         [attr.data-testing-id]="item.id + '-nav-link'"
       >
         <span>
-          @if (item.faIcon) {
-          <fa-icon [icon]="item.faIcon" />
+          @if (item.icon) {
+          <i class="bi" [class]="item.icon"></i>
           }
           {{ item.localizationKey | translate }}
         </span>
@@ -53,8 +53,8 @@
         [routerLinkActiveOptions]="{ exact: item.routerLink === '/account' ? true : false }"
       >
         <a [routerLink]="item.routerLink" class="link-decoration-hover" [attr.data-testing-id]="item.id + '-nav-link'">
-          @if (item.faIcon) {
-          <fa-icon [icon]="item.faIcon" />
+          @if (item.icon) {
+          <i class="bi" [class]="item.icon"></i>
           }{{ item.localizationKey | translate }}
         </a>
       </li>

@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 
 import { StoreLocatorFooterComponent } from './store-locator-footer.component';
 
@@ -13,7 +11,7 @@ describe('Store Locator Footer Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [MockComponent(FaIconComponent), StoreLocatorFooterComponent],
+      declarations: [StoreLocatorFooterComponent],
     }).compileComponents();
   });
 

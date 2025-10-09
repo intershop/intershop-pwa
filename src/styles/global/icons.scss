@@ -1,14 +1,23 @@
-.ng-fa-icon {
+.bi {
+  width: 1em;
+  height: 1em;
   line-height: 1;
 }
 
 .btn-tool {
-  .ng-fa-icon {
+  .bi {
     font-size: 22px;
+    font-weight: bold;
   }
 
   & ~ .btn-tool {
     margin-left: divide($space-default * 2, 3);
+  }
+}
+
+tbody tr {
+  .bi {
+    font-size: 1rem;
   }
 }
 

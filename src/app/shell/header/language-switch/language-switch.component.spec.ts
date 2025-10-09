@@ -1,9 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -27,11 +26,7 @@ describe('Language Switch Component', () => {
     appFacade = mock(AppFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        LanguageSwitchComponent,
-        MockComponent(FaIconComponent),
-        MockPipe(MakeHrefPipe, (_, urlParams) => of(urlParams.lang)),
-      ],
+      declarations: [LanguageSwitchComponent, MockPipe(MakeHrefPipe, (_, urlParams) => of(urlParams.lang))],
       imports: [NgbDropdownModule, TranslateModule.forRoot()],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },

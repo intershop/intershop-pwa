@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockDirective } from 'ng-mocks';
 import { BehaviorSubject, Subject, of } from 'rxjs';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
@@ -70,12 +69,7 @@ describe('Payment Paypal Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(FaIconComponent),
-        MockDirective(NgbPopover),
-        MockDirective(PaypalErrorDirective),
-        PaymentPaypalComponent,
-      ],
+      declarations: [MockDirective(NgbPopover), MockDirective(PaypalErrorDirective), PaymentPaypalComponent],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: PaypalConfigService, useFactory: () => instance(paypalConfigService) },

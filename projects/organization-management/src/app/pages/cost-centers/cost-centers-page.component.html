@@ -86,7 +86,7 @@
           (click)="openConfirmationDialog(costCenter, deactivateDialog)"
           data-testing-id="deactivate-cost-center"
         >
-          <fa-icon [icon]="['fas', 'ban']" />
+          <i class="bi bi-ban"></i>
         </button>
         } @else {
 
@@ -97,7 +97,7 @@
           (click)="activate(costCenter)"
           data-testing-id="activate-cost-center"
         >
-          <fa-icon [icon]="['fas', 'check-circle']" />
+          <i class="bi bi-check-circle"></i>
         </button>
 
         }
@@ -117,7 +117,7 @@
           (click)="openConfirmationDialog(costCenter, deleteDialog)"
           data-testing-id="delete-cost-center"
         >
-          <fa-icon [icon]="['fas', 'trash-alt']" />
+          <i class="bi bi-trash-fill"></i>
         </button>
 
         }

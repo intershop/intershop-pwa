@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
@@ -24,7 +23,6 @@ describe('Product Notification Delete Component', () => {
     productNotificationsFacade = mock(ProductNotificationsFacade);
     await TestBed.configureTestingModule({
       declarations: [
-        MockComponent(FaIconComponent),
         MockComponent(ModalDialogComponent),
         MockDirective(ServerHtmlDirective),
         ProductNotificationDeleteComponent,

@@ -14,7 +14,7 @@
     aria-haspopup="menu"
     [attr.aria-label]="'shopping_cart.ministatus.label' | translate : { '0': itemCount$ | async }"
   >
-    <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
+    <i class="bi bi-cart-fill header-icon"></i>
     <span>{{ 'shopping_cart.ministatus.items.text' | translate : { '0': itemCount$ | async } }}</span>
     @if (itemTotal$ | async; as itemTotal) {
     <span> / </span> <span class="mini-cart-price">{{ itemTotal | ishPrice }}</span>
@@ -33,7 +33,7 @@
   class="item-count-container position-relative sticky-header-icon"
   [attr.aria-label]="'shopping_cart.ministatus.label' | translate : { '0': itemCount$ | async }"
 >
-  <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
+  <i class="bi bi-cart-fill header-icon"></i>
   <span class="badge rounded-pill" [ngClass]="basketAnimation$ | async">{{ itemCount }}</span>
 </a>
 } @else {
@@ -49,7 +49,7 @@
   tabindex="0"
   [attr.aria-label]="'shopping_cart.ministatus.label' | translate : { '0': itemCount$ | async }"
 >
-  <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon" />
+  <i class="bi bi-cart-fill header-icon"></i>
   <span class="badge rounded-pill" [ngClass]="basketAnimation$ | async">0</span>
 </a>
 } }

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -24,7 +23,6 @@ describe('Search Result Component', () => {
       declarations: [
         MockComponent(BreadcrumbComponent),
         MockComponent(ContentIncludeComponent),
-        MockComponent(FaIconComponent),
         MockComponent(FilterNavigationComponent),
         MockComponent(ProductListingComponent),
         MockComponent(SkipContentLinkComponent),

@@ -5,7 +5,7 @@ export const navigationItems: NavigationItem[] = [
   {
     id: 'my-purchases',
     localizationKey: 'account.requisitions.purchases',
-    faIcon: 'cart-shopping',
+    icon: 'bi-cart-fill',
     isCollapsed: true,
     notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
     children: [
@@ -56,7 +56,7 @@ export const navigationItems: NavigationItem[] = [
   {
     id: 'my-approvals',
     localizationKey: 'account.requisitions.myapprovals',
-    faIcon: 'check',
+    icon: 'bi-check-lg',
     isCollapsed: true,
     serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
     permission: ['APP_B2B_ORDER_APPROVAL', 'APP_B2B_MANAGE_COSTCENTER'],
@@ -73,7 +73,7 @@ export const navigationItems: NavigationItem[] = [
   {
     id: 'my-organization',
     localizationKey: 'account.requisitions.organization',
-    faIcon: 'briefcase',
+    icon: 'bi-briefcase-fill',
     isCollapsed: true,
     notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
     children: [
@@ -114,7 +114,7 @@ export const navigationItems: NavigationItem[] = [
   {
     id: 'my-profile',
     localizationKey: 'account.profile.myprofile',
-    faIcon: 'gear',
+    icon: 'bi-gear-fill',
     isCollapsed: true,
     notRole: ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'],
     children: [
@@ -149,7 +149,7 @@ export const navigationItems: NavigationItem[] = [
   {
     id: 'logout',
     localizationKey: 'account.navigation.logout.link',
-    faIcon: 'right-from-bracket',
+    icon: 'bi-box-arrow-right',
     routerLink: '/logout',
   },
 ];

@@ -9,7 +9,7 @@ fieldset {
 
 // 	REQUIRED FIELDS
 .indicates-required {
-  color: $text-color-tertiary;
+  color: $text-color-secondary;
 
   .required {
     margin-right: 4px;
@@ -200,14 +200,14 @@ optgroup {
 }
 
 .has-success {
-  .ng-fa-icon {
+  .bi {
     color: $color-special-success;
   }
 }
 
 .has-error {
   .col-form-label,
-  .ng-fa-icon,
+  .bi,
   .validation-message,
   .form-check {
     color: $color-special-error;

@@ -38,7 +38,7 @@
             class="btn-tool"
             [title]="'account.punchout.configure.link' | translate : { '0': user.login }"
           >
-            <fa-icon [icon]="['fas', 'cog']" />
+            <i class="bi bi-gear-fill"></i>
           </a>
           }
           <a
@@ -48,7 +48,7 @@
             [title]="'account.profile.update.link' | translate : { '0': user.login }"
             data-testing-id="edit-user"
           >
-            <fa-icon [icon]="['fas', 'pencil-alt']" />
+            <i class="bi bi-pencil-fill"></i>
           </a>
           <button
             type="button"
@@ -57,7 +57,7 @@
             (click)="modalDialog.show(user)"
             data-testing-id="delete-user"
           >
-            <fa-icon [icon]="['fas', 'trash-alt']" />
+            <i class="bi bi-trash-fill"></i>
           </button>
           <ish-modal-dialog
             #modalDialog

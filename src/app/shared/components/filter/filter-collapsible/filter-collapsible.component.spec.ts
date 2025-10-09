@@ -1,6 +1,4 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { MockComponent } from 'ng-mocks';
 
 import { Filter } from 'ish-core/models/filter/filter.model';
 
@@ -13,7 +11,7 @@ describe('Filter Collapsible Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FilterCollapsibleComponent, MockComponent(FaIconComponent)],
+      declarations: [FilterCollapsibleComponent],
     }).compileComponents();
   });
 
@@ -47,7 +45,7 @@ describe('Filter Collapsible Component', () => {
           aria-controls="PriceFilterId"
         >
           <h3 class="m-0">Price</h3>
-          <fa-icon ng-reflect-icon="fas,angle-up"></fa-icon>
+          <i class="bi bi-chevron-up" ng-reflect-ng-class="bi-chevron-up"></i>
         </button>
       </div>
     `);
@@ -68,7 +66,7 @@ describe('Filter Collapsible Component', () => {
           aria-controls="PriceFilterId"
         >
           <h3 class="m-0">Price</h3>
-          <fa-icon ng-reflect-icon="fas,angle-down"></fa-icon>
+          <i class="bi bi-chevron-down" ng-reflect-ng-class="bi-chevron-down"></i>
         </button>
       </div>
     `);

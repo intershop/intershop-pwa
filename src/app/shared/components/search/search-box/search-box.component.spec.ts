@@ -1,8 +1,6 @@
 /* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 import { ReplaySubject, Subject, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -33,7 +31,6 @@ describe('Search Box Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [MockComponent(FaIconComponent), SearchBoxComponent],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   });

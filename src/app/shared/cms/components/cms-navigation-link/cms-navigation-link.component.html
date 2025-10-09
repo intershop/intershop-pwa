@@ -23,9 +23,9 @@
   } @if (pagelet.hasParam('SubNavigationHTML')) {
   <a class="dropdown-toggle" (click)="toggleOpen()">
     @if (opened) {
-    <fa-icon [icon]="['fas', 'minus']" />
+    <i class="bi bi-dash"></i>
     } @else {
-    <fa-icon [icon]="['fas', 'plus']" />
+    <i class="bi bi-plus"></i>
     }
   </a>
   <ul class="category-level1 dropdown-menu">

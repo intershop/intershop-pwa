@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -42,7 +41,6 @@ describe('Account Order Template Detail Page Component', () => {
         InPlaceEditComponent,
         MockComponent(AccountOrderTemplateDetailLineItemComponent),
         MockComponent(ErrorMessageComponent),
-        MockComponent(FaIconComponent),
         MockComponent(ProductAddToBasketComponent),
         MockDirective(ProductContextDirective),
       ],
@@ -80,7 +78,6 @@ describe('Account Order Template Detail Page Component', () => {
         [
           "ish-error-message",
           "ish-in-place-edit",
-          "fa-icon",
         ]
       `);
     });
@@ -94,7 +91,6 @@ describe('Account Order Template Detail Page Component', () => {
         [
           "ish-error-message",
           "ish-in-place-edit",
-          "fa-icon",
           "ish-account-order-template-detail-line-item",
           "ish-product-add-to-basket",
         ]

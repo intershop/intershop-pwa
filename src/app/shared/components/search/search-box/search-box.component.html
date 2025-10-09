@@ -117,7 +117,7 @@
       (focus)="handleFocus(true)"
       (click)="handleResetButton($event); setFocusOnSearchInput()"
     >
-      <fa-icon [icon]="['fas', 'times']" class="searchbox-icon" />
+      <i class="bi bi-x searchbox-icon"></i>
     </button>
     }
 
@@ -132,7 +132,7 @@
     >
       <!-- search button with icon -->
       @if (!configuration?.buttonText) {
-      <fa-icon [icon]="['fas', usedIcon]" class="searchbox-icon" />
+      <i class="searchbox-icon" [class]="'bi bi-' + usedIcon"></i>
       } @else {
       {{ configuration?.buttonText }}
       }

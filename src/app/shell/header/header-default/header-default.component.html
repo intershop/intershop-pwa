@@ -42,7 +42,7 @@
       tabindex="0"
       [attr.aria-label]="'search.searchbox.button.sticky_header.aria_label' | translate"
     >
-      <fa-icon [icon]="['fas', 'search']" class="header-icon" />
+      <i class="bi bi-search header-icon"></i>
     </a>
     } @else {
     <a
@@ -55,7 +55,7 @@
       [attr.aria-label]="'search.searchbox.button.sticky_header.aria_label' | translate"
     >
       @if (isSticky) {
-      <fa-icon [icon]="['fas', 'search']" class="header-icon" />
+      <i class="bi bi-search header-icon"></i>
       }
     </a>
     @if (isSticky || showSearch) {

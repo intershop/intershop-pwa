@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -27,7 +26,6 @@ describe('Account Wishlist Page Component', () => {
         AccountWishlistPageComponent,
         MockComponent(AccountWishlistListComponent),
         MockComponent(ErrorMessageComponent),
-        MockComponent(FaIconComponent),
         MockComponent(WishlistPreferencesDialogComponent),
       ],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistsFacade) }],

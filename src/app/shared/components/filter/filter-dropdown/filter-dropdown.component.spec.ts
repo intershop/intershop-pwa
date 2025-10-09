@@ -1,6 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { MockComponent } from 'ng-mocks';
 
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
@@ -11,12 +9,6 @@ describe('Filter Dropdown Component', () => {
   let component: FilterDropdownComponent;
   let fixture: ComponentFixture<FilterDropdownComponent>;
   let element: HTMLElement;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [FilterDropdownComponent, MockComponent(FaIconComponent)],
-    }).compileComponents();
-  });
 
   const facet = (n: string, value: string) =>
     ({
