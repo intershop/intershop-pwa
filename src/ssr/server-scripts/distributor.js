@@ -8,7 +8,7 @@ const proxy = require('express-http-proxy');
 
 const app = express();
 
-const deployUrl = getDeployURL();
+const deployUrl = getDeployURLFromEnv();
 const concurrencySSR = getConcurrencySSR();
 
 app.use((req, res, next) => {
@@ -71,7 +71,7 @@ function getConcurrencySSR() {
 }
 
 // copy from deploy-url.ts
-function getDeployURL() {
+function getDeployURLFromEnv() {
   const envDeployUrl = process.env.DEPLOY_URL || '/';
 
   return `${envDeployUrl}${envDeployUrl.endsWith('/') ? '' : '/'}`;
