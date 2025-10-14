@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -13,7 +13,7 @@ import { PriceType } from 'ish-core/models/price/price.model';
   templateUrl: './shopping-basket-payment.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ShoppingBasketPaymentComponent implements OnInit {
+export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: BasketView;
 
   paymentMethods$: Observable<PaymentMethod[]>;
@@ -28,10 +28,20 @@ export class ShoppingBasketPaymentComponent implements OnInit {
 
   ngOnInit(): void {
     this.priceType$ = this.checkoutFacade.priceType$;
-    this.checkoutFacade.loadEligiblePaymentMethods();
+
     this.paymentMethods$ = this.checkoutFacade.eligibleFastCheckoutPaymentMethods$;
     // if page is shown after cancelled/faulty redirect determine error message variable
     this.redirectStatus = this.route.snapshot.queryParamMap.get('redirect');
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      changes.basket &&
+      (changes.basket.previousValue?.recurrence !== changes.basket.currentValue?.recurrence ||
+        !changes.basket.currentValue?.recurrence)
+    ) {
+      this.checkoutFacade.loadEligiblePaymentMethods();
+    }
   }
 
   fastCheckout(paymentId: string) {

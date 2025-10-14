@@ -97,6 +97,7 @@ export class CartPage {
 
   fillOutRecurringOrderForm(repetitions: string) {
     cy.get('[data-testing-id="enable-recurring-order"]').click();
+    waitLoadingEnd();
     cy.get('[data-testing-id="radio-order.recurrence.form.ending.repetitions.label"]').click();
     cy.get('[data-testing-id="repetitions"]').clear().type(repetitions);
   }
