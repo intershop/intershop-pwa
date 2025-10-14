@@ -404,7 +404,7 @@ export function app() {
   });
   server.get(/\/.*\.(js|css)$/, (req, res) => {
     // remove all parameters
-    const path = req.originalUrl.substring(1).replace(/[;?&].*$/, '');
+    const path = req.originalUrl.slice(!DEPLOY_URL.startsWith('http') ? DEPLOY_URL.length : 0).replace(/[;?&].*$/, '');
     const filename = join(BROWSER_FOLDER, path);
     if (filename.startsWith(BROWSER_FOLDER)) {
       fs.readFile(filename, { encoding: 'utf-8' }, (err, data) => {
@@ -436,6 +436,13 @@ export function app() {
       }
     });
   });
+
+  // route handler for all files that need the DEPLOY_URL replacement
+  server.get(/\/assets\/.*|.*\.(woff2?|json)$|.*\/manifest\.webmanifest$/, (req, _, next) => {
+    req.url = req.originalUrl.slice(!DEPLOY_URL.startsWith('http') ? DEPLOY_URL.length : 0).replace(/[;?&].*$/, '');
+    next();
+  });
+
   server.get(/^(?!\/assets\/).*\/favicon.ico.*/, (req, _, next) => {
     req.url = req.originalUrl.replace(/[;?&].*$/, '').replace(/^.*\//g, '/');
     next();

@@ -132,10 +132,10 @@ services:
     #  - /home/your-user/ca-dir:/root/.local/share/mkcert
 
   # <CDN-Example>
-  # add 127.0.0.1 mypwa.net to your hosts file and
-  # uncomment the following lines
+  # - add 127.0.0.1 mypwa.net to your hosts file and
+  # - add DEPLOY_URL: 'http://mypwa.net:4222' to the pwa environment section
+  # - uncomment the following lines
   #
-  #     DEPLOY_URL: 'http://mypwa.net:4222'
   # cdn:
   #   build:
   #     context: .

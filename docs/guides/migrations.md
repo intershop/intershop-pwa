@@ -12,6 +12,11 @@ kb_sync_latest_only
 Functionality was added to the SSR container to support the manual creation of PWA heap dumps for debugging purposes.
 For more information on how to use this functionality, see the [Heap Dumps](./ssr-startup.md#heap-dumps) section in the SSR guide.
 
+The `DEPLOY_URL` functionality has been adapted to support relative deploy URLs as well.
+For more information, see [Serving the PWA from a Sub-Path Including Static Files](../concepts/deploy-url.md#serving-the-pwa-from-a-sub-path-including-static-files).
+
+Together with the `DEPLOY_URL` changes the file `src/ssr/server-scripts/server.js` needed adaptions and was renamed to `src/ssr/server-scripts/distributor.js` for more clarity.
+
 ## From 7.1.0 to 8.0.0
 
 The Intershop PWA now uses Node.js 22.17.1 LTS with the corresponding npm version 10.9.2.
