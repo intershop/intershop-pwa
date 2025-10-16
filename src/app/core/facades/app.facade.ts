@@ -1,5 +1,5 @@
 import { getCurrencySymbol } from '@angular/common';
-import { Injectable } from '@angular/core';
+import { ApplicationRef, Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, merge, noop } from 'rxjs';
@@ -25,12 +25,14 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {
-  constructor(private store: Store, private router: Router) {
+  constructor(private store: Store, private router: Router, private appRef: ApplicationRef) {
     this.routingInProgress$.subscribe(noop);
 
     store.pipe(select(getICMBaseURL)).subscribe(icmBaseUrl => (this.icmBaseUrl = icmBaseUrl));
   }
   icmBaseUrl: string;
+
+  wasAlreadyStable$ = this.appRef.isStable.pipe(whenTruthy(), take(1));
 
   headerType$ = this.store.pipe(select(getHeaderType));
   deviceType$ = this.store.pipe(select(getDeviceType));

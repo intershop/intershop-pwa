@@ -3,8 +3,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
+import { instance, mock } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
 
 import { CaptchaV3Component } from './captcha-v3.component';
@@ -19,7 +21,10 @@ describe('Captcha V3 Component', () => {
     await TestBed.configureTestingModule({
       declarations: [CaptchaV3Component, MockDirective(ServerHtmlDirective)],
       imports: [RecaptchaV3Module, TranslateModule.forRoot()],
-      providers: [{ provide: RECAPTCHA_V3_SITE_KEY, useValue: captchaSiteKey }],
+      providers: [
+        { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
+        { provide: RECAPTCHA_V3_SITE_KEY, useValue: captchaSiteKey },
+      ],
     }).compileComponents();
   });
 

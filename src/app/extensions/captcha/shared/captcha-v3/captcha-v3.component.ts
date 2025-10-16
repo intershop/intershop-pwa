@@ -3,10 +3,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaV3Module } from 'ng-recaptcha';
-import { timer } from 'rxjs';
+import { combineLatest, timer } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
 
 import { DirectivesModule } from 'ish-core/directives.module';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import {
@@ -29,14 +30,14 @@ export class CaptchaV3Component implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private recaptchaV3Service: ReCaptchaV3Service) {}
+  constructor(private recaptchaV3Service: ReCaptchaV3Service, private appFacade: AppFacade) {}
 
   ngOnInit() {
     this.parentForm.get('captchaAction').setValidators([Validators.required]);
 
     // as soon as the user starts editing the form request a captcha token every 2 minutes
     if (!SSR) {
-      this.parentForm.statusChanges
+      combineLatest([this.parentForm.statusChanges.pipe(take(1)), this.appFacade.wasAlreadyStable$])
         .pipe(
           take(1),
           switchMap(() =>
