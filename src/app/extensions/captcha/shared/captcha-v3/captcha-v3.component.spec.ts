@@ -3,7 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
-import { instance, mock } from 'ts-mockito';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -15,14 +16,17 @@ describe('Captcha V3 Component', () => {
   let component: CaptchaV3Component;
   let fixture: ComponentFixture<CaptchaV3Component>;
   let element: HTMLElement;
+  let appFacade: AppFacade;
   const captchaSiteKey = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 
   beforeEach(async () => {
+    appFacade = mock(AppFacade);
+    when(appFacade.appBecameStable$).thenReturn(of(true));
     await TestBed.configureTestingModule({
       declarations: [CaptchaV3Component, MockDirective(ServerHtmlDirective)],
       imports: [RecaptchaV3Module, TranslateModule.forRoot()],
       providers: [
-        { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: RECAPTCHA_V3_SITE_KEY, useValue: captchaSiteKey },
       ],
     }).compileComponents();

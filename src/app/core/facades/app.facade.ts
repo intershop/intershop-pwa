@@ -32,7 +32,7 @@ export class AppFacade {
   }
   icmBaseUrl: string;
 
-  wasAlreadyStable$ = this.appRef.isStable.pipe(whenTruthy(), take(1));
+  appBecameStable$ = this.appRef.isStable.pipe(whenTruthy(), take(1));
 
   headerType$ = this.store.pipe(select(getHeaderType));
   deviceType$ = this.store.pipe(select(getDeviceType));

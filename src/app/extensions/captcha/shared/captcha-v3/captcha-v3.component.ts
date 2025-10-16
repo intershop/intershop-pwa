@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaV3Module } from 'ng-recaptcha';
-import { combineLatest, timer } from 'rxjs';
+import { timer } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
 
 import { DirectivesModule } from 'ish-core/directives.module';
@@ -35,9 +35,9 @@ export class CaptchaV3Component implements OnInit {
   ngOnInit() {
     this.parentForm.get('captchaAction').setValidators([Validators.required]);
 
-    // as soon as the user starts editing the form request a captcha token every 2 minutes
+    // as soon as the app is getting stable the form requests a captcha token every 2 minutes
     if (!SSR) {
-      combineLatest([this.parentForm.statusChanges.pipe(take(1)), this.appFacade.wasAlreadyStable$])
+      this.appFacade.appBecameStable$
         .pipe(
           take(1),
           switchMap(() =>
