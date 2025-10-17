@@ -7,6 +7,7 @@ import { timer } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
 
 import { DirectivesModule } from 'ish-core/directives.module';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import {
@@ -29,14 +30,14 @@ export class CaptchaV3Component implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private recaptchaV3Service: ReCaptchaV3Service) {}
+  constructor(private recaptchaV3Service: ReCaptchaV3Service, private appFacade: AppFacade) {}
 
   ngOnInit() {
     this.parentForm.get('captchaAction').setValidators([Validators.required]);
 
-    // as soon as the user starts editing the form request a captcha token every 2 minutes
+    // as soon as the app is getting stable the form requests a captcha token every 2 minutes
     if (!SSR) {
-      this.parentForm.statusChanges
+      this.appFacade.appBecameStable$
         .pipe(
           take(1),
           switchMap(() =>
