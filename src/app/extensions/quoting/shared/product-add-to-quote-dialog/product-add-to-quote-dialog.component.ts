@@ -33,7 +33,11 @@ export class ProductAddToQuoteDialogComponent implements OnInit {
     this.state$ = this.context.select('state');
     this.error$ = this.context.select('error');
 
-    this.context.hold(this.router.events.pipe(filter(event => event instanceof NavigationEnd)), () => this.hide());
+    // prevent closing the dialog immediately after opening it
+    setTimeout(() => {
+      // close dialog if the user clicks a link within the dialog
+      this.context.hold(this.router.events.pipe(filter(event => event instanceof NavigationEnd)), () => this.hide());
+    }, 1000);
   }
 
   hide() {
