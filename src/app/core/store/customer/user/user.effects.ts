@@ -10,6 +10,7 @@ import { CustomerRegistrationType } from 'ish-core/models/customer/customer.mode
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { TokenService } from 'ish-core/services/token/token.service';
 import { UserService } from 'ish-core/services/user/user.service';
+import { getICMChannel } from 'ish-core/store/core/configuration';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectQueryParam, selectUrl } from 'ish-core/store/core/router';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
@@ -289,7 +290,8 @@ export class UserEffects {
   determinePersonalizationStatus$ = createEffect(() =>
     this.store.pipe(
       select(getPGID),
-      map(pgid => !this.apiTokenService.hasUserApiTokenCookie() || pgid),
+      concatLatestFrom(() => this.store.pipe(select(getICMChannel))),
+      map(([pgid, channel]) => !this.apiTokenService.hasUserApiTokenCookie(channel) || pgid),
       whenTruthy(),
       delay(100),
       map(() => personalizationStatusDetermined())

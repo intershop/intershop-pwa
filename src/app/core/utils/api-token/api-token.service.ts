@@ -1,5 +1,6 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
 import { ApplicationRef, Injectable } from '@angular/core';
+import { concatLatestFrom } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { CookieOptions } from 'express';
 import { isEqual } from 'lodash-es';
@@ -37,6 +38,7 @@ import {
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { getICMChannel } from 'ish-core/store/core/configuration';
 import { getCurrentBasket, getCurrentBasketId, loadBasketByAPIToken } from 'ish-core/store/customer/basket';
 import { getOrder, getSelectedOrderId, loadOrderByAPIToken } from 'ish-core/store/customer/orders';
 import {
@@ -60,6 +62,11 @@ export interface ApiTokenCookie {
 
 // If no expiry date is supplied by the token endpoint, this value (in ms) is used
 const DEFAULT_EXPIRY_TIME = 3600000;
+
+// construct the apiToken cookie name based on the given channel name
+export function apiTokenCookieName(channel?: string): string {
+  return `apiToken${channel ? `-${channel}` : ''}`;
+}
 
 @Injectable({ providedIn: 'root' })
 export class ApiTokenService {
@@ -90,30 +97,42 @@ export class ApiTokenService {
   private cookieChangeEvent$: Observable<[ApiTokenCookie, ApiTokenCookie]>;
 
   constructor(private cookiesService: CookiesService, private store: Store, private appRef: ApplicationRef) {
-    // setup initial values
-    const initialCookie = this.parseCookie();
-    this.initialCookie$ = new BehaviorSubject<ApiTokenCookie>(!SSR ? initialCookie : undefined);
-    this.apiToken$ = new BehaviorSubject<string>(initialCookie?.apiToken);
+    // setup initial values - initialize with undefined first, will be set with proper channel info below
+    this.initialCookie$ = new BehaviorSubject<ApiTokenCookie>(undefined);
+    this.apiToken$ = new BehaviorSubject<string>(undefined);
+
+    // Initialize with channel-aware cookie parsing
+    if (!SSR) {
+      this.store.pipe(select(getICMChannel), whenTruthy(), take(1)).subscribe(channel => {
+        const initialCookie = this.parseCookie(channel);
+        this.initialCookie$.next(initialCookie);
+        this.apiToken$.next(initialCookie?.apiToken);
+      });
+    }
 
     if (!SSR) {
       // multicast apiTokenCookieChange$ to avoid multiple listeners
       this.cookieChangeEvent$ = this.apiTokenCookieChange$().pipe(shareReplay(1));
 
       // save internal calculated apiToken as cookie whenever apiToken, basket, user or order information changes
-      this.calculateApiTokenCookieValueOnChanges$().subscribe(apiToken => {
-        const cookieContent = apiToken?.apiToken ? JSON.stringify(apiToken) : undefined;
-        if (cookieContent) {
-          this.cookiesService.put('apiToken', cookieContent, {
-            expires: this.cookieOptions?.expires ?? new Date(Date.now() + DEFAULT_EXPIRY_TIME),
-            secure: this.cookieOptions?.secure,
-            path: '/',
-          });
-        }
-      });
+      this.calculateApiTokenCookieValueOnChanges$()
+        .pipe(concatLatestFrom(() => this.store.pipe(select(getICMChannel))))
+        .subscribe(([apiToken, channel]) => {
+          const cookieContent = apiToken?.apiToken ? JSON.stringify(apiToken) : undefined;
+          if (cookieContent) {
+            this.cookiesService.put(apiTokenCookieName(channel), cookieContent, {
+              expires: this.cookieOptions?.expires ?? new Date(Date.now() + DEFAULT_EXPIRY_TIME),
+              secure: this.cookieOptions?.secure,
+              path: '/',
+            });
+          }
+        });
 
       // remove apiToken cookie on logout
       // path: '/' is added in order to remove cookie within a multi-site configuration (e.g. configured /en, /fr, /de routes)
-      this.logoutUser$().subscribe(() => this.cookiesService.remove('apiToken', { path: '/' }));
+      this.logoutUser$()
+        .pipe(concatLatestFrom(() => this.store.pipe(select(getICMChannel))))
+        .subscribe(([, channel]) => this.cookiesService.remove(apiTokenCookieName(channel), { path: '/' }));
 
       // unset apiToken when cookie vanishes/ has been removed unexpectedly and notify public event stream
       this.tokenVanish$().subscribe(type => {
@@ -147,8 +166,8 @@ export class ApiTokenService {
     this.apiToken$.next(apiToken);
   }
 
-  hasUserApiTokenCookie() {
-    const apiTokenCookie = this.parseCookie();
+  hasUserApiTokenCookie(channel?: string) {
+    const apiTokenCookie = this.parseCookie(channel);
     return apiTokenCookie?.type === 'user' && !apiTokenCookie?.isAnonymous;
   }
 
@@ -159,9 +178,9 @@ export class ApiTokenService {
     if (SSR) {
       return of(true);
     }
-    return this.initialCookie$.pipe(
-      first(),
-      switchMap(cookie => {
+    return this.store.pipe(select(getICMChannel), whenTruthy(), take(1)).pipe(
+      switchMap(channel => {
+        const cookie = this.parseCookie(channel);
         if (types.includes(cookie?.type)) {
           switch (cookie?.type) {
             case 'user': {
@@ -216,7 +235,8 @@ export class ApiTokenService {
       this.anonymousUserTokenMechanism(),
       of(true)
     ).pipe(
-      switchMap(() =>
+      concatLatestFrom(() => this.store.pipe(select(getICMChannel))),
+      switchMap(([, channel]) =>
         this.appendAuthenticationHeader(req).pipe(
           concatMap(request =>
             next.handle(request).pipe(
@@ -239,7 +259,7 @@ export class ApiTokenService {
               }),
               catchError(err => {
                 if (this.isAuthTokenError(err)) {
-                  this.invalidateApiToken();
+                  this.invalidateApiToken(channel);
 
                   // retry request without auth token
                   const retryRequest = request.clone({
@@ -260,8 +280,8 @@ export class ApiTokenService {
   /**
    * will remove apiToken and inform cookieVanishes$ listeners that cookie in not working as expected
    */
-  private invalidateApiToken() {
-    const cookie = this.parseCookie();
+  private invalidateApiToken(channel?: string) {
+    const cookie = this.parseCookie(channel);
 
     this.removeApiToken();
 
@@ -315,7 +335,8 @@ export class ApiTokenService {
       first(),
       mergeMap(() =>
         interval(1000).pipe(
-          map(() => this.parseCookie()),
+          concatLatestFrom(() => this.store.pipe(select(getICMChannel))),
+          map(([, channel]) => this.parseCookie(channel)),
           pairwise(),
           distinctUntilChanged((prev, curr) => isEqual(prev, curr))
         )
@@ -410,7 +431,8 @@ export class ApiTokenService {
   private mapToApiTokenCookie(): OperatorFunction<[User, BasketView, string, string], ApiTokenCookie> {
     return (source$: Observable<[User, BasketView, string, string]>) =>
       source$.pipe(
-        map(([user, basket, orderId, apiToken]): ApiTokenCookie => {
+        concatLatestFrom(() => this.store.pipe(select(getICMChannel))),
+        map(([[user, basket, orderId, apiToken], channel]): ApiTokenCookie => {
           if (user) {
             return { apiToken, type: 'user', isAnonymous: false, creator: 'pwa' };
           } else if (basket) {
@@ -419,7 +441,7 @@ export class ApiTokenService {
             return { apiToken, type: 'order', orderId, creator: 'pwa' };
           }
 
-          const apiTokenCookieString = this.cookiesService.get('apiToken');
+          const apiTokenCookieString = this.cookiesService.get(apiTokenCookieName(channel));
           const apiTokenCookie: ApiTokenCookie = apiTokenCookieString ? JSON.parse(apiTokenCookieString) : undefined;
           if (apiToken && apiTokenCookie) {
             return { ...apiTokenCookie, apiToken }; // overwrite existing cookie information with new apiToken
@@ -428,8 +450,8 @@ export class ApiTokenService {
       );
   }
 
-  private parseCookie(): ApiTokenCookie {
-    const cookieContent = this.cookiesService.get('apiToken');
+  private parseCookie(channel?: string): ApiTokenCookie {
+    const cookieContent = this.cookiesService.get(apiTokenCookieName(channel));
     if (cookieContent) {
       try {
         return JSON.parse(cookieContent);

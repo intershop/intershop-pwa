@@ -4,7 +4,9 @@ import { Store, select } from '@ngrx/store';
 import { iif, of, race, timer } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
+import { getICMChannel } from 'ish-core/store/core/configuration';
 import { getUserAuthorized } from 'ish-core/store/customer/user';
+import { apiTokenCookieName } from 'ish-core/utils/api-token/api-token.service';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -33,7 +35,17 @@ export function authGuard(snapshot: ActivatedRouteSnapshot, state: RouterStateSn
       store.pipe(select(getUserAuthorized), whenTruthy(), take(1)),
       // send to login after timeout
       // send right away if no user can be re-hydrated
-      timer(!router.navigated && cookieService.get('apiToken') ? 4000 : 0).pipe(map(() => defaultRedirect))
+      store.pipe(
+        select(getICMChannel),
+        whenTruthy(),
+        take(1),
+        map(channel => {
+          const hasApiToken = cookieService.get(apiTokenCookieName(channel));
+          return !router.navigated && hasApiToken ? 4000 : 0;
+        }),
+        map(delay => timer(delay)),
+        map(() => defaultRedirect)
+      )
     )
   );
 }
