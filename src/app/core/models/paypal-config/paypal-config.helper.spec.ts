@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { instance, mock } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
 import { PaypalConfigHelper } from './paypal-config.helper';
 import { PaypalConfig } from './paypal-config.model';
@@ -10,18 +9,12 @@ import { PaypalConfig } from './paypal-config.model';
 describe('Paypal Config Helper', () => {
   let helper: PaypalConfigHelper;
   let appFacadeMock: AppFacade;
-  let scriptLoaderMock: ScriptLoaderService;
 
   beforeEach(() => {
     appFacadeMock = mock(AppFacade);
-    scriptLoaderMock = mock(ScriptLoaderService);
 
     TestBed.configureTestingModule({
-      providers: [
-        { provide: AppFacade, useFactory: () => instance(appFacadeMock) },
-        { provide: ScriptLoaderService, useFactory: () => instance(scriptLoaderMock) },
-        PaypalConfigHelper,
-      ],
+      providers: [{ provide: AppFacade, useFactory: () => instance(appFacadeMock) }, PaypalConfigHelper],
     });
 
     helper = TestBed.inject(PaypalConfigHelper);
