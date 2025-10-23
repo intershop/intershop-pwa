@@ -216,6 +216,7 @@ export class CopilotComponent {
    */
   private handleToolCall(toolCall: ChatbotToolCall) {
     // Execute both tool type handlers to ensure compatibility with old and new chatflows
+    console.log(toolCall);
     this.oldToolTypeCall(toolCall);
     this.newToolTypeCall(toolCall);
   }
@@ -303,6 +304,9 @@ export class CopilotComponent {
       case 'PWA_order_template_actions':
         this.handlePWAOrderTemplateToolCall(toolCall.toolInput);
         break;
+      case 'icmSearch': //Todo renaming
+        this.handleIcmSearchToolCall(toolCall.toolOutput);
+        break;
       default:
         break;
     }
@@ -359,7 +363,7 @@ export class CopilotComponent {
    * @param toolInput The chatbot tool call input information  for PWA_navigate_to_page
    */
   private handlePWANavigateToPageToolCall(toolInput: { [key: string]: string }) {
-    const { page, sku, categoryId, orderId } = toolInput || {};
+    const { page, sku, categoryId, orderId, orderTemplateId } = toolInput || {};
     console.log('PWA_navigate_to_page tool call', toolInput);
     const navigationMap: { [key: string]: () => void } = {
       home: () => this.navigate('/'),
@@ -368,6 +372,8 @@ export class CopilotComponent {
       category: () => this.navigate(`/category/${categoryId}`),
       order: () => this.navigate(`/account/orders/${orderId}`),
       orderHistory: () => this.navigate('/account/orders'),
+      orderTemplates: () => this.navigate('/account/order-templates'),
+      orderTemplate: () => this.navigate(`/account/order-templates/${orderTemplateId}`),
       myAccount: () => this.navigate('/account'),
       contact: () => this.navigate('/contact'),
       imprint: () => this.navigate('/page/page.legalnotice'),
@@ -413,6 +419,24 @@ export class CopilotComponent {
           this.orderTemplatesFacade.deleteOrderTemplate(order_template_id);
         }
         break;
+    }
+  }
+
+  private handleIcmSearchToolCall(toolOutput: { [key: string]: string } | string) {
+    let query: string;
+
+    if (typeof toolOutput === 'string') {
+      try {
+        const parsed = JSON.parse(toolOutput);
+
+        if (typeof parsed === 'object' && parsed?.showOnPwa !== undefined && parsed?.query) {
+          query = parsed.query;
+        }
+      } catch {}
+    }
+
+    if (query) {
+      this.navigate(`/search/${encodeURIComponent(query)}`);
     }
   }
 }
