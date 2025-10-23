@@ -89,7 +89,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
   private readonly paypalButtonsContainerId = '#paypal-buttons-container';
 
   /** BehaviorSubject tracking PayPal script loading status */
-  scriptLoaded$ = new BehaviorSubject<boolean>(false);
+  scriptLoaded$ = new BehaviorSubject<boolean>(undefined);
 
   /** References to PayPal component instances for proper cleanup */
   private paypalButtonsComponent: { close?(): void } | undefined;
