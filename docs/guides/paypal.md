@@ -2,6 +2,7 @@
 kb_guide
 kb_pwa
 kb_everyone
+kb_sync_latest_only
 -->
 
 # PayPal Styling Guide
@@ -12,15 +13,26 @@ kb_everyone
   - [Styling Categories](#styling-categories)
 - [Message Styling](#message-styling)
   - [Available Message Styles](#available-message-styles)
+    - [Category/Listing Page Messages](#categorylisting-page-messages)
+    - [Product Detail Page Messages](#product-detail-page-messages)
+    - [Cart/Checkout Messages](#cartcheckout-messages)
+    - [Button-Adjacent Messages](#button-adjacent-messages)
   - [Implementing Message Styling](#implementing-message-styling)
   - [Pay Later Message Limitations](#pay-later-message-limitations)
+    - [Required Conditions](#required-conditions)
+    - [Implementation Notes](#implementation-notes)
+    - [Troubleshooting](#troubleshooting)
 - [Button Styling](#button-styling)
   - [Available Button Styles](#available-button-styles)
+    - [Standard Checkout Buttons](#standard-checkout-buttons)
+    - [Express Checkout Buttons](#express-checkout-buttons)
   - [Implementing Button Styling](#implementing-button-styling)
 - [Customizing PayPal Styles](#customizing-paypal-styles)
   - [Modifying Existing Styles](#modifying-existing-styles)
   - [Adding New Style Configurations](#adding-new-style-configurations)
   - [Style Configuration Options](#style-configuration-options)
+    - [Button Style Options](#button-style-options)
+    - [Message Style Options](#message-style-options)
 - [Further Reading](#further-reading)
 
 This guide explains how to style PayPal buttons and messages in the Intershop PWA using the centralized styling system.
