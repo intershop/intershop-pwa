@@ -62,7 +62,7 @@ export class PaymentMethodMapper {
       return [];
     }
 
-    const pmBlacklist = ['ISH_FASTPAY', 'ISH_INVOICE_TOTAL_ZERO'];
+    const pmBlacklist = ['ISH_FASTPAY', 'ISH_INVOICE_TOTAL_ZERO', 'PAYPAL_CHECKOUT', 'PAYPAL_EXPRESS'];
 
     // return only payment methods that have either payment instruments or no parameters
     return options.methods[0].payments
