@@ -348,6 +348,9 @@ export class CopilotComponent {
       case 'clear':
         this.checkoutFacade.deleteBasketItems();
         break;
+      case 'view':
+        this.navigate('/basket');
+        break;
     }
   }
 
@@ -356,13 +359,14 @@ export class CopilotComponent {
    * @param toolInput The chatbot tool call input information  for PWA_navigate_to_page
    */
   private handlePWANavigateToPageToolCall(toolInput: { [key: string]: string }) {
-    const { page, identifier, categoryId, orderId } = toolInput || {};
+    const { page, sku, categoryId, orderId } = toolInput || {};
+    console.log('PWA_navigate_to_page tool call', toolInput);
     const navigationMap: { [key: string]: () => void } = {
       home: () => this.navigate('/'),
       basket: () => this.navigate('/basket'),
-      product: () => this.navigate(`/product/${identifier}`),
-      category: () => this.navigate(`${categoryId}`),
-      order: () => this.navigate(`/account/order/${orderId}`),
+      product: () => this.navigate(`/product/${sku}`),
+      category: () => this.navigate(`/category/${categoryId}`),
+      order: () => this.navigate(`/account/orders/${orderId}`),
       orderHistory: () => this.navigate('/account/orders'),
       myAccount: () => this.navigate('/account'),
       contact: () => this.navigate('/contact'),
@@ -376,10 +380,11 @@ export class CopilotComponent {
   }
 
   private handlePWAOrderTemplateToolCall(toolInput: { [key: string]: string }) {
-    const { operation, sku, orderTemplateId, title, quantity } = toolInput || {};
+    const { operation, sku, order_template_id, title, quantity } = toolInput || {};
+    console.log('PWA_order_template_actions tool call', toolInput);
     console.warn('operation', operation);
     console.warn('sku', sku);
-    console.warn('wishlistId', orderTemplateId);
+    console.warn('wishlistId', order_template_id);
     console.warn('title', title);
     console.warn('quantity', quantity);
 
@@ -388,20 +393,26 @@ export class CopilotComponent {
         this.orderTemplatesFacade.addOrderTemplate({ title });
         break;
       case 'add':
-        if (sku && orderTemplateId) {
-          this.orderTemplatesFacade.addProductToOrderTemplate(orderTemplateId, sku, quantity ? Number(quantity) : 1);
+        if (sku && order_template_id) {
+          console.log('addProductToOrderTemplate', {
+            order_template_id,
+            sku,
+            quantity: quantity ? Number(quantity) : 1,
+          });
+          this.orderTemplatesFacade.addProductToOrderTemplate(order_template_id, sku, quantity ? Number(quantity) : 1);
         }
         break;
-      // case 'remove':
-      //   if (sku && orderTemplateId) {
-      //     this.shoppingFacade.removeProductFromWishlist(sku, wishlistId);
-      //   }
-      //   break;
-      // case 'delete':
-      //   if (wishlistId) {
-      //     this.shoppingFacade.deleteWishlist(wishlistId);
-      //   }
-      //   break;
+      case 'remove':
+        if (sku && order_template_id) {
+          this.orderTemplatesFacade.removeProductFromOrderTemplate(order_template_id, sku);
+        }
+        break;
+      case 'delete':
+        console.log('tool_input', toolInput);
+        if (order_template_id) {
+          this.orderTemplatesFacade.deleteOrderTemplate(order_template_id);
+        }
+        break;
     }
   }
 }
