@@ -5,7 +5,7 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
-import { PaypalConfig } from './paypal-config.model';
+import { PaypalConfig, PaypalConfigMessaging } from './paypal-config.model';
 
 /**
  * Configuration parameters for PayPal script loading.
@@ -74,32 +74,28 @@ export class PaypalConfigHelper {
   constructor(private appFacade: AppFacade, private scriptLoader: ScriptLoaderService) {}
 
   /**
-   * Determines if PayPal funding sources should be enabled for a specific page type.
+   * Determines if PayPal messaging should be enabled for a specific page type.
    *
    * This method checks the PayPal configuration to determine whether PayLater
    * messaging and funding options should be displayed based on the current page context.
    * Different pages have different messaging strategies and funding availability.
    *
-   * @param config - PayPal configuration containing messaging settings
+   * @param messagingConfig - PayPal configuration messaging settings
    * @param pageType - The type of page where PayPal integration is being used
-   * @returns True if funding/messaging should be enabled for the given page type
-   *
-   * @example
-   * ```typescript
-   * const shouldShowPayLater = this.paypalConfigHelper.isFundingEnabled(
-   *   paypalConfig,
-   *   'product-details'
-   * );
-   * ```
+   * @returns True if messaging should be enabled for the given page type
    */
-  isFundingEnabled(config: PaypalConfig, pageType: string): boolean {
+  isMessagingEnabled(messagingConfig: PaypalConfigMessaging, pageType: string): boolean {
     switch (pageType) {
+      case 'homepage':
+        return messagingConfig.onHomepage;
       case 'product-details':
-        return config.payLaterMessagingProductDetails;
+        return messagingConfig.onProductDetailsPage;
       case 'product-listing':
-        return config.payLaterMessagingCategory;
+        return messagingConfig.onCategoryPage;
+      case 'checkout-payment':
+        return messagingConfig.onPaymentPage;
       default:
-        return config.payLaterMessagingCart;
+        return messagingConfig.onCartPage;
     }
   }
 
@@ -201,7 +197,7 @@ export class PaypalConfigHelper {
       .map(attr => `${attr.name}=${attr.value}`)
       .join('&');
     if (param.type === 'button') {
-      if (param.paypalConfig.payLaterEnabled) {
+      if (param.paypalConfig.payLaterButtonEnabled) {
         params = `${params}&components=buttons,messages`;
       } else {
         params = `${params}&components=buttons`;
@@ -212,7 +208,7 @@ export class PaypalConfigHelper {
     params = `${params}&currency=${param.currency}`;
     params = `${params}&locale=${param.locale}`; // ToDo: decide if paypal should determine locale from browser settings
     params = `${params}&commit=false`; // do not show the "Pay now" button, but the "Continue to PayPal" button
-    if (param.paypalConfig.payLaterEnabled) {
+    if (param.paypalConfig.payLaterButtonEnabled) {
       params = `${params}&enable-funding=paylater`;
     }
     // ToDo: make sure the checkout and express scripts are different to load the script twice

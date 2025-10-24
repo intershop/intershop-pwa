@@ -2,6 +2,7 @@ import { isDevMode } from '@angular/core';
 import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 
+import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { getCoreState } from 'ish-core/store/core/core-store';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 
@@ -162,5 +163,48 @@ export const getStaticEndpoint = createSelector(
       ? `${state.baseURL}/${state.serverStatic}/${state.channel}/${application}/${
           state.channel.split('-')[0]
         }/${locale}`
+      : undefined
+);
+
+/* returns the paypal configuration if it exists in the configuration
+ * if not it returns undefined
+ * if all messages are disables the payLaterMessaging is undefined
+ */
+export const getPaypalConfig = createSelector(
+  getServerConfigParameter('preferences.PayPalCheckoutPreferences'),
+  getServerConfigParameter<boolean>('preferences.PayPalCheckoutPreferences.PayLaterEnabled'),
+  getServerConfigParameter<boolean>('preferences.PayPalCheckoutPreferences.PayLaterMessagingHomeEnabled'),
+  getServerConfigParameter<boolean>('preferences.PayPalCheckoutPreferences.PayLaterMessagingCategoryEnabled'),
+  getServerConfigParameter<boolean>('preferences.PayPalCheckoutPreferences.PayLaterMessagingProductDetailsEnabled'),
+  getServerConfigParameter<boolean>('preferences.PayPalCheckoutPreferences.PayLaterMessagingCartEnabled'),
+  getServerConfigParameter<boolean>('preferences.PayPalCheckoutPreferences.PayLaterMessagingPaymentEnabled'),
+  // eslint-disable-next-line complexity
+  (
+    paypalConfig,
+    payLaterButtonEnabled,
+    messagingOnHomepage,
+    messagingOnCategoryPage,
+    messagingOnProductDetailsPage,
+    messagingOnCartPage,
+    messagingOnPaymentPage
+  ): PaypalConfig =>
+    paypalConfig
+      ? {
+          payLaterButtonEnabled: payLaterButtonEnabled ?? false,
+          payLaterMessaging:
+            messagingOnHomepage ||
+            messagingOnCategoryPage ||
+            messagingOnProductDetailsPage ||
+            messagingOnCartPage ||
+            messagingOnPaymentPage
+              ? {
+                  onHomepage: messagingOnHomepage ?? false,
+                  onCategoryPage: messagingOnCategoryPage ?? false,
+                  onProductDetailsPage: messagingOnProductDetailsPage ?? false,
+                  onCartPage: messagingOnCartPage ?? false,
+                  onPaymentPage: messagingOnPaymentPage ?? false,
+                }
+              : undefined,
+        }
       : undefined
 );

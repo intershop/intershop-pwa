@@ -4,7 +4,7 @@ import { instance, mock } from 'ts-mockito';
 import { AppFacade } from 'ish-core/facades/app.facade';
 
 import { PaypalConfigHelper } from './paypal-config.helper';
-import { PaypalConfig } from './paypal-config.model';
+import { PaypalConfigMessaging } from './paypal-config.model';
 
 describe('Paypal Config Helper', () => {
   let helper: PaypalConfigHelper;
@@ -25,41 +25,40 @@ describe('Paypal Config Helper', () => {
   });
 
   describe('isFundingEnabled', () => {
-    let mockConfig: PaypalConfig;
+    let mockConfig: PaypalConfigMessaging;
 
     beforeEach(() => {
       mockConfig = {
-        payLaterMessagingHome: false,
-        payLaterMessagingProductDetails: true,
-        payLaterMessagingCategory: false,
-        payLaterMessagingCart: true,
-        payLaterMessagingPayment: false,
-        payLaterEnabled: true,
+        onHomepage: false,
+        onProductDetailsPage: true,
+        onCategoryPage: false,
+        onCartPage: true,
+        onPaymentPage: true,
       };
     });
 
     it('should return true for product-details when payLaterMessagingProductDetails is enabled', () => {
-      const result = helper.isFundingEnabled(mockConfig, 'product-details');
+      const result = helper.isMessagingEnabled(mockConfig, 'product-details');
       expect(result).toBeTrue();
     });
 
     it('should return false for product-listing when payLaterMessagingCategory is disabled', () => {
-      const result = helper.isFundingEnabled(mockConfig, 'product-listing');
+      const result = helper.isMessagingEnabled(mockConfig, 'product-listing');
       expect(result).toBeFalse();
     });
 
     it('should return true for cart page when payLaterMessagingCart is enabled', () => {
-      const result = helper.isFundingEnabled(mockConfig, 'cart');
+      const result = helper.isMessagingEnabled(mockConfig, 'cart');
       expect(result).toBeTrue();
     });
 
     it('should return payLaterMessagingCart value for checkout page (default case)', () => {
-      const result = helper.isFundingEnabled(mockConfig, 'checkout');
+      const result = helper.isMessagingEnabled(mockConfig, 'checkout');
       expect(result).toBeTrue();
     });
 
     it('should return payLaterMessagingCart value for unknown page types (default case)', () => {
-      const result = helper.isFundingEnabled(mockConfig, 'unknown-page');
+      const result = helper.isMessagingEnabled(mockConfig, 'unknown-page');
       expect(result).toBeTrue();
     });
   });

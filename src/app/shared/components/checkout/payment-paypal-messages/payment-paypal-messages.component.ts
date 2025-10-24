@@ -30,20 +30,7 @@ import { PayPalStyling } from 'ish-core/models/paypal-config/paypal-styling';
  * - Supports multiple page types: product details, cart, checkout, and product listing
  * - Automatically calculates display amounts based on context (product price, basket total)
  * - Handles PayPal script loading and error states
- * - Provides proper cleanup to prevent memory leaks
- * - Responsive styling based on page context
  *
- * @example
- * ```html
- * <!-- Product details page -->
- * <ish-payment-paypal-messages pageType="product-details" [productSKU]="product.sku"></ish-payment-paypal-messages>
- *
- * <!-- Cart page -->
- * <ish-payment-paypal-messages pageType="cart"></ish-payment-paypal-messages>
- *
- * <!-- Checkout page -->
- * <ish-payment-paypal-messages pageType="checkout"></ish-payment-paypal-messages>
- * ```
  */
 @Component({
   selector: 'ish-payment-paypal-messages',
@@ -121,7 +108,11 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
       this.amount$,
     ])
       .pipe(
-        filter(([, config]) => this.paypalConfigHelper.isFundingEnabled(config, this.pageType)),
+        filter(
+          ([, config]) =>
+            config?.payLaterMessaging &&
+            this.paypalConfigHelper.isMessagingEnabled(config.payLaterMessaging, this.pageType)
+        ),
         distinctUntilChanged(
           ([prevMethod, , prevAmount], [currMethod, , currAmount]) =>
             prevMethod?.id === currMethod?.id && prevAmount === currAmount

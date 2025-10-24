@@ -12,6 +12,7 @@ import {
   getCurrentLocale,
   getDeviceType,
   getICMBaseURL,
+  getPaypalConfig,
   getPipelineEndpoint,
   getRestEndpoint,
 } from 'ish-core/store/core/configuration';
@@ -50,51 +51,7 @@ export class AppFacade {
   getRestEndpoint$ = this.store.pipe(select(getRestEndpoint));
   getPipelineEndpoint$ = this.store.pipe(select(getPipelineEndpoint));
 
-  payPalConfig$: Observable<PaypalConfig> = combineLatest([
-    this.store.pipe(select(getServerConfigParameter<boolean>(`preferences.PayPalCheckoutPreferences.PayLaterEnabled`))),
-    this.store.pipe(
-      select(getServerConfigParameter<boolean>(`preferences.PayPalCheckoutPreferences.PayLaterMessagingHomeEnabled`))
-    ),
-    this.store.pipe(
-      select(
-        getServerConfigParameter<boolean>(`preferences.PayPalCheckoutPreferences.PayLaterMessagingCategoryEnabled`)
-      )
-    ),
-    this.store.pipe(
-      select(
-        getServerConfigParameter<boolean>(
-          `preferences.PayPalCheckoutPreferences.PayLaterMessagingProductDetailsEnabled`
-        )
-      )
-    ),
-    this.store.pipe(
-      select(getServerConfigParameter<boolean>(`preferences.PayPalCheckoutPreferences.PayLaterMessagingCartEnabled`))
-    ),
-    this.store.pipe(
-      select(getServerConfigParameter<boolean>(`preferences.PayPalCheckoutPreferences.PayLaterMessagingPaymentEnabled`))
-    ),
-    this.store.pipe(select(getServerConfigParameter<string>(`preferences.PayPalCheckoutPreferences.clientID`))),
-    this.store.pipe(select(getServerConfigParameter<string>(`preferences.PayPalCheckoutPreferences.merchantID`))),
-    this.store.pipe(select(getServerConfigParameter<string>(`preferences.PayPalCheckoutPreferences.intent`))),
-  ]).pipe(
-    map(
-      ([
-        payLaterEnabled,
-        payLaterMessagingHome,
-        payLaterMessagingCategory,
-        payLaterMessagingProductDetails,
-        payLaterMessagingCart,
-        payLaterMessagingPayment,
-      ]) => ({
-        payLaterEnabled: payLaterEnabled ?? false,
-        payLaterMessagingHome: payLaterMessagingHome ?? false,
-        payLaterMessagingCategory: payLaterMessagingCategory ?? false,
-        payLaterMessagingProductDetails: payLaterMessagingProductDetails ?? true,
-        payLaterMessagingCart: payLaterMessagingCart ?? true,
-        payLaterMessagingPayment: payLaterMessagingPayment ?? true,
-      })
-    )
-  );
+  payPalConfig$: Observable<PaypalConfig> = this.store.pipe(select(getPaypalConfig));
 
   getRestEndpointWithContext$ = combineLatest([
     this.store.pipe(select(getRestEndpoint)),

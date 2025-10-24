@@ -24,9 +24,11 @@ describe('Payment Paypal Messages Component', () => {
     when(appFacade.currentCurrency$).thenReturn(of('USD'));
     when(appFacade.payPalConfig$).thenReturn(
       of({
-        payLaterMessagingProductDetails: true,
-        payLaterMessagingCategory: true,
-        payLaterMessagingCart: true,
+        payLaterMessaging: {
+          onProductDetailsPage: true,
+          onCategoryPage: true,
+          onCartPage: true,
+        },
       } as PaypalConfig)
     );
 
@@ -47,7 +49,7 @@ describe('Payment Paypal Messages Component', () => {
     );
 
     const paypalConfigHelper = mock(PaypalConfigHelper);
-    when(paypalConfigHelper.isFundingEnabled(anything(), anything())).thenReturn(true);
+    when(paypalConfigHelper.isMessagingEnabled(anything(), anything())).thenReturn(true);
     when(paypalConfigHelper.loadPayPalScript(anything())).thenReturn(of('https://www.paypal.com/sdk/js'));
 
     await TestBed.configureTestingModule({
