@@ -5,7 +5,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { merge } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import { OrderTemplatesFacade } from 'src/app/extensions/order-templates/facades/order-templates.facade';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -15,6 +14,7 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
 import { CompareFacade } from '../../../compare/facades/compare.facade';
+import { OrderTemplatesFacade } from '../../../order-templates/facades/order-templates.facade';
 import { CopilotFacade } from '../../facades/copilot.facade';
 import { ChatbotMessage, ChatbotToolCall } from '../../models/copilot-chatbot/copilot-chatbot.model';
 import { CopilotConfig } from '../../models/copilot-config/copilot-config.model';
@@ -364,7 +364,7 @@ export class CopilotComponent {
    */
   private handlePWANavigateToPageToolCall(toolInput: { [key: string]: string }) {
     const { page, sku, categoryId, orderId, orderTemplateId } = toolInput || {};
-    console.log('PWA_navigate_to_page tool call', toolInput);
+
     const navigationMap: { [key: string]: () => void } = {
       home: () => this.navigate('/'),
       basket: () => this.navigate('/basket'),
@@ -387,12 +387,6 @@ export class CopilotComponent {
 
   private handlePWAOrderTemplateToolCall(toolInput: { [key: string]: string }) {
     const { operation, sku, order_template_id, title, quantity } = toolInput || {};
-    console.log('PWA_order_template_actions tool call', toolInput);
-    console.warn('operation', operation);
-    console.warn('sku', sku);
-    console.warn('wishlistId', order_template_id);
-    console.warn('title', title);
-    console.warn('quantity', quantity);
 
     switch (operation) {
       case 'create':
@@ -400,11 +394,6 @@ export class CopilotComponent {
         break;
       case 'add':
         if (sku && order_template_id) {
-          console.log('addProductToOrderTemplate', {
-            order_template_id,
-            sku,
-            quantity: quantity ? Number(quantity) : 1,
-          });
           this.orderTemplatesFacade.addProductToOrderTemplate(order_template_id, sku, quantity ? Number(quantity) : 1);
         }
         break;
@@ -414,7 +403,6 @@ export class CopilotComponent {
         }
         break;
       case 'delete':
-        console.log('tool_input', toolInput);
         if (order_template_id) {
           this.orderTemplatesFacade.deleteOrderTemplate(order_template_id);
         }
@@ -423,20 +411,18 @@ export class CopilotComponent {
   }
 
   private handleIcmSearchToolCall(toolOutput: { [key: string]: string } | string) {
-    let query: string;
-
     if (typeof toolOutput === 'string') {
       try {
         const parsed = JSON.parse(toolOutput);
 
-        if (typeof parsed === 'object' && parsed?.showOnPwa !== undefined && parsed?.query) {
-          query = parsed.query;
+        if (typeof parsed === 'object' && parsed && parsed.showOnPwa !== undefined && parsed.query) {
+          const query = parsed.query;
+
+          if (query?.trim()) {
+            this.navigate(`/search/${encodeURIComponent(query)}`);
+          }
         }
       } catch {}
-    }
-
-    if (query) {
-      this.navigate(`/search/${encodeURIComponent(query)}`);
     }
   }
 }

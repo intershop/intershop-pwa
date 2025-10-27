@@ -1,13 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
 import { CompareFacade } from '../../../compare/facades/compare.facade';
+import { OrderTemplatesFacade } from '../../../order-templates/facades/order-templates.facade';
 import { CopilotFacade } from '../../facades/copilot.facade';
 import { CopilotConfig } from '../../models/copilot-config/copilot-config.model';
 
@@ -42,9 +46,13 @@ describe('Copilot Component', () => {
     await TestBed.configureTestingModule({
       imports: [],
       providers: [
+        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) },
         { provide: CompareFacade, useFactory: () => instance(mock(CompareFacade)) },
         { provide: CopilotFacade, useFactory: () => instance(copilotFacade) },
+        { provide: OrderTemplatesFacade, useFactory: () => instance(mock(OrderTemplatesFacade)) },
+        { provide: Router, useFactory: () => instance(mock(Router)) },
         { provide: ScriptLoaderService, useFactory: () => instance(scriptLoader) },
         { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
         { provide: TranslateService, useFactory: () => instance(translateService) },
