@@ -7,9 +7,9 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { PaypalConfigHelper } from 'ish-core/models/paypal-config/paypal-config.helper';
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { PaypalConfigService } from 'ish-core/utils/paypal-config/paypal-config.service';
 
 import { PaymentPaypalMessagesComponent } from './payment-paypal-messages.component';
 
@@ -48,9 +48,9 @@ describe('Payment Paypal Messages Component', () => {
       of({ salePrice: { value: 100, type: 'Money', currency: 'USD' } })
     );
 
-    const paypalConfigHelper = mock(PaypalConfigHelper);
-    when(paypalConfigHelper.isMessagingEnabled(anything(), anything())).thenReturn(true);
-    when(paypalConfigHelper.loadPayPalScript(anything())).thenReturn(of('https://www.paypal.com/sdk/js'));
+    const paypalConfigService = mock(PaypalConfigService);
+    when(paypalConfigService.isMessagingEnabled(anything(), anything())).thenReturn(true);
+    when(paypalConfigService.loadPayPalScript(anything())).thenReturn(of('https://www.paypal.com/sdk/js'));
 
     await TestBed.configureTestingModule({
       declarations: [PaymentPaypalMessagesComponent],
@@ -58,7 +58,7 @@ describe('Payment Paypal Messages Component', () => {
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
-        { provide: PaypalConfigHelper, useFactory: () => instance(paypalConfigHelper) },
+        { provide: PaypalConfigService, useFactory: () => instance(paypalConfigService) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
       ],
     }).compileComponents();

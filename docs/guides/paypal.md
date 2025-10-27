@@ -47,7 +47,7 @@ This ensures consistent appearance and optimal user experience across different 
 ### Core Components
 
 - **`PayPalStyling`** - Central repository for all PayPal styling configurations
-- **`PaypalConfigHelper`** - Manages PayPal SDK loading and configuration
+- **`PaypalConfigService`** - Manages PayPal SDK loading and configuration
 - **`PaypalConfig`** - Interface defining which PayPal features are enabled
 - **PayPal Components** - UI components that render PayPal buttons and messages
 
@@ -170,11 +170,6 @@ The `PaymentPaypalMessagesComponent` automatically handles these conditions by:
 - Filtering payment methods to ensure PayPal Fast Checkout is available
 - Only rendering messages when both conditions are satisfied
 - Gracefully handling cases where conditions are not met
-
-```typescript
-// The component checks for eligible payment methods
-filter(([, config]) => this.paypalConfigHelper.isFundingEnabled(config, this.pageType));
-```
 
 #### Troubleshooting
 

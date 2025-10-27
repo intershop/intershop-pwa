@@ -10,7 +10,7 @@
  *
  *
  * @see {@link https://https://developer.paypal.com/studio/checkout/pay-later/us/customize/reference} PayPal Style Reference
- * @see {@link PaypalConfigHelper} for PayPal configuration management
+ * @see {@link PaypalConfigService} for PayPal configuration management
  * @since 1.0.0
  */
 export class PayPalStyling {

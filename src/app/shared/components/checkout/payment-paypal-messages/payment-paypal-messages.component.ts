@@ -15,8 +15,8 @@ import {
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { PaypalConfigHelper, PaypalPageType } from 'ish-core/models/paypal-config/paypal-config.helper';
 import { PayPalStyling } from 'ish-core/models/paypal-config/paypal-styling';
+import { PaypalConfigService, PaypalPageType } from 'ish-core/utils/paypal-config/paypal-config.service';
 
 /**
  * Component for displaying PayPal Pay Later messages on different pages.
@@ -69,7 +69,7 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
     private appFacade: AppFacade,
     private checkoutFacade: CheckoutFacade,
     private shoppingFacade: ShoppingFacade,
-    private paypalConfigHelper: PaypalConfigHelper
+    private paypalConfigService: PaypalConfigService
   ) {}
 
   /**
@@ -105,7 +105,7 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
         filter(
           ([, config]) =>
             config?.payLaterMessaging &&
-            this.paypalConfigHelper.isMessagingEnabled(config.payLaterMessaging, this.pageType)
+            this.paypalConfigService.isMessagingEnabled(config.payLaterMessaging, this.pageType)
         ),
         distinctUntilChanged(
           ([prevMethod, , prevAmount], [currMethod, , currAmount]) =>
@@ -113,7 +113,7 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
         ),
         switchMap(([paymentMethod, , amount]) => {
           if (paymentMethod?.hostedPaymentPageParameters?.length) {
-            return this.paypalConfigHelper
+            return this.paypalConfigService
               .loadPayPalScript({
                 paymentMethod,
                 page: this.pageType,

@@ -30,9 +30,9 @@ import {
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { PaypalButtonsPageType, PaypalConfigHelper } from 'ish-core/models/paypal-config/paypal-config.helper';
 import { PayPalStyling } from 'ish-core/models/paypal-config/paypal-styling';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { PaypalButtonsPageType, PaypalConfigService } from 'ish-core/utils/paypal-config/paypal-config.service';
 
 /**
  * PayPal Payment Component for handling PayPal button integration and checkout flow.
@@ -42,7 +42,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
  * the complete payment process including order creation, payment approval, and error handling.
  *
  * Key Features:
- * - Dynamic PayPal script loading using centralized PaypalConfigHelper
+ * - Dynamic PayPal script loading using centralized PaypalConfigService
  * - Support for both checkout and express checkout flows
  * - Consistent styling through PayPalStyling constants
  * - Dynamic namespace handling for multiple PayPal integrations
@@ -63,7 +63,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
  *
  * @see {@link CheckoutPaymentPageComponent} - Main checkout page integration
  * @see {@link PaymentPaypalMessagesComponent} - PayPal messaging component
- * @see {@link PaypalConfigHelper} - PayPal configuration and script loading
+ * @see {@link PaypalConfigService} - PayPal configuration and script loading
  * @see {@link PayPalStyling} - Centralized PayPal styling constants
  */
 @Component({
@@ -102,7 +102,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
     private checkoutFacade: CheckoutFacade,
     private ngZone: NgZone,
     private router: Router,
-    private paypalConfigHelper: PaypalConfigHelper
+    private paypalConfigService: PaypalConfigService
   ) {}
 
   ngOnInit(): void {
@@ -138,7 +138,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
             paypalPaymentMethod: PaymentMethod;
           }> => {
             if (paypalPaymentMethod.hostedPaymentPageParameters?.length) {
-              return this.paypalConfigHelper
+              return this.paypalConfigService
                 .loadPayPalScript({
                   paymentMethod: paypalPaymentMethod,
                   page: this.pageType,

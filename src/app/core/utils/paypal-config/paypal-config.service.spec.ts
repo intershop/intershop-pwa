@@ -2,22 +2,22 @@ import { TestBed } from '@angular/core/testing';
 import { instance, mock } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { PaypalConfigMessaging } from 'ish-core/models/paypal-config/paypal-config.model';
 
-import { PaypalConfigHelper } from './paypal-config.helper';
-import { PaypalConfigMessaging } from './paypal-config.model';
+import { PaypalConfigService } from './paypal-config.service';
 
-describe('Paypal Config Helper', () => {
-  let helper: PaypalConfigHelper;
+describe('Paypal Config Service', () => {
+  let helper: PaypalConfigService;
   let appFacadeMock: AppFacade;
 
   beforeEach(() => {
     appFacadeMock = mock(AppFacade);
 
     TestBed.configureTestingModule({
-      providers: [{ provide: AppFacade, useFactory: () => instance(appFacadeMock) }, PaypalConfigHelper],
+      providers: [{ provide: AppFacade, useFactory: () => instance(appFacadeMock) }, PaypalConfigService],
     });
 
-    helper = TestBed.inject(PaypalConfigHelper);
+    helper = TestBed.inject(PaypalConfigService);
   });
 
   it('should be created', () => {
@@ -66,12 +66,6 @@ describe('Paypal Config Helper', () => {
   describe('loadPayPalScript', () => {
     it('should be a function', () => {
       expect(typeof helper.loadPayPalScript).toBe('function');
-    });
-  });
-
-  describe('static properties', () => {
-    it('should have correct PayPal script URL', () => {
-      expect(PaypalConfigHelper.PAYPAL_SCRIPT_URL).toBe('https://www.paypal.com/sdk/js');
     });
   });
 });

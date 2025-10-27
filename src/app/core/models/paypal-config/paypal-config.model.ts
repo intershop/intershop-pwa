@@ -4,7 +4,7 @@
  * Interface defining the configuration structure for PayPal integration features
  * This configuration controls the availability and display of PayPal Pay Later messaging across different page contexts.
  *
- * @see {@link PaypalConfigHelper} for PayPal configuration management
+ * @see {@link PaypalConfigService} for PayPal configuration management
  * @see {@link PayPalStyling} for PayPal styling configurations
  * @since 1.0.0
  */

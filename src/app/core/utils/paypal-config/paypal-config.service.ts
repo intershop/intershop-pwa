@@ -3,34 +3,33 @@ import { Observable, combineLatest, map, switchMap } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { PaypalConfig, PaypalConfigMessaging } from 'ish-core/models/paypal-config/paypal-config.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
-
-import { PaypalConfig, PaypalConfigMessaging } from './paypal-config.model';
 
 export type PaypalPageType = PaypalButtonsPageType | 'home' | 'product-details' | 'product-listing';
 export type PaypalButtonsPageType = 'cart' | 'checkout';
 
 /**
  * Configuration parameters for PayPal script loading.
- * Used internally by PaypalConfigHelper to customize script loading behavior.
+ * Used internally by PaypalConfigService to customize script loading behavior.
  */
 interface ScriptParam {
+  /** Payment method configuration attributes from the backend */
+  paymentMethod: PaymentMethod;
+  /** Page context where the script is being loaded */
+  page: PaypalPageType;
   /** Optional locale override (normally retrieved from AppFacade) */
   locale?: string;
   /** Optional currency override (normally retrieved from AppFacade) */
   currency?: string;
-  /** Payment method configuration attributes from the backend */
-  paymentMethod: PaymentMethod;
   /** Optional PayPal configuration override (normally retrieved from AppFacade) */
   paypalConfig?: PaypalConfig;
-  /** Page context where the script is being loaded */
-  page: PaypalPageType;
   /** Type of PayPal integration (e.g., 'button', 'message') */
-  type?: string;
+  type?: 'button' | 'message';
 }
 
 /**
- * PayPal Configuration Helper Service
+ * PayPal Configuration Service
  *
  * This service provides centralized PayPal SDK integration functionality, handling
  * script loading, configuration management, and funding eligibility checks across
@@ -53,12 +52,9 @@ interface ScriptParam {
  * @see {@link PaypalConfig} - PayPal configuration model
  */
 @Injectable({ providedIn: 'root' })
-export class PaypalConfigHelper {
-  /** Base URL for PayPal SDK script loading */
-  static PAYPAL_SCRIPT_URL = 'https://www.paypal.com/sdk/js';
-
+export class PaypalConfigService {
   /** Private script URL property for potential runtime customization */
-  private scriptUrl: string = PaypalConfigHelper.PAYPAL_SCRIPT_URL;
+  private readonly scriptUrl = 'https://www.paypal.com/sdk/js';
 
   constructor(private appFacade: AppFacade, private scriptLoader: ScriptLoaderService) {}
 

@@ -5,9 +5,9 @@ import { map } from 'rxjs/operators';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
-import { PaypalPageType } from 'ish-core/models/paypal-config/paypal-config.helper';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { PriceHelper } from 'ish-core/models/price/price.model';
+import { PaypalPageType } from 'ish-core/utils/paypal-config/paypal-config.service';
 
 /**
  * The Cost Summary Component displays a detailed summary of basket or order costs, respectively.
