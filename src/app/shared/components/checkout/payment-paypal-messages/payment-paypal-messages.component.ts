@@ -15,7 +15,7 @@ import {
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { PaypalConfigHelper } from 'ish-core/models/paypal-config/paypal-config.helper';
+import { PaypalConfigHelper, PaypalPageType } from 'ish-core/models/paypal-config/paypal-config.helper';
 import { PayPalStyling } from 'ish-core/models/paypal-config/paypal-styling';
 
 /**
@@ -27,11 +27,12 @@ import { PayPalStyling } from 'ish-core/models/paypal-config/paypal-styling';
  * and current amount.
  *
  * Features:
- * - Supports multiple page types: product details, cart, checkout, and product listing
+ * - Supports multiple page types: product details, cart, payment, and product listing
  * - Automatically calculates display amounts based on context (product price, basket total)
  * - Handles PayPal script loading and error states
  *
  */
+
 @Component({
   selector: 'ish-payment-paypal-messages',
   templateUrl: './payment-paypal-messages.component.html',
@@ -42,7 +43,7 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
    * The type of page where the component is displayed.
    * Determines which PayPal message styling and configuration to use.
    */
-  @Input() pageType: 'product-details' | 'cart' | 'checkout' | 'product-listing' = 'cart';
+  @Input() pageType: PaypalPageType = 'cart';
 
   /**
    * Product SKU for product detail pages.
@@ -62,7 +63,6 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
   /** Observable stream for the current amount to display in messages */
   private amount$: Observable<number>;
 
-  /** DestroyRef for handling component cleanup */
   private destroyRef = inject(DestroyRef);
 
   constructor(
@@ -100,13 +100,7 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
   }
 
   private loadScript() {
-    combineLatest([
-      this.checkoutFacade.paypalPaymentMethod$(
-        this.pageType !== 'checkout' ? 'FastCheckout' : 'RedirectBeforeCheckout'
-      ),
-      this.appFacade.payPalConfig$,
-      this.amount$,
-    ])
+    combineLatest([this.checkoutFacade.paypalPaymentMethod$(), this.appFacade.payPalConfig$, this.amount$])
       .pipe(
         filter(
           ([, config]) =>
@@ -152,8 +146,11 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
     let messageConfig;
 
     switch (this.pageType) {
+      case 'home':
+        messageConfig = { pageType: this.pageType, style: PayPalStyling.HOME_MESSAGE_STYLING };
+        break;
       case 'product-listing':
-        messageConfig = { style: PayPalStyling.CATEGORY_MESSAGE_STYLING };
+        messageConfig = { pageType: this.pageType, style: PayPalStyling.CATEGORY_MESSAGE_STYLING };
         break;
       case 'product-details':
         messageConfig = { amount, style: PayPalStyling.PDP_MESSAGE_STYLING };
@@ -167,7 +164,7 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const paypalObject = (window as any)[nameSpace];
     this.paypalMessagesComponent = paypalObject
-      .Messages(messageConfig)
+      .Messages({ ...messageConfig, pageType: this.pageType })
       .render(this.paypalMessagesContainerId)
       .catch((error: string) => {
         console.error('PayPal Messages render failed:', error);

@@ -8,20 +8,18 @@
  * The styling configurations follow PayPal's official SDK documentation and are optimized
  * for the Intershop PWA's design system and user experience requirements.
  *
- * @example
- * ```typescript
- * // Using message styling in a component
- * const messageStyle = PayPalStyling.PDP_MESSAGE_STYLING;
  *
- * // Using button styling in PayPal integration
- * const buttonStyle = PayPalStyling.PAYPAL_CHECKOUT_BUTTON_STYLING;
- * ```
- *
- * @see {@link https://developer.paypal.com/docs/checkout/reference/style/} PayPal Style Reference
+ * @see {@link https://https://developer.paypal.com/studio/checkout/pay-later/us/customize/reference} PayPal Style Reference
  * @see {@link PaypalConfigHelper} for PayPal configuration management
  * @since 1.0.0
  */
 export class PayPalStyling {
+  static HOME_MESSAGE_STYLING = {
+    layout: 'flex',
+    color: 'white-no-border',
+    ratio: '20x1',
+  };
+
   /**
    * Styling configuration for PayPal Pay Later messages on category/listing pages.
    *
@@ -30,15 +28,11 @@ export class PayPalStyling {
    *
    * @static
    * @readonly
-   * @example
-   * ```typescript
-   * paypal.Messages({
-   *   style: PayPalStyling.CATEGORY_MESSAGE_STYLING,
-   *   // ... other options
-   * }).render('#paypal-message-container');
-   * ```
    */
-  static CATEGORY_MESSAGE_STYLING = { layout: 'flex', color: 'white-no-border' };
+  static CATEGORY_MESSAGE_STYLING = {
+    layout: 'flex',
+    color: 'white-no-border',
+  };
 
   /**
    * Styling configuration for PayPal Pay Later messages on Product Detail Pages (PDP).
@@ -48,13 +42,6 @@ export class PayPalStyling {
    *
    * @static
    * @readonly
-   * @example
-   * ```typescript
-   * paypal.Messages({
-   *   style: PayPalStyling.PDP_MESSAGE_STYLING,
-   *   // ... other options
-   * }).render('#product-paypal-message');
-   * ```
    */
   static PDP_MESSAGE_STYLING = {
     layout: 'text',
@@ -72,13 +59,6 @@ export class PayPalStyling {
    *
    * @static
    * @readonly
-   * @example
-   * ```typescript
-   * paypal.Messages({
-   *   style: PayPalStyling.CART_CHECKOUT_MESSAGE_STYLING,
-   *   // ... other options
-   * }).render('#checkout-paypal-message');
-   * ```
    */
   static CART_CHECKOUT_MESSAGE_STYLING = {
     layout: 'text',
@@ -96,13 +76,6 @@ export class PayPalStyling {
    *
    * @static
    * @readonly
-   * @example
-   * ```typescript
-   * paypal.Messages({
-   *   style: PayPalStyling.BUTTON_MESSAGE_STYLING,
-   *   // ... other options
-   * }).render('#button-paypal-message');
-   * ```
    */
   static BUTTON_MESSAGE_STYLING = {
     layout: 'text',
@@ -117,13 +90,6 @@ export class PayPalStyling {
    *
    * @static
    * @readonly
-   * @example
-   * ```typescript
-   * paypal.Buttons({
-   *   style: PayPalStyling.PAYPAL_CHECKOUT_BUTTON_STYLING,
-   *   // ... other button options
-   * }).render('#paypal-checkout-button');
-   * ```
    */
   static PAYPAL_CHECKOUT_BUTTON_STYLING = {
     layout: 'horizontal',
@@ -142,13 +108,6 @@ export class PayPalStyling {
    *
    * @static
    * @readonly
-   * @example
-   * ```typescript
-   * paypal.Buttons({
-   *   style: PayPalStyling.PAYPAL_EXPRESS_BUTTON_STYLING,
-   *   // ... other button options
-   * }).render('#paypal-express-button');
-   * ```
    */
   static PAYPAL_EXPRESS_BUTTON_STYLING = {
     shape: 'sharp',

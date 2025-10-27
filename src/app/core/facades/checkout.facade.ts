@@ -296,7 +296,7 @@ export class CheckoutFacade {
     return this.basket$.pipe(
       whenTruthy(),
       take(1),
-      tap(() => this.store.dispatch(loadBasketEligiblePaymentMethods())),
+      tap(() => this.loadEligiblePaymentMethods()),
       switchMap(() => this.store.pipe(select(getBasketEligiblePaymentMethods)))
     );
   }
@@ -312,16 +312,22 @@ export class CheckoutFacade {
    * @param contextCapability 'FastCheckout' | 'RedirectBeforeCheckout'
    * @returns Observable<PaymentMethod> or undefined if no PayPal payment method is available
    */
-  paypalPaymentMethod$(contextCapability: string): Observable<PaymentMethod> {
-    return this.store.pipe(
-      select(getBasketEligiblePaymentMethods),
-      map(methods =>
-        methods?.find(
-          method =>
-            method.capabilities?.includes('PaypalCheckout') &&
-            (contextCapability === 'FastCheckout'
-              ? method.capabilities?.includes(contextCapability)
-              : !method.capabilities?.includes('FastCheckout'))
+  paypalPaymentMethod$(contextCapability?: string): Observable<PaymentMethod> {
+    return this.basket$.pipe(
+      whenTruthy(),
+      switchMap(() =>
+        this.store.pipe(
+          select(getBasketEligiblePaymentMethods),
+          tap(pms => pms?.length || this.store.dispatch(loadBasketEligiblePaymentMethods())),
+          map(methods =>
+            methods?.find(method =>
+              method.capabilities?.includes('PaypalCheckout') && contextCapability
+                ? contextCapability === 'FastCheckout'
+                  ? method.capabilities?.includes(contextCapability)
+                  : !method.capabilities?.includes('FastCheckout')
+                : true
+            )
+          )
         )
       )
     );

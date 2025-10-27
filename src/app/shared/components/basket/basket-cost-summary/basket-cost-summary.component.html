@@ -59,7 +59,11 @@
       <span *ngIf="!totals.isEstimated">{{ 'checkout.order.total_cost.label' | translate }}</span>
     </dt>
     <dd class="col-6 total-price">{{ totals.total | ishPrice : 'gross' }}</dd>
-    <dd class="col-12 pt-2"><ish-payment-paypal-messages /></dd>
+    <ng-container *ngIf="showPaypalMessages$ | async as messaging">
+      <dd *ngIf="messaging.preference | ishServerSetting" class="col-12">
+        <ish-payment-paypal-messages [pageType]="messaging.type" />
+      </dd>
+    </ng-container>
   </dl>
 </div>
 

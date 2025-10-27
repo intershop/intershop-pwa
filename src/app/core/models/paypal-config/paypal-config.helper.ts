@@ -7,6 +7,9 @@ import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.
 
 import { PaypalConfig, PaypalConfigMessaging } from './paypal-config.model';
 
+export type PaypalPageType = PaypalButtonsPageType | 'home' | 'product-details' | 'product-listing';
+export type PaypalButtonsPageType = 'cart' | 'checkout';
+
 /**
  * Configuration parameters for PayPal script loading.
  * Used internally by PaypalConfigHelper to customize script loading behavior.
@@ -21,7 +24,7 @@ interface ScriptParam {
   /** Optional PayPal configuration override (normally retrieved from AppFacade) */
   paypalConfig?: PaypalConfig;
   /** Page context where the script is being loaded */
-  page: 'product-details' | 'cart' | 'checkout' | 'product-listing';
+  page: PaypalPageType;
   /** Type of PayPal integration (e.g., 'button', 'message') */
   type?: string;
 }
@@ -44,20 +47,6 @@ interface ScriptParam {
  * configuration systems to provide a seamless PayPal experience across
  * product pages, cart, and checkout flows.
  *
- * @example
- * ```typescript
- * // Load PayPal script for button integration
- * const scriptParam = {
- *   hostedPaymentPageParameters: paymentMethod.hostedPaymentPageParameters,
- *   page: 'cart' as const,
- *   type: 'button' as const
- * };
- *
- * this.paypalConfigHelper.loadPayPalScript(scriptParam).subscribe(namespace => {
- *   // PayPal SDK loaded with namespace
- *   const paypalObject = window[namespace];
- * });
- * ```
  *
  * @see {@link PaymentPaypalComponent} - Main PayPal button integration
  * @see {@link PaymentPaypalMessagesComponent} - PayPal messaging integration
@@ -84,15 +73,15 @@ export class PaypalConfigHelper {
    * @param pageType - The type of page where PayPal integration is being used
    * @returns True if messaging should be enabled for the given page type
    */
-  isMessagingEnabled(messagingConfig: PaypalConfigMessaging, pageType: string): boolean {
+  isMessagingEnabled(messagingConfig: PaypalConfigMessaging, pageType: PaypalPageType): boolean {
     switch (pageType) {
-      case 'homepage':
+      case 'home':
         return messagingConfig.onHomepage;
       case 'product-details':
         return messagingConfig.onProductDetailsPage;
       case 'product-listing':
         return messagingConfig.onCategoryPage;
-      case 'checkout-payment':
+      case 'checkout':
         return messagingConfig.onPaymentPage;
       default:
         return messagingConfig.onCartPage;
@@ -114,24 +103,13 @@ export class PaypalConfigHelper {
    * @param param - Script loading parameters including page context and payment method config
    * @returns Observable that emits the PayPal namespace string when script loads successfully
    *
-   * @example
-   * ```typescript
-   * const scriptParam = {
-   *   hostedPaymentPageParameters: paymentMethod.hostedPaymentPageParameters,
-   *   page: 'checkout' as const,
-   *   type: 'button' as const
-   * };
-   *
-   * this.loadPayPalScript(scriptParam).subscribe({
-   *   next: (namespace) => {
-   *     const paypalSdk = (window as any)[namespace];
-   *     // Initialize PayPal components
-   *   },
-   *   error: (error) => console.error('PayPal script loading failed:', error)
-   * });
-   * ```
    */
   loadPayPalScript(param: ScriptParam): Observable<string> {
+    const nameSpace =
+      param.type === 'message'
+        ? 'PayPal_iframe_message'
+        : 'PayPal_iframe_'.concat(param.paymentMethod.id, '_').concat(param.type);
+
     return combineLatest([
       this.appFacade.currentLocale$,
       this.appFacade.currentCurrency$,
@@ -154,7 +132,7 @@ export class PaypalConfigHelper {
               ) ?? []),
               {
                 name: 'data-namespace',
-                value: 'PayPal_iframe_'.concat(scriptParam.paymentMethod.id, '_').concat(scriptParam.type),
+                value: nameSpace,
               },
               { name: 'data-page-type', value: scriptParam.page },
               {
@@ -165,7 +143,7 @@ export class PaypalConfigHelper {
               },
             ],
           })
-          .pipe(map(() => 'PayPal_iframe_'.concat(scriptParam.paymentMethod.id, '_').concat(scriptParam.type)))
+          .pipe(map(() => nameSpace))
       )
     );
   }
@@ -197,11 +175,7 @@ export class PaypalConfigHelper {
       .map(attr => `${attr.name}=${attr.value}`)
       .join('&');
     if (param.type === 'button') {
-      if (param.paypalConfig.payLaterButtonEnabled) {
-        params = `${params}&components=buttons,messages`;
-      } else {
-        params = `${params}&components=buttons`;
-      }
+      params = `${params}&components=buttons`;
     } else {
       params = `${params}&components=messages`;
     }

@@ -58,7 +58,7 @@ describe('Paypal Config Helper', () => {
     });
 
     it('should return payLaterMessagingCart value for unknown page types (default case)', () => {
-      const result = helper.isMessagingEnabled(mockConfig, 'unknown-page');
+      const result = helper.isMessagingEnabled(mockConfig, undefined);
       expect(result).toBeTrue();
     });
   });

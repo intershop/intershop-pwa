@@ -30,7 +30,7 @@ import {
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { PaypalConfigHelper } from 'ish-core/models/paypal-config/paypal-config.helper';
+import { PaypalButtonsPageType, PaypalConfigHelper } from 'ish-core/models/paypal-config/paypal-config.helper';
 import { PayPalStyling } from 'ish-core/models/paypal-config/paypal-styling';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -77,7 +77,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
    * The type of page where the component is displayed.
    * Determines which PayPal message styling and configuration to use.
    */
-  @Input() pageType: 'product-details' | 'cart' | 'checkout' | 'product-listing' = 'cart';
+  @Input() pageType: PaypalButtonsPageType = 'cart';
 
   /**
    * Event emitted when a PayPal payment method is selected.
@@ -85,24 +85,16 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
    */
   @Output() selectPaypalPaymentMethod = new EventEmitter<string>();
 
-  /** Container selector for PayPal button rendering */
   private readonly paypalButtonsContainerId = '#paypal-buttons-container';
 
-  /** BehaviorSubject tracking PayPal script loading status */
+  isPaypalPaymentMethodSelected$: Observable<boolean>;
   scriptLoaded$ = new BehaviorSubject<boolean>(undefined);
+
+  private basket$ = this.checkoutFacade.basket$.pipe(shareReplay(1));
+  private paypalPaymentMethod$: Observable<PaymentMethod>;
 
   /** References to PayPal component instances for proper cleanup */
   private paypalButtonsComponent: { close?(): void } | undefined;
-  private paypalMessagesComponent: { close?(): void } | undefined;
-
-  /** Observable stream of the current basket with caching */
-  private basket$ = this.checkoutFacade.basket$.pipe(shareReplay(1));
-
-  /** Observable stream of the PayPal payment method configuration */
-  private paypalPaymentMethod$: Observable<PaymentMethod>;
-
-  /** Observable indicating whether PayPal payment method is currently selected */
-  isPaypalPaymentMethodSelected$: Observable<boolean>;
 
   private destroyRef = inject(DestroyRef);
 
@@ -129,17 +121,6 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
 
   /**
    * Loads PayPal SDK script and initializes payment buttons.
-   *
-   * This method orchestrates the complete PayPal integration process by:
-   * 1. Combining basket, payment method, and configuration data
-   * 2. Loading appropriate PayPal script using PaypalConfigHelper
-   * 3. Setting up dynamic namespace for PayPal object access
-   * 4. Initializing checkout or express checkout buttons based on configuration
-   *
-   * The method uses RxJS operators to handle the asynchronous loading process
-   * and ensures proper cleanup through takeUntilDestroyed.
-   *
-   * @private
    */
   private loadScript() {
     combineLatest({
@@ -375,9 +356,6 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
     try {
       if (this.paypalButtonsComponent?.close) {
         this.paypalButtonsComponent.close();
-      }
-      if (this.paypalMessagesComponent?.close) {
-        this.paypalMessagesComponent.close();
       }
     } catch (error) {
       // Ignore cleanup errors - components may already be destroyed
