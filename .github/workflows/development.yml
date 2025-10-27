@@ -18,7 +18,7 @@ concurrency:
 
 env:
   NODE_VERSION: 22.17.1
-  ICM_BASE_URL: https://icm-konsum-review-int.icm.intershop.de
+  ICM_BASE_URL: https://icm-issup-int.icm.intershop.de
 
 jobs:
   Quality:
