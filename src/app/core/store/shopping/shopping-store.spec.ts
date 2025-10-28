@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -10,19 +11,15 @@ import { SelectedProductContextFacade } from 'ish-core/facades/selected-product-
 import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/category.model';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { CountryService } from 'ish-core/services/country/country.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
-import { PricesService } from 'ish-core/services/prices/prices.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
-import { WarrantyService } from 'ish-core/services/warranty/warranty.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -47,10 +44,7 @@ describe('Shopping Store', () => {
   let productsServiceProviderMock: ProductsServiceProvider;
   let sparqueSuggestionsServiceMock: SparqueSuggestionsService;
   let suggestServiceMock: SuggestService;
-  let promotionsServiceMock: PromotionsService;
   let filterServiceMock: FilterService;
-  let priceServiceMock: PricesService;
-  let warrantyServiceMock: WarrantyService;
 
   beforeEach(() => {
     const catA = { uniqueId: 'A', categoryPath: ['A'], name: 'nA' } as Category;
@@ -62,20 +56,6 @@ describe('Shopping Store', () => {
       name: 'nA123456',
     } as Category;
     const catB = { uniqueId: 'B', categoryPath: ['B'], name: 'nB' } as Category;
-
-    const promotion = {
-      id: 'PROMO_UUID',
-      name: 'MyPromotion',
-      couponCodeRequired: false,
-      currency: 'EUR',
-      promotionType: 'MyPromotionType',
-      description: 'MyPromotionDescription',
-      legalContentMessage: 'MyPromotionContentMessage',
-      longTitle: 'MyPromotionLongTitle',
-      ruleDescription: 'MyPromotionRuleDescription',
-      title: 'MyPromotionTitle',
-      useExternalUrl: false,
-    } as Promotion;
 
     categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getCategory(anything())).thenCall(uniqueId => {
@@ -121,6 +101,7 @@ describe('Shopping Store', () => {
     suggestServiceMock = mock(SuggestService);
     productsServiceMock = mock(ProductsService);
     when(productsServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
+    when(productsServiceProviderMock.isSparqueSearchEnabled()).thenReturn(of(false));
     when(productsServiceMock.getProduct(anyString())).thenCall(sku => {
       if (['P1', 'P2'].find(x => x === sku)) {
         return of({ sku, name: `n${sku}` });
@@ -142,22 +123,14 @@ describe('Shopping Store', () => {
       of<{ suggestions: Suggestions }>({ suggestions: { keywords: [{ keyword: 'something' }] } })
     );
 
-    promotionsServiceMock = mock(PromotionsService);
-    when(promotionsServiceMock.getPromotion(anything())).thenReturn(of(promotion));
-
     filterServiceMock = mock(FilterService);
     when(filterServiceMock.getFilterForSearch(anything())).thenReturn(of({} as FilterNavigation));
     when(filterServiceMock.getFilterForCategory(anything())).thenReturn(of({} as FilterNavigation));
 
-    priceServiceMock = mock(PricesService);
-    when(priceServiceMock.getProductPrices(anything())).thenReturn(of([]));
-
-    warrantyServiceMock = mock(WarrantyService);
-    when(warrantyServiceMock.getWarranty(anything())).thenReturn(of(undefined));
-
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], true),
+        HttpClientTestingModule,
         RouterTestingModule.withRoutes([
           {
             path: 'home',
@@ -195,13 +168,10 @@ describe('Shopping Store', () => {
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
-        { provide: PricesService, useFactory: () => instance(priceServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
-        { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
         { provide: SparqueSuggestionsService, useFactory: () => instance(sparqueSuggestionsServiceMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
-        { provide: WarrantyService, useFactory: () => instance(warrantyServiceMock) },
         provideStoreSnapshots(),
         SelectedProductContextFacade,
       ],
