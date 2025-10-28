@@ -15,8 +15,9 @@ import {
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { PayPalStyling } from 'ish-core/models/paypal-config/paypal-styling';
 import { PaypalConfigService, PaypalPageType } from 'ish-core/utils/paypal-config/paypal-config.service';
+
+import { PAYPAL_MESSAGE_STYLING } from './payment-paypal-messages.component.styling';
 
 /**
  * Component for displaying PayPal Pay Later messages on different pages.
@@ -147,16 +148,19 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
 
     switch (this.pageType) {
       case 'home':
-        messageConfig = { pageType: this.pageType, style: PayPalStyling.HOME_MESSAGE_STYLING };
+        messageConfig = { style: PAYPAL_MESSAGE_STYLING.home };
         break;
       case 'product-listing':
-        messageConfig = { pageType: this.pageType, style: PayPalStyling.CATEGORY_MESSAGE_STYLING };
+        messageConfig = { style: PAYPAL_MESSAGE_STYLING.category };
         break;
       case 'product-details':
-        messageConfig = { amount, style: PayPalStyling.PDP_MESSAGE_STYLING };
+        messageConfig = { amount, style: PAYPAL_MESSAGE_STYLING.product };
+        break;
+      case 'checkout':
+        messageConfig = { amount, style: PAYPAL_MESSAGE_STYLING.checkout };
         break;
       default:
-        messageConfig = { amount, style: PayPalStyling.CART_CHECKOUT_MESSAGE_STYLING };
+        messageConfig = { amount, style: PAYPAL_MESSAGE_STYLING.cart };
         break;
     }
     this.scriptLoaded$.next(true);

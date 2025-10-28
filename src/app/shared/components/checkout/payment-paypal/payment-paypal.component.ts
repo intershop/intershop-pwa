@@ -30,9 +30,10 @@ import {
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { PayPalStyling } from 'ish-core/models/paypal-config/paypal-styling';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalButtonsPageType, PaypalConfigService } from 'ish-core/utils/paypal-config/paypal-config.service';
+
+import { PAYPAL_BUTTON_STYLING } from './payment-paypal.component.styling';
 
 /**
  * PayPal Payment Component for handling PayPal button integration and checkout flow.
@@ -44,7 +45,6 @@ import { PaypalButtonsPageType, PaypalConfigService } from 'ish-core/utils/paypa
  * Key Features:
  * - Dynamic PayPal script loading using centralized PaypalConfigService
  * - Support for both checkout and express checkout flows
- * - Consistent styling through PayPalStyling constants
  * - Dynamic namespace handling for multiple PayPal integrations
  * - Comprehensive error handling and user feedback
  * - PayPal Messages integration for payment method promotion
@@ -55,16 +55,9 @@ import { PaypalButtonsPageType, PaypalConfigService } from 'ish-core/utils/paypa
  * 3. Handling payment flow through PayPal's hosted checkout
  * 4. Managing basket updates and navigation upon completion
  *
- * @example
- * ```html
- * <ish-payment-paypal [pageType]="cart" (selectPaypalPaymentMethod)="onPaymentMethodSelected($event)">
- * </ish-payment-paypal>
- * ```
- *
  * @see {@link CheckoutPaymentPageComponent} - Main checkout page integration
  * @see {@link PaymentPaypalMessagesComponent} - PayPal messaging component
  * @see {@link PaypalConfigService} - PayPal configuration and script loading
- * @see {@link PayPalStyling} - Centralized PayPal styling constants
  */
 @Component({
   selector: 'ish-payment-paypal',
@@ -193,7 +186,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
       let isShippingAddressChanged = false;
 
       const paypalButtonsConfig = paypalObject.Buttons({
-        style: PayPalStyling.PAYPAL_CHECKOUT_BUTTON_STYLING,
+        style: PAYPAL_BUTTON_STYLING.checkout,
         // Call your server to set up the transaction after the user has clicked the button
         createOrder: (data: { paymentSource: string }) => {
           isShippingAddressChanged = false;
@@ -277,7 +270,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
       this.scriptLoaded$.next(true);
 
       const paypalExpressButtonsConfig = paypalObject.Buttons({
-        style: PayPalStyling.PAYPAL_EXPRESS_BUTTON_STYLING,
+        style: PAYPAL_BUTTON_STYLING.cart,
         // Call your server to set up the transaction after the user has clicked the button
         createOrder: (data: { paymentSource: string }) => {
           this.selectPaypalPaymentMethod.emit(
