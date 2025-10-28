@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, take } from 'rxjs';
+import { Observable, map, take } from 'rxjs';
 
 import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
@@ -8,6 +8,19 @@ import { SparqueProductsService } from 'ish-core/services/sparque-products/sparq
 import { getSparqueConfig } from 'ish-core/store/core/configuration';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
+/**
+ * Service provider that determines which products service implementation to use
+ * based on Sparque configuration and feature toggles.
+ *
+ * This provider acts as a factory that returns either the standard ProductsService
+ * or the SparqueProductsService based on:
+ * - Sparque configuration availability
+ * - Feature toggle states (sparque_search)
+ * - skipSparque parameter override
+ *
+ * The provider implements a legacy mode where any valid Sparque configuration
+ * will enable Sparque functionality even without explicit feature toggles.
+ */
 @Injectable({ providedIn: 'root' })
 export class ProductsServiceProvider {
   constructor(
@@ -17,17 +30,25 @@ export class ProductsServiceProvider {
   ) {}
 
   /**
-   * Gets the appropriate products service based on the store configuration.
+   * Gets the appropriate products service implementation based on configuration and parameters.
    *
-   * @returns An instance of either SparqueProductsService or ProductsService.
+   * @param skipSparque - Optional flag to force use of standard ProductsService, defaults to false.
+   * @returns The SparqueProductsService if enabled and not skipped, otherwise the standard ProductsService.
    */
   // TODO: (Sparque handling) remove 'skipSparque' parameter once the category navigation will be handled by Sparque
   get(skipSparque: boolean = false): ProductsServiceInterface {
-    let isSparque = false;
-    this.store
-      .pipe(select(getSparqueConfig), take(1))
-      .subscribe(sparqueConfig => (sparqueConfig ? (isSparque = true) : (isSparque = false)));
-    return isSparque && !skipSparque ? this.sparqueProductsService : this.productsService;
+    let enabled = false;
+    this.isSparqueSearchEnabled()
+      .pipe(take(1))
+      .subscribe(sparqueSearchEnabled => (enabled = sparqueSearchEnabled));
+    return enabled && !skipSparque ? this.sparqueProductsService : this.productsService;
+  }
+
+  isSparqueSearchEnabled(): Observable<boolean> {
+    return this.store.pipe(
+      select(getSparqueConfig),
+      map(sparqueConfig => sparqueConfig?.features?.includes('search'))
+    );
   }
 }
 

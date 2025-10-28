@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable, merge, noop, of, throwError } from 'rxjs';
 import { delay, toArray } from 'rxjs/operators';
 import { anyNumber, anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
+import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { ProductPriceDetails } from 'ish-core/models/product-prices/product-prices.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
@@ -44,13 +45,34 @@ describe('Products Effects', () => {
   let store: Store;
   let productsServiceMock: ProductsService;
   let productsServiceProviderMock: ProductsServiceProvider;
+  let productListingMapperMock: ProductListingMapper;
   let router: Router;
   let httpStatusCodeService: HttpStatusCodeService;
 
   beforeEach(() => {
     productsServiceProviderMock = mock(ProductsServiceProvider);
     productsServiceMock = mock(ProductsService);
+    productListingMapperMock = mock(ProductListingMapper);
     when(productsServiceProviderMock.get(anything())).thenReturn(instance(productsServiceMock));
+    when(productsServiceProviderMock.isSparqueSearchEnabled()).thenReturn(of(true));
+    when(productListingMapperMock.createPages(anything(), anything(), anything(), anything(), anything())).thenCall(
+      (
+        skus: string[],
+        type: string,
+        value: string,
+        _amount: number,
+        options: {
+          filters?: Record<string, unknown>;
+          itemCount?: number;
+          sortableAttributes?: { name: string }[];
+        }
+      ) => ({
+        1: skus,
+        id: { type, value, filters: options.filters },
+        itemCount: options.itemCount || skus.length,
+        sortableAttributes: options.sortableAttributes || [],
+      })
+    );
     when(productsServiceMock.getProduct(anyString())).thenCall((sku: string) => {
       if (sku === 'invalid') {
         return throwError(() => makeHttpError({ message: 'invalid' }));
@@ -74,6 +96,25 @@ describe('Products Effects', () => {
         return of({
           total: 2,
           products: [{ sku: '123' }, { sku: '234' }],
+          filter: [
+            {
+              name: 'param',
+              displayType: 'text_clear',
+              id: 'param',
+              facets: [
+                {
+                  name: 'b',
+                  count: 2,
+                  selected: true,
+                  displayName: 'b',
+                  searchParameter: {},
+                  level: 0,
+                },
+              ],
+              selectionType: 'single',
+            },
+          ],
+          sortableAttributes: [],
         });
       }
     });
@@ -108,6 +149,7 @@ describe('Products Effects', () => {
           serverUrl: 'https://mock-sparque.example.com',
           workspaceName: 'test-workspace',
           apiName: 'test-api',
+          features: [],
         },
       })
     );

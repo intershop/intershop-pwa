@@ -11,13 +11,16 @@ kb_sync_latest_only
   - [Configuration Parameters Explained](#configuration-parameters-explained)
   - [Multi-Site Configurations](#multi-site-configurations)
   - [Versioning of SPARQUE Service Requests](#versioning-of-sparque-service-requests)
+  - [Feature Toggle Behavior](#feature-toggle-behavior)
+    - [Available Feature Toggles](#available-feature-toggles)
+  - [Personalization of SPARQUE Requests](#personalization-of-sparque-requests)
 - [Provider Concept](#provider-concept)
-- [Suggestion Feature](#suggestion-feature)
+- [Search Suggestions Feature](#search-suggestions-feature)
   - [Search Box Component](#search-box-component)
   - [Recent Search Terms](#recent-search-terms)
 - [Search Feature](#search-feature)
 
-SPARQUE.AI works as an AI-powered search engine and delivers various information, like keyword suggestions, search results, filter options, and category navigation.
+SPARQUE.AI works as an AI-powered search engine and delivers various types of information, such as keyword suggestions, search results, filter options, and category navigation.
 
 ## Configuration
 
@@ -39,6 +42,7 @@ sparque: {
   apiName: '<used sparque api>',
   config: '<optional parameter => default>',
   channelId: '<in sparque workspace configured channel>',
+  features: ['search', 'suggestions'],
 },
 ```
 
@@ -54,6 +58,7 @@ pwa:
       apiName: <used sparque api>
       config: <optional parameter => default>
       channelId: <channel configured in sparque workspace>
+      features: ['search', 'suggestions']
 ```
 
 Example for the specification of the SPARQUE configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
@@ -68,6 +73,7 @@ environment:
         "apiName": "<used sparque api>",
         "config": "<optional parameter => default>",
         "channelId": "<channel configured in sparque workspace>"
+        "features": "['search', 'suggestions']"
       }
 ```
 
@@ -75,20 +81,21 @@ environment:
 
 - **serverUrl**: The URL of the SPARQUE server that the PWA will connect to.
   - PROD: https://api.search.sparque.ai
-  - Early adopters can use our UAT: https://uat.api.search.sparque.ai (New API releases will be available here approximately one week earlier.)
+  - Early adopters can use our UAT: https://uat.api.search.sparque.ai (New API releases are available here approximately one week earlier.)
 - **workspaceName**: The name of the workspace configured in SPARQUE Desk.
 - **apiName**: The name of the API to be used for SPARQUE requests. If your project is based on the ISH project template, use `PWA`. Otherwise, use the name defined in SPARQUE Desk.
 - **config**: Optional parameter specifying the SPARQUE REST configuration (defaults to `default` if not provided).
   - Default: `default` (typically used for UAT)
   - Other option: `production` (used for PROD)
   - Additional configurations can be created in the project as needed.
-- **channelId**: The channel ID configured in the SPARQUE workspace. The default is `ish`. Please adjust this to match your own channelId in your data mapping.
+- **channelId**: The channel ID configured in the SPARQUE workspace. The default is `ish`. Adjust this to match your own channelId in your data mapping.
+- **features**: Array of feature names to enable selective SPARQUE functionality. Only specified features will be active. Available values: `search`, `suggestions`.
 
 ### Multi-Site Configurations
 
 The SPARQUE integration also supports dynamic configurations of a single PWA container deployment with regard to a multi-site scenario, see [Guide - Multi-Site Configurations](./multi-site-configurations.md).
 
-Example for the specification of multiple domain configuration in a NGINX Docker yaml:
+Example for the specification of multiple domain configuration in an NGINX Docker yaml:
 
 ```yaml
 'domain1':
@@ -99,6 +106,7 @@ Example for the specification of multiple domain configuration in a NGINX Docker
     apiName: <used sparque api>
     config: <sparque REST configuration e.g. production>
     channelId: <channel configured in sparque workspace>
+    features: ['search', 'suggestions']
   ...
 ```
 
@@ -112,7 +120,7 @@ The following example shows the provided `SparqueSuggestionsService` which uses 
 
 ```ts
 export class SparqueSuggestionsService implements SuggestionsServiceInterface {
-  // API version for Sparque API.
+  // API version for SPARQUE API.
   private readonly apiVersion = 'v2';
   ...
   searchSuggestions(
@@ -125,6 +133,29 @@ export class SparqueSuggestionsService implements SuggestionsServiceInterface {
   }
 }
 ```
+
+### Feature Toggle Behavior
+
+The SPARQUE integration supports selective enabling of features via feature toggles defined in the `features` array of the SPARQUE configuration.
+This allows for granular control over which SPARQUE functionalities are active within the PWA.
+The feature toggles must be specified in the configuration.
+Otherwise, no SPARQUE functions will be executed.
+
+#### Available Feature Toggles
+
+The following feature toggles control SPARQUE functionality:
+
+- **`search`**: Enables SPARQUE-powered product search and filtering
+- **`suggestions`**: Enables SPARQUE-powered search suggestions
+
+> [!IMPORTANT]
+> SPARQUE services will only be used when valid SPARQUE configuration is provided. The service providers check for both configuration presence and feature states. Missing configuration will cause the system to fall back to standard ICM services where available, or return `undefined` for recommendations.
+
+### Personalization of SPARQUE Requests
+
+When a user is logged in, each SPARQUE request contains an additional HTTP query parameter with `user` as the key and the user's customerNo/BusinessPartnerNo as the value (this value corresponds to the user ID in orders of an ICM order export).
+The request also contains the ICM user token.
+This parameter is passed to SPARQUE by the Wrapper and can be used in SPARQUE for the strategies.
 
 ## Provider Concept
 
@@ -183,11 +214,11 @@ suggestSearch$ =
 );
 ```
 
-## Suggestion Feature
+## Search Suggestions Feature
 
-Beside the keywords, the SPARQUE.AI suggestion response contains further data like suggested products, categories and brands.
+In addition to the keywords, the SPARQUE.AI suggestion response contains further data like suggested products, categories, and brands.
 The suggestion is part of the [Search Box Component](../../src/app/shared/components/search/search-box/search-box.component.ts).
-As soon as the search term has a length of at least 3 characters, a suggestion request is triggered.
+Once the search term reaches a length of at least 3 characters, a suggestion request is triggered.
 If no hits are found for the used search term, the recently used search terms appear.
 Otherwise, the search results are displayed.
 
@@ -222,7 +253,7 @@ The default settings are 5 elements for keywords and recent search terms, 3 elem
 ### Recent Search Terms
 
 The recent search terms are words that were used in the past for a search for this shop domain in the currently used browser.
-The last 5 search terms are stored in the browser's local storage.
+The last five search terms are stored in the browser's local storage.
 This functionality is independent of SPARQUE, but was implemented as part of the PWA SPARQUE integration.
 This functionality is also available for customers who continue to use the ICM/Solr search.
 To customize the number of search terms stored in the browser's local storage, modify the `MAX_NUMBER_OF_STORED_SEARCH_TERMS` constant in the [Search reducer](../../src/app/core/store/shopping/search/search.reducer.ts) to suit your requirements.
