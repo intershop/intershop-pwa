@@ -18,6 +18,7 @@ import { ConfigurationService } from 'ish-core/services/configuration/configurat
 import { CountryService } from 'ish-core/services/country/country.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
+import { SparqueRecommendationsService } from 'ish-core/services/sparque-recommendations/sparque-recommendations.service';
 import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -42,6 +43,7 @@ describe('Shopping Store', () => {
   let categoriesServiceMock: CategoriesService;
   let productsServiceMock: ProductsService;
   let productsServiceProviderMock: ProductsServiceProvider;
+  let sparqueRecommendationsServiceMock: SparqueRecommendationsService;
   let sparqueSuggestionsServiceMock: SparqueSuggestionsService;
   let suggestServiceMock: SuggestService;
   let filterServiceMock: FilterService;
@@ -97,11 +99,15 @@ describe('Shopping Store', () => {
     when(countryServiceMock.getCountries()).thenReturn(EMPTY);
 
     productsServiceProviderMock = mock(ProductsServiceProvider);
+    sparqueRecommendationsServiceMock = mock(SparqueRecommendationsService);
     sparqueSuggestionsServiceMock = mock(SparqueSuggestionsService);
     suggestServiceMock = mock(SuggestService);
     productsServiceMock = mock(ProductsService);
     when(productsServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
     when(productsServiceProviderMock.isSparqueSearchEnabled()).thenReturn(of(false));
+    when(sparqueRecommendationsServiceMock.getRecommendations(anything())).thenReturn(
+      of({ recommendations: { strategy: 'test', count: 5, productSKUs: [] }, products: [] })
+    );
     when(productsServiceMock.getProduct(anyString())).thenCall(sku => {
       if (['P1', 'P2'].find(x => x === sku)) {
         return of({ sku, name: `n${sku}` });
@@ -170,6 +176,7 @@ describe('Shopping Store', () => {
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
+        { provide: SparqueRecommendationsService, useFactory: () => instance(sparqueRecommendationsServiceMock) },
         { provide: SparqueSuggestionsService, useFactory: () => instance(sparqueSuggestionsServiceMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         provideStoreSnapshots(),
