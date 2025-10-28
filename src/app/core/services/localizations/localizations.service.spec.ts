@@ -77,5 +77,27 @@ describe('Localizations Service', () => {
       expect(req.request.url).toMatchInlineSnapshot(`"https://example.com/rest;loc=en_US/localizations"`);
       req.flush('Not Found', { status: 404, statusText: 'Not Found' });
     });
+
+    it('should fetch translations for lang and an arbitrary prefix from ICM api', done => {
+      localizationsService.getServerTranslations('en_US', 'customfield.').subscribe({
+        next: res => {
+          expect(res).toMatchInlineSnapshot(`
+            {
+              "a": "A",
+              "b": "B",
+            }
+          `);
+        },
+        error: fail,
+        complete: done,
+      });
+
+      const req = http.expectOne(() => true);
+      expect(req.request.url).toMatchInlineSnapshot(`"https://example.com/rest;loc=en_US/localizations"`);
+      req.flush({
+        'customfield.a': 'A',
+        'customfield.b': 'B',
+      });
+    });
   });
 });
