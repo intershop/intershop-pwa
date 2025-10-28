@@ -290,17 +290,14 @@ export class CopilotComponent {
       case 'PWA_basket':
         this.handlePWABasketToolCall(toolCall.toolInput);
         break;
-
       case 'PWA_compare_products':
         // Note: this will only work if the 'compare' feature is enabled in the PWA
         this.compareFacade.compareProducts(toolCall.toolInput?.SKUs?.split(';'));
         this.navigate(`/compare`);
         break;
-
       case 'PWA_navigate_to_page':
         this.handlePWANavigateToPageToolCall(toolCall.toolInput);
         break;
-
       case 'PWA_order_template_actions':
         this.handlePWAOrderTemplateToolCall(toolCall.toolInput);
         break;
@@ -390,25 +387,25 @@ export class CopilotComponent {
    * @param toolInput The copilot tool call input information.
    */
   private handlePWAOrderTemplateToolCall(toolInput: { [key: string]: string }) {
-    const { operation, sku, order_template_id, title, quantity } = toolInput || {};
+    const { operation, sku, orderTemplateId, title, quantity } = toolInput || {};
 
     switch (operation) {
       case 'create':
         this.orderTemplatesFacade.addOrderTemplate({ title });
         break;
       case 'add':
-        if (sku && order_template_id) {
-          this.orderTemplatesFacade.addProductToOrderTemplate(order_template_id, sku, quantity ? Number(quantity) : 1);
+        if (sku && orderTemplateId) {
+          this.orderTemplatesFacade.addProductToOrderTemplate(orderTemplateId, sku, quantity ? Number(quantity) : 1);
         }
         break;
       case 'remove':
-        if (sku && order_template_id) {
-          this.orderTemplatesFacade.removeProductFromOrderTemplate(order_template_id, sku);
+        if (sku && orderTemplateId) {
+          this.orderTemplatesFacade.removeProductFromOrderTemplate(orderTemplateId, sku);
         }
         break;
       case 'delete':
-        if (order_template_id) {
-          this.orderTemplatesFacade.deleteOrderTemplate(order_template_id);
+        if (orderTemplateId) {
+          this.orderTemplatesFacade.deleteOrderTemplate(orderTemplateId);
         }
         break;
     }
