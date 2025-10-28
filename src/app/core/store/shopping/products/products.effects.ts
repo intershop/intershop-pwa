@@ -26,7 +26,6 @@ import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { getSparqueConfig } from 'ish-core/store/core/configuration';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
@@ -199,7 +198,7 @@ export class ProductsEffects {
               .get(Object.keys(searchParameter).includes('productFilter'))
               .getFilteredProducts(searchParameter, pageSize, sorting, ((page || 1) - 1) * pageSize)
               .pipe(
-                concatLatestFrom(() => this.store.pipe(select(getSparqueConfig))),
+                concatLatestFrom(() => this.productsServiceProvider.isSparqueSearchEnabled()),
                 mergeMap(([{ products, total, filter, sortableAttributes }, isSparque]) => [
                   ...products.map((product: Product) => loadProductSuccess({ product })),
                   setProductListingPages(

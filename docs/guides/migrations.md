@@ -17,6 +17,19 @@ For more information, see [Serving the PWA from a Sub-Path Including Static File
 
 Together with the `DEPLOY_URL` changes the file `src/ssr/server-scripts/server.js` needed adaptions and was renamed to `src/ssr/server-scripts/distributor.js` for more clarity.
 
+When we introduced the **SPARQUE suggest** and **SPARQUE search** functionality in PWA 7.0.0, the SPARQUE configuration used an all-or-nothing approach in which the entire SPARQUE integration was either enabled or disabled through a single configuration setting.
+With the Intershop PWA 9.0.0 release, the SPARQUE configuration has been refined to allow for more granular control over individual SPARQUE features.
+You can now enable or disable each feature independently, based on your business needs.
+For more details, see [SPARQUE.AI guide | Feature Toggle Behavior](./sparque-ai.md#feature-toggle-behavior).
+For existing projects with a SPARQUE configuration, the configuration needs to be extended to include the new `features` configuration to keep the previous behavior of having the SPARQUE search and suggestions enabled.
+
+```json
+sparque: {
+  ...
+  features: ['search', 'suggestions'],
+},
+```
+
 ## From 7.1.0 to 8.0.0
 
 The Intershop PWA now uses Node.js 22.17.1 LTS with the corresponding npm version 10.9.2.

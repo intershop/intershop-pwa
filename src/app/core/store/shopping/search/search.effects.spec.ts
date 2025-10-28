@@ -5,8 +5,8 @@ import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
+import { SuggestionsServiceProvider } from 'ish-core/service-provider/suggestions.service-provider';
 import { ProductsService } from 'ish-core/services/products/products.service';
-import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
@@ -26,19 +26,21 @@ describe('Search Effects', () => {
   let router: Router;
   let productsServiceMock: ProductsService;
   let suggestServiceMock: SuggestService;
-  let sparqueSuggestionsServiceMock: SparqueSuggestionsService;
   let productsServiceProviderMock: ProductsServiceProvider;
+  let suggestionsServiceProviderMock: SuggestionsServiceProvider;
   let httpStatusCodeService: HttpStatusCodeService;
 
   const suggests = { suggestions: { keywords: [{ keyword: 'Goods' }] } };
 
   beforeEach(() => {
-    sparqueSuggestionsServiceMock = mock(SparqueSuggestionsService);
     suggestServiceMock = mock(SuggestService);
     when(suggestServiceMock.searchSuggestions(anyString())).thenReturn(of(suggests));
     productsServiceMock = mock(ProductsService);
     productsServiceProviderMock = mock(ProductsServiceProvider);
     when(productsServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
+    when(productsServiceProviderMock.isSparqueSearchEnabled()).thenReturn(of(false));
+    suggestionsServiceProviderMock = mock(SuggestionsServiceProvider);
+    when(suggestionsServiceProviderMock.get()).thenReturn(instance(suggestServiceMock));
     const skus = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
     when(productsServiceMock.searchProducts(anything())).thenCall(
       (searchTerm: string, amount: number, _, offset: number) => {
@@ -66,8 +68,7 @@ describe('Search Effects', () => {
       ],
       providers: [
         { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
-        { provide: SparqueSuggestionsService, useFactory: () => instance(sparqueSuggestionsServiceMock) },
-        { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
+        { provide: SuggestionsServiceProvider, useFactory: () => instance(suggestionsServiceProviderMock) },
         provideStoreSnapshots(),
       ],
     });
