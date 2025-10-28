@@ -216,7 +216,6 @@ export class CopilotComponent {
    */
   private handleToolCall(toolCall: ChatbotToolCall) {
     // Execute both tool type handlers to ensure compatibility with old and new chatflows
-    console.log(toolCall);
     this.oldToolTypeCall(toolCall);
     this.newToolTypeCall(toolCall);
   }
