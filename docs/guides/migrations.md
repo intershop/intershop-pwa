@@ -32,6 +32,9 @@ sparque: {
 },
 ```
 
+The `TranslationService.getServerTranslations()` method now accepts an optional `prefix` parameter (default: `'pwa-'`) to specify the prefix for translation keys to be loaded from the server.
+This change requires no migration of existing code.
+
 ## From 7.1.0 to 8.0.0
 
 The Intershop PWA now uses Node.js 22.17.1 LTS with the corresponding npm version 10.9.2.
