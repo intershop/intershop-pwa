@@ -6,7 +6,7 @@ export class CheckoutReceiptPage {
   }
 
   get costCenterInformation() {
-    return cy.get('div[data-testing-id="buyer-cost-center"');
+    return cy.get('div[data-testing-id="additional-info-cost-center"');
   }
 
   lineItemWarranty() {

@@ -14,6 +14,7 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { BasketApprovalInfoComponent } from 'ish-shared/components/basket/basket-approval-info/basket-approval-info.component';
+import { BasketCostCenterViewComponent } from 'ish-shared/components/basket/basket-cost-center-view/basket-cost-center-view.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketErrorMessageComponent } from 'ish-shared/components/basket/basket-error-message/basket-error-message.component';
 import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket/basket-merchant-message-view/basket-merchant-message-view.component';
@@ -41,6 +42,7 @@ describe('Checkout Review Component', () => {
         CheckoutReviewTacFieldComponent,
         MockComponent(AddressComponent),
         MockComponent(BasketApprovalInfoComponent),
+        MockComponent(BasketCostCenterViewComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketErrorMessageComponent),
         MockComponent(BasketMerchantMessageViewComponent),
@@ -70,7 +72,7 @@ describe('Checkout Review Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    component.basket = BasketMockData.getBasket();
+    component.basket = { ...BasketMockData.getBasket(), costCenter: 'CC123' };
   });
 
   it('should be created', () => {
@@ -120,6 +122,8 @@ describe('Checkout Review Component', () => {
         "ish-basket-error-message",
         "ish-basket-validation-results",
         "ish-basket-merchant-message-view",
+        "ish-info-box",
+        "ish-basket-cost-center-view",
         "ish-info-box",
         "ish-address",
         "ish-info-box",

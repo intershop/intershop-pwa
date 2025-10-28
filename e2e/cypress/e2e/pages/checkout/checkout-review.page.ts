@@ -9,7 +9,7 @@ export class CheckoutReviewPage {
   }
 
   get costCenterInformation() {
-    return cy.get('div[data-testing-id="buyer-cost-center"');
+    return cy.get('div[data-testing-id="additional-info-cost-center"');
   }
 
   submitOrder() {

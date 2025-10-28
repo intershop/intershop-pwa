@@ -8,6 +8,7 @@ import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
+import { BasketCostCenterViewComponent } from 'ish-shared/components/basket/basket-cost-center-view/basket-cost-center-view.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket/basket-merchant-message-view/basket-merchant-message-view.component';
 import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
@@ -27,6 +28,7 @@ describe('Checkout Receipt Component', () => {
       declarations: [
         CheckoutReceiptComponent,
         MockComponent(AddressComponent),
+        MockComponent(BasketCostCenterViewComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketMerchantMessageViewComponent),
         MockComponent(BasketShippingMethodComponent),
@@ -44,7 +46,7 @@ describe('Checkout Receipt Component', () => {
     fixture = TestBed.createComponent(CheckoutReceiptComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.order = BasketMockData.getOrder();
+    component.order = { ...BasketMockData.getOrder(), costCenter: 'CC123' };
   });
 
   it('should be created', () => {
@@ -68,6 +70,8 @@ describe('Checkout Receipt Component', () => {
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       [
         "ish-basket-merchant-message-view",
+        "ish-info-box",
+        "ish-basket-cost-center-view",
         "ish-info-box",
         "ish-address",
         "ish-info-box",

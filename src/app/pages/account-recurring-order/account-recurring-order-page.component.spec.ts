@@ -13,6 +13,7 @@ import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.model';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
+import { BasketCostCenterViewComponent } from 'ish-shared/components/basket/basket-cost-center-view/basket-cost-center-view.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
@@ -55,6 +56,7 @@ describe('Account Recurring Order Page Component', () => {
       declarations: [
         AccountRecurringOrderPageComponent,
         MockComponent(AddressComponent),
+        MockComponent(BasketCostCenterViewComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketShippingMethodComponent),
         MockComponent(FaIconComponent),
