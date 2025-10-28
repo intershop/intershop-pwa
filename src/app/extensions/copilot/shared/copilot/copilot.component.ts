@@ -282,8 +282,8 @@ export class CopilotComponent {
 
   /**
    * To completely replace the old tool in future major release
-   * Handle the selected tool call from the chatbot and trigger the corresponding action in the PWA for the new flowise blue print.
-   * @param toolCall The chatbot tool call information for new tool types
+   * Handle the selected tool call from the copilot and trigger the corresponding action in the PWA for the new flowise blue print.
+   * @param toolCall The copilot tool call information for new tool types
    */
   private newToolTypeCall(toolCall: ChatbotToolCall) {
     switch (toolCall?.tool) {
@@ -304,7 +304,7 @@ export class CopilotComponent {
       case 'PWA_order_template_actions':
         this.handlePWAOrderTemplateToolCall(toolCall.toolInput);
         break;
-      case 'icmSearch': //Todo renaming
+      case 'icmSearch': //navigate to search results page based on icmSearch tool call
         this.handleIcmSearchToolCall(toolCall.toolOutput);
         break;
       default:
@@ -313,8 +313,8 @@ export class CopilotComponent {
   }
 
   /**
-   * Handle the PWA_basket tool call from the chatbot and trigger the corresponding basket action in the PWA.
-   * @param toolInput The chatbot tool call input information for PWA_basket
+   * Triggers the corresponding basket action in the PWA based on the PWA_basket tool call from the copilot.
+   * @param toolInput The copilot tool call input.
    */
   private handlePWABasketToolCall(toolInput: { [key: string]: string }) {
     const { operation, items } = toolInput || {};
@@ -359,8 +359,8 @@ export class CopilotComponent {
   }
 
   /**
-   * Handle the PWA_navigate_to_page tool call from the chatbot and trigger the corresponding navigation route in the PWA.
-   * @param toolInput The chatbot tool call input information  for PWA_navigate_to_page
+   * Triggers the corresponding navigation route in the PWA based on the PWA_navigate_to_page tool call from the copilot.
+   * @param toolInput The copilot tool call input information.
    */
   private handlePWANavigateToPageToolCall(toolInput: { [key: string]: string }) {
     const { page, sku, categoryId, orderId, orderTemplateId } = toolInput || {};
@@ -385,6 +385,10 @@ export class CopilotComponent {
     }
   }
 
+  /**
+   * Triggers the corresponding order template action in the PWA based on the PWA_order_template_actions tool call from the copilot.
+   * @param toolInput The copilot tool call input information.
+   */
   private handlePWAOrderTemplateToolCall(toolInput: { [key: string]: string }) {
     const { operation, sku, order_template_id, title, quantity } = toolInput || {};
 
@@ -410,12 +414,18 @@ export class CopilotComponent {
     }
   }
 
+  /**
+   * Processes the copilot's icmSearch tool call and triggers the corresponding search action in the PWA.
+   * @param toolOutput - The copilot tool call output information
+   * @param toolOutput.showOnPWA - Indicates if the search results should be displayed in the PWA
+   * @param toolOutput.query - The search query executed by the copilot to be displayed in the PWA
+   */
   private handleIcmSearchToolCall(toolOutput: { [key: string]: string } | string) {
     if (typeof toolOutput === 'string') {
       try {
         const parsed = JSON.parse(toolOutput);
 
-        if (typeof parsed === 'object' && parsed && parsed.showOnPwa !== undefined && parsed.query) {
+        if (typeof parsed === 'object' && parsed && parsed.showOnPWA !== undefined && parsed.query) {
           const query = parsed.query;
 
           if (query?.trim()) {
