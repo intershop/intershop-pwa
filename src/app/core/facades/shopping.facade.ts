@@ -19,6 +19,7 @@ import { AddLineItemType } from 'ish-core/models/line-item/line-item.model';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
+import { RecommendationsParams } from 'ish-core/models/recommendations/recommendations.model';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { addItemsToBasket, addProductToBasket } from 'ish-core/store/customer/basket';
 import { getPriceDisplayType } from 'ish-core/store/customer/user';
@@ -55,6 +56,7 @@ import {
   loadProductVariationsIfNotLoaded,
 } from 'ish-core/store/shopping/products';
 import { getPromotion, getPromotions, loadPromotion } from 'ish-core/store/shopping/promotions';
+import { getRecommendationsForStrategy, recommendationsActions } from 'ish-core/store/shopping/recommendations';
 import {
   getSearchTerm,
   getSearchedTerms,
@@ -282,6 +284,13 @@ export class ShoppingFacade {
       )
     )
   );
+
+  // RECOMMENDATIONS
+
+  productRecommendations$(recommendationsParams: RecommendationsParams) {
+    this.store.dispatch(recommendationsActions.loadProductRecommendations({ recommendationsParams }));
+    return this.store.pipe(select(getRecommendationsForStrategy(recommendationsParams.strategy)));
+  }
 
   // FILTER
 

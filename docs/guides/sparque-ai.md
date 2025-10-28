@@ -42,7 +42,7 @@ sparque: {
   apiName: '<used sparque api>',
   config: '<optional parameter => default>',
   channelId: '<in sparque workspace configured channel>',
-  features: ['search', 'suggestions'],
+  features: ['search', 'suggestions', 'recommendations'],
 },
 ```
 
@@ -58,7 +58,7 @@ pwa:
       apiName: <used sparque api>
       config: <optional parameter => default>
       channelId: <channel configured in sparque workspace>
-      features: ['search', 'suggestions']
+      features: ['search', 'suggestions', 'recommendations']
 ```
 
 Example for the specification of the SPARQUE configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
@@ -73,7 +73,7 @@ environment:
         "apiName": "<used sparque api>",
         "config": "<optional parameter => default>",
         "channelId": "<channel configured in sparque workspace>"
-        "features": "['search', 'suggestions']"
+        "features": "['search', 'suggestions', 'recommendations']"
       }
 ```
 
@@ -89,7 +89,7 @@ environment:
   - Other option: `production` (used for PROD)
   - Additional configurations can be created in the project as needed.
 - **channelId**: The channel ID configured in the SPARQUE workspace. The default is `ish`. Adjust this to match your own channelId in your data mapping.
-- **features**: Array of feature names to enable selective SPARQUE functionality. Only specified features will be active. Available values: `search`, `suggestions`.
+- **features**: Array of feature names to enable selective SPARQUE functionality. Only specified features will be active. Available values: `search`, `suggestions`, `recommendations`.
 
 ### Multi-Site Configurations
 
@@ -106,7 +106,7 @@ Example for the specification of multiple domain configuration in an NGINX Docke
     apiName: <used sparque api>
     config: <sparque REST configuration e.g. production>
     channelId: <channel configured in sparque workspace>
-    features: ['search', 'suggestions']
+    features: ['search', 'suggestions', 'recommendations']
   ...
 ```
 
@@ -147,6 +147,7 @@ The following feature toggles control SPARQUE functionality:
 
 - **`search`**: Enables SPARQUE-powered product search and filtering
 - **`suggestions`**: Enables SPARQUE-powered search suggestions
+- **`recommendations`**: Enables SPARQUE-powered product recommendations
 
 > [!IMPORTANT]
 > SPARQUE services will only be used when valid SPARQUE configuration is provided. The service providers check for both configuration presence and feature states. Missing configuration will cause the system to fall back to standard ICM services where available, or return `undefined` for recommendations.

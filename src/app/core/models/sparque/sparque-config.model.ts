@@ -13,7 +13,7 @@ export interface SparqueConfig {
   // id of channel where sparque product data are assigned to
   channelId?: string;
   // enabled features
-  features: ('search' | 'suggestions')[];
+  features: ('search' | 'suggestions' | 'recommendations')[];
 
   // additional custom settings
   [key: string]: unknown;
