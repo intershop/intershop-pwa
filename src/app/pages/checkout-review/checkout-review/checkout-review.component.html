@@ -56,14 +56,20 @@
       </ng-container>
 
       <!-- Additional Information -->
-      <ng-container *ngIf="basket.recurrence">
+      <ng-container *ngIf="basket.costCenter || basket.recurrence">
         <ish-info-box
           heading="checkout.widget.additional-information.heading"
           editRouterLink="/basket"
           class="infobox-wrapper col-md-6"
           cssClass="pb-3"
         >
-          <ish-order-recurrence [recurrence]="basket.recurrence" labelCssClass="col-4" valueCssClass="col-8" />
+          <ish-basket-cost-center-view [data]="basket" />
+          <ish-order-recurrence
+            *ngIf="basket.recurrence"
+            [recurrence]="basket.recurrence"
+            labelCssClass="col-4"
+            valueCssClass="col-8"
+          />
         </ish-info-box>
       </ng-container>
     </div>

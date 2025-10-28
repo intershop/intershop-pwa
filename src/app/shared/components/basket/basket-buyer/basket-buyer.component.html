@@ -8,11 +8,6 @@
     {{ object.email || object.invoiceToAddress?.email }}
   </p>
 
-  <div *ngIf="object.costCenter" data-testing-id="buyer-cost-center">
-    <strong>{{ 'checkout.widget.buyer.costcenter' | translate }}</strong>
-    <p>{{ object.costCenter }} {{ costCenterName }}</p>
-  </div>
-
   <div *ngIf="object.externalOrderReference" data-testing-id="orderReferenceID">
     <a
       *ngIf="editRouterLink"

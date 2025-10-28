@@ -21,7 +21,6 @@ export interface RecurringOrder extends OrderBasket {
   lastOrderDate?: string;
   nextOrderDate?: string;
   orderCount?: number;
-  costCenterId?: string;
   costCenterName?: string;
   approvalStatuses?: { approvalDate: number; approver: BasketApprover; statusCode: string }[];
 

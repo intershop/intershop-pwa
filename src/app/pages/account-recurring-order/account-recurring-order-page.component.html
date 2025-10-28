@@ -158,10 +158,7 @@
         class="infobox-wrapper col-md-6"
         cssClass="pb-3"
       >
-        <dl *ngIf="recurringOrder.costCenterId" class="row dl-horizontal dl-separator">
-          <dt class="col-5">{{ 'account.recurring_order.details.cost_center.label' | translate }}</dt>
-          <dd class="col-7">{{ recurringOrder.costCenterId }} {{ recurringOrder.costCenterName }}</dd>
-        </dl>
+        <ish-basket-cost-center-view [data]="recurringOrder" />
         <ish-order-recurrence [recurrence]="recurringOrder.recurrence" labelCssClass="col-5" valueCssClass="col-7" />
       </ish-info-box>
     </div>

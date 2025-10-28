@@ -81,7 +81,7 @@ export class RecurringOrderMapper {
       lastOrderDate: data.lastOrderDate,
       nextOrderDate: data.nextOrderDate,
       orderCount: data.orderCount,
-      costCenterId: data.costCenterID,
+      costCenter: data.costCenterID,
       costCenterName: data.costCenterName,
 
       customerNo: data.buyer?.customerNo,
