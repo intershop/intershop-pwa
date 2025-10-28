@@ -19,6 +19,7 @@ kb_sync_latest_only
   - [Search Box Component](#search-box-component)
   - [Recent Search Terms](#recent-search-terms)
 - [Search Feature](#search-feature)
+- [Product Recommendations Feature](#product-recommendations-feature)
 
 SPARQUE.AI works as an AI-powered search engine and delivers various types of information, such as keyword suggestions, search results, filter options, and category navigation.
 
@@ -264,3 +265,25 @@ To customize the number of search terms stored in the browser's local storage, m
 The SPARQUE.AI search response not only delivers product results but also includes relevant filters and sorting options.
 This eliminates the need for additional requests to gather all the data required for the search page.
 The SPARQUE response data is mapped to the existing data models used by the PWA, ensuring that no modifications are needed for the components utilized on the search page.
+
+## Product Recommendations Feature
+
+SPARQUE.AI provides AI-powered product recommendations that you can display throughout the PWA to enhance user experience and increase engagement.
+The implementation in the PWA is developed with the help of the [CMS](../concepts/cms-integration.md).
+This allows for a high degree of flexibility in terms of where and how recommendations are displayed in the application.
+The CMS component to be used in ICM is called _Product List (SPARQUE Recommendations)_ with the qualified name `app_sf_base_cm:component.common.productListRecommendations.pagelet2-Component`.
+
+```ts
+// CMS Module
+...
+{
+provide: CMS_COMPONENT,
+useValue: {
+definitionQualifiedName: 'app_sf_base_cm:component.common.productListRecommendations.pagelet2-Component',
+class: CMSProductListRecommendationsComponent,
+},
+multi: true,
+},...
+
+`
+```

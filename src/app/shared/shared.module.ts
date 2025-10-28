@@ -50,6 +50,7 @@ import { CMSNavigationPageComponent } from './cms/components/cms-navigation-page
 import { CMSProductListCategoryComponent } from './cms/components/cms-product-list-category/cms-product-list-category.component';
 import { CMSProductListFilterComponent } from './cms/components/cms-product-list-filter/cms-product-list-filter.component';
 import { CMSProductListManualComponent } from './cms/components/cms-product-list-manual/cms-product-list-manual.component';
+import { CMSProductListRecommendationsComponent } from './cms/components/cms-product-list-recommendations/cms-product-list-recommendations.component';
 import { CMSProductListRestComponent } from './cms/components/cms-product-list-rest/cms-product-list-rest.component';
 import { CMSStandardPageComponent } from './cms/components/cms-standard-page/cms-standard-page.component';
 import { CMSStaticPageComponent } from './cms/components/cms-static-page/cms-static-page.component';
@@ -214,6 +215,7 @@ const declaredComponents = [
   CMSProductListCategoryComponent,
   CMSProductListFilterComponent,
   CMSProductListManualComponent,
+  CMSProductListRecommendationsComponent,
   CMSProductListRestComponent,
   CMSStandardPageComponent,
   CMSStaticPageComponent,
