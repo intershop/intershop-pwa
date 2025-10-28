@@ -386,6 +386,8 @@ export class CopilotComponent {
    * Triggers the corresponding order template action in the PWA based on the PWA_order_template_actions tool call from the copilot.
    * @param toolInput The copilot tool call input information.
    */
+
+  // eslint-disable-next-line complexity
   private handlePWAOrderTemplateToolCall(toolInput: { [key: string]: string }) {
     const { operation, sku, orderTemplateId, title, quantity } = toolInput || {};
 
