@@ -9,13 +9,13 @@ kb_sync_latest_only
 
 ## From 8.0.0 to 9.0.0
 
-Functionality was added to the SSR container to support the manual creation of PWA heap dumps for debugging purposes.
-For more information on how to use this functionality, see the [Heap Dumps](./ssr-startup.md#heap-dumps) section in the SSR guide.
+With Intershop PWA 9.0.0, the SSR container now supports the manual creation of PWA heap dumps for debugging purposes.
+For more information about using this functionality, see [Building and Running Server-Side Rendering | Heap Dumps](./ssr-startup.md#heap-dumps).
 
-The `DEPLOY_URL` functionality has been adapted to support relative deploy URLs as well.
-For more information, see [Serving the PWA from a Sub-Path Including Static Files](../concepts/deploy-url.md#serving-the-pwa-from-a-sub-path-including-static-files).
+The `DEPLOY_URL` functionality now also supports relative deploy URLs.
+For more information, see [Deploy URL | Serving the PWA from a Sub-Path Including Static Files](../concepts/deploy-url.md#serving-the-pwa-from-a-sub-path-including-static-files).
 
-Together with the `DEPLOY_URL` changes the file `src/ssr/server-scripts/server.js` needed adaptions and was renamed to `src/ssr/server-scripts/distributor.js` for more clarity.
+With the `DEPLOY_URL` changes, the file `src/ssr/server-scripts/server.js` required adaptions and was renamed to `src/ssr/server-scripts/distributor.js` for clarity.
 
 The Intershop PWA 9.0.0 release contains the **SPARQUE recommendations** functionality (for more details, see [SPARQUE.AI guide | Product Recommendations Feature](./sparque-ai.md#product-recommendations-feature)).
 
@@ -25,7 +25,7 @@ You can now enable or disable each feature independently, based on your business
 For more details, see [SPARQUE.AI guide | Feature Toggle Behavior](./sparque-ai.md#feature-toggle-behavior).
 For existing projects with a SPARQUE configuration, the configuration needs to be extended to include the new `features` configuration to keep the previous behavior of having the SPARQUE search and suggestions enabled.
 
-```json
+```typescript
 sparque: {
   ...
   features: ['search', 'suggestions'],
