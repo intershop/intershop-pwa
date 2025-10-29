@@ -301,7 +301,7 @@ export class CopilotComponent {
         this.handlePWAOrderTemplateToolCall(toolCall.toolInput);
         break;
       case 'icmSearch':
-        //navigate to search results page based on icmSearch tool call
+        // navigate to search results page based on icmSearch tool call
         this.handleIcmSearchToolCall(toolCall.toolOutput);
         break;
       default:

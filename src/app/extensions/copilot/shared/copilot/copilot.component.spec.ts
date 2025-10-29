@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -52,7 +51,6 @@ describe('Copilot Component', () => {
         { provide: CompareFacade, useFactory: () => instance(mock(CompareFacade)) },
         { provide: CopilotFacade, useFactory: () => instance(copilotFacade) },
         { provide: OrderTemplatesFacade, useFactory: () => instance(mock(OrderTemplatesFacade)) },
-        { provide: Router, useFactory: () => instance(mock(Router)) },
         { provide: ScriptLoaderService, useFactory: () => instance(scriptLoader) },
         { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
         { provide: TranslateService, useFactory: () => instance(translateService) },
