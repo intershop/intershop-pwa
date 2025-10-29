@@ -132,5 +132,5 @@ Interactive popovers (e.g., info bubbles) now open on click, not on hover.
 
 ## Summary
 
-The patterns described here help ensure that our PWA is not only accessible in a technical sense, but also usable, predictable and efficient for everyone.
+The patterns described here help ensure that our PWA is not only accessible in a technical sense, but also usable, predictable, and efficient for everyone.
 Consistently applying these guidelines creates better experiences for all users while reducing friction for those who rely on accessible design.
