@@ -243,7 +243,7 @@ export class CopilotComponent {
   /**
    * soon to be deprecated  - to be removed in future major release
    * Handle the selected tool call from the chatbot and trigger the corresponding action in the PWA for the old flowise blue print.
-   * @param toolCall The chatbot tool call information for new tool types
+   * @param toolCall The chatbot tool call information for old tool types
    */
 
   private oldToolTypeCall(toolCall: ChatbotToolCall) {
