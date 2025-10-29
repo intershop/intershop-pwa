@@ -9,13 +9,13 @@ kb_sync_latest_only
 
 ## From 8.0.0 to 9.0.0
 
-Functionality was added to the SSR container to support the manual creation of PWA heap dumps for debugging purposes.
-For more information on how to use this functionality, see the [Heap Dumps](./ssr-startup.md#heap-dumps) section in the SSR guide.
+With Intershop PWA 9.0.0, the SSR container now supports the manual creation of PWA heap dumps for debugging purposes.
+For more information about using this functionality, see [Building and Running Server-Side Rendering | Heap Dumps](./ssr-startup.md#heap-dumps).
 
-The `DEPLOY_URL` functionality has been adapted to support relative deploy URLs as well.
-For more information, see [Serving the PWA from a Sub-Path Including Static Files](../concepts/deploy-url.md#serving-the-pwa-from-a-sub-path-including-static-files).
+The `DEPLOY_URL` functionality now also supports relative deploy URLs.
+For more information, see [Deploy URL | Serving the PWA from a Sub-Path Including Static Files](../concepts/deploy-url.md#serving-the-pwa-from-a-sub-path-including-static-files).
 
-Together with the `DEPLOY_URL` changes the file `src/ssr/server-scripts/server.js` needed adaptions and was renamed to `src/ssr/server-scripts/distributor.js` for more clarity.
+With the `DEPLOY_URL` changes, the file `src/ssr/server-scripts/server.js` required adaptions and was renamed to `src/ssr/server-scripts/distributor.js` for clarity.
 
 The Intershop PWA 9.0.0 release contains the **SPARQUE recommendations** functionality (for more details, see [SPARQUE.AI guide | Product Recommendations Feature](./sparque-ai.md#product-recommendations-feature)).
 
@@ -35,9 +35,9 @@ sparque: {
 The `TranslationService.getServerTranslations()` method now accepts an optional `prefix` parameter (default: `'pwa-'`) to specify the prefix for translation keys to be loaded from the server.
 This change requires no migration of existing code.
 
-The Intershop PWA 9.0.0 release contains support for ICM [Pre-integrated Custom Fields](https://knowledge.intershop.com/kb/index.php/Display/3M1102).
-Through such a configuration a shop user can now add/edit additional information at the basket and at basket line-items.
-The custom fields information is displayed during the checkout and on the order details page.
+Intershop PWA 9.0.0 contains support for ICM [Pre-integrated Custom Fields](https://knowledge.intershop.com/kb/index.php/Display/3M1102).
+With this configuration, shop users can now add/edit additional information at the basket and at basket line-items.
+The custom field information is displayed during the checkout and on the order details page.
 
 ## From 7.1.0 to 8.0.0
 
