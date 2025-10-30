@@ -50,7 +50,7 @@ export class SparqueProductsService implements ProductsServiceInterface {
       .set('count', searchParams.amount.toString())
       .set('offset', searchParams.offset.toString())
       .set('facetOptionsCount', this.facetOptionsCount);
-    if (searchParams.sorting) {
+    if (searchParams.sorting && searchParams.sorting !== 'default') {
       params = params.set('sorting', searchParams.sorting);
     }
     if (!searchParams.searchParameter && searchParams.searchTerm) {
@@ -88,7 +88,7 @@ export class SparqueProductsService implements ProductsServiceInterface {
       .set('facetOptionsCount', this.facetOptionsCount)
       .set('keyword', searchParameter.searchTerm ? searchParameter.searchTerm[0] : '');
 
-    if (sortKey) {
+    if (sortKey && sortKey !== 'default') {
       params = params.set('sorting', sortKey);
     }
     const selectedFacetParam = this.selectedFacets(omit(searchParameter, 'searchTerm'));
@@ -122,7 +122,7 @@ export class SparqueProductsService implements ProductsServiceInterface {
       .set('offset', offset.toString())
       .set('facetOptionsCount', this.facetOptionsCount);
 
-    if (sortKey) {
+    if (sortKey && sortKey !== 'default') {
       params = params.set('sorting', sortKey);
     }
     const selectedFacetParam = this.selectedFacets(omit(searchParameter, 'selectedCategory'));
@@ -158,7 +158,7 @@ export class SparqueProductsService implements ProductsServiceInterface {
       .set('offset', offset.toString())
       .set('facetOptionsCount', this.facetOptionsCount);
 
-    if (sortKey) {
+    if (sortKey && sortKey !== 'default') {
       params = params.set('sorting', sortKey);
     }
 
