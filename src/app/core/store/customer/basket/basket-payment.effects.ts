@@ -3,7 +3,7 @@ import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { EMPTY } from 'rxjs';
-import { concatMap, filter, map, switchMap, take } from 'rxjs/operators';
+import { concatMap, exhaustMap, filter, map, switchMap, take } from 'rxjs/operators';
 
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { mapToRouterState } from 'ish-core/store/core/router';
@@ -46,7 +46,7 @@ export class BasketPaymentEffects {
   loadBasketEligiblePaymentMethods$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadBasketEligiblePaymentMethods),
-      switchMap(() =>
+      exhaustMap(() =>
         this.paymentService.getBasketEligiblePaymentMethods().pipe(
           map(result => loadBasketEligiblePaymentMethodsSuccess({ paymentMethods: result })),
           mapErrorToAction(loadBasketEligiblePaymentMethodsFail)

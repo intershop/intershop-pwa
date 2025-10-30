@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { combineLatest, map, switchMap } from 'rxjs';
+import { combineLatest, map, switchMap, take } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -72,6 +72,7 @@ export class PaypalConfigService {
         paypalConfig: config,
         type: param.type,
       })),
+      take(1),
       switchMap(scriptParams =>
         this.scriptLoader.load(this.calculateURL(scriptParams), {
           attributes: [

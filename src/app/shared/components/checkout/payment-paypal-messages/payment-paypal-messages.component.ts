@@ -141,7 +141,6 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
         messageConfig = { amount, style: PAYPAL_MESSAGE_STYLING.cart };
         break;
     }
-    this.scriptLoaded$.next(true);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const paypalObject = (window as any)[nameSpace];

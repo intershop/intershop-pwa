@@ -5,6 +5,7 @@ import { anything, instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { PaymentPaypalComponent } from './payment-paypal.component';
@@ -20,7 +21,13 @@ describe('Payment Paypal Component', () => {
 
     const checkoutFacade = mock(CheckoutFacade);
     when(checkoutFacade.basket$).thenReturn(of(BasketMockData.getBasket()));
-    when(checkoutFacade.paypalPaymentMethod$(anything())).thenReturn(of(undefined));
+    when(checkoutFacade.paypalPaymentMethod$(anything())).thenReturn(
+      of({
+        id: 'paypal',
+        displayName: 'PayPal',
+        serviceId: 'paypal-service',
+      } as PaymentMethod)
+    );
 
     await TestBed.configureTestingModule({
       declarations: [PaymentPaypalComponent],

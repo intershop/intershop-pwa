@@ -17,14 +17,15 @@ import {
   BehaviorSubject,
   Observable,
   combineLatest,
-  concatMap,
   filter,
   firstValueFrom,
   map,
   race,
   shareReplay,
+  switchMap,
   take,
   timer,
+  withLatestFrom,
 } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -38,16 +39,7 @@ import { PAYPAL_BUTTON_STYLING } from './payment-paypal.component.styling';
 /**
  * PayPal Payment Component for handling PayPal button integration and checkout flow.
  *
- * This component manages the PayPal SDK integration for both standard checkout and express
- * checkout flows. It dynamically loads PayPal scripts, renders payment buttons, and handles
- * the complete payment process including order creation, payment approval, and error handling.
- *
- * Key Features:
- * - Dynamic PayPal script loading using centralized PaypalConfigService
- * - Support for both checkout and express checkout flows
- * - Dynamic namespace handling for multiple PayPal integrations
- * - Comprehensive error handling and user feedback
- * - PayPal Messages integration for payment method promotion
+ * This component manages the PayPal SDK integration for both standard checkout and express checkout flows.
  *
  * The component integrates with the checkout process by:
  * 1. Loading appropriate PayPal scripts based on payment method configuration
@@ -55,7 +47,6 @@ import { PAYPAL_BUTTON_STYLING } from './payment-paypal.component.styling';
  * 3. Handling payment flow through PayPal's hosted checkout
  * 4. Managing basket updates and navigation upon completion
  *
- * @see {@link CheckoutPaymentPageComponent} - Main checkout page integration
  * @see {@link PaymentPaypalMessagesComponent} - PayPal messaging component
  * @see {@link PaypalConfigService} - PayPal configuration and script loading
  */
@@ -83,7 +74,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
   isPaypalPaymentMethodSelected$: Observable<boolean>;
   scriptLoaded$ = new BehaviorSubject<boolean>(undefined);
 
-  private basket$ = this.checkoutFacade.basket$.pipe(shareReplay(1));
+  private basket$ = this.checkoutFacade.basket$.pipe(whenTruthy(), shareReplay(1));
   private paypalPaymentMethod$: Observable<PaymentMethod>;
 
   /** References to PayPal component instances for proper cleanup */
@@ -101,7 +92,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
   ngOnInit(): void {
     this.paypalPaymentMethod$ = this.checkoutFacade
       .paypalPaymentMethod$(this.pageType === 'cart' ? 'FastCheckout' : 'RedirectBeforeCheckout')
-      .pipe(shareReplay(1));
+      .pipe(whenTruthy(), shareReplay(1));
     this.isPaypalPaymentMethodSelected$ = combineLatest({
       method: this.paypalPaymentMethod$,
       basket: this.basket$,
@@ -116,36 +107,25 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
    * Loads PayPal SDK script and initializes payment buttons.
    */
   private loadScript() {
-    combineLatest({
-      basket: this.basket$.pipe(whenTruthy()),
-      paypalPaymentMethod: this.paypalPaymentMethod$.pipe(whenTruthy()),
-    })
+    this.paypalPaymentMethod$
       .pipe(
+        whenTruthy(),
+        filter(paymentMethod => !!paymentMethod.hostedPaymentPageParameters?.length),
         take(1),
-        concatMap(
-          ({
-            basket,
-            paypalPaymentMethod,
-          }): Observable<{
-            basket: Basket;
-            paypalPaymentMethod: PaymentMethod;
-          }> => {
-            if (paypalPaymentMethod.hostedPaymentPageParameters?.length) {
-              return this.paypalConfigService
-                .loadPayPalScript('PayPal_iframe_'.concat(paypalPaymentMethod.id, '_button'), {
-                  paymentMethod: paypalPaymentMethod,
-                  page: this.pageType,
-                  type: 'button',
-                })
-                .pipe(
-                  map(() => ({
-                    basket,
-                    paypalPaymentMethod,
-                  }))
-                );
-            }
-            return new Observable(observer => observer.complete());
-          }
+        switchMap(paypalPaymentMethod =>
+          this.paypalConfigService
+            .loadPayPalScript(this.getNameSpace(paypalPaymentMethod), {
+              paymentMethod: paypalPaymentMethod,
+              page: this.pageType,
+              type: 'button',
+            })
+            .pipe(
+              withLatestFrom(this.basket$),
+              map(([, basket]) => ({
+                basket,
+                paypalPaymentMethod,
+              }))
+            )
         ),
         takeUntilDestroyed(this.destroyRef)
       )
@@ -154,11 +134,16 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
           this.pageType !== 'checkout'
             ? this.initializePaypalExpressButton(paypalPaymentMethod)
             : this.initializePaypalCheckoutButton(basket, paypalPaymentMethod);
+          this.scriptLoaded$.next(true);
         },
         error: () => {
           this.scriptLoaded$.next(false);
         },
       });
+  }
+
+  private getNameSpace(paymentMethod: PaymentMethod): string {
+    return 'PayPal_iframe_'.concat(paymentMethod.id, '_button');
   }
 
   /**
@@ -179,10 +164,8 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
    */
   private initializePaypalCheckoutButton(basket: Basket, paypalPaymentMethod: PaymentMethod) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const paypalObject = (window as any)['PayPal_iframe_'.concat(paypalPaymentMethod.id, '_button')];
+    const paypalObject = (window as any)[this.getNameSpace(paypalPaymentMethod)];
     if (paypalObject?.Buttons) {
-      this.scriptLoaded$.next(true);
-
       let isShippingAddressChanged = false;
 
       const paypalButtonsConfig = paypalObject.Buttons({
@@ -267,8 +250,6 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const paypalObject = (window as any)['PayPal_iframe_'.concat(paypalPaymentMethod.id, '_button')];
     if (paypalObject?.Buttons) {
-      this.scriptLoaded$.next(true);
-
       const paypalExpressButtonsConfig = paypalObject.Buttons({
         style: PAYPAL_BUTTON_STYLING.cart,
         // Call your server to set up the transaction after the user has clicked the button
