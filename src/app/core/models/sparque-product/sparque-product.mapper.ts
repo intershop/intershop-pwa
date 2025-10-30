@@ -15,7 +15,7 @@ export class SparqueProductMapper {
 
     if (productsData?.length) {
       productsData.forEach(product => {
-        products.push(this.fromData(product));
+        products.push(this.fromListDataSingle(product));
         productSkus.push(product.sku);
       });
     }
@@ -27,15 +27,16 @@ export class SparqueProductMapper {
    * Maps Sparque product data to PWA product format for list displays.
    *
    * @param data - Array of SparqueProduct data to map
-   * @param completenessLevel - Product data completeness level (default is 1).
-   *                           The recommendations service sets this value to 2.
-   *                           To display recommended products it is not necessary to get information about promotions and ratings.
    */
   fromListData(data: SparqueProduct[]): Partial<Product>[] {
-    return data?.length ? data.map(product => this.fromData(product)) : [];
+    return data?.length ? data.map(product => this.fromListDataSingle(product)) : [];
   }
 
-  fromData(data: SparqueProduct): Partial<Product> {
+  private fromListDataSingle(data: SparqueProduct): Partial<Product> {
+    return this.fromData(data, 2); // List level for search results
+  }
+
+  fromData(data: SparqueProduct, completenessLevel: number = 3): Partial<Product> {
     return {
       sku: data.sku,
       name: data.name,
@@ -50,7 +51,7 @@ export class SparqueProductMapper {
       minOrderQuantity: 1,
       stepQuantity: 1,
       packingUnit: '',
-      completenessLevel: 2,
+      completenessLevel, // Dynamic level: 2 for lists, 3 for details
     };
   }
 }
