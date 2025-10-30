@@ -3,11 +3,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
-import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { PaypalConfigService } from 'ish-core/utils/paypal-config/paypal-config.service';
 
@@ -19,22 +17,9 @@ describe('Payment Paypal Messages Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
-    const appFacade = mock(AppFacade);
-    when(appFacade.currentLocale$).thenReturn(of('en_US'));
-    when(appFacade.currentCurrency$).thenReturn(of('USD'));
-    when(appFacade.payPalConfig$).thenReturn(
-      of({
-        payLaterMessaging: {
-          onProductDetailsPage: true,
-          onCategoryPage: true,
-          onCartPage: true,
-        },
-      } as PaypalConfig)
-    );
-
     const checkoutFacade = mock(CheckoutFacade);
     when(checkoutFacade.basket$).thenReturn(of(BasketMockData.getBasket()));
-    when(checkoutFacade.paypalPaymentMethod$(anything())).thenReturn(
+    when(checkoutFacade.paypalPaymentMethod$()).thenReturn(
       of({
         id: 'paypal',
         displayName: 'PayPal',
@@ -49,14 +34,14 @@ describe('Payment Paypal Messages Component', () => {
     );
 
     const paypalConfigService = mock(PaypalConfigService);
-    when(paypalConfigService.isMessagingEnabled(anything(), anything())).thenReturn(true);
-    when(paypalConfigService.loadPayPalScript(anything())).thenReturn(of('https://www.paypal.com/sdk/js'));
+    when(paypalConfigService.loadPayPalScript(anything(), anything())).thenReturn(
+      of({ src: 'test-src', loaded: true })
+    );
 
     await TestBed.configureTestingModule({
       declarations: [PaymentPaypalMessagesComponent],
       imports: [TranslateModule.forRoot()],
       providers: [
-        { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: PaypalConfigService, useFactory: () => instance(paypalConfigService) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },

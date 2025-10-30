@@ -296,7 +296,6 @@ export class CheckoutFacade {
     return this.basket$.pipe(
       whenTruthy(),
       take(1),
-      tap(() => this.loadEligiblePaymentMethods()),
       switchMap(() => this.store.pipe(select(getBasketEligiblePaymentMethods)))
     );
   }
@@ -307,25 +306,30 @@ export class CheckoutFacade {
   }
 
   /**
-   * If contextCapability is 'FastCheckout', it returns the PayPal payment method with 'FastCheckout' capability.
-   * If contextCapability is 'RedirectBeforeCheckout', it returns the PayPal payment method without 'FastCheckout' capability.
-   * @param contextCapability 'FastCheckout' | 'RedirectBeforeCheckout'
+   * If a contextCapability is given, it returns the PayPal payment method (capability 'PaypalCheckout') with the appropriate capability.
+   * If no contextCapability is given, it returns an arbitrary PayPal payment method.
+   * @param contextCapability 'FastCheckout' or 'RedirectBeforeCheckout'
    * @returns Observable<PaymentMethod> or undefined if no PayPal payment method is available
    */
-  paypalPaymentMethod$(contextCapability?: string): Observable<PaymentMethod> {
+  paypalPaymentMethod$(contextCapability?: 'FastCheckout' | 'RedirectBeforeCheckout'): Observable<PaymentMethod> {
     return this.basket$.pipe(
       whenTruthy(),
+      take(1),
       switchMap(() =>
         this.store.pipe(
           select(getBasketEligiblePaymentMethods),
+          // fetch payment methods if not yet loaded
           tap(pms => pms?.length || this.store.dispatch(loadBasketEligiblePaymentMethods())),
           map(methods =>
-            methods?.find(method =>
-              method.capabilities?.includes('PaypalCheckout') && contextCapability
-                ? contextCapability === 'FastCheckout'
-                  ? method.capabilities?.includes(contextCapability)
-                  : !method.capabilities?.includes('FastCheckout')
-                : true
+            methods?.find(
+              method =>
+                // ToDo: adjust this very special logic when more capabilities are added
+                method.capabilities?.includes('PaypalCheckout') &&
+                (contextCapability
+                  ? contextCapability === 'FastCheckout'
+                    ? method.capabilities?.includes(contextCapability)
+                    : !method.capabilities?.includes('FastCheckout')
+                  : true)
             )
           )
         )

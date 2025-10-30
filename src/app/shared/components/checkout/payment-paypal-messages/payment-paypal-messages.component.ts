@@ -1,20 +1,10 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  BehaviorSubject,
-  Observable,
-  combineLatest,
-  distinctUntilChanged,
-  filter,
-  iif,
-  map,
-  of,
-  switchMap,
-} from 'rxjs';
+import { BehaviorSubject, Observable, distinctUntilChanged, filter, iif, map, of, switchMap, take } from 'rxjs';
 
-import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalConfigService, PaypalPageType } from 'ish-core/utils/paypal-config/paypal-config.service';
 
 import { PAYPAL_MESSAGE_STYLING } from './payment-paypal-messages.component.styling';
@@ -67,7 +57,6 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
   private destroyRef = inject(DestroyRef);
 
   constructor(
-    private appFacade: AppFacade,
     private checkoutFacade: CheckoutFacade,
     private shoppingFacade: ShoppingFacade,
     private paypalConfigService: PaypalConfigService
@@ -101,41 +90,30 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
   }
 
   private loadScript() {
-    combineLatest([this.checkoutFacade.paypalPaymentMethod$(), this.appFacade.payPalConfig$, this.amount$])
+    const nameSpace = 'PayPal_iframe_message';
+
+    // make sure payment method is configured
+    this.checkoutFacade
+      .paypalPaymentMethod$()
       .pipe(
-        filter(
-          ([, config]) =>
-            config?.payLaterMessaging &&
-            this.paypalConfigService.isMessagingEnabled(config.payLaterMessaging, this.pageType)
+        whenTruthy(),
+        filter(paymentMethod => !!paymentMethod.hostedPaymentPageParameters?.length),
+        take(1),
+        switchMap(paymentMethod =>
+          this.paypalConfigService
+            .loadPayPalScript(nameSpace, {
+              paymentMethod,
+              page: this.pageType,
+              type: 'message',
+            })
+            .pipe(switchMap(() => this.amount$.pipe(distinctUntilChanged())))
         ),
-        distinctUntilChanged(
-          ([prevMethod, , prevAmount], [currMethod, , currAmount]) =>
-            prevMethod?.id === currMethod?.id && prevAmount === currAmount
-        ),
-        switchMap(([paymentMethod, , amount]) => {
-          if (paymentMethod?.hostedPaymentPageParameters?.length) {
-            return this.paypalConfigService
-              .loadPayPalScript({
-                paymentMethod,
-                page: this.pageType,
-                type: 'message',
-              })
-              .pipe(
-                map(nameSpace => ({
-                  nameSpace,
-                  amount,
-                }))
-              );
-          }
-          return of({ nameSpace: '', amount });
-        }),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
-        next: data => {
-          if (data.nameSpace) {
-            this.renderPaypalMessages(data.amount, data.nameSpace);
-          }
+        next: (amount: number) => {
+          this.scriptLoaded$.next(true);
+          this.renderPaypalMessages(amount, nameSpace);
         },
         error: () => {
           this.scriptLoaded$.next(false);

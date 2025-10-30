@@ -132,7 +132,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
           }> => {
             if (paypalPaymentMethod.hostedPaymentPageParameters?.length) {
               return this.paypalConfigService
-                .loadPayPalScript({
+                .loadPayPalScript('PayPal_iframe_'.concat(paypalPaymentMethod.id, '_button'), {
                   paymentMethod: paypalPaymentMethod,
                   page: this.pageType,
                   type: 'button',

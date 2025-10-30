@@ -68,7 +68,6 @@ giftwrap
 glyphicon
 glyphicons
 gomplate
-grayscale
 greaterthan
 grecaptcha
 heapsnapshot
