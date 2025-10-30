@@ -2,9 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Observable, ReplaySubject, combineLatest, map } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { CustomFields, CustomFieldsComponentInput } from 'ish-core/models/custom-field/custom-field.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.model';
@@ -20,24 +18,11 @@ import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.
 export class BasketCustomFieldsViewComponent implements OnInit {
   @Input({ required: true }) set data(val: Basket | Order | RecurringOrder) {
     this.customFields$.next(val.customFields || {});
-    this.costCenter = val?.costCenter
-      ? {
-          costCenterId: val.costCenter,
-          name:
-            AttributeHelper.getAttributeValueByAttributeName<string>(
-              val.attributes,
-              'BusinessObjectAttributes#Order_CostCenter_Name'
-            ) || // fallback for RecurringOrder
-            (val as RecurringOrder).costCenterName,
-        }
-      : undefined;
   }
 
   private customFields$ = new ReplaySubject<CustomFields>(1);
   fields$: Observable<CustomFieldsComponentInput[]>;
   visible$: Observable<boolean>;
-
-  costCenter: Partial<CostCenter>;
 
   constructor(private checkoutFacade: CheckoutFacade) {}
 

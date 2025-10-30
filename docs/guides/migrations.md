@@ -25,7 +25,7 @@ You can now enable or disable each feature independently, based on your business
 For more details, see [SPARQUE.AI guide | Feature Toggle Behavior](./sparque-ai.md#feature-toggle-behavior).
 For existing projects with a SPARQUE configuration, the configuration needs to be extended to include the new `features` configuration to keep the previous behavior of having the SPARQUE search and suggestions enabled.
 
-```json
+```typescript
 sparque: {
   ...
   features: ['search', 'suggestions'],

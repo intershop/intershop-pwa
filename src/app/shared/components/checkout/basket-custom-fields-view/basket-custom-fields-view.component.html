@@ -1,8 +1,3 @@
-<div *ngIf="costCenter" class="mb-2" data-testing-id="additional-info-cost-center">
-  {{ 'checkout.widget.buyer.costcenter' | translate }}
-  {{ costCenter.costCenterId }} {{ costCenter.name }}
-</div>
-
 <div *ngIf="visible$ | async" class="mb-2" data-testing-id="additional-information-basket-custom-fields">
   <ish-custom-fields-view [fields]="fields$ | async" />
 </div>
