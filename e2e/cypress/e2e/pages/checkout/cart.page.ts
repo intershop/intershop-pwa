@@ -113,11 +113,10 @@ export class CartPage {
             .eq(idx)
             .click()
             .wait(1000)
-            .clear()
-            .wait(1000)
+            .type('{selectAll}')
             .type(num.toString())
-            .wait(1000)
-            .blur(),
+            .wait(1000),
+
         get: () =>
           cy
             .get(this.tag)
