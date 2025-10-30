@@ -144,12 +144,7 @@ export class ProductListingEffects {
       map(({ id, sorting, page, filters }) => {
         if (filters) {
           const searchParameter = filters;
-          return loadProductsForFilter({
-            id: { ...id, filters },
-            searchParameter,
-            page,
-            sorting,
-          });
+          return loadProductsForFilter({ id: { ...id, filters }, searchParameter, page, sorting });
         } else {
           switch (id.type) {
             case 'category':

@@ -34,9 +34,6 @@ export class ProductsServiceProvider {
   /**
    * Gets the appropriate products service implementation based on configuration and parameters.
    *
-  /**
-   * Gets the appropriate products service implementation based on configuration and parameters.
-   *
    * @param skipSparque Optional parameter to skip Sparque functionality even if configured
    * @returns An observable emitting either SparqueProductsService or ProductsService.
    */
