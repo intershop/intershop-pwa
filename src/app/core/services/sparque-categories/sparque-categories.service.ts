@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
+import { CategoryTree, CategoryTreeHelper } from 'ish-core/models/category-tree/category-tree.model';
 import { CategoryHelper } from 'ish-core/models/category/category.helper';
 import { SparqueCategory } from 'ish-core/models/sparque-category/sparque-category.interface';
 import { SparqueCategoryMapper } from 'ish-core/models/sparque-category/sparque-category.mapper';
@@ -60,7 +60,10 @@ export class SparqueCategoriesService implements CategoriesServiceInterface {
         unpackEnvelope<SparqueCategory>('categories'),
         map(categories =>
           this.sparqueCategoryMapper.fromCategoryTreeData(categories || [], this.getCategoryPath(categoryUniqueId))
-        )
+        ),
+        // For Sparque, we can't load individual categories, so we return an empty tree
+        // The category data comes from navigation loading instead
+        map(() => CategoryTreeHelper.empty())
       );
   }
 

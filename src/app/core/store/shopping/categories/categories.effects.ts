@@ -6,6 +6,7 @@ import { from } from 'rxjs';
 import { concatMap, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
+import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { ofCategoryUrl } from 'ish-core/routing/category/category.route';
 import { CategoriesServiceProvider } from 'ish-core/service-provider/categories.service-provider';
@@ -168,7 +169,7 @@ export class CategoriesEffects {
           ofCategoryUrl(),
           select(getBreadcrumbForCategoryPage),
           whenTruthy(),
-          map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
+          map((breadcrumbData: BreadcrumbItem[]) => setBreadcrumbData({ breadcrumbData }))
         )
       )
     )
