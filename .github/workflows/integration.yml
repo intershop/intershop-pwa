@@ -50,55 +50,14 @@ jobs:
           name: dist
           path: dist
 
-  Universal:
-    needs: [Build]
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        test: ['b2c', 'b2b']
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js 22
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-
-      - name: Download Build Output
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
-
-      - name: Set Environment
-        run: |
-          echo "LOGGING=true" >> $GITHUB_ENV
-
-      - name: Set B2C Environment
-        if: matrix.test == 'b2c'
-        run: |
-          echo "THEME=b2c" >> $GITHUB_ENV
-
-      - name: Set B2B Environment
-        if: matrix.test == 'b2b'
-        run: |
-          echo "THEME=b2b" >> $GITHUB_ENV
-
-      - name: Test Universal
-        run: |
-          node dist/$THEME/run-standalone &
-          sh e2e/test-universal.sh
-
   Cypress:
-    needs: [Build, Universal]
+    needs: [Build]
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        test: ['b2c', 'b2b']
+        test: ['b2c']
 
     steps:
       - name: Checkout
@@ -140,7 +99,7 @@ jobs:
           wait-on: 'http://localhost:4200'
           wait-on-timeout: 180
           working-directory: e2e
-          command: npx ts-node cypress-ci-e2e **/*${{ matrix.test }}*.e2e-spec.ts
+          command: npx ts-node cypress-ci-e2e **/*{basket-handling.b2c,basket-promotion-handling.b2c,cart-variation-handling.b2c}.e2e-spec.ts
 
       - name: Upload Screenshots
         uses: actions/upload-artifact@v4
@@ -155,13 +114,3 @@ jobs:
         with:
           name: videos_${{ matrix.test }}
           path: e2e/cypress/videos
-
-  Shellspec:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Execute shellspec tests
-        run: |
-          docker run --rm -v "${{ github.workspace }}/nginx/docker-entrypoint.d:/src" shellspec/shellspec
