@@ -99,7 +99,7 @@ jobs:
           wait-on: 'http://localhost:4200'
           wait-on-timeout: 180
           working-directory: e2e
-          command: npx ts-node cypress-ci-e2e **/*{basket-handling.b2c,basket-promotion-handling.b2c,cart-variation-handling.b2c}.e2e-spec.ts
+          command: npx ts-node cypress-ci-e2e **/*handling.b2c*.e2e-spec.ts
 
       - name: Upload Screenshots
         uses: actions/upload-artifact@v4
