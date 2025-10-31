@@ -215,8 +215,28 @@ export class CopilotComponent {
    * @param toolCall The chatbot tool call information
    */
   private handleToolCall(toolCall: ChatbotToolCall) {
-    // Execute both tool type handlers to ensure compatibility with old and new chatflows
-    this.toolCall(toolCall);
+    switch (toolCall?.tool) {
+      case 'PWA_basket':
+        this.handlePWABasketToolCall(toolCall.toolInput);
+        break;
+      case 'PWA_compare_products':
+        // Note: this will only work if the 'compare' feature is enabled in the PWA
+        this.compareFacade.compareProducts(toolCall.toolInput?.SKUs?.split(';'));
+        this.navigate(`/compare`);
+        break;
+      case 'PWA_navigate_to_page':
+        this.handlePWANavigateToPageToolCall(toolCall.toolInput);
+        break;
+      case 'PWA_order_template_actions':
+        this.handlePWAOrderTemplateToolCall(toolCall.toolInput);
+        break;
+      case 'icmSearch':
+        // Navigate to search results page based on icmSearch tool call
+        this.handleIcmSearchToolCall(toolCall.toolOutput);
+        break;
+      default:
+        break;
+    }
   }
 
   /**
@@ -244,30 +264,6 @@ export class CopilotComponent {
    * Handle the selected tool call from the copilot and trigger the corresponding action in the PWA for the new flowise blue print.
    * @param toolCall The copilot tool call information for new tool types
    */
-  private toolCall(toolCall: ChatbotToolCall) {
-    switch (toolCall?.tool) {
-      case 'PWA_basket':
-        this.handlePWABasketToolCall(toolCall.toolInput);
-        break;
-      case 'PWA_compare_products':
-        // Note: this will only work if the 'compare' feature is enabled in the PWA
-        this.compareFacade.compareProducts(toolCall.toolInput?.SKUs?.split(';'));
-        this.navigate(`/compare`);
-        break;
-      case 'PWA_navigate_to_page':
-        this.handlePWANavigateToPageToolCall(toolCall.toolInput);
-        break;
-      case 'PWA_order_template_actions':
-        this.handlePWAOrderTemplateToolCall(toolCall.toolInput);
-        break;
-      case 'icmSearch':
-        // navigate to search results page based on icmSearch tool call
-        this.handleIcmSearchToolCall(toolCall.toolOutput);
-        break;
-      default:
-        break;
-    }
-  }
 
   /**
    * Triggers the corresponding basket action in the PWA based on the PWA_basket tool call from the copilot.
