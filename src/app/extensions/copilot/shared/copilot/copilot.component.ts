@@ -216,8 +216,7 @@ export class CopilotComponent {
    */
   private handleToolCall(toolCall: ChatbotToolCall) {
     // Execute both tool type handlers to ensure compatibility with old and new chatflows
-    this.oldToolTypeCall(toolCall);
-    this.newToolTypeCall(toolCall);
+    this.toolCall(toolCall);
   }
 
   /**
@@ -241,50 +240,11 @@ export class CopilotComponent {
   }
 
   /**
-   * soon to be deprecated  - to be removed in future major release
-   * Handle the selected tool call from the chatbot and trigger the corresponding action in the PWA for the old flowise blue print.
-   * @param toolCall The chatbot tool call information for old tool types
-   */
-
-  private oldToolTypeCall(toolCall: ChatbotToolCall) {
-    switch (toolCall?.tool) {
-      case 'product_search':
-        if (toolCall.toolInput?.Query) {
-          this.navigate(`/search/${toolCall.toolInput?.Query}`);
-        } else if (toolCall.toolInput?.filter) {
-          this.navigate(`/search/*?filters=${toolCall.toolInput?.filter}`);
-        }
-        break;
-      case 'product_detail_page':
-        this.navigate(`/product/${toolCall.toolInput?.SKU}`);
-        break;
-      case 'get_product_variations':
-        this.navigate(`/product/${toolCall.toolInput?.SKU}`);
-        break;
-      case 'open_basket':
-        this.navigate('/basket');
-        break;
-      case 'add_product_to_basket':
-        this.shoppingFacade.addProductsToBasket(
-          toolCall.toolInput?.Products?.split(';').map(sku => ({ sku, quantity: 1 }))
-        );
-        break;
-      case 'compare_products':
-        // Note: this will only work if the 'compare' feature is enabled in the PWA
-        this.compareFacade.compareProducts(toolCall.toolInput?.SKUs?.split(';'));
-        this.navigate(`/compare`);
-        break;
-      default:
-        break;
-    }
-  }
-
-  /**
    * To completely replace the old tool in future major release
    * Handle the selected tool call from the copilot and trigger the corresponding action in the PWA for the new flowise blue print.
    * @param toolCall The copilot tool call information for new tool types
    */
-  private newToolTypeCall(toolCall: ChatbotToolCall) {
+  private toolCall(toolCall: ChatbotToolCall) {
     switch (toolCall?.tool) {
       case 'PWA_basket':
         this.handlePWABasketToolCall(toolCall.toolInput);
@@ -352,6 +312,8 @@ export class CopilotComponent {
       case 'view':
         this.navigate('/basket');
         break;
+      default:
+        break;
     }
   }
 
@@ -409,6 +371,8 @@ export class CopilotComponent {
         if (orderTemplateId) {
           this.orderTemplatesFacade.deleteOrderTemplate(orderTemplateId);
         }
+        break;
+      default:
         break;
     }
   }

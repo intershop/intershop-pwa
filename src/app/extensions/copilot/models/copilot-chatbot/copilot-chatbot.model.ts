@@ -4,25 +4,8 @@ export interface ChatbotMessage {
   type: 'apiMessage' | 'userMessage';
   usedTools?: ChatbotToolCall[];
 }
-
-type ChatbotToolTypeNew =
-  | 'PWA_basket'
-  | 'PWA_compare_products'
-  | 'PWA_navigate_to_page'
-  | 'PWA_order_template_actions'
-  | 'icmSearch';
-
-type ChatbotToolTypeOld =
-  | 'product_search'
-  | 'product_detail_page'
-  | 'get_product_variations'
-  | 'open_basket'
-  | 'add_product_to_basket'
-  | 'remove_product_from_basket'
-  | 'compare_products';
-
 export interface ChatbotToolCall {
-  tool: ChatbotToolTypeNew | ChatbotToolTypeOld;
+  tool: string;
   toolInput: { [key: string]: string };
   toolOutput?: string;
 }
