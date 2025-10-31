@@ -260,12 +260,6 @@ export class CopilotComponent {
   }
 
   /**
-   * To completely replace the old tool in future major release
-   * Handle the selected tool call from the copilot and trigger the corresponding action in the PWA for the new flowise blue print.
-   * @param toolCall The copilot tool call information for new tool types
-   */
-
-  /**
    * Triggers the corresponding basket action in the PWA based on the PWA_basket tool call from the copilot.
    * @param toolInput The copilot tool call input.
    */
