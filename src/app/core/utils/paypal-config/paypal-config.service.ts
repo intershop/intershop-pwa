@@ -118,12 +118,12 @@ export class PaypalConfigService {
       params = `${params}&components=messages`;
     }
     params = `${params}&currency=${param.currency}`;
-    params = `${params}&locale=${param.locale}`; // ToDo: decide if paypal should determine locale from browser settings
+    params = `${params}&locale=${param.locale}`;
     params = `${params}&commit=false`; // do not show the "Pay now" button, but the "Continue to PayPal" button
     if (param.paypalConfig.payLaterButtonEnabled) {
       params = `${params}&enable-funding=paylater`;
     }
-    // ToDo: make sure the checkout and express scripts are different to load the script twice
+    // make sure the checkout and express scripts are different to load the script twice
     if (param.page === 'cart') {
       params = `${params}&disable-funding=card,sepa`;
     }

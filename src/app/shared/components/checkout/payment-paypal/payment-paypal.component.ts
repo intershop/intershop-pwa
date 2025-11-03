@@ -30,6 +30,7 @@ import {
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalButtonsPageType, PaypalConfigService } from 'ish-core/utils/paypal-config/paypal-config.service';
@@ -171,36 +172,18 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
       // Call your server to set up the transaction after the user has clicked the button
       createOrder: (data: { paymentSource: string }) => {
         isShippingAddressChanged = false;
-        this.selectPaypalPaymentMethod.emit(
-          paypalPaymentMethod.paymentInstruments[0]?.id || paypalPaymentMethod.serviceId
-        );
         // eslint-disable-next-line no-console
-        console.log('createOrder', data);
-        return firstValueFrom(this.getPaypalOrderId$().pipe(take(1)));
+        console.info('createOrder', data);
+        return this.createOrder(paypalPaymentMethod);
       },
       // after the user has submitted the payment in the paypal overlay
       onApprove: (data: { payerID: string; orderID: string }) => {
-        // eslint-disable-next-line no-console
-        console.log('onApprove', data);
-        // ngZone is needed to navigate outside of the Angular zone in a callback function
-        this.ngZone.run(() => {
-          this.router.navigate(['/checkout/review'], {
-            queryParams: {
-              redirect: 'success',
-              token: data.orderID,
-              PayerID: data.payerID,
-              shippingAddressChanged: isShippingAddressChanged,
-            },
-          });
-        });
+        this.onApprove(data, isShippingAddressChanged);
       },
       // in case the shipping address was changed in the paypal overlay
       onShippingAddressChange: (data: {
         shippingAddress: { city: string; countryCode: string; postalCode: string; state: string };
       }) => {
-        // eslint-disable-next-line no-console
-        console.log('onShippingAddressChange', data);
-
         const normalize = (val: string) => val?.trim()?.toLowerCase();
         const basketAddress = basket?.commonShipToAddress;
         const shippingAddress = data?.shippingAddress;
@@ -213,16 +196,11 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
       },
       // after the user has cancelled the payment in the paypal overlay
       onCancel: () => {
-        this.checkoutFacade.deleteBasketPayment(paypalPaymentMethod.paymentInstruments[0]);
-        this.ngZone.run(() => {
-          this.router.navigate(['/checkout/payment'], { queryParams: { redirect: 'cancel' } });
-        });
+        this.onCancel('/checkout/payment', paypalPaymentMethod.paymentInstruments[0]);
       },
       // show a generic error message in case of an error
       onError: () => {
-        this.ngZone.run(() => {
-          this.router.navigate(['/checkout/payment'], { queryParams: { redirect: 'failure' } });
-        });
+        this.onError('/checkout/payment');
       },
     };
   }
@@ -243,43 +221,58 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
       style: PAYPAL_BUTTON_STYLING.cart,
       // Call your server to set up the transaction after the user has clicked the button
       createOrder: (data: { paymentSource: string }) => {
-        this.selectPaypalPaymentMethod.emit(
-          paypalPaymentMethod.paymentInstruments[0]?.id || paypalPaymentMethod.serviceId
-        );
         // eslint-disable-next-line no-console
         console.log('createOrder', data);
-        return firstValueFrom(this.getPaypalOrderId$().pipe(take(1)));
+        return this.createOrder(paypalPaymentMethod);
       },
       // after the user has submitted the payment in the paypal overlay
       onApprove: (data: { payerID: string; orderID: string }) => {
-        // eslint-disable-next-line no-console
-        console.log('onApprove', data);
-        // ngZone is needed to navigate outside of the Angular zone in a callback function
-        this.ngZone.run(() => {
-          this.router.navigate(['/checkout/review'], {
-            queryParams: {
-              redirect: 'success',
-              token: data.orderID,
-              PayerID: data.payerID,
-              shippingAddressChanged: true, // always true, because shipping address is not known before
-            },
-          });
-        });
+        // shippingAddressChanged is always true, because shipping address is not known before
+        this.onApprove(data, true);
       },
       // after the user has cancelled the payment in the paypal overlay
       onCancel: () => {
-        this.checkoutFacade.deleteBasketPayment(paypalPaymentMethod.paymentInstruments[0]);
-        this.ngZone.run(() => {
-          this.router.navigate(['/basket'], { queryParams: { redirect: 'cancel' } });
-        });
+        this.onCancel('/basket', paypalPaymentMethod.paymentInstruments[0]);
       },
       // show a generic error message in case of an error
       onError: () => {
-        this.ngZone.run(() => {
-          this.router.navigate(['/basket'], { queryParams: { redirect: 'failure' } });
-        });
+        this.onError('/basket');
       },
     };
+  }
+
+  private createOrder(paypalPaymentMethod: PaymentMethod) {
+    this.selectPaypalPaymentMethod.emit(paypalPaymentMethod.paymentInstruments[0]?.id || paypalPaymentMethod.serviceId);
+    return firstValueFrom(this.getPaypalOrderId$().pipe(take(1)));
+  }
+
+  private onApprove(data: { payerID: string; orderID: string }, shippingAddressChanged: boolean) {
+    // ngZone is needed to navigate outside of the Angular zone in a callback function
+    this.ngZone.run(() => {
+      this.router.navigate(['/checkout/review'], {
+        queryParams: {
+          redirect: 'success',
+          token: data.orderID,
+          PayerID: data.payerID,
+          shippingAddressChanged,
+        },
+      });
+    });
+  }
+
+  private onCancel(navigationTarget: string, paymentInstrument: PaymentInstrument) {
+    if (paymentInstrument) {
+      this.checkoutFacade.deleteBasketPayment(paymentInstrument);
+    }
+    this.ngZone.run(() => {
+      this.router.navigate([navigationTarget], { queryParams: { redirect: 'cancel' } });
+    });
+  }
+
+  private onError(navigationTarget: string) {
+    this.ngZone.run(() => {
+      this.router.navigate([navigationTarget], { queryParams: { redirect: 'failure' } });
+    });
   }
 
   private getPaypalOrderId$(): Observable<string> {
