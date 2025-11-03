@@ -170,10 +170,9 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
     return {
       style: PAYPAL_BUTTON_STYLING.checkout,
       // Call your server to set up the transaction after the user has clicked the button
-      createOrder: (data: { paymentSource: string }) => {
+      createOrder: () => {
+        //  data: { paymentSource: string }
         isShippingAddressChanged = false;
-        // eslint-disable-next-line no-console
-        console.info('createOrder', data);
         return this.createOrder(paypalPaymentMethod);
       },
       // after the user has submitted the payment in the paypal overlay
@@ -220,11 +219,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
     return {
       style: PAYPAL_BUTTON_STYLING.cart,
       // Call your server to set up the transaction after the user has clicked the button
-      createOrder: (data: { paymentSource: string }) => {
-        // eslint-disable-next-line no-console
-        console.log('createOrder', data);
-        return this.createOrder(paypalPaymentMethod);
-      },
+      createOrder: () => this.createOrder(paypalPaymentMethod),
       // after the user has submitted the payment in the paypal overlay
       onApprove: (data: { payerID: string; orderID: string }) => {
         // shippingAddressChanged is always true, because shipping address is not known before
