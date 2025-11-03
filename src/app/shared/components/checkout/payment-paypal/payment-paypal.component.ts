@@ -31,7 +31,6 @@ import {
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { log } from 'ish-core/utils/dev/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalButtonsPageType, PaypalConfigService } from 'ish-core/utils/paypal-config/paypal-config.service';
 
@@ -96,10 +95,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
     this.isPaypalPaymentMethodSelected$ = combineLatest({
       method: this.paypalPaymentMethod$,
       basket: this.basket$,
-    }).pipe(
-      log(),
-      map(({ method, basket }) => method?.paymentInstruments[0]?.id === basket?.payment?.paymentInstrument?.id)
-    );
+    }).pipe(map(({ method, basket }) => method?.paymentInstruments[0]?.id === basket?.payment?.paymentInstrument?.id));
   }
 
   ngAfterViewInit() {
