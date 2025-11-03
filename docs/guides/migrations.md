@@ -39,6 +39,9 @@ Intershop PWA 9.0.0 contains support for ICM [Pre-integrated Custom Fields](http
 With this configuration, shop users can now add/edit additional information at the basket and at basket line-items.
 The custom field information is displayed during the checkout and on the order details page.
 
+The CMS _Product List (REST)_ rendering component was enhanced to support predefined endpoints for ICM (`icm://`) and SPARQUE (`sparque://`).
+This allows content managers to configure product lists with relative endpoints to the PWAs configured ICM or SPARQUE backends, e.g. `icm://products?searchTerm=notebook&attrs=sku&amount=6`, instead of using absolute REST endpoints to a fixed ICM backend URL.
+
 ## From 7.1.0 to 8.0.0
 
 The Intershop PWA now uses Node.js 22.17.1 LTS with the corresponding npm version 10.9.2.
