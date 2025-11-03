@@ -17,6 +17,9 @@ For more information, see [Serving the PWA from a Sub-Path Including Static File
 
 Together with the `DEPLOY_URL` changes the file `src/ssr/server-scripts/server.js` needed adaptions and was renamed to `src/ssr/server-scripts/distributor.js` for more clarity.
 
+The Copilot integration was updated to work with a newer version of the Intershop Copilot for Buyers that returns different tool calls.
+When migrating a PWA project that uses the Copilot integration, either use a new fitting configuration or skip this commit and continue with the previous implementation.
+
 ## From 7.1.0 to 8.0.0
 
 The Intershop PWA now uses Node.js 22.17.1 LTS with the corresponding npm version 10.9.2.

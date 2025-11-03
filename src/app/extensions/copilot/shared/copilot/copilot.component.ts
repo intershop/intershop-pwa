@@ -373,21 +373,19 @@ export class CopilotComponent {
    * @param toolOutput.showOnPWA - Indicates if the search results should be displayed in the PWA
    * @param toolOutput.query - The search query executed by the copilot to be displayed in the PWA
    */
-  private handleIcmSearchToolCall(toolOutput: { [key: string]: string } | string) {
-    if (typeof toolOutput === 'string') {
-      try {
-        const parsed = JSON.parse(toolOutput);
+  private handleIcmSearchToolCall(toolOutput: string) {
+    try {
+      const parsed = JSON.parse(toolOutput);
 
-        if (typeof parsed === 'object' && parsed && parsed.showOnPWA !== undefined && parsed.query) {
-          const query = parsed.query;
+      if (typeof parsed === 'object' && parsed && parsed.showOnPWA !== undefined && parsed.query) {
+        const query = parsed.query;
 
-          if (query?.trim()) {
-            this.navigate(`/search/${encodeURIComponent(query)}`);
-          }
+        if (query?.trim()) {
+          this.navigate(`/search/${encodeURIComponent(query)}`);
         }
-      } catch {
-        // intentionally ignore JSON parse errors
       }
+    } catch {
+      // intentionally ignore JSON parse errors
     }
   }
 }
