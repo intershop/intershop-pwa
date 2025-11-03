@@ -10,6 +10,7 @@ import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketAddressSummaryComponent } from 'ish-shared/components/basket/basket-address-summary/basket-address-summary.component';
@@ -20,7 +21,6 @@ import { BasketPaymentCostInfoComponent } from 'ish-shared/components/basket/bas
 import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketRecurrenceSummaryComponent } from 'ish-shared/components/basket/basket-recurrence-summary/basket-recurrence-summary.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
-import { PaymentPaypalComponent } from 'ish-shared/components/checkout/payment-paypal/payment-paypal.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoMessageComponent } from 'ish-shared/components/common/info-message/info-message.component';
 
@@ -52,11 +52,11 @@ describe('Checkout Payment Component', () => {
         MockComponent(FormlyForm),
         MockComponent(InfoMessageComponent),
         MockComponent(PaymentConcardisCreditcardComponent),
-        MockComponent(PaymentPaypalComponent),
         MockComponent(PaymentSaveCheckboxComponent),
         MockDirective(NgbCollapse),
         MockDirective(ServerHtmlDirective),
         MockPipe(PricePipe),
+        MockPipe(ServerSettingPipe),
         PaymentParameterFormComponent,
       ],
       imports: [

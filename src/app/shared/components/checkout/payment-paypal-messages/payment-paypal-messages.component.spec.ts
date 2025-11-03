@@ -4,6 +4,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -28,8 +29,8 @@ describe('Payment Paypal Messages Component', () => {
       } as PaymentMethod)
     );
 
-    const shoppingFacade = mock(ShoppingFacade);
-    when(shoppingFacade.productPrices$(anything())).thenReturn(
+    const productContextFacade = mock(ProductContextFacade);
+    when(productContextFacade.select('prices')).thenReturn(
       of({ salePrice: { value: 100, type: 'Money', currency: 'USD' } })
     );
 
@@ -44,7 +45,7 @@ describe('Payment Paypal Messages Component', () => {
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: PaypalConfigService, useFactory: () => instance(paypalConfigService) },
-        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
+        { provide: ShoppingFacade, useFactory: () => instance(productContextFacade) },
       ],
     }).compileComponents();
   });
@@ -83,14 +84,6 @@ describe('Payment Paypal Messages Component', () => {
     it('should accept checkout pageType', () => {
       component.pageType = 'checkout';
       expect(component.pageType).toBe('checkout');
-    });
-  });
-
-  describe('productSKU input', () => {
-    it('should accept productSKU for product-details pages', () => {
-      const testSKU = 'TEST-SKU-123';
-      component.productSKU = testSKU;
-      expect(component.productSKU).toBe(testSKU);
     });
   });
 });

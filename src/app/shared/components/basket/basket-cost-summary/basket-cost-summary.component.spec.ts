@@ -11,7 +11,6 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { PaymentPaypalMessagesComponent } from 'ish-shared/components/checkout/payment-paypal-messages/payment-paypal-messages.component';
 
 import { BasketCostSummaryComponent } from './basket-cost-summary.component';
 
@@ -31,7 +30,6 @@ describe('Basket Cost Summary Component', () => {
       declarations: [
         BasketCostSummaryComponent,
         MockComponent(FaIconComponent),
-        MockComponent(PaymentPaypalMessagesComponent),
         MockDirective(NgbPopover),
         MockPipe(ServerSettingPipe),
         PricePipe,

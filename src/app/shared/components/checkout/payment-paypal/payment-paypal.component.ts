@@ -31,6 +31,7 @@ import {
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { log } from 'ish-core/utils/dev/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalButtonsPageType, PaypalConfigService } from 'ish-core/utils/paypal-config/paypal-config.service';
 
@@ -47,7 +48,6 @@ import { PAYPAL_BUTTON_STYLING } from './payment-paypal.component.styling';
  * 3. Handling payment flow through PayPal's hosted checkout
  * 4. Managing basket updates and navigation upon completion
  *
- * @see {@link PaymentPaypalMessagesComponent} - PayPal messaging component
  * @see {@link PaypalConfigService} - PayPal configuration and script loading
  */
 @Component({
@@ -96,7 +96,10 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
     this.isPaypalPaymentMethodSelected$ = combineLatest({
       method: this.paypalPaymentMethod$,
       basket: this.basket$,
-    }).pipe(map(({ method, basket }) => method?.paymentInstruments[0]?.id === basket?.payment?.paymentInstrument?.id));
+    }).pipe(
+      log(),
+      map(({ method, basket }) => method?.paymentInstruments[0]?.id === basket?.payment?.paymentInstrument?.id)
+    );
   }
 
   ngAfterViewInit() {
@@ -109,7 +112,6 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
   private loadScript() {
     this.paypalPaymentMethod$
       .pipe(
-        whenTruthy(),
         filter(paymentMethod => !!paymentMethod.hostedPaymentPageParameters?.length),
         take(1),
         switchMap(paypalPaymentMethod =>
@@ -131,9 +133,16 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
       )
       .subscribe({
         next: ({ basket, paypalPaymentMethod }) => {
-          this.pageType !== 'checkout'
-            ? this.initializePaypalExpressButton(paypalPaymentMethod)
-            : this.initializePaypalCheckoutButton(basket, paypalPaymentMethod);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const paypalObject = (window as any)[this.getNameSpace(paypalPaymentMethod)];
+          if (paypalObject?.Buttons) {
+            const paypalButtonsConfig = paypalObject.Buttons(
+              this.pageType === 'checkout'
+                ? this.initializePaypalCheckoutButton(basket, paypalPaymentMethod)
+                : this.initializePaypalExpressButton(paypalPaymentMethod)
+            );
+            this.paypalButtonsComponent = paypalButtonsConfig.render(this.paypalButtonsContainerId);
+          }
           this.scriptLoaded$.next(true);
         },
         error: () => {
@@ -155,80 +164,71 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
    * - Shipping address change handling
    * - Error and cancellation scenarios
    *
-   * Also optionally renders PayPal Messages for payment method promotion.
-   *
    * @param basket - Current shopping basket
    * @param paypalPaymentMethod - PayPal payment method configuration
-   * @param displayMessage - Whether to show promotional PayPal messages
-   * @private
    */
   private initializePaypalCheckoutButton(basket: Basket, paypalPaymentMethod: PaymentMethod) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const paypalObject = (window as any)[this.getNameSpace(paypalPaymentMethod)];
-    if (paypalObject?.Buttons) {
-      let isShippingAddressChanged = false;
+    let isShippingAddressChanged = false;
 
-      const paypalButtonsConfig = paypalObject.Buttons({
-        style: PAYPAL_BUTTON_STYLING.checkout,
-        // Call your server to set up the transaction after the user has clicked the button
-        createOrder: (data: { paymentSource: string }) => {
-          isShippingAddressChanged = false;
-          this.selectPaypalPaymentMethod.emit(
-            paypalPaymentMethod.paymentInstruments[0]?.id || paypalPaymentMethod.serviceId
-          );
-          // eslint-disable-next-line no-console
-          console.log('createOrder', data);
-          return firstValueFrom(this.getPaypalOrderId$().pipe(take(1)));
-        },
-        // after the user has submitted the payment in the paypal overlay
-        onApprove: (data: { payerID: string; orderID: string }) => {
-          // eslint-disable-next-line no-console
-          console.log('onApprove', data);
-          // ngZone is needed to navigate outside of the Angular zone in a callback function
-          this.ngZone.run(() => {
-            this.router.navigate(['/checkout/review'], {
-              queryParams: {
-                redirect: 'success',
-                token: data.orderID,
-                PayerID: data.payerID,
-                shippingAddressChanged: isShippingAddressChanged,
-              },
-            });
+    return {
+      style: PAYPAL_BUTTON_STYLING.checkout,
+      // Call your server to set up the transaction after the user has clicked the button
+      createOrder: (data: { paymentSource: string }) => {
+        isShippingAddressChanged = false;
+        this.selectPaypalPaymentMethod.emit(
+          paypalPaymentMethod.paymentInstruments[0]?.id || paypalPaymentMethod.serviceId
+        );
+        // eslint-disable-next-line no-console
+        console.log('createOrder', data);
+        return firstValueFrom(this.getPaypalOrderId$().pipe(take(1)));
+      },
+      // after the user has submitted the payment in the paypal overlay
+      onApprove: (data: { payerID: string; orderID: string }) => {
+        // eslint-disable-next-line no-console
+        console.log('onApprove', data);
+        // ngZone is needed to navigate outside of the Angular zone in a callback function
+        this.ngZone.run(() => {
+          this.router.navigate(['/checkout/review'], {
+            queryParams: {
+              redirect: 'success',
+              token: data.orderID,
+              PayerID: data.payerID,
+              shippingAddressChanged: isShippingAddressChanged,
+            },
           });
-        },
-        // in case the shipping address was changed in the paypal overlay
-        onShippingAddressChange: (data: {
-          shippingAddress: { city: string; countryCode: string; postalCode: string; state: string };
-        }) => {
-          // eslint-disable-next-line no-console
-          console.log('onShippingAddressChange', data);
+        });
+      },
+      // in case the shipping address was changed in the paypal overlay
+      onShippingAddressChange: (data: {
+        shippingAddress: { city: string; countryCode: string; postalCode: string; state: string };
+      }) => {
+        // eslint-disable-next-line no-console
+        console.log('onShippingAddressChange', data);
 
-          const normalize = (val: string) => val?.trim()?.toLowerCase();
-          const basketAddress = basket?.commonShipToAddress;
-          const shippingAddress = data?.shippingAddress;
+        const normalize = (val: string) => val?.trim()?.toLowerCase();
+        const basketAddress = basket?.commonShipToAddress;
+        const shippingAddress = data?.shippingAddress;
 
-          isShippingAddressChanged =
-            normalize(basketAddress?.country) !== normalize(shippingAddress?.countryCode) &&
-            normalize(basketAddress?.postalCode) !== normalize(shippingAddress?.postalCode) &&
-            normalize(basketAddress?.city) !== normalize(shippingAddress?.city);
-          // no state comparison, because it is not available in the basket and also not always provided by paypal
-        },
-        // after the user has cancelled the payment in the paypal overlay
-        onCancel: () => {
-          this.checkoutFacade.deleteBasketPayment(paypalPaymentMethod.paymentInstruments[0]);
-          this.ngZone.run(() => {
-            this.router.navigate(['/checkout/payment'], { queryParams: { redirect: 'cancel' } });
-          });
-        },
-        // show a generic error message in case of an error
-        onError: () => {
-          this.ngZone.run(() => {
-            this.router.navigate(['/checkout/payment'], { queryParams: { redirect: 'failure' } });
-          });
-        },
-      });
-      this.paypalButtonsComponent = paypalButtonsConfig.render(this.paypalButtonsContainerId);
-    }
+        isShippingAddressChanged =
+          normalize(basketAddress?.country) !== normalize(shippingAddress?.countryCode) &&
+          normalize(basketAddress?.postalCode) !== normalize(shippingAddress?.postalCode) &&
+          normalize(basketAddress?.city) !== normalize(shippingAddress?.city);
+        // no state comparison, because it is not available in the basket and also not always provided by paypal
+      },
+      // after the user has cancelled the payment in the paypal overlay
+      onCancel: () => {
+        this.checkoutFacade.deleteBasketPayment(paypalPaymentMethod.paymentInstruments[0]);
+        this.ngZone.run(() => {
+          this.router.navigate(['/checkout/payment'], { queryParams: { redirect: 'cancel' } });
+        });
+      },
+      // show a generic error message in case of an error
+      onError: () => {
+        this.ngZone.run(() => {
+          this.router.navigate(['/checkout/payment'], { queryParams: { redirect: 'failure' } });
+        });
+      },
+    };
   }
 
   /**
@@ -240,59 +240,50 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
    * - Navigate directly to basket upon completion
    * - Display appropriate error messages for failures
    *
-   * Also optionally renders PayPal Messages for cart-specific payment promotion.
-   *
    * @param paypalPaymentMethod - PayPal payment method configuration
-   * @param displayMessage - Whether to show promotional PayPal messages
-   * @private
    */
   private initializePaypalExpressButton(paypalPaymentMethod: PaymentMethod) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const paypalObject = (window as any)['PayPal_iframe_'.concat(paypalPaymentMethod.id, '_button')];
-    if (paypalObject?.Buttons) {
-      const paypalExpressButtonsConfig = paypalObject.Buttons({
-        style: PAYPAL_BUTTON_STYLING.cart,
-        // Call your server to set up the transaction after the user has clicked the button
-        createOrder: (data: { paymentSource: string }) => {
-          this.selectPaypalPaymentMethod.emit(
-            paypalPaymentMethod.paymentInstruments[0]?.id || paypalPaymentMethod.serviceId
-          );
-          // eslint-disable-next-line no-console
-          console.log('createOrder', data);
-          return firstValueFrom(this.getPaypalOrderId$().pipe(take(1)));
-        },
-        // after the user has submitted the payment in the paypal overlay
-        onApprove: (data: { payerID: string; orderID: string }) => {
-          // eslint-disable-next-line no-console
-          console.log('onApprove', data);
-          // ngZone is needed to navigate outside of the Angular zone in a callback function
-          this.ngZone.run(() => {
-            this.router.navigate(['/checkout/review'], {
-              queryParams: {
-                redirect: 'success',
-                token: data.orderID,
-                PayerID: data.payerID,
-                shippingAddressChanged: true, // always true, because shipping address is not known before
-              },
-            });
+    return {
+      style: PAYPAL_BUTTON_STYLING.cart,
+      // Call your server to set up the transaction after the user has clicked the button
+      createOrder: (data: { paymentSource: string }) => {
+        this.selectPaypalPaymentMethod.emit(
+          paypalPaymentMethod.paymentInstruments[0]?.id || paypalPaymentMethod.serviceId
+        );
+        // eslint-disable-next-line no-console
+        console.log('createOrder', data);
+        return firstValueFrom(this.getPaypalOrderId$().pipe(take(1)));
+      },
+      // after the user has submitted the payment in the paypal overlay
+      onApprove: (data: { payerID: string; orderID: string }) => {
+        // eslint-disable-next-line no-console
+        console.log('onApprove', data);
+        // ngZone is needed to navigate outside of the Angular zone in a callback function
+        this.ngZone.run(() => {
+          this.router.navigate(['/checkout/review'], {
+            queryParams: {
+              redirect: 'success',
+              token: data.orderID,
+              PayerID: data.payerID,
+              shippingAddressChanged: true, // always true, because shipping address is not known before
+            },
           });
-        },
-        // after the user has cancelled the payment in the paypal overlay
-        onCancel: () => {
-          this.checkoutFacade.deleteBasketPayment(paypalPaymentMethod.paymentInstruments[0]);
-          this.ngZone.run(() => {
-            this.router.navigate(['/basket'], { queryParams: { redirect: 'cancel' } });
-          });
-        },
-        // show a generic error message in case of an error
-        onError: () => {
-          this.ngZone.run(() => {
-            this.router.navigate(['/basket'], { queryParams: { redirect: 'failure' } });
-          });
-        },
-      });
-      this.paypalButtonsComponent = paypalExpressButtonsConfig.render(this.paypalButtonsContainerId);
-    }
+        });
+      },
+      // after the user has cancelled the payment in the paypal overlay
+      onCancel: () => {
+        this.checkoutFacade.deleteBasketPayment(paypalPaymentMethod.paymentInstruments[0]);
+        this.ngZone.run(() => {
+          this.router.navigate(['/basket'], { queryParams: { redirect: 'cancel' } });
+        });
+      },
+      // show a generic error message in case of an error
+      onError: () => {
+        this.ngZone.run(() => {
+          this.router.navigate(['/basket'], { queryParams: { redirect: 'failure' } });
+        });
+      },
+    };
   }
 
   private getPaypalOrderId$(): Observable<string> {

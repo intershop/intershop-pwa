@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, Observable, distinctUntilChanged, filter, iif, map, of, switchMap, take } from 'rxjs';
+import { BehaviorSubject, Observable, distinctUntilChanged, filter, map, of, switchMap, take } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalConfigService, PaypalPageType } from 'ish-core/utils/paypal-config/paypal-config.service';
 
@@ -12,16 +12,9 @@ import { PAYPAL_MESSAGE_STYLING } from './payment-paypal-messages.component.styl
 /**
  * Component for displaying PayPal Pay Later messages on different pages.
  *
- * This component dynamically loads PayPal SDK and renders promotional messages
- * that inform customers about PayPal financing options (Pay Later/Pay in 3/Pay in 4).
- * The messages are contextual and can display different content based on the page type
- * and current amount.
- *
- * Features:
- * - Supports multiple page types: product details, cart, payment, and product listing
- * - Automatically calculates display amounts based on context (product price, basket total)
- * - Handles PayPal script loading and error states
- *
+ * This component dynamically loads PayPal SDK and renders promotional messages that inform customers about PayPal financing options.
+ * The messages are contextual and can display different content based on the page type and current amount.
+ * They can be styled using the PAYPAL_MESSAGE_STYLING configuration of payment-paypal-messages.styling.component.ts.
  */
 
 @Component({
@@ -36,12 +29,6 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
    */
   @Input() pageType: PaypalPageType = 'cart';
 
-  /**
-   * Product SKU for product detail pages.
-   * Required when pageType is 'product-details' to calculate the correct amount.
-   */
-  @Input() productSKU: string;
-
   /** DOM selector for the PayPal messages container element */
   private readonly paypalMessagesContainerId = '#paypal-messages-container';
 
@@ -55,36 +42,18 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
   private amount$: Observable<number>;
 
   private destroyRef = inject(DestroyRef);
+  private productContext = inject(ProductContextFacade, { optional: true });
 
-  constructor(
-    private checkoutFacade: CheckoutFacade,
-    private shoppingFacade: ShoppingFacade,
-    private paypalConfigService: PaypalConfigService
-  ) {}
+  constructor(private checkoutFacade: CheckoutFacade, private paypalConfigService: PaypalConfigService) {}
 
-  /**
-   * Initializes the component and sets up the amount observable based on page type.
-   *
-   * This method:
-   * 1. Configures the amount$ observable based on pageType:
-   *    - For product-details: Gets product price from shopping facade
-   *    - For cart/checkout: Gets basket total from checkout facade
-   *    - For other pages: Uses default value of 0
-   * 2. Initiates the PayPal script loading process
-   *
-   * The amount is used to display contextually relevant PayPal financing messages
-   * that show potential payment options based on the current transaction value.
-   */
   ngOnInit(): void {
-    this.amount$ = iif(
-      () => this.pageType === 'product-details' && !!this.productSKU,
-      this.shoppingFacade.productPrices$(this.productSKU).pipe(map(prices => prices?.salePrice?.value ?? 0)),
-      iif(
-        () => this.pageType === 'cart' || this.pageType === 'checkout',
-        this.checkoutFacade.basket$.pipe(map(basket => basket?.totals?.total?.gross ?? 0)),
-        of(0)
-      )
-    );
+    // The amount is used to display contextually relevant PayPal financing messages that show potential payment options based on the current transaction value.
+    this.amount$ =
+      this.pageType === 'product-details' && !!this.productContext
+        ? this.productContext.select('prices').pipe(map(prices => prices?.salePrice?.value ?? 0))
+        : this.pageType === 'cart' || this.pageType === 'checkout'
+        ? this.checkoutFacade.basket$.pipe(map(basket => basket?.totals?.total?.gross ?? 0))
+        : of(0);
 
     this.loadScript();
   }
@@ -144,12 +113,14 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const paypalObject = (window as any)[nameSpace];
-    this.paypalMessagesComponent = paypalObject
-      .Messages({ ...messageConfig, pageType: this.pageType })
-      .render(this.paypalMessagesContainerId)
-      .catch((error: string) => {
-        console.error('PayPal Messages render failed:', error);
-      });
+    if (paypalObject?.Messages) {
+      this.paypalMessagesComponent = paypalObject
+        .Messages({ ...messageConfig, pageType: this.pageType })
+        .render(this.paypalMessagesContainerId)
+        .catch((error: string) => {
+          console.error('PayPal Messages render failed:', error);
+        });
+    }
   }
 
   /**

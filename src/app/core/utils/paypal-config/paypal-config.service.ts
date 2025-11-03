@@ -39,7 +39,7 @@ interface ScriptParams extends PayPalScriptParams {
  * - Namespace management for multiple PayPal integrations
  *
  * The service integrates with the application's locale, currency, and PayPal configuration
- * *
+ *
  * @see {@link PaymentPaypalComponent} - Main PayPal button integration
  * @see {@link PaymentPaypalMessagesComponent} - PayPal messaging integration
  */
@@ -104,7 +104,6 @@ export class PaypalConfigService {
    *
    * @param param - Script parameters containing configuration and context
    * @returns Query parameter string for the PayPal SDK script URL
-   * @private
    */
   private getScriptQueryParameters(param: ScriptParams): string {
     let params = param.paymentMethod.hostedPaymentPageParameters

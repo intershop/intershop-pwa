@@ -7,6 +7,7 @@ import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PriceType } from 'ish-core/models/price/price.model';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-shopping-basket-payment',
@@ -30,8 +31,8 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.priceType$ = this.checkoutFacade.priceType$;
     this.paymentMethods$ = this.checkoutFacade.eligibleFastCheckoutPaymentMethods$.pipe(shareReplay(1));
-    this.checkoutFacade.loadEligiblePaymentMethods();
     this.filteredPaymentMethods$ = this.paymentMethods$.pipe(
+      whenTruthy(),
       map(methods => methods.filter(method => !method.capabilities?.includes('PaypalCheckout')))
     );
     // if page is shown after cancelled/faulty redirect determine error message variable
@@ -42,7 +43,8 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
     if (
       changes.basket &&
       (changes.basket.previousValue?.recurrence !== changes.basket.currentValue?.recurrence ||
-        !changes.basket.currentValue?.recurrence)
+        !changes.basket.currentValue?.recurrence) &&
+      this.basket
     ) {
       this.checkoutFacade.loadEligiblePaymentMethods();
     }

@@ -30,10 +30,11 @@
           [basket]="basket"
           [paymentMethod]="paymentMethod"
           [priceType]="priceType$ | async"
-        /></li></ng-container
-  ></ng-container>
-
-  <li>
-    <ish-payment-paypal [pageType]="'cart'" (selectPaypalPaymentMethod)="setBasketPayment($event)" />
-  </li>
+        />
+      </li>
+      <li *ngIf="'preferences.PayPalCheckoutPreferences' | ishServerSetting">
+        <ish-payment-paypal [pageType]="'cart'" (selectPaypalPaymentMethod)="setBasketPayment($event)" />
+      </li>
+    </ng-container>
+  </ng-container>
 </ul>
