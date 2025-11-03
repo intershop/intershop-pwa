@@ -39,7 +39,7 @@ describe('Search Effects', () => {
     when(suggestionsServiceProviderMock.get()).thenReturn(of(instance(suggestServiceMock)));
     productsServiceMock = mock(ProductsService);
     productsServiceProviderMock = mock(ProductsServiceProvider);
-    when(productsServiceProviderMock.get()).thenReturn(of(instance(productsServiceMock)));
+    when(productsServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
     const skus = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
     when(productsServiceMock.searchProducts(anything())).thenCall(
       (searchTerm: string, amount: number, _, offset: number) => {

@@ -26,7 +26,7 @@ export class SuggestionsServiceProvider {
   /**
    * Gets the appropriate suggestions service implementation based on current configuration.
    *
-   * @returns An observable emitting either SparqueSuggestionsService or SuggestService (ICM/Solr).
+   * @returns An observable emitting either SparqueSuggestionsService or the default ICM suggest service.
    */
   get(): Observable<SuggestionsServiceInterface> {
     return this.store.pipe(

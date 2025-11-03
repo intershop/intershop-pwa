@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, map, take } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 import { Product } from 'ish-core/models/product/product.model';
 import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
@@ -35,19 +35,17 @@ export class ProductsServiceProvider {
    * Gets the appropriate products service implementation based on configuration and parameters.
    *
    * @param skipSparque Optional parameter to skip Sparque functionality even if configured
-   * @returns An observable emitting either SparqueProductsService or ProductsService.
+   * @returns The products service implementation.
    */
-  get(skipSparque = false): Observable<ProductsServiceInterface> {
-    return this.store.pipe(
-      select(getSparqueConfig),
-      take(1),
-      map(config => {
-        if (this.isSparqueSearchEnabled(config) && !skipSparque) {
-          return this.sparqueProductsService;
-        }
-        return this.productsService;
-      })
-    );
+  get(skipSparque = false): ProductsServiceInterface {
+    // For now, assume Sparque is not enabled if config is not available synchronously
+    // TODO: make this asynchronous if needed
+    let config: SparqueConfig | undefined;
+    this.store.pipe(select(getSparqueConfig), take(1)).subscribe(c => (config = c));
+    if (this.isSparqueSearchEnabled(config) && !skipSparque) {
+      return this.sparqueProductsService;
+    }
+    return this.productsService;
   }
 
   private isSparqueSearchEnabled(config: SparqueConfig | undefined): boolean {

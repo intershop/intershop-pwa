@@ -8,6 +8,7 @@ import { from } from 'rxjs';
 import { concatMap, map, sample, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
+import { Product } from 'ish-core/models/product/product.model';
 import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { SuggestionsServiceProvider } from 'ish-core/service-provider/suggestions.service-provider';
@@ -83,38 +84,37 @@ export class SearchEffects {
       concatLatestFrom(() => this.store.pipe(select(getProductListingItemsPerPage('search')))),
       map(([payload, pageSize]) => ({ ...payload, amount: pageSize, offset: (payload.page - 1) * pageSize })),
       concatMap(({ searchTerm, amount, offset, sorting, page }) =>
-        this.productsServiceProvider.get().pipe(
-          concatMap(service =>
-            service.searchProducts({ searchTerm, amount, offset, sorting }).pipe(
-              concatMap(({ total, products, sortableAttributes, filter }) => {
-                // route to product detail page if only one product was found
-                if (total === 1) {
-                  this.router.navigate([generateProductUrl(products[0])]);
-                }
-                // provide the data for the search result page
-                return [
-                  ...products.map(product => loadProductSuccess({ product })),
-                  setProductListingPages(
-                    this.productListingMapper.createPages(
-                      products.map(p => p.sku),
-                      'search',
-                      searchTerm,
-                      amount,
-                      {
-                        startPage: page,
-                        sorting,
-                        sortableAttributes,
-                        itemCount: total,
-                      }
-                    )
-                  ),
-                  filter?.length ? loadFilterSuccess({ filterNavigation: { filter } }) : { type: 'no_filter_action' },
-                ];
-              }),
-              mapErrorToAction(searchProductsFail)
-            )
+        this.productsServiceProvider
+          .get()
+          .searchProducts({ searchTerm, amount, offset, sorting })
+          .pipe(
+            concatMap(({ total, products, sortableAttributes, filter }) => {
+              // route to product detail page if only one product was found
+              if (total === 1) {
+                this.router.navigate([generateProductUrl(products[0])]);
+              }
+              // provide the data for the search result page
+              return [
+                ...products.map((product: Product) => loadProductSuccess({ product })),
+                setProductListingPages(
+                  this.productListingMapper.createPages(
+                    products.map((p: Product) => p.sku),
+                    'search',
+                    searchTerm,
+                    amount,
+                    {
+                      startPage: page,
+                      sorting,
+                      sortableAttributes,
+                      itemCount: total,
+                    }
+                  )
+                ),
+                filter?.length ? loadFilterSuccess({ filterNavigation: { filter } }) : { type: 'no_filter_action' },
+              ];
+            }),
+            mapErrorToAction(searchProductsFail)
           )
-        )
       )
     )
   );

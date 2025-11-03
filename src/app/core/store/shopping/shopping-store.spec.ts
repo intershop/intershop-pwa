@@ -21,7 +21,6 @@ import { CountryService } from 'ish-core/services/country/country.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SparqueRecommendationsService } from 'ish-core/services/sparque-recommendations/sparque-recommendations.service';
-import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
@@ -49,7 +48,6 @@ describe('Shopping Store', () => {
   let categoriesServiceProviderMock: CategoriesServiceProvider;
   let suggestServiceMock: SuggestService;
   let suggestionsServiceProviderMock: SuggestionsServiceProvider;
-  let sparqueSuggestionsServiceMock: SparqueSuggestionsService;
   let filterServiceMock: FilterService;
 
   beforeEach(() => {
@@ -103,13 +101,12 @@ describe('Shopping Store', () => {
     when(countryServiceMock.getCountries()).thenReturn(EMPTY);
 
     productsServiceProviderMock = mock(ProductsServiceProvider);
-    sparqueSuggestionsServiceMock = mock(SparqueSuggestionsService);
     sparqueRecommendationsServiceMock = mock(SparqueRecommendationsService);
     categoriesServiceProviderMock = mock(CategoriesServiceProvider);
     suggestServiceMock = mock(SuggestService);
     suggestionsServiceProviderMock = mock(SuggestionsServiceProvider);
     productsServiceMock = mock(ProductsService);
-    when(productsServiceProviderMock.get()).thenReturn(of(instance(productsServiceMock)));
+    when(productsServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
     when(sparqueRecommendationsServiceMock.getRecommendations(anything())).thenReturn(
       of({ recommendations: { strategy: 'test', count: 5, productSKUs: [] }, products: [] })
     );
@@ -179,15 +176,11 @@ describe('Shopping Store', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
-        { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CategoriesServiceProvider, useFactory: () => instance(categoriesServiceProviderMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
-        { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
         { provide: SparqueRecommendationsService, useFactory: () => instance(sparqueRecommendationsServiceMock) },
-        { provide: SparqueSuggestionsService, useFactory: () => instance(sparqueSuggestionsServiceMock) },
         { provide: SuggestionsServiceProvider, useFactory: () => instance(suggestionsServiceProviderMock) },
-        { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         provideStoreSnapshots(),
         SelectedProductContextFacade,
       ],

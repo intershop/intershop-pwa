@@ -19,16 +19,19 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { Facet } from 'ish-core/models/facet/facet.model';
+import { Filter } from 'ish-core/models/filter/filter.model';
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { ProductsService } from 'ish-core/services/products/products.service';
+import { getSparqueConfig } from 'ish-core/store/core/configuration';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadCategory } from 'ish-core/store/shopping/categories';
-import { loadFilterSuccess, loadProductsForFilter } from 'ish-core/store/shopping/filter';
+import { getFilterById, loadFilterSuccess, loadProductsForFilter } from 'ish-core/store/shopping/filter';
 import { getProductListingItemsPerPage, setProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
@@ -39,6 +42,7 @@ import {
   mapToProperty,
   whenTruthy,
 } from 'ish-core/utils/operators';
+import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 import {
   loadProduct,
@@ -89,14 +93,13 @@ export class ProductsEffects {
         group$.pipe(
           this.throttleOnBrowser(),
           switchMap(sku =>
-            this.productsServiceProvider.get().pipe(
-              concatMap(service =>
-                service.getProduct(sku).pipe(
-                  map(product => loadProductSuccess({ product })),
-                  mapErrorToAction(loadProductFail, { sku })
-                )
+            this.productsServiceProvider
+              .get()
+              .getProduct(sku)
+              .pipe(
+                map(product => loadProductSuccess({ product })),
+                mapErrorToAction(loadProductFail, { sku })
               )
-            )
           )
         )
       )
@@ -128,38 +131,37 @@ export class ProductsEffects {
         offset: (payload.page - 1) * pageSize,
       })),
       mergeMap(({ categoryId, amount, sorting, offset, page }) =>
-        this.productsServiceProvider.get().pipe(
-          concatMap(service =>
-            service.getCategoryProducts(categoryId, amount, sorting, offset).pipe(
-              concatMap(({ total, products, sortableAttributes, filter }) => [
-                ...products.map(product => loadProductSuccess({ product })),
-                setProductListingPages(
-                  this.productListingMapper.createPages(
-                    products.map(p => p.sku),
-                    'category',
-                    categoryId,
-                    amount,
-                    {
-                      startPage: page,
-                      sortableAttributes,
-                      sorting,
-                      itemCount: total,
-                    }
-                  )
-                ),
-                filter?.length
-                  ? // handle Sparque filter
-                    loadFilterSuccess({
-                      filterNavigation: {
-                        filter,
-                      },
-                    })
-                  : { type: 'no_filter_action' },
-              ]),
-              mapErrorToAction(loadProductsForCategoryFail, { categoryId })
-            )
+        this.productsServiceProvider
+          .get()
+          .getCategoryProducts(categoryId, amount, sorting, offset)
+          .pipe(
+            concatMap(({ total, products, sortableAttributes, filter }) => [
+              ...products.map((product: Product) => loadProductSuccess({ product })),
+              setProductListingPages(
+                this.productListingMapper.createPages(
+                  products.map((p: Product) => p.sku),
+                  'category',
+                  categoryId,
+                  amount,
+                  {
+                    startPage: page,
+                    sortableAttributes,
+                    sorting,
+                    itemCount: total,
+                  }
+                )
+              ),
+              filter?.length
+                ? // handle Sparque filter
+                  loadFilterSuccess({
+                    filterNavigation: {
+                      filter,
+                    },
+                  })
+                : { type: 'no_filter_action' },
+            ]),
+            mapErrorToAction(loadProductsForCategoryFail, { categoryId })
           )
-        )
       )
     )
   );
@@ -203,45 +205,58 @@ export class ProductsEffects {
     this.actions$.pipe(
       ofType(loadProductsForFilter),
       mapToPayload(),
-      switchMap(({ id, searchParameter, page, sorting }) =>
+      concatLatestFrom(() => this.store.pipe(select(getFilterById('category')))),
+      switchMap(([{ id, searchParameter, page, sorting }, categoryFilter]) =>
         this.store.pipe(
           select(getProductListingItemsPerPage(id.type)),
           whenTruthy(),
           first(),
           switchMap(pageSize =>
-            this.productsServiceProvider.get().pipe(
-              concatMap(service =>
-                service.getFilteredProducts(searchParameter, pageSize, sorting, ((page || 1) - 1) * pageSize).pipe(
-                  mergeMap(({ products, total, sortableAttributes, filter }) => [
-                    ...products.map((product: Product) => loadProductSuccess({ product })),
-                    setProductListingPages(
-                      this.productListingMapper.createPages(
-                        products.map(p => p.sku),
-                        id.type,
-                        id.value,
-                        pageSize,
-                        {
-                          filters: id.filters,
-                          itemCount: total,
-                          startPage: page,
-                          sortableAttributes,
-                          sorting,
-                        }
-                      )
-                    ),
-                    filter?.length
-                      ? // handle Sparque filter
-                        loadFilterSuccess({
+            this.productsServiceProvider
+              // TODO: (Sparque handling) remove this additional parameter once the category navigation will be handled by Sparque
+              .get(Object.keys(searchParameter).includes('productFilter'))
+              .getFilteredProducts(searchParameter, pageSize, sorting, ((page || 1) - 1) * pageSize)
+              .pipe(
+                concatLatestFrom(() =>
+                  this.store.pipe(
+                    select(getSparqueConfig),
+                    map(config => !!(config && Array.isArray(config.features) && config.features.includes('search')))
+                  )
+                ),
+                mergeMap(([{ products, total, filter, sortableAttributes }, isSparque]) => [
+                  ...products.map((product: Product) => loadProductSuccess({ product })),
+                  setProductListingPages(
+                    this.productListingMapper.createPages(
+                      products.map((p: Product) => p.sku),
+                      id.type,
+                      id.value,
+                      pageSize,
+                      {
+                        filters: id.filters,
+                        itemCount: total,
+                        startPage: page,
+                        sortableAttributes,
+                        sorting,
+                      }
+                    )
+                  ),
+                  isSparque
+                    ? filter?.length
+                      ? loadFilterSuccess({
                           filterNavigation: {
-                            filter,
+                            filter: this.handleSparqueCategoryFilter(filter, categoryFilter, searchParameter),
                           },
                         })
-                      : { type: 'no_filter_action' },
-                  ]),
-                  mapErrorToAction(loadProductFail)
-                )
+                      : // in case no filter is returned filter state must contain at least the filters from the search parameter
+                        loadFilterSuccess({
+                          filterNavigation: {
+                            filter: this.getSelectedFilter(searchParameter, products?.length || 0),
+                          },
+                        })
+                    : { type: 'no_filter_action' },
+                ]),
+                mapErrorToAction(loadProductFail)
               )
-            )
           )
         )
       )
@@ -403,6 +418,150 @@ export class ProductsEffects {
       )
     )
   );
+
+  /**
+   * Generates a list of Filter objects from the provided search parameters.
+   * Each key-value pair in searchParameter (except 'searchTerm') is converted into a filter
+   * with facets representing the values. This is used to create filters for display
+   * when no actual filters are returned from the search response, ensuring that
+   * selected search parameters are still shown as active filters in the UI.
+   *
+   * @param searchParameter - The search parameters from which to generate filters.
+   * @param count - The count value to assign to each facet within the generated
+   *   filters.
+   *
+   * @returns An array of Filter objects where each entry in searchParameter
+   *          (except 'searchTerm') becomes a filter with its values converted to facets.
+   *          Each filter has a display type of 'text_clear' and selection type of 'single'.
+   */
+  getSelectedFilter(searchParameter: URLFormParams, count: number): Filter[] {
+    return Object.entries(searchParameter)
+      .filter(([key]) => key !== 'searchTerm')
+      .map(([key, value]) => ({
+        id: key,
+        name: key,
+        facets: Array.isArray(value)
+          ? value.map(v => ({
+              name: v,
+              displayName: v,
+              selected: true,
+              count,
+              searchParameter: Object.fromEntries(
+                Object.entries(searchParameter).filter(([k]) => k !== key && k !== 'searchTerm')
+              ),
+              level: 0,
+            }))
+          : [],
+        displayType: 'text_clear',
+        selectionType: 'single',
+      }));
+  }
+
+  /**
+   * Handles the processing of category facets in a search response, ensuring
+   * that the facets are updated based on the current search parameters and the stored category facet.
+   * This function modifies the replied facets to reflect the selected category facet and its hierarchy.
+   *
+   * @param repliedFacets - The list of facets returned from the search response.
+   * @param storedCategoryFacet - The stored category facet that represents the current category filter.
+   * @param searchParameter - The search parameters used in the current search query.
+   * @returns The updated list of facets with the processed category facet.
+   */
+  private handleSparqueCategoryFilter(
+    repliedFacets: Filter[],
+    storedCategoryFacet: Filter,
+    searchParameter: URLFormParams
+  ): Filter[] {
+    const newFacets = repliedFacets;
+
+    // processing of the category facet only necessary if a category facet is applied in the current search
+    if (storedCategoryFacet && searchParameter[storedCategoryFacet.id]) {
+      const currentCategoryFacetOption = storedCategoryFacet.facets.find(
+        facetOption => facetOption.name === searchParameter[storedCategoryFacet.id][0]
+      );
+
+      // get predecessor category facet option 0> necessary to calculate the level of the new facets
+      let predecessorCategoryFacetOption: Facet;
+      let rootLevel = currentCategoryFacetOption.level;
+      storedCategoryFacet.facets.forEach(facetOption => {
+        if (facetOption.level < rootLevel) {
+          rootLevel = facetOption.level;
+          predecessorCategoryFacetOption = facetOption;
+        }
+      });
+
+      // change parameter of the selected facet option
+      const selectedFacetOption = {
+        ...currentCategoryFacetOption,
+        selected: true,
+        searchParameter: predecessorCategoryFacetOption
+          ? {
+              ...searchParameter,
+              [storedCategoryFacet.id]: [
+                storedCategoryFacet.facets.find(
+                  facetOption =>
+                    facetOption.level <= currentCategoryFacetOption.level &&
+                    facetOption.name !== currentCategoryFacetOption.name &&
+                    facetOption.selected
+                ).name,
+              ],
+            }
+          : Object.fromEntries(
+              Object.entries(searchParameter).filter(([, value]) => !value.includes(currentCategoryFacetOption.name))
+            ),
+        count: repliedFacets.find(element => element.id === storedCategoryFacet.id)
+          ? repliedFacets
+              .filter(element => element.id === storedCategoryFacet.id)
+              .flatMap(filter => filter.facets)
+              .map(facet => facet.count)
+              .reduce((acc, val) => acc + val, 0)
+          : currentCategoryFacetOption.count,
+      };
+
+      // get predecessor category facet options and change count regarding the selected facet option count
+      const predecessorCategoryFacetOptions = storedCategoryFacet.facets
+        .filter(facetOption => facetOption.level < currentCategoryFacetOption.level)
+        .map(facetOption => ({
+          ...facetOption,
+          count: selectedFacetOption.count,
+        }));
+
+      // increase level of founded facets
+      let foundedCategoryFacetOptions: Facet[] = [];
+
+      if (repliedFacets) {
+        foundedCategoryFacetOptions = repliedFacets
+          .filter(element => element.id === storedCategoryFacet.id)
+          .flatMap(filter => filter.facets)
+          .map(facetOption => ({ ...facetOption, level: currentCategoryFacetOption.level + 1 }));
+      }
+
+      // exchange the updated category facet within the category facet in responded facets if present otherwise add it
+      // category facet in responded facets is not present if the selected facet option is a leaf category
+      if (newFacets.find(f => f.id === storedCategoryFacet.id)) {
+        newFacets.splice(
+          newFacets.findIndex((e: Filter) => e.id === storedCategoryFacet.id),
+          1,
+          {
+            ...storedCategoryFacet,
+            facets: [...predecessorCategoryFacetOptions, selectedFacetOption, ...foundedCategoryFacetOptions].sort(
+              (a, b) => (a.level === b.level ? a.displayName.localeCompare(b.displayName) : a.level - b.level)
+            ),
+          }
+        );
+      } else {
+        newFacets.push({
+          ...storedCategoryFacet,
+          facets: [...predecessorCategoryFacetOptions, selectedFacetOption].sort((a, b) =>
+            a.level === b.level ? a.displayName.localeCompare(b.displayName) : a.level - b.level
+          ),
+        });
+        newFacets.sort((a, b) => a.name.localeCompare(b.name));
+      }
+    }
+
+    return newFacets;
+  }
 
   private throttleOnBrowser<T>() {
     return !SSR && this.router.navigated ? throttleTime<T>(100) : map(identity);
