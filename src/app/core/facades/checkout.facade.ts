@@ -320,11 +320,14 @@ export class CheckoutFacade {
           select(getBasketEligiblePaymentMethods),
           // fetch payment methods if not yet loaded
           tap(pms => pms?.length || this.store.dispatch(loadBasketEligiblePaymentMethods())),
+          filter(methods => !!methods?.length),
+          take(1),
           map(methods =>
             methods?.find(
               method =>
                 // ToDo: adjust this very special logic when more capabilities are added
                 method.capabilities?.includes('PaypalCheckout') &&
+                !!method.hostedPaymentPageParameters?.length &&
                 (contextCapability
                   ? contextCapability === 'FastCheckout'
                     ? method.capabilities?.includes(contextCapability)
