@@ -296,6 +296,7 @@ export class CheckoutFacade {
     return this.basket$.pipe(
       whenTruthy(),
       take(1),
+      tap(() => this.store.dispatch(loadBasketEligiblePaymentMethods())),
       switchMap(() => this.store.pipe(select(getBasketEligiblePaymentMethods)))
     );
   }
