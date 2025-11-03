@@ -69,7 +69,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
    */
   @Output() selectPaypalPaymentMethod = new EventEmitter<string>();
 
-  private readonly paypalButtonsContainerId = '#paypal-buttons-container';
+  readonly paypalButtonsContainerId = 'paypal-buttons-container';
 
   isPaypalPaymentMethodSelected$: Observable<boolean>;
   scriptLoaded$ = new BehaviorSubject<boolean>(undefined);
@@ -138,7 +138,11 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
                 ? this.initializePaypalCheckoutButton(basket, paypalPaymentMethod)
                 : this.initializePaypalExpressButton(paypalPaymentMethod)
             );
-            this.paypalButtonsComponent = paypalButtonsConfig.render(this.paypalButtonsContainerId);
+            this.paypalButtonsComponent = paypalButtonsConfig
+              .render(`#${this.paypalButtonsContainerId}`)
+              .catch((error: string) => {
+                console.error('PayPal Buttons render failed:', error);
+              });
           }
           this.scriptLoaded$.next(true);
         },

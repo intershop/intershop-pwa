@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -31,7 +30,6 @@ describe('Payment Paypal Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [PaymentPaypalComponent],
-      imports: [TranslateModule.forRoot()],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
@@ -49,5 +47,10 @@ describe('Payment Paypal Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should render the buttons container', () => {
+    fixture.detectChanges();
+    expect(element.querySelector(`#${component.paypalButtonsContainerId}`)).toBeTruthy();
   });
 });

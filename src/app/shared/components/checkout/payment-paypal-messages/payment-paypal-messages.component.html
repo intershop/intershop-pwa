@@ -1,5 +1,5 @@
 <!-- container for paypal messages -->
-<div id="paypal-messages-container" class="pt-2"></div>
+<div [id]="paypalMessagesContainerId" class="pt-2"></div>
 <div *ngIf="(scriptLoaded$ | async) === false" class="alert alert-info">
   {{ 'checkout.payment.paypal.script.error.message' | translate }}
 </div>

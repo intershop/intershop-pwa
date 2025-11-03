@@ -30,7 +30,7 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
   @Input() pageType: PaypalPageType = 'cart';
 
   /** DOM selector for the PayPal messages container element */
-  private readonly paypalMessagesContainerId = '#paypal-messages-container';
+  readonly paypalMessagesContainerId = 'paypal-messages-container';
 
   /** Observable indicating whether the PayPal script has been loaded and messages rendered */
   scriptLoaded$ = new BehaviorSubject<boolean>(undefined);
@@ -116,7 +116,7 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
     if (paypalObject?.Messages) {
       this.paypalMessagesComponent = paypalObject
         .Messages({ ...messageConfig, pageType: this.pageType })
-        .render(this.paypalMessagesContainerId)
+        .render(`#${this.paypalMessagesContainerId}`)
         .catch((error: string) => {
           console.error('PayPal Messages render failed:', error);
         });

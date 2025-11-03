@@ -13,7 +13,7 @@ describe('Paypal Config Service', () => {
     appFacadeMock = mock(AppFacade);
 
     TestBed.configureTestingModule({
-      providers: [{ provide: AppFacade, useFactory: () => instance(appFacadeMock) }, PaypalConfigService],
+      providers: [{ provide: AppFacade, useFactory: () => instance(appFacadeMock) }],
     });
 
     helper = TestBed.inject(PaypalConfigService);
