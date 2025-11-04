@@ -6,12 +6,15 @@ import { merge } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
 import { CompareFacade } from '../../../compare/facades/compare.facade';
+import { OrderTemplatesFacade } from '../../../order-templates/facades/order-templates.facade';
 import { CopilotFacade } from '../../facades/copilot.facade';
 import { ChatbotMessage, ChatbotToolCall } from '../../models/copilot-chatbot/copilot-chatbot.model';
 import { CopilotConfig } from '../../models/copilot-config/copilot-config.model';
@@ -45,7 +48,10 @@ export class CopilotComponent {
     private router: Router,
     private appFacade: AppFacade,
     private shoppingFacade: ShoppingFacade,
-    private compareFacade: CompareFacade
+    private checkoutFacade: CheckoutFacade,
+    private compareFacade: CompareFacade,
+    private accountFacade: AccountFacade,
+    private orderTemplatesFacade: OrderTemplatesFacade
   ) {
     // afterNextRender = only rendered in browser
     afterNextRender(() => {
@@ -191,8 +197,8 @@ export class CopilotComponent {
 
             // Check if the last message is an 'apiMessage' and ensure at least one usedTool exists
             if (lastMessage.type === 'apiMessage' && lastMessage.usedTools?.length > 0) {
-              // Extract the last tool from the usedTools array to handle the according action
-              this.handleToolCall(lastMessage.usedTools[lastMessage.usedTools.length - 1]);
+              // Iterate over all used tools to handle multiple tool calls in one message
+              lastMessage.usedTools.forEach(toolCall => this.handleToolCall(toolCall));
             }
           }
 
@@ -210,31 +216,23 @@ export class CopilotComponent {
    */
   private handleToolCall(toolCall: ChatbotToolCall) {
     switch (toolCall?.tool) {
-      case 'product_search':
-        if (toolCall.toolInput?.Query) {
-          this.navigate(`/search/${toolCall.toolInput?.Query}`);
-        } else if (toolCall.toolInput?.filter) {
-          this.navigate(`/search/*?filters=${toolCall.toolInput?.filter}`);
-        }
+      case 'PWA_basket':
+        this.handlePWABasketToolCall(toolCall.toolInput);
         break;
-      case 'product_detail_page':
-        this.navigate(`/product/${toolCall.toolInput?.SKU}`);
-        break;
-      case 'get_product_variations':
-        this.navigate(`/product/${toolCall.toolInput?.SKU}`);
-        break;
-      case 'open_basket':
-        this.navigate('/basket');
-        break;
-      case 'add_product_to_basket':
-        this.shoppingFacade.addProductsToBasket(
-          toolCall.toolInput?.Products?.split(';').map(sku => ({ sku, quantity: 1 }))
-        );
-        break;
-      case 'compare_products':
+      case 'PWA_compare_products':
         // Note: this will only work if the 'compare' feature is enabled in the PWA
         this.compareFacade.compareProducts(toolCall.toolInput?.SKUs?.split(';'));
         this.navigate(`/compare`);
+        break;
+      case 'PWA_navigate_to_page':
+        this.handlePWANavigateToPageToolCall(toolCall.toolInput);
+        break;
+      case 'PWA_order_template_actions':
+        this.handlePWAOrderTemplateToolCall(toolCall.toolInput);
+        break;
+      case 'icmSearch':
+        // Navigate to search results page based on icmSearch tool call
+        this.handleIcmSearchToolCall(toolCall.toolOutput);
         break;
       default:
         break;
@@ -259,5 +257,135 @@ export class CopilotComponent {
       getComputedStyle(document.documentElement).getPropertyValue('--corporate-primary') ||
       getComputedStyle(document.documentElement).getPropertyValue('--primary')
     );
+  }
+
+  /**
+   * Triggers the corresponding basket action in the PWA based on the PWA_basket tool call from the copilot.
+   * @param toolInput The copilot tool call input.
+   */
+  private handlePWABasketToolCall(toolInput: { [key: string]: string }) {
+    const { operation, items } = toolInput || {};
+    const skusAndQty = (items?.split(';') ?? []).map(item => {
+      const [sku, param] = item.split(':');
+      const isAllQty = param?.toLowerCase() === 'all';
+      return { sku, qty: isAllQty ? 1 : Number(param) || 1, isAllQty };
+    });
+
+    switch (operation) {
+      case 'add':
+        this.shoppingFacade.addProductsToBasket(skusAndQty.map(({ sku, qty }) => ({ sku, quantity: qty })));
+        break;
+      case 'update':
+      case 'remove':
+        this.checkoutFacade.basket$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(basket => {
+          skusAndQty.forEach(({ sku, qty, isAllQty }) => {
+            basket?.lineItems
+              ?.filter(li => li?.productSKU === sku)
+              ?.forEach(item => {
+                if (operation === 'update') {
+                  this.checkoutFacade.updateBasketItem({ itemId: item.id, quantity: qty });
+                } else if (isAllQty) {
+                  this.checkoutFacade.deleteBasketItem(item.id);
+                } else {
+                  const newQty = item?.quantity?.value - qty;
+                  if (newQty >= 0) {
+                    this.checkoutFacade.updateBasketItem({ itemId: item.id, quantity: newQty });
+                  }
+                }
+              });
+          });
+        });
+        break;
+      case 'clear':
+        this.checkoutFacade.deleteBasketItems();
+        break;
+      case 'view':
+        this.navigate('/basket');
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
+   * Triggers the corresponding navigation route in the PWA based on the PWA_navigate_to_page tool call from the copilot.
+   * @param toolInput The copilot tool call input information.
+   */
+  private handlePWANavigateToPageToolCall(toolInput: { [key: string]: string }) {
+    const { page, sku, categoryId, orderId, orderTemplateId } = toolInput || {};
+
+    const navigationMap: { [key: string]: () => void } = {
+      home: () => this.navigate('/'),
+      basket: () => this.navigate('/basket'),
+      product: () => this.navigate(`/product/${sku}`),
+      category: () => this.navigate(`/category/${categoryId}`),
+      order: () => this.navigate(`/account/orders/${orderId}`),
+      orderHistory: () => this.navigate('/account/orders'),
+      orderTemplates: () => this.navigate('/account/order-templates'),
+      orderTemplate: () => this.navigate(`/account/order-templates/${orderTemplateId}`),
+      myAccount: () => this.navigate('/account'),
+      contact: () => this.navigate('/contact'),
+      imprint: () => this.navigate('/page/page.legalnotice'),
+      login: () => this.navigate('/login'),
+      logout: () => this.accountFacade.logoutUser(),
+    };
+    if (navigationMap[page]) {
+      navigationMap[page]();
+    }
+  }
+
+  /**
+   * Triggers the corresponding order template action in the PWA based on the PWA_order_template_actions tool call from the copilot.
+   * @param toolInput The copilot tool call input information.
+   */
+
+  // eslint-disable-next-line complexity
+  private handlePWAOrderTemplateToolCall(toolInput: { [key: string]: string }) {
+    const { operation, sku, orderTemplateId, title, quantity } = toolInput || {};
+
+    switch (operation) {
+      case 'create':
+        this.orderTemplatesFacade.addOrderTemplate({ title });
+        break;
+      case 'add':
+        if (sku && orderTemplateId) {
+          this.orderTemplatesFacade.addProductToOrderTemplate(orderTemplateId, sku, quantity ? Number(quantity) : 1);
+        }
+        break;
+      case 'remove':
+        if (sku && orderTemplateId) {
+          this.orderTemplatesFacade.removeProductFromOrderTemplate(orderTemplateId, sku);
+        }
+        break;
+      case 'delete':
+        if (orderTemplateId) {
+          this.orderTemplatesFacade.deleteOrderTemplate(orderTemplateId);
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
+   * Processes the copilot's icmSearch tool call and triggers the corresponding search action in the PWA.
+   * @param toolOutput - The copilot tool call output information
+   * @param toolOutput.showOnPWA - Indicates if the search results should be displayed in the PWA
+   * @param toolOutput.query - The search query executed by the copilot to be displayed in the PWA
+   */
+  private handleIcmSearchToolCall(toolOutput: string) {
+    try {
+      const parsed = JSON.parse(toolOutput);
+
+      if (typeof parsed === 'object' && parsed && parsed.showOnPWA !== undefined && parsed.query) {
+        const query = parsed.query;
+
+        if (query?.trim()) {
+          this.navigate(`/search/${encodeURIComponent(query)}`);
+        }
+      }
+    } catch {
+      // intentionally ignore JSON parse errors
+    }
   }
 }
