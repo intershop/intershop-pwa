@@ -907,7 +907,7 @@
   "checkout.payment.payWith.link": "Payer par {{0}}",
   "checkout.payment.payment_cost_threshold.amount_reached": "Gratuit pour cette commande de ",
   "checkout.payment.payment_cost_threshold.text": "gratuit pour les commandes d’un minimum de ",
-  "checkout.payment.paypal.script.error.message": "PayPal est temporairement indisponible. Veuillez réessayer dans un instant ou choisir un autre mode de paiement ci-dessous.",
+  "checkout.payment.paypal.script.error.message": "PayPal est temporairement indisponible. Veuillez réessayer sous peu ou choisir un autre mode de paiement.",
   "checkout.payment.security_code.missing.error": "Le code de sécurité manque.",
   "checkout.payment.sorry_message.text": "Nous sommes désolés.",
   "checkout.pli.desc.heading": "Description de l’article",
