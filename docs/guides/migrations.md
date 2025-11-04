@@ -60,7 +60,7 @@ It is recommended to perform the migration step by step through each version (ve
 Especially for the [migration to version 5.0.0](https://getbootstrap.com/docs/5.3/migration/#v500), it is advised to divide that into smaller tasks (SCSS, Typescript, form layout, buttons, etc.).
 AI (like Github Copilot) can be a great help with these individual migration tasks.
 
-The PayPal payment integration via [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 2](https://knowledge.intershop.com/kb/go.php/a/ENFDEVDOC/pages/50123243588/Public+Release+Note+-+PayPal+Complete+Payments+Service+Connector+2) was introduced in Intershop PWA 9.0.0.
+The PayPal payment integration via [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 2](https://knowledge.intershop.com/kb/index.php/Display/27P833) was introduced in Intershop PWA 9.0.0.
 The PayPal integration is enabled in the PWA via ICM backend configuration.
 For more details, see [Guide - PayPal](./paypal.md).
 
