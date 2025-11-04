@@ -149,7 +149,7 @@ customCSS: `
 
 Tool calls like `PWA_basket` are triggered by the Copilot backend service and can be detected in the PWA.
 The `handleToolCall` method handles these actions and the parameters given by the Intershop Copilot for Buyers.
-A new method in the Copilot backend service that is meant to control something inside the PWA needs a new handler in this function.
+A new method in the Copilot backend service that is meant to control something inside the PWA requires a new handler in this function.
 
 The implementation iterates over all used tools in a message, handling multiple tool calls from a single bot response.
 So, for example, the user asked for a laptop, and the Intershop Copilot for Buyers first runs the `icmSearch` and then the `PWA_basket` tool.

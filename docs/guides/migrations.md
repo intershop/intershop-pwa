@@ -10,15 +10,15 @@ kb_sync_latest_only
 ## From 8.0.0 to 9.0.0
 
 Functionality was added to the SSR container to support the manual creation of PWA heap dumps for debugging purposes.
-For more information on how to use this functionality, see the [Heap Dumps](./ssr-startup.md#heap-dumps) section in the SSR guide.
+For more information on how to use this functionality, see [Building and Running Server-Side Rendering | Heap Dumps](./ssr-startup.md#heap-dumps).
 
-The `DEPLOY_URL` functionality has been adapted to support relative deploy URLs as well.
-For more information, see [Serving the PWA from a Sub-Path Including Static Files](../concepts/deploy-url.md#serving-the-pwa-from-a-sub-path-including-static-files).
+The `DEPLOY_URL` functionality now also supports relative deploy URLs.
+For more information, see [Deploy URL | Serving the PWA from a Sub-Path Including Static Files](../concepts/deploy-url.md#serving-the-pwa-from-a-sub-path-including-static-files).
 
-Together with the `DEPLOY_URL` changes the file `src/ssr/server-scripts/server.js` needed adaptions and was renamed to `src/ssr/server-scripts/distributor.js` for more clarity.
+With the `DEPLOY_URL` changes, the file `src/ssr/server-scripts/server.js` required adaptions and was renamed to `src/ssr/server-scripts/distributor.js` for clarity.
 
 The Copilot integration was updated to work with a newer version of the Intershop Copilot for Buyers that returns different tool calls.
-When migrating a PWA project that uses the Copilot integration, either use a new fitting configuration or skip this commit and continue with the previous implementation.
+When migrating a PWA project that uses the Copilot integration, either use a new compatible configuration or skip this commit and continue with the previous implementation.
 
 ## From 7.1.0 to 8.0.0
 
