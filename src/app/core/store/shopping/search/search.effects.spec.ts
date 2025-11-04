@@ -1,6 +1,7 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
@@ -39,7 +40,7 @@ describe('Search Effects', () => {
     when(suggestionsServiceProviderMock.get()).thenReturn(of(instance(suggestServiceMock)));
     productsServiceMock = mock(ProductsService);
     productsServiceProviderMock = mock(ProductsServiceProvider);
-    when(productsServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
+    when(productsServiceProviderMock.get()).thenReturn(of(instance(productsServiceMock)));
     const skus = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
     when(productsServiceMock.searchProducts(anything())).thenCall(
       (searchTerm: string, amount: number, _, offset: number) => {
@@ -64,6 +65,7 @@ describe('Search Effects', () => {
           { path: 'search/:searchTerm', children: [] },
         ]),
         ShoppingStoreModule.forTesting('productListing'),
+        TranslateModule.forRoot(),
       ],
       providers: [
         { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },

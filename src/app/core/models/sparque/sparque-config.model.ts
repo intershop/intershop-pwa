@@ -1,4 +1,24 @@
 /**
+ * Available Sparque features that can be enabled
+ */
+export const SPARQUE_FEATURES: {
+  readonly CATEGORY: 'category';
+  readonly RECOMMENDATIONS: 'recommendations';
+  readonly SEARCH: 'search';
+  readonly SUGGESTIONS: 'suggestions';
+} = {
+  CATEGORY: 'category',
+  RECOMMENDATIONS: 'recommendations',
+  SEARCH: 'search',
+  SUGGESTIONS: 'suggestions',
+};
+
+/**
+ * Type for Sparque feature values
+ */
+type SparqueFeature = (typeof SPARQUE_FEATURES)[keyof typeof SPARQUE_FEATURES];
+
+/**
  * Configuration settings for the Sparque connections.
  */
 export interface SparqueConfig {
@@ -13,7 +33,7 @@ export interface SparqueConfig {
   // id of channel where sparque product data are assigned to
   channelId?: string;
   // enabled features
-  features: ('search' | 'suggestions' | 'recommendations')[];
+  features: SparqueFeature[];
 
   // additional custom settings
   [key: string]: unknown;

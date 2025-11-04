@@ -3,6 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, map, take } from 'rxjs';
 
 import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
+import { SPARQUE_FEATURES, SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { SparqueCategoriesService } from 'ish-core/services/sparque-categories/sparque-categories.service';
 import { getSparqueConfig } from 'ish-core/store/core/configuration';
@@ -24,8 +25,14 @@ export class CategoriesServiceProvider {
     return this.store.pipe(
       select(getSparqueConfig),
       take(1),
-      map(sparqueConfig => (sparqueConfig ? this.sparqueCategoriesService : this.categoriesService))
+      map(sparqueConfig =>
+        this.isSparqueNavigationEnabled(sparqueConfig) ? this.sparqueCategoriesService : this.categoriesService
+      )
     );
+  }
+
+  private isSparqueNavigationEnabled(config: SparqueConfig | undefined): boolean {
+    return config && Array.isArray(config.features) && config?.features?.includes(SPARQUE_FEATURES.CATEGORY);
   }
 }
 

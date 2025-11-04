@@ -53,8 +53,7 @@ describe('Products Effects', () => {
     productsServiceProviderMock = mock(ProductsServiceProvider);
     productsServiceMock = mock(ProductsService);
     productListingMapperMock = mock(ProductListingMapper);
-    when(productsServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
-    when(productsServiceProviderMock.get(false)).thenReturn(instance(productsServiceMock));
+    when(productsServiceProviderMock.get()).thenReturn(of(instance(productsServiceMock)));
     when(productListingMapperMock.createPages(anything(), anything(), anything(), anything(), anything())).thenCall(
       (
         skus: string[],
@@ -390,7 +389,8 @@ describe('Products Effects', () => {
             id: {"type":"search","value":"test","filters":{"searchTerm":[1]}}
             itemCount: 2
             sortableAttributes: []
-          no_filter_action
+          [Filter API] Load Filter Success:
+            filterNavigation: {"filter":[1]}
         `);
         done();
       });

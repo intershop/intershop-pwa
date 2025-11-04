@@ -4,7 +4,7 @@ import { Observable, map, take } from 'rxjs';
 
 import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
+import { SPARQUE_FEATURES, SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
@@ -42,7 +42,7 @@ export class SuggestionsServiceProvider {
   }
 
   private isSparqueSuggestionsEnabled(config: SparqueConfig | undefined): boolean {
-    return config && Array.isArray(config.features) && config.features.includes('suggestions');
+    return config && Array.isArray(config.features) && config.features.includes(SPARQUE_FEATURES.SUGGESTIONS);
   }
 }
 

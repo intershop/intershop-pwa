@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, take } from 'rxjs';
+import { Observable, map, take } from 'rxjs';
 
 import { Product } from 'ish-core/models/product/product.model';
 import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
-import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
+import { SPARQUE_FEATURES, SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SparqueProductsService } from 'ish-core/services/sparque-products/sparque-products.service';
 import { getSparqueConfig } from 'ish-core/store/core/configuration';
@@ -34,22 +34,23 @@ export class ProductsServiceProvider {
   /**
    * Gets the appropriate products service implementation based on configuration and parameters.
    *
-   * @param skipSparque Optional parameter to skip Sparque functionality even if configured
-   * @returns The products service implementation.
+  /**
+   * Gets the appropriate products service implementation based on configuration and parameters.
+   *
+   * @returns An observable emitting either SparqueProductsService or ProductsService.
    */
-  get(skipSparque = false): ProductsServiceInterface {
-    // For now, assume Sparque is not enabled if config is not available synchronously
-    // TODO: make this asynchronous if needed
-    let config: SparqueConfig | undefined;
-    this.store.pipe(select(getSparqueConfig), take(1)).subscribe(c => (config = c));
-    if (this.isSparqueSearchEnabled(config) && !skipSparque) {
-      return this.sparqueProductsService;
-    }
-    return this.productsService;
+  get(): Observable<ProductsServiceInterface> {
+    return this.store.pipe(
+      select(getSparqueConfig),
+      take(1),
+      map(sparqueConfig =>
+        this.isSparqueSearchEnabled(sparqueConfig) ? this.sparqueProductsService : this.productsService
+      )
+    );
   }
 
   private isSparqueSearchEnabled(config: SparqueConfig | undefined): boolean {
-    return config && Array.isArray(config.features) && config.features.includes('search');
+    return config && Array.isArray(config.features) && config.features.includes(SPARQUE_FEATURES.SEARCH);
   }
 }
 

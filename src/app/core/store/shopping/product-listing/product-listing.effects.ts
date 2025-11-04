@@ -8,6 +8,7 @@ import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
+import { SPARQUE_FEATURES } from 'ish-core/models/sparque/sparque-config.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { getDeviceType, getSparqueConfig } from 'ish-core/store/core/configuration';
 import { selectQueryParam, selectQueryParams } from 'ish-core/store/core/router';
@@ -170,7 +171,7 @@ export class ProductListingEffects {
       map(({ id, filters }) => ({ type: id.type, value: id.value, filters })),
       distinctUntilChanged(isEqual),
       concatLatestFrom(() => this.store.pipe(select(getSparqueConfig))),
-      filter(([_, sparqueConfig]) => !sparqueConfig),
+      filter(([_, sparqueConfig]) => !sparqueConfig?.features.includes(SPARQUE_FEATURES.SEARCH)), // skip when Sparque Search is enabled
       map(([{ type, value, filters }]) => {
         if (filters) {
           const searchParameter = filters;
