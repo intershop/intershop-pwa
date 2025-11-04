@@ -62,7 +62,7 @@ AI (like Github Copilot) can be a great help with these individual migration tas
 
 The PayPal payment integration via [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 2](https://knowledge.intershop.com/kb/go.php/a/ENFDEVDOC/pages/50123243588/Public+Release+Note+-+PayPal+Complete+Payments+Service+Connector+2) was introduced in Intershop PWA 9.0.0.
 The PayPal integration is enabled in the PWA via ICM backend configuration.
-For more details, see the [Guide - Payment with PayPal](./paypal.md).
+For more details, see [Guide - PayPal](./paypal.md).
 
 ## From 7.1.0 to 8.0.0
 
