@@ -5,33 +5,37 @@ kb_everyone
 kb_sync_latest_only
 -->
 
-# PayPal Styling Guide
+# PayPal
 
-- [Styling Categories](#styling-categories)
-- [Pay Later Message Styling](#pay-later-message-styling)
-  - [Limitations](#limitations)
+- [Styling](#styling)
+  - [Styling Categories](#styling-categories)
+  - [Pay Later Message Styling](#pay-later-message-styling)
+    - [Limitations](#limitations)
     - [Implementation Notes](#implementation-notes)
     - [Troubleshooting](#troubleshooting)
-- [Button Styling](#button-styling)
-  - [Available Button Styles](#available-button-styles)
+  - [Button Styling](#button-styling)
     - [Standard Checkout Buttons](#standard-checkout-buttons)
     - [Express Checkout Buttons](#express-checkout-buttons)
 - [Further Reading](#further-reading)
 
+The Intershop PWA provides a payment integration with PayPal via the [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 2](https://knowledge.intershop.com/kb/go.php/a/ENFDEVDOC/pages/50123243588/Public+Release+Note+-+PayPal+Complete+Payments+Service+Connector+2).
+
+## Styling
+
 This guide explains how to style PayPal buttons and messages in the Intershop PWA using the centralized styling system.
 
-## Styling Categories
+### Styling Categories
 
 The styling system is organized into two main categories:
 
 1. **Pay Later Message Styling** - For PayPal Pay Later promotional messages
 2. **Button Styling** - For PayPal payment buttons
 
-## Pay Later Message Styling
+### Pay Later Message Styling
 
-PayPal messages are styled depending on the page context in the `PaymentPaypalMessagesStylingComponent.ts`.
+PayPal messages are styled depending on the page context in the `payment-paypal-messages.component.styling.ts`.
 
-### Limitations
+#### Limitations
 
 PayPal Pay Later messages have specific requirements that must be met for them to display correctly:
 
@@ -56,23 +60,22 @@ The `PaymentPaypalMessagesComponent` only renders messages when both conditions 
 - The basket total meets PayPal's minimum requirements
 - PayPal services are available in the customer's region
 
-## Button Styling
+### Button Styling
 
-PayPal payment buttons are styled differently based on their integration context in the `PaymentPaypalStylingComponent.ts`.
-
-### Available Button Styles
+PayPal payment buttons are styled differently based on their integration context in the `payment-paypal.component.styling.ts`.
 
 #### Standard Checkout Buttons
 
-**Use Case**: Standard checkout flow on the checkout payment page
+**Use Case**: Standard checkout flow on the checkout payment page<br/>
 **Features**: Horizontal layout with consistent branding and height
 
 #### Express Checkout Buttons
 
-**Use Case**: Express checkout scenarios (e.g., product page quick checkout) on the cart page.
+**Use Case**: Express checkout scenarios (e.g., product page quick checkout) on the cart page.<br/>
 **Features**: Flexible layout without fixed horizontal constraint
 
 ## Further Reading
 
 - [PayPal JavaScript SDK Reference](https://developer.paypal.com/docs/checkout/reference/customize-sdk/)
 - [PayPal Messages Documentation](https://developer.paypal.com/docs/checkout/pay-later/us/integrate/)
+- [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 2](https://knowledge.intershop.com/kb/go.php/a/ENFDEVDOC/pages/50123243588/Public+Release+Note+-+PayPal+Complete+Payments+Service+Connector+2)
