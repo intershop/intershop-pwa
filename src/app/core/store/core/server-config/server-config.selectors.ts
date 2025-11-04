@@ -1,5 +1,9 @@
 import { createSelector } from '@ngrx/store';
 
+import {
+  CustomFieldDefinitionScopeType,
+  CustomFieldDefinitionScopes,
+} from 'ish-core/models/custom-field-definition/custom-field-definition.model';
 import { getCoreState } from 'ish-core/store/core/core-store';
 
 const getServerConfigState = createSelector(getCoreState, state => state.serverConfig);
@@ -29,3 +33,27 @@ export const getExtraConfigParameter = <T>(path: string) =>
         .split('.')
         .reduce((obj, key) => (obj?.[key] !== undefined ? obj[key] : undefined), extraConfig) as unknown as T
   );
+
+const getCustomFieldDefinitions = createSelector(getServerConfigState, state => state._definitions);
+
+export const getCustomFieldDefinitionEntities = createSelector(
+  getCustomFieldDefinitions,
+  customFieldDefinitions => customFieldDefinitions?.entities ?? {}
+);
+
+export const getCustomFieldIdsForScope = (scope: CustomFieldDefinitionScopes) =>
+  createSelector(
+    getCustomFieldDefinitions,
+    customFieldDefinitions => (customFieldDefinitions?.scopes?.[scope] ?? []) as CustomFieldDefinitionScopeType[]
+  );
+
+export const getCustomFieldsForScope = (scope: CustomFieldDefinitionScopes) =>
+  createSelector(
+    getCustomFieldDefinitions,
+    getCustomFieldIdsForScope(scope),
+    (customFieldDefinitions, ids: CustomFieldDefinitionScopeType[]) =>
+      ids.map(({ name, editable }) => ({ name, editable, ...customFieldDefinitions?.entities?.[name] }))
+  );
+
+export const getCustomFieldDefinition = (name: string) =>
+  createSelector(getCustomFieldDefinitions, customFieldDefinitions => customFieldDefinitions?.entities?.[name]);

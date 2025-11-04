@@ -12,6 +12,7 @@ import { CMSNavigationPageComponent } from './components/cms-navigation-page/cms
 import { CMSProductListCategoryComponent } from './components/cms-product-list-category/cms-product-list-category.component';
 import { CMSProductListFilterComponent } from './components/cms-product-list-filter/cms-product-list-filter.component';
 import { CMSProductListManualComponent } from './components/cms-product-list-manual/cms-product-list-manual.component';
+import { CMSProductListRecommendationsComponent } from './components/cms-product-list-recommendations/cms-product-list-recommendations.component';
 import { CMSProductListRestComponent } from './components/cms-product-list-rest/cms-product-list-rest.component';
 import { CMSStandardPageComponent } from './components/cms-standard-page/cms-standard-page.component';
 import { CMSStaticPageComponent } from './components/cms-static-page/cms-static-page.component';
@@ -98,6 +99,14 @@ import { CMS_COMPONENT } from './configurations/injection-keys';
       useValue: {
         definitionQualifiedName: 'app_sf_base_cm:component.common.productListRest.pagelet2-Component',
         class: CMSProductListRestComponent,
+      },
+      multi: true,
+    },
+    {
+      provide: CMS_COMPONENT,
+      useValue: {
+        definitionQualifiedName: 'app_sf_base_cm:component.common.productListRecommendations.pagelet2-Component',
+        class: CMSProductListRecommendationsComponent,
       },
       multi: true,
     },

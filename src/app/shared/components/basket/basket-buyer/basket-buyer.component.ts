@@ -24,7 +24,6 @@ export class BasketBuyerComponent implements OnInit {
   private customer$: Observable<Customer>;
 
   taxationID: string;
-  costCenterName: string;
   companyName1: string;
   companyName2: string;
 
@@ -34,7 +33,6 @@ export class BasketBuyerComponent implements OnInit {
 
   ngOnInit() {
     this.taxationID = this.object.taxationId;
-    this.costCenterName = this.getAttributeValue('BusinessObjectAttributes#Order_CostCenter_Name');
 
     this.companyName1 = this.object.user?.companyName || this.object.invoiceToAddress?.companyName1 || '';
     this.companyName2 =
@@ -47,10 +45,6 @@ export class BasketBuyerComponent implements OnInit {
     this.customer$.pipe(whenTruthy(), first(), takeUntilDestroyed(this.destroyRef)).subscribe(customer => {
       this.taxationID = this.taxationID || customer?.taxationID;
     });
-  }
-
-  private getAttributeValue(attributeName: string): string {
-    return this.object.attributes?.find(attr => attr.name === attributeName)?.value as string;
   }
 
   get userName(): string {

@@ -2,6 +2,7 @@ import { AddressData } from 'ish-core/models/address/address.interface';
 import { BasketApprover } from 'ish-core/models/basket-approval/basket-approval.model';
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
 import { BasketTotalData } from 'ish-core/models/basket-total/basket-total.interface';
+import { CustomFieldData } from 'ish-core/models/custom-field/custom-field.interface';
 import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
 import { PaymentData } from 'ish-core/models/payment/payment.interface';
@@ -32,6 +33,7 @@ export interface RecurringOrderDetailData extends Omit<RecurringOrderListData, '
   costCenterName?: string;
   payments?: PaymentData[];
   paymentMethods?: PaymentMethodBaseData[];
+  customFields?: CustomFieldData[];
   lastOrders?: [{ id: string; documentNumber: string; creationDate: string }];
 }
 

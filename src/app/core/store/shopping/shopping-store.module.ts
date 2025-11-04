@@ -18,6 +18,8 @@ import { ProductsEffects } from './products/products.effects';
 import { productsReducer } from './products/products.reducer';
 import { PromotionsEffects } from './promotions/promotions.effects';
 import { promotionsReducer } from './promotions/promotions.reducer';
+import { RecommendationsEffects } from './recommendations/recommendations.effects';
+import { recommendationsReducer } from './recommendations/recommendations.reducer';
 import { SearchEffects } from './search/search.effects';
 import { searchReducer } from './search/search.reducer';
 import { ShoppingState } from './shopping-store';
@@ -32,6 +34,7 @@ const shoppingReducers: ActionReducerMap<ShoppingState> = {
   promotions: promotionsReducer,
   productListing: productListingReducer,
   productPrices: productPricesReducer,
+  productRecommendations: recommendationsReducer,
   warranties: warrantiesReducer,
 };
 
@@ -43,6 +46,7 @@ const shoppingEffects = [
   PromotionsEffects,
   ProductListingEffects,
   ProductPricesEffects,
+  RecommendationsEffects,
   WarrantiesEffects,
 ];
 

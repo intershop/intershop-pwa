@@ -134,7 +134,7 @@ describe('Shopping Recurring Order', () => {
 
     it('should go to recurring order detail page in my account', () => {
       at(CheckoutReceiptPage, page => {
-        page.goToDetailPageOfOrder();
+        page.navigateToOrderDetailPage();
       });
       cy.get('[data-testing-id="recurring-order-info"]')
         .should('exist')

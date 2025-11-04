@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
+import { CustomFieldMapper } from 'ish-core/models/custom-field/custom-field.mapper';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
 import { PaymentMapper } from 'ish-core/models/payment/payment.mapper';
 
@@ -81,7 +82,7 @@ export class RecurringOrderMapper {
       lastOrderDate: data.lastOrderDate,
       nextOrderDate: data.nextOrderDate,
       orderCount: data.orderCount,
-      costCenterId: data.costCenterID,
+      costCenter: data.costCenterID,
       costCenterName: data.costCenterName,
 
       customerNo: data.buyer?.customerNo,
@@ -128,6 +129,7 @@ export class RecurringOrderMapper {
           )
         : [],
 
+      customFields: CustomFieldMapper.fromData(data.customFields),
       totals: BasketMapper.getTotals(data as unknown as BasketBaseData, included ? included.discounts : undefined),
     };
   }

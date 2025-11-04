@@ -7,12 +7,18 @@ import { debounceTime, distinctUntilChanged, filter, map, sample, switchMap, tak
 import { Address } from 'ish-core/models/address/address.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
+import { CustomFieldDefinitionScopes } from 'ish-core/models/custom-field-definition/custom-field-definition.model';
+import { CustomFields } from 'ish-core/models/custom-field/custom-field.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PriceType } from 'ish-core/models/price/price.model';
 import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
 import { selectQueryParam, selectRouteData } from 'ish-core/store/core/router';
-import { getServerConfigParameter } from 'ish-core/store/core/server-config';
+import {
+  getCustomFieldDefinition,
+  getCustomFieldIdsForScope,
+  getServerConfigParameter,
+} from 'ish-core/store/core/server-config';
 import {
   addMessageToMerchant,
   addPromotionCodeToBasket,
@@ -47,6 +53,7 @@ import {
   loadBasketWithId,
   removePromotionCodeFromBasket,
   setBasketAttribute,
+  setBasketCustomFields,
   setBasketDesiredDeliveryDate,
   setBasketPayment,
   startCheckout,
@@ -133,10 +140,10 @@ export class CheckoutFacade {
   }
 
   updateBasketItem(update: LineItemUpdate) {
-    if (update.quantity) {
-      this.store.dispatch(updateBasketItem({ lineItemUpdate: update }));
-    } else {
+    if (update.quantity === 0) {
       this.store.dispatch(deleteBasketItem({ itemId: update.itemId }));
+    } else {
+      this.store.dispatch(updateBasketItem({ lineItemUpdate: update }));
     }
   }
 
@@ -405,4 +412,17 @@ export class CheckoutFacade {
       return (isLoggedIn || !invoiceAddress) && !hasQuoteItems;
     })
   );
+  // CUSTOM FIELD definitions
+
+  customFieldsForScope$(scope: CustomFieldDefinitionScopes) {
+    return this.store.pipe(select(getCustomFieldIdsForScope(scope)));
+  }
+
+  customField$(name: string) {
+    return this.store.pipe(select(getCustomFieldDefinition(name)));
+  }
+
+  setBasketCustomFields(customFields: CustomFields) {
+    this.store.dispatch(setBasketCustomFields({ customFields }));
+  }
 }

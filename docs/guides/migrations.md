@@ -9,13 +9,38 @@ kb_sync_latest_only
 
 ## From 8.0.0 to 9.0.0
 
-Functionality was added to the SSR container to support the manual creation of PWA heap dumps for debugging purposes.
-For more information on how to use this functionality, see [Building and Running Server-Side Rendering | Heap Dumps](./ssr-startup.md#heap-dumps).
+With Intershop PWA 9.0.0, the SSR container now supports the manual creation of PWA heap dumps for debugging purposes.
+For more information about using this functionality, see [Building and Running Server-Side Rendering | Heap Dumps](./ssr-startup.md#heap-dumps).
 
 The `DEPLOY_URL` functionality now also supports relative deploy URLs.
 For more information, see [Deploy URL | Serving the PWA from a Sub-Path Including Static Files](../concepts/deploy-url.md#serving-the-pwa-from-a-sub-path-including-static-files).
 
 With the `DEPLOY_URL` changes, the file `src/ssr/server-scripts/server.js` required adaptions and was renamed to `src/ssr/server-scripts/distributor.js` for clarity.
+
+The Intershop PWA 9.0.0 release contains the **SPARQUE recommendations** functionality (for more details, see [SPARQUE.AI guide | Product Recommendations Feature](./sparque-ai.md#product-recommendations-feature)).
+
+When we introduced the **SPARQUE suggest** and **SPARQUE search** functionality in PWA 7.0.0, the SPARQUE configuration used an all-or-nothing approach in which the entire SPARQUE integration was either enabled or disabled through a single configuration setting.
+With the Intershop PWA 9.0.0 release, the SPARQUE configuration has been refined to allow for more granular control over individual SPARQUE features.
+You can now enable or disable each feature independently, based on your business needs.
+For more details, see [SPARQUE.AI guide | Feature Toggle Behavior](./sparque-ai.md#feature-toggle-behavior).
+For existing projects with a SPARQUE configuration, the configuration needs to be extended to include the new `features` configuration to keep the previous behavior of having the SPARQUE search and suggestions enabled.
+
+```typescript
+sparque: {
+  ...
+  features: ['search', 'suggestions'],
+},
+```
+
+The `TranslationService.getServerTranslations()` method now accepts an optional `prefix` parameter (default: `'pwa-'`) to specify the prefix for translation keys to be loaded from the server.
+This change requires no migration of existing code.
+
+Intershop PWA 9.0.0 contains support for ICM [Pre-integrated Custom Fields](https://knowledge.intershop.com/kb/index.php/Display/3M1102).
+With this configuration, shop users can now add/edit additional information at the basket and at basket line-items.
+The custom field information is displayed during the checkout and on the order details page.
+
+The CMS _Product List (REST)_ rendering component was enhanced to support predefined endpoints for ICM (`icm://`) and SPARQUE (`sparque://`).
+This allows content managers to configure product lists with relative endpoints to the PWAs configured ICM or SPARQUE backends, e.g. `icm://products?searchTerm=notebook&attrs=sku&amount=6`, instead of using absolute REST endpoints to a fixed ICM backend URL.
 
 The Copilot integration was updated to work with a newer version of the Intershop Copilot for Buyers that returns different tool calls.
 When migrating a PWA project that uses the Copilot integration, either use a new compatible configuration or skip this commit and continue with the previous implementation.

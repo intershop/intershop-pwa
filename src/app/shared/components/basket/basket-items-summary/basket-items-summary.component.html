@@ -37,7 +37,7 @@
   <button
     *ngIf="isShowAllLinkVisible()"
     type="button"
-    class="btn btn-link btn-content-toggle cart-items-collapse-link"
+    class="btn btn-link btn-content-toggle mt-3"
     (click)="toggleCollapse()"
   >
     {{ 'checkout.show_all.link' | translate : { '0': basket.lineItems.length } }}
@@ -46,7 +46,7 @@
   <button
     *ngIf="isHideLinkVisible()"
     type="button"
-    class="btn btn-link btn-content-toggle cart-items-collapse-link"
+    class="btn btn-link btn-content-toggle mt-3"
     (click)="toggleCollapse()"
   >
     {{ 'checkout.hide_all.link' | translate }}
