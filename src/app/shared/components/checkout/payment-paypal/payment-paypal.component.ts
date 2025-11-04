@@ -192,8 +192,8 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
         const shippingAddress = data?.shippingAddress;
 
         isShippingAddressChanged =
-          normalize(basketAddress?.country) !== normalize(shippingAddress?.countryCode) &&
-          normalize(basketAddress?.postalCode) !== normalize(shippingAddress?.postalCode) &&
+          normalize(basketAddress?.country) !== normalize(shippingAddress?.countryCode) ||
+          normalize(basketAddress?.postalCode) !== normalize(shippingAddress?.postalCode) ||
           normalize(basketAddress?.city) !== normalize(shippingAddress?.city);
         // no state comparison, because it is not available in the basket and also not always provided by paypal
       },
