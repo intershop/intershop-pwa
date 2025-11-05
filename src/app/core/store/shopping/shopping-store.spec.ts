@@ -177,7 +177,6 @@ describe('Shopping Store', () => {
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
-        { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
         { provide: SparqueCategoriesService, useFactory: () => instance(sparqueCategoriesServiceMock) },
         { provide: SparqueRecommendationsService, useFactory: () => instance(sparqueRecommendationsServiceMock) },
