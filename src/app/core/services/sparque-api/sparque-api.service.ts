@@ -123,7 +123,7 @@ export class SparqueApiService {
       });
 
     params?.keys().forEach(key => {
-      if (key.includes('selectedFacets')) {
+      if (key.includes('selectedFacets') || key.includes('cartProductIds')) {
         params
           .get(key)
           ?.split(',')
