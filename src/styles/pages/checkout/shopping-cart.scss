@@ -16,7 +16,14 @@
   border: $border-width-default solid $border-color-light;
   border-width: 1px 1px 0;
 
-  .form-inline {
+  .promo-code-input {
+    display: flex;
+    flex-wrap: wrap;
+
+    &.collapse:not(.show) {
+      display: none;
+    }
+
     * {
       margin-top: $space-default;
 
@@ -47,11 +54,6 @@
 
   h3 {
     margin-top: 0;
-  }
-
-  .cart-items-collapse-link {
-    padding: 0;
-    margin-top: $space-default;
   }
 
   .promotion-details-and-remove-links {
@@ -200,5 +202,13 @@
     display: inline-block;
     width: auto;
     max-width: 100%;
+  }
+}
+
+.list-item-actions {
+  padding: $table-cell-padding * 0.2 0 $table-cell-padding * 0.9 0;
+
+  .btn-tool.btn-link {
+    padding: 0 divide($space-default, 3);
   }
 }

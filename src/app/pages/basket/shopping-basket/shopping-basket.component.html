@@ -45,7 +45,10 @@
 
         <ish-basket-cost-center-selection />
 
+        <ish-basket-custom-fields />
+
         <div class="section">
+          <h2 class="h3 mb-0">{{ 'shopping_cart.items.heading' | translate }}</h2>
           <ish-skip-content-link>
             <ng-container *ishFeature="'quoting'; else elseTemplate">
               <ish-lazy-quoting-basket-line-items />
@@ -58,7 +61,7 @@
           <ish-loading *ngIf="loading" />
 
           <div class="button-group clearfix">
-            <div class="float-md-left">
+            <div class="float-md-start">
               <ish-lazy-basket-add-to-quote />
               <ish-lazy-basket-create-order-template
                 *ngIf="basket"
@@ -66,7 +69,7 @@
                 [products]="basket.lineItems"
               />
             </div>
-            <ish-clear-basket cssClass="float-md-right" />
+            <ish-clear-basket cssClass="float-md-end" />
           </div>
         </div>
         <ish-lazy-direct-order />
@@ -99,14 +102,16 @@
             />
           </ng-container>
 
-          <button
-            *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']"
-            type="submit"
-            class="btn btn-lg btn-block btn-primary"
-            (click)="checkout()"
-          >
-            {{ 'shopping_cart.proceed_to_checkout.button.label' | translate }}
-          </button>
+          <div class="d-grid">
+            <button
+              *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']"
+              type="submit"
+              class="btn btn-lg btn-primary"
+              (click)="checkout()"
+            >
+              {{ 'shopping_cart.proceed_to_checkout.button.label' | translate }}
+            </button>
+          </div>
           <ish-lazy-punchout-transfer-basket *ishIsAuthorizedTo="'APP_B2B_SEND_PUNCHOUT_BASKET'" />
           <ish-shopping-basket-payment *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']" [basket]="basket" />
         </div>

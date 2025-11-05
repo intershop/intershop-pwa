@@ -1,5 +1,5 @@
 <div *ngIf="view$ | async as view">
-  <div class="float-right">
+  <div class="float-end">
     <ul class="share-tools">
       <li>
         <a
@@ -98,7 +98,7 @@
     <ng-container *ngTemplateOutlet="approvalButtonBar; context: { requisition: requisition }" />
 
     <ng-template #approvalButtonBar let-requisition="requisition">
-      <div *ngIf="requisition.approval?.statusCode === 'PENDING' && view === 'approver'" class="section text-right">
+      <div *ngIf="requisition.approval?.statusCode === 'PENDING' && view === 'approver'" class="section text-end">
         <button (click)="approveRequisition()" type="button" class="btn btn-primary">
           {{ 'approval.detailspage.approve.button.label' | translate }}
         </button>

@@ -5,13 +5,13 @@
       <div class="col-8">
         <ish-product-name ishProductContext [sku]="pli.productSKU" />
       </div>
-      <div class="col-4 text-right pt-1">{{ pli.totals.total | ishPrice }}</div>
+      <div class="col-4 text-end pt-1">{{ pli.totals.total | ishPrice }}</div>
 
       <!-- quantity and undiscounted price -->
       <div class="col-8 cart-pli-data">
         <span> {{ 'checkout.pli.qty.label' | translate }} {{ pli.quantity.value }} </span>
       </div>
-      <div class="col-4 text-right">
+      <div class="col-4 text-end">
         <div *ngIf="pli.totals.valueRebatesTotal" class="old-price">
           <span class="price-value">{{ pli.totals.undiscountedTotal | ishPrice }}</span>
         </div>
@@ -28,7 +28,7 @@
       <!-- warranty -->
       <ng-container *ngIf="pli.warranty">
         <div class="col-8">{{ pli.warranty.sku }}</div>
-        <div class="col-4 text-right">{{ pli.warranty.price | ishPrice }}</div>
+        <div class="col-4 text-end">{{ pli.warranty.price | ishPrice }}</div>
       </ng-container>
     </ng-container>
   </div>
@@ -37,19 +37,19 @@
   <button
     *ngIf="isShowAllLinkVisible()"
     type="button"
-    class="btn btn-link btn-content-toggle cart-items-collapse-link"
+    class="btn btn-link btn-content-toggle mt-3"
     (click)="toggleCollapse()"
   >
     {{ 'checkout.show_all.link' | translate : { '0': basket.lineItems.length } }}
-    <fa-icon [icon]="['fas', 'angle-down']" class="float-right" />
+    <fa-icon [icon]="['fas', 'angle-down']" class="float-end" />
   </button>
   <button
     *ngIf="isHideLinkVisible()"
     type="button"
-    class="btn btn-link btn-content-toggle cart-items-collapse-link"
+    class="btn btn-link btn-content-toggle mt-3"
     (click)="toggleCollapse()"
   >
     {{ 'checkout.hide_all.link' | translate }}
-    <fa-icon [icon]="['fas', 'angle-up']" class="float-right" />
+    <fa-icon [icon]="['fas', 'angle-up']" class="float-end" />
   </button>
 </div>

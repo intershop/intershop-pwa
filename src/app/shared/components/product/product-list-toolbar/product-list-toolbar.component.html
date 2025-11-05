@@ -1,5 +1,5 @@
 <div class="filters-row row align-items-center">
-  <div class="col-md-7 col-sm-10">
+  <div class="item-count" [ngClass]="{ 'col-md-7': sortOptions?.length, 'col-md-10': !sortOptions?.length }">
     <div class="row align-items-center">
       <div class="col-sm-3 col-4">
         <div *ngIf="itemCount >= 0" class="pagination-total text-nowrap" aria-live="polite">
@@ -16,11 +16,20 @@
       </div>
     </div>
   </div>
-  <div
-    class="col-4 col-sm-2 switch-layout"
-    [ngClass]="{ 'col-md-2': sortOptions?.length, 'col-md-5': !sortOptions?.length }"
-  >
-    <div class="sort-by align-items-center justify-content-end">
+  <div *ngIf="sortOptions?.length" class="col-8 col-sm-9 col-md-3 sort-by">
+    <select
+      class="form-control sort-by-filter"
+      [attr.aria-label]="'product.items.sorting.label' | translate"
+      (change)="changeSortBy($event.target)"
+    >
+      <option value="default" [selected]="sortBy === 'default'">
+        {{ 'product.items.sorting.default.label' | translate }}
+      </option>
+      <option *ngFor="let o of sortOptions" [value]="o.value" [selected]="o.value === sortBy">{{ o.label }}</option>
+    </select>
+  </div>
+  <div class="col-4 col-sm-3 col-md-2 switch-layout">
+    <div class="d-flex align-items-center justify-content-end">
       <a
         [routerLink]="[]"
         queryParamsHandling="merge"
@@ -50,17 +59,5 @@
         <fa-icon [icon]="['fas', 'list']" />
       </a>
     </div>
-  </div>
-  <div *ngIf="sortOptions?.length" class="col-8 col-sm-12 col-md-3 sort-by">
-    <select
-      class="form-control sort-by-filter"
-      [attr.aria-label]="'product.items.sorting.label' | translate"
-      (change)="changeSortBy($event.target)"
-    >
-      <option value="default" [selected]="sortBy === 'default'">
-        {{ 'product.items.sorting.default.label' | translate }}
-      </option>
-      <option *ngFor="let o of sortOptions" [value]="o.value" [selected]="o.value === sortBy">{{ o.label }}</option>
-    </select>
   </div>
 </div>

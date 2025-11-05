@@ -18,6 +18,10 @@
 
       <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <ish-product-price [showInformationalPrice]="true" [showPriceSavings]="true" />
+        <ish-payment-paypal-messages
+          *ngIf="'preferences.PayPalCheckoutPreferences.PayLaterMessagingProductDetailsEnabled' | ishServerSetting"
+          [pageType]="'product-details'"
+        />
       </div>
 
       <ish-product-inventory />
@@ -35,13 +39,19 @@
         </div>
       </div>
 
-      <ish-product-add-to-basket [cssClass]="'btn-lg btn-block'" />
+      <div class="d-grid">
+        <ish-product-add-to-basket [cssClass]="'btn-lg w-100'" />
+      </div>
+      <div class="d-grid">
+        <ish-lazy-product-add-to-order-template [cssClass]="'btn btn-secondary'" />
+      </div>
+      <div class="d-grid">
+        <ish-lazy-product-add-to-quote [cssClass]="'btn btn-secondary'" />
+      </div>
+      <div class="d-grid">
+        <ish-lazy-product-notification-edit cssClass="btn btn-secondary" displayType="button" />
+      </div>
 
-      <ish-lazy-product-add-to-order-template [cssClass]="'btn btn-secondary btn-block'" />
-
-      <ish-lazy-product-add-to-quote [cssClass]="'btn-secondary btn-block'" />
-
-      <ish-lazy-product-notification-edit cssClass="btn btn-secondary btn-block" displayType="button" />
       <ish-product-warranty (submitWarranty)="setSelectedWarranty($event)" />
     </div>
 

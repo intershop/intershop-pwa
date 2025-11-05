@@ -17,6 +17,7 @@ import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/bas
 import { BasketBaseData, BasketData } from 'ish-core/models/basket/basket.interface';
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { CustomFieldData } from 'ish-core/models/custom-field/custom-field.interface';
 import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
@@ -33,7 +34,8 @@ export type BasketUpdateType =
   | { externalOrderReference: string }
   | { invoiceToAddress: string }
   | { messageToMerchant: string }
-  | { recurrence: Recurrence };
+  | { recurrence: Recurrence }
+  | { customFields: CustomFieldData[] };
 
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.

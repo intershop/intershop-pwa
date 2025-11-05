@@ -69,7 +69,7 @@ describe('Requisition Summary Component', () => {
         <dd class="col-6 col-sm-8 col-md-9"></dd>,
         <dd class="col-6 col-sm-8 col-md-9">
         <span
-          class="border border-secondary badge badge-secondary text-capitalize border-warning badge-warning"
+          class="border border-secondary badge bg-secondary text-capitalize border-warning bg-warning text-dark"
         >
           pending
         </span>
@@ -101,9 +101,7 @@ describe('Requisition Summary Component', () => {
         <dd class="col-6 col-sm-8 col-md-9"></dd>,
         <dd class="col-6 col-sm-8 col-md-9"></dd>,
         <dd class="col-6 col-sm-8 col-md-9">
-        <span
-          class="border border-secondary badge badge-secondary text-capitalize border-danger badge-danger"
-        >
+        <span class="border border-secondary badge bg-secondary text-capitalize border-danger bg-danger">
           rejected
         </span>
       </dd>,
@@ -123,7 +121,7 @@ describe('Requisition Summary Component', () => {
         <dd class="col-6 col-sm-8 col-md-9"></dd>,
         <dd class="col-6 col-sm-8 col-md-9">
         <span
-          class="border border-secondary badge badge-secondary text-capitalize border-warning badge-warning"
+          class="border border-secondary badge bg-secondary text-capitalize border-warning bg-warning text-dark"
         >
           pending
         </span>

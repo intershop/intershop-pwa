@@ -21,7 +21,7 @@ describe('Scrolling User', () => {
       page.productList.currentPage.should('equal', 1);
       cy.scrollTo('bottom');
       waitLoadingEnd();
-      page.productList.currentPage.should('equal', 2);
+      page.productList.currentPage.should('be.within', 2, 3);
     });
   });
 

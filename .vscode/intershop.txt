@@ -70,6 +70,7 @@ glyphicons
 gomplate
 greaterthan
 grecaptcha
+heapsnapshot
 helpdesk
 hoverable
 iban
@@ -140,6 +141,7 @@ phenomnomnominal
 pipeable
 pkce
 pluralizable
+ppcp
 prectx
 prefilled
 prepended

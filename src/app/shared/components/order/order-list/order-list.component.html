@@ -12,7 +12,7 @@
             *ngIf="order.recurringOrderID"
             [icon]="['fas', 'repeat']"
             [title]="'account.orderlist.table.recurring.icon.title' | translate"
-            class="ml-1"
+            class="ms-1"
           />
         </td>
       </ng-container>
@@ -21,7 +21,7 @@
       <ng-container cdkColumnDef="orderNo">
         <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-number">
           <span aria-hidden="true">{{ 'account.orderlist.table.order_number' | translate }}</span>
-          <span class="sr-only">{{ 'account.orderlist.table.order_number.title' | translate }}</span>
+          <span class="visually-hidden">{{ 'account.orderlist.table.order_number.title' | translate }}</span>
         </th>
         <td
           cdk-cell
@@ -35,7 +35,7 @@
       <ng-container cdkColumnDef="orderNoWithLink">
         <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-number">
           <span aria-hidden="true">{{ 'account.orderlist.table.order_number' | translate }}</span>
-          <span class="sr-only">{{ 'account.orderlist.table.order_number.title' | translate }}</span>
+          <span class="visually-hidden">{{ 'account.orderlist.table.order_number.title' | translate }}</span>
         </th>
         <td
           cdk-cell
@@ -72,7 +72,7 @@
           {{ 'account.orderlist.table.order_status' | translate }}
         </th>
         <td cdk-cell *cdkCellDef="let order" [attr.data-label]="'account.orderlist.table.order_status' | translate">
-          <span class="badge badge-info">{{ order.status }}</span>
+          <span class="badge text-bg-info">{{ order.status }}</span>
         </td>
       </ng-container>
 
@@ -88,7 +88,7 @@
 
       <!-- Order total  -->
       <ng-container cdkColumnDef="orderTotal">
-        <th scope="col" cdk-header-cell *cdkHeaderCellDef class="text-right" data-testing-id="th-order-total">
+        <th scope="col" cdk-header-cell *cdkHeaderCellDef class="text-end" data-testing-id="th-order-total">
           {{ 'account.orderlist.table.order_total' | translate }}
         </th>
         <td

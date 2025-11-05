@@ -1,6 +1,7 @@
 import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
 import { BasketRebate } from 'ish-core/models/basket-rebate/basket-rebate.model';
 import { BasketWarranty } from 'ish-core/models/basket-warranty/basket-warranty.model';
+import { CustomFields } from 'ish-core/models/custom-field/custom-field.model';
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
@@ -38,7 +39,7 @@ export interface LineItem {
   editable: boolean;
   quote?: string;
   desiredDeliveryDate?: string;
-
+  customFields?: CustomFields;
   warranty?: BasketWarranty;
 }
 

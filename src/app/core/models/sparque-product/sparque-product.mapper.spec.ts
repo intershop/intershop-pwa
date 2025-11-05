@@ -53,6 +53,7 @@ describe('Sparque Product Mapper', () => {
               },
             ],
             "manufacturer": "BRAND",
+            "minOrderQuantity": 1,
             "name": "Product 1",
             "shortDescription": "Short description",
             "sku": "SKU1",

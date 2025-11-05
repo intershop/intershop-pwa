@@ -12,7 +12,6 @@ import {
   defer,
   first,
   forkJoin,
-  iif,
   map,
   of,
   switchMap,
@@ -20,40 +19,46 @@ import {
   throwError,
 } from 'rxjs';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AvailableOptions } from 'ish-core/services/api/api.service';
-import { TokenService } from 'ish-core/services/token/token.service';
 import { getCurrentLocale, getSparqueConfig } from 'ish-core/store/core/configuration';
 import { communicationTimeoutError, serverError } from 'ish-core/store/core/error';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 // sparque config keys that should not be appended to the query params
-const SPARQUE_CONFIG_EXCLUDE_PARAMS = ['serverUrl'];
+const SPARQUE_CONFIG_EXCLUDE_PARAMS = ['serverUrl', 'features'];
 
 /**
- * Service for interacting with the Sparque API.
+ * The Sparque API Service handles interaction with the SPARQUE.AI recommendation engine.
+ * It provides methods to make HTTP requests to SPARQUE endpoints with proper authentication,
+ * parameter mapping, and error handling.
  *
- * This service provides methods to construct HTTP requests with appropriate headers and parameters,
- * handle errors, and execute HTTP GET requests. It leverages Angular's HttpClient for making HTTP calls
- * and NgRx Store for accessing application state.
- *
- * The service includes methods to:
- * - Construct HTTP client parameters and headers.
- * - Convert paths to HTTP parameters based on Sparque configuration and locale.
- * - Handle errors and dispatch actions to the store in case of server errors.
- * - Execute HTTP GET requests.
+ * This service automatically handles:
+ * - Authentication via bearer tokens
+ * - User identification (customer number or business partner number)
+ * - Locale configuration
+ * - SPARQUE-specific configuration parameters
+ * - Error handling and retry logic
  */
 @Injectable({ providedIn: 'root' })
 export class SparqueApiService {
-  private static SPARQUE_PERSONALIZATION_IDENTIFIER = 'userId';
-
   constructor(
     private httpClient: HttpClient,
     private store: Store,
     private apiTokenService: ApiTokenService,
-    private tokenService: TokenService
+    private accountFacade: AccountFacade
   ) {}
 
+  /**
+   * Constructs HTTP client parameters for SPARQUE API requests.
+   * Combines URL construction and header/parameter preparation.
+   *
+   * @param path        The API endpoint path (relative or absolute URL)
+   * @param apiVersion  The SPARQUE API version to use (e.g., 'v2')
+   * @param options     Optional HTTP request configuration
+   * @returns           Observable containing the complete URL and HTTP options
+   */
   private constructHttpClientParams(
     path: string,
     apiVersion: string,
@@ -74,13 +79,16 @@ export class SparqueApiService {
   }
 
   /**
-   * Converts a given path to HTTP parameters based on the Sparque configuration and current locale.
-   * If the path starts with 'http://' or 'https://', it returns an empty set of HTTP parameters.
-   * Otherwise, it retrieves the Sparque configuration and current locale from the store,
-   * and appends them as HTTP parameters, excluding specific keys defined in SPARQUE_CONFIG_EXCLUDE_PARAMS.
+   * Converts SPARQUE configuration and request parameters to HTTP query parameters.
+   * Automatically includes:
+   * - SPARQUE configuration values (apiName, workspaceName, channelId, etc.)
+   * - Current locale (formatted for SPARQUE compatibility)
+   * - User identification (customer number or business partner number)
+   * - Additional request parameters
    *
-   * @param path - The path to be converted to HTTP parameters.
-   * @returns An instance of HttpParams containing the Sparque configuration and locale.
+   * @param path    The API endpoint path
+   * @param params  Additional HTTP parameters to include
+   * @returns       Combined HTTP parameters for the request
    */
   private sparqueQueryToHttpParams(path: string, params: HttpParams): HttpParams {
     if (path.startsWith('http://') || path.startsWith('https://')) {
@@ -92,18 +100,30 @@ export class SparqueApiService {
       .pipe(
         select(getSparqueConfig),
         take(1),
-        concatLatestFrom(() => this.store.pipe(select(getCurrentLocale)))
+        concatLatestFrom(() => [
+          this.store.pipe(select(getCurrentLocale)),
+          this.accountFacade.user$,
+          this.accountFacade.customer$,
+        ])
       )
-      .subscribe(([config, locale]) => {
+      .subscribe(([config, locale, user, customer]) => {
         Object.keys(config).forEach(key => {
           if (!SPARQUE_CONFIG_EXCLUDE_PARAMS.includes(key)) {
             sparqueParams = sparqueParams.append(key, <string>config[key]);
           }
         });
         sparqueParams = sparqueParams.append('Locale', locale.replace('_', '-'));
+
+        if (customer && user) {
+          sparqueParams = sparqueParams.append(
+            'user',
+            customer?.isBusinessCustomer ? user?.businessPartnerNo : customer?.customerNo
+          );
+        }
       });
+
     params?.keys().forEach(key => {
-      if (key.includes('selectedFacets')) {
+      if (key.includes('selectedFacets') || key.includes('cartProductIds')) {
         params
           .get(key)
           ?.split(',')
@@ -119,40 +139,19 @@ export class SparqueApiService {
   }
 
   /**
-   * Constructs HTTP headers for a request, optionally including an authorization token.
+   * Constructs HTTP headers for SPARQUE API requests.
+   * Sets default headers and optionally adds bearer token authentication.
    *
-   * @param options - Optional parameters that may include additional headers and query parameters.
-   * @returns An observable that emits the constructed HttpHeaders.
-   *
-   * This method performs the following steps:
-   * 1. Initializes default headers with 'content-type' and 'Accept' set to 'application/json'.
-   * 2. Checks if the `SPARQUE_PERSONALIZATION_IDENTIFIER` is present in the query parameters.
-   * 3. If the identifier is present, it attempts to retrieve an API token:
-   *    - If an API token is available, it uses it.
-   *    - If no API token is available, it fetches an anonymous token.
-   * 4. Appends the authorization token to the headers if available.
-   * 5. Merges any additional headers provided in the options with the default headers.
+   * @param options  Optional HTTP request configuration including custom headers
+   * @returns        Observable containing the complete HTTP headers
    */
   private constructHeaders(options?: AvailableOptions): Observable<HttpHeaders> {
     let defaultHeaders = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
 
-    return iif(
-      () => options?.params?.keys().includes(SparqueApiService.SPARQUE_PERSONALIZATION_IDENTIFIER),
-      this.apiTokenService.apiToken$.pipe(
-        first(),
-        switchMap(apiToken =>
-          iif(
-            () => options?.params?.keys().includes(SparqueApiService.SPARQUE_PERSONALIZATION_IDENTIFIER) && !!apiToken,
-            of(apiToken),
-            this.tokenService.fetchToken('anonymous')
-          )
-        )
-      ),
-      of(EMPTY)
-    ).pipe(
+    return this.apiTokenService.apiToken$.pipe(
       first(),
       switchMap(apiToken => {
-        if (apiToken && apiToken !== EMPTY) {
+        if (apiToken) {
           defaultHeaders = defaultHeaders.append('Authorization', `bearer ${apiToken}`);
         }
         return of(
@@ -166,6 +165,14 @@ export class SparqueApiService {
     );
   }
 
+  /**
+   * Constructs the complete URL for a SPARQUE API endpoint.
+   * Handles both relative paths (using SPARQUE server configuration) and absolute URLs.
+   *
+   * @param path        The API endpoint path
+   * @param apiVersion  The SPARQUE API version to use
+   * @returns           Observable containing the complete URL
+   */
   private constructUrlForPath(path: string, apiVersion: string): Observable<string> {
     if (path.startsWith('http://') || path.startsWith('https://')) {
       return of(path);
@@ -183,6 +190,13 @@ export class SparqueApiService {
     );
   }
 
+  /**
+   * Handles HTTP errors from SPARQUE API requests.
+   * Dispatches appropriate error actions for communication timeouts and server errors.
+   *
+   * @param dispatch  Whether to dispatch error actions to the store
+   * @returns         RxJS operator for error handling
+   */
   private handleErrors<T>(dispatch: boolean): MonoTypeOperatorFunction<T> {
     return catchError(error => {
       if (dispatch) {
@@ -198,12 +212,25 @@ export class SparqueApiService {
     });
   }
 
+  /**
+   * Executes HTTP requests with error handling.
+   *
+   * @param options    HTTP request options including error handling configuration
+   * @param httpCall$  The HTTP request observable to execute
+   * @returns          The HTTP response with error handling applied
+   */
   private execute<T>(options: AvailableOptions, httpCall$: Observable<T>): Observable<T> {
     return httpCall$.pipe(this.handleErrors(!options?.skipApiErrorHandling));
   }
 
   /**
-   * http get request
+   * Performs an HTTP GET request to a SPARQUE API endpoint.
+   * Automatically handles authentication, parameter mapping, and error handling.
+   *
+   * @param path        The API endpoint path (relative or absolute URL)
+   * @param apiVersion  The SPARQUE API version to use (e.g., 'v2')
+   * @param options     Optional HTTP request configuration
+   * @returns           Observable containing the API response
    */
   get<T>(path: string, apiVersion: string, options?: AvailableOptions): Observable<T> {
     return this.execute(

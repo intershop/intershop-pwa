@@ -8,6 +8,7 @@ const proxy = require('express-http-proxy');
 
 const app = express();
 
+const deployUrl = getDeployURLFromEnv();
 const concurrencySSR = getConcurrencySSR();
 
 app.use((req, res, next) => {
@@ -15,7 +16,13 @@ app.use((req, res, next) => {
 
   if (!match) {
     match = Object.keys(ports).find(config => {
-      const p = path.join(process.cwd(), 'dist', config, 'browser', req.path.substring(1).replace(/[;?&].*$/, ''));
+      const p = path.join(
+        process.cwd(),
+        'dist',
+        config,
+        'browser',
+        req.path.slice(!deployUrl.startsWith('http') ? deployUrl.length : 0).replace(/[;?&].*$/, '')
+      );
       return fs.existsSync(p);
     });
   }
@@ -61,4 +68,11 @@ function getConcurrencySSR() {
   if (parsed < 0) return Math.max(1, cpuCount + parsed);
 
   return 2;
+}
+
+// copy from deploy-url.ts
+function getDeployURLFromEnv() {
+  const envDeployUrl = process.env.DEPLOY_URL || '/';
+
+  return `${envDeployUrl}${envDeployUrl.endsWith('/') ? '' : '/'}`;
 }

@@ -3,16 +3,16 @@
   <div class="error-text mb-3">
     <div [ishServerHtml]="'server.maintenance.page.text' | translate"></div>
   </div>
-  <div class="text-muted d-flex flex-column flex-sm-row justify-content-sm-between">
+  <div class="text-body-secondary d-flex flex-column flex-sm-row justify-content-sm-between">
     <div>{{ 'server.maintenance.page.contact.label' | translate }}</div>
     <div>
-      <fa-icon [icon]="['fas', 'phone']" class="pr-1" />
+      <fa-icon [icon]="['fas', 'phone']" class="pe-1" />
       <a href="tel:{{ 'server.maintenance.page.contact.phone' | translate }}">{{
         'server.maintenance.page.contact.phone' | translate
       }}</a>
     </div>
     <div>
-      <fa-icon [icon]="['fas', 'envelope']" class="pr-1" />
+      <fa-icon [icon]="['fas', 'envelope']" class="pe-1" />
       <a href="mailto:{{ 'server.maintenance.page.contact.email' | translate }}">{{
         'server.maintenance.page.contact.email' | translate
       }}</a>

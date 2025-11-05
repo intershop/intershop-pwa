@@ -4,7 +4,7 @@
     type="button"
     [id]="'dropdownMenuLink-' + filterElement.id"
     class="form-control"
-    data-toggle="dropdown"
+    data-bs-toggle="dropdown"
     [title]="placeholder !== filterElement.name ? placeholder : ''"
   >
     <span>{{ placeholder }}</span>
@@ -22,7 +22,7 @@
     >
       {{ facet.displayName }}
       <ng-container *ngIf="facet.count"> ({{ facet.count }})</ng-container>
-      <fa-icon *ngIf="facet.selected" [icon]="['fas', 'check']" class="icon-checked pl-1" />
+      <fa-icon *ngIf="facet.selected" [icon]="['fas', 'check']" class="icon-checked ps-1" />
     </button>
   </div>
 </div>

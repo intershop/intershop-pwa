@@ -16,7 +16,7 @@
   <div
     *ngIf="additionalAmount?.value"
     [title]="additionalAmount | ishPrice"
-    class="budget-bar-used budget-bar-used-additional border-left"
+    class="budget-bar-used budget-bar-used-additional border-start"
     [ngClass]="addDisplayClass"
     role="progressbar"
     [ngStyle]="{ width: additionalPercentage / 100 | percent }"

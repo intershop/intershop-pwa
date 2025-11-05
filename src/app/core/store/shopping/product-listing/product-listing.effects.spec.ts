@@ -1,11 +1,14 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
+import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
@@ -17,8 +20,12 @@ import { getProductListingItemsPerPage, getProductListingViewType } from './prod
 describe('Product Listing Effects', () => {
   let router: Router;
   let store$: StoreWithSnapshots;
+  let productsServiceProviderMock: ProductsServiceProvider;
 
   beforeEach(() => {
+    productsServiceProviderMock = mock(ProductsServiceProvider);
+    when(productsServiceProviderMock.isSparqueSearchEnabled()).thenReturn(of(false));
+
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration'], [ProductListingEffects]),
@@ -28,6 +35,7 @@ describe('Product Listing Effects', () => {
       providers: [
         { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },
         { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 7 },
+        { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
         provideStoreSnapshots(),
       ],
     });

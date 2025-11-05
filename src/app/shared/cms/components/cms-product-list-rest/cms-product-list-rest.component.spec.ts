@@ -1,3 +1,4 @@
+/* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
 // eslint-disable-next-line ish-custom-rules/ban-imports-file-pattern
 import { HttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -5,6 +6,8 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { ApiService } from 'ish-core/services/api/api.service';
+import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.service';
 
 import { CMSProductListRestComponent } from './cms-product-list-rest.component';
 
@@ -41,13 +44,19 @@ describe('Cms Product List Rest Component', () => {
   let fixture: ComponentFixture<CMSProductListRestComponent>;
   let element: HTMLElement;
   let httpClient: HttpClient;
+  const apiService = mock(ApiService);
+  const sparqueApiService = mock(SparqueApiService);
 
   beforeEach(async () => {
     httpClient = mock(HttpClient);
 
     await TestBed.configureTestingModule({
       declarations: [CMSProductListRestComponent],
-      providers: [{ provide: HttpClient, useFactory: () => instance(httpClient) }],
+      providers: [
+        { provide: ApiService, useFactory: () => instance(apiService) },
+        { provide: HttpClient, useFactory: () => instance(httpClient) },
+        { provide: SparqueApiService, useFactory: () => instance(sparqueApiService) },
+      ],
     }).compileComponents();
   });
 

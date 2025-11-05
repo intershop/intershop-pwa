@@ -4,7 +4,7 @@
   font-family: $font-family-bold;
   text-transform: uppercase;
 
-  &:not(.btn-link) {
+  &:not(.btn-link):not(.input-group-text) {
     @media (max-width: $screen-xs-max) {
       clear: both;
       display: block;
@@ -93,12 +93,9 @@
     }
   }
 
-  & ~ .btn.btn-block {
-    margin-left: 0;
-  }
-
   &.btn-link {
     font-family: $font-family-regular;
+    color: $link-color;
     text-transform: unset;
     text-decoration: none;
     border: none;
@@ -114,15 +111,11 @@
 
 .btn-lg {
   font-family: $font-family-condensedbold;
-
-  &.btn-block {
-    padding-right: 0;
-    padding-left: 0;
-  }
 }
 
 button.btn-link {
   font-family: $font-family-regular;
+  color: $link-color;
   text-transform: unset;
   text-decoration: none;
 
@@ -140,6 +133,7 @@ button.btn-link {
 
   &:hover,
   &:focus {
+    color: $CORPORATE-SECONDARY;
     text-decoration: none;
 
     &:not(:focus-visible) {
@@ -167,7 +161,7 @@ button.btn-link {
 .btn:not(:only-child):not(.btn-link) {
   margin-bottom: divide($space-default, 3);
 
-  &:not(.float-right) {
+  &:not(.float-end) {
     margin-right: divide($space-default, 3);
 
     @media (max-width: $screen-xs-max) {
@@ -175,7 +169,25 @@ button.btn-link {
     }
   }
 
-  &.float-right {
+  &.float-end {
+    margin-left: divide($space-default, 3);
+
+    @media (max-width: $screen-xs-max) {
+      margin-left: 0;
+    }
+  }
+}
+
+.d-grid:has(> .btn:not(.btn-link)):not(:only-child) .btn {
+  margin-bottom: divide($space-default, 3);
+
+  &:not(.float-end) {
+    @media (max-width: $screen-xs-max) {
+      margin-right: 0;
+    }
+  }
+
+  &.float-end {
     margin-left: divide($space-default, 3);
 
     @media (max-width: $screen-xs-max) {
@@ -190,6 +202,7 @@ button.btn-link {
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding: 0;
 
   @include hover-none-underline();
 }

@@ -29,17 +29,12 @@
   </div>
 
   <div class="col-md-12 col-lg-8">
-    <div class="row">
-      <p class="col-md-9">
-        {{
-          (basket.recurrence ? 'checkout.order_review.recurring.heading.text' : 'checkout.order_review.heading.text')
-            | translate
-        }}
-      </p>
-      <p class="col-md-3 text-right">
-        <a routerLink="/basket">{{ 'checkout.widget.return_to_cart.link' | translate }}</a>
-      </p>
-    </div>
+    <p>
+      {{
+        (basket.recurrence ? 'checkout.order_review.recurring.heading.text' : 'checkout.order_review.heading.text')
+          | translate
+      }}
+    </p>
     <ish-basket-approval-info *ngIf="basket.approval" [approval]="basket.approval" />
 
     <ng-container *ngIf="'shipping.messageToMerchant' | ishServerSetting">
@@ -56,14 +51,21 @@
       </ng-container>
 
       <!-- Additional Information -->
-      <ng-container *ngIf="basket.recurrence">
+      <ng-container *ngIf="basket.costCenter || hasCustomFields() || basket.recurrence">
         <ish-info-box
           heading="checkout.widget.additional-information.heading"
           editRouterLink="/basket"
           class="infobox-wrapper col-md-6"
           cssClass="pb-3"
         >
-          <ish-order-recurrence [recurrence]="basket.recurrence" labelCssClass="col-4" valueCssClass="col-8" />
+          <ish-basket-cost-center-view [data]="basket" />
+          <ish-basket-custom-fields-view [data]="basket" />
+          <ish-order-recurrence
+            *ngIf="basket.recurrence"
+            [recurrence]="basket.recurrence"
+            labelCssClass="col-4"
+            valueCssClass="col-8"
+          />
         </ish-info-box>
       </ng-container>
     </div>
@@ -113,6 +115,10 @@
       </ish-info-box>
     </div>
 
+    <p class="text-end">
+      <a routerLink="/basket">{{ 'checkout.widget.return_to_cart.link' | translate }}</a>
+    </p>
+
     <!-- Line Items -->
     <ish-skip-content-link *ngIf="basket.lineItems?.length > 0">
       <ish-line-item-list [lineItems]="basket.lineItems" [editable]="false" />
@@ -127,19 +133,21 @@
       <ish-basket-cost-summary [totals]="basket.totals" />
       <form [formGroup]="form" ishFormSubmit #tcForm="ngForm" (ngSubmit)="submitOrder()">
         <formly-form [form]="form" [model]="model" [fields]="fields" [options]="options" />
-        <button
-          class="btn btn-lg btn-block btn-primary"
-          type="submit"
-          [disabled]="(form.invalid && tcForm.submitted) || multipleBuckets || submitting"
-        >
-          <ng-container *ngIf="submitting">
-            <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pr-3" />
-          </ng-container>
-          {{
-            (basket.recurrence ? 'checkout.order_review.recurring.send.button' : 'checkout.order_review.send.button')
-              | translate
-          }}
-        </button>
+        <div class="d-grid">
+          <button
+            class="btn btn-lg btn-block btn-primary"
+            type="submit"
+            [disabled]="(form.invalid && tcForm.submitted) || multipleBuckets || submitting"
+          >
+            <ng-container *ngIf="submitting">
+              <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pe-3" />
+            </ng-container>
+            {{
+              (basket.recurrence ? 'checkout.order_review.recurring.send.button' : 'checkout.order_review.send.button')
+                | translate
+            }}
+          </button>
+        </div>
       </form>
     </div>
   </div>

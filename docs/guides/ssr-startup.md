@@ -12,6 +12,9 @@ kb_sync_latest_only
 - [Running](#running)
 - [Development](#development)
 - [Local ICM Cache](#local-icm-cache)
+- [Heap Dumps](#heap-dumps)
+  - [Creation](#creation)
+  - [Analysis](#analysis)
 - [Further References](#further-references)
 
 ## Building
@@ -121,6 +124,23 @@ You can further customize the caching by supplying a JSON structure to the `CACH
 This example will cache `/configurations` for 20 minutes, product variations for 2 hours, and everything else for 2 minutes.
 
 This feature can also be used to benchmark the SSR render performance locally by caching all ICM calls.
+
+## Heap Dumps
+
+### Creation
+
+To analyze memory leaks or high memory usage in the SSR process, you can manually trigger the creation of a heap dump from within the SSR container by sending a `USR2` signal to the running SSR process.
+The heap dump is generated in the `/tmp` directory of the container, named `Heap.<process name from pm2>.<process id>.<date-time as ISOString>.heapsnapshot`.
+To find the process ID of the SSR processes, use `pm2 list` or `ps`, then send the signal with `kill -USR2 <process_id>`.
+
+### Analysis
+
+You can download the generated heap dumps from the container and analyze them using Chrome or Edge DevTools.
+
+1.  Open DevTools (press F12 or right-click and select _Inspect_).
+2.  Switch to the _Memory_ tab.
+3.  Click the _Load profile_ button.
+4.  Select your `.heapsnapshot` file.
 
 ## Further References
 

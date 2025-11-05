@@ -11,4 +11,8 @@ import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.
 })
 export class CheckoutReceiptComponent {
   @Input({ required: true }) order: Order | RecurringOrder | Basket;
+
+  hasCustomFields(): boolean {
+    return this.order?.customFields && Object.keys(this.order.customFields).length > 0;
+  }
 }

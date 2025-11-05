@@ -43,7 +43,8 @@ describe('Filter Checkbox Component', () => {
         <li class="filter-item filter-layer">
           <div>
             <label class="filter-item-checkbox-label-native"
-              ><input type="checkbox" /><span class="filter-item-name"> Asus </span
+              ><input type="checkbox" class="form-check-input" /><span class="filter-item-name">
+                Asus </span
               ><span class="count"> (4) </span></label
             >
           </div>
@@ -51,7 +52,8 @@ describe('Filter Checkbox Component', () => {
         <li class="filter-item filter-layer filter-selected">
           <div>
             <label class="filter-item-checkbox-label-native"
-              ><input type="checkbox" /><span class="filter-item-name"> Logitech </span
+              ><input type="checkbox" class="form-check-input" /><span class="filter-item-name">
+                Logitech </span
               ><span class="count"> (5) </span></label
             >
           </div>

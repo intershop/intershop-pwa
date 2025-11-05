@@ -21,6 +21,14 @@ import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level
 import { METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
 import { icmCallsCache } from './src/app/core/interceptors/universal-cache.interceptor';
 import { Agent, install, setGlobalDispatcher, interceptors } from 'undici';
+import { writeHeapSnapshot } from 'v8';
+
+process.on('SIGUSR2', () => {
+  const pm2Name = process.env.name || 'no-pm2';
+  const filename = `/tmp/Heap.${pm2Name}.${process.pid}.${new Date().toISOString().replaceAll(':', '-')}.heapsnapshot`;
+  writeHeapSnapshot(filename);
+  console.log(`Heap snapshot written to ${filename}`);
+});
 
 // allowing HTTP/2 uses HTTPClient withFetch() and undici agent allowH2 option
 if (/on|1|true|yes/.test(process.env.ALLOW_H2?.toLowerCase())) {
@@ -396,7 +404,7 @@ export function app() {
   });
   server.get(/\/.*\.(js|css)$/, (req, res) => {
     // remove all parameters
-    const path = req.originalUrl.substring(1).replace(/[;?&].*$/, '');
+    const path = req.originalUrl.slice(!DEPLOY_URL.startsWith('http') ? DEPLOY_URL.length : 0).replace(/[;?&].*$/, '');
     const filename = join(BROWSER_FOLDER, path);
     if (filename.startsWith(BROWSER_FOLDER)) {
       fs.readFile(filename, { encoding: 'utf-8' }, (err, data) => {
@@ -428,6 +436,13 @@ export function app() {
       }
     });
   });
+
+  // route handler for all files that need the DEPLOY_URL replacement
+  server.get(/\/assets\/.*|.*\.(woff2?|json)$|.*\/manifest\.webmanifest$/, (req, _, next) => {
+    req.url = req.originalUrl.slice(!DEPLOY_URL.startsWith('http') ? DEPLOY_URL.length : 0).replace(/[;?&].*$/, '');
+    next();
+  });
+
   server.get(/^(?!\/assets\/).*\/favicon.ico.*/, (req, _, next) => {
     req.url = req.originalUrl.replace(/[;?&].*$/, '').replace(/^.*\//g, '/');
     next();

@@ -1,5 +1,9 @@
 import { createAction } from '@ngrx/store';
 
+import {
+  CustomFieldDefinitionEntities,
+  CustomFieldDefinitions,
+} from 'ish-core/models/custom-field-definition/custom-field-definition.model';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
@@ -7,10 +11,22 @@ export const loadServerConfig = createAction('[Configuration Internal] Get the I
 
 export const loadServerConfigSuccess = createAction(
   '[Configuration API] Get the ICM configuration Success',
-  payload<{ config: ServerConfig }>()
+  payload<{ config: ServerConfig; definitions?: CustomFieldDefinitions }>()
 );
 
 export const loadServerConfigFail = createAction('[Configuration API] Get the ICM configuration Fail', httpError());
+
+export const loadCustomFieldTranslationsSuccess = createAction(
+  '[Configuration API] Get the custom field translations Success',
+  payload<{
+    definitionEntities: CustomFieldDefinitionEntities;
+  }>()
+);
+
+export const loadCustomFieldTranslationsFail = createAction(
+  '[CMS API] Get the custom field translations Success',
+  httpError()
+);
 
 export const loadExtraConfigSuccess = createAction(
   '[CMS API] Get extra ICM configuration from CMS Success',

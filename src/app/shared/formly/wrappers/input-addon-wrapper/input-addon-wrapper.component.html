@@ -1,9 +1,5 @@
 <div class="align-items-start flex-nowrap" [ngClass]="{ 'input-group': props.addonLeft || props.addonRight }">
-  <div *ngIf="props.addonLeft" class="input-group-prepend">
-    <span class="input-group-text">{{ addonLeftText | async | translate }}</span>
-  </div>
+  <span *ngIf="props.addonLeft" class="input-group-text">{{ addonLeftText | async | translate }}</span>
   <div class="flex-grow-1"><ng-container #fieldComponent /></div>
-  <div *ngIf="props.addonRight" class="input-group-append">
-    <span class="input-group-text">{{ addonRightText | async | translate }}</span>
-  </div>
+  <span *ngIf="props.addonRight" class="input-group-text">{{ addonRightText | async | translate }}</span>
 </div>

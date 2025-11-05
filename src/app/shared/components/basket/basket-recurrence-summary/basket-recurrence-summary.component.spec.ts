@@ -44,9 +44,9 @@ describe('Basket Recurrence Summary Component', () => {
         <h3 class="h5">order.recurrence.heading</h3>
         <ish-order-recurrence
           labelcssclass="col-6"
-          valuecssclass="col-6 text-right"
+          valuecssclass="col-6 text-end"
           ng-reflect-label-css-class="col-6"
-          ng-reflect-value-css-class="col-6 text-right"
+          ng-reflect-value-css-class="col-6 text-end"
         ></ish-order-recurrence>
       </div>
     `);

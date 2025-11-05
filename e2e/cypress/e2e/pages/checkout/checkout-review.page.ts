@@ -9,7 +9,15 @@ export class CheckoutReviewPage {
   }
 
   get costCenterInformation() {
-    return cy.get('div[data-testing-id="buyer-cost-center"');
+    return cy.get('div[data-testing-id="additional-info-cost-center"');
+  }
+
+  get basketCustomFields() {
+    return cy.get('[data-testing-id="additional-information-basket-custom-fields"]');
+  }
+
+  getLineItemCustomFields(sku: string) {
+    return cy.get(`[data-testing-id="line-item-information-edit_${sku}"]`);
   }
 
   submitOrder() {

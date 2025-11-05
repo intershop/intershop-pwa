@@ -79,7 +79,7 @@ describe('Recurring Order Mapper', () => {
       expect(recurringOrder.id).toEqual('TEwK8ITr4AQAAAGRGCQADlo0');
       expect(recurringOrder.statusCode).toEqual('APPROVED');
       expect(recurringOrder.expired).toBeFalsy();
-      expect(recurringOrder.costCenterId).toEqual('testCostCenterID');
+      expect(recurringOrder.costCenter).toEqual('testCostCenterID');
       expect(recurringOrder.costCenterName).toEqual('Test Cost Center Name');
       expect(recurringOrder.user.companyName).toEqual('Oil Corp');
       expect(recurringOrder.recurrence).toEqual({

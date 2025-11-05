@@ -5,7 +5,7 @@
     <ish-basket-error-message [error]="error" />
     <ish-basket-validation-results />
 
-    <div *ngIf="redirectStatus" role="alert" class="alert alert-danger">
+    <div *ngIf="redirectStatus$ | async as redirectStatus" role="alert" class="alert alert-danger">
       {{ 'checkout.payment.sorry_message.text' | translate }}
       <ng-container *ngIf="redirectStatus === 'cancel'">{{
         'checkout.payment.canceled.text' | translate
@@ -17,6 +17,12 @@
   <!-- Payment method selection -->
   <div class="col-md-12 col-lg-8">
     <h2 class="h3">{{ 'checkout.payment.method.select.heading' | translate }}</h2>
+
+    <ish-payment-paypal
+      *ngIf="'preferences.PayPalCheckoutPreferences' | ishServerSetting"
+      [pageType]="'checkout'"
+      (selectPaypalPaymentMethod)="setBasketPayment($event)"
+    />
 
     <!-- display all payment methods -->
     <ng-container *ngIf="basket.totals?.total?.net > 0 || !basket.payment; else zeroTotalInfo">
@@ -70,7 +76,7 @@
                     <!-- Delete payment method button -->
                     <button
                       type="button"
-                      class="btn btn-link btn-link-action float-right"
+                      class="btn btn-link btn-link-action float-end"
                       (click)="deleteBasketPayment(paymentInstrument)"
                       data-testing-id="delete-payment-link"
                       [attr.aria-label]="
@@ -115,7 +121,7 @@
                 </div>
 
                 <!-- Screen reader announcement for form open/close -->
-                <div class="sr-only" aria-live="polite" role="text">
+                <div class="visually-hidden" aria-live="polite" role="text">
                   {{
                     (formIsOpen(i)
                       ? 'checkout.payment.parameter_form.open.announcement'
@@ -126,7 +132,7 @@
                 <!-- Payment instrument form -->
                 <div [ngbCollapse]="!formIsOpen(i)" [id]="'payment-form-' + paymentMethod.id" [hidden]="!formIsOpen(i)">
                   <fieldset class="mb-0">
-                    <legend class="sr-only">
+                    <legend class="visually-hidden">
                       {{
                         'checkout.payment.addPayment.form.legend'
                           | translate : { paymentMethodName: paymentMethod.displayName }
@@ -216,15 +222,17 @@
     <div class="cost-summary">
       <ish-basket-cost-summary [totals]="basket.totals" />
 
-      <button
-        class="btn btn-lg btn-block btn-primary"
-        id="checkoutBtn"
-        type="button"
-        [disabled]="nextDisabled"
-        (click)="goToNextStep()"
-      >
-        {{ 'checkout.button.label' | translate }}
-      </button>
+      <div class="d-grid">
+        <button
+          class="btn btn-lg btn-primary"
+          id="checkoutBtn"
+          type="button"
+          [disabled]="nextDisabled"
+          (click)="goToNextStep()"
+        >
+          {{ 'checkout.button.label' | translate }}
+        </button>
+      </div>
     </div>
     <!-- Privacy policy link -->
     <span

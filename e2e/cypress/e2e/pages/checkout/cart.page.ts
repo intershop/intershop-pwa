@@ -97,8 +97,10 @@ export class CartPage {
 
   fillOutRecurringOrderForm(repetitions: string) {
     cy.get('[data-testing-id="enable-recurring-order"]').click();
+    waitLoadingEnd();
     cy.get('[data-testing-id="radio-order.recurrence.form.ending.repetitions.label"]').click();
     cy.get('[data-testing-id="repetitions"]').clear().type(repetitions);
+    waitLoadingEnd();
   }
 
   lineItem(idx: number) {
@@ -111,11 +113,10 @@ export class CartPage {
             .eq(idx)
             .click()
             .wait(1000)
-            .clear()
-            .wait(1000)
+            .type('{selectAll}')
             .type(num.toString())
-            .wait(1000)
-            .blur(),
+            .wait(1000),
+
         get: () =>
           cy
             .get(this.tag)
@@ -165,5 +166,39 @@ export class CartPage {
     return {
       message: cy.get('#toast-container').find('.toast-message'),
     };
+  }
+
+  get basketCustomFields() {
+    return cy.get('[data-testing-id="basket-custom-fields"]');
+  }
+
+  get basketCustomFieldsToggleLink() {
+    return cy.get('[data-testing-id="basket-custom-fields-toggle-link"]');
+  }
+
+  get basketCustomFieldsForm() {
+    return cy.get('#basket-custom-fields-input form');
+  }
+
+  submitBasketCustomFieldValue(value: string) {
+    this.basketCustomFieldsForm.find('input').first().clear().type(value);
+    return this.basketCustomFieldsForm.find('button[type="submit"]').click();
+  }
+
+  getLineItemCustomFields(sku: string) {
+    return cy.get(`[data-testing-id="line-item-information-edit_${sku}"]`);
+  }
+
+  get lineItemCustomFieldsToggleLinks() {
+    return cy.get('[data-testing-id="line-item-custom-fields-toggle-link"]');
+  }
+
+  get lastLineItemCustomFieldsForm() {
+    return cy.get('ish-line-item-information-edit form').last();
+  }
+
+  submitLastLineItemCustomFieldValue(value: string) {
+    this.lastLineItemCustomFieldsForm.find('input').last().clear().type(value);
+    return this.lastLineItemCustomFieldsForm.find('button[type="submit"]').click();
   }
 }

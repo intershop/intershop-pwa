@@ -42,6 +42,7 @@ import {
   setBasketAttribute,
   setBasketAttributeFail,
   setBasketAttributeSuccess,
+  setBasketCustomFields,
   setBasketDesiredDeliveryDate,
   setBasketDesiredDeliveryDateFail,
   setBasketDesiredDeliveryDateSuccess,
@@ -432,6 +433,21 @@ describe('Basket Effects', () => {
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
       expect(effects.addMessageToMerchant$).toBeObservable(expected$);
+    });
+  });
+
+  describe('setBasketCustomFields$', () => {
+    it('should trigger the updateBasket action if called', () => {
+      const customFields = { customField1: 'value1', customField2: 'value2' };
+      const action = setBasketCustomFields({ customFields });
+      const completion = updateBasket({
+        update: {
+          customFields: [],
+        },
+      });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+      expect(effects.setBasketCustomFields$).toBeObservable(expected$);
     });
   });
 

@@ -6,16 +6,23 @@ import { map } from 'rxjs/operators';
 
 import { ContentConfigurationParameterMapper } from 'ish-core/models/content-configuration-parameter/content-configuration-parameter.mapper';
 import { ContentPageletEntryPointData } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.interface';
+import {
+  CustomFieldDefinitionEntities,
+  CustomFieldDefinitions,
+} from 'ish-core/models/custom-field-definition/custom-field-definition.model';
 import { ServerConfigMapper } from 'ish-core/models/server-config/server-config.mapper';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
 import { DomService } from 'ish-core/utils/dom/dom.service';
+import { Translations } from 'ish-core/utils/translate/translations.type';
 
 @Injectable({ providedIn: 'root' })
 export class ConfigurationService {
   constructor(
     private apiService: ApiService,
     private domService: DomService,
+    private localizationService: LocalizationsService,
     private contentConfigurationParameterMapper: ContentConfigurationParameterMapper,
     @Inject(DOCUMENT) private document: Document
   ) {}
@@ -30,7 +37,7 @@ export class ConfigurationService {
    *
    * @returns           The configuration object.
    */
-  getServerConfiguration(): Observable<ServerConfig> {
+  getServerConfiguration(): Observable<[ServerConfig, CustomFieldDefinitions]> {
     return this.apiService
       .get(`configurations`, {
         headers: this.configHeaders,
@@ -38,6 +45,19 @@ export class ConfigurationService {
         sendCurrency: false,
       })
       .pipe(map(ServerConfigMapper.fromData));
+  }
+
+  /**
+   * Retrieves and transforms custom field translations for a specified language.
+   *
+   * @param lang - The language code for which to fetch translations.
+   * @param existingEntities - The existing custom field definition entities to be transformed.
+   * @returns An Observable emitting the transformed custom field definitions with applied translations.
+   */
+  getCustomFieldsTranslations(lang: string, existingEntities: CustomFieldDefinitionEntities) {
+    return this.localizationService
+      .getServerTranslations(lang, 'customfield.')
+      .pipe(map(translations => this.updateCustomDefinitionTranslations(translations, existingEntities)));
   }
 
   /**
@@ -118,5 +138,30 @@ export class ConfigurationService {
       const style = this.domService.createElement<HTMLStyleElement>('style', this.document.head);
       this.domService.createTextNode(config.CSSStyling.toString(), style);
     }
+  }
+
+  private updateCustomDefinitionTranslations(
+    translations: Translations,
+    existingEntities: CustomFieldDefinitionEntities
+  ): CustomFieldDefinitionEntities {
+    const updatedEntities = { ...existingEntities };
+
+    Object.entries(translations).forEach(([fullKey, value]) => {
+      // Split key into field and property, e.g. 'commissionNumber.description'
+      const match = fullKey.match(/^([^.:]+)[.:](.+)$/);
+      if (!match) {
+        return;
+      }
+      const [, fieldKey, property] = match;
+
+      if (updatedEntities[fieldKey]) {
+        updatedEntities[fieldKey] = {
+          ...updatedEntities[fieldKey],
+          [property]: value,
+        };
+      }
+    });
+
+    return updatedEntities;
   }
 }

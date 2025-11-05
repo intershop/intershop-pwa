@@ -50,6 +50,7 @@ import { CMSNavigationPageComponent } from './cms/components/cms-navigation-page
 import { CMSProductListCategoryComponent } from './cms/components/cms-product-list-category/cms-product-list-category.component';
 import { CMSProductListFilterComponent } from './cms/components/cms-product-list-filter/cms-product-list-filter.component';
 import { CMSProductListManualComponent } from './cms/components/cms-product-list-manual/cms-product-list-manual.component';
+import { CMSProductListRecommendationsComponent } from './cms/components/cms-product-list-recommendations/cms-product-list-recommendations.component';
 import { CMSProductListRestComponent } from './cms/components/cms-product-list-rest/cms-product-list-rest.component';
 import { CMSStandardPageComponent } from './cms/components/cms-standard-page/cms-standard-page.component';
 import { CMSStaticPageComponent } from './cms/components/cms-static-page/cms-static-page.component';
@@ -66,7 +67,9 @@ import { BasketAddressSummaryComponent } from './components/basket/basket-addres
 import { BasketApprovalInfoComponent } from './components/basket/basket-approval-info/basket-approval-info.component';
 import { BasketBuyerComponent } from './components/basket/basket-buyer/basket-buyer.component';
 import { BasketCostCenterSelectionComponent } from './components/basket/basket-cost-center-selection/basket-cost-center-selection.component';
+import { BasketCostCenterViewComponent } from './components/basket/basket-cost-center-view/basket-cost-center-view.component';
 import { BasketCostSummaryComponent } from './components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketCustomFieldsComponent } from './components/basket/basket-custom-fields/basket-custom-fields.component';
 import { BasketDesiredDeliveryDateComponent } from './components/basket/basket-desired-delivery-date/basket-desired-delivery-date.component';
 import { BasketErrorMessageComponent } from './components/basket/basket-error-message/basket-error-message.component';
 import { BasketInfoComponent } from './components/basket/basket-info/basket-info.component';
@@ -84,8 +87,11 @@ import { BasketValidationProductsComponent } from './components/basket/basket-va
 import { BasketValidationResultsComponent } from './components/basket/basket-validation-results/basket-validation-results.component';
 import { ClearBasketComponent } from './components/basket/clear-basket/clear-basket.component';
 import { MiniBasketContentComponent } from './components/basket/mini-basket-content/mini-basket-content.component';
+import { BasketCustomFieldsViewComponent } from './components/checkout/basket-custom-fields-view/basket-custom-fields-view.component';
 import { BasketInvoiceAddressWidgetComponent } from './components/checkout/basket-invoice-address-widget/basket-invoice-address-widget.component';
 import { BasketShippingAddressWidgetComponent } from './components/checkout/basket-shipping-address-widget/basket-shipping-address-widget.component';
+import { PaymentPaypalMessagesComponent } from './components/checkout/payment-paypal-messages/payment-paypal-messages.component';
+import { PaymentPaypalComponent } from './components/checkout/payment-paypal/payment-paypal.component';
 import { AccordionItemComponent } from './components/common/accordion-item/accordion-item.component';
 import { AccordionComponent } from './components/common/accordion/accordion.component';
 import { BreadcrumbComponent } from './components/common/breadcrumb/breadcrumb.component';
@@ -99,6 +105,8 @@ import { ModalDialogComponent } from './components/common/modal-dialog/modal-dia
 import { PagingComponent } from './components/common/paging/paging.component';
 import { SkipContentLinkComponent } from './components/common/skip-content-link/skip-content-link.component';
 import { SuccessMessageComponent } from './components/common/success-message/success-message.component';
+import { CustomFieldsFormlyComponent } from './components/custom-fields/custom-fields-formly/custom-fields-formly.component';
+import { CustomFieldsViewComponent } from './components/custom-fields/custom-fields-view/custom-fields-view.component';
 import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';
 import { FilterCollapsibleComponent } from './components/filter/filter-collapsible/filter-collapsible.component';
 import { FilterDropdownComponent } from './components/filter/filter-dropdown/filter-dropdown.component';
@@ -108,8 +116,10 @@ import { FilterNavigationSidebarComponent } from './components/filter/filter-nav
 import { FilterNavigationComponent } from './components/filter/filter-navigation/filter-navigation.component';
 import { FilterSwatchImagesComponent } from './components/filter/filter-swatch-images/filter-swatch-images.component';
 import { FilterTextComponent } from './components/filter/filter-text/filter-text.component';
+import { LineItemCustomFieldsComponent } from './components/line-item/line-item-custom-fields/line-item-custom-fields.component';
 import { LineItemEditDialogComponent } from './components/line-item/line-item-edit-dialog/line-item-edit-dialog.component';
 import { LineItemEditComponent } from './components/line-item/line-item-edit/line-item-edit.component';
+import { LineItemInformationEditComponent } from './components/line-item/line-item-information-edit/line-item-information-edit.component';
 import { LineItemListElementComponent } from './components/line-item/line-item-list-element/line-item-list-element.component';
 import { LineItemListComponent } from './components/line-item/line-item-list/line-item-list.component';
 import { LineItemWarrantyComponent } from './components/line-item/line-item-warranty/line-item-warranty.component';
@@ -214,12 +224,12 @@ const declaredComponents = [
   CMSProductListCategoryComponent,
   CMSProductListFilterComponent,
   CMSProductListManualComponent,
+  CMSProductListRecommendationsComponent,
   CMSProductListRestComponent,
   CMSStandardPageComponent,
   CMSStaticPageComponent,
   CMSTextComponent,
   CMSVideoComponent,
-  ConfirmLeaveModalComponent,
   ContentSlotComponent,
   FilterCheckboxComponent,
   FilterCollapsibleComponent,
@@ -231,13 +241,12 @@ const declaredComponents = [
   FilterTextComponent,
   LineItemEditComponent,
   LineItemEditDialogComponent,
+  LineItemInformationEditComponent,
   LineItemListElementComponent,
   LineItemWarrantyComponent,
   LoginModalComponent,
   ProductChooseVariationComponent,
-  ProductIdComponent,
   ProductItemVariationsComponent,
-  ProductLabelComponent,
   ProductListComponent,
   ProductListPagingComponent,
   ProductListToolbarComponent,
@@ -249,10 +258,12 @@ const exportedComponents = [
   AccordionComponent,
   AccordionItemComponent,
   AddressComponent,
+  BasketCustomFieldsComponent,
   BasketAddressSummaryComponent,
   BasketApprovalInfoComponent,
   BasketBuyerComponent,
   BasketCostCenterSelectionComponent,
+  BasketCostCenterViewComponent,
   BasketCostSummaryComponent,
   BasketDesiredDeliveryDateComponent,
   BasketErrorMessageComponent,
@@ -292,6 +303,8 @@ const exportedComponents = [
   OrderListComponent,
   OrderRecurrenceComponent,
   OrderWidgetComponent,
+  PaymentPaypalComponent,
+  PaymentPaypalMessagesComponent,
   PagingComponent,
   ProductAddToBasketComponent,
   ProductAttachmentsComponent,
@@ -316,6 +329,10 @@ const exportedComponents = [
   ProductVariationSelectSwatchComponent,
   ProductWarrantyComponent,
   ProductWarrantyDetailsComponent,
+  CustomFieldsFormlyComponent,
+  LineItemCustomFieldsComponent,
+  CustomFieldsViewComponent,
+  BasketCustomFieldsViewComponent,
   PromotionDetailsComponent,
   PromotionRemoveComponent,
   SkipContentLinkComponent,

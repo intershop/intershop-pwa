@@ -10,9 +10,7 @@
           {{ quote.displayName || quote.number }}
         </ng-template>
       </h2>
-      <button type="button" class="close" [title]="'dialog.close.text' | translate" (click)="hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <button type="button" class="btn-close" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
     </div>
 
     <div class="modal-body">
@@ -27,7 +25,7 @@
     </div>
 
     <div class="modal-footer">
-      <a class="btn btn-link mr-auto" [routerLink]="['/account/quotes']">{{
+      <a class="btn btn-link me-auto" [routerLink]="['/account/quotes']">{{
         'account.quotes.widget.view_all_quotes.link' | translate
       }}</a>
       <ish-quote-interactions />

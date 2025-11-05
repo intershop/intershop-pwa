@@ -1,16 +1,18 @@
 import { getCurrencySymbol } from '@angular/common';
-import { Injectable } from '@angular/core';
+import { ApplicationRef, Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { combineLatest, merge, noop } from 'rxjs';
+import { Observable, combineLatest, merge, noop } from 'rxjs';
 import { filter, map, sample, shareReplay, startWith, take, withLatestFrom } from 'rxjs/operators';
 
+import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import {
   getAvailableLocales,
   getCurrentCurrency,
   getCurrentLocale,
   getDeviceType,
   getICMBaseURL,
+  getPaypalConfig,
   getPipelineEndpoint,
   getRestEndpoint,
 } from 'ish-core/store/core/configuration';
@@ -25,12 +27,14 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {
-  constructor(private store: Store, private router: Router) {
+  constructor(private store: Store, private router: Router, private appRef: ApplicationRef) {
     this.routingInProgress$.subscribe(noop);
 
     store.pipe(select(getICMBaseURL)).subscribe(icmBaseUrl => (this.icmBaseUrl = icmBaseUrl));
   }
   icmBaseUrl: string;
+
+  appBecameStable$ = this.appRef.isStable.pipe(whenTruthy(), take(1));
 
   headerType$ = this.store.pipe(select(getHeaderType));
   deviceType$ = this.store.pipe(select(getDeviceType));
@@ -46,6 +50,8 @@ export class AppFacade {
 
   getRestEndpoint$ = this.store.pipe(select(getRestEndpoint));
   getPipelineEndpoint$ = this.store.pipe(select(getPipelineEndpoint));
+
+  payPalConfig$: Observable<PaypalConfig> = this.store.pipe(select(getPaypalConfig));
 
   getRestEndpointWithContext$ = combineLatest([
     this.store.pipe(select(getRestEndpoint)),

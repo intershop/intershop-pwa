@@ -1,5 +1,5 @@
 <!-- Print Button -->
-<div *ngIf="recurringOrder$ | async" class="float-right">
+<div *ngIf="recurringOrder$ | async" class="float-end">
   <ul class="share-tools">
     <li>
       <a
@@ -48,7 +48,7 @@
         <dl class="row dl-horizontal dl-separator">
           <dt class="col-6">
             <span aria-hidden="true">{{ 'account.recurring_order.details.order_number.label' | translate }}</span>
-            <span class="sr-only">{{ 'account.recurring_order.details.order_number.title' | translate }}</span>
+            <span class="visually-hidden">{{ 'account.recurring_order.details.order_number.title' | translate }}</span>
           </dt>
           <dd class="col-6" data-testing-id="rec-order-number">{{ recurringOrder.documentNo }}</dd>
         </dl>
@@ -158,10 +158,8 @@
         class="infobox-wrapper col-md-6"
         cssClass="pb-3"
       >
-        <dl *ngIf="recurringOrder.costCenterId" class="row dl-horizontal dl-separator">
-          <dt class="col-5">{{ 'account.recurring_order.details.cost_center.label' | translate }}</dt>
-          <dd class="col-7">{{ recurringOrder.costCenterId }} {{ recurringOrder.costCenterName }}</dd>
-        </dl>
+        <ish-basket-cost-center-view [data]="recurringOrder" />
+        <ish-basket-custom-fields-view [data]="recurringOrder" />
         <ish-order-recurrence [recurrence]="recurringOrder.recurrence" labelCssClass="col-5" valueCssClass="col-7" />
       </ish-info-box>
     </div>

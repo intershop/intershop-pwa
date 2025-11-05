@@ -74,7 +74,7 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
         {
           key: 'period',
           type: 'ish-select-field',
-          className: 'col-6 pl-0',
+          className: 'col-6 ps-0',
           props: {
             options: this.periodOptions,
             label: 'order.recurrence.form.period.label',
@@ -111,18 +111,18 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
         {
           key: 'ending',
           type: 'ish-radio-field',
-          className: 'col-12 col-md-3',
+          className: 'col-12 col-md-3 col-lg-4 pe-md-0',
           props: {
             label: 'order.recurrence.form.ending.date.label',
             value: 'date',
-            labelClass: 'col-md-12 pl-0',
+            labelClass: 'col-md-12 ps-0 d-inline',
             fieldClass: 'col-md-12',
           },
         },
         {
           key: 'endDate',
           type: 'ish-date-picker-field',
-          className: 'col-12 col-md-9',
+          className: 'col-12 col-md-9 col-lg-8',
           props: {
             placeholder: 'order.recurrence.form.date.placeholder',
             labelClass: 'col-md-12',
@@ -147,18 +147,18 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
         {
           key: 'ending',
           type: 'ish-radio-field',
-          className: 'col-12 col-md-3 col-lg-5 mr-lg-0',
+          className: 'col-12 col-md-3 col-lg-5 me-lg-0',
           props: {
             label: 'order.recurrence.form.ending.repetitions.label',
             value: 'repetitions',
-            labelClass: 'col-md-12 pl-0',
+            labelClass: 'col-md-12 ps-0 d-inline',
             fieldClass: 'col-md-12',
           },
         },
         {
           key: 'repetitions',
           type: 'ish-number-field',
-          className: 'col-12 col-md-4 col-lg-7 pl-lg-0',
+          className: 'col-12 col-md-4 col-lg-7 ps-lg-0',
           props: {
             postWrappers: [{ wrapper: 'information', index: -1 }],
             labelClass: 'col-md-12',

@@ -1,7 +1,7 @@
 {
   "name": "intershop-pwa",
   "description": "Intershop Progressive Web App",
-  "version": "8.0.0",
+  "version": "9.0.0",
   "license": "Intershop Standard Software End User License Agreement Intershop 7",
   "keywords": [
     "intershop"
@@ -73,7 +73,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@googlemaps/js-api-loader": "1.16.8",
-    "@ng-bootstrap/ng-bootstrap": "^11.0.1",
+    "@ng-bootstrap/ng-bootstrap": "^15.1.2",
     "@ng-select/ng-select": "^11.2.0",
     "@ngrx/effects": "^16.3.0",
     "@ngrx/entity": "^16.3.0",
@@ -83,10 +83,11 @@
     "@nguniversal/express-engine": "^16.2.0",
     "@ngx-formly/core": "6.2.2",
     "@ngx-translate/core": "^15.0.0",
+    "@popperjs/core": "^2.11.8",
     "@rx-angular/state": "^16.3.0",
     "angular-oauth2-oidc": "^15.0.1",
     "angulartics2": "^12.2.1",
-    "bootstrap": "^4.6.2",
+    "bootstrap": "^5.3.8",
     "date-fns": "^2.30.0",
     "express": "^4.21.2",
     "express-http-proxy": "^2.1.2",
@@ -189,12 +190,6 @@
     "xliff": "^6.2.2"
   },
   "overrides": {
-    "@ng-bootstrap/ng-bootstrap": {
-      "@angular/common": "^13.0.0 || ^14.0.0 || ^15.0.0 || ^16.0.0",
-      "@angular/core": "^13.0.0 || ^14.0.0 || ^15.0.0 || ^16.0.0",
-      "@angular/forms": "^13.0.0 || ^14.0.0 || ^15.0.0 || ^16.0.0",
-      "@angular/localize": "^13.0.0 || ^14.0.0 || ^15.0.0 || ^16.0.0"
-    },
     "uuid": "^8.3.2",
     "semver": "~7.5.4"
   },

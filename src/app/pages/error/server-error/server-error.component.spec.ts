@@ -52,7 +52,7 @@ describe('Server Error Component', () => {
     component.error = makeHttpError({ status: 500 });
     component.type = 'Error';
     fixture.detectChanges();
-    const a = element.querySelector('p.text-muted');
+    const a = element.querySelector('p.text-body-secondary');
     expect(a).toBeTruthy();
     expect(a.textContent).toContain('Error');
   });
@@ -61,13 +61,13 @@ describe('Server Error Component', () => {
     component.error = makeHttpError({ status: 0 });
     component.type = 'Error';
     fixture.detectChanges();
-    expect(element.querySelector('p.text-muted').textContent).toContain('Server timeout');
+    expect(element.querySelector('p.text-body-secondary').textContent).toContain('Server timeout');
   });
 
   it('should render a 5xx error content on template', () => {
     component.error = makeHttpError({ status: 500 });
     component.type = 'Error';
     fixture.detectChanges();
-    expect(element.querySelector('p.text-muted').textContent).toContain('Error code 500');
+    expect(element.querySelector('p.text-body-secondary').textContent).toContain('Error code 500');
   });
 });

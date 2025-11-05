@@ -3,7 +3,7 @@
 <a
   #skipContentLink
   data-nosnippet
-  [href]="skipToElementId || generatedElementAfterListingId"
+  [href]="'#' + (skipToElementId || generatedElementAfterListingId)"
   class="d-none d-lg-block skip-content-link"
   >{{ linkText | translate }}</a
 >
@@ -14,7 +14,7 @@
 <span
   *ngIf="generatedElementAfterListingId"
   [id]="generatedElementAfterListingId"
-  class="sr-only d-none d-lg-block"
+  class="visually-hidden d-none d-lg-block"
   tabindex="-1"
   >{{ 'common.skip_listing.announcement.default' | translate }}</span
 >

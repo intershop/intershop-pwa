@@ -5,7 +5,7 @@
 >
   <div class="loading-container mt-auto">
     <div *ngIf="(loading$ | async) !== true; else loading">
-      <div class="row align-items-end no-gutters">
+      <div class="row align-items-end g-0">
         <div class="col">
           <div class="infobox-count" data-testing-id="responded-counter">
             {{ respondedQuotes }}
@@ -14,7 +14,7 @@
             {{ 'account.quotes.widget.responded.label' | translate }}
           </div>
         </div>
-        <div class="col text-right">
+        <div class="col text-end">
           <div class="infobox-count-large" data-testing-id="submitted-counter">
             {{ submittedQuoteRequests }}
           </div>
