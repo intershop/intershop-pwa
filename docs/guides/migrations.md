@@ -40,7 +40,7 @@ With this configuration, shop users can now add/edit additional information at t
 The custom field information is displayed during the checkout and on the order details page.
 
 The CMS _Product List (REST)_ rendering component was enhanced to support predefined endpoints for ICM (`icm://`) and SPARQUE (`sparque://`).
-This allows content managers to configure product lists with relative endpoints to the PWAs configured ICM or SPARQUE backends, e.g. `icm://products?searchTerm=notebook&attrs=sku&amount=6`, instead of using absolute REST endpoints to a fixed ICM backend URL.
+This allows content managers to configure product lists with relative endpoints to the PWA's configured ICM or SPARQUE backends, e.g., `icm://products?searchTerm=notebook&attrs=sku&amount=6`, instead of using absolute REST endpoints to a fixed ICM backend URL.
 
 The Copilot integration was updated to work with a newer version of the Intershop Copilot for Buyers that returns different tool calls.
 When migrating a PWA project that uses the Copilot integration, either use a new compatible configuration or skip this commit and continue with the previous implementation.

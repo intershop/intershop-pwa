@@ -7,6 +7,54 @@ kb_everyone
 
 # Changelog
 
+## [9.0.0](https://github.com/intershop/intershop-pwa/releases/tag/9.0.0) (2025-11-05)
+
+> [!NOTE]
+> Intershop PWA 9.0.0 was developed and tested with Intershop Commerce Management (ICM) version ICM 13.2.0.
+> It will work with all versions from ICM 13.2.0 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> _PWA 9.0.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
+>
+> The PWA was developed and tested using Node.js version 22.17.1 LTS (including npm 10.9.2), which is the recommended version.
+>
+> Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.9.3 for PWA 9.0.0 deployments.
+
+### Features
+
+- PayPal support via Intershop PayPal Complete Payments Service Connector (#1903) ([467905f](https://github.com/intershop/intershop-pwa/commit/467905f))
+- Bootstrap 5 migration (#1868) ([8c827b6](https://github.com/intershop/intershop-pwa/commit/8c827b6))
+- Bootstrap 5 update (bootstrap 5.3.8 + ng-bootstrap 15.1.2 + popper 2.11.8) (#1868) ([8ebcb6f](https://github.com/intershop/intershop-pwa/commit/8ebcb6f))
+- predefined endpoints for CMS Product List (REST) component (#1495) ([50feafe](https://github.com/intershop/intershop-pwa/commit/50feafe))
+- custom fields on basket/orders and line-items (#1561) ([6f9c040](https://github.com/intershop/intershop-pwa/commit/6f9c040))
+- **Copilot:** refactor and extend Copilot tools (#1943) ([493c768](https://github.com/intershop/intershop-pwa/commit/493c768))
+- **search:** switch order of "sorting" and "grid/list view toggle icons" (#1912) ([cf9bf1a](https://github.com/intershop/intershop-pwa/commit/cf9bf1a))
+- **search:** add text box "Don't feel like looking any further?" (#1912) ([5f0cd71](https://github.com/intershop/intershop-pwa/commit/5f0cd71))
+- **search:** add headline to the search input and move bullet points right to the search input (#1912) ([c4052c2](https://github.com/intershop/intershop-pwa/commit/c4052c2))
+- **search:** remove item count from headline (#1912) ([fff977e](https://github.com/intershop/intershop-pwa/commit/fff977e))
+- **search:** shorten search breadcrumb (#1912) ([0208273](https://github.com/intershop/intershop-pwa/commit/0208273))
+- **Sparque:** introduction of CMS component for recommendations functionality (#1899) ([8c29577](https://github.com/intershop/intershop-pwa/commit/8c29577))
+- **Sparque:** introduction of SPARQUE recommendations functionality (#1899) ([08c4cb4](https://github.com/intershop/intershop-pwa/commit/08c4cb4))
+- **Sparque:** introduction of personalization and SPARQUE specific feature flags (#1899) ([edc2a61](https://github.com/intershop/intershop-pwa/commit/edc2a61))
+- **SSR:** handle static files with relative `DEPLOY_URL` path (#1913) ([3bfa0d3](https://github.com/intershop/intershop-pwa/commit/3bfa0d3))
+- **SSR:** allow creation of heap dumps by signaling `USR2` to SSR processes (#1919) ([27a4799](https://github.com/intershop/intershop-pwa/commit/27a4799))
+
+### Bug Fixes
+
+- wrong `cartProductIds` http parameter settings for basket recommendations (#1944) ([a0ee155](https://github.com/intershop/intershop-pwa/commit/a0ee155))
+- align wrapped label with input ([78ced73](https://github.com/intershop/intershop-pwa/commit/78ced73))
+- open quote dialog after login (#1940) ([b8ed6cb](https://github.com/intershop/intershop-pwa/commit/b8ed6cb))
+- allow the usage of common tracking parameters in search pages (#1905, #1918) ([4df3758](https://github.com/intershop/intershop-pwa/commit/4df3758))
+- prevent captcha timer from blocking app stability (#1938) ([351e8d9](https://github.com/intershop/intershop-pwa/commit/351e8d9))
+- prepend '#' to href for skip content link (#1935) ([dc8f592](https://github.com/intershop/intershop-pwa/commit/dc8f592))
+- refresh payment express buttons after basket recurrence changed (#1934) ([67030b9](https://github.com/intershop/intershop-pwa/commit/67030b9))
+
+### BREAKING CHANGES
+
+- With the Intershop PWA 9.0.0 release, the SPARQUE configuration has been refined to allow for more granular control over individual SPARQUE features. SPARQUE features need to be explicitly enabled now via the new `features` configuration array in the SPARQUE configuration (see [Migrations / From 8.0.0 to 9.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-800-to-900) for more details).
+- The Copilot integration was updated to work with a newer version of the Intershop Copilot for Buyers that returns different tool calls. For this reason a new compatible Copilot configuration has to be used.
+- The styling of the Intershop PWA was migrated to Bootstrap 5.3.8 (see [Migrations / From 8.0.0 to 9.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-800-to-900) for more details). Detailed information on the individual migration steps and breaking changes can be found in the official [Bootstrap 5 Migration Guide](https://getbootstrap.com/docs/5.3/migration/).
+
 ## [8.0.0](https://github.com/intershop/intershop-pwa/releases/tag/8.0.0) (2025-09-23)
 
 > [!NOTE]
