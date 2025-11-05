@@ -53,7 +53,7 @@ describe('Sparque Product Mapper', () => {
                 "effectiveUrl": "baseUrl/S/123.jpg",
               },
             ],
-            "longDescription": undefined,
+            "longDescription": "Short description",
             "manufacturer": "BRAND",
             "minOrderQuantity": 1,
             "name": "Product 1",

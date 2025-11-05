@@ -46,7 +46,7 @@ export class SparqueProductMapper {
       type: 'Product',
       images: this.sparqueImageMapper.fromImages(data.images),
       defaultCategoryId: data.defaultCategoryId,
-      longDescription: data.longDescription,
+      longDescription: data.longDescription || data.shortDescription,
       // TODO map quantity value in case sparque wrapper API provides it
       minOrderQuantity: 1,
       stepQuantity: 1,
