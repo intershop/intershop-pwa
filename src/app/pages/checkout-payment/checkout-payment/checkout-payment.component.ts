@@ -13,7 +13,8 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { filter, take } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -58,7 +59,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
   // visible-for-testing
   formSubmitted = false;
 
-  redirectStatus: string;
+  redirectStatus$ = new BehaviorSubject<string>(undefined);
 
   private openFormIndex = -1; // index of the open parameter form
 
@@ -83,23 +84,11 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(id => {
-        this.redirectStatus = undefined;
-        this.updatePaymentMethod.emit(id);
+        this.setBasketPayment(id);
       });
 
     // if page is shown after cancelled/faulty redirect determine error message variable
-    this.route.queryParamMap.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(params => {
-      const redirect = params.get('redirect');
-      this.redirectStatus = redirect;
-    });
-  }
-
-  get parameterForm(): FormGroup {
-    return this.paymentForm.get('parameters') as FormGroup;
-  }
-
-  private getBasketPayment(): string {
-    return this.basket?.payment ? this.basket.payment.paymentInstrument.id : '';
+    this.redirectStatus$.next(this.route.snapshot.queryParamMap.get('redirect'));
   }
 
   ngOnChanges(c: SimpleChanges) {
@@ -109,6 +98,10 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
       // copy objects for runtime checks because formly modifies them, TODO: refactor
       this.filteredPaymentMethods = this.paymentMethods?.map(x => JSON.parse(JSON.stringify(x)));
     }
+  }
+
+  get parameterForm(): FormGroup {
+    return this.paymentForm.get('parameters') as FormGroup;
   }
 
   /**
@@ -177,6 +170,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     };
 
     this.createPaymentInstrument.emit({ paymentInstrument, saveForLater: body.saveAllowed });
+    this.redirectStatus$.next(undefined);
   }
 
   /**
@@ -207,6 +201,11 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     });
   }
 
+  setBasketPayment(paymentInstrumentId: string) {
+    this.redirectStatus$.next(undefined);
+    this.updatePaymentMethod.emit(paymentInstrumentId);
+  }
+
   /**
    * deletes a basket instrument and related payment
    */
@@ -230,6 +229,10 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
 
   get submitDisabled() {
     return this.paymentForm.invalid && this.formSubmitted;
+  }
+
+  private getBasketPayment(): string {
+    return this.basket?.payment ? this.basket.payment.paymentInstrument.id : '';
   }
 
   private isParameterFormOpen() {

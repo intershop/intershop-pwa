@@ -3,9 +3,11 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { PriceHelper } from 'ish-core/models/price/price.model';
+import { PaypalPageType } from 'ish-core/utils/paypal-config/paypal-config.service';
 
 /**
  * The Cost Summary Component displays a detailed summary of basket or order costs, respectively.
@@ -26,7 +28,21 @@ export class BasketCostSummaryComponent implements OnInit {
   taxTranslation$: Observable<string>;
   invert = PriceHelper.invert;
 
-  constructor(private accountFacade: AccountFacade) {}
+  showPaypalMessages$: Observable<{ type: PaypalPageType; preference: string }> =
+    this.checkoutFacade.checkoutStep$.pipe(
+      map(step =>
+        step === 3
+          ? {
+              type: 'checkout',
+              preference: 'preferences.PayPalCheckoutPreferences.PayLaterMessagingPaymentEnabled',
+            }
+          : step === undefined
+          ? { type: 'cart', preference: 'preferences.PayPalCheckoutPreferences.PayLaterMessagingCartEnabled' }
+          : undefined
+      )
+    );
+
+  constructor(private accountFacade: AccountFacade, private checkoutFacade: CheckoutFacade) {}
 
   ngOnInit() {
     this.taxTranslation$ = this.accountFacade.userPriceDisplayType$.pipe(

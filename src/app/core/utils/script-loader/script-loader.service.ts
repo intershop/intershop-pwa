@@ -2,6 +2,8 @@ import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { Observable, Observer } from 'rxjs';
 
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
+
 interface ScriptType {
   src: string;
   loaded: boolean;
@@ -20,6 +22,10 @@ interface ScriptLoaderOption {
    * optional value for crossOrigin attribute in script tag
    */
   crossorigin?: string;
+  /**
+   * optional script html element (data) attributes, e.g. <script src="..." data-foo="bar">
+   */
+  attributes?: Attribute<string>[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -68,6 +74,12 @@ export class ScriptLoaderService {
         if (options?.integrity) {
           scriptElement.integrity = options.integrity;
           scriptElement.crossOrigin = 'anonymous'; // required to be 'anonymous' if integrity is given
+        }
+
+        if (options?.attributes?.length) {
+          for (const attr of options.attributes) {
+            this.renderer.setAttribute(scriptElement, attr.name, attr.value);
+          }
         }
 
         scriptElement.onload = () => {

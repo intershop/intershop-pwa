@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
 import { formatISO } from 'date-fns';
-import { Subject, combineLatest, iif, merge } from 'rxjs';
+import { Observable, Subject, combineLatest, iif, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, sample, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
@@ -11,6 +11,7 @@ import { CustomFieldDefinitionScopes } from 'ish-core/models/custom-field-defini
 import { CustomFields } from 'ish-core/models/custom-field/custom-field.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PriceType } from 'ish-core/models/price/price.model';
 import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
 import { selectQueryParam, selectRouteData } from 'ish-core/store/core/router';
@@ -303,6 +304,41 @@ export class CheckoutFacade {
   eligibleFastCheckoutPaymentMethods$ = this.store.pipe(select(getEligibleFastCheckoutPaymentMethods));
   loadEligiblePaymentMethods() {
     this.store.dispatch(loadBasketEligiblePaymentMethods());
+  }
+
+  /**
+   * If a contextCapability is given, it returns the PayPal payment method (capability 'PaypalCheckout') with the appropriate capability.
+   * If no contextCapability is given, it returns an arbitrary PayPal payment method.
+   * @param contextCapability 'FastCheckout' or 'RedirectBeforeCheckout'
+   * @returns Observable<PaymentMethod> or undefined if no PayPal payment method is available
+   */
+  paypalPaymentMethod$(contextCapability?: 'FastCheckout' | 'RedirectBeforeCheckout'): Observable<PaymentMethod> {
+    return this.basket$.pipe(
+      whenTruthy(),
+      take(1),
+      switchMap(() =>
+        this.store.pipe(
+          select(getBasketEligiblePaymentMethods),
+          // fetch payment methods if not yet loaded
+          tap(pms => pms?.length || this.store.dispatch(loadBasketEligiblePaymentMethods())),
+          filter(methods => !!methods?.length),
+          take(1),
+          map(methods =>
+            methods?.find(
+              method =>
+                // ToDo: adjust this very special logic when more capabilities are added
+                method.capabilities?.includes('PaypalCheckout') &&
+                !!method.hostedPaymentPageParameters?.length &&
+                (contextCapability
+                  ? contextCapability === 'FastCheckout'
+                    ? method.capabilities?.includes(contextCapability)
+                    : !method.capabilities?.includes('FastCheckout')
+                  : true)
+            )
+          )
+        )
+      )
+    );
   }
 
   setBasketPayment(paymentName: string) {

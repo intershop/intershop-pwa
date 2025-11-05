@@ -2,12 +2,14 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { BasketCostSummaryComponent } from './basket-cost-summary.component';
@@ -21,10 +23,22 @@ describe('Basket Cost Summary Component', () => {
     const accountFacade = mock(AccountFacade);
     when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
 
+    const checkoutFacade = mock(CheckoutFacade);
+    when(checkoutFacade.checkoutStep$).thenReturn(of(3));
+
     await TestBed.configureTestingModule({
-      declarations: [BasketCostSummaryComponent, MockComponent(FaIconComponent), MockDirective(NgbPopover), PricePipe],
+      declarations: [
+        BasketCostSummaryComponent,
+        MockComponent(FaIconComponent),
+        MockDirective(NgbPopover),
+        MockPipe(ServerSettingPipe),
+        PricePipe,
+      ],
       imports: [TranslateModule.forRoot()],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+      ],
     }).compileComponents();
   });
 

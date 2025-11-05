@@ -1,11 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketPaymentCostInfoComponent } from 'ish-shared/components/basket/basket-payment-cost-info/basket-payment-cost-info.component';
 
@@ -22,7 +24,7 @@ describe('Shopping Basket Payment Component', () => {
     checkoutFacade = mock(CheckoutFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [BasketPaymentCostInfoComponent, ShoppingBasketPaymentComponent],
+      declarations: [BasketPaymentCostInfoComponent, MockPipe(ServerSettingPipe), ShoppingBasketPaymentComponent],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },

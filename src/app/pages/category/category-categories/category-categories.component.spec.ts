@@ -2,10 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
@@ -32,6 +33,7 @@ describe('Category Categories Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(SkipContentLinkComponent),
         MockDirective(NgbCollapse),
+        MockPipe(ServerSettingPipe),
       ],
     }).compileComponents();
   });
