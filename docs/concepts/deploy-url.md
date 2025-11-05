@@ -96,7 +96,7 @@ After parsing the response, the client-side application pulls all necessary stat
 > [!NOTE]
 > This functionality is supported with Intershop PWA 9.0.0 and later.
 
-If you want to serve the PWA from a sub-path (e.g., `https://www.example.com/shop/`), this can be easily achieved using the `baseHref` [Multi-Site Configurations](../guides/multi-site-configurations.md).
+If you want to serve the PWA from a sub-path (e.g., `https://www.example.com/shop/`), this can be achieved by using the `baseHref` [Multi-Site Configurations](../guides/multi-site-configurations.md).
 
 ```yaml
 'www\.example\.com':
@@ -104,10 +104,10 @@ If you want to serve the PWA from a sub-path (e.g., `https://www.example.com/sho
     channel: default
 ```
 
-In this configuration, the PWA's JavaScript and assets would still be served from the root path (`/`), e.g., `https://www.example.com/runtime.1234567.js`.
+In this configuration, the PWA's JavaScript and assets will still be served from the root path (`/`), e.g., `https://www.example.com/runtime.1234567.js`.
 
-To serve these static files such as `https://www.example.com/shop/runtime.1234567.js` as well, you can use the `DEPLOY_URL` functionality to configure a common relative URL prefix.
-With the `DEPLOY_URL` set to `/shop/`, the intended static file paths for the example can be achieved.
+To serve these static files, such as `https://www.example.com/shop/runtime.1234567.js` as well, you can use the `DEPLOY_URL` functionality to configure a common relative URL prefix.
+With the `DEPLOY_URL` set to `/shop/`, the intended static file paths can be achieved for this example.
 
 Such a configuration supports scenarios where the Intershop PWA is responsible for serving requests and files from a specific sub-path while a different application handles the domain root.
 
