@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, distinctUntilChanged, filter, map, of, switchMap, take } from 'rxjs';
 
@@ -22,7 +31,7 @@ import { PAYPAL_MESSAGE_STYLING } from './payment-paypal-messages.component.styl
   templateUrl: './payment-paypal-messages.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
+export class PaymentPaypalMessagesComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * The type of page where the component is displayed.
    * Determines which PayPal message styling and configuration to use.
@@ -54,7 +63,9 @@ export class PaymentPaypalMessagesComponent implements OnInit, OnDestroy {
         : this.pageType === 'cart' || this.pageType === 'checkout'
         ? this.checkoutFacade.basket$.pipe(map(basket => basket?.totals?.total?.gross ?? 0))
         : of(0);
+  }
 
+  ngAfterViewInit() {
     this.loadScript();
   }
 
