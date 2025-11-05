@@ -13,9 +13,9 @@
   <!-- container for displaying of fast checkout payment methods -->
   <ng-container *ngIf="paymentMethods$ | async as paymentMethods">
     <ng-container *ngIf="paymentMethods.length">
-      <li class="d-block text-center pt-2">{{ 'shopping_cart.payment.or.text' | translate }}</li>
+      <li class="d-block text-center pt-1">{{ 'shopping_cart.payment.or.text' | translate }}</li>
       <li *ngFor="let paymentMethod of filteredPaymentMethods$ | async" class="d-block">
-        <div class="d-grid">
+        <div class="d-grid mt-2">
           <button
             type="button"
             (click)="fastCheckout(paymentMethod.id)"
