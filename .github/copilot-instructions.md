@@ -7,7 +7,7 @@ Angular 16-based Progressive Web App for enterprise commerce. Built for performa
 ## Technology Stack
 
 - Angular 16.2, TypeScript 5.1, NgRx, Node.js 22
-- Express.js (SSR), Bootstrap 4, Jest + Cypress
+- Express.js (SSR), Bootstrap 5, Jest + Cypress
 - REST APIs only, RxJS for reactive flows
 
 ## Architecture Principles
