@@ -54,5 +54,3 @@ We added the commit message linter [commitlint](https://github.com/conventional-
 With [commitizen](https://github.com/commitizen/cz-cli) there is also a wizard available to help you fill out all required information when committing.
 
 Install with `npm install commitizen -g`. Afterwards you can use it by calling `git cz` when you want to commit something.
-
-There is also a [VSCode extension for commitizen](https://marketplace.visualstudio.com/items?itemName=KnisterPeter.vscode-commitizen) available.

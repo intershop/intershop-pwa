@@ -12,7 +12,6 @@ kb_sync_latest_only
 - [Specific Concerns](#specific-concerns)
   - [Components](#components)
     - [Theme-Specific Overrides](#theme-specific-overrides)
-      - [Schematic Support](#schematic-support)
   - [Existing Features](#existing-features)
   - [New Features](#new-features)
   - [Data](#data)
