@@ -39,19 +39,19 @@ describe('Order Recurrence Component', () => {
       repetitions: 5,
     };
     component.labelCssClass = 'col-6';
-    component.valueCssClass = 'col-6 text-right';
+    component.valueCssClass = 'col-6 text-end';
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
       <dl data-testing-id="recurring-order-info" class="row dl-horizontal dl-separator">
         <dt class="col-6">order.recurrence.interval.label</dt>
-        <dd class="col-6 text-right"></dd>
+        <dd class="col-6 text-end"></dd>
         <dt class="col-6">order.recurrence.start.label</dt>
-        <dd class="col-6 text-right"></dd>
+        <dd class="col-6 text-end"></dd>
         <dt data-testing-id="end-date-label" class="col-6">order.recurrence.end.label</dt>
-        <dd class="col-6 text-right"></dd>
+        <dd class="col-6 text-end"></dd>
         <dt data-testing-id="repetitions-label" class="col-6">order.recurrence.repetitions.label</dt>
-        <dd data-testing-id="repetitions-number" class="col-6 text-right">
+        <dd data-testing-id="repetitions-number" class="col-6 text-end">
           order.recurrence.repetitions.text
         </dd>
       </dl>
@@ -66,7 +66,7 @@ describe('Order Recurrence Component', () => {
       repetitions: 5,
     };
     component.labelCssClass = 'col-6';
-    component.valueCssClass = 'col-6 text-right';
+    component.valueCssClass = 'col-6 text-end';
     fixture.detectChanges();
 
     expect(element.querySelector('[data-testing-id="end-date-label"]')).toBeFalsy();
@@ -81,7 +81,7 @@ describe('Order Recurrence Component', () => {
       repetitions: undefined,
     };
     component.labelCssClass = 'col-6';
-    component.valueCssClass = 'col-6 text-right';
+    component.valueCssClass = 'col-6 text-end';
     fixture.detectChanges();
 
     expect(element.querySelector('[data-testing-id="end-date-label"]')).toBeTruthy();
