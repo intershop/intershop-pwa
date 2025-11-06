@@ -17,7 +17,7 @@ kb_sync_latest_only
     - [Express Checkout Buttons](#express-checkout-buttons)
 - [Further References](#further-references)
 
-The Intershop PWA provides a payment integration with PayPal via the [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 2](https://knowledge.intershop.com/kb/index.php/Display/27P833).
+The Intershop PWA provides a payment integration with PayPal via the [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 2](https://knowledge.intershop.com/kb/index.php/Display/455B74).
 
 ## Styling
 
@@ -76,4 +76,4 @@ PayPal payment buttons are styled differently based on their integration context
 
 - [PayPal JavaScript SDK Reference](https://developer.paypal.com/docs/checkout/reference/customize-sdk/)
 - [PayPal Messages Documentation](https://developer.paypal.com/docs/checkout/pay-later/us/integrate/)
-- [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 2](https://knowledge.intershop.com/kb/index.php/Display/27P833)
+- [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 2](https://knowledge.intershop.com/kb/index.php/Display/455B74)
