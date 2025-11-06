@@ -156,7 +156,7 @@ export class ProductMapper {
   /**
    * map API Response to fully qualified {@link Product}s
    */
-  fromData(data: ProductData): AllProductTypes {
+  fromData(data: ProductData): Partial<AllProductTypes> {
     const product: Product = {
       type: 'Product',
       name: data.productName,

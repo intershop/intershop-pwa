@@ -172,9 +172,12 @@ The service must implement the methods defined in the interface.
 @Injectable({ providedIn: 'root' })
 export class SuggestionsServiceProvider {
   ...
-  get(): SuggestionsServiceInterface {
-    ...
-    return isSparque ? this.sparqueSuggestionsService : this.suggestService;
+  get(): Observable<SuggestionsServiceInterface> {
+    return this.store.pipe(
+      select(getSparqueConfig),
+      take(1),
+      map(sparqueConfig => (sparqueConfig ? this.sparqueSuggestionsService : this.suggestService))
+    );
   }
 }
 
@@ -207,9 +210,9 @@ suggestSearch$ =
         ofType(suggestSearch),
         mapToPayloadProperty('searchTerm'),
         concatMap(searchTerm =>
-          this.suggestionsServiceProvider
-            .get()
-            .searchSuggestions(searchTerm)
+          this.suggestionsServiceProvider.get().pipe(
+            concatMap(service =>
+              service.searchSuggestions(searchTerm)
               ....
       )
   ...

@@ -39,113 +39,126 @@ describe('Suggestions Service Provider', () => {
   });
 
   describe('get', () => {
-    it('should return SuggestService when Sparque config is not available', () => {
+    it('should return SuggestService when Sparque config is not available', done => {
       configureTestBed();
 
-      const result = suggestionsServiceProvider.get();
-
-      expect(result).toBe(instance(suggestServiceMock));
+      suggestionsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(suggestServiceMock));
+        done();
+      });
     });
 
-    it('should return SuggestService when Sparque config exists but no features are defined', () => {
+    it('should return SuggestService when Sparque config exists but no features are defined', done => {
       configureTestBed({ apiKey: 'test-key' });
 
-      const result = suggestionsServiceProvider.get();
-
-      expect(result).toBe(instance(suggestServiceMock));
+      suggestionsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(suggestServiceMock));
+        done();
+      });
     });
 
-    it('should return SuggestService when Sparque config exists but suggestions feature is not in features', () => {
+    it('should return SuggestService when Sparque config exists but suggestions feature is not in features', done => {
       configureTestBed({ apiKey: 'test-key', features: ['other_feature'] });
 
-      const result = suggestionsServiceProvider.get();
-
-      expect(result).toBe(instance(suggestServiceMock));
+      suggestionsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(suggestServiceMock));
+        done();
+      });
     });
 
-    it('should return SparqueSuggestionsService when Sparque config exists and suggestions feature is enabled', () => {
+    it('should return SparqueSuggestionsService when Sparque config exists and suggestions feature is enabled', done => {
       configureTestBed({ apiKey: 'test-key', features: ['suggestions'] });
 
-      const result = suggestionsServiceProvider.get();
-
-      expect(result).toBe(instance(sparqueSuggestionsServiceMock));
+      suggestionsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(sparqueSuggestionsServiceMock));
+        done();
+      });
     });
 
-    it('should return SparqueSuggestionsService when Sparque config exists and multiple features including suggestions are enabled', () => {
+    it('should return SparqueSuggestionsService when Sparque config exists and multiple features including suggestions are enabled', done => {
       configureTestBed({ apiKey: 'test-key', features: ['search', 'suggestions'] });
 
-      const result = suggestionsServiceProvider.get();
-
-      expect(result).toBe(instance(sparqueSuggestionsServiceMock));
+      suggestionsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(sparqueSuggestionsServiceMock));
+        done();
+      });
     });
 
-    it('should return SuggestService when Sparque config is null', () => {
+    it('should return SuggestService when Sparque config is null', done => {
       configureTestBed(undefined);
 
-      const result = suggestionsServiceProvider.get();
-
-      expect(result).toBe(instance(suggestServiceMock));
+      suggestionsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(suggestServiceMock));
+        done();
+      });
     });
 
-    it('should return SuggestService when empty Sparque config object is provided', () => {
+    it('should return SuggestService when empty Sparque config object is provided', done => {
       configureTestBed({});
 
-      const result = suggestionsServiceProvider.get();
-
-      expect(result).toBe(instance(suggestServiceMock));
+      suggestionsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(suggestServiceMock));
+        done();
+      });
     });
 
-    it('should return SuggestService when config is falsy value', () => {
+    it('should return SuggestService when config is falsy value', done => {
       configureTestBed(false);
 
-      const result = suggestionsServiceProvider.get();
-
-      expect(result).toBe(instance(suggestServiceMock));
+      suggestionsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(suggestServiceMock));
+        done();
+      });
     });
 
-    it('should return SuggestService when config is zero', () => {
+    it('should return SuggestService when config is zero', done => {
       configureTestBed(0);
 
-      const result = suggestionsServiceProvider.get();
-
-      expect(result).toBe(instance(suggestServiceMock));
+      suggestionsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(suggestServiceMock));
+        done();
+      });
     });
 
-    it('should return SuggestService when config is empty string', () => {
+    it('should return SuggestService when config is empty string', done => {
       configureTestBed('');
 
-      const result = suggestionsServiceProvider.get();
-
-      expect(result).toBe(instance(suggestServiceMock));
+      suggestionsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(suggestServiceMock));
+        done();
+      });
     });
 
-    it('should return SuggestService when Sparque config has empty features array', () => {
+    it('should return SuggestService when Sparque config has empty features array', done => {
       configureTestBed({ apiKey: 'test-key', features: [] });
 
-      const result = suggestionsServiceProvider.get();
-
-      expect(result).toBe(instance(suggestServiceMock));
+      suggestionsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(suggestServiceMock));
+        done();
+      });
     });
 
-    it('should prioritize Sparque service when both config and features are properly set', () => {
+    it('should prioritize Sparque service when both config and features are properly set', done => {
       configureTestBed({
         apiKey: 'test-key',
         baseUrl: 'https://api.sparque.ai',
         features: ['suggestions'],
       });
 
-      const result = suggestionsServiceProvider.get();
-
-      expect(result).toBe(instance(sparqueSuggestionsServiceMock));
-      expect(result).not.toBe(instance(suggestServiceMock));
+      suggestionsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(sparqueSuggestionsServiceMock));
+        expect(result).not.toBe(instance(suggestServiceMock));
+        done();
+      });
     });
 
-    it('should return SuggestService when features array exists but does not include sparque_suggestions', () => {
+    it('should return SuggestService when features array exists but does not include sparque_suggestions', done => {
       configureTestBed({ apiKey: 'test-key', features: ['other_feature', 'another_feature'] });
 
-      const result = suggestionsServiceProvider.get();
-
-      expect(result).toBe(instance(suggestServiceMock));
+      suggestionsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(suggestServiceMock));
+        done();
+      });
     });
   });
 });

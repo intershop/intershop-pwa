@@ -4,7 +4,6 @@ import { isEqual } from 'lodash-es';
 import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
 import { CategoryTree, CategoryTreeHelper } from 'ish-core/models/category-tree/category-tree.model';
 import { CategoryView, createCategoryView } from 'ish-core/models/category-view/category-view.model';
-import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
 import { generateCategoryUrl } from 'ish-core/routing/category/category.route';
 import { selectRouteParamAorB } from 'ish-core/store/core/router';
@@ -38,17 +37,21 @@ export const getSelectedCategory = createSelectorFactory<object, CategoryView>(p
 
 export const getBreadcrumbForCategoryPage = createSelectorFactory<object, BreadcrumbItem[]>(projector =>
   resultMemoize(projector, isEqual)
-)(getSelectedCategory, getCategoryTree, (category: CategoryView, tree: CategoryTree) =>
-  CategoryHelper.isCategoryCompletelyLoaded(category)
-    ? (category.categoryPath || [])
-        .map(id => createCategoryView(tree, id))
-        .filter(x => !!x)
-        .map((cat, idx, arr) => ({
-          text: cat.name,
-          link: idx === arr.length - 1 ? undefined : generateCategoryUrl(cat),
-        }))
-    : undefined
-);
+)(getSelectedCategory, getCategoryTree, (category: CategoryView, tree: CategoryTree) => {
+  // For Sparque, we can generate breadcrumbs even if category is not completely loaded
+  // as long as it has a categoryPath
+  if (category?.categoryPath?.length) {
+    return (category.categoryPath || [])
+      .map(id => createCategoryView(tree, id))
+      .filter(x => !!x)
+      .map((cat, idx, arr) => ({
+        text: cat.name,
+        link: idx === arr.length - 1 ? undefined : generateCategoryUrl(cat),
+      }));
+  } else {
+    return;
+  }
+});
 
 export const getNavigationCategories = (uniqueId: string) =>
   createSelectorFactory<object, NavigationCategory[]>(projector =>

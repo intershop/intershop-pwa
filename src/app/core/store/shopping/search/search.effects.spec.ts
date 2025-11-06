@@ -35,12 +35,11 @@ describe('Search Effects', () => {
   beforeEach(() => {
     suggestServiceMock = mock(SuggestService);
     when(suggestServiceMock.searchSuggestions(anyString())).thenReturn(of(suggests));
+    suggestionsServiceProviderMock = mock(SuggestionsServiceProvider);
+    when(suggestionsServiceProviderMock.get()).thenReturn(of(instance(suggestServiceMock)));
     productsServiceMock = mock(ProductsService);
     productsServiceProviderMock = mock(ProductsServiceProvider);
-    when(productsServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
-    when(productsServiceProviderMock.isSparqueSearchEnabled()).thenReturn(of(false));
-    suggestionsServiceProviderMock = mock(SuggestionsServiceProvider);
-    when(suggestionsServiceProviderMock.get()).thenReturn(instance(suggestServiceMock));
+    when(productsServiceProviderMock.get()).thenReturn(of(instance(productsServiceMock)));
     const skus = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
     when(productsServiceMock.searchProducts(anything())).thenCall(
       (searchTerm: string, amount: number, _, offset: number) => {

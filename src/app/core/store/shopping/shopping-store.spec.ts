@@ -18,6 +18,7 @@ import { ConfigurationService } from 'ish-core/services/configuration/configurat
 import { CountryService } from 'ish-core/services/country/country.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
+import { SparqueCategoriesService } from 'ish-core/services/sparque-categories/sparque-categories.service';
 import { SparqueRecommendationsService } from 'ish-core/services/sparque-recommendations/sparque-recommendations.service';
 import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
@@ -47,6 +48,7 @@ describe('Shopping Store', () => {
   let sparqueSuggestionsServiceMock: SparqueSuggestionsService;
   let suggestServiceMock: SuggestService;
   let filterServiceMock: FilterService;
+  let sparqueCategoriesServiceMock: SparqueCategoriesService;
 
   beforeEach(() => {
     const catA = { uniqueId: 'A', categoryPath: ['A'], name: 'nA' } as Category;
@@ -103,8 +105,7 @@ describe('Shopping Store', () => {
     sparqueSuggestionsServiceMock = mock(SparqueSuggestionsService);
     suggestServiceMock = mock(SuggestService);
     productsServiceMock = mock(ProductsService);
-    when(productsServiceProviderMock.get()).thenReturn(instance(productsServiceMock));
-    when(productsServiceProviderMock.isSparqueSearchEnabled()).thenReturn(of(false));
+    when(productsServiceProviderMock.get()).thenReturn(of(instance(productsServiceMock)));
     when(sparqueRecommendationsServiceMock.getRecommendations(anything())).thenReturn(
       of({ recommendations: { strategy: 'test', count: 5, productSKUs: [] }, products: [] })
     );
@@ -132,6 +133,8 @@ describe('Shopping Store', () => {
     filterServiceMock = mock(FilterService);
     when(filterServiceMock.getFilterForSearch(anything())).thenReturn(of({} as FilterNavigation));
     when(filterServiceMock.getFilterForCategory(anything())).thenReturn(of({} as FilterNavigation));
+
+    sparqueCategoriesServiceMock = mock(SparqueCategoriesService);
 
     TestBed.configureTestingModule({
       imports: [
@@ -174,8 +177,8 @@ describe('Shopping Store', () => {
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
-        { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
+        { provide: SparqueCategoriesService, useFactory: () => instance(sparqueCategoriesServiceMock) },
         { provide: SparqueRecommendationsService, useFactory: () => instance(sparqueRecommendationsServiceMock) },
         { provide: SparqueSuggestionsService, useFactory: () => instance(sparqueSuggestionsServiceMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
@@ -451,6 +454,7 @@ describe('Shopping Store', () => {
           id: {"type":"category","value":"A.123.456"}
           itemCount: 2
           sortableAttributes: []
+        no_filter_action
         [Filter API] Load Filter Success:
           filterNavigation: {}
       `);
@@ -582,6 +586,7 @@ describe('Shopping Store', () => {
               id: {"type":"category","value":"A.123.456"}
               itemCount: 2
               sortableAttributes: []
+            no_filter_action
             [Filter API] Load Filter Success:
               filterNavigation: {}
           `);
@@ -707,6 +712,7 @@ describe('Shopping Store', () => {
             id: {"type":"category","value":"A.123.456"}
             itemCount: 2
             sortableAttributes: []
+          no_filter_action
           [Filter API] Load Filter Success:
             filterNavigation: {}
         `);

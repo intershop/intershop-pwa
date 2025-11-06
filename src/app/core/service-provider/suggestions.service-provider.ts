@@ -4,6 +4,7 @@ import { Observable, map, take } from 'rxjs';
 
 import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
 import { Product } from 'ish-core/models/product/product.model';
+import { SPARQUE_FEATURES, SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
@@ -25,21 +26,23 @@ export class SuggestionsServiceProvider {
   /**
    * Gets the appropriate suggestions service implementation based on current configuration.
    *
-   * @returns The Sparque suggestions service if enabled, otherwise the default ICM suggest service.
+   * @returns An observable emitting either SparqueSuggestionsService or the default ICM suggest service.
    */
-  get(): SuggestionsServiceInterface {
-    let enabled = false;
-    this.isSparqueSuggestionsEnabled()
-      .pipe(take(1))
-      .subscribe(sparqueSuggestionsEnabled => (enabled = sparqueSuggestionsEnabled));
-    return enabled ? this.sparqueSuggestionsService : this.suggestService;
-  }
-
-  private isSparqueSuggestionsEnabled(): Observable<boolean> {
+  get(): Observable<SuggestionsServiceInterface> {
     return this.store.pipe(
       select(getSparqueConfig),
-      map(sparqueConfig => sparqueConfig?.features?.includes('suggestions'))
+      take(1),
+      map(config => {
+        if (this.isSparqueSuggestionsEnabled(config)) {
+          return this.sparqueSuggestionsService;
+        }
+        return this.suggestService;
+      })
     );
+  }
+
+  private isSparqueSuggestionsEnabled(config: SparqueConfig | undefined): boolean {
+    return config && Array.isArray(config.features) && config.features.includes(SPARQUE_FEATURES.SUGGESTIONS);
   }
 }
 

@@ -27,6 +27,54 @@ export class SparqueCategoryMapper {
     return { categoryIds, categoryTree };
   }
 
+  fromCategoryTreeData(categoriesData: SparqueCategory[], entryPath: string[] = []): CategoryTree {
+    if (!categoriesData?.length) {
+      return CategoryTreeHelper.empty();
+    }
+
+    return categoriesData
+      .map(categoryData => this.fromCategoryTreeDataRecursive(categoryData, entryPath))
+      .reduce((acc, categoryTree) => CategoryTreeHelper.merge(acc, categoryTree), CategoryTreeHelper.empty());
+  }
+
+  private fromCategoryTreeDataRecursive(data: SparqueCategory, parentCategoryPath: string[]): CategoryTree {
+    const uniqueId =
+      parentCategoryPath.length > 0
+        ? `${parentCategoryPath[parentCategoryPath.length - 1]}${CategoryHelper.uniqueIdSeparator}${data.categoryID}`
+        : data.categoryID;
+
+    // Build category path from root to current category
+    const categoryPath = [...parentCategoryPath, uniqueId];
+
+    const category: Category = {
+      uniqueId,
+      name: data.categoryName,
+      categoryRef: undefined, // categoryRef not available in Sparque data
+      categoryPath,
+      description: AttributeHelper.getAttributeValueByAttributeName<string>(data.attributes, 'description'),
+      images: [
+        this.sparqueImageMapper.fromImageUrl(
+          AttributeHelper.getAttributeValueByAttributeName(data.attributes, 'image')
+        ),
+      ],
+      hasOnlineProducts: true,
+      completenessLevel: 0,
+    };
+    category.completenessLevel = CategoryHelper.computeCompleteness(category);
+
+    let categoryTree = CategoryTreeHelper.add(CategoryTreeHelper.empty(), category);
+
+    // Process subCategories recursively
+    if (data.subCategories?.length) {
+      for (const subCategory of data.subCategories) {
+        const subCategoryTree = this.fromCategoryTreeDataRecursive(subCategory, categoryPath);
+        categoryTree = CategoryTreeHelper.merge(categoryTree, subCategoryTree);
+      }
+    }
+
+    return categoryTree;
+  }
+
   private fromData(data: SparqueCategory): { category: Category; categoryTree: CategoryTree } {
     let parentCategory: Category = undefined;
     let categoryTree = CategoryTreeHelper.empty();
@@ -55,10 +103,10 @@ export class SparqueCategoryMapper {
           AttributeHelper.getAttributeValueByAttributeName(data.attributes, 'image')
         ),
       ],
-      hasOnlineProducts: !!data.totalCount,
-      productCount: data.totalCount,
+      hasOnlineProducts: true,
       completenessLevel: 0,
     };
+    category.completenessLevel = CategoryHelper.computeCompleteness(category);
 
     return { category, categoryTree: CategoryTreeHelper.add(categoryTree, category) };
   }
@@ -94,6 +142,7 @@ export class SparqueCategoryMapper {
         hasOnlineProducts: true,
         completenessLevel: 0,
       };
+      category.completenessLevel = CategoryHelper.computeCompleteness(category);
 
       categoryTree = CategoryTreeHelper.add(categoryTree, category);
     }

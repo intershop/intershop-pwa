@@ -8,9 +8,9 @@ import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
+import { SPARQUE_FEATURES } from 'ish-core/models/sparque/sparque-config.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
-import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
-import { getDeviceType } from 'ish-core/store/core/configuration';
+import { getDeviceType, getSparqueConfig } from 'ish-core/store/core/configuration';
 import { selectQueryParam, selectQueryParams } from 'ish-core/store/core/router';
 import {
   applyFilter,
@@ -40,7 +40,6 @@ export class ProductListingEffects {
     @Inject(DEFAULT_PRODUCT_LISTING_VIEW_TYPE)
     private defaultViewType: InjectSingle<typeof DEFAULT_PRODUCT_LISTING_VIEW_TYPE>,
     private actions$: Actions,
-    private productsServiceProvider: ProductsServiceProvider,
     private store: Store
   ) {}
 
@@ -171,9 +170,8 @@ export class ProductListingEffects {
       mapToPayload(),
       map(({ id, filters }) => ({ type: id.type, value: id.value, filters })),
       distinctUntilChanged(isEqual),
-      // TODO: (Sparque handling) temporary solution until the category navigation will be handled by Sparque
-      concatLatestFrom(() => this.productsServiceProvider.isSparqueSearchEnabled()),
-      filter(([{ type }, isSparqueSearchEnabled]) => !isSparqueSearchEnabled || type !== 'search'),
+      concatLatestFrom(() => this.store.pipe(select(getSparqueConfig))),
+      filter(([_, sparqueConfig]) => !sparqueConfig?.features.includes(SPARQUE_FEATURES.SEARCH)), // skip when Sparque Search is enabled
       map(([{ type, value, filters }]) => {
         if (filters) {
           const searchParameter = filters;

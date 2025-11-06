@@ -83,37 +83,38 @@ export class SearchEffects {
       concatLatestFrom(() => this.store.pipe(select(getProductListingItemsPerPage('search')))),
       map(([payload, pageSize]) => ({ ...payload, amount: pageSize, offset: (payload.page - 1) * pageSize })),
       concatMap(({ searchTerm, amount, offset, sorting, page }) =>
-        this.productsServiceProvider
-          .get()
-          .searchProducts({ searchTerm, amount, offset, sorting })
-          .pipe(
-            concatMap(({ total, products, sortableAttributes, filter }) => {
-              // route to product detail page if only one product was found
-              if (total === 1) {
-                this.router.navigate([generateProductUrl(products[0])]);
-              }
-              // provide the data for the search result page
-              return [
-                ...products.map(product => loadProductSuccess({ product })),
-                setProductListingPages(
-                  this.productListingMapper.createPages(
-                    products.map(p => p.sku),
-                    'search',
-                    searchTerm,
-                    amount,
-                    {
-                      startPage: page,
-                      sorting,
-                      sortableAttributes,
-                      itemCount: total,
-                    }
-                  )
-                ),
-                filter?.length ? loadFilterSuccess({ filterNavigation: { filter } }) : { type: 'no_filter_action' },
-              ];
-            }),
-            mapErrorToAction(searchProductsFail)
+        this.productsServiceProvider.get().pipe(
+          concatMap(service =>
+            service.searchProducts({ searchTerm, amount, offset, sorting }).pipe(
+              concatMap(({ total, products, sortableAttributes, filter }) => {
+                // route to product detail page if only one product was found
+                if (total === 1) {
+                  this.router.navigate([generateProductUrl(products[0])]);
+                }
+                // provide the data for the search result page
+                return [
+                  ...products.map(product => loadProductSuccess({ product })),
+                  setProductListingPages(
+                    this.productListingMapper.createPages(
+                      products.map(p => p.sku),
+                      'search',
+                      searchTerm,
+                      amount,
+                      {
+                        startPage: page,
+                        sorting,
+                        sortableAttributes,
+                        itemCount: total,
+                      }
+                    )
+                  ),
+                  filter?.length ? loadFilterSuccess({ filterNavigation: { filter } }) : { type: 'no_filter_action' },
+                ];
+              }),
+              mapErrorToAction(searchProductsFail)
+            )
           )
+        )
       )
     )
   );
@@ -125,22 +126,23 @@ export class SearchEffects {
         ofType(suggestSearch),
         mapToPayloadProperty('searchTerm'),
         switchMap(searchTerm =>
-          this.suggestionsServiceProvider
-            .get()
-            .searchSuggestions(searchTerm)
-            .pipe(
-              concatMap(({ suggestions, categories, products }) => {
-                const actions: Action[] = [suggestSearchSuccess({ suggestions })];
-                if (categories) {
-                  actions.push(loadCategorySuccess({ categories }));
-                }
-                if (products) {
-                  products.map(product => actions.push(loadProductSuccess({ product })));
-                }
-                return actions;
-              }),
-              mapErrorToAction(suggestSearchFail)
+          this.suggestionsServiceProvider.get().pipe(
+            concatMap(service =>
+              service.searchSuggestions(searchTerm).pipe(
+                concatMap(({ suggestions, categories, products }) => {
+                  const actions: Action[] = [suggestSearchSuccess({ suggestions })];
+                  if (categories) {
+                    actions.push(loadCategorySuccess({ categories }));
+                  }
+                  if (products) {
+                    products.map(product => actions.push(loadProductSuccess({ product })));
+                  }
+                  return actions;
+                }),
+                mapErrorToAction(suggestSearchFail)
+              )
             )
+          )
         )
       )
     );

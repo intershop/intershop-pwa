@@ -5,6 +5,3 @@ import { ShoppingState, getShoppingState } from 'ish-core/store/shopping/shoppin
 const getFilterState = createSelector(getShoppingState, (state: ShoppingState) => state.filter);
 
 export const getAvailableFilter = createSelector(getFilterState, state => state.availableFilter);
-
-export const getFilterById = (filterId: string) =>
-  createSelector(getAvailableFilter, state => state?.filter?.find(element => element.id === filterId));

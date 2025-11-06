@@ -41,7 +41,7 @@ export class ProductsService implements ProductsServiceInterface {
    * @param sku  The Product SKU for the product of interest.
    * @returns    The Product data.
    */
-  getProduct(sku: string): Observable<Product> {
+  getProduct(sku: string): Observable<Partial<Product>> {
     if (!sku) {
       return throwError(() => new Error('getProduct() called without a sku'));
     }
@@ -57,14 +57,14 @@ export class ProductsService implements ProductsServiceInterface {
    *
    * @param categoryUniqueId  The unique Category ID.
    * @param sortKey           The sortKey to sort the list, default value is ''.
-   * @returns                 A list of the categories products SKUs [skus], the unique Category ID [categoryUniqueId] and a list of possible sort keys [sortKeys].
+   * @returns                 A search response containing products, sortable attributes, and total count.
    */
   getCategoryProducts(
     categoryUniqueId: string,
     amount: number,
     sortKey?: string,
     offset = 0
-  ): Observable<{ products: Product[]; sortableAttributes: SortableAttributesType[]; total: number }> {
+  ): Observable<SearchResponse> {
     if (!categoryUniqueId) {
       return throwError(() => new Error('getCategoryProducts() called without categoryUniqueId'));
     }
@@ -96,11 +96,14 @@ export class ProductsService implements ProductsServiceInterface {
         withLatestFrom(
           this.appFacade.serverSetting$<boolean>('preferences.ChannelPreferences.EnableAdvancedVariationHandling')
         ),
-        map(([{ products, sortableAttributes, total }, advancedVariationHandling]) => ({
-          products: this.postProcessMasters(products, advancedVariationHandling),
-          sortableAttributes,
-          total,
-        }))
+        map(
+          ([{ products, sortableAttributes, total }, advancedVariationHandling]) =>
+            <SearchResponse>{
+              products: this.postProcessMasters(products, advancedVariationHandling),
+              sortableAttributes,
+              total,
+            }
+        )
       );
   }
 

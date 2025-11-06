@@ -38,84 +38,76 @@ describe('Products Service Provider', () => {
   });
 
   describe('get', () => {
-    it('should return ProductsService when Sparque config is not available', () => {
+    it('should return ProductsService when Sparque config is not available', done => {
       configureTestBed();
 
-      const result = productsServiceProvider.get();
-
-      expect(result).toBe(instance(productsServiceMock));
+      productsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(productsServiceMock));
+        done();
+      });
     });
 
-    it('should return ProductsService when skipSparque is true even if Sparque is enabled', () => {
-      configureTestBed({ apiKey: 'test-key' });
-
-      const result = productsServiceProvider.get(true);
-
-      expect(result).toBe(instance(productsServiceMock));
-    });
-
-    it('should return SparqueProductsService when Sparque config exists and search feature is enabled', () => {
+    it('should return SparqueProductsService when Sparque config exists and search feature is enabled', done => {
       configureTestBed({ apiKey: 'test-key', features: ['search'] });
 
-      const result = productsServiceProvider.get();
-
-      expect(result).toBe(instance(sparqueProductsServiceMock));
+      productsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(sparqueProductsServiceMock));
+        done();
+      });
     });
 
-    it('should return ProductsService when Sparque config exists but search feature is not in features', () => {
+    it('should return ProductsService when Sparque config exists but search feature is not in features', done => {
       configureTestBed({ apiKey: 'test-key', features: ['recommendations'] });
 
-      const result = productsServiceProvider.get();
-
-      expect(result).toBe(instance(productsServiceMock));
+      productsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(productsServiceMock));
+        done();
+      });
     });
 
-    it('should return SparqueProductsService when Sparque config exists and multiple features including search are enabled', () => {
+    it('should return SparqueProductsService when Sparque config exists and multiple features including search are enabled', done => {
       configureTestBed({ apiKey: 'test-key', features: ['search', 'recommendations'] });
 
-      const result = productsServiceProvider.get();
-
-      expect(result).toBe(instance(sparqueProductsServiceMock));
+      productsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(sparqueProductsServiceMock));
+        done();
+      });
     });
 
-    it('should return ProductsService when Sparque config is null', () => {
+    it('should return ProductsService when Sparque config is null', done => {
       configureTestBed(undefined);
 
-      const result = productsServiceProvider.get();
-
-      expect(result).toBe(instance(productsServiceMock));
+      productsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(productsServiceMock));
+        done();
+      });
     });
 
-    it('should return ProductsService when empty Sparque config object is provided', () => {
+    it('should return ProductsService when empty Sparque config object is provided', done => {
       configureTestBed({});
 
-      const result = productsServiceProvider.get();
-
-      expect(result).toBe(instance(productsServiceMock));
+      productsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(productsServiceMock));
+        done();
+      });
     });
 
-    it('should use default parameter value for skipSparque when not provided', () => {
+    it('should use default parameter value for skipSparque when not provided', done => {
       configureTestBed({ apiKey: 'test-key', features: ['search'] });
 
-      const result = productsServiceProvider.get();
-
-      expect(result).toBe(instance(sparqueProductsServiceMock));
+      productsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(sparqueProductsServiceMock));
+        done();
+      });
     });
 
-    it('should return ProductsService when skipSparque is explicitly false but conditions are not met', () => {
-      configureTestBed();
-
-      const result = productsServiceProvider.get(false);
-
-      expect(result).toBe(instance(productsServiceMock));
-    });
-
-    it('should return ProductsService when Sparque config has empty features array', () => {
+    it('should return ProductsService when Sparque config has empty features array', done => {
       configureTestBed({ apiKey: 'test-key', features: [] });
 
-      const result = productsServiceProvider.get();
-
-      expect(result).toBe(instance(productsServiceMock));
+      productsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(productsServiceMock));
+        done();
+      });
     });
   });
 });

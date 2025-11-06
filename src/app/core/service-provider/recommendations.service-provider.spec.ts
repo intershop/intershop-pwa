@@ -35,113 +35,126 @@ describe('Recommendations Service Provider', () => {
   });
 
   describe('get', () => {
-    it('should return undefined when Sparque config is not available', () => {
+    it('should return undefined when Sparque config is not available', done => {
       configureTestBed();
 
-      const result = recommendationsServiceProvider.get();
-
-      expect(result).toBeUndefined();
+      recommendationsServiceProvider.get().subscribe(result => {
+        expect(result).toBeUndefined();
+        done();
+      });
     });
 
-    it('should return undefined when Sparque config exists but no features are defined', () => {
+    it('should return undefined when Sparque config exists but no features are defined', done => {
       configureTestBed({ apiKey: 'test-key' });
 
-      const result = recommendationsServiceProvider.get();
-
-      expect(result).toBeUndefined();
+      recommendationsServiceProvider.get().subscribe(result => {
+        expect(result).toBeUndefined();
+        done();
+      });
     });
 
-    it('should return undefined when Sparque config exists but recommendations feature is not in features', () => {
+    it('should return undefined when Sparque config exists but recommendations feature is not in features', done => {
       configureTestBed({ apiKey: 'test-key', features: ['other_feature'] });
 
-      const result = recommendationsServiceProvider.get();
-
-      expect(result).toBeUndefined();
+      recommendationsServiceProvider.get().subscribe(result => {
+        expect(result).toBeUndefined();
+        done();
+      });
     });
 
-    it('should return SparqueRecommendationsService when Sparque config exists and recommendations feature is enabled', () => {
+    it('should return SparqueRecommendationsService when Sparque config exists and recommendations feature is enabled', done => {
       configureTestBed({ apiKey: 'test-key', features: ['recommendations'] });
 
-      const result = recommendationsServiceProvider.get();
-
-      expect(result).toBe(instance(sparqueRecommendationsServiceMock));
+      recommendationsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(sparqueRecommendationsServiceMock));
+        done();
+      });
     });
 
-    it('should return SparqueRecommendationsService when Sparque config exists and multiple features including recommendations are enabled', () => {
+    it('should return SparqueRecommendationsService when Sparque config exists and multiple features including recommendations are enabled', done => {
       configureTestBed({ apiKey: 'test-key', features: ['search', 'recommendations'] });
 
-      const result = recommendationsServiceProvider.get();
-
-      expect(result).toBe(instance(sparqueRecommendationsServiceMock));
+      recommendationsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(sparqueRecommendationsServiceMock));
+        done();
+      });
     });
 
-    it('should return undefined when Sparque config is null', () => {
+    it('should return undefined when Sparque config is null', done => {
       configureTestBed(undefined);
 
-      const result = recommendationsServiceProvider.get();
-
-      expect(result).toBeUndefined();
+      recommendationsServiceProvider.get().subscribe(result => {
+        expect(result).toBeUndefined();
+        done();
+      });
     });
 
-    it('should return undefined when empty Sparque config object is provided', () => {
+    it('should return undefined when empty Sparque config object is provided', done => {
       configureTestBed({});
 
-      const result = recommendationsServiceProvider.get();
-
-      expect(result).toBeUndefined();
+      recommendationsServiceProvider.get().subscribe(result => {
+        expect(result).toBeUndefined();
+        done();
+      });
     });
 
-    it('should return undefined when config is falsy value', () => {
+    it('should return undefined when config is falsy value', done => {
       configureTestBed(false);
 
-      const result = recommendationsServiceProvider.get();
-
-      expect(result).toBeUndefined();
+      recommendationsServiceProvider.get().subscribe(result => {
+        expect(result).toBeUndefined();
+        done();
+      });
     });
 
-    it('should return undefined when config is zero', () => {
+    it('should return undefined when config is zero', done => {
       configureTestBed(0);
 
-      const result = recommendationsServiceProvider.get();
-
-      expect(result).toBeUndefined();
+      recommendationsServiceProvider.get().subscribe(result => {
+        expect(result).toBeUndefined();
+        done();
+      });
     });
 
-    it('should return undefined when config is empty string', () => {
+    it('should return undefined when config is empty string', done => {
       configureTestBed('');
 
-      const result = recommendationsServiceProvider.get();
-
-      expect(result).toBeUndefined();
+      recommendationsServiceProvider.get().subscribe(result => {
+        expect(result).toBeUndefined();
+        done();
+      });
     });
 
-    it('should return undefined when Sparque config has empty features array', () => {
+    it('should return undefined when Sparque config has empty features array', done => {
       configureTestBed({ apiKey: 'test-key', features: [] });
 
-      const result = recommendationsServiceProvider.get();
-
-      expect(result).toBeUndefined();
+      recommendationsServiceProvider.get().subscribe(result => {
+        expect(result).toBeUndefined();
+        done();
+      });
     });
 
-    it('should prioritize Sparque service when both config and features are properly set', () => {
+    it('should prioritize Sparque service when both config and features are properly set', done => {
       configureTestBed({
         apiKey: 'test-key',
         baseUrl: 'https://api.sparque.ai',
         features: ['recommendations'],
       });
 
-      const result = recommendationsServiceProvider.get();
-
-      expect(result).toBe(instance(sparqueRecommendationsServiceMock));
-      expect(result).not.toBeUndefined();
+      recommendationsServiceProvider.get().subscribe(result => {
+        expect(result).toBe(instance(sparqueRecommendationsServiceMock));
+        expect(result).not.toBeUndefined();
+        done();
+      });
     });
 
-    it('should return undefined when features array exists but does not include recommendations', () => {
+    it('should return undefined when features array exists but does not include recommendations', done => {
       configureTestBed({ apiKey: 'test-key', features: ['other_feature', 'another_feature'] });
 
-      const result = recommendationsServiceProvider.get();
-
-      expect(result).toBeUndefined();
+      recommendationsServiceProvider.get().subscribe(result => {
+        expect(result).toBeUndefined();
+        done();
+      });
     });
   });
 });

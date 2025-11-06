@@ -5,6 +5,7 @@ import { ImageMapper } from 'ish-core/models/image/image.mapper';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
+import { CategoryHelper } from './category.helper';
 import { CategoryData, CategoryPathElement } from './category.interface';
 import { CategoryMapper } from './category.mapper';
 import { Category } from './category.model';
@@ -78,17 +79,17 @@ describe('Category Mapper', () => {
 
   describe('computeCompleteness()', () => {
     it('should return -1 for falsy inputs', () => {
-      expect(categoryMapper.computeCompleteness(undefined)).toEqual(-1);
+      expect(CategoryHelper.computeCompleteness(undefined)).toEqual(-1);
     });
     it('should return 0 for input from category path categories', () => {
-      expect(categoryMapper.computeCompleteness({ uri: 'some' } as CategoryData)).toEqual(0);
+      expect(CategoryHelper.computeCompleteness({ uri: 'some' } as CategoryData)).toEqual(0);
     });
     it('should return 1 for input from sub categories', () => {
-      expect(categoryMapper.computeCompleteness({ uri: 'some', categoryRef: 'some@demo' } as CategoryData)).toEqual(1);
+      expect(CategoryHelper.computeCompleteness({ uri: 'some', categoryRef: 'some@demo' } as CategoryData)).toEqual(1);
     });
     it('should return 2 for root categories from top level categories call', () => {
       expect(
-        categoryMapper.computeCompleteness({
+        CategoryHelper.computeCompleteness({
           uri: 'some',
           categoryRef: 'some@demo',
           categoryPath: [{}],
@@ -97,7 +98,7 @@ describe('Category Mapper', () => {
     });
     it('should return 2 for sub categories from categories call', () => {
       expect(
-        categoryMapper.computeCompleteness({
+        CategoryHelper.computeCompleteness({
           uri: 'some',
           categoryRef: 'some@demo',
           images: [{}],
@@ -107,7 +108,7 @@ describe('Category Mapper', () => {
     });
     it('should return 3 for input from categories call', () => {
       expect(
-        categoryMapper.computeCompleteness({
+        CategoryHelper.computeCompleteness({
           uri: 'some',
           categoryRef: 'some@demo',
           images: [{}],

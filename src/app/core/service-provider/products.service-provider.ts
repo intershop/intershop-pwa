@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, map, take } from 'rxjs';
 
+import { Product } from 'ish-core/models/product/product.model';
 import { SearchParameter, SearchResponse } from 'ish-core/models/search/search.model';
+import { SPARQUE_FEATURES, SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SparqueProductsService } from 'ish-core/services/sparque-products/sparque-products.service';
 import { getSparqueConfig } from 'ish-core/store/core/configuration';
@@ -32,23 +34,23 @@ export class ProductsServiceProvider {
   /**
    * Gets the appropriate products service implementation based on configuration and parameters.
    *
-   * @param skipSparque - Optional flag to force use of standard ProductsService, defaults to false.
-   * @returns The SparqueProductsService if enabled and not skipped, otherwise the standard ProductsService.
+  /**
+   * Gets the appropriate products service implementation based on configuration and parameters.
+   *
+   * @returns An observable emitting either SparqueProductsService or ProductsService.
    */
-  // TODO: (Sparque handling) remove 'skipSparque' parameter once the category navigation will be handled by Sparque
-  get(skipSparque: boolean = false): ProductsServiceInterface {
-    let enabled = false;
-    this.isSparqueSearchEnabled()
-      .pipe(take(1))
-      .subscribe(sparqueSearchEnabled => (enabled = sparqueSearchEnabled));
-    return enabled && !skipSparque ? this.sparqueProductsService : this.productsService;
-  }
-
-  isSparqueSearchEnabled(): Observable<boolean> {
+  get(): Observable<ProductsServiceInterface> {
     return this.store.pipe(
       select(getSparqueConfig),
-      map(sparqueConfig => sparqueConfig?.features?.includes('search'))
+      take(1),
+      map(sparqueConfig =>
+        this.isSparqueSearchEnabled(sparqueConfig) ? this.sparqueProductsService : this.productsService
+      )
     );
+  }
+
+  private isSparqueSearchEnabled(config: SparqueConfig | undefined): boolean {
+    return config && Array.isArray(config.features) && config.features.includes(SPARQUE_FEATURES.SEARCH);
   }
 }
 
@@ -59,6 +61,14 @@ export class ProductsServiceProvider {
  * behavior for these search functionalities.
  */
 export interface ProductsServiceInterface {
+  /**
+   * Get the full Product data for the given Product SKU.
+   *
+   * @param sku  The Product SKU for the product of interest.
+   * @returns    The Product data.
+   */
+  getProduct(sku: string): Observable<Partial<Product>>;
+
   /**
    * Searches for products based on the provided search parameters.
    *
@@ -78,6 +88,23 @@ export interface ProductsServiceInterface {
    */
   getFilteredProducts(
     searchParameter: URLFormParams,
+    amount: number,
+    sortKey?: string,
+    offset?: number
+  ): Observable<SearchResponse>;
+
+  /**
+   * Retrieves products for a specific category.
+   *
+   * @param categoryUniqueId - The unique identifier of the category.
+   * @param amount - The number of products to retrieve.
+   * @param sortKey - (Optional) The key to sort the products by.
+   * @param offset - (Optional) The offset for pagination.
+   * @param selectedFacets - (Optional) The selected facets to filter by.
+   * @returns An observable that emits the search response containing the products.
+   */
+  getCategoryProducts(
+    categoryUniqueId: string,
     amount: number,
     sortKey?: string,
     offset?: number

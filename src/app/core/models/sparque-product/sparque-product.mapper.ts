@@ -15,7 +15,7 @@ export class SparqueProductMapper {
 
     if (productsData?.length) {
       productsData.forEach(product => {
-        products.push(this.fromData(product));
+        products.push(this.fromListDataSingle(product));
         productSkus.push(product.sku);
       });
     }
@@ -27,15 +27,16 @@ export class SparqueProductMapper {
    * Maps Sparque product data to PWA product format for list displays.
    *
    * @param data - Array of SparqueProduct data to map
-   * @param completenessLevel - Product data completeness level (default is 1).
-   *                           The recommendations service sets this value to 2.
-   *                           To display recommended products it is not necessary to get information about promotions and ratings.
    */
-  fromListData(data: SparqueProduct[], completenessLevel: number = 1): Partial<Product>[] {
-    return data?.length ? data.map(product => this.fromData(product, completenessLevel)) : [];
+  fromListData(data: SparqueProduct[]): Partial<Product>[] {
+    return data?.length ? data.map(product => this.fromListDataSingle(product)) : [];
   }
 
-  private fromData(data: SparqueProduct, completenessLevel: number = 1): Partial<Product> {
+  private fromListDataSingle(data: SparqueProduct): Partial<Product> {
+    return this.fromData(data, 2); // List level for search results
+  }
+
+  fromData(data: SparqueProduct, completenessLevel: number = 3): Partial<Product> {
     return {
       sku: data.sku,
       name: data.name,
@@ -44,10 +45,13 @@ export class SparqueProductMapper {
       available: true,
       type: 'Product',
       images: this.sparqueImageMapper.fromImages(data.images),
-      // TODO: completenessLevel for product lists should be 2 (otherwise a product details call will be triggered)
-      // the Sparque response is currently missing needed product data to omit the additional REST calls (rating, promotion, etc.)
-      completenessLevel,
+      defaultCategoryId: data.defaultCategoryId,
+      longDescription: data.longDescription || data.shortDescription,
+      // TODO map quantity value in case sparque wrapper API provides it
       minOrderQuantity: 1,
+      stepQuantity: 1,
+      packingUnit: '',
+      completenessLevel, // Dynamic level: 2 for lists, 3 for details
     };
   }
 }

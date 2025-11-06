@@ -39,18 +39,19 @@ export class RecommendationsEffects {
         },
       })),
       mergeMap(({ recommendationsContext }) =>
-        this.recommendationsServiceProvider
-          .get()
-          .getRecommendations(recommendationsContext)
-          .pipe(
-            concatMap(response => [
-              recommendationsActions.loadProductRecommendationsSuccess({
-                recommendations: response.recommendations,
-              }),
-              ...response.products.map(product => loadProductSuccess({ product })),
-            ]),
-            mapErrorToAction(recommendationsActions.loadProductRecommendationsFail)
+        this.recommendationsServiceProvider.get().pipe(
+          concatMap(service =>
+            service.getRecommendations(recommendationsContext).pipe(
+              concatMap(response => [
+                recommendationsActions.loadProductRecommendationsSuccess({
+                  recommendations: response.recommendations,
+                }),
+                ...response.products.map(product => loadProductSuccess({ product })),
+              ]),
+              mapErrorToAction(recommendationsActions.loadProductRecommendationsFail)
+            )
           )
+        )
       )
     )
   );

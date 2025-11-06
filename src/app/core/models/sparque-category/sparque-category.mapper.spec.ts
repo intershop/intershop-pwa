@@ -37,29 +37,41 @@ const sparqueCategories = [
         name: 'root',
         value: '0',
       },
+    ],
+  },
+];
+
+const sparqueCategoriesWithSubCategories = [
+  {
+    categoryID: '123',
+    categoryName: 'Computers',
+    totalCount: 10,
+    attributes: [
       {
-        name: 'hasParent',
-        value: [
+        name: 'image',
+        value: 'M/123.jpg',
+      },
+    ],
+    subCategories: [
+      {
+        categoryID: '456',
+        categoryName: 'Printers',
+        totalCount: 5,
+        attributes: [
           {
-            identifier: '456',
-            image: 'M/456.jpg',
-            name: {
-              'de-DE': 'Drucker',
-              'en-US': 'Printers',
-              'fr-FR': 'Imprimantes',
-            },
-            online: 1,
-            root: 0,
-            hasParent: [
+            name: 'image',
+            value: 'M/456.jpg',
+          },
+        ],
+        subCategories: [
+          {
+            categoryID: '789',
+            categoryName: 'Laser',
+            totalCount: 1,
+            attributes: [
               {
-                identifier: '123',
-                name: {
-                  'de-DE': 'Computer',
-                  'en-US': 'Computers',
-                  'fr-FR': 'Ordinateurs',
-                },
-                online: 1,
-                root: 1,
+                name: 'image',
+                value: 'M/789.jpg',
               },
             ],
           },
@@ -82,18 +94,16 @@ describe('Sparque Category Mapper', () => {
     when(sparqueImageMapper.fromImageUrl(undefined)).thenReturn(undefined);
   });
 
-  describe('fromData', () => {
-    it('should create the category tree correctly', () => {
+  describe('fromSuggestionsData', () => {
+    it('should create the category tree correctly from suggestions data', () => {
       const result = sparqueCategoryMapper.fromSuggestionsData(sparqueCategories);
       expect(result.categoryIds).toMatchInlineSnapshot(`
         [
-          "123.456.789",
+          "789",
         ]
       `);
       expect(result.categoryTree).toMatchInlineSnapshot(`
-        └─ 123
-           └─ 123.456
-              └─ 123.456.789
+        └─ 789
 
       `);
     });
@@ -102,6 +112,31 @@ describe('Sparque Category Mapper', () => {
       const result = sparqueCategoryMapper.fromSuggestionsData(undefined);
       expect(result.categoryIds).toMatchInlineSnapshot(`[]`);
       expect(result.categoryTree).toMatchInlineSnapshot(``);
+    });
+  });
+
+  describe('fromCategoryTreeData', () => {
+    it('should create the category tree correctly from root categories without subcategories', () => {
+      const result = sparqueCategoryMapper.fromCategoryTreeData(sparqueCategories);
+      expect(result).toMatchInlineSnapshot(`
+        └─ 789
+
+      `);
+    });
+
+    it('should create the category tree correctly with subcategories', () => {
+      const result = sparqueCategoryMapper.fromCategoryTreeData(sparqueCategoriesWithSubCategories);
+      expect(result).toMatchInlineSnapshot(`
+        └─ 123
+           └─ 123.456
+              └─ 123.456.789
+
+      `);
+    });
+
+    it('should return empty tree if categories are empty', () => {
+      const result = sparqueCategoryMapper.fromCategoryTreeData(undefined);
+      expect(result).toMatchInlineSnapshot(``);
     });
   });
 });

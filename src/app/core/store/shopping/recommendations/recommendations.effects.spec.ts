@@ -61,8 +61,8 @@ describe('Recommendations Effects', () => {
       }
     });
 
-    // Mock the service provider to return the mocked service
-    when(recommendationsServiceProviderMock.get()).thenReturn(instance(recommendationsServiceMock));
+    // Mock the service provider to return the mocked service instance
+    when(recommendationsServiceProviderMock.get()).thenReturn(of(instance(recommendationsServiceMock)));
 
     TestBed.configureTestingModule({
       imports: [

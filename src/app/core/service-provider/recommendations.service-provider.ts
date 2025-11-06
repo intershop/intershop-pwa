@@ -4,6 +4,7 @@ import { Observable, map, take } from 'rxjs';
 
 import { Product } from 'ish-core/models/product/product.model';
 import { Recommendations, RecommendationsContext } from 'ish-core/models/recommendations/recommendations.model';
+import { SPARQUE_FEATURES, SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { SparqueRecommendationsService } from 'ish-core/services/sparque-recommendations/sparque-recommendations.service';
 import { getSparqueConfig } from 'ish-core/store/core/configuration';
 
@@ -19,21 +20,20 @@ export class RecommendationsServiceProvider {
   /**
    * Gets the appropriate recommendations service implementation based on current configuration.
    *
-   * @returns The Sparque recommendations service if enabled, otherwise undefined.
+   * @returns An observable emitting either SparqueRecommendationsService or, otherwise undefined.
    */
-  get(): RecommendationsServiceInterface {
-    let enabled = false;
-    this.isSparqueRecommendationsEnabled()
-      .pipe(take(1))
-      .subscribe(sparqueRecommendationsEnabled => (enabled = sparqueRecommendationsEnabled));
-    return enabled ? this.sparqueRecommendationsService : undefined;
-  }
-
-  private isSparqueRecommendationsEnabled(): Observable<boolean> {
+  get(): Observable<RecommendationsServiceInterface> {
     return this.store.pipe(
       select(getSparqueConfig),
-      map(sparqueConfig => sparqueConfig?.features?.includes('recommendations'))
+      take(1),
+      map(sparqueConfig =>
+        this.isSparqueRecommendationsEnabled(sparqueConfig) ? this.sparqueRecommendationsService : undefined
+      )
     );
+  }
+
+  private isSparqueRecommendationsEnabled(config: SparqueConfig | undefined): boolean {
+    return config && Array.isArray(config.features) && config?.features?.includes(SPARQUE_FEATURES.RECOMMENDATIONS);
   }
 }
 
