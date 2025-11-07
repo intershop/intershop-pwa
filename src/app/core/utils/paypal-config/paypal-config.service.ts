@@ -63,6 +63,7 @@ export class PaypalConfigService {
       this.appFacade.currentLocale$,
       this.appFacade.currentCurrency$,
       this.appFacade.payPalConfig$,
+      this.appFacade.appBecameStable$,
     ]).pipe(
       map(([locale, currency, config]) => ({
         paymentMethod: param.paymentMethod,
