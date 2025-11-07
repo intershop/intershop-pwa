@@ -130,21 +130,24 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy 
       )
       .subscribe({
         next: ({ basket, paypalPaymentMethod }) => {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const paypalObject = (window as any)[this.getNameSpace(paypalPaymentMethod)];
-          if (paypalObject?.Buttons) {
-            const paypalButtonsConfig = paypalObject.Buttons(
-              this.pageType === 'checkout'
-                ? this.initializePaypalCheckoutButton(basket, paypalPaymentMethod)
-                : this.initializePaypalExpressButton(paypalPaymentMethod)
-            );
-            this.paypalButtonsComponent = paypalButtonsConfig
-              .render(`#${this.paypalButtonsContainerId}`)
-              .catch((error: string) => {
-                console.error('PayPal Buttons render failed:', error);
-              });
-          }
-          this.scriptLoaded$.next(true);
+          // ensure change detection is working properly
+          this.ngZone.run(() => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const paypalObject = (window as any)[this.getNameSpace(paypalPaymentMethod)];
+            if (paypalObject?.Buttons) {
+              const paypalButtonsConfig = paypalObject.Buttons(
+                this.pageType === 'checkout'
+                  ? this.initializePaypalCheckoutButton(basket, paypalPaymentMethod)
+                  : this.initializePaypalExpressButton(paypalPaymentMethod)
+              );
+              this.paypalButtonsComponent = paypalButtonsConfig
+                .render(`#${this.paypalButtonsContainerId}`)
+                .catch((error: string) => {
+                  console.error('PayPal Buttons render failed:', error);
+                });
+              this.scriptLoaded$.next(true);
+            }
+          });
         },
         error: () => {
           this.scriptLoaded$.next(false);
