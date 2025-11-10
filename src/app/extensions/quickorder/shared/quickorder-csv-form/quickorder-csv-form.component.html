@@ -8,22 +8,25 @@
   >
     <div class="form-group section">
       <input
+        #fileInput
         type="file"
         name="csvFile"
-        id="CSVFile"
         size="35"
         accept=".csv"
-        (change)="uploadListener($event.target)"
+        (change)="onFileChange($event)"
         [attr.aria-label]="'quickorder.page.csv.file.upload.aria_label' | translate"
       />
       <div [ngSwitch]="status">
-        <small *ngSwitchCase="'IncorrectInput'" class="has-error"
+        <small *ngSwitchCase="'InvalidHeader'" class="has-error"
+          ><span class="validation-message">{{ 'quickorder.page.csv.file.invalid.input' | translate }}</span></small
+        >
+        <small *ngSwitchCase="'InvalidData'" class="has-error"
           ><span class="validation-message">{{ 'quickorder.page.csv.file.invalid.input' | translate }}</span></small
         >
         <small *ngSwitchCase="'InvalidFormat'" class="has-error"
           ><span class="validation-message">{{ 'quickorder.page.csv.file.invalid.format' | translate }}</span></small
         >
-        <small *ngSwitchCase="'ValidFormat'" class="has-success"
+        <small *ngSwitchCase="'Valid'" class="has-success"
           ><span class="validation-message">{{ 'quickorder.page.csv.file.uploaded' | translate }}</span></small
         >
         <small *ngSwitchDefault></small>
@@ -34,10 +37,10 @@
       ></small>
     </div>
     <div>
-      <button type="submit" class="btn btn-primary" name="addToCartCSV" [disabled]="isCsvDisabled">
+      <button type="submit" class="btn btn-primary" name="addToCartCsv" [disabled]="isCsvDisabled">
         {{ 'quickorder.page.add.cart' | translate }}
       </button>
-      <button type="reset" class="btn btn-link" name="reset" (click)="resetCsvProductArray()">
+      <button type="reset" class="btn btn-link" name="reset" (click)="resetInput()">
         {{ 'quickorder.page.csv.reset.form' | translate }}
       </button>
     </div>
