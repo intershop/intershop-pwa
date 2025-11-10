@@ -115,7 +115,7 @@ export class CartPage {
             .wait(1000)
             .type('{selectAll}')
             .type(num.toString())
-            .wait(1000),
+            .wait(1500),
 
         get: () =>
           cy
@@ -173,6 +173,7 @@ export class CartPage {
   }
 
   get basketCustomFieldsToggleLink() {
+    cy.scrollTo('top', { ensureScrollable: false });
     return cy.get('[data-testing-id="basket-custom-fields-toggle-link"]');
   }
 
