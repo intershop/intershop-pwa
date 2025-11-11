@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -14,7 +15,8 @@ import { InjectSingle } from 'ish-core/utils/injection';
 export class HeaderNavigationComponent implements OnInit {
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
 
-  categories$: Observable<NavigationCategory[]>;
+  private categories$: Observable<NavigationCategory[]>;
+  filteredCategories$: Observable<NavigationCategory[]>;
 
   private openedCategories: string[] = [];
 
@@ -29,6 +31,9 @@ export class HeaderNavigationComponent implements OnInit {
 
   ngOnInit() {
     this.categories$ = this.shoppingFacade.navigationCategories$();
+    this.filteredCategories$ = this.categories$.pipe(
+      map(categories => categories.filter(category => this.shouldShowInMenu(category)))
+    );
   }
 
   /**
@@ -68,5 +73,16 @@ export class HeaderNavigationComponent implements OnInit {
   toggleOpen(uniqueId: string) {
     const index = this.openedCategories.findIndex(id => id === uniqueId);
     index > -1 ? this.openedCategories.splice(index, 1) : this.openedCategories.push(uniqueId);
+  }
+
+  /**
+   * Check if category should be shown in the header navigation
+   * based on the "ShowInMenu" attribute.
+   *
+   * @param category The category item.
+   */
+  private shouldShowInMenu(category: NavigationCategory): boolean {
+    const value = category.attributes?.find(attr => attr.name === 'ShowInMenu')?.value;
+    return typeof value === 'string' && value.toLowerCase() === 'true';
   }
 }

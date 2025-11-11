@@ -85,6 +85,7 @@ function mapNavigationCategoryFromId(
     name: selected.nodes[uniqueId].name,
     url: generateCategoryUrl(createCategoryView(tree, uniqueId)),
     hasChildren: !!selected.edges[uniqueId]?.length,
+    attributes: selected.nodes[uniqueId]?.attributes,
     children:
       depth > 0
         ? selected.edges[uniqueId]?.map(childId => mapNavigationCategoryFromId(childId, tree, subTree, depth - 1))

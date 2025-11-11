@@ -192,6 +192,7 @@ describe('Categories Selectors', () => {
         expect(getNavigationCategories(undefined)(store$.state)).toMatchInlineSnapshot(`
           [
             {
+              "attributes": undefined,
               "children": undefined,
               "hasChildren": true,
               "name": "name_A",
@@ -199,6 +200,7 @@ describe('Categories Selectors', () => {
               "url": "/name_a-ctgA",
             },
             {
+              "attributes": undefined,
               "children": undefined,
               "hasChildren": false,
               "name": "name_B",
@@ -213,6 +215,7 @@ describe('Categories Selectors', () => {
         expect(getNavigationCategories('A')(store$.state)).toMatchInlineSnapshot(`
           [
             {
+              "attributes": undefined,
               "children": undefined,
               "hasChildren": true,
               "name": "name_A.1",
@@ -220,6 +223,7 @@ describe('Categories Selectors', () => {
               "url": "/name_a/name_a.1-ctgA.1",
             },
             {
+              "attributes": undefined,
               "children": undefined,
               "hasChildren": false,
               "name": "name_A.2",
@@ -234,6 +238,7 @@ describe('Categories Selectors', () => {
         expect(getNavigationCategories('A.1')(store$.state)).toMatchInlineSnapshot(`
           [
             {
+              "attributes": undefined,
               "children": undefined,
               "hasChildren": false,
               "name": "name_A.1.a",
@@ -241,6 +246,7 @@ describe('Categories Selectors', () => {
               "url": "/name_a/name_a.1/name_a.1.a-ctgA.1.a",
             },
             {
+              "attributes": undefined,
               "children": undefined,
               "hasChildren": false,
               "name": "name_A.1.b",
@@ -281,6 +287,7 @@ describe('Categories Selectors', () => {
       it('should select only the category tree root', () => {
         expect(getNavigationCategoryTree('A@cat', 0)(store$.state)).toMatchInlineSnapshot(`
           {
+            "attributes": undefined,
             "children": undefined,
             "hasChildren": true,
             "name": "name_A",
@@ -293,8 +300,10 @@ describe('Categories Selectors', () => {
       it('should select the category tree with only one level', () => {
         expect(getNavigationCategoryTree('A@cat', 1)(store$.state)).toMatchInlineSnapshot(`
           {
+            "attributes": undefined,
             "children": [
               {
+                "attributes": undefined,
                 "children": undefined,
                 "hasChildren": true,
                 "name": "name_A.1",
@@ -302,6 +311,7 @@ describe('Categories Selectors', () => {
                 "url": "/name_a/name_a.1-ctgA.1",
               },
               {
+                "attributes": undefined,
                 "children": undefined,
                 "hasChildren": false,
                 "name": "name_A.2",
@@ -320,10 +330,13 @@ describe('Categories Selectors', () => {
       it('should select the whole category tree', () => {
         expect(getNavigationCategoryTree('A@cat', 2)(store$.state)).toMatchInlineSnapshot(`
           {
+            "attributes": undefined,
             "children": [
               {
+                "attributes": undefined,
                 "children": [
                   {
+                    "attributes": undefined,
                     "children": undefined,
                     "hasChildren": false,
                     "name": "name_A.1.a",
@@ -331,6 +344,7 @@ describe('Categories Selectors', () => {
                     "url": "/name_a/name_a.1/name_a.1.a-ctgA.1.a",
                   },
                   {
+                    "attributes": undefined,
                     "children": undefined,
                     "hasChildren": false,
                     "name": "name_A.1.b",
@@ -344,6 +358,7 @@ describe('Categories Selectors', () => {
                 "url": "/name_a/name_a.1-ctgA.1",
               },
               {
+                "attributes": undefined,
                 "children": undefined,
                 "hasChildren": false,
                 "name": "name_A.2",
@@ -362,8 +377,10 @@ describe('Categories Selectors', () => {
       it('should select sub category tree when deeper sub category is selected', () => {
         expect(getNavigationCategoryTree('A.1@cat', 2)(store$.state)).toMatchInlineSnapshot(`
           {
+            "attributes": undefined,
             "children": [
               {
+                "attributes": undefined,
                 "children": undefined,
                 "hasChildren": false,
                 "name": "name_A.1.a",
@@ -371,6 +388,7 @@ describe('Categories Selectors', () => {
                 "url": "/name_a/name_a.1/name_a.1.a-ctgA.1.a",
               },
               {
+                "attributes": undefined,
                 "children": undefined,
                 "hasChildren": false,
                 "name": "name_A.1.b",
@@ -389,6 +407,7 @@ describe('Categories Selectors', () => {
       it('should select only the root category if it has no subcategories', () => {
         expect(getNavigationCategoryTree('A.2@cat', 2)(store$.state)).toMatchInlineSnapshot(`
           {
+            "attributes": undefined,
             "children": undefined,
             "hasChildren": false,
             "name": "name_A.2",
