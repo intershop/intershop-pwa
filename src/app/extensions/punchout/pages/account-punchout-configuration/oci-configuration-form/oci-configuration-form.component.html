@@ -53,12 +53,12 @@
       </div>
       <div class="row">
         <div class="button-group w-100 gx-0 clearfix">
-          <div class="float-md-right">
+          <div class="float-md-end">
             <div
+              *ngIf="form.invalid && configForm.submitted"
               id="submit-button-help"
               aria-live="polite"
-              class="sr-only"
-              *ngIf="form.invalid && configForm.submitted"
+              class="visually-hidden"
             >
               {{ 'forms.button.label.disabled' | translate }}
             </div>

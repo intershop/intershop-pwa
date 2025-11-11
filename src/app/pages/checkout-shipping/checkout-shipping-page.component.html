@@ -55,7 +55,7 @@
         <ish-basket-cost-summary [totals]="basket.totals" />
 
         <div class="d-grid">
-          <div id="checkout-button-help" aria-live="polite" class="sr-only" *ngIf="nextDisabled">
+          <div *ngIf="nextDisabled" id="checkout-button-help" aria-live="polite" class="visually-hidden">
             {{ 'checkout.button.label.disabled' | translate }}
           </div>
           <button

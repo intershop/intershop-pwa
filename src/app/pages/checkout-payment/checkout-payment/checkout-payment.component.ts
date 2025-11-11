@@ -219,10 +219,8 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
    * leads to next checkout page (checkout review)
    */
   goToNextStep() {
-    if (!this.nextDisabled) {
-      this.nextSubmitted = true;
-      this.nextStep.emit();
-    }
+    this.nextSubmitted = true;
+    this.nextStep.emit();
   }
 
   get nextDisabled() {

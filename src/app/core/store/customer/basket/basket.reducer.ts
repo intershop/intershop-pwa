@@ -257,6 +257,7 @@ export const basketReducer = createReducer(
     removePromotionCodeFromBasketSuccess,
     setBasketAttributeSuccess,
     deleteBasketAttributeSuccess,
+    continueCheckout,
     (state): BasketState => ({
       ...state,
       validationResults: initialValidationResults,

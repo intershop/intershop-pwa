@@ -8,10 +8,10 @@
         <div class="row form-group">
           <div class="offset-md-4 col-md-8">
             <div
+              *ngIf="form.invalid && registrationForm.submitted"
               id="submit-button-help"
               aria-live="polite"
-              class="sr-only"
-              *ngIf="form.invalid && registrationForm.submitted"
+              class="visually-hidden"
             >
               {{ 'forms.button.label.disabled' | translate }}
             </div>

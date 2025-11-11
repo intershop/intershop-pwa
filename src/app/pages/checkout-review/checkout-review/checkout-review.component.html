@@ -135,10 +135,10 @@
         <formly-form [form]="form" [model]="model" [fields]="fields" [options]="options" />
         <div class="d-grid">
           <div
+            *ngIf="(form.invalid && tcForm.submitted) || multipleBuckets || submitting"
             id="checkout-button-help"
             aria-live="polite"
-            class="sr-only"
-            *ngIf="(form.invalid && tcForm.submitted) || multipleBuckets || submitting"
+            class="visually-hidden"
           >
             {{ 'checkout.order_review.send.button.disabled' | translate }}
           </div>
@@ -150,7 +150,7 @@
             type="submit"
           >
             <ng-container *ngIf="submitting">
-              <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pr-3" />
+              <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pe-3" />
             </ng-container>
             {{
               (basket.recurrence ? 'checkout.order_review.recurring.send.button' : 'checkout.order_review.send.button')

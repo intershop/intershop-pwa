@@ -67,10 +67,10 @@
             <div [ngClass]="{ 'row form-group': isShippingAddressFormExpanded }">
               <div [ngClass]="{ 'offset-md-4 col-md-8': isShippingAddressFormExpanded }">
                 <div
+                  *ngIf="form.invalid && addressForm.submitted"
                   id="checkout-button-help"
                   aria-live="polite"
-                  class="sr-only"
-                  *ngIf="form.invalid && addressForm.submitted"
+                  class="visually-hidden"
                 >
                   {{ 'checkout.button.label.disabled' | translate }}
                 </div>

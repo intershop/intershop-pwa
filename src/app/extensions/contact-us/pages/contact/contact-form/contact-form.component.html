@@ -14,7 +14,7 @@
 
   <div class="row form-group">
     <div class="offset-md-4 col-md-8">
-      <div id="submit-button-help" aria-live="polite" class="sr-only" *ngIf="form.submitted && form.invalid">
+      <div *ngIf="form.submitted && form.invalid" id="submit-button-help" aria-live="polite" class="visually-hidden">
         {{ 'forms.button.label.disabled' | translate }}
       </div>
       <input

@@ -37,11 +37,7 @@
     }
 
     &.disabled,
-    &:disabled,
-    &[aria-disabled='true'],
-    &[aria-disabled='true']:not(:disabled):not(.disabled):active, // to override bootstrap styles
-    &[aria-disabled='true']:not(:disabled):not(.disabled).active,
-    &[aria-disabled='true']:not(:disabled):not(.disabled):focus {
+    &:disabled {
       color: $text-color-secondary;
       background-color: $color-tertiary;
       border-color: $border-color-light;
@@ -49,8 +45,8 @@
       opacity: 0.65;
     }
 
-    &:not(:disabled):not(.disabled):not([aria-disabled='true']):active,
-    &:not(:disabled):not(.disabled):not([aria-disabled='true']).active {
+    &:not(:disabled):not(.disabled):active,
+    &:not(:disabled):not(.disabled).active {
       background-color: $input-accent-color;
       border-color: $input-accent-color;
       box-shadow: none;
@@ -80,11 +76,7 @@
     }
 
     &.disabled,
-    &:disabled,
-    &[aria-disabled='true'],
-    &[aria-disabled='true']:not(:disabled):not(.disabled):active, // to override bootstrap styles
-    &[aria-disabled='true']:not(:disabled):not(.disabled).active,
-    &[aria-disabled='true']:not(:disabled):not(.disabled):focus {
+    &:disabled {
       color: $text-color-secondary;
       background-color: $button-default-bg;
       border-color: $border-color-light;
@@ -92,8 +84,8 @@
       opacity: 0.65;
     }
 
-    &:not(:disabled):not(.disabled):not([aria-disabled='true']):active,
-    &:not(:disabled):not(.disabled):not([aria-disabled='true']).active {
+    &:not(:disabled):not(.disabled):active,
+    &:not(:disabled):not(.disabled).active {
       color: $input-accent-color;
       background-color: $color-quaternary;
       border-color: $input-accent-color;
