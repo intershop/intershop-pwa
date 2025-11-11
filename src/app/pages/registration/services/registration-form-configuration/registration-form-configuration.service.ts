@@ -327,7 +327,6 @@ export class RegistrationFormConfigurationService {
             props: {
               required: true,
               label: 'account.register.password_confirmation.label',
-              attributes: { autocomplete: 'new-password' },
             },
             validation: {
               messages: {

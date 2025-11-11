@@ -73,7 +73,6 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
               required: true,
               hideRequiredMarker: true,
               label: 'account.update_password.newpassword_confirmation.label',
-              attributes: { autocomplete: 'new-password' },
             },
             validation: {
               messages: {

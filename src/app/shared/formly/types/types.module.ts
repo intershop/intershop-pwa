@@ -127,7 +127,7 @@ const fieldComponents = [
           name: 'ish-password-field',
           extends: 'ish-password-novalidate-field',
           defaultOptions: {
-            props: { attributes: { autocomplete: 'new-password' } },
+            props: { attributes: { autocomplete: 'off' } },
             validators: {
               password: formlyValidation('password', SpecialValidators.password),
             },
@@ -143,7 +143,7 @@ const fieldComponents = [
           name: 'ish-password-novalidate-field',
           component: PasswordFieldComponent,
           defaultOptions: {
-            props: { attributes: { autocomplete: 'current-password' } },
+            props: { attributes: { autocomplete: 'off' } },
             validation: {
               messages: {
                 required: 'form.password.error.required',

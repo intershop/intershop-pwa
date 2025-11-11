@@ -93,7 +93,6 @@ export class PunchoutUserFormComponent implements OnInit {
               label: this.punchoutUser
                 ? 'account.punchout.password.new.confirmation.label'
                 : 'account.punchout.password.confirmation.label',
-              attributes: { autocomplete: 'new-password' },
               hideRequiredMarker: true,
             },
             validation: {
