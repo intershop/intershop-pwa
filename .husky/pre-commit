@@ -1,2 +1,2 @@
 echo "🔍 Running checks before commit..."
-lint-staged --concurrent false
+lint-staged --concurrent false --relative

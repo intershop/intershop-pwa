@@ -212,7 +212,11 @@
     ],
     "*.ts": [
       "eslint --fix",
-      "jest --ci --bail --findRelatedTests --passWithNoTests"
+      "jest --ci --bail --findRelatedTests --passWithNoTests",
+      "npx ts-node scripts/find-dead-code.ts"
+    ],
+    "*.spec.ts": [
+      "npm run cleanup-testbed --"
     ],
     "src/assets/i18n/*.json": [
       "npm run sort-i18n"
