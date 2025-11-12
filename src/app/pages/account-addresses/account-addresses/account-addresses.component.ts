@@ -171,7 +171,7 @@ export class AccountAddressesComponent implements OnInit {
   }
 
   isUpdateAddressFormCollapsed(address: Address) {
-    return address?.id !== this.updateFormExpandedAddressId;
+    return !this.updateFormExpandedAddressId || address?.id !== this.updateFormExpandedAddressId;
   }
 
   createAddress(address: Address) {
