@@ -805,7 +805,7 @@
   "checkout.cart.payment_cost.label": "Payment costs",
   "checkout.cart.subtotal.heading": "Subtotal",
   "checkout.cart_for_approval.title": "Thank you for your requisition",
-  "checkout.continue.validation.message": "Please correct the errors and complete all required fields before continuing the checkout.",
+  "checkout.continue.validation.message": "Please correct the errors and complete all required fields before continuing with the checkout.",
   "checkout.cost_center.multiple.error": "You are assigned to multiple cost centers. Please select a cost center before proceeding to checkout.",
   "checkout.cost_center.select.heading": "Select a cost center",
   "checkout.cost_center.select.label": "Cost center",

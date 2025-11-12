@@ -883,7 +883,7 @@
   "checkout.order_review.recurring.heading.title": "Daten Ihrer wiederkehrenden Bestellung prüfen",
   "checkout.order_review.recurring.send.button": "Wiederkehrende Bestellung absenden",
   "checkout.order_review.send.button": "Bestellung absenden",
-  "checkout.order_review.submit.validation.message": "Das Formular kann nicht übermittelt werden. Bitte korrigieren Sie die Fehler und füllen Sie alle erforderlichen Felder aus.",
+  "checkout.order_review.submit.validation.message": "Die Bestellung kann nicht gesendet werden. Bitte korrigieren Sie die Fehler.",
   "checkout.order_summary.heading": "Bestellübersicht",
   "checkout.payment.addPayment.form.legend": "Zahlungsmittelformular für {{paymentMethodName}}",
   "checkout.payment.addPayment.link": "Zahlungsmittel hinzufügen",
