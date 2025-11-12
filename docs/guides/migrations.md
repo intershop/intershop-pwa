@@ -7,6 +7,11 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 9.0.0 to 9.1.0
+
+Catalogs (root-level categories in ICM terminology) with the attribute "ShowInMenu" set to "False" or "false" are now hidden from the main header navigation.
+Catalogs or categories without the attribute or with other values remain visible as before.
+
 ## From 8.0.0 to 9.0.0
 
 With Intershop PWA 9.0.0, the SSR container now supports the manual creation of PWA heap dumps for debugging purposes.
