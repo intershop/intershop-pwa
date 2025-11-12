@@ -32,7 +32,8 @@ export class HeaderNavigationComponent implements OnInit {
   ngOnInit() {
     this.categories$ = this.shoppingFacade.navigationCategories$();
     this.filteredCategories$ = this.categories$.pipe(
-      map(categories => categories.filter(category => this.shouldShowInMenu(category)))
+      // filter out categories that should be hidden in the menu
+      map(categories => categories.filter(category => !this.shouldHideInMenu(category)))
     );
   }
 
@@ -76,13 +77,11 @@ export class HeaderNavigationComponent implements OnInit {
   }
 
   /**
-   * Check if category should be shown in the header navigation
-   * based on the "ShowInMenu" attribute.
+   * Check if category should be hidden in the header navigation.
    *
    * @param category The category item.
    */
-  private shouldShowInMenu(category: NavigationCategory): boolean {
-    const value = category.attributes?.find(attr => attr.name === 'ShowInMenu')?.value;
-    return typeof value === 'string' && value.toLowerCase() === 'true';
+  private shouldHideInMenu(category: NavigationCategory): boolean {
+    return category.hideInMenu;
   }
 }

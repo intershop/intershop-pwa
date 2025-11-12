@@ -12,6 +12,7 @@ export interface Category {
   description: string;
   images: Image[];
   attributes?: Attribute[];
+  hideInMenu?: boolean;
 
   completenessLevel: number;
 

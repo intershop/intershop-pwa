@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -19,6 +20,7 @@ describe('Header Navigation Component', () => {
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       declarations: [HeaderNavigationComponent, MockComponent(LazyContentIncludeComponent)],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
@@ -30,9 +32,9 @@ describe('Header Navigation Component', () => {
     element = fixture.nativeElement;
 
     const categories = [
-      { uniqueId: 'A', name: 'CAT_A', url: '/cat/A', hasChildren: true },
-      { uniqueId: 'B', name: 'CAT_B', url: '/cat/B' },
-      { uniqueId: 'C', name: 'CAT_C', url: '/cat/C' },
+      { uniqueId: 'A', name: 'CAT_A', url: '/cat/A', hasChildren: true, hideInMenu: false },
+      { uniqueId: 'B', name: 'CAT_B', url: '/cat/B', hideInMenu: true },
+      { uniqueId: 'C', name: 'CAT_C', url: '/cat/C', hideInMenu: false },
     ] as NavigationCategory[];
     when(shoppingFacade.navigationCategories$()).thenReturn(of(categories));
   });
@@ -43,6 +45,28 @@ describe('Header Navigation Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`
       <ul class="navbar-nav main-navigation-list">
+        <li class="dropdown first">
+          <a
+            class="main-navigation-link"
+            ng-reflect-router-link="/cat/A"
+            data-testing-id="A-link"
+            style="width: 100%"
+            href="/cat/A"
+          >
+            CAT_A
+          </a>
+        </li>
+        <li class="dropdown">
+          <a
+            class="main-navigation-link"
+            ng-reflect-router-link="/cat/C"
+            data-testing-id="C-link"
+            style="width: 100%"
+            href="/cat/C"
+          >
+            CAT_C
+          </a>
+        </li>
         <ish-lazy-content-include
           includeid="include.header.navigation.pagelet2-Include"
           role="listitem"
@@ -50,5 +74,15 @@ describe('Header Navigation Component', () => {
         ></ish-lazy-content-include>
       </ul>
     `);
+  });
+
+  it('should filter out categories with hideInMenu set to true', done => {
+    fixture.detectChanges(); // Initialize component and call ngOnInit
+    component.filteredCategories$.subscribe(filteredCategories => {
+      expect(filteredCategories).toHaveLength(2);
+      expect(filteredCategories.map(cat => cat.uniqueId)).toEqual(['A', 'C']);
+      expect(filteredCategories.find(cat => cat.uniqueId === 'B')).toBeUndefined();
+      done();
+    });
   });
 });

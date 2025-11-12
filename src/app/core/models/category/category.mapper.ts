@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { CategoryTreeHelper } from 'ish-core/models/category-tree/category-tree.helper';
 import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
 import { ImageMapper } from 'ish-core/models/image/image.mapper';
@@ -107,6 +108,7 @@ export class CategoryMapper {
         description: categoryData.description,
         images: this.imageMapper.fromImages(categoryData.images),
         attributes: categoryData.attributes,
+        hideInMenu: this.shouldHideInMenu(categoryData),
         completenessLevel: this.computeCompleteness(categoryData),
         seoAttributes: SeoAttributesMapper.fromData(categoryData.seoAttributes),
       };
@@ -146,5 +148,25 @@ export class CategoryMapper {
     } else {
       throw new Error(`'categoryData' is required`);
     }
+  }
+
+  /**
+   * Sets the hideInMenu value from category attribute 'ShowInMenu'.
+   *
+   * Returns true if the category should be hidden ('ShowInMenu' is 'false').
+   * Categories without this attribute or if the attribute is 'true' will be shown by default.
+   *
+   * @param categoryData The category data object.
+   */
+  private shouldHideInMenu(categoryData: CategoryData): boolean {
+    if (!categoryData?.attributes) {
+      return false;
+    }
+
+    const showInMenuValue = AttributeHelper.getAttributeValueByAttributeName<string>(
+      categoryData.attributes,
+      'ShowInMenu'
+    );
+    return showInMenuValue?.toLowerCase() === 'false';
   }
 }
