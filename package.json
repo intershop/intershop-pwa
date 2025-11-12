@@ -39,6 +39,7 @@
     "check": "npm-run-all \"lint -- --fix\" format compile build:multi test dead-code update-dockerignore clean-localizations",
     "clean-check": "npm-run-all clean check",
     "check-no-changes": "git diff --exit-code --raw -p --stat",
+    "check-lint-staged-extended": "npx lint-staged && npx lint-staged --concurrent false --relative --config scripts/lint-staged.extended.js",
     "show-ignored-files": "git ls-files . --exclude-standard --others --ignored --directory",
     "changelog": "npm install q --no-save --no-audit --no-fund && npx -p conventional-changelog-cli conventional-changelog -n intershop-changelog.js -i CHANGELOG.md -s",
     "3rd-party-licenses": "npm ci && npx license-checker --csv --out 3rd-party-licenses.txt --customPath templates/3rd-party-licenses_format.json",
@@ -212,11 +213,7 @@
     ],
     "*.ts": [
       "eslint --fix",
-      "jest --ci --bail --findRelatedTests --passWithNoTests",
-      "npx ts-node scripts/find-dead-code.ts"
-    ],
-    "*.spec.ts": [
-      "npm run cleanup-testbed --"
+      "jest --ci --bail --findRelatedTests --passWithNoTests"
     ],
     "src/assets/i18n/*.json": [
       "npm run sort-i18n"
