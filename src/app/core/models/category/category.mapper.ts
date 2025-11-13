@@ -152,14 +152,13 @@ export class CategoryMapper {
 
   /**
    * Sets the hideInMenu value from category attribute 'ShowInMenu'.
-   *
-   * Returns true if the category should be hidden ('ShowInMenu' is 'false').
-   * Categories without this attribute or if the attribute is 'true' will be shown by default.
+   * Categories without this attribute or if the attribute is 'true' will be shown.
    *
    * @param categoryData The category data object.
+   * @return boolean indicating whether the category should be hidden in the menu.
    */
   private shouldHideInMenu(categoryData: CategoryData): boolean {
-    if (!categoryData?.attributes) {
+    if (!categoryData?.attributes?.length) {
       return false;
     }
 

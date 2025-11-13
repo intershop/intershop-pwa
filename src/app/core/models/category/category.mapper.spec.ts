@@ -126,6 +126,7 @@ describe('Category Mapper', () => {
     it('should return Category when supplied with raw CategoryData', () => {
       const category = categoryMapper.fromDataSingle({ categoryPath: [{ id: '1' }] } as CategoryData);
       expect(category).toBeTruthy();
+      expect(category.hideInMenu).toBeFalse();
       verify(imageMapper.fromImages(anything())).once();
     });
 
@@ -141,6 +142,16 @@ describe('Category Mapper', () => {
       } as CategoryData);
       expect(category).toHaveProperty('uniqueId', '1.2');
       expect(category.categoryPath).toEqual(['1', '1.2']);
+      verify(imageMapper.fromImages(anything())).once();
+    });
+
+    it('should return Category with true hideMenu when false ShowInMenu attribute', () => {
+      const category = categoryMapper.fromDataSingle({
+        categoryPath: [{ id: '1' }],
+        attributes: [{ name: 'ShowInMenu', value: 'false' }],
+      } as CategoryData);
+      expect(category).toBeTruthy();
+      expect(category.hideInMenu).toBeTrue();
       verify(imageMapper.fromImages(anything())).once();
     });
   });

@@ -2,7 +2,7 @@
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <ul class="navbar-nav main-navigation-list">
   <li
-    *ngFor="let category of filteredCategories$ | async; first as isFirst"
+    *ngFor="let category of categories$ | async; first as isFirst"
     #subMenu
     class="dropdown"
     [ngClass]="{ open: isOpened(category.uniqueId), first: isFirst }"

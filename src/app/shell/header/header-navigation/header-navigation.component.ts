@@ -15,8 +15,7 @@ import { InjectSingle } from 'ish-core/utils/injection';
 export class HeaderNavigationComponent implements OnInit {
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
 
-  private categories$: Observable<NavigationCategory[]>;
-  filteredCategories$: Observable<NavigationCategory[]>;
+  categories$: Observable<NavigationCategory[]>;
 
   private openedCategories: string[] = [];
 
@@ -30,10 +29,9 @@ export class HeaderNavigationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.categories$ = this.shoppingFacade.navigationCategories$();
-    this.filteredCategories$ = this.categories$.pipe(
+    this.categories$ = this.shoppingFacade.navigationCategories$().pipe(
       // filter out categories that should be hidden in the menu
-      map(categories => categories.filter(category => !this.shouldHideInMenu(category)))
+      map(categories => categories.filter(category => !category?.hideInMenu))
     );
   }
 
@@ -74,14 +72,5 @@ export class HeaderNavigationComponent implements OnInit {
   toggleOpen(uniqueId: string) {
     const index = this.openedCategories.findIndex(id => id === uniqueId);
     index > -1 ? this.openedCategories.splice(index, 1) : this.openedCategories.push(uniqueId);
-  }
-
-  /**
-   * Check if category should be hidden in the header navigation.
-   *
-   * @param category The category item.
-   */
-  private shouldHideInMenu(category: NavigationCategory): boolean {
-    return category.hideInMenu;
   }
 }

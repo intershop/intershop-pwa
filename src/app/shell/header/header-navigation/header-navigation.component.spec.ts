@@ -78,10 +78,10 @@ describe('Header Navigation Component', () => {
 
   it('should filter out categories with hideInMenu set to true', done => {
     fixture.detectChanges(); // Initialize component and call ngOnInit
-    component.filteredCategories$.subscribe(filteredCategories => {
-      expect(filteredCategories).toHaveLength(2);
-      expect(filteredCategories.map(cat => cat.uniqueId)).toEqual(['A', 'C']);
-      expect(filteredCategories.find(cat => cat.uniqueId === 'B')).toBeUndefined();
+    component.categories$.subscribe(categories => {
+      expect(categories).toHaveLength(2);
+      expect(categories.map(cat => cat.uniqueId)).toEqual(['A', 'C']);
+      expect(categories.find(cat => cat.uniqueId === 'B')).toBeUndefined();
       done();
     });
   });
