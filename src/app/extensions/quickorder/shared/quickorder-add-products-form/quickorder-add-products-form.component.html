@@ -14,18 +14,16 @@
   <div
     id="submit-button-help"
     aria-live="polite"
-    class="sr-only"
-    *ngIf="(quickOrderForm.pristine || quickOrderForm.invalid || quickOrderForm.pending) && quickOrderIDForm.submitted"
+    class="visually-hidden"
+    *ngIf="(quickOrderForm.pristine || quickOrderForm.invalid) && quickOrderIDForm.submitted"
   >
-    {{ 'quickorder.page.add.cart.disabled' | translate }}
+    {{ 'form.submit.validation.message' | translate }}
   </div>
   <button
     type="submit"
     class="btn btn-primary"
     [attr.aria-describedby]="
-      (quickOrderForm.pristine || quickOrderForm.invalid || quickOrderForm.pending) && quickOrderIDForm.submitted
-        ? 'submit-button-help'
-        : null
+      (quickOrderForm.pristine || quickOrderForm.invalid) && quickOrderIDForm.submitted ? 'submit-button-help' : null
     "
     data-testing-id="add-form-to-cart"
   >

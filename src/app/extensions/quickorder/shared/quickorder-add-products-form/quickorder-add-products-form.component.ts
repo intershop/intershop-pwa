@@ -36,7 +36,7 @@ export class QuickorderAddProductsFormComponent implements OnInit {
 
   onAddProducts() {
     const products = this.model.addProducts.filter((p: SkuQuantityType) => !!p.sku && !!p.quantity);
-    if (products.length === 0 || this.quickOrderForm.pending || this.hasValidationError()) {
+    if (products.length === 0 || this.hasValidationError()) {
       return;
     }
     products.forEach(product => {
@@ -98,8 +98,7 @@ export class QuickorderAddProductsFormComponent implements OnInit {
                   if (currentIndex !== 0) {
                     return false;
                   }
-                  const products = this.model.addProducts.filter((p: SkuQuantityType) => !!p.sku && !!p.quantity);
-                  return products.length === 0;
+                  return !this.model.addProducts.find((p: SkuQuantityType) => p.sku && p.quantity);
                 },
               },
               validation: {
