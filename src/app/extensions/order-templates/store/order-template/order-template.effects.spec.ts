@@ -409,6 +409,25 @@ describe('Order Template Effects', () => {
       expect(effects.addProductToOrderTemplate$).toBeObservable(expected$);
     });
 
+    it('should process multiple add requests sequentially', () => {
+      const firstResponse$ = cold('--a|', { a: orderTemplates[0] });
+      const secondResponse$ = cold('-a|', { a: orderTemplates[1] });
+      when(orderTemplateServiceMock.addProductToOrderTemplate(anyString(), anyString(), anyNumber())).thenReturn(
+        firstResponse$,
+        secondResponse$
+      );
+
+      const action1 = addProductToOrderTemplate(payload);
+      const action2 = addProductToOrderTemplate({ ...payload, sku: 'second-sku' });
+      const completion1 = addProductToOrderTemplateSuccess({ orderTemplate: orderTemplates[0] });
+      const completion2 = addProductToOrderTemplateSuccess({ orderTemplate: orderTemplates[1] });
+
+      actions$ = hot('-a-b----|', { a: action1, b: action2 });
+      const expected$ = cold('---c-d--|', { c: completion1, d: completion2 });
+
+      expect(effects.addProductToOrderTemplate$).toBeObservable(expected$);
+    });
+
     it('should map failed calls to actions of type AddProductToOrderTemplateFail', () => {
       const error = makeHttpError({ message: 'invalid' });
       when(orderTemplateServiceMock.addProductToOrderTemplate(anyString(), anyString(), anything())).thenReturn(
@@ -549,6 +568,27 @@ describe('Order Template Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
       expect(effects.removeProductFromOrderTemplate$).toBeObservable(expected$);
     });
+    it('should process multiple remove requests sequentially', () => {
+      const orderTemplateAfterFirstRemoval: OrderTemplate = { ...orderTemplate, itemsCount: 1 };
+      const orderTemplateAfterSecondRemoval: OrderTemplate = { ...orderTemplate, itemsCount: 0 };
+      const firstResponse$ = cold('--a|', { a: orderTemplateAfterFirstRemoval });
+      const secondResponse$ = cold('-a|', { a: orderTemplateAfterSecondRemoval });
+      when(orderTemplateServiceMock.removeProductFromOrderTemplate(anyString(), anyString())).thenReturn(
+        firstResponse$,
+        secondResponse$
+      );
+
+      const action1 = removeItemFromOrderTemplate(payload);
+      const action2 = removeItemFromOrderTemplate({ ...payload, sku: 'another-sku' });
+      const completion1 = removeItemFromOrderTemplateSuccess({ orderTemplate: orderTemplateAfterFirstRemoval });
+      const completion2 = removeItemFromOrderTemplateSuccess({ orderTemplate: orderTemplateAfterSecondRemoval });
+
+      actions$ = hot('-a-b----|', { a: action1, b: action2 });
+      const expected$ = cold('---c-d--|', { c: completion1, d: completion2 });
+
+      expect(effects.removeProductFromOrderTemplate$).toBeObservable(expected$);
+    });
+
     it('should map failed calls to actions of type RemoveItemFromOrderTemplateFail', () => {
       const error = makeHttpError({ message: 'invalid' });
       when(orderTemplateServiceMock.removeProductFromOrderTemplate(anyString(), anyString())).thenReturn(
