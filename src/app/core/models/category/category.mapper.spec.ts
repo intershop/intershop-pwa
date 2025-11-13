@@ -145,7 +145,7 @@ describe('Category Mapper', () => {
       verify(imageMapper.fromImages(anything())).once();
     });
 
-    it('should return Category with true hideMenu when false ShowInMenu attribute', () => {
+    it('should return Category with true hideMenu when ShowInMenu attribute is "false"', () => {
       const category = categoryMapper.fromDataSingle({
         categoryPath: [{ id: '1' }],
         attributes: [{ name: 'ShowInMenu', value: 'false' }],
@@ -154,6 +154,46 @@ describe('Category Mapper', () => {
       expect(category.hideInMenu).toBeTrue();
       verify(imageMapper.fromImages(anything())).once();
     });
+  });
+
+  it('should return Category with false hideInMenu when ShowInMenu attribute is "true"', () => {
+    const category = categoryMapper.fromDataSingle({
+      categoryPath: [{ id: '1' }],
+      attributes: [{ name: 'ShowInMenu', value: 'true' }],
+    } as CategoryData);
+    expect(category).toBeTruthy();
+    expect(category.hideInMenu).toBeFalse();
+    verify(imageMapper.fromImages(anything())).once();
+  });
+
+  it('should return Category with true hideInMenu when ShowInMenu attribute is "False" (mixed case)', () => {
+    const category = categoryMapper.fromDataSingle({
+      categoryPath: [{ id: '1' }],
+      attributes: [{ name: 'ShowInMenu', value: 'False' }],
+    } as CategoryData);
+    expect(category).toBeTruthy();
+    expect(category.hideInMenu).toBeTrue();
+    verify(imageMapper.fromImages(anything())).once();
+  });
+
+  it('should return Category with false hideInMenu when ShowInMenu attribute is empty string', () => {
+    const category = categoryMapper.fromDataSingle({
+      categoryPath: [{ id: '1' }],
+      attributes: [{ name: 'ShowInMenu', value: '' }],
+    } as CategoryData);
+    expect(category).toBeTruthy();
+    expect(category.hideInMenu).toBeFalse();
+    verify(imageMapper.fromImages(anything())).once();
+  });
+
+  it('should return Category with false hideInMenu when ShowInMenu attribute has unexpected value', () => {
+    const category = categoryMapper.fromDataSingle({
+      categoryPath: [{ id: '1' }],
+      attributes: [{ name: 'ShowInMenu', value: 'maybe' }],
+    } as CategoryData);
+    expect(category).toBeTruthy();
+    expect(category.hideInMenu).toBeFalse();
+    verify(imageMapper.fromImages(anything())).once();
   });
 
   describe('fromData', () => {
