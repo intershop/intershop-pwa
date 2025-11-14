@@ -41,6 +41,8 @@
       color: $text-color-secondary;
       background-color: $color-tertiary;
       border-color: $border-color-light;
+      box-shadow: none;
+      opacity: 0.65;
     }
 
     &:not(:disabled):not(.disabled):active,
@@ -78,6 +80,8 @@
       color: $text-color-secondary;
       background-color: $button-default-bg;
       border-color: $border-color-light;
+      box-shadow: none;
+      opacity: 0.65;
     }
 
     &:not(:disabled):not(.disabled):active,

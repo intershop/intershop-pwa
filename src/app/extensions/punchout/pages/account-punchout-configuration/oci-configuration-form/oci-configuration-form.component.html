@@ -54,10 +54,18 @@
       <div class="row">
         <div class="button-group w-100 gx-0 clearfix">
           <div class="float-md-end">
+            <div
+              *ngIf="form.invalid && configForm.submitted"
+              id="submit-button-help"
+              aria-live="polite"
+              class="visually-hidden"
+            >
+              {{ 'form.submit.validation.message' | translate }}
+            </div>
             <button
               type="submit"
               class="btn btn-primary"
-              [disabled]="form.invalid && configForm.submitted"
+              [attr.aria-describedby]="form.invalid && configForm.submitted ? 'submit-button-help' : null"
               data-testing-id="update-oci-configuration"
             >
               {{ 'account.update.button.label' | translate }}
