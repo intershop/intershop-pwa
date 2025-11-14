@@ -113,8 +113,7 @@ export function createLazyComponent(options: Options): Rule {
       const pathFragments = originalPath.split('/');
       pathFragments.pop();
       pathFragments.pop();
-      pathFragments.shift();
-      componentImportPath = `ish-shared/${pathFragments.join('/')}`;
+      componentImportPath = `../../../${pathFragments.join('/')}`;
     } else {
       componentImportPath = '../../shared';
     }
