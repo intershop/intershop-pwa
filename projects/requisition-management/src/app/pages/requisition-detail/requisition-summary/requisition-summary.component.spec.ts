@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockPipe } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
+import { BasketCustomFieldsViewComponent } from 'ish-shared/components/checkout/basket-custom-fields-view/basket-custom-fields-view.component';
 
 import { Requisition } from '../../../models/requisition/requisition.model';
 
@@ -17,7 +18,12 @@ describe('Requisition Summary Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [MockPipe(DatePipe), MockPipe(PricePipe), RequisitionSummaryComponent],
+      declarations: [
+        MockComponent(BasketCustomFieldsViewComponent),
+        MockPipe(DatePipe),
+        MockPipe(PricePipe),
+        RequisitionSummaryComponent,
+      ],
     }).compileComponents();
   });
 
@@ -63,11 +69,11 @@ describe('Requisition Summary Component', () => {
     fixture.detectChanges();
     expect(element.querySelectorAll('dd')).toMatchInlineSnapshot(`
       NodeList [
-        <dd class="col-6 col-sm-8 col-md-9">4712</dd>,
-        <dd class="col-6 col-sm-8 col-md-9"></dd>,
-        <dd class="col-6 col-sm-8 col-md-9">Jack Link, Bernhhard Boldner</dd>,
-        <dd class="col-6 col-sm-8 col-md-9"></dd>,
-        <dd class="col-6 col-sm-8 col-md-9">
+        <dd class="col-6">4712</dd>,
+        <dd class="col-6"></dd>,
+        <dd class="col-6">Jack Link, Bernhhard Boldner</dd>,
+        <dd class="col-6"></dd>,
+        <dd class="col-6">
         <span
           class="border border-secondary badge bg-secondary text-capitalize border-warning bg-warning text-dark"
         >
@@ -95,12 +101,12 @@ describe('Requisition Summary Component', () => {
     fixture.detectChanges();
     expect(element.querySelectorAll('dd')).toMatchInlineSnapshot(`
       NodeList [
-        <dd class="col-6 col-sm-8 col-md-9">4712_R</dd>,
-        <dd class="col-6 col-sm-8 col-md-9"></dd>,
-        <dd class="col-6 col-sm-8 col-md-9">Bernhhard Boldner</dd>,
-        <dd class="col-6 col-sm-8 col-md-9"></dd>,
-        <dd class="col-6 col-sm-8 col-md-9"></dd>,
-        <dd class="col-6 col-sm-8 col-md-9">
+        <dd class="col-6">4712_R</dd>,
+        <dd class="col-6"></dd>,
+        <dd class="col-6">Bernhhard Boldner</dd>,
+        <dd class="col-6"></dd>,
+        <dd class="col-6"></dd>,
+        <dd class="col-6">
         <span class="border border-secondary badge bg-secondary text-capitalize border-danger bg-danger">
           rejected
         </span>
@@ -115,11 +121,11 @@ describe('Requisition Summary Component', () => {
     fixture.detectChanges();
     expect(element.querySelectorAll('dd')).toMatchInlineSnapshot(`
       NodeList [
-        <dd class="col-6 col-sm-8 col-md-9">4712</dd>,
-        <dd class="col-6 col-sm-8 col-md-9"></dd>,
-        <dd class="col-6 col-sm-8 col-md-9">Patricia Miller</dd>,
-        <dd class="col-6 col-sm-8 col-md-9"></dd>,
-        <dd class="col-6 col-sm-8 col-md-9">
+        <dd class="col-6">4712</dd>,
+        <dd class="col-6"></dd>,
+        <dd class="col-6">Patricia Miller</dd>,
+        <dd class="col-6"></dd>,
+        <dd class="col-6">
         <span
           class="border border-secondary badge bg-secondary text-capitalize border-warning bg-warning text-dark"
         >
