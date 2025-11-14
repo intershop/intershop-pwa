@@ -8,6 +8,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.model';
@@ -70,6 +71,7 @@ describe('Account Recurring Order Page Component', () => {
         MockPipe(DatePipe),
       ],
       imports: [
+        FeatureToggleModule.forTesting('businessCustomerRegistration'),
         RouterTestingModule.withRoutes([{ path: 'account/requisitions/buyer:RecurringOrderId', children: [] }]),
         TranslateModule.forRoot(),
       ],
