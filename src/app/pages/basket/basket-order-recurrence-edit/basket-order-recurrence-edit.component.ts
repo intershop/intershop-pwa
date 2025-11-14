@@ -253,10 +253,16 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
       period = 'W';
       duration = duration / 7;
     }
+
+    const currentStartDate = parseISO(recurrence.startDate);
+    const defaultStartDate = parseISO(this.defaultRecurrence.startDate);
+
     return {
       period,
       duration: duration.toString(),
-      startDate: parseISO(recurrence.startDate),
+      // Auto-correct start date if it's in the past by setting it to today's date
+      // This prevents validation errors when the basket contains recurring order information with past dates
+      startDate: currentStartDate < defaultStartDate ? defaultStartDate : currentStartDate,
       endDate: recurrence.endDate ? parseISO(recurrence.endDate) : undefined,
       repetitions: recurrence.repetitions,
       ending: recurrence.repetitions ? 'repetitions' : 'date',
