@@ -260,6 +260,8 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
     return {
       period,
       duration: duration.toString(),
+      // Auto-correct start date if it's in the past by setting it to today's date
+      // This prevents validation errors when the basket contains recurring order information with past dates
       startDate: currentStartDate < defaultStartDate ? defaultStartDate : currentStartDate,
       endDate: recurrence.endDate ? parseISO(recurrence.endDate) : undefined,
       repetitions: recurrence.repetitions,
