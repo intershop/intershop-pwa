@@ -4,4 +4,5 @@ export interface NavigationCategory {
   url: string;
   hasChildren: boolean;
   children?: NavigationCategory[];
+  hideInMenu?: boolean;
 }
