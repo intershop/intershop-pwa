@@ -102,7 +102,7 @@ export class ProductListingEffects {
               !!params?.view ||
               !!params?.sorting ||
               !!params?.page ||
-              // allow common tracking parameters from google, matomo, meta
+              // allow common tracking parameters from Google, Matomo, Meta
               Object.keys(params || {}).some(
                 key => key.startsWith('utm_') || key.startsWith('mtm_') || key.endsWith('clid')
               ) ||
