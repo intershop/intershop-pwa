@@ -81,7 +81,7 @@ export class QuickorderAddProductsFormComponent implements OnInit {
           numberMoreRows: this.numberOfRows,
         },
         fieldArray: {
-          fieldGroupClassName: 'row list-item-row py-2',
+          fieldGroupClassName: 'row quickorder-line-item',
           fieldGroup: [
             {
               key: 'sku',
