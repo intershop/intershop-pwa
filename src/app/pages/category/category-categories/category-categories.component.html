@@ -45,7 +45,6 @@
       <ish-breadcrumb />
       <h1>{{ category.name }}</h1>
 
-      <!-- DISABLED VIEW CONTEXT --
       <div class="marketing-area">
         <ish-content-viewcontext
           *ngIf="category.categoryRef"
@@ -53,11 +52,9 @@
           [callParameters]="{ Category: category.categoryRef }"
         />
       </div>
-      -- DISABLED VIEW CONTEXT -->
 
       <ish-category-list [categories]="category.children" />
 
-      <!-- DISABLED VIEW CONTEXT --
       <div class="marketing-area">
         <ish-content-viewcontext
           *ngIf="category.categoryRef"
@@ -65,7 +62,6 @@
           [callParameters]="{ Category: category.categoryRef }"
         />
       </div>
-      -- DISABLED VIEW CONTEXT -->
     </div>
   </div>
   <!-- DISABLED VIEW CONTEXT --
