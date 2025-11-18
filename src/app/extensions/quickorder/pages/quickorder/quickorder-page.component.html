@@ -1,19 +1,17 @@
 <div class="content-page">
   <ish-breadcrumb />
+
+  <h1>{{ 'quickorder.page.title' | translate }}</h1>
+
+  <h2 class="h3">{{ 'quickorder.page.subtitle' | translate }}</h2>
+  <p>{{ 'quickorder.page.subtitle.description' | translate }}</p>
   <div class="row">
-    <div class="col-md-12">
-      <h1>{{ 'quickorder.page.title' | translate }}</h1>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-8">
-      <h2 class="h3">{{ 'quickorder.page.subtitle' | translate }}</h2>
-      <p>{{ 'quickorder.page.subtitle.description' | translate }}</p>
+    <div class="col-md-8 col-lg-6">
       <ish-skip-content-link linkText="common.skip_content.link.text.form">
         <ish-quickorder-add-products-form />
       </ish-skip-content-link>
       <ish-quickorder-csv-form />
+      <ish-loading *ngIf="loading$ | async" />
     </div>
   </div>
-  <ish-loading *ngIf="loading$ | async" />
 </div>

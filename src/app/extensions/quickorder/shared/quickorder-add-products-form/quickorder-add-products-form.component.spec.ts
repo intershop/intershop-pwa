@@ -73,6 +73,7 @@ describe('Quickorder Add Products Form Component', () => {
     component.model = {
       addProducts: [validProducts[0], invalidProducts[0], invalidProducts[1], validProducts[1], invalidProducts[2]],
     };
+    component.quickOrderForm.patchValue(component.model);
     component.onAddProducts();
 
     verify(shoppingFacade.addProductToBasket(validProducts[0].sku, validProducts[0].quantity)).once();
