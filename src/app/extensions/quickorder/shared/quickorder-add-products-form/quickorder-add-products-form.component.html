@@ -19,18 +19,20 @@
   >
     {{ 'form.submit.validation.message' | translate }}
   </div>
-  <button
-    type="submit"
-    class="btn btn-primary"
-    [attr.aria-describedby]="
-      (quickOrderForm.pristine || quickOrderForm.invalid) && quickOrderIDForm.submitted ? 'submit-button-help' : null
-    "
-    data-testing-id="add-form-to-cart"
-  >
-    {{ 'quickorder.page.add.cart' | translate }}
-  </button>
+  <div class="pb-2">
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [attr.aria-describedby]="
+        (quickOrderForm.pristine || quickOrderForm.invalid) && quickOrderIDForm.submitted ? 'submit-button-help' : null
+      "
+      data-testing-id="add-form-to-cart"
+    >
+      {{ 'quickorder.page.add.cart' | translate }}
+    </button>
 
-  <button type="button" class="btn btn-link" (click)="reset()">
-    {{ 'quickorder.page.reset.form' | translate }}
-  </button>
+    <button type="button" class="btn btn-link" (click)="reset()">
+      {{ 'quickorder.page.reset.form' | translate }}
+    </button>
+  </div>
 </form>
