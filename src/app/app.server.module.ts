@@ -1,5 +1,5 @@
 import { HTTP_INTERCEPTORS, HttpErrorResponse, provideHttpClient, withFetch } from '@angular/common/http';
-import { APP_INITIALIZER, ErrorHandler, NgModule, TransferState } from '@angular/core';
+import { ErrorHandler, NgModule, TransferState } from '@angular/core';
 import { ServerModule, provideServerRendering } from '@angular/platform-server';
 import { META_REDUCERS } from '@ngrx/store';
 
@@ -15,7 +15,6 @@ import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
-import { SeoService } from './extensions/seo/services/seo/seo.service';
 
 class UniversalErrorHandler implements ErrorHandler {
   handleError(error: unknown): void {
@@ -36,10 +35,6 @@ class UniversalErrorHandler implements ErrorHandler {
   }
 }
 
-export function setCanonicalFactory(seoService: SeoService) {
-  return () => seoService.resolveAndSetCanonicalUrl();
-}
-
 const providers = [
   // Modern server rendering provider
   provideServerRendering(),
@@ -53,12 +48,7 @@ const providers = [
   { provide: META_REDUCERS, useValue: configurationMeta, multi: true },
   // disable data retention for SSR
   { provide: DATA_RETENTION_POLICY, useValue: {} },
-  {
-    provide: APP_INITIALIZER,
-    useFactory: setCanonicalFactory,
-    deps: [SeoService],
-    multi: true,
-  },
+  // Canonical URL handling is managed by SEO effects, not APP_INITIALIZER
 ];
 
 @NgModule({

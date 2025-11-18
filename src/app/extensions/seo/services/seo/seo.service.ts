@@ -3,7 +3,7 @@ import { Inject, Injectable, Optional } from '@angular/core';
 import { Meta, MetaDefinition } from '@angular/platform-browser';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subject, delay, filter, firstValueFrom, map, of, race } from 'rxjs';
+import { Observable, Subject, delay, filter, map, of, race } from 'rxjs';
 
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { CategoryHelper } from 'ish-core/models/category/category.helper';
@@ -63,7 +63,6 @@ export class SeoService {
     // even though the PWA SSR container itself is usually not deployed in an SSL environment so the URLs need manual adaption
 
     const canonicalUrl = encodeURI(url.replace('http:', 'https:'));
-
     const canonicalLink = this.domService.getOrCreateElement('link[rel="canonical"]', 'link', this.doc.head);
 
     this.domService.setAttribute(canonicalLink, 'rel', 'canonical');
@@ -118,11 +117,5 @@ export class SeoService {
       ),
       of(this.doc.URL.replace(/[;?].*/g, '')).pipe(delay(0)),
     ]);
-  }
-
-  async resolveAndSetCanonicalUrl(): Promise<string> {
-    const url = await firstValueFrom(this.resolveCanonicalUrl());
-    this.setCanonicalLink(url);
-    return url;
   }
 }
