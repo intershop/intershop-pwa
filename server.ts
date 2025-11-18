@@ -495,21 +495,31 @@ export function app() {
         ],
       })
       .then(html => {
-        let newHtml = html;
+        if (html) {
+          let newHtml = html;
 
-        if (process.env.PROXY_ICM && req.get('host')) {
-          newHtml = newHtml.replace(
-            new RegExp(ICM_BASE_URL, 'g'),
-            process.env.PROXY_ICM.startsWith('http') ? process.env.PROXY_ICM : `${req.protocol}://${req.get('host')}`
-          );
+          if (process.env.PROXY_ICM && req.get('host')) {
+            newHtml = newHtml.replace(
+              new RegExp(ICM_BASE_URL, 'g'),
+              process.env.PROXY_ICM.startsWith('http') ? process.env.PROXY_ICM : `${req.protocol}://${req.get('host')}`
+            );
+          }
+
+          newHtml = newHtml.replace(/<base href="[^>]*>/, `<base href="${baseHref}" />`);
+          newHtml = setDeployUrlInFile(DEPLOY_URL, req.originalUrl, newHtml);
+
+          res.status(res.statusCode).send(newHtml);
         }
-
-        newHtml = newHtml.replace(/<base href="[^>]*>/, `<base href="${baseHref}" />`);
-        newHtml = setDeployUrlInFile(DEPLOY_URL, req.originalUrl, newHtml);
-
-        res.send(newHtml);
+        if (logging && (logAll || res.statusCode >= 400)) {
+          console.log(`RES ${res.statusCode} ${req.originalUrl}`);
+        }
       })
+      // ToDo: middleware error handling is missing
       .catch(err => {
+        if (logging) {
+          console.log(err);
+        }
+        // errors will only be logged server-side, client gets a generic error page
         next(err);
       });
   };

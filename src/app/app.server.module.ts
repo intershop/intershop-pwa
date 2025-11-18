@@ -1,6 +1,6 @@
 import { HTTP_INTERCEPTORS, HttpErrorResponse, provideHttpClient, withFetch } from '@angular/common/http';
 import { APP_INITIALIZER, ErrorHandler, NgModule, TransferState } from '@angular/core';
-import { ServerModule } from '@angular/platform-server';
+import { ServerModule, provideServerRendering } from '@angular/platform-server';
 import { META_REDUCERS } from '@ngrx/store';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
@@ -41,6 +41,8 @@ export function setCanonicalFactory(seoService: SeoService) {
 }
 
 const providers = [
+  // Modern server rendering provider
+  provideServerRendering(),
   // Conditionally add provideHttpClient(withFetch()) based on environment variable
   ...(/on|1|true|yes/.test(process.env.ALLOW_H2?.toLowerCase()) ? [provideHttpClient(withFetch())] : []),
   { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
