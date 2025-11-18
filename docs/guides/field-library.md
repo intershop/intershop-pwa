@@ -247,6 +247,7 @@ They are automatically updated using sync-formly-docs.ts -->
 | `addressLine2`   | ish-text-input-field | Address Line 2, not required by default                                                     |
 | `postalCode`     | ish-text-input-field | Postal code, required by default                                                            |
 | `city`           | ish-text-input-field | City, required by default                                                                   |
+| `email`          | ish-text-input-field | Email address, not required by default                                                      |
 
 | ConfigurationGroup ID | ShortcutFor Types                               |
 | --------------------- | ----------------------------------------------- |
