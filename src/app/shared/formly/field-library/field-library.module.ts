@@ -9,6 +9,7 @@ import { AddressLine2Configuration } from './configurations/address-line-2.confi
 import { CityConfiguration } from './configurations/city.configuration';
 import { CompanyName1Configuration } from './configurations/company-name-1.configuration';
 import { CompanyName2Configuration } from './configurations/company-name-2.configuration';
+import { EmailConfiguration } from './configurations/email.configuration';
 import { FirstNameConfiguration } from './configurations/first-name.configuration';
 import { LastNameConfiguration } from './configurations/last-name.configuration';
 import { PhoneHomeConfiguration } from './configurations/phone-home.configuration';
@@ -33,6 +34,7 @@ import { registerLibraryConfigReplacementExtension } from './library-config-repl
     { provide: FIELD_LIBRARY_CONFIGURATION, useClass: AddressLine2Configuration, multi: true },
     { provide: FIELD_LIBRARY_CONFIGURATION, useClass: PostalCodeConfiguration, multi: true },
     { provide: FIELD_LIBRARY_CONFIGURATION, useClass: CityConfiguration, multi: true },
+    { provide: FIELD_LIBRARY_CONFIGURATION, useClass: EmailConfiguration, multi: true },
     {
       provide: FIELD_LIBRARY_CONFIGURATION_GROUP,
       useValue: { id: 'personalInfo', shortcutFor: ['title', 'firstName', 'lastName', 'phoneHome'] },
