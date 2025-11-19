@@ -559,33 +559,14 @@ export function app() {
     });
   }
 
-  // set Cache-Control headers to all routes
-  const setCacheControlHeaders = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    const strictNoCacheRoutes = [
-      '/account',
-      '/checkout',
-      '/basket',
-      '/register',
-      '/login',
-      '/forgotPassword',
-      '/gdpr-requests',
-    ];
-
-    const isStrictNoCacheRoute = strictNoCacheRoutes.some(route => req.originalUrl.includes(route));
-
-    if (isStrictNoCacheRoute) {
-      // Strict cache control for sensitive routes
-      res.set('Cache-Control', 'max-age=0, must-revalidate, no-cache, no-store, private');
-    } else {
-      // Default cache control for all other routes
-      res.set('Cache-Control', 'no-cache');
-    }
-
+  // set Cache-Control: no-cache headers to all routes
+  const setNoCacheHeader = (_req: express.Request, res: express.Response, next: express.NextFunction) => {
+    res.set('Cache-Control', 'no-cache');
     next();
   };
 
   // All regular routes use the Universal engine with Cache-Control headers
-  server.use('*', setCacheControlHeaders, angularUniversal);
+  server.use('*', setNoCacheHeader, angularUniversal);
 
   console.log('ICM_BASE_URL is', ICM_BASE_URL);
 
