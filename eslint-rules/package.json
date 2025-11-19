@@ -13,11 +13,6 @@
     "test": "jest -i"
   },
   "jest": {
-    "globals": {
-      "ts-jest": {
-        "isolatedModules": true
-      }
-    },
     "testRunner": "jest-jasmine2",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
