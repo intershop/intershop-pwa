@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { spawnSync } from 'child_process';
 import * as fs from 'fs';
-import { sync } from 'glob';
+import glob from 'glob';
 import * as path from 'path';
 
 async function mapSeries(iterable, action) {
@@ -59,9 +59,9 @@ let gitChanged =
     .split('\n')
     .filter(path => path.endsWith('.md'));
 
-const files = sync('**/*.md').filter(
-  file => !file.includes(`node_modules${path.sep}`) && !file.includes(`dist${path.sep}`)
-);
+const files = glob.sync('**/*.md', {
+  ignore: ['**/node_modules/**', '**/dist/**'],
+});
 
 const externalLinks = [];
 let isError = false;

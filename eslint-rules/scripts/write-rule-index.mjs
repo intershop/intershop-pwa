@@ -1,10 +1,10 @@
 import { writeFileSync } from 'fs';
-import { sync } from 'glob';
+import glob from 'glob';
 import { basename, extname } from 'path';
 
 const rules = {};
 
-sync('src/rules/**/*.ts').forEach(file => {
+glob.sync('src/rules/**/*.ts').forEach(file => {
   const ruleName = basename(file).replace(extname(file), '');
   const ruleImportPath = `./rules/${basename(file).replace(extname(file), '.js')}`;
   rules[ruleName] = `require('${ruleImportPath}').default`;
