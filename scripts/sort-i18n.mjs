@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import * as glob from 'glob';
+import glob from 'glob';
 import sort from 'sort-json';
 
 /** @type string[] */
