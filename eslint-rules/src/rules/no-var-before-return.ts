@@ -38,7 +38,7 @@ const noVarBeforeReturnRule: TSESLint.RuleModule<keyof typeof messages> = {
           end: node.loc.end,
         };
         if (variable.type === AST_NODE_TYPES.VariableDeclaration) {
-          const sourceCode = context.getSourceCode();
+          const sourceCode = context.sourceCode;
           context.report({
             loc,
             messageId: 'varError',

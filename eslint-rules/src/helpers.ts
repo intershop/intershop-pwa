@@ -36,9 +36,11 @@ export const isType = (node: TSESTree.ClassDeclaration, types: string[]): boolea
  */
 export function getClosestAncestorByKind(
   context: TSESLint.RuleContext<string, readonly unknown[]>,
+  node: TSESTree.Node,
   type: AST_NODE_TYPES
 ): TSESTree.Node {
-  const ancestors = context.getAncestors();
+  const ancestors = context.sourceCode.getAncestors(node);
+
   for (let i = ancestors.length - 1; i >= 0; i--) {
     if (ancestors[i].type === type) {
       return ancestors[i];
