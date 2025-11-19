@@ -1,5 +1,18 @@
 <ng-container *ngIf="isDesignViewMode && type; else cmsOutlet">
-  <div class="design-view-wrapper" [ngClass]="[type, (isPageletSelected$ | async) ? 'pagelet-selected' : '']">
+  <div
+    class="design-view-wrapper"
+    [ngClass]="[
+      type,
+      (isPageletSelected$ | async) ? 'pagelet-selected' : '',
+      (isPageletPreviewed$ | async) ? 'pagelet-previewed' : ''
+    ]"
+    [ishScroll]="shouldScroll$ | async"
+    scrollContainer="root"
+    [scrollDuration]="500"
+    [scrollSpacing]="50"
+    (mouseenter)="onPageletHover()"
+    (mouseleave)="onPageletLeave()"
+  >
     <div class="design-view-wrapper-actions">
       <ng-container [ngSwitch]="type">
         <!-- pagelet -->
