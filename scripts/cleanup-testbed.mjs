@@ -1,7 +1,7 @@
 import { execSync, spawnSync } from 'child_process';
 import { copyFileSync, existsSync, statSync } from 'fs';
 import globModule from 'glob';
-import { minimatch } from 'minimatch';
+import minimatch from 'minimatch';
 import runAll from 'npm-run-all';
 import { cpus } from 'os';
 import { basename, dirname, join, normalize, sep } from 'path';
