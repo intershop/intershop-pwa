@@ -91,9 +91,7 @@ const noIntelligenceInArtifactsRule: TSESLint.RuleModule<keyof typeof messages, 
     }
 
     const [options] = context.options;
-    const ruleMatch = Object.keys(options).find(regexp =>
-      new RegExp(regexp).test(normalizePath(context.getFilename()))
-    );
+    const ruleMatch = Object.keys(options).find(regexp => new RegExp(regexp).test(normalizePath(context.filename)));
     if (!ruleMatch) {
       return {};
     }
