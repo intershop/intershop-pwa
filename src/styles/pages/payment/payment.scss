@@ -12,7 +12,7 @@
   .panel {
     margin-top: $space-default * 0.5;
     margin-bottom: 0;
-    background-color: #f7f7f7;
+    background-color: $gray-200;
 
     @include box-shadow(none);
 

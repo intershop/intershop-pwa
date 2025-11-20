@@ -1,10 +1,12 @@
+@import 'variables';
+
 .loading {
   position: absolute;
   inset: 0;
   z-index: 10;
   min-width: 50px;
   min-height: 50px;
-  background: #fff url('/assets/img/loading.gif') center min(50%, 300px) no-repeat;
+  background: $color-inverse url('/assets/img/loading.gif') center min(50%, 300px) no-repeat;
   opacity: 0.5;
 }
 

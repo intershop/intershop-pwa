@@ -1,3 +1,5 @@
+@import 'variables';
+
 .budget-bar {
   position: relative;
   display: flex;
@@ -5,13 +7,13 @@
   overflow: hidden;
   font-size: inherit;
   line-height: 0;
-  background-color: #fff;
+  background-color: $color-inverse;
 
   .budget-bar-used {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    color: #fff;
+    color: $text-color-inverse;
     text-align: center;
   }
 
@@ -46,7 +48,7 @@
       width: 0;
       height: 0;
       content: '';
-      border-top: 6px solid #2f2f2f;
+      border-top: 6px solid $border-color-default;
       border-right: 6px solid transparent;
       border-left: 6px solid transparent;
     }

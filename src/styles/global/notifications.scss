@@ -1,7 +1,7 @@
 // inline alert box, e.g. for alerts in the basket item list
 .alert-inline {
   margin-top: $space-default;
-  background-color: #fff;
+  background-color: $color-inverse;
   border-width: 2px;
 }
 
