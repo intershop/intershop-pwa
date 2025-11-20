@@ -17,7 +17,7 @@
 <div *ngIf="punchoutTypes?.length > 1">
   <nav
     ngbNav
-    class="nav-tabs section"
+    class="nav-tabs"
     [(activeId)]="selectedType"
     [attr.aria-label]="'account.punchout.type.tabs.aria_label' | translate"
   >
@@ -26,7 +26,6 @@
         ngbNavLink
         [routerLink]="['../punchout']"
         [queryParams]="{ format: type }"
-        class="mb-0"
         [attr.data-testing-id]="'account-punchout-tab-' + type"
         >{{ 'account.punchout.type.text' | translate : { '0': type } }}</a
       >
