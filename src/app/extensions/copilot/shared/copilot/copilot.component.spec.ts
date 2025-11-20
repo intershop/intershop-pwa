@@ -52,7 +52,6 @@ describe('Copilot Component', () => {
         { provide: CompareFacade, useFactory: () => instance(mock(CompareFacade)) },
         { provide: CopilotFacade, useFactory: () => instance(copilotFacade) },
         { provide: OrderTemplatesFacade, useFactory: () => instance(mock(OrderTemplatesFacade)) },
-        { provide: ScriptLoaderService, useFactory: () => instance(scriptLoader) },
         { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
         { provide: THEME_COLOR, useValue: 'blue' },
         { provide: TranslateService, useFactory: () => instance(translateService) },
@@ -67,11 +66,16 @@ describe('Copilot Component', () => {
   });
 
   it('should be created', () => {
-    const copilotSpy = jest.spyOn(component, 'initializeCopilot');
-
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should initialize copilot when loadCopilot is called', () => {
+    const copilotSpy = jest.spyOn(component, 'initializeCopilot');
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (component as any).loadCopilot();
 
     // check whether the Copilot was initialized
     expect(copilotSpy).toHaveBeenCalledOnce();
