@@ -1,39 +1,49 @@
-import { Injectable } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
+import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
+import { ApplicationRef, Inject, Injectable, Optional } from '@angular/core';
+import { Meta, MetaDefinition, Title } from '@angular/platform-browser';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction, routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
-import { combineLatest, merge, race } from 'rxjs';
+import { Subject, combineLatest, merge, race } from 'rxjs';
 import { delay, distinctUntilChanged, filter, map, switchMap, takeWhile, tap } from 'rxjs/operators';
 
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
+import { REQUEST } from 'ish-core/models/express-tokens/express.tokens';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.model';
-import { ofCategoryUrl } from 'ish-core/routing/category/category.route';
+import { generateCategoryUrl, ofCategoryUrl } from 'ish-core/routing/category/category.route';
 import { ofContentPageUrl } from 'ish-core/routing/content-page/content-page.route';
-import { ofProductUrl } from 'ish-core/routing/product/product.route';
+import { generateProductUrl, ofProductUrl } from 'ish-core/routing/product/product.route';
 import { getSelectedContentPage } from 'ish-core/store/content/pages';
 import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/configuration';
 import { ofUrl, selectPath, selectRouteData, selectRouteParam } from 'ish-core/store/core/router';
 import { getSelectedCategory } from 'ish-core/store/shopping/categories/categories.selectors';
 import { getSelectedProduct } from 'ish-core/store/shopping/products';
+import { DomService } from 'ish-core/utils/dom/dom.service';
+import { InjectSingle } from 'ish-core/utils/injection';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
-
-import { SeoService } from '../../services/seo/seo.service';
 
 @Injectable()
 export class SeoEffects {
   constructor(
     private actions$: Actions,
     private store: Store,
+    private domService: DomService,
     private metaService: Meta,
     private titleService: Title,
     private translate: TranslateService,
-    private seoService: SeoService
+    @Inject(DOCUMENT) private doc: Document,
+    @Optional() @Inject(REQUEST) private request: InjectSingle<typeof REQUEST>,
+    @Inject(APP_BASE_HREF) private baseHref: string,
+    private appRef: ApplicationRef
   ) {}
+
+  private pageTitle$ = new Subject<string>();
+  private pageDescription$ = new Subject<string>();
 
   private productPage$ = this.store.pipe(
     ofProductUrl(),
@@ -54,10 +64,24 @@ export class SeoEffects {
     () =>
       this.actions$.pipe(
         ofType(routerNavigatedAction),
-        switchMap(() => this.seoService.resolveCanonicalUrl()),
+        switchMap(() =>
+          race([
+            // PRODUCT PAGE
+            this.productPage$.pipe(map(product => this.baseURL + generateProductUrl(product).substring(1))),
+            // CATEGORY / FAMILY PAGE
+            this.categoryPage$.pipe(
+              map((category: CategoryView) => this.baseURL + generateCategoryUrl(category).substring(1))
+            ),
+            // DEFAULT
+            this.appRef.isStable.pipe(
+              whenTruthy(),
+              map(() => this.doc.URL.replace(/[;?].*/g, ''))
+            ),
+          ])
+        ),
         distinctUntilChanged(),
         tap(url => {
-          this.seoService.setCanonicalLink(url);
+          this.setCanonicalLink(url);
         })
       ),
     { dispatch: false }
@@ -109,7 +133,7 @@ export class SeoEffects {
         })),
         distinctUntilChanged(isEqual),
         tap(seoAttributes => {
-          this.seoService.setSeoAttributes(seoAttributes);
+          this.setSeoAttributes(seoAttributes);
         })
       ),
     { dispatch: false }
@@ -138,7 +162,7 @@ export class SeoEffects {
 
   seoTitle$ = createEffect(
     () =>
-      this.seoService.pageTitle$.pipe(
+      this.pageTitle$.pipe(
         delay(0), // ensures asynchronous stream processing to prevent "missing translation" issues
         switchMap(title =>
           combineLatest([
@@ -147,11 +171,11 @@ export class SeoEffects {
             this.translate.get('seo.applicationName'),
           ])
         ),
-        map(([title, path, application]) => [this.seoService.enhancePageTitle(title, path), application]),
+        map(([title, path, application]) => [this.enhancePageTitle(title, path), application]),
         map(([title, application]) => `${title} | ${application}`),
         tap(title => {
           this.titleService.setTitle(title);
-          this.seoService.addOrModifyTag({ property: 'og:title', content: title });
+          this.addOrModifyTag({ property: 'og:title', content: title });
         })
       ),
     { dispatch: false }
@@ -159,14 +183,74 @@ export class SeoEffects {
 
   seoDescription$ = createEffect(
     () =>
-      this.seoService.pageDescription$.pipe(
+      this.pageDescription$.pipe(
         delay(0), // ensures asynchronous stream processing to prevent "missing translation" issues
         switchMap(description => this.translate.get(description)),
         tap(description => {
-          this.seoService.addOrModifyTag({ name: 'description', content: description });
-          this.seoService.addOrModifyTag({ property: 'og:description', content: description });
+          this.addOrModifyTag({ name: 'description', content: description });
+          this.addOrModifyTag({ property: 'og:description', content: description });
         })
       ),
     { dispatch: false }
   );
+
+  private get baseURL() {
+    let url: string;
+    if (this.request) {
+      url = `${this.request.protocol}://${this.request.get('host')}${this.baseHref}`;
+    } else {
+      url = this.doc.baseURI;
+    }
+    return url.endsWith('/') ? url : `${url}/`;
+  }
+
+  private setCanonicalLink(url: string) {
+    // the canonical URL of a production system should always be with 'https:'
+    // even though the PWA SSR container itself is usually not deployed in an SSL environment so the URLs need manual adaption
+    const canonicalUrl = encodeURI(url.replace('http:', 'https:'));
+    const canonicalLink = this.domService.getOrCreateElement('link[rel="canonical"]', 'link', this.doc.head);
+
+    this.domService.setAttribute(canonicalLink, 'rel', 'canonical');
+    this.domService.setAttribute(canonicalLink, 'href', canonicalUrl);
+
+    this.addOrModifyTag({ property: 'og:url', content: canonicalUrl });
+  }
+
+  private setSeoAttributes(seoAttributes: SeoAttributes) {
+    Object.entries(seoAttributes)
+      .filter(([, v]) => !!v)
+      .forEach(([key, value]) => {
+        switch (key) {
+          case 'title':
+            this.pageTitle$.next(value);
+            return;
+          case 'description':
+            this.pageDescription$.next(value);
+            return;
+          case 'robots':
+            this.addOrModifyTag({ name: key, content: value });
+            return;
+        }
+        this.addOrModifyTag({ property: key.startsWith('og:') ? key : `og:${key}`, content: value });
+      });
+    this.addOrModifyTag({ property: 'pwa-version', content: PWA_VERSION });
+  }
+
+  private addOrModifyTag(tag: MetaDefinition) {
+    if (!this.metaService.updateTag(tag)) {
+      this.metaService.addTag(tag);
+    }
+  }
+
+  // Adapt the page title for specific pages
+  private enhancePageTitle(title: string, path: string): string {
+    let pageSuffix = '';
+    if (path?.startsWith('account/')) {
+      pageSuffix = `${this.translate.instant('account.my_account.heading')}`;
+    }
+    if (path?.startsWith('checkout/')) {
+      pageSuffix = `${this.translate.instant('seo.title.checkout')}`;
+    }
+    return pageSuffix && pageSuffix !== title ? `${title} - ${pageSuffix}` : title;
+  }
 }
