@@ -4,7 +4,7 @@
   z-index: 1000;
   width: 100%;
   padding: $space-default $space-default $space-default * 0.5;
-  color: $color-inverse;
+  color: $text-color-inverse;
   background-color: $color-primary !important;
   opacity: 0.9;
 
@@ -12,13 +12,13 @@
     margin-bottom: divide($space-default, 3);
 
     a {
-      color: $color-inverse;
+      color: $text-color-inverse;
     }
   }
 
   .btn-link {
     margin-bottom: 5px;
-    color: $color-inverse !important;
+    color: $text-color-inverse !important;
     text-decoration: underline;
 
     &:hover {
