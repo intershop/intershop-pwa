@@ -11,6 +11,9 @@ kb_sync_latest_only
 
 Catalogs (root-level categories in ICM terminology) with _Show In Menu_ disabled are now hidden from the main header navigation.
 
+Intershop PWA 9.1.0 contains a fix to display warranties at recurring order line items.
+This fix requires ICM 14.1.0 with the Recurring Order Extension 2.3.0 (`icm-as-customization-recurringorders:2.3.0`).
+
 ## From 8.0.0 to 9.0.0
 
 With Intershop PWA 9.0.0, the SSR container now supports the manual creation of PWA heap dumps for debugging purposes.
