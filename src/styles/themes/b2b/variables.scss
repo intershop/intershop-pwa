@@ -156,8 +156,8 @@ $white: #fff;
 $gray-100: #f8f9fa;
 $gray-200: #e9ecef;
 $gray-300: #dee2e6;
-$gray-400: #757575;
-$gray-500: #adb5bd;
+$gray-400: #8b8b8b;
+$gray-500: #757575;
 $gray-600: #6c757d;
 $gray-700: #495057;
 $gray-800: #343a40;
@@ -218,7 +218,7 @@ $headings-color: $text-color-primary;
 $input-placeholder-color: $text-color-tertiary;
 $input-accent-color: $CORPORATE-DARK;
 $body-tertiary-bg: $gray-200; // bg for input group text
-$input-group-addon-border-color: $gray-400;
+$input-group-addon-border-color: $gray-500;
 
 // Dropdown
 // Dropdown menu container and contents.
@@ -267,5 +267,5 @@ $carousel-indicator-active-bg: $CORPORATE-PRIMARY;
 $close-text-shadow: none;
 
 // import ng-select default theme
-$ng-select-border: $gray-400;
+$ng-select-border: $gray-500;
 $ng-select-border-radius: 0;
