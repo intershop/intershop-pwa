@@ -47,8 +47,8 @@
 
     &:not(:disabled):not(.disabled):active,
     &:not(:disabled):not(.disabled).active {
-      background-color: $input-accent-color;
-      border-color: $input-accent-color;
+      background-color: $CORPORATE-DARK;
+      border-color: $CORPORATE-DARK;
       box-shadow: none;
 
       &:focus {
@@ -86,9 +86,9 @@
 
     &:not(:disabled):not(.disabled):active,
     &:not(:disabled):not(.disabled).active {
-      color: $input-accent-color;
+      color: $CORPORATE-DARK;
       background-color: $color-quaternary;
-      border-color: $input-accent-color;
+      border-color: $CORPORATE-DARK;
       box-shadow: none;
 
       &:focus {

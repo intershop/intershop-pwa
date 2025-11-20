@@ -71,7 +71,7 @@ $color-label-new: #06f; // new
 
 // BORDERS
 
-$border-color-corporate: $color-corporate;
+$border-color-corporate: $CORPORATE-PRIMARY;
 
 $border-color-default: #222;
 $border-color-light: #ccc;
@@ -216,7 +216,6 @@ $headings-color: $text-color-primary;
 
 // Forms
 $input-placeholder-color: $text-color-tertiary;
-$input-accent-color: $CORPORATE-DARK;
 $body-tertiary-bg: $gray-200; // bg for input group text
 $input-group-addon-border-color: $gray-500;
 
@@ -263,8 +262,6 @@ $modal-header-border-color: $border-color-light;
 $carousel-control-color: $color-secondary;
 $carousel-control-width: 5%;
 $carousel-indicator-active-bg: $CORPORATE-PRIMARY;
-// Close
-$close-text-shadow: none;
 
 // import ng-select default theme
 $ng-select-border: $gray-500;
