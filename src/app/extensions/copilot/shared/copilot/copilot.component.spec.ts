@@ -65,11 +65,16 @@ describe('Copilot Component', () => {
   });
 
   it('should be created', () => {
-    const copilotSpy = jest.spyOn(component, 'initializeCopilot');
-
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should initialize copilot when loadCopilot is called', () => {
+    const copilotSpy = jest.spyOn(component, 'initializeCopilot');
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (component as any).loadCopilot();
 
     // check whether the Copilot was initialized
     expect(copilotSpy).toHaveBeenCalledOnce();

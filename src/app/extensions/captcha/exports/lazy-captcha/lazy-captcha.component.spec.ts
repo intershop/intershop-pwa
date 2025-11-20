@@ -1,13 +1,14 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
-import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service } from 'ng-recaptcha';
-import { EMPTY, of } from 'rxjs';
+import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaLoaderService } from 'ng-recaptcha';
+import { of } from 'rxjs';
 import { anyString, instance, mock, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { AppFacade } from 'ish-core/facades/app.facade';
 
 import { CaptchaFacade } from '../../facades/captcha.facade';
 import { CaptchaV2Component, CaptchaV2ComponentModule } from '../../shared/captcha-v2/captcha-v2.component';
@@ -20,15 +21,21 @@ describe('Lazy Captcha Component', () => {
   let component: LazyCaptchaComponent;
   let element: HTMLElement;
   let captchaFacade: CaptchaFacade;
+  let appFacade: AppFacade;
 
   beforeEach(async () => {
     captchaFacade = mock(CaptchaFacade);
-    when(captchaFacade.captchaVersion$).thenReturn(EMPTY);
+    appFacade = mock(AppFacade);
+    when(captchaFacade.captchaVersion$).thenReturn(of(3 as const));
     when(captchaFacade.captchaSiteKey$).thenReturn(of('captchaSiteKeyASDF'));
     when(captchaFacade.captchaActive$(anyString())).thenReturn(of(true));
+    when(appFacade.appBecameStable$).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
-      providers: [{ provide: CaptchaFacade, useFactory: () => instance(captchaFacade) }],
+      providers: [
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: CaptchaFacade, useFactory: () => instance(captchaFacade) },
+      ],
     })
       .overrideModule(CaptchaV2ComponentModule, { set: { declarations: [CaptchaV2Component] } })
       .overrideModule(CaptchaV3ComponentModule, {
@@ -38,6 +45,7 @@ describe('Lazy Captcha Component', () => {
           providers: [
             { provide: RECAPTCHA_V3_SITE_KEY, useValue: 'captchaSiteKeyQWERTY' },
             { provide: ReCaptchaV3Service },
+            { provide: RecaptchaLoaderService },
           ],
         },
       })
@@ -62,33 +70,54 @@ describe('Lazy Captcha Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  /* eslint-disable jest/no-disabled-tests */
-  xit('should render v2 component when configured', fakeAsync(() => {
+  it('should render v2 component when configured', async () => {
     when(captchaFacade.captchaVersion$).thenReturn(of(2 as const));
+    when(captchaFacade.captchaActive$('register')).thenReturn(of(true));
+
     fixture.detectChanges();
 
-    tick(500);
-    expect(element).toMatchInlineSnapshot(`<ish-captcha-v2></ish-captcha-v2>`);
+    // Wait for the dynamic import to complete
+    await new Promise(resolve => setTimeout(resolve, 100));
+    fixture.detectChanges();
+
+    expect(element).toMatchInlineSnapshot(`
+      <ish-captcha-v2
+        ><div>
+          <div ng-reflect-ng-class="d-none" class="d-none">
+            <re-captcha
+              class="captcha"
+              ng-reflect-site-key="captchaSiteKeyASDF"
+              id="ngrecaptcha-0"
+            ></re-captcha>
+          </div></div
+      ></ish-captcha-v2>
+    `);
     const v2Cmp: CaptchaV2Component = fixture.debugElement.query(By.css('ish-captcha-v2'))?.componentInstance;
     expect(v2Cmp).toBeTruthy();
     expect(v2Cmp.cssClass).toEqual('d-none');
-  }));
-  xit('should render v3 component when configured', fakeAsync(() => {
+  });
+  it('should render v3 component when configured', async () => {
     when(captchaFacade.captchaVersion$).thenReturn(of(3 as const));
+    when(captchaFacade.captchaActive$('register')).thenReturn(of(true));
+
     fixture.detectChanges();
 
-    tick(500);
+    // Wait for the dynamic import to complete
+    await new Promise(resolve => setTimeout(resolve, 100));
+    fixture.detectChanges();
+
     expect(element).toMatchInlineSnapshot(`
       <ish-captcha-v3
-        ><div class="row">
-          <div class="offset-md-4 col-md-8">
-            <p data-testing-id="recaptcha-v3-info" class="validation-message"></p>
-          </div></div
+        ><p
+          data-testing-id="recaptcha-v3-info"
+          class="validation-message"
+          ng-reflect-ish-server-html="recaptcha.v3.info_text"
+        ></p
       ></ish-captcha-v3>
     `);
     const v3Cmp: CaptchaV3Component = fixture.debugElement.query(By.css('ish-captcha-v3'))?.componentInstance;
     expect(v3Cmp).toBeTruthy();
-  }));
+  });
 
   // errors are thrown if required input parameters are missing
   it('should throw an error if there is no form set as input parameter', () => {
