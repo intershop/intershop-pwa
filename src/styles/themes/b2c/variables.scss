@@ -50,8 +50,6 @@ $text-color-special: #ea1919; //RED
 
 //GENERAL COLORS
 
-$color-corporate: var(--color-corporate);
-
 $color-primary: var(--color-primary);
 $color-secondary: var(--color-secondary);
 $color-tertiary: var(--color-tertiary);
@@ -68,6 +66,9 @@ $color-special-quaternary: #3c7d3c; // GREEN
 $color-label-sale: #ea1919; // sale
 $color-label-topseller: #cf00a5; // topseller
 $color-label-new: #06f; // new
+
+// BACKGROUNDS
+$bg-color-corporate: $CORPORATE-PRIMARY;
 
 // BORDERS
 
