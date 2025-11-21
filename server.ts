@@ -559,14 +559,14 @@ export function app() {
     });
   }
 
-  // set Cache-Control: no-cache headers to all routes
-  const setNoCacheHeader = (_req: express.Request, res: express.Response, next: express.NextFunction) => {
+  // set `Cache-Control: no-cache` header to all routes
+  const setCacheControlHeader = (_req: express.Request, res: express.Response, next: express.NextFunction) => {
     res.set('Cache-Control', 'no-cache');
     next();
   };
 
-  // All regular routes use the Universal engine with Cache-Control headers
-  server.use('*', setNoCacheHeader, angularUniversal);
+  // All regular routes use the Universal engine with Cache-Control header
+  server.use('*', setCacheControlHeader, angularUniversal);
 
   console.log('ICM_BASE_URL is', ICM_BASE_URL);
 
