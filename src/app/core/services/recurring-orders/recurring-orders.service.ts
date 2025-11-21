@@ -18,7 +18,7 @@ export class RecurringOrdersService {
 
   private recurringOrderHeaderV2 = new HttpHeaders({ Accept: 'application/vnd.intershop.recurringorder.v2+json' });
 
-  private recurringOrderIncludes: OrderIncludeType[] = ['discounts', 'lineItems_discounts'];
+  private recurringOrderIncludes: OrderIncludeType[] = ['discounts', 'lineItems_discounts', 'lineItems_warranty'];
 
   /**
    * Returns the REST API endpoint for recurring orders of the customer or the logged-in user.

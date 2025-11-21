@@ -125,7 +125,7 @@ export class RecurringOrderMapper {
 
       lineItems: data.lineItems?.length
         ? data.lineItems.map(lineItem =>
-            LineItemMapper.fromData(lineItem, included ? included.lineItems_discounts : undefined)
+            LineItemMapper.fromData(lineItem, included?.lineItems_discounts, included?.lineItems_warranty)
           )
         : [],
 
