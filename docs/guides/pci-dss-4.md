@@ -7,19 +7,19 @@ kb_sync_latest_only
 
 # Security Standard PCI DSS 4.0
 
-- [Security Standard PCI DSS 4.0](#security-standard-pci-dss-40)
-  - [Understanding PCI DSS 4.0 Applicability](#understanding-pci-dss-40-applicability)
-  - [Secure Angular PWA Code \& Dependencies](#secure-angular-pwa-code--dependencies)
-    - [Prevent Cross-Site Scripting (XSS) Attacks](#prevent-cross-site-scripting-xss-attacks)
-    - [Secure API Calls \& Prevent CORS Attacks](#secure-api-calls--prevent-cors-attacks)
-    - [Use Secure HTTP Headers to Prevent Browser Attacks](#use-secure-http-headers-to-prevent-browser-attacks)
-    - [Enforce Secure Authentication \& Session Management](#enforce-secure-authentication--session-management)
-    - [Secure Server-Side Rendering (SSR)](#secure-server-side-rendering-ssr)
-    - [Regular Testing \& Harden Dependency Management](#regular-testing--harden-dependency-management)
-  - [Additional Points to Consider](#additional-points-to-consider)
-    - [Secure Data Handling](#secure-data-handling)
-    - [Secure Authentication \& Access Control](#secure-authentication--access-control)
-    - [Logging \& Monitoring](#logging--monitoring)
+- [Understanding PCI DSS 4.0 Applicability](#understanding-pci-dss-40-applicability)
+- [Secure Angular PWA Code \& Dependencies](#secure-angular-pwa-code--dependencies)
+  - [Prevent Cross-Site Scripting (XSS) Attacks](#prevent-cross-site-scripting-xss-attacks)
+  - [Secure API Calls \& Prevent CORS Attacks](#secure-api-calls--prevent-cors-attacks)
+  - [Use Secure HTTP Headers to Prevent Browser Attacks](#use-secure-http-headers-to-prevent-browser-attacks)
+  - [Enforce Secure Authentication \& Session Management](#enforce-secure-authentication--session-management)
+  - [Secure Server-Side Rendering (SSR)](#secure-server-side-rendering-ssr)
+  - [Regular Testing \& Harden Dependency Management](#regular-testing--harden-dependency-management)
+- [Additional Points to Consider](#additional-points-to-consider)
+  - [Secure Data Handling](#secure-data-handling)
+  - [Secure Authentication \& Access Control](#secure-authentication--access-control)
+  - [Logging \& Monitoring](#logging--monitoring)
+  - [Password Autocomplete](#password-autocomplete)
 
 PCI DSS stands for Payment Card Industry Data Security Standard and is a comprehensive set of security guidelines designed to protect payment card information during storage, processing, and transmission.
 The up-to-date document can be found in the [PCI Document Library](https://www.pcisecuritystandards.org/document_library/?category=pcidss).
@@ -148,3 +148,11 @@ PCI DSS requires the use of several best practices, including:
 - Structured Logging: ICM uses a consistent log format (JSON) to facilitate automated parsing, aggregation, and analysis.
 - Automated Alerts: Alerts can be configured for anomalous behavior such as repeatedly failed logins, unexpected IP address changes, or high volumes of error logs.
 - Dashboards & Visualization: Use dashboards to visualize trends and quickly identify security incidents.
+
+### Password Autocomplete
+
+The Intershop PWA keeps password autocomplete enabled with appropriate attributes to comply with WCAG 2.2 accessibility requirements.
+While some PCI DSS interpretations suggest disabling autocomplete for password fields, we have prioritized accessibility in the baseline PWA implementation, see the [Accessibility in UX: Patterns and Rationale](accessibility-ux-pattern.md#password-autocomplete) guide.
+
+PCI DSS compliance for password autocomplete must be enforced through project-level security measures while maintaining accessibility features in the core PWA.
+For the technical implementation approach, reference [PR #1956](https://github.com/intershop/intershop-pwa/pull/1956).

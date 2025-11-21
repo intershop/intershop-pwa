@@ -14,6 +14,7 @@ kb_sync_latest_only
   - [Form Patterns](#form-patterns)
     - [Focus Management on Validation Errors](#focus-management-on-validation-errors)
     - [Avoid Disabled Buttons](#avoid-disabled-buttons)
+    - [Password Autocomplete](#password-autocomplete)
   - [Component Behavior](#component-behavior)
     - [Links with Icons Do Not Require Underlines](#links-with-icons-do-not-require-underlines)
     - [Popovers Open on Click Instead of Hover](#popovers-open-on-click-instead-of-hover)
@@ -97,6 +98,18 @@ Reasons for this approach:
 - Screen reader users remain informed when a button is inactive and understand why it cannot be used.
 - Disabling buttons for short or optional forms ensures that users cannot submit invalid data while keeping the experience predictable.
 - Error summaries are recognized as a good accessibility pattern, providing an overview of all errors; however, they are currently not implemented in our forms.
+
+#### Password Autocomplete
+
+Password input fields have `autocomplete` attributes **enabled** to support accessibility and modern security practices.
+
+This approach was chosen because it:
+
+- reduces cognitive load and typing effort for users with disabilities and ensures a better user experience for all users (Accessibility Priority).
+- supports WCAG Success Criterion 1.3.5 (Identify Input Purpose) by making form fields programmatically determinable (WCAG 2.2 Compliance).
+- integrates with password managers, which store credentials securely and promote strong, unique passwords, reducing risks like password reuse or weak credentials (Modern Security Practices).
+
+The standard PWA prioritizes accessibility over PCI DSS requirements that suggest disabling autocomplete on password fields; for more details on PCI DSS compliance, see the [Security Standard PCI DSS 4.0](pci-dss-4.md#password-autocomplete) guide.
 
 ### Component Behavior
 
