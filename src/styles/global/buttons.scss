@@ -21,8 +21,8 @@
   @include focus-visible-reset();
 
   &-primary {
-    background-color: $button-primary-bg;
-    border-color: $button-primary-border;
+    background-color: $CORPORATE-PRIMARY;
+    border-color: $CORPORATE-PRIMARY;
 
     &:hover,
     &:focus,
@@ -58,9 +58,9 @@
   }
 
   &-secondary {
-    color: $button-default-color;
-    background-color: $button-default-bg;
-    border-color: $button-default-border;
+    color: $CORPORATE-PRIMARY;
+    background-color: $color-inverse;
+    border-color: $CORPORATE-PRIMARY;
 
     &:hover,
     &:focus,
@@ -78,7 +78,7 @@
     &.disabled,
     &:disabled {
       color: $text-color-secondary;
-      background-color: $button-default-bg;
+      background-color: $color-inverse;
       border-color: $border-color-light;
       box-shadow: none;
       opacity: 0.65;
