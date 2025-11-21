@@ -258,11 +258,11 @@ a {
   }
 
   &-success {
-    color: $success-color !important;
+    color: $color-special-success !important;
   }
 
   &-error {
-    color: $error-color !important;
+    color: $color-special-error !important;
   }
 }
 
@@ -437,11 +437,11 @@ img.marketing {
 }
 
 .badge.bg-primary {
-  background-color: $color-special-tertiary !important;
+  background-color: $color-special-info !important;
 }
 
 .badge.border-primary {
-  border-color: $color-special-tertiary !important;
+  border-color: $color-special-info !important;
 }
 
 .alert {

@@ -57,10 +57,11 @@ $color-quaternary: var(--color-quaternary);
 
 $color-dark: #000;
 $color-inverse: #fff;
-$color-special-primary: #c00; //RED
-$color-special-secondary: #f39c12; //ORANGE
-$color-special-tertiary: #006b99; //SEA BLUE
-$color-special-quaternary: #3c7d3c; // GREEN
+
+$color-special-error: #c00;
+$color-special-warning: #f39c12;
+$color-special-info: #006b99;
+$color-special-success: #3c7d3c;
 
 // Product label colors
 $color-special-sale: #ea1919; // sale
@@ -100,10 +101,6 @@ $datepicker-today-hover: #e65100;
 
 $datepicker-active-bg: $CORPORATE-PRIMARY;
 $datepicker-active-hover: $CORPORATE-SECONDARY;
-
-// input indicator color
-$error-color: #dc3545;
-$success-color: #28a745;
 
 // mobile toggler base width
 $toggler-width: 64px;
@@ -165,6 +162,11 @@ $gray-800: #343a40;
 $gray-900: #212529;
 $black: #000;
 
+$danger: $color-special-error;
+$warning: $color-special-warning;
+$info: $color-special-info;
+$success: $color-special-success;
+
 // NOTE: these few variables cannot be set with CSS custom properties
 // since they are used for Bootstrap internal color calculations
 // if necessary such Bootstrap generated styles need to be overridden in project styles (e.g. see buttons.scss)
@@ -172,11 +174,6 @@ $primary: #006f6f;
 $secondary: color.adjust($primary, $lightness: -10%);
 $body-color: #222;
 // ------------------------------
-
-$danger: $color-special-primary;
-$warning: $color-special-secondary;
-$info: $color-special-tertiary;
-$success: $color-special-quaternary;
 
 // Body
 // Settings for the `<body>` element.

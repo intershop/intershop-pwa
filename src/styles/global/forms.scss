@@ -201,7 +201,7 @@ optgroup {
 
 .has-success {
   .ng-fa-icon {
-    color: $success-color;
+    color: $color-special-success;
   }
 }
 
@@ -210,7 +210,7 @@ optgroup {
   .ng-fa-icon,
   .validation-message,
   .form-check {
-    color: $error-color;
+    color: $color-special-error;
   }
 
   .form-check a,
@@ -222,16 +222,16 @@ optgroup {
   input,
   select,
   textarea {
-    border-color: $error-color;
+    border-color: $color-special-error;
 
     &:focus {
-      border-color: $error-color;
+      border-color: $color-special-error;
       box-shadow: none;
     }
   }
 
   .captcha > div {
-    border: 1px solid $error-color;
+    border: 1px solid $color-special-error;
   }
 }
 

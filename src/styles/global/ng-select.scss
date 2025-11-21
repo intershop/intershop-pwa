@@ -65,14 +65,14 @@
   }
 
   &.ng-invalid.ng-dirty:not(.ng-select-opened) .ng-select-container {
-    border-color: $error-color;
+    border-color: $color-special-error;
 
     .ng-arrow {
-      border-color: $error-color transparent transparent;
+      border-color: $color-special-error transparent transparent;
     }
 
     .ng-placeholder {
-      color: $error-color;
+      color: $color-special-error;
     }
   }
 }
