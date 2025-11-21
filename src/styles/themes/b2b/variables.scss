@@ -2,12 +2,11 @@
 @use 'sass:map';
 
 ///////////////////////////////////////////////////////////////////////////////
-// DEFAULT THEME VARIABLES
-// supposed to reflect the style guide of the storefront
+// Default theme variables
+// Supposed to reflect the style guide of the storefront
 ///////////////////////////////////////////////////////////////////////////////
 
-// LOGOS
-
+// Logos
 $logo: url('/assets/themes/b2b/img/logo.svg');
 $logo-width: 114px;
 $logo-height: 40px;
@@ -18,38 +17,23 @@ $logo-mobile-height: 41px;
 // General spaces
 $space-default: 15px;
 
-// FONTS
+// Fonts
 $font-family-regular: 'robotoregular', 'Helvetica', 'Arial', sans-serif;
 $font-family-bold: 'robotobold', 'Helvetica', 'Arial', sans-serif;
 $font-family-condensedregular: 'roboto_condensedregular', 'Helvetica Neue', helvetica, 'Arial', sans-serif;
 $font-family-condensedbold: 'roboto_condensedbold', 'Helvetica Neue', helvetica, 'Arial', sans-serif;
 
-// FONT SIZES
+// Font sizes
 $font-size-corporate: 0.875rem; // 14px is the bootstrap 3 default font size (1rem should be around 16px)
 
-//CORPORATE DESIGN COLORS
-
+// Corporate design colors
 $CORPORATE-PRIMARY: #006b99; // sea blue
 $CORPORATE-SECONDARY: color.adjust($CORPORATE-PRIMARY, $lightness: -10%);
 $CORPORATE-LIGHT: color.adjust($CORPORATE-PRIMARY, $lightness: 10%);
 $CORPORATE-DARK: color.adjust($CORPORATE-PRIMARY, $lightness: -20%);
 $CORPORATE-SHADOW: #7f9ecc80; // with alpha transparency
 
-//TEXT COLORS
-
-$text-color-corporate: $CORPORATE-PRIMARY;
-
-$text-color-primary: #222;
-$text-color-secondary: #6b6b6b;
-$text-color-tertiary: #757575;
-$text-color-quaternary: #8b8b8b;
-$text-color-quinary: #eee;
-
-$text-color-inverse: #fff;
-$text-color-special: #ea1919; //RED
-
-//GENERAL COLORS
-
+// General colors
 $color-primary: #222;
 $color-secondary: #2c2d2e;
 $color-tertiary: #eee;
@@ -64,32 +48,38 @@ $color-special-info: #006f6f;
 $color-special-success: #3c7d3c;
 
 // Product label colors
-$color-special-sale: #ea1919; // sale
-$color-special-topseller: #cf00a5; // topseller
-$color-special-new: #06f; // new
+$color-special-sale: #ea1919;
+$color-special-topseller: #cf00a5;
+$color-special-new: #06f;
 
-// BACKGROUNDS
+// Text colors
+$text-color-corporate: $CORPORATE-PRIMARY;
+$text-color-primary: #222;
+$text-color-secondary: #6b6b6b;
+$text-color-tertiary: #757575;
+$text-color-quaternary: #8b8b8b;
+$text-color-quinary: #eee;
+$text-color-inverse: #fff;
+$text-color-special: #ea1919;
+
+// Backgrounds
 $bg-color-corporate: $CORPORATE-PRIMARY;
 
-// BORDERS
-
+// Borders
 $border-color-corporate: $CORPORATE-PRIMARY;
-
-$border-color-default: #222;
+$border-color-default: $color-primary;
 $border-color-light: #ccc;
 $border-color-lighter: #ddd;
 
 $border-width-default: 1px;
 
-// mobile toggler base width
-$toggler-width: 64px;
-
-// Header
+// Header measurements
 $top-header-height: 40px;
 $header-height-mobile: 55px;
-
-//search container
 $search-container-height: 38px;
+
+// Mobile toggler width
+$toggler-width: 64px;
 
 // Navigation
 $font-size-navbar-item: $font-size-corporate * 1.25; // ~18px
@@ -100,16 +90,16 @@ $font-size-navbar-item-mobile: $font-size-corporate * 1.14; // ~16px
 $font-size-menu-item-mobile: $font-size-corporate; // ~14px
 $font-size-sub-menu-item-mobile: $font-size-corporate; // ~14px
 
-// filter
+// Filter
 $swatch-image-diameter: 28px;
 $swatch-image-border-radius: 50%;
 $swatch-image-padding-to-border: 2px;
 
-// tables
+// Tables
 $table-cell-padding: 0.75rem;
 $table-bg: transparent;
 
-// toasts
+// Toasts
 $toastViewBox: '0 0 512 512';
 $toast-error-icon: '<path d="M256,0C114.6,0,0,114.6,0,256s114.6,256,256,256s256-114.6,256-256S397.4,0,256,0z M377,343c9.4,9.4,9.4,24.6,0,33.9c-4.7,4.7-10.8,7-17,7s-12.3-2.3-17-7l-87-87l-87,87c-4.7,4.7-10.8,7-17,7s-12.3-2.3-17-7c-9.4-9.4-9.4-24.6,0-33.9l87-87l-87-87c-9.4-9.4-9.4-24.6,0-33.9c9.4-9.4,24.6-9.4,33.9,0l87,87l87-87c9.4-9.4,24.6-9.4,33.9,0c9.4,9.4,9.4,24.6,0,33.9l-87,87L377,343z"/>';
 $toast-warning-icon: '<path d="M7.5,14.967A7.467,7.467,0,1,0,.033,7.5,7.476,7.476,0,0,0,7.5,14.967Zm0-14A6.533,6.533,0,1,1,.967,7.5,6.54,6.54,0,0,1,7.5.967Z"/><circle cx="7.5" cy="11.5" r="0.5"/><path d="M8,8V3.5a.5.5,0,0,0-1,0V10H8Z"/>';
@@ -123,12 +113,11 @@ $toast-info-color: rgb(12 84 96 / 0.999999);
 /* stylelint-enable number-max-precision */
 
 ///////////////////////////////////////////////////////////////////////////////
-// CUSTOMIZED BOOTSTRAP DEFAULT VARIABLES
-// theme specific customization of Bootstrap variables
+// Customized Bootstrap default variables
+// Theme specific customization of Bootstrap variables
 ///////////////////////////////////////////////////////////////////////////////
 
 // Color system
-
 $white: #fff;
 $gray-100: #f8f9fa;
 $gray-200: #f7f7f7;
@@ -151,19 +140,16 @@ $secondary: $CORPORATE-SECONDARY;
 
 // Body
 // Settings for the `<body>` element.
-
 $body-bg: $white;
 $body-color: $color-primary;
 
 // Links
 // Style anchor elements.
-
 $link-color: $CORPORATE-PRIMARY;
 $link-hover-color: $CORPORATE-SECONDARY;
 
 // Components
 // Define common padding and border radius sizes and more.
-
 $border-radius: 0;
 $border-radius-lg: 0;
 $border-radius-sm: 0;
@@ -198,13 +184,11 @@ $input-group-addon-border-color: $gray-500;
 
 // Dropdown
 // Dropdown menu container and contents.
-
 $dropdown-border-color: $color-inverse;
 
 // Grid breakpoints
 // Define the minimum dimensions at which your layout will change,
 // adapting to different screen sizes, for use in media queries.
-
 $grid-breakpoints: (
   xs: 0,
   sm: 576px,
@@ -216,30 +200,36 @@ $grid-breakpoints: (
 // Grid columns
 // Set the number of columns and specify the width of the gutters.
 $grid-gutter-width: 30px;
-// Container sizes
 
+// Container sizes
 // Define the maximum width of `.container` for different screen sizes.
-// to work well with our breakpoints the value for 'sm' needs to be the width of the next breakpoint
-// and the value of 'md' needs to be larger than the one for 'sm'
+// To work well with our breakpoints the value for 'sm' needs to be the width of the next breakpoint.
+// The value of 'md' needs to be larger than the one for 'sm'.
 $container-max-widths: (
   sm: 768px,
   md: 770px,
   lg: map.get($grid-breakpoints, lg) - $grid-gutter-width,
   xl: map.get($grid-breakpoints, xl) - $grid-gutter-width,
 );
+
 // Navbar
 $navbar-padding-x: 0;
+
 // Popovers
 $popover-max-width: 310px;
 $popover-border-color: rgb(0 0 0 / 0.2);
+
 // Modals
 $modal-content-border-color: rgb(0 0 0 / 0.2);
 $modal-header-border-color: $border-color-light;
+
 // Carousel
 $carousel-control-color: $color-secondary;
 $carousel-control-width: 5%;
 $carousel-indicator-active-bg: $CORPORATE-PRIMARY;
 
-// import ng-select default theme
+///////////////////////////////////////////////////////////////////////////////
+// Customized ng-select default variables
+///////////////////////////////////////////////////////////////////////////////
 $ng-select-border: $gray-500;
 $ng-select-border-radius: 0;
