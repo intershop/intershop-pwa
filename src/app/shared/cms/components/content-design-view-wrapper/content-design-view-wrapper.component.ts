@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, combineLatest, map } from 'rxjs';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageletEntryPointView, ContentPageletView } from 'ish-core/models/content-view/content-view.model';
@@ -24,9 +24,11 @@ export class ContentDesignViewWrapperComponent implements OnInit {
   pagelet$: Observable<ContentPageletView>;
   type: 'pagelet' | 'slot' | 'include';
 
-  isDesignViewMode = false; // temporary activation switch
+  isDesignViewMode = false;
 
   isPageletSelected$: Observable<boolean>;
+  isPageletPreviewed$: Observable<boolean>;
+  shouldScroll$: Observable<boolean>;
 
   constructor(
     private cmsFacade: CMSFacade,
@@ -37,6 +39,28 @@ export class ContentDesignViewWrapperComponent implements OnInit {
   ngOnInit() {
     this.isDesignViewMode = this.previewService.isDesignViewMode;
 
+    if (this.isDesignViewMode) {
+      this.initializeComponent();
+    }
+  }
+
+  onPageletHover() {
+    if (this.isDesignViewMode && this.pageletId) {
+      this.triggerAction(this.pageletId, 'pageletPreview');
+    }
+  }
+
+  onPageletLeave() {
+    if (this.isDesignViewMode) {
+      this.triggerAction(undefined, 'pageletPreview');
+    }
+  }
+
+  triggerAction(id: string, action: string) {
+    this.designViewService.messageToHost({ type: 'dv-clientAction', payload: { id, action } });
+  }
+
+  private initializeComponent() {
     if (this.pageletId) {
       this.type = 'pagelet';
       this.pagelet$ = this.cmsFacade.pagelet$(this.pageletId);
@@ -44,14 +68,24 @@ export class ContentDesignViewWrapperComponent implements OnInit {
       this.isPageletSelected$ = this.cmsFacade.designViewSelectedPageletId$.pipe(
         map(id => (this.isDesignViewMode ? this.pageletId === id : false))
       );
+
+      this.isPageletPreviewed$ = combineLatest([
+        this.cmsFacade.designViewPreviewedPageletId$,
+        this.cmsFacade.designViewSelectedPageletId$,
+      ]).pipe(
+        map(
+          ([previewedId, selectedId]) =>
+            this.isDesignViewMode && this.pageletId === previewedId && this.pageletId !== selectedId
+        )
+      );
+
+      this.shouldScroll$ = this.cmsFacade.designViewScrollToPageletId$.pipe(
+        map(id => this.isDesignViewMode && id === this.pageletId)
+      );
     } else if (this.slotId) {
       this.type = 'slot';
     } else if (this.include) {
       this.type = 'include';
     }
-  }
-
-  triggerAction(id: string, action: string) {
-    this.designViewService.messageToHost({ type: 'dv-clientAction', payload: { id, action } });
   }
 }
