@@ -19,7 +19,7 @@
 
     <ish-payment-paypal
       *ngIf="'preferences.PayPalCheckoutPreferences' | ishServerSetting"
-      [pageType]="'checkout'"
+      [componentType]="'buttons'"
       (selectPaypalPaymentMethod)="setBasketPayment($event)"
     />
 

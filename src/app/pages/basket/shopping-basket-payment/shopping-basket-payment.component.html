@@ -33,7 +33,7 @@
         />
       </li>
       <li *ngIf="'preferences.PayPalCheckoutPreferences' | ishServerSetting">
-        <ish-payment-paypal [pageType]="'cart'" (selectPaypalPaymentMethod)="setBasketPayment($event)" />
+        <ish-payment-paypal [componentType]="'buttons'" (selectPaypalPaymentMethod)="setBasketPayment($event)" />
       </li>
     </ng-container>
   </ng-container>

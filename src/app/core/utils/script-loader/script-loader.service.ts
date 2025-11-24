@@ -154,4 +154,13 @@ export class ScriptLoaderService {
     const scripts = this.document.querySelectorAll('script[src]');
     return Array.from(scripts).some(script => (script as HTMLScriptElement).src === url);
   }
+
+  private isScriptAlreadyLoaded(url: string, namespace?: string): boolean {
+    if (namespace) {
+      const scripts = this.document.querySelectorAll(`script[data-namespace="${namespace}"]`);
+      return Array.from(scripts).some(script => (script as HTMLScriptElement).src === url);
+    }
+    const scripts = this.document.querySelectorAll('script[src]');
+    return Array.from(scripts).some(script => (script as HTMLScriptElement).src === url);
+  }
 }
