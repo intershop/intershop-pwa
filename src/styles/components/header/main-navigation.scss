@@ -75,6 +75,7 @@
 
         ul > li {
           float: none;
+          max-width: none;
         }
       }
       // Menu Items
@@ -196,19 +197,14 @@
       }
 
       &.open .category-level1 {
-        display: block;
         margin-top: 0;
       }
 
       ul {
         > li {
-          float: left;
+          max-width: 250px;
           padding-right: 3%;
           line-height: 28px;
-
-          &:nth-child(4n + 1) {
-            clear: left;
-          }
 
           a {
             font-family: $font-family-regular;
@@ -216,7 +212,6 @@
           }
 
           li {
-            float: none;
             padding-right: 0;
             line-height: 24px;
 
@@ -249,8 +244,9 @@
     .category-level1 {
       left: 0;
       z-index: 9999;
-      display: block;
+      display: flex;
       visibility: hidden;
+      flex-wrap: wrap;
       width: 720px;
       padding: 25px 25px ($grid-gutter-width * 0.5);
       margin: 0;
