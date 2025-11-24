@@ -5,6 +5,9 @@ $design-view-color-pagelet: #399;
 $design-view-color-slot: #399;
 $design-view-color-include: #ce5399;
 
+$design-view-color-pagelet-hover: #256f6f;
+$design-view-color-pagelet-active: #206060;
+
 .design-view-wrapper {
   position: relative;
 
@@ -29,6 +32,7 @@ $design-view-color-include: #ce5399;
       color: $color-inverse;
       text-transform: none;
       white-space: nowrap;
+      border: none;
 
       fa-icon {
         font-size: 20px;
@@ -55,11 +59,21 @@ $design-view-color-include: #ce5399;
         height: 100%;
         pointer-events: none; // important not to block mouse events on included components
         content: '';
-        border: 2px solid $design-view-color-pagelet;
+        border: 2px dashed $design-view-color-pagelet;
       }
 
       > .design-view-wrapper-actions {
         display: flex;
+
+        .btn {
+          &:hover {
+            background-color: $design-view-color-pagelet-hover;
+          }
+
+          &:active {
+            background-color: $design-view-color-pagelet-active;
+          }
+        }
       }
     }
 
