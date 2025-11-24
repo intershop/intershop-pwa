@@ -55,7 +55,7 @@ $design-view-color-include: #ce5399;
         height: 100%;
         pointer-events: none; // important not to block mouse events on included components
         content: '';
-        border: 2px solid $design-view-color-pagelet;
+        border: 2px dashed $design-view-color-pagelet;
       }
 
       > .design-view-wrapper-actions {
