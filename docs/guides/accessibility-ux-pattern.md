@@ -103,11 +103,11 @@ Reasons for this approach:
 
 Password input fields have `autocomplete` attributes **enabled** to support accessibility and modern security practices.
 
-This approach was chosen because it:
+Rationale for enabling autocomplete:
 
-- reduces cognitive load and typing effort for users with disabilities and ensures a better user experience for all users (Accessibility Priority).
-- supports WCAG Success Criterion 1.3.5 (Identify Input Purpose) by making form fields programmatically determinable (WCAG 2.2 Compliance).
-- integrates with password managers, which store credentials securely and promote strong, unique passwords, reducing risks like password reuse or weak credentials (Modern Security Practices).
+- Reduces cognitive load and typing effort for users with disabilities and ensures a better user experience for all users.
+- Supports WCAG Success Criterion 1.3.5 (Identify Input Purpose) by making form fields programmatically determinable (WCAG 2.2 compliance).
+- Integrates with password managers, which store credentials securely and promote strong, unique passwords, reducing risks like password reuse or weak credentials.
 
 The standard PWA prioritizes accessibility over PCI DSS requirements that suggest disabling autocomplete on password fields; for more details on PCI DSS compliance, see the [Security Standard PCI DSS 4.0](pci-dss-4.md#password-autocomplete) guide.
 
