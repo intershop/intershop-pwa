@@ -269,6 +269,7 @@ The SPARQUE response data is mapped to the existing data models used by the PWA,
 ## Product Recommendations Feature
 
 SPARQUE.AI provides AI-powered product recommendations that you can display throughout the PWA to enhance user experience and increase engagement.
+For more details, refer to the [Knowledge Base](https://knowledge.intershop.com/kb/index.php/Display/45L579).
 The implementation in the PWA is developed with the help of the [CMS](../concepts/cms-integration.md).
 This allows for a high degree of flexibility in terms of where and how recommendations are displayed in the application.
 The CMS component to be used in ICM is called _Product List (SPARQUE Recommendations)_ with the qualified name `app_sf_base_cm:component.common.productListRecommendations.pagelet2-Component`.
