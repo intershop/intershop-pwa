@@ -152,7 +152,7 @@ PCI DSS requires the use of several best practices, including:
 ### Password Autocomplete
 
 The Intershop PWA keeps password autocomplete enabled with appropriate attributes to comply with WCAG 2.2 accessibility requirements.
-While some PCI DSS interpretations suggest disabling autocomplete for password fields, we have prioritized accessibility in the baseline PWA implementation, see the [Accessibility in UX: Patterns and Rationale](accessibility-ux-pattern.md#password-autocomplete) guide.
+While some PCI DSS interpretations suggest disabling autocomplete for password fields, Intershop prioritized accessibility in the baseline PWA implementation, see the [Accessibility in UX: Patterns and Rationale](accessibility-ux-pattern.md#password-autocomplete) guide.
 
 PCI DSS compliance for password autocomplete must be enforced through project-level security measures while maintaining accessibility features in the core PWA.
-For the technical implementation approach, reference [PR #1956](https://github.com/intershop/intershop-pwa/pull/1956).
+For the technical implementation approach, see [PR #1956](https://github.com/intershop/intershop-pwa/pull/1956).
