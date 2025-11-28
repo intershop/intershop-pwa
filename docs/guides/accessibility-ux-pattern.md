@@ -109,7 +109,8 @@ Rationale for enabling autocomplete:
 - Supports WCAG Success Criterion 1.3.5 (Identify Input Purpose) by making form fields programmatically determinable (WCAG 2.2 compliance).
 - Integrates with password managers, which store credentials securely and promote strong, unique passwords, reducing risks like password reuse or weak credentials.
 
-The standard PWA prioritizes accessibility over PCI DSS requirements that suggest disabling autocomplete on password fields. For more details on PCI DSS compliance, see the [Security Standard PCI DSS 4.0](pci-dss-4.md#password-autocomplete) guide.
+The standard PWA prioritizes accessibility over PCI DSS requirements that suggest disabling autocomplete on password fields.
+For more details on PCI DSS compliance, see the [Security Standard PCI DSS 4.0](pci-dss-4.md#password-autocomplete) guide.
 
 ### Component Behavior
 
