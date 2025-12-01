@@ -6,8 +6,8 @@ import {
   MissingTranslationHandler,
   TranslateCompiler,
   TranslateLoader,
-  TranslateModule,
   TranslateService,
+  provideTranslateService,
 } from '@ngx-translate/core';
 
 import { SSR_LOCALE } from './configurations/state-keys';
@@ -20,15 +20,13 @@ import { PWATranslateCompiler } from './utils/translate/pwa-translate-compiler';
 import { TranslationGenerator } from './utils/translate/translations-generator';
 
 @NgModule({
-  imports: [
-    TranslateModule.forRoot({
+  providers: [
+    provideTranslateService({
       loader: { provide: TranslateLoader, useClass: ICMTranslateLoader },
       missingTranslationHandler: { provide: MissingTranslationHandler, useClass: FallbackMissingTranslationHandler },
       useDefaultLang: false,
       compiler: { provide: TranslateCompiler, useClass: PWATranslateCompiler },
     }),
-  ],
-  providers: [
     { provide: FALLBACK_LANG, useValue: 'en_US' },
     {
       provide: LOCAL_TRANSLATIONS,
