@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import { Observable, ReplaySubject, map } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -13,7 +12,7 @@ import { ProductImageComponent } from 'ish-shared/components/product/product-ima
   selector: 'ish-suggest-products-tile',
   templateUrl: './suggest-products-tile.component.html',
   standalone: true,
-  imports: [CommonModule, PipesModule, TranslateModule, RouterModule, ProductImageComponent],
+  imports: [CommonModule, PipesModule, RouterModule, ProductImageComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestProductsTileComponent implements OnInit {

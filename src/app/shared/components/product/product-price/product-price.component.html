@@ -42,14 +42,14 @@
       <ng-container *ngFor="let scaledPrice of d.scaledPrices; index as i; last as lastScaledPrice">
         <div *ngIf="lastScaledPrice; else showRange">
           {{
-            'product.price.scaledPrice.text.last'
+            'product.price.scaledPrice.unlimited.text'
               | translate : { '0': scaledPrice.minQuantity, '1': scaledPrice | ishPrice }
           }}
         </div>
         <ng-template #showRange>
           <div *ngIf="scaledPrice.minQuantity !== d.scaledPrices[i + 1].minQuantity - 1; else singleScaledPrice">
             {{
-              'product.price.scaledPrice.text'
+              'product.price.scaledPrice.range.text'
                 | translate
                   : {
                       '0': scaledPrice.minQuantity,
