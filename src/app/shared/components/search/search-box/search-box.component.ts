@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { IconName } from '@fortawesome/fontawesome-svg-core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, ReplaySubject, map, shareReplay } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -51,7 +51,7 @@ import { SuggestSearchTermsComponent } from 'ish-shared/components/search/sugges
     CommonModule,
     IconModule,
     PipesModule,
-    TranslateModule,
+    TranslatePipe,
     SuggestBrandsComponent,
     SuggestCategoriesComponent,
     SuggestKeywordsComponent,
@@ -168,7 +168,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // reset input when ESC key is pressed and element is focused within the search box
   @HostListener('document:keydown.escape', ['$event'])
-  onEscape(event: KeyboardEvent) {
+  onEscape(event: Event) {
     if (this.searchBox.nativeElement.contains(event.target)) {
       event.preventDefault(); // Optional: Prevent default behavior
       this.resetInput();
@@ -177,18 +177,18 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // remove focus when clicking outside the search box
   @HostListener('document:click', ['$event.target'])
-  onClick(targetElement: undefined): void {
+  onClick(targetElement: EventTarget): void {
     this.blurIfOutside(targetElement);
   }
 
   // remove focus when focused outside the search box
   @HostListener('document:focusin', ['$event.target'])
-  onFocusIn(targetElement: undefined): void {
+  onFocusIn(targetElement: EventTarget): void {
     this.blurIfOutside(targetElement);
   }
 
   // check if the target element is outside the search box
-  private blurIfOutside(targetElement: undefined): void {
+  private blurIfOutside(targetElement: EventTarget): void {
     const clickedOrFocusedInside = this.searchBox.nativeElement.contains(targetElement);
     if (!clickedOrFocusedInside) {
       this.blur();

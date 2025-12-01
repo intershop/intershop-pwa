@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ReplaySubject } from 'rxjs';
 
 import { SuggestCategoriesTileComponent } from 'ish-shared/components/search/suggest-categories-tile/suggest-categories-tile.component';
@@ -9,7 +9,7 @@ import { SuggestCategoriesTileComponent } from 'ish-shared/components/search/sug
   selector: 'ish-suggest-categories',
   templateUrl: './suggest-categories.component.html',
   standalone: true,
-  imports: [CommonModule, TranslateModule, SuggestCategoriesTileComponent],
+  imports: [CommonModule, TranslatePipe, SuggestCategoriesTileComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestCategoriesComponent {

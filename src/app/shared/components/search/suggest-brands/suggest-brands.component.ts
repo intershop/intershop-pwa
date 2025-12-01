@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ReplaySubject } from 'rxjs';
 
 import { Brand } from 'ish-core/models/brand/brand.model';
@@ -11,7 +11,7 @@ import { PipesModule } from 'ish-core/pipes.module';
   selector: 'ish-suggest-brands',
   templateUrl: './suggest-brands.component.html',
   standalone: true,
-  imports: [CommonModule, PipesModule, TranslateModule, RouterModule],
+  imports: [CommonModule, PipesModule, TranslatePipe, RouterModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestBrandsComponent {

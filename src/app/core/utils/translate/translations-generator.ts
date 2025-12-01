@@ -21,7 +21,7 @@ export class TranslationGenerator {
     const localizedShortDate = shortDate.replace(/(\w)/g, (_, letter) =>
       this.translate.instant(`common.date_format.letters.${letter}`)
     );
-    this.translate.set('common.placeholder.shortdate', localizedShortDate, lang);
-    this.translate.set('common.placeholder.shortdate-caps', localizedShortDate.toUpperCase(), lang);
+    this.translate.set('placeholder-short-date', localizedShortDate, lang);
+    this.translate.set('placeholder-short-date-caps', localizedShortDate.toUpperCase(), lang);
   }
 }

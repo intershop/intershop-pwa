@@ -147,8 +147,8 @@ describe('Product Price Component', () => {
     it('should show scaled prices when configured and scaled prices are available', () => {
       component.showScaledPrices = true;
 
-      translate.set('product.price.scaledPrice.text', 'Buy {{0}}-{{1}} for {{2}} each');
-      translate.set('product.price.scaledPrice.text.last', 'Buy {{0}}+ for {{1}} each');
+      translate.set('product.price.scaledPrice.range.text', 'Buy {{0}}-{{1}} for {{2}} each');
+      translate.set('product.price.scaledPrice.unlimited.text', 'Buy {{0}}+ for {{1}} each');
       translate.set('product.price.scaledPrice.single.text', 'Buy {{0}} for {{1}} each');
       when(context.select('prices')).thenReturn(
         of(
