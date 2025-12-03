@@ -258,10 +258,14 @@ The same system can be adopted for customization projects.
 ## Import Changes from New PWA Release (Migration)
 
 Importing changes of new releases is done with Git tooling.
-If you stick to the guidelines in this chapter, the process of updating should run without major problems.
-Also remember to use `npm install` after importing a change that modified the `package.json` and `package-lock.json`, and run tests and linting in the process.
+If you follow the guidelines in this chapter, the updating process will run without major problems.
+Remember to use `npm install` after importing a change that modified the `package.json` and `package-lock.json`, and run tests and linting in the process.
 
-Reading through the [migrations.md](./migrations.md) and the [CHANGELOG.md](../../CHANGELOG.md) - here especially the 'Breaking Changes' section - should be the first step before any migration.
+> [!TIP]
+> In case of problems with `npm install` during or at the end of a migration, replace the `package-lock.json` of your project with the original one from the Intershop PWA (the one fitting to the last migration commit), delete the `node_modules` folder and run `npm install` again.
+> This is the most reliable way to get a working set of dependencies again including the changes fitting to your project-specific dependencies.
+
+Reading the [migrations.md](./migrations.md) and the [CHANGELOG.md](../../CHANGELOG.md) - especially the 'Breaking Changes' section - is the first step before any migration.
 
 > [!TIP]
 > The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers migration‑related video tutorials in the _Progressive Web App_ category.

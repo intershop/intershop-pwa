@@ -2,11 +2,11 @@
 
 ## Project Overview
 
-Angular 16-based Progressive Web App for enterprise commerce. Built for performance, maintainability, SSR, and extensibility.
+Angular 17-based Progressive Web App for enterprise commerce. Built for performance, maintainability, SSR, and extensibility.
 
 ## Technology Stack
 
-- Angular 16.2, TypeScript 5.1, NgRx, Node.js 22
+- Angular 17.3, TypeScript 5.4, NgRx, Node.js 22
 - Express.js (SSR), Bootstrap 5, Jest + Cypress
 - REST APIs only, RxJS for reactive flows
 
@@ -15,7 +15,7 @@ Angular 16-based Progressive Web App for enterprise commerce. Built for performa
 - Component = View logic only
 - Business logic in services/facades
 - NgRx for state, EntityAdapter for normalization
-- SSR via Angular Universal + Express
+- SSR via Angular SSR + Express
 - Lazy loaded modules for performance
 
 ## Naming & Structure
