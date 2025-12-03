@@ -3,7 +3,7 @@ const { pathsToModuleNameMapper } = require('ts-jest');
 
 const tsConfig = require('comment-json').parse(fs.readFileSync('./tsconfig.json', { encoding: 'utf-8' }));
 
-const esModules = ['lodash-es/.*', 'swiper', 'ssr-window', 'dom7', '.*\\.mjs$'];
+const esModules = ['lodash-es/.*', 'swiper', 'ssr-window', 'dom7', 'uuid', '.*\\.mjs$'];
 const { defaultTransformerOptions } = require('jest-preset-angular/presets');
 
 /** @type {import('ts-jest/dist/types').JestConfigWithTsJest} */
@@ -25,10 +25,6 @@ module.exports = {
   transformIgnorePatterns: [`node_modules/(?!${esModules.join('|')})`],
   moduleNameMapper: {
     ...pathsToModuleNameMapper(tsConfig.compilerOptions.paths, { prefix: '<rootDir>' }),
-    // This forces jest to use a Node+CommonJS version of uuid. Refer to the following resources for more info:
-    // https://github.com/uuidjs/uuid/pull/616
-    // https://github.com/microsoft/accessibility-insights-web/pull/5421#issuecomment-1109168149
-    '^uuid$': require.resolve('uuid'),
   },
   snapshotSerializers: [
     './src/jest-serializer/AngularHTMLSerializer.js',
