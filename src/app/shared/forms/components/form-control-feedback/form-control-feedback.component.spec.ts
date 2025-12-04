@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { FormControlFeedbackComponent } from './form-control-feedback.component';
 
@@ -12,9 +12,7 @@ describe('Form Control Feedback Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [FormControlFeedbackComponent],
-      providers: [provideTranslateService()],
+      imports: [FormControlFeedbackComponent, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

@@ -5,7 +5,7 @@ import { Store, select } from '@ngrx/store';
 import { defer, fromEvent } from 'rxjs';
 import { bufferToggle, concatMap, delay, distinctUntilChanged, filter, first, map } from 'rxjs/operators';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
 import { selectRouteData } from 'ish-core/store/core/router';
 import { whenTruthy } from 'ish-core/utils/operators';

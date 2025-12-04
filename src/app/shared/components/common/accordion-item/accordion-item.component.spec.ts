@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { MockDirective } from 'ng-mocks';
 
 import { AccordionItemComponent } from './accordion-item.component';
@@ -11,8 +11,13 @@ describe('Accordion Item Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccordionItemComponent, MockDirective(NgbCollapse)],
-    }).compileComponents();
+      imports: [AccordionItemComponent],
+    })
+      .overrideComponent(AccordionItemComponent, {
+        remove: { imports: [NgbCollapseModule] },
+        add: { imports: [MockDirective(NgbCollapse)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { CopilotStoreModule } from '../copilot-store.module';
+import { CopilotStoreProviders } from '../copilot-store.providers';
 
 import { copilotConfigInternalActions } from './copilot-config.actions';
 import { getCopilotConfig } from './copilot-config.selectors';
@@ -13,7 +13,7 @@ describe('Copilot Config Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CopilotStoreModule.forTesting('copilotConfig'), CoreStoreModule.forTesting()],
+      imports: [...CoreStoreProviders.forTesting(), CopilotStoreProviders.forTesting('copilotConfig')],
       providers: [provideStoreSnapshots()],
     });
 

@@ -27,14 +27,20 @@ describe('Cms Static Page Component', () => {
     cmsFacade = mock(CMSFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        CMSStaticPageComponent,
-        MockComponent(BreadcrumbComponent),
-        MockComponent(ContentNavigationComponent),
-        MockComponent(ContentSlotComponent),
-      ],
+      imports: [CMSStaticPageComponent],
       providers: [{ provide: CMSFacade, useFactory: () => instance(cmsFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(CMSStaticPageComponent, {
+        remove: { imports: [BreadcrumbComponent, ContentNavigationComponent, ContentSlotComponent] },
+        add: {
+          imports: [
+            MockComponent(BreadcrumbComponent),
+            MockComponent(ContentNavigationComponent),
+            MockComponent(ContentSlotComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

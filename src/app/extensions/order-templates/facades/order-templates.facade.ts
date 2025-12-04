@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, startWith, withLatestFrom } from 'rxjs/operators';
@@ -6,6 +6,7 @@ import { map, startWith, withLatestFrom } from 'rxjs/operators';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
+import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
 import { OrderTemplate, OrderTemplateHeader } from '../models/order-template/order-template.model';
 import {
@@ -26,25 +27,42 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class OrderTemplatesFacade {
+  private moduleLoader = inject(ModuleLoaderService);
+
   constructor(private store: Store) {}
 
-  orderTemplates$: Observable<OrderTemplate[]> = this.store.pipe(select(getAllOrderTemplates));
-  currentOrderTemplate$: Observable<OrderTemplate> = this.store.pipe(select(getSelectedOrderTemplateDetails));
-  currentOrderTemplateOutOfStockItems$: Observable<string[]> = this.store.pipe(
-    select(getSelectedOrderTemplateOutOfStockItems)
+  orderTemplates$: Observable<OrderTemplate[]> = this.moduleLoader.whenLoaded('orderTemplates', () =>
+    this.store.pipe(select(getAllOrderTemplates))
   );
-  orderTemplateLoading$: Observable<boolean> = this.store.pipe(select(getOrderTemplateLoading));
-  orderTemplateError$: Observable<HttpError> = this.store.pipe(select(getOrderTemplateError));
+  currentOrderTemplate$: Observable<OrderTemplate> = this.moduleLoader.whenLoaded('orderTemplates', () =>
+    this.store.pipe(select(getSelectedOrderTemplateDetails))
+  );
+  currentOrderTemplateOutOfStockItems$: Observable<string[]> = this.moduleLoader.whenLoaded('orderTemplates', () =>
+    this.store.pipe(select(getSelectedOrderTemplateOutOfStockItems))
+  );
+  orderTemplateLoading$: Observable<boolean> = this.moduleLoader.whenLoaded('orderTemplates', () =>
+    this.store.pipe(select(getOrderTemplateLoading))
+  );
+  orderTemplateError$: Observable<HttpError> = this.moduleLoader.whenLoaded('orderTemplates', () =>
+    this.store.pipe(select(getOrderTemplateError))
+  );
 
   orderTemplatesSelectOptions$(filterCurrent = true): Observable<SelectOption[]> {
-    return this.orderTemplates$.pipe(
+    const orderTemplateOptions$ = this.orderTemplates$.pipe(
       startWith([] as OrderTemplate[]),
       map(orderTemplates =>
         orderTemplates.map(orderTemplate => ({
           value: orderTemplate.id,
           label: orderTemplate.title,
         }))
-      ),
+      )
+    );
+
+    if (!filterCurrent) {
+      return orderTemplateOptions$;
+    }
+
+    return orderTemplateOptions$.pipe(
       withLatestFrom(this.currentOrderTemplate$),
       map(([orderTemplateOptions, currentOrderTemplate]) => {
         if (filterCurrent && currentOrderTemplate) {
@@ -56,27 +74,41 @@ export class OrderTemplatesFacade {
   }
 
   addOrderTemplate(orderTemplate: OrderTemplateHeader): HttpError | void {
-    this.store.dispatch(createOrderTemplate({ orderTemplate }));
+    void this.moduleLoader
+      .ensureLoaded('orderTemplates')
+      .then(() => this.store.dispatch(createOrderTemplate({ orderTemplate })));
   }
 
   createOrderTemplateFromLineItems(orderTemplate: OrderTemplateHeader, lineItems: LineItem[]): HttpError | void {
-    this.store.dispatch(orderTemplatesActions.createOrderTemplateFromLineItems({ orderTemplate, lineItems }));
+    void this.moduleLoader
+      .ensureLoaded('orderTemplates')
+      .then(() =>
+        this.store.dispatch(orderTemplatesActions.createOrderTemplateFromLineItems({ orderTemplate, lineItems }))
+      );
   }
 
   deleteOrderTemplate(id: string): void {
-    this.store.dispatch(deleteOrderTemplate({ orderTemplateId: id }));
+    void this.moduleLoader
+      .ensureLoaded('orderTemplates')
+      .then(() => this.store.dispatch(deleteOrderTemplate({ orderTemplateId: id })));
   }
 
   updateOrderTemplate(orderTemplate: OrderTemplate): void {
-    this.store.dispatch(updateOrderTemplate({ orderTemplate }));
+    void this.moduleLoader
+      .ensureLoaded('orderTemplates')
+      .then(() => this.store.dispatch(updateOrderTemplate({ orderTemplate })));
   }
 
   addProductToNewOrderTemplate(title: string, sku: string, quantity?: number): void {
-    this.store.dispatch(addProductToNewOrderTemplate({ title, sku, quantity }));
+    void this.moduleLoader
+      .ensureLoaded('orderTemplates')
+      .then(() => this.store.dispatch(addProductToNewOrderTemplate({ title, sku, quantity })));
   }
 
   addProductToOrderTemplate(orderTemplateId: string, sku: string, quantity?: number): void {
-    this.store.dispatch(addProductToOrderTemplate({ orderTemplateId, sku, quantity }));
+    void this.moduleLoader
+      .ensureLoaded('orderTemplates')
+      .then(() => this.store.dispatch(addProductToOrderTemplate({ orderTemplateId, sku, quantity })));
   }
 
   moveItemToOrderTemplate(
@@ -85,21 +117,29 @@ export class OrderTemplatesFacade {
     sku: string,
     quantity: number
   ): void {
-    this.store.dispatch(
-      moveItemToOrderTemplate({
-        source: { id: sourceOrderTemplateId },
-        target: { id: targetOrderTemplateId, sku, quantity },
-      })
+    void this.moduleLoader.ensureLoaded('orderTemplates').then(() =>
+      this.store.dispatch(
+        moveItemToOrderTemplate({
+          source: { id: sourceOrderTemplateId },
+          target: { id: targetOrderTemplateId, sku, quantity },
+        })
+      )
     );
   }
 
   moveItemToNewOrderTemplate(sourceOrderTemplateId: string, title: string, sku: string, quantity: number): void {
-    this.store.dispatch(
-      moveItemToOrderTemplate({ source: { id: sourceOrderTemplateId }, target: { title, sku, quantity } })
-    );
+    void this.moduleLoader
+      .ensureLoaded('orderTemplates')
+      .then(() =>
+        this.store.dispatch(
+          moveItemToOrderTemplate({ source: { id: sourceOrderTemplateId }, target: { title, sku, quantity } })
+        )
+      );
   }
 
   removeProductFromOrderTemplate(orderTemplateId: string, sku: string): void {
-    this.store.dispatch(removeItemFromOrderTemplate({ orderTemplateId, sku }));
+    void this.moduleLoader
+      .ensureLoaded('orderTemplates')
+      .then(() => this.store.dispatch(removeItemFromOrderTemplate({ orderTemplateId, sku })));
   }
 }

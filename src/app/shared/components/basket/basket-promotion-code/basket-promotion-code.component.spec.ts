@@ -1,13 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { SuccessMessageComponent } from 'ish-shared/components/common/success-message/success-message.component';
 
 import { BasketPromotionCodeComponent } from './basket-promotion-code.component';
 
@@ -21,10 +22,20 @@ describe('Basket Promotion Code Component', () => {
     when(checkoutFacade.basket$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslatePipe],
-      declarations: [BasketPromotionCodeComponent, MockComponent(ErrorMessageComponent), MockDirective(NgbCollapse)],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, provideTranslateService()],
-    }).compileComponents();
+      imports: [BasketPromotionCodeComponent, ReactiveFormsModule, TranslateModule.forRoot()],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
+    })
+      .overrideComponent(BasketPromotionCodeComponent, {
+        remove: { imports: [ErrorMessageComponent, SuccessMessageComponent] },
+        add: {
+          imports: [
+            MockComponent(ErrorMessageComponent),
+            MockDirective(NgbCollapse),
+            MockComponent(SuccessMessageComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

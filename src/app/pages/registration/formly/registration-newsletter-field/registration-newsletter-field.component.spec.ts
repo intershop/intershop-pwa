@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
@@ -23,11 +23,15 @@ describe('Registration Newsletter Field Component', () => {
         }),
         FormlyTestingComponentsModule,
         ReactiveFormsModule,
-        TranslatePipe,
+        RegistrationNewsletterFieldComponent,
+        TranslateModule.forRoot(),
       ],
-      declarations: [MockPipe(ServerSettingPipe, () => true), RegistrationNewsletterFieldComponent],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(RegistrationNewsletterFieldComponent, {
+        remove: { imports: [ServerSettingPipe] },
+        add: { imports: [MockPipe(ServerSettingPipe, () => true)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

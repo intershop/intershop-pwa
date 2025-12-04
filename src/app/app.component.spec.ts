@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
-import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
+import { provideRouter } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -10,7 +10,6 @@ import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { CookiesBannerComponent } from 'ish-shell/application/cookies-banner/cookies-banner.component';
 
 import { AppComponent } from './app.component';
-import { LazyCopilotComponent } from './extensions/copilot/exports/lazy-copilot/lazy-copilot.component';
 import { FooterComponent } from './shell/footer/footer/footer.component';
 import { HeaderComponent } from './shell/header/header/header.component';
 
@@ -26,20 +25,20 @@ describe('App Component', () => {
     appFacade = mock(AppFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        AppComponent,
-        MockComponent(CookiesBannerComponent),
-        MockComponent(FooterComponent),
-        MockComponent(HeaderComponent),
-        MockComponent(LazyCopilotComponent),
-      ],
-      imports: [RouterModule, TranslatePipe],
-      providers: [
-        { provide: AppFacade, useFactory: () => instance(appFacade) },
-        provideRouter([]),
-        provideTranslateService(),
-      ],
-    }).compileComponents();
+      imports: [AppComponent, TranslateModule.forRoot()],
+      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }, provideRouter([])],
+    })
+      .overrideComponent(AppComponent, {
+        remove: { imports: [CookiesBannerComponent, FooterComponent, HeaderComponent] },
+        add: {
+          imports: [
+            MockComponent(CookiesBannerComponent),
+            MockComponent(FooterComponent),
+            MockComponent(HeaderComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

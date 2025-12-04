@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,13 +10,15 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { FormGroup, FormGroupDirective } from '@angular/forms';
+import { FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { Address } from 'ish-core/models/address/address.model';
+import { FORMLY_ADDRESS_FORMS_COMPONENTS } from 'ish-shared/formly-address-forms/formly-address-forms';
 
 /**
  * The Customer Address Form Component renders an address form with apply/cancel buttons so that the user can create or edit an address.
@@ -31,6 +34,8 @@ import { Address } from 'ish-core/models/address/address.model';
  */
 @Component({
   selector: 'ish-formly-customer-address-form',
+  imports: [ReactiveFormsModule, TranslatePipe, ...FORMLY_ADDRESS_FORMS_COMPONENTS, AsyncPipe],
+  standalone: true,
   templateUrl: './formly-customer-address-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

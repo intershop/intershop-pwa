@@ -4,8 +4,8 @@ import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
@@ -53,7 +53,7 @@ describe('Orders Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('orders')],
+      imports: [...CoreStoreProviders.forTesting(), CustomerStoreProviders.forTesting('orders')],
       providers: [provideStoreSnapshots()],
     });
 

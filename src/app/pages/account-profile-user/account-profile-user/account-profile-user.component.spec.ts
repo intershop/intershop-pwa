@@ -1,9 +1,14 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { FormlyForm } from '@ngx-formly/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { User } from 'ish-core/models/user/user.model';
@@ -53,15 +58,27 @@ describe('Account Profile User Component', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslatePipe],
-      declarations: [AccountProfileUserComponent, MockComponent(ErrorMessageComponent)],
+      imports: [AccountProfileUserComponent, FormlyTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacadeMock) },
         { provide: AppFacade, useFactory: () => instance(appFacadeMock) },
         { provide: FieldLibrary, useFactory: () => instance(fieldLibraryMock) },
-        provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountProfileUserComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            MockComponent(ErrorMessageComponent),
+            FormSubmitDirective,
+            FormlyForm,
+            ReactiveFormsModule,
+            TranslatePipe,
+            MockDirective(RouterLink),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 
 import { Address } from 'ish-core/models/address/address.model';
@@ -59,9 +59,7 @@ describe('Address Doctor Modal Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslatePipe],
-      declarations: [AddressDoctorModalComponent],
-      providers: [provideTranslateService()],
+      imports: [AddressDoctorModalComponent, FormlyTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

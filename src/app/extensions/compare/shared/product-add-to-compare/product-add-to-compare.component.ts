@@ -1,8 +1,10 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
 
 import { CompareFacade } from '../../facades/compare.facade';
 
@@ -11,10 +13,11 @@ import { CompareFacade } from '../../facades/compare.facade';
  */
 @Component({
   selector: 'ish-product-add-to-compare',
+  imports: [AsyncPipe, FeatureTogglePipe, NgClass, TranslatePipe],
+  standalone: true,
   templateUrl: './product-add-to-compare.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-@GenerateLazyComponent()
 export class ProductAddToCompareComponent implements OnInit {
   @Input() displayType: 'button' | 'icon' = 'button';
   @Input() cssClass: string;

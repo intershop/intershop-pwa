@@ -1,13 +1,14 @@
+import { AsyncPipe } from '@angular/common';
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.imports';
 import { FormlyAddressExtensionFormComponent } from 'ish-shared/formly-address-forms/components/formly-address-extension-form/formly-address-extension-form.component';
 import { FormlyAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-address-form/formly-address-form.component';
 
@@ -22,14 +23,24 @@ describe('Formly Customer Address Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        FormlyCustomerAddressFormComponent,
-        MockComponent(FormlyAddressExtensionFormComponent),
-        MockComponent(FormlyAddressFormComponent),
+      imports: [FormlyCustomerAddressFormComponent, TranslateModule.forRoot()],
+      providers: [
+        ...(FeatureToggleModule.forTesting('businessCustomerRegistration').providers ?? []),
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
       ],
-      imports: [FeatureToggleModule.forTesting('businessCustomerRegistration'), ReactiveFormsModule, TranslatePipe],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(FormlyCustomerAddressFormComponent, {
+        set: {
+          imports: [
+            ReactiveFormsModule,
+            TranslatePipe,
+            MockComponent(FormlyAddressExtensionFormComponent),
+            MockComponent(FormlyAddressFormComponent),
+            AsyncPipe,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

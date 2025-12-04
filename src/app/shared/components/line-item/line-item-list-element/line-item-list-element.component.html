@@ -161,13 +161,14 @@
 
   <div class="offset-2 col-10 d-flex align-items-end list-item-actions">
     @if (editable) {
-      <ish-lazy-product-add-to-order-template
+      <ish-product-add-to-order-template
+        *ishFeature="'orderTemplates'"
         displayType="icon"
         [cssClass]="'btn-link btn-tool ps-0 add-to-order-template'"
       />
     }
     @if (editable) {
-      <ish-lazy-product-add-to-wishlist displayType="icon" [cssClass]="'btn-link btn-tool'" />
+      <ish-product-add-to-wishlist *ishFeature="'wishlists'" displayType="icon" [cssClass]="'btn-link btn-tool'" />
     }
     @if (!pli.isFreeGift && editable) {
       <button

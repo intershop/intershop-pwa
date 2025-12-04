@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -24,15 +24,20 @@ describe('Data Request Page Component', () => {
     when(accountFacade.dataRequestLoading$).thenReturn(of(false));
     when(accountFacade.isFirstGDPRDataRequest$).thenReturn(of(true));
     await TestBed.configureTestingModule({
-      declarations: [
-        DataRequestPageComponent,
-        MockComponent(ErrorMessageComponent),
-        MockComponent(LoadingComponent),
-        MockDirective(ServerHtmlDirective),
-      ],
-      imports: [TranslatePipe],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
-    }).compileComponents();
+      imports: [DataRequestPageComponent, TranslateModule.forRoot()],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+    })
+      .overrideComponent(DataRequestPageComponent, {
+        remove: { imports: [ErrorMessageComponent, LoadingComponent, ServerHtmlDirective] },
+        add: {
+          imports: [
+            MockComponent(ErrorMessageComponent),
+            MockComponent(LoadingComponent),
+            MockDirective(ServerHtmlDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

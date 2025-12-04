@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -25,9 +25,8 @@ describe('Custom Fields View Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [CustomFieldsViewComponent],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, provideTranslateService()],
+      imports: [CustomFieldsViewComponent, TranslateModule.forRoot()],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
   });
 

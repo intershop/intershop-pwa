@@ -1,11 +1,14 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /**
  * The page header for error pages - the logo link reloads the app
  */
 @Component({
   selector: 'ish-header-error',
+  imports: [TranslatePipe],
+  standalone: true,
   templateUrl: './header-error.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

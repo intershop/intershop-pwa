@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -13,10 +13,13 @@ describe('Maintenance Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [MaintenancePageComponent, MockDirective(ServerHtmlDirective)],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+      imports: [MaintenancePageComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(MaintenancePageComponent, {
+        remove: { imports: [ServerHtmlDirective] },
+        add: { imports: [MockDirective(ServerHtmlDirective)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

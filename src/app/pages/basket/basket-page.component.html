@@ -22,8 +22,9 @@
     <ish-loading />
   }
 }
-
-<ish-lazy-recently-viewed />
+@defer (when ('recently' | ishFeature)) {
+  <ish-recently-viewed />
+}
 
 <div class="marketing-area">
   <ish-content-include includeId="include.basket.base.bottom.pagelet2-Include" />

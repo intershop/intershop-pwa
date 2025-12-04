@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
@@ -5,9 +6,13 @@ import { Observable } from 'rxjs';
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageletEntryPointView } from 'ish-core/models/content-view/content-view.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ContentPageletComponent } from 'ish-shared/cms/components/content-pagelet/content-pagelet.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 @Component({
   selector: 'ish-account-content-page',
+  imports: [AsyncPipe, ContentPageletComponent, LoadingComponent],
+  standalone: true,
   templateUrl: './account-content-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

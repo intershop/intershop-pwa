@@ -1,10 +1,16 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
+import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 
 @Component({
   selector: 'ish-product-shipment',
+  imports: [AsyncPipe, ContentIncludeComponent, ModalDialogLinkComponent, NgClass, TranslatePipe],
+  standalone: true,
   templateUrl: './product-shipment.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

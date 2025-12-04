@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { DataRequest, DataRequestConfirmation } from 'ish-core/models/data-request/data-request.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -22,7 +22,7 @@ describe('Data Requests Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('dataRequests')],
+      imports: [...CoreStoreProviders.forTesting(), CustomerStoreProviders.forTesting('dataRequests')],
       providers: [provideStoreSnapshots()],
     });
 

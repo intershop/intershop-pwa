@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -6,6 +7,7 @@ import { Address } from 'ish-core/models/address/address.model';
 import { FeatureEventNotifier, FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
 
 import { AddressDoctorFacade } from '../../facades/address-doctor.facade';
+import { AddressDoctorModalComponent } from '../address-doctor-modal/address-doctor-modal.component';
 
 import { AddressDoctorComponent } from './address-doctor.component';
 
@@ -31,11 +33,17 @@ describe('Address Doctor Component', () => {
     featureEventService = mock(FeatureEventService);
 
     await TestBed.configureTestingModule({
+      imports: [AddressDoctorComponent],
       providers: [
         { provide: AddressDoctorFacade, useFactory: () => instance(mock(AddressDoctorFacade)) },
         { provide: FeatureEventService, useFactory: () => instance(featureEventService) },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(AddressDoctorComponent, {
+        remove: { imports: [AddressDoctorModalComponent] },
+        add: { imports: [MockComponent(AddressDoctorModalComponent)] },
+      })
+      .compileComponents();
 
     when(featureEventService.eventNotifier$).thenReturn(
       of({

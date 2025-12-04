@@ -31,7 +31,7 @@ describe('Product Variation Select Swatch Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ProductVariationSelectSwatchComponent],
+      imports: [ProductVariationSelectSwatchComponent],
     }).compileComponents();
   });
 

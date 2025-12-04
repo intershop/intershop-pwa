@@ -1,8 +1,11 @@
 import { AnimationEvent } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, OnInit, TransferState } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import bottomOutAnimation from 'ish-core/animations/bottom-out.animation';
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { CookieConsentSettings } from 'ish-core/models/cookies/cookies.model';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 
@@ -11,6 +14,8 @@ import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
  */
 @Component({
   selector: 'ish-cookies-banner',
+  imports: [RouterLink, ServerHtmlDirective, TranslatePipe],
+  standalone: true,
   templateUrl: './cookies-banner.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [bottomOutAnimation()],

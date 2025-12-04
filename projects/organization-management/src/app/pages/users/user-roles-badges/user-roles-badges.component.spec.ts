@@ -12,7 +12,7 @@ describe('User Roles Badges Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserRolesBadgesComponent],
+      imports: [UserRolesBadgesComponent],
       providers: [
         { provide: OrganizationManagementFacade, useFactory: () => instance(mock(OrganizationManagementFacade)) },
       ],

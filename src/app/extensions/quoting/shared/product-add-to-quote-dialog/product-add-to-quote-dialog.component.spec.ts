@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideRouter } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { QuoteContextFacade } from '../../facades/quote-context.facade';
 import { Quote, QuoteRequest } from '../../models/quoting/quoting.model';
@@ -26,16 +27,29 @@ describe('Product Add To Quote Dialog Component', () => {
     context = mock(QuoteContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterModule, TranslatePipe],
-      providers: [provideRouter([]), provideTranslateService()],
-      declarations: [
-        MockComponent(ErrorMessageComponent),
-        MockComponent(QuoteEditComponent),
-        MockComponent(QuoteInteractionsComponent),
-        MockComponent(QuoteViewComponent),
-        ProductAddToQuoteDialogComponent,
-      ],
+      imports: [ProductAddToQuoteDialogComponent, TranslateModule.forRoot()],
+      providers: [provideRouter([])],
     })
+      .overrideComponent(ProductAddToQuoteDialogComponent, {
+        remove: {
+          imports: [
+            ErrorMessageComponent,
+            LoadingComponent,
+            QuoteEditComponent,
+            QuoteInteractionsComponent,
+            QuoteViewComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockComponent(ErrorMessageComponent),
+            MockComponent(LoadingComponent),
+            MockComponent(QuoteEditComponent),
+            MockComponent(QuoteInteractionsComponent),
+            MockComponent(QuoteViewComponent),
+          ],
+        },
+      })
       .overrideComponent(ProductAddToQuoteDialogComponent, {
         set: { providers: [{ provide: QuoteContextFacade, useFactory: () => instance(context) }] },
       })

@@ -21,9 +21,14 @@ describe('Basket Custom Fields View Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      declarations: [BasketCustomFieldsViewComponent, MockComponent(CustomFieldsViewComponent)],
+      imports: [BasketCustomFieldsViewComponent],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(BasketCustomFieldsViewComponent, {
+        remove: { imports: [CustomFieldsViewComponent] },
+        add: { imports: [MockComponent(CustomFieldsViewComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

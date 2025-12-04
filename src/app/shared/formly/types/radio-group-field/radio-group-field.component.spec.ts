@@ -15,13 +15,13 @@ describe('Radio Group Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [RadioGroupFieldComponent],
       imports: [
         FormlyModule.forRoot({
           types: [{ name: 'ish-radio-group-field', component: RadioGroupFieldComponent }],
         }),
         FormlySelectModule,
         FormlyTestingComponentsModule,
+        RadioGroupFieldComponent,
         ReactiveFormsModule,
       ],
     }).compileComponents();

@@ -1,6 +1,7 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { RouterLink, provideRouter } from '@angular/router';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -12,6 +13,7 @@ import { LoadingComponent } from 'ish-shared/components/common/loading/loading.c
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { BudgetInfoComponent } from '../../components/budget-info/budget-info.component';
+import { UserBudgetComponent } from '../../components/user-budget/user-budget.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
@@ -35,29 +37,38 @@ describe('Users Page Component', () => {
     accountFacade = mock(AccountFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterModule, TranslatePipe],
-      declarations: [
-        MockComponent(BudgetInfoComponent),
-        MockComponent(ErrorMessageComponent),
-        MockComponent(LoadingComponent),
-        MockComponent(ModalDialogComponent),
-        MockComponent(UserRolesBadgesComponent),
-        MockPipe(ServerSettingPipe),
-        UsersPageComponent,
-      ],
+      imports: [TranslateModule.forRoot(), UsersPageComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
         provideRouter([]),
-        provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(UsersPageComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            MockComponent(BudgetInfoComponent),
+            MockComponent(ErrorMessageComponent),
+            MockComponent(LoadingComponent),
+            MockComponent(ModalDialogComponent),
+            MockPipe(ServerSettingPipe),
+            TranslatePipe,
+            MockComponent(UserBudgetComponent),
+            MockComponent(UserRolesBadgesComponent),
+            RouterLink,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UsersPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    when(accountFacade.user$).thenReturn(of({} as never));
+    when(organizationManagementFacade.usersLoading$).thenReturn(of(false));
   });
 
   it('should be created', () => {

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -13,8 +14,10 @@ import {
   NgbDateAdapter,
   NgbDateParserFormatter,
   NgbDateStruct,
+  NgbDatepickerModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, isObservable, map, of } from 'rxjs';
 
 function toObservableNumber(days: number | Observable<number>) {
@@ -39,6 +42,8 @@ function toObservableNumber(days: number | Observable<number>) {
  */
 @Component({
   selector: 'ish-date-range-picker-field',
+  imports: [CommonModule, FormlyAttributes, NgbDatepickerModule, TranslatePipe],
+  standalone: true,
   templateUrl: './date-range-picker-field.component.html',
   styleUrls: ['./date-range-picker-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

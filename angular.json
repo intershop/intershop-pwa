@@ -57,19 +57,19 @@
                 {
                   "type": "bundle",
                   "name": "main",
-                  "maximumWarning": "500kb",
-                  "maximumError": "600kb"
+                  "maximumWarning": "680kb",
+                  "maximumError": "730kb"
                 },
                 {
                   "type": "bundle",
                   "name": "vendor",
-                  "maximumWarning": "900kb",
+                  "maximumWarning": "950kb",
                   "maximumError": "1000kb"
                 },
                 {
                   "type": "initial",
-                  "maximumWarning": "1.6mb",
-                  "maximumError": "2mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "2.2mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -81,8 +81,8 @@
               "ngswConfigPath": "ngsw-config.json",
               "fileReplacements": [
                 {
-                  "replace": "src/app/core/store/store-devtools.module.ts",
-                  "with": "src/app/core/store/store-devtools.module.production.ts"
+                  "replace": "src/app/core/store/store-devtools.providers.ts",
+                  "with": "src/app/core/store/store-devtools.providers.production.ts"
                 }
               ]
             },

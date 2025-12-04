@@ -9,7 +9,8 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { CostCenterBase } from 'ish-core/models/cost-center/cost-center.model';
 import { CsvImportData, CsvImportHandler, CsvImportStatus } from 'ish-core/utils/csv/csv.import-handler';
@@ -18,6 +19,8 @@ import { OrganizationManagementFacade } from '../../../facades/organization-mana
 
 @Component({
   selector: 'ish-cost-center-csv-import',
+  imports: [ReactiveFormsModule, TranslatePipe],
+  standalone: true,
   templateUrl: './cost-center-csv-import.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

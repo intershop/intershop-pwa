@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { MessageFacade } from 'ish-core/facades/message.facade';
 
@@ -10,6 +11,8 @@ import { MessageFacade } from 'ish-core/facades/message.facade';
  */
 @Component({
   selector: 'ish-info-message',
+  imports: [TranslatePipe],
+  standalone: true,
   templateUrl: './info-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

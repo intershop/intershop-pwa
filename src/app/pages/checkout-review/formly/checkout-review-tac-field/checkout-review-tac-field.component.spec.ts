@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockDirective, MockPipe } from 'ng-mocks';
+import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
+import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 
@@ -19,16 +20,26 @@ describe('Checkout Review Tac Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        CheckoutReviewTacFieldComponent,
         FormlyModule.forRoot({
           types: [{ name: 'ish-checkout-review-tac-field', component: CheckoutReviewTacFieldComponent }],
         }),
         FormlyTestingComponentsModule,
         ReactiveFormsModule,
-        TranslatePipe,
+        TranslateModule.forRoot(),
       ],
-      declarations: [CheckoutReviewTacFieldComponent, MockDirective(ServerHtmlDirective), MockPipe(ServerSettingPipe)],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(CheckoutReviewTacFieldComponent, {
+        remove: { imports: [ServerHtmlDirective, ServerSettingPipe, ValidationMessageComponent] },
+        add: {
+          imports: [
+            MockDirective(ServerHtmlDirective),
+            MockPipe(ServerSettingPipe, () => true),
+            MockComponent(ValidationMessageComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

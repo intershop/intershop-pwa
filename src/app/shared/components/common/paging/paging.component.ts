@@ -1,8 +1,11 @@
-import { ViewportScroller } from '@angular/common';
+import { NgClass, ViewportScroller } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'ish-paging',
+  imports: [NgClass, TranslatePipe],
+  standalone: true,
   templateUrl: './paging.component.html',
   styleUrls: ['./paging.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

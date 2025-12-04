@@ -1,11 +1,10 @@
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideRouter } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { ProductContextAccessDirective } from 'ish-core/directives/product-context-access.directive';
 import { ProductContext, ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
@@ -22,12 +21,10 @@ describe('Product Brand Component', () => {
     when(context.select()).thenReturn(of({ product: { manufacturer: 'Samsung' } as ProductView } as ProductContext));
 
     await TestBed.configureTestingModule({
-      imports: [RouterModule, TranslatePipe],
-      declarations: [ProductBrandComponent, ProductContextAccessDirective],
+      imports: [ProductBrandComponent, TranslateModule.forRoot()],
       providers: [
         { provide: ProductContextFacade, useFactory: () => instance(context) },
         provideRouter([{ path: '**', component: ProductBrandComponent }]),
-        provideTranslateService(),
       ],
     }).compileComponents();
   });

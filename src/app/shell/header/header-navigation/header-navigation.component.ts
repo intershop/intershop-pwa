@@ -1,4 +1,7 @@
+import { AsyncPipe, NgClass, NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -6,9 +9,21 @@ import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configuration
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
 import { InjectSingle } from 'ish-core/utils/injection';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
+import { SubCategoryNavigationComponent } from 'ish-shell/header/sub-category-navigation/sub-category-navigation.component';
 
 @Component({
   selector: 'ish-header-navigation',
+  imports: [
+    AsyncPipe,
+    ContentIncludeComponent,
+    NgClass,
+    NgStyle,
+    RouterLink,
+    SubCategoryNavigationComponent,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './header-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

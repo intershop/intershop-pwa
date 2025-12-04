@@ -1,6 +1,8 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest, map } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -14,6 +16,8 @@ import { PasswordReminder } from 'ish-core/models/password-reminder/password-rem
  */
 @Component({
   selector: 'ish-request-reminder-form',
+  imports: [AsyncPipe, FormlyForm, ReactiveFormsModule, TranslatePipe],
+  standalone: true,
   templateUrl: './request-reminder-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

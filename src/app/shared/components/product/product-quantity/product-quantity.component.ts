@@ -1,4 +1,6 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslateDirective, TranslatePipe } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, map, shareReplay } from 'rxjs/operators';
@@ -9,6 +11,8 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 @Component({
   selector: 'ish-product-quantity',
+  imports: [AsyncPipe, NgClass, TranslateDirective, TranslatePipe],
+  standalone: true,
   templateUrl: './product-quantity.component.html',
   styleUrls: ['./product-quantity.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,6 +42,7 @@ export class ProductQuantityComponent implements OnInit {
     this.visible$ = this.context.select('displayProperties', 'quantity');
     this.quantity$ = this.context.select('quantity').pipe(filter(n => typeof n === 'number' && !isNaN(n)));
     this.min$ = this.context.select('minQuantity');
+
     this.max$ = this.context.select('maxQuantity');
     this.step$ = this.context.select('stepQuantity');
     this.hasQuantityError$ = this.context.select('hasQuantityError').pipe(shareReplay(1));

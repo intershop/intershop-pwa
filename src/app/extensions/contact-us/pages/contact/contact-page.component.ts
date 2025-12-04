@@ -1,13 +1,29 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { Contact } from 'ish-core/models/contact/contact.model';
+import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { ContactUsFacade } from '../../facades/contact-us.facade';
 
+import { ContactConfirmationComponent } from './contact-confirmation/contact-confirmation.component';
+import { ContactFormComponent } from './contact-form/contact-form.component';
+
 @Component({
   selector: 'ish-contact-page',
+  imports: [
+    AsyncPipe,
+    BreadcrumbComponent,
+    ContactConfirmationComponent,
+    ContactFormComponent,
+    LoadingComponent,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './contact-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

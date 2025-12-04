@@ -10,6 +10,8 @@ import { Address } from 'ish-core/models/address/address.model';
  */
 @Component({
   selector: 'ish-address',
+  imports: [],
+  standalone: true,
   templateUrl: './address.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

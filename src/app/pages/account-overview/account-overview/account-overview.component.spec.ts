@@ -1,21 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
+import { RouterLink, provideRouter } from '@angular/router';
+import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
-import { LazyBudgetWidgetComponent } from 'organization-management';
-import { LazyRequisitionWidgetComponent } from 'requisition-management';
+import { BudgetWidgetComponent, CostCenterWidgetComponent } from 'organization-management';
+import { ApprovalWidgetComponent, RequisitionWidgetComponent } from 'requisition-management';
 
-import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
+import { AuthorizationToggleDirective, AuthorizationToggleModule } from 'ish-core/authorization-toggle.imports';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleDirective, FeatureToggleModule } from 'ish-core/feature-toggle.imports';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { HtmlEncodePipe } from 'ish-core/pipes/html-encode.pipe';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
-import { RoleToggleModule } from 'ish-core/role-toggle.module';
+import { NotRoleToggleDirective, RoleToggleModule } from 'ish-core/role-toggle.imports';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { OrderWidgetComponent } from 'ish-shared/components/order/order-widget/order-widget.component';
 
-import { LazyWishlistWidgetComponent } from '../../../extensions/wishlists/exports/lazy-wishlist-widget/lazy-wishlist-widget.component';
+import { OrderTemplateWidgetComponent } from '../../../extensions/order-templates/shared/order-template-widget/order-template-widget.component';
+import { QuoteWidgetComponent } from '../../../extensions/quoting/shared/quote-widget/quote-widget.component';
+import { WishlistWidgetComponent } from '../../../extensions/wishlists/shared/wishlist-widget/wishlist-widget.component';
 
 import { AccountOverviewComponent } from './account-overview.component';
 
@@ -30,21 +33,38 @@ describe('Account Overview Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AccountOverviewComponent,
-        MockComponent(ContentIncludeComponent),
-        MockComponent(LazyBudgetWidgetComponent),
-        MockComponent(LazyRequisitionWidgetComponent),
-        MockComponent(LazyWishlistWidgetComponent),
-        MockComponent(OrderWidgetComponent),
-        MockDirective(AuthorizationToggleDirective),
-        MockDirective(ServerHtmlDirective),
-        MockPipe(HtmlEncodePipe),
-        MockPipe(ServerSettingPipe, () => true),
+      imports: [AccountOverviewComponent, TranslateModule.forRoot()],
+      providers: [
+        ...(AuthorizationToggleModule.forTesting().providers ?? []),
+        ...(FeatureToggleModule.forTesting().providers ?? []),
+        ...(RoleToggleModule.forTesting().providers ?? []),
+        provideRouter([]),
       ],
-      imports: [FeatureToggleModule.forTesting(), RoleToggleModule.forTesting(), TranslatePipe],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountOverviewComponent, {
+        set: {
+          imports: [
+            AuthorizationToggleDirective,
+            MockComponent(ContentIncludeComponent),
+            MockDirective(ServerHtmlDirective),
+            FeatureToggleDirective,
+            MockComponent(OrderTemplateWidgetComponent),
+            MockComponent(OrderWidgetComponent),
+            MockComponent(BudgetWidgetComponent),
+            MockComponent(CostCenterWidgetComponent),
+            MockPipe(HtmlEncodePipe),
+            MockPipe(ServerSettingPipe, () => true),
+            MockComponent(QuoteWidgetComponent),
+            MockComponent(RequisitionWidgetComponent),
+            MockComponent(ApprovalWidgetComponent),
+            NotRoleToggleDirective,
+            TranslatePipe,
+            MockComponent(WishlistWidgetComponent),
+            RouterLink,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

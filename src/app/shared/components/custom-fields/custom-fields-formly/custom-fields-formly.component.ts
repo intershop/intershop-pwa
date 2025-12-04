@@ -1,6 +1,7 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { RxState } from '@rx-angular/state';
 import { Observable, combineLatest, map, switchMap } from 'rxjs';
 
@@ -19,6 +20,8 @@ interface ComponentState {
  */
 @Component({
   selector: 'ish-custom-fields-formly',
+  imports: [AsyncPipe, FormlyForm],
+  standalone: true,
   templateUrl: './custom-fields-formly.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -7,12 +7,12 @@ import { ProductsServiceProvider } from 'ish-core/service-provider/products.serv
 import { SuggestionsServiceProvider } from 'ish-core/service-provider/suggestions.service-provider';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadMoreProducts, setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
 import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/product-listing.effects';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { ShoppingStoreProviders } from 'ish-core/store/shopping/shopping-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
@@ -59,9 +59,9 @@ describe('Search Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['router', 'configuration'], [ProductListingEffects, SearchEffects]),
-        CustomerStoreModule.forTesting('user'),
-        ShoppingStoreModule.forTesting('productListing'),
+        ...CoreStoreProviders.forTesting(['router', 'configuration'], [ProductListingEffects, SearchEffects]),
+        CustomerStoreProviders.forTesting('user'),
+        ShoppingStoreProviders.forTesting('productListing'),
       ],
       providers: [
         { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },

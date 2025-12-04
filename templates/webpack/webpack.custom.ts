@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 import { CustomWebpackBrowserSchema, TargetOptions } from '@angular-builders/custom-webpack';
 import { tsquery } from '@phenomnomnominal/tsquery';
 import * as fs from 'fs';
@@ -241,29 +240,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
 
           return 'common';
         },
-      };
-
-      // split heavy third-party libs into async chunks to reduce common/vendor bundle size
-      cacheGroups['lib-swiper'] = {
-        test: /[\\/]node_modules[\\/]swiper[\\/]/,
-        chunks: 'all',
-        name: 'lib-swiper',
-        priority: 60,
-        enforce: true,
-      };
-      cacheGroups['lib-cdk'] = {
-        test: /[\\/]node_modules[\\/]@angular[\\/]cdk[\\/]/,
-        chunks: 'async',
-        name: 'lib-cdk',
-        priority: 50,
-        enforce: true,
-      };
-      cacheGroups['lib-extras'] = {
-        test: /[\\/]node_modules[\\/](@ngx-formly|ng-recaptcha|date-fns|ngx-infinite-scroll)[\\/]/,
-        chunks: 'async',
-        name: 'lib-extras',
-        priority: 40,
-        enforce: true,
       };
     }
 

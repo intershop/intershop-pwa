@@ -3,11 +3,11 @@ import { Router, provideRouter } from '@angular/router';
 
 import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { OrganizationManagementStoreModule } from '../organization-management-store.module';
+import { OrganizationManagementStoreProviders } from '../organization-management-store.providers';
 
 import {
   addCostCenter,
@@ -43,7 +43,10 @@ describe('Cost Centers Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router']), OrganizationManagementStoreModule.forTesting('costCenters')],
+      imports: [
+        CoreStoreProviders.forTesting(['router']),
+        OrganizationManagementStoreProviders.forTesting('costCenters'),
+      ],
       providers: [provideRouter([{ path: 'cost-centers/:CostCenterId', children: [] }]), provideStoreSnapshots()],
     });
 

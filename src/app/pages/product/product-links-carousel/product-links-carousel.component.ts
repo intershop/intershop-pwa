@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, Inject, Input, OnDestroy, ViewChild } from '@angular/core';
 import { RxState } from '@rx-angular/state';
 import { Observable, combineLatest, of } from 'rxjs';
@@ -7,11 +8,15 @@ import { A11y, Navigation, Pagination } from 'swiper/modules';
 import { SwiperOptions } from 'swiper/types';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
+import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { DeferredItemComponent } from 'ish-shared/components/common/deferred-item/deferred-item.component';
+import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 /**
  * The Product Link Carousel Component
@@ -24,8 +29,17 @@ import { whenTruthy } from 'ish-core/utils/operators';
  */
 @Component({
   selector: 'ish-product-links-carousel',
+  imports: [
+    AsyncPipe,
+    DeferredItemComponent,
+    LazyLoadingContentDirective,
+    ProductContextDirective,
+    ProductItemComponent,
+  ],
+  standalone: true,
   templateUrl: './product-links-carousel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { ngSkipHydration: 'true' },
   providers: [RxState],
 })
 export class ProductLinksCarouselComponent implements OnDestroy {
@@ -47,6 +61,7 @@ export class ProductLinksCarouselComponent implements OnDestroy {
   }
 
   productSKUs$ = this.state.select('products$');
+  isServerSideRendering = SSR;
 
   private swiper: Swiper;
   private swiperInitialized = false;

@@ -3,9 +3,9 @@ import { Router, provideRouter } from '@angular/router';
 
 import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/category.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { ShoppingStoreProviders } from 'ish-core/store/shopping/shopping-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
@@ -51,7 +51,7 @@ describe('Categories Selectors', () => {
     } as Category;
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router']), ShoppingStoreModule.forTesting('categories')],
+      imports: [...CoreStoreProviders.forTesting(['router']), ShoppingStoreProviders.forTesting('categories')],
       providers: [provideRouter([{ path: 'category/:categoryUniqueId', children: [] }]), provideStoreSnapshots()],
     });
 

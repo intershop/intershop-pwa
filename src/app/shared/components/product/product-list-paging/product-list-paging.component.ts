@@ -1,4 +1,6 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 /**
  * Displays paging information for robots.
@@ -13,6 +15,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
  */
 @Component({
   selector: 'ish-product-list-paging',
+  imports: [NgClass, RouterLink],
+  standalone: true,
   templateUrl: './product-list-paging.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

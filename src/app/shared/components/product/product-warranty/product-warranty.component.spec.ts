@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
@@ -37,13 +37,14 @@ describe('Product Warranty Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [MockComponent(ProductWarrantyDetailsComponent), MockPipe(PricePipe), ProductWarrantyComponent],
-      providers: [
-        { provide: ProductContextFacade, useFactory: () => instance(productContext) },
-        provideTranslateService(),
-      ],
-    }).compileComponents();
+      imports: [ProductWarrantyComponent, TranslateModule.forRoot()],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(productContext) }],
+    })
+      .overrideComponent(ProductWarrantyComponent, {
+        remove: { imports: [PricePipe, ProductWarrantyDetailsComponent] },
+        add: { imports: [MockPipe(PricePipe), MockComponent(ProductWarrantyDetailsComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

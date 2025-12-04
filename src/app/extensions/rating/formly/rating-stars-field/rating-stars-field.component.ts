@@ -1,14 +1,20 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 
-import { RatingFilledType } from '../../shared/product-rating-star/product-rating-star.component';
+import {
+  ProductRatingStarComponent,
+  RatingFilledType,
+} from '../../shared/product-rating-star/product-rating-star.component';
 
 /**
  * Type that will render 5 stars to rate a product.
  */
 @Component({
   selector: 'ish-rating-stars-field',
+  imports: [ProductRatingStarComponent, TranslatePipe],
+  standalone: true,
   templateUrl: './rating-stars-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { ShoppingStoreProviders } from 'ish-core/store/shopping/shopping-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -20,7 +20,7 @@ describe('Promotions Selectors', () => {
     promo1 = { id: 'id1' } as Promotion;
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('promotions')],
+      imports: [...CoreStoreProviders.forTesting(), ShoppingStoreProviders.forTesting('promotions')],
       providers: [provideStoreSnapshots()],
     });
 

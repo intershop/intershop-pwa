@@ -6,7 +6,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { displayErrorMessage } from 'ish-core/store/core/messages';
 import { loadBasketSuccess } from 'ish-core/store/customer/basket';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -31,7 +31,7 @@ describe('Punchout Functions Effects', () => {
     when(punchoutService.transferPunchoutBasket()).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting([])],
+      imports: [...CoreStoreProviders.forTesting()],
       providers: [
         { provide: PunchoutService, useFactory: () => instance(punchoutService) },
         provideMockActions(() => actions$),

@@ -1,13 +1,19 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductHelper } from 'ish-core/models/product/product.helper';
+import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
+import { ProductVariationSelectComponent } from 'ish-shared/components/product/product-variation-select/product-variation-select.component';
 
 @Component({
   selector: 'ish-product-item-variations',
+  imports: [AsyncPipe, ProductVariationDisplayComponent, ProductVariationSelectComponent, TranslatePipe],
+  standalone: true,
   templateUrl: './product-item-variations.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

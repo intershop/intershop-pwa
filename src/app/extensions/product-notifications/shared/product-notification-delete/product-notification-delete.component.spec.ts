@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -22,18 +22,17 @@ describe('Product Notification Delete Component', () => {
     context = mock(ProductContextFacade);
     productNotificationsFacade = mock(ProductNotificationsFacade);
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(ModalDialogComponent),
-        MockDirective(ServerHtmlDirective),
-        ProductNotificationDeleteComponent,
-      ],
-      imports: [TranslatePipe],
+      imports: [ProductNotificationDeleteComponent, TranslateModule.forRoot()],
       providers: [
         { provide: ProductContextFacade, useFactory: () => instance(context) },
         { provide: ProductNotificationsFacade, useFactory: () => instance(productNotificationsFacade) },
-        provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductNotificationDeleteComponent, {
+        remove: { imports: [ModalDialogComponent, ServerHtmlDirective] },
+        add: { imports: [MockComponent(ModalDialogComponent), MockDirective(ServerHtmlDirective)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

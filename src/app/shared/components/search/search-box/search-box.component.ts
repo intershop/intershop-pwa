@@ -42,8 +42,6 @@ import { SuggestSearchTermsComponent } from 'ish-shared/components/search/sugges
  */
 @Component({
   selector: 'ish-search-box',
-  templateUrl: './search-box.component.html',
-  standalone: true,
   imports: [
     AsyncPipe,
     NgClass,
@@ -54,6 +52,8 @@ import { SuggestSearchTermsComponent } from 'ish-shared/components/search/sugges
     SuggestSearchTermsComponent,
     TranslatePipe,
   ],
+  standalone: true,
+  templateUrl: './search-box.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {

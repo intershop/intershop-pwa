@@ -1,4 +1,7 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -6,6 +9,8 @@ import { User } from 'ish-core/models/user/user.model';
 
 @Component({
   selector: 'ish-login-status',
+  imports: [AsyncPipe, NgClass, RouterLink, TranslatePipe],
+  standalone: true,
   templateUrl: './login-status.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

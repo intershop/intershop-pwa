@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -5,12 +6,17 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+
+import { AccountProfileEmailComponent } from './account-profile-email/account-profile-email.component';
 
 /**
  * The Account Profile Email Page Component renders a page where the user can change his email.
  */
 @Component({
   selector: 'ish-account-profile-email-page',
+  imports: [AccountProfileEmailComponent, AsyncPipe, LoadingComponent],
+  standalone: true,
   templateUrl: './account-profile-email-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

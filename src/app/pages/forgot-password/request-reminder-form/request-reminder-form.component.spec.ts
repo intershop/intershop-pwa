@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anyString, instance, mock, when } from 'ts-mockito';
 
@@ -18,9 +18,8 @@ describe('Request Reminder Form Component', () => {
     when(mockAppFacade.serverSetting$<boolean>(anyString())).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      declarations: [RequestReminderFormComponent],
-      imports: [FormlyTestingModule, TranslatePipe],
-      providers: [{ provide: AppFacade, useFactory: () => instance(mockAppFacade) }, provideTranslateService()],
+      imports: [FormlyTestingModule, RequestReminderFormComponent, TranslateModule.forRoot()],
+      providers: [{ provide: AppFacade, useFactory: () => instance(mockAppFacade) }],
     }).compileComponents();
   });
 

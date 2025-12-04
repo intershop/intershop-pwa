@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, verify } from 'ts-mockito';
 
@@ -21,10 +21,14 @@ describe('Account Payment Component', () => {
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslatePipe],
-      declarations: [AccountPaymentComponent, MockComponent(AccountPaymentConcardisDirectdebitComponent)],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
-    }).compileComponents();
+      imports: [AccountPaymentComponent, ReactiveFormsModule, TranslateModule.forRoot()],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+    })
+      .overrideComponent(AccountPaymentComponent, {
+        remove: { imports: [AccountPaymentConcardisDirectdebitComponent] },
+        add: { imports: [MockComponent(AccountPaymentConcardisDirectdebitComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

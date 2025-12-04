@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -23,10 +23,14 @@ describe('Content Navigation Component', () => {
     cmsFacade = mock(CMSFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterModule],
-      declarations: [ContentNavigationComponent, ContentPageRoutePipe, MockComponent(SkipContentLinkComponent)],
+      imports: [ContentNavigationComponent, ContentPageRoutePipe],
       providers: [{ provide: CMSFacade, useFactory: () => instance(cmsFacade) }, provideRouter([])],
-    }).compileComponents();
+    })
+      .overrideComponent(ContentNavigationComponent, {
+        remove: { imports: [SkipContentLinkComponent] },
+        add: { imports: [MockComponent(SkipContentLinkComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,18 +1,17 @@
+import { APP_BASE_HREF } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockDirective } from 'ng-mocks';
+import { provideRouter } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaLoaderService } from 'ng-recaptcha-2';
-import { of } from 'rxjs';
-import { anyString, instance, mock, when } from 'ts-mockito';
+import { BehaviorSubject, of } from 'rxjs';
 
-import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 
 import { CaptchaFacade } from '../../facades/captcha.facade';
-import { CaptchaV2Component, CaptchaV2ComponentModule } from '../../shared/captcha-v2/captcha-v2.component';
-import { CaptchaV3Component, CaptchaV3ComponentModule } from '../../shared/captcha-v3/captcha-v3.component';
+import { CaptchaV2Component } from '../../shared/captcha-v2/captcha-v2.component';
+import { CaptchaV3Component } from '../../shared/captcha-v3/captcha-v3.component';
 
 import { LazyCaptchaComponent } from './lazy-captcha.component';
 
@@ -20,37 +19,44 @@ describe('Lazy Captcha Component', () => {
   let fixture: ComponentFixture<LazyCaptchaComponent>;
   let component: LazyCaptchaComponent;
   let element: HTMLElement;
+  let captchaVersion$: BehaviorSubject<2 | 3>;
   let captchaFacade: CaptchaFacade;
-  let appFacade: AppFacade;
 
   beforeEach(async () => {
-    captchaFacade = mock(CaptchaFacade);
-    appFacade = mock(AppFacade);
-    when(captchaFacade.captchaVersion$).thenReturn(of(3 as const));
-    when(captchaFacade.captchaSiteKey$).thenReturn(of('captchaSiteKeyASDF'));
-    when(captchaFacade.captchaActive$(anyString())).thenReturn(of(true));
-    when(appFacade.appBecameStable$).thenReturn(of(true));
+    captchaVersion$ = new BehaviorSubject<2 | 3>(3);
+    captchaFacade = {
+      captchaActive$: jest.fn(() => of(true)),
+      captchaSiteKey$: of('captchaSiteKeyASDF'),
+      captchaVersion$: captchaVersion$.asObservable(),
+    } as unknown as CaptchaFacade;
 
     await TestBed.configureTestingModule({
+      imports: [LazyCaptchaComponent, TranslateModule.forRoot()],
       providers: [
-        { provide: AppFacade, useFactory: () => instance(appFacade) },
-        { provide: CaptchaFacade, useFactory: () => instance(captchaFacade) },
-      ],
-    })
-      .overrideModule(CaptchaV2ComponentModule, { set: { declarations: [CaptchaV2Component] } })
-      .overrideModule(CaptchaV3ComponentModule, {
-        set: {
-          imports: [TranslatePipe],
-          declarations: [CaptchaV3Component, MockDirective(ServerHtmlDirective)],
-          providers: [
-            { provide: RECAPTCHA_V3_SITE_KEY, useValue: 'captchaSiteKeyQWERTY' },
-            { provide: ReCaptchaV3Service },
-            { provide: RecaptchaLoaderService },
-            provideTranslateService(),
-          ],
+        {
+          provide: AppFacade,
+          useValue: { appBecameStable$: of(true), icmBaseUrl: 'https://example.org' } as Partial<AppFacade>,
         },
-      })
-      .compileComponents();
+        {
+          provide: RecaptchaLoaderService,
+          useValue: {
+            ready: of({
+              render: () => 0,
+              reset: () => undefined,
+              getResponse: () => '',
+            }),
+          },
+        },
+        {
+          provide: ReCaptchaV3Service,
+          useValue: { execute: jest.fn(() => of('captcha-v3-token')) },
+        },
+        { provide: APP_BASE_HREF, useValue: '/' },
+        { provide: CaptchaFacade, useValue: captchaFacade },
+        { provide: RECAPTCHA_V3_SITE_KEY, useValue: 'captchaSiteKeyQWERTY' },
+        provideRouter([]),
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -72,8 +78,8 @@ describe('Lazy Captcha Component', () => {
   });
 
   it('should render v2 component when configured', async () => {
-    when(captchaFacade.captchaVersion$).thenReturn(of(2 as const));
-    when(captchaFacade.captchaActive$('register')).thenReturn(of(true));
+    captchaVersion$.next(2);
+    (captchaFacade.captchaActive$ as jest.Mock).mockReturnValue(of(true));
 
     fixture.detectChanges();
 
@@ -98,8 +104,8 @@ describe('Lazy Captcha Component', () => {
     expect(v2Cmp.cssClass).toEqual('d-none');
   });
   it('should render v3 component when configured', async () => {
-    when(captchaFacade.captchaVersion$).thenReturn(of(3 as const));
-    when(captchaFacade.captchaActive$('register')).thenReturn(of(true));
+    captchaVersion$.next(3);
+    (captchaFacade.captchaActive$ as jest.Mock).mockReturnValue(of(true));
 
     fixture.detectChanges();
 
@@ -109,12 +115,10 @@ describe('Lazy Captcha Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <ish-captcha-v3
-        ><p
-          data-testing-id="recaptcha-v3-info"
-          class="validation-message"
-          ng-reflect-ish-server-html="recaptcha.v3.info_text"
-        ></p
-      ></ish-captcha-v3>
+        ><p data-testing-id="recaptcha-v3-info" class="validation-message">
+          recaptcha.v3.info_text
+        </p></ish-captcha-v3
+      >
     `);
     const v3Cmp: CaptchaV3Component = fixture.debugElement.query(By.css('ish-captcha-v3'))?.componentInstance;
     expect(v3Cmp).toBeTruthy();

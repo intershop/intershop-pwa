@@ -1,18 +1,4 @@
-import { strings } from '@angular-devkit/core';
-import {
-  Rule,
-  SchematicsException,
-  apply,
-  applyTemplates,
-  chain,
-  forEach,
-  mergeWith,
-  move,
-  schematic,
-  url,
-} from '@angular-devkit/schematics';
-import { tsquery } from '@phenomnomnominal/tsquery';
-import { getWorkspace } from '@schematics/angular/utility/workspace';
+import { Rule, SchematicsException } from '@angular-devkit/schematics';
 import { PWALazyComponentOptionsSchema as Options } from 'schemas/lazy-component/schema';
 import * as ts from 'typescript';
 

@@ -18,9 +18,10 @@ describe('Account User Info Component', () => {
     accountFacade = mock(AccountFacade);
     when(accountFacade.customer$).thenReturn(EMPTY);
     when(accountFacade.roles$).thenReturn(EMPTY);
+    when(accountFacade.user$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      declarations: [AccountUserInfoComponent],
+      imports: [AccountUserInfoComponent],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });

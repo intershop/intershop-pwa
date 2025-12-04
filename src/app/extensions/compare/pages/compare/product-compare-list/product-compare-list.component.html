@@ -86,7 +86,9 @@
               <th scope="row">{{ 'product.compare.ratings.label' | translate }}</th>
               @for (product of visibleProducts; track product.sku) {
                 <td>
-                  <ish-lazy-product-rating ishProductContext [sku]="product?.sku" />
+                  @defer {
+                    <ish-product-rating ishProductContext [sku]="product?.sku" />
+                  }
                 </td>
               }
             </tr>

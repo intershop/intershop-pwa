@@ -10,7 +10,7 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { CostCenter, CostCenterBase, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { CostCentersService } from '../../services/cost-centers/cost-centers.service';
@@ -67,7 +67,7 @@ describe('Cost Centers Effects', () => {
     when(costCentersService.deleteCostCenterBuyer(anyString(), anything())).thenReturn(of(costCenters[0]));
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router'])],
+      imports: [CoreStoreProviders.forTesting(['router'])],
       providers: [
         { provide: CostCentersService, useFactory: () => instance(costCentersService) },
         CostCentersEffects,

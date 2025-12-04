@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockPipe } from 'ng-mocks';
+import { RouterLink } from '@angular/router';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MockDirective, MockPipe } from 'ng-mocks';
 
 import { Price } from 'ish-core/models/price/price.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
@@ -14,13 +15,18 @@ describe('User Detail Budget Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [
-        MockPipe(PricePipe, (price: Price) => `${price.currency} ${price.value}`),
-        UserDetailBudgetComponent,
-      ],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+      imports: [TranslateModule.forRoot(), UserDetailBudgetComponent],
+    })
+      .overrideComponent(UserDetailBudgetComponent, {
+        set: {
+          imports: [
+            TranslatePipe,
+            MockPipe(PricePipe, (price: Price) => `${price.currency} ${price.value}`),
+            MockDirective(RouterLink),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -77,6 +83,7 @@ describe('User Detail Budget Component', () => {
         data-testing-id="edit-budget"
         routerlink="budget"
         class="btn-tool"
+        ng-reflect-router-link="budget"
         title="account.profile.update.link"
         ><i class="bi bi-pencil-fill"></i
       ></a>

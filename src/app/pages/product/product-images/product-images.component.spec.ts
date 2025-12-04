@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
@@ -6,6 +7,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 import { ProductLabelComponent } from 'ish-shared/components/product/product-label/product-label.component';
 
@@ -67,11 +69,23 @@ describe('Product Images Component', () => {
         ],
       } as ProductView)
     );
+
     await TestBed.configureTestingModule({
-      imports: [MockComponent(ProductImageComponent)],
-      declarations: [MockComponent(ProductLabelComponent), ProductImagesComponent],
+      imports: [ProductImagesComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductImagesComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            NgClass,
+            MockComponent(ModalDialogComponent),
+            MockComponent(ProductImageComponent),
+            MockComponent(ProductLabelComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -88,7 +102,7 @@ describe('Product Images Component', () => {
 
   it('should render carousel on component', () => {
     fixture.detectChanges();
-    expect(element.getElementsByTagName('ish-product-image')).toHaveLength(4);
+    expect(element.querySelector('.product-detail-img').getElementsByTagName('ish-product-image')).toHaveLength(2);
   });
 
   it('should render thumbnails on component', () => {
@@ -115,6 +129,6 @@ describe('Product Images Component', () => {
     );
 
     fixture.detectChanges();
-    expect(element.getElementsByTagName('ish-product-image')).toHaveLength(2);
+    expect(element.querySelector('.product-detail-img').getElementsByTagName('ish-product-image')).toHaveLength(1);
   });
 });

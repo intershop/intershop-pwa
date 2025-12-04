@@ -5,15 +5,15 @@ import { Observable, ReplaySubject } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
-import { PipesModule } from 'ish-core/pipes.module';
 import { HighlightPipe } from 'ish-core/pipes/highlight.pipe';
+import { CategoryRoutePipe } from 'ish-core/routing/category/category-route.pipe';
 import { CategoryImageComponent } from 'ish-shared/components/category/category-image/category-image.component';
 
 @Component({
   selector: 'ish-suggest-categories-tile',
-  imports: [AsyncPipe, CategoryImageComponent, HighlightPipe, PipesModule, RouterLink],
-  templateUrl: './suggest-categories-tile.component.html',
+  imports: [AsyncPipe, CategoryImageComponent, CategoryRoutePipe, HighlightPipe, RouterLink],
   standalone: true,
+  templateUrl: './suggest-categories-tile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestCategoriesTileComponent implements OnInit {

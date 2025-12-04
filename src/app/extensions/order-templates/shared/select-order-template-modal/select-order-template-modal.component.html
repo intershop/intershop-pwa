@@ -30,8 +30,8 @@
               | translate
                 : {
                     '0': product.name,
-                    '1': selectedOrderTemplateTitle$ | async | ishHtmlEncode,
-                    '2': selectedOrderTemplateRoute$ | async,
+                    '1': successOrderTemplateTitle | ishHtmlEncode,
+                    '2': successOrderTemplateRoute$ | async,
                   }
           "
         ></span>

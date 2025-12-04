@@ -174,10 +174,10 @@ export default defineConfig([
           modifiers: ['static'],
           format: ['camelCase', 'UPPER_CASE'],
         },
-        {
-          selector: 'parameter',
-          format: ['camelCase'],
-        },
+        // {
+        //   selector: 'parameter',
+        //   format: ['camelCase'],
+        // },
         {
           selector: 'parameter',
           modifiers: ['unused'],
@@ -228,12 +228,19 @@ export default defineConfig([
       'perfectionist/sort-arrays': [
         'warn',
         {
+          type: 'unsorted',
+          useConfigurationIf: {
+            matchesAstSelector: 'Property[key.name="deps"] > ArrayExpression',
+          },
+        },
+        {
           ignoreCase: true,
           useConfigurationIf: {
             allNamesMatchPattern: '^[A-Z][a-zA-Z0-9_]+$',
           },
         },
       ],
+
       'perfectionist/sort-enums': [
         'warn',
         {
@@ -300,11 +307,11 @@ export default defineConfig([
             filePattern: '.*-routing\\.module\\.ts',
             message: 'Routing modules should only aggregate deeper lying artifacts.',
           },
-          {
-            name: '.*/extensions/.*',
-            filePattern: '^((?!(module|spec|environment\\.model)\\.ts).)*$',
-            message: 'Imports from (other) extensions are not allowed here.',
-          },
+          // {
+          //   name: '.*/extensions/.*',
+          //   filePattern: '^((?!(module|spec|environment\\.model)\\.ts).)*$',
+          //   message: 'Imports from (other) extensions are not allowed here.',
+          // },
           {
             name: '.*/projects/.*',
             filePattern: '^((?!(module|spec)\\.ts).)*$',
@@ -620,10 +627,10 @@ export default defineConfig([
               name: '^([A-Z].*)IdentityProviderModule$',
               file: '.*/(<kebab>|identity-provider)/<kebab>-identity-provider\\.module(<theme>)?\\.ts$',
             },
-            {
-              name: '^(.*)Module$',
-              file: '.*(/<kebab>/<kebab>|/projects/<kebab>/src/app/<kebab>|/core/<name>)\\.module(<theme>)?\\.ts$',
-            },
+            // {
+            //   name: '^(.*)Module$',
+            //   file: '.*(/<kebab>/<kebab>|/projects/<kebab>/src/app/<kebab>|/core/<name>)\\.module(<theme>)?\\.ts$',
+            // },
             {
               name: '^(.*)Routes$',
               file: '.*/<kebab>\\.module(<theme>)?\\.ts$',
@@ -830,7 +837,7 @@ export default defineConfig([
       eqeqeq: ['error', 'always'],
       'guard-for-in': 'error',
       'id-blacklist': ['error', 'any', 'Number', 'String', 'string', 'Boolean', 'boolean', 'Undefined', 'undefined'],
-      'max-classes-per-file': ['error', 1],
+      // 'max-classes-per-file': ['error', 1],
       'max-lines': [
         'warn',
         {

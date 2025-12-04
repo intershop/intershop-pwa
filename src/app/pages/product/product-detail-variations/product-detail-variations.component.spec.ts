@@ -23,20 +23,33 @@ describe('Product Detail Variations Component', () => {
     context = mock(ProductContextFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(ProductMasterLinkComponent),
-        MockComponent(ProductVariationDisplayComponent),
-        MockComponent(ProductVariationSelectComponent),
-        MockPipe(ServerSettingPipe, () => serverSetting),
-        ProductDetailVariationsComponent,
-      ],
+      imports: [ProductDetailVariationsComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductDetailVariationsComponent, {
+        remove: {
+          imports: [
+            ProductMasterLinkComponent,
+            ProductVariationDisplayComponent,
+            ProductVariationSelectComponent,
+            ServerSettingPipe,
+          ],
+        },
+        add: {
+          imports: [
+            MockComponent(ProductMasterLinkComponent),
+            MockComponent(ProductVariationDisplayComponent),
+            MockComponent(ProductVariationSelectComponent),
+            MockPipe(ServerSettingPipe, () => serverSetting),
+          ],
+        },
+      })
+      .compileComponents();
   }
 
   describe('b2c variation handling', () => {
     beforeEach(async () => {
-      prepareTestbed(false);
+      await prepareTestbed(false);
     });
 
     beforeEach(() => {
@@ -71,7 +84,7 @@ describe('Product Detail Variations Component', () => {
 
   describe('advanced variation handling', () => {
     beforeEach(async () => {
-      prepareTestbed(true);
+      await prepareTestbed(true);
     });
 
     beforeEach(() => {

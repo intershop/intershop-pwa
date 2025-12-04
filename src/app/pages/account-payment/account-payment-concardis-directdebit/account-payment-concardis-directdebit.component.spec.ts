@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { DatePipe } from 'ish-core/pipes/date.pipe';
@@ -17,14 +17,13 @@ describe('Account Payment Concardis Directdebit Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [
-        AccountPaymentConcardisDirectdebitComponent,
-        MockComponent(ModalDialogLinkComponent),
-        MockPipe(DatePipe),
-      ],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+      imports: [AccountPaymentConcardisDirectdebitComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(AccountPaymentConcardisDirectdebitComponent, {
+        remove: { imports: [DatePipe, ModalDialogLinkComponent] },
+        add: { imports: [MockPipe(DatePipe), MockComponent(ModalDialogLinkComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

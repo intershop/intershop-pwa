@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable, NgZone } from '@angular/core';
 import { memoize, once } from 'lodash-es';

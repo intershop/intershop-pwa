@@ -1,9 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { provideRouter } from '@angular/router';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
+import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 
 import { CheckoutReceiptOrderComponent } from './checkout-receipt-order.component';
@@ -15,10 +17,23 @@ describe('Checkout Receipt Order Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CheckoutReceiptOrderComponent, MockComponent(ModalDialogLinkComponent)],
-      imports: [RouterModule, TranslatePipe],
-      providers: [provideRouter([]), provideTranslateService()],
-    }).compileComponents();
+      imports: [CheckoutReceiptOrderComponent, TranslateModule.forRoot()],
+      providers: [provideRouter([])],
+    })
+      .overrideComponent(CheckoutReceiptOrderComponent, {
+        remove: {
+          imports: [ContentIncludeComponent, LazyLoadingContentDirective, ModalDialogLinkComponent, TranslatePipe],
+        },
+        add: {
+          imports: [
+            MockPipe(TranslatePipe),
+            MockComponent(ModalDialogLinkComponent),
+            MockComponent(ContentIncludeComponent),
+            MockDirective(LazyLoadingContentDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -11,9 +11,9 @@ import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
 import { BasketItemsService } from 'ish-core/services/basket-items/basket-items.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { resetOrderErrors } from 'ish-core/store/customer/orders';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
@@ -72,8 +72,8 @@ describe('Basket Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['router', 'serverConfig', 'configuration']),
-        CustomerStoreModule.forTesting('user', 'basket'),
+        ...CoreStoreProviders.forTesting(['router', 'serverConfig', 'configuration']),
+        CustomerStoreProviders.forTesting('user', 'basket'),
       ],
       providers: [
         { provide: ApiTokenService, useFactory: () => instance(apiTokenMock) },

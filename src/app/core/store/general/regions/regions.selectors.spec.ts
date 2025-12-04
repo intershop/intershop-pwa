@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Region } from 'ish-core/models/region/region.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { GeneralStoreProviders } from 'ish-core/store/general/general-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -24,7 +24,7 @@ describe('Regions Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), GeneralStoreModule.forTesting('regions')],
+      imports: [...CoreStoreProviders.forTesting(), GeneralStoreProviders.forTesting('regions')],
       providers: [provideStoreSnapshots()],
     });
 

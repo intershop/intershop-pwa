@@ -17,11 +17,18 @@ describe('Account Overview Page Component', () => {
 
   beforeEach(async () => {
     accountFacadeMock = mock(AccountFacade);
+    when(accountFacadeMock.user$).thenReturn(of(undefined));
+    when(accountFacadeMock.customer$).thenReturn(of(undefined));
 
     await TestBed.configureTestingModule({
-      declarations: [AccountOverviewPageComponent, MockComponent(AccountOverviewComponent)],
+      imports: [AccountOverviewPageComponent],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacadeMock) }],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountOverviewPageComponent, {
+        remove: { imports: [AccountOverviewComponent] },
+        add: { imports: [MockComponent(AccountOverviewComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

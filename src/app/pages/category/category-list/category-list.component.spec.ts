@@ -12,8 +12,13 @@ describe('Category List Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CategoryListComponent, MockComponent(CategoryTileComponent)],
-    }).compileComponents();
+      imports: [CategoryListComponent],
+    })
+      .overrideComponent(CategoryListComponent, {
+        remove: { imports: [CategoryTileComponent] },
+        add: { imports: [MockComponent(CategoryTileComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

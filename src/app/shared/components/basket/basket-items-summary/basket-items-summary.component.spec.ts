@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockDirective, MockPipe } from 'ng-mocks';
+import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { BasketPromotionComponent } from 'ish-shared/components/basket/basket-promotion/basket-promotion.component';
+import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 
 import { BasketItemsSummaryComponent } from './basket-items-summary.component';
 
@@ -15,10 +17,20 @@ describe('Basket Items Summary Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BasketItemsSummaryComponent, MockDirective(ProductContextDirective), MockPipe(PricePipe)],
-      imports: [TranslatePipe],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+      imports: [BasketItemsSummaryComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(BasketItemsSummaryComponent, {
+        remove: { imports: [BasketPromotionComponent, PricePipe, ProductContextDirective, ProductNameComponent] },
+        add: {
+          imports: [
+            MockComponent(BasketPromotionComponent),
+            MockPipe(PricePipe),
+            MockDirective(ProductContextDirective),
+            MockComponent(ProductNameComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

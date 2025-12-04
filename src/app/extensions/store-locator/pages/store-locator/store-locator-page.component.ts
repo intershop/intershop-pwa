@@ -1,20 +1,46 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
+import { NotFeatureToggleDirective } from 'ish-core/directives/not-feature-toggle.directive';
+import { ScrollDirective } from 'ish-core/directives/scroll.directive';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Country } from 'ish-core/models/country/country.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 
 import { StoreLocatorFacade } from '../../facades/store-locator.facade';
 import { StoreLocationHelper } from '../../models/store-location/store-location.helper';
 import { StoreLocation } from '../../models/store-location/store-location.model';
+import { StoreAddressComponent } from '../../shared/store-address/store-address.component';
 import { StoresMapComponent } from '../../shared/stores-map/stores-map.component';
 
 @Component({
   selector: 'ish-store-locator-page',
+  imports: [
+    AsyncPipe,
+    ErrorMessageComponent,
+    FeatureToggleDirective,
+    FormlyForm,
+    LoadingComponent,
+    NotFeatureToggleDirective,
+    ReactiveFormsModule,
+    ScrollDirective,
+    ServerHtmlDirective,
+    SkipContentLinkComponent,
+    StoreAddressComponent,
+    StoresMapComponent,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './store-locator-page.component.html',
   styleUrls: ['./store-locator-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

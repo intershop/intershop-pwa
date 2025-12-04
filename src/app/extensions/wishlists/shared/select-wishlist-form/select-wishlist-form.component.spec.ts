@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -18,9 +18,8 @@ describe('Select Wishlist Form Component', () => {
   beforeEach(async () => {
     wishlistFacade = mock(wishlistFacade);
     await TestBed.configureTestingModule({
-      declarations: [SelectWishlistFormComponent],
-      imports: [FormlyTestingModule, TranslatePipe],
-      providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacade) }, provideTranslateService()],
+      imports: [FormlyTestingModule, SelectWishlistFormComponent, TranslateModule.forRoot()],
+      providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacade) }],
     }).compileComponents();
   });
 

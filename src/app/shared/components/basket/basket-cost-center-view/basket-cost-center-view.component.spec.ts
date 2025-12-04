@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 
@@ -12,9 +12,7 @@ describe('Basket Cost Center View Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [BasketCostCenterViewComponent],
-      providers: [provideTranslateService()],
+      imports: [BasketCostCenterViewComponent, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

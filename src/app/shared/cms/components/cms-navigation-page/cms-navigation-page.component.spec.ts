@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -75,10 +75,14 @@ describe('Cms Navigation Page Component', () => {
     cmsFacade = mock(CMSFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterModule],
-      declarations: [CMSNavigationPageComponent, MockDirective(ServerHtmlDirective), MockPipe(ContentPageRoutePipe)],
+      imports: [CMSNavigationPageComponent],
       providers: [{ provide: CMSFacade, useFactory: () => instance(cmsFacade) }, provideRouter([])],
-    }).compileComponents();
+    })
+      .overrideComponent(CMSNavigationPageComponent, {
+        remove: { imports: [ContentPageRoutePipe, ServerHtmlDirective] },
+        add: { imports: [MockPipe(ContentPageRoutePipe), MockDirective(ServerHtmlDirective)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

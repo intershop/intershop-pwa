@@ -1,4 +1,6 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -8,6 +10,8 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
  */
 @Component({
   selector: 'ish-product-label',
+  imports: [AsyncPipe, NgClass, TranslatePipe],
+  standalone: true,
   templateUrl: './product-label.component.html',
   styleUrls: ['./product-label.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

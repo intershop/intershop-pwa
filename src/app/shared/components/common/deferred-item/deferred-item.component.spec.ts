@@ -27,13 +27,14 @@ describe('Deferred Item Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        DeferredItemComponent,
-        LazyLoadingContentDirective,
-        MockDirective(IntersectionObserverDirective),
-        TestHostComponent,
-      ],
-    }).compileComponents();
+      imports: [DeferredItemComponent, LazyLoadingContentDirective],
+      declarations: [TestHostComponent],
+    })
+      .overrideComponent(DeferredItemComponent, {
+        remove: { imports: [IntersectionObserverDirective] },
+        add: { imports: [MockDirective(IntersectionObserverDirective)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { selectRouteData, selectRouteParam } from 'ish-core/store/core/router';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -16,7 +16,7 @@ describe('Routing Integration', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router'])],
+      imports: [...CoreStoreProviders.forTesting(['router'])],
       providers: [
         provideRouter([
           { matcher: matchProductRoute, data: { page: 'product' }, children: [{ path: '**', children: [] }] },

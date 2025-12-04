@@ -24,16 +24,17 @@ describe('Category Page Component', () => {
     shoppingFacade = mock(ShoppingFacade);
     when(shoppingFacade.selectedCategory$).thenReturn(of(undefined));
     await TestBed.configureTestingModule({
-      declarations: [
-        CategoryPageComponent,
-        MockComponent(CategoryCategoriesComponent),
-        MockComponent(CategoryProductsComponent),
-      ],
+      imports: [CategoryPageComponent],
       providers: [
         { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CategoryPageComponent, {
+        remove: { imports: [CategoryCategoriesComponent, CategoryProductsComponent] },
+        add: { imports: [MockComponent(CategoryCategoriesComponent), MockComponent(CategoryProductsComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

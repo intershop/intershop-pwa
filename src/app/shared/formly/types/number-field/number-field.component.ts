@@ -1,5 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FieldType, FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /**
  * Type for a number field
@@ -8,6 +11,8 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-number-field',
+  imports: [CommonModule, FormlyAttributes, ReactiveFormsModule, TranslatePipe],
+  standalone: true,
   templateUrl: './number-field.component.html',
   styleUrls: ['./number-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -8,7 +8,7 @@ import {
   ProductNotification,
   ProductNotificationType,
 } from '../../models/product-notification/product-notification.model';
-import { ProductNotificationsStoreModule } from '../product-notifications-store.module';
+import { ProductNotificationsStoreProviders } from '../product-notifications-store.providers';
 
 import { productNotificationsActions, productNotificationsApiActions } from './product-notification.actions';
 import {
@@ -24,7 +24,10 @@ describe('Product Notification Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), ProductNotificationsStoreModule.forTesting('productNotifications')],
+      imports: [
+        ...CoreStoreProviders.forTesting(),
+        ProductNotificationsStoreProviders.forTesting('productNotifications'),
+      ],
       providers: [provideStoreSnapshots()],
     });
 

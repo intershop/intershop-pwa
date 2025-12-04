@@ -1,23 +1,44 @@
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 import { Observable, combineLatest, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
+import { NotRoleToggleDirective } from 'ish-core/directives/not-role-toggle.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+import { DatePipe } from 'ish-core/pipes/date.pipe';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { ProductReviewsFacade } from '../../facades/product-reviews.facade';
 import { ProductReview } from '../../models/product-reviews/product-review.model';
-import { RatingFilledType } from '../product-rating-star/product-rating-star.component';
+import { ProductRatingStarComponent, RatingFilledType } from '../product-rating-star/product-rating-star.component';
+import { ProductReviewCreateDialogComponent } from '../product-review-create-dialog/product-review-create-dialog.component';
 
 @Component({
   selector: 'ish-product-reviews',
+  imports: [
+    AsyncPipe,
+    DatePipe,
+    ErrorMessageComponent,
+    LoadingComponent,
+    ModalDialogComponent,
+    NgTemplateOutlet,
+    NotRoleToggleDirective,
+    ProductRatingStarComponent,
+    ProductReviewCreateDialogComponent,
+    RouterLink,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './product-reviews.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-@GenerateLazyComponent()
 export class ProductReviewsComponent implements OnInit, OnDestroy {
   recentProductReviews$: Observable<ProductReview[]>;
   ownProductReview$: Observable<ProductReview>;

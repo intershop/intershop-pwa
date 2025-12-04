@@ -11,17 +11,21 @@
         <div class="row">
           <div class="col-md-7">
             <ish-product-name />
-            <ish-lazy-product-rating [hideNumberOfReviews]="true" />
+            <ish-product-rating *ishFeature="'rating'" [hideNumberOfReviews]="true" />
             <ish-product-id />
             @if (configuration$('description') | async) {
               <div class="product-description" [ishServerHtml]="product.shortDescription"></div>
             }
             <ish-product-promotion displayType="simpleWithDetail" />
             <div class="product-tile-actions btn-group">
-              <ish-lazy-product-add-to-quote cssClass="btn-link" displayType="icon" />
-              <ish-lazy-product-add-to-compare cssClass="btn-link" displayType="icon" />
-              <ish-lazy-product-add-to-wishlist cssClass="btn-link" displayType="icon" />
-              <ish-lazy-product-add-to-order-template cssClass="btn-link" displayType="icon" />
+              <ish-product-add-to-quote *ishFeature="'quoting'" cssClass="btn-link" displayType="icon" />
+              <ish-product-add-to-compare cssClass="btn-link" displayType="icon" />
+              <ish-product-add-to-wishlist *ishFeature="'wishlists'" cssClass="btn-link" displayType="icon" />
+              <ish-product-add-to-order-template
+                *ishFeature="'orderTemplates'"
+                cssClass="btn-link"
+                displayType="icon"
+              />
             </div>
           </div>
           <div class="col-12 col-md-5 text-md-end">

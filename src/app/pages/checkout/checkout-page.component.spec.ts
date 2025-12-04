@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -15,10 +15,14 @@ describe('Checkout Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CheckoutPageComponent, MockComponent(CheckoutProgressBarComponent)],
-      imports: [RouterModule],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }],
-    }).compileComponents();
+      imports: [CheckoutPageComponent],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }, provideRouter([])],
+    })
+      .overrideComponent(CheckoutPageComponent, {
+        remove: { imports: [CheckoutProgressBarComponent] },
+        add: { imports: [MockComponent(CheckoutProgressBarComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

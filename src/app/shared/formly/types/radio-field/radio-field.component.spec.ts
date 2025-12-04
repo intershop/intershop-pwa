@@ -15,12 +15,12 @@ describe('Radio Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [RadioFieldComponent],
       imports: [
         FormlyModule.forRoot({
           types: [{ name: 'radio', component: RadioFieldComponent }],
         }),
         FormlyTestingComponentsModule,
+        RadioFieldComponent,
         ReactiveFormsModule,
         TranslatePipe,
       ],

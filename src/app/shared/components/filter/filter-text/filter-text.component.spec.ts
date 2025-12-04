@@ -12,7 +12,7 @@ describe('Filter Text Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FilterTextComponent, SanitizePipe],
+      imports: [FilterTextComponent, SanitizePipe],
     }).compileComponents();
   });
 

@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -10,9 +11,10 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { UntypedFormGroup } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 
 import { CostCenterQuery } from '../../../models/cost-center-query/cost-center-query.model';
@@ -64,6 +66,8 @@ function urlToQuery(params: UrlModel): Partial<CostCenterQuery> {
 
 @Component({
   selector: 'ish-cost-centers-filter',
+  imports: [AsyncPipe, FormlyForm, ReactiveFormsModule, TranslatePipe],
+  standalone: true,
   templateUrl: './cost-centers-filter.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

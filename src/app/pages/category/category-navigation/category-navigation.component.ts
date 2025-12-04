@@ -1,4 +1,6 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -7,6 +9,8 @@ import { NavigationCategory } from 'ish-core/models/navigation-category/navigati
 
 @Component({
   selector: 'ish-category-navigation',
+  imports: [AsyncPipe, NgClass, RouterLink],
+  standalone: true,
   templateUrl: './category-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -13,8 +13,7 @@ describe('Custom Fields Formly Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule],
-      declarations: [CustomFieldsFormlyComponent],
+      imports: [CustomFieldsFormlyComponent, FormlyTestingModule],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }],
     }).compileComponents();
   });

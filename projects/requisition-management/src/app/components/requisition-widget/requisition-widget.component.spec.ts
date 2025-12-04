@@ -1,5 +1,7 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { RouterLink, provideRouter } from '@angular/router';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -79,18 +81,25 @@ describe('Requisition Widget Component', () => {
   beforeEach(async () => {
     requisitionManagementFacade = mock(RequisitionManagementFacade);
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [
-        MockComponent(InfoBoxComponent),
-        MockComponent(LoadingComponent),
-        MockPipe(PricePipe, (price: Price) => `${price.currency} ${price.value}`),
-        RequisitionWidgetComponent,
-      ],
+      imports: [RequisitionWidgetComponent, TranslateModule.forRoot()],
       providers: [
         { provide: RequisitionManagementFacade, useFactory: () => instance(requisitionManagementFacade) },
-        provideTranslateService(),
+        provideRouter([]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(RequisitionWidgetComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            MockComponent(InfoBoxComponent),
+            MockComponent(LoadingComponent),
+            MockPipe(PricePipe, (price: Price) => `${price.currency} ${price.value}`),
+            RouterLink,
+            TranslatePipe,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

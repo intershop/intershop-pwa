@@ -1,5 +1,7 @@
+import { NgClass } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { RouterLink, provideRouter } from '@angular/router';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { PricePipe } from 'ish-core/models/price/price.pipe';
@@ -17,15 +19,22 @@ describe('Requisition Summary Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [
-        MockComponent(BasketCustomFieldsViewComponent),
-        MockPipe(DatePipe),
-        MockPipe(PricePipe),
-        RequisitionSummaryComponent,
-      ],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+      imports: [RequisitionSummaryComponent, TranslateModule.forRoot()],
+      providers: [provideRouter([])],
+    })
+      .overrideComponent(RequisitionSummaryComponent, {
+        set: {
+          imports: [
+            MockComponent(BasketCustomFieldsViewComponent),
+            MockPipe(DatePipe),
+            NgClass,
+            MockPipe(PricePipe),
+            RouterLink,
+            TranslatePipe,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

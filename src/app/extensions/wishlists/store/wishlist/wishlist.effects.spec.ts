@@ -3,22 +3,22 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
 import { Wishlist } from '../../models/wishlist/wishlist.model';
 import { WishlistService } from '../../services/wishlist/wishlist.service';
-import { WishlistsStoreModule } from '../wishlists-store.module';
+import { WishlistsStoreProviders } from '../wishlists-store.providers';
 
 import {
   addProductToNewWishlist,
@@ -80,17 +80,16 @@ describe('Wishlist Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['router']),
-        CustomerStoreModule.forTesting('user'),
-        TranslatePipe,
-        WishlistsStoreModule.forTesting('wishlists'),
+        ...CoreStoreProviders.forTesting(['router']),
+        CustomerStoreProviders.forTesting('user'),
+        TranslateModule.forRoot(),
+        WishlistsStoreProviders.forTesting('wishlists'),
       ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: WishlistService, useFactory: () => instance(wishlistServiceMock) },
         provideMockActions(() => actions$),
         provideRouter([{ path: 'account/wishlists/:wishlistName', children: [] }]),
-        provideTranslateService(),
         WishlistEffects,
       ],
     });

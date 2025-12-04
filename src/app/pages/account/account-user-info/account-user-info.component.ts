@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -8,6 +9,8 @@ import { User } from 'ish-core/models/user/user.model';
 
 @Component({
   selector: 'ish-account-user-info',
+  imports: [AsyncPipe],
+  standalone: true,
   templateUrl: './account-user-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

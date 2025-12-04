@@ -1,9 +1,12 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { Filter } from 'ish-core/models/filter/filter.model';
 
 @Component({
   selector: 'ish-filter-collapsible',
+  imports: [NgClass],
+  standalone: true,
   templateUrl: './filter-collapsible.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,6 +1,10 @@
+import { NgClass, NgStyle, PercentPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { Price } from 'ish-core/models/price/price.model';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 
 import { UserBudget } from '../../models/user-budget/user-budget.model';
 
@@ -9,6 +13,8 @@ import { UserBudget } from '../../models/user-budget/user-budget.model';
  */
 @Component({
   selector: 'ish-user-budget',
+  imports: [NgbPopover, NgClass, NgStyle, PercentPipe, PricePipe, TranslatePipe],
+  standalone: true,
   templateUrl: './user-budget.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

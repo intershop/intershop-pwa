@@ -1,12 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockDirective } from 'ng-mocks';
+import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Subject, of } from 'rxjs';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
-import { PaypalErrorDirective } from 'ish-core/directives/paypal-error.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
@@ -66,12 +63,10 @@ describe('Payment Paypal Component', () => {
     when(router.url).thenReturn('/checkout/payment');
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [MockDirective(NgbPopover), MockDirective(PaypalErrorDirective), PaymentPaypalComponent],
+      imports: [PaymentPaypalComponent, TranslateModule.forRoot()],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: PaypalConfigService, useFactory: () => instance(paypalConfigService) },
-        provideTranslateService(),
       ],
     })
       .overrideComponent(PaymentPaypalComponent, {

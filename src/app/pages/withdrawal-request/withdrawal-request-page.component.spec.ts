@@ -1,12 +1,14 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { WithdrawalFacade } from 'ish-core/facades/withdrawal.facade';
 import { Withdrawal } from 'ish-core/models/withdrawal/withdrawal.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { WithdrawalRequestFormComponent } from './withdrawal-request-form/withdrawal-request-form.component';
 import { WithdrawalRequestPageComponent } from './withdrawal-request-page.component';
@@ -25,16 +27,19 @@ describe('Withdrawal Request Page Component', () => {
     when(withdrawalFacade.initialized).thenReturn(signal(true));
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [
-        MockComponent(WithdrawalRequestFormComponent),
-        MockDirective(ServerHtmlDirective),
-        WithdrawalRequestPageComponent,
-      ],
-      providers: [provideTranslateService()],
+      imports: [TranslateModule.forRoot(), WithdrawalRequestPageComponent],
     })
       .overrideComponent(WithdrawalRequestPageComponent, {
-        set: { providers: [{ provide: WithdrawalFacade, useFactory: () => instance(withdrawalFacade) }] },
+        set: {
+          imports: [
+            MockComponent(ErrorMessageComponent),
+            MockComponent(LoadingComponent),
+            MockComponent(WithdrawalRequestFormComponent),
+            MockDirective(ServerHtmlDirective),
+            TranslatePipe,
+          ],
+          providers: [{ provide: WithdrawalFacade, useFactory: () => instance(withdrawalFacade) }],
+        },
       })
       .compileComponents();
   });

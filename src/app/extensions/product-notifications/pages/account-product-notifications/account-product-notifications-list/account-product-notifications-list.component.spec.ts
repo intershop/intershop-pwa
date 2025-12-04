@@ -1,6 +1,6 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
@@ -34,15 +34,22 @@ describe('Account Product Notifications List Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CdkTableModule, MockComponent(ProductImageComponent), TranslatePipe],
-      declarations: [
-        AccountProductNotificationsListComponent,
-        MockComponent(ProductNameComponent),
-        MockComponent(ProductPriceComponent),
-        MockDirective(ProductContextDirective),
-      ],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+      imports: [AccountProductNotificationsListComponent, CdkTableModule, TranslateModule.forRoot()],
+    })
+      .overrideComponent(AccountProductNotificationsListComponent, {
+        remove: {
+          imports: [ProductContextDirective, ProductImageComponent, ProductNameComponent, ProductPriceComponent],
+        },
+        add: {
+          imports: [
+            MockComponent(ProductImageComponent),
+            MockComponent(ProductNameComponent),
+            MockComponent(ProductPriceComponent),
+            MockDirective(ProductContextDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

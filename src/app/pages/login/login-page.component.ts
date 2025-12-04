@@ -1,15 +1,21 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { IdentityProviderLoginComponent } from 'ish-shared/components/login/identity-provider-login/identity-provider-login.component';
 
 /**
  * The Login Page Container displays the login page component {@link LoginPageComponent} as wrapper for the login form
  */
 @Component({
+  imports: [AsyncPipe, IdentityProviderLoginComponent, LoadingComponent, LoadingComponent, RouterLink, TranslatePipe],
+  standalone: true,
   templateUrl: './login-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

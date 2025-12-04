@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
@@ -18,6 +19,8 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
  */
 @Component({
   selector: 'ish-wishlist-preferences-dialog',
+  imports: [FormlyForm, ModalDialogComponent, ReactiveFormsModule, TranslatePipe],
+  standalone: true,
   templateUrl: './wishlist-preferences-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

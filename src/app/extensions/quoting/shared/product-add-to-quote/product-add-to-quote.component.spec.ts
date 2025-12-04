@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -25,12 +25,10 @@ describe('Product Add To Quote Component', () => {
     when(accountFacade.isLoggedIn$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [ProductAddToQuoteComponent],
+      imports: [ProductAddToQuoteComponent, TranslateModule.forRoot()],
       providers: [
         { provide: ProductContextFacade, useFactory: () => instance(context) },
         provideRouter([{ path: '**', children: [] }]),
-        provideTranslateService(),
       ],
     }).compileComponents();
   });

@@ -1,9 +1,12 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
 
 @Component({
   selector: 'ish-product-variation-select-default',
+  imports: [TranslatePipe],
+  standalone: true,
   templateUrl: './product-variation-select-default.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

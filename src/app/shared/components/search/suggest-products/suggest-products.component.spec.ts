@@ -1,14 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { ReplaySubject, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
+import { SuggestProductsTileComponent } from 'ish-shared/components/search/suggest-products-tile/suggest-products-tile.component';
 
 import { SuggestProductsComponent } from './suggest-products.component';
 
@@ -29,13 +32,21 @@ describe('Suggest Products Component', () => {
     when(shoppingFacade.productInventory$(anything())).thenReturn(of({} as ProductInventory));
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
+      imports: [SuggestProductsComponent, TranslateModule.forRoot()],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
-        provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(SuggestProductsComponent, {
+        remove: {
+          imports: [ProductContextDirective, SuggestProductsTileComponent],
+        },
+        add: {
+          imports: [MockDirective(ProductContextDirective), MockComponent(SuggestProductsTileComponent)],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

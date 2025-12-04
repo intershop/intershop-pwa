@@ -3,8 +3,8 @@ import { Router, provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle.imports';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ViewconfEffects } from './viewconf.effects';
@@ -19,7 +19,7 @@ describe('Viewconf Integration', () => {
     when(featureToggleServiceMock.enabled$(anything())).thenReturn(of(true));
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router', 'viewconf'], [ViewconfEffects])],
+      imports: [...CoreStoreProviders.forTesting(['router', 'viewconf'], [ViewconfEffects])],
       providers: [
         { provide: FeatureToggleService, useFactory: () => instance(featureToggleServiceMock) },
         provideRouter([

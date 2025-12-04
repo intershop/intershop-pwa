@@ -1,7 +1,13 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
+
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { IdentityProviderLoginComponent } from 'ish-shared/components/login/identity-provider-login/identity-provider-login.component';
 
 @Component({
   selector: 'ish-login-modal',
+  imports: [IdentityProviderLoginComponent, ServerHtmlDirective, TranslatePipe],
+  standalone: true,
   templateUrl: './login-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

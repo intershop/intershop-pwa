@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -21,7 +21,7 @@ describe('Sso Registration Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('ssoRegistration')],
+      imports: [...CoreStoreProviders.forTesting(), CustomerStoreProviders.forTesting('ssoRegistration')],
       providers: [provideStoreSnapshots()],
     });
 

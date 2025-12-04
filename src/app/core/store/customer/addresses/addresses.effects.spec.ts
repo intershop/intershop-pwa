@@ -8,9 +8,9 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { Address } from 'ish-core/models/address/address.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { AddressService } from 'ish-core/services/address/address.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
@@ -44,7 +44,7 @@ describe('Addresses Effects', () => {
     when(addressServiceMock.deleteCustomerAddress(anyString(), anything())).thenReturn(of('123'));
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('user')],
+      imports: [...CoreStoreProviders.forTesting(), CustomerStoreProviders.forTesting('user')],
       providers: [
         { provide: AddressService, useFactory: () => instance(addressServiceMock) },
         AddressesEffects,

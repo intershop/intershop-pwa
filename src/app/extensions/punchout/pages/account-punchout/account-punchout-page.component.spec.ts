@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideRouter } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
@@ -37,22 +37,28 @@ describe('Account Punchout Page Component', () => {
     appFacade = mock(AppFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterModule, TranslatePipe],
-      declarations: [
-        AccountPunchoutPageComponent,
-        MockComponent(AccountPunchoutHeaderComponent),
-        MockComponent(LoadingComponent),
-        MockComponent(ModalDialogComponent),
-        MockPipe(ServerSettingPipe, path => path === 'punchout.cxmlUserConfigurationEnabled'),
-      ],
+      imports: [AccountPunchoutPageComponent, TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) },
         provideRouter([]),
-        provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountPunchoutPageComponent, {
+        remove: {
+          imports: [AccountPunchoutHeaderComponent, LoadingComponent, ModalDialogComponent, ServerSettingPipe],
+        },
+        add: {
+          imports: [
+            MockComponent(AccountPunchoutHeaderComponent),
+            MockComponent(LoadingComponent),
+            MockComponent(ModalDialogComponent),
+            MockPipe(ServerSettingPipe, path => path === 'punchout.cxmlUserConfigurationEnabled'),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

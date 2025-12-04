@@ -14,7 +14,6 @@ describe('Plain Text Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PlainTextFieldComponent],
       imports: [
         FormlyModule.forRoot({
           types: [
@@ -25,6 +24,7 @@ describe('Plain Text Field Component', () => {
           ],
         }),
         FormlyTestingComponentsModule,
+        PlainTextFieldComponent,
       ],
     }).compileComponents();
   });

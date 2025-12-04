@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -28,14 +28,14 @@ describe('Account Punchout Details Page Component', () => {
     when(punchoutFacade.punchoutLoading$).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [
-        AccountPunchoutDetailsPageComponent,
-        MockComponent(ErrorMessageComponent),
-        MockComponent(PunchoutUserFormComponent),
-      ],
-      providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }, provideTranslateService()],
-    }).compileComponents();
+      imports: [AccountPunchoutDetailsPageComponent, TranslateModule.forRoot()],
+      providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }],
+    })
+      .overrideComponent(AccountPunchoutDetailsPageComponent, {
+        remove: { imports: [ErrorMessageComponent, PunchoutUserFormComponent] },
+        add: { imports: [MockComponent(ErrorMessageComponent), MockComponent(PunchoutUserFormComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 
 import { Price } from 'ish-core/models/price/price.model';
@@ -15,13 +15,13 @@ describe('Basket Payment Cost Info Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [
-        BasketPaymentCostInfoComponent,
-        MockPipe(PricePipe, (price: Price) => `${price.currency} ${price.value}`),
-      ],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+      imports: [BasketPaymentCostInfoComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(BasketPaymentCostInfoComponent, {
+        remove: { imports: [PricePipe] },
+        add: { imports: [MockPipe(PricePipe, (price: Price) => `${price.currency} ${price.value}`)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

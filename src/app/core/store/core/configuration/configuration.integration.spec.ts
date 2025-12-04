@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, UrlSerializer, provideRouter } from '@angular/router';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -11,7 +11,7 @@ import { ConfigurationService } from 'ish-core/services/configuration/configurat
 import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
 import { applyConfiguration, getFeatures, getRestEndpoint } from 'ish-core/store/core/configuration';
 import { ConfigurationEffects } from 'ish-core/store/core/configuration/configuration.effects';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -28,19 +28,18 @@ describe('Configuration Integration', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(
+        ...CoreStoreProviders.forTesting(
           ['router', 'configuration', 'serverConfig'],
           [ConfigurationEffects],
           [configurationMeta]
         ),
-        TranslatePipe,
+        TranslateModule.forRoot(),
       ],
       providers: [
         { provide: LocalizationsService, useFactory: () => instance(mock(LocalizationsService)) },
         { provide: UrlSerializer, useClass: PWAUrlSerializer },
         provideRouter([{ path: 'home', children: [] }]),
         provideStoreSnapshots(),
-        provideTranslateService(),
       ],
     });
 

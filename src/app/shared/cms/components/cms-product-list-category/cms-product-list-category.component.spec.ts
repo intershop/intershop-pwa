@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyNumber, anyString, instance, mock, when } from 'ts-mockito';
 
@@ -6,6 +9,7 @@ import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
 
 import { CMSProductListCategoryComponent } from './cms-product-list-category.component';
 
@@ -21,12 +25,18 @@ describe('Cms Product List Category Component', () => {
     shoppingFacade = mock(ShoppingFacade);
     cmsFacade = mock(CMSFacade);
     await TestBed.configureTestingModule({
-      declarations: [CMSProductListCategoryComponent],
+      imports: [CMSProductListCategoryComponent, TranslateModule.forRoot()],
       providers: [
         { provide: CMSFacade, useFactory: () => instance(cmsFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
+        provideRouter([]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CMSProductListCategoryComponent, {
+        remove: { imports: [ProductsListComponent] },
+        add: { imports: [MockComponent(ProductsListComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,5 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FieldType } from '@ngx-formly/core';
+import { FieldType, FormlyField } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /**
  * Type to render a group of fields within ``<fieldset>`` tags.
@@ -17,6 +19,8 @@ import { FieldType } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-fieldset-field',
+  imports: [CommonModule, FormlyField, TranslatePipe],
+  standalone: true,
   templateUrl: './fieldset-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

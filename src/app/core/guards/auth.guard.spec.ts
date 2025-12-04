@@ -4,8 +4,8 @@ import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 
@@ -17,7 +17,7 @@ describe('Auth Guard', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('user')],
+      imports: [...CoreStoreProviders.forTesting(), CustomerStoreProviders.forTesting('user')],
       providers: [
         { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
         provideRouter([

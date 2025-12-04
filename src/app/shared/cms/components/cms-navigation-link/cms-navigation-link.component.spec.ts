@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -26,10 +26,14 @@ describe('Cms Navigation Link Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterModule],
+      imports: [CMSNavigationLinkComponent],
       providers: [provideRouter([])],
-      declarations: [CMSNavigationLinkComponent, MockDirective(ServerHtmlDirective)],
-    }).compileComponents();
+    })
+      .overrideComponent(CMSNavigationLinkComponent, {
+        remove: { imports: [ServerHtmlDirective] },
+        add: { imports: [MockDirective(ServerHtmlDirective)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

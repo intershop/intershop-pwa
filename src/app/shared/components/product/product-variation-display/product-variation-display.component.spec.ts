@@ -12,7 +12,7 @@ describe('Product Variation Display Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ProductVariationDisplayComponent],
+      imports: [ProductVariationDisplayComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(mock(ProductContextFacade)) }],
     }).compileComponents();
   });

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -23,11 +23,15 @@ describe('Registration Tac Field Component', () => {
         }),
         FormlyTestingComponentsModule,
         ReactiveFormsModule,
-        TranslatePipe,
+        RegistrationTacFieldComponent,
+        TranslateModule.forRoot(),
       ],
-      declarations: [MockDirective(ServerHtmlDirective), RegistrationTacFieldComponent],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(RegistrationTacFieldComponent, {
+        remove: { imports: [ServerHtmlDirective] },
+        add: { imports: [MockDirective(ServerHtmlDirective)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

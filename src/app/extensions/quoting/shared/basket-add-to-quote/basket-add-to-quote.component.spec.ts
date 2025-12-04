@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideRouter } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
 import { instance, mock, verify } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -16,14 +18,15 @@ describe('Basket Add To Quote Component', () => {
 
   beforeEach(async () => {
     quotingFacade = mock(QuotingFacade);
+    const accountFacade = mock(AccountFacade);
+    accountFacade.isLoggedIn$ = of(false);
 
     await TestBed.configureTestingModule({
-      declarations: [BasketAddToQuoteComponent],
-      imports: [TranslatePipe],
+      imports: [BasketAddToQuoteComponent, TranslateModule.forRoot()],
       providers: [
-        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: QuotingFacade, useFactory: () => instance(quotingFacade) },
-        provideTranslateService(),
+        provideRouter([]),
       ],
     }).compileComponents();
   });

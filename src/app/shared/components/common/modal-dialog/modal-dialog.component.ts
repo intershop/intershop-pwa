@@ -17,6 +17,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroupDirective } from '@angular/forms';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Subject, race, take } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
@@ -77,6 +78,8 @@ export interface ModalOptions extends NgbModalOptions {
  */
 @Component({
   selector: 'ish-modal-dialog',
+  imports: [TranslatePipe],
+  standalone: true,
   templateUrl: './modal-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

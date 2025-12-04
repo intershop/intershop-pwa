@@ -1,14 +1,39 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { ComponentFixture, DeferBlockBehavior, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
-import { MockComponent } from 'ng-mocks';
-import { LazyBuyersSelectComponent } from 'organization-management';
 
-import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 
 import { AccountOrderSelectBuyerFieldComponent } from './account-order-select-buyer-field.component';
+
+@Directive({
+  selector: '[ishIsAuthorizedTo]',
+  standalone: true,
+})
+class MockAuthorizationToggleDirective {
+  @Input() set ishIsAuthorizedTo(permission: unknown) {
+    void permission;
+    this.viewContainerRef.clear();
+    this.viewContainerRef.createEmbeddedView(this.templateRef);
+  }
+
+  constructor(
+    private templateRef: TemplateRef<unknown>,
+    private viewContainerRef: ViewContainerRef
+  ) {}
+}
+
+@Component({
+  selector: 'ish-buyers-select',
+  standalone: true,
+  template: '',
+})
+class MockBuyersSelectComponent {
+  @Input() control: unknown;
+  @Input() field: unknown;
+}
 
 describe('Account Order Select Buyer Field Component', () => {
   let component: FormlyTestingContainerComponent;
@@ -18,14 +43,20 @@ describe('Account Order Select Buyer Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_ORDERS'),
+        AccountOrderSelectBuyerFieldComponent,
         FormlyModule.forRoot({
           types: [{ name: 'select-buyer', component: AccountOrderSelectBuyerFieldComponent }],
         }),
         FormlyTestingComponentsModule,
       ],
-      declarations: [AccountOrderSelectBuyerFieldComponent, MockComponent(LazyBuyersSelectComponent)],
-    }).compileComponents();
+      deferBlockBehavior: DeferBlockBehavior.Playthrough,
+    })
+      .overrideComponent(AccountOrderSelectBuyerFieldComponent, {
+        set: {
+          imports: [MockAuthorizationToggleDirective, MockBuyersSelectComponent],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -52,7 +83,9 @@ describe('Account Order Select Buyer Field Component', () => {
     expect(element.querySelector('ish-account-order-select-buyer-field')).toBeTruthy();
   });
 
-  it('should render a select box after creation', () => {
+  it('should render a select box after creation', async () => {
+    fixture.detectChanges();
+    await fixture.whenRenderingDone();
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id=buyers-select]')).toBeTruthy();
   });

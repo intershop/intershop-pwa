@@ -1,21 +1,24 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormlyForm } from '@ngx-formly/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllCustomElements, findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
-import { LazyAddressDoctorComponent } from '../../../../extensions/address-doctor/exports/lazy-address-doctor/lazy-address-doctor.component';
+import { AddressDoctorComponent } from '../../../../extensions/address-doctor/shared/address-doctor/address-doctor.component';
 
 import { BasketInvoiceAddressWidgetComponent } from './basket-invoice-address-widget.component';
 
@@ -35,20 +38,28 @@ describe('Basket Invoice Address Widget Component', () => {
     when(accountFacade.isLoggedIn$).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting('addressDoctor'), FormlyTestingModule, TranslatePipe],
-      declarations: [
-        BasketInvoiceAddressWidgetComponent,
-        MockComponent(AddressComponent),
-        MockComponent(FormlyCustomerAddressFormComponent),
-        MockComponent(LazyAddressDoctorComponent),
-        MockDirective(NgbCollapse),
-      ],
+      imports: [BasketInvoiceAddressWidgetComponent, FormlyTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
-        provideTranslateService(),
+        { provide: FeatureToggleService, useValue: { enabled: (feature: string) => feature === 'addressDoctor' } },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(BasketInvoiceAddressWidgetComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            TranslatePipe,
+            MockComponent(AddressDoctorComponent),
+            FormlyForm,
+            NgbCollapseModule,
+            ReactiveFormsModule,
+            MockComponent(FormlyCustomerAddressFormComponent),
+            MockComponent(AddressComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -106,7 +117,6 @@ describe('Basket Invoice Address Widget Component', () => {
         [
           "ish-address",
           "ish-formly-customer-address-form",
-          "ish-lazy-address-doctor",
         ]
       `);
       expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
@@ -129,7 +139,6 @@ describe('Basket Invoice Address Widget Component', () => {
         [
           "ish-address",
           "ish-formly-customer-address-form",
-          "ish-lazy-address-doctor",
         ]
       `);
       expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`

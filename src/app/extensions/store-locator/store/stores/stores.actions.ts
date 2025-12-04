@@ -1,6 +1,6 @@
 import { createAction } from '@ngrx/store';
 
-import { payload } from 'ish-core/utils/ngrx-creators';
+import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 import { StoreLocation } from '../../models/store-location/store-location.model';
 
@@ -14,6 +14,6 @@ export const loadStoresSuccess = createAction(
   payload<{ stores: StoreLocation[] }>()
 );
 
-export const loadStoresFail = createAction('[Stores API] Load Stores Fail');
+export const loadStoresFail = createAction('[Stores API] Load Stores Fail', httpError());
 
 export const highlightStore = createAction('[Stores] Highlight Store', payload<{ storeId: string }>());

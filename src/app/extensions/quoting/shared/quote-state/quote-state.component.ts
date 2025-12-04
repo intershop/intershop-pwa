@@ -1,4 +1,6 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
@@ -12,6 +14,8 @@ import { QuoteStatus } from '../../models/quoting/quoting.model';
  */
 @Component({
   selector: 'ish-quote-state',
+  imports: [AsyncPipe, TranslatePipe],
+  standalone: true,
   templateUrl: './quote-state.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

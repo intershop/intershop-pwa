@@ -1,4 +1,6 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
@@ -14,6 +16,8 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  */
 @Component({
   selector: 'ish-filter-checkbox',
+  imports: [NgClass, TranslatePipe],
+  standalone: true,
   templateUrl: './filter-checkbox.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

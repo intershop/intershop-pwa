@@ -35,15 +35,28 @@ describe('Product Listing Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(ProductListComponent),
-        MockComponent(ProductListPagingComponent),
-        MockComponent(ProductListToolbarComponent),
-        MockDirective(InfiniteScrollDirective),
-        ProductListingComponent,
-      ],
+      imports: [ProductListingComponent],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }, provideRouter([])],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductListingComponent, {
+        remove: {
+          imports: [
+            InfiniteScrollDirective,
+            ProductListComponent,
+            ProductListPagingComponent,
+            ProductListToolbarComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockDirective(InfiniteScrollDirective),
+            MockComponent(ProductListComponent),
+            MockComponent(ProductListPagingComponent),
+            MockComponent(ProductListToolbarComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

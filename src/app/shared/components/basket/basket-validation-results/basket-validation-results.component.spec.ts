@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
@@ -23,18 +23,20 @@ describe('Basket Validation Results Component', () => {
     when(checkoutFacadeMock.basketValidationResults$).thenReturn(of(undefined));
 
     await TestBed.configureTestingModule({
-      declarations: [
-        BasketValidationResultsComponent,
-        MockComponent(BasketValidationItemsComponent),
-        MockComponent(BasketValidationProductsComponent),
-        MockDirective(ScrollDirective),
-      ],
-      imports: [TranslatePipe],
-      providers: [
-        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacadeMock) },
-        provideTranslateService(),
-      ],
-    }).compileComponents();
+      imports: [BasketValidationResultsComponent, TranslateModule.forRoot()],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacadeMock) }],
+    })
+      .overrideComponent(BasketValidationResultsComponent, {
+        remove: { imports: [BasketValidationItemsComponent, BasketValidationProductsComponent, ScrollDirective] },
+        add: {
+          imports: [
+            MockComponent(BasketValidationItemsComponent),
+            MockComponent(BasketValidationProductsComponent),
+            MockDirective(ScrollDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

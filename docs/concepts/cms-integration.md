@@ -109,7 +109,7 @@ With Intershop PWA release 5.1.0, three new CMS rendering components were introd
 
 The corresponding content models to configure these new components in ICM are part of `icm-as-customization-headless:1.7.0` (ICM 11.9.0).
 They are all assignable to the _Header - Navigation_ include and can be combined to extend the main navigation.
-It is also possible to completely configure the main navigation with these components without the default main navigation by only rendering the `<ish-lazy-content-include includeId="include.header.navigation.pagelet2-Include"/>` in the `HeaderNavigationComponent`.
+It is also possible to completely configure the main navigation with these components without the default main navigation by only rendering the `<ish-content-include includeId="include.header.navigation.pagelet2-Include" />` in the `HeaderNavigationComponent`.
 To fulfill such a requirement, the source code needs to be adapted accordingly.
 
 All three components allow the configuration of additional freestyle HTML that is rendered within the sub-navigation layer.

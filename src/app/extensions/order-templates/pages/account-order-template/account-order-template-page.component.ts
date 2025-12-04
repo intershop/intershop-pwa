@@ -1,13 +1,29 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate } from '../../models/order-template/order-template.model';
+import { OrderTemplatePreferencesDialogComponent } from '../../shared/order-template-preferences-dialog/order-template-preferences-dialog.component';
+
+import { AccountOrderTemplateListComponent } from './account-order-template-list/account-order-template-list.component';
 
 @Component({
   selector: 'ish-account-order-template-page',
+  imports: [
+    AccountOrderTemplateListComponent,
+    CommonModule,
+    ErrorMessageComponent,
+    LoadingComponent,
+    OrderTemplatePreferencesDialogComponent,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './account-order-template-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

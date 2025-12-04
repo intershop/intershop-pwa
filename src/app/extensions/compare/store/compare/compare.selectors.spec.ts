@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { CompareStoreModule } from '../compare-store.module';
+import { CompareStoreProviders } from '../compare-store.providers';
 
 import { addToCompare, removeFromCompare } from './compare.actions';
 import { getCompareProductsSKUs, isInCompareProducts } from './compare.selectors';
@@ -13,7 +13,7 @@ describe('Compare Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CompareStoreModule.forTesting('_compare'), CoreStoreModule.forTesting()],
+      imports: [...CoreStoreProviders.forTesting(), CompareStoreProviders.forTesting('_compare')],
       providers: [provideStoreSnapshots()],
     });
 

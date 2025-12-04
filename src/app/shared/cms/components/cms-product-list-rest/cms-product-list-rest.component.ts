@@ -1,5 +1,6 @@
+/* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 /* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
-// eslint-disable-next-line ish-custom-rules/ban-imports-file-pattern
+import { AsyncPipe, NgClass } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -9,6 +10,7 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-view.mo
 import { ApiService } from 'ish-core/services/api/api.service';
 import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.service';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
+import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
 
 /**
  * CMS component that displays a product list by fetching product SKUs from a REST endpoint.
@@ -23,6 +25,8 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
  */
 @Component({
   selector: 'ish-cms-product-list-rest',
+  imports: [AsyncPipe, NgClass, ProductsListComponent],
+  standalone: true,
   templateUrl: './cms-product-list-rest.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

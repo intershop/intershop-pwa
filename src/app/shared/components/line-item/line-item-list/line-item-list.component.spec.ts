@@ -1,6 +1,6 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
@@ -20,16 +20,20 @@ describe('Line Item List Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        LineItemListComponent,
-        MockComponent(LineItemListElementComponent),
-        MockComponent(PagingComponent),
-        MockDirective(ProductContextDirective),
-        MockPipe(PricePipe),
-      ],
-      imports: [TranslatePipe],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+      imports: [LineItemListComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(LineItemListComponent, {
+        remove: { imports: [LineItemListElementComponent, PagingComponent, PricePipe, ProductContextDirective] },
+        add: {
+          imports: [
+            MockComponent(LineItemListElementComponent),
+            MockComponent(PagingComponent),
+            MockDirective(ProductContextDirective),
+            MockPipe(PricePipe),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

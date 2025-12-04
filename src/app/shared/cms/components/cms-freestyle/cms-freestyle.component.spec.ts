@@ -1,8 +1,8 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { instance, mock } from 'ts-mockito';
 
-import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 
@@ -15,10 +15,11 @@ describe('Cms Freestyle Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CMSFreestyleComponent, ServerHtmlDirective],
+      imports: [CMSFreestyleComponent],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
+        provideRouter([]),
       ],
     }).compileComponents();
   });

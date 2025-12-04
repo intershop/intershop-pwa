@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FeatureToggleModule, FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { FeatureToggleModule, FeatureToggleType } from 'ish-core/feature-toggle.imports';
 
 import { FeatureTogglePipe } from './feature-toggle.pipe';
 
 @Component({
+  imports: [FeatureTogglePipe],
+  standalone: true,
   template: `
     <div>unrelated</div>
     @if ('feature1' | ishFeature) {
@@ -31,8 +33,8 @@ describe('Feature Toggle Pipe', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting('feature1' as FeatureToggleType)],
-      declarations: [FeatureTogglePipe, TestComponent],
+      imports: [TestComponent],
+      providers: [...(FeatureToggleModule.forTesting('feature1' as FeatureToggleType).providers ?? [])],
     });
   });
 

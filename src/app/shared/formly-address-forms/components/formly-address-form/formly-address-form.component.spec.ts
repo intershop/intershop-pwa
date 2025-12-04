@@ -105,8 +105,8 @@ describe('Formly Address Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FormlyAddressFormComponent],
       imports: [
+        FormlyAddressFormComponent,
         FormlyBaseModule.forRoot({
           types: [
             {

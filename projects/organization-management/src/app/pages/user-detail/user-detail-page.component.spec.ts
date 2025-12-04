@@ -1,6 +1,8 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockPipe } from 'ng-mocks';
+import { RouterLink, provideRouter } from '@angular/router';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -10,6 +12,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
 import { B2bRole } from '../../models/b2b-role/b2b-role.model';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
+import { UserDetailBudgetComponent } from './user-detail-budget/user-detail-budget.component';
 import { UserDetailPageComponent } from './user-detail-page.component';
 
 describe('User Detail Page Component', () => {
@@ -38,13 +41,24 @@ describe('User Detail Page Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [MockPipe(ServerSettingPipe), UserDetailPageComponent],
+      imports: [TranslateModule.forRoot(), UserDetailPageComponent],
       providers: [
         { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
-        provideTranslateService(),
+        provideRouter([]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(UserDetailPageComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            MockPipe(ServerSettingPipe),
+            TranslatePipe,
+            MockComponent(UserDetailBudgetComponent),
+            RouterLink,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,9 +1,11 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
 import { ContentPageletEntryPointView } from 'ish-core/models/content-view/content-view.model';
+import { ContentPageletComponent } from 'ish-shared/cms/components/content-pagelet/content-pagelet.component';
 
 /**
  * The Content ViewContext Component renders the content of the ViewContext
@@ -18,6 +20,8 @@ import { ContentPageletEntryPointView } from 'ish-core/models/content-view/conte
  */
 @Component({
   selector: 'ish-content-viewcontext',
+  imports: [AsyncPipe, ContentPageletComponent],
+  standalone: true,
   templateUrl: './content-viewcontext.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

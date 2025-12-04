@@ -1,6 +1,13 @@
+import { CdkTableModule } from '@angular/cdk/table';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
+import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
+import { NotRoleToggleDirective } from 'ish-core/directives/not-role-toggle.directive';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { CostCenter, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
@@ -16,6 +23,18 @@ type CostCenterBuyersListColumnsType = 'actions' | 'budget' | 'buyerName' | 'ord
  */
 @Component({
   selector: 'ish-cost-center-users-list',
+  imports: [
+    AuthorizationToggleDirective,
+    CdkTableModule,
+    CostCenterBuyerEditDialogComponent,
+    ModalDialogComponent,
+    NotRoleToggleDirective,
+    PricePipe,
+    RouterLink,
+    ServerHtmlDirective,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './cost-center-users-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

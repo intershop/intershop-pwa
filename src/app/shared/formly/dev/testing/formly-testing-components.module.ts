@@ -17,5 +17,4 @@ import { FormlyTestingFieldgroupExampleComponent } from './formly-testing-fieldg
   imports: [CommonModule, FormlyModule.forRoot({ formlyForm: FormlyForm } as any), ReactiveFormsModule],
   exports: [FormlyModule, FormlyTestingContainerComponent, FormlyTestingExampleComponent],
 })
-// eslint-disable-next-line ish-custom-rules/project-structure
 export class FormlyTestingComponentsModule {}

@@ -1,13 +1,14 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { RouterLink, provideRouter } from '@angular/router';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleDirective, FeatureToggleModule } from 'ish-core/feature-toggle.imports';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.model';
@@ -54,31 +55,35 @@ describe('Account Recurring Order Page Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      declarations: [
-        AccountRecurringOrderPageComponent,
-        MockComponent(AddressComponent),
-        MockComponent(BasketCostCenterViewComponent),
-        MockComponent(BasketCostSummaryComponent),
-        MockComponent(BasketCustomFieldsViewComponent),
-        MockComponent(BasketShippingMethodComponent),
-        MockComponent(InfoBoxComponent),
-        MockComponent(LineItemListComponent),
-        MockComponent(OrderRecurrenceComponent),
-        MockDirective(ServerHtmlDirective),
-        MockPipe(DatePipe),
-      ],
-      imports: [
-        FeatureToggleModule.forTesting('businessCustomerRegistration'),
-        MockComponent(SwitchComponent),
-        RouterModule,
-        TranslatePipe,
-      ],
+      imports: [AccountRecurringOrderPageComponent, TranslateModule.forRoot()],
       providers: [
+        ...(FeatureToggleModule.forTesting('businessCustomerRegistration').providers ?? []),
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         provideRouter([{ path: 'account/requisitions/buyer:RecurringOrderId', children: [] }]),
-        provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountRecurringOrderPageComponent, {
+        set: {
+          imports: [
+            MockComponent(AddressComponent),
+            AsyncPipe,
+            MockComponent(BasketCostCenterViewComponent),
+            MockComponent(BasketCostSummaryComponent),
+            MockComponent(BasketCustomFieldsViewComponent),
+            MockComponent(BasketShippingMethodComponent),
+            MockPipe(DatePipe),
+            FeatureToggleDirective,
+            MockComponent(InfoBoxComponent),
+            MockComponent(LineItemListComponent),
+            MockComponent(OrderRecurrenceComponent),
+            MockDirective(ServerHtmlDirective),
+            MockComponent(SwitchComponent),
+            TranslatePipe,
+            RouterLink,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

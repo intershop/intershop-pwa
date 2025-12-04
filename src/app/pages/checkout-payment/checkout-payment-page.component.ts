@@ -1,5 +1,7 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslatePipe } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, filter, first, map, shareReplay, switchMap, tap, withLatestFrom } from 'rxjs/operators';
@@ -13,9 +15,14 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { PriceType } from 'ish-core/models/price/price.model';
 import { PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+
+import { CheckoutPaymentComponent } from './checkout-payment/checkout-payment.component';
 
 @Component({
   selector: 'ish-checkout-payment-page',
+  imports: [AsyncPipe, CheckoutPaymentComponent, LoadingComponent, TranslatePipe],
+  standalone: true,
   templateUrl: './checkout-payment-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

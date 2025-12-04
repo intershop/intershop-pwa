@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 import { filter, map, shareReplay, tap } from 'rxjs/operators';
 
@@ -27,6 +27,8 @@ import { AddressFormConfigurationProvider } from 'ish-shared/formly-address-form
  */
 @Component({
   selector: 'ish-formly-address-form',
+  imports: [FormlyForm],
+  standalone: true,
   templateUrl: './formly-address-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

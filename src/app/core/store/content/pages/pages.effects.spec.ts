@@ -9,9 +9,9 @@ import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito
 import { ContentPageTreeElement } from 'ish-core/models/content-page-tree/content-page-tree.model';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
-import { ContentStoreModule } from 'ish-core/store/content/content-store.module';
+import { ContentStoreProviders } from 'ish-core/store/content/content-store.providers';
 import { loadContentPageTreeSuccess } from 'ish-core/store/content/page-tree';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
@@ -37,7 +37,7 @@ describe('Pages Effects', () => {
     cmsServiceMock = mock(CMSService);
 
     TestBed.configureTestingModule({
-      imports: [ContentStoreModule.forTesting('pagetree', 'pages'), CoreStoreModule.forTesting(['router'])],
+      imports: [...CoreStoreProviders.forTesting(['router']), ContentStoreProviders.forTesting('pagetree', 'pages')],
       providers: [
         { provide: CMSService, useFactory: () => instance(cmsServiceMock) },
         PagesEffects,

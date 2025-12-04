@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { MessageFacade } from 'ish-core/facades/message.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -11,6 +13,8 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
  */
 @Component({
   selector: 'ish-error-message',
+  imports: [ServerHtmlDirective, TranslatePipe],
+  standalone: true,
   templateUrl: './error-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

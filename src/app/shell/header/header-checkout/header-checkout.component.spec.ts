@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideRouter } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
@@ -14,10 +15,14 @@ describe('Header Checkout Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [HeaderCheckoutComponent, MockComponent(LoginStatusComponent)],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+      imports: [HeaderCheckoutComponent, TranslateModule.forRoot()],
+      providers: [provideRouter([])],
+    })
+      .overrideComponent(HeaderCheckoutComponent, {
+        remove: { imports: [LoginStatusComponent] },
+        add: { imports: [MockComponent(LoginStatusComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -32,13 +32,11 @@ describe('Product Add To Basket Component', () => {
     when(context.select('hasProductError')).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [ProductAddToBasketComponent],
+      imports: [ProductAddToBasketComponent, TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
-        provideTranslateService(),
       ],
     }).compileComponents();
   });

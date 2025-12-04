@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
@@ -13,9 +13,7 @@ describe('Filter Navigation Actions Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [FilterNavigationActionsComponent],
-      providers: [provideTranslateService()],
+      imports: [FilterNavigationActionsComponent, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

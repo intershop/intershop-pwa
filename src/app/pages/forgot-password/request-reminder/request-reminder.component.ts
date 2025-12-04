@@ -1,9 +1,16 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+
+import { RequestReminderFormComponent } from '../request-reminder-form/request-reminder-form.component';
 
 /**
  * The Request Reminder Component handles the interaction for requesting a password reminder email.
@@ -11,6 +18,15 @@ import { PasswordReminder } from 'ish-core/models/password-reminder/password-rem
  */
 @Component({
   selector: 'ish-request-reminder',
+  imports: [
+    AsyncPipe,
+    ErrorMessageComponent,
+    LoadingComponent,
+    RequestReminderFormComponent,
+    ServerHtmlDirective,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './request-reminder.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -15,8 +15,8 @@ describe('Checkbox Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CheckboxFieldComponent],
       imports: [
+        CheckboxFieldComponent,
         FormlyModule.forRoot({
           types: [{ name: 'checkbox', component: CheckboxFieldComponent }],
         }),

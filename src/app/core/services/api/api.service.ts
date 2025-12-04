@@ -16,7 +16,7 @@ import {
 } from 'rxjs';
 import { catchError, concatMap, filter, first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { Captcha } from 'ish-core/models/captcha/captcha.model';
 import { Link } from 'ish-core/models/link/link.model';
 import {

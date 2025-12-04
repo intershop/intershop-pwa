@@ -1,7 +1,21 @@
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgClass, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 
+import { FEATURE_TOGGLE_IMPORTS } from 'ish-core/feature-toggle';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
+import { SearchBoxComponent as SearchBoxComponent_1 } from 'ish-shared/components/search/search-box/search-box.component';
+import { HeaderNavigationComponent as HeaderNavigationComponent_1 } from 'ish-shell/header/header-navigation/header-navigation.component';
+import { LanguageSwitchComponent as LanguageSwitchComponent_1 } from 'ish-shell/header/language-switch/language-switch.component';
+import { LoginStatusComponent as LoginStatusComponent_1 } from 'ish-shell/header/login-status/login-status.component';
+import { MiniBasketComponent as MiniBasketComponent_1 } from 'ish-shell/header/mini-basket/mini-basket.component';
+import { UserInformationMobileComponent } from 'ish-shell/header/user-information-mobile/user-information-mobile.component';
+
+import { ProductCompareStatusComponent } from '../../../extensions/compare/shared/product-compare-status/product-compare-status.component';
+import { QuickorderLinkComponent } from '../../../extensions/quickorder/shared/quickorder-link/quickorder-link.component';
+import { WishlistsLinkComponent } from '../../../extensions/wishlists/shared/wishlists-link/wishlists-link.component';
 
 type CollapsibleComponent = 'minibasket' | 'navbar' | 'search';
 
@@ -21,6 +35,24 @@ type CollapsibleComponent = 'minibasket' | 'navbar' | 'search';
  */
 @Component({
   selector: 'ish-header-default',
+  imports: [
+    SearchBoxComponent_1,
+    NgClass,
+    LoginStatusComponent_1,
+    ProductCompareStatusComponent,
+    QuickorderLinkComponent,
+    WishlistsLinkComponent,
+    ...FEATURE_TOGGLE_IMPORTS,
+    NgbCollapseModule,
+    NgTemplateOutlet,
+    LanguageSwitchComponent_1,
+    MiniBasketComponent_1,
+    RouterLink,
+    HeaderNavigationComponent_1,
+    UserInformationMobileComponent,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './header-default.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

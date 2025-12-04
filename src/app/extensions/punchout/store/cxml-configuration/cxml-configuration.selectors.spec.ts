@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { PunchoutStoreModule } from '../punchout-store.module';
+import { PunchoutStoreProviders } from '../punchout-store.providers';
 
 import { cxmlConfigurationActions, cxmlConfigurationApiActions } from './cxml-configuration.actions';
 import { getCxmlConfiguration } from './cxml-configuration.selectors';
@@ -14,7 +14,7 @@ describe('Cxml Configuration Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), PunchoutStoreModule.forTesting('cxmlConfiguration')],
+      imports: [...CoreStoreProviders.forTesting(), PunchoutStoreProviders.forTesting('cxmlConfiguration')],
       providers: [provideStoreSnapshots()],
     });
 

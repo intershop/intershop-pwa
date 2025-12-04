@@ -1,14 +1,19 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { RxState } from '@rx-angular/state';
 import { pick } from 'lodash-es';
 import { concatMap, map, of, withLatestFrom } from 'rxjs';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
 
 interface ComponentState {
@@ -23,6 +28,16 @@ interface ComponentState {
  */
 @Component({
   selector: 'ish-account-profile-user',
+  imports: [
+    AsyncPipe,
+    ErrorMessageComponent,
+    FormlyForm,
+    FormSubmitDirective,
+    ReactiveFormsModule,
+    RouterLink,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './account-profile-user.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

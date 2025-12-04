@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 
 /**
  * Sub form with additional fields like email address and taxation id to extend the anonymous invoice address form.
  */
 @Component({
   selector: 'ish-formly-address-extension-form',
+  imports: [FormlyForm],
+  standalone: true,
   templateUrl: './formly-address-extension-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

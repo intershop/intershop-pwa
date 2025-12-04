@@ -1,13 +1,31 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
+import { WishlistPreferencesDialogComponent } from '../../shared/wishlist-preferences-dialog/wishlist-preferences-dialog.component';
+
+import { AccountWishlistListComponent } from './account-wishlist-list/account-wishlist-list.component';
 
 @Component({
   selector: 'ish-account-wishlist-page',
+  imports: [
+    AccountWishlistListComponent,
+    AsyncPipe,
+    ErrorMessageComponent,
+    LoadingComponent,
+    NgbPopover,
+    TranslatePipe,
+    WishlistPreferencesDialogComponent,
+  ],
+  standalone: true,
   templateUrl: './account-wishlist-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

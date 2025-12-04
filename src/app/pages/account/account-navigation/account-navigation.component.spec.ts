@@ -1,17 +1,52 @@
+import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
-import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
+import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
+import { NotRoleToggleDirective } from 'ish-core/directives/not-role-toggle.directive';
 import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
-import { RoleToggleModule } from 'ish-core/role-toggle.module';
 
 import { AccountUserInfoComponent } from '../account-user-info/account-user-info.component';
 
 import { AccountNavigationComponent } from './account-navigation.component';
+
+@Directive({
+  selector: '[ishIsAuthorizedTo]',
+  standalone: true,
+})
+class MockAuthorizationToggleDirective {
+  @Input() set ishIsAuthorizedTo(permission: unknown) {
+    void permission;
+    this.viewContainerRef.clear();
+    this.viewContainerRef.createEmbeddedView(this.templateRef);
+  }
+
+  constructor(
+    private templateRef: TemplateRef<unknown>,
+    private viewContainerRef: ViewContainerRef
+  ) {}
+}
+
+@Directive({
+  selector: '[ishHasNotRole]',
+  standalone: true,
+})
+class MockNotRoleToggleDirective {
+  @Input() set ishHasNotRole(role: unknown) {
+    void role;
+    this.viewContainerRef.clear();
+    this.viewContainerRef.createEmbeddedView(this.templateRef);
+  }
+
+  constructor(
+    private templateRef: TemplateRef<unknown>,
+    private viewContainerRef: ViewContainerRef
+  ) {}
+}
 
 describe('Account Navigation Component', () => {
   let component: AccountNavigationComponent;
@@ -20,21 +55,32 @@ describe('Account Navigation Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AccountNavigationComponent,
-        MockComponent(AccountUserInfoComponent),
-        MockDirective(NgbCollapse),
-        MockPipe(FeatureTogglePipe, () => true),
-        MockPipe(ServerSettingPipe, () => true),
-      ],
-      imports: [
-        AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_USERS', 'APP_B2B_PURCHASE'),
-        RoleToggleModule.forTesting(),
-        RouterModule,
-        TranslatePipe,
-      ],
-      providers: [provideRouter([]), provideTranslateService()],
-    }).compileComponents();
+      imports: [AccountNavigationComponent, TranslateModule.forRoot()],
+      providers: [provideRouter([])],
+    })
+      .overrideComponent(AccountNavigationComponent, {
+        remove: {
+          imports: [
+            AccountUserInfoComponent,
+            AuthorizationToggleDirective,
+            FeatureTogglePipe,
+            NgbCollapse,
+            NotRoleToggleDirective,
+            ServerSettingPipe,
+          ],
+        },
+        add: {
+          imports: [
+            MockComponent(AccountUserInfoComponent),
+            MockAuthorizationToggleDirective,
+            MockDirective(NgbCollapse),
+            MockNotRoleToggleDirective,
+            MockPipe(FeatureTogglePipe, () => true),
+            MockPipe(ServerSettingPipe, () => true),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -42,6 +88,10 @@ describe('Account Navigation Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });
+
+  const expandNavigationGroup = (id: string) => {
+    component.navItems.find(item => item.id === id).isCollapsed = false;
+  };
 
   it('should be created', () => {
     expect(component).toBeTruthy();
@@ -60,11 +110,15 @@ describe('Account Navigation Component', () => {
   });
 
   it('should display link to user list', () => {
+    expandNavigationGroup('my-organization');
+    fixture.detectChanges();
     fixture.detectChanges();
     expect(element.textContent).toContain('account.organization.user_management');
   });
 
   it('should display link to requisition list if order approval service is enabled', () => {
+    expandNavigationGroup('my-purchases');
+    fixture.detectChanges();
     fixture.detectChanges();
     expect(element.textContent).toContain('account.requisitions.requisitions');
   });

@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideRouter } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { QuickorderLinkComponent } from './quickorder-link.component';
 
@@ -10,9 +11,8 @@ describe('Quickorder Link Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [QuickorderLinkComponent],
-      providers: [provideTranslateService()],
+      imports: [QuickorderLinkComponent, TranslateModule.forRoot()],
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 

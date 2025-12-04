@@ -1,7 +1,9 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { UntypedFormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { distinctUntilChanged, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
@@ -16,6 +18,8 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
  */
 @Component({
   selector: 'ish-basket-cost-center-selection',
+  imports: [AsyncPipe, FormlyForm, ReactiveFormsModule, TranslatePipe],
+  standalone: true,
   templateUrl: './basket-cost-center-selection.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

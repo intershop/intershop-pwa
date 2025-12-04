@@ -83,3 +83,10 @@ Object.defineProperty(document.body.style, 'transform', {
     configurable: true,
   }),
 });
+
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn((query: string) => ({
+    media: query,
+  })),
+});

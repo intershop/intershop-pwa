@@ -1,5 +1,7 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
@@ -17,6 +19,8 @@ import { whenFalsy } from 'ish-core/utils/operators';
  */
 @Component({
   selector: 'ish-product-add-to-basket',
+  imports: [AsyncPipe, NgClass, TranslatePipe],
+  standalone: true,
   templateUrl: './product-add-to-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

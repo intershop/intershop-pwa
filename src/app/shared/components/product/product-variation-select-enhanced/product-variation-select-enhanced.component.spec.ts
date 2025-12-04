@@ -35,7 +35,7 @@ describe('Product Variation Select Enhanced Component', () => {
   beforeEach(async () => {
     appFacade = mock(AppFacade);
     await TestBed.configureTestingModule({
-      declarations: [ProductVariationSelectEnhancedComponent],
+      imports: [ProductVariationSelectEnhancedComponent],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();
   });

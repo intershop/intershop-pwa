@@ -1,3 +1,4 @@
+import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
@@ -6,6 +7,17 @@ import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/for
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 
 import { RegistrationAddressFieldComponent } from './registration-address-field.component';
+
+@Component({
+  selector: 'ish-formly-address-form',
+  standalone: true,
+  template: '',
+})
+class MockFormlyAddressFormComponent {
+  @Input() businessCustomer: boolean;
+  @Input() shortForm: boolean;
+  @Input() parentForm: FormGroup;
+}
 
 describe('Registration Address Field Component', () => {
   let component: FormlyTestingContainerComponent;
@@ -18,10 +30,15 @@ describe('Registration Address Field Component', () => {
         FormlyModule.forRoot({
           types: [{ name: 'address', component: RegistrationAddressFieldComponent }],
         }),
-
         FormlyTestingComponentsModule,
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(RegistrationAddressFieldComponent, {
+        set: {
+          imports: [MockFormlyAddressFormComponent],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

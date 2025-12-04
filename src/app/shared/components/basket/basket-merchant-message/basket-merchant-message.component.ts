@@ -8,11 +8,13 @@ import {
   SimpleChange,
   SimpleChanges,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { SuccessMessageComponent } from 'ish-shared/components/common/success-message/success-message.component';
 
 /**
  * The Basket Merchant Message Component displays a message to merchant input.
@@ -21,6 +23,8 @@ import { Basket } from 'ish-core/models/basket/basket.model';
  */
 @Component({
   selector: 'ish-basket-merchant-message',
+  imports: [FormlyForm, ReactiveFormsModule, SuccessMessageComponent, TranslatePipe],
+  standalone: true,
   templateUrl: './basket-merchant-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

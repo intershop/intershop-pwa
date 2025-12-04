@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { range } from 'lodash-es';
 
 import { ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { ShoppingStoreProviders } from 'ish-core/store/shopping/shopping-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { setProductListingPageSize, setProductListingPages } from './product-listing.actions';
@@ -37,7 +37,7 @@ describe('Product Listing Selectors', () => {
     });
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('productListing')],
+      imports: [...CoreStoreProviders.forTesting(), ShoppingStoreProviders.forTesting('productListing')],
       providers: [provideStoreSnapshots()],
     });
 

@@ -1,3 +1,5 @@
 <div *ishIsAuthorizedTo="'APP_B2B_MANAGE_ORDERS'">
-  <ish-lazy-buyers-select data-testing-id="buyers-select" [control]="formControl" [field]="field" />
+  @defer {
+    <ish-buyers-select data-testing-id="buyers-select" [control]="formControl" [field]="field" />
+  }
 </div>

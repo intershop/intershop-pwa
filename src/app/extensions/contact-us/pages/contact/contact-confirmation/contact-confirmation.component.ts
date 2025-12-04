@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /**
  * The Contact Confirmation Component show the customer the confirmation
@@ -9,6 +11,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
  */
 @Component({
   selector: 'ish-contact-confirmation',
+  imports: [RouterLink, TranslatePipe],
+  standalone: true,
   templateUrl: './contact-confirmation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

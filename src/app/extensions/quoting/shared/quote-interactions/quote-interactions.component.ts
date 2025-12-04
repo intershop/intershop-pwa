@@ -1,4 +1,6 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { QuoteContextFacade, isQuoteValid } from '../../facades/quote-context.facade';
@@ -6,6 +8,8 @@ import { Quote, QuoteRequest, QuoteStatus } from '../../models/quoting/quoting.m
 
 @Component({
   selector: 'ish-quote-interactions',
+  imports: [AsyncPipe, TranslatePipe],
+  standalone: true,
   templateUrl: './quote-interactions.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

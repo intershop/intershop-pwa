@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -16,14 +16,14 @@ describe('Account Punchout Header Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgbNavModule, RouterModule, TranslatePipe],
-      declarations: [
-        AccountPunchoutHeaderComponent,
-        MockComponent(ErrorMessageComponent),
-        MockComponent(InfoMessageComponent),
-      ],
-      providers: [provideRouter([]), provideTranslateService()],
-    }).compileComponents();
+      imports: [AccountPunchoutHeaderComponent, NgbNavModule, TranslateModule.forRoot()],
+      providers: [provideRouter([])],
+    })
+      .overrideComponent(AccountPunchoutHeaderComponent, {
+        remove: { imports: [ErrorMessageComponent, InfoMessageComponent] },
+        add: { imports: [MockComponent(ErrorMessageComponent), MockComponent(InfoMessageComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

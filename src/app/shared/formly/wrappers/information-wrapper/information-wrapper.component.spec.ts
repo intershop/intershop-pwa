@@ -29,12 +29,14 @@ describe('Information Wrapper Component', () => {
           wrappers: [{ name: 'information', component: InformationWrapperComponent }],
         }),
         FormlyTestingComponentsModule,
-      ],
-      declarations: [
         InformationWrapperComponent,
-        MockPipe(TranslatePipe, (value, args) => `value:${value} args:${JSON.stringify(args)}`),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(InformationWrapperComponent, {
+        remove: { imports: [TranslatePipe] },
+        add: { imports: [MockPipe(TranslatePipe, (value, args) => `value:${value} args:${JSON.stringify(args)}`)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
