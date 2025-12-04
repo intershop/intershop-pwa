@@ -1,18 +1,18 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { Observable, ReplaySubject, map } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
-import { PipesModule } from 'ish-core/pipes.module';
+import { HighlightPipe } from 'ish-core/pipes/highlight.pipe';
 import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 
 @Component({
   selector: 'ish-suggest-products-tile',
   templateUrl: './suggest-products-tile.component.html',
   standalone: true,
-  imports: [CommonModule, PipesModule, RouterModule, ProductImageComponent],
+  imports: [AsyncPipe, HighlightPipe, RouterLink, NgIf, ProductImageComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestProductsTileComponent implements OnInit {

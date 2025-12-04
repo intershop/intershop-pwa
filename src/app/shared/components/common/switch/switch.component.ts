@@ -5,8 +5,8 @@ import { v4 as uuid } from 'uuid';
   selector: 'ish-switch',
   templateUrl: './switch.component.html',
   styleUrls: ['./switch.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 /**
  * The Switch Component is a reusable component that allows toggling between two states for a given object.

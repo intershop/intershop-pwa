@@ -1,4 +1,4 @@
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { AsyncPipe, DOCUMENT, NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -12,16 +12,15 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { IconName } from '@fortawesome/fontawesome-svg-core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, ReplaySubject, map, shareReplay } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { SearchBoxConfiguration } from 'ish-core/models/search-box-configuration/search-box-configuration.model';
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
-import { PipesModule } from 'ish-core/pipes.module';
 import { SuggestBrandsComponent } from 'ish-shared/components/search/suggest-brands/suggest-brands.component';
 import { SuggestCategoriesComponent } from 'ish-shared/components/search/suggest-categories/suggest-categories.component';
 import { SuggestKeywordsComponent } from 'ish-shared/components/search/suggest-keywords/suggest-keywords.component';
@@ -48,9 +47,12 @@ import { SuggestSearchTermsComponent } from 'ish-shared/components/search/sugges
   templateUrl: './search-box.component.html',
   standalone: true,
   imports: [
-    CommonModule,
-    IconModule,
-    PipesModule,
+    FaIconComponent,
+    NgIf,
+    AsyncPipe,
+    NgClass,
+    NgFor,
+    NgTemplateOutlet,
     TranslatePipe,
     SuggestBrandsComponent,
     SuggestCategoriesComponent,

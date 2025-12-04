@@ -1,7 +1,10 @@
 /* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { ReplaySubject, Subject } from 'rxjs';
+import { MockComponent } from 'ng-mocks';
+import { ReplaySubject, Subject, of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
@@ -16,6 +19,13 @@ describe('Search Box Component', () => {
   let searchTerm$: Subject<string>;
 
   beforeEach(async () => {
+    const shoppingFacade = mock(ShoppingFacade);
+
+    when(shoppingFacade.suggestResults$).thenReturn(() => searchResults$);
+    when(shoppingFacade.searchTerm$).thenReturn(searchTerm$);
+    when(shoppingFacade.recentSearchTerms$).thenReturn(new ReplaySubject<string[]>(1));
+    when(shoppingFacade.searchSuggestLoading$).thenReturn(of(false));
+
     searchResults$ = new ReplaySubject(1);
     searchTerm$ = new ReplaySubject(1);
     searchResults$.next(undefined);
@@ -23,17 +33,8 @@ describe('Search Box Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      providers: [
-        {
-          provide: ShoppingFacade,
-          useFactory: () =>
-            ({
-              suggestResults$: () => searchResults$,
-              searchTerm$,
-              recentSearchTerms$: new ReplaySubject<string[]>(1),
-            } as Partial<ShoppingFacade>),
-        },
-      ],
+      declarations: [MockComponent(FaIconComponent), SearchBoxComponent],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   });
 
@@ -44,8 +45,7 @@ describe('Search Box Component', () => {
 
     // activate
     component.searchBoxFocus = true;
-    component.configuration = { maxAutoSuggests: 4 };
-    component.configuration = { autoSuggest: true };
+    component.configuration = { maxAutoSuggests: 4, autoSuggest: true };
   });
 
   it('should be created', () => {

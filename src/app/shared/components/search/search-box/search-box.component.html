@@ -1,16 +1,16 @@
 <div #searchBox class="search clearfix" [ngClass]="{ focus: searchBoxFocus, 'scaled-up': searchBoxScaledUp }">
   <input
     #searchInput
+    id="header-search-input"
+    type="search"
     [placeholder]="configuration?.placeholder || ''"
     autocomplete="off"
-    type="search"
-    id="header-search-input"
     class="form-control searchTerm search-input"
-    (input)="handleInput($event.target)"
     [value]="inputSearchTerms$ | async"
+    [attr.aria-label]="'search.searchbox.label' | translate"
+    (input)="handleInput($event.target)"
     (focus)="handleFocus(true)"
     (keydown.enter)="submitSearch(searchInput.value)"
-    [attr.aria-label]="'search.searchbox.label' | translate"
   />
 
   <ng-container *ngIf="configuration?.autoSuggest && suggestions$ | async as results; else initialState">

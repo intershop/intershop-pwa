@@ -5,7 +5,6 @@ import { PricePipe } from './models/price/price.pipe';
 import { DatePipe } from './pipes/date.pipe';
 import { FeatureTogglePipe } from './pipes/feature-toggle.pipe';
 import { FrequencyPipe } from './pipes/frequency.pipe';
-import { HighlightPipe } from './pipes/highlight.pipe';
 import { HtmlEncodePipe } from './pipes/html-encode.pipe';
 import { MakeHrefPipe } from './pipes/make-href.pipe';
 import { SanitizePipe } from './pipes/sanitize.pipe';
@@ -22,7 +21,6 @@ const pipes = [
   DatePipe,
   FeatureTogglePipe,
   FrequencyPipe,
-  HighlightPipe,
   HtmlEncodePipe,
   MakeHrefPipe,
   PricePipe,
