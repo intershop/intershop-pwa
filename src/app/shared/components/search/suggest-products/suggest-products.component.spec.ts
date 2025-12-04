@@ -1,9 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockBuilder } from 'ng-mocks';
-import { ReplaySubject } from 'rxjs';
+import { MockComponent } from 'ng-mocks';
+import { ReplaySubject, of } from 'rxjs';
+import { anything, instance, mock, when } from 'ts-mockito';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
+import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
+import { SuggestProductsTileComponent } from 'ish-shared/components/search/suggest-products-tile/suggest-products-tile.component';
 
 import { SuggestProductsComponent } from './suggest-products.component';
 
@@ -11,11 +18,27 @@ describe('Suggest Products Component', () => {
   let component: SuggestProductsComponent;
   let fixture: ComponentFixture<SuggestProductsComponent>;
   let element: HTMLElement;
+  let appFacade: AppFacade;
+  let shoppingFacade: ShoppingFacade;
 
-  beforeEach(
-    // it will mock all dependencies automatically,
-    async () => MockBuilder(SuggestProductsComponent).keep(TranslateModule.forRoot())
-  );
+  beforeEach(async () => {
+    appFacade = mock(AppFacade);
+    shoppingFacade = mock(ShoppingFacade);
+
+    when(appFacade.serverSetting$<number>(anything())).thenReturn(of(10));
+    when(shoppingFacade.category$(anything())).thenReturn(of({} as CategoryView));
+    when(shoppingFacade.product$(anything(), anything())).thenReturn(of({} as ProductView));
+    when(shoppingFacade.productInventory$(anything())).thenReturn(of({} as ProductInventory));
+
+    await TestBed.configureTestingModule({
+      imports: [MockComponent(SuggestProductsTileComponent), TranslateModule.forRoot()],
+      declarations: [SuggestProductsComponent],
+      providers: [
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
+      ],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SuggestProductsComponent);

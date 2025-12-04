@@ -18,11 +18,10 @@ describe('Search No Result Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [MockComponent(SearchBoxComponent), TranslateModule.forRoot()],
       declarations: [
         MockComponent(BreadcrumbComponent),
         MockComponent(ContentIncludeComponent),
-        MockComponent(SearchBoxComponent),
         MockDirective(ServerHtmlDirective),
         MockPipe(HtmlEncodePipe, value => value),
         SearchNoResultComponent,

@@ -24,10 +24,9 @@ describe('Mini Basket Content Component', () => {
     when(checkoutFacade.basketLineItems$).thenReturn(of([lineItem, lineItem, lineItem]));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [MockComponent(ProductImageComponent), TranslateModule.forRoot()],
       declarations: [
         MiniBasketContentComponent,
-        MockComponent(ProductImageComponent),
         MockComponent(ProductNameComponent),
         MockDirective(ProductContextDirective),
         MockPipe(PricePipe),

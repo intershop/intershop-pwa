@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
@@ -24,7 +25,12 @@ describe('Header Default Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting('compare'), TranslateModule.forRoot()],
+      imports: [
+        CommonModule,
+        FeatureToggleModule.forTesting('compare'),
+        MockComponent(SearchBoxComponent),
+        TranslateModule.forRoot(),
+      ],
       declarations: [
         HeaderDefaultComponent,
         MockComponent(FaIconComponent),
@@ -33,7 +39,6 @@ describe('Header Default Component', () => {
         MockComponent(LazyProductCompareStatusComponent),
         MockComponent(LoginStatusComponent),
         MockComponent(MiniBasketComponent),
-        MockComponent(SearchBoxComponent),
         MockComponent(UserInformationMobileComponent),
         MockDirective(NgbCollapse),
       ],

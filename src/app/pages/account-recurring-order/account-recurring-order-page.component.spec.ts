@@ -66,12 +66,12 @@ describe('Account Recurring Order Page Component', () => {
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
         MockComponent(OrderRecurrenceComponent),
-        MockComponent(SwitchComponent),
         MockDirective(ServerHtmlDirective),
         MockPipe(DatePipe),
       ],
       imports: [
         FeatureToggleModule.forTesting('businessCustomerRegistration'),
+        MockComponent(SwitchComponent),
         RouterModule,
         TranslateModule.forRoot(),
       ],

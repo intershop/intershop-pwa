@@ -28,11 +28,11 @@ describe('Line Item Edit Dialog Component', () => {
     context = mock(ProductContextFacade);
 
     await TestBed.configureTestingModule({
+      imports: [MockComponent(ProductImageComponent)],
       declarations: [
         LineItemEditDialogComponent,
         MockComponent(LoadingComponent),
         MockComponent(ProductIdComponent),
-        MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductQuantityComponent),
         MockComponent(ProductQuantityLabelComponent),

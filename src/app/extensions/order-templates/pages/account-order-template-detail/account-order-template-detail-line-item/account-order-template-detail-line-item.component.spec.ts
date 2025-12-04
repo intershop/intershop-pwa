@@ -37,7 +37,7 @@ describe('Account Order Template Detail Line Item Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(ProductBundleDisplayComponent),
         MockComponent(ProductIdComponent),
-        MockComponent(ProductImageComponent),
+
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductNameComponent),
         MockComponent(ProductPriceComponent),
@@ -46,7 +46,7 @@ describe('Account Order Template Detail Line Item Component', () => {
         MockComponent(SelectOrderTemplateModalComponent),
         MockPipe(DatePipe),
       ],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [MockComponent(ProductImageComponent), ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [
         { provide: OrderTemplatesFacade, useFactory: () => instance(mock(OrderTemplatesFacade)) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
