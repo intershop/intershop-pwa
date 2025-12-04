@@ -42,8 +42,8 @@ describe('Category Tile Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [RouterModule],
-      declarations: [CategoryTileComponent, MockComponent(CategoryImageComponent), MockPipe(CategoryRoutePipe)],
+      imports: [MockComponent(CategoryImageComponent), RouterModule],
+      declarations: [CategoryTileComponent, MockPipe(CategoryRoutePipe)],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }, provideRouter([])],
     }).compileComponents();
   });

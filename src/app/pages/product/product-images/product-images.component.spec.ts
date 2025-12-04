@@ -69,12 +69,8 @@ describe('Product Images Component', () => {
       } as ProductView)
     );
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(ProductImageComponent),
-        MockComponent(ProductLabelComponent),
-        MockComponent(SwiperComponent),
-        ProductImagesComponent,
-      ],
+      imports: [MockComponent(ProductImageComponent)],
+      declarations: [MockComponent(ProductLabelComponent), MockComponent(SwiperComponent), ProductImagesComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });

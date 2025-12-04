@@ -42,7 +42,7 @@ describe('Line Item List Element Component', () => {
     when(context.select('quantity')).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [MockComponent(ProductImageComponent), TranslateModule.forRoot()],
       declarations: [
         LineItemListElementComponent,
         MockComponent(FaIconComponent),
@@ -52,7 +52,6 @@ describe('Line Item List Element Component', () => {
         MockComponent(LineItemWarrantyComponent),
         MockComponent(ProductBundleDisplayComponent),
         MockComponent(ProductIdComponent),
-        MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductNameComponent),
         MockComponent(ProductQuantityComponent),

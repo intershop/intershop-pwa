@@ -34,10 +34,9 @@ describe('Account Product Notifications List Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CdkTableModule, TranslateModule.forRoot()],
+      imports: [CdkTableModule, MockComponent(ProductImageComponent), TranslateModule.forRoot()],
       declarations: [
         AccountProductNotificationsListComponent,
-        MockComponent(ProductImageComponent),
         MockComponent(ProductNameComponent),
         MockComponent(ProductPriceComponent),
         MockDirective(ProductContextDirective),

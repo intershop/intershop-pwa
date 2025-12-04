@@ -71,12 +71,11 @@ describe('Product Compare List Component', () => {
     compareFacade = mock(CompareFacade);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [MockComponent(ProductImageComponent), TranslateModule.forRoot()],
       declarations: [
         MockComponent(FaIconComponent),
         MockComponent(ProductAttributesComponent),
         MockComponent(ProductComparePagingComponent),
-        MockComponent(ProductImageComponent),
         MockComponent(ProductNameComponent),
         MockComponent(ProductPriceComponent),
         MockDirective(FeatureToggleDirective),

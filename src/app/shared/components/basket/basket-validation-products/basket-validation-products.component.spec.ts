@@ -22,13 +22,12 @@ describe('Basket Validation Products Component', () => {
       declarations: [
         BasketValidationProductsComponent,
         MockComponent(ProductIdComponent),
-        MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductNameComponent),
         MockDirective(ProductContextDirective),
         MockPipe(PricePipe),
       ],
-      imports: [TranslateModule.forRoot()],
+      imports: [MockComponent(ProductImageComponent), TranslateModule.forRoot()],
     }).compileComponents();
   });
 
