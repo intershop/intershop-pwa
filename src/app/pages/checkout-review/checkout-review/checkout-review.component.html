@@ -132,7 +132,7 @@
     <div class="cost-summary">
       <ish-basket-cost-summary [totals]="basket.totals" />
       <form [formGroup]="form" ishFormSubmit #tcForm="ngForm" (ngSubmit)="submitOrder()">
-        <formly-form [form]="form" [model]="model" [fields]="fields" [options]="options" />
+        <formly-form [form]="form" [model]="model" [fields]="fields$ | async" [options]="options" />
         <div class="d-grid">
           <div
             *ngIf="(form.invalid && tcForm.submitted) || multipleBuckets || submitting"

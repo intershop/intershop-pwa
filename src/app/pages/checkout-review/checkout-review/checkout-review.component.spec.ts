@@ -3,9 +3,11 @@ import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
-import { spy, verify } from 'ts-mockito';
+import { of } from 'rxjs';
+import { instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
@@ -35,8 +37,10 @@ describe('Checkout Review Component', () => {
   let component: CheckoutReviewComponent;
   let fixture: ComponentFixture<CheckoutReviewComponent>;
   let element: HTMLElement;
+  let appFacade: AppFacade;
 
   beforeEach(async () => {
+    appFacade = mock(AppFacade);
     await TestBed.configureTestingModule({
       declarations: [
         CheckoutReviewComponent,
@@ -58,6 +62,7 @@ describe('Checkout Review Component', () => {
         MockDirective(ServerHtmlDirective),
         MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
       ],
+      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
       imports: [
         FeatureToggleModule.forTesting(),
         FormlyModule.forRoot({
@@ -74,6 +79,7 @@ describe('Checkout Review Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
+    when(appFacade.serverSetting$<boolean>('basket.termsAndConditions')).thenReturn(of(true));
     component.basket = { ...BasketMockData.getBasket(), costCenter: 'CC123' };
   });
 
@@ -83,7 +89,27 @@ describe('Checkout Review Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should emit an event if t&c checkbox is checked', () => {
+  it('should emit an event if t&c are disabled', () => {
+    when(appFacade.serverSetting$<boolean>('basket.termsAndConditions')).thenReturn(of(false));
+    const emitter = spy(component.createOrder);
+
+    fixture.detectChanges();
+    component.submitOrder();
+    verify(emitter.emit()).once();
+  });
+
+  it('should return empty fields array when t&c are disabled', done => {
+    when(appFacade.serverSetting$<boolean>('basket.termsAndConditions')).thenReturn(of(false));
+
+    fixture.detectChanges();
+
+    component.fields$.subscribe(fields => {
+      expect(fields).toBeEmpty();
+      done();
+    });
+  });
+
+  it('should emit an event if t&c checkbox is checked and t&c are enabled', () => {
     const emitter = spy(component.createOrder);
 
     fixture.detectChanges();
@@ -95,12 +121,24 @@ describe('Checkout Review Component', () => {
     verify(emitter.emit()).once();
   });
 
-  it('should not emit an event if t&c checkbox is empty', () => {
+  it('should not emit an event if t&c checkbox is empty and t&c are enabled', () => {
     const emitter = spy(component.createOrder);
 
     fixture.detectChanges();
     component.submitOrder();
     verify(emitter.emit()).never();
+  });
+
+  it('should return t&c fields when t&c are enabled', done => {
+    when(appFacade.serverSetting$<boolean>('basket.termsAndConditions')).thenReturn(of(true));
+
+    fixture.detectChanges();
+
+    component.fields$.subscribe(fields => {
+      expect(fields).toHaveLength(1);
+      expect(fields[0].type).toBe('ish-checkout-review-tac-field');
+      done();
+    });
   });
 
   it('should display a message if an error occurs', () => {
