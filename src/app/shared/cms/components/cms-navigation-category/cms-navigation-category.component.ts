@@ -5,11 +5,17 @@ import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
+import { AsyncPipe, NgClass, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { IconModule } from 'ish-core/icon.module';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 
 @Component({
   selector: 'ish-cms-navigation-category',
   templateUrl: './cms-navigation-category.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, NgClass, NgTemplateOutlet, RouterLink, AsyncPipe, NgStyle, IconModule, ServerHtmlDirective],
 })
 export class CMSNavigationCategoryComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;

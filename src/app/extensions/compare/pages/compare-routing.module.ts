@@ -6,7 +6,9 @@ import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 const routes: Routes = [
   {
     path: 'compare',
-    loadChildren: () => import('./compare/compare-page.module').then(m => m.ComparePageModule),
+    loadComponent() {
+      return import('./compare/compare-page.component').then(c => c.ComparePageComponent);
+    },
     canActivate: [featureToggleGuard],
     data: {
       feature: 'compare',

@@ -7,6 +7,8 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { CompareFacade } from '../../facades/compare.facade';
 
 import { ProductSendToCompareComponent } from './product-send-to-compare.component';
+import { IconModule } from 'ish-core/icon.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('Product Send To Compare Component', () => {
   let component: ProductSendToCompareComponent;

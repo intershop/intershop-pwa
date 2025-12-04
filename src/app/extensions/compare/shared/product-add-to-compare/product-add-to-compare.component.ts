@@ -5,6 +5,10 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { CompareFacade } from '../../facades/compare.facade';
+import { TranslateModule } from '@ngx-translate/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgIf, NgClass, AsyncPipe } from '@angular/common';
+import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
 
 /**
  * The Product Add To Compare Component add and remove a product to the compare view.
@@ -13,6 +17,8 @@ import { CompareFacade } from '../../facades/compare.facade';
   selector: 'ish-product-add-to-compare',
   templateUrl: './product-add-to-compare.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, NgClass, FontAwesomeModule, AsyncPipe, TranslateModule, FeatureTogglePipe],
 })
 @GenerateLazyComponent()
 export class ProductAddToCompareComponent implements OnInit {

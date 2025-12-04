@@ -5,11 +5,12 @@ import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountAddressesPageComponent } from './account-addresses-page.component';
 import { AccountAddressesComponent } from './account-addresses/account-addresses.component';
+import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
 
 const routes: Routes = [{ path: '', component: AccountAddressesPageComponent }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes), SharedModule],
+  imports: [RouterModule.forChild(routes), SharedModule, FormlyCustomerAddressFormComponent],
   declarations: [AccountAddressesComponent, AccountAddressesPageComponent],
 })
 export class AccountAddressesPageModule {}

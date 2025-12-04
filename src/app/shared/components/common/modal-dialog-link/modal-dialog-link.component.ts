@@ -3,6 +3,8 @@ import { BehaviorSubject } from 'rxjs';
 
 import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
 import { ModalDialogComponent, ModalOptions } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
 
 /**
  * The Modal Dialog Link Component
@@ -26,6 +28,8 @@ import { ModalDialogComponent, ModalOptions } from 'ish-shared/components/common
   selector: 'ish-modal-dialog-link',
   templateUrl: './modal-dialog-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [TranslateModule, NgIf, AsyncPipe, ModalDialogComponent, NgTemplateOutlet],
 })
 export class ModalDialogLinkComponent {
   /**

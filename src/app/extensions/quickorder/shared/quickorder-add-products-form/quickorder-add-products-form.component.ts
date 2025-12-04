@@ -1,10 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { TranslateService } from '@ngx-translate/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FORMLY_CONFIG, FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { SkuQuantityType } from 'ish-core/models/product/product.helper';
+
+import { QuickorderRepeatFieldComponent } from '../formly/quickorder-repeat-field/quickorder-repeat-field.component';
 
 /**
  * The Quick Add Products Component displays a form to insert multiple product sku and quantity to add them to the cart.
@@ -12,7 +16,18 @@ import { SkuQuantityType } from 'ish-core/models/product/product.helper';
 @Component({
   selector: 'ish-quickorder-add-products-form',
   templateUrl: './quickorder-add-products-form.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule, FormlyModule, ProductContextDirective],
+  providers: [
+    {
+      provide: FORMLY_CONFIG,
+      multi: true,
+      useValue: {
+        types: [{ name: 'repeat', component: QuickorderRepeatFieldComponent }],
+      },
+    },
+  ],
 })
 export class QuickorderAddProductsFormComponent implements OnInit {
   quickOrderForm: FormGroup = new FormGroup({});

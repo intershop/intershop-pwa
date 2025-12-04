@@ -5,11 +5,29 @@ import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
+import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { IconModule } from 'ish-core/icon.module';
+import { ContentPageRoutePipe } from 'ish-core/routing/content-page/content-page-route.pipe';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 
 @Component({
   selector: 'ish-cms-navigation-page',
   templateUrl: './cms-navigation-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    NgIf,
+    NgFor,
+    NgClass,
+    AsyncPipe,
+    RouterLink,
+    NgStyle,
+    IconModule,
+    NgTemplateOutlet,
+    ContentPageRoutePipe,
+    ServerHtmlDirective,
+  ],
 })
 export class CMSNavigationPageComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;

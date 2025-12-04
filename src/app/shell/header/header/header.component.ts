@@ -5,11 +5,27 @@ import { filter, map } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { DeviceType, HeaderType, headerTypes } from 'ish-core/models/viewtype/viewtype.types';
+import { BackToTopComponent } from '../back-to-top/back-to-top.component';
+import { HeaderDefaultComponent } from '../header-default/header-default.component';
+import { HeaderCheckoutComponent } from '../header-checkout/header-checkout.component';
+import { HeaderErrorComponent } from '../header-error/header-error.component';
+import { HeaderSimpleComponent } from '../header-simple/header-simple.component';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'ish-header',
-  templateUrl: './header.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'ish-header',
+    templateUrl: './header.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        NgIf,
+        HeaderSimpleComponent,
+        HeaderErrorComponent,
+        HeaderCheckoutComponent,
+        HeaderDefaultComponent,
+        BackToTopComponent,
+        AsyncPipe,
+    ],
 })
 export class HeaderComponent implements OnInit {
   headerType$: Observable<HeaderType>;

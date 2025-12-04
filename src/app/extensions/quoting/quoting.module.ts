@@ -16,10 +16,9 @@ import { QuoteWidgetComponent } from './shared/quote-widget/quote-widget.compone
 import { QuotingBasketLineItemsComponent } from './shared/quoting-basket-line-items/quoting-basket-line-items.component';
 
 @NgModule({
-  imports: [SharedModule],
+  imports: [ProductAddToQuoteComponent, SharedModule],
   declarations: [
     BasketAddToQuoteComponent,
-    ProductAddToQuoteComponent,
     ProductAddToQuoteDialogComponent,
     QuoteEditComponent,
     QuoteExpirationDateComponent,

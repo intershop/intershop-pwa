@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,17 +9,21 @@ import {
   SimpleChange,
   SimpleChanges,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { SuccessMessageComponent } from 'ish-shared/components/common/success-message/success-message.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 @Component({
   selector: 'ish-basket-order-reference',
   templateUrl: './basket-order-reference.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [TranslateModule, NgIf, FormlyModule, SuccessMessageComponent, ReactiveFormsModule],
 })
 export class BasketOrderReferenceComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: Basket;

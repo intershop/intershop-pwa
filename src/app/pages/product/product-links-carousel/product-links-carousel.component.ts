@@ -1,15 +1,19 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input } from '@angular/core';
 import { RxState } from '@rx-angular/state';
 import { EMPTY, Observable, combineLatest, of } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import SwiperCore, { Navigation, Pagination, SwiperOptions, A11y } from 'swiper';
+import { SwiperModule } from 'swiper/angular';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 SwiperCore.use([Navigation, Pagination, A11y]);
 
@@ -27,6 +31,8 @@ SwiperCore.use([Navigation, Pagination, A11y]);
   templateUrl: './product-links-carousel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [RxState],
+  standalone: true,
+  imports: [NgIf, SwiperModule, NgFor, AsyncPipe, ProductItemComponent, ProductContextDirective],
 })
 export class ProductLinksCarouselComponent {
   /**

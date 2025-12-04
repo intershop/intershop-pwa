@@ -20,6 +20,7 @@ import { Directive, ElementRef, Inject, Input, OnChanges } from '@angular/core';
  */
 @Directive({
   selector: '[ishScroll]',
+  standalone: true,
 })
 export class ScrollDirective implements OnChanges {
   constructor(private el: ElementRef, @Inject(DOCUMENT) private document: Document) {}

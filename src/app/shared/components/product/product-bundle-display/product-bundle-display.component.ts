@@ -3,11 +3,16 @@ import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { ProductNameComponent } from '../product-name/product-name.component';
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 
 @Component({
   selector: 'ish-product-bundle-display',
   templateUrl: './product-bundle-display.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, NgFor, AsyncPipe, ProductNameComponent, ProductContextDirective],
 })
 export class ProductBundleDisplayComponent implements OnInit {
   parts$: Observable<SkuQuantityType[]>;

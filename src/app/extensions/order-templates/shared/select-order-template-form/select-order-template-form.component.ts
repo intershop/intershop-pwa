@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -9,11 +9,14 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
+import { AsyncPipe, NgIf } from '@angular/common';
 
 @Component({
   selector: 'ish-select-order-template-form',
   templateUrl: './select-order-template-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, FormlyModule, AsyncPipe],
 })
 export class SelectOrderTemplateFormComponent implements OnInit {
   @Input() formGroup: FormGroup;

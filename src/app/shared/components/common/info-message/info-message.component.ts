@@ -1,4 +1,6 @@
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { MessageFacade } from 'ish-core/facades/message.facade';
 
@@ -12,6 +14,8 @@ import { MessageFacade } from 'ish-core/facades/message.facade';
   selector: 'ish-info-message',
   templateUrl: './info-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, TranslateModule],
 })
 export class InfoMessageComponent implements OnChanges {
   @Input({ required: true }) message: string;

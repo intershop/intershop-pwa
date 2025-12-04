@@ -8,12 +8,32 @@ import { matchProductRoute } from 'ish-core/routing/product/product.route';
 
 const routes: Routes = [
   {
+    path: 'product/:sku',
+    loadComponent: () => import('./product/product-page.component').then(c => c.ProductPageComponent),
+    data: { legacy: true },
+  },
+  {
+    path: 'category/:categoryUniqueId/product/:sku',
+    loadComponent: () => import('./product/product-page.component').then(c => c.ProductPageComponent),
+    data: { legacy: true },
+  },
+  {
+    path: 'category/:categoryUniqueId',
+    loadComponent: () => import('./category/category-page.component').then(c => c.CategoryPageComponent),
+    data: { legacy: true },
+  },
+  {
+    path: 'categoryref/:categoryRefId',
+    loadComponent: () => import('./category/category-page.component').then(c => c.CategoryPageComponent),
+    data: { legacy: true },
+  },
+  {
     matcher: matchProductRoute,
-    loadChildren: () => import('./product/product-page.module').then(m => m.ProductPageModule),
+    loadComponent: () => import('./product/product-page.component').then(c => c.ProductPageComponent),
   },
   {
     matcher: matchCategoryRoute,
-    loadChildren: () => import('./category/category-page.module').then(m => m.CategoryPageModule),
+    loadComponent: () => import('./category/category-page.component').then(c => c.CategoryPageComponent),
   },
   {
     matcher: matchContentRoute,

@@ -11,15 +11,17 @@ import { SelectOrderTemplateFormComponent } from './shared/select-order-template
 import { SelectOrderTemplateModalComponent } from './shared/select-order-template-modal/select-order-template-modal.component';
 
 @NgModule({
-  imports: [SharedModule],
+  imports: [
+    SharedModule,
+    ProductAddToOrderTemplateComponent,
+    SelectOrderTemplateModalComponent,
+    SelectOrderTemplateFormComponent,
+  ],
   declarations: [
     BasketCreateOrderTemplateComponent,
     OrderCreateOrderTemplateComponent,
     OrderTemplatePreferencesDialogComponent,
     OrderTemplateWidgetComponent,
-    ProductAddToOrderTemplateComponent,
-    SelectOrderTemplateFormComponent,
-    SelectOrderTemplateModalComponent,
   ],
   exports: [OrderTemplatePreferencesDialogComponent, OrderTemplateWidgetComponent, SelectOrderTemplateModalComponent],
 })

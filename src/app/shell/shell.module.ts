@@ -13,8 +13,8 @@ import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
 
-import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
-import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
+import { LazyProductCompareStatusComponent } from '../extensions/compare/exports/lazy-product-compare-status/lazy-product-compare-status.component';
+import { LazyQuickorderLinkComponent } from '../extensions/quickorder/exports/lazy-quickorder-link/lazy-quickorder-link.component';
 import { SeoExportsModule } from '../extensions/seo/exports/seo-exports.module';
 import { StoreLocatorExportsModule } from '../extensions/store-locator/exports/store-locator-exports.module';
 import { TrackingExportsModule } from '../extensions/tracking/exports/tracking-exports.module';
@@ -43,14 +43,13 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
   imports: [
     AuthorizationToggleModule,
     CommonModule,
-    CompareExportsModule,
     DirectivesModule,
     FeatureToggleModule,
     NgbCollapseModule,
     NgbDropdownModule,
+    LazyProductCompareStatusComponent,
     NgbPopoverModule,
     PipesModule,
-    QuickorderExportsModule,
     RoleToggleModule,
     RouterModule,
     SearchBoxComponent,
@@ -59,22 +58,21 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     TrackingExportsModule,
     TranslateModule,
     WishlistsExportsModule,
-  ],
-  declarations: [
+    LazyQuickorderLinkComponent,
+    HeaderNavigationComponent,
+    SubCategoryNavigationComponent,
+    LazyContentIncludeComponent,
+    HeaderErrorComponent,
     ...exportedComponents,
     BackToTopComponent,
     CookiesBannerComponent,
     HeaderCheckoutComponent,
     HeaderDefaultComponent,
-    HeaderErrorComponent,
-    HeaderNavigationComponent,
     HeaderSimpleComponent,
     LanguageSwitchComponent,
-    LazyContentIncludeComponent,
     LazyMiniBasketContentComponent,
     LoginStatusComponent,
     MiniBasketComponent,
-    SubCategoryNavigationComponent,
     UserInformationMobileComponent,
   ],
   exports: [...exportedComponents],

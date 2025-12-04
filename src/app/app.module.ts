@@ -6,11 +6,13 @@ import { UrlSerializer } from '@angular/router';
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
 import { CoreModule } from 'ish-core/core.module';
 import { PWAUrlSerializer } from 'ish-core/routing/pwa-url.serializer';
+import { StateManagementModule } from 'ish-core/state-management.module';
 
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { CompareRoutingModule } from './extensions/compare/pages/compare-routing.module';
+import { CompareStoreModule } from './extensions/compare/store/compare-store.module';
 import { ContactUsRoutingModule } from './extensions/contact-us/pages/contact-us-routing.module';
 import { CopilotExportsModule } from './extensions/copilot/exports/copilot-exports.module';
 import { PunchoutRoutingModule } from './extensions/punchout/pages/punchout-routing.module';
@@ -27,6 +29,7 @@ import { ShellModule } from './shell/shell.module';
   declarations: [AppComponent],
   /* eslint-disable @angular-eslint/sort-ngmodule-metadata-arrays */
   imports: [
+    StateManagementModule,
     BrowserModule,
     BrowserAnimationsModule,
     CoreModule,
@@ -42,6 +45,7 @@ import { ShellModule } from './shell/shell.module';
     ContactUsRoutingModule,
     WishlistSharingRoutingModule,
     AppLastRoutingModule,
+    CompareStoreModule,
   ],
   /* eslint-enable @angular-eslint/sort-ngmodule-metadata-arrays */
   bootstrap: [AppComponent],

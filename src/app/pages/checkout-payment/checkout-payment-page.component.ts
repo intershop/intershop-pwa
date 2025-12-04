@@ -1,5 +1,7 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslateModule } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, filter, first, map, shareReplay, tap, withLatestFrom } from 'rxjs/operators';
@@ -12,11 +14,16 @@ import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-in
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { PriceType } from 'ish-core/models/price/price.model';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+
+import { CheckoutPaymentComponent } from './checkout-payment/checkout-payment.component';
 
 @Component({
   selector: 'ish-checkout-payment-page',
   templateUrl: './checkout-payment-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, TranslateModule, LoadingComponent, CheckoutPaymentComponent, NgIf],
 })
 export class CheckoutPaymentPageComponent implements OnInit {
   basket$: Observable<BasketView>;

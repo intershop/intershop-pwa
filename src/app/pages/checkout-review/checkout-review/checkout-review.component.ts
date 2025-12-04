@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -16,11 +17,64 @@ import { map } from 'rxjs/operators';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
+import { AddressComponent } from 'ish-shared/components/address/address/address.component';
+import { BasketApprovalInfoComponent } from 'ish-shared/components/basket/basket-approval-info/basket-approval-info.component';
+import { BasketBuyerComponent } from 'ish-shared/components/basket/basket-buyer/basket-buyer.component';
+import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketErrorMessageComponent } from 'ish-shared/components/basket/basket-error-message/basket-error-message.component';
+import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket/basket-merchant-message-view/basket-merchant-message-view.component';
+import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
+import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
+import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
+import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
+import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
+import { OrderRecurrenceComponent } from 'ish-shared/components/order/order-recurrence/order-recurrence.component';
+
+import { CheckoutReviewTacFieldComponent } from '../formly/checkout-review-tac-field/checkout-review-tac-field.component';
+
+export const checkoutReviewFormlyConfig: ConfigOption = {
+  types: [
+    {
+      name: 'ish-checkout-review-tac-field',
+      component: CheckoutReviewTacFieldComponent,
+    },
+  ],
+};
 
 @Component({
   selector: 'ish-checkout-review',
   templateUrl: './checkout-review.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    NgIf,
+    TranslateModule,
+    ModalDialogLinkComponent,
+    ContentIncludeComponent,
+    LazyLoadingContentDirective,
+    ErrorMessageComponent,
+    BasketErrorMessageComponent,
+    BasketValidationResultsComponent,
+    BasketApprovalInfoComponent,
+    BasketMerchantMessageViewComponent,
+    ServerSettingPipe,
+    InfoBoxComponent,
+    BasketBuyerComponent,
+    FeatureToggleDirective,
+    OrderRecurrenceComponent,
+    AddressComponent,
+    SkipContentLinkComponent,
+    LineItemListComponent,
+    BasketCostSummaryComponent,
+    FormlyModule,
+    ReactiveFormsModule,
+    IconModule,
+    BasketShippingMethodComponent,
+  ],
 })
 export class CheckoutReviewComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: Basket;

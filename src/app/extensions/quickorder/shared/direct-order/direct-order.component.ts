@@ -1,22 +1,34 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
-import { TranslateService } from '@ngx-translate/core';
+import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+import { AsyncPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { SharedModule } from 'ish-shared/shared.module';
 
 /**
  * The Direct Order Component displays a form to insert a product sku and quantity to add it to the cart.
  */
 @Component({
-  selector: 'ish-direct-order',
-  templateUrl: './direct-order.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ProductContextFacade],
+    selector: 'ish-direct-order',
+    templateUrl: './direct-order.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [ProductContextFacade],
+    standalone: true,
+    imports: [
+        ReactiveFormsModule,
+        FormlyModule,
+        SharedModule,
+        RouterLink,
+        AsyncPipe,
+        TranslateModule,
+    ],
 })
 @GenerateLazyComponent()
 export class DirectOrderComponent implements OnInit, AfterViewInit {

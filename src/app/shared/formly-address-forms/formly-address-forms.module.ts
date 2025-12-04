@@ -22,8 +22,8 @@ import { AddressFormUSConfiguration } from './configurations/us/address-form-us.
 
 @NgModule({
   imports: [CommonModule, DirectivesModule, FormlyModule, FormsSharedModule, ReactiveFormsModule, TranslateModule],
-  declarations: [FormlyAddressExtensionFormComponent, FormlyAddressFormComponent, FormlyCustomerAddressFormComponent],
-  exports: [FormlyAddressExtensionFormComponent, FormlyAddressFormComponent, FormlyCustomerAddressFormComponent],
+  declarations: [FormlyAddressExtensionFormComponent, FormlyAddressFormComponent],
+  exports: [FormlyAddressExtensionFormComponent, FormlyAddressFormComponent],
   providers: [
     AddressFormConfigurationProvider,
     { provide: ADDRESS_FORM_CONFIGURATION, useClass: AddressFormDEConfiguration, multi: true },

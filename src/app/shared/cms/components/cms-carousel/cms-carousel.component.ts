@@ -9,18 +9,23 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarousel, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { map, take } from 'rxjs/operators';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { arraySlices } from 'ish-core/utils/functions';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
+import { NgClass, NgFor, NgIf } from '@angular/common';
+import { ContentPageletComponent } from '../content-pagelet/content-pagelet.component';
+import { ContentSlotComponent } from '../content-slot/content-slot.component';
 
 @Component({
   selector: 'ish-cms-carousel',
   templateUrl: './cms-carousel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, NgClass, ContentPageletComponent, ContentSlotComponent, NgFor, NgbCarouselModule],
 })
 export class CMSCarouselComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;

@@ -12,7 +12,13 @@ import {
 import { ProductContextDisplayProperties } from 'ish-core/facades/product-context.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { InjectSingle } from 'ish-core/utils/injection';
-import { ProductItemDisplayType } from 'ish-shared/components/product/product-item/product-item.component';
+import {
+  ProductItemComponent,
+  ProductItemDisplayType,
+} from 'ish-shared/components/product/product-item/product-item.component';
+import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
+import { SwiperModule } from 'swiper/angular';
 
 SwiperCore.use([Pagination, Navigation, A11y]);
 
@@ -20,6 +26,8 @@ SwiperCore.use([Pagination, Navigation, A11y]);
   selector: 'ish-products-list',
   templateUrl: './products-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, AsyncPipe, NgFor, ProductItemComponent, NgClass, ProductContextDirective, SwiperModule],
 })
 export class ProductsListComponent implements OnChanges {
   @Input({ required: true }) productSKUs: string[];

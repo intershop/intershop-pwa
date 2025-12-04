@@ -8,6 +8,9 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 import { whenFalsy } from 'ish-core/utils/operators';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { IconModule } from 'ish-core/icon.module';
 
 /**
  * Displays an add to cart button with an icon or a text label. After clicking the button a loading animation is displayed
@@ -21,6 +24,8 @@ import { whenFalsy } from 'ish-core/utils/operators';
   selector: 'ish-product-add-to-basket',
   templateUrl: './product-add-to-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgClass, NgIf, AsyncPipe, TranslateModule, IconModule],
 })
 export class ProductAddToBasketComponent implements OnInit {
   /**

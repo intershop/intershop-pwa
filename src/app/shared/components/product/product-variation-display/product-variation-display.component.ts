@@ -3,11 +3,15 @@ import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { VariationAttributePipe } from 'ish-core/pipes/variation-attribute.pipe';
 
 @Component({
   selector: 'ish-product-variation-display',
   templateUrl: './product-variation-display.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, AsyncPipe, NgFor, VariationAttributePipe],
 })
 export class ProductVariationDisplayComponent implements OnInit {
   product$: Observable<ProductView>;

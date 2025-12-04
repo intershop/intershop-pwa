@@ -9,7 +9,7 @@ import { LazyOrderTemplateWidgetComponent } from './lazy-order-template-widget/l
 import { LazyProductAddToOrderTemplateComponent } from './lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
 
 @NgModule({
-  imports: [FeatureToggleModule],
+  imports: [FeatureToggleModule, LazyProductAddToOrderTemplateComponent],
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
@@ -24,7 +24,6 @@ import { LazyProductAddToOrderTemplateComponent } from './lazy-product-add-to-or
     LazyBasketCreateOrderTemplateComponent,
     LazyOrderCreateOrderTemplateComponent,
     LazyOrderTemplateWidgetComponent,
-    LazyProductAddToOrderTemplateComponent,
   ],
   exports: [
     LazyBasketCreateOrderTemplateComponent,

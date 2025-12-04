@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
 
 /**
  * The Product Compare Paging Component
@@ -17,6 +19,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
   selector: 'ish-product-compare-paging',
   templateUrl: './product-compare-paging.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, TranslateModule],
 })
 export class ProductComparePagingComponent implements OnChanges {
   /**

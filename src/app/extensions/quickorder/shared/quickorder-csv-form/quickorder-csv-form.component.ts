@@ -19,6 +19,8 @@ import { CsvImportData, CsvImportHandler, CsvImportStatus } from 'ish-core/utils
   selector: 'ish-quickorder-csv-form',
   templateUrl: './quickorder-csv-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ReactiveFormsModule, NgSwitch, NgSwitchCase, NgSwitchDefault, TranslateModule],
 })
 export class QuickorderCsvFormComponent implements OnInit {
   csvForm: FormGroup;

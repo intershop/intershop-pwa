@@ -10,11 +10,16 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wishlist-modal.component';
+import { AsyncPipe, NgClass, NgIf, NgSwitch } from '@angular/common';
+import { IconModule } from 'ish-core/icon.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'ish-product-add-to-wishlist',
   templateUrl: './product-add-to-wishlist.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, NgClass, NgSwitch, IconModule, TranslateModule, AsyncPipe, SelectWishlistModalComponent],
 })
 /**
  * The Product Add To Wishlist Component adds a product to a wishlist.

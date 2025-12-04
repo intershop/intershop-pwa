@@ -6,9 +6,8 @@ import { LazyDirectOrderComponent } from './lazy-direct-order/lazy-direct-order.
 import { LazyQuickorderLinkComponent } from './lazy-quickorder-link/lazy-quickorder-link.component';
 
 @NgModule({
-  imports: [FeatureToggleModule],
+  imports: [FeatureToggleModule, LazyDirectOrderComponent, LazyQuickorderLinkComponent],
 
-  declarations: [LazyDirectOrderComponent, LazyQuickorderLinkComponent],
   exports: [LazyDirectOrderComponent, LazyQuickorderLinkComponent],
 })
 export class QuickorderExportsModule {}

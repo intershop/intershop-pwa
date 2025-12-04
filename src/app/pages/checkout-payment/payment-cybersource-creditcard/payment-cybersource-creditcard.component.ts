@@ -1,3 +1,4 @@
+import { NgClass, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,14 +12,21 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 
+import { IconModule } from 'ish-core/icon.module';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
+import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
+import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form-feedback.directive';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+
+import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- allows access to cybersource js functionality */
 declare let Flex: any;
@@ -28,6 +36,18 @@ declare let Flex: any;
   templateUrl: './payment-cybersource-creditcard.component.html',
   styleUrls: ['./payment-cybersource-creditcard.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [
+    NgIf,
+    ReactiveFormsModule,
+    TranslateModule,
+    NgClass,
+    ShowFormFeedbackDirective,
+    FormControlFeedbackComponent,
+    NgbPopoverModule,
+    IconModule,
+    PaymentSaveCheckboxComponent,
+  ],
 })
 export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit {
   cyberSourceCreditCardForm: FormGroup;

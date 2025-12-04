@@ -3,6 +3,10 @@ import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
+import { TranslateModule } from '@ngx-translate/core';
+import { ProductLinksCarouselComponent as ProductLinksCarouselComponent_1 } from '../product-links-carousel/product-links-carousel.component';
+import { ProductLinksListComponent } from '../product-links-list/product-links-list.component';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 /**
  * The Product Links Component
@@ -15,9 +19,17 @@ import { ProductLinksDictionary } from 'ish-core/models/product-links/product-li
  * <ish-product-links></ish-product-links>
  */
 @Component({
-  selector: 'ish-product-links',
-  templateUrl: './product-links.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'ish-product-links',
+    templateUrl: './product-links.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        NgIf,
+        ProductLinksListComponent,
+        ProductLinksCarouselComponent_1,
+        AsyncPipe,
+        TranslateModule,
+    ],
 })
 export class ProductLinksComponent implements OnInit {
   links$: Observable<ProductLinksDictionary>;

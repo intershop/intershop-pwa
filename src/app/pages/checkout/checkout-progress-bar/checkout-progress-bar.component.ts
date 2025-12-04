@@ -1,9 +1,15 @@
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { IconModule } from 'ish-core/icon.module';
 
 @Component({
   selector: 'ish-checkout-progress-bar',
   templateUrl: './checkout-progress-bar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgFor, NgClass, NgIf, RouterLink, IconModule, TranslateModule],
 })
 export class CheckoutProgressBarComponent {
   @Input() step = 1;

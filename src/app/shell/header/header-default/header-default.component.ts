@@ -1,7 +1,22 @@
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
 
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
+import { SearchBoxComponent as SearchBoxComponent_1 } from 'ish-shared/components/search/search-box/search-box.component';
+import { HeaderNavigationComponent as HeaderNavigationComponent_1 } from 'ish-shell/header/header-navigation/header-navigation.component';
+import { LanguageSwitchComponent as LanguageSwitchComponent_1 } from 'ish-shell/header/language-switch/language-switch.component';
+import { LoginStatusComponent as LoginStatusComponent_1 } from 'ish-shell/header/login-status/login-status.component';
+import { MiniBasketComponent as MiniBasketComponent_1 } from 'ish-shell/header/mini-basket/mini-basket.component';
+import { UserInformationMobileComponent } from 'ish-shell/header/user-information-mobile/user-information-mobile.component';
+
+import { LazyProductCompareStatusComponent } from '../../../extensions/compare/exports/lazy-product-compare-status/lazy-product-compare-status.component';
+import { LazyQuickorderLinkComponent } from '../../../extensions/quickorder/exports/lazy-quickorder-link/lazy-quickorder-link.component';
+import { WishlistsExportsModule } from '../../../extensions/wishlists/exports/wishlists-exports.module';
 
 type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
 
@@ -23,6 +38,26 @@ type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
   selector: 'ish-header-default',
   templateUrl: './header-default.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    SearchBoxComponent_1,
+    NgClass,
+    NgIf,
+    LoginStatusComponent_1,
+    FeatureToggleModule,
+    LazyProductCompareStatusComponent,
+    LazyQuickorderLinkComponent,
+    WishlistsExportsModule,
+    FontAwesomeModule,
+    NgbCollapseModule,
+    NgTemplateOutlet,
+    LanguageSwitchComponent_1,
+    MiniBasketComponent_1,
+    RouterLink,
+    HeaderNavigationComponent_1,
+    UserInformationMobileComponent,
+    TranslateModule,
+  ],
 })
 export class HeaderDefaultComponent implements OnChanges {
   @Input() isSticky = false;

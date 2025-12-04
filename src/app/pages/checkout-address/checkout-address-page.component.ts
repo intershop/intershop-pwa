@@ -11,6 +11,11 @@ import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { CheckoutAddressComponent } from './checkout-address/checkout-address.component';
+import { CheckoutAddressAnonymousComponent } from './checkout-address-anonymous/checkout-address-anonymous.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 /**
  * The Checkout Address Page Component renders the checkout address page of a logged in user.
@@ -20,6 +25,15 @@ import { whenTruthy } from 'ish-core/utils/operators';
   selector: 'ish-checkout-address-page',
   templateUrl: './checkout-address-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    NgIf,
+    AsyncPipe,
+    CheckoutAddressComponent,
+    CheckoutAddressAnonymousComponent,
+    LoadingComponent,
+    TranslateModule,
+  ],
 })
 export class CheckoutAddressPageComponent implements OnInit {
   basket$: Observable<BasketView>;

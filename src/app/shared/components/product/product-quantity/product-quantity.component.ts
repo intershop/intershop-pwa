@@ -6,12 +6,16 @@ import { v4 as uuid } from 'uuid';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FormsService } from 'ish-shared/forms/utils/forms.service';
+import { AsyncPipe, NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'ish-product-quantity',
   templateUrl: './product-quantity.component.html',
   styleUrls: ['./product-quantity.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, AsyncPipe, NgFor, NgClass, TranslateModule, NgSwitch, NgSwitchCase, NgSwitchDefault],
 })
 export class ProductQuantityComponent implements OnInit {
   @Input() type: 'input' | 'select' | 'counter' = 'counter';
@@ -38,6 +42,7 @@ export class ProductQuantityComponent implements OnInit {
     this.visible$ = this.context.select('displayProperties', 'quantity');
     this.quantity$ = this.context.select('quantity').pipe(filter(n => typeof n === 'number' && !isNaN(n)));
     this.min$ = this.context.select('minQuantity');
+
     this.max$ = this.context.select('maxQuantity');
     this.step$ = this.context.select('stepQuantity');
     this.hasQuantityError$ = this.context.select('hasQuantityError').pipe(shareReplay(1));

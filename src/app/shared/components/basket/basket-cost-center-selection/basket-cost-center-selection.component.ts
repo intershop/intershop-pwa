@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { UntypedFormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { Observable, combineLatest } from 'rxjs';
 import { distinctUntilChanged, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
@@ -10,6 +10,8 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 /**
  * Assign a cost center for to the basket for business customers
@@ -18,6 +20,8 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   selector: 'ish-basket-cost-center-selection',
   templateUrl: './basket-cost-center-selection.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, FormlyModule, AsyncPipe, ReactiveFormsModule, TranslateModule],
 })
 export class BasketCostCenterSelectionComponent implements OnInit {
   form = new UntypedFormGroup({});

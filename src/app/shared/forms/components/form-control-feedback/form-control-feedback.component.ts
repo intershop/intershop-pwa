@@ -1,5 +1,9 @@
+import { NgFor, NgIf, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DoCheck, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+
+import { IconModule } from 'ish-core/icon.module';
 
 interface FormErrorMessages {
   [key: string]: string;
@@ -9,6 +13,8 @@ interface FormErrorMessages {
   selector: 'ish-form-control-feedback',
   templateUrl: './form-control-feedback.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [NgIf, IconModule, TranslateModule, NgFor, SlicePipe],
 })
 export class FormControlFeedbackComponent implements DoCheck {
   @Input({ required: true }) control: AbstractControl;

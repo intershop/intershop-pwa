@@ -4,12 +4,16 @@ import { Observable } from 'rxjs';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
+import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'ish-product-variation-select-enhanced',
   templateUrl: './product-variation-select-enhanced.component.html',
   styleUrls: ['./product-variation-select-enhanced.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, AsyncPipe, NgFor, NgTemplateOutlet, NgStyle, NgClass, TranslateModule],
 })
 export class ProductVariationSelectEnhancedComponent implements OnInit {
   @Input({ required: true }) group: VariationOptionGroup;

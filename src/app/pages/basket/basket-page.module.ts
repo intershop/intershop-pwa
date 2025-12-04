@@ -9,10 +9,12 @@ import { ShoppingBasketEmptyComponent } from './shopping-basket-empty/shopping-b
 import { ShoppingBasketPaymentComponent } from './shopping-basket-payment/shopping-basket-payment.component';
 import { ShoppingBasketComponent } from './shopping-basket/shopping-basket.component';
 
+import { LazyDirectOrderComponent } from 'src/app/extensions/quickorder/exports/lazy-direct-order/lazy-direct-order.component';
+
 const basketPageRoutes: Routes = [{ path: '', component: BasketPageComponent }];
 
 @NgModule({
-  imports: [RouterModule.forChild(basketPageRoutes), SharedModule],
+  imports: [RouterModule.forChild(basketPageRoutes), SharedModule, LazyDirectOrderComponent],
   declarations: [
     BasketOrderRecurrenceEditComponent,
     BasketPageComponent,

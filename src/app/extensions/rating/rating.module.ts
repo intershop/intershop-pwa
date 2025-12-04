@@ -20,14 +20,13 @@ const ratingFormlyConfig: ConfigOption = {
 };
 
 @NgModule({
-  imports: [FormlyModule.forChild(ratingFormlyConfig), SharedModule],
-  declarations: [
+  imports: [
+    FormlyModule.forChild(ratingFormlyConfig),
+    SharedModule,
     ProductRatingComponent,
     ProductRatingStarComponent,
-    ProductReviewCreateDialogComponent,
-    ProductReviewsComponent,
-    RatingStarsFieldComponent,
   ],
+  declarations: [ProductReviewCreateDialogComponent, ProductReviewsComponent, RatingStarsFieldComponent],
   exports: [ProductRatingComponent, ProductReviewsComponent, SharedModule],
 })
 export class RatingModule {}

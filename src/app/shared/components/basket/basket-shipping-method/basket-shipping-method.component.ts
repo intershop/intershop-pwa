@@ -3,11 +3,16 @@ import { Requisition } from 'projects/requisition-management/src/app/models/requ
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Order } from 'ish-core/models/order/order.model';
+import { NgIf } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { DatePipe } from 'ish-core/pipes/date.pipe';
 
 @Component({
   selector: 'ish-basket-shipping-method',
   templateUrl: './basket-shipping-method.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, TranslateModule, DatePipe],
 })
 export class BasketShippingMethodComponent implements OnChanges {
   @Input({ required: true }) data: Basket | Order | Requisition;
