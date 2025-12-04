@@ -116,6 +116,16 @@ hybrid:
   pwaExternalPort: 443 # external port used to access the PWA
 ```
 
+To prevent issues with switching between the different ICM applications for PWA and Responsive Starter Store, it is recommended to explicitly set the `multiChannel` > `channel` and `application` configuration in the PWA NGINX container.
+
+```yaml
+cache:
+  multiChannel: |
+    .+:
+        channel: inSPIRED-inTRONICS_Business-Site
+        application: rest
+```
+
 > [!WARNING]
 >
 > **Only for development environments**
@@ -157,6 +167,11 @@ Each entry contains:
 The properties `icm` and `pwaBuild` can use [named capture groups](<https://2ality.com/2017/05/regexp-named-capture-groups.html#replace()-and-named-capture-groups>).
 They are only used in the _node.js_ process running on the server.
 However, `pwa` and `icmBuild` are used in the client application where [named capture groups are not yet supported by all browsers](https://github.com/tc39/proposal-regexp-named-groups#implementations).
+
+> [!NOTE]
+>
+> The `handledBy` configuration for _Login_ and _My Account_ should be set to the same value to avoid context switches between PWA and ICM during the login process.
+> The login process contains redirects the My Account that will lead to problems or unexpected results if the contexts are switched.
 
 ## PWA Adaptions
 
