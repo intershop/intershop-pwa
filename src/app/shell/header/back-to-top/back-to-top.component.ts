@@ -1,9 +1,20 @@
 import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { FeatureTogglePipe } from '../../../core/pipes/feature-toggle.pipe';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'ish-back-to-top',
-  templateUrl: './back-to-top.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'ish-back-to-top',
+    templateUrl: './back-to-top.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        NgClass,
+        FontAwesomeModule,
+        FeatureTogglePipe,
+        TranslateModule,
+    ],
 })
 export class BackToTopComponent {
   /**

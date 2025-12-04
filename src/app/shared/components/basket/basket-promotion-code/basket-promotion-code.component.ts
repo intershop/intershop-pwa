@@ -8,13 +8,19 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { IconModule } from 'ish-core/icon.module';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { SuccessMessageComponent } from 'ish-shared/components/common/success-message/success-message.component';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 /**
  * The Basket Promotion Component displays a promotion code input.
@@ -27,6 +33,17 @@ import { whenTruthy } from 'ish-core/utils/operators';
   selector: 'ish-basket-promotion-code',
   templateUrl: './basket-promotion-code.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    IconModule,
+    ErrorMessageComponent,
+    TranslateModule,
+    AsyncPipe,
+    SuccessMessageComponent,
+    NgbCollapseModule,
+    ReactiveFormsModule,
+    NgIf,
+  ],
 })
 export class BasketPromotionCodeComponent implements OnInit {
   @Input() toast = true;

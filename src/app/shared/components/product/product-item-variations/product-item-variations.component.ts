@@ -5,11 +5,17 @@ import { map, startWith } from 'rxjs/operators';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductHelper } from 'ish-core/models/product/product.helper';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { ProductVariationDisplayComponent } from '../product-variation-display/product-variation-display.component';
+import { ProductVariationSelectComponent } from '../product-variation-select/product-variation-select.component';
 
 @Component({
   selector: 'ish-product-item-variations',
   templateUrl: './product-item-variations.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, AsyncPipe, TranslateModule, ProductVariationDisplayComponent, ProductVariationSelectComponent],
 })
 export class ProductItemVariationsComponent implements OnInit {
   visible$: Observable<boolean>;

@@ -1,4 +1,4 @@
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -15,11 +15,14 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
+
+import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
 
 // spell-checker: disable
 // allows access to Payone js functionality
@@ -30,6 +33,8 @@ declare let Payone: any;
   selector: 'ish-payment-payone-creditcard',
   templateUrl: './payment-payone-creditcard.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [TranslateModule, ReactiveFormsModule, NgIf, PaymentSaveCheckboxComponent],
 })
 export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, OnInit {
   payoneCreditCardForm = new FormGroup({});

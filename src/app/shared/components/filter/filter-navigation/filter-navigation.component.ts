@@ -5,11 +5,23 @@ import { Observable } from 'rxjs';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { URLFormParams, formParamsToString } from 'ish-core/utils/url-form-params';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { FilterNavigationSidebarComponent } from '../filter-navigation-sidebar/filter-navigation-sidebar.component';
+import { FilterNavigationHorizontalComponent } from '../filter-navigation-horizontal/filter-navigation-horizontal.component';
+import { FilterNavigationBadgesComponent } from '../filter-navigation-badges/filter-navigation-badges.component';
 
 @Component({
   selector: 'ish-filter-navigation',
   templateUrl: './filter-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    NgIf,
+    AsyncPipe,
+    FilterNavigationSidebarComponent,
+    FilterNavigationHorizontalComponent,
+    FilterNavigationBadgesComponent,
+  ],
 })
 export class FilterNavigationComponent implements OnInit {
   @Input() fragmentOnRouting: string;

@@ -3,7 +3,9 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { IconModule } from 'ish-core/icon.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 /**
  * The Product Add To Quote Component displays a button which adds a product to a Quote Request.
@@ -13,8 +15,9 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
   selector: 'ish-product-add-to-quote',
   templateUrl: './product-add-to-quote.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, AsyncPipe, NgClass, IconModule, TranslateModule],
 })
-@GenerateLazyComponent()
 export class ProductAddToQuoteComponent implements OnInit {
   @Input() displayType: 'icon' | 'link' = 'link';
   @Input() cssClass: string;

@@ -1,6 +1,9 @@
+import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { ContentDesignViewWrapperComponent } from '../content-design-view-wrapper/content-design-view-wrapper.component';
+import { ContentPageletComponent } from '../content-pagelet/content-pagelet.component';
 
 /**
  * The Content Slot Component renders the assigned sub pagelets
@@ -23,6 +26,8 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-view.mo
   selector: 'ish-content-slot',
   templateUrl: './content-slot.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, NgFor, ContentDesignViewWrapperComponent, ContentPageletComponent],
 })
 export class ContentSlotComponent {
   /**

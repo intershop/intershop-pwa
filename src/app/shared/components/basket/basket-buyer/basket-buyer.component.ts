@@ -8,11 +8,17 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { NgIf } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { IconModule } from 'ish-core/icon.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'ish-basket-buyer',
   templateUrl: './basket-buyer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, RouterLink, IconModule, TranslateModule],
 })
 export class BasketBuyerComponent implements OnInit {
   @Input({ required: true }) object: Basket | Order;

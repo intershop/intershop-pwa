@@ -9,6 +9,11 @@ import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
+import { TranslateModule } from '@ngx-translate/core';
+import { BasketValidationItemsComponent } from '../basket-validation-items/basket-validation-items.component';
+import { BasketValidationProductsComponent } from '../basket-validation-products/basket-validation-products.component';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { ScrollDirective } from 'ish-core/directives/scroll.directive';
 
 /**
  * Displays the basket validation result messages. In case of basket adjustments removed or undeliverable items are
@@ -20,6 +25,16 @@ import { PriceItem } from 'ish-core/models/price-item/price-item.model';
   selector: 'ish-basket-validation-results',
   templateUrl: './basket-validation-results.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [
+    NgIf,
+    TranslateModule,
+    BasketValidationItemsComponent,
+    BasketValidationProductsComponent,
+    NgFor,
+    AsyncPipe,
+    ScrollDirective,
+  ],
 })
 export class BasketValidationResultsComponent implements OnInit {
   private validationResults$: Observable<BasketValidationResultType>;

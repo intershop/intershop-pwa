@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Observable, map, shareReplay, startWith } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 import { SupplierStock } from 'ish-core/models/product-inventory/product-inventory.model';
 
 enum StockLevel {
@@ -15,6 +17,8 @@ enum StockLevel {
   templateUrl: './product-inventory.component.html',
   styleUrls: ['./product-inventory.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, AsyncPipe, TranslateModule],
 })
 export class ProductInventoryComponent implements OnInit {
   @Input() displayType: 'default' | 'extended' = 'default';

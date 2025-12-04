@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   DestroyRef,
+  EnvironmentInjector,
   Injector,
   Input,
   OnChanges,
@@ -21,6 +22,7 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-view.mo
 import { whenTruthy } from 'ish-core/utils/operators';
 import { CMSComponentProvider, CMS_COMPONENT } from 'ish-shared/cms/configurations/injection-keys';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
+import { ContentDesignViewWrapperComponent } from '../content-design-view-wrapper/content-design-view-wrapper.component';
 
 /**
  * The Content Pagelet Component renders the pagelet for the given 'pageletId'.
@@ -34,6 +36,8 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   selector: 'ish-content-pagelet',
   templateUrl: './content-pagelet.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ContentDesignViewWrapperComponent],
 })
 export class ContentPageletComponent implements OnChanges, OnInit {
   /**
@@ -45,6 +49,7 @@ export class ContentPageletComponent implements OnChanges, OnInit {
 
   private pageletId$ = new ReplaySubject<string>(1);
   private destroyRef = inject(DestroyRef);
+  private environmentInjector = inject(EnvironmentInjector);
 
   constructor(
     private injector: Injector,
@@ -82,7 +87,9 @@ export class ContentPageletComponent implements OnChanges, OnInit {
 
   private createComponent(mappedComponent: CMSComponentProvider) {
     this.cmsOutlet.clear();
-    return this.cmsOutlet.createComponent(mappedComponent.class);
+    return this.cmsOutlet.createComponent(mappedComponent.class, {
+      environmentInjector: this.environmentInjector,
+    });
   }
 
   private initializeComponent(instance: CMSComponent, pagelet: ContentPageletView) {

@@ -9,6 +9,8 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-view.mo
 import { ApiService } from 'ish-core/services/api/api.service';
 import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.service';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
 
 /**
  * CMS component that displays a product list by fetching product SKUs from a REST endpoint.
@@ -25,6 +27,8 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   selector: 'ish-cms-product-list-rest',
   templateUrl: './cms-product-list-rest.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, NgClass, ProductsListComponent, AsyncPipe],
 })
 export class CMSProductListRestComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;
@@ -38,6 +42,7 @@ export class CMSProductListRestComponent implements CMSComponent, OnChanges {
   ) {}
 
   ngOnChanges() {
+    console.log(this.pagelet.configurationParameters);
     if (this.pagelet.hasParam('ProductsRestEndpoint')) {
       this.productSKUs$ = this.getProductSKUs$();
     }

@@ -9,7 +9,7 @@ import { VariationAttribute } from 'ish-core/models/product-variation/variation-
  *
  * Used on a variation attribute (of type VariationAttribute), this pipe will return the corresponding display (string) value, considering the current locale for number attribute values.
  */
-@Pipe({ name: 'ishVariationAttribute', pure: false })
+@Pipe({ name: 'ishVariationAttribute', pure: false, standalone: true })
 export class VariationAttributePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 

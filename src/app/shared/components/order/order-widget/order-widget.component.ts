@@ -3,6 +3,10 @@ import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Order } from 'ish-core/models/order/order.model';
+import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
+import { OrderListComponent } from '../order-list/order-list.component';
+import { AsyncPipe } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 /**
  * The Order Widget Component - displays an overview of the latest orders as list.
@@ -14,6 +18,8 @@ import { Order } from 'ish-core/models/order/order.model';
   selector: 'ish-order-widget',
   templateUrl: './order-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [InfoBoxComponent, OrderListComponent, AsyncPipe, TranslateModule],
 })
 export class OrderWidgetComponent implements OnInit {
   orders$: Observable<Order[]>;

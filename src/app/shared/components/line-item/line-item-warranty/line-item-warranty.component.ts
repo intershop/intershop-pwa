@@ -6,6 +6,9 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { OrderLineItem } from 'ish-core/models/order/order.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ProductWarrantyComponent } from 'ish-shared/components/product/product-warranty/product-warranty.component';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { AsyncPipe, NgIf } from '@angular/common';
 
 /**
  * The Line Item Warranty Component displays the selected warranty. If the parameter editable is true a select box is shown and the user can selects a warranty. Otherwise only the warranty name is displayed.
@@ -17,6 +20,8 @@ import { whenTruthy } from 'ish-core/utils/operators';
   selector: 'ish-line-item-warranty',
   templateUrl: './line-item-warranty.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ProductWarrantyComponent, PricePipe, NgIf, AsyncPipe],
 })
 export class LineItemWarrantyComponent implements OnInit {
   @Input({ required: true }) pli: Partial<LineItemView & OrderLineItem>;

@@ -5,12 +5,17 @@ import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageletEntryPointView, ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { DesignViewService } from 'ish-core/utils/design-view/design-view.service';
 import { PreviewService } from 'ish-core/utils/preview/preview.service';
+import { AsyncPipe, NgClass, NgIf, NgSwitch, NgTemplateOutlet, NgSwitchCase } from '@angular/common';
+import { IconModule } from 'ish-core/icon.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'ish-content-design-view-wrapper',
   templateUrl: './content-design-view-wrapper.component.html',
   styleUrls: ['./content-design-view-wrapper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgClass, NgSwitch, IconModule, NgIf, TranslateModule, AsyncPipe, NgTemplateOutlet, NgSwitchCase],
 })
 export class ContentDesignViewWrapperComponent implements OnInit {
   // pagelet parameter

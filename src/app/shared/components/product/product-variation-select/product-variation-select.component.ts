@@ -7,11 +7,27 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
 import { ProductHelper } from 'ish-core/models/product/product.helper';
+import { AsyncPipe, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { ProductVariationSelectSwatchComponent } from '../product-variation-select-swatch/product-variation-select-swatch.component';
+import { ProductVariationSelectEnhancedComponent } from '../product-variation-select-enhanced/product-variation-select-enhanced.component';
+import { ProductVariationSelectDefaultComponent } from '../product-variation-select-default/product-variation-select-default.component';
 
 @Component({
   selector: 'ish-product-variation-select',
   templateUrl: './product-variation-select.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    NgIf,
+    AsyncPipe,
+    NgFor,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    ProductVariationSelectSwatchComponent,
+    ProductVariationSelectEnhancedComponent,
+    ProductVariationSelectDefaultComponent,
+  ],
 })
 export class ProductVariationSelectComponent implements OnInit {
   uuid = uuid();

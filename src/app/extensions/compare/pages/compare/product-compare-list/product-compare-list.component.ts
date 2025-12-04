@@ -8,6 +8,19 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 
 import { CompareFacade } from '../../../facades/compare.facade';
+import { TranslateModule } from '@ngx-translate/core';
+import { RatingExportsModule } from '../../../../rating/exports/rating-exports.module';
+import { FeatureToggleModule } from '../../../../../core/feature-toggle.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ProductImageComponent } from '../../../../../shared/components/product/product-image/product-image.component';
+import { ProductComparePagingComponent as ProductComparePagingComponent_1 } from '../product-compare-paging/product-compare-paging.component';
+import { NgIf, NgFor, AsyncPipe, SlicePipe } from '@angular/common';
+import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
+import { ProductAttributesComponent } from 'ish-shared/components/product/product-attributes/product-attributes.component';
+import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
 
 /**
  * The Product Compare List Component
@@ -21,6 +34,25 @@ import { CompareFacade } from '../../../facades/compare.facade';
   selector: 'ish-product-compare-list',
   templateUrl: './product-compare-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    NgIf,
+    ProductComparePagingComponent_1,
+    NgFor,
+    ProductImageComponent,
+    FontAwesomeModule,
+    FeatureToggleModule,
+    RatingExportsModule,
+    AsyncPipe,
+    SlicePipe,
+    TranslateModule,
+    ProductNameComponent,
+    ProductAttributesComponent,
+    ProductPriceComponent,
+    ProductContextDirective,
+    ServerHtmlDirective,
+    AttributeToStringPipe,
+  ],
 })
 export class ProductCompareListComponent implements OnInit {
   /**

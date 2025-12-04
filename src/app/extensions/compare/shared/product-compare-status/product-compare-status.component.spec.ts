@@ -8,6 +8,7 @@ import { instance, mock, when } from 'ts-mockito';
 import { CompareFacade } from '../../facades/compare.facade';
 
 import { ProductCompareStatusComponent } from './product-compare-status.component';
+import { IconModule } from 'ish-core/icon.module';
 
 describe('Product Compare Status Component', () => {
   let component: ProductCompareStatusComponent;

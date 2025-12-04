@@ -6,7 +6,7 @@ import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 const routes: Routes = [
   {
     path: 'quick-order',
-    loadChildren: () => import('./quickorder/quickorder-page.module').then(m => m.QuickorderPageModule),
+    loadComponent: () => import('./quickorder/quickorder-page.component').then(m => m.QuickorderPageComponent),
     canActivate: [featureToggleGuard],
     data: {
       feature: 'quickorder',

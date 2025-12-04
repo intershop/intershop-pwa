@@ -1,4 +1,4 @@
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -14,6 +14,8 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
+import { IconModule } from 'ish-core/icon.module';
 import { Subject, race, take } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
@@ -61,6 +63,8 @@ export interface ModalOptions extends NgbModalOptions {
   selector: 'ish-modal-dialog',
   templateUrl: './modal-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, TranslateModule, IconModule],
 })
 export class ModalDialogComponent<T> implements OnDestroy {
   @Input({ required: true }) options: ModalOptions;

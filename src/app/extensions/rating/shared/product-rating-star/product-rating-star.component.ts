@@ -1,4 +1,6 @@
+import { NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { IconModule } from 'ish-core/icon.module';
 
 export type RatingFilledType = 'full' | 'half' | 'empty';
 /**
@@ -12,6 +14,8 @@ export type RatingFilledType = 'full' | 'half' | 'empty';
   templateUrl: './product-rating-star.component.html',
   styleUrls: ['./product-rating-star.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [IconModule, NgIf, NgClass],
 })
 export class ProductRatingStarComponent {
   /**

@@ -9,11 +9,47 @@ import { BasketView } from 'ish-core/models/basket/basket.model';
 import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { BasketErrorMessageComponent } from 'ish-shared/components/basket/basket-error-message/basket-error-message.component';
+import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
+import { CheckoutShippingComponent } from './checkout-shipping/checkout-shipping.component';
+import { BasketDesiredDeliveryDateComponent } from 'ish-shared/components/basket/basket-desired-delivery-date/basket-desired-delivery-date.component';
+import { BasketOrderReferenceComponent } from 'ish-shared/components/basket/basket-order-reference/basket-order-reference.component';
+import { BasketMerchantMessageComponent } from 'ish-shared/components/basket/basket-merchant-message/basket-merchant-message.component';
+import { BasketAddressSummaryComponent } from 'ish-shared/components/basket/basket-address-summary/basket-address-summary.component';
+import { BasketRecurrenceSummaryComponent } from 'ish-shared/components/basket/basket-recurrence-summary/basket-recurrence-summary.component';
+import { BasketItemsSummaryComponent } from 'ish-shared/components/basket/basket-items-summary/basket-items-summary.component';
+import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 @Component({
   selector: 'ish-checkout-shipping-page',
   templateUrl: './checkout-shipping-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    NgIf,
+    TranslateModule,
+    AsyncPipe,
+    ServerSettingPipe,
+    ErrorMessageComponent,
+    BasketErrorMessageComponent,
+    BasketValidationResultsComponent,
+    CheckoutShippingComponent,
+    BasketDesiredDeliveryDateComponent,
+    BasketOrderReferenceComponent,
+    BasketMerchantMessageComponent,
+    BasketAddressSummaryComponent,
+    BasketRecurrenceSummaryComponent,
+    BasketItemsSummaryComponent,
+    BasketCostSummaryComponent,
+    ServerHtmlDirective,
+    LoadingComponent,
+  ],
 })
 export class CheckoutShippingPageComponent implements OnInit {
   loading$: Observable<boolean>;

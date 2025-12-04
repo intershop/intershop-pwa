@@ -7,7 +7,8 @@ import { NotFeatureToggleDirective } from './directives/not-feature-toggle.direc
 import { FeatureToggleService, FeatureToggleType, checkFeature } from './utils/feature-toggle/feature-toggle.service';
 
 @NgModule({
-  declarations: [FeatureToggleDirective, NotFeatureToggleDirective],
+  imports: [FeatureToggleDirective],
+  declarations: [NotFeatureToggleDirective],
   exports: [FeatureToggleDirective, NotFeatureToggleDirective],
 })
 export class FeatureToggleModule {

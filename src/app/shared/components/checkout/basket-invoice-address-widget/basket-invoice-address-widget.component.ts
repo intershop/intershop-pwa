@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 
@@ -12,6 +12,13 @@ import { Address } from 'ish-core/models/address/address.model';
 import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { FormsService } from 'ish-shared/forms/utils/forms.service';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { IconModule } from 'ish-core/icon.module';
+import { LazyAddressDoctorComponent } from 'src/app/extensions/address-doctor/exports/lazy-address-doctor/lazy-address-doctor.component';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
+import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 
 /**
  * Standalone widget component for selecting and setting the basket invoice address in the checkout.
@@ -20,6 +27,19 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
   selector: 'ish-basket-invoice-address-widget',
   templateUrl: './basket-invoice-address-widget.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    TranslateModule,
+    IconModule,
+    NgIf,
+    LazyAddressDoctorComponent,
+    FormlyModule,
+    NgbCollapseModule,
+    ReactiveFormsModule,
+    FormlyCustomerAddressFormComponent,
+    AddressComponent,
+  ],
 })
 export class BasketInvoiceAddressWidgetComponent implements OnInit {
   @Input({ required: true }) eligibleAddresses$: Observable<Address[]>;

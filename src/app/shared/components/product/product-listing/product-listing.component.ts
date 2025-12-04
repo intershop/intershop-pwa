@@ -7,7 +7,13 @@ import { map, take, withLatestFrom } from 'rxjs/operators';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductListingID, ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
-import { whenTruthy } from 'ish-core/utils/operators';
+import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
+import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
+import { ProductListComponent } from '../product-list/product-list.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { ProductListToolbarComponent } from '../product-list-toolbar/product-list-toolbar.component';
+import { ProductListPagingComponent } from '../product-list-paging/product-list-paging.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @Component({
   selector: 'ish-product-listing',
@@ -15,6 +21,18 @@ import { whenTruthy } from 'ish-core/utils/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
   // merged query parameters for product detail links are needed to apply previously selected filter options for variation masters too
   providers: [{ provide: 'PRODUCT_QUERY_PARAMS_HANDLING', useValue: 'merge' }],
+  standalone: true,
+  imports: [
+    ProductListComponent,
+    NgIf,
+    AsyncPipe,
+    NgTemplateOutlet,
+    LoadingComponent,
+    ProductListToolbarComponent,
+    ProductListPagingComponent,
+    ProductListComponent,
+    InfiniteScrollModule,
+  ],
 })
 export class ProductListingComponent implements OnInit {
   @Input() categoryId: string;

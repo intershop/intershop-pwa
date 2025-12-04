@@ -1,4 +1,6 @@
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 /**
  * Displays paging information for robots.
@@ -15,6 +17,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   selector: 'ish-product-list-paging',
   templateUrl: './product-list-paging.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, NgFor, RouterLink, NgClass],
 })
 export class ProductListPagingComponent {
   @Input({ required: true }) currentPage: number;

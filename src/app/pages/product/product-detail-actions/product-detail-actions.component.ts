@@ -1,14 +1,30 @@
-import { DOCUMENT } from '@angular/common';
+import { AsyncPipe, DOCUMENT, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextDisplayProperties, ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+
+import { LazyProductSendToCompareComponent } from '../../../extensions/compare/exports/lazy-product-send-to-compare/lazy-product-send-to-compare.component';
+import { WishlistsExportsModule } from '../../../extensions/wishlists/exports/wishlists-exports.module';
 
 @Component({
   selector: 'ish-product-detail-actions',
   templateUrl: './product-detail-actions.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    NgIf,
+    FeatureToggleModule,
+    WishlistsExportsModule,
+    LazyProductSendToCompareComponent,
+    FontAwesomeModule,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class ProductDetailActionsComponent implements OnInit {
   // TODO: to be removed once channelName information available in system

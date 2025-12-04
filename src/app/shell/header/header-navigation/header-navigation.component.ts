@@ -6,11 +6,30 @@ import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configuration
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
 import { InjectSingle } from 'ish-core/utils/injection';
+import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { IconModule } from 'ish-core/icon.module';
+import { SubCategoryNavigationComponent } from '../sub-category-navigation/sub-category-navigation.component';
+import { LazyContentIncludeComponent } from 'ish-shell/shared/lazy-content-include/lazy-content-include.component';
 
 @Component({
   selector: 'ish-header-navigation',
   templateUrl: './header-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    NgClass,
+    NgFor,
+    NgIf,
+    AsyncPipe,
+    RouterLink,
+    NgStyle,
+    TranslateModule,
+    IconModule,
+    SubCategoryNavigationComponent,
+    LazyContentIncludeComponent,
+  ],
 })
 export class HeaderNavigationComponent implements OnInit {
   @Input() view: 'auto' | 'small' | 'full' = 'auto';

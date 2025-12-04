@@ -15,7 +15,7 @@ import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle
  *   <ish-product-add-to-compare> ...</ish-product-add-to-compare>
  * }
  */
-@Pipe({ name: 'ishFeature', pure: false })
+@Pipe({ name: 'ishFeature', pure: false, standalone: true })
 export class FeatureTogglePipe implements PipeTransform {
   private enabled: boolean;
   private destroyRef = inject(DestroyRef);

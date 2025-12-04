@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 
 /**
  * Displays basket info messages, e.g. if a basket operation has only partly been executed
@@ -15,6 +16,8 @@ import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
   selector: 'ish-basket-info',
   templateUrl: './basket-info.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [NgFor, NgIf, AsyncPipe],
 })
 export class BasketInfoComponent implements OnInit {
   infoMessages$: Observable<BasketInfo[]>;

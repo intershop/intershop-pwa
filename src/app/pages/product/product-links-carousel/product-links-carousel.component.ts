@@ -1,17 +1,21 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, Inject, Input, OnDestroy, ViewChild } from '@angular/core';
 import { RxState } from '@rx-angular/state';
 import { Observable, combineLatest, of } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import Swiper from 'swiper';
+import { SwiperModule } from 'swiper/angular';
 import { A11y, Navigation, Pagination } from 'swiper/modules';
 import { SwiperOptions } from 'swiper/types';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 /**
  * The Product Link Carousel Component
@@ -27,6 +31,8 @@ import { whenTruthy } from 'ish-core/utils/operators';
   templateUrl: './product-links-carousel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [RxState],
+  standalone: true,
+  imports: [NgIf, SwiperModule, NgFor, AsyncPipe, ProductItemComponent, ProductContextDirective],
 })
 export class ProductLinksCarouselComponent implements OnDestroy {
   /**

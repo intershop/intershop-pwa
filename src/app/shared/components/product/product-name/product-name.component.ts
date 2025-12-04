@@ -1,13 +1,16 @@
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit, Optional } from '@angular/core';
-import { QueryParamsHandling } from '@angular/router';
+import { QueryParamsHandling, RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { AsyncPipe, NgIf } from '@angular/common';
 
 @Component({
   selector: 'ish-product-name',
   templateUrl: './product-name.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, AsyncPipe, RouterLink],
 })
 export class ProductNameComponent implements OnInit {
   @Input() link = true;

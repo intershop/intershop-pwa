@@ -11,7 +11,7 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, of } from 'rxjs';
 import { filter, map, take, withLatestFrom } from 'rxjs/operators';
@@ -20,6 +20,11 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { DirectivesModule } from 'ish-core/directives.module';
+import { PipesModule } from 'ish-core/pipes.module';
+import { SelectWishlistFormComponent } from '../select-wishlist-form/select-wishlist-form.component';
 
 /**
  * The wishlist select modal displays a list of wishlists. The user can select one wishlist or enter a name for a new wishlist in order to add or move an item to a the selected wishlist.
@@ -28,6 +33,16 @@ import { WishlistsFacade } from '../../facades/wishlists.facade';
   selector: 'ish-select-wishlist-modal',
   templateUrl: './select-wishlist-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    NgIf,
+    TranslateModule,
+    AsyncPipe,
+    ReactiveFormsModule,
+    PipesModule,
+    DirectivesModule,
+    SelectWishlistFormComponent,
+  ],
 })
 export class SelectWishlistModalComponent implements OnInit {
   /**

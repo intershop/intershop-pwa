@@ -52,12 +52,9 @@ export function matchProductRoute(segments: UrlSegment[]): UrlMatchResult {
     return { consumed: [] };
   }
 
-  // generate complete url path
   const url = `/${segments.map(s => s.path).join('/')}`;
 
-  // check that complete url path is a product route
   if (productRouteFormat.test(url)) {
-    // select product sku and categoryUniqueId to render a product detail page
     const match = productRouteFormat.exec(url);
     const posParams: Record<string, UrlSegment> = {};
     if (match[4]) {
@@ -67,7 +64,7 @@ export function matchProductRoute(segments: UrlSegment[]): UrlMatchResult {
       posParams.sku = new UrlSegment(match[2], {});
     }
     return {
-      consumed: [],
+      consumed: segments,
       posParams,
     };
   }

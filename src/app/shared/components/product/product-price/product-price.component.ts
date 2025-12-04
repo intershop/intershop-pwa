@@ -5,11 +5,16 @@ import { map } from 'rxjs/operators';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { Price, PriceHelper, Pricing } from 'ish-core/models/price/price.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
+import { AsyncPipe, DecimalPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 
 @Component({
   selector: 'ish-product-price',
   templateUrl: './product-price.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [NgIf, AsyncPipe, TranslateModule, NgClass, PricePipe, DecimalPipe, NgFor],
 })
 export class ProductPriceComponent implements OnInit {
   @Input() showInformationalPrice: boolean;

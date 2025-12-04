@@ -5,7 +5,8 @@ import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
+import { FeatureToggleModule, FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { IconModule } from 'ish-core/icon.module';
 
 import { CompareFacade } from '../../facades/compare.facade';
 
@@ -20,6 +21,7 @@ describe('Product Add To Compare Component', () => {
   beforeEach(async () => {
     const context = mock(ProductContextFacade);
     when(context.select('displayProperties', 'addToCompare')).thenReturn(of(true));
+    when(context.select('sku')).thenReturn(of('SKU'));
 
     compareFacade = mock(CompareFacade);
 

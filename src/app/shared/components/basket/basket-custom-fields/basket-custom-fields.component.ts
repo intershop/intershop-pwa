@@ -1,10 +1,16 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable, combineLatest, debounce, map } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { IconModule } from 'ish-core/icon.module';
 import { CustomFieldsComponentInput } from 'ish-core/models/custom-field/custom-field.model';
 import { whenFalsy } from 'ish-core/utils/operators';
+import { CustomFieldsFormlyComponent } from 'ish-shared/components/custom-fields/custom-fields-formly/custom-fields-formly.component';
+import { CustomFieldsViewComponent } from 'ish-shared/components/custom-fields/custom-fields-view/custom-fields-view.component';
 
 /**
  * The Basket Custom Fields Component displays the basket attribute values. If editable it shows a link to add/edit these attributes.
@@ -13,6 +19,17 @@ import { whenFalsy } from 'ish-core/utils/operators';
   selector: 'ish-basket-custom-fields',
   templateUrl: './basket-custom-fields.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    NgIf,
+    AsyncPipe,
+    TranslateModule,
+    CustomFieldsViewComponent,
+    IconModule,
+    NgbCollapse,
+    ReactiveFormsModule,
+    CustomFieldsFormlyComponent,
+  ],
 })
 export class BasketCustomFieldsComponent implements OnInit {
   customFields$: Observable<CustomFieldsComponentInput[]>;

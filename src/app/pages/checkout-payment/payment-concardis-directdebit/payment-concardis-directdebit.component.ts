@@ -1,12 +1,16 @@
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validators } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { pairwise, startWith } from 'rxjs/operators';
 
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
+import { FormlyModule } from 'ish-shared/formly/formly.module';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
+import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
 import { ConcardisErrorMessageType, PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- allows access to concardis js functionality */
@@ -27,6 +31,8 @@ declare let PayEngine: any;
   selector: 'ish-payment-concardis-directdebit',
   templateUrl: './payment-concardis-directdebit.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [FormlyModule, TranslateModule, PaymentSaveCheckboxComponent, NgIf],
 })
 export class PaymentConcardisDirectdebitComponent extends PaymentConcardisComponent implements OnInit {
   constructor(

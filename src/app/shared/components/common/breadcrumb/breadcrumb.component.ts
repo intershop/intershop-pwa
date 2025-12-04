@@ -3,6 +3,9 @@ import { Observable } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
+import { TranslateModule } from '@ngx-translate/core';
+import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 /**
  * component for setting the breadcrumb trail of a specific page
@@ -15,6 +18,8 @@ import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.
   selector: 'ish-breadcrumb',
   templateUrl: './breadcrumb.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, TranslateModule, AsyncPipe, NgClass, RouterLink, NgForOf],
 })
 export class BreadcrumbComponent implements OnInit {
   @Input() separator = '/';

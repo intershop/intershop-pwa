@@ -11,15 +11,21 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { ProductContextAccessDirective } from 'ish-core/directives/product-context-access.directive';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { PipesModule } from 'ish-core/pipes.module';
+import { DirectivesModule } from 'ish-core/directives.module';
+import { SelectOrderTemplateFormComponent } from '../select-order-template-form/select-order-template-form.component';
 
 /**
  * The order template select modal displays a list of order templates. The user can select one order template  or enter a name for a new order template  in order to add or move an item to the selected order template .
@@ -28,6 +34,18 @@ import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
   selector: 'ish-select-order-template-modal',
   templateUrl: './select-order-template-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    NgIf,
+    TranslateModule,
+    ProductContextAccessDirective,
+    ServerHtmlDirective,
+    AsyncPipe,
+    PipesModule,
+    ReactiveFormsModule,
+    DirectivesModule,
+    SelectOrderTemplateFormComponent,
+  ],
 })
 export class SelectOrderTemplateModalComponent implements OnInit {
   /**

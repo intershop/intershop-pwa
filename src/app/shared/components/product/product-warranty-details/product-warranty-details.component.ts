@@ -6,6 +6,12 @@ import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Warranty } from 'ish-core/models/warranty/warranty.model';
+import { NgIf, AsyncPipe, NgClass } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 
 /**
  * The Warranty Details Component displays a link to a modal dialog
@@ -18,6 +24,17 @@ import { Warranty } from 'ish-core/models/warranty/warranty.model';
   selector: 'ish-product-warranty-details',
   templateUrl: './product-warranty-details.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    NgIf,
+    AsyncPipe,
+    TranslateModule,
+    NgClass,
+    ModalDialogLinkComponent,
+    LoadingComponent,
+    ErrorMessageComponent,
+    ServerHtmlDirective,
+  ],
 })
 export class ProductWarrantyDetailsComponent {
   @Input({ required: true }) warranty: Warranty;

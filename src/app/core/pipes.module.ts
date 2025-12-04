@@ -14,24 +14,24 @@ import { CategoryRoutePipe } from './routing/category/category-route.pipe';
 import { ContentPageRoutePipe } from './routing/content-page/content-page-route.pipe';
 import { ProductRoutePipe } from './routing/product/product-route.pipe';
 
-const pipes = [
+const pipes = [HighlightPipe, HtmlEncodePipe, ProductRoutePipe, SanitizePipe];
+
+const standalonePipes = [
+  FrequencyPipe,
+  ServerSettingPipe,
   AttributeToStringPipe,
-  CategoryRoutePipe,
+  PricePipe,
+  VariationAttributePipe,
+  FeatureTogglePipe,
+  MakeHrefPipe,
   ContentPageRoutePipe,
   DatePipe,
-  FeatureTogglePipe,
-  FrequencyPipe,
-  HtmlEncodePipe,
-  MakeHrefPipe,
-  PricePipe,
-  ProductRoutePipe,
-  SanitizePipe,
-  ServerSettingPipe,
-  VariationAttributePipe,
+  CategoryRoutePipe,
 ];
 
 @NgModule({
+  imports: [...standalonePipes],
   declarations: [...pipes],
-  exports: [...pipes],
+  exports: [...pipes, ...standalonePipes],
 })
 export class PipesModule {}

@@ -1,14 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { FORMLY_CONFIG } from '@ngx-formly/core';
 
 import { noServerSideRenderingGuard } from 'ish-core/guards/no-server-side-rendering.guard';
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { CheckoutAddressPageModule } from '../checkout-address/checkout-address-page.module';
-import { CheckoutPaymentPageModule } from '../checkout-payment/checkout-payment-page.module';
-import { CheckoutReceiptPageModule } from '../checkout-receipt/checkout-receipt-page.module';
-import { CheckoutReviewPageModule } from '../checkout-review/checkout-review-page.module';
-import { CheckoutShippingPageModule } from '../checkout-shipping/checkout-shipping-page.module';
+import { CheckoutAddressAnonymousComponent } from '../checkout-address/checkout-address-anonymous/checkout-address-anonymous.component';
+import { CheckoutAddressPageComponent } from '../checkout-address/checkout-address-page.component';
+import { CheckoutPaymentPageComponent } from '../checkout-payment/checkout-payment-page.component';
+import { CheckoutReceiptPageComponent } from '../checkout-receipt/checkout-receipt-page.component';
+import { CheckoutReviewPageComponent } from '../checkout-review/checkout-review-page.component';
+import { checkoutReviewFormlyConfig } from '../checkout-review/checkout-review/checkout-review.component';
+import { CheckoutShippingPageComponent } from '../checkout-shipping/checkout-shipping-page.component';
 
 import { CheckoutPageComponent } from './checkout-page.component';
 import { checkoutPageGuard } from './checkout-page.guard';
@@ -30,7 +33,7 @@ const checkoutPageRoutes: Routes = [
             robots: 'noindex, nofollow',
           },
         },
-        component: CheckoutAddressPageModule.component,
+        component: CheckoutAddressPageComponent,
       },
       {
         path: 'shipping',
@@ -42,7 +45,7 @@ const checkoutPageRoutes: Routes = [
             robots: 'noindex, nofollow',
           },
         },
-        component: CheckoutShippingPageModule.component,
+        component: CheckoutShippingPageComponent,
       },
       {
         path: 'payment',
@@ -54,7 +57,7 @@ const checkoutPageRoutes: Routes = [
             robots: 'noindex, nofollow',
           },
         },
-        component: CheckoutPaymentPageModule.component,
+        component: CheckoutPaymentPageComponent,
       },
       {
         path: 'review',
@@ -66,7 +69,8 @@ const checkoutPageRoutes: Routes = [
             robots: 'noindex, nofollow',
           },
         },
-        component: CheckoutReviewPageModule.component,
+        component: CheckoutReviewPageComponent,
+        providers: [{ provide: FORMLY_CONFIG, useValue: checkoutReviewFormlyConfig, multi: true }],
       },
       {
         path: 'receipt',
@@ -77,7 +81,7 @@ const checkoutPageRoutes: Routes = [
             robots: 'noindex, nofollow',
           },
         },
-        component: CheckoutReceiptPageModule.component,
+        component: CheckoutReceiptPageComponent,
       },
       {
         path: '',
@@ -90,14 +94,13 @@ const checkoutPageRoutes: Routes = [
 
 @NgModule({
   imports: [
-    CheckoutAddressPageModule,
-    CheckoutPaymentPageModule,
-    CheckoutReceiptPageModule,
-    CheckoutReviewPageModule,
-    CheckoutShippingPageModule,
+    CheckoutAddressAnonymousComponent,
+    CheckoutPageComponent,
+    CheckoutProgressBarComponent,
     RouterModule.forChild(checkoutPageRoutes),
+    CheckoutReceiptPageComponent,
+    CheckoutReviewPageComponent,
     SharedModule,
   ],
-  declarations: [CheckoutPageComponent, CheckoutProgressBarComponent],
 })
 export class CheckoutPageModule {}

@@ -1,4 +1,6 @@
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { MessageFacade } from 'ish-core/facades/message.facade';
 
@@ -6,6 +8,8 @@ import { MessageFacade } from 'ish-core/facades/message.facade';
   selector: 'ish-success-message',
   templateUrl: './success-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, TranslateModule],
 })
 export class SuccessMessageComponent implements OnChanges {
   /**  key or message is accepted */

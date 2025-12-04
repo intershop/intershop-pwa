@@ -1,13 +1,20 @@
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { FormlyModule } from 'ish-shared/formly/formly.module';
+
+import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
 
 @Component({
   selector: 'ish-payment-parameter-form',
   templateUrl: './payment-parameter-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [FormlyModule, PaymentSaveCheckboxComponent, TranslateModule, NgIf],
 })
 export class PaymentParameterFormComponent implements OnInit, OnChanges {
   @Input({ required: true }) parentForm: FormGroup;

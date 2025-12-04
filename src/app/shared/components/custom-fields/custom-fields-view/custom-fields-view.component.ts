@@ -1,4 +1,6 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable, ReplaySubject, combineLatest, filter, map, switchMap } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -13,6 +15,8 @@ import { CustomFieldsComponentInput } from 'ish-core/models/custom-field/custom-
   templateUrl: './custom-fields-view.component.html',
   styleUrls: ['./custom-fields-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, NgFor, TranslateModule, AsyncPipe],
 })
 export class CustomFieldsViewComponent implements OnInit {
   @Input({ required: true })

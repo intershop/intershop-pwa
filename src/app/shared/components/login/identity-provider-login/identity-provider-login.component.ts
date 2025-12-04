@@ -16,6 +16,7 @@ import { LoginFormComponent } from 'ish-shared/components/login/login-form/login
   selector: 'ish-identity-provider-login',
   templateUrl: './identity-provider-login.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class IdentityProviderLoginComponent implements OnInit {
   @Input() labelClass: string;

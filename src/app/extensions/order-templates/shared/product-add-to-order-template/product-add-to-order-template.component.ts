@@ -10,6 +10,9 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { SelectOrderTemplateModalComponent } from '../select-order-template-modal/select-order-template-modal.component';
+import { IconModule } from 'ish-core/icon.module';
+import { AsyncPipe, NgClass, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 /**
  * The Product Add To Order Template Component adds a product to a order template.
@@ -21,6 +24,18 @@ import { SelectOrderTemplateModalComponent } from '../select-order-template-moda
   selector: 'ish-product-add-to-order-template',
   templateUrl: './product-add-to-order-template.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    SelectOrderTemplateModalComponent,
+    AsyncPipe,
+    NgIf,
+    TranslateModule,
+    IconModule,
+    NgClass,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+  ],
 })
 @GenerateLazyComponent()
 export class ProductAddToOrderTemplateComponent implements OnInit {

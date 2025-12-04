@@ -1,12 +1,19 @@
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 
+import { IconModule } from 'ish-core/icon.module';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
+import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
+import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form-feedback.directive';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
+import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
 import { ConcardisErrorMessageType, PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- allows access to concardis js functionality */
@@ -27,6 +34,19 @@ declare let PayEngine: any;
   selector: 'ish-payment-concardis-creditcard',
   templateUrl: './payment-concardis-creditcard.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [
+    NgIf,
+    NgClass,
+    NgFor,
+    TranslateModule,
+    FormControlFeedbackComponent,
+    NgbPopoverModule,
+    IconModule,
+    ReactiveFormsModule,
+    ShowFormFeedbackDirective,
+    PaymentSaveCheckboxComponent,
+  ],
 })
 export class PaymentConcardisCreditcardComponent extends PaymentConcardisComponent implements OnInit {
   constructor(

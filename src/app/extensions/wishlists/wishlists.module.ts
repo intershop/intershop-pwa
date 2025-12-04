@@ -12,11 +12,8 @@ import { WishlistWidgetComponent } from './shared/wishlist-widget/wishlist-widge
 import { WishlistsLinkComponent } from './shared/wishlists-link/wishlists-link.component';
 
 @NgModule({
-  imports: [SharedModule],
+  imports: [SharedModule, ProductAddToWishlistComponent, SelectWishlistModalComponent, SelectWishlistFormComponent],
   declarations: [
-    ProductAddToWishlistComponent,
-    SelectWishlistFormComponent,
-    SelectWishlistModalComponent,
     WishlistLineItemComponent,
     WishlistPreferencesDialogComponent,
     WishlistSharingDialogComponent,

@@ -2,12 +2,22 @@ import { ChangeDetectionStrategy, Component, OnInit, SkipSelf } from '@angular/c
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { TranslateModule } from '@ngx-translate/core';
+import { RouterLink } from '@angular/router';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'ish-product-master-link',
-  templateUrl: './product-master-link.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ProductContextFacade],
+    selector: 'ish-product-master-link',
+    templateUrl: './product-master-link.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [ProductContextFacade],
+    standalone: true,
+    imports: [
+        NgIf,
+        RouterLink,
+        AsyncPipe,
+        TranslateModule,
+    ],
 })
 export class ProductMasterLinkComponent implements OnInit {
   masterProductURL$: Observable<string>;

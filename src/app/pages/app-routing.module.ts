@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'loading', loadChildren: () => import('./loading/loading-page.module').then(m => m.LoadingPageModule) },
   {
     path: 'home',
-    loadChildren: () => import('./home/home-page.module').then(m => m.HomePageModule),
+    loadComponent: () => import('./home/home-page.component').then(c => c.HomePageComponent),
     data: {
       meta: {
         title: 'seo.title.home',
