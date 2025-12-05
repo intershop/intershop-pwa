@@ -4,19 +4,20 @@
     <button type="button" class="btn-close" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
   </div>
 
+  <!-- $any is used here to suppress strict template type checking errors related to the keyvalue pipe -->
   <div class="modal-body">
     <div *ngFor="let option of cookieConsentOptions?.options | keyvalue : unsorted" class="cookie-option">
       <label class="mb-2">
         <input
           type="checkbox"
           class="form-check-input mt-0"
-          [checked]="option.value.required || cookieConsentSettings?.enabledOptions.includes(option.key)"
-          [disabled]="option.value.required"
-          (change)="selectedIds[option.key] = !selectedIds[option.key]"
+          [checked]="$any(option.value).required || cookieConsentSettings?.enabledOptions.includes(option.key)"
+          [disabled]="$any(option.value).required"
+          (change)="selectedIds[$any(option.key)] = !selectedIds[$any(option.key)]"
         />
-        <span>{{ option.value.name | translate }}</span>
+        <span>{{ $any(option.value).name | translate }}</span>
       </label>
-      <p>{{ option.value.description | translate }}</p>
+      <p>{{ $any(option.value).description | translate }}</p>
     </div>
   </div>
 
