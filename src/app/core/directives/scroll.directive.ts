@@ -72,13 +72,27 @@ export class ScrollDirective implements OnChanges {
       return;
     }
 
-    // calculate the offset from target to scrollContainer
-    let offset = target.offsetTop;
-    let tempTarget = target.offsetParent as HTMLElement;
-    while (!tempTarget.isSameNode(container) && !tempTarget.isSameNode(this.document.body)) {
-      offset += tempTarget.offsetTop;
-      tempTarget = tempTarget.offsetParent as HTMLElement;
+    let offset: number;
+
+    // for parent container, use simple offsetTop
+    if (this.scrollContainer === 'parent') {
+      // calculate the offset from target to scrollContainer
+      const targetRect = target.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+      offset = targetRect.top - containerRect.top + container.scrollTop;
+    } else {
+      // for other containers, traverse the offsetParent chain
+      offset = target.offsetTop;
+      let tempTarget = target.offsetParent as HTMLElement;
+
+      // traverse up the DOM tree until we reach the container
+      while (tempTarget && !tempTarget.isSameNode(container) && !tempTarget.isSameNode(this.document.body)) {
+        offset += tempTarget.offsetTop;
+        tempTarget = tempTarget.offsetParent as HTMLElement;
+      }
     }
+
+    // apply spacing
     offset -= this.scrollSpacing;
     if (offset < 0) {
       offset = 0;
