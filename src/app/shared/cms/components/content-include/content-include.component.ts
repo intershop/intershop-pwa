@@ -1,12 +1,12 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
-import { Observable, ReplaySubject, tap } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageletEntryPointView } from 'ish-core/models/content-view/content-view.model';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { ContentDesignViewWrapperComponent } from '../content-design-view-wrapper/content-design-view-wrapper.component';
-import { ContentPageletComponent } from '../content-pagelet/content-pagelet.component';
+import { ContentDesignViewWrapperComponent } from 'ish-shared/cms/components/content-design-view-wrapper/content-design-view-wrapper.component';
+import { ContentPageletComponent } from 'ish-shared/cms/components/content-pagelet/content-pagelet.component';
 
 /**
  * The Content Include Component renders the content of the include with the given 'includeId'.

@@ -17,7 +17,14 @@ import { StoreLocatorExportsModule } from '../../../extensions/store-locator/exp
   templateUrl: './footer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CMSModule, RoleToggleModule, ServerHtmlDirective, ShellLazyComponentsModule, StoreLocatorExportsModule, TranslateModule],
+  imports: [
+    CMSModule,
+    RoleToggleModule,
+    ServerHtmlDirective,
+    ShellLazyComponentsModule,
+    StoreLocatorExportsModule,
+    TranslateModule,
+  ],
 })
 export class FooterComponent implements OnInit {
   appVersion: string;

@@ -9,7 +9,6 @@ import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
 import { FormlyAddressExtensionFormComponent } from './components/formly-address-extension-form/formly-address-extension-form.component';
 import { FormlyAddressFormComponent } from './components/formly-address-form/formly-address-form.component';
-import { FormlyCustomerAddressFormComponent } from './components/formly-customer-address-form/formly-customer-address-form.component';
 import {
   ADDRESS_FORM_CONFIGURATION,
   AddressFormConfigurationProvider,

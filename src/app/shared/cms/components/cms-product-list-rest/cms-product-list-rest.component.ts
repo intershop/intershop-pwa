@@ -1,5 +1,6 @@
 /* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
 // eslint-disable-next-line ish-custom-rules/ban-imports-file-pattern
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -9,7 +10,6 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-view.mo
 import { ApiService } from 'ish-core/services/api/api.service';
 import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.service';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
 
 /**
@@ -42,7 +42,6 @@ export class CMSProductListRestComponent implements CMSComponent, OnChanges {
   ) {}
 
   ngOnChanges() {
-    console.log(this.pagelet.configurationParameters);
     if (this.pagelet.hasParam('ProductsRestEndpoint')) {
       this.productSKUs$ = this.getProductSKUs$();
     }
