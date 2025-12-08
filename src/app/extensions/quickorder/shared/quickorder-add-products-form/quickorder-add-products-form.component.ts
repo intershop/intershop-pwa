@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FORMLY_CONFIG, FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { FormlyConfig, FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -18,16 +18,7 @@ import { QuickorderRepeatFieldComponent } from '../formly/quickorder-repeat-fiel
   templateUrl: './quickorder-add-products-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslateModule, FormlyModule],
-  providers: [
-    {
-      provide: FORMLY_CONFIG,
-      multi: true,
-      useValue: {
-        types: [{ name: 'repeat', component: QuickorderRepeatFieldComponent }],
-      },
-    },
-  ],
+  imports: [NgIf, ReactiveFormsModule, TranslateModule, FormlyModule],
 })
 export class QuickorderAddProductsFormComponent implements OnInit {
   quickOrderForm: FormGroup = new FormGroup({});
@@ -37,10 +28,11 @@ export class QuickorderAddProductsFormComponent implements OnInit {
 
   private numberOfRows = 5;
 
-  constructor(
-    private translate: TranslateService,
-    private shoppingFacade: ShoppingFacade
-  ) {}
+  constructor(private translate: TranslateService, private shoppingFacade: ShoppingFacade, formlyConfig: FormlyConfig) {
+    if (!formlyConfig.getType('repeat')) {
+      formlyConfig.setType({ name: 'repeat', component: QuickorderRepeatFieldComponent });
+    }
+  }
 
   ngOnInit() {
     this.initModel();

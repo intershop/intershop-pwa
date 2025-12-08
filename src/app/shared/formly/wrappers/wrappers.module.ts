@@ -5,6 +5,7 @@ import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ComponentsModule } from 'ish-shared/formly/components/components.module';
+import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
 
 import { DescriptionWrapperComponent } from './description-wrapper/description-wrapper.component';
 import { HorizontalCheckboxWrapperComponent } from './horizontal-checkbox-wrapper/horizontal-checkbox-wrapper.component';
@@ -32,6 +33,7 @@ const wrapperComponents = [
     ComponentsModule,
     ReactiveFormsModule,
     TranslateModule,
+    ValidationMessageComponent,
     FormlyBaseModule.forChild({
       wrappers: [
         { name: 'form-field-horizontal', component: HorizontalWrapperComponent },

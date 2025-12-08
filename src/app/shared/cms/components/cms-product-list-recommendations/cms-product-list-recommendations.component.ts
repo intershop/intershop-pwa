@@ -1,6 +1,6 @@
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
@@ -29,8 +29,7 @@ export class CMSProductListRecommendationsComponent implements CMSComponent, OnC
       .pipe(
         map(recommendation =>
           recommendation?.productSKUs ? recommendation?.productSKUs.slice(0, maxNumberOfProducts) : []
-        ),
-        tap(skus => console.log('CMSProductListRecommendations SKUs:', skus))
+        )
       );
   }
 }

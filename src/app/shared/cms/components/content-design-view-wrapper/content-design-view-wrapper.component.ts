@@ -1,13 +1,14 @@
+import { AsyncPipe, NgClass, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable, combineLatest, map } from 'rxjs';
 
+import { ScrollDirective } from 'ish-core/directives/scroll.directive';
 import { CMSFacade } from 'ish-core/facades/cms.facade';
+import { IconModule } from 'ish-core/icon.module';
 import { ContentPageletEntryPointView, ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { DesignViewService } from 'ish-core/utils/design-view/design-view.service';
 import { PreviewService } from 'ish-core/utils/preview/preview.service';
-import { AsyncPipe, NgClass, NgIf, NgSwitch, NgTemplateOutlet, NgSwitchCase } from '@angular/common';
-import { IconModule } from 'ish-core/icon.module';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'ish-content-design-view-wrapper',
@@ -15,7 +16,17 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./content-design-view-wrapper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, NgSwitch, IconModule, NgIf, TranslateModule, AsyncPipe, NgTemplateOutlet, NgSwitchCase],
+  imports: [
+    NgClass,
+    NgSwitch,
+    IconModule,
+    NgIf,
+    TranslateModule,
+    AsyncPipe,
+    NgTemplateOutlet,
+    NgSwitchCase,
+    ScrollDirective,
+  ],
 })
 export class ContentDesignViewWrapperComponent implements OnInit {
   // pagelet parameter
