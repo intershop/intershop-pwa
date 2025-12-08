@@ -7,6 +7,47 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 9.1.0 to 10.0.0
+
+With Intershop PWA 10.0.0, the SCSS variables were cleaned up.
+Hard-coded color codes were removed and replaced with the appropriate variables.
+Color variables are used in the appropriate places, and the gray color scale was adjusted.
+In addition, some variable names were changed (renamed or removed) to make them more meaningful and to match the Bootstrap variable names.
+These renamed and removed variables need to be adapted in customized project theme styles if the theme styles still rely on the standard SCSS files.
+
+This table lists all variable name changes you need to adjust in your custom code:
+
+| Renamed variable          | New variable name        | Used for                        |
+| ------------------------- | ------------------------ | ------------------------------- |
+| $color-corporate          | $bg-color-corporate      | Corporate color for backgrounds |
+| $color-special-primary    | $color-special-error     | Error state color               |
+| $color-special-secondary  | $color-special-warning   | Warning state color             |
+| $color-special-tertiary   | $color-special-info      | Info state color                |
+| $color-special-quaternary | $color-special-success   | Success state color             |
+| $color-label-sale         | $color-special-sale      | "Sale" label color              |
+| $color-label-topseller    | $color-special-topseller | "Top Seller" label color        |
+| $color-label-new          | $color-special-new       | "New" product label color       |
+| $success-color            | $color-special-success   | Success state color             |
+| $error-color              | $color-special-error     | Error state color               |
+| $gray-400                 | $gray-500                | Part of new sorted gray color   |
+
+This table lists all variables that were removed and their replacements:
+
+| Removed variable          | Variable replacement |
+| ------------------------- | -------------------- |
+| $input-accent-color       | $CORPORATE-DARK      |
+| $button-primary-bg        | $CORPORATE-PRIMARY   |
+| $button-primary-border    | $CORPORATE-PRIMARY   |
+| $button-default-color     | $CORPORATE-PRIMARY   |
+| $button-default-bg        | $color-inverse       |
+| $button-default-border    | $CORPORATE-PRIMARY   |
+| $button-focus-box-shadow  | $CORPORATE-SHADOW    |
+| $datepicker-border-radius | -                    |
+| $datepicker-today-bg      | -                    |
+| $datepicker-today-hover   | -                    |
+| $datepicker-active-bg     | -                    |
+| $datepicker-active-hover  | -                    |
+
 ## From 9.0.0 to 9.1.0
 
 Catalogs (root-level categories in ICM terminology) with _Show In Menu_ being disabled are now hidden from the main header navigation.
