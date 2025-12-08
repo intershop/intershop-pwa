@@ -434,4 +434,26 @@ export class PaymentService {
         .pipe(map(() => paymentInstrument));
     }
   }
+
+  initializePayPal3DSecureFlow(): Observable<string> {
+    const loc = `${location.origin}${this.baseHref}`;
+
+    return this.store.pipe(select(getCurrentLocale)).pipe(
+      whenTruthy(),
+      take(1),
+      switchMap(currentLocale => {
+        const body = {
+          returnUrl: `${loc}/checkout/payment;lang=${currentLocale}?redirect=success`,
+          cancelUrl: `${loc}/checkout/payment;lang=${currentLocale}?redirect=cancel`,
+        };
+
+        return this.apiService
+          .currentBasketEndpoint()
+          .put<{ data: { orderId: string } }>('payments/open-tender/paypal-3ds', body, {
+            headers: this.basketHeaders,
+          })
+          .pipe(map(response => response.data.orderId));
+      })
+    );
+  }
 }

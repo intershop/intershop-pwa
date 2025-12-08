@@ -43,7 +43,7 @@ export class CheckoutPaymentPageComponent implements OnInit {
         pmList?.filter(
           pm =>
             !pm.capabilities ||
-            (!pm.capabilities.includes('FastCheckout') && !pm.capabilities.includes('PaypalCheckout')) ||
+            !pm.capabilities.includes('FastCheckout') ||
             (pm.capabilities &&
               pm.capabilities.includes('FastCheckout') &&
               basket?.payment?.capabilities?.includes('FastCheckout') &&

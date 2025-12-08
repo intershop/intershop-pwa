@@ -157,9 +157,12 @@ export class ScriptLoaderService {
 
   private isScriptAlreadyLoaded(url: string, namespace?: string): boolean {
     if (namespace) {
+      // When namespace is provided, check only for namespace presence in DOM
+      // This prevents re-loading scripts with dynamic URLs (like PayPal with changing locale/currency)
       const scripts = this.document.querySelectorAll(`script[data-namespace="${namespace}"]`);
-      return Array.from(scripts).some(script => (script as HTMLScriptElement).src === url);
+      return scripts.length > 0;
     }
+    // For scripts without namespace, check by URL
     const scripts = this.document.querySelectorAll('script[src]');
     return Array.from(scripts).some(script => (script as HTMLScriptElement).src === url);
   }

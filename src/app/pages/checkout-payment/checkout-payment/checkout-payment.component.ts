@@ -119,6 +119,17 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     this.parameterForm.reset();
   }
 
+  selectedPayPalMethod(): PaymentMethod {
+    if (
+      this.basket?.payment?.capabilities?.includes('PaypalCheckout') &&
+      this.basket?.payment?.capabilities?.includes('RedirectBeforeCheckout') &&
+      this.basket?.payment?.redirectRequired
+    ) {
+      return this.paymentMethods.find(pm => pm.id.includes(this.basket.payment.paymentInstrument.id));
+    }
+    return;
+  }
+
   /**
    * Determine whether payment parameter form for a payment method is opened or not
    *

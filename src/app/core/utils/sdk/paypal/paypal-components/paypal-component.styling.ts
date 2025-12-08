@@ -54,10 +54,43 @@ export const PAYPAL_BUTTON_STYLING = {
   },
   // PayPal checkout buttons on checkout (payment) page.
   checkout: {
-    layout: 'horizontal',
+    //layout: 'horizontal',
     shape: 'sharp',
     label: 'paypal',
     height: 40,
     tagline: false,
   },
+};
+
+// General Styling configuration for PayPal card fields.
+export const PAYPAL_CART_FIELDS_STYLING = {
+  input: {
+    'font-size': '0.875rem',
+    'font-family': 'robotoregular Helvetica Arial sans-serif',
+    'border-radius': '0',
+    padding: '0.375rem 0.75rem',
+    color: 'blue',
+  },
+  '.invalid': { color: 'purple' },
+};
+
+// Styling configuration for PayPal card holder card fields.
+export const PAYPAL_CART_FIELDS_CARD_HOLDER_STYLING = {
+  input: {
+    'font-size': '0.875rem',
+    'font-family': 'robotoregular Helvetica Arial sans-serif',
+    'border-radius': '0',
+    color: '#ccc',
+  },
+  '.invalid': { color: 'purple' },
+};
+
+// Styling configuration for PayPal card number card fields.
+export const PAYPAL_CART_FIELDS_CARD_NUMBER_STYLING = {
+  input: {
+    'font-size': '0.875rem',
+    'font-family': 'robotoregular Helvetica Arial sans-serif',
+    color: '#ccc',
+  },
+  '.invalid': { color: 'purple' },
 };

@@ -179,7 +179,11 @@ export const BUTTONS = (
         map(basket => basket.payment.redirectUrl.split('token=')[1]),
         take(1)
       ),
-      timer(4000).pipe(map(() => ''))
+      timer(4000).pipe(
+        map(() => {
+          throw new Error('PayPal order ID not available');
+        })
+      )
     );
 
   return {
