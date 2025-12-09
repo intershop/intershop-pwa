@@ -1,11 +1,20 @@
 import {
-  ChangeDetectionStrategy, Component, createNgModule, OnInit, ViewChild, ViewContainerRef,
-  Injector,
+  ChangeDetectionStrategy,
+  Component,
   ComponentRef,
-  <% if (inputNames.length) { %>Input, OnChanges, <% } %>
-  <% if (guardDisplay) { %>inject, DestroyRef,<% } %>
-  <% if (onChanges === 'complex') { %>SimpleChange, SimpleChanges, <% } %>
-} from '@angular/core';
+  Injector,
+  OnInit,
+  ViewChild,
+  ViewContainerRef,
+<% if (!isStandalone) { %>  createNgModule,
+<% } %><% if (isStandalone) { %>  EnvironmentInjector,
+<% } %><% if (inputNames.length) { %>  Input,
+  OnChanges,
+<% } %><% if (guardDisplay) { %>  DestroyRef,
+  inject,
+<% } %><% if (onChanges === 'complex') { %>  SimpleChange,
+  SimpleChanges,
+<% } %>} from '@angular/core';
 
 <% if(guardDisplay) { %>
   import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -36,12 +45,13 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
   @Input() <%= name %>: OriginalComponent['<%= name %>'];
 <% } %>
 
-  private component: ComponentRef<OriginalComponent>;
-  <% if (guardDisplay) { %> private destroyRef = inject(DestroyRef);<% } %>
+  private component?: ComponentRef<OriginalComponent>;
+  <% if (guardDisplay) { %>private destroyRef = inject(DestroyRef);<% } %>
 
   constructor(
     <% if(guardDisplay) { %>private featureToggleService: FeatureToggleService,<% } %>
-    private injector: Injector
+    private injector: Injector<% if (isStandalone) { %>,
+    private environmentInjector: EnvironmentInjector<% } %>
   ) {}
 
   <% if(!guardDisplay) { %>async<% } %> ngOnInit() {
@@ -53,6 +63,8 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
 
     <% if(guardDisplay){ %>
         } else {
+          this.component?.destroy();
+          this.component = undefined;
           this.anchor.clear();
         }
       })
@@ -60,6 +72,11 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
   }
 
   private async renderComponent() {
+    this.component?.destroy();
+    this.component = undefined;
+    this.anchor.clear();
+
+<% if (!isStandalone) { %>
     const module = await import(`../..<% if(isShared) { %>/../shared<% } %>/<%= dasherize(declaringModule) %>.module`).then(m => m.<%= classify(declaringModule) %>Module);
 
     const { <%= classify(originalName) %>Component: originalComponent } = await import('<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component');
@@ -67,17 +84,22 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
     const ngModuleRef = createNgModule(module, this.injector);
 
     this.component = this.anchor.createComponent(originalComponent, { ngModuleRef });
+<% } else { %>
+    const { <%= classify(originalName) %>Component: originalComponent } = await import('<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component');
+
+    this.component = this.anchor.createComponent(originalComponent, {
+      injector: this.injector,
+      environmentInjector: this.environmentInjector,
+    });
+<% } %>
   <% if (inputNames.length) { %>
-    this.ngOnChanges(
-      <% if (onChanges === 'complex') { %>{
+      this.ngOnChanges(<% if (onChanges === 'complex') { %>{
         <% for (let name of inputNames) { %>
           <%= name %>: new SimpleChange(undefined, this.<%= name %>, true),
         <% } %>
-        }
-      <% } %>
-    );
+      }<% } %>);
   <% } %>
-    this.component.changeDetectorRef.markForCheck();
+    this.component?.changeDetectorRef.markForCheck();
   }
 
 <% if (inputNames.length) { %>

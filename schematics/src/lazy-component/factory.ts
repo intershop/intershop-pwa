@@ -70,6 +70,14 @@ export function createLazyComponent(options: Options): Rule {
     const componentContent = host.read(componentPath).toString('utf-8');
     const componentSource = ts.createSourceFile(componentPath, componentContent, ts.ScriptTarget.Latest, true);
 
+    const standalonePropertyAssignments = tsquery(
+      componentSource,
+      'CallExpression:has(Identifier[name=Component]) PropertyAssignment:has(Identifier[name=standalone])'
+    ) as ts.PropertyAssignment[];
+    const isStandalone =
+      standalonePropertyAssignments.length > 0 &&
+      standalonePropertyAssignments[0].initializer.kind === ts.SyntaxKind.TrueKeyword;
+
     const selectorPropertyAssignment = tsquery(
       componentSource,
       'CallExpression:has(Identifier[name=Component]) PropertyAssignment:has(Identifier[name=selector])'
@@ -175,6 +183,7 @@ export function createLazyComponent(options: Options): Rule {
             guardDisplay,
             componentImportPath,
             declaringModule,
+            isStandalone,
           }),
           move(options.path),
           forEach(fileEntry => {
