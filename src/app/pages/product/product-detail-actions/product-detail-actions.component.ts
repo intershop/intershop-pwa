@@ -3,12 +3,12 @@ import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/cor
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
+import { CompareExportsModule } from 'src/app/extensions/compare/exports/compare-exports.module';
 
 import { ProductContextDisplayProperties, ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
-import { LazyProductSendToCompareComponent } from '../../../extensions/compare/exports/lazy-product-send-to-compare/lazy-product-send-to-compare.component';
 import { WishlistsExportsModule } from '../../../extensions/wishlists/exports/wishlists-exports.module';
 
 @Component({
@@ -20,7 +20,7 @@ import { WishlistsExportsModule } from '../../../extensions/wishlists/exports/wi
     NgIf,
     FeatureToggleModule,
     WishlistsExportsModule,
-    LazyProductSendToCompareComponent,
+    CompareExportsModule,
     FontAwesomeModule,
     AsyncPipe,
     TranslateModule,

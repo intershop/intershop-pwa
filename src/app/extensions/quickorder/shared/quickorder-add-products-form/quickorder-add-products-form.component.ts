@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FORMLY_CONFIG, FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
+import { FORMLY_CONFIG, FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { SkuQuantityType } from 'ish-core/models/product/product.helper';
+import { FormlyModule } from 'ish-shared/formly/formly.module';
 
 import { QuickorderRepeatFieldComponent } from '../formly/quickorder-repeat-field/quickorder-repeat-field.component';
 
@@ -18,7 +18,7 @@ import { QuickorderRepeatFieldComponent } from '../formly/quickorder-repeat-fiel
   templateUrl: './quickorder-add-products-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslateModule, FormlyModule, ProductContextDirective],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule, FormlyModule],
   providers: [
     {
       provide: FORMLY_CONFIG,

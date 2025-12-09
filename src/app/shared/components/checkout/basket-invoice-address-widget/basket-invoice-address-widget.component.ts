@@ -1,24 +1,24 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
+import { AddressDoctorExportsModule } from 'src/app/extensions/address-doctor/exports/address-doctor-exports.module';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { IconModule } from 'ish-core/icon.module';
 import { Address } from 'ish-core/models/address/address.model';
 import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { FormsService } from 'ish-shared/forms/utils/forms.service';
-import { AsyncPipe, NgIf } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { IconModule } from 'ish-core/icon.module';
-import { LazyAddressDoctorComponent } from 'src/app/extensions/address-doctor/exports/lazy-address-doctor/lazy-address-doctor.component';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
+import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
+import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 /**
  * Standalone widget component for selecting and setting the basket invoice address in the checkout.
@@ -33,7 +33,7 @@ import { AddressComponent } from 'ish-shared/components/address/address/address.
     TranslateModule,
     IconModule,
     NgIf,
-    LazyAddressDoctorComponent,
+    AddressDoctorExportsModule,
     FormlyModule,
     NgbCollapseModule,
     ReactiveFormsModule,

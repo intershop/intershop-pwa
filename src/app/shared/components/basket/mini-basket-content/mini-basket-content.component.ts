@@ -1,18 +1,18 @@
+import { AsyncPipe, NgFor, NgIf, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
-import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
-import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { TranslateModule } from '@ngx-translate/core';
-import { AsyncPipe, NgFor, NgIf, SlicePipe } from '@angular/common';
-import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
-import { BasketErrorMessageComponent } from '../basket-error-message/basket-error-message.component';
-import { RouterLink } from '@angular/router';
+import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+import { BasketErrorMessageComponent } from 'ish-shared/components/basket/basket-error-message/basket-error-message.component';
+import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
+import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 
 @Component({
   selector: 'ish-mini-basket-content',

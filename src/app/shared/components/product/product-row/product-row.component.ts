@@ -2,12 +2,12 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { LazyProductAddToCompareComponent } from 'src/app/extensions/compare/exports/lazy-product-add-to-compare/lazy-product-add-to-compare.component';
-import { LazyProductAddToOrderTemplateComponent } from 'src/app/extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
+import { CompareExportsModule } from 'src/app/extensions/compare/exports/compare-exports.module';
+import { OrderTemplatesExportsModule } from 'src/app/extensions/order-templates/exports/order-templates-exports.module';
 import { ProductNotificationsExportsModule } from 'src/app/extensions/product-notifications/exports/product-notifications-exports.module';
-import { LazyProductAddToQuoteComponent } from 'src/app/extensions/quoting/exports/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
-import { LazyProductRatingComponent } from 'src/app/extensions/rating/exports/lazy-product-rating/lazy-product-rating.component';
-import { LazyProductAddToWishlistComponent } from 'src/app/extensions/wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
+import { QuotingExportsModule } from 'src/app/extensions/quoting/exports/quoting-exports.module';
+import { RatingExportsModule } from 'src/app/extensions/rating/exports/rating-exports.module';
+import { WishlistsExportsModule } from 'src/app/extensions/wishlists/exports/wishlists-exports.module';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ProductContextDisplayProperties, ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -46,12 +46,12 @@ import { ProductShipmentComponent } from 'ish-shared/components/product/product-
     ProductQuantityComponent,
     ProductAddToBasketComponent,
     ProductChooseVariationComponent,
-    LazyProductRatingComponent,
-    LazyProductAddToQuoteComponent,
-    LazyProductAddToOrderTemplateComponent,
+    RatingExportsModule,
+    QuotingExportsModule,
+    OrderTemplatesExportsModule,
     ProductNotificationsExportsModule,
-    LazyProductAddToCompareComponent,
-    LazyProductAddToWishlistComponent,
+    CompareExportsModule,
+    WishlistsExportsModule,
     ServerHtmlDirective,
   ],
 })

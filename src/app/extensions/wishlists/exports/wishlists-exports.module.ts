@@ -8,7 +8,7 @@ import { LazyWishlistWidgetComponent } from './lazy-wishlist-widget/lazy-wishlis
 import { LazyWishlistsLinkComponent } from './lazy-wishlists-link/lazy-wishlists-link.component';
 
 @NgModule({
-  imports: [FeatureToggleModule, LazyProductAddToWishlistComponent],
+  imports: [FeatureToggleModule],
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
@@ -19,7 +19,7 @@ import { LazyWishlistsLinkComponent } from './lazy-wishlists-link/lazy-wishlists
       multi: true,
     },
   ],
-  declarations: [LazyWishlistsLinkComponent, LazyWishlistWidgetComponent],
+  declarations: [LazyProductAddToWishlistComponent, LazyWishlistsLinkComponent, LazyWishlistWidgetComponent],
   exports: [LazyProductAddToWishlistComponent, LazyWishlistsLinkComponent, LazyWishlistWidgetComponent],
 })
 export class WishlistsExportsModule {}

@@ -5,8 +5,8 @@ import { LazyCheckoutReceiptRequisitionComponent } from './lazy-checkout-receipt
 import { LazyRequisitionWidgetComponent } from './lazy-requisition-widget/lazy-requisition-widget.component';
 
 @NgModule({
-  imports: [LazyApprovalWidgetComponent, LazyCheckoutReceiptRequisitionComponent],
-  declarations: [LazyRequisitionWidgetComponent],
+  imports: [],
+  declarations: [LazyApprovalWidgetComponent, LazyCheckoutReceiptRequisitionComponent, LazyRequisitionWidgetComponent],
   exports: [LazyApprovalWidgetComponent, LazyCheckoutReceiptRequisitionComponent, LazyRequisitionWidgetComponent],
 })
 export class RequisitionManagementExportsModule {}

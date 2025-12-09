@@ -13,8 +13,8 @@ import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
 
-import { LazyProductCompareStatusComponent } from '../extensions/compare/exports/lazy-product-compare-status/lazy-product-compare-status.component';
-import { LazyQuickorderLinkComponent } from '../extensions/quickorder/exports/lazy-quickorder-link/lazy-quickorder-link.component';
+import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
+import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { SeoExportsModule } from '../extensions/seo/exports/seo-exports.module';
 import { StoreLocatorExportsModule } from '../extensions/store-locator/exports/store-locator-exports.module';
 import { TrackingExportsModule } from '../extensions/tracking/exports/tracking-exports.module';
@@ -25,8 +25,6 @@ import { FooterComponent } from './footer/footer/footer.component';
 import { BackToTopComponent } from './header/back-to-top/back-to-top.component';
 import { HeaderCheckoutComponent } from './header/header-checkout/header-checkout.component';
 import { HeaderDefaultComponent } from './header/header-default/header-default.component';
-import { HeaderErrorComponent } from './header/header-error/header-error.component';
-import { HeaderNavigationComponent } from './header/header-navigation/header-navigation.component';
 import { HeaderSimpleComponent } from './header/header-simple/header-simple.component';
 import { HeaderComponent } from './header/header/header.component';
 import { LanguageSwitchComponent } from './header/language-switch/language-switch.component';
@@ -42,40 +40,37 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
 @NgModule({
   imports: [
     AuthorizationToggleModule,
+    BackToTopComponent,
     CommonModule,
+    CompareExportsModule,
     DirectivesModule,
     FeatureToggleModule,
     NgbCollapseModule,
     NgbDropdownModule,
-    LazyProductCompareStatusComponent,
     NgbPopoverModule,
     PipesModule,
+    CookiesBannerComponent,
+    QuickorderExportsModule,
     RoleToggleModule,
     RouterModule,
     SearchBoxComponent,
     SeoExportsModule,
     StoreLocatorExportsModule,
+    SubCategoryNavigationComponent,
     TrackingExportsModule,
+    ...exportedComponents,
     TranslateModule,
     WishlistsExportsModule,
-    LazyQuickorderLinkComponent,
-    HeaderNavigationComponent,
-    SubCategoryNavigationComponent,
-    LazyContentIncludeComponent,
-    HeaderErrorComponent,
-    ...exportedComponents,
-    BackToTopComponent,
-    CookiesBannerComponent,
     HeaderCheckoutComponent,
     HeaderDefaultComponent,
     HeaderSimpleComponent,
     LanguageSwitchComponent,
-    LazyMiniBasketContentComponent,
     LoginStatusComponent,
     MiniBasketComponent,
     UserInformationMobileComponent,
   ],
-  exports: [...exportedComponents],
+  declarations: [LazyContentIncludeComponent, LazyMiniBasketContentComponent],
+  exports: [...exportedComponents, LazyContentIncludeComponent, LazyMiniBasketContentComponent],
 })
 export class ShellModule {
   constructor(moduleLoader: ModuleLoaderService, featureEventNotifier: FeatureEventService, injector: Injector) {
