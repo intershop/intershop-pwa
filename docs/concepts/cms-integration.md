@@ -17,10 +17,10 @@ kb_sync_latest_only
 
 ## Introduction
 
-The Intershop REST API contains resources reflecting the aspects of Intershop's integrated Content Management System (CMS), i.e.
+The Intershop REST API contains resources reflecting the aspects of Intershop's integrated Content Management System (CMS), i.e.,
 Pagelets, Includes, Pages.
 
-Calling the `/cms` resource will list the available CMS sub resources for the different CMS artifacts.
+Calling the `/cms` resource will list the available CMS subresources for the different CMS artifacts.
 
 ```json
 {
@@ -97,7 +97,7 @@ UPDATE src/app/cms/cms.module.ts (4956 bytes)
 
 ## Navigation Components
 
-With Intershop PWA release 5.1.0, three new CMS rendering components are introduced that can be used to extend the main navigation.
+With Intershop PWA release 5.1.0, three new CMS rendering components were introduced that can be used to extend the main navigation.
 
 | Component           | Description                                                                                  |
 | ------------------- | -------------------------------------------------------------------------------------------- |
@@ -123,7 +123,7 @@ This component template is intended for standalone content pages or content page
 
 The route to a content page in the My Account area is `/account/content/<PAGE_ID>`.
 
-This way, they can be integrated into the My Account navigation via `account-navigation.items.ts` like this.
+In this way, they can be integrated into the My Account navigation via `account-navigation.items.ts`:
 
 ```typescript
 {
@@ -147,7 +147,7 @@ It is also possible to use the _Account - General - Navigation Bar_ content incl
 
 ## View Contexts
 
-With the Intershop PWA version 2.0.0, we introduced demo/example view contexts that are now disabled by default with Intershop PWA 5.2.0.
+With the Intershop PWA version 2.0.0, we introduced demo/example view contexts that have been disabled by default with Intershop PWA 5.2.0.
 Each integrated view context triggers a REST call that potentially decreases the SSR rendering performance, which is not necessary if this feature is not actively used in a PWA project.
 If the used ICM does not have the integrated view context instances configured, the requests result in 404 responses, which is not helpful either.
 For that reason, the examples were commented out in the source code and must be activated in the project source code if needed.
@@ -184,12 +184,12 @@ Be aware that enabling view contexts requires adapting some Jest component tests
 ## Design View
 
 > [!IMPORTANT]
-> To use the new Design View for the PWA within the Intershop Administration Portal, ICM version 11.7.0 or above is needed.
+> To use the Design View for the PWA within the Intershop Administration Portal, ICM version 11.7.0 or above is needed.
 
-The Intershop PWA 5.0.0 introduces experimental support for the new Design View that can be used within the Intershop Administration Portal (IAP).
-In addition to access to the IAP, you require ICM 11+ that provides the necessary CMS Management REST API to get information about available CMS models, the CMS page tree and to edit CMS components.
+The Intershop PWA 5.0.0 introduces experimental support for the Design View that can be used within the Intershop Administration Portal (IAP).
+In addition to access to the IAP, you require ICM 11+ that provides the necessary CMS Management REST API to get information about available CMS models, the CMS page tree, and to edit CMS components.
 
-The new Design View in the IAP currently only supports content editing but not content preview.
+The Design View in the IAP currently only supports content editing but not content preview.
 
 ## Integration with an External CMS
 
