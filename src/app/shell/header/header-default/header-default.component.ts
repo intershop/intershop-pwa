@@ -4,6 +4,8 @@ import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { CompareExportsModule } from 'src/app/extensions/compare/exports/compare-exports.module';
+import { QuickorderExportsModule } from 'src/app/extensions/quickorder/exports/quickorder-exports.module';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
@@ -14,8 +16,6 @@ import { LoginStatusComponent as LoginStatusComponent_1 } from 'ish-shell/header
 import { MiniBasketComponent as MiniBasketComponent_1 } from 'ish-shell/header/mini-basket/mini-basket.component';
 import { UserInformationMobileComponent } from 'ish-shell/header/user-information-mobile/user-information-mobile.component';
 
-import { LazyProductCompareStatusComponent } from '../../../extensions/compare/exports/lazy-product-compare-status/lazy-product-compare-status.component';
-import { LazyQuickorderLinkComponent } from '../../../extensions/quickorder/exports/lazy-quickorder-link/lazy-quickorder-link.component';
 import { WishlistsExportsModule } from '../../../extensions/wishlists/exports/wishlists-exports.module';
 
 type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
@@ -45,8 +45,8 @@ type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
     NgIf,
     LoginStatusComponent_1,
     FeatureToggleModule,
-    LazyProductCompareStatusComponent,
-    LazyQuickorderLinkComponent,
+    CompareExportsModule,
+    QuickorderExportsModule,
     WishlistsExportsModule,
     FontAwesomeModule,
     NgbCollapseModule,

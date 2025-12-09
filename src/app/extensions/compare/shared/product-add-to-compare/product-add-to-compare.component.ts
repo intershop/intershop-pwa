@@ -1,14 +1,14 @@
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { CompareFacade } from '../../facades/compare.facade';
-import { TranslateModule } from '@ngx-translate/core';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgIf, NgClass, AsyncPipe } from '@angular/common';
-import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
 
 /**
  * The Product Add To Compare Component add and remove a product to the compare view.

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { QuickorderExportsModule } from 'src/app/extensions/quickorder/exports/quickorder-exports.module';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
@@ -9,12 +10,10 @@ import { ShoppingBasketEmptyComponent } from './shopping-basket-empty/shopping-b
 import { ShoppingBasketPaymentComponent } from './shopping-basket-payment/shopping-basket-payment.component';
 import { ShoppingBasketComponent } from './shopping-basket/shopping-basket.component';
 
-import { LazyDirectOrderComponent } from 'src/app/extensions/quickorder/exports/lazy-direct-order/lazy-direct-order.component';
-
 const basketPageRoutes: Routes = [{ path: '', component: BasketPageComponent }];
 
 @NgModule({
-  imports: [RouterModule.forChild(basketPageRoutes), SharedModule, LazyDirectOrderComponent],
+  imports: [RouterModule.forChild(basketPageRoutes), QuickorderExportsModule, SharedModule],
   declarations: [
     BasketOrderRecurrenceEditComponent,
     BasketPageComponent,

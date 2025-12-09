@@ -1,30 +1,25 @@
 import { AnimationEvent } from '@angular/animations';
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, TransferState } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 import bottomOutAnimation from 'ish-core/animations/bottom-out.animation';
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { CookieConsentSettings } from 'ish-core/models/cookies/cookies.model';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
-import { TranslateModule } from '@ngx-translate/core';
-import { RouterLink } from '@angular/router';
-import { ServerHtmlDirective } from '../../../core/directives/server-html.directive';
-import { NgIf } from '@angular/common';
 
 /**
  * Cookies Banner Component
  */
 @Component({
-    selector: 'ish-cookies-banner',
-    templateUrl: './cookies-banner.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [bottomOutAnimation()],
-    standalone: true,
-    imports: [
-        NgIf,
-        ServerHtmlDirective,
-        RouterLink,
-        TranslateModule,
-    ],
+  selector: 'ish-cookies-banner',
+  templateUrl: './cookies-banner.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [bottomOutAnimation()],
+  standalone: true,
+  imports: [NgIf, ServerHtmlDirective, RouterLink, TranslateModule],
 })
 export class CookiesBannerComponent implements OnInit {
   showBanner = false;

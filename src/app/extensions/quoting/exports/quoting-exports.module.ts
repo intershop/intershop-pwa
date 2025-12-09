@@ -9,7 +9,7 @@ import { LazyQuoteWidgetComponent } from './lazy-quote-widget/lazy-quote-widget.
 import { LazyQuotingBasketLineItemsComponent } from './lazy-quoting-basket-line-items/lazy-quoting-basket-line-items.component';
 
 @NgModule({
-  imports: [FeatureToggleModule, LazyProductAddToQuoteComponent],
+  imports: [FeatureToggleModule],
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
@@ -20,7 +20,12 @@ import { LazyQuotingBasketLineItemsComponent } from './lazy-quoting-basket-line-
       multi: true,
     },
   ],
-  declarations: [LazyBasketAddToQuoteComponent, LazyQuoteWidgetComponent, LazyQuotingBasketLineItemsComponent],
+  declarations: [
+    LazyBasketAddToQuoteComponent,
+    LazyProductAddToQuoteComponent,
+    LazyQuoteWidgetComponent,
+    LazyQuotingBasketLineItemsComponent,
+  ],
   exports: [
     LazyBasketAddToQuoteComponent,
     LazyProductAddToQuoteComponent,

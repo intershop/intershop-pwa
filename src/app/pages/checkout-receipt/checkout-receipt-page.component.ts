@@ -1,15 +1,16 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { RequisitionManagementExportsModule } from 'requisition-management';
 import { Observable } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.model';
-import { AsyncPipe, NgIf } from '@angular/common';
-import { CheckoutReceiptComponent } from './checkout-receipt/checkout-receipt.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+
 import { CheckoutReceiptOrderComponent } from './checkout-receipt-order/checkout-receipt-order.component';
-import { LazyCheckoutReceiptRequisitionComponent } from 'requisition-management';
+import { CheckoutReceiptComponent } from './checkout-receipt/checkout-receipt.component';
 
 @Component({
   selector: 'ish-checkout-receipt-page',
@@ -22,7 +23,7 @@ import { LazyCheckoutReceiptRequisitionComponent } from 'requisition-management'
     CheckoutReceiptComponent,
     LoadingComponent,
     CheckoutReceiptOrderComponent,
-    LazyCheckoutReceiptRequisitionComponent,
+    RequisitionManagementExportsModule,
   ],
 })
 export class CheckoutReceiptPageComponent implements OnInit {
