@@ -11,7 +11,7 @@ import { IconModule } from 'ish-core/icon.module';
 import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { SubCategoryNavigationComponent } from 'ish-shell/header/sub-category-navigation/sub-category-navigation.component';
-import { ShellModule } from 'ish-shell/shell.module';
+import { ShellLazyComponentsModule } from 'ish-shell/shared/shell-lazy-components.module';
 
 @Component({
   selector: 'ish-header-navigation',
@@ -19,16 +19,16 @@ import { ShellModule } from 'ish-shell/shell.module';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
+    AsyncPipe,
+    IconModule,
     NgClass,
     NgFor,
     NgIf,
-    AsyncPipe,
-    RouterLink,
     NgStyle,
-    TranslateModule,
-    IconModule,
+    RouterLink,
+    ShellLazyComponentsModule,
     SubCategoryNavigationComponent,
-    ShellModule,
+    TranslateModule,
   ],
 })
 export class HeaderNavigationComponent implements OnInit {

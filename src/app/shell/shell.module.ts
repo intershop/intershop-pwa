@@ -32,8 +32,7 @@ import { LoginStatusComponent } from './header/login-status/login-status.compone
 import { MiniBasketComponent } from './header/mini-basket/mini-basket.component';
 import { SubCategoryNavigationComponent } from './header/sub-category-navigation/sub-category-navigation.component';
 import { UserInformationMobileComponent } from './header/user-information-mobile/user-information-mobile.component';
-import { LazyContentIncludeComponent } from './shared/lazy-content-include/lazy-content-include.component';
-import { LazyMiniBasketContentComponent } from './shared/lazy-mini-basket-content/lazy-mini-basket-content.component';
+import { ShellLazyComponentsModule } from './shared/shell-lazy-components.module';
 
 const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderComponent];
 
@@ -43,34 +42,36 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     BackToTopComponent,
     CommonModule,
     CompareExportsModule,
+    CookiesBannerComponent,
+    CookiesBannerComponent,
     DirectivesModule,
     FeatureToggleModule,
     NgbCollapseModule,
     NgbDropdownModule,
     NgbPopoverModule,
     PipesModule,
-    CookiesBannerComponent,
     QuickorderExportsModule,
     RoleToggleModule,
     RouterModule,
     SearchBoxComponent,
     SeoExportsModule,
+    ShellLazyComponentsModule,
     StoreLocatorExportsModule,
+    HeaderCheckoutComponent,
     SubCategoryNavigationComponent,
-    TrackingExportsModule,
     ...exportedComponents,
+    TrackingExportsModule,
     TranslateModule,
     WishlistsExportsModule,
-    HeaderCheckoutComponent,
     HeaderDefaultComponent,
     HeaderSimpleComponent,
     LanguageSwitchComponent,
     LoginStatusComponent,
     MiniBasketComponent,
     UserInformationMobileComponent,
+    WishlistsExportsModule,
   ],
-  declarations: [LazyContentIncludeComponent, LazyMiniBasketContentComponent],
-  exports: [...exportedComponents, LazyContentIncludeComponent, LazyMiniBasketContentComponent],
+  exports: [...exportedComponents, ShellLazyComponentsModule],
 })
 export class ShellModule {
   constructor(moduleLoader: ModuleLoaderService, featureEventNotifier: FeatureEventService, injector: Injector) {

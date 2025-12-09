@@ -5,7 +5,7 @@ import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { CMSModule } from 'ish-shared/cms/cms.module';
-import { ShellModule } from 'ish-shell/shell.module';
+import { ShellLazyComponentsModule } from 'ish-shell/shared/shell-lazy-components.module';
 
 import { StoreLocatorExportsModule } from '../../../extensions/store-locator/exports/store-locator-exports.module';
 
@@ -17,7 +17,7 @@ import { StoreLocatorExportsModule } from '../../../extensions/store-locator/exp
   templateUrl: './footer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [RoleToggleModule, StoreLocatorExportsModule, ServerHtmlDirective, ShellModule, TranslateModule, CMSModule],
+  imports: [CMSModule, RoleToggleModule, ServerHtmlDirective, ShellLazyComponentsModule, StoreLocatorExportsModule, TranslateModule],
 })
 export class FooterComponent implements OnInit {
   appVersion: string;
