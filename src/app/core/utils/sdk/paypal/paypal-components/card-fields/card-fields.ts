@@ -1,9 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { switchMap } from 'rxjs';
 
-import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -51,10 +49,11 @@ export interface CardFieldsConfig {
 @Injectable({ providedIn: 'root' })
 export class PayPalCardFieldsService {
   paymentMethod: PaymentMethod;
+  private paymentInstrumentId: string;
+  private cardType: string;
+
   constructor(
     private ngZone: NgZone,
-    private router: Router,
-    private checkoutFacade: CheckoutFacade,
     private paymentService: PaymentService,
     private translateService: TranslateService
   ) {}
@@ -87,19 +86,16 @@ export class PayPalCardFieldsService {
         }) as PayPalCardFieldsComponent;
 
         // Check if card fields are eligible
-        if (!cardField.isEligible()) {
-          console.warn('PayPal card fields are not eligible for this configuration');
-          throw new Error('INELIGIBLE'); // Throw specific error for ineligibility
+        if (cardField.isEligible()) {
+          // Render individual fields outside Angular zone for proper iframe interaction
+          await this.renderIndividualFields(cardField);
+
+          // set payment method for use in createOrder
+          this.paymentMethod = paymentMethod;
+
+          // Setup submit button handler
+          this.setupSubmitHandler(cardField);
         }
-
-        // Render individual fields outside Angular zone for proper iframe interaction
-        await this.renderIndividualFields(cardField);
-
-        // set payment method for use in createOrder
-        this.paymentMethod = paymentMethod;
-
-        // Setup submit button handler
-        this.setupSubmitHandler(cardField);
       } catch (error) {
         console.error('PayPal card fields rendering failed:', error);
         return Promise.reject(error);
@@ -119,23 +115,21 @@ export class PayPalCardFieldsService {
     // Render name field
     const nameField = cardField.NameField({
       style: PAYPAL_CART_FIELDS_STYLING,
-      placeholder: this.translateService.instant('checkout.credit_card.holder.placeholder'),
+      placeholder: '',
     });
     await nameField.render('#card-name-field-container');
 
     // Render number field
     const numberField = cardField.NumberField({
       style: PAYPAL_CART_FIELDS_STYLING,
-      placeholder: this.translateService.instant('checkout.credit_card.number.label'),
-      // inputEvents,  // Temporarily remove to test
+      placeholder: '',
     });
     await numberField.render('#card-number-field-container');
 
     // Render CVV field
     const cvvField = cardField.CVVField({
       style: PAYPAL_CART_FIELDS_STYLING,
-      placeholder: this.translateService.instant('checkout.credit_card.cvc.label'),
-      // inputEvents,  // Temporarily remove to test
+      placeholder: '',
     });
     await cvvField.render('#card-cvv-field-container');
 
@@ -143,7 +137,6 @@ export class PayPalCardFieldsService {
     const expiryField = cardField.ExpiryField({
       style: PAYPAL_CART_FIELDS_STYLING,
       placeholder: this.translateService.instant('checkout.credit_card.expiration_date.placeholder'),
-      // inputEvents,  // Temporarily remove to test
     });
     await expiryField.render('#card-expiry-field-container');
   }
@@ -158,11 +151,16 @@ export class PayPalCardFieldsService {
       submitButton.addEventListener('click', () => {
         this.ngZone.run(async () => {
           try {
-            cardField.submit();
-            // Submit successful - handle success case
-            this.handleSubmitSuccess();
+            // Await the submit call to handle 3D Secure authentication properly
+            await cardField.submit();
           } catch (error) {
-            this.handleSubmitError(error);
+            // Check if error is due to popup being closed
+            if (error instanceof Error && error.message.includes('Window closed')) {
+              console.warn('3D Secure authentication was cancelled or popup was closed');
+              this.showResultMessage('Payment authentication was cancelled. Please try again.');
+            } else {
+              this.handleSubmitError(error);
+            }
           }
         });
       });
@@ -171,6 +169,7 @@ export class PayPalCardFieldsService {
 
   /**
    * Creates PayPal order through the checkout facade.
+   * official PayPal developer documentation link: https://developer.paypal.com/studio/checkout/advanced/integrate
    */
   async createOrder(): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -181,12 +180,13 @@ export class PayPalCardFieldsService {
         })
         .pipe(
           whenTruthy(),
-          switchMap(paymentInstrument =>
-            this.paymentService.setBasketPayment(paymentInstrument.id).pipe(
+          switchMap(paymentInstrument => {
+            this.paymentInstrumentId = paymentInstrument.id;
+            return this.paymentService.setBasketPayment(paymentInstrument.id).pipe(
               whenTruthy(),
               switchMap(() => this.paymentService.initializePayPal3DSecureFlow())
-            )
-          )
+            );
+          })
         )
         .subscribe({
           next: orderID => resolve(orderID),
@@ -199,19 +199,27 @@ export class PayPalCardFieldsService {
    * Handles PayPal payment approval.
    */
   async onApprove(data: { orderID: string }): Promise<void> {
-    console.log('PayPal payment approved with order ID:', data.orderID);
-    try {
-      // Navigate to checkout review or success page
-      this.ngZone.run(() => {
-        this.router.navigate(['/checkout/review'], {
-          queryParams: { paypalOrderId: data.orderID },
-        });
-      });
-    } catch (error) {
-      console.error('PayPal approval handling failed:', error);
-      this.showResultMessage(`Transaction could not be processed: ${error}`);
-      throw error;
-    }
+    console.log(
+      'PayPal payment approved with Order ID:',
+      data.orderID,
+      'Payment Instrument ID:',
+      this.paymentInstrumentId,
+      'Card Type:',
+      this.cardType
+    );
+    return Promise.resolve();
+    // try {
+    //   // Navigate to checkout review or success page
+    //   this.ngZone.run(() => {
+    //     this.router.navigate(['/checkout/review'], {
+    //       queryParams: { paypalOrderId: data.orderID },
+    //     });
+    //   });
+    // } catch (error) {
+    //   console.error('PayPal approval handling failed:', error);
+    //   this.showResultMessage(`Transaction could not be processed: ${error}`);
+    //   throw error;
+    // }
   }
 
   /**
@@ -223,35 +231,11 @@ export class PayPalCardFieldsService {
   }
 
   /**
-   * Handles successful card field submission.
-   */
-  private handleSubmitSuccess(): void {
-    this.showResultMessage('Payment submitted successfully');
-  }
-
-  /**
    * Handles card field submission errors.
    */
   private handleSubmitError(error: unknown): void {
     console.error('Card field submission error:', error);
     this.showResultMessage(`Payment submission failed: ${error}`);
-  }
-
-  /**
-   * Gets default styling configuration for card fields.
-   */
-  private getDefaultStyle(): CardFieldsStyleConfig {
-    return {
-      input: {
-        'font-size': '16px',
-        'font-family': 'courier, monospace',
-        'font-weight': 'lighter',
-        color: '#ccc',
-      },
-      '.invalid': {
-        color: 'purple',
-      },
-    };
   }
 
   /**
@@ -264,6 +248,5 @@ export class PayPalCardFieldsService {
       container.innerHTML = message;
     }
     // TODO: Integrate with application's notification/toast system
-    console.log('PayPal message:', message);
   }
 }

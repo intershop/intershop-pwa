@@ -11,7 +11,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { isEqual } from 'lodash-es';
-import { Observable, distinctUntilChanged, map, of, shareReplay, switchMap, tap } from 'rxjs';
+import { Observable, distinctUntilChanged, map, of, shareReplay, switchMap } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -27,12 +27,14 @@ import { PaypalConfigService, PaypalPageType } from 'ish-core/utils/sdk/paypal/p
 @Component({
   selector: 'ish-payment-paypal',
   templateUrl: './payment-paypal.component.html',
+  styleUrls: ['./payment-paypal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   @Input() componentType: string;
   @Input() selectedPaymentMethod: PaymentMethod;
   @Output() selectPaypalPaymentMethod = new EventEmitter<string>();
+  @Output() cancelPayment = new EventEmitter<void>();
 
   paypalComponentContainerId = 'paypal-container-';
   isCardFieldsReady = false;
@@ -77,19 +79,15 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
         .pipe(
           whenTruthy(),
           distinctUntilChanged(isEqual),
-          tap(paymentMethod => console.log('PaymentMethod: ', paymentMethod, ' ComponentType: ', this.componentType)),
           switchMap(paymentMethod => {
             this.scriptNamespace = this.setNameSpace(paymentMethod);
-            console.log('ScriptNamespace: ', this.scriptNamespace);
             return this.paypalConfigService
               .loadPayPalScript(this.scriptNamespace, {
                 paymentMethod,
                 page: this.page,
               })
               .pipe(
-                tap(() => console.log('PayPal script loaded')),
                 whenTruthy(),
-                tap(response => console.log('RESPONSE FROM LOAD SCRIPT: ', response)),
                 map(() => paymentMethod)
               );
           }),
@@ -140,6 +138,10 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
 
   hasError(): boolean {
     return this.renderError;
+  }
+
+  cancelNewPaymentInstrument() {
+    this.cancelPayment.emit();
   }
 
   private setPageType() {

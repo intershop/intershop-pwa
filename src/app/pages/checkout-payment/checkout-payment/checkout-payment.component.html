@@ -141,6 +141,7 @@
                           [selectedPaymentMethod]="paymentMethod"
                           [componentType]="'cardFields'"
                           (selectPaypalPaymentMethod)="setBasketPayment($event)"
+                          (cancelPayment)="closePaymentInstrumentForm()"
                         />
                       </ng-template>
                       <ng-template [ngSwitchCase]="'Concardis_CreditCard'">
