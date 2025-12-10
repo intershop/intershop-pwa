@@ -63,11 +63,11 @@ This mapping table is also used in the browser-side PWA to switch from the singl
 
 ### Intershop Commerce Management (ICM)
 
-ICM must be run with [Secure URL-only Server Configuration](https://docs.intershop.com/icm/7.10/olh/oma/en/topics/managing_site_settings/topic_secure_url-only_server_configuration.html), which can be done by adding `SecureAccessOnly=true` to the appserver configuration.
+ICM must be run with [Secure URL-only Server Configuration](https://knowledge.intershop.com/oh/index.php/Display/40633N), which can be done by adding `SecureAccessOnly=true` to the appserver configuration.
 This is the default for ICM 11+ deployments.
 
 Furthermore, the synchronization of the `apiToken` cookie must be switched on, so that users and baskets are synchronized between PWA and ICM.
-See [Concept - Integration of Progressive Web App and inSPIRED Storefront](https://support.intershop.com/kb/index.php/Display/2928F6).
+See [Concept - Hybrid Approach](https://knowledge.intershop.com/kb/index.php/Display/4788V2).
 
 If you also want to support the correct handling for links generated in e-mails, the property `intershop.WebServerSecureURL` must point to NGINX.
 
