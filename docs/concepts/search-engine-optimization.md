@@ -16,22 +16,22 @@ This concept documents our approach for search engine optimization for the Inter
 
 ## Server Side Rendering
 
-The PWA uses Universal for pre-rendering complete pages to tackle SEO concerns.
-An Angular application without Universal support will not respond to web crawlers with complete indexable page responses.
+The PWA uses SSR for pre-rendering complete pages to tackle SEO concerns.
+An Angular application without SSR support will not respond to web crawlers with complete indexable page responses.
 
 Angular's state transfer mechanism is used to transfer properties to the client side.
 We use it to de-hydrate the ngrx state in the server application and re-hydrate it on the client side.
-See [Using TransferState API in an Angular v5 Universal App](https://medium.com/angular-in-depth/using-transferstate-api-in-an-angular-5-universal-app-130f3ada9e5b) for specifics.
+See [Using State Transfer in Angular 17 SSR](https://medium.com/@saikiranmaddukuri22/using-state-transfer-in-angular-17-ssr-b228bd27450b) for specifics.
 
-Follow the steps in [Guide - Getting Started](../guides/getting-started.md) to build and run the application in Universal mode.
+Follow the steps in [Guide - Getting Started](../guides/getting-started.md) to build and run the application in SSR mode.
 
-Official documentation for Angular Universal can be found at [https://angular.io/guide/universal](https://angular.io/guide/universal).
+Official documentation for Angular SSR can be found at [https://angular.io/guide/ssr](https://angular.io/guide/ssr).
 
 ## robots.txt
 
 We use the library [express-robots-txt](https://github.com/modosc/express-robots-txt) in the express.js server (`server.ts` in the project root) to supply a response to `robots.txt` for crawlers.
 
-By default, the universal server provides a response with access to all pages except some restricted paths (e.g. `/error` or `/account`).
+By default, the SSR server provides a response with access to all pages except some restricted paths (e.g. `/error` or `/account`).
 To use a custom `robots.txt`, place it as a file in the `dist` folder.
 
 ## Page Metadata

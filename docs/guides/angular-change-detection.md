@@ -10,7 +10,7 @@ kb_sync_latest_only
 - [Zones](#zones)
 - [Zone Stability](#zone-stability)
 - [Using Zone Stability](#using-zone-stability)
-  - [Service Workers and Universal](#service-workers-and-universal)
+  - [Service Workers and SSR](#service-workers-and-ssr)
   - [Pitfall: The Zone Must Become Stable](#pitfall-the-zone-must-become-stable)
 
 Change detection is one of the core concepts of Angular.
@@ -71,9 +71,9 @@ export class MyComponent {
 Getting to know whether a zone is stable or not is crucial when programmatically accessing the application from the "outside".
 Having a stable zone means that Angular has finished rendering and that we do not expect any async tasks to finish in the near future.
 The Intershop PWA effectively uses this concept for communication with the CMS Design View.
-Also, Angular waits for stability in Service Workers and in Universal Rendering (Server-Side Rendering).
+Also, Angular waits for stability in Service Workers and in Server-Side Rendering.
 
-### Service Workers and Universal
+### Service Workers and SSR
 
 Both `@angular/service-worker` and `@angular/platform-server` use zone stability information internally.
 The Service Worker will not be attached to the page before the zone will have become stable.
@@ -82,9 +82,9 @@ This is necessary because data from HTTP requests must be resolved to render mea
 
 ### Pitfall: The Zone Must Become Stable
 
-For all of those aspects – Design View, Service Workers, and Universal rendering – it is essential to get a stable zone at some point.
+For all of those aspects – Design View, Service Workers, and SSR rendering – it is essential to get a stable zone at some point.
 If not, those aspects will not work properly, e.g.,
-Universal rendering will never return the rendered HTML and the Design View will never render the component tree view.
+SSR will never return the rendered HTML and the Design View will never render the component tree view.
 
 > [!NOTE]
 > Avoid long-running timers and intervals. If this is unavoidable, make sure the async tasks do not start before the zone has become stable once.

@@ -12,7 +12,7 @@ kb_sync_latest_only
 - [Code Formatting](#code-formatting)
 - [Unit Testing](#unit-testing)
 - [UI Testing](#ui-testing)
-- [Universal Testing](#universal-testing)
+- [Testing Server-Side Rendering](#testing-server-side-rendering)
 - [Static Code Analysis](#static-code-analysis)
 
 This section provides an overview of required continuous integration steps to verify the validity of code contributions.
@@ -58,13 +58,13 @@ This requires a suitable version of Google Chrome to be installed on the CI work
 Run UI tests interactively with `npm run e2e`.
 Before that you have to start up a PWA application.
 
-## Universal Testing
+## Testing Server-Side Rendering
 
-Since Angular Universal is used for server-side pre-rendering of content to tackle SEO concerns, the CI system should also check if server-side rendering is still working.
+Since Angular SSR is used for server-side pre-rendering of content to tackle SEO concerns, the CI system should also check if server-side rendering is still working.
 For this purpose, it must be checked whether the server response contains content from lazy-loaded modules, in other words making sure all modules have produced compliant HTML markup.
 
 This can be done by pointing `curl` to a product detail page and checking if a specific CSS class could be found (via `grep`) in the HTML.
-Have a look into `e2e/test-universal.sh` to see how we are doing that.
+Have a look into `e2e/test-ssr.sh` to see how we are doing that.
 
 ## Static Code Analysis
 

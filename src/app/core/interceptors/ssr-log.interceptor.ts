@@ -9,7 +9,7 @@ import {
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-export class UniversalLogInterceptor implements HttpInterceptor {
+export class SSRLogInterceptor implements HttpInterceptor {
   private logging = /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase());
 
   private logAll = /on|1|true|yes/.test(process.env.LOG_ALL?.toLowerCase());

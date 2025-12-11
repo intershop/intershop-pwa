@@ -78,6 +78,5 @@ jobs:
         with:
           issue-number: ${{ steps.find-pull-request.outputs.number }}
           body: |
-            Azure Demo Servers are available:
-            - [Universal B2B](https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/en/home)
-            - [Universal B2C](https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/b2c/home)
+            - [Demo Server B2B](https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/en/home)
+            - [Demo Server B2C](https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/b2c/home)

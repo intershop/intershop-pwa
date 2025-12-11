@@ -87,7 +87,7 @@ Make sure to use them as written in the table below.
 
 ## Development
 
-For live Angular Universal (SSR) development, you have to use means provided by Angular CLI.
+For live Angular SSR development, you have to use means provided by Angular CLI.
 The following command starts an SSR development environment.
 
 ```
@@ -137,10 +137,10 @@ To find the process ID of the SSR processes, use `pm2 list` or `ps`, then send t
 
 You can download the generated heap dumps from the container and analyze them using Chrome or Edge DevTools.
 
-1.  Open DevTools (press F12 or right-click and select _Inspect_).
-2.  Switch to the _Memory_ tab.
-3.  Click the _Load profile_ button.
-4.  Select your `.heapsnapshot` file.
+1. Open DevTools (press F12 or right-click and select _Inspect_).
+2. Switch to the _Memory_ tab.
+3. Click the _Load profile_ button.
+4. Select your `.heapsnapshot` file.
 
 ## Further References
 
@@ -152,8 +152,7 @@ You can download the generated heap dumps from the container and analyze them us
 - [Guide - Google Tag Manager](./google-tag-manager.md)
 - [Guide - Monitoring with Prometheus](./prometheus-monitoring.md)
 - [PM2][pm2]
-- [YouTube - Server Side Rendering and Pre Rendering with Angular Universal](https://www.youtube.com/watch?v=-VDOAjzLcvQ)
-- [Google Developers - Rendering on the Web](https://developers.google.com/web/updates/2019/02/rendering-on-the-web)
+- Rendering on the Web](https://developers.google.com/web/updates/2019/02/rendering-on-the-web)
 - [Angular Universal: a Complete Practical Guide](https://blog.angular-university.io/angular-universal/)
 
 [concept-hybrid]: ../concepts/hybrid-approach.md

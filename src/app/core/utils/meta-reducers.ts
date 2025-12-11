@@ -36,7 +36,7 @@ function saveMeta<S>(
   lifeTimeMinutes?: number
 ): MetaReducer<S, Action> {
   if (!key?.startsWith('_')) {
-    console.warn('saveMeta:', `store key ${prefix}/${key} is not excluded from universal state transfer.`);
+    console.warn('saveMeta:', `store key ${prefix}/${key} is not excluded from ssr state transfer.`);
   }
   const item = `${baseHref}-${prefix}-${key}`;
   return (reducer): ActionReducer<S> =>

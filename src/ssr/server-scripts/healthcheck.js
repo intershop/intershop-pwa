@@ -11,7 +11,7 @@ if (process.env.TRUST_ICM) {
 
 const pwaClient = require('http');
 
-const optionsAngularUniversal = {
+const optionsAngularSSR = {
   host: 'localhost',
   timeout: 2000,
 };
@@ -36,13 +36,13 @@ if (Object.keys(ports).length > 1) {
 }
 
 portsToCheck.forEach(port => {
-  const requestAngularUniversal = pwaClient.request({ ...optionsAngularUniversal, port }, res => {
+  const requestAngularSSR = pwaClient.request({ ...optionsAngularSSR, port }, res => {
     console.log(`STATUS STOREFRONT (${port}): ${res.statusCode} ${res.statusMessage}`);
     if (res.statusCode !== 200) {
       process.exit(1);
     }
   });
-  requestAngularUniversal.on('error', errFunc);
+  requestAngularSSR.on('error', errFunc);
 
-  requestAngularUniversal.end();
+  requestAngularSSR.end();
 });

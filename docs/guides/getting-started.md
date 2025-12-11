@@ -100,7 +100,7 @@ Build it with `docker build -t my_pwa .`.
 To run the PWA with multiple channels you can use the nginx docker image supplied in the sub folder [nginx](../../nginx).
 
 In general, the deployment artifacts of the Intershop PWA are generated to the _dist_ folder of the project.
-Use `npm run build` to generate an Angular Universal enabled version.
+Use `npm run build` to generate an Angular SSR enabled version.
 On the server the _dist/server.js_ script has to be executed with `node`.
 Alternatively, you can use `npm run build client` to get an application using browser rendering.
 All the files under `dist/browser` have to be served statically.

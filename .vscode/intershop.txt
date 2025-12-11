@@ -113,7 +113,6 @@ mouseout
 ngcc
 ngmodule
 ngrx
-nguniversal
 nofollow
 noindex
 noneditable
