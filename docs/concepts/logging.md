@@ -16,7 +16,7 @@ kb_sync_latest_only
 
 ## Server-Side Rendering (SSR)
 
-The _express.js_ image serving the Angular Universal Server-Side Rendering can be provisioned to log extended information to the console by supplying the environment variable `LOGGING=true`.
+The _express.js_ image serving the Angular server-side rendering can be provisioned to log extended information to the console by supplying the environment variable `LOGGING=true`.
 
 Information logged to the console includes the following:
 

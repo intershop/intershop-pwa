@@ -93,7 +93,7 @@ Another recommendation is to implement automatic session timeouts and log out us
 
 ### Secure Server-Side Rendering (SSR)
 
-Secure Server-Side Rendering is used in the Intershop Progressive Web App when running in a Docker container.
+Secure server-side rendering is used in the Intershop Progressive Web App when running in a Docker container.
 To secure SSR, it is important to sanitize any user input before rendering dynamic content, ensuring that malicious data is not processed.
 Additionally, preventing SSR template injection is vital; this can be achieved by avoiding direct DOM manipulation during the rendering process.
 Finally, using only trusted sources for dynamic content further minimizes the risk of introducing vulnerabilities.
@@ -115,7 +115,7 @@ The package-lock file (`package-lock.json`) is tracked in Git to prevent depende
 ### Secure Data Handling
 
 Protecting Cardholder Data (CHD) and Sensitive Authentication Data (SAD) is one of the core requirements of PCI DSS 4.0.
-In the Intershop PWA, Server-Side Rendering (SSR) is used.
+In the Intershop PWA, server-side rendering (SSR) is used.
 The data is processed on the client-side (Angular PWA) as well as in ICM and third-party system like the payment processor.
 To comply with PCI DSS, you need to secure data storage, transmission, and ensure proper encryption mechanisms.
 The requirements mandate that SAD must never be stored after authorization.

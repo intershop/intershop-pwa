@@ -64,7 +64,7 @@ ng serve --open
 
 For more information about the development environment configuration, server, and tools consult the according chapters in the [Development Guide](./development.md).
 
-To build and start the Intershop PWA with Server-Side Rendering for testing but without the automatic building and reloading of code changes `npm start` works as well and does not require Angular CLI to be installed.
+To build and start the Intershop PWA with server-side rendering for testing but without the automatic building and reloading of code changes `npm start` works as well and does not require Angular CLI to be installed.
 
 ## Customization
 
@@ -100,7 +100,7 @@ Build it with `docker build -t my_pwa .`.
 To run the PWA with multiple channels you can use the nginx docker image supplied in the sub folder [nginx](../../nginx).
 
 In general, the deployment artifacts of the Intershop PWA are generated to the _dist_ folder of the project.
-Use `npm run build` to generate an Angular Universal enabled version.
+Use `npm run build` to generate an Angular SSR enabled version.
 On the server the _dist/server.js_ script has to be executed with `node`.
 Alternatively, you can use `npm run build client` to get an application using browser rendering.
 All the files under `dist/browser` have to be served statically.

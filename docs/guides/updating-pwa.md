@@ -68,7 +68,6 @@ Found 99 dependencies.
      --------------------------------------------------------------------------------
       @angular/cli                       9.1.4 -> 9.1.6           ng update @angular/cli
       @angular/core                      9.1.6 -> 9.1.7           ng update @angular/core
-      @nguniversal/express-engine        9.1.0 -> 9.1.1           ng update @nguniversal/express-engine
 ```
 
 ### 2. Updating Third-Party Project Dependencies

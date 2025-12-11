@@ -46,7 +46,7 @@ See also [Guide - Building and Running Server-Side Rendering][guide-ssr]
 In general the extraction is as follows:
 
 1. The environment variable is accessed by the SSR process running with _node.js_ (via _process.env_).
-2. An effect running in Angular Universal extracts these properties and puts them into the state management.
+2. An effect running in Angular SSR extracts these properties and puts them into the state management.
 3. Upon completing the initial page response, the NgRx state is [dehydrated][dehydrated-rehydrated] and appended to the HTML document.
 4. The browser boots up angular and [re-hydrates][dehydrated-rehydrated] the state, effectively completing the transfer of the property.
 

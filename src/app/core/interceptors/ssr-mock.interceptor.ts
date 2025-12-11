@@ -5,13 +5,13 @@ import { join } from 'path';
 import { Observable, Observer } from 'rxjs';
 
 /**
- * answers requests to mock-data with file-content in universal mode
+ * answers requests to mock-data with file-content in SSR mode
  */
 @Injectable()
-export class UniversalMockInterceptor implements HttpInterceptor {
+export class SSRMockInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!SSR) {
-      console.warn('UniversalMockInterceptor is active for non-server platform');
+      console.warn('SSRMockInterceptor is active for non-server platform');
     }
     if (!req.url.startsWith('http')) {
       // eslint-disable-next-line no-console

@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export class UniversalInternalBackendInterceptor implements HttpInterceptor {
+export class SSRInternalBackendInterceptor implements HttpInterceptor {
   private readonly icmBaseUrlSsr: string | undefined;
   private readonly shouldAddHeader: boolean;
 
