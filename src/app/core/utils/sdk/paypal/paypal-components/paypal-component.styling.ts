@@ -54,7 +54,6 @@ export const PAYPAL_BUTTON_STYLING = {
   },
   // PayPal checkout buttons on checkout (payment) page.
   checkout: {
-    //layout: 'horizontal',
     shape: 'sharp',
     label: 'paypal',
     height: 40,

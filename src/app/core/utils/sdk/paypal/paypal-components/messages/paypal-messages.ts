@@ -1,13 +1,13 @@
 import { PaypalComponentsConfig } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.builder';
 import { PAYPAL_MESSAGE_STYLING } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.styling';
-import { PaypalComponent, PaypalSdk } from 'ish-core/utils/sdk/paypal/paypal-model/paypal.interface';
+import { PaypalComponent } from 'ish-core/utils/sdk/paypal/paypal-model/paypal.interface';
 
 export class PayPalMessages {
   constructor(private config: PaypalComponentsConfig) {}
 
   async renderMessages(): Promise<void> {
     // Access PayPal SDK from window object
-    const paypalObject = (window as unknown as Record<string, PaypalSdk>)[this.config.scriptNamespace];
+    const paypalObject = (window as unknown as Record<string, PaypalComponent>)[this.config.scriptNamespace];
 
     if (!paypalObject?.Buttons) {
       return Promise.reject(new Error(`PayPal Messages not available on namespace '${this.config.scriptNamespace}'`));
@@ -20,7 +20,7 @@ export class PayPalMessages {
         throw new Error(`Container element '${this.config.containerId}' no longer exists in DOM`);
       }
 
-      const messages = paypalObject.Messages(this.getMessages()) as PaypalComponent;
+      const messages = paypalObject.Messages(this.getMessages());
 
       // Render outside Angular zone - PayPal SDK needs direct DOM access
       await messages.render(`#${this.config.containerId}`);

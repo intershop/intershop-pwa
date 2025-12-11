@@ -9,7 +9,7 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalComponentsConfig } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.builder';
 import { PAYPAL_BUTTON_STYLING } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.styling';
-import { PaypalComponent, PaypalSdk } from 'ish-core/utils/sdk/paypal/paypal-model/paypal.interface';
+import { PaypalComponent } from 'ish-core/utils/sdk/paypal/paypal-model/paypal.interface';
 
 export class PayPalButtons {
   isShippingAddressChanged = false;
@@ -79,7 +79,7 @@ export class PayPalButtons {
 
   async renderButtons(): Promise<void> {
     // Access PayPal SDK from window object
-    const paypalObject = (window as unknown as Record<string, PaypalSdk>)[this.config.scriptNamespace];
+    const paypalObject = (window as unknown as Record<string, PaypalComponent>)[this.config.scriptNamespace];
 
     if (!paypalObject?.Buttons) {
       return Promise.reject(new Error(`PayPal Buttons not available on namespace '${this.config.scriptNamespace}'`));
@@ -131,7 +131,7 @@ export class PayPalButtons {
             this.config.paypalPaymentMethod.capabilities.includes('FastCheckout') ? '/basket' : '/checkout/payment'
           );
         },
-      }) as PaypalComponent;
+      });
 
       // Render outside Angular zone - PayPal SDK needs direct DOM access
       await button.render(`#${this.config.containerId}`);

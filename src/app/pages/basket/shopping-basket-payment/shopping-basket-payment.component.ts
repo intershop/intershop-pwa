@@ -62,4 +62,12 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
   setBasketPayment(paymentInstrumentId: string) {
     this.checkoutFacade.setBasketPayment(paymentInstrumentId);
   }
+
+  getPayPalPaymentMethod(): Observable<PaymentMethod> {
+    return this.paymentMethods$.pipe(
+      map(paymentMethods =>
+        paymentMethods.find(paymentMethod => paymentMethod.capabilities?.includes('PaypalCheckout'))
+      )
+    );
+  }
 }

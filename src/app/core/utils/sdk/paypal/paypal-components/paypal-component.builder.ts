@@ -10,10 +10,9 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalPageType } from 'ish-core/utils/sdk/paypal/paypal-config/paypal-config.service';
-import { PaypalSdk } from 'ish-core/utils/sdk/paypal/paypal-model/paypal.interface';
 
 import { PayPalButtons } from './buttons/paypal-buttons';
-import { PayPalCardFields } from './card-fields/card-fields';
+import { PayPalCardFields } from './card-fields/paypal-card-fields';
 import { PayPalMessages } from './messages/paypal-messages';
 
 /**
@@ -76,12 +75,6 @@ export class PaypalComponentBuilder {
    * Creates a PayPal component based on the provided configuration.
    */
   build(config: PaypalComponentsConfig): Promise<void> {
-    const paypalObject = (window as unknown as Record<string, PaypalSdk>)[config.scriptNamespace];
-
-    if (!paypalObject) {
-      throw new Error(`PayPal SDK not found on window object with namespace: ${config.scriptNamespace}`);
-    }
-
     switch (config.componentType) {
       case 'buttons':
         return new PayPalButtons(

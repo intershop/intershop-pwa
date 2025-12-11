@@ -128,29 +128,17 @@ export interface PayPalCardFieldsIndividualField {
   close(): Promise<void>;
 }
 
-export interface PayPalCardFieldsComponentBasics {
+export interface PayPalComponentBasics {
+  createOrder(): Promise<string>;
   onApprove(data: CardFieldsOnApproveData): void;
   onError(err: Record<string, unknown>): void;
   onCancel?(): Promise<void> | void;
   inputEvents?: PayPalCardFieldsInputEvents;
   style?: Record<string, PayPalCardFieldsStyleOptions>;
+  render(selector?: string): Promise<void>;
 }
 
-export interface PayPalCardFieldsComponentCreateOrder extends PayPalCardFieldsComponentBasics {
-  createOrder(): Promise<string>;
-  createVaultSetupToken?: never;
-}
-
-export interface PayPalCardFieldsComponentCreateVaultSetupToken extends PayPalCardFieldsComponentBasics {
-  createOrder?: never;
-  createVaultSetupToken(): Promise<string>;
-}
-
-export type PayPalCardFieldsComponentOptions =
-  | PayPalCardFieldsComponentCreateOrder
-  | PayPalCardFieldsComponentCreateVaultSetupToken;
-
-export interface PayPalCardFieldsComponent extends PayPalCardFieldsComponentCreateOrder {
+export interface PayPalCardFieldsComponent extends PayPalComponentBasics {
   getState(): Promise<PayPalCardFieldsStateObject>;
   isEligible(): boolean;
   submit(): Promise<void>;
@@ -161,17 +149,12 @@ export interface PayPalCardFieldsComponent extends PayPalCardFieldsComponentCrea
 }
 
 export interface PaypalComponent {
-  /** Renders the component into the specified DOM selector */
-  render(selector?: string): Promise<void>;
-}
-
-export interface PaypalSdk extends PayPalCardFieldsComponentCreateOrder {
   /** Creates PayPal payment buttons with checkout functionality */
-  Buttons(options: unknown): PaypalComponent;
+  Buttons(options: unknown): PayPalComponentBasics;
   /** Creates PayPal promotional messages (optional, not all SDK versions include this) */
-  Messages?(options: unknown): PaypalComponent;
+  Messages?(options: unknown): PayPalComponentBasics;
   /** Creates PayPal payment marks for alternative payment methods */
-  Marks(options: unknown): PaypalComponent;
+  Marks(options: unknown): PayPalComponentBasics;
   /** Creates PayPal hosted card input fields */
-  CardFields?(options?: unknown): PaypalComponent;
+  CardFields?(options?: unknown): PayPalCardFieldsComponent;
 }
