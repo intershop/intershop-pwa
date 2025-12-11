@@ -8,7 +8,7 @@ kb_sync_latest_only
 # Deployment Scenarios for Angular Applications
 
 - [Simple Browser-Side Rendering](#simple-browser-side-rendering)
-- [Browser-Side Rendering with On-Demand Server-Side Pre-Rendering (Angular Universal)](#browser-side-rendering-with-on-demand-server-side-pre-rendering-angular-universal)
+- [Browser-Side Rendering with On-Demand Server-Side Pre-Rendering (Angular SSR)](#browser-side-rendering-with-on-demand-server-side-pre-rendering-angular-ssr)
 - [Impact of Service Workers](#impact-of-service-workers)
 - [Further References](#further-references)
 
@@ -33,14 +33,14 @@ However, we do not recommend this setup for production use.
 
 > This setup is also used for the Angular CLI built-in webpack-dev-server and should not be confused with a standard production setup.
 
-## Browser-Side Rendering with On-Demand Server-Side Pre-Rendering (Angular Universal)
+## Browser-Side Rendering with On-Demand Server-Side Pre-Rendering (Angular SSR)
 
-To tackle sophisticated SEO requirements, the [Angular Universal][angular-universal] package was introduced.
+To tackle sophisticated SEO requirements, the [Angular SSR][angular-ssr] package was introduced.
 In a second step in the build process, a server-side application can be built by the Angular CLI after building the client-side application.
 The resulting distribution has to be executed in a node environment.
 The _server.js_ executable handles client requests on the server and pre-renders the content of the page, basically executing everything in a _Node.js_ environment.
 The resulting initial page response to the browser is mainly prepared and can be displayed quickly on the client side while the client-side application is booting up.
-With the introduction of the non-destructive [Client Hydration](https://angular.io/guide/hydration) in Angular V16 the server side rendered application is restored on the client, reusing the server-rendered DOM structures, preserving the application state, transferring application data that was already retrieved by the server, and other processes.
+With the introduction of the non-destructive [Client Hydration](https://angular.io/guide/hydration) in Angular V17 the server side rendered application is restored on the client, reusing the server-rendered DOM structures, preserving the application state, transferring application data that was already retrieved by the server, and other processes.
 This leads to significant performance improvements.
 
 ![Angular-ServerSideRendering-Sequence](deployment-angular-serversiderendering-sequence.jpg 'Angular-ServerSideRendering-Sequence')
@@ -60,9 +60,9 @@ However, browsers and crawlers that do not support JavaScript execution will sti
 - [Concept - Building Blocks][concept-building-blocks]
 - [Concept - Progressive Web App][concept-progressive-web-app]
 - [Angular - Deployment][angular-deployment]
-- [Angular - Universal][angular-universal]
+- [Angular - SSR][angular-ssr]
 
 [angular-deployment]: https://angular.io/guide/deployment
-[angular-universal]: https://angular.io/guide/universal
+[angular-ssr]: https://angular.io/guide/ssr
 [concept-building-blocks]: ./pwa-building-blocks.md
 [concept-progressive-web-app]: ./progressive-web-app.md#service-worker

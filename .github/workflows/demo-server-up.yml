@@ -82,8 +82,8 @@ jobs:
           echo ${{ env.AZURE_WEBAPP_NAME }}
           cat <<EOF > demo-server-links.md
           Azure Demo Servers are available:
-          - [Universal B2B](https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/en/home)
-          - [Universal B2C](https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/b2c/home)
+          - [Demo Server B2B](https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/en/home)
+          - [Demo Server B2C](https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/b2c/home)
           EOF
 
           # Write demo server links to GitHub Step Summary

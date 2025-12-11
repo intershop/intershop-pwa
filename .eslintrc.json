@@ -184,11 +184,11 @@
           },
           {
             "name": "atob",
-            "message": "This is not available in universal mode. Use https://github.com/jacobwgillespie/b64u"
+            "message": "This is not available in SSR mode. Use https://github.com/jacobwgillespie/b64u"
           },
           {
             "name": "btoa",
-            "message": "This is not available in universal mode. Use https://github.com/jacobwgillespie/b64u"
+            "message": "This is not available in SSR mode. Use https://github.com/jacobwgillespie/b64u"
           }
         ],
         "complexity": [

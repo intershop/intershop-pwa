@@ -63,7 +63,7 @@ class IcmCallsCache {
 export const icmCallsCache = new IcmCallsCache();
 
 @Injectable()
-export class UniversalCacheInterceptor implements HttpInterceptor {
+export class SSRCacheInterceptor implements HttpInterceptor {
   constructor(private zone: NgZone) {}
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {

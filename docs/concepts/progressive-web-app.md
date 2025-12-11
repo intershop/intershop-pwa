@@ -35,7 +35,7 @@ node schematics/customization/service-worker true
 ```
 
 To run the project as a Progressive Web App with an enabled [Service Worker](https://angular.io/guide/service-worker-getting-started), use `npm run start` to build and serve the application.
-After that open _http://localhost:4200_ in your browser and test it or run a PWA audit.
-Currently only _localhost_ or _127.0.0.1_ will work with the service worker since it requires _https_ communication on any other domain.
+Next, open _<http://localhost:4200>_ in your browser and test it or run a PWA audit.
+Currently, only _localhost_ or _127.0.0.1_ will work with the service worker since it requires _https_ communication on any other domain.
 
 You can also activate the service worker specifically for docker builds by supplying the build argument `serviceWorker=true`.

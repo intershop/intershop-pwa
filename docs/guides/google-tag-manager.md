@@ -14,7 +14,7 @@ To enable user tracking and setting it up with [Google Tag Manager](https://gith
 >
 > Please refer to the [angulartics2 documentation](https://github.com/angulartics/angulartics2#usage) for information on how to enable tracking for additional events (e.g. e-commerce events).
 
-This feature only works in combination with Server Side Rendering, where the initial tracking configuration is set if the feature is enabled.
+This feature only works in combination with server-side rendering, where the initial tracking configuration is set if the feature is enabled.
 
 > [!IMPORTANT]
 > The actual tracking on the client side will only work if the user has given his consent for `tracking` via the cookie banner or setting the according cookie preferences.

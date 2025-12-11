@@ -30,12 +30,12 @@ kb_sync_latest_only
 
 In a complex application like the Intershop Progressive Web App, there are multiple ways and kinds of configuration.
 The complexity increases if you consider that the communication with Intershop Commerce Management has to be coordinated as well.
-In addition, the PWA, when run with Angular Universal, consists of a server-side and a client-side application.
+In addition, the PWA, when run with Angular SSR, consists of a server-side and a client-side application.
 
 ## Ways of Configuring Angular Applications
 
 > [!WARNING]
-> If available, always prefer configuration via system environment variables and running the PWA with Universal Rendering.
+> If available, always prefer configuration via system environment variables and running the PWA with server-side rendering.
 
 ### Angular CLI Environments
 
@@ -75,7 +75,7 @@ As can be seen here, only build-time and deploy-time configuration parameters ca
 
 ### Node.js Environment Variables
 
-When running the application in Angular Universal mode within a _Node.js_ environment, we can additionally access the process environment variables via _process.env_.
+When running the application in Angular SSR mode within a _Node.js_ environment, we can additionally access the process environment variables via _process.env_.
 This method provides a way to configure the application at deploy time, e.g., when using Docker images.
 Configuration can then be consumed and passed to the client side via state transfer using Angular's [TransferState](https://angular.io/api/core/TransferState).
 
@@ -158,7 +158,7 @@ This can be done by modifying environment files or by setting the environment va
 The latter is the preferred way.
 See also [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md).
 
-Independent of where and how you deploy the Angular Universal application, be it in a Docker container or plain, running on Azure, with or without service orchestrator, setting the base URL provides the most flexible way of configuring the PWA.
+Independent of where and how you deploy the Angular SSR application, be it in a Docker container or plain, running on Azure, with or without service orchestrator, setting the base URL provides the most flexible way of configuring the PWA.
 Refer to the documentation for mechanisms of your environment on how to set and pass environment variables.
 
 ### Settings for Channels and Applications

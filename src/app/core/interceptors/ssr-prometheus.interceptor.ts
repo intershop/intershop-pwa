@@ -18,7 +18,7 @@ import { InjectSingle } from 'ish-core/utils/injection';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 @Injectable()
-export class UniversalPrometheusInterceptor implements HttpInterceptor {
+export class SSRPrometheusInterceptor implements HttpInterceptor {
   constructor(
     private store: Store,
     @Optional()
