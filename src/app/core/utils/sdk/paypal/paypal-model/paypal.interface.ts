@@ -159,3 +159,19 @@ export interface PayPalCardFieldsComponent extends PayPalCardFieldsComponentCrea
   CVVField(options?: PayPalCardFieldsIndividualFieldOptions): PayPalCardFieldsIndividualField;
   ExpiryField(options?: PayPalCardFieldsIndividualFieldOptions): PayPalCardFieldsIndividualField;
 }
+
+export interface PaypalComponent {
+  /** Renders the component into the specified DOM selector */
+  render(selector?: string): Promise<void>;
+}
+
+export interface PaypalSdk extends PayPalCardFieldsComponentCreateOrder {
+  /** Creates PayPal payment buttons with checkout functionality */
+  Buttons(options: unknown): PaypalComponent;
+  /** Creates PayPal promotional messages (optional, not all SDK versions include this) */
+  Messages?(options: unknown): PaypalComponent;
+  /** Creates PayPal payment marks for alternative payment methods */
+  Marks(options: unknown): PaypalComponent;
+  /** Creates PayPal hosted card input fields */
+  CardFields?(options?: unknown): PaypalComponent;
+}

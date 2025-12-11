@@ -1,10 +1,10 @@
 <div class="row pt-2">
   <div [ngClass]="'col-12'">
     <!-- PayPal Button container -->
-    <div *ngIf="!isCardFieldsComponent(); else CardfieldContainer" [id]="paypalComponentContainerId"></div>
+    <div *ngIf="!isCardFieldsComponent(); else cardFieldsContainer" [id]="paypalComponentContainerId"></div>
 
     <!-- PayPal Card Fields containers -->
-    <ng-template #CardfieldContainer>
+    <ng-template #cardFieldsContainer>
       <div class="card_container">
         <div class="row">
           <div class="col-form-label col-md-4">

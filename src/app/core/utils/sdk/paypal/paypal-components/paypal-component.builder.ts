@@ -1,47 +1,20 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { filter, map, switchMap, take } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalPageType } from 'ish-core/utils/sdk/paypal/paypal-config/paypal-config.service';
+import { PaypalSdk } from 'ish-core/utils/sdk/paypal/paypal-model/paypal.interface';
 
-import { BUTTONS } from './buttons/paypal-buttons';
-import { PayPalCardFieldsService } from './card-fields/card-fields';
-import { PayPalCardFieldsComponentCreateOrder } from './card-fields/paypal-card-fields.interface';
-import { MESSAGES } from './messages/paypal-messages';
-
-/**
- * Represents a rendered PayPal component (buttons, messages, marks, etc.).
- * All PayPal SDK components implement this interface to provide a consistent API.
- */
-export interface PaypalComponent {
-  /** Renders the component into the specified DOM selector */
-  render(selector?: string): Promise<void>;
-}
-
-/**
- * Represents the PayPal JavaScript SDK object loaded from the PayPal CDN.
- * This interface defines the factory methods available on the SDK for creating various PayPal components.
- *
- * The SDK is loaded dynamically and accessed via a namespace on the window object.
- * Each method creates a specific type of PayPal component that can be rendered into the DOM.
- *
- * @see {@link https://developer.paypal.com/docs/checkout/reference/sdk-reference/}
- */
-export interface PaypalSdk extends PayPalCardFieldsComponentCreateOrder {
-  /** Creates PayPal payment buttons with checkout functionality */
-  Buttons(options: unknown): PaypalComponent;
-  /** Creates PayPal promotional messages (optional, not all SDK versions include this) */
-  Messages?(options: unknown): PaypalComponent;
-  /** Creates PayPal payment marks for alternative payment methods */
-  Marks(options: unknown): PaypalComponent;
-  /** Creates PayPal hosted card input fields */
-  CardFields?(options?: unknown): PaypalComponent;
-}
+import { PayPalButtons } from './buttons/paypal-buttons';
+import { PayPalCardFields } from './card-fields/card-fields';
+import { PayPalMessages } from './messages/paypal-messages';
 
 /**
  * Configuration object for creating PayPal components.
@@ -62,6 +35,8 @@ export interface PaypalComponentsConfig {
   paypalPaymentMethod?: PaymentMethod;
   /** Amount to be used in the component (required for messages) */
   amount?: number;
+  /** container id of rendering div */
+  containerId?: string;
   /** Callback function to select PayPal as the payment method */
   selectPaypalPaymentMethod?(id: string): void;
 }
@@ -93,13 +68,14 @@ export class PaypalComponentBuilder {
     private router: Router,
     private checkoutFacade: CheckoutFacade,
     private shoppingFacade: ShoppingFacade,
-    private payPalCardFieldsService: PayPalCardFieldsService
+    private paymentService: PaymentService,
+    private translateService: TranslateService
   ) {}
 
   /**
    * Creates a PayPal component based on the provided configuration.
    */
-  get(config: PaypalComponentsConfig): PaypalComponent {
+  build(config: PaypalComponentsConfig): Promise<void> {
     const paypalObject = (window as unknown as Record<string, PaypalSdk>)[config.scriptNamespace];
 
     if (!paypalObject) {
@@ -108,19 +84,23 @@ export class PaypalComponentBuilder {
 
     switch (config.componentType) {
       case 'buttons':
-        return paypalObject.Buttons(BUTTONS(config, this.getBasket(), this.checkoutFacade, this.ngZone, this.router));
+        return new PayPalButtons(
+          config,
+          this.getBasket(),
+          this.checkoutFacade,
+          this.ngZone,
+          this.router
+        ).renderButtons();
       case 'messages':
-        return paypalObject.Messages(MESSAGES({ ...config, amount: this.getAmount(config) }));
+        return new PayPalMessages({ ...config, amount: this.getAmount(config) }).renderMessages();
       case 'cardFields':
-        this.render(config.scriptNamespace, config.paypalPaymentMethod);
-        return <PaypalComponent>{};
+        return new PayPalCardFields(this.ngZone, this.paymentService, this.translateService).renderCardFields(
+          config.scriptNamespace,
+          config.paypalPaymentMethod
+        );
       default:
-        return <PaypalComponent>{};
+        return Promise.reject(new Error(`Unsupported PayPal component type: ${config.componentType}`));
     }
-  }
-
-  render(scriptNamespace: string, paymentMethod: PaymentMethod): Promise<void> {
-    return this.payPalCardFieldsService.renderCardFields(scriptNamespace, paymentMethod);
   }
 
   private getAmount(config: PaypalComponentsConfig): number {

@@ -71,7 +71,7 @@ export const PAYPAL_CART_FIELDS_STYLING = {
     'font-family': 'inherit',
     'border-radius': '0',
     padding: '0.375rem 0.75rem',
-    color: 'blue',
+    color: 'inherit',
   },
-  '.invalid': { color: 'purple' },
+  '.invalid': { color: 'inherit' },
 };

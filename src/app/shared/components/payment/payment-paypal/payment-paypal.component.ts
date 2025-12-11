@@ -96,7 +96,12 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
         .subscribe(paymentMethod => {
           if (this.componentType === 'cardFields') {
             this.paypalComponentBuilder
-              .render(this.scriptNamespace, paymentMethod)
+              .build({
+                scriptNamespace: this.scriptNamespace,
+                componentType: this.componentType,
+                pageType: this.page,
+                paypalPaymentMethod: paymentMethod,
+              })
               .then(() => {
                 this.rendered = true;
               })
@@ -110,22 +115,20 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
                 }
               });
           } else {
-            const paypalComponent = this.paypalComponentBuilder.get({
-              scriptNamespace: this.scriptNamespace,
-              componentType: this.componentType,
-              pageType: this.page,
-              paypalPaymentMethod: paymentMethod,
-              selectPaypalPaymentMethod: (id: string) => this.selectPaypalPaymentMethod.emit(id),
-            });
-
-            paypalComponent
-              .render(`#${this.paypalComponentContainerId}`)
+            this.paypalComponentBuilder
+              .build({
+                scriptNamespace: this.scriptNamespace,
+                componentType: this.componentType,
+                pageType: this.page,
+                paypalPaymentMethod: paymentMethod,
+                selectPaypalPaymentMethod: (id: string) => this.selectPaypalPaymentMethod.emit(id),
+                containerId: this.paypalComponentContainerId,
+              })
               .then(() => {
                 this.rendered = true;
               })
-              .catch((error: string) => {
+              .catch(() => {
                 this.renderError = true;
-                console.error('PayPal CardFields render failed:', error);
               });
           }
         });

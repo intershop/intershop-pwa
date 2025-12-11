@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { switchMap } from 'rxjs';
 
@@ -6,48 +6,9 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PAYPAL_CART_FIELDS_STYLING } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.styling';
+import { PayPalCardFieldsComponent } from 'ish-core/utils/sdk/paypal/paypal-model/paypal.interface';
 
-import { PayPalCardFieldsComponent } from './paypal-card-fields.interface';
-
-/**
- * Configuration interface for PayPal card fields styling
- */
-export interface CardFieldsStyleConfig {
-  input?: {
-    'font-size'?: string;
-    'font-family'?: string;
-    'font-weight'?: string;
-    color?: string;
-  };
-  '.invalid'?: {
-    color?: string;
-  };
-}
-
-/**
- * Configuration interface for PayPal card fields
- */
-export interface CardFieldsConfig {
-  createOrder(): Promise<string>;
-  onApprove(data: { orderID: string }): Promise<void>;
-  onError?(error: unknown): void;
-  style?: CardFieldsStyleConfig;
-}
-
-/**
- * PayPal Card Fields service for handling PayPal hosted card input fields.
- *
- * This service provides TypeScript/Angular integration for PayPal's CardFields component,
- * which allows secure collection of credit card information through hosted fields.
- *
- * Key features:
- * - Secure hosted card input fields (name, number, CVV, expiry)
- * - Integration with PayPal's payment processing
- * - Customizable styling and validation
- * - Angular-compatible error handling and navigation
- */
-@Injectable({ providedIn: 'root' })
-export class PayPalCardFieldsService {
+export class PayPalCardFields {
   paymentMethod: PaymentMethod;
   private paymentInstrumentId: string;
   private cardType: string;
