@@ -49,7 +49,7 @@ describe('Edit and Display Custom Fields on Cart and Checkout B2B', () => {
 
   it('should allow the user to enter a basket custom form field value', () => {
     at(CartPage, page => {
-      page.basketCustomFieldsToggleLink.click();
+      page.basketCustomFieldsToggleLink.click({ scrollBehavior: false });
       page.basketCustomFieldsForm.should('be.visible');
 
       page.submitBasketCustomFieldValue(_.projectNumber);
