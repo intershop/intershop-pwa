@@ -19,6 +19,7 @@ import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-meth
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { Payment } from 'ish-core/models/payment/payment.model';
+import { Paypal3Ds } from 'ish-core/models/paypal-3ds/paypal-3ds.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -443,17 +444,63 @@ export class PaymentService {
       take(1),
       switchMap(currentLocale => {
         const body = {
-          returnUrl: `${loc}/checkout/payment;lang=${currentLocale}?redirect=success`,
-          cancelUrl: `${loc}/checkout/payment;lang=${currentLocale}?redirect=cancel`,
+          redirect: {
+            returnUrl: `${loc}/checkout/payment;lang=${currentLocale}?redirect=success`,
+            cancelUrl: `${loc}/checkout/payment;lang=${currentLocale}?redirect=cancel`,
+          },
         };
 
         return this.apiService
           .currentBasketEndpoint()
-          .put<{ data: { orderId: string } }>('payments/open-tender/paypal-3ds', body, {
+          .put<{ data: Paypal3Ds }>('payments/open-tender/paypal-3ds', body, {
             headers: this.basketHeaders,
           })
           .pipe(map(response => response.data.orderId));
       })
     );
+  }
+
+  approvePayPal3DSecure(paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
+    return this.apiService
+      .currentBasketEndpoint()
+      .get<{ data: Paypal3Ds }>('payments/open-tender/paypal-3ds', {
+        headers: this.basketHeaders,
+      })
+      .pipe(
+        map(response => {
+          const paypal3Ds = response.data;
+          return {
+            parameters: [
+              {
+                name: 'orderId',
+                value: paypal3Ds.orderId,
+              },
+              {
+                name: 'brand',
+                value: paypal3Ds.card?.brand || '',
+              },
+              { name: 'expiry', value: paypal3Ds.card?.expiry || '' },
+              {
+                name: 'lastDigits',
+                value: paypal3Ds.card?.lastDigits || '',
+              },
+              {
+                name: 'name',
+                value: paypal3Ds.card?.name || '',
+              },
+            ],
+          };
+        }),
+        switchMap(body =>
+          this.apiService
+            .currentBasketEndpoint()
+            .patch<{ data: PaymentInstrument }>(
+              `payment-instruments/${this.apiService.encodeResourceId(paymentInstrument.id)}`,
+              body,
+              { headers: this.basketHeaders }
+            )
+            .pipe(map(({ data }) => data))
+        )
+      );
   }
 }
