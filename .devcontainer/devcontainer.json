@@ -27,7 +27,6 @@
         // general
         "vscode-icons-team.vscode-icons",
         // code assist
-        "visualstudioexptteam.vscodeintellicode",
         "angular.ng-template",
         "mikael.angular-beastcode",
         // code style + formatting
