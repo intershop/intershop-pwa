@@ -48,6 +48,20 @@ This table lists all variables that were removed and their replacements:
 | $datepicker-active-bg     | -                    |
 | $datepicker-active-hover  | -                    |
 
+With Intershop PWA 10.0.0, we updated the project to support Angular 17.
+The upgrade replaces Angular Universal with the new `@angular/ssr` package.
+In addition, several dependencies (including NgRx and `@ngx-translate`) have also been updated.
+
+Key changes include:
+
+- Updated the import for `glob` in scripts
+- Refactored test files to use `provideRouter()` instead of the deprecated `RouterTestingModule`
+- Moved `concatLatestFrom` imports from `@ngrx/effects` to `@ngrx/operators`
+- Removed extra closing tags for empty elements in HTML templates
+- Updated Angular compiler options in `tsconfig.json`
+
+Find more details about the Angular 17 update in the [Angular Update Guide](https://angular.dev/update-guide?v=16.0-17.0&l=3).
+
 ## From 9.0.0 to 9.1.0
 
 Catalogs (root-level categories in ICM terminology) with _Show In Menu_ being disabled are now hidden from the main header navigation.
