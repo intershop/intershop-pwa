@@ -3,44 +3,51 @@
   <div class="row">
     <div class="col-md-4 col-form-label">{{ 'account.user.details.profile.role_permissions.heading' | translate }}</div>
     <div class="col-md-8">
-      <div *ngIf="form$ | async as form" class="row" [formGroup]="form">
-        <ng-container *ngFor="let item of form.controls | keyvalue : unsorted; let i = index">
-          <div
-            *ngIf="role$(item.key) | async as role"
-            [ngClass]="{ 'd-none': hideRole(form.get(item.key)) }"
-            class="col-12"
-          >
-            <div class="form-control-checkbox">
-              <div class="form-check form-control">
-                <label [for]="item.key" class="mb-2">
-                  <input type="checkbox" [id]="item.key" [formControlName]="item.key" class="form-check-input" />
-                  <span>{{ role.displayName }}</span
-                  ><br />
-                  <span *ngIf="role.description" class="input-help">{{ role.description }}</span>
-                </label>
-              </div>
+      @if (form$ | async; as form) {
+      <div class="row" [formGroup]="form">
+        @for (item of form.controls | keyvalue : unsorted; track item; let i = $index) { @if (role$(item.key) | async;
+        as role) {
+        <div [ngClass]="{ 'd-none': hideRole(form.get(item.key)) }" class="col-12">
+          <div class="form-control-checkbox">
+            <div class="form-check form-control">
+              <label [for]="item.key" class="mb-2">
+                <input type="checkbox" [id]="item.key" [formControlName]="item.key" class="form-check-input" />
+                <span>{{ role.displayName }}</span
+                ><br />
+                @if (role.description) {
+                <span class="input-help">{{ role.description }}</span>
+                }
+              </label>
             </div>
-
-            <ul *ngIf="isExpanded[i]" data-testing-id="user_permissions">
-              <li *ngFor="let p of role.permissionDisplayNames">{{ p }}</li>
-            </ul>
-            <p>
-              <!-- Expand/Collapse user permissions -->
-              <button type="button" (click)="toggleExpanded(i)" class="btn btn-link btn-link-with-icon btn-link-action">
-                <ng-container *ngIf="isExpanded[i]; else show_permissions_link">
-                  {{ 'account.user.details.profile.role.hide_permissions.link' | translate
-                  }}<fa-icon [icon]="['fas', 'angle-up']" />
-                </ng-container>
-
-                <ng-template #show_permissions_link>
-                  {{ 'account.user.details.profile.role.show_permissions.link' | translate
-                  }}<fa-icon [icon]="['fas', 'angle-down']" />
-                </ng-template>
-              </button>
-            </p>
           </div>
-        </ng-container>
+
+          @if (isExpanded[i]) {
+          <ul data-testing-id="user_permissions">
+            @for (p of role.permissionDisplayNames; track p) {
+            <li>{{ p }}</li>
+            }
+          </ul>
+          }
+          <p>
+            <!-- Expand/Collapse user permissions -->
+            <button type="button" (click)="toggleExpanded(i)" class="btn btn-link btn-link-with-icon btn-link-action">
+              @if (isExpanded[i]) {
+
+              {{ 'account.user.details.profile.role.hide_permissions.link' | translate
+              }}<fa-icon [icon]="['fas', 'angle-up']" />
+
+              } @else {
+
+              {{ 'account.user.details.profile.role.show_permissions.link' | translate
+              }}<fa-icon [icon]="['fas', 'angle-down']" />
+
+              }
+            </button>
+          </p>
+        </div>
+        } }
       </div>
+      }
     </div>
   </div>
 </fieldset>

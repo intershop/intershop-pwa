@@ -37,4 +37,6 @@
 
 <ish-wishlist-preferences-dialog #addWishlistDialog (submitWishlist)="addWishlist($event)" />
 
-<ish-loading *ngIf="wishlistLoading$ | async" />
+@if (wishlistLoading$ | async) {
+<ish-loading />
+}

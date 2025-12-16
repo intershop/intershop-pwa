@@ -1,29 +1,29 @@
-<div *ngIf="visible$ | async" class="bundled-product-list">
+@if (visible$ | async) {
+<div class="bundled-product-list">
   <h2 class="h3">{{ 'product.productBundle.products.heading' | translate }}</h2>
-
   <div class="product-list row">
-    <ng-container *ngFor="let part of parts$ | async">
-      <div class="col-lg-8 product-list-item list-view">
-        <ish-product-item
-          displayType="row"
-          ishProductContext
-          [sku]="part.sku"
-          [quantity]="part.quantity"
-          [configuration]="{
-            readOnly: true,
-            price: false,
-            inventory: false,
-            shipment: false,
-            promotions: false,
-            addToBasket: false,
-            addToWishlist: false,
-            addToOrderTemplate: false,
-            addToQuote: false,
-            addToCompare: false
-          }"
-        />
-      </div>
-    </ng-container>
+    @for (part of parts$ | async; track part) {
+    <div class="col-lg-8 product-list-item list-view">
+      <ish-product-item
+        displayType="row"
+        ishProductContext
+        [sku]="part.sku"
+        [quantity]="part.quantity"
+        [configuration]="{
+          readOnly: true,
+          price: false,
+          inventory: false,
+          shipment: false,
+          promotions: false,
+          addToBasket: false,
+          addToWishlist: false,
+          addToOrderTemplate: false,
+          addToQuote: false,
+          addToCompare: false
+        }"
+      />
+    </div>
+    }
   </div>
   <div class="product-info">
     <div class="col align-self-start g-0">
@@ -31,3 +31,4 @@
     </div>
   </div>
 </div>
+}

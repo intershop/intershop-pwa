@@ -22,7 +22,6 @@ describe('Horizontal Wrapper Component', () => {
         }),
         FormlyTestingComponentsModule,
       ],
-      declarations: [HorizontalWrapperComponent],
     }).compileComponents();
   });
 

@@ -1,9 +1,11 @@
 <div [formGroup]="payoneCreditCardForm">
   <!-- This element is used by Payone scripts for error handling. -->
   <p class="text-danger col-sm-offset-4" id="error"></p>
-  <p *ngIf="generalErrorMessage" class="text-danger col-sm-offset-4">
+  @if (generalErrorMessage) {
+  <p class="text-danger col-sm-offset-4">
     {{ generalErrorMessage | translate }}
   </p>
+  }
   <!-- card number -->
   <div class="row form-group">
     <label class="col-form-label col-md-4" for="cardpanInput"
@@ -38,7 +40,8 @@
   </div>
 
   <!-- security code CVC -->
-  <div *ngIf="isSecurityCodeCheckRequired()" class="row form-group">
+  @if (isSecurityCodeCheckRequired()) {
+  <div class="row form-group">
     <label class="col-form-label col-md-4" for="cvcInput"
       >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required" aria-hidden="true">*</span></label
     >
@@ -46,9 +49,12 @@
       <span id="cardcvc2" class="inputIframe"></span>
     </div>
   </div>
+  }
 </div>
 
-<ish-payment-save-checkbox *ngIf="paymentMethod" [paymentMethod]="paymentMethod" [form]="payoneCreditCardForm" />
+@if (paymentMethod) {
+<ish-payment-save-checkbox [paymentMethod]="paymentMethod" [form]="payoneCreditCardForm" />
+}
 
 <div class="row">
   <div class="offset-md-4 col-md-8">

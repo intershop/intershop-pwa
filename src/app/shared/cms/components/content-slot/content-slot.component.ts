@@ -14,9 +14,11 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-view.mo
  * <ish-content-slot [slot]="'app_pwa:slot.pagelet2-Slot'" [pagelet]="pagelet"></ish-content-slot>
  *
  * <ish-content-slot [wrapper]="true" [slot]="'app_pwa:slot.pagelet2-Slot'" [pagelet]="pagelet">
- *               <div *ngFor="let slotPagelet of slotPagelets">
- *                 <ish-content-pagelet [pageletId]="slotPagelet"></ish-content-pagelet>
- *               </div>
+ *   @for (slotPagelet of slotPagelets; track slotPagelet) {
+ *     <div>
+ *       <ish-content-pagelet [pageletId]="slotPagelet"></ish-content-pagelet>
+ *     </div>
+ *   }
  * </ish-content-slot>
  */
 @Component({

@@ -1,5 +1,7 @@
 <ul class="category-list row">
-  <li *ngFor="let category of categories" class="category-list-item col-6 col-lg-4">
+  @for (category of categories; track category) {
+  <li class="category-list-item col-6 col-lg-4">
     <ish-category-tile [categoryUniqueId]="category" />
   </li>
+  }
 </ul>

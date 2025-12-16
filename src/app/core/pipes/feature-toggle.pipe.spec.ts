@@ -8,10 +8,15 @@ import { FeatureTogglePipe } from './feature-toggle.pipe';
 @Component({
   template: `
     <div>unrelated</div>
-    <div *ngIf="'feature1' | ishFeature">content1</div>
-    <div *ngIf="'feature2' | ishFeature">content2</div>
-    <div *ngIf="'always' | ishFeature">contentAlways</div>
-    <div *ngIf="'never' | ishFeature">contentNever</div>
+    @if ('feature1' | ishFeature) {
+    <div>content1</div>
+    } @if ('feature2' | ishFeature) {
+    <div>content2</div>
+    } @if ('always' | ishFeature) {
+    <div>contentAlways</div>
+    } @if ('never' | ishFeature) {
+    <div>contentNever</div>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

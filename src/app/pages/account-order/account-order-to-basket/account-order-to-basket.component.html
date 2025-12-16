@@ -7,13 +7,12 @@
     (click)="addOrderToBasket()"
     data-testing-id="addOrderToBasketButton"
   >
-    <ng-container *ngIf="displaySpinner() !== true; else spinning">
-      {{ 'account.orderdetails.add_to_cart.button.label' | translate }}
-    </ng-container>
+    @if (displaySpinner() !== true) {
+    {{ 'account.orderdetails.add_to_cart.button.label' | translate }}
     <!-- spinning animation after clicking button -->
-    <ng-template #spinning>
-      <fa-icon [icon]="['fas', 'spinner']" [spin]="true" ngClass="pe-3" />
-      <span>{{ 'common.button.spinning.label' | translate }}</span></ng-template
-    >&nbsp;
+    } @else {
+    <fa-icon [icon]="['fas', 'spinner']" [spin]="true" ngClass="pe-3" />
+    <span>{{ 'common.button.spinning.label' | translate }}</span>
+    }&nbsp;
   </button>
 </div>

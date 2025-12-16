@@ -4,10 +4,12 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
  * Displays paging information for robots.
  *
  * @example
- *  <ish-product-list-paging *ngIf="displayPaging$ | async"
- *    [currentPage]="currentPage$ | async"
- *    [pageIndices]="pageIndices$ | async"
- *  ></ish-product-list-paging>
+ * @if (displayPaging$ | async) {
+ *   <ish-product-list-paging
+ *     [currentPage]="currentPage$ | async"
+ *     [pageIndices]="pageIndices$ | async"
+ *   ></ish-product-list-paging>
+ * }
  */
 @Component({
   selector: 'ish-product-list-paging',

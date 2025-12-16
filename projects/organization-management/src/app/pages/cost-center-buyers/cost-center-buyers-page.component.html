@@ -6,63 +6,62 @@
   -->
 <ish-error-message [error]="error$ | async" />
 
-<ng-container *ngIf="buyers$ | async as buyers; else emptyList">
-  <div *ngIf="buyers.length; else emptyList">
-    <div class="container">
-      <div class="row list-header d-none d-md-flex">
-        <div class="col-md-2 list-header-item no-seperator">
-          <button type="button" (click)="toggleItemSelection()" class="btn btn-link">
-            <ng-container *ngIf="selectAll; else clearAll">{{
-              'account.costcenter.details.buyers.list.header.selectall' | translate
-            }}</ng-container>
-            <ng-template #clearAll>{{
-              'account.costcenter.details.buyers.list.header.clearall' | translate
-            }}</ng-template>
-          </button>
-        </div>
-        <div class="col-md-3 list-header-item no-seperator">
-          {{ 'account.costcenter.details.buyers.list.header.name' | translate }}
-        </div>
-        <div class="col-md-7 list-header-item no-seperator">
-          {{ 'account.costcenter.details.buyers.list.header.orderspendlimit' | translate }}
-        </div>
+@if (buyers$ | async; as buyers) { @if (buyers.length) {
+<div>
+  <div class="container">
+    <div class="row list-header d-none d-md-flex">
+      <div class="col-md-2 list-header-item no-seperator">
+        <button type="button" (click)="toggleItemSelection()" class="btn btn-link">
+          @if (selectAll) {
+          {{ 'account.costcenter.details.buyers.list.header.selectall' | translate }}
+          } @else {
+          {{ 'account.costcenter.details.buyers.list.header.clearall' | translate }}
+          }
+        </button>
       </div>
+      <div class="col-md-3 list-header-item no-seperator">
+        {{ 'account.costcenter.details.buyers.list.header.name' | translate }}
+      </div>
+      <div class="col-md-7 list-header-item no-seperator">
+        {{ 'account.costcenter.details.buyers.list.header.orderspendlimit' | translate }}
+      </div>
+    </div>
 
-      <form [formGroup]="form" (ngSubmit)="submitForm()" #buyersForm="ngForm" novalidate>
-        <div class="list-body">
-          <formly-form [model]="model" [fields]="fields" [form]="form" class="pt-1" />
-        </div>
-        <div class="row">
-          <div class="button-group w-100 gx-0 clearfix">
-            <div class="float-md-end">
-              <button
-                type="submit"
-                class="btn btn-primary"
-                [disabled]="formDisabled || (buyersForm.submitted && form.invalid)"
-                data-testing-id="add-buyers-submit"
-              >
-                {{ 'account.costcenter.details.buyers.action.add' | translate }}
-              </button>
-              <a routerLink="../" class="btn btn-secondary" data-testing-id="add-cost-center-buyers-cancel">{{
-                'account.cancel.link' | translate
-              }}</a>
-            </div>
+    <form [formGroup]="form" (ngSubmit)="submitForm()" #buyersForm="ngForm" novalidate>
+      <div class="list-body">
+        <formly-form [model]="model" [fields]="fields" [form]="form" class="pt-1" />
+      </div>
+      <div class="row">
+        <div class="button-group w-100 gx-0 clearfix">
+          <div class="float-md-end">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="formDisabled || (buyersForm.submitted && form.invalid)"
+              data-testing-id="add-buyers-submit"
+            >
+              {{ 'account.costcenter.details.buyers.action.add' | translate }}
+            </button>
+            <a routerLink="../" class="btn btn-secondary" data-testing-id="add-cost-center-buyers-cancel">{{
+              'account.cancel.link' | translate
+            }}</a>
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
-</ng-container>
-<ng-template #emptyList>
-  <p *ngIf="!!(error$ | async) === false" data-testing-id="empty-buyer-list">
-    {{ 'account.costcenter.details.add.buyers.list.empty' | translate }}
-  </p>
+</div>
+} @else { @if (!!(error$ | async) === false) {
+<p data-testing-id="empty-buyer-list">
+  {{ 'account.costcenter.details.add.buyers.list.empty' | translate }}
+</p>
+}
 
-  <div class="section text-end">
-    <a routerLink="../" class="btn btn-secondary" data-testing-id="add-cost-center-buyers-cancel">{{
-      'account.cancel.link' | translate
-    }}</a>
-  </div>
-</ng-template>
-
-<ish-loading *ngIf="loading$ | async" />
+<div class="section text-end">
+  <a routerLink="../" class="btn btn-secondary" data-testing-id="add-cost-center-buyers-cancel">{{
+    'account.cancel.link' | translate
+  }}</a>
+</div>
+} } @if (loading$ | async) {
+<ish-loading />
+}

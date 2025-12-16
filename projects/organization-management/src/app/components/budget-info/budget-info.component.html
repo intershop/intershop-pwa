@@ -7,8 +7,8 @@
   >
   </span
 ></ng-template>
+@if ('services.OrderApprovalServiceDefinition.runnable' | ishServerSetting) {
 <button
-  *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
   type="button"
   class="btn btn-link budget-info"
   [ngbPopover]="BudgetPriceTypeInfo"
@@ -18,3 +18,4 @@
 >
   <fa-icon [icon]="['fas', 'info-circle']" />
 </button>
+}

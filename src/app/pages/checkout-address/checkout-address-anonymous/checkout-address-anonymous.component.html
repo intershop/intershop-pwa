@@ -33,11 +33,12 @@
 
     <!-- checkout as guest -->
     <ng-container *ishFeature="'guestCheckout'">
-      <div *ngIf="!isRecurringOrder()" data-testing-id="guest-checkout">
+      @if (!isRecurringOrder()) {
+      <div data-testing-id="guest-checkout">
         <h2>{{ 'checkout.addresses.checkout_as_guest.heading' | translate }}</h2>
         <p>{{ 'checkout.address.anonymous.guestcheckout.text' | translate }}</p>
+        @if (isAddressFormCollapsed) {
         <button
-          *ngIf="isAddressFormCollapsed"
           class="btn btn-secondary"
           type="button"
           (click)="showAddressForm()"
@@ -47,7 +48,7 @@
         >
           {{ 'checkout.addresses.checkout_as_guest.heading' | translate }}
         </button>
-
+        }
         <!-- create address form -->
         <div
           id="collapseBasic"
@@ -66,14 +67,11 @@
             <ish-checkout-address-anonymous-form [parentForm]="form" />
             <div [ngClass]="{ 'row form-group': isShippingAddressFormExpanded }">
               <div [ngClass]="{ 'offset-md-4 col-md-8': isShippingAddressFormExpanded }">
-                <div
-                  *ngIf="form.invalid && addressForm.submitted"
-                  id="checkout-button-help"
-                  aria-live="polite"
-                  class="visually-hidden"
-                >
+                @if (form.invalid && addressForm.submitted) {
+                <div id="checkout-button-help" aria-live="polite" class="visually-hidden">
                   {{ 'checkout.continue.validation.message' | translate }}
                 </div>
+                }
                 <button
                   class="btn btn-primary"
                   type="submit"
@@ -89,6 +87,7 @@
           </form>
         </div>
       </div>
+      }
     </ng-container>
   </div>
 </div>

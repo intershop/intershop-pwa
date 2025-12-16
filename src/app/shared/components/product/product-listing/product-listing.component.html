@@ -1,60 +1,57 @@
-<a *ngIf="fragmentOnRouting === 'product-list-top'" id="product-list-top" title="top"></a>
-<ng-container *ngIf="productListingView$ | async as listing">
-  <div
-    *ngIf="isEndlessScrolling"
-    infiniteScroll
-    (scrolled)="loadMoreProducts('down')"
-    (scrolledUp)="loadMoreProducts('up')"
-    [alwaysCallback]="true"
-    [immediateCheck]="true"
-    [infiniteScrollDistance]="scrollDistance"
-  >
+@if (fragmentOnRouting === 'product-list-top') {
+<a id="product-list-top" title="top"></a>
+} @if (productListingView$ | async; as listing) { @if (isEndlessScrolling) {
+<div
+  infiniteScroll
+  (scrolled)="loadMoreProducts('down')"
+  (scrolledUp)="loadMoreProducts('up')"
+  [alwaysCallback]="true"
+  [immediateCheck]="true"
+  [infiniteScrollDistance]="scrollDistance"
+>
+  <ish-product-list-toolbar
+    [itemCount]="listing.itemCount"
+    [sortableAttributes]="listing.sortableAttributes"
+    [viewType]="viewType$ | async"
+    [sortBy]="sortBy$ | async"
+    [fragmentOnRouting]="fragmentOnRouting"
+  />
+  <ish-product-list [products]="listing.products()" [categoryId]="categoryId" [viewType]="viewType$ | async" />
+  <div class="row justify-content-center">
+    @if (!listing.allPagesAvailable()) {
+    <ish-product-list-paging
+      [currentPage]="listing.lastPage"
+      [pageIndices]="listing.pageIndices()"
+      [fragmentOnRouting]="fragmentOnRouting"
+    />
+    }
+  </div>
+</div>
+} @if (isPaging) {
+<div>
+  @if (currentPage$ | async; as currentPage) {
+  <ng-template #pagingToolbar>
     <ish-product-list-toolbar
       [itemCount]="listing.itemCount"
       [sortableAttributes]="listing.sortableAttributes"
       [viewType]="viewType$ | async"
       [sortBy]="sortBy$ | async"
+      [currentPage]="currentPage"
+      [pageIndices]="listing.pageIndices(currentPage)"
       [fragmentOnRouting]="fragmentOnRouting"
+      [isPaging]="true"
     />
-
-    <ish-product-list [products]="listing.products()" [categoryId]="categoryId" [viewType]="viewType$ | async" />
-
-    <div class="row justify-content-center">
-      <ish-product-list-paging
-        *ngIf="!listing.allPagesAvailable()"
-        [currentPage]="listing.lastPage"
-        [pageIndices]="listing.pageIndices()"
-        [fragmentOnRouting]="fragmentOnRouting"
-      />
-    </div>
-  </div>
-
-  <div *ngIf="isPaging">
-    <ng-container *ngIf="currentPage$ | async as currentPage">
-      <ng-template #pagingToolbar>
-        <ish-product-list-toolbar
-          [itemCount]="listing.itemCount"
-          [sortableAttributes]="listing.sortableAttributes"
-          [viewType]="viewType$ | async"
-          [sortBy]="sortBy$ | async"
-          [currentPage]="currentPage"
-          [pageIndices]="listing.pageIndices(currentPage)"
-          [fragmentOnRouting]="fragmentOnRouting"
-          [isPaging]="true"
-        />
-      </ng-template>
-
-      <ng-container *ngTemplateOutlet="pagingToolbar" />
-
-      <ish-product-list
-        [products]="listing.productsOfPage(currentPage)"
-        [categoryId]="categoryId"
-        [viewType]="viewType$ | async"
-      />
-
-      <ish-loading *ngIf="listingLoading$ | async" [standalone]="true" />
-
-      <ng-container *ngTemplateOutlet="pagingToolbar" />
-    </ng-container>
-  </div>
-</ng-container>
+  </ng-template>
+  <ng-container *ngTemplateOutlet="pagingToolbar" />
+  <ish-product-list
+    [products]="listing.productsOfPage(currentPage)"
+    [categoryId]="categoryId"
+    [viewType]="viewType$ | async"
+  />
+  @if (listingLoading$ | async) {
+  <ish-loading [standalone]="true" />
+  }
+  <ng-container *ngTemplateOutlet="pagingToolbar" />
+  }
+</div>
+} }

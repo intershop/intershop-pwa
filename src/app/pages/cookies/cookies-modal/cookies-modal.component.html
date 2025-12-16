@@ -5,7 +5,8 @@
   </div>
 
   <div class="modal-body">
-    <div *ngFor="let option of cookieConsentOptions?.options | keyvalue : unsorted" class="cookie-option">
+    @for (option of cookieConsentOptions?.options | keyvalue : unsorted; track option) {
+    <div class="cookie-option">
       <label class="mb-2">
         <input
           type="checkbox"
@@ -18,6 +19,7 @@
       </label>
       <p>{{ option.value.description | translate }}</p>
     </div>
+    }
   </div>
 
   <div class="modal-footer">

@@ -7,5 +7,7 @@
     <ish-account-payment [paymentMethods]="paymentMethods$ | async" [user]="user$ | async" />
   </ng-container>
 
-  <ish-loading *ngIf="loading$ | async" />
+  @if (loading$ | async) {
+  <ish-loading />
+  }
 </div>

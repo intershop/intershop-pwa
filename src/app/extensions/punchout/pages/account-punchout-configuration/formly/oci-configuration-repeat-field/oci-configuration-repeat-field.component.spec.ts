@@ -20,7 +20,6 @@ describe('Oci Configuration Repeat Field Component', () => {
         }),
         FormlyTestingComponentsModule,
       ],
-      declarations: [OciConfigurationRepeatFieldComponent],
     }).compileComponents();
   });
 

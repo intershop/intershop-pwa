@@ -14,11 +14,9 @@
 
   <ish-error-message [error]="promotionError$ | async" [toast]="toast" />
 
-  <ish-success-message
-    *ngIf="displaySuccessMessage"
-    message="shopping_cart.promotion.qualified_promo.text"
-    [toast]="toast"
-  />
+  @if (displaySuccessMessage) {
+  <ish-success-message message="shopping_cart.promotion.qualified_promo.text" [toast]="toast" />
+  }
 
   <div id="promo-code-input" class="promo-code-input" [ngbCollapse]="isCollapsed" data-testing-id="promo-code-form">
     <input

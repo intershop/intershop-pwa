@@ -22,7 +22,6 @@ describe('Input Addon Wrapper Component', () => {
         }),
         FormlyTestingComponentsModule,
       ],
-      declarations: [InputAddonWrapperComponent],
     }).compileComponents();
   });
 

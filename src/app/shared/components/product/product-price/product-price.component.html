@@ -1,83 +1,71 @@
-<ng-container *ngIf="visible$ | async">
-  <ng-container *ngIf="isPriceRange$ | async; then priceRange; else singlePrice" />
-</ng-container>
-
-<ng-template #singlePrice>
-  <ng-container *ngIf="data$ | async as d">
-    <div
-      class="current-price"
-      [ngClass]="{
-        'sale-price': showInformationalPrice && d.isListPriceGreaterThanSalePrice,
-        'sale-price-higher': showInformationalPrice && d.isListPriceLessThanSalePrice
-      }"
-      data-testing-id="current-price"
-    >
-      <ng-container *ngIf="d.salePrice; else salePriceNotAvailable">
-        {{
-          (d.isListPriceGreaterThanSalePrice
-            ? 'product.price.salePricePrefix.text'
-            : 'product.price.salePriceFallback.text'
-          ) | translate : { '0': d.salePrice | ishPrice }
-        }}
-        <meta itemprop="price" [attr.content]="d.salePrice.value | number : '1.2-2' : 'en_US'" />
-        <meta itemprop="priceCurrency" [attr.content]="d.salePrice.currency" />
-      </ng-container>
-      <ng-template #salePriceNotAvailable> {{ 'product.price.na.text' | translate }} </ng-template>
-    </div>
-
-    <div
-      *ngIf="showInformationalPrice && d.isListPriceGreaterThanSalePrice"
-      class="old-price"
-      data-testing-id="old-price"
-    >
-      <span class="price-value">
-        {{ 'product.price.listPriceFallback.text' | translate : { '0': d.listPrice | ishPrice } }}
-      </span>
-      <span *ngIf="showPriceSavings" class="price-savings">
-        {{ 'product.price.savingsFallback.text' | translate : { '0': d.priceSavings | ishPrice } }}
-      </span>
-    </div>
-
-    <div *ngIf="showScaledPrices && d.scaledPrices?.length" class="scaled-prices" data-testing-id="scaled-prices">
-      <ng-container *ngFor="let scaledPrice of d.scaledPrices; index as i; last as lastScaledPrice">
-        <div *ngIf="lastScaledPrice; else showRange">
-          {{
-            'product.price.scaledPrice.unlimited.text'
-              | translate : { '0': scaledPrice.minQuantity, '1': scaledPrice | ishPrice }
-          }}
-        </div>
-        <ng-template #showRange>
-          <div *ngIf="scaledPrice.minQuantity !== d.scaledPrices[i + 1].minQuantity - 1; else singleScaledPrice">
-            {{
-              'product.price.scaledPrice.range.text'
-                | translate
-                  : {
-                      '0': scaledPrice.minQuantity,
-                      '1': d.scaledPrices[i + 1].minQuantity - 1,
-                      '2': scaledPrice | ishPrice
-                    }
-            }}
-          </div>
-          <ng-template #singleScaledPrice>
-            <div>
-              {{
-                'product.price.scaledPrice.single.text'
-                  | translate
-                    : {
-                        '0': scaledPrice.minQuantity,
-                        '1': scaledPrice | ishPrice
-                      }
-              }}
-            </div>
-          </ng-template>
-        </ng-template>
-      </ng-container>
-    </div>
-  </ng-container>
-</ng-template>
-
-<ng-template #priceRange>
-  <div *ngIf="data$ | async as d" class="current-price" data-testing-id="current-price">
-    {{ d.lowerPrice | ishPrice }} - {{ d.upperPrice | ishPrice }}
+@if (visible$ | async) { @if (isPriceRange$ | async) { @if (data$ | async; as d) {
+<div class="current-price" data-testing-id="current-price">
+  {{ d.lowerPrice | ishPrice }} - {{ d.upperPrice | ishPrice }}
+</div>
+} } @else { @if (data$ | async; as d) {
+<div
+  class="current-price"
+  [ngClass]="{
+    'sale-price': showInformationalPrice && d.isListPriceGreaterThanSalePrice,
+    'sale-price-higher': showInformationalPrice && d.isListPriceLessThanSalePrice
+  }"
+  data-testing-id="current-price"
+>
+  @if (d.salePrice) {
+  {{
+    (d.isListPriceGreaterThanSalePrice ? 'product.price.salePricePrefix.text' : 'product.price.salePriceFallback.text')
+      | translate : { '0': d.salePrice | ishPrice }
+  }}
+  <meta itemprop="price" [attr.content]="d.salePrice.value | number : '1.2-2' : 'en_US'" />
+  <meta itemprop="priceCurrency" [attr.content]="d.salePrice.currency" />
+  } @else {
+  {{ 'product.price.na.text' | translate }}
+  }
+</div>
+@if (showInformationalPrice && d.isListPriceGreaterThanSalePrice) {
+<div class="old-price" data-testing-id="old-price">
+  <span class="price-value">
+    {{ 'product.price.listPriceFallback.text' | translate : { '0': d.listPrice | ishPrice } }}
+  </span>
+  @if (showPriceSavings) {
+  <span class="price-savings">
+    {{ 'product.price.savingsFallback.text' | translate : { '0': d.priceSavings | ishPrice } }}
+  </span>
+  }
+</div>
+} @if (showScaledPrices && d.scaledPrices?.length) {
+<div class="scaled-prices" data-testing-id="scaled-prices">
+  @for (scaledPrice of d.scaledPrices; track scaledPrice; let i = $index; let lastScaledPrice = $last) { @if
+  (lastScaledPrice) {
+  <div>
+    {{
+      'product.price.scaledPrice.unlimited.text'
+        | translate : { '0': scaledPrice.minQuantity, '1': scaledPrice | ishPrice }
+    }}
   </div>
-</ng-template>
+  } @else { @if (scaledPrice.minQuantity !== d.scaledPrices[i + 1].minQuantity - 1) {
+  <div>
+    {{
+      'product.price.scaledPrice.range.text'
+        | translate
+          : {
+              '0': scaledPrice.minQuantity,
+              '1': d.scaledPrices[i + 1].minQuantity - 1,
+              '2': scaledPrice | ishPrice
+            }
+    }}
+  </div>
+  } @else {
+  <div>
+    {{
+      'product.price.scaledPrice.single.text'
+        | translate
+          : {
+              '0': scaledPrice.minQuantity,
+              '1': scaledPrice | ishPrice
+            }
+    }}
+  </div>
+  } } }
+</div>
+} } } }

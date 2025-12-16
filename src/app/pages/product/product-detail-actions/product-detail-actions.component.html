@@ -1,17 +1,21 @@
-<div class="row product-details-top-line justify-content-end" *ngIf="product$ | async as product">
+@if (product$ | async; as product) {
+<div class="row product-details-top-line justify-content-end">
   <div class="col-lg-12">
     <ul class="share-tools">
       <ng-container *ishFeature="'wishlists'">
-        <li *ngIf="configuration$('addToWishlist') | async" [attr.data-testing-id]="'wishlist-' + product.sku">
+        @if (configuration$('addToWishlist') | async) {
+        <li [attr.data-testing-id]="'wishlist-' + product.sku">
           <ish-lazy-product-add-to-wishlist [displayType]="'icon'" />
         </li>
+        }
       </ng-container>
       <ng-container *ishFeature="'compare'">
-        <li *ngIf="configuration$('addToCompare') | async" [attr.data-testing-id]="'compare-' + product.sku">
+        @if (configuration$('addToCompare') | async) {
+        <li [attr.data-testing-id]="'compare-' + product.sku">
           <ish-lazy-product-send-to-compare />
         </li>
+        }
       </ng-container>
-
       <li>
         <a
           href="javascript:window.print();"
@@ -22,7 +26,6 @@
           <fa-icon [icon]="['fas', 'print']" />
         </a>
       </li>
-
       <li>
         <a
           href="mailto:
@@ -36,3 +39,4 @@
     </ul>
   </div>
 </div>
+}

@@ -17,16 +17,19 @@
   </h1>
 </div>
 
-<div *ngIf="basket" class="row">
+@if (basket) {
+<div class="row">
   <!-- Error Message-->
   <div class="col-md-12">
-    <ish-basket-error-message *ngIf="error" [error]="error" />
-    <div *ngIf="multipleBuckets" role="alert" class="alert alert-danger">
+    @if (error) {
+    <ish-basket-error-message [error]="error" />
+    } @if (multipleBuckets) {
+    <div role="alert" class="alert alert-danger">
       {{ 'checkout.shipping.no_methods.message' | translate }}
     </div>
+    }
     <ish-basket-validation-results />
   </div>
-
   <div class="col-md-12 col-lg-8">
     <p>
       {{
@@ -34,13 +37,12 @@
           | translate
       }}
     </p>
-    <ish-basket-approval-info *ngIf="basket.approval" [approval]="basket.approval" />
-
-    <ng-container *ngIf="'shipping.messageToMerchant' | ishServerSetting">
-      <!-- MessageToMerchant-->
-      <ish-basket-merchant-message-view [data]="basket" editRouterLink="/checkout/shipping" />
-    </ng-container>
-
+    @if (basket.approval) {
+    <ish-basket-approval-info [approval]="basket.approval" />
+    } @if ('shipping.messageToMerchant' | ishServerSetting) {
+    <!-- MessageToMerchant-->
+    <ish-basket-merchant-message-view [data]="basket" editRouterLink="/checkout/shipping" />
+    }
     <div class="row">
       <!-- Buyer-->
       <ng-container *ishFeature="'businessCustomerRegistration'">
@@ -48,27 +50,22 @@
           <ish-basket-buyer [object]="basket" editRouterLink="/checkout/shipping" />
         </ish-info-box>
       </ng-container>
-
       <!-- Additional Information -->
-      <ng-container *ngIf="basket.costCenter || hasCustomFields() || basket.recurrence">
-        <ish-info-box
-          heading="checkout.widget.additional-information.heading"
-          editRouterLink="/basket"
-          class="infobox-wrapper col-md-6"
-          cssClass="pb-3"
-        >
-          <ish-basket-cost-center-view [data]="basket" />
-          <ish-basket-custom-fields-view [data]="basket" />
-          <ish-order-recurrence
-            *ngIf="basket.recurrence"
-            [recurrence]="basket.recurrence"
-            labelCssClass="col-4"
-            valueCssClass="col-8"
-          />
-        </ish-info-box>
-      </ng-container>
+      @if (basket.costCenter || hasCustomFields() || basket.recurrence) {
+      <ish-info-box
+        heading="checkout.widget.additional-information.heading"
+        editRouterLink="/basket"
+        class="infobox-wrapper col-md-6"
+        cssClass="pb-3"
+      >
+        <ish-basket-cost-center-view [data]="basket" />
+        <ish-basket-custom-fields-view [data]="basket" />
+        @if (basket.recurrence) {
+        <ish-order-recurrence [recurrence]="basket.recurrence" labelCssClass="col-4" valueCssClass="col-8" />
+        }
+      </ish-info-box>
+      }
     </div>
-
     <div class="row d-flex">
       <!-- Invoice Address -->
       <ish-info-box
@@ -78,7 +75,6 @@
       >
         <ish-address [address]="basket.invoiceToAddress" [displayEmail]="true" />
       </ish-info-box>
-
       <!-- Shipping Address -->
       <ish-info-box
         heading="checkout.widget.shipping-address.heading"
@@ -88,7 +84,6 @@
         <ish-address [address]="basket.commonShipToAddress" />
       </ish-info-box>
     </div>
-
     <div class="row d-flex">
       <!-- Shipping Method -->
       <ish-info-box
@@ -98,7 +93,6 @@
       >
         <ish-basket-shipping-method [data]="basket" />
       </ish-info-box>
-
       <!-- Payment Method -->
       <ish-info-box
         heading="checkout.widget.payment_method.heading"
@@ -107,40 +101,35 @@
       >
         <p>
           {{ basket.payment?.displayName }}<br />{{ basket.payment?.paymentInstrument?.accountIdentifier }}
-          <ng-container *ngIf="!basket.payment?.displayName && !basket.payment?.paymentInstrument?.accountIdentifier">{{
-            basket.payment?.paymentInstrument
-          }}</ng-container>
+          @if (!basket.payment?.displayName && !basket.payment?.paymentInstrument?.accountIdentifier) {
+          {{ basket.payment?.paymentInstrument }}
+          }
         </p>
       </ish-info-box>
     </div>
-
     <p class="text-end">
       <a routerLink="/basket">{{ 'checkout.widget.return_to_cart.link' | translate }}</a>
     </p>
-
     <!-- Line Items -->
-    <ish-skip-content-link *ngIf="basket.lineItems?.length > 0">
+    @if (basket.lineItems?.length > 0) {
+    <ish-skip-content-link>
       <ish-line-item-list [lineItems]="basket.lineItems" [editable]="false" />
     </ish-skip-content-link>
+    }
   </div>
-
   <!-- basket summary -->
   <div class="col-md-12 col-lg-4 order-summary">
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
-
     <div class="cost-summary">
       <ish-basket-cost-summary [totals]="basket.totals" />
       <form [formGroup]="form" ishFormSubmit #tcForm="ngForm" (ngSubmit)="submitOrder()">
         <formly-form [form]="form" [model]="model" [fields]="fields$ | async" [options]="options" />
         <div class="d-grid">
-          <div
-            *ngIf="(form.invalid && tcForm.submitted) || multipleBuckets || submitting"
-            id="checkout-button-help"
-            aria-live="polite"
-            class="visually-hidden"
-          >
+          @if ((form.invalid && tcForm.submitted) || multipleBuckets || submitting) {
+          <div id="checkout-button-help" aria-live="polite" class="visually-hidden">
             {{ 'checkout.order_review.submit.validation.message' | translate }}
           </div>
+          }
           <button
             class="btn btn-lg btn-block btn-primary"
             [attr.aria-describedby]="
@@ -148,9 +137,9 @@
             "
             type="submit"
           >
-            <ng-container *ngIf="submitting">
-              <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pe-3" />
-            </ng-container>
+            @if (submitting) {
+            <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pe-3" />
+            }
             {{
               (basket.recurrence ? 'checkout.order_review.recurring.send.button' : 'checkout.order_review.send.button')
                 | translate
@@ -161,3 +150,4 @@
     </div>
   </div>
 </div>
+}

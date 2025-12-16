@@ -1,7 +1,9 @@
 <!-- error messages -->
-<p *ngIf="errorMessage.general.message" class="text-danger col-sm-offset-4">
+@if (errorMessage.general.message) {
+<p class="text-danger col-sm-offset-4">
   {{ errorMessage.general.message | translate }}
 </p>
+}
 
 <div [formGroup]="parameterForm">
   <!-- Credit card number -->
@@ -11,9 +13,9 @@
     >
     <div class="col-sm-6">
       <div id="a_credit_card_number_container" class="iframe-container"></div>
-      <small *ngIf="errorMessage.cardNumber?.messageKey" class="validation-message">{{
-        errorMessage.cardNumber.messageKey | translate
-      }}</small>
+      @if (errorMessage.cardNumber?.messageKey) {
+      <small class="validation-message">{{ errorMessage.cardNumber.messageKey | translate }}</small>
+      }
     </div>
   </div>
 
@@ -38,7 +40,9 @@
             data-testing-id="expirationMonth"
           >
             <option value="">{{ 'account.date.month' | translate }}</option>
-            <option *ngFor="let option of monthOptions" [value]="option.value">{{ option.label | translate }}</option>
+            @for (option of monthOptions; track option) {
+            <option [value]="option.value">{{ option.label | translate }}</option>
+            }
           </select>
           <ish-form-control-feedback
             [messages]="{ required: 'account.date.month.error.required' }"
@@ -54,7 +58,9 @@
             data-testing-id="expirationYear"
           >
             <option value="">{{ 'account.date.year' | translate }}</option>
-            <option *ngFor="let option of yearOptions" [value]="option.value">{{ option.label | translate }}</option>
+            @for (option of yearOptions; track option) {
+            <option [value]="option.value">{{ option.label | translate }}</option>
+            }
           </select>
           <ish-form-control-feedback
             [messages]="{ required: 'account.date.year.error.required' }"
@@ -64,9 +70,9 @@
       </div>
     </div>
     <div class="col-sm-6 offset-sm-4">
-      <small *ngIf="errorMessage.expiryMonth?.messageKey" class="validation-message">{{
-        errorMessage.expiryMonth.messageKey | translate
-      }}</small>
+      @if (errorMessage.expiryMonth?.messageKey) {
+      <small class="validation-message">{{ errorMessage.expiryMonth.messageKey | translate }}</small>
+      }
     </div>
   </div>
 
@@ -77,9 +83,9 @@
     >
     <div class="col-3 col-md-2">
       <div id="a_verification_container" class="iframe-container"></div>
-      <small *ngIf="errorMessage.cvc?.message" class="validation-message">{{
-        errorMessage.cvc.messageKey | translate
-      }}</small>
+      @if (errorMessage.cvc?.message) {
+      <small class="validation-message">{{ errorMessage.cvc.messageKey | translate }}</small>
+      }
     </div>
     <div>
       <ng-template #CVCHelp>
@@ -98,7 +104,9 @@
   </div>
 </div>
 
-<ish-payment-save-checkbox *ngIf="paymentMethod" [paymentMethod]="paymentMethod" [form]="parameterForm" />
+@if (paymentMethod) {
+<ish-payment-save-checkbox [paymentMethod]="paymentMethod" [form]="parameterForm" />
+}
 
 <div class="row">
   <div class="offset-md-4 col-md-8">

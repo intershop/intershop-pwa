@@ -1,101 +1,87 @@
-<ng-container *ngIf="quote$ | async as quote">
-  <ng-container *ngIf="state$ | async as state">
-    <!-- Description -->
-    <!-- Quote Header ( shown once if quote request submitted ) -->
-    <ng-container *ngIf="state === 'Submitted'; else quotePending">
-      <ng-container *ngIf="justSubmitted$ | async; else previouslySubmitted">
-        <p>
-          {{ 'quote.edit.submitted.your_quote_number.text' | translate }}
-          <a [routerLink]="['/account/quotes', quote.id]">{{ quote.number }}</a>
-        </p>
-        <p
-          [ishServerHtml]="
-            'quote.edit.submitted.your_quote_request.text'
-              | translate : { '0': 'route://account/quotes', '1': 'route://account' }
-          "
-        ></p>
-        <p>{{ 'quote.edit.submitted.we_will_email.text' | translate : { '0': userEmail$ | async } }}</p>
-      </ng-container>
-      <ng-template #previouslySubmitted>
-        <ish-info-message
-          message="{{
-            'quote.edit.submitted.your_quote_request_has_been_submitted.text'
-              | translate : { '0': asQuoteRequest(quote).submittedDate || quote.creationDate | ishDate : 'shortDate' }
-          }}"
-          [toast]="false"
-        />
-      </ng-template>
-    </ng-container>
-
-    <ng-template #quotePending>
-      <ish-info-message
-        *ngIf="state === 'Responded' && (isQuoteStarted$ | async) === false"
-        message="quote.error.not_started"
-        [toast]="false"
-      />
-    </ng-template>
-
-    <!-- Quote No. -->
-    <div class="row">
-      <div class="col-4 col-md-3 col-xl-2 col-form-label">
-        {{ 'quote.edit.unsubmitted.quote_no.label' | translate }}
-      </div>
-      <div class="col-8 col-md-9 col-xl-10">
-        <p class="form-control-plaintext" data-testing-id="quoteId" [attr.data-quote-id]="quote.id">
-          {{ quote.number }}
-        </p>
-      </div>
+@if (quote$ | async; as quote) { @if (state$ | async; as state) {
+<!-- Description -->
+<!-- Quote Header ( shown once if quote request submitted ) -->
+@if (state === 'Submitted') { @if (justSubmitted$ | async) {
+<p>
+  {{ 'quote.edit.submitted.your_quote_number.text' | translate }}
+  <a [routerLink]="['/account/quotes', quote.id]">{{ quote.number }}</a>
+</p>
+<p
+  [ishServerHtml]="
+    'quote.edit.submitted.your_quote_request.text'
+      | translate : { '0': 'route://account/quotes', '1': 'route://account' }
+  "
+></p>
+<p>{{ 'quote.edit.submitted.we_will_email.text' | translate : { '0': userEmail$ | async } }}</p>
+} @else {
+<ish-info-message
+  message="{{
+    'quote.edit.submitted.your_quote_request_has_been_submitted.text'
+      | translate : { '0': asQuoteRequest(quote).submittedDate || quote.creationDate | ishDate : 'shortDate' }
+  }}"
+  [toast]="false"
+/>
+} } @else { @if (state === 'Responded' && (isQuoteStarted$ | async) === false) {
+<ish-info-message message="quote.error.not_started" [toast]="false" />
+} }
+<!-- Quote No. -->
+<div class="row">
+  <div class="col-4 col-md-3 col-xl-2 col-form-label">
+    {{ 'quote.edit.unsubmitted.quote_no.label' | translate }}
+  </div>
+  <div class="col-8 col-md-9 col-xl-10">
+    <p class="form-control-plaintext" data-testing-id="quoteId" [attr.data-quote-id]="quote.id">
+      {{ quote.number }}
+    </p>
+  </div>
+</div>
+<!-- Status -->
+<div class="row">
+  <div class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.status.label' | translate }}</div>
+  <div class="col-8 col-md-9 col-xl-10">
+    <p class="form-control-plaintext"><ish-quote-state [quoteId]="quote.id" /></p>
+  </div>
+</div>
+<!-- Shows the valid from/to date  -->
+@if (state === 'Responded') {
+<div class="row">
+  <div class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.valid.label' | translate }}</div>
+  <div class="col-8 col-md-9 col-xl-10">
+    <p class="form-control-plaintext">
+      {{ asQuote(quote).validFromDate | ishDate : 'shortDate' }} -
+      {{ asQuote(quote).validToDate | ishDate : 'shortDate' }}
+    </p>
+  </div>
+</div>
+}
+<div class="section">
+  <!-- displayName -->
+  <div class="row has-feedback">
+    <div class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.name.label' | translate }}:</div>
+    <div class="col-8 col-md-9 col-xl-10">
+      <p class="form-control-plaintext">{{ quote.displayName }}</p>
     </div>
-
-    <!-- Status -->
-    <div class="row">
-      <div class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.status.label' | translate }}</div>
-      <div class="col-8 col-md-9 col-xl-10">
-        <p class="form-control-plaintext"><ish-quote-state [quoteId]="quote.id" /></p>
-      </div>
+  </div>
+  <!-- Description -->
+  @if (quote.description) {
+  <div class="row">
+    <div class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.comment.label' | translate }}:</div>
+    <div class="col-8 col-md-9 col-xl-10">
+      <p class="form-control-plaintext">{{ quote.description }}</p>
     </div>
-
-    <!-- Shows the valid from/to date  -->
-    <div *ngIf="state === 'Responded'" class="row">
-      <div class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.valid.label' | translate }}</div>
-      <div class="col-8 col-md-9 col-xl-10">
-        <p class="form-control-plaintext">
-          {{ asQuote(quote).validFromDate | ishDate : 'shortDate' }} -
-          {{ asQuote(quote).validToDate | ishDate : 'shortDate' }}
-        </p>
-      </div>
+  </div>
+  }
+  <!-- Seller Comment -->
+  @if (asQuote(quote).sellerComment) {
+  <div class="row">
+    <div class="col-4 col-md-3 col-xl-2 col-form-label">
+      {{ 'quote.edit.unsubmitted.seller_comment.label' | translate }}
     </div>
-
-    <div class="section">
-      <!-- displayName -->
-      <div class="row has-feedback">
-        <div class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.name.label' | translate }}:</div>
-        <div class="col-8 col-md-9 col-xl-10">
-          <p class="form-control-plaintext">{{ quote.displayName }}</p>
-        </div>
-      </div>
-
-      <!-- Description -->
-      <div *ngIf="quote.description" class="row">
-        <div class="col-4 col-md-3 col-xl-2 col-form-label">
-          {{ 'quote.edit.unsubmitted.comment.label' | translate }}:
-        </div>
-        <div class="col-8 col-md-9 col-xl-10">
-          <p class="form-control-plaintext">{{ quote.description }}</p>
-        </div>
-      </div>
-
-      <!-- Seller Comment -->
-      <div *ngIf="asQuote(quote).sellerComment" class="row">
-        <div class="col-4 col-md-3 col-xl-2 col-form-label">
-          {{ 'quote.edit.unsubmitted.seller_comment.label' | translate }}
-        </div>
-        <div class="col-8 col-md-9 col-xl-10">
-          <p class="form-control-plaintext">{{ asQuote(quote).sellerComment }}</p>
-        </div>
-      </div>
+    <div class="col-8 col-md-9 col-xl-10">
+      <p class="form-control-plaintext">{{ asQuote(quote).sellerComment }}</p>
     </div>
-
-    <ish-quote-line-item-list />
-  </ng-container>
-</ng-container>
+  </div>
+  }
+</div>
+<ish-quote-line-item-list />
+} }

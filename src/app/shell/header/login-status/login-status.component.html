@@ -1,65 +1,56 @@
-<ng-container *ngIf="logoutOnly; else loginStatus">
-  <ng-container *ngIf="user$ | async as user; else notLoggedIn">
-    <a routerLink="/logout" data-testing-id="link-logout" [attr.aria-label]="'account.logout.link' | translate">
-      <fa-icon [icon]="['fas', 'user']" class="header-icon" />
-      <span *ngIf="view !== 'small'">{{ 'account.logout.link' | translate }}</span>
-    </a>
-  </ng-container>
-  <!-- eslint-disable-next-line @angular-eslint/template/prefer-self-closing-tags -->
-  <ng-template #notLoggedIn>&nbsp;</ng-template>
-</ng-container>
-
-<ng-template #loginStatus>
-  <!-- logged in -->
-  <ng-container *ngIf="user$ | async as user; else notLoggedIn">
-    <a
-      routerLink="/account"
-      class="my-account-link sticky-header-icon"
-      data-testing-id="link-myaccount"
-      [attr.aria-label]="'account.go_to_account.aria_label' | translate"
-    >
-      <fa-icon [icon]="['fas', 'user']" class="header-icon" />
-      <span *ngIf="user.lastName; else nameNotDisplayed" class="login-name" [ngClass]="getViewClasses()">{{
-        user.firstName + ' ' + user.lastName
-      }}</span>
-      <ng-template #nameNotDisplayed
-        ><span class="login-name" [ngClass]="getViewClasses()">{{
-          'account.login_status.myaccount.link' | translate
-        }}</span></ng-template
-      >
-    </a>
-    <span class="separator" [ngClass]="getViewClasses()">&#124;</span>
-    <a
-      routerLink="/logout"
-      class="my-account-link my-account-logout"
-      data-testing-id="link-logout"
-      [attr.aria-label]="'account.logout.link' | translate"
-      [ngClass]="getViewClasses()"
-    >
-      <span>{{ 'account.logout.link' | translate }}</span>
-    </a>
-  </ng-container>
-  <!-- not logged in -->
-  <ng-template #notLoggedIn>
-    <a
-      routerLink="/login"
-      [queryParams]="{ returnUrl: '/account' }"
-      class="my-account-link my-account-login sticky-header-icon"
-      rel="nofollow"
-      [attr.aria-label]="'account.login.link' | translate"
-    >
-      <fa-icon [icon]="['fas', 'user']" class="header-icon" />
-      <span [ngClass]="getViewClasses()">{{ 'account.login.link' | translate }}</span>
-    </a>
-    <span class="separator" [ngClass]="getViewClasses()">&#124;</span
-    ><a
-      routerLink="/register"
-      [queryParams]="{ returnUrl: '/account' }"
-      class="my-account-link my-account-register"
-      rel="nofollow"
-      [attr.aria-label]="'account.register.link' | translate"
-      [ngClass]="getViewClasses()"
-      ><span>{{ 'account.register.link' | translate }}</span>
-    </a>
-  </ng-template>
-</ng-template>
+@if (logoutOnly) { @if (user$ | async; as user) {
+<a routerLink="/logout" data-testing-id="link-logout" [attr.aria-label]="'account.logout.link' | translate">
+  <fa-icon [icon]="['fas', 'user']" class="header-icon" />
+  @if (view !== 'small') {
+  <span>{{ 'account.logout.link' | translate }}</span>
+  }
+</a>
+} @else { &nbsp; } } @else {
+<!-- logged in -->
+@if (user$ | async; as user) {
+<a
+  routerLink="/account"
+  class="my-account-link sticky-header-icon"
+  data-testing-id="link-myaccount"
+  [attr.aria-label]="'account.go_to_account.aria_label' | translate"
+>
+  <fa-icon [icon]="['fas', 'user']" class="header-icon" />
+  @if (user.lastName) {
+  <span class="login-name" [ngClass]="getViewClasses()">{{ user.firstName + ' ' + user.lastName }}</span>
+  } @else {
+  <span class="login-name" [ngClass]="getViewClasses()">{{ 'account.login_status.myaccount.link' | translate }}</span>
+  }
+</a>
+<span class="separator" [ngClass]="getViewClasses()">&#124;</span>
+<a
+  routerLink="/logout"
+  class="my-account-link my-account-logout"
+  data-testing-id="link-logout"
+  [attr.aria-label]="'account.logout.link' | translate"
+  [ngClass]="getViewClasses()"
+>
+  <span>{{ 'account.logout.link' | translate }}</span>
+</a>
+} @else {
+<!-- not logged in -->
+<a
+  routerLink="/login"
+  [queryParams]="{ returnUrl: '/account' }"
+  class="my-account-link my-account-login sticky-header-icon"
+  rel="nofollow"
+  [attr.aria-label]="'account.login.link' | translate"
+>
+  <fa-icon [icon]="['fas', 'user']" class="header-icon" />
+  <span [ngClass]="getViewClasses()">{{ 'account.login.link' | translate }}</span>
+</a>
+<span class="separator" [ngClass]="getViewClasses()">&#124;</span
+><a
+  routerLink="/register"
+  [queryParams]="{ returnUrl: '/account' }"
+  class="my-account-link my-account-register"
+  rel="nofollow"
+  [attr.aria-label]="'account.register.link' | translate"
+  [ngClass]="getViewClasses()"
+  ><span>{{ 'account.register.link' | translate }}</span>
+</a>
+} }

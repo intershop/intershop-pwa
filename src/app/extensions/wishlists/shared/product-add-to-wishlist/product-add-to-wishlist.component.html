@@ -1,6 +1,6 @@
 <!-- display addToCart Icon/animated Icon or link-->
+@if (visible$ | async) {
 <button
-  *ngIf="visible$ | async"
   type="button"
   name="addProduct"
   class="btn add-to-wishlist"
@@ -11,16 +11,15 @@
   (click)="openModal(modal)"
   data-testing-id="addToWishlistButton"
 >
-  <ng-container [ngSwitch]="displayType">
-    <ng-template [ngSwitchCase]="'animated'">
-      <fa-icon [icon]="['fas', 'heart']" />
-      <span class="share-label">{{ 'product.add_to_wishlist.link' | translate }}</span>
-    </ng-template>
-    <ng-template [ngSwitchCase]="'icon'"><fa-icon [icon]="['fas', 'heart']" /></ng-template>
-    <ng-template ngSwitchDefault>
-      {{ 'product.add_to_wishlist.link' | translate }}
-    </ng-template>
-  </ng-container>
+  @switch (displayType) { @case ('animated') {
+  <fa-icon [icon]="['fas', 'heart']" />
+  <span class="share-label">{{ 'product.add_to_wishlist.link' | translate }}</span>
+  } @case ('icon') {
+  <fa-icon [icon]="['fas', 'heart']" />
+  } @default {
+  {{ 'product.add_to_wishlist.link' | translate }}
+  } }
 </button>
+}
 
 <ish-select-wishlist-modal #modal (submitEmitter)="addProductToWishlist($event)" />

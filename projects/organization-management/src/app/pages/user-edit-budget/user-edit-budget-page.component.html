@@ -1,10 +1,11 @@
-<div *ngIf="selectedUser$ | async as user">
+@if (selectedUser$ | async; as user) {
+<div>
   <h1>{{ 'account.user.update_budget.heading' | translate }} - {{ user.firstName }} {{ user.lastName }}</h1>
 
   <ish-error-message [error]="error$ | async" />
 
+  @if (budgetForm && 'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting) {
   <form
-    *ngIf="budgetForm && 'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
     [formGroup]="budgetForm"
     ishFormSubmit
     #form="ngForm"
@@ -30,6 +31,8 @@
       </div>
     </div>
   </form>
-
-  <ish-loading *ngIf="loading$ | async" />
+  } @if (loading$ | async) {
+  <ish-loading />
+  }
 </div>
+}

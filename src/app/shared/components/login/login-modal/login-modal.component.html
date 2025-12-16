@@ -12,10 +12,12 @@
 
   <div class="modal-body">
     <div data-testing-id="account-login-page">
-      <p *ngIf="loginMessageKey" class="alert alert-info">
+      @if (loginMessageKey) {
+      <p class="alert alert-info">
         <!-- keep-localization-pattern: ^account\.login\..*\.message$ -->
         {{ 'account.login.' + loginMessageKey + '.message' | translate }}
       </p>
+      }
 
       <ish-identity-provider-login
         labelClass="col-12"

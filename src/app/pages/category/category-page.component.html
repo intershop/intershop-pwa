@@ -1,19 +1,13 @@
-<ng-container *ngIf="category$ | async as category">
-  <!-- category with subcategories -->
-  <ng-container *ngIf="category.hasChildren; else productListing">
-    <ish-category-categories [category]="category" [deviceType]="deviceType$ | async" />
-  </ng-container>
-
-  <!-- category with products -->
-  <ng-template #productListing>
-    <ng-container *ngIf="category.hasOnlineProducts">
-      <ish-category-products [category]="category" [deviceType]="deviceType$ | async" />
-    </ng-container>
-  </ng-template>
-
-  <!-- empty category without subcategories and without products -->
-  <ng-container *ngIf="!category.hasChildren && !category.hasOnlineProducts">
-    <!-- TODO: decide how to handle empty categories -->
-    <h1>{{ category.name }}</h1>
-  </ng-container>
-</ng-container>
+@if (category$ | async; as category) {
+<!-- category with subcategories -->
+@if (category.hasChildren) {
+<ish-category-categories [category]="category" [deviceType]="deviceType$ | async" />
+} @else { @if (category.hasOnlineProducts) {
+<ish-category-products [category]="category" [deviceType]="deviceType$ | async" />
+} }
+<!-- category with products -->
+<!-- empty category without subcategories and without products -->
+@if (!category.hasChildren && !category.hasOnlineProducts) {
+<!-- TODO: decide how to handle empty categories -->
+<h1>{{ category.name }}</h1>
+} }

@@ -1,6 +1,8 @@
 <formly-form [form]="form" [model]="model" [fields]="fields" />
 
-<ish-payment-save-checkbox *ngIf="paymentMethod" [paymentMethod]="paymentMethod" [form]="parentForm" />
+@if (paymentMethod) {
+<ish-payment-save-checkbox [paymentMethod]="paymentMethod" [form]="parentForm" />
+}
 
 <div class="row">
   <div class="offset-md-4 col-md-8">

@@ -1,12 +1,10 @@
-<ng-container *ngIf="buyers$ | async as buyers">
-  <select [formControl]="control" class="form-control" [formlyAttributes]="field" data-testing-id="buyers-select-box">
-    <option value="all">
-      {{ 'account.order_history.filter.all_buyers' | translate }}
-    </option>
-    <ng-container *ngIf="buyers.length">
-      <ng-container *ngFor="let buyer of buyers">
-        <option [value]="buyer.businessPartnerNo">{{ buyer.firstName }} {{ buyer.lastName }}</option>
-      </ng-container>
-    </ng-container>
-  </select>
-</ng-container>
+@if (buyers$ | async; as buyers) {
+<select [formControl]="control" class="form-control" [formlyAttributes]="field" data-testing-id="buyers-select-box">
+  <option value="all">
+    {{ 'account.order_history.filter.all_buyers' | translate }}
+  </option>
+  @if (buyers.length) { @for (buyer of buyers; track buyer.businessPartnerNo) {
+  <option [value]="buyer.businessPartnerNo">{{ buyer.firstName }} {{ buyer.lastName }}</option>
+  } }
+</select>
+}

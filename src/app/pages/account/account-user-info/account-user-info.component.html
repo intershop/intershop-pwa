@@ -1,16 +1,17 @@
-<li *ngIf="isBusinessUser$ | async" class="account-welcome" role="presentation">
-  <ng-container *ngIf="user$ | async as user">
-    <ng-container *ngIf="user.lastName && user.firstName; else email">
-      <h4>{{ user.lastName }}, {{ user.firstName }}</h4>
-    </ng-container>
-    <ng-template #email>
-      <h4 class="ellipsis">{{ user.login }}</h4>
-    </ng-template>
-  </ng-container>
-  <div *ngIf="customer$ | async as customer">
+@if (isBusinessUser$ | async) {
+<li class="account-welcome" role="presentation">
+  @if (user$ | async; as user) { @if (user.lastName && user.firstName) {
+  <h4>{{ user.lastName }}, {{ user.firstName }}</h4>
+  } @else {
+  <h4 class="ellipsis">{{ user.login }}</h4>
+  } } @if (customer$ | async; as customer) {
+  <div>
     {{ customer.companyName }}
   </div>
-  <div *ngIf="roles$ | async as roles">
+  } @if (roles$ | async; as roles) {
+  <div>
     {{ roles }}
   </div>
+  }
 </li>
+}

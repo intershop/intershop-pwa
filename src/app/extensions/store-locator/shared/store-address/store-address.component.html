@@ -1,18 +1,26 @@
 <address>
-  <div *ngIf="store.name">{{ store.name }}</div>
-  <div *ngIf="store.address">{{ store.address }}</div>
-  <div *ngIf="store.postalCode || store.city">{{ store.postalCode }} {{ store.city }}</div>
-  <div *ngIf="store.country">{{ store.country }}</div>
-  <div *ngIf="store.phone">
+  @if (store.name) {
+  <div>{{ store.name }}</div>
+  } @if (store.address) {
+  <div>{{ store.address }}</div>
+  } @if (store.postalCode || store.city) {
+  <div>{{ store.postalCode }} {{ store.city }}</div>
+  } @if (store.country) {
+  <div>{{ store.country }}</div>
+  } @if (store.phone) {
+  <div>
     <fa-icon [icon]="['fas', 'phone']" class="pe-1" />
     <a href="tel:{{ store.phone }}">{{ store.phone }}</a>
   </div>
-  <div *ngIf="store.fax">
+  } @if (store.fax) {
+  <div>
     <fa-icon [icon]="['fas', 'fax']" class="pe-1" />
     <span>{{ store.fax }}</span>
   </div>
-  <div *ngIf="store.email">
+  } @if (store.email) {
+  <div>
     <fa-icon [icon]="['fas', 'envelope']" class="pe-1" />
     <a href="mailto:{{ store.email }}">{{ store.email }}</a>
   </div>
+  }
 </address>

@@ -4,44 +4,40 @@
     <button type="button" class="btn-close" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
   </div>
 
-  <ng-container *ngIf="showForm; else showSuccess">
-    <form [formGroup]="formGroup" ishFormSubmit #form="ngForm" (ngSubmit)="submitForm()" novalidate>
-      <div class="modal-body">
-        <ish-select-order-template-form [formGroup]="formGroup" [addMoveProduct]="addMoveProduct" />
-      </div>
-
-      <div class="modal-footer">
-        <button type="submit" [disabled]="formGroup.invalid && form.submitted" class="btn btn-primary">
-          {{ submitButtonTranslationKey | translate }}
-        </button>
-        <button type="button" class="btn btn-secondary" (click)="hide()">
-          {{ 'account.cancel.button.label' | translate }}
-        </button>
-      </div>
-    </form>
-  </ng-container>
-
-  <ng-template #showSuccess>
-    <div class="modal-body" *ishProductContextAccess="let product = product">
-      <span
-        [ishServerHtml]="
-          successTranslationKey
-            | translate
-              : {
-                  '0': product.name,
-                  '1': selectedOrderTemplateTitle$ | async | ishHtmlEncode,
-                  '2': selectedOrderTemplateRoute$ | async
-                }
-        "
-        [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
-        data-testing-id="order-template-success-link"
-      ></span>
+  @if (showForm) {
+  <form [formGroup]="formGroup" ishFormSubmit #form="ngForm" (ngSubmit)="submitForm()" novalidate>
+    <div class="modal-body">
+      <ish-select-order-template-form [formGroup]="formGroup" [addMoveProduct]="addMoveProduct" />
     </div>
-
     <div class="modal-footer">
+      <button type="submit" [disabled]="formGroup.invalid && form.submitted" class="btn btn-primary">
+        {{ submitButtonTranslationKey | translate }}
+      </button>
       <button type="button" class="btn btn-secondary" (click)="hide()">
-        {{ 'store.dialog.button.ok' | translate }}
+        {{ 'account.cancel.button.label' | translate }}
       </button>
     </div>
-  </ng-template>
+  </form>
+  } @else {
+  <div class="modal-body" *ishProductContextAccess="let product = product">
+    <span
+      [ishServerHtml]="
+        successTranslationKey
+          | translate
+            : {
+                '0': product.name,
+                '1': selectedOrderTemplateTitle$ | async | ishHtmlEncode,
+                '2': selectedOrderTemplateRoute$ | async
+              }
+      "
+      [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
+      data-testing-id="order-template-success-link"
+    ></span>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="hide()">
+      {{ 'store.dialog.button.ok' | translate }}
+    </button>
+  </div>
+  }
 </ng-template>

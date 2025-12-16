@@ -1,5 +1,5 @@
+@for (field of field?.fieldGroup; track field; let i = $index) {
 <div
-  *ngFor="let field of field?.fieldGroup; let i = index"
   class="row"
   [attr.data-testing-id]="'quickorder-line-' + i"
   ishProductContext
@@ -19,6 +19,7 @@
     </button>
   </div>
 </div>
+}
 <div class="d-flex flex-nowrap pb-4">
   <button
     type="button"

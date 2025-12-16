@@ -1,4 +1,5 @@
-<nav *ngIf="currentPage && lastPage" [attr.aria-label]="'navigation.paging.aria_label' | translate">
+@if (currentPage && lastPage) {
+<nav [attr.aria-label]="'navigation.paging.aria_label' | translate">
   <ul class="pagination">
     <li class="page-item">
       <button
@@ -13,14 +14,10 @@
         <fa-icon [icon]="['fas', 'angle-left']" />
       </button>
     </li>
-    <li
-      *ngFor="let p of pageIndices"
-      class="page-item pt-2"
-      [ngClass]="{ active: p === currentPage }"
-      data-testing-id="paging-link"
-    >
+    @for (p of pageIndices; track p) {
+    <li class="page-item pt-2" [ngClass]="{ active: p === currentPage }" data-testing-id="paging-link">
+      @if (p !== -1) {
       <a
-        *ngIf="p !== -1; else more"
         [attr.aria-current]="p === currentPage ? 'page' : null"
         [title]="
           p === currentPage
@@ -32,8 +29,9 @@
         (keyup.enter)="setPage(p)"
         >{{ p }}</a
       >
-      <ng-template #more>...</ng-template>
+      } @else { ... }
     </li>
+    }
     <li class="page-item">
       <button
         type="button"
@@ -49,3 +47,4 @@
     </li>
   </ul>
 </nav>
+}

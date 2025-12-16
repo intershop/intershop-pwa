@@ -1,27 +1,30 @@
 <div class="d-flex align-items-center justify-content-between flex-wrap">
   <h1>{{ 'account.punchout.heading' | translate }}</h1>
 
-  <a *ngIf="selectedType === 'oci'" routerLink="configuration" class="btn btn-secondary m-0">{{
+  @if (selectedType === 'oci') {
+  <a routerLink="configuration" class="btn btn-secondary m-0">{{
     'account.punchout.configuration.button.label' | translate
   }}</a>
+  }
 </div>
 <ish-error-message [error]="error" />
 
-<p *ngIf="punchoutTypes?.length > 0; else noPunchoutTypes">
+@if (punchoutTypes?.length > 0) {
+<p>
   {{ 'account.punchout.subtitle' | translate }}
 </p>
-<ng-template #noPunchoutTypes>
-  <ish-info-message message="account.punchout.no.protocols.info" [toast]="false" />
-</ng-template>
-
-<div *ngIf="punchoutTypes?.length > 1">
+} @else {
+<ish-info-message message="account.punchout.no.protocols.info" [toast]="false" />
+} @if (punchoutTypes?.length > 1) {
+<div>
   <nav
     ngbNav
     class="nav-tabs"
     [(activeId)]="selectedType"
     [attr.aria-label]="'account.punchout.type.tabs.aria_label' | translate"
   >
-    <ng-container *ngFor="let type of punchoutTypes" [ngbNavItem]="type">
+    @for (type of punchoutTypes; track type) {
+    <ng-container [ngbNavItem]="type">
       <a
         ngbNavLink
         [routerLink]="['../punchout']"
@@ -30,5 +33,7 @@
         >{{ 'account.punchout.type.text' | translate : { '0': type } }}</a
       >
     </ng-container>
+    }
   </nav>
 </div>
+}

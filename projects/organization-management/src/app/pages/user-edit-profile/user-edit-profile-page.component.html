@@ -1,4 +1,5 @@
-<div *ngIf="selectedUser$ | async as user">
+@if (selectedUser$ | async; as user) {
+<div>
   <h1>{{ 'account.user.update_profile.heading' | translate }} - {{ user.firstName }} {{ user.lastName }}</h1>
   <form
     [formGroup]="profileForm"
@@ -25,5 +26,8 @@
       </div>
     </div>
   </form>
-  <ish-loading *ngIf="loading$ | async" />
+  @if (loading$ | async) {
+  <ish-loading />
+  }
 </div>
+}

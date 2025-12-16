@@ -1,4 +1,5 @@
-<div *ngIf="'marketing.newsletterSubscriptionEnabled' | ishServerSetting" class="row form-group">
+@if ('marketing.newsletterSubscriptionEnabled' | ishServerSetting) {
+<div class="row form-group">
   <div [class.has-error]="showError" class="offset-md-4 col-md-8">
     <div class="form-check" [attr.data-testing-id]="'registration_newsletter-wrapper'">
       <input
@@ -15,3 +16,4 @@
     </div>
   </div>
 </div>
+}

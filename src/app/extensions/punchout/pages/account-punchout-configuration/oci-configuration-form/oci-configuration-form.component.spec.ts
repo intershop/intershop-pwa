@@ -47,7 +47,6 @@ describe('Oci Configuration Form Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(LoadingComponent),
         OciConfigurationFormComponent,
-        OciConfigurationRepeatFieldComponent,
       ],
       providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }, provideRouter([])],
     }).compileComponents();

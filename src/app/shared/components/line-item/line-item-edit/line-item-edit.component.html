@@ -1,23 +1,22 @@
-<ng-container *ngIf="product$ | async as product">
-  <button
-    *ngIf="product.type === 'VariationProduct'"
-    type="button"
-    (click)="show()"
-    class="line-item-edit-link btn btn-link btn-link-action"
-    title="{{ 'checkout.variation.edit.button.label' | translate }}"
-  >
-    {{ 'checkout.variation.edit.button.label' | translate }}
-  </button>
-
-  <ish-modal-dialog
-    #modalDialog
-    [options]="{
-      titleText: product.name,
-      confirmText: 'shopping_cart.variation.save.button.label' | translate,
-      rejectText: 'shopping_cart.button.cancel' | translate,
-      size: 'lg'
-    }"
-  >
-    <ish-line-item-edit-dialog />
-  </ish-modal-dialog>
-</ng-container>
+@if (product$ | async; as product) { @if (product.type === 'VariationProduct') {
+<button
+  type="button"
+  (click)="show()"
+  class="line-item-edit-link btn btn-link btn-link-action"
+  title="{{ 'checkout.variation.edit.button.label' | translate }}"
+>
+  {{ 'checkout.variation.edit.button.label' | translate }}
+</button>
+}
+<ish-modal-dialog
+  #modalDialog
+  [options]="{
+    titleText: product.name,
+    confirmText: 'shopping_cart.variation.save.button.label' | translate,
+    rejectText: 'shopping_cart.button.cancel' | translate,
+    size: 'lg'
+  }"
+>
+  <ish-line-item-edit-dialog />
+</ish-modal-dialog>
+}

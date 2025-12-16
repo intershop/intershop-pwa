@@ -1,6 +1,9 @@
-<div *ngIf="(error?.message || error?.code) && !toast" role="alert" class="alert alert-danger">
-  <span *ngIf="error.message; else translationMissing" [ishServerHtml]="error.message"></span>
-  <ng-template #translationMissing>
-    <span [ishServerHtml]="error.code | translate"></span>
-  </ng-template>
+@if ((error?.message || error?.code) && !toast) {
+<div role="alert" class="alert alert-danger">
+  @if (error.message) {
+  <span [ishServerHtml]="error.message"></span>
+  } @else {
+  <span [ishServerHtml]="error.code | translate"></span>
+  }
 </div>
+}

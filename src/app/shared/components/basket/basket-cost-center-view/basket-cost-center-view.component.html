@@ -1,4 +1,6 @@
-<div *ngIf="costCenter" class="mb-2" data-testing-id="additional-info-cost-center">
+@if (costCenter) {
+<div class="mb-2" data-testing-id="additional-info-cost-center">
   {{ 'checkout.widget.buyer.costcenter' | translate }}
   {{ costCenter.costCenterId }} {{ costCenter.name }}
 </div>
+}

@@ -1,34 +1,25 @@
-<ng-container *ngIf="pagelet?.hasParam('Link') && !pagelet.hasParam('LinkText'); else imageEnhanced">
-  <ng-container *ngIf="isRouterLink(pagelet, 'Link'); else externalLink">
-    <a [routerLink]="routerLink(pagelet, 'Link')" [attr.title]="pagelet.stringParam('LinkTitle')" class="teaser-link">
-      <ng-container *ngTemplateOutlet="imageEnhanced" />
-    </a>
-  </ng-container>
-  <ng-template #externalLink>
-    <a [href]="pagelet.stringParam('Link')" [attr.title]="pagelet.stringParam('LinkTitle')" class="teaser-link">
-      <ng-container *ngTemplateOutlet="imageEnhanced" />
-    </a>
-  </ng-template>
-</ng-container>
+@if (pagelet?.hasParam('Link') && !pagelet.hasParam('LinkText')) { @if (isRouterLink(pagelet, 'Link')) {
+<a [routerLink]="routerLink(pagelet, 'Link')" [attr.title]="pagelet.stringParam('LinkTitle')" class="teaser-link">
+  <ng-container *ngTemplateOutlet="imageEnhanced" />
+</a>
+} @else {
+<a [href]="pagelet.stringParam('Link')" [attr.title]="pagelet.stringParam('LinkTitle')" class="teaser-link">
+  <ng-container *ngTemplateOutlet="imageEnhanced" />
+</a>
+} } @else {
+<ng-container *ngTemplateOutlet="imageEnhanced" />
+}
 
 <ng-template #imageEnhanced>
   <div class="enhanced-image-container" [ngClass]="pagelet.stringParam('CSSClass')">
     <picture class="enhanced-image">
-      <source
-        *ngIf="pagelet.hasParam('ImageXS')"
-        [srcset]="pagelet.stringParam('ImageXS')"
-        media="(max-width: 767px)"
-      />
-      <source
-        *ngIf="pagelet.hasParam('ImageSM')"
-        [srcset]="pagelet.stringParam('ImageSM')"
-        media="(max-width: 991px)"
-      />
-      <source
-        *ngIf="pagelet.hasParam('ImageMD')"
-        [srcset]="pagelet.stringParam('ImageMD')"
-        media="(max-width: 1199px)"
-      />
+      @if (pagelet.hasParam('ImageXS')) {
+      <source [srcset]="pagelet.stringParam('ImageXS')" media="(max-width: 767px)" />
+      } @if (pagelet.hasParam('ImageSM')) {
+      <source [srcset]="pagelet.stringParam('ImageSM')" media="(max-width: 991px)" />
+      } @if (pagelet.hasParam('ImageMD')) {
+      <source [srcset]="pagelet.stringParam('ImageMD')" media="(max-width: 1199px)" />
+      }
       <img
         [attr.loading]="loading"
         [src]="pagelet.stringParam('Image')"
@@ -37,21 +28,21 @@
       />
     </picture>
     <div class="enhanced-image-text">
-      <h1 *ngIf="pagelet.hasParam('Heading1')">{{ pagelet.stringParam('Heading1') }}</h1>
-      <h2 *ngIf="pagelet.hasParam('Heading2')">{{ pagelet.stringParam('Heading2') }}</h2>
-      <div
-        *ngIf="pagelet.hasParam('Description')"
-        class="d-none d-sm-inline"
-        [ishServerHtml]="pagelet.stringParam('Description')"
-      ></div>
+      @if (pagelet.hasParam('Heading1')) {
+      <h1>{{ pagelet.stringParam('Heading1') }}</h1>
+      } @if (pagelet.hasParam('Heading2')) {
+      <h2>{{ pagelet.stringParam('Heading2') }}</h2>
+      } @if (pagelet.hasParam('Description')) {
+      <div class="d-none d-sm-inline" [ishServerHtml]="pagelet.stringParam('Description')"></div>
+      } @if (pagelet.hasParam('Link') && pagelet.hasParam('LinkText')) {
       <a
-        *ngIf="pagelet.hasParam('Link') && pagelet.hasParam('LinkText')"
         [routerLink]="routerLink(pagelet, 'Link')"
         [attr.title]="pagelet.stringParam('LinkTitle')"
         class="btn btn-lg btn-primary"
       >
         {{ pagelet.stringParam('LinkText') }}
       </a>
+      }
     </div>
   </div>
 </ng-template>

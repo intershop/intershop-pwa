@@ -1,36 +1,26 @@
 <ish-product-detail-actions />
 
-<div *ngIf="product$ | async as product" class="row product-details">
+@if (product$ | async; as product) {
+<div class="row product-details">
   <div class="col-12 col-md-6 col-lg-8"><ish-product-images /></div>
-
   <div class="col-12 col-md-6 col-lg-4">
     <ish-lazy-product-rating />
     <h1>
       <span itemprop="name"><ish-product-name [link]="false" /></span>
     </h1>
-
     <div class="product-info">
       <ish-product-brand />
-
       <ish-product-id />
-
       <ish-product-promotion />
-
       <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <ish-product-price [showInformationalPrice]="true" [showPriceSavings]="true" />
-        <ng-container
-          *ngIf="'payment.paypal.payLaterPreferences.PayLaterMessagingProductDetailsEnabled' | ishServerSetting"
-        >
-          <ish-payment-paypal pageType="product-details" />
-        </ng-container>
+        @if ('payment.paypal.payLaterPreferences.PayLaterMessagingProductDetailsEnabled' | ishServerSetting) {
+        <ish-payment-paypal pageType="product-details" />
+        }
       </div>
-
       <ish-product-inventory />
-
       <ish-product-shipment />
-
       <ish-product-detail-variations />
-
       <div class="row form-group">
         <div class="col-6">
           <ish-product-quantity-label for="product-detail-quantity" />
@@ -39,7 +29,6 @@
           <ish-product-quantity elementId="product-detail-quantity" />
         </div>
       </div>
-
       <div class="d-grid">
         <ish-product-add-to-basket [cssClass]="'btn-lg w-100'" />
       </div>
@@ -52,17 +41,16 @@
       <div class="d-grid">
         <ish-lazy-product-notification-edit cssClass="btn btn-secondary" displayType="button" />
       </div>
-
       <ish-product-warranty (submitWarranty)="setSelectedWarranty($event)" />
     </div>
-
     <!-- DISABLED VIEW CONTEXT --
-    <div class="marketing-area">
-      <ish-content-viewcontext
-        viewContextId="viewcontext.include.product.productinfo"
-        [callParameters]="{ Product: product.sku }"
-      />
-    </div>
-    -- DISABLED VIEW CONTEXT -->
+      <div class="marketing-area">
+        <ish-content-viewcontext
+          viewContextId="viewcontext.include.product.productinfo"
+          [callParameters]="{ Product: product.sku }"
+          />
+      </div>
+      -- DISABLED VIEW CONTEXT -->
   </div>
 </div>
+}

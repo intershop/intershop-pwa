@@ -1,12 +1,12 @@
 <div class="form-group row" [class.has-error]="showError" [attr.data-testing-id]="keyString + '-wrapper'">
-  <label
-    *ngIf="props.label"
-    [attr.for]="id"
-    class="col-form-label"
-    [ngClass]="props.labelClass ? props.labelClass : dprops.labelClass"
-    >{{ props.labelNoTranslate ? props.label : (props.label | translate)
-    }}<span *ngIf="props.required && !props.hideRequiredMarker" class="required" aria-hidden="true">*</span>
+  @if (props.label) {
+  <label [attr.for]="id" class="col-form-label" [ngClass]="props.labelClass ? props.labelClass : dprops.labelClass"
+    >{{ props.labelNoTranslate ? props.label : (props.label | translate) }}@if (props.required &&
+    !props.hideRequiredMarker) {
+    <span class="required" aria-hidden="true">*</span>
+    }
   </label>
+  }
   <div [ngClass]="props.fieldClass ? props.fieldClass : dprops.fieldClass">
     <ng-template #fieldComponent />
   </div>

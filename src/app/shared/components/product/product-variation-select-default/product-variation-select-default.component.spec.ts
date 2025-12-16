@@ -15,9 +15,7 @@ describe('Product Variation Select Default Component', () => {
   const group = { id: 'a', options: [{ value: 'B' }, { value: 'C' }] } as VariationOptionGroup;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ProductVariationSelectDefaultComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
   });
 
   beforeEach(() => {

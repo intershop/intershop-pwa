@@ -1,5 +1,5 @@
+@if (paymentInstrument.paymentMethod === 'Concardis_DirectDebit') {
 <ish-modal-dialog-link
-  *ngIf="paymentInstrument.paymentMethod === 'Concardis_DirectDebit'"
   (click)="showSepaMandateText()"
   linkText="account.payment.view_sepa_mandate.link"
   [options]="{ titleText: 'account.payment.view_sepa_mandate_text.link' | translate }"
@@ -18,3 +18,4 @@
     </dl>
   </div>
 </ish-modal-dialog-link>
+}

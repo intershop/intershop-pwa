@@ -1,7 +1,7 @@
-<ng-container *ngIf="visible$ | async">
-  <ul>
-    <li *ngFor="let item of parts$ | async">
-      {{ item.quantity }} x <ish-product-name ishProductContext [sku]="item.sku" [link]="false" />
-    </li>
-  </ul>
-</ng-container>
+@if (visible$ | async) {
+<ul>
+  @for (item of parts$ | async; track item) {
+  <li>{{ item.quantity }} x <ish-product-name ishProductContext [sku]="item.sku" [link]="false" /></li>
+  }
+</ul>
+}

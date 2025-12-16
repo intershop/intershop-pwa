@@ -1,7 +1,5 @@
-<ng-container *ngIf="visible$ | async">
-  <ng-container *ngIf="masterProductURL$ | async as url">
-    <a [routerLink]="url" class="product-variation all-variations-link">{{
-      'product.choose_another_variation.link' | translate
-    }}</a>
-  </ng-container>
-</ng-container>
+@if (visible$ | async) { @if (masterProductURL$ | async; as url) {
+<a [routerLink]="url" class="product-variation all-variations-link">{{
+  'product.choose_another_variation.link' | translate
+}}</a>
+} }

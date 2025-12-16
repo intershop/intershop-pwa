@@ -12,10 +12,13 @@
 </ng-template>
 
 <div class="header container" [ngClass]="deviceType">
-  <ul *ngIf="!isSticky" class="user-links">
-    <li *ngIf="!isSticky && deviceType !== 'mobile'">
+  @if (!isSticky) {
+  <ul class="user-links">
+    @if (!isSticky && deviceType !== 'mobile') {
+    <li>
       <ish-login-status data-testing-id="user-status-desktop" />
     </li>
+    }
     <li *ishFeature="'compare'" class="d-none d-md-block">
       <ish-lazy-product-compare-status data-testing-id="compare-status-desktop" />
     </li>
@@ -26,11 +29,12 @@
       <ish-lazy-wishlists-link />
     </li>
   </ul>
+  }
 
   <div class="header-utility">
     <!-- Sticky Header Search Button -->
+    @if (isSticky && deviceType !== 'mobile') {
     <a
-      *ngIf="isSticky && deviceType !== 'mobile'; else mobileSearch"
       role="button"
       class="btn btn-link search-toggler sticky-header-icon"
       (click)="scrollTopAndFocusSearch()"
@@ -40,34 +44,36 @@
     >
       <fa-icon [icon]="['fas', 'search']" class="header-icon" />
     </a>
+    } @else {
+    <a
+      role="button"
+      class="btn btn-link search-toggler sticky-header-icon"
+      [ngClass]="{ 'active-search': showSearch }"
+      (click)="scrollTopAndFocusSearch()"
+      (keydown.enter)="scrollTopAndFocusSearch()"
+      [tabindex]="isSticky ? 0 : -1"
+      [attr.aria-label]="'search.searchbox.button.sticky_header.aria_label' | translate"
+    >
+      @if (isSticky) {
+      <fa-icon [icon]="['fas', 'search']" class="header-icon" />
+      }
+    </a>
+    @if (isSticky || showSearch) {
+    <div class="search-container header-search-container" [ngbCollapse]="!showSearch" [ngClass]="{ show: !isSticky }">
+      <ng-container *ngTemplateOutlet="searchBoxTemplate" />
+    </div>
+    } }
 
     <!-- Sticky Header Mobile Search -->
-    <ng-template #mobileSearch>
-      <a
-        role="button"
-        class="btn btn-link search-toggler sticky-header-icon"
-        [ngClass]="{ 'active-search': showSearch }"
-        (click)="scrollTopAndFocusSearch()"
-        (keydown.enter)="scrollTopAndFocusSearch()"
-        [tabindex]="isSticky ? 0 : -1"
-        [attr.aria-label]="'search.searchbox.button.sticky_header.aria_label' | translate"
-      >
-        <fa-icon *ngIf="isSticky" [icon]="['fas', 'search']" class="header-icon" />
-      </a>
-      <div
-        *ngIf="isSticky || showSearch"
-        class="search-container header-search-container"
-        [ngbCollapse]="!showSearch"
-        [ngClass]="{ show: !isSticky }"
-      >
-        <ng-container *ngTemplateOutlet="searchBoxTemplate" />
-      </div>
-    </ng-template>
 
     <div class="language-switch-container">
-      <ish-language-switch *ngIf="!isSticky" [deviceType]="deviceType" data-testing-id="language-switch-desktop" />
+      @if (!isSticky) {
+      <ish-language-switch [deviceType]="deviceType" data-testing-id="language-switch-desktop" />
+      }
     </div>
-    <ish-login-status *ngIf="isSticky || deviceType === 'mobile'" view="small" />
+    @if (isSticky || deviceType === 'mobile') {
+    <ish-login-status view="small" />
+    }
 
     <ish-mini-basket
       data-testing-id="mini-basket-desktop"
@@ -84,28 +90,31 @@
   <div class="mid-header row align-items-center justify-content-between">
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
+        @if (showDesktopLogoLink) {
         <a
-          *ngIf="showDesktopLogoLink"
           rel="home"
           routerLink="/home"
           class="logo"
           [attr.aria-label]="'common.home.link' | translate"
           data-testing-id="header-home-link-desktop"
         ></a>
+        } @if (showMobileLogoLink) {
         <a
-          *ngIf="showMobileLogoLink"
           rel="home"
           routerLink="/home"
           class="mobile-logo"
           [attr.aria-label]="'common.home.link' | translate"
           data-testing-id="header-home-link-mobile"
         ></a>
+        }
       </div>
     </div>
     <div class="col-md-4">
-      <div *ngIf="deviceType !== 'mobile'" class="search-container header-search-container">
+      @if (deviceType !== 'mobile') {
+      <div class="search-container header-search-container">
         <ng-container *ngTemplateOutlet="searchBoxTemplate" />
       </div>
+      }
     </div>
   </div>
 

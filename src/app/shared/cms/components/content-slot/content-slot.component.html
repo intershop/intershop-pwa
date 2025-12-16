@@ -1,7 +1,7 @@
 <ish-content-design-view-wrapper [slotId]="slot" [pagelet]="pagelet">
-  <ng-content *ngIf="wrapper; else renderPagelets" />
-
-  <ng-template #renderPagelets>
-    <ish-content-pagelet *ngFor="let pagelet of pagelet.slot(slot).pageletIDs" [pageletId]="pagelet" />
-  </ng-template>
+  @if (wrapper) {
+  <ng-content />
+  } @else { @for (pagelet of pagelet.slot(slot).pageletIDs; track pagelet) {
+  <ish-content-pagelet [pageletId]="pagelet" />
+  } }
 </ish-content-design-view-wrapper>

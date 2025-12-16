@@ -1,33 +1,24 @@
-<ng-container *ngIf="visible$ | async">
-  <div
-    *ngIf="{
-      readyForShipmentMin: readyForShipmentMin$ | async,
-      readyForShipmentMax: readyForShipmentMax$ | async
-    } as product"
-    class="ready-for-shipment"
-    data-testing-id="section-productshipping-shortinfo"
+@if (visible$ | async) { @if ({ readyForShipmentMin: readyForShipmentMin$ | async, readyForShipmentMax:
+readyForShipmentMax$ | async }; as product) {
+<div class="ready-for-shipment" data-testing-id="section-productshipping-shortinfo">
+  @if (product.readyForShipmentMin === 0) {
+  {{
+    (product.readyForShipmentMax === 1 ? 'product.ready_for_shipment.within24' : 'product.ready_for_shipment.within')
+      | translate : { '0': product.readyForShipmentMax }
+  }}
+  } @else {
+  {{
+    'product.ready_for_shipment.minmax'
+      | translate : { '0': product.readyForShipmentMin, '1': product.readyForShipmentMax }
+  }}
+  }
+  <!-- details link and dialog -->
+  <ish-modal-dialog-link
+    linkText="product.ready_for_shipment.detail.text"
+    [options]="{ titleText: 'shopping.product.readyforshipment.details.title' | translate, size: 'lg' }"
+    [ngClass]="'details-link'"
   >
-    <ng-container *ngIf="product.readyForShipmentMin === 0; else shipmentRange">
-      {{
-        (product.readyForShipmentMax === 1
-          ? 'product.ready_for_shipment.within24'
-          : 'product.ready_for_shipment.within'
-        ) | translate : { '0': product.readyForShipmentMax }
-      }}
-    </ng-container>
-    <ng-template #shipmentRange>
-      {{
-        'product.ready_for_shipment.minmax'
-          | translate : { '0': product.readyForShipmentMin, '1': product.readyForShipmentMax }
-      }}
-    </ng-template>
-    <!-- details link and dialog -->
-    <ish-modal-dialog-link
-      linkText="product.ready_for_shipment.detail.text"
-      [options]="{ titleText: 'shopping.product.readyforshipment.details.title' | translate, size: 'lg' }"
-      [ngClass]="'details-link'"
-    >
-      <ish-content-include includeId="include.dialog.readyForShipment.pagelet2-Include" *ishLazyLoadingContent />
-    </ish-modal-dialog-link>
-  </div>
-</ng-container>
+    <ish-content-include includeId="include.dialog.readyForShipment.pagelet2-Include" *ishLazyLoadingContent />
+  </ish-modal-dialog-link>
+</div>
+} }

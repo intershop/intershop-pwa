@@ -1,19 +1,24 @@
 <!-- target element to scroll to the messages -->
-<div *ngIf="error as basketError" [ishScroll]="scrollToMessage" [scrollSpacing]="scrollSpacing">
-  <ng-container *ngIf="basketError.errors?.length; else generalError">
-    <div *ngFor="let error of basketError.errors" [class]="cssClass" data-testing-id="basket-errors">
-      <strong>{{ error.message }}</strong>
-      <ng-container *ngIf="error.causes as causes">
-        <p *ngFor="let cause of causes" role="alert">
-          <span> {{ cause.message }}</span>
-          <span *ngIf="cause.parameters?.sku" class="product-id"
-            ><br />
-            <span class="product-id-label">{{ 'product.itemNumber.label' | translate }}</span>
-            <span itemprop="sku">{{ cause.parameters.sku }}</span>
-          </span>
-        </p>
-      </ng-container>
-    </div>
-  </ng-container>
-  <ng-template #generalError> <ish-error-message [error]="error" [toast]="false" /></ng-template>
+@if (error; as basketError) {
+<div [ishScroll]="scrollToMessage" [scrollSpacing]="scrollSpacing">
+  @if (basketError.errors?.length) { @for (error of basketError.errors; track $index) {
+  <div [class]="cssClass" data-testing-id="basket-errors">
+    <strong>{{ error.message }}</strong>
+    @if (error.causes; as causes) { @for (cause of causes; track $index) {
+    <p role="alert">
+      <span> {{ cause.message }}</span>
+      @if (cause.parameters?.sku) {
+      <span class="product-id"
+        ><br />
+        <span class="product-id-label">{{ 'product.itemNumber.label' | translate }}</span>
+        <span itemprop="sku">{{ cause.parameters.sku }}</span>
+      </span>
+      }
+    </p>
+    } }
+  </div>
+  } } @else {
+  <ish-error-message [error]="error" [toast]="false" />
+  }
 </div>
+}

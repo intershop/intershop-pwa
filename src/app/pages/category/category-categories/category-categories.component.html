@@ -1,11 +1,12 @@
 <div class="category-page" [attr.data-testing-id]="category.uniqueId">
   <!-- DISABLED VIEW CONTEXT --
   <div class="marketing-area">
-    <ish-content-viewcontext
-      *ngIf="category.categoryRef"
-      viewContextId="viewcontext.include.category.base.top"
-      [callParameters]="{ Category: category.categoryRef }"
-    />
+    @if (category.categoryRef) {
+      <ish-content-viewcontext
+        viewContextId="viewcontext.include.category.base.top"
+        [callParameters]="{ Category: category.categoryRef }"
+        />
+    }
   </div>
   -- DISABLED VIEW CONTEXT -->
   <div class="row">
@@ -15,19 +16,19 @@
         <nav [attr.aria-label]="'category.navigation.aria_label' | translate">
           <ish-category-navigation [uniqueId]="category.categoryPath[0]" />
         </nav>
-        <div
-          *ngIf="'payment.paypal.payLaterPreferences.PayLaterMessagingCategoryEnabled' | ishServerSetting"
-          class="mt-2"
-        >
+        @if ('payment.paypal.payLaterPreferences.PayLaterMessagingCategoryEnabled' | ishServerSetting) {
+        <div class="mt-2">
           <ish-payment-paypal pageType="product-listing" />
         </div>
+        }
         <!-- DISABLED VIEW CONTEXT --
         <div class="marketing-area">
-          <ish-content-viewcontext
-            *ngIf="category.categoryRef"
-            viewContextId="viewcontext.include.category.navigation"
-            [callParameters]="{ Category: category.categoryRef }"
-          />
+          @if (category.categoryRef) {
+            <ish-content-viewcontext
+              viewContextId="viewcontext.include.category.navigation"
+              [callParameters]="{ Category: category.categoryRef }"
+              />
+          }
         </div>
         -- DISABLED VIEW CONTEXT -->
       </div>
@@ -46,31 +47,34 @@
       <h1>{{ category.name }}</h1>
 
       <div class="marketing-area">
+        @if (category.categoryRef) {
         <ish-content-viewcontext
-          *ngIf="category.categoryRef"
           viewContextId="viewcontext.include.category.content.top"
           [callParameters]="{ Category: category.categoryRef }"
         />
+        }
       </div>
 
       <ish-category-list [categories]="category.children" />
 
       <div class="marketing-area">
+        @if (category.categoryRef) {
         <ish-content-viewcontext
-          *ngIf="category.categoryRef"
           viewContextId="viewcontext.include.category.content.bottom"
           [callParameters]="{ Category: category.categoryRef }"
         />
+        }
       </div>
     </div>
   </div>
   <!-- DISABLED VIEW CONTEXT --
   <div class="marketing-area">
-    <ish-content-viewcontext
-      *ngIf="category.categoryRef"
-      viewContextId="viewcontext.include.category.base.bottom"
-      [callParameters]="{ Category: category.categoryRef }"
-    />
+    @if (category.categoryRef) {
+      <ish-content-viewcontext
+        viewContextId="viewcontext.include.category.base.bottom"
+        [callParameters]="{ Category: category.categoryRef }"
+        />
+    }
   </div>
   -- DISABLED VIEW CONTEXT -->
 </div>

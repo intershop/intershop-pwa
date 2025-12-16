@@ -1,41 +1,35 @@
-<ng-container *ngIf="lineItems$ | async as lineItems; else emptyBlock">
-  <div class="product-rows-block">
-    <ish-basket-error-message
-      *ngIf="basketError$ | async as basketError"
-      [error]="basketError"
-      cssClass="text-danger"
-    />
-    <div *ngFor="let lineItem of lineItems | slice : 0 : maxItemNumber" class="product-row">
-      <ng-container ishProductContext [sku]="lineItem.productSKU">
-        <div class="mini-product-img">
-          <ish-product-image imageType="S" [link]="true" />
+@if (lineItems$ | async; as lineItems) {
+<div class="product-rows-block">
+  @if (basketError$ | async; as basketError) {
+  <ish-basket-error-message [error]="basketError" cssClass="text-danger" />
+  } @for (lineItem of lineItems | slice : 0 : maxItemNumber; track lineItem) {
+  <div class="product-row">
+    <ng-container ishProductContext [sku]="lineItem.productSKU">
+      <div class="mini-product-img">
+        <ish-product-image imageType="S" [link]="true" />
+      </div>
+      <div class="mini-product-info">
+        <ish-product-name />
+        <div class="product-price">{{ lineItem.price | ishPrice }}</div>
+        <div class="cart-pli-data">
+          <span>{{ 'shopping_cart.pli.qty.label' | translate }}</span> {{ lineItem.quantity.value }}
         </div>
-        <div class="mini-product-info">
-          <ish-product-name />
-          <div class="product-price">{{ lineItem.price | ishPrice }}</div>
-          <div class="cart-pli-data">
-            <span>{{ 'shopping_cart.pli.qty.label' | translate }}</span> {{ lineItem.quantity.value }}
-          </div>
-        </div>
-      </ng-container>
-    </div>
-    <div
-      *ngIf="maxItemNumber && lineItems.length >= maxItemNumber + 1"
-      class="alert alert-info mb-0"
-      data-testing-id="show-all-cart-items-hint"
-    >
-      {{ 'shopping_cart.ministatus.show_all_items.text' | translate }}
-    </div>
+      </div>
+    </ng-container>
   </div>
-
-  <div class="d-grid">
-    <a class="view-cart btn btn-primary btn-lg" routerLink="/basket">
-      {{ 'shopping_cart.ministatus.view_cart.link' | translate }}
-    </a>
+  } @if (maxItemNumber && lineItems.length >= maxItemNumber + 1) {
+  <div class="alert alert-info mb-0" data-testing-id="show-all-cart-items-hint">
+    {{ 'shopping_cart.ministatus.show_all_items.text' | translate }}
   </div>
-</ng-container>
-
-<ng-template #emptyBlock>
-  <ish-basket-error-message *ngIf="basketError$ | async as basketError" [error]="basketError" cssClass="text-danger" />
-  {{ 'shopping_cart.ministatus.empty_cart.text' | translate }}
-</ng-template>
+  }
+</div>
+<div class="d-grid">
+  <a class="view-cart btn btn-primary btn-lg" routerLink="/basket">
+    {{ 'shopping_cart.ministatus.view_cart.link' | translate }}
+  </a>
+</div>
+} @else { @if (basketError$ | async; as basketError) {
+<ish-basket-error-message [error]="basketError" cssClass="text-danger" />
+}
+{{ 'shopping_cart.ministatus.empty_cart.text' | translate }}
+}

@@ -1,8 +1,10 @@
 <div class="search-suggest-recent-terms">
   <div class="d-flex justify-content-start headline">{{ 'suggest.recent_searched_terms.headline' | translate }}</div>
   <ul>
-    <li *ngFor="let term of searchTerms$ | async">
+    @for (term of searchTerms$ | async; track term) {
+    <li>
       <button type="button" [innerHTML]="term | ishHighlight : (inputTerms$ | async)" (click)="submit(term)"></button>
     </li>
+    }
   </ul>
 </div>

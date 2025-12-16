@@ -1,8 +1,7 @@
-<ng-container *ngIf="visible$ | async">
-  <ng-container *ngIf="product$ | async as product">
-    <div *ngFor="let attr of product.variableVariationAttributes" class="product-variation read-only">
-      <span class="product-variation-info span-separator">{{ attr.name }}</span>
-      <span>{{ attr | ishVariationAttribute }}</span>
-    </div>
-  </ng-container>
-</ng-container>
+@if (visible$ | async) { @if (product$ | async; as product) { @for (attr of product.variableVariationAttributes; track
+attr) {
+<div class="product-variation read-only">
+  <span class="product-variation-info span-separator">{{ attr.name }}</span>
+  <span>{{ attr | ishVariationAttribute }}</span>
+</div>
+} } }

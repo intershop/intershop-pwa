@@ -1,3 +1,5 @@
-<div *ngFor="let field of field?.fieldGroup; let i = index" class="row" [attr.data-testing-id]="'buyers-line-' + i">
+@for (field of field?.fieldGroup; track field; let i = $index) {
+<div class="row" [attr.data-testing-id]="'buyers-line-' + i">
   <formly-field class="col-12" [field]="field" />
 </div>
+}

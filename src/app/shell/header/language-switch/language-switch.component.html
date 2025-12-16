@@ -1,10 +1,6 @@
 <!-- keep-localization-pattern: ^locale\..*\.(long|short)$ -->
-<div
-  *ngIf="locale$ | async as locale"
-  class="language-switch"
-  ngbDropdown
-  placement="{{ placement === 'up' ? 'top-right' : 'bottom-right' }}"
->
+@if (locale$ | async; as locale) {
+<div class="language-switch" ngbDropdown placement="{{ placement === 'up' ? 'top-right' : 'bottom-right' }}">
   <button
     ngbDropdownToggle
     type="button"
@@ -22,21 +18,22 @@
   </button>
   <div ngbDropdownMenu class="language-switch-container dropdown-menu" role="menu" style="left: 0 !important">
     <div class="language-switch-menu-container">
-      <ng-container *ngIf="availableLocales$ | async as availableLocales">
-        <ul *ngIf="availableLocales.length">
-          <ng-container *ngFor="let l of availableLocales">
-            <li *ngIf="l !== locale">
-              <a
-                [href]="location | ishMakeHref : { lang: l } | async"
-                (click)="setLocaleCookie(l)"
-                [lang]="'locale.' + l + '.short' | translate"
-              >
-                {{ 'locale.' + l + '.long' | translate }}
-              </a>
-            </li>
-          </ng-container>
-        </ul>
-      </ng-container>
+      @if (availableLocales$ | async; as availableLocales) { @if (availableLocales.length) {
+      <ul>
+        @for (l of availableLocales; track l) { @if (l !== locale) {
+        <li>
+          <a
+            [href]="location | ishMakeHref : { lang: l } | async"
+            (click)="setLocaleCookie(l)"
+            [lang]="'locale.' + l + '.short' | translate"
+          >
+            {{ 'locale.' + l + '.long' | translate }}
+          </a>
+        </li>
+        } }
+      </ul>
+      } }
     </div>
   </div>
 </div>
+}

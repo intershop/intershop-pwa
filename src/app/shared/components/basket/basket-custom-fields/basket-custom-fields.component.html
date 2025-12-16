@@ -1,10 +1,9 @@
-<div
-  *ngIf="(visible$ | async) && (editMode$ | async) as editMode"
-  class="section"
-  data-testing-id="basket-custom-fields"
->
+@if ((visible$ | async) && (editMode$ | async); as editMode) {
+<div class="section" data-testing-id="basket-custom-fields">
   <h2 class="h3">{{ 'shopping_cart.custom_fields.heading' | translate }}</h2>
-  <ish-custom-fields-view *ngIf="collapsed" [fields]="customFields$ | async" />
+  @if (collapsed) {
+  <ish-custom-fields-view [fields]="customFields$ | async" />
+  }
   <button
     type="button"
     class="btn btn-link btn-link-with-icon"
@@ -21,11 +20,9 @@
     }}
     <fa-icon [icon]="['fas', collapsed ? 'angle-down' : 'angle-up']" />
   </button>
-
   <div id="basket-custom-fields-input" [ngbCollapse]="collapsed">
     <form [formGroup]="form" (ngSubmit)="submit()">
       <ish-custom-fields-formly [form]="form" [fields]="customFields$ | async" />
-
       <div class="row">
         <div class="col-12 offset-md-4 col-md-8">
           <button type="submit" class="btn btn-primary">
@@ -44,3 +41,4 @@
     </form>
   </div>
 </div>
+}

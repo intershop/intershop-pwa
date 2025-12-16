@@ -39,5 +39,7 @@
     [columnsToDisplay]="columnsToDisplay"
   />
 
-  <ish-loading *ngIf="loading$ | async" />
+  @if (loading$ | async) {
+  <ish-loading />
+  }
 </div>
