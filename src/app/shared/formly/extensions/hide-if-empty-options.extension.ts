@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
  */
 export const hideIfEmptyOptionsExtension: FormlyExtension = {
   prePopulate(field: FormlyFieldConfig): void {
-    if (field.type !== 'ish-select-field') {
+    if (field.type !== 'ish-select-field' && field.type !== 'ish-search-select-field') {
       return;
     }
     field.expressions = {
