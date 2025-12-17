@@ -36,7 +36,8 @@ LABEL displayVersion="${displayVersion}"
 ENV DISPLAY_VERSION=${displayVersion} NODE_PATH=/dist/node_modules PATH=$PATH:/dist/node_modules/.bin
 ENV LOG_ALL=on
 EXPOSE 4200 9113
-RUN mkdir /.pm2 && chmod 777 -Rf /.pm2 && touch /dist/ecosystem.yml && chmod 777 -f /dist/ecosystem.yml
+RUN mkdir /.pm2 && chown nobody:nobody /.pm2 && chmod 700 /.pm2 && \
+    touch /dist/ecosystem.yml && chown nobody:nobody /dist/ecosystem.yml && chmod 644 /dist/ecosystem.yml
 USER nobody
 HEALTHCHECK --interval=60s --timeout=20s --start-period=2s CMD node /dist/healthcheck.js
 ENTRYPOINT [ "/sbin/tini", "--", "sh", "/dist/entrypoint.sh" ]
