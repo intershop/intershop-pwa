@@ -118,7 +118,7 @@ server {
     listen 80;
   {{- end }}
 
-    access_log /var/log/nginx-access.log {{ getenv "LOGFORMAT" }};
+    # Write access logs to stdout only (no disk logging)
     access_log /dev/stdout {{ getenv "LOGFORMAT" }} if=$loggable;
 
     include /etc/nginx/conf.d/cache-blacklist.conf;

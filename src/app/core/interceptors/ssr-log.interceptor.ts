@@ -9,10 +9,12 @@ import {
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-export class SSRLogInterceptor implements HttpInterceptor {
-  private logging = /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase());
+import { logECS } from 'ish-core/utils/ssr-logging.utils';
 
-  private logAll = /on|1|true|yes/.test(process.env.LOG_ALL?.toLowerCase());
+export class SSRLogInterceptor implements HttpInterceptor {
+  private logging = SSR && /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase());
+
+  private logAll = SSR && /on|1|true|yes/.test(process.env.LOG_ALL?.toLowerCase());
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!this.logging) {
@@ -32,8 +34,36 @@ export class SSRLogInterceptor implements HttpInterceptor {
         const duration = (performance.now() - start).toFixed(2);
         const size = res instanceof HttpResponse ? ` ${JSON.stringify(res.body)?.length}` : '';
 
-        // eslint-disable-next-line no-console
-        console.log(`${req.method} ${req.urlWithParams} ${res.status}${size} - ${duration} ms`);
+        const message = `${req.method} ${req.urlWithParams} ${res.status}${size} - ${duration} ms`;
+
+        // Determine log level based on status code
+        let level: 'info' | 'warn' | 'error' = 'info';
+        if (res.status >= 500) {
+          level = 'error';
+        } else if (res.status >= 400) {
+          level = 'warn';
+        }
+
+        // Add HTTP context similar to server.ts pinoHttp logs
+        const httpContext = {
+          http: {
+            request: {
+              method: req.method,
+            },
+            response: {
+              status_code: res.status,
+            },
+          },
+          url: {
+            original: req.urlWithParams,
+            path: req.url,
+          },
+          event: {
+            duration: Math.round(parseFloat(duration) * 1e6), // Convert ms to nanoseconds (integer) for ECS compliance
+          },
+        };
+
+        logECS(level, message, 'ssr-log.interceptor', httpContext);
       }
     };
 

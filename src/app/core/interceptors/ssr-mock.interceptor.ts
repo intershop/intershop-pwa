@@ -4,6 +4,8 @@ import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { Observable, Observer } from 'rxjs';
 
+import { logECS } from 'ish-core/utils/ssr-logging.utils';
+
 /**
  * answers requests to mock-data with file-content in SSR mode
  */
@@ -11,20 +13,23 @@ import { Observable, Observer } from 'rxjs';
 export class SSRMockInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!SSR) {
-      console.warn('SSRMockInterceptor is active for non-server platform');
+      logECS('error', 'SSRMockInterceptor is active for non-server platform', 'ssr-mock.interceptor');
     }
     if (!req.url.startsWith('http')) {
-      // eslint-disable-next-line no-console
-      console.log(`loading mock-data for '${req.url}' from file system.`);
+      logECS('info', `loading mock-data for '${req.url}' from file system.`, 'ssr-mock.interceptor', {
+        url: { original: req.url },
+      });
       return new Observable((observer: Observer<HttpResponse<unknown>>) => {
-        let rootPath = process.cwd();
+        let rootPath = SSR ? process.cwd() : '';
         if (rootPath && rootPath.indexOf('browser') > 0) {
-          rootPath = process.cwd().split('browser')[0];
+          rootPath = SSR ? process.cwd().split('browser')[0] : '';
         }
         const file = join(rootPath, 'browser', req.url);
         if (!existsSync(file)) {
           const errString = `mock data file '${file}' not found!`;
-          console.error(errString);
+          logECS('error', errString, 'ssr-mock.interceptor', {
+            file: { path: file },
+          });
           observer.error(errString);
         } else {
           const content = JSON.parse(readFileSync(file, 'utf8'));

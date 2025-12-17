@@ -26,6 +26,7 @@ if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
 `;
 }
 
+// Prevent PM2 from double-encoding JSON logs using log_type: raw
 Object.entries(ports).forEach(([theme, port]) => {
   content += `
   - script: dist/${theme}/server/main.js
@@ -33,6 +34,7 @@ Object.entries(ports).forEach(([theme, port]) => {
     instances: ${process.env.CONCURRENCY_SSR || 2}
     exec_mode: cluster
     max_memory_restart: ${process.env.SSR_MAX_MEM || '600M'}
+    log_type: raw
     env:
       BROWSER_FOLDER: dist/${theme}/browser
       PORT: ${port}

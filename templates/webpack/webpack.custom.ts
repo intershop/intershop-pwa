@@ -169,6 +169,12 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
       SSR: targetOptions.target === 'server',
     })
   );
+
+  // suppress webpack warning for optional elastic-apm-node agent (Elastic APM - Application Performance Monitoring) dependency in @elastic/ecs-pino-format
+  config.resolve = config.resolve || {};
+  config.resolve.alias = config.resolve.alias || {};
+  (config.resolve.alias as Record<string, string | false>)['elastic-apm-node'] = false;
+
   logger.log('setting production:', production);
   logger.log('setting serviceWorker:', serviceWorker);
   logger.log('setting ngrxRuntimeChecks:', ngrxRuntimeChecks);

@@ -8,65 +8,103 @@ kb_sync_latest_only
 # Logging
 
 - [Server-Side Rendering (SSR)](#server-side-rendering-ssr)
+  - [Log Format](#log-format)
 - [NGINX](#nginx)
-- [Logging to an External Device](#logging-to-an-external-device)
-  - [PWA (SSR with PM2)](#pwa-ssr-with-pm2)
-  - [NGINX](#nginx-1)
+  - [Log Format](#log-format-1)
+- [Container Log Management](#container-log-management)
 - [Further References](#further-references)
 
 ## Server-Side Rendering (SSR)
 
-The _express.js_ image serving the Angular Server-Side Rendering can be provisioned to log extended information to the console by supplying the environment variable `LOGGING=true`.
+The _express.js_ server that handles Angular Universal Server-Side Rendering can log extended information to the console when the environment variable `LOGGING=true` is set (default).
 
-Information logged to the console includes the following:
+```yaml
+# docker-compose.yml
+services:
+  pwa:
+    environment:
+      LOGGING: 'true'
+      # LOG_ALL: 'false'
+      # LOGFORMAT: 'json'
+```
 
-- Requests to the SSR process are logged with [morgan](https://github.com/expressjs/morgan) (see configuration in _server.ts_) in the form of:
+`LOG_ALL` applies only to outbound requests from the SSR application.
+When commented out (default), the [Dockerfile](../../Dockerfile) default `LOG_ALL=on` is used, which causes all outbound HTTP requests to ICM to be logged.
 
-  `<method> <url> <status> <bytes> - <duration> ms`
+To disable all SSR application logs:
 
-- Requests handled by the SSR process are logged at the beginning with `SSR <url>` and at the end with `RES <status> <url>`.
+```yaml
+# docker-compose.yml
+services:
+  pwa:
+    environment:
+      LOGGING: 'false'
+      LOG_ALL: 'false'
+      # LOGFORMAT: 'json'
+```
 
-- Further the redirect actions of the [Hybrid Approach](./hybrid-approach.md) are logged with `RED <url>`.
+> NOTE: PM2 process manager logs will still appear as they are infrastructure-level logs.
 
-- Uncaught `Error` objects thrown in the SSR process, including `HttpErrorResponse` and runtime errors, are printed as well.
+### Log Format
+
+The SSR application supports two log formats controlled by the environment variable `LOGFORMAT`:
+
+- No `LOGFORMAT` variable (default): Requests to the SSR process are logged using [morgan](https://github.com/expressjs/morgan) (see configuration in _server.ts_) in the format: `<method> <url> <status> <bytes> - <duration> ms`
+- `LOGFORMAT='json'`: Uses [pino](https://github.com/pinojs/pino) for high-performance structured JSON logs compliant with the [Elastic Common Schema (ECS) v8.11](https://www.elastic.co/guide/en/ecs/current/index.html) specification, including log levels `info`, `warn`, and `error`
+
+Both log formats include the following common log entries:
+
+- PM2 process identifiers, automatically prefixed with `PM2`
+- Redirect actions of the [Hybrid Approach](./hybrid-approach.md) are logged with `RED <url>` (in JSON mode this text is in the `"message"` field of the structured log entry)
+- Uncaught `Error` objects thrown in the SSR process, including `HttpErrorResponse` and runtime errors (in JSON mode error details are included in the structured log entry)
+
+When using the default plain text format (no `LOGFORMAT` variable), additional SSR-specific logs appear (only when `LOG_ALL=true`):
+
+- `SSR <url>` is logged at the beginning of SSR processing
+- `RES <status> <url>` is logged at the end of SSR processing
 
 ## NGINX
 
-The NGINX image providing multi-channel configuration uses the default logging capabilities of [nginx](https://www.nginx.com/).
-You can enable `json` formatted logging by passing the environment variable `LOGFORMAT=json` to the container.
-If no `LOGFORMAT` variable is passed, the container uses `main` as its default format.
+The NGINX image that provides multi-channel configuration uses the default logging capabilities of [nginx](https://www.nginx.com/).
+
+```yaml
+# docker-compose.yml
+services:
+  nginx:
+    environment:
+      # LOG_ALL: 'false'
+      # LOGFORMAT: 'json'
+      # DEBUG: 1
+```
+
+When `LOG_ALL` is commented out (default), the NGINX [Dockerfile](../../nginx/Dockerfile) default `LOG_ALL=on` is used, which logs all requests.
 
 Additionally, the environment variable `DEBUG=true` provides even more debugging output in the NGINX logs.
 
-- [Configure Logging](https://docs.nginx.com/nginx/admin-guide/monitoring/logging/)
-- [Debugging Nginx Configuration](https://easyengine.io/tutorials/nginx/debugging/)
-
-## Logging to an External Device
-
-Within PWA development systems, information from the SSR and NGINX containers can be stored in external log files for analysis purposes.
-When launching your PWA as a Docker image/container, you can copy the log information from the containers which can be stored in the local file system using Docker volumes.
-Enabled volumes allow you to write SSR and NGINX logs in local Unix/Windows directories.
-
-The path is composed as follows:
-
-- `d:/pwa/logs` - The local Windows/Unix directory of the development machine where the logs should be stored.
-- `/var/log/` - The log location in the SSR/NGINX container.
-
-To enable logging to volumes, copy the examples below to the according `docker-compose.yml` sections.
-
-### PWA (SSR with PM2)
+To disable all NGINX logs (except 4xx/5xx errors):
 
 ```yaml
-volumes:
-  - d:/pwa/logs:/.pm2/logs/
+# docker-compose.yml
+services:
+  nginx:
+    environment:
+      LOG_ALL: 'false'
+      # LOGFORMAT: 'json'
+      # DEBUG: 1
 ```
 
-### NGINX
+### Log Format
 
-```yaml
-volumes:
-  - d:/pwa/logs:/var/log/
-```
+NGINX supports two log formats controlled by the environment variable `LOGFORMAT`:
+
+- No `LOGFORMAT` variable (default): The container uses `main` as its default format
+- `LOGFORMAT='json'`: The container uses nginx's built-in JSON logging compliant with the [Elastic Common Schema (ECS) v8.11](https://www.elastic.co/guide/en/ecs/current/index.html) specification
+
+## Container Log Management
+
+The SSR and NGINX containers write all logs exclusively to stdout and stderr.
+This approach replaces the former "Logging to an External Device" method.
+Mounting volumes to read log files inside containers is now deprecated in favor of Docker's built-in logging mechanisms based on stdout/stderr.
 
 ## Further References
 

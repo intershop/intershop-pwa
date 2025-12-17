@@ -1,10 +1,12 @@
-/* eslint-disable no-console, no-restricted-imports, complexity, @typescript-eslint/no-var-requires */
+/* eslint-disable no-console, no-restricted-imports, complexity, @typescript-eslint/no-var-requires, @typescript-eslint/no-explicit-any, ish-custom-rules/no-var-before-return, unicorn/no-null */
 import { CommonEngine } from '@angular/ssr';
 import * as express from 'express';
 import * as proxy from 'express-http-proxy';
 import * as robots from 'express-robots-txt';
 import * as fs from 'fs';
+import * as os from 'os';
 import { join } from 'path';
+import pinoHttp from 'pino-http';
 import * as client from 'prom-client';
 import { Agent, install, interceptors, setGlobalDispatcher } from 'undici';
 import { writeHeapSnapshot } from 'v8';
@@ -16,6 +18,13 @@ import { REQUEST, RESPONSE } from 'ish-core/utils/ssr/ssr.tokens';
 
 import { icmCallsCache } from './src/app/core/interceptors/ssr-cache.interceptor';
 import {
+  AppLogger,
+  getLogger,
+  isPinoLogger,
+  loggingEnabled,
+  useJsonFormat,
+} from './src/app/core/utils/ssr-logging.utils';
+import {
   APP_BASE_HREF,
   AppServerModule,
   HYBRID_MAPPING_TABLE,
@@ -25,11 +34,24 @@ import {
 } from './src/main.server';
 import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
 
+// Logger source for this file
+const LOGGER_SOURCE = 'server.ts';
+
+// Get the shared logger with source binding
+const logger: AppLogger = getLogger(LOGGER_SOURCE);
+
 process.on('SIGUSR2', () => {
   const pm2Name = process.env.name || 'no-pm2';
   const filename = `/tmp/Heap.${pm2Name}.${process.pid}.${new Date().toISOString().replaceAll(':', '-')}.heapsnapshot`;
   writeHeapSnapshot(filename);
-  console.log(`Heap snapshot written to ${filename}`);
+  logger.info(
+    {
+      log: { logger: LOGGER_SOURCE },
+      file: { path: filename },
+      event: { category: ['process'], action: 'heap-snapshot', outcome: 'success' },
+    },
+    `Heap snapshot written to ${filename}`
+  );
 });
 
 // allowing HTTP/2 uses HTTPClient withFetch() and undici agent allowH2 option
@@ -40,7 +62,10 @@ if (/on|1|true|yes/.test(process.env.ALLOW_H2?.toLowerCase())) {
 
   const h2Agent = new Agent({ allowH2: true }).compose(decompress(), dns(), retry());
   setGlobalDispatcher(h2Agent);
-  console.log('installed undici globally, enabled HTTP/2 support for backend requests');
+  logger.info(
+    { event: { category: ['configuration'], action: 'http2-enabled', outcome: 'success' } },
+    'installed undici globally, enabled HTTP/2 support for backend requests'
+  );
 }
 
 const collectDefaultMetrics = client.collectDefaultMetrics;
@@ -104,24 +129,15 @@ const restRequestDuration = collectDetailedMetrics
 
 const PM2 = process.env.pm_id && process.env.name ? `${process.env.pm_id} ${process.env.name}` : undefined;
 
-if (PM2) {
-  const logOriginal = console.log;
-
-  console.log = (...args: unknown[]) => {
-    logOriginal(PM2, ...args);
-  };
-
-  const warnOriginal = console.warn;
-
-  console.warn = (...args: unknown[]) => {
-    warnOriginal(PM2, ...args);
-  };
-
-  const errorOriginal = console.error;
-
-  console.error = (...args: unknown[]) => {
-    errorOriginal(PM2, ...args);
-  };
+// Console methods are overridden in plain text mode with PM2 prefix - JSON mode includes it in structured fields
+if (PM2 && !useJsonFormat) {
+  const methods = ['log', 'info', 'debug', 'warn', 'error', 'trace'] as const;
+  methods.forEach(method => {
+    const original = console[method];
+    console[method] = (...args: unknown[]) => {
+      original(PM2, ...args);
+    };
+  });
 }
 
 const PORT = process.env.PORT || 4200;
@@ -132,26 +148,35 @@ const DIST_FOLDER = join(process.cwd(), 'dist');
 
 const BROWSER_FOLDER = process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'browser');
 
+type TimedRequest = express.Request & { startTime?: number };
+
 // The Express app is exported so that it can be used by serverless Functions.
 export function app() {
-  const logging = /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase());
   const logAll = /on|1|true|yes/.test(process.env.LOG_ALL?.toLowerCase());
 
   const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
-
   const SSR_HYBRID_BACKEND = process.env.SSR_HYBRID_BACKEND || ICM_BASE_URL;
 
   if (!ICM_BASE_URL) {
-    console.error('ICM_BASE_URL not set');
+    logger.error(
+      { event: { category: ['configuration'], action: 'missing-icm-url', outcome: 'failure' } },
+      'ICM_BASE_URL not set'
+    );
     process.exit(1);
   }
 
+  // TLS Certificate handling
   if (process.env.TRUST_ICM) {
     // trust https certificate if self-signed
     // see also https://medium.com/nodejs-tips/ssl-certificate-explained-fc86f8aa43d4
     // and https://github.com/angular/universal/issues/856#issuecomment-436364729
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-    console.warn("ignoring all TLS verification as 'TRUST_ICM' variable is set - never use this in production!");
+    logger.warn(
+      {
+        event: { category: ['configuration'], action: 'tls-verification-disabled', outcome: 'failure' },
+      },
+      "ignoring all TLS verification as 'TRUST_ICM' variable is set - never use this in production!"
+    );
   } else {
     const [icmProtocol, icmBase] = ICM_BASE_URL.split('://');
     // check for ssl certificate should be done, if https is used
@@ -168,7 +193,17 @@ export function app() {
       };
 
       const req = https.request(options, (res: { socket: { authorized: boolean } }) => {
-        console.log('Certificate for', ICM_BASE_URL, 'authorized:', res.socket.authorized);
+        logger.info(
+          {
+            url: { full: ICM_BASE_URL },
+            event: {
+              category: ['web'],
+              action: 'certificate-check',
+              outcome: res.socket.authorized ? 'success' : 'failure',
+            },
+          },
+          `Certificate for ${ICM_BASE_URL} authorized: ${res.socket.authorized}`
+        );
       });
 
       const certErrorCodes = [
@@ -192,14 +227,16 @@ export function app() {
 
       req.on('error', (e: { code: string }) => {
         if (certErrorCodes.includes(e.code)) {
-          console.log(
-            e.code,
-            ': The given ICM_BASE_URL',
-            ICM_BASE_URL,
-            "has a certificate problem. Please set 'TRUST_ICM' variable to avoid further errors for all requests to the ICM_BASE_URL - never use this in production!"
+          logger.warn(
+            {
+              error: { type: 'certificate', code: e.code },
+              url: { full: ICM_BASE_URL },
+              event: { category: ['web'], action: 'certificate-error', outcome: 'failure' },
+            },
+            `${e.code}: The given ICM_BASE_URL ${ICM_BASE_URL} has a certificate problem. Please set 'TRUST_ICM' variable to avoid further errors for all requests to the ICM_BASE_URL - never use this in production!`
           );
         } else {
-          console.error(e);
+          logger.error({ error: { message: e.code }, event: { category: ['web'], outcome: 'failure' } }, e.code);
         }
       });
 
@@ -222,22 +259,66 @@ export function app() {
     ],
   });
 
-  if (logging) {
-    const morgan = require('morgan');
-    // see https://github.com/expressjs/morgan#predefined-formats
-    let logFormat = morgan.tiny;
-    if (PM2) {
-      logFormat = `${PM2} ${logFormat}`;
-    }
-    server.use(
-      morgan(logFormat, {
-        skip: (req: express.Request, res: express.Response) =>
-          req.originalUrl.startsWith('/INTERSHOP/static') || (res.statusCode < 400 && !logAll),
-      })
-    );
+  // HTTP logging middleware
+  if (loggingEnabled) {
+    // Track request start time (stored on request object, not response header)
+    server.use((req: TimedRequest, _res, next) => {
+      req.startTime = Date.now();
+      next();
+    });
+
+    const httpLogger = (() => {
+      try {
+        if (!isPinoLogger(logger)) {
+          // Fallback to morgan for plain text mode
+          const morgan = require('morgan');
+          // see https://github.com/expressjs/morgan#predefined-formats
+          return morgan('tiny', {
+            skip: (req: express.Request, res: express.Response) =>
+              req.originalUrl.startsWith('/INTERSHOP/static') || (res.statusCode < 400 && !logAll),
+          });
+        }
+
+        // ECS-compliant pino-http configuration
+        return pinoHttp({
+          logger,
+          autoLogging: {
+            ignore: (req: express.Request) => req.originalUrl.startsWith('/INTERSHOP/static'),
+          },
+          customLogLevel: (_req: express.Request, res: express.Response, err?: Error) => {
+            if (res.statusCode >= 500 || err) {
+              return 'error';
+            }
+            if (res.statusCode >= 400) {
+              return 'warn';
+            }
+            if (logAll) {
+              return 'info';
+            }
+            return 'silent';
+          },
+          customSuccessMessage: (req: express.Request) => `${req.method} ${req.originalUrl}`,
+          customErrorMessage: (_req: express.Request, _res: express.Response, err: Error) =>
+            err?.message || 'Request failed',
+          // duration is not included and needs to be added manually
+          // customProps cannot be used since it doubles the duration field in the JSON
+          customSuccessObject: (req: TimedRequest, _res: express.Response, val: object) => ({
+            ...val,
+            event: {
+              ...(val as any).event,
+              duration: req.startTime ? (Date.now() - req.startTime) * 1_000_000 : undefined,
+            },
+          }),
+        });
+      } catch (err) {
+        console.error('Failed to initialize pino-http middleware:', err);
+        return (_req: express.Request, _res: express.Response, next: express.NextFunction) => next();
+      }
+    })();
+
+    server.use(httpLogger);
   }
 
-  // seo robots.txt
   const pathToRobotsTxt = join(DIST_FOLDER, 'robots.txt');
   if (fs.existsSync(pathToRobotsTxt)) {
     server.use(robots(pathToRobotsTxt));
@@ -263,6 +344,9 @@ export function app() {
       })
     );
   }
+
+  const buildICMWebURL = (config: { [is: string]: string } = {}): string =>
+    ICM_WEB_URL.replace(/\$<(\w+)>/g, (match, group) => config[group] || match);
 
   const hybridRedirect = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const url = req.originalUrl;
@@ -310,18 +394,26 @@ export function app() {
         break;
       }
     }
+
     if (newUrl) {
-      if (logging) {
-        console.log('RED', newUrl);
+      if (loggingEnabled) {
+        logger.info(
+          {
+            event: { category: ['web'], action: 'redirect', outcome: 'success' },
+            http: {
+              request: { method: req.method },
+              response: { status_code: 301 },
+            },
+            url: { original: req.originalUrl, full: newUrl },
+          },
+          `RED ${newUrl}`
+        );
       }
       res.redirect(301, newUrl);
     } else {
       next();
     }
   };
-
-  const buildICMWebURL = (config: { [is: string]: string } = {}): string =>
-    ICM_WEB_URL.replace(/\$<(\w+)>/g, (match, group) => config[group] || match);
 
   if (process.env.SSR_HYBRID) {
     server.use('*', hybridRedirect);
@@ -330,7 +422,6 @@ export function app() {
   const icmProxy = proxy(SSR_HYBRID_BACKEND, {
     // preserve original path
     proxyReqPathResolver: req => req.originalUrl,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     proxyReqOptDecorator: (options: any) => {
       if (process.env.TRUST_ICM) {
         // https://github.com/villadora/express-http-proxy#q-how-to-ignore-self-signed-certificates-
@@ -348,10 +439,17 @@ export function app() {
   });
 
   if (process.env.PROXY_ICM || process.env.SSR_HYBRID) {
-    console.log("making ICM available for all requests to '/INTERSHOP'");
+    logger.info(
+      {
+        event: { category: ['web'], action: 'proxy-setup', outcome: 'success' },
+        url: { path: '/INTERSHOP' },
+      },
+      "making ICM available for all requests to '/INTERSHOP'"
+    );
     server.use('/INTERSHOP', icmProxy);
   }
 
+  // static file serving
   function defaultCacheControl(path: string): string {
     if (/\.[0-9a-f]{16,}\./.test(path)) {
       // file was output-hashed -> 1y
@@ -364,7 +462,12 @@ export function app() {
 
   const SOURCE_MAPS_ACTIVE = /on|1|true|yes/.test(process.env.SOURCE_MAPS?.toLowerCase());
   if (SOURCE_MAPS_ACTIVE) {
-    console.warn('SOURCE_MAPS are active - never use this in production!');
+    logger.warn(
+      {
+        event: { category: ['configuration'], action: 'source-maps-enabled', outcome: 'failure' },
+      },
+      'SOURCE_MAPS are active - never use this in production!'
+    );
   }
 
   // Serve static files from browser folder
@@ -379,6 +482,7 @@ export function app() {
       return res.sendStatus(404);
     }
   });
+
   server.get(/\/.*\.(js|css)$/, (req, res) => {
     // remove all parameters
     const path = req.originalUrl.slice(!DEPLOY_URL.startsWith('http') ? DEPLOY_URL.length : 0).replace(/[;?&].*$/, '');
@@ -424,6 +528,7 @@ export function app() {
     req.url = req.originalUrl.replace(/[;?&].*$/, '').replace(/^.*\//g, '/');
     next();
   });
+
   server.get(
     '*.*',
     express.static(BROWSER_FOLDER, {
@@ -443,8 +548,18 @@ export function app() {
   // complete setup and usage of new angular common engine for Angular 17+ SSR
   const angularCommonEngine = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     if (req.originalUrl.startsWith('/assets/')) {
-      if (logging) {
-        console.log(`RES 404 ${req.originalUrl} - cannot serve static assets with Angular SSR`);
+      if (loggingEnabled) {
+        logger.info(
+          {
+            event: { category: ['web'], action: 'static-asset-request', outcome: 'failure' },
+            http: {
+              request: { method: req.method },
+              response: { status_code: 404 },
+            },
+            url: { original: req.originalUrl, path: req.path },
+          },
+          `RES 404 ${req.originalUrl} - cannot serve static assets with Angular SSR`
+        );
       }
       return res.sendStatus(404);
     }
@@ -452,8 +567,18 @@ export function app() {
     if (req.headers.accept) {
       const accept = req.headers.accept.toLowerCase();
       if (!accept.includes('html') && ['css', 'image', 'json', 'javascript'].some(inc => accept.includes(inc))) {
-        if (logging) {
-          console.log(`RES 404 ${req.originalUrl} - accept header mismatch '${accept}'`);
+        if (loggingEnabled) {
+          logger.info(
+            {
+              event: { category: ['web'], action: 'accept-header-mismatch', outcome: 'failure' },
+              http: {
+                request: { method: req.method },
+                response: { status_code: 404 },
+              },
+              url: { original: req.originalUrl },
+            },
+            `RES 404 ${req.originalUrl} - accept header mismatch '${accept}'`
+          );
         }
         return res.sendStatus(404);
       }
@@ -466,6 +591,10 @@ export function app() {
     }
 
     const url = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+
+    if (loggingEnabled && !useJsonFormat && logAll) {
+      console.log(`SSR ${req.originalUrl}`);
+    }
 
     commonEngine
       .render({
@@ -499,16 +628,30 @@ export function app() {
         } else {
           res.status(500).send('SSR rendering failed');
         }
-        if (logging && (logAll || res.statusCode >= 400)) {
+
+        if (loggingEnabled && !useJsonFormat && (logAll || res.statusCode >= 400)) {
           console.log(`RES ${res.statusCode} ${req.originalUrl}`);
         }
       })
-      // ToDo: middleware error handling is missing
       .catch(err => {
-        if (logging) {
-          console.log(err);
+        if (loggingEnabled) {
+          logger.error(
+            {
+              event: { category: ['web'], action: 'ssr-render', outcome: 'failure' },
+              error: {
+                message: err.message,
+                stack_trace: err.stack,
+                type: err.name,
+              },
+              http: {
+                request: { method: req.method },
+                response: { status_code: 500 },
+              },
+              url: { original: req.originalUrl },
+            },
+            err.message
+          );
         }
-        // errors will only be logged server-side, client gets a generic error page
         next(err);
       });
   };
@@ -546,7 +689,13 @@ export function app() {
 
   server.use('*', angularCommonEngine);
 
-  console.log('ICM_BASE_URL is', ICM_BASE_URL);
+  logger.info(
+    {
+      event: { category: ['configuration'], action: 'icm-base-url', outcome: 'success' },
+      url: { full: ICM_BASE_URL },
+    },
+    `ICM_BASE_URL is ${ICM_BASE_URL}`
+  );
 
   // running behind nginx - make sure to use all x-forwarded headers correctly
   // see https://expressjs.com/en/guide/behind-proxies.html
@@ -576,8 +725,24 @@ function run() {
   const http = require('http');
   http.createServer(app()).listen(PORT);
   collectDefaultMetrics({ prefix: 'pwa_' });
-  console.log(`Node Express server listening on http://${require('os').hostname()}:${PORT}`);
-  console.log('serving static files from', BROWSER_FOLDER);
+
+  logger.info(
+    {
+      event: { category: ['web'], action: 'server-start', outcome: 'success' },
+      server: { port: PORT },
+      host: { hostname: os.hostname() },
+      url: { full: `http://${os.hostname()}:${PORT}` },
+    },
+    `Node Express server listening on http://${os.hostname()}:${PORT}`
+  );
+
+  logger.info(
+    {
+      event: { category: ['file'], action: 'static-files-path', outcome: 'success' },
+      file: { path: BROWSER_FOLDER },
+    },
+    `serving static files from ${BROWSER_FOLDER}`
+  );
 }
 
 // Webpack will replace 'require' with '__webpack_require__'

@@ -10,6 +10,7 @@ import { SSRCacheInterceptor } from 'ish-core/interceptors/ssr-cache.interceptor
 import { SSRLogInterceptor } from 'ish-core/interceptors/ssr-log.interceptor';
 import { SSRMockInterceptor } from 'ish-core/interceptors/ssr-mock.interceptor';
 import { SSRPrometheusInterceptor } from 'ish-core/interceptors/ssr-prometheus.interceptor';
+import { logECS } from 'ish-core/utils/ssr-logging.utils';
 
 import { environment } from '../environments/environment';
 
@@ -18,20 +19,72 @@ import { AppModule } from './app.module';
 
 class SSRErrorHandler implements ErrorHandler {
   handleError(error: unknown): void {
+    const isJsonLogging = process.env.LOGFORMAT?.toLowerCase() === 'json';
+
+    if (!isJsonLogging) {
+      // Original logging behavior for non-JSON mode
+      if (error instanceof HttpErrorResponse) {
+        console.error('ERROR', error.message);
+      } else if (error instanceof Error) {
+        console.error('ERROR', error.name, error.message, error.stack?.split('\n')?.[1]?.trim());
+      } else if (typeof error === 'object') {
+        try {
+          console.error('ERROR', JSON.stringify(error));
+        } catch (_) {
+          // do not log the error if it can't be stringified, it floods the log with irrelevant information
+          console.error('ERROR (cannot stringify)');
+        }
+      } else {
+        console.error('ERROR', error);
+      }
+      return;
+    }
+
+    // ECS logging for JSON mode
+    let message: string;
+    let extra: Record<string, unknown> | undefined;
+
     if (error instanceof HttpErrorResponse) {
-      console.error('ERROR', error.message);
+      message = `ERROR: ${error.message}`;
+      extra = {
+        error: {
+          message: error.message,
+          type: 'HttpErrorResponse',
+        },
+        http: {
+          response: { status_code: error.status },
+        },
+        url: { original: error.url },
+      };
     } else if (error instanceof Error) {
-      console.error('ERROR', error.name, error.message, error.stack?.split('\n')?.[1]?.trim());
+      message = `ERROR: ${error.message}`;
+      extra = {
+        error: {
+          message: error.message,
+          type: error.name,
+          stack_trace: error.stack,
+        },
+      };
     } else if (typeof error === 'object') {
       try {
-        console.error('ERROR', JSON.stringify(error));
+        message = `ERROR: ${JSON.stringify(error)}`;
+        extra = {
+          error: { details: JSON.stringify(error) },
+        };
       } catch (_) {
-        // do not log the error if it can't be stringified, it floods the log with irrelevant information
-        console.error('ERROR (cannot stringify)');
+        message = 'ERROR (cannot stringify)';
+        extra = {
+          error: { message: 'cannot stringify' },
+        };
       }
     } else {
-      console.error('ERROR', error);
+      message = `ERROR: ${String(error)}`;
+      extra = {
+        error: { message: String(error) },
+      };
     }
+
+    logECS('error', message, 'app.server.module', extra);
   }
 }
 

@@ -20,6 +20,7 @@ services:
       # TRUST_ICM: 'true'
       LOGGING: 'true'
       # LOG_ALL: 'false'
+      # LOGFORMAT: 'json'
       SOURCE_MAPS: 'true'
       # SSR_HYBRID: 'true'
       # PROXY_ICM: 'true'
@@ -46,10 +47,6 @@ services:
       # allow backend requests to use HTTP/2 with Fetch API (experimental)
       # ALLOW_H2: 'true'
 
-    # Logging to an External Device (see logging.md)
-    # volumes:
-    #   - d:/pwa/logs:/.pm2/logs/
-
   nginx:
     image: intershophub/intershop-pwa-nginx
     build: nginx
@@ -65,7 +62,8 @@ services:
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
       CACHE: 0
       # CACHE_CLEARER: 0 # Set to 1 to enable cache clearer based on ICM webadapter statistics
-      # LOG_ALL: 0
+      # LOG_ALL: 'false'
+      # LOGFORMAT: 'json'
       # SSL: 1
       # SSL_MKCERT_OFF: 1
       # SSR: 0
@@ -109,10 +107,6 @@ services:
       #     - Content-Security-Policy: "default-src https://develop.icm.intershop.de 'self'; style-src 'unsafe-inline' 'self'; font-src data: 'self'; script-src secure.pay1.de 'self'; frame-src secure.pay1.de;"
       #     - X-Frame-Options: 'SAMEORIGIN'
       # REDIS_URI: redis://redis:6379
-
-    # Logging to an External Device (see logging.md)
-    # volumes:
-    #   - d:/pwa/logs:/var/log/
 
     # Provide own SSL certificate files with SSL and SSL_MKCERT_OFF (see nginx-startup.md)
     # volumes:

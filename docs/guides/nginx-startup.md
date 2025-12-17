@@ -316,6 +316,7 @@ Built-in features can be enabled and disabled:
 - `SSL=on` to switch on HTTPS. See [HTTPS or SSL](#https-or-ssl) above for further explanation.
 - `DEBUG=on` to log extra information like path matching.
 - `LOG_ALL=off` to restrict logging to errors.
+- `LOGFORMAT=json` to enable ECS-compliant JSON logging (default: plain text).
 - `CACHE_CLEARER=on` to enable caching per ICM sites and do cache clearing when ICM page cache is invalidated (default `off`)
 
 ## Features

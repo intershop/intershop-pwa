@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { API_MOCK_PATHS } from 'ish-core/configurations/injection-keys';
 import { getRestEndpoint } from 'ish-core/store/core/configuration';
 import { InjectSingle } from 'ish-core/utils/injection';
+import { logECS } from 'ish-core/utils/ssr-logging.utils';
 
 const MOCK_DATA_ROOT = './assets/mock-data';
 
@@ -37,8 +38,9 @@ export class MockInterceptor implements HttpInterceptor {
     const commands = this.router.parseUrl(mockUrl)?.root?.children?.[PRIMARY_OUTLET]?.segments?.map(s => s.path);
     const newUrl = this.router.createUrlTree(commands)?.toString();
 
-    // eslint-disable-next-line no-console
-    console.log(`redirecting '${req.url}' to '${newUrl}'`);
+    logECS('info', `redirecting '${req.url}' to '${newUrl}'`, 'mock.interceptor', {
+      url: { original: req.url, redirect: newUrl },
+    });
 
     return next.handle(req.clone({ url: newUrl, method: 'GET' }));
   }
