@@ -7,6 +7,57 @@ kb_everyone
 
 # Changelog
 
+## [9.1.0](https://github.com/intershop/intershop-pwa/releases/tag/9.1.0) (2025-12-18)
+
+> [!NOTE]
+> Intershop PWA 9.1.0 was developed and tested with Intershop Commerce Management (ICM) version ICM 14.0.1.
+> It will work with all versions from ICM 14.0.1 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> _PWA 9.1.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
+>
+> The PWA was developed and tested using Node.js version 22.17.1 LTS (including npm 10.9.2), which is the recommended version.
+>
+> Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.11.0 for PWA 9.1.0 deployments.
+
+### Features
+
+- use search select box (ng-select) for additional places, virtual scroll (#1797) ([6848009](https://github.com/intershop/intershop-pwa/commit/6848009))
+- user bulk import via CSV upload (#1883) ([9843fab](https://github.com/intershop/intershop-pwa/commit/9843fab))
+- cost center bulk import via CSV upload (#1799) ([db5b7fa](https://github.com/intershop/intershop-pwa/commit/db5b7fa))
+- introduce CSV import handler for reusability and adapt quick order (#1799) ([778bf2b](https://github.com/intershop/intershop-pwa/commit/778bf2b))
+- support checkout without terms and conditions (#1972) ([f00cb62](https://github.com/intershop/intershop-pwa/commit/f00cb62))
+- set `Cache-Control: no-cache` header to all SSR responses for PCI DSS compliance (#1955) ([b6bcb5c](https://github.com/intershop/intershop-pwa/commit/b6bcb5c))
+- improve PWA Design View interactions (#1962) ([ffc9c94](https://github.com/intershop/intershop-pwa/commit/ffc9c94))
+- enable category content top and bottom view contexts (#1960) ([466eec1](https://github.com/intershop/intershop-pwa/commit/466eec1))
+- hide catalog(category) from main navigation if `ShowInMenu` is disabled (#1951) ([d600384](https://github.com/intershop/intershop-pwa/commit/d600384))
+- **accessibility:** usage of disabled buttons (#1872) ([202dc31](https://github.com/intershop/intershop-pwa/commit/202dc31))
+
+### Bug Fixes
+
+- replace chmod 777 permissions with restrictive settings in Dockerfile (#1979) ([32d341a](https://github.com/intershop/intershop-pwa/commit/32d341a))
+- scroll positioning of the scroll directive (#1976) ([f0b9baa](https://github.com/intershop/intershop-pwa/commit/f0b9baa))
+- Design View wrapper styling (#1969) ([df68d44](https://github.com/intershop/intershop-pwa/commit/df68d44))
+- improve styling of sub categories in main navigation (#1884, #1961) ([4939027](https://github.com/intershop/intershop-pwa/commit/4939027))
+- add warranty information for recurring order line items (#1964, #1965) ([92921c8](https://github.com/intershop/intershop-pwa/commit/92921c8))
+- remove display of buyer information on recurring order detail page for B2C (#1936) ([4db3460](https://github.com/intershop/intershop-pwa/commit/4db3460))
+- display basket custom fields on requisition detail page ([8ddb9de](https://github.com/intershop/intershop-pwa/commit/8ddb9de))
+- revert label - input field alignment ([bce6ce0](https://github.com/intershop/intershop-pwa/commit/bce6ce0))
+- display select box for preferred addresses ([923e931](https://github.com/intershop/intershop-pwa/commit/923e931))
+- display basket validation results for recurring orders (#1952) ([b9b2644](https://github.com/intershop/intershop-pwa/commit/b9b2644))
+- wait to load PayPal script after the app becomes stable ([65a3184](https://github.com/intershop/intershop-pwa/commit/65a3184))
+- show 'or' text under PayPal buttons ([b8fa6db](https://github.com/intershop/intershop-pwa/commit/b8fa6db))
+- prevent redundant spacing in category tree (#1950) ([35d12d9](https://github.com/intershop/intershop-pwa/commit/35d12d9))
+- enable default sorting on product lists with Sparque config (#1947) ([ba22d78](https://github.com/intershop/intershop-pwa/commit/ba22d78))
+- **accessibility:** label - input association of ng-select (#1978) ([ca5ca7e](https://github.com/intershop/intershop-pwa/commit/ca5ca7e))
+- **accessibility:** quickorder disabled button (#1882) ([771aa7d](https://github.com/intershop/intershop-pwa/commit/771aa7d))
+- **Hybrid Approach:** option to set the correct port to be forwarded to the Responsive Starter Store (#1974) ([38342f9](https://github.com/intershop/intershop-pwa/commit/38342f9))
+- **order-templates:** add/remove multiple products concurrently (#1953) ([3c20144](https://github.com/intershop/intershop-pwa/commit/3c20144))
+
+### Documentation
+
+- document password autocomplete accessibility prioritization over PCI DSS (#1968) ([6c902c5](https://github.com/intershop/intershop-pwa/commit/6c902c5))
+
 ## [9.0.0](https://github.com/intershop/intershop-pwa/releases/tag/9.0.0) (2025-11-05)
 
 > [!NOTE]
