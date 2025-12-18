@@ -147,7 +147,7 @@ It is also possible to use the _Account - General - Navigation Bar_ content incl
 
 ## View Contexts
 
-With the Intershop PWA version 2.0.0, we introduced demo/example view contexts that have been disabled by default with Intershop PWA 5.2.0.
+With the Intershop PWA version 2.0.0, we introduced demo/example view contexts, which were disabled by default with Intershop PWA 5.2.0.
 Each integrated view context triggers a REST call that potentially decreases the SSR rendering performance, which is not necessary if this feature is not actively used in a PWA project.
 If the used ICM does not have the integrated view context instances configured, the requests result in 404 responses, which is not helpful either.
 For that reason, the examples were commented out in the source code and must be activated in the project source code if needed.
