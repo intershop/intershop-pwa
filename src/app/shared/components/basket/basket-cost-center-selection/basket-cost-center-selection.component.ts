@@ -98,6 +98,7 @@ export class BasketCostCenterSelectionComponent implements OnInit {
           hideRequiredMarker: true,
           options,
           placeholder: options.length > 1 && !this.model?.costCenter ? 'account.option.select.text' : undefined,
+          virtualScroll: true,
         },
       },
     ];

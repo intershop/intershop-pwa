@@ -84,6 +84,7 @@ describe('Basket Cost Center Selection Component', () => {
             }
           ],
           "placeholder": "",
+          "virtualScroll": true,
           "disabled": false
         }"
       `);
@@ -109,6 +110,7 @@ describe('Basket Cost Center Selection Component', () => {
             }
           ],
           "placeholder": "account.option.select.text",
+          "virtualScroll": true,
           "disabled": false
         }"
       `);
@@ -140,6 +142,7 @@ describe('Basket Cost Center Selection Component', () => {
             }
           ],
           "placeholder": "",
+          "virtualScroll": true,
           "disabled": false
         }"
       `);

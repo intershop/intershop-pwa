@@ -48,7 +48,7 @@ describe('Cost Center Management - CRUD', () => {
   it('should create a new cost center', () => {
     at(CostCentersPage, page => page.addCostCenter());
     at(CostCenterCreatePage, page => {
-      page.fillForm({ ..._.newCostCenter, costCenterManager: _.user.login });
+      page.fillForm({ ..._.newCostCenter, costCenterManager: _.user.lastName });
       page.submit();
     });
     at(CostCenterDetailPage, page => {
