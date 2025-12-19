@@ -16,8 +16,8 @@
   // OFF
   // default
   &:not(:checked) {
-    background-color: $text-color-tertiary;
-    border-color: $text-color-tertiary;
+    background-color: $gray-500;
+    border-color: $gray-500;
 
     // remove the transition halo effect
     box-shadow: none;

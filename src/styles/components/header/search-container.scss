@@ -289,7 +289,7 @@
       right: 85px;
       width: 20px;
       height: 20px;
-      background: #fff url('/assets/img/loading.gif') center center no-repeat;
+      background: $color-inverse url('/assets/img/loading.gif') center center no-repeat;
       background-size: contain;
     }
   }

@@ -5,13 +5,11 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 /**
  * The Product Label Component renders a label for a product with label information, i.a. new, sale or top seller.
- *
- * @example
- * <ish-product-label></ish-product-label>
  */
 @Component({
   selector: 'ish-product-label',
   templateUrl: './product-label.component.html',
+  styleUrls: ['./product-label.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductLabelComponent implements OnInit {

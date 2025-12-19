@@ -2,12 +2,16 @@
 @use 'sass:map';
 
 ///////////////////////////////////////////////////////////////////////////////
-// DEFAULT THEME VARIABLES
-// supposed to reflect the style guide of the storefront
+// Default theme variables
+// Supposed to reflect the style guide of the storefront
+///////////////////////////////////////////////////////////////////////////////
+// NOTE
+// The b2c theme styling is based on CSS custom properties.
+// The actual default values for the variables are defined in `properties.scss`.
+// See [Configurable Theme documentation](./docs/guides/themes.md#configurable-theme) for more information.
 ///////////////////////////////////////////////////////////////////////////////
 
-// LOGOS
-
+// Logos
 $logo: var(--logo);
 $logo-width: var(--logo-width);
 $logo-height: var(--logo-height);
@@ -18,40 +22,23 @@ $logo-mobile-height: var(--logo-mobile-height);
 // General spaces
 $space-default: 15px;
 
-// FONTS
+// Fonts
 $font-family-regular: var(--font-family-regular);
 $font-family-bold: var(--font-family-bold);
 $font-family-condensedregular: var(--font-family-condensedregular);
 $font-family-condensedbold: var(--font-family-condensedbold);
 
-// FONT SIZES
+// Font sizes
 $font-size-corporate: 0.875rem; // 14px is the bootstrap 3 default font size (1rem should be around 16px)
 
-//CORPORATE DESIGN COLORS
-
+// Corporate design colors
 $CORPORATE-PRIMARY: var(--corporate-primary);
 $CORPORATE-SECONDARY: var(--corporate-secondary);
 $CORPORATE-LIGHT: var(--corporate-light);
 $CORPORATE-DARK: var(--corporate-dark);
 $CORPORATE-SHADOW: var(--corporate-shadow);
 
-//TEXT COLORS
-
-$text-color-corporate: var(--text-color-corporate);
-
-$text-color-primary: var(--text-color-primary);
-$text-color-secondary: var(--text-color-secondary);
-$text-color-tertiary: var(--text-color-tertiary);
-$text-color-quaternary: var(--text-color-quaternary);
-$text-color-quinary: var(--text-color-quinary);
-
-$text-color-inverse: #fff;
-$text-color-special: #ea1919; //RED
-
-//GENERAL COLORS
-
-$color-corporate: var(--color-corporate);
-
+// General colors
 $color-primary: var(--color-primary);
 $color-secondary: var(--color-secondary);
 $color-tertiary: var(--color-tertiary);
@@ -59,60 +46,45 @@ $color-quaternary: var(--color-quaternary);
 
 $color-dark: #000;
 $color-inverse: #fff;
-$color-special-primary: #c00; //RED
-$color-special-secondary: #f39c12; //ORANGE
-$color-special-tertiary: #006b99; //SEA BLUE
-$color-special-quaternary: #3c7d3c; // GREEN
 
-// colors for product label ribbons
-$color-label-sale: #ea1919; // sale
-$color-label-topseller: #cf00a5; // topseller
-$color-label-new: #06f; // new
+$color-special-error: #c00;
+$color-special-warning: #f39c12;
+$color-special-info: #006b99;
+$color-special-success: #3c7d3c;
 
-// BORDERS
+// Product label colors
+$color-special-sale: #ea1919;
+$color-special-topseller: #cf00a5;
+$color-special-new: #06f;
 
-$border-color-corporate: $color-corporate;
+// Text colors
+$text-color-corporate: var(--text-color-corporate);
+$text-color-primary: var(--text-color-primary);
+$text-color-secondary: var(--text-color-secondary);
+$text-color-tertiary: var(--text-color-tertiary);
+$text-color-quaternary: var(--text-color-quaternary);
+$text-color-quinary: var(--text-color-quinary);
+$text-color-inverse: #fff;
+$text-color-special: #ea1919;
 
-$border-color-default: #222;
+// Backgrounds
+$bg-color-corporate: $CORPORATE-PRIMARY;
+
+// Borders
+$border-color-corporate: $CORPORATE-PRIMARY;
+$border-color-default: $color-primary;
 $border-color-light: #ccc;
 $border-color-lighter: #ddd;
 
 $border-width-default: 1px;
 
-// BUTTONS
-
-// primary buttons
-$button-primary-bg: $CORPORATE-PRIMARY;
-$button-primary-border: $CORPORATE-PRIMARY;
-$button-focus-box-shadow: $CORPORATE-SHADOW;
-
-// default buttons
-$button-default-color: $CORPORATE-PRIMARY;
-$button-default-bg: #fff;
-$button-default-border: $CORPORATE-PRIMARY;
-
-// datepicker
-$datepicker-border-radius: 15px;
-
-$datepicker-today-bg: #ff9800;
-$datepicker-today-hover: #e65100;
-
-$datepicker-active-bg: $CORPORATE-PRIMARY;
-$datepicker-active-hover: $CORPORATE-SECONDARY;
-
-// input indicator color
-$error-color: #dc3545;
-$success-color: #28a745;
-
-// mobile toggler base width
-$toggler-width: 64px;
-
-// Header
+// Header measurements
 $top-header-height: 40px;
 $header-height-mobile: 55px;
-
-//search container
 $search-container-height: 38px;
+
+// Mobile toggler width
+$toggler-width: 64px;
 
 // Navigation
 $font-size-navbar-item: $font-size-corporate * 1.25; // ~18px
@@ -123,16 +95,16 @@ $font-size-navbar-item-mobile: $font-size-corporate * 1.14; // ~16px
 $font-size-menu-item-mobile: $font-size-corporate; // ~14px
 $font-size-sub-menu-item-mobile: $font-size-corporate; // ~14px
 
-// filter
+// Filter
 $swatch-image-diameter: 28px;
 $swatch-image-border-radius: 50%;
 $swatch-image-padding-to-border: 2px;
 
-// tables
+// Tables
 $table-cell-padding: 0.75rem;
 $table-bg: transparent;
 
-// toasts
+// Toasts
 $toastViewBox: '0 0 512 512';
 $toast-error-icon: '<path d="M256,0C114.6,0,0,114.6,0,256s114.6,256,256,256s256-114.6,256-256S397.4,0,256,0z M377,343c9.4,9.4,9.4,24.6,0,33.9c-4.7,4.7-10.8,7-17,7s-12.3-2.3-17-7l-87-87l-87,87c-4.7,4.7-10.8,7-17,7s-12.3-2.3-17-7c-9.4-9.4-9.4-24.6,0-33.9l87-87l-87-87c-9.4-9.4-9.4-24.6,0-33.9c9.4-9.4,24.6-9.4,33.9,0l87,87l87-87c9.4-9.4,24.6-9.4,33.9,0c9.4,9.4,9.4,24.6,0,33.9l-87,87L377,343z"/>';
 $toast-warning-icon: '<path d="M7.5,14.967A7.467,7.467,0,1,0,.033,7.5,7.476,7.476,0,0,0,7.5,14.967Zm0-14A6.533,6.533,0,1,1,.967,7.5,6.54,6.54,0,0,1,7.5.967Z"/><circle cx="7.5" cy="11.5" r="0.5"/><path d="M8,8V3.5a.5.5,0,0,0-1,0V10H8Z"/>';
@@ -146,51 +118,41 @@ $toast-info-color: rgb(12 84 96 / 0.999999);
 /* stylelint-enable number-max-precision */
 
 ///////////////////////////////////////////////////////////////////////////////
-// CUSTOMIZED BOOTSTRAP DEFAULT VARIABLES
-// theme specific customization of Bootstrap variables
+// Customized Bootstrap default variables
+// Theme specific customization of Bootstrap variables
 ///////////////////////////////////////////////////////////////////////////////
 
 // Color system
-
 $white: #fff;
 $gray-100: #f8f9fa;
-$gray-200: #e9ecef;
+$gray-200: #f7f7f7;
 $gray-300: #dee2e6;
-$gray-400: #757575;
-$gray-500: #adb5bd;
+$gray-400: #8b8b8b;
+$gray-500: #757575;
 $gray-600: #6c757d;
 $gray-700: #495057;
 $gray-800: #343a40;
 $gray-900: #212529;
 $black: #000;
 
+$danger: $color-special-error;
+$warning: $color-special-warning;
+$info: $color-special-info;
+$success: $color-special-success;
+
 // NOTE: these few variables cannot be set with CSS custom properties
 // since they are used for Bootstrap internal color calculations
 // if necessary such Bootstrap generated styles need to be overridden in project styles (e.g. see buttons.scss)
 $primary: #006f6f;
 $secondary: color.adjust($primary, $lightness: -10%);
-$body-color: #222;
-// ------------------------------
-
-$danger: $color-special-primary;
-$warning: $color-special-secondary;
-$info: $color-special-tertiary;
-$success: $color-special-quaternary;
-
-// Body
-// Settings for the `<body>` element.
-
 $body-bg: $white;
-
-// Links
-// Style anchor elements.
-
+$body-color: #222;
 $link-color: $primary;
 $link-hover-color: $secondary;
+// ------------------------------
 
 // Components
 // Define common padding and border radius sizes and more.
-
 $border-radius: 0;
 $border-radius-lg: 0;
 $border-radius-sm: 0;
@@ -220,17 +182,16 @@ $headings-color: $text-color-primary;
 
 // Forms
 $input-placeholder-color: $text-color-tertiary;
-$input-accent-color: $CORPORATE-DARK;
+$body-tertiary-bg: $gray-200; // bg for input group text
+$input-group-addon-border-color: $gray-500;
 
 // Dropdown
 // Dropdown menu container and contents.
-
 $dropdown-border-color: $color-inverse;
 
 // Grid breakpoints
 // Define the minimum dimensions at which your layout will change,
 // adapting to different screen sizes, for use in media queries.
-
 $grid-breakpoints: (
   xs: 0,
   sm: 576px,
@@ -242,32 +203,36 @@ $grid-breakpoints: (
 // Grid columns
 // Set the number of columns and specify the width of the gutters.
 $grid-gutter-width: 30px;
-// Container sizes
 
+// Container sizes
 // Define the maximum width of `.container` for different screen sizes.
-// to work well with our breakpoints the value for 'sm' needs to be the width of the next breakpoint
-// and the value of 'md' needs to be larger than the one for 'sm'
+// To work well with our breakpoints the value for 'sm' needs to be the width of the next breakpoint.
+// The value of 'md' needs to be larger than the one for 'sm'.
 $container-max-widths: (
   sm: 768px,
   md: 770px,
   lg: map.get($grid-breakpoints, lg) - $grid-gutter-width,
   xl: map.get($grid-breakpoints, xl) - $grid-gutter-width,
 );
+
 // Navbar
 $navbar-padding-x: 0;
+
 // Popovers
 $popover-max-width: 310px;
 $popover-border-color: rgb(0 0 0 / 0.2);
+
 // Modals
 $modal-content-border-color: rgb(0 0 0 / 0.2);
 $modal-header-border-color: $border-color-light;
+
 // Carousel
 $carousel-control-color: $color-secondary;
 $carousel-control-width: 5%;
 $carousel-indicator-active-bg: $CORPORATE-PRIMARY;
-// Close
-$close-text-shadow: none;
 
-// import ng-select default theme
-$ng-select-border: $gray-400;
+///////////////////////////////////////////////////////////////////////////////
+// Customized ng-select default variables
+///////////////////////////////////////////////////////////////////////////////
+$ng-select-border: $gray-500;
 $ng-select-border-radius: 0;

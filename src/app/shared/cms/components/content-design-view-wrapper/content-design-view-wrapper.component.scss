@@ -19,7 +19,7 @@ $design-view-color-pagelet-active: #206060;
     display: none;
     align-items: center;
     justify-content: flex-end;
-    color: $color-inverse;
+    color: $text-color-inverse;
 
     .btn {
       display: flex;
@@ -29,7 +29,7 @@ $design-view-color-pagelet-active: #206060;
       margin-bottom: 0;
       font-family: $font-family-regular;
       font-weight: normal;
-      color: $color-inverse;
+      color: $text-color-inverse;
       text-transform: none;
       white-space: nowrap;
       border: none;

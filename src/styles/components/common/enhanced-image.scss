@@ -7,16 +7,16 @@
   top: 30%;
   width: 100%;
   font-weight: bold;
-  color: #fff;
+  color: $text-color-inverse;
   text-align: center;
 
   h1 {
     font-size: 60px;
-    color: #fff;
+    color: $text-color-inverse;
   }
 
   h2 {
-    color: #fff;
+    color: $text-color-inverse;
   }
 
   @media (max-width: $screen-xs-max) {
