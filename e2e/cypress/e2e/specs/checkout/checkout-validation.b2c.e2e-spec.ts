@@ -47,7 +47,7 @@ describe('Shopping User', () => {
 
   it('should remove validation messages after customer address changed', () => {
     at(CheckoutAddressesPage, page => {
-      page.changeInvoiceAddressRegion('CA');
+      page.changeInvoiceAddressRegion('California');
       waitLoadingEnd(1000);
       page.validationMessage.should('not.exist');
     });

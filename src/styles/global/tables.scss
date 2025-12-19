@@ -314,12 +314,19 @@ table.mobile-optimized.table-lg {
         border: none;
 
         &::before {
+          flex: 0 0 40%;
           width: 40%;
           content: '';
         }
 
         &[data-label]::before {
           content: attr(data-label) ':';
+        }
+      }
+
+      td.status-cell {
+        &::before {
+          flex: 0 0 40%;
         }
       }
 

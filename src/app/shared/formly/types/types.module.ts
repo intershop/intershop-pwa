@@ -206,7 +206,7 @@ const fieldComponents = [
         {
           name: 'ish-search-select-field',
           component: SearchSelectFieldComponent,
-          wrappers: ['form-field-horizontal'],
+          wrappers: ['form-field-horizontal', 'validation'],
         },
         {
           name: 'ish-number-field',

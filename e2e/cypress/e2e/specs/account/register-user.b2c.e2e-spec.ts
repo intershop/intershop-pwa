@@ -7,6 +7,7 @@ import { HomePage } from '../../pages/home.page';
 const _ = {
   user: {
     ...sensibleDefaults,
+    countryCode: 'Austria',
     login: `testuser${new Date().getTime()}@test.intershop.de`,
   } as Registration,
 };

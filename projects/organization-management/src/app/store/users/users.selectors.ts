@@ -44,3 +44,7 @@ export const getRoles = (roleIDs: string[]) =>
     // preserve order from state
     roles.filter(r => roleIDs?.includes(r.id))
   );
+
+export const getUsersImportResults = createSelector(getUsersState, state => state.importResults);
+
+export const getUsersImportTotal = createSelector(getUsersState, state => state.importTotal);

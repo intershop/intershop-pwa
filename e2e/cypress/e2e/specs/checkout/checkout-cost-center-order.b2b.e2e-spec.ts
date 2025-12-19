@@ -37,7 +37,7 @@ describe('Shopping User B2B', () => {
     });
     at(CostCentersPage, page => page.addCostCenter());
     at(CostCenterCreatePage, page => {
-      page.fillForm({ ..._.costCenter, costCenterManager: _.user.login });
+      page.fillForm({ ..._.costCenter, costCenterManager: _.user.lastName });
       page.submit();
     });
     at(CostCenterDetailPage, page => page.addBuyers());

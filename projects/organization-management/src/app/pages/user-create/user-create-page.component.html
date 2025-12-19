@@ -17,10 +17,18 @@
       />
       <div class="row">
         <div class="offset-md-4 col-md-8">
+          <div
+            *ngIf="form.invalid && userForm.submitted"
+            id="submit-button-help"
+            aria-live="polite"
+            class="visually-hidden"
+          >
+            {{ 'form.submit.validation.message' | translate }}
+          </div>
           <button
             type="submit"
             class="btn btn-primary"
-            [disabled]="form.invalid && userForm.submitted"
+            [attr.aria-describedby]="form.invalid && userForm.submitted ? 'submit-button-help' : null"
             data-testing-id="create-user-submit"
           >
             {{ 'account.user.new.button.create.label' | translate }}
@@ -34,3 +42,5 @@
   </div>
   <ish-loading *ngIf="loading$ | async" />
 </div>
+
+<ish-user-csv-import />

@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -28,7 +29,10 @@ export class HeaderNavigationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.categories$ = this.shoppingFacade.navigationCategories$();
+    this.categories$ = this.shoppingFacade.navigationCategories$().pipe(
+      // filter out categories that should be hidden in the menu
+      map(categories => categories.filter(category => !category?.hideInMenu))
+    );
   }
 
   /**

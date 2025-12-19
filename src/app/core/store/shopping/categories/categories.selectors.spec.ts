@@ -194,6 +194,7 @@ describe('Categories Selectors', () => {
             {
               "children": undefined,
               "hasChildren": true,
+              "hideInMenu": undefined,
               "name": "name_A",
               "uniqueId": "A",
               "url": "/name_a-ctgA",
@@ -201,6 +202,7 @@ describe('Categories Selectors', () => {
             {
               "children": undefined,
               "hasChildren": false,
+              "hideInMenu": undefined,
               "name": "name_B",
               "uniqueId": "B",
               "url": "/name_b-ctgB",
@@ -215,6 +217,7 @@ describe('Categories Selectors', () => {
             {
               "children": undefined,
               "hasChildren": true,
+              "hideInMenu": undefined,
               "name": "name_A.1",
               "uniqueId": "A.1",
               "url": "/name_a/name_a.1-ctgA.1",
@@ -222,6 +225,7 @@ describe('Categories Selectors', () => {
             {
               "children": undefined,
               "hasChildren": false,
+              "hideInMenu": undefined,
               "name": "name_A.2",
               "uniqueId": "A.2",
               "url": "/name_a/name_a.2-ctgA.2",
@@ -236,6 +240,7 @@ describe('Categories Selectors', () => {
             {
               "children": undefined,
               "hasChildren": false,
+              "hideInMenu": undefined,
               "name": "name_A.1.a",
               "uniqueId": "A.1.a",
               "url": "/name_a/name_a.1/name_a.1.a-ctgA.1.a",
@@ -243,6 +248,7 @@ describe('Categories Selectors', () => {
             {
               "children": undefined,
               "hasChildren": false,
+              "hideInMenu": undefined,
               "name": "name_A.1.b",
               "uniqueId": "A.1.b",
               "url": "/name_a/name_a.1/name_a.1.b-ctgA.1.b",
@@ -283,6 +289,7 @@ describe('Categories Selectors', () => {
           {
             "children": undefined,
             "hasChildren": true,
+            "hideInMenu": undefined,
             "name": "name_A",
             "uniqueId": "A",
             "url": "/name_a-ctgA",
@@ -297,6 +304,7 @@ describe('Categories Selectors', () => {
               {
                 "children": undefined,
                 "hasChildren": true,
+                "hideInMenu": undefined,
                 "name": "name_A.1",
                 "uniqueId": "A.1",
                 "url": "/name_a/name_a.1-ctgA.1",
@@ -304,12 +312,14 @@ describe('Categories Selectors', () => {
               {
                 "children": undefined,
                 "hasChildren": false,
+                "hideInMenu": undefined,
                 "name": "name_A.2",
                 "uniqueId": "A.2",
                 "url": "/name_a/name_a.2-ctgA.2",
               },
             ],
             "hasChildren": true,
+            "hideInMenu": undefined,
             "name": "name_A",
             "uniqueId": "A",
             "url": "/name_a-ctgA",
@@ -326,6 +336,7 @@ describe('Categories Selectors', () => {
                   {
                     "children": undefined,
                     "hasChildren": false,
+                    "hideInMenu": undefined,
                     "name": "name_A.1.a",
                     "uniqueId": "A.1.a",
                     "url": "/name_a/name_a.1/name_a.1.a-ctgA.1.a",
@@ -333,12 +344,14 @@ describe('Categories Selectors', () => {
                   {
                     "children": undefined,
                     "hasChildren": false,
+                    "hideInMenu": undefined,
                     "name": "name_A.1.b",
                     "uniqueId": "A.1.b",
                     "url": "/name_a/name_a.1/name_a.1.b-ctgA.1.b",
                   },
                 ],
                 "hasChildren": true,
+                "hideInMenu": undefined,
                 "name": "name_A.1",
                 "uniqueId": "A.1",
                 "url": "/name_a/name_a.1-ctgA.1",
@@ -346,12 +359,14 @@ describe('Categories Selectors', () => {
               {
                 "children": undefined,
                 "hasChildren": false,
+                "hideInMenu": undefined,
                 "name": "name_A.2",
                 "uniqueId": "A.2",
                 "url": "/name_a/name_a.2-ctgA.2",
               },
             ],
             "hasChildren": true,
+            "hideInMenu": undefined,
             "name": "name_A",
             "uniqueId": "A",
             "url": "/name_a-ctgA",
@@ -366,6 +381,7 @@ describe('Categories Selectors', () => {
               {
                 "children": undefined,
                 "hasChildren": false,
+                "hideInMenu": undefined,
                 "name": "name_A.1.a",
                 "uniqueId": "A.1.a",
                 "url": "/name_a/name_a.1/name_a.1.a-ctgA.1.a",
@@ -373,12 +389,14 @@ describe('Categories Selectors', () => {
               {
                 "children": undefined,
                 "hasChildren": false,
+                "hideInMenu": undefined,
                 "name": "name_A.1.b",
                 "uniqueId": "A.1.b",
                 "url": "/name_a/name_a.1/name_a.1.b-ctgA.1.b",
               },
             ],
             "hasChildren": true,
+            "hideInMenu": undefined,
             "name": "name_A.1",
             "uniqueId": "A.1",
             "url": "/name_a/name_a.1-ctgA.1",
@@ -391,6 +409,7 @@ describe('Categories Selectors', () => {
           {
             "children": undefined,
             "hasChildren": false,
+            "hideInMenu": undefined,
             "name": "name_A.2",
             "uniqueId": "A.2",
             "url": "/name_a/name_a.2-ctgA.2",

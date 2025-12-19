@@ -1,4 +1,4 @@
-import { waitLoadingEnd } from '../../framework';
+import { selectNgSelectOption, waitLoadingEnd } from '../../framework';
 import { AddToOrderTemplateModule } from '../account/add-to-order-template.module';
 import { AddToWishlistModule } from '../account/add-to-wishlist.module';
 import { HeaderModule } from '../header.module';
@@ -45,18 +45,8 @@ export class CartPage {
     return cy.get('[data-testing-id="costCenter"]');
   }
 
-  selectCostCenter(id: string) {
-    this.costCenterSelection.then(selects => {
-      const select = selects[0];
-      cy.wrap(select)
-        .click()
-        .get('ng-dropdown-panel')
-        .get('.ng-option')
-        .contains(id)
-        .then(item => {
-          cy.wrap(item).click();
-        });
-    });
+  selectCostCenter(costCenter: string) {
+    selectNgSelectOption('costCenter', costCenter);
   }
 
   addProductToWishlist() {
@@ -115,7 +105,7 @@ export class CartPage {
             .wait(1000)
             .type('{selectAll}')
             .type(num.toString())
-            .wait(1000),
+            .wait(1500),
 
         get: () =>
           cy
@@ -173,6 +163,7 @@ export class CartPage {
   }
 
   get basketCustomFieldsToggleLink() {
+    cy.scrollTo('top', { ensureScrollable: false });
     return cy.get('[data-testing-id="basket-custom-fields-toggle-link"]');
   }
 

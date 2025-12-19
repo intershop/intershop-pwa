@@ -40,7 +40,7 @@
   "lingua.flatTranslationKeys": true,
   "lingua.defaultLanguage": "en_US",
 
-  "markdown.extension.toc.levels": "2..6",
+  "markdown.extension.toc.levels": "2..4",
 
   "files.exclude": {
     "**/.angular": true,

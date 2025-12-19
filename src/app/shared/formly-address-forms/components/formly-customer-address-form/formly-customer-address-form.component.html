@@ -19,7 +19,19 @@
 
   <div class="row">
     <div class="offset-md-4 col-md-8 offset-lg-0 col-lg-12 offset-lg-4 col-xl-8">
-      <button type="submit" [disabled]="form.invalid && addressForm.submitted" class="btn btn-primary">
+      <div
+        *ngIf="form.invalid && addressForm.submitted"
+        id="submit-button-help"
+        aria-live="polite"
+        class="visually-hidden"
+      >
+        {{ 'form.submit.validation.message' | translate }}
+      </div>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [attr.aria-describedby]="form.invalid && addressForm.submitted ? 'submit-button-help' : null"
+      >
         {{ buttonLabel | translate }}
       </button>
       <button (click)="cancelForm()" type="reset" class="btn btn-secondary">

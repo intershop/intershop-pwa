@@ -25,13 +25,13 @@ export class HeaderModule {
   }
 
   gotoLoginPage(wait: () => unknown = waitLoadingEnd) {
-    cy.scrollTo('top');
+    cy.scrollTo('top', { ensureScrollable: false });
     this.loginLink.click();
     wait();
   }
 
   gotoRegistrationPage(wait: () => unknown = waitLoadingEnd) {
-    cy.scrollTo('top');
+    cy.scrollTo('top', { ensureScrollable: false });
     cy.get('[data-testing-id="user-status-desktop"] .my-account-register').click();
     wait();
   }
@@ -52,6 +52,7 @@ export class HeaderModule {
   }
 
   logout(wait: () => unknown = waitLoadingEnd) {
+    cy.scrollTo('top', { ensureScrollable: false });
     cy.get('[data-testing-id="link-logout"]').first().click();
     wait();
   }

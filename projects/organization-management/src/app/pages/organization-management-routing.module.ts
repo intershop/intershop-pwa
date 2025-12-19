@@ -55,6 +55,12 @@ export const routes: Routes = [
     canActivate: [redirectFirstToParentGuard, authorizationToggleGuard],
   },
   {
+    path: 'users/import',
+    loadChildren: () => import('./user-import/user-import-page.module').then(m => m.UserImportPageModule),
+    data: { permission: 'APP_B2B_MANAGE_USERS' },
+    canActivate: [redirectFirstToParentGuard, authorizationToggleGuard],
+  },
+  {
     path: 'users/:B2BCustomerLogin',
     loadChildren: () => import('./user-detail/user-detail-page.module').then(m => m.UserDetailPageModule),
     canActivate: [fetchUsersGuard, authorizationToggleGuard],
@@ -98,6 +104,12 @@ export const routes: Routes = [
     path: 'cost-centers/create',
     loadChildren: () =>
       import('./cost-center-create/cost-center-create-page.module').then(m => m.CostCenterCreatePageModule),
+    canActivate: [redirectFirstToParentGuard],
+  },
+  {
+    path: 'cost-centers/import',
+    loadChildren: () =>
+      import('./cost-center-import/cost-center-import-page.module').then(m => m.CostCenterImportPageModule),
     canActivate: [redirectFirstToParentGuard],
   },
   {

@@ -8,6 +8,7 @@ import { CostCenterFormComponent } from '../../components/cost-center-form/cost-
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
 import { CostCenterCreatePageComponent } from './cost-center-create-page.component';
+import { CostCenterCsvImportComponent } from './cost-center-csv-import/cost-center-csv-import.component';
 
 describe('Cost Center Create Page Component', () => {
   let component: CostCenterCreatePageComponent;
@@ -21,7 +22,11 @@ describe('Cost Center Create Page Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [CostCenterCreatePageComponent, MockComponent(CostCenterFormComponent)],
+      declarations: [
+        CostCenterCreatePageComponent,
+        MockComponent(CostCenterCsvImportComponent),
+        MockComponent(CostCenterFormComponent),
+      ],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
     }).compileComponents();
   });

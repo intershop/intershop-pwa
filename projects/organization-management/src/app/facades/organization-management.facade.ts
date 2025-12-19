@@ -22,10 +22,13 @@ import {
 import {
   addCostCenter,
   addCostCenterBuyers,
+  addCostCentersFromCsv,
   deleteCostCenter,
   deleteCostCenterBuyer,
   getCostCenters,
   getCostCentersError,
+  getCostCentersImportResults,
+  getCostCentersImportTotal,
   getCostCentersLoading,
   getCostCentersPagingInfo,
   getSelectedCostCenter,
@@ -35,6 +38,7 @@ import {
 } from '../store/cost-centers';
 import {
   addUser,
+  addUsersFromCsv,
   deleteUser,
   getCostCenterManagers,
   getRole,
@@ -43,6 +47,8 @@ import {
   getSystemUserRoles,
   getUsers,
   getUsersError,
+  getUsersImportResults,
+  getUsersImportTotal,
   getUsersLoading,
   loadUsers,
   setUserBudget,
@@ -55,10 +61,12 @@ import {
 export class OrganizationManagementFacade {
   constructor(private store: Store) {}
 
+  users$ = this.store.pipe(select(getUsers));
   usersError$ = this.store.pipe(select(getUsersError));
   usersLoading$ = this.store.pipe(select(getUsersLoading));
   selectedUser$ = this.store.pipe(select(getSelectedUser));
-  users$ = this.store.pipe(select(getUsers));
+  usersImportResults$ = this.store.pipe(select(getUsersImportResults));
+  usersImportTotal$ = this.store.pipe(select(getUsersImportTotal));
 
   loggedInUserBudgetLoading$ = this.store.pipe(select(getCurrentUserBudgetLoading));
   loggedInUserBudgetError$ = this.store.pipe(select(getCurrentUserBudgetError));
@@ -70,6 +78,8 @@ export class OrganizationManagementFacade {
   costCentersLoading$ = this.store.pipe(select(getCostCentersLoading));
   selectedCostCenter$ = this.store.pipe(select(getSelectedCostCenter));
   costCentersPagingInfo$ = this.store.pipe(select(getCostCentersPagingInfo));
+  costCentersImportResults$ = this.store.pipe(select(getCostCentersImportResults));
+  costCentersImportTotal$ = this.store.pipe(select(getCostCentersImportTotal));
 
   /**
    * user methods
@@ -89,6 +99,10 @@ export class OrganizationManagementFacade {
         user,
       })
     );
+  }
+
+  addUsersFromCsv(users: B2bUser[]) {
+    this.store.dispatch(addUsersFromCsv({ users }));
   }
 
   updateUser(user: B2bUser) {
@@ -196,6 +210,10 @@ export class OrganizationManagementFacade {
         costCenter,
       })
     );
+  }
+
+  addCostCentersFromCsv(costCenters: CostCenterBase[]) {
+    this.store.dispatch(addCostCentersFromCsv({ costCenters }));
   }
 
   updateCostCenter(costCenter: CostCenterBase) {

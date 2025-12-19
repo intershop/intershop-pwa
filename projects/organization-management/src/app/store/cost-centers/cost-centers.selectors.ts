@@ -23,3 +23,7 @@ export const getSelectedCostCenter = createSelector(
   selectEntities,
   (id, costCenters) => costCenters[id]
 );
+
+export const getCostCentersImportResults = createSelector(getCostCentersState, state => state.importResults);
+
+export const getCostCentersImportTotal = createSelector(getCostCentersState, state => state.importTotal);

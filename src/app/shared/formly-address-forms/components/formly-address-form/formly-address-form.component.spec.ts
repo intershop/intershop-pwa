@@ -114,7 +114,7 @@ describe('Formly Address Form Component', () => {
               component: FormlyTestingExampleComponent,
             },
             {
-              name: 'ish-select-field',
+              name: 'ish-search-select-field',
               component: FormlyTestingExampleComponent,
             },
           ],

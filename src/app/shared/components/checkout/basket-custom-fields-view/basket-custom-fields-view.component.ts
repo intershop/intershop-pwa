@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Requisition } from 'projects/requisition-management/src/app/models/requisition/requisition.model';
 import { Observable, ReplaySubject, combineLatest, map } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -16,7 +17,7 @@ import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketCustomFieldsViewComponent implements OnInit {
-  @Input({ required: true }) set data(val: Basket | Order | RecurringOrder) {
+  @Input({ required: true }) set data(val: Basket | Order | RecurringOrder | Requisition) {
     this.customFields$.next(val.customFields || {});
   }
 

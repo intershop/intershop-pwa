@@ -7,6 +7,21 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 9.0.0 to 9.1.0
+
+Catalogs (root-level categories in ICM terminology) with _Show In Menu_ being disabled are now hidden from the main header navigation.
+
+Intershop PWA 9.1.0 contains a fix to display warranties at recurring order line items.
+This fix requires ICM 14.1.0 with the Recurring Order Extension 2.3.0 (`icm-as-customization-recurringorders:2.3.0`).
+
+The Server Side Rendering (SSR) responses now contain a `Cache-Control: no-cache` header by default.
+This `Cache-Control` header is ignored by the NGINX cache, but it ensures that browsers do not cache SSR responses.
+Having `Cache-Control: no-cache` is a requirement for the Payment Card Industry Data Security Standard (PCI DSS).
+
+With Intershop PWA 9.1.0, cost center import functionality via CSV files was introduced.
+
+With Intershop PWA 9.1.0, user import functionality via CSV files was introduced.
+
 ## From 8.0.0 to 9.0.0
 
 With Intershop PWA 9.0.0, the SSR container now supports the manual creation of PWA heap dumps for debugging purposes.
@@ -60,7 +75,7 @@ It is recommended to perform the migration step by step through each version (ve
 Especially for the [migration to version 5.0.0](https://getbootstrap.com/docs/5.3/migration/#v500), it is advised to divide that into smaller tasks (SCSS, Typescript, form layout, buttons, etc.).
 AI (like Github Copilot) can be a great help with these individual migration tasks.
 
-The PayPal payment integration via [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 2](https://knowledge.intershop.com/kb/index.php/Display/27P833) was introduced in Intershop PWA 9.0.0.
+The PayPal payment integration via [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 2](https://knowledge.intershop.com/kb/index.php/Display/455B74) was introduced in Intershop PWA 9.0.0.
 The PayPal integration is enabled in the PWA via ICM backend configuration.
 For more details, see [Guide - PayPal](./paypal.md).
 

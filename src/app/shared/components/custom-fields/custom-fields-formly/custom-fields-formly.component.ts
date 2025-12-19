@@ -15,7 +15,7 @@ interface ComponentState {
 }
 
 /**
- * The Custom Fields Formly Component displays the custom fields form using rxstate functionality.
+ * The Custom Fields Formly Component displays the custom fields form using RxState functionality.
  */
 @Component({
   selector: 'ish-custom-fields-formly',

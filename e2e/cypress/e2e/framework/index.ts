@@ -28,35 +28,47 @@ export function back() {
   cy.go('back');
 }
 
-export function fillFormField(parent: string, key: string, value: number | string) {
+export function selectNgSelectOption(dataTestingId: string, option: string | number) {
+  const ngSelect = cy.get(`[data-testing-id="${dataTestingId}"]`);
+  ngSelect.then(selects => {
+    const select = selects[0];
+    cy.wrap(select)
+      .click()
+      .get('ng-dropdown-panel')
+      .get('.ng-option') // Get all the options in drop-down
+      .contains(option)
+      .then(item => {
+        cy.wrap(item).click();
+      });
+  });
+}
+
+export function fillFormField(parent: string, dataTestingId: string, value: number | string) {
   cy.get(parent).then(form => {
-    const field = form.find(`[data-testing-id="${key}"]`);
-    expect(field.length).to.equal(1, `expected to find one form field "${key}" in "${parent}"`);
+    const field = form.find(`[data-testing-id="${dataTestingId}"]`);
+    expect(field.length).to.equal(1, `expected to find one form field "${dataTestingId}" in "${parent}"`);
     const tagName = field.prop('tagName');
     expect(tagName).to.match(/^(INPUT|SELECT|TEXTAREA|NG-SELECT)$/);
 
     cy.get(parent).within(() => {
       if (/^(INPUT|TEXTAREA)$/.test(tagName)) {
-        const inputField = cy.get(`[data-testing-id="${key}"]`);
+        const inputField = cy.get(`[data-testing-id="${dataTestingId}"]`);
         inputField.focus().clear();
         if (value) {
           inputField.type(value.toString());
         }
       } else if (tagName === 'SELECT') {
         if (typeof value === 'number') {
-          cy.get(`[data-testing-id="${key}"]`)
+          cy.get(`[data-testing-id="${dataTestingId}"]`)
             .find('option')
             .eq(value as number)
             .then(option => option.attr('value'))
-            .then(val => cy.get(`[data-testing-id="${key}"]`).select(val));
+            .then(val => cy.get(`[data-testing-id="${dataTestingId}"]`).select(val));
         } else {
-          cy.get(`[data-testing-id="${key}"]`).select(value);
+          cy.get(`[data-testing-id="${dataTestingId}"]`).select(value);
         }
       } else if (tagName === 'NG-SELECT') {
-        const field = cy.get(`[data-testing-id="${key}"] input`);
-        if (value) {
-          field.type(value.toString());
-        }
+        selectNgSelectOption(dataTestingId, value);
       }
     });
   });

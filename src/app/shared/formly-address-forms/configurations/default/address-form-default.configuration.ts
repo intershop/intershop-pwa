@@ -44,7 +44,7 @@ export class AddressFormDefaultConfiguration extends AddressFormConfiguration {
         'city',
         {
           key: 'mainDivisionCode',
-          type: 'ish-select-field',
+          type: 'ish-search-select-field',
           props: {
             required: true,
             label: 'account.default_address.state.label',

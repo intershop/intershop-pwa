@@ -21,6 +21,7 @@ export class OrganizationManagementBreadcrumbService {
     return this.appFacade.routingInProgress$.pipe(
       whenFalsy(),
       withLatestFrom(this.appFacade.path$.pipe(whenTruthy())),
+      // eslint-disable-next-line complexity
       switchMap(([, path]) => {
         if (path.endsWith('users')) {
           return of([{ key: 'account.organization.user_management' }]);
@@ -37,6 +38,11 @@ export class OrganizationManagementBreadcrumbService {
           return of([
             { key: 'account.organization.user_management', link: `${prefix}/users` },
             { key: 'account.user.breadcrumbs.new_user.text' },
+          ]);
+        } else if (path.endsWith('users/import')) {
+          return of([
+            { key: 'account.organization.user_management', link: `${prefix}/users` },
+            { key: 'account.user.import.breadcrumb' },
           ]);
         } else if (/users\/:B2BCustomerLogin(\/(profile|roles|budget))?$/.test(path)) {
           return this.organizationManagementFacade.selectedUser$.pipe(
@@ -66,6 +72,11 @@ export class OrganizationManagementBreadcrumbService {
           return of([
             { key: 'account.organization.cost_center_management', link: `${prefix}/cost-centers` },
             { key: 'account.costcenter.create.heading' },
+          ]);
+        } else if (path.endsWith('cost-centers/import')) {
+          return of([
+            { key: 'account.organization.cost_center_management', link: `${prefix}/cost-centers` },
+            { key: 'account.costcenter.import.breadcrumb' },
           ]);
         } else if (/cost-centers\/:CostCenterId(\/(edit|buyers))?$/.test(path)) {
           return this.organizationManagementFacade.selectedCostCenter$.pipe(

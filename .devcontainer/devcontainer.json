@@ -1,5 +1,5 @@
 // For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
-// https://github.com/microsoft/vscode-dev-containers/tree/v0.134.0/containers/javascript-node
+// https://github.com/devcontainers/images/tree/main/src/javascript-node
 {
   "name": "Intershop PWA",
   "build": {
@@ -27,7 +27,6 @@
         // general
         "vscode-icons-team.vscode-icons",
         // code assist
-        "visualstudioexptteam.vscodeintellicode",
         "angular.ng-template",
         "mikael.angular-beastcode",
         // code style + formatting

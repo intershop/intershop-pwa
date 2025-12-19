@@ -132,12 +132,22 @@
     <div class="cost-summary">
       <ish-basket-cost-summary [totals]="basket.totals" />
       <form [formGroup]="form" ishFormSubmit #tcForm="ngForm" (ngSubmit)="submitOrder()">
-        <formly-form [form]="form" [model]="model" [fields]="fields" [options]="options" />
+        <formly-form [form]="form" [model]="model" [fields]="fields$ | async" [options]="options" />
         <div class="d-grid">
+          <div
+            *ngIf="(form.invalid && tcForm.submitted) || multipleBuckets || submitting"
+            id="checkout-button-help"
+            aria-live="polite"
+            class="visually-hidden"
+          >
+            {{ 'checkout.order_review.submit.validation.message' | translate }}
+          </div>
           <button
             class="btn btn-lg btn-block btn-primary"
+            [attr.aria-describedby]="
+              (form.invalid && tcForm.submitted) || multipleBuckets || submitting ? 'checkout-button-help' : null
+            "
             type="submit"
-            [disabled]="(form.invalid && tcForm.submitted) || multipleBuckets || submitting"
           >
             <ng-container *ngIf="submitting">
               <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pe-3" />

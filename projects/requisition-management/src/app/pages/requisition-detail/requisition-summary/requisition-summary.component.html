@@ -1,136 +1,146 @@
 <div *ngIf="requisition" class="section">
-  <dl class="row dl-horizontal dl-separator">
-    <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.order.request_id' | translate }}</dt>
-    <dd class="col-6 col-sm-8 col-md-9">{{ requisition.requisitionNo || requisition.recurringOrderDocumentNo }}</dd>
+  <div class="row pb-3">
+    <div class="col-12 col-sm-6">
+      <dl class="row dl-horizontal dl-separator">
+        <dt class="col-6">{{ 'approval.detailspage.order.request_id' | translate }}</dt>
+        <dd class="col-6">{{ requisition.requisitionNo || requisition.recurringOrderDocumentNo }}</dd>
 
-    <ng-container *ngIf="requisition.approval?.statusCode === 'APPROVED'">
-      <!-- prettier-ignore -->
-      <dt class="col-6 col-sm-4 col-md-3">
+        <ng-container *ngIf="requisition.approval?.statusCode === 'APPROVED'">
+          <!-- prettier-ignore -->
+          <dt class="col-6">
         <span aria-hidden="true">{{ 'approval.detailspage.order_reference_id.label' | translate : { recurring: !requisition.requisitionNo } }}</span>
         <span class="visually-hidden">{{ 'approval.detailspage.order_reference_id.title' | translate : { recurring: !requisition.requisitionNo } }}</span>
       </dt>
-      <dd class="col-6 col-sm-8 col-md-9">
-        <a
-          *ngIf="view === 'buyer'; else noOrderLink"
-          [routerLink]="[requisition.orderNo ? '/account/orders/' : '/account/recurring-orders/', requisition.id]"
-        >
-          {{ requisition.orderNo || requisition.recurringOrderDocumentNo }}
-        </a>
-        <ng-template #noOrderLink>
-          {{ requisition.orderNo || requisition.recurringOrderDocumentNo }}
-        </ng-template>
-      </dd>
-    </ng-container>
+          <dd class="col-6">
+            <a
+              *ngIf="view === 'buyer'; else noOrderLink"
+              [routerLink]="[requisition.orderNo ? '/account/orders/' : '/account/recurring-orders/', requisition.id]"
+            >
+              {{ requisition.orderNo || requisition.recurringOrderDocumentNo }}
+            </a>
+            <ng-template #noOrderLink>
+              {{ requisition.orderNo || requisition.recurringOrderDocumentNo }}
+            </ng-template>
+          </dd>
+        </ng-container>
 
-    <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.order_date.label' | translate }}</dt>
-    <dd class="col-6 col-sm-8 col-md-9">{{ requisition.creationDate | ishDate }}</dd>
+        <dt class="col-6">{{ 'approval.detailspage.order_date.label' | translate }}</dt>
+        <dd class="col-6">{{ requisition.creationDate | ishDate }}</dd>
 
-    <ng-container *ngIf="requisition.costCenter">
-      <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.cost_center.label' | translate }}</dt>
-      <dd class="col-6 col-sm-8 col-md-9">{{ requisition.costCenter }} {{ costCenterName }}</dd>
-    </ng-container>
+        <ng-container *ngIf="requisition.costCenter">
+          <dt class="col-6">{{ 'approval.detailspage.cost_center.label' | translate }}</dt>
+          <dd class="col-6">{{ requisition.costCenter }} {{ costCenterName }}</dd>
+        </ng-container>
 
-    <ng-container *ngIf="view === 'buyer'">
-      <ng-container *ngIf="requisition.approval?.statusCode !== 'PENDING'; else pendingCustomerApprovers">
-        <!-- prettier-ignore -->
-        <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.approver.label' | translate: { '0': customerApproverCount } }}</dt>
-        <dd class="col-6 col-sm-8 col-md-9">
-          <ng-container *ngFor="let approver of uniqueApprovers; let i = index"
-            ><ng-container *ngIf="i > 0">, </ng-container>{{ approver.firstName }} {{ approver.lastName }}</ng-container
+        <ng-container *ngIf="view === 'buyer'">
+          <ng-container *ngIf="requisition.approval?.statusCode !== 'PENDING'; else pendingCustomerApprovers">
+            <!-- prettier-ignore -->
+            <dt class="col-6">{{ 'approval.detailspage.approver.label' | translate: { '0': customerApproverCount } }}</dt>
+            <dd class="col-6">
+              <ng-container *ngFor="let approver of uniqueApprovers; let i = index"
+                ><ng-container *ngIf="i > 0">, </ng-container>{{ approver.firstName }}
+                {{ approver.lastName }}</ng-container
+              >
+            </dd>
+          </ng-container>
+
+          <ng-template #pendingCustomerApprovers>
+            <!-- prettier-ignore -->
+            <dt class="col-6">{{ 'approval.detailspage.buyer.approver.label' | translate: { '0': customerApproverCount } }}</dt>
+            <dd class="col-6">
+              <!-- prettier-ignore -->
+              <ng-container *ngFor="let approver of requisition.approval?.customerApproval?.approvers; let i = index"><ng-container *ngIf="i > 0">, </ng-container>{{ approver.firstName }} {{ approver.lastName }}</ng-container>
+              <fa-icon
+                *ngIf="requisition.approval?.customerApproval?.statusCode === 'APPROVED'"
+                [icon]="['fas', 'check']"
+                class="ps-3 text-success"
+              />
+            </dd>
+          </ng-template>
+
+          <ng-container
+            *ngIf="
+              requisition.approval?.costCenterApproval?.approvers?.length &&
+              requisition.approval?.statusCode === 'PENDING'
+            "
           >
-        </dd>
-      </ng-container>
-
-      <ng-template #pendingCustomerApprovers>
-        <!-- prettier-ignore -->
-        <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.buyer.approver.label' | translate: { '0': customerApproverCount } }}</dt>
-        <dd class="col-6 col-sm-8 col-md-9">
-          <!-- prettier-ignore -->
-          <ng-container *ngFor="let approver of requisition.approval?.customerApproval?.approvers; let i = index"><ng-container *ngIf="i > 0">, </ng-container>{{ approver.firstName }} {{ approver.lastName }}</ng-container>
-          <fa-icon
-            *ngIf="requisition.approval?.customerApproval?.statusCode === 'APPROVED'"
-            [icon]="['fas', 'check']"
-            class="ps-3 text-success"
-          />
-        </dd>
-      </ng-template>
-
-      <ng-container
-        *ngIf="
-          requisition.approval?.costCenterApproval?.approvers?.length && requisition.approval?.statusCode === 'PENDING'
-        "
-      >
-        <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.costcenter.approver.label' | translate }}</dt>
-        <dd class="col-6 col-sm-8 col-md-9">
-          {{ requisition.approval?.costCenterApproval?.approvers[0].firstName }}
-          {{ requisition.approval?.costCenterApproval?.approvers[0].lastName }}
-          <fa-icon
-            *ngIf="requisition.approval?.costCenterApproval?.statusCode === 'APPROVED'"
-            [icon]="['fas', 'check']"
-            class="ps-2 text-success"
-          />
-        </dd>
-      </ng-container>
-    </ng-container>
-
-    <ng-container *ngIf="view === 'approver'">
-      <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.buyer.label' | translate }}</dt>
-      <dd class="col-6 col-sm-8 col-md-9">{{ requisition.user?.firstName }} {{ requisition.user?.lastName }}</dd>
-    </ng-container>
-
-    <ng-container *ngIf="requisition.approval?.statusCode !== 'PENDING'">
-      <ng-container *ngIf="requisition.approval?.statusCode === 'APPROVED'; else labelDateRejected">
-        <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.approval_date.label' | translate }}</dt>
-      </ng-container>
-      <ng-template #labelDateRejected>
-        <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.rejection_date.label' | translate }}</dt>
-      </ng-template>
-      <dd class="col-6 col-sm-8 col-md-9">{{ requisition.approval.approvalDate | ishDate }}</dd>
-    </ng-container>
-
-    <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.order_total.label' | translate }}</dt>
-    <dd class="col-6 col-sm-8 col-md-9">{{ requisition.totals?.total | ishPrice : 'gross' }}</dd>
-
-    <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.approval_status.label' | translate }}</dt>
-    <dd class="col-6 col-sm-8 col-md-9">
-      <span
-        class="border border-secondary badge bg-secondary text-capitalize"
-        [ngClass]="{
-          'border-warning bg-warning text-dark': requisition.approval.statusCode === 'PENDING',
-          'border-success bg-success': requisition.approval.statusCode === 'APPROVED',
-          'border-danger bg-danger': requisition.approval.statusCode === 'REJECTED'
-        }"
-      >
-        <ng-container *ngIf="!requisition.systemRejected; else systemRejected">
-          {{ requisition.approval.status }}
+            <dt class="col-6">{{ 'approval.detailspage.costcenter.approver.label' | translate }}</dt>
+            <dd class="col-6">
+              {{ requisition.approval?.costCenterApproval?.approvers[0].firstName }}
+              {{ requisition.approval?.costCenterApproval?.approvers[0].lastName }}
+              <fa-icon
+                *ngIf="requisition.approval?.costCenterApproval?.statusCode === 'APPROVED'"
+                [icon]="['fas', 'check']"
+                class="ps-2 text-success"
+              />
+            </dd>
+          </ng-container>
         </ng-container>
-        <ng-template #systemRejected>{{
-          'approval.detailspage.approval_status.system_rejected.status' | translate
-        }}</ng-template>
-      </span>
-    </dd>
 
-    <ng-container *ngIf="requisition.approval.approvalComment || requisition.systemRejected">
-      <dt class="col-6 col-sm-4 col-md-3 mt-3">{{ 'approval.detailspage.comment.label' | translate }}</dt>
-      <dd class="col-6 col-sm-8 col-md-9 mt-3">
-        <ng-container *ngIf="requisition.systemRejected">
-          <p>
-            {{ 'approval.detailspage.approval_status.system_rejected.comment' | translate }}
-            <ng-container *ngIf="requisition.systemRejectErrors?.length">
-              {{
-                'approval.detailspage.approval_status.system_rejected.reasons.comment'
-                  | translate : { '0': requisition.systemRejectErrors.length }
-              }}
-            </ng-container>
-          </p>
-          <ul *ngIf="requisition.systemRejectErrors?.length">
-            <ng-container *ngFor="let err of requisition.systemRejectErrors">
-              <li>{{ err }}</li>
-            </ng-container>
-          </ul>
+        <ng-container *ngIf="view === 'approver'">
+          <dt class="col-6">{{ 'approval.detailspage.buyer.label' | translate }}</dt>
+          <dd class="col-6">{{ requisition.user?.firstName }} {{ requisition.user?.lastName }}</dd>
         </ng-container>
-        {{ requisition.approval.approvalComment }}
-      </dd>
-    </ng-container>
-  </dl>
+
+        <ng-container *ngIf="requisition.approval?.statusCode !== 'PENDING'">
+          <ng-container *ngIf="requisition.approval?.statusCode === 'APPROVED'; else labelDateRejected">
+            <dt class="col-6">{{ 'approval.detailspage.approval_date.label' | translate }}</dt>
+          </ng-container>
+          <ng-template #labelDateRejected>
+            <dt class="col-6">{{ 'approval.detailspage.rejection_date.label' | translate }}</dt>
+          </ng-template>
+          <dd class="col-6">{{ requisition.approval.approvalDate | ishDate }}</dd>
+        </ng-container>
+
+        <dt class="col-6">{{ 'approval.detailspage.order_total.label' | translate }}</dt>
+        <dd class="col-6">{{ requisition.totals?.total | ishPrice : 'gross' }}</dd>
+
+        <dt class="col-6">{{ 'approval.detailspage.approval_status.label' | translate }}</dt>
+        <dd class="col-6">
+          <span
+            class="border border-secondary badge bg-secondary text-capitalize"
+            [ngClass]="{
+              'border-warning bg-warning text-dark': requisition.approval.statusCode === 'PENDING',
+              'border-success bg-success': requisition.approval.statusCode === 'APPROVED',
+              'border-danger bg-danger': requisition.approval.statusCode === 'REJECTED'
+            }"
+          >
+            <ng-container *ngIf="!requisition.systemRejected; else systemRejected">
+              {{ requisition.approval.status }}
+            </ng-container>
+            <ng-template #systemRejected>{{
+              'approval.detailspage.approval_status.system_rejected.status' | translate
+            }}</ng-template>
+          </span>
+        </dd>
+
+        <ng-container *ngIf="requisition.approval.approvalComment || requisition.systemRejected">
+          <dt class="col-6 mt-3">{{ 'approval.detailspage.comment.label' | translate }}</dt>
+          <dd class="col-6 mt-3">
+            <ng-container *ngIf="requisition.systemRejected">
+              <p>
+                {{ 'approval.detailspage.approval_status.system_rejected.comment' | translate }}
+                <ng-container *ngIf="requisition.systemRejectErrors?.length">
+                  {{
+                    'approval.detailspage.approval_status.system_rejected.reasons.comment'
+                      | translate : { '0': requisition.systemRejectErrors.length }
+                  }}
+                </ng-container>
+              </p>
+              <ul *ngIf="requisition.systemRejectErrors?.length">
+                <ng-container *ngFor="let err of requisition.systemRejectErrors">
+                  <li>{{ err }}</li>
+                </ng-container>
+              </ul>
+            </ng-container>
+            {{ requisition.approval.approvalComment }}
+          </dd>
+        </ng-container>
+      </dl>
+    </div>
+
+    <div class="col-12 col-sm-6">
+      <ish-basket-custom-fields-view [data]="requisition" />
+    </div>
+  </div>
 </div>

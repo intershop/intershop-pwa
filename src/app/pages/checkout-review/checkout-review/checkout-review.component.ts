@@ -10,7 +10,10 @@ import {
 } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -26,15 +29,19 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
   @Output() createOrder = new EventEmitter<void>();
 
   form = new FormGroup({});
-  fields: FormlyFieldConfig[];
   options: FormlyFormOptions = {};
+  fields$: Observable<FormlyFieldConfig[]>;
 
   model = { termsAndConditions: false };
 
   multipleBuckets = false;
 
+  constructor(private appFacade: AppFacade) {}
+
   ngOnInit() {
-    this.fields = this.setFields();
+    this.fields$ = this.appFacade
+      .serverSetting$<boolean>('basket.termsAndConditions')
+      .pipe(map(enabled => (enabled ? this.setFields() : [])));
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -47,7 +54,7 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
    * sends an event to submit order
    */
   submitOrder() {
-    if (this.form.valid) {
+    if (this.form.valid && !this.multipleBuckets && !this.submitting) {
       this.createOrder.emit();
     }
   }

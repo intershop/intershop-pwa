@@ -22,6 +22,20 @@ export const addUserFail = createAction('[Users API] Add User Fail', httpError()
 
 export const addUserSuccess = createAction('[Users API] Add User Success', payload<{ user: B2bUser }>());
 
+export const addUsersFromCsv = createAction('[Users] Add Users from CSV', payload<{ users: B2bUser[] }>());
+
+export const addUserFromCsvSingleResult = createAction(
+  '[Users API] Add User from CSV Single Result',
+  payload<{ importResult: { user: B2bUser; status: string } }>()
+);
+
+export const addUsersFromCsvComplete = createAction('[Users API] Add Users from CSV Complete');
+
+export const addUsersFromCsvImportTotal = createAction(
+  '[Users API] Add Users from CSV Import Total',
+  payload<{ totalUsers: number }>()
+);
+
 export const updateUser = createAction('[Users] Update User', payload<{ user: B2bUser }>());
 
 export const updateUserFail = createAction('[Users API] Update User Fail', httpError());

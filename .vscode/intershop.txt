@@ -21,6 +21,7 @@ chatflow
 chatflowid
 clickability
 clickjacking
+clid
 cobrowse
 colorcode
 compodoc
@@ -31,9 +32,11 @@ condensedregular
 contentful
 costcenter
 costcenters
+costobject
 creditcard
 crossselling
 crosssells
+customfield
 cxml
 cybersource
 dateness
@@ -98,6 +101,7 @@ lessthan
 logformat
 loglevel
 luarocks
+matomo
 maxlength
 mergeable
 minibasket
@@ -134,6 +138,7 @@ pagespeed
 pagetree
 pagevariant
 parallelization
+paylater
 payone
 pghow
 pgid
@@ -244,3 +249,4 @@ whitespaces
 wishtack
 xdescribe
 zindex
+zoid

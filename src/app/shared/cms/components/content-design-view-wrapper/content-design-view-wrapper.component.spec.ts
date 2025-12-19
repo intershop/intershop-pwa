@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { ScrollDirective } from 'ish-core/directives/scroll.directive';
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import {
@@ -34,11 +35,13 @@ describe('Content Design View Wrapper Component', () => {
       of({ id: 'xyz', displayName: 'Pagelet Name xyz' } as ContentPageletView)
     );
     when(cmsFacade.designViewSelectedPageletId$).thenReturn(of('xyz'));
+    when(cmsFacade.designViewPreviewedPageletId$).thenReturn(of(undefined));
+    when(cmsFacade.designViewScrollToPageletId$).thenReturn(of('xyz'));
     when(previewService.isDesignViewMode).thenReturn(true);
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [ContentDesignViewWrapperComponent, MockComponent(FaIconComponent)],
+      declarations: [ContentDesignViewWrapperComponent, MockComponent(FaIconComponent), MockDirective(ScrollDirective)],
       providers: [
         { provide: CMSFacade, useFactory: () => instance(cmsFacade) },
         { provide: DesignViewService, useFactory: () => instance(designViewService) },
@@ -72,8 +75,13 @@ describe('Content Design View Wrapper Component', () => {
     expect(component.type).toEqual('pagelet');
     expect(element).toMatchInlineSnapshot(`
       <div
+        scrollcontainer="root"
         class="design-view-wrapper pagelet pagelet-selected"
-        ng-reflect-ng-class="pagelet,pagelet-selected"
+        ng-reflect-scroll-container="root"
+        ng-reflect-ng-class="pagelet,pagelet-selected,"
+        ng-reflect-ish-scroll="true"
+        ng-reflect-scroll-duration="500"
+        ng-reflect-scroll-spacing="50"
       >
         <div class="design-view-wrapper-actions">
           <button type="button" class="btn" title="designview.edit.link.title Pagelet Name xyz">
@@ -100,7 +108,14 @@ describe('Content Design View Wrapper Component', () => {
 
     expect(component.type).toEqual('slot');
     expect(element).toMatchInlineSnapshot(`
-      <div class="design-view-wrapper slot" ng-reflect-ng-class="slot,">
+      <div
+        scrollcontainer="root"
+        class="design-view-wrapper slot"
+        ng-reflect-scroll-container="root"
+        ng-reflect-ng-class="slot,,"
+        ng-reflect-scroll-duration="500"
+        ng-reflect-scroll-spacing="50"
+      >
         <div class="design-view-wrapper-actions">
           <div class="name">Slot Name xyz</div>
           <button type="button" class="btn" title="designview.add.link.title">
@@ -120,7 +135,14 @@ describe('Content Design View Wrapper Component', () => {
 
     expect(component.type).toEqual('include');
     expect(element).toMatchInlineSnapshot(`
-      <div class="design-view-wrapper include" ng-reflect-ng-class="include,">
+      <div
+        scrollcontainer="root"
+        class="design-view-wrapper include"
+        ng-reflect-scroll-container="root"
+        ng-reflect-ng-class="include,,"
+        ng-reflect-scroll-duration="500"
+        ng-reflect-scroll-spacing="50"
+      >
         <div class="design-view-wrapper-actions">
           <div class="name">Include Name xyz</div>
           <button type="button" class="btn" title="designview.add.link.title">

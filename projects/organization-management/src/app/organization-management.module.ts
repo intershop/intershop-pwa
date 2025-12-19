@@ -14,6 +14,7 @@ import { UserBudgetFormComponent } from './components/user-budget-form/user-budg
 import { UserBudgetComponent } from './components/user-budget/user-budget.component';
 import { UserProfileFormComponent } from './components/user-profile-form/user-profile-form.component';
 import { UserRolesSelectionComponent } from './components/user-roles-selection/user-roles-selection.component';
+import { UserRolesBadgesComponent } from './pages/users/user-roles-badges/user-roles-badges.component';
 import { OrganizationManagementStoreModule } from './store/organization-management-store.module';
 
 const exportedComponents = [
@@ -27,6 +28,7 @@ const exportedComponents = [
   UserBudgetFormComponent,
   UserProfileFormComponent,
   UserRolesSelectionComponent,
+  UserRolesBadgesComponent,
 ];
 
 @NgModule({

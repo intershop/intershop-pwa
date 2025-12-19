@@ -14,10 +14,13 @@
 
   <div class="row form-group">
     <div class="offset-md-4 col-md-8">
+      <div *ngIf="form.submitted && form.invalid" id="submit-button-help" aria-live="polite" class="visually-hidden">
+        {{ 'form.submit.validation.message' | translate }}
+      </div>
       <input
         type="submit"
-        [disabled]="form.submitted && form.invalid"
         class="btn btn-primary"
+        [attr.aria-describedby]="form.submitted && form.invalid ? 'submit-button-help' : null"
         value="{{ 'helpdesk.contactus.submit' | translate }}"
         data-testing-id="submitContact"
       />

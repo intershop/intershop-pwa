@@ -45,20 +45,19 @@ export class QuickorderRepeatFieldComponent extends FieldArrayType implements Af
    * Set the form control field to the according product context and handle its behavior.
    */
   updateContexts() {
-    this.cdRef.detectChanges();
     this.contexts.forEach((context: { context: ProductContextFacade }, index) => {
       const field = this.field.fieldGroup[index].fieldGroup[0];
       const formControl = field.formControl;
 
       context.context.connect('sku', formControl.valueChanges.pipe(debounceTime(500)));
       formControl.setAsyncValidators(() =>
-        context.context.select('product').pipe(
-          map(product => {
-            this.cdRef.markForCheck();
-            return product.failed && formControl.value.trim !== '' ? { validProduct: false } : undefined;
-          })
-        )
+        context.context
+          .select('product')
+          .pipe(
+            map(product => (product.failed && formControl.value?.trim() !== '' ? { validProduct: false } : undefined))
+          )
       );
     });
+    this.cdRef.markForCheck();
   }
 }

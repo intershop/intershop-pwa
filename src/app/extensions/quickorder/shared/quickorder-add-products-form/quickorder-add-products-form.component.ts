@@ -36,12 +36,26 @@ export class QuickorderAddProductsFormComponent implements OnInit {
 
   onAddProducts() {
     const products = this.model.addProducts.filter((p: SkuQuantityType) => !!p.sku && !!p.quantity);
-    if (products.length > 0) {
-      products.forEach(product => {
-        this.shoppingFacade.addProductToBasket(product.sku, product.quantity);
-      });
+    if (products.length === 0 || this.hasValidationError()) {
+      return;
     }
+    products.forEach(product => {
+      this.shoppingFacade.addProductToBasket(product.sku, product.quantity);
+    });
     this.reset();
+  }
+
+  private hasValidationError(): boolean {
+    if (this.quickOrderForm.valid) {
+      return false;
+    }
+    for (let i = 0; i < this.model.addProducts.length; i++) {
+      const skuControl = this.quickOrderForm.get(`addProducts.${i}.sku`);
+      if (skuControl?.errors) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private initModel() {
@@ -67,7 +81,7 @@ export class QuickorderAddProductsFormComponent implements OnInit {
           numberMoreRows: this.numberOfRows,
         },
         fieldArray: {
-          fieldGroupClassName: 'row list-item-row py-2',
+          fieldGroupClassName: 'row quickorder-line-item',
           fieldGroup: [
             {
               key: 'sku',
@@ -79,7 +93,13 @@ export class QuickorderAddProductsFormComponent implements OnInit {
                 ariaLabel: 'shopping_cart.direct_order.item_placeholder',
               },
               expressions: {
-                'props.required': conf => !!conf.model.quantity,
+                'props.required': (field: FormlyFieldConfig) => {
+                  const currentIndex = parseInt(field?.parent?.key?.toString() || '-1', 10);
+                  if (currentIndex !== 0) {
+                    return false;
+                  }
+                  return !this.model.addProducts.find((p: SkuQuantityType) => p.sku && p.quantity);
+                },
               },
               validation: {
                 messages: {

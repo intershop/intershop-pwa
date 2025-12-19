@@ -32,9 +32,9 @@ describe('Header Navigation Component', () => {
     element = fixture.nativeElement;
 
     const categories = [
-      { uniqueId: 'A', name: 'CAT_A', url: '/cat/A', hasChildren: true },
-      { uniqueId: 'B', name: 'CAT_B', url: '/cat/B' },
-      { uniqueId: 'C', name: 'CAT_C', url: '/cat/C' },
+      { uniqueId: 'A', name: 'CAT_A', url: '/cat/A', hasChildren: true, hideInMenu: false },
+      { uniqueId: 'B', name: 'CAT_B', url: '/cat/B', hideInMenu: true },
+      { uniqueId: 'C', name: 'CAT_C', url: '/cat/C', hideInMenu: false },
     ] as NavigationCategory[];
     when(shoppingFacade.navigationCategories$()).thenReturn(of(categories));
   });
@@ -59,17 +59,6 @@ describe('Header Navigation Component', () => {
         <li class="dropdown">
           <a
             class="main-navigation-link"
-            ng-reflect-router-link="/cat/B"
-            data-testing-id="B-link"
-            style="width: 100%"
-            href="/cat/B"
-          >
-            CAT_B
-          </a>
-        </li>
-        <li class="dropdown">
-          <a
-            class="main-navigation-link"
             ng-reflect-router-link="/cat/C"
             data-testing-id="C-link"
             style="width: 100%"
@@ -85,5 +74,15 @@ describe('Header Navigation Component', () => {
         ></ish-lazy-content-include>
       </ul>
     `);
+  });
+
+  it('should filter out categories with hideInMenu set to true', done => {
+    fixture.detectChanges(); // Initialize component and call ngOnInit
+    component.categories$.subscribe(categories => {
+      expect(categories).toHaveLength(2);
+      expect(categories.map(cat => cat.uniqueId)).toEqual(['A', 'C']);
+      expect(categories.find(cat => cat.uniqueId === 'B')).toBeUndefined();
+      done();
+    });
   });
 });

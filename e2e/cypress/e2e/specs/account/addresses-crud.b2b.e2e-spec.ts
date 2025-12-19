@@ -11,7 +11,7 @@ const _ = {
     companyName1: 'Big Foods',
   } as Registration,
   address: {
-    countryCode: 'DE',
+    countryCode: 'Germany',
     companyName1: 'Intershop',
     firstName: 'Pablo',
     lastName: 'Parked',
@@ -24,9 +24,9 @@ const _ = {
     firstName: 'Daniel',
     lastName: 'Circus',
     addressLine1: 'Berg Str. 83',
-    city: 'Heidelberg',
+    city: 'Hannover',
     postalCode: '36890',
-    countryCode: 'DE',
+    countryCode: 'Germany',
   } as AddressDetailsTypes,
   newAddress: {
     companyName1: 'Samsung DE',
@@ -35,7 +35,7 @@ const _ = {
     addressLine1: 'HeidelBerg Str. 83',
     city: 'Heidelberg',
     postalCode: '36890',
-    countryCode: 'DE',
+    countryCode: 'Germany',
   } as AddressDetailsTypes,
 };
 
@@ -59,7 +59,7 @@ describe('Addresses Page Functionality', () => {
       page.fillCreateAddressForm(_.address);
       page.saveAddress();
       page.furtherAddress.should('contain', _.address.addressLine1);
-      page.selectShippingAddress();
+      page.selectShippingAddress('Stuttgart');
       page.shippingAddress.should('contain', _.address.addressLine1);
     });
   });
@@ -75,7 +75,7 @@ describe('Addresses Page Functionality', () => {
 
   it('should be able to assign the further address as default invoice address', () => {
     at(AddressesPage, page => {
-      page.selectInvoiceAddress();
+      page.selectInvoiceAddress('Hannover');
       page.invoiceAddress.should('contain', _.furtherAddress.addressLine1);
     });
   });

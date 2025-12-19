@@ -21,7 +21,7 @@ const _ = {
     price: 175.0,
   },
   address: {
-    countryCode: 'DE',
+    countryCode: 'Germany',
     firstName: 'Pablo',
     lastName: 'Parkes',
     addressLine1: 'Marbacher Str. 87',

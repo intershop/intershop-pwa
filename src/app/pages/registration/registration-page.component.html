@@ -7,10 +7,18 @@
       <div class="col-md-10 col-lg-8 col-xl-6">
         <div class="row form-group">
           <div class="offset-md-4 col-md-8">
+            <div
+              *ngIf="form.invalid && registrationForm.submitted"
+              id="submit-button-help"
+              aria-live="polite"
+              class="visually-hidden"
+            >
+              {{ 'form.submit.validation.message' | translate }}
+            </div>
             <input
-              type="submit"
-              [disabled]="form.invalid && registrationForm.submitted"
               class="btn btn-primary"
+              type="submit"
+              [attr.aria-describedby]="form.invalid && registrationForm.submitted ? 'submit-button-help' : null"
               value="{{ 'account.create.button.label' | translate }}"
             />
             <input

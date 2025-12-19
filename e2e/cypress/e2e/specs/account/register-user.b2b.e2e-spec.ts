@@ -8,6 +8,7 @@ const _ = {
   user: {
     ...sensibleDefaults,
     login: `testuser${new Date().getTime()}@test.intershop.de`,
+    countryCode: 'Austria',
     companyName1: 'Big Foods',
   } as Registration,
 };

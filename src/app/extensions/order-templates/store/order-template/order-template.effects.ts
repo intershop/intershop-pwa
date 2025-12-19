@@ -169,7 +169,7 @@ export class OrderTemplateEffects {
     this.actions$.pipe(
       ofType(addProductToOrderTemplate),
       mapToPayload(),
-      mergeMap(payload =>
+      concatMap(payload =>
         this.orderTemplateService
           .addProductToOrderTemplate(payload.orderTemplateId, payload.sku, payload.quantity)
           .pipe(
@@ -244,7 +244,7 @@ export class OrderTemplateEffects {
     this.actions$.pipe(
       ofType(removeItemFromOrderTemplate),
       mapToPayload(),
-      mergeMap(payload =>
+      concatMap(payload =>
         this.orderTemplateService.removeProductFromOrderTemplate(payload.orderTemplateId, payload.sku).pipe(
           map(orderTemplate => removeItemFromOrderTemplateSuccess({ orderTemplate })),
           mapErrorToAction(removeItemFromOrderTemplateFail)

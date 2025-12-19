@@ -1,7 +1,7 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
-import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
+import { CostCenter, CostCenterBase } from 'ish-core/models/cost-center/cost-center.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn } from 'ish-core/utils/ngrx-creators';
@@ -12,7 +12,11 @@ import {
   addCostCenterBuyersFail,
   addCostCenterBuyersSuccess,
   addCostCenterFail,
+  addCostCenterFromCsvSingleResult,
   addCostCenterSuccess,
+  addCostCentersFromCsv,
+  addCostCentersFromCsvComplete,
+  addCostCentersFromCsvImportTotal,
   deleteCostCenter,
   deleteCostCenterBuyer,
   deleteCostCenterBuyerFail,
@@ -45,12 +49,16 @@ export interface CostCentersState extends EntityState<CostCenter> {
   loading: boolean;
   error: HttpError;
   paging: PagingInfo;
+  importResults: { costCenter: CostCenterBase; status: string }[];
+  importTotal: number;
 }
 
 const initialState: CostCentersState = costCentersAdapter.getInitialState({
   loading: false,
   error: undefined,
   paging: undefined,
+  importResults: [],
+  importTotal: 0,
 });
 
 export const costCentersReducer = createReducer(
@@ -114,6 +122,36 @@ export const costCentersReducer = createReducer(
       ...costCentersAdapter.addOne(costCenter, state),
     };
   }),
+  on(
+    addCostCentersFromCsv,
+    (state, action): CostCentersState => ({
+      ...state,
+      loading: true,
+      importResults: [],
+      importTotal: action.payload.costCenters?.length || 0,
+    })
+  ),
+  on(
+    addCostCenterFromCsvSingleResult,
+    (state, action): CostCentersState => ({
+      ...state,
+      importResults: [...state.importResults, action.payload.importResult],
+    })
+  ),
+  on(
+    addCostCentersFromCsvComplete,
+    (state): CostCentersState => ({
+      ...state,
+      loading: false,
+    })
+  ),
+  on(
+    addCostCentersFromCsvImportTotal,
+    (state, action): CostCentersState => ({
+      ...state,
+      importTotal: action.payload.totalCostCenters,
+    })
+  ),
   on(updateCostCenterSuccess, (state, action) => {
     const { costCenter } = action.payload;
 

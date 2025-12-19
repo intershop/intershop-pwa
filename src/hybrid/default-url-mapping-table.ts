@@ -62,6 +62,14 @@ export const HYBRID_MAPPING_TABLE: HybridMappingEntry[] = [
     handledBy: 'pwa',
   },
   {
+    id: 'Content Pages',
+    icm: `${ICM_CONFIG_MATCH}/ViewContent-Start\\?PageletEntryPointID=($<id>.*?)(&.*|)$`,
+    pwaBuild: `page/$<id>${PWA_CONFIG_BUILD}`,
+    pwa: '^/page/(.*)$',
+    icmBuild: 'ViewContent-Start?PageletEntryPointID=$1',
+    handledBy: 'icm',
+  },
+  {
     id: 'Shopping Basket',
     icm: `${ICM_CONFIG_MATCH}/.*ViewCart-View$`,
     pwaBuild: `basket${PWA_CONFIG_BUILD}`,
@@ -78,22 +86,6 @@ export const HYBRID_MAPPING_TABLE: HybridMappingEntry[] = [
     handledBy: 'pwa',
   },
   {
-    id: 'Password Reset',
-    icm: `${ICM_CONFIG_MATCH}/ViewForgotLoginData-NewPassword\\?uid=(?<uid>[^&]+)&Hash=(?<hash>[0-9a-f-]+).*$`,
-    pwaBuild: `forgotPassword/updatePassword${PWA_CONFIG_BUILD}?uid=$<uid>&Hash=$<hash>`,
-    pwa: `^/forgotPassword/updatePassword?uid=([^&]+)&Hash=([0-9a-f-]+).*$`,
-    icmBuild: 'ViewForgotLoginData-NewPassword\\?uid=$1&Hash=$2',
-    handledBy: 'pwa',
-  },
-  {
-    id: 'Content Pages',
-    icm: `${ICM_CONFIG_MATCH}/ViewContent-Start\\?PageletEntryPointID=($<id>.*?)(&.*|)$`,
-    pwaBuild: `page/$<id>${PWA_CONFIG_BUILD}`,
-    pwa: '^/page/(.*)$',
-    icmBuild: 'ViewContent-Start?PageletEntryPointID=$1',
-    handledBy: 'icm',
-  },
-  {
     id: 'My Account',
     icm: `${ICM_CONFIG_MATCH}/ViewUserAccount-Start.*$`,
     pwaBuild: `account${PWA_CONFIG_BUILD}`,
@@ -107,6 +99,14 @@ export const HYBRID_MAPPING_TABLE: HybridMappingEntry[] = [
     pwaBuild: `register${PWA_CONFIG_BUILD}`,
     pwa: '^/register.*$',
     icmBuild: 'ViewUserAccount-ShowRegister',
+    handledBy: 'pwa',
+  },
+  {
+    id: 'Password Reset',
+    icm: `${ICM_CONFIG_MATCH}/ViewForgotLoginData-NewPassword\\?uid=(?<uid>[^&]+)&Hash=(?<hash>[0-9a-f-]+).*$`,
+    pwaBuild: `forgotPassword/updatePassword${PWA_CONFIG_BUILD}?uid=$<uid>&Hash=$<hash>`,
+    pwa: `^/forgotPassword/updatePassword?uid=([^&]+)&Hash=([0-9a-f-]+).*$`,
+    icmBuild: 'ViewForgotLoginData-NewPassword\\?uid=$1&Hash=$2',
     handledBy: 'pwa',
   },
   {

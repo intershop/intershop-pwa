@@ -1,9 +1,9 @@
 import { ApplicationRef, Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { filter, first, fromEvent, map, switchMap, tap } from 'rxjs';
+import { filter, first, fromEvent, map, switchMap, tap, withLatestFrom } from 'rxjs';
 
-import { designViewActions } from 'ish-core/store/content/design-view';
+import { designViewActions, getDesignViewSelectedPageletId } from 'ish-core/store/content/design-view';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { DomService } from 'ish-core/utils/dom/dom.service';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -14,7 +14,11 @@ interface DesignViewMessage<T = ToDVMessageType> {
   payload?: any;
 }
 
-type FromDVMessageType = 'dv-clientRefresh' | 'dv-clientHighlightPagelet';
+type FromDVMessageType =
+  | 'dv-clientRefresh'
+  | 'dv-clientHighlightPagelet'
+  | 'dv-clientPreviewPagelet'
+  | 'dv-clientScrollToPagelet';
 
 type ToDVMessageType =
   | 'dv-clientAction'
@@ -56,6 +60,7 @@ export class DesignViewService {
 
     this.listenToHostMessages();
     this.listenToApplication();
+    this.setupGlobalClickOutside();
 
     // tell the host client is ready
     this.messageToHost({ type: 'dv-clientReady' });
@@ -146,6 +151,14 @@ export class DesignViewService {
         this.store.dispatch(designViewActions.selectPagelet({ pageletId: message.payload.componentId }));
         break;
       }
+      case 'dv-clientPreviewPagelet': {
+        this.store.dispatch(designViewActions.previewPagelet({ pageletId: message.payload.componentId }));
+        break;
+      }
+      case 'dv-clientScrollToPagelet': {
+        this.store.dispatch(designViewActions.scrollToPagelet({ pageletId: message.payload.componentId }));
+        break;
+      }
       default: {
         // eslint-disable-next-line no-console
         console.warn(`Design View Service received unknown message type: ${message.type}`, message);
@@ -153,10 +166,6 @@ export class DesignViewService {
     }
   }
 
-  /**
-   * Workaround for the missing Firefox CSS support for :has to highlight
-   * only the last .design-view-wrapper in the .design-view-wrapper hierarchy.
-   */
   private applyHierarchyHighlighting() {
     const designViewWrapper: NodeListOf<HTMLElement> = document.querySelectorAll('.design-view-wrapper');
 
@@ -165,6 +174,18 @@ export class DesignViewService {
         this.domService.addClass(element, 'last-design-view-wrapper');
       }
     });
+  }
+
+  private setupGlobalClickOutside() {
+    fromEvent<MouseEvent>(document, 'click')
+      .pipe(
+        withLatestFrom(this.store.pipe(select(getDesignViewSelectedPageletId))),
+        filter(([event, selectedId]) => !!selectedId && !(event.target as Element).closest('.last-design-view-wrapper'))
+      )
+      .subscribe(() => {
+        this.store.dispatch(designViewActions.selectPagelet({ pageletId: undefined }));
+        this.messageToHost({ type: 'dv-clientAction', payload: { action: 'deselectPagelet' } });
+      });
   }
 
   /**
