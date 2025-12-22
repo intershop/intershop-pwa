@@ -20,7 +20,7 @@ import {
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { Image } from 'ish-core/models/image/image.model';
 import { Pricing } from 'ish-core/models/price/price.model';
-import { ProductInventoryDetails } from 'ish-core/models/product-inventories/product-inventories.model';
+import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -98,7 +98,6 @@ export interface ProductContext {
   requiredCompletenessLevel: ProductCompletenessLevel | true;
   product: ProductView;
   prices: Pricing;
-  inventory: ProductInventoryDetails;
   hasProductError: boolean;
   productURL: string;
   loading: boolean;
@@ -113,6 +112,7 @@ export interface ProductContext {
   variations: VariationProduct[];
   variationCount: number;
   productMaster: VariationProductMaster;
+  inventory: ProductInventory;
 
   // quantity
   quantity: number;
@@ -418,15 +418,6 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
             }
           : state.displayProperties
     );
-
-    this.connect(
-      'inventory',
-      this.select('sku').pipe(
-        whenTruthy(),
-        distinctUntilChanged(),
-        switchMap(sku => this.shoppingFacade.productInventory$(sku))
-      )
-    );
   }
 
   private get isMaximumLevel(): boolean {
@@ -453,6 +444,7 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     k2: K2
   ): Observable<ProductContext[K1][K2]>;
 
+  // eslint-disable-next-line complexity
   select<K1 extends keyof ProductContext, K2 extends keyof ProductContext[K1]>(k1?: K1, k2?: K2) {
     const wrap = <K extends keyof ProductContext>(key: K, obs: Observable<ProductContext[K]>) => {
       if (!this.lazyFieldsInitialized.includes(key)) {
@@ -518,6 +510,9 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
             switchMap(([, sku, fresh]) => this.shoppingFacade.productPrices$(sku, fresh))
           )
         );
+        break;
+      case 'inventory':
+        wrap('inventory', this.shoppingFacade.productInventory$(this.validProductSKU$));
         break;
     }
     return k2 ? super.select(k1, k2) : k1 ? super.select(k1) : super.select();

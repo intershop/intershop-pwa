@@ -2,21 +2,21 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { debounceTime, filter, map, mergeMap, toArray, window } from 'rxjs/operators';
 
-import { InventoriesService } from 'ish-core/services/inventories/inventories.service';
+import { InventoryService } from 'ish-core/services/inventory/inventory.service';
 import { mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
-import { loadProductInventory, loadProductInventorySuccess } from './product-inventories.actions';
+import { productInventoriesApiActions, productInventoriesInternalActions } from './product-inventories.actions';
 
 @Injectable()
 export class ProductInventoriesEffects {
-  constructor(private actions$: Actions, private inventoriesService: InventoriesService) {}
+  constructor(private actions$: Actions, private inventoryService: InventoryService) {}
 
-  loadProductInventory$ = createEffect(() =>
+  loadProductInventories$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadProductInventory),
+      ofType(productInventoriesInternalActions.loadProductInventories),
       mapToPayloadProperty('skus'),
       whenTruthy(),
-      window(this.actions$.pipe(ofType(loadProductInventory), debounceTime(500))),
+      window(this.actions$.pipe(ofType(productInventoriesInternalActions.loadProductInventories), debounceTime(500))),
       mergeMap(window$ =>
         window$.pipe(
           toArray(),
@@ -26,9 +26,9 @@ export class ProductInventoriesEffects {
         )
       ),
       mergeMap(skus =>
-        this.inventoriesService
+        this.inventoryService
           .getProductInventory(skus)
-          .pipe(map(inventory => loadProductInventorySuccess({ inventory })))
+          .pipe(map(inventory => productInventoriesApiActions.loadProductInventoriesSuccess({ inventory })))
       )
     )
   );

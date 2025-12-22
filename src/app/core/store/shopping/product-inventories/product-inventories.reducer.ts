@@ -1,21 +1,21 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
-import { ProductInventoryDetails } from 'ish-core/models/product-inventories/product-inventories.model';
+import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
 
-import { loadProductInventorySuccess } from './product-inventories.actions';
+import { productInventoriesApiActions } from './product-inventories.actions';
 
-export const productInventoryAdapter = createEntityAdapter<ProductInventoryDetails>({
+export const productInventoryAdapter = createEntityAdapter<ProductInventory>({
   selectId: inventory => inventory.sku,
 });
 
-export type ProductInventoryState = EntityState<ProductInventoryDetails>;
+export type ProductInventoryState = EntityState<ProductInventory>;
 
 const initialState: ProductInventoryState = productInventoryAdapter.getInitialState({});
 
 export const productInventoryReducer = createReducer(
   initialState,
-  on(loadProductInventorySuccess, (state, action) =>
+  on(productInventoriesApiActions.loadProductInventoriesSuccess, (state, action) =>
     productInventoryAdapter.upsertMany(action.payload.inventory, state)
   )
 );

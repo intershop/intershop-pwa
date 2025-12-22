@@ -3,14 +3,17 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ProductInventoryData } from 'ish-core/models/product-inventories/product-inventories.interface';
-import { ProductInventoriesMapper } from 'ish-core/models/product-inventories/product-inventories.mapper';
-import { ProductInventoryDetails } from 'ish-core/models/product-inventories/product-inventories.model';
+import { ProductInventoryData } from 'ish-core/models/product-inventory/product-inventory.interface';
+import { ProductInventoryMapper } from 'ish-core/models/product-inventory/product-inventory.mapper';
+import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 
+/**
+ * The Inventory Service handles the interaction with the 'inventories' REST API.
+ */
 @Injectable({ providedIn: 'root' })
-export class InventoriesService {
-  private inventoryHeaders = new HttpHeaders({
+export class InventoryService {
+  private readonly inventoryHeaders = new HttpHeaders({
     Accept: 'application/vnd.intershop.inventory.v1+json',
   });
 
@@ -22,7 +25,7 @@ export class InventoriesService {
    * @param skus           Array of product skus.
    * @returns              Product Inventory details.
    */
-  getProductInventory(skus: string[]): Observable<ProductInventoryDetails[]> {
+  getProductInventory(skus: string[]): Observable<ProductInventory[]> {
     if (!skus || skus.length === 0) {
       return throwError(() => new Error('getProductInventory() called without skus'));
     }
@@ -31,7 +34,7 @@ export class InventoriesService {
     skus.map(sku => (params = params.append('sku', sku)));
 
     return this.apiService
-      .get<ProductInventoryData>(`inventories`, { headers: this.inventoryHeaders, params })
-      .pipe(map(response => response?.data?.map(inventory => ProductInventoriesMapper.fromData(inventory))));
+      .get<{ data: ProductInventoryData[] }>(`inventories`, { headers: this.inventoryHeaders, params })
+      .pipe(map(response => response?.data?.map(inventory => ProductInventoryMapper.fromData(inventory))));
   }
 }

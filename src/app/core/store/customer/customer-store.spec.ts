@@ -12,10 +12,7 @@ import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { User } from 'ish-core/models/user/user.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { DataRequestsService } from 'ish-core/services/data-requests/data-requests.service';
-import { FilterService } from 'ish-core/services/filter/filter.service';
-import { InventoriesService } from 'ish-core/services/inventories/inventories.service';
-import { NewsletterService } from 'ish-core/services/newsletter/newsletter.service';
+import { InventoryService } from 'ish-core/services/inventory/inventory.service';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { TokenService } from 'ish-core/services/token/token.service';
@@ -88,8 +85,8 @@ describe('Customer Store', () => {
     const userServiceMock = mock(UserService);
     when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user, pgid }));
 
-    const inventoriesServiceMock = mock(InventoriesService);
-    when(inventoriesServiceMock.getProductInventory(anything())).thenReturn(of([]));
+    const inventoryServiceMock = mock(InventoryService);
+    when(inventoryServiceMock.getProductInventory(anything())).thenReturn(of([]));
 
     TestBed.configureTestingModule({
       imports: [
@@ -112,10 +109,7 @@ describe('Customer Store', () => {
       providers: [
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
-        { provide: DataRequestsService, useFactory: () => instance(mock(DataRequestsService)) },
-        { provide: FilterService, useFactory: () => instance(mock(FilterService)) },
-        { provide: InventoriesService, useFactory: () => instance(inventoriesServiceMock) },
-        { provide: NewsletterService, useFactory: () => instance(mock(NewsletterService)) },
+        { provide: InventoryService, useFactory: () => instance(inventoryServiceMock) },
         { provide: OrderService, useFactory: () => instance(mock(OrderService)) },
         { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
         { provide: TokenService, useFactory: () => instance(mock(TokenService)) },

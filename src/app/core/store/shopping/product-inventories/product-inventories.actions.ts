@@ -1,14 +1,18 @@
-import { createAction } from '@ngrx/store';
+import { createActionGroup } from '@ngrx/store';
 
-import { ProductInventoryDetails } from 'ish-core/models/product-inventories/product-inventories.model';
+import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
 import { payload } from 'ish-core/utils/ngrx-creators';
 
-export const loadProductInventory = createAction(
-  '[Product Inventory] Load Product Inventory',
-  payload<{ skus: string[] }>()
-);
+export const productInventoriesInternalActions = createActionGroup({
+  source: 'Product Inventories Internal',
+  events: {
+    'Load Product Inventories': payload<{ skus: string[] }>(),
+  },
+});
 
-export const loadProductInventorySuccess = createAction(
-  '[Products API] Load Product Inventory Success',
-  payload<{ inventory: ProductInventoryDetails[] }>()
-);
+export const productInventoriesApiActions = createActionGroup({
+  source: 'Product Inventories API',
+  events: {
+    'Load Product Inventories Success': payload<{ inventory: ProductInventory[] }>(),
+  },
+});

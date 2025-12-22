@@ -17,11 +17,11 @@ export interface ShoppingState {
   search: SearchState;
   filter: FilterState;
   promotions: PromotionsState;
+  productInventory: ProductInventoryState;
   productListing: ProductListingState;
   productPrices: ProductPricesState;
-  warranties: WarrantiesState;
   productRecommendations: RecommendationsState;
-  productInventory: ProductInventoryState;
+  warranties: WarrantiesState;
 }
 
 export const getShoppingState = createFeatureSelector<ShoppingState>('shopping');

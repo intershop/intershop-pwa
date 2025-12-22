@@ -1,4 +1,4 @@
-export interface ProductInventoryDetails {
+export interface ProductInventory {
   sku: string;
   inStock: boolean;
   availableStock?: number;

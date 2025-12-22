@@ -34,8 +34,7 @@ import {
   loadTopLevelCategories,
 } from 'ish-core/store/shopping/categories';
 import { getAvailableFilter } from 'ish-core/store/shopping/filter';
-import { loadProductInventory } from 'ish-core/store/shopping/product-inventories/product-inventories.actions';
-import { getProductInventory } from 'ish-core/store/shopping/product-inventories/product-inventories.selector';
+import { getProductInventory } from 'ish-core/store/shopping/product-inventories';
 import {
   getProductListingLoading,
   getProductListingView,
@@ -179,16 +178,7 @@ export class ShoppingFacade {
     return toObservable(sku).pipe(
       whenTruthy(),
       switchMap(plainSKU =>
-        this.store.pipe(
-          select(getProductInventory(plainSKU)),
-          distinctUntilChanged(),
-          tap(inventory => {
-            if (!inventory) {
-              this.store.dispatch(loadProductInventory({ skus: [plainSKU] }));
-            }
-          }),
-          whenTruthy()
-        )
+        this.store.pipe(select(getProductInventory(plainSKU)), distinctUntilChanged(), whenTruthy())
       )
     );
   }

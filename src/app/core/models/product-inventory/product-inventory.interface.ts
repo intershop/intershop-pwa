@@ -1,4 +1,4 @@
-export interface ProductInventoryDetailsData {
+export interface ProductInventoryData {
   sku: string;
   inStock: boolean;
   availableStock?: number;
@@ -9,8 +9,4 @@ export interface ProductInventoryDetailsData {
     unit?: string;
   };
   stockLevelCode?: string;
-}
-
-export interface ProductInventoryData {
-  data: ProductInventoryDetailsData[];
 }

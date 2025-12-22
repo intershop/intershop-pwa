@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
-import { ProductInventoryDetailsData } from './product-inventories.interface';
-import { ProductInventoryDetails } from './product-inventories.model';
+import { ProductInventoryData } from './product-inventory.interface';
+import { ProductInventory } from './product-inventory.model';
 
 @Injectable({ providedIn: 'root' })
-export class ProductInventoriesMapper {
-  static fromData(data: ProductInventoryDetailsData): ProductInventoryDetails {
+export class ProductInventoryMapper {
+  static fromData(data: ProductInventoryData): ProductInventory {
     if (!data) {
       return;
     }

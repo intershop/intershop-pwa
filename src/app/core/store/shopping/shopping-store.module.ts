@@ -34,11 +34,11 @@ const shoppingReducers: ActionReducerMap<ShoppingState> = {
   search: searchReducer,
   filter: filterReducer,
   promotions: promotionsReducer,
+  productInventory: productInventoryReducer,
   productListing: productListingReducer,
   productPrices: productPricesReducer,
   productRecommendations: recommendationsReducer,
   warranties: warrantiesReducer,
-  productInventory: productInventoryReducer,
 };
 
 const shoppingEffects = [
@@ -47,11 +47,11 @@ const shoppingEffects = [
   SearchEffects,
   FilterEffects,
   PromotionsEffects,
+  ProductInventoriesEffects,
   ProductListingEffects,
   ProductPricesEffects,
   RecommendationsEffects,
   WarrantiesEffects,
-  ProductInventoriesEffects,
 ];
 
 @Injectable()

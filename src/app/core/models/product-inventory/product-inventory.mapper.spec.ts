@@ -1,10 +1,10 @@
-import { ProductInventoriesMapper } from './product-inventories.mapper';
+import { ProductInventoryMapper } from './product-inventory.mapper';
 
-describe('Product Inventories Mapper', () => {
+describe('Product Inventory Mapper', () => {
   describe('fromData', () => {
     it('should map product inventory data to client object', () => {
       expect(
-        ProductInventoriesMapper.fromData({
+        ProductInventoryMapper.fromData({
           sku: 'abc',
           inStock: true,
           stockLevel: { value: 100 },
@@ -25,7 +25,7 @@ describe('Product Inventories Mapper', () => {
 
     it('should fallback to availableStock when stockLevel is not provided', () => {
       expect(
-        ProductInventoriesMapper.fromData({
+        ProductInventoryMapper.fromData({
           sku: 'abc',
           inStock: false,
           availableStock: 25,
@@ -44,12 +44,12 @@ describe('Product Inventories Mapper', () => {
     });
 
     it('should handle undefined data gracefully', () => {
-      expect(ProductInventoriesMapper.fromData(undefined)).toBeUndefined();
+      expect(ProductInventoryMapper.fromData(undefined)).toBeUndefined();
     });
 
     it('should handle partial data', () => {
       expect(
-        ProductInventoriesMapper.fromData({
+        ProductInventoryMapper.fromData({
           sku: 'xyz',
           inStock: true,
         })
