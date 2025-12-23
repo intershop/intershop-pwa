@@ -44,14 +44,15 @@ describe('Search Box', () => {
     });
   });
 
-  // currently not working, because typing tab is not supported by cypress
+  // currently not working, because typing key down arrow is currently not working
   // eslint-disable-next-line jest/no-disabled-tests
   it.skip('should follow search when hitting enter with choosing suggestion with keyboard', () => {
     at(HomePage, page => {
       page.header.searchBox.type('ken');
       page.header.searchBox.suggestions.should('contain', 'kensington');
 
-      page.header.searchBox.tab().enter();
+      page.header.searchBox.down();
+      // expect selected suggestion to be 'kensington'
     });
   });
 
