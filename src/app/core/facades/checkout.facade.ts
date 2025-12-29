@@ -325,7 +325,7 @@ export class CheckoutFacade {
           map(methods =>
             methods?.find(
               method =>
-                // ToDo: adjust this very special logic when more capabilities are added
+                // TODO: adjust this very special logic when more capabilities are added
                 method.capabilities?.includes('PaypalCheckout') &&
                 !!method.hostedPaymentPageParameters?.length &&
                 (contextCapability

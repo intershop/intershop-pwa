@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 /*
- * adapted from https://gist.github.com/Bkucera/4ffd05f67034176a00518df251e19f58
+ * Custom Cypress CI runner with retry logic for failed tests.
  *
- * referenced by open cypress issue https://github.com/cypress-io/cypress/issues/1313
+ * Referenced by Cypress issue: https://github.com/cypress-io/cypress/issues/1313
  */
 
 import * as cypress from 'cypress';
