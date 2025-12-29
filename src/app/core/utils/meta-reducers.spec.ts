@@ -5,7 +5,7 @@ import { identity } from 'rxjs';
 import { applyConfiguration, getICMBaseURL } from 'ish-core/store/core/configuration';
 import { CoreState } from 'ish-core/store/core/core-store';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { loginUser, logoutUserSuccess } from 'ish-core/store/customer/user';
+import { loginUser, resetUserData } from 'ish-core/store/customer/user';
 
 import { StoreWithSnapshots, provideStoreSnapshots } from './dev/ngrx-testing';
 import { resetOnLogoutMeta, resetSubStatesOnActionsMeta } from './meta-reducers';
@@ -19,7 +19,7 @@ describe('Meta Reducers', () => {
       TestBed.configureTestingModule({
         imports: [
           CoreStoreModule.forTesting(['configuration'], true, [
-            resetSubStatesOnActionsMeta<CoreState>(['configuration'], [logoutUserSuccess]),
+            resetSubStatesOnActionsMeta<CoreState>(['configuration'], [resetUserData]),
           ]),
         ],
         providers: [provideStoreSnapshots()],
@@ -28,7 +28,7 @@ describe('Meta Reducers', () => {
       store$ = TestBed.inject(StoreWithSnapshots);
     });
 
-    describe('on logout action', () => {
+    describe('on reset user data action', () => {
       beforeEach(() => {
         store$.dispatch(applyConfiguration({ baseURL }));
       });
@@ -36,7 +36,7 @@ describe('Meta Reducers', () => {
       it('should reset the configuration sub state', () => {
         expect(getICMBaseURL(store$.state)).toEqual(baseURL);
 
-        store$.dispatch(logoutUserSuccess());
+        store$.dispatch(resetUserData());
 
         expect(getICMBaseURL(store$.state)).toBeUndefined();
       });
@@ -70,13 +70,13 @@ describe('Meta Reducers', () => {
       b: (s = 'initialB') => s,
     });
 
-    it('should reset state when reducing LogoutUser action', () => {
-      const result = resetOnLogoutMeta(identity)(state, logoutUserSuccess());
+    it('should reset state when reducing ResetUserData action', () => {
+      const result = resetOnLogoutMeta(identity)(state, resetUserData());
       expect(result).toBeUndefined();
     });
 
-    it('should reset and delegate to reducer initial state when reducing LogoutUser action', () => {
-      const result = resetOnLogoutMeta(reducer)(state, logoutUserSuccess());
+    it('should reset and delegate to reducer initial state when reducing ResetUserData action', () => {
+      const result = resetOnLogoutMeta(reducer)(state, resetUserData());
       expect(result).toEqual({ a: 'initialA', b: 'initialB' });
     });
 

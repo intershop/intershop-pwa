@@ -23,10 +23,11 @@ export const loadCompanyUserFail = createAction('[User API] Load Company User Fa
 
 export const loadCompanyUserSuccess = createAction('[User API] Load Company User Success', payload<{ user: User }>());
 
+export const resetUserData = createAction('[User] Reset User Data');
+
 export const logoutUser = createAction('[User] Logout User');
 
-// TODO: this should be an API action
-export const logoutUserSuccess = createAction('[User] Logout User Success');
+export const logoutUserSuccess = createAction('[User API] Logout User Success');
 
 export const logoutUserFail = createAction('[User API] Logout User Failed', httpError());
 

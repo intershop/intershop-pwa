@@ -14,7 +14,7 @@ import {
   CustomerStoreModule,
 } from 'ish-core/store/customer/customer-store.module';
 import { loadOrderSuccess, selectOrder } from 'ish-core/store/customer/orders';
-import { loginUserSuccess, logoutUserSuccess } from 'ish-core/store/customer/user';
+import { loginUserSuccess, resetUserData } from 'ish-core/store/customer/user';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 
 import { ApiTokenCookie, ApiTokenService } from './api-token.service';
@@ -116,8 +116,8 @@ describe('Api Token Service', () => {
       );
     });
 
-    it('should remove apiToken on logout', () => {
-      store.dispatch(logoutUserSuccess());
+    it('should remove apiToken on resetUserData', () => {
+      store.dispatch(resetUserData());
 
       verify(cookieServiceMock.remove('apiToken', anything())).once();
     });
