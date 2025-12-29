@@ -72,9 +72,9 @@ import {
   loginUser,
   loginUserWithToken,
   logoutUser,
-  logoutUserSuccess,
   requestPasswordReminder,
   resetPasswordReminder,
+  resetUserData,
   updateCustomer,
   updateUser,
   updateUserPassword,
@@ -122,7 +122,7 @@ export class AccountFacade {
    * @param revokeToken option to revoke api token on server side before logout success action is dispatched
    */
   logoutUser(options = { revokeApiToken: true }) {
-    options?.revokeApiToken ? this.store.dispatch(logoutUser()) : this.store.dispatch(logoutUserSuccess());
+    options?.revokeApiToken ? this.store.dispatch(logoutUser()) : this.store.dispatch(resetUserData());
   }
 
   createUser(body: CustomerRegistrationType) {

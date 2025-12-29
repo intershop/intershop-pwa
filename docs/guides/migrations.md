@@ -51,6 +51,10 @@ This table lists all variables that were removed and their replacements:
 The deprecated `options` method of the [`api.service`](../../src/app/core/services/api/api.service.ts) has been removed.
 Alternatively, use the `get` method with REST calls of the latest REST interface instead.
 
+The `logoutUserSuccess` action is now designated as API-specific and should only be dispatched after successful token revocation in `user.effects`.
+For resetting user-related state without API calls (e.g., forced logout or session cleanup), use the new `resetUserData` action instead.
+This ensures clearer separation between API events and state management.
+
 ## From 9.0.0 to 9.1.0
 
 Catalogs (root-level categories in ICM terminology) with _Show In Menu_ being disabled are now hidden from the main header navigation.

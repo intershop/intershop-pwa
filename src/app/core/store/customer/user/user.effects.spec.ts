@@ -53,6 +53,7 @@ import {
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
+  resetUserData,
   updateCustomer,
   updateCustomerFail,
   updateCustomerSuccess,
@@ -221,10 +222,11 @@ describe('User Effects', () => {
 
     it('should dispatch a success action on a successful request and should fetch a new anonymous user token', () => {
       const action = logoutUser();
-      const completion = logoutUserSuccess();
+      const completion1 = logoutUserSuccess();
+      const completion2 = resetUserData();
 
       actions$ = hot('-a', { a: action });
-      const expected$ = cold('-b', { b: completion });
+      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
 
       expect(effects.logoutUser$).toBeObservable(expected$);
     });
