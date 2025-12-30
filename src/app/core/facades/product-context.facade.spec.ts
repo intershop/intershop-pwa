@@ -293,7 +293,7 @@ describe('Product Context Facade', () => {
 
       it('should go to error if quantity is null', () => {
         // eslint-disable-next-line unicorn/no-null
-        context.set('quantity', () => null);
+        context.set('quantity', (): number => null);
         expect(pickQuantityFields(context)).toMatchInlineSnapshot(`
           {
             "allowZeroQuantity": false,

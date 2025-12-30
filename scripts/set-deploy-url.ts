@@ -1,7 +1,8 @@
-/* eslint-disable ish-custom-rules/ordered-imports, no-console */
+/* eslint-disable no-console */
 import * as fs from 'fs';
 import * as glob from 'glob';
 import * as path from 'path';
+
 import { setDeployUrlInFile } from '../src/ssr/deploy-url';
 
 if (process.argv.length < 3) {

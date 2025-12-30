@@ -118,7 +118,7 @@ export class PunchoutService {
           .pipe(
             unpackEnvelope<Link>(),
             this.apiService.resolveLinks<PunchoutUser>({ headers: this.getPunchoutHeader(punchoutType) }),
-            map(users => users.map(user => ({ ...user, punchoutType, password: undefined })))
+            map(users => users.map(user => ({ ...user, punchoutType, password: undefined as string | undefined })))
           )
       )
     );
@@ -147,7 +147,11 @@ export class PunchoutService {
           )
           .pipe(
             this.apiService.resolveLink<PunchoutUser>({ headers: this.getPunchoutHeader(user.punchoutType) }),
-            map(createdUser => ({ ...createdUser, punchoutType: user.punchoutType, password: undefined }))
+            map(createdUser => ({
+              ...createdUser,
+              punchoutType: user.punchoutType,
+              password: undefined as string | undefined,
+            }))
           )
       )
     );
@@ -174,7 +178,13 @@ export class PunchoutService {
             user,
             { headers: this.getPunchoutHeader(user.punchoutType) }
           )
-          .pipe(map(updatedUser => ({ ...updatedUser, punchoutType: user.punchoutType, password: undefined })))
+          .pipe(
+            map(updatedUser => ({
+              ...updatedUser,
+              punchoutType: user.punchoutType,
+              password: undefined as string | undefined,
+            }))
+          )
       )
     );
   }

@@ -1,9 +1,8 @@
 /***************************************************************************************************
  * Load `$localize` onto the global scope - used if i18n tags appear in Angular templates.
  */
-// eslint-disable-next-line ish-custom-rules/ordered-imports
-import '@angular/localize/init';
 import { enableProdMode } from '@angular/core';
+import '@angular/localize/init';
 
 if (PRODUCTION_MODE) {
   enableProdMode();
