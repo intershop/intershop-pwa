@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, DestroyRef, Directive, Input, TemplateRef, ViewContainerRef, inject } from '@angular/core';
+import { ChangeDetectorRef, Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ReplaySubject, Subscription } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { BehaviorSubject, of } from 'rxjs';
+import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 
 import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
 
@@ -20,10 +20,7 @@ import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle
   selector: '[ishNotFeature]',
 })
 export class NotFeatureToggleDirective {
-  private subscription: Subscription;
-  private disabled$ = new ReplaySubject<boolean>(1);
-
-  private destroyRef = inject(DestroyRef);
+  private feature$ = new BehaviorSubject<'always' | 'never' | FeatureToggleType>(undefined);
 
   constructor(
     private templateRef: TemplateRef<unknown>,
@@ -31,26 +28,24 @@ export class NotFeatureToggleDirective {
     private featureToggle: FeatureToggleService,
     private cdRef: ChangeDetectorRef
   ) {
-    this.disabled$.pipe(distinctUntilChanged(), takeUntilDestroyed()).subscribe(disabled => {
-      if (disabled) {
-        this.viewContainer.createEmbeddedView(this.templateRef);
-      } else {
-        this.viewContainer.clear();
-      }
-      this.cdRef.markForCheck();
-    });
+    this.feature$
+      .pipe(
+        switchMap(val => (val ? this.featureToggle.enabled$(val) : of(false))),
+        map(value => !value),
+        distinctUntilChanged(),
+        takeUntilDestroyed()
+      )
+      .subscribe(disabled => {
+        if (disabled) {
+          this.viewContainer.createEmbeddedView(this.templateRef);
+        } else {
+          this.viewContainer.clear();
+        }
+        this.cdRef.markForCheck();
+      });
   }
 
   @Input() set ishNotFeature(val: 'always' | 'never' | FeatureToggleType) {
-    // end previous subscription and newly subscribe
-    if (this.subscription) {
-      // eslint-disable-next-line ban/ban
-      this.subscription.unsubscribe();
-    }
-
-    this.subscription = this.featureToggle
-      .enabled$(val)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({ next: value => this.disabled$.next(!value) });
+    this.feature$.next(val);
   }
 }
