@@ -14,7 +14,6 @@ import {
   toggleCompare,
 } from '../store/compare';
 
-/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class CompareFacade {
   constructor(private store: Store) {}

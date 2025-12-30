@@ -76,7 +76,6 @@ import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import { AccountFacade } from './account.facade';
 
-/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class CheckoutFacade {
   private basketChangeInternal$ = new Subject<void>();

@@ -13,7 +13,6 @@ export type CaptchaTopic =
   | 'redemptionOfGiftCardsAndCertificates'
   | 'register';
 
-/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class CaptchaFacade {
   constructor(private store: Store) {}

@@ -70,7 +70,6 @@ import { toObservable } from 'ish-core/utils/functions';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { mapToProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
-/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class ShoppingFacade {
   constructor(private store: Store, @Inject(PRICE_UPDATE) private priceUpdate: InjectSingle<typeof PRICE_UPDATE>) {}

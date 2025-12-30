@@ -22,7 +22,6 @@ interface QuoteEntitiesOptions {
   automaticRefresh?: boolean;
 }
 
-/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class QuotingFacade {
   private isStable$ = new BehaviorSubject<boolean>(false);
