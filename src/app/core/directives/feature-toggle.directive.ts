@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, DestroyRef, Directive, Input, TemplateRef, ViewContainerRef, inject } from '@angular/core';
+import { ChangeDetectorRef, Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
-import { distinctUntilChanged, filter } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, of } from 'rxjs';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
 
@@ -13,20 +13,20 @@ import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle
  * For the corresponding pipe see {@link FeatureTogglePipe}.
  *
  * @example
- * <div *ishFeature="'quoting'">
- *   Only visible when quoting is enabled by configuration.
+ * <div *ishFeature="'quoting'; else disabledTemplate">
+ *   Only visible when quoting is enabled.
  * </div>
+ * <ng-template #disabledTemplate>
+ *   <div>Quoting is disabled.</div>
+ * </ng-template>
  */
 @Directive({
   selector: '[ishFeature]',
 })
 export class FeatureToggleDirective {
   private otherTemplateRef: TemplateRef<unknown>;
-  private subscription: Subscription;
-  private enabled$ = new BehaviorSubject<boolean>(undefined);
-  private tick$ = new BehaviorSubject<void>(undefined);
-
-  private destroyRef = inject(DestroyRef);
+  private feature$ = new BehaviorSubject<'always' | 'never' | FeatureToggleType>(undefined);
+  private elseSet$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     private templateRef: TemplateRef<unknown>,
@@ -35,18 +35,18 @@ export class FeatureToggleDirective {
     private cdRef: ChangeDetectorRef
   ) {
     combineLatest([
-      this.enabled$.pipe(
-        distinctUntilChanged(),
-        filter(val => typeof val === 'boolean')
+      this.feature$.pipe(
+        switchMap(feature => (feature ? this.featureToggle.enabled$(feature) : of(false))),
+        distinctUntilChanged()
       ),
-      this.tick$,
+      this.elseSet$,
     ])
       .pipe(takeUntilDestroyed())
-      .subscribe(([enabled]) => {
+      .subscribe(([enabled, elseSet]) => {
         this.viewContainer.clear();
         if (enabled) {
           this.viewContainer.createEmbeddedView(this.templateRef);
-        } else if (this.otherTemplateRef) {
+        } else if (elseSet && this.otherTemplateRef) {
           this.viewContainer.createEmbeddedView(this.otherTemplateRef);
         }
         this.cdRef.markForCheck();
@@ -54,20 +54,11 @@ export class FeatureToggleDirective {
   }
 
   @Input() set ishFeature(feature: 'always' | 'never' | FeatureToggleType) {
-    // end previous subscription and newly subscribe
-    if (this.subscription) {
-      // eslint-disable-next-line ban/ban
-      this.subscription.unsubscribe();
-    }
-
-    this.subscription = this.featureToggle
-      .enabled$(feature)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({ next: val => this.enabled$.next(val) });
+    this.feature$.next(feature);
   }
 
   @Input() set ishFeatureElse(otherTemplateRef: TemplateRef<unknown>) {
     this.otherTemplateRef = otherTemplateRef;
-    this.tick$.next();
+    this.elseSet$.next(true);
   }
 }
