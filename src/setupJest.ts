@@ -3,9 +3,9 @@ require('jest-preset-angular/setup-jest');
 import { CompilerOptions } from '@angular/core';
 import { getTestBed } from '@angular/core/testing';
 import '@angular/localize/init';
+import * as matchers from 'jest-extended';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-expect.extend(require('jest-extended'));
+expect.extend(matchers);
 
 beforeEach(() => {
   const compilerOptions: CompilerOptions = { preserveWhitespaces: false };

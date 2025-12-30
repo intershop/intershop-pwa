@@ -12,7 +12,6 @@ import { ProductHelper } from 'ish-core/models/product/product.model';
   templateUrl: './product-master-variations.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// eslint-disable-next-line rxjs-angular/prefer-takeuntil
 export class ProductMasterVariationsComponent implements OnInit {
   sku$: Observable<string>;
   categoryId$: Observable<string>;
@@ -39,7 +38,6 @@ export class ProductMasterVariationsComponent implements OnInit {
         // take until routing away
         takeUntil(this.router.events.pipe(filter(event => event instanceof ActivationStart)))
       )
-      // eslint-disable-next-line rxjs-angular/prefer-takeuntil
       .subscribe(position => {
         this.scroller.scrollToPosition(position);
       });
