@@ -63,37 +63,6 @@ describe('Api Service', () => {
       httpTestingController.verify();
     });
 
-    it('should call the httpClient.options method when apiService.options method is called.', done => {
-      // eslint-disable-next-line etc/no-deprecated
-      apiService.options('data').subscribe({
-        next: data => {
-          expect(data).toBeTruthy();
-        },
-        complete: done,
-      });
-
-      const req = httpTestingController.expectOne(`${REST_URL}/data`);
-      req.flush({});
-      expect(req.request.method).toEqual('OPTIONS');
-    });
-
-    it('should create Error Action if httpClient.options throws Error.', () => {
-      const statusText = 'ERROR';
-
-      // eslint-disable-next-line etc/no-deprecated
-      apiService.options('data').subscribe({ next: fail, error: fail });
-      const req = httpTestingController.expectOne(`${REST_URL}/data`);
-
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(noop);
-      req.flush('err', { status: 500, statusText });
-      consoleSpy.mockRestore();
-
-      verify(store.dispatch(anything())).once();
-      const [action] = capture<Action & { payload: { error: HttpError } }>(store.dispatch).last();
-      expect(action.type).toEqual(serverError.type);
-      expect(action.payload.error).toHaveProperty('statusText', statusText);
-    });
-
     it('should call the httpClient.get method when apiService.get method is called.', done => {
       apiService.get('data').subscribe({
         next: data => {

@@ -48,6 +48,9 @@ This table lists all variables that were removed and their replacements:
 | $datepicker-active-bg     | -                    |
 | $datepicker-active-hover  | -                    |
 
+The deprecated `options` method of the [`api.service`](../../src/app/core/services/api/api.service.ts) has been removed.
+Alternatively, use the `get` method with REST calls of the latest REST interface instead.
+
 ## From 9.0.0 to 9.1.0
 
 Catalogs (root-level categories in ICM terminology) with _Show In Menu_ being disabled are now hidden from the main header navigation.
