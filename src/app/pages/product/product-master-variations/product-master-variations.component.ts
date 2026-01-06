@@ -2,10 +2,11 @@ import { ViewportScroller } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivationStart, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Observable, combineLatest } from 'rxjs';
-import { debounce, filter, map, takeUntil } from 'rxjs/operators';
+import { debounce, filter, map, startWith, takeUntil } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductHelper } from 'ish-core/models/product/product.model';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-product-master-variations',
@@ -24,8 +25,14 @@ export class ProductMasterVariationsComponent implements OnInit {
     this.categoryId$ = this.context.select('categoryId');
     this.hasVariations$ = combineLatest([
       this.context.select('product').pipe(map(product => ProductHelper.isMasterProduct(product))),
-      this.context.select('variations').pipe(map(variations => variations?.length > 0)),
-    ]).pipe(map(([isMaster, hasVariations]) => isMaster && hasVariations));
+      this.context.select('variations').pipe(
+        map(variations => variations?.length > 0),
+        whenTruthy()
+      ),
+    ]).pipe(
+      map(([isMaster, hasVariations]) => isMaster && hasVariations),
+      startWith(false)
+    );
 
     this.router.events
       .pipe(
