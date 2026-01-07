@@ -36,7 +36,7 @@
         <ng-container *ngIf="getPayPalPaymentMethod() | async as paypalPaymentMethod">
           <ish-payment-paypal
             [selectedPaymentMethod]="paypalPaymentMethod"
-            [componentType]="'buttons'"
+            [componentType]="paypalComponentType"
             (selectPaypalPaymentMethod)="setBasketPayment($event)"
           />
         </ng-container>

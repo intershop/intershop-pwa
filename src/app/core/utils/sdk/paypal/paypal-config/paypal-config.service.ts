@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { combineLatest, map, switchMap } from 'rxjs';
+import { combineLatest, iif, switchMap } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -7,39 +7,37 @@ import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model'
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
 /**
- * Represents all possible page types where PayPal components can be rendered.
- * Includes both button-enabled pages and non-button pages.
+ * Enumeration of PayPal page types used for configuring the PayPal SDK parameter data-page-type.
  */
-export type PaypalPageType = PaypalButtonsPageType | 'home' | 'product-details' | 'product-listing';
+export enum PaypalPageTypes {
+  Cart = 'cart',
+  CheckoutPayment = 'checkout',
+  Home = 'home',
+  ProductDetails = 'product-details',
+  ProductListing = 'product-listing',
+}
 
-/**
- * Page types where PayPal buttons are displayed (cart and checkout pages).
- */
-type PaypalButtonsPageType = 'cart' | 'checkout';
-
-/**
- * Basic parameters required to load the PayPal SDK script.
- */
-interface PayPalScriptParams {
-  /** The PayPal payment method configuration */
-  paymentMethod: PaymentMethod;
-  /** The current page type where PayPal is being loaded */
-  page: PaypalPageType;
+export enum PaypalComponentTypes {
+  Buttons,
+  Messages,
+  CardFields,
 }
 
 /**
  * Extended script parameters including application context (locale, currency, config).
  * Used internally to construct the complete PayPal SDK URL with all required parameters.
  */
-interface ScriptParams extends PayPalScriptParams {
+interface PayPalScriptParams {
   /** The current application locale (e.g., 'en_US', 'de_DE') */
   locale: string;
   /** The current currency code (e.g., 'USD', 'EUR') */
   currency: string;
   /** Payment method capabilities that determine SDK behavior */
-  capabilities: string[];
+  capabilities?: string[];
   /** PayPal-specific configuration from the application */
-  paypalConfig: PaypalConfig;
+  paypalLaterConfig: PaypalConfig;
+  /** The PayPal payment method configuration */
+  paymentMethod?: PaymentMethod;
 }
 
 /**
@@ -72,47 +70,72 @@ export class PaypalConfigService {
   /**
    * Loads the PayPal JavaScript SDK with the appropriate configuration.
    */
-  loadPayPalScript(nameSpace: string, param: PayPalScriptParams) {
+  loadPayPalScript(nameSpace: string, pageType: string, paymentMethod?: PaymentMethod) {
     return combineLatest([
       this.appFacade.currentLocale$,
       this.appFacade.currentCurrency$,
       this.appFacade.payPalConfig$,
     ]).pipe(
-      map(([locale, currency, config]) => ({
-        paymentMethod: param.paymentMethod,
-        page: param.page,
-        locale,
-        currency,
-        paypalConfig: config,
-        capabilities: param.paymentMethod.capabilities,
-      })),
-      switchMap(scriptParams =>
-        this.scriptLoader.load(this.calculateURL(scriptParams), {
-          attributes: [
-            ...(scriptParams.paymentMethod.hostedPaymentPageParameters?.filter(attr => attr.name.startsWith('data-')) ??
-              []),
+      switchMap(([locale, currency, paypalLaterConfig]) =>
+        iif(
+          () => !!paymentMethod,
+          this.scriptLoader.load(
+            this.calculateURL({
+              paymentMethod,
+              locale,
+              currency,
+              paypalLaterConfig,
+              capabilities: paymentMethod?.capabilities,
+            }),
             {
-              name: 'data-namespace',
-              value: nameSpace,
-            },
-            { name: 'data-page-type', value: scriptParams.page },
-            {
-              name: 'data-partner-attribution-id',
-              value: scriptParams.paymentMethod.hostedPaymentPageParameters?.find(
-                attr => attr.name === 'data-partner-attribution-id'
-              )?.value,
-            },
-          ],
-        })
+              attributes: [
+                ...(paymentMethod?.hostedPaymentPageParameters?.filter(attr => attr.name.startsWith('data-')) ?? []),
+                {
+                  name: 'data-namespace',
+                  value: nameSpace,
+                },
+                { name: 'data-page-type', value: pageType },
+                {
+                  name: 'data-partner-attribution-id',
+                  value: paymentMethod?.hostedPaymentPageParameters?.find(
+                    attr => attr.name === 'data-partner-attribution-id'
+                  )?.value,
+                },
+              ],
+            }
+          ),
+          this.scriptLoader.load(this.calculateURL({ locale, currency, paypalLaterConfig }), {
+            attributes: [
+              {
+                name: 'data-namespace',
+                value: nameSpace,
+              },
+              { name: 'data-page-type', value: pageType },
+            ],
+          })
+        )
       )
     );
   }
 
-  private calculateURL(param: ScriptParams): string {
-    return this.scriptUrl.concat(`?${this.getScriptQueryParameters(param)}`);
+  private calculateURL(param: PayPalScriptParams): string {
+    if (param.paymentMethod) {
+      return this.scriptUrl.concat(`?${this.getScriptQueryParameters(param)}`);
+    }
+    return this.scriptUrl.concat(`?${this.getScriptQueryParameterForMessages(param)}`);
   }
 
-  private getScriptQueryParameters(param: ScriptParams): string {
+  private getScriptQueryParameterForMessages(param: PayPalScriptParams): string {
+    let params = `client-id=${param.paypalLaterConfig.clientId}`;
+    params = `${params}&merchant-id=${param.paypalLaterConfig.merchantId}`;
+    params = `${params}&currency=${param.currency}`;
+    params = `${params}&locale=${param.locale}`;
+    params = `${params}&components=messages`;
+    params = `${params}&enable-funding=paylater`;
+    return params;
+  }
+
+  private getScriptQueryParameters(param: PayPalScriptParams): string {
     let params = param.paymentMethod.hostedPaymentPageParameters
       ?.filter(attr => ['client-id', 'merchant-id'].includes(attr?.name) || attr.name === 'intent')
       .map(attr => `${attr.name}=${attr.value}`)
@@ -124,7 +147,7 @@ export class PaypalConfigService {
     if (!param.capabilities.includes('RedirectAfterCheckout')) {
       params = `${params}&commit=false`;
     }
-    if (param.paypalConfig.payLaterButtonEnabled && !param.capabilities.includes('Paypal3DSecure')) {
+    if (param.paypalLaterConfig.payLaterPreferences.PayLaterEnabled && !param.capabilities.includes('Paypal3DSecure')) {
       params = `${params}&enable-funding=paylater`;
       //TODO: icm must have deliver information which cart type should be disabled for funding
       params = `${params}&disable-funding=card,sepa`;

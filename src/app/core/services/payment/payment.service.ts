@@ -436,7 +436,7 @@ export class PaymentService {
     }
   }
 
-  initializePayPal3DSecureFlow(): Observable<string> {
+  initializePayPal3DSecureFlow(paymentMethod: PaymentMethod): Observable<string> {
     const loc = `${location.origin}${this.baseHref}`;
 
     return this.store.pipe(select(getCurrentLocale)).pipe(
@@ -452,15 +452,19 @@ export class PaymentService {
 
         return this.apiService
           .currentBasketEndpoint()
-          .put<{ data: Paypal3Ds }>('payments/open-tender/paypal-3ds', body, {
-            headers: this.basketHeaders,
-          })
+          .put<{ data: Paypal3Ds }>(
+            `eligible-payment-methods'${this.apiService.encodeResourceId(paymentMethod.id)}`,
+            body,
+            {
+              headers: this.basketHeaders,
+            }
+          )
           .pipe(map(response => response.data.orderId));
       })
     );
   }
 
-  approvePayPal3DSecure(paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
+  getPayPalPaymentInstrumentData(paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
     return this.apiService
       .currentBasketEndpoint()
       .get<{ data: Paypal3Ds }>('payments/open-tender/paypal-3ds', {
@@ -470,6 +474,7 @@ export class PaymentService {
         map(response => {
           const paypal3Ds = response.data;
           return {
+            ...paymentInstrument,
             parameters: [
               {
                 name: 'orderId',
@@ -490,17 +495,29 @@ export class PaymentService {
               },
             ],
           };
-        }),
-        switchMap(body =>
-          this.apiService
-            .currentBasketEndpoint()
-            .patch<{ data: PaymentInstrument }>(
-              `payment-instruments/${this.apiService.encodeResourceId(paymentInstrument.id)}`,
-              body,
-              { headers: this.basketHeaders }
-            )
-            .pipe(map(({ data }) => data))
-        )
+        })
       );
+  }
+
+  updatePaymentInstrument(paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
+    const body: {
+      parameters?: {
+        name: string;
+        value: string;
+      }[];
+    } = {
+      parameters: paymentInstrument.parameters?.length
+        ? paymentInstrument.parameters.map(attr => ({ name: attr.name, value: attr.value }))
+        : undefined,
+    };
+
+    return this.apiService
+      .currentBasketEndpoint()
+      .patch<{ data: PaymentInstrument }>(
+        `payment-instruments/${this.apiService.encodeResourceId(paymentInstrument.id)}`,
+        body,
+        { headers: this.basketHeaders }
+      )
+      .pipe(map(({ data }) => data));
   }
 }

@@ -15,6 +15,7 @@ import {
   getPaypalConfig,
   getPipelineEndpoint,
   getRestEndpoint,
+  showPaypalPayLaterInformation,
 } from 'ish-core/store/core/configuration';
 import { businessError, getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
 import { selectPath } from 'ish-core/store/core/router';
@@ -24,6 +25,7 @@ import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { getAllCountries, loadCountries } from 'ish-core/store/general/countries';
 import { getRegionsByCountryCode, loadRegions } from 'ish-core/store/general/regions';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { PaypalPageTypes } from 'ish-core/utils/sdk/paypal/paypal-config/paypal-config.service';
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {
@@ -153,5 +155,15 @@ export class AppFacade {
   regions$(countryCode: string) {
     this.store.dispatch(loadRegions({ countryCode }));
     return this.store.pipe(select(getRegionsByCountryCode(countryCode)));
+  }
+
+  /**
+   * Returns an observable that indicates whether to show PayPal Pay Later information on the given page.
+   * Information can be showing messages or PayPal Pay Later messaging within PayPal buttons.
+   * @param page
+   * @returns
+   */
+  showPaypalPayLaterInformation$(page: PaypalPageTypes): Observable<boolean> {
+    return this.store.pipe(select(showPaypalPayLaterInformation(page)));
   }
 }

@@ -63,6 +63,9 @@ export const PAYPAL_BUTTON_STYLING = {
 
 // General Styling configuration for PayPal card fields.
 export const PAYPAL_CART_FIELDS_STYLING = {
+  body: {
+    padding: '0',
+  },
   input: {
     'font-size': '0.875rem',
     'font-weight': '400',

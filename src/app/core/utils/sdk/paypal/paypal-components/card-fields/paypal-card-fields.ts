@@ -1,21 +1,30 @@
-import { NgZone } from '@angular/core';
+import { EventEmitter, Injectable, NgZone, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { switchMap } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PAYPAL_CART_FIELDS_STYLING } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.styling';
-import { PayPalCardFieldsComponent } from 'ish-core/utils/sdk/paypal/paypal-model/paypal.interface';
+import {
+  PayPalCardFieldsComponent,
+  PayPalCardFieldsStateObject,
+} from 'ish-core/utils/sdk/paypal/paypal-model/paypal.interface';
 
+@Injectable({ providedIn: 'root' })
 export class PayPalCardFields {
   paymentMethod: PaymentMethod;
-  private paymentInstrument: PaymentInstrument;
+  private orderId$: Observable<string>;
+
+  private cardFieldComponent: PayPalCardFieldsComponent;
+  @Output() createPaymentInstrument = new EventEmitter<{
+    paymentInstrument: PaymentInstrument;
+  }>();
 
   constructor(
     private ngZone: NgZone,
-    private paymentService: PaymentService,
+    private checkoutFacade: CheckoutFacade,
     private translateService: TranslateService
   ) {}
 
@@ -41,13 +50,16 @@ export class PayPalCardFields {
         // Initialize CardFields with MINIMAL configuration - exactly as official PayPal example
         // NO style parameter - this may interfere with keyboard input
         const cardField = paypalObject.CardFields({
-          createOrder: () => this.ngZone.run(() => this.createOrder()),
-          onApprove: () => this.ngZone.run(() => this.onApprove()),
+          createOrder: (data: undefined) => this.ngZone.run(() => this.createOrder(data)),
+          onApprove: (data: undefined) => this.ngZone.run(() => this.onApprove(data)),
           onError: (error: unknown) => this.ngZone.run(() => this.errorHandler(error)),
         }) as PayPalCardFieldsComponent;
 
         // Check if card fields are eligible
         if (cardField.isEligible()) {
+          // Store card field component for later access
+          this.cardFieldComponent = cardField;
+
           // Render individual fields outside Angular zone for proper iframe interaction
           await this.renderIndividualFields(cardField);
 
@@ -73,10 +85,24 @@ export class PayPalCardFields {
    * Permissions-Policy headers if needed.
    */
   private async renderIndividualFields(cardField: PayPalCardFieldsComponent): Promise<void> {
+    // Hide any existing error messages
+    this.hideFieldError('card-name-field-error');
+
     // Render name field
     const nameField = cardField.NameField({
       style: PAYPAL_CART_FIELDS_STYLING,
       placeholder: '',
+      inputEvents: {
+        onChange: (state: PayPalCardFieldsStateObject): void => {
+          if (state.emittedBy === 'name' && state.errors?.includes('INVALID_NAME')) {
+            console.log('FAILURE');
+            this.showFieldError('card-name-field-error', 'blubber');
+          } else {
+            console.log('NO FAILURE');
+            this.hideFieldError('card-name-field-error');
+          }
+        },
+      },
     });
     await nameField.render('#card-name-field-container');
 
@@ -113,6 +139,7 @@ export class PayPalCardFields {
         this.ngZone.run(async () => {
           try {
             // Await the submit call to handle 3D Secure authentication properly
+            this.orderId$ = this.checkoutFacade.initializePayPal3DSecureFlow(this.paymentMethod);
             await cardField.submit();
           } catch (error) {
             // Check if error is due to popup being closed
@@ -120,7 +147,8 @@ export class PayPalCardFields {
               console.warn('3D Secure authentication was cancelled or popup was closed');
               this.showResultMessage('Payment authentication was cancelled. Please try again.');
             } else {
-              this.handleSubmitError(error);
+              const state = await cardField.getState();
+              this.handleSubmitError(state);
             }
           }
         });
@@ -132,43 +160,51 @@ export class PayPalCardFields {
    * Creates PayPal order through the checkout facade.
    * official PayPal developer documentation link: https://developer.paypal.com/studio/checkout/advanced/integrate
    */
-  async createOrder(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      this.paymentService
-        .createBasketPayment({
-          id: undefined,
-          paymentMethod: this.paymentMethod.id,
-        })
-        .pipe(
-          whenTruthy(),
-          switchMap(paymentInstrument => {
-            this.paymentInstrument = paymentInstrument;
-            return this.paymentService.setBasketPayment(paymentInstrument.id).pipe(
-              whenTruthy(),
-              switchMap(() => this.paymentService.initializePayPal3DSecureFlow())
-            );
-          })
-        )
-        .subscribe({
-          next: orderID => resolve(orderID),
-          error: error => reject(error),
-        });
-    });
+  async createOrder(data: undefined): Promise<string> {
+    console.log('Creating PayPal CardFields order: ', data);
+    return firstValueFrom(this.orderId$.pipe(whenTruthy()));
   }
 
   /**
    * Handles PayPal payment approval.
    */
-  async onApprove(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.paymentService
-        .approvePayPal3DSecure(this.paymentInstrument)
-        .pipe(whenTruthy())
-        .subscribe({
-          next: () => resolve(),
-          error: error => reject(error),
-        });
+  async onApprove(data: undefined): Promise<void> {
+    console.log('PayPal CardFields payment approved: ', data);
+    return new Promise(resolve => {
+      this.createPaymentInstrument.emit({ paymentInstrument: { id: undefined, paymentMethod: this.paymentMethod.id } });
+      resolve();
     });
+  }
+
+  /**
+   * Resets card fields by clearing containers and re-rendering them.
+   */
+  private async resetCardFields(): Promise<void> {
+    if (!this.cardFieldComponent) {
+      return;
+    }
+
+    try {
+      // Clear all field containers
+      const containerIds = [
+        'card-name-field-container',
+        'card-number-field-container',
+        'card-cvv-field-container',
+        'card-expiry-field-container',
+      ];
+
+      containerIds.forEach(id => {
+        const container = document.getElementById(id);
+        if (container) {
+          container.innerHTML = '';
+        }
+      });
+
+      // Re-render fields with empty values
+      await this.renderIndividualFields(this.cardFieldComponent);
+    } catch (error) {
+      console.error('Error resetting card fields:', error);
+    }
   }
 
   /**
@@ -182,9 +218,36 @@ export class PayPalCardFields {
   /**
    * Handles card field submission errors.
    */
-  private handleSubmitError(error: unknown): void {
-    console.error('Card field submission error:', error);
+  private handleSubmitError(error: PayPalCardFieldsStateObject): void {
+    console.error('PayPal card fields error:', error);
+    if (error.errors.includes('INVALID_NAME')) {
+      const errorMessages = 'Der verwendete Name ist ungültig.';
+      this.showFieldError('card-name-field-error', errorMessages);
+    }
+
     this.showResultMessage(`Payment submission failed: ${error}`);
+  }
+
+  /**
+   * Displays error message for a specific field.
+   */
+  private showFieldError(errorElementId: string, message: string): void {
+    const errorElement = document.getElementById(errorElementId);
+    if (errorElement) {
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+    }
+  }
+
+  /**
+   * Hides error message for a specific field.
+   */
+  private hideFieldError(errorElementId: string): void {
+    const errorElement = document.getElementById(errorElementId);
+    if (errorElement) {
+      errorElement.textContent = '';
+      errorElement.style.display = 'none';
+    }
   }
 
   /**

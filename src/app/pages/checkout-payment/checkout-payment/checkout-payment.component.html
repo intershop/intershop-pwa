@@ -139,8 +139,8 @@
                       <ng-template [ngSwitchCase]="'PAYPAL_CREDIT_CARD'">
                         <ish-payment-paypal
                           [selectedPaymentMethod]="paymentMethod"
-                          [componentType]="'cardFields'"
-                          (selectPaypalPaymentMethod)="setBasketPayment($event)"
+                          [componentType]="getPaypalComponentType(paymentMethod)"
+                          (paymentInstrument)="createNewPaymentInstrument($event)"
                           (cancelPayment)="closePaymentInstrumentForm()"
                         />
                       </ng-template>
@@ -240,7 +240,7 @@
         <ng-template #PaypalButton>
           <ish-payment-paypal
             [selectedPaymentMethod]="selectedPayPalMethod()"
-            [componentType]="'buttons'"
+            [componentType]="getPaypalComponentType()"
             (selectPaypalPaymentMethod)="setBasketPayment($event)"
           />
         </ng-template>

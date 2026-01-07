@@ -1,4 +1,4 @@
-<div class="row pt-2">
+<div *ngIf="showPayPalComponent" class="row pt-2">
   <div [ngClass]="'col-12'">
     <!-- PayPal Button container -->
     <div *ngIf="!isCardFieldsComponent(); else cardFieldsContainer" [id]="paypalComponentContainerId"></div>
@@ -6,40 +6,50 @@
     <!-- PayPal Card Fields containers -->
     <ng-template #cardFieldsContainer>
       <div class="card_container">
-        <div class="row">
+        <div class="row form-group">
+          <div class="col-form-label col-md-4">
+            {{ 'checkout.credit_card.holder.label' | translate }}
+          </div>
+          <div id="card-name-field-container" class="col-sm-6"></div>
+          <div class="offset-md-4">
+            <small id="card-name-field-error" class="form-text text-danger" style="display: none"></small>
+          </div>
+        </div>
+
+        <div class="row form-group">
           <div class="col-form-label col-md-4">
             {{ 'checkout.credit_card.number.label' | translate }}
             <span class="required" aria-hidden="true">*</span>
           </div>
-          <div id="card-number-field-container" class="col-sm-6 reset-padding"></div>
+          <div id="card-number-field-container" class="col-sm-6"></div>
         </div>
 
-        <div class="row">
+        <div class="row form-group">
           <div class="col-form-label col-md-4">
             {{ 'checkout.credit_card.expiration_date.label' | translate }}
             <span class="required">*</span>
           </div>
-          <div id="card-expiry-field-container" class="col-6 reset-padding"></div>
+          <div id="card-expiry-field-container" class="col-sm-2"></div>
         </div>
 
-        <div class="row">
+        <div class="row form-group">
           <div class="col-form-label col-md-4">
             {{ 'checkout.credit_card.cvc.short.label' | translate }}
             <span class="required" aria-hidden="true">*</span>
+            <ng-template #Description>
+              <span innerHTML="{{ 'checkout.credit_card.cvc.helptext' | translate }}"></span>
+            </ng-template>
+            <button
+              type="button"
+              class="btn btn-link details-tooltip header-note ps-0 ms-0"
+              [ngbPopover]="Description"
+              placement="bottom"
+              popoverTitle="{{ 'checkout.credit_card.cvc.short.label' | translate }}"
+            >
+              <fa-icon [icon]="['fas', 'info-circle']" />
+            </button>
           </div>
-          <div id="card-cvv-field-container" class="col-sm-6 reset-padding"></div>
-          <div class="offset-md-4 col-sm-6 pt-0 mt-0">
-            <small class="form-text text-muted">
-              {{ 'checkout.credit_card.cvc.helptext' | translate }}
-            </small>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-form-label col-md-4">
-            {{ 'checkout.credit_card.holder.label' | translate }}
-          </div>
-          <div id="card-name-field-container" class="col-sm-6 reset-padding"></div>
+          <div id="card-cvv-field-container" class="col-sm-2"></div>
         </div>
 
         <div class="row">
@@ -53,6 +63,7 @@
           </div>
         </div>
       </div>
+      <div id="result-message"></div>
     </ng-template>
   </div>
 </div>

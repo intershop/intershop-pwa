@@ -1,26 +1,22 @@
-import { NgZone } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, filter, firstValueFrom, map, race, take, timer } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalComponentsConfig } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.builder';
 import { PAYPAL_BUTTON_STYLING } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.styling';
+import { PaypalPageTypes } from 'ish-core/utils/sdk/paypal/paypal-config/paypal-config.service';
 import { PaypalComponent } from 'ish-core/utils/sdk/paypal/paypal-model/paypal.interface';
 
+@Injectable({ providedIn: 'root' })
 export class PayPalButtons {
   isShippingAddressChanged = false;
+  private config: PaypalComponentsConfig;
 
-  constructor(
-    private config: PaypalComponentsConfig,
-    private basket: Basket,
-    private checkoutFacade: CheckoutFacade,
-    private ngZone: NgZone,
-    private router: Router
-  ) {}
+  constructor(private checkoutFacade: CheckoutFacade, private ngZone: NgZone, private router: Router) {}
 
   async createOrder(paypalPaymentMethod: PaymentMethod): Promise<string> {
     this.config.selectPaypalPaymentMethod(
@@ -77,7 +73,8 @@ export class PayPalButtons {
     );
   }
 
-  async renderButtons(): Promise<void> {
+  async renderButtons(config: PaypalComponentsConfig): Promise<void> {
+    this.config = config;
     // Access PayPal SDK from window object
     const paypalObject = (window as unknown as Record<string, PaypalComponent>)[this.config.scriptNamespace];
 
@@ -93,7 +90,10 @@ export class PayPalButtons {
       }
 
       const button = paypalObject.Buttons({
-        style: this.config.pageType === 'checkout' ? PAYPAL_BUTTON_STYLING.checkout : PAYPAL_BUTTON_STYLING.cart,
+        style:
+          this.config.pageType === PaypalPageTypes.CheckoutPayment
+            ? PAYPAL_BUTTON_STYLING.checkout
+            : PAYPAL_BUTTON_STYLING.cart,
         createOrder: () => this.ngZone.run(() => this.createOrder(this.config.paypalPaymentMethod)),
         onApprove: (data: { payerID: string; orderID: string }) =>
           this.ngZone.run(() =>
@@ -109,7 +109,7 @@ export class PayPalButtons {
           shippingAddress: { city: string; countryCode: string; postalCode: string; state: string };
         }) => {
           const normalize = (val: string) => val?.trim()?.toLowerCase();
-          const basketAddress = this.basket?.commonShipToAddress;
+          const basketAddress = this.config.basket?.commonShipToAddress;
           const shippingAddress = data?.shippingAddress;
 
           this.isShippingAddressChanged =

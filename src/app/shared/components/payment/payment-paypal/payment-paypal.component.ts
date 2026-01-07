@@ -10,14 +10,21 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { isEqual } from 'lodash-es';
-import { Observable, distinctUntilChanged, map, of, shareReplay, switchMap } from 'rxjs';
 
-import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { PaypalComponentBuilder } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.builder';
-import { PaypalConfigService, PaypalPageType } from 'ish-core/utils/sdk/paypal/paypal-config/paypal-config.service';
+import {
+  PaypalComponentBuilder,
+  PaypalComponentsConfig,
+} from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.builder';
+import {
+  PaypalComponentTypes,
+  PaypalConfigService,
+  PaypalPageTypes,
+} from 'ish-core/utils/sdk/paypal/paypal-config/paypal-config.service';
 
 /**
  * The PaymentPaypalComponent handles the integration of PayPal payment buttons and components
@@ -31,42 +38,47 @@ import { PaypalConfigService, PaypalPageType } from 'ish-core/utils/sdk/paypal/p
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit {
-  @Input() componentType: string;
+  @Input() componentType: PaypalComponentTypes = PaypalComponentTypes.Messages;
   @Input() selectedPaymentMethod: PaymentMethod;
   @Output() selectPaypalPaymentMethod = new EventEmitter<string>();
+  @Output() paymentInstrument = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
   @Output() cancelPayment = new EventEmitter<void>();
 
+  showPayPalComponent = false;
   paypalComponentContainerId = 'paypal-container-';
   isCardFieldsReady = false;
   private scriptNamespace: string;
-  private paypalPaymentMethod$: Observable<PaymentMethod>;
-  private page: PaypalPageType;
+  private page: PaypalPageTypes;
   private rendered = false;
   private renderError = false;
 
   constructor(
-    private checkoutFacade: CheckoutFacade,
     private destroyRef: DestroyRef,
+    private appFacade: AppFacade,
     private paypalConfigService: PaypalConfigService,
     private paypalComponentBuilder: PaypalComponentBuilder,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.paypalComponentContainerId = `${this.paypalComponentContainerId}${Math.random()
-      .toString(36)
-      .substring(2, 15)}`;
     this.setPageType();
 
-    if (this.selectedPaymentMethod) {
-      this.paypalPaymentMethod$ = of(this.selectedPaymentMethod);
-    } else if (this.componentType === 'messages') {
-      this.paypalPaymentMethod$ = this.checkoutFacade.paypalPaymentMethod$().pipe(whenTruthy(), shareReplay(1));
-    } else {
-      this.paypalPaymentMethod$ = this.checkoutFacade
-        .paypalPaymentMethod$(this.page === 'cart' ? 'FastCheckout' : 'RedirectBeforeCheckout')
-        .pipe(whenTruthy(), shareReplay(1));
-    }
+    this.appFacade
+      .showPaypalPayLaterInformation$(this.page)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(value => {
+        this.showPayPalComponent =
+          (this.componentType === PaypalComponentTypes.Messages && value) ||
+          this.componentType !== PaypalComponentTypes.Messages;
+        if (this.showPayPalComponent) {
+          this.paypalComponentContainerId = `${this.paypalComponentContainerId}${Math.random()
+            .toString(36)
+            .substring(2, 15)}`;
+          this.scriptNamespace = this.selectedPaymentMethod
+            ? 'PPCP_'.concat(`${this.selectedPaymentMethod.id}`)
+            : 'PPCP_MESSAGES';
+        }
+      });
   }
 
   /**
@@ -74,69 +86,67 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
    * This ensures the DOM container element is available before attempting to render the PayPal component.
    */
   ngAfterViewInit(): void {
-    if (!this.rendered) {
-      this.paypalPaymentMethod$
-        .pipe(
-          whenTruthy(),
-          distinctUntilChanged(isEqual),
-          switchMap(paymentMethod => {
-            this.scriptNamespace = this.setNameSpace(paymentMethod);
-            return this.paypalConfigService
-              .loadPayPalScript(this.scriptNamespace, {
-                paymentMethod,
-                page: this.page,
-              })
-              .pipe(
-                whenTruthy(),
-                map(() => paymentMethod)
-              );
-          }),
-          takeUntilDestroyed(this.destroyRef)
-        )
-        .subscribe(paymentMethod => {
-          if (this.componentType === 'cardFields') {
+    if (this.showPayPalComponent && !this.rendered) {
+      if (this.componentType === PaypalComponentTypes.Messages) {
+        this.paypalConfigService
+          .loadPayPalScript(this.scriptNamespace, this.page)
+          .pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef))
+          .subscribe(() => {
             this.paypalComponentBuilder
               .build({
                 scriptNamespace: this.scriptNamespace,
                 componentType: this.componentType,
                 pageType: this.page,
-                paypalPaymentMethod: paymentMethod,
-              })
-              .then(() => {
-                this.rendered = true;
-              })
-              .catch((error: string) => {
-                if (error === 'INELIGIBLE') {
-                  console.warn('PayPal CardFields are not eligible for this configuration');
-                  this.rendered = true; // Mark as rendered to avoid showing error UI
-                } else {
-                  this.renderError = true;
-                  console.error('PayPal CardFields render failed:', error);
-                }
-              });
-          } else {
-            this.paypalComponentBuilder
-              .build({
-                scriptNamespace: this.scriptNamespace,
-                componentType: this.componentType,
-                pageType: this.page,
-                paypalPaymentMethod: paymentMethod,
-                selectPaypalPaymentMethod: (id: string) => this.selectPaypalPaymentMethod.emit(id),
                 containerId: this.paypalComponentContainerId,
               })
               .then(() => {
                 this.rendered = true;
               })
-              .catch(() => {
+              .catch((error: string) => {
                 this.renderError = true;
+                console.error('PayPal Messages render failure: ', error);
               });
-          }
-        });
+          });
+      } else {
+        this.paypalConfigService
+          .loadPayPalScript(this.scriptNamespace, this.page, this.selectedPaymentMethod)
+          .pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef))
+          .subscribe(() => {
+            let config: PaypalComponentsConfig = {
+              scriptNamespace: this.scriptNamespace,
+              componentType: this.componentType,
+              pageType: this.page,
+              paypalPaymentMethod: this.selectedPaymentMethod,
+            };
+            if (this.isCardFieldsComponent()) {
+              config = {
+                ...config,
+                paymentInstrument: (paymentInstrument: PaymentInstrument) =>
+                  this.paymentInstrument.emit({ parameters: paymentInstrument.parameters, saveAllowed: undefined }),
+              };
+            } else {
+              config = {
+                ...config,
+                containerId: this.paypalComponentContainerId,
+                selectPaypalPaymentMethod: (id: string) => this.selectPaypalPaymentMethod.emit(id),
+              };
+            }
+            this.paypalComponentBuilder
+              .build(config)
+              .then(() => {
+                this.rendered = true;
+              })
+              .catch((error: string) => {
+                this.renderError = true;
+                console.error('PayPal Component render failure: ', error);
+              });
+          });
+      }
     }
   }
 
-  isCardFieldsComponent(): boolean {
-    return this.componentType === 'cardFields';
+  isCardFieldsComponent() {
+    return this.componentType === PaypalComponentTypes.CardFields;
   }
 
   hasError(): boolean {
@@ -149,21 +159,18 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
 
   private setPageType() {
     const url = this.router.url;
-    this.page = 'home';
     if (url.includes('/basket')) {
-      this.page = 'cart';
-    } else if (url.includes('/checkout')) {
-      this.page = 'checkout';
+      this.page = PaypalPageTypes.Cart;
+    } else if (url.includes('checkout/payment')) {
+      this.page = PaypalPageTypes.CheckoutPayment;
     } else if (url.includes('-ctg')) {
       if (url.includes('-prd')) {
-        this.page = 'product-details';
+        this.page = PaypalPageTypes.ProductDetails;
       } else {
-        this.page = 'product-listing';
+        this.page = PaypalPageTypes.ProductListing;
       }
+    } else if (url.includes('/home')) {
+      this.page = PaypalPageTypes.Home;
     }
-  }
-
-  private setNameSpace(paymentMethod: PaymentMethod): string {
-    return (this.scriptNamespace = 'PPCP_'.concat(`${paymentMethod.id}`));
   }
 }

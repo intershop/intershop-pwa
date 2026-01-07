@@ -22,6 +22,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PriceType } from 'ish-core/models/price/price.model';
+import { PaypalComponentTypes } from 'ish-core/utils/sdk/paypal/paypal-config/paypal-config.service';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
@@ -128,6 +129,14 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
       return this.paymentMethods.find(pm => pm.id.includes(this.basket.payment.paymentInstrument.id));
     }
     return;
+  }
+
+  getPaypalComponentType(method?: PaymentMethod): PaypalComponentTypes {
+    if (method?.capabilities?.includes('Paypal3DSecure')) {
+      return PaypalComponentTypes.CardFields;
+    } else {
+      return PaypalComponentTypes.Buttons;
+    }
   }
 
   /**

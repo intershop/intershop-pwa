@@ -14,6 +14,7 @@ import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-in
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PriceType } from 'ish-core/models/price/price.model';
 import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
+import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { selectQueryParam, selectRouteData } from 'ish-core/store/core/router';
 import {
   getCustomFieldDefinition,
@@ -57,10 +58,12 @@ import {
   setBasketCustomFields,
   setBasketDesiredDeliveryDate,
   setBasketPayment,
+  setBasketPaymentSuccess,
   startCheckout,
   startFastCheckout,
   startRedirectBeforeCheckout,
   submitOrder,
+  submitPayPalPaymentInstrumentData,
   updateBasket,
   updateBasketAddress,
   updateBasketCostCenter,
@@ -80,7 +83,7 @@ import { AccountFacade } from './account.facade';
 export class CheckoutFacade {
   private basketChangeInternal$ = new Subject<void>();
 
-  constructor(private store: Store, private accountFacade: AccountFacade) {
+  constructor(private store: Store, private accountFacade: AccountFacade, private paymentService: PaymentService) {
     if (!SSR) {
       this.store
         .pipe(
@@ -125,6 +128,10 @@ export class CheckoutFacade {
 
   loadBasketWithId(basketId: string) {
     this.store.dispatch(loadBasketWithId({ basketId }));
+  }
+
+  loadBasketAfterChanges() {
+    this.store.dispatch(setBasketPaymentSuccess());
   }
 
   createBasket() {
@@ -338,6 +345,14 @@ export class CheckoutFacade {
         )
       )
     );
+  }
+
+  initializePayPal3DSecureFlow(paymentMethod: PaymentMethod) {
+    return this.paymentService.initializePayPal3DSecureFlow(paymentMethod);
+  }
+
+  submitPayPalPaymentInstrumentData(paymentInstrument: PaymentInstrument) {
+    this.store.dispatch(submitPayPalPaymentInstrumentData({ paymentInstrument }));
   }
 
   setBasketPayment(paymentName: string) {

@@ -1,15 +1,20 @@
+import { Injectable } from '@angular/core';
+
 import { PaypalComponentsConfig } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.builder';
 import { PAYPAL_MESSAGE_STYLING } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.styling';
+import { PaypalPageTypes } from 'ish-core/utils/sdk/paypal/paypal-config/paypal-config.service';
 import { PaypalComponent } from 'ish-core/utils/sdk/paypal/paypal-model/paypal.interface';
 
+@Injectable({ providedIn: 'root' })
 export class PayPalMessages {
-  constructor(private config: PaypalComponentsConfig) {}
+  private config: PaypalComponentsConfig;
 
-  async renderMessages(): Promise<void> {
+  async renderMessages(config: PaypalComponentsConfig): Promise<void> {
+    this.config = config;
     // Access PayPal SDK from window object
     const paypalObject = (window as unknown as Record<string, PaypalComponent>)[this.config.scriptNamespace];
 
-    if (!paypalObject?.Buttons) {
+    if (!paypalObject?.Messages) {
       return Promise.reject(new Error(`PayPal Messages not available on namespace '${this.config.scriptNamespace}'`));
     }
 
@@ -36,16 +41,16 @@ export class PayPalMessages {
     let messageConfig;
 
     switch (this.config.pageType) {
-      case 'home':
+      case PaypalPageTypes.Home:
         messageConfig = { style: PAYPAL_MESSAGE_STYLING.home };
         break;
-      case 'product-listing':
+      case PaypalPageTypes.ProductListing:
         messageConfig = { style: PAYPAL_MESSAGE_STYLING.category };
         break;
-      case 'product-details':
+      case PaypalPageTypes.ProductDetails:
         messageConfig = { amount: this.config.amount, style: PAYPAL_MESSAGE_STYLING.product };
         break;
-      case 'checkout':
+      case PaypalPageTypes.CheckoutPayment:
         messageConfig = { amount: this.config.amount, style: PAYPAL_MESSAGE_STYLING.checkout };
         break;
       default:

@@ -27,6 +27,9 @@ import {
   setBasketPaymentSuccess,
   startRedirectBeforeCheckout,
   startRedirectBeforeCheckoutFail,
+  submitPayPalPaymentInstrumentData,
+  submitPayPalPaymentInstrumentDataFail,
+  submitPayPalPaymentInstrumentDataSuccess,
   updateBasketPayment,
   updateBasketPaymentFail,
   updateBasketPaymentSuccess,
@@ -83,6 +86,59 @@ export class BasketPaymentEffects {
             return EMPTY;
           }),
           mapErrorToAction(startRedirectBeforeCheckoutFail)
+        )
+      )
+    )
+  );
+
+  // initializePayPal3DSecureFlow$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(initializePayPal3DSecureFlow),
+  //     mapToPayload(),
+  //     switchMap(payload =>
+  //       this.paymentService
+  //         .createBasketPayment({
+  //           id: undefined,
+  //           paymentMethod: payload.paymentMethodId,
+  //           parameters: [
+  //             { name: 'orderId', value: '' },
+  //             { name: 'brand', value: '' },
+  //             { name: 'expiry', value: '' },
+  //             { name: 'lastDigits', value: '' },
+  //             { name: 'name', value: '' },
+  //           ],
+  //         })
+  //         .pipe(
+  //           whenTruthy(),
+  //           switchMap(paymentInstrument =>
+  //             this.paymentService.setBasketPayment(paymentInstrument.id).pipe(
+  //               whenTruthy(),
+  //               switchMap(() =>
+  //                 this.paymentService.initializePayPal3DSecureFlow(paymentInstrument.paymentMethod).pipe(
+  //                   map(paypalOrderId => initializePayPal3DSecureFlowSuccess({ paypalOrderId })),
+  //                   mapErrorToAction(initializePayPal3DSecureFlowFail)
+  //                 )
+  //               )
+  //             )
+  //           )
+  //         )
+  //     )
+  //   )
+  // );
+
+  submitPayPalPaymentInstrumentData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(submitPayPalPaymentInstrumentData),
+      mapToPayloadProperty('paymentInstrument'),
+      concatMap(paymentInstrument =>
+        this.paymentService.getPayPalPaymentInstrumentData(paymentInstrument).pipe(
+          switchMap(data =>
+            this.paymentService.updatePaymentInstrument(data).pipe(
+              map(() => submitPayPalPaymentInstrumentDataSuccess()),
+              mapErrorToAction(submitPayPalPaymentInstrumentDataFail)
+            )
+          ),
+          mapErrorToAction(submitPayPalPaymentInstrumentDataFail)
         )
       )
     )

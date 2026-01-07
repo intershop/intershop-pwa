@@ -8,6 +8,7 @@ import { BasketView } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PriceType } from 'ish-core/models/price/price.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { PaypalComponentTypes } from 'ish-core/utils/sdk/paypal/paypal-config/paypal-config.service';
 
 @Component({
   selector: 'ish-shopping-basket-payment',
@@ -21,6 +22,7 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
   filteredPaymentMethods$: Observable<PaymentMethod[]>;
   priceType$: Observable<PriceType>;
   redirectStatus: string;
+  paypalComponentType = PaypalComponentTypes.Buttons;
 
   constructor(
     private checkoutFacade: CheckoutFacade,

@@ -300,6 +300,35 @@ export const startRedirectBeforeCheckoutFail = createAction(
   httpError()
 );
 
+export const initializePayPal3DSecureFlow = createAction(
+  '[Basket] Initialize PayPal 3D Secure Flow',
+  payload<{ paymentMethodId: string }>()
+);
+
+export const initializePayPal3DSecureFlowSuccess = createAction(
+  '[Basket API] Initialize PayPal 3D Secure Flow Success',
+  payload<{ paypalOrderId: string }>()
+);
+
+export const initializePayPal3DSecureFlowFail = createAction(
+  '[Basket API] Initialize PayPal 3D Secure Flow Fail',
+  httpError()
+);
+
+export const submitPayPalPaymentInstrumentData = createAction(
+  '[Basket] Submit PayPal Payment Instrument Data',
+  payload<{ paymentInstrument: PaymentInstrument }>()
+);
+
+export const submitPayPalPaymentInstrumentDataSuccess = createAction(
+  '[Basket API] Submit PayPal Payment Instrument Data Success'
+);
+
+export const submitPayPalPaymentInstrumentDataFail = createAction(
+  '[Basket API] Submit PayPal Payment Instrument Data Fail',
+  httpError()
+);
+
 export const submitBasket = createAction('[Basket API] Submit a Basket for Approval');
 
 export const submitBasketSuccess = createAction('[Basket API] Submit a Basket for Approval Success');
