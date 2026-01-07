@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 async function run() {
-  const mdPath = process.argv[2] || 'lhci-comparison.md';
+  const mdPath = process.argv[2] || 'lighthouse-comparison.md';
   let body;
   try {
     body = fs.readFileSync(mdPath, 'utf8');

@@ -12,6 +12,7 @@ kb_sync_latest_only
 - [Code Formatting](#code-formatting)
 - [Unit Testing](#unit-testing)
 - [UI Testing](#ui-testing)
+- [Performance and Accessibility Testing](#performance-and-accessibility-testing)
 - [Universal Testing](#universal-testing)
 - [Static Code Analysis](#static-code-analysis)
 
@@ -57,6 +58,43 @@ This requires a suitable version of Google Chrome to be installed on the CI work
 
 Run UI tests interactively with `npm run e2e`.
 Before that you have to start up a PWA application.
+
+## Performance and Accessibility Testing
+
+[Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci) is used for automated performance and accessibility audits.
+It runs as a GitHub action and generates markdown reports that are displayed directly in the PR comments on the GitHub website.
+
+**Configuration Files:**
+
+- Performance: `.github/lighthouse/performance-*.lighthouserc.json`
+- Accessibility: `.github/lighthouse/accessibility-*.lighthouserc.json`
+
+All Lighthouse configurations use a custom `urlConfig` block that maps URLs to friendly page names and also adds thresholds for accessibility checks.
+The friendly names appear in generated reports instead of raw URLs, making reports more readable.
+
+> NOTE: The `urlConfig` block is a custom extension, as Lighthouse CI's standard JSON structure does not support per-URL configurations.
+
+### Performance Checks
+
+Performance checks compare the current branch against a baseline branch (develop) to detect regressions via GitHub Actions workflows:
+
+- `.github/workflows/lighthouse-performance-baseline.yml` generates baseline artifacts from develop branch
+- `.github/workflows/lighthouse-performance-compare.yml` compares current branch against baseline
+
+### Accessibility Checks
+
+Accessibility checks ensure that web pages meet defined accessibility standards (e.g., WCAG) via GitHub Actions workflow:
+
+- `.github/workflows/lighthouse-accessibility.yml` generates accessibility reports for the current branch
+
+Scores must meet or exceed configured thresholds.
+The CI action fails if any page scores below its threshold.
+
+Thresholds below 100 are allowed to accommodate:
+
+- Known accessibility issues in third-party components.
+- Temporary exceptions during development.
+- Unavoidable limitations due to business requirements.
 
 ## Universal Testing
 

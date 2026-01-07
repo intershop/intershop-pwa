@@ -98,6 +98,7 @@ keyvalue
 klausen
 kubernetes
 lessthan
+lhci
 logformat
 loglevel
 luarocks

@@ -1,4 +1,4 @@
-name: LHCI Baseline
+name: Lighthouse Performance Baseline
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  lighthouse-baseline:
+  lighthouse-performance-baseline:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,7 +32,7 @@ jobs:
       - name: Install deps
         run: npm ci
 
-      - name: Build
+      - name: Build SSR
         run: npm run build
 
       - name: Setup Chrome path
@@ -43,22 +43,52 @@ jobs:
         env:
           LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          LHCI_BASE_ORIGIN: http://localhost:4200
           LHCI_COLLECT__CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
         run: |
           set -euo pipefail
 
-          npm run serve -- --host 0.0.0.0 &
-          SERVER_PID=$!
-          trap 'echo "Stopping dev server $SERVER_PID"; kill $SERVER_PID' EXIT
+          # Build nginx image
+          docker build -t intershop-pwa-nginx nginx/
 
-          echo "Waiting for http://localhost:4200/home ..."
+          # Start SSR server
+          npm run start:ssr-dev -- --host 0.0.0.0 &
+          SERVER_PID=$!
+          trap 'echo "Stopping servers"; kill $SERVER_PID' EXIT
+
+          # Wait for SSR server to be ready
+          echo "Waiting for SSR server on port 4200..."
           for i in {1..180}; do
             curl -fsS http://localhost:4200/home >/dev/null && break || sleep 1
           done
 
+          # Start nginx proxy
+          docker run -d --name nginx-ssr \
+            -p 8080:80 \
+            --add-host host.docker.internal:host-gateway \
+            -v $(pwd)/nginx/multi-channel.yaml:/etc/nginx/multi-channel.yaml \
+            -e UPSTREAM_PWA=http://host.docker.internal:4200 \
+            -e MULTI_CHANNEL_SOURCE=file:///etc/nginx/multi-channel.yaml \
+            -e CACHE=0 \
+            intershop-pwa-nginx
+
+          # Wait for nginx to be ready
+          echo "Waiting for nginx on port 8080..."
+          for i in {1..60}; do
+            curl -fsS http://localhost:8080/home >/dev/null && break || sleep 1
+          done
+
+          # Warm up nginx cache for each URL
+          echo "Warming up nginx cache..."
+          urls=$(jq -r '.ci.collect.url[]' .github/lighthouse/performance-desktop.lighthouserc.json)
+          for url in $urls; do
+            echo "Warming up $url"
+            for i in {1..5}; do
+              curl -s "$url" >/dev/null
+            done
+          done
+
           echo "LHCI desktop"
-          npx lhci autorun --config=.github/lighthouse/desktop.lighthouserc.json
+          npx lhci autorun --config=.github/lighthouse/performance-desktop.lighthouserc.json
           echo "Desktop run completed. Checking directory structure:"
           ls -la .lighthouseci/ || echo "No .lighthouseci directory found"
 
@@ -70,7 +100,7 @@ jobs:
 
           echo "LHCI mobile"
           rm -rf .lighthouseci
-          npx lhci autorun --config=.github/lighthouse/mobile.lighthouserc.json
+          npx lhci autorun --config=.github/lighthouse/performance-mobile.lighthouserc.json
           echo "Mobile run completed. Checking directory structure:"
           ls -la .lighthouseci/ || echo "No .lighthouseci directory found"
 

@@ -1,11 +1,6 @@
-name: LHCI Compare
+name: Lighthouse Performance Compare
 
 on:
-  push:
-    branches-ignore:
-      - develop
-  pull_request:
-    branches: [develop]
   workflow_dispatch:
     inputs:
       issue-number:
@@ -22,7 +17,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  lighthouse-compare:
+  lighthouse-performance-compare:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -56,35 +51,68 @@ jobs:
       - name: Install deps
         run: npm ci
 
-      - name: Build
+      - name: Build SSR
         run: npm run build
 
       - name: Run Lighthouse CI (desktop + mobile)
         env:
           LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          LHCI_BASE_ORIGIN: http://localhost:4200
           LHCI_COLLECT__CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
         run: |
           set -euo pipefail
           export DISABLE_MOCK_DATA=true
-          npm run serve -- --host 0.0.0.0 &
+
+          # Build nginx image
+          docker build -t intershop-pwa-nginx nginx/
+
+          # Start SSR server
+          npm run start:ssr-dev -- --host 0.0.0.0 &
           SERVER_PID=$!
-          trap 'echo "Stopping dev server $SERVER_PID"; kill $SERVER_PID' EXIT
-          echo "Waiting for http://localhost:4200/home ..."
+          trap 'echo "Stopping servers"; kill $SERVER_PID' EXIT
+
+          # Wait for SSR server to be ready
+          echo "Waiting for SSR server on port 4200..."
           for i in {1..180}; do
             curl -fsS http://localhost:4200/home >/dev/null && break || sleep 1
           done
-          npx lhci autorun --config=.github/lighthouse/desktop.lighthouserc.json
+
+          # Start nginx proxy
+          docker run -d --name nginx-ssr \
+            -p 8080:80 \
+            --add-host host.docker.internal:host-gateway \
+            -v $(pwd)/nginx/multi-channel.yaml:/etc/nginx/multi-channel.yaml \
+            -e UPSTREAM_PWA=http://host.docker.internal:4200 \
+            -e MULTI_CHANNEL_SOURCE=file:///etc/nginx/multi-channel.yaml \
+            -e CACHE=0 \
+            intershop-pwa-nginx
+
+          # Wait for nginx to be ready
+          echo "Waiting for nginx on port 8080..."
+          for i in {1..60}; do
+            curl -fsS http://localhost:8080/home >/dev/null && break || sleep 1
+          done
+
+          # Warm up nginx cache for each URL
+          echo "Warming up nginx cache..."
+          urls=$(jq -r '.ci.collect.url[]' .github/lighthouse/performance-desktop.lighthouserc.json)
+          for url in $urls; do
+            echo "Warming up $url"
+            for i in {1..5}; do
+              curl -s "$url" >/dev/null
+            done
+          done
+
+          npx lhci autorun --config=.github/lighthouse/performance-desktop.lighthouserc.json
           mkdir -p current-desktop && cp -r .lighthouseci/* current-desktop/ || true
           rm -rf .lighthouseci
-          npx lhci autorun --config=.github/lighthouse/mobile.lighthouserc.json
+          npx lhci autorun --config=.github/lighthouse/performance-mobile.lighthouserc.json
           mkdir -p current-mobile && cp -r .lighthouseci/* current-mobile/ || true
 
       - name: Download baseline desktop artifact
         uses: dawidd6/action-download-artifact@v6
         with:
-          workflow: lhci-baseline.yml
+          workflow: lighthouse-performance-baseline.yml
           branch: ${{ github.event_name == 'workflow_dispatch' && inputs.baseline_branch || (github.event_name == 'pull_request' && github.base_ref) || github.ref_name }}
           name: lighthouse-desktop-reports
           path: baseline-desktop
@@ -93,7 +121,7 @@ jobs:
       - name: Download baseline mobile artifact
         uses: dawidd6/action-download-artifact@v6
         with:
-          workflow: lhci-baseline.yml
+          workflow: lighthouse-performance-baseline.yml
           branch: ${{ github.event_name == 'workflow_dispatch' && inputs.baseline_branch || (github.event_name == 'pull_request' && github.base_ref) || github.ref_name }}
           name: lighthouse-mobile-reports
           path: baseline-mobile
@@ -103,7 +131,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: dawidd6/action-download-artifact@v6
         with:
-          workflow: lhci-baseline.yml
+          workflow: lighthouse-performance-baseline.yml
           branch: ${{ github.head_ref }}
           name: lighthouse-desktop-reports
           path: baseline-desktop-fallback
@@ -113,7 +141,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: dawidd6/action-download-artifact@v6
         with:
-          workflow: lhci-baseline.yml
+          workflow: lighthouse-performance-baseline.yml
           branch: ${{ github.head_ref }}
           name: lighthouse-mobile-reports
           path: baseline-mobile-fallback
@@ -136,13 +164,13 @@ jobs:
 
       - name: Generate comparison markdown
         run: |
-          node .github/scripts/lighthouse/lhci-compare.js \
+          node .github/scripts/lighthouse/lighthouse-performance-compare.js \
             --aggregate=median \
             --baseline-desktop baseline-desktop \
             --current-desktop current-desktop \
             --baseline-mobile baseline-mobile \
             --current-mobile current-mobile \
-            --out lhci-comparison.md
+            --out lighthouse-performance-comparison.md
 
       - name: Upload current Lighthouse reports
         if: always()
@@ -172,4 +200,4 @@ jobs:
         uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ steps.resolve-pr.outputs.result }}
-          body-file: lhci-comparison.md
+          body-file: lighthouse-performance-comparison.md

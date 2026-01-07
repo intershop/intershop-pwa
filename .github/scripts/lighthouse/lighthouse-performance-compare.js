@@ -3,58 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 
-function parseArgs(argv) {
-  const args = {};
-  for (let i = 0; i < argv.length; i++) {
-    const a = argv[i];
-    if (a.startsWith('--')) {
-      const [k, v] = a.includes('=') ? a.split('=') : [a, argv[i + 1]];
-      const key = k.replace(/^--/, '');
-      if (a.includes('=')) {
-        args[key] = v;
-      } else {
-        args[key] = v;
-        i++;
-      }
-    }
-  }
-  return args;
-}
-
-function median(arr) {
-  const a = [...arr].sort((x, y) => x - y);
-  const m = Math.floor(a.length / 2);
-  return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2;
-}
-
-function mean(arr) {
-  return arr.reduce((s, v) => s + v, 0) / (arr.length || 1);
-}
-
-function agg(arr, type) {
-  if (!arr.length) return undefined;
-  switch (type) {
-    case 'mean':
-      return mean(arr);
-    case 'min':
-      return Math.min(...arr);
-    case 'max':
-      return Math.max(...arr);
-    case 'median':
-    default:
-      return median(arr);
-  }
-}
-
-function collectFilesRec(dir) {
-  const out = [];
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const p = path.join(dir, entry.name);
-    if (entry.isDirectory()) out.push(...collectFilesRec(p));
-    else if (/^lhr-.*\.json$/i.test(entry.name)) out.push(p);
-  }
-  return out;
-}
+const { parseArgs, agg, collectFilesRec, normalizeUrl, fmt } = require('./lighthouse-utils');
 
 function collectScoresPerUrl(dir, aggregate = 'median') {
   if (!dir || !fs.existsSync(dir)) return [];
@@ -68,7 +17,13 @@ function collectScoresPerUrl(dir, aggregate = 'median') {
   const perUrlCatRuns = new Map();
 
   for (const f of files) {
-    const report = JSON.parse(fs.readFileSync(f, 'utf8'));
+    let report;
+    try {
+      report = JSON.parse(fs.readFileSync(f, 'utf8'));
+    } catch (e) {
+      console.warn(`Warning: Could not parse Lighthouse report file ${f}: ${e.message}`);
+      continue;
+    }
     const url = report.requestedUrl || report.finalDisplayedUrl || report.finalUrl || 'unknown';
     const cats = report.categories || {};
     if (!perUrlCatRuns.has(url)) perUrlCatRuns.set(url, {});
@@ -97,18 +52,43 @@ function collectScoresPerUrl(dir, aggregate = 'median') {
   return perUrlAgg;
 }
 
-function normalizeUrl(u) {
+// Load configuration from lighthouserc config files
+function loadConfigFromFile(configPath) {
   try {
-    const { pathname } = new URL(u);
-    return pathname.replace(/\/$/, '') || '/';
-  } catch {
-    return (u || '').replace(/^https?:\/\/[^/]+/, '').split(/[?#]/)[0] || u;
+    const content = fs.readFileSync(configPath, 'utf8');
+    const config = JSON.parse(content);
+    // Extract pageNames from the config
+    const urlConfig = config.urlConfig || {};
+    const pageNames = {};
+
+    for (const [url, configArray] of Object.entries(urlConfig)) {
+      if (Array.isArray(configArray) && configArray.length >= 1) {
+        // Format: ["name"] for performance configs
+        const [name] = configArray;
+        if (typeof name === 'string') {
+          pageNames[url] = name;
+        }
+      }
+    }
+
+    return {
+      pageNames,
+    };
+  } catch (error) {
+    console.warn(`Warning: Could not load config from ${configPath}, using empty config`);
+    return { pageNames: {} };
   }
 }
 
-function pageLabel(u) {
+function pageLabel(u, pageNames = {}) {
   const p = normalizeUrl(u);
-  if (p === '/' || p === '/home') return 'Homepage';
+
+  // Check if we have a friendly name for this URL in the config
+  if (pageNames[u]) {
+    return pageNames[u];
+  }
+
+  // Fallback to the normalized URL or original URL
   return p || u || 'unknown';
 }
 
@@ -117,10 +97,6 @@ function colorEmoji(score) {
   if (score >= 90) return '🟩';
   if (score >= 50) return '🟨';
   return '🟥';
-}
-
-function fmt(score) {
-  return typeof score === 'number' ? `${score}%` : '-';
 }
 
 function fmtDelta(curr, base) {
@@ -138,14 +114,14 @@ function deltaEmojiFrom(curr, base) {
   return '➖';
 }
 
-function renderPerPagePerformanceTable(title, deskBase, deskCurr, mobBase, mobCurr, labels) {
+function renderPerPagePerformanceTable(title, deskBase, deskCurr, mobBase, mobCurr, labels, pageNames = {}) {
   const currentLabel = labels?.current || 'Current';
 
   const mapScores = list => {
     const m = new Map();
     for (const e of list || []) {
       const perf = e.cats?.performance;
-      m.set(normalizeUrl(e.url), typeof perf === 'number' ? Math.round(perf) : undefined);
+      m.set(e.url, typeof perf === 'number' ? Math.round(perf) : undefined);
     }
     return m;
   };
@@ -155,7 +131,20 @@ function renderPerPagePerformanceTable(title, deskBase, deskCurr, mobBase, mobCu
   const mB = mapScores(mobBase);
   const mC = mapScores(mobCurr);
 
-  const urls = Array.from(new Set([...dB.keys(), ...dC.keys(), ...mB.keys(), ...mC.keys()])).sort();
+  // Get all unique URLs and sort by config file order
+  const allUrls = Array.from(new Set([...dB.keys(), ...dC.keys(), ...mB.keys(), ...mC.keys()]));
+  const configUrls = Object.keys(pageNames);
+  const urls = allUrls.sort((a, b) => {
+    const aIndex = configUrls.indexOf(a);
+    const bIndex = configUrls.indexOf(b);
+    // If both are in config, sort by config order
+    if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+    // If only one is in config, prioritize it
+    if (aIndex !== -1) return -1;
+    if (bIndex !== -1) return 1;
+    // If neither is in config, sort alphabetically
+    return a.localeCompare(b);
+  });
   if (!urls.length) return '';
 
   let md = `### ${title}\n\n`;
@@ -167,7 +156,7 @@ function renderPerPagePerformanceTable(title, deskBase, deskCurr, mobBase, mobCu
     const mBase = mB.get(u);
     const mCurr = mC.get(u);
     const row = [
-      pageLabel(u),
+      pageLabel(u, pageNames),
       `${colorEmoji(dCurr)} ${fmt(dCurr)}`.trim(),
       `${deltaEmojiFrom(dCurr, dBase)} ${fmtDelta(dCurr, dBase)}`.trim(),
       `${colorEmoji(mCurr)} ${fmt(mCurr)}`.trim(),
@@ -186,10 +175,16 @@ function renderPerPagePerformanceTable(title, deskBase, deskCurr, mobBase, mobCu
     currentDesktop: args['current-desktop'] || 'current-desktop',
     baselineMobile: args['baseline-mobile'] || 'baseline-mobile',
     currentMobile: args['current-mobile'] || 'current-mobile',
-    out: args.out || 'lhci-comparison.md',
+    out: args.out || 'lighthouse-performance-comparison.md',
+    desktopConfig:
+      args['desktop-config'] || path.join(__dirname, '../../lighthouse/performance-desktop.lighthouserc.json'),
+    mobileConfig:
+      args['mobile-config'] || path.join(__dirname, '../../lighthouse/performance-mobile.lighthouserc.json'),
   };
   const aggregate = args.aggregate || 'median';
 
+  const desktopConfig = loadConfigFromFile(paths.desktopConfig);
+  const mobileConfig = loadConfigFromFile(paths.mobileConfig);
   const perUrlBaselineDesktop = collectScoresPerUrl(paths.baselineDesktop, aggregate);
   const perUrlCurrentDesktop = collectScoresPerUrl(paths.currentDesktop, aggregate);
   const perUrlBaselineMobile = collectScoresPerUrl(paths.baselineMobile, aggregate);
@@ -213,7 +208,8 @@ function renderPerPagePerformanceTable(title, deskBase, deskCurr, mobBase, mobCu
       {
         baseline: 'Baseline',
         current: 'Current',
-      }
+      },
+      { ...desktopConfig.pageNames, ...mobileConfig.pageNames }
     );
   } else {
     body += 'No page-level results found.\n\n';

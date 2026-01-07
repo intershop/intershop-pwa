@@ -14,10 +14,11 @@ module.exports = async ({ github, context, core }) => {
 
   async function prFromRunNumber(runNumber) {
     if (!runNumber) return '';
+    const workflowId = (process.env.WORKFLOW_ID || 'lighthouse-performance-compare.yml').trim();
     const runs = await github.paginate(github.rest.actions.listWorkflowRuns, {
       owner,
       repo,
-      workflow_id: 'lhci-compare.yml',
+      workflow_id: workflowId,
       per_page: 100,
     });
     const run = runs.find(r => String(r.run_number) === String(runNumber));
