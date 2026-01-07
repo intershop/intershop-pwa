@@ -1,8 +1,13 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 /**
  * The data request page handles the interaction for dispatching of a confirmation request triggered via confirmation email link.
@@ -11,6 +16,8 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
   selector: 'ish-data-request-page',
   templateUrl: './data-request-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, ErrorMessageComponent, AsyncPipe, TranslateModule, ServerHtmlDirective, LoadingComponent],
 })
 export class DataRequestPageComponent implements OnInit {
   loading$: Observable<boolean>;

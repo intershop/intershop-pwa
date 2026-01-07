@@ -20,6 +20,7 @@ import { AuthorizationToggleService } from 'ish-core/utils/authorization-toggle/
  */
 @Directive({
   selector: '[ishIsAuthorizedTo]',
+  standalone: true,
 })
 export class AuthorizationToggleDirective {
   private permission$ = new BehaviorSubject<string | string[]>(undefined);

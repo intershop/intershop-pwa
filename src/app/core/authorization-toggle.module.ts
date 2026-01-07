@@ -7,7 +7,7 @@ import { AuthorizationToggleService, checkPermission } from './utils/authorizati
 import { whenTruthy } from './utils/operators';
 
 @NgModule({
-  declarations: [AuthorizationToggleDirective],
+  imports: [AuthorizationToggleDirective],
   exports: [AuthorizationToggleDirective],
 })
 export class AuthorizationToggleModule {
