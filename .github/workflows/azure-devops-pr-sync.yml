@@ -1,4 +1,4 @@
-# https://github.com/marketplace/actions/sync-pull-requests-to-azure-boards
+# https://github.com/danhellem/github-actions-pr-to-work-item
 
 name: Sync Pull Request to Azure DevOps
 
