@@ -1,0 +1,136 @@
+name: Lighthouse Accessibility
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue-number:
+        description: 'PR number to comment on'
+        required: false
+  push:
+    branches: [develop]
+  pull_request:
+    types: [opened, synchronize]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: write
+
+jobs:
+  lighthouse-accessibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.17.1
+          cache: npm
+
+      - name: Setup Chrome
+        id: chrome
+        uses: browser-actions/setup-chrome@v2
+        with:
+          chrome-version: stable
+          install-dependencies: true
+
+      - name: Configure npm for reliability
+        run: |
+          npm config set fetch-retries 5
+          npm config set fetch-retry-mintimeout 20000
+          npm config set fetch-retry-maxtimeout 120000
+
+      - name: Install deps
+        run: npm ci
+
+      # Run Lighthouse accessibility audits
+      # continue-on-error ensures workflow continues even if Lighthouse encounters errors (e.g., page load failures)
+      # This allows us to get partial results and generate reports even when some URLs fail
+      - name: Run Lighthouse CI Accessibility (desktop + mobile)
+        id: run-lighthouse
+        continue-on-error: true
+        env:
+          LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LHCI_BASE_ORIGIN: http://localhost:4200
+          LHCI_COLLECT__CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+        run: |
+          set -euo pipefail
+          export DISABLE_MOCK_DATA=true
+          npx ng serve --host localhost &
+          SERVER_PID=$!
+          trap 'echo "Stopping dev server $SERVER_PID"; kill $SERVER_PID' EXIT
+          echo "Waiting for http://localhost:4200/ ..."
+          for i in {1..180}; do
+            curl -fsS http://localhost:4200/ >/dev/null && break || sleep 1
+          done
+          npx lhci autorun --config=.github/lighthouse/accessibility-desktop.lighthouserc.json || true
+          mkdir -p current-accessibility-desktop && cp -r .lighthouseci/* current-accessibility-desktop/ || true
+          rm -rf .lighthouseci
+          npx lhci autorun --config=.github/lighthouse/accessibility-mobile.lighthouserc.json || true
+          mkdir -p current-accessibility-mobile && cp -r .lighthouseci/* current-accessibility-mobile/ || true
+
+      # Generate markdown report with accessibility results
+      # continue-on-error allows script to exit with code 1 (threshold failures) without stopping workflow
+      # This ensures the markdown file is always generated for PR comments, even when scores are below thresholds
+      # The workflow will fail at the end based on the script's exit code (checked via step outcome)
+      - name: Generate accessibility results markdown
+        id: generate-results
+        if: always()
+        continue-on-error: true
+        run: |
+          node .github/scripts/lighthouse/lighthouse-accessibility.js \
+            --aggregate=median \
+            --current-desktop current-accessibility-desktop \
+            --current-mobile current-accessibility-mobile \
+            --out lighthouse-accessibility-comparison.md
+
+      - name: Check if accessibility check passed
+        id: check-results
+        if: always()
+        run: |
+          if [ "${{ steps.generate-results.outcome }}" == "failure" ]; then
+            echo "result=failed" >> $GITHUB_OUTPUT
+          else
+            echo "result=passed" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload current Accessibility Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: current-accessibility-lighthouse-reports
+          path: |
+            current-accessibility-desktop/
+            current-accessibility-mobile/
+          if-no-files-found: warn
+
+      - name: Resolve PR number (by input/commit/run)
+        id: resolve-pr
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ inputs['issue-number'] }}
+          COMPARE_COMMIT: ${{ github.sha }}
+          COMPARE_RUN_NUMBER: ''
+          WORKFLOW_ID: 'lighthouse-accessibility.yml'
+        with:
+          script: |
+            const run = require('./.github/scripts/lighthouse/resolve-pr.js');
+            return run({ github, context, core });
+          result-encoding: string
+
+      - name: Comment results on PR
+        if: ${{ steps.resolve-pr.outputs.result != '' }}
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ steps.resolve-pr.outputs.result }}
+          body-file: lighthouse-accessibility-comparison.md
+
+      - name: Fail if accessibility scores below thresholds
+        if: steps.check-results.outputs.result == 'failed'
+        run: |
+          echo "❌ Accessibility check failed: One or more pages scored below their required thresholds"
+          exit 1
