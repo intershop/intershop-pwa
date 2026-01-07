@@ -1,8 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { ConfigOption, FormlyModule } from '@ngx-formly/core';
-
-import { SharedModule } from 'ish-shared/shared.module';
+import { Routes } from '@angular/router';
+import { ConfigOption } from '@ngx-formly/core';
 
 import { disablePrefilledExtension } from './formly/disable-prefilled.extension';
 import { RegistrationAddressFieldComponent } from './formly/registration-address-field/registration-address-field.component';
@@ -12,9 +9,8 @@ import { RegistrationTacFieldComponent } from './formly/registration-tac-field/r
 import { RegistrationApprovalComponent } from './registration-approval/registration-approval.component';
 import { RegistrationPageComponent } from './registration-page.component';
 import { canDeactivateRegistrationPage, registrationPageGuard } from './registration-page.guard';
-import { RegistrationFormConfigurationService } from './services/registration-form-configuration/registration-form-configuration.service';
 
-const registrationPageRoutes: Routes = [
+export const registrationPageRoutes: Routes = [
   {
     path: '',
     component: RegistrationPageComponent,
@@ -32,7 +28,7 @@ const registrationPageRoutes: Routes = [
   },
 ];
 
-const registrationFormlyConfig: ConfigOption = {
+export const registrationFormlyConfig: ConfigOption = {
   types: [
     {
       name: 'ish-registration-address-field',
@@ -44,21 +40,3 @@ const registrationFormlyConfig: ConfigOption = {
   ],
   extensions: [{ name: 'disable-prefilled', extension: disablePrefilledExtension }],
 };
-
-@NgModule({
-  imports: [
-    FormlyModule.forChild(registrationFormlyConfig),
-    RouterModule.forChild(registrationPageRoutes),
-    SharedModule,
-  ],
-  declarations: [
-    RegistrationAddressFieldComponent,
-    RegistrationApprovalComponent,
-    RegistrationHeadingFieldComponent,
-    RegistrationNewsletterFieldComponent,
-    RegistrationPageComponent,
-    RegistrationTacFieldComponent,
-  ],
-  providers: [RegistrationFormConfigurationService],
-})
-export class RegistrationPageModule {}

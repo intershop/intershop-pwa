@@ -17,7 +17,6 @@ const declaredDirectives = [
   ClickOutsideDirective,
   FocusOutsideDirective,
   FormSubmitDirective,
-  IdentityProviderCapabilityDirective,
   IntersectionObserverDirective,
 ];
 
@@ -27,6 +26,7 @@ const standaloneDirectives = [
   ServerHtmlDirective,
   ScrollDirective,
   LazyLoadingContentDirective,
+  IdentityProviderCapabilityDirective,
 ];
 
 @NgModule({

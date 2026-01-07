@@ -7,7 +7,7 @@ import { whenTruthy } from './utils/operators';
 import { RoleToggleService, checkRole } from './utils/role-toggle/role-toggle.service';
 
 @NgModule({
-  declarations: [NotRoleToggleDirective],
+  imports: [NotRoleToggleDirective],
   exports: [NotRoleToggleDirective],
 })
 export class RoleToggleModule {

@@ -1,18 +1,14 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 
 import { authorizationToggleGuard } from 'ish-core/authorization-toggle.module';
 import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 import { serverSettingGuard } from 'ish-core/guards/server-setting.guard';
-import { SharedModule } from 'ish-shared/shared.module';
 
-import { AccountOverviewPageModule } from '../account-overview/account-overview-page.module';
+import { AccountOverviewPageComponent } from '../account-overview/account-overview-page.component';
 
-import { AccountNavigationComponent } from './account-navigation/account-navigation.component';
 import { AccountPageComponent } from './account-page.component';
-import { AccountUserInfoComponent } from './account-user-info/account-user-info.component';
 
-const accountPageRoutes: Routes = [
+export const accountPageRoutes: Routes = [
   {
     path: '',
     component: AccountPageComponent,
@@ -20,7 +16,7 @@ const accountPageRoutes: Routes = [
       {
         path: '',
         data: { breadcrumbData: [] },
-        component: AccountOverviewPageModule.component,
+        component: AccountOverviewPageComponent,
       },
       {
         path: 'addresses',
@@ -181,9 +177,3 @@ const accountPageRoutes: Routes = [
     ],
   },
 ];
-
-@NgModule({
-  imports: [AccountOverviewPageModule, RouterModule.forChild(accountPageRoutes), SharedModule],
-  declarations: [AccountNavigationComponent, AccountPageComponent, AccountUserInfoComponent],
-})
-export class AccountPageModule {}

@@ -22,10 +22,11 @@ const forgotPasswordPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(forgotPasswordPageRoutes), SharedModule],
-  declarations: [
+  imports: [
     RequestReminderComponent,
+    RouterModule.forChild(forgotPasswordPageRoutes),
     RequestReminderFormComponent,
+    SharedModule,
     UpdatePasswordComponent,
     UpdatePasswordFormComponent,
   ],

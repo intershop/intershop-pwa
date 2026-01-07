@@ -1,10 +1,13 @@
 /* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AbstractControl, UntypedFormGroup } from '@angular/forms';
+import { AbstractControl, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable, take, tap } from 'rxjs';
+import { AddressDoctorExportsModule } from 'src/app/extensions/address-doctor/exports/address-doctor-exports.module';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -12,6 +15,8 @@ import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import {
@@ -26,6 +31,17 @@ import {
 @Component({
   templateUrl: './registration-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    ErrorMessageComponent,
+    AsyncPipe,
+    TranslateModule,
+    AddressDoctorExportsModule,
+    LoadingComponent,
+    ReactiveFormsModule,
+    FormlyModule,
+    NgIf,
+  ],
 })
 export class RegistrationPageComponent implements OnInit {
   error$: Observable<HttpError>;

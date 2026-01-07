@@ -1,5 +1,7 @@
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 const sizes = ['h1', 'h2'];
 
@@ -15,6 +17,8 @@ const sizes = ['h1', 'h2'];
   selector: 'ish-registration-heading-field',
   templateUrl: './registration-heading-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, TranslateModule],
 })
 export class RegistrationHeadingFieldComponent extends FieldType {
   private dto = {

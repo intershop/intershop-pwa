@@ -1,8 +1,8 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { DirectivesModule } from 'ish-core/directives.module';
 
+import { DirectivesModule } from 'ish-core/directives.module';
 import { MessageFacade } from 'ish-core/facades/message.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 

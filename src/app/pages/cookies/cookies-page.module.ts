@@ -1,12 +1,8 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { Routes } from '@angular/router';
 
-import { CookiesModalComponent } from './cookies-modal/cookies-modal.component';
 import { cookiesPageGuard } from './cookies-page.guard';
 
-const cookiesPageRoutes: Routes = [
+export const cookiesPageRoutes: Routes = [
   {
     path: '',
     children: [],
@@ -19,9 +15,3 @@ const cookiesPageRoutes: Routes = [
     },
   },
 ];
-
-@NgModule({
-  imports: [CommonModule, RouterModule.forChild(cookiesPageRoutes), TranslateModule],
-  declarations: [CookiesModalComponent],
-})
-export class CookiesPageModule {}

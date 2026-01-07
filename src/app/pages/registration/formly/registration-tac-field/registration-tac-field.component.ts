@@ -1,5 +1,11 @@
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
+
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
 
 /**
  * Type that will render a terms and conditions field, specific for the registration form.
@@ -8,5 +14,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   selector: 'ish-registration-tac-field',
   templateUrl: './registration-tac-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ValidationMessageComponent, ServerHtmlDirective, TranslateModule, NgIf, ReactiveFormsModule, FormlyModule],
 })
 export class RegistrationTacFieldComponent extends FieldType<FieldTypeConfig> {}

@@ -7,10 +7,10 @@ import { FieldTooltipComponent } from './field-tooltip/field-tooltip.component';
 import { ValidationIconsComponent } from './validation-icons/validation-icons.component';
 import { ValidationMessageComponent } from './validation-message/validation-message.component';
 
-const components = [FieldTooltipComponent, ValidationIconsComponent, ValidationMessageComponent];
+const components = [FieldTooltipComponent, ValidationIconsComponent];
 
 @NgModule({
-  imports: [CommonModule, NgbPopoverModule, TranslateModule],
+  imports: [CommonModule, IconModule, NgbPopoverModule, TranslateModule, ValidationMessageComponent],
   declarations: [...components],
   exports: [...components],
 })
