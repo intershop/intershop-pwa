@@ -347,8 +347,8 @@ export class CheckoutFacade {
     );
   }
 
-  initializePayPal3DSecureFlow(paymentMethod: PaymentMethod) {
-    return this.paymentService.initializePayPal3DSecureFlow(paymentMethod);
+  initializePayPal3DSecureFlow() {
+    return this.paymentService.initializePayPal3DSecureFlow();
   }
 
   submitPayPalPaymentInstrumentData(paymentInstrument: PaymentInstrument) {

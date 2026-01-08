@@ -1,10 +1,11 @@
-import { EventEmitter, Injectable, NgZone, Output } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, firstValueFrom } from 'rxjs';
+import { switchMap } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PAYPAL_CART_FIELDS_STYLING } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.styling';
 import {
@@ -15,16 +16,13 @@ import {
 @Injectable({ providedIn: 'root' })
 export class PayPalCardFields {
   paymentMethod: PaymentMethod;
-  private orderId$: Observable<string>;
-
+  private paymentInstrument: PaymentInstrument;
   private cardFieldComponent: PayPalCardFieldsComponent;
-  @Output() createPaymentInstrument = new EventEmitter<{
-    paymentInstrument: PaymentInstrument;
-  }>();
 
   constructor(
     private ngZone: NgZone,
     private checkoutFacade: CheckoutFacade,
+    private paymentService: PaymentService,
     private translateService: TranslateService
   ) {}
 
@@ -50,8 +48,8 @@ export class PayPalCardFields {
         // Initialize CardFields with MINIMAL configuration - exactly as official PayPal example
         // NO style parameter - this may interfere with keyboard input
         const cardField = paypalObject.CardFields({
-          createOrder: (data: undefined) => this.ngZone.run(() => this.createOrder(data)),
-          onApprove: (data: undefined) => this.ngZone.run(() => this.onApprove(data)),
+          createOrder: () => this.ngZone.run(() => this.createOrder()),
+          onApprove: () => this.ngZone.run(() => this.onApprove()),
           onError: (error: unknown) => this.ngZone.run(() => this.errorHandler(error)),
         }) as PayPalCardFieldsComponent;
 
@@ -139,7 +137,7 @@ export class PayPalCardFields {
         this.ngZone.run(async () => {
           try {
             // Await the submit call to handle 3D Secure authentication properly
-            this.orderId$ = this.checkoutFacade.initializePayPal3DSecureFlow(this.paymentMethod);
+            this.checkoutFacade.initializePayPal3DSecureFlow();
             await cardField.submit();
           } catch (error) {
             // Check if error is due to popup being closed
@@ -160,19 +158,47 @@ export class PayPalCardFields {
    * Creates PayPal order through the checkout facade.
    * official PayPal developer documentation link: https://developer.paypal.com/studio/checkout/advanced/integrate
    */
-  async createOrder(data: undefined): Promise<string> {
-    console.log('Creating PayPal CardFields order: ', data);
-    return firstValueFrom(this.orderId$.pipe(whenTruthy()));
+  async createOrder(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.paymentService
+        .createBasketPayment({
+          id: undefined,
+          paymentMethod: this.paymentMethod.id,
+        })
+        .pipe(
+          whenTruthy(),
+          switchMap(paymentInstrument => {
+            this.paymentInstrument = paymentInstrument;
+            return this.paymentService.setBasketPayment(paymentInstrument.id).pipe(
+              whenTruthy(),
+              switchMap(() => this.paymentService.initializePayPal3DSecureFlow())
+            );
+          })
+        )
+        .subscribe({
+          next: orderID => resolve(orderID),
+          error: error => reject(error),
+        });
+    });
   }
 
   /**
    * Handles PayPal payment approval.
    */
-  async onApprove(data: undefined): Promise<void> {
-    console.log('PayPal CardFields payment approved: ', data);
-    return new Promise(resolve => {
-      this.createPaymentInstrument.emit({ paymentInstrument: { id: undefined, paymentMethod: this.paymentMethod.id } });
-      resolve();
+  async onApprove(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.paymentService
+        .approvePayPal3DSecure(this.paymentInstrument)
+        .pipe(whenTruthy())
+        .subscribe({
+          next: () => {
+            // After successful approval, reload eligible payment methods
+            this.checkoutFacade.loadEligiblePaymentMethods();
+            this.checkoutFacade.loadBasketAfterChanges();
+            resolve();
+          },
+          error: error => reject(error),
+        });
     });
   }
 

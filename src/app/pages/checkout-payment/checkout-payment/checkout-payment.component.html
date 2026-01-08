@@ -140,7 +140,6 @@
                         <ish-payment-paypal
                           [selectedPaymentMethod]="paymentMethod"
                           [componentType]="getPaypalComponentType(paymentMethod)"
-                          (paymentInstrument)="createNewPaymentInstrument($event)"
                           (cancelPayment)="closePaymentInstrumentForm()"
                         />
                       </ng-template>

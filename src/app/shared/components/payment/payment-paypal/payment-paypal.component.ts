@@ -12,8 +12,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { Attribute } from 'ish-core/models/attribute/attribute.model';
-import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import {
@@ -38,10 +36,10 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit {
+  // Component type Messages is set as default
   @Input() componentType: PaypalComponentTypes = PaypalComponentTypes.Messages;
   @Input() selectedPaymentMethod: PaymentMethod;
   @Output() selectPaypalPaymentMethod = new EventEmitter<string>();
-  @Output() paymentInstrument = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
   @Output() cancelPayment = new EventEmitter<void>();
 
   showPayPalComponent = false;
@@ -118,19 +116,14 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
               pageType: this.page,
               paypalPaymentMethod: this.selectedPaymentMethod,
             };
-            if (this.isCardFieldsComponent()) {
-              config = {
-                ...config,
-                paymentInstrument: (paymentInstrument: PaymentInstrument) =>
-                  this.paymentInstrument.emit({ parameters: paymentInstrument.parameters, saveAllowed: undefined }),
-              };
-            } else {
+            if (!this.isCardFieldsComponent()) {
               config = {
                 ...config,
                 containerId: this.paypalComponentContainerId,
                 selectPaypalPaymentMethod: (id: string) => this.selectPaypalPaymentMethod.emit(id),
               };
             }
+
             this.paypalComponentBuilder
               .build(config)
               .then(() => {

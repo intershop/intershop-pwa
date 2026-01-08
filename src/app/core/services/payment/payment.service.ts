@@ -436,34 +436,6 @@ export class PaymentService {
     }
   }
 
-  initializePayPal3DSecureFlow(paymentMethod: PaymentMethod): Observable<string> {
-    const loc = `${location.origin}${this.baseHref}`;
-
-    return this.store.pipe(select(getCurrentLocale)).pipe(
-      whenTruthy(),
-      take(1),
-      switchMap(currentLocale => {
-        const body = {
-          redirect: {
-            returnUrl: `${loc}/checkout/payment;lang=${currentLocale}?redirect=success`,
-            cancelUrl: `${loc}/checkout/payment;lang=${currentLocale}?redirect=cancel`,
-          },
-        };
-
-        return this.apiService
-          .currentBasketEndpoint()
-          .put<{ data: Paypal3Ds }>(
-            `eligible-payment-methods'${this.apiService.encodeResourceId(paymentMethod.id)}`,
-            body,
-            {
-              headers: this.basketHeaders,
-            }
-          )
-          .pipe(map(response => response.data.orderId));
-      })
-    );
-  }
-
   getPayPalPaymentInstrumentData(paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
     return this.apiService
       .currentBasketEndpoint()
@@ -490,7 +462,7 @@ export class PaymentService {
                 value: paypal3Ds.card?.lastDigits || '',
               },
               {
-                name: 'name',
+                name: 'cardHolder',
                 value: paypal3Ds.card?.name || '',
               },
             ],
@@ -519,5 +491,73 @@ export class PaymentService {
         { headers: this.basketHeaders }
       )
       .pipe(map(({ data }) => data));
+  }
+
+  initializePayPal3DSecureFlow(): Observable<string> {
+    const loc = `${location.origin}${this.baseHref}`;
+
+    return this.store.pipe(select(getCurrentLocale)).pipe(
+      whenTruthy(),
+      take(1),
+      switchMap(currentLocale => {
+        const body = {
+          redirect: {
+            returnUrl: `${loc}/checkout/payment;lang=${currentLocale}?redirect=success`,
+            cancelUrl: `${loc}/checkout/payment;lang=${currentLocale}?redirect=cancel`,
+          },
+        };
+
+        return this.apiService
+          .currentBasketEndpoint()
+          .put<{ data: Paypal3Ds }>('payments/open-tender/paypal-3ds', body, {
+            headers: this.basketHeaders,
+          })
+          .pipe(map(response => response.data.orderId));
+      })
+    );
+  }
+
+  approvePayPal3DSecure(paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
+    return this.apiService
+      .currentBasketEndpoint()
+      .get<{ data: Paypal3Ds }>('payments/open-tender/paypal-3ds', {
+        headers: this.basketHeaders,
+      })
+      .pipe(
+        map(response => {
+          const paypal3Ds = response.data;
+          return {
+            parameters: [
+              {
+                name: 'orderId',
+                value: paypal3Ds.orderId,
+              },
+              {
+                name: 'brand',
+                value: paypal3Ds.card?.brand || '',
+              },
+              { name: 'expiry', value: paypal3Ds.card?.expiry || '' },
+              {
+                name: 'lastDigits',
+                value: paypal3Ds.card?.lastDigits || '',
+              },
+              {
+                name: 'cardHolder',
+                value: paypal3Ds.card?.name || '',
+              },
+            ],
+          };
+        }),
+        switchMap(body =>
+          this.apiService
+            .currentBasketEndpoint()
+            .patch<{ data: PaymentInstrument }>(
+              `payment-instruments/${this.apiService.encodeResourceId(paymentInstrument.id)}`,
+              body,
+              { headers: this.basketHeaders }
+            )
+            .pipe(map(({ data }) => data))
+        )
+      );
   }
 }
