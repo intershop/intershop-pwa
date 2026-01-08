@@ -1,3 +1,4 @@
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import {
   ApplicationRef,
   ChangeDetectionStrategy,
@@ -15,10 +16,9 @@ import { map, take } from 'rxjs/operators';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { arraySlices } from 'ish-core/utils/functions';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ContentPageletComponent } from 'ish-shared/cms/components/content-pagelet/content-pagelet.component';
+import { ContentSlotComponent } from 'ish-shared/cms/components/content-slot/content-slot.component';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
-import { NgClass, NgFor, NgIf } from '@angular/common';
-import { ContentPageletComponent } from '../content-pagelet/content-pagelet.component';
-import { ContentSlotComponent } from '../content-slot/content-slot.component';
 
 @Component({
   selector: 'ish-cms-carousel',

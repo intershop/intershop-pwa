@@ -1,9 +1,9 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable, map, shareReplay, startWith } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { AsyncPipe, NgIf } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'ish-product-inventory',

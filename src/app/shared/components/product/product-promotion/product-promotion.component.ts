@@ -1,11 +1,11 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { PromotionDetailsComponent } from 'ish-shared/components/promotion/promotion-details/promotion-details.component';
-import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 
 @Component({
   selector: 'ish-product-promotion',

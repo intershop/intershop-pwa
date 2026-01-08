@@ -5,10 +5,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { IconModule } from 'ish-core/icon.module';
+
 import { CompareFacade } from '../../facades/compare.facade';
 
 import { ProductCompareStatusComponent } from './product-compare-status.component';
-import { IconModule } from 'ish-core/icon.module';
 
 describe('Product Compare Status Component', () => {
   let component: ProductCompareStatusComponent;

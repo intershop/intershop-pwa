@@ -2,12 +2,12 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { IconModule } from 'ish-core/icon.module';
 
+import { IconModule } from 'ish-core/icon.module';
 import { SortableAttributesType } from 'ish-core/models/product-listing/product-listing.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
-import { ProductListPagingComponent } from '../product-list-paging/product-list-paging.component';
+import { ProductListPagingComponent } from 'ish-shared/components/product/product-list-paging/product-list-paging.component';
 
 @Component({
   selector: 'ish-product-list-toolbar',

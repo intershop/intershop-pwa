@@ -1,14 +1,14 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductHelper } from 'ish-core/models/product/product.helper';
-import { AsyncPipe, NgIf } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { ProductVariationDisplayComponent } from '../product-variation-display/product-variation-display.component';
-import { ProductVariationSelectComponent } from '../product-variation-select/product-variation-select.component';
+import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
+import { ProductVariationSelectComponent } from 'ish-shared/components/product/product-variation-select/product-variation-select.component';
 
 @Component({
   selector: 'ish-product-item-variations',

@@ -1,6 +1,8 @@
+import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, take, withLatestFrom } from 'rxjs/operators';
 
@@ -8,12 +10,10 @@ import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductListingID, ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
-import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
-import { ProductListComponent } from '../product-list/product-list.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
-import { ProductListToolbarComponent } from '../product-list-toolbar/product-list-toolbar.component';
-import { ProductListPagingComponent } from '../product-list-paging/product-list-paging.component';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { ProductListPagingComponent } from 'ish-shared/components/product/product-list-paging/product-list-paging.component';
+import { ProductListToolbarComponent } from 'ish-shared/components/product/product-list-toolbar/product-list-toolbar.component';
+import { ProductListComponent } from 'ish-shared/components/product/product-list/product-list.component';
 
 @Component({
   selector: 'ish-product-listing',

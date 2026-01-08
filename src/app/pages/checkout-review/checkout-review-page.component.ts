@@ -1,3 +1,4 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -5,8 +6,8 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { AsyncPipe, NgIf } from '@angular/common';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+
 import { CheckoutReviewComponent } from './checkout-review/checkout-review.component';
 
 @Component({

@@ -1,9 +1,9 @@
+import { AsyncPipe, NgClass, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { AsyncPipe, NgClass, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 
 /**
  * The Product Label Component renders a label for a product with label information, i.a. new, sale or top seller.

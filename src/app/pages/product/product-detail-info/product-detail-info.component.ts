@@ -1,19 +1,19 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable, map } from 'rxjs';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.helper';
-import { TranslateModule } from '@ngx-translate/core';
-import { RatingExportsModule } from '../../../extensions/rating/exports/rating-exports.module';
-import { FeatureToggleModule } from '../../../core/feature-toggle.module';
-
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgIf, AsyncPipe } from '@angular/common';
 import { ProductAttachmentsComponent } from 'ish-shared/components/product/product-attachments/product-attachments.component';
 import { ProductAttributesComponent } from 'ish-shared/components/product/product-attributes/product-attributes.component';
-import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+
+import { RatingExportsModule } from '../../../extensions/rating/exports/rating-exports.module';
 
 @Component({
   selector: 'ish-product-detail-info',

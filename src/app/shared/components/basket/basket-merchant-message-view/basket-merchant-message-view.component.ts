@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Requisition } from 'projects/requisition-management/src/app/models/requisition/requisition.model';
 
@@ -5,7 +6,6 @@ import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
-import { NgIf } from '@angular/common';
 
 /**
  * The Basket Merchant Message View Component displays the message to merchant on related pages like basket review, order details and requisition details page.

@@ -1,9 +1,9 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { AsyncPipe, NgIf } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 
 /**
  * The Product ID Component renders the product id with a label.

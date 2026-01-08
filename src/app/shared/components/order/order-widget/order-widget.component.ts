@@ -1,12 +1,12 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Order } from 'ish-core/models/order/order.model';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
-import { OrderListComponent } from '../order-list/order-list.component';
-import { AsyncPipe } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { OrderListComponent } from 'ish-shared/components/order/order-list/order-list.component';
 
 /**
  * The Order Widget Component - displays an overview of the latest orders as list.

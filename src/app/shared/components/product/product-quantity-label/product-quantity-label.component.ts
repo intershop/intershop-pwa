@@ -1,9 +1,9 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { AsyncPipe, NgIf } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'ish-product-quantity-label',

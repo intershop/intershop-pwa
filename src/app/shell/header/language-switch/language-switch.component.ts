@@ -1,15 +1,14 @@
-import { LocationStrategy, NgIf, NgClass, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe, LocationStrategy, NgClass, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
-import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
-import { TranslateModule } from '@ngx-translate/core';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { MakeHrefPipe } from 'ish-core/pipes/make-href.pipe';
+import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 
 /**
  * The Language Switch Component shows a dropdown allowing to switch the current language/locale.

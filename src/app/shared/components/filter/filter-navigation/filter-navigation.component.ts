@@ -1,3 +1,4 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -5,10 +6,9 @@ import { Observable } from 'rxjs';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { URLFormParams, formParamsToString } from 'ish-core/utils/url-form-params';
-import { AsyncPipe, NgIf } from '@angular/common';
-import { FilterNavigationSidebarComponent } from '../filter-navigation-sidebar/filter-navigation-sidebar.component';
-import { FilterNavigationHorizontalComponent } from '../filter-navigation-horizontal/filter-navigation-horizontal.component';
-import { FilterNavigationBadgesComponent } from '../filter-navigation-badges/filter-navigation-badges.component';
+import { FilterNavigationBadgesComponent } from 'ish-shared/components/filter/filter-navigation-badges/filter-navigation-badges.component';
+import { FilterNavigationHorizontalComponent } from 'ish-shared/components/filter/filter-navigation-horizontal/filter-navigation-horizontal.component';
+import { FilterNavigationSidebarComponent } from 'ish-shared/components/filter/filter-navigation-sidebar/filter-navigation-sidebar.component';
 
 @Component({
   selector: 'ish-filter-navigation',

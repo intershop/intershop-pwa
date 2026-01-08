@@ -1,8 +1,9 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { IdentityProviderLoginComponent } from '../identity-provider-login/identity-provider-login.component';
+import { IdentityProviderLoginComponent } from 'ish-shared/components/login/identity-provider-login/identity-provider-login.component';
 
 @Component({
   selector: 'ish-login-modal',

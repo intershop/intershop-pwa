@@ -1,3 +1,4 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -17,14 +18,13 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 
-import { SelectOption } from 'ish-core/models/select-option/select-option.model';
-
-import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { DirectivesModule } from 'ish-core/directives.module';
 import { ProductContextAccessDirective } from 'ish-core/directives/product-context-access.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { PipesModule } from 'ish-core/pipes.module';
-import { DirectivesModule } from 'ish-core/directives.module';
+
+import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { SelectOrderTemplateFormComponent } from '../select-order-template-form/select-order-template-form.component';
 
 /**

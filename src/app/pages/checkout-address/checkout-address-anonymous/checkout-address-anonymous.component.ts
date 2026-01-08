@@ -1,17 +1,18 @@
 import { NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { FormGroupDirective, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { IdentityProviderLoginComponent } from 'ish-shared/components/login/identity-provider-login/identity-provider-login.component';
+
 import { CheckoutAddressAnonymousFormComponent } from '../formly/components/checkout-address-anonymous-form/checkout-address-anonymous-form.component';
-import { RouterModule } from '@angular/router';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**

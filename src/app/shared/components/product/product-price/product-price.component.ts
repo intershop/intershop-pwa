@@ -1,13 +1,13 @@
+import { AsyncPipe, DecimalPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { Price, PriceHelper, Pricing } from 'ish-core/models/price/price.model';
-import { ProductHelper } from 'ish-core/models/product/product.model';
-import { AsyncPipe, DecimalPipe, NgClass, NgFor, NgIf } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { ProductHelper } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-price',

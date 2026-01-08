@@ -1,16 +1,17 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyFieldConfig, FormlyModule, FormlyConfig, ConfigOption } from '@ngx-formly/core';
+import { ConfigOption, FormlyConfig, FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
-import { ShippingRadioWrapperComponent } from '../formly/shipping-radio-wrapper/shipping-radio-wrapper.component';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { AsyncPipe, NgIf } from '@angular/common';
+
+import { ShippingRadioWrapperComponent } from '../formly/shipping-radio-wrapper/shipping-radio-wrapper.component';
 
 const ShippingWrapperConfig: ConfigOption = {
   wrappers: [{ name: 'shipping-radio-wrapper', component: ShippingRadioWrapperComponent }],

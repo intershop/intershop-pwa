@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { v4 as uuid } from 'uuid';
 
 import { IconModule } from 'ish-core/icon.module';
-import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'ish-accordion-item',

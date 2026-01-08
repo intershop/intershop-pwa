@@ -20,9 +20,9 @@ import { switchMap } from 'rxjs/operators';
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ContentDesignViewWrapperComponent } from 'ish-shared/cms/components/content-design-view-wrapper/content-design-view-wrapper.component';
 import { CMSComponentProvider, CMS_COMPONENT } from 'ish-shared/cms/configurations/injection-keys';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
-import { ContentDesignViewWrapperComponent } from '../content-design-view-wrapper/content-design-view-wrapper.component';
 
 /**
  * The Content Pagelet Component renders the pagelet for the given 'pageletId'.

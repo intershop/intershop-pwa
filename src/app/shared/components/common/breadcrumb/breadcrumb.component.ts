@@ -1,11 +1,11 @@
+import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
-import { TranslateModule } from '@ngx-translate/core';
-import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
-import { RouterLink } from '@angular/router';
 
 /**
  * component for setting the breadcrumb trail of a specific page

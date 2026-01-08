@@ -1,7 +1,7 @@
 import { NgFor, NgIf, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
 
+import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 @Component({

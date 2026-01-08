@@ -1,13 +1,13 @@
 import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { IconModule } from 'ish-core/icon.module';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
+import { IconModule } from 'ish-core/icon.module';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { BasketPromotionComponent } from '../basket-promotion/basket-promotion.component';
+import { BasketPromotionComponent } from 'ish-shared/components/basket/basket-promotion/basket-promotion.component';
 import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
-import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 
 @Component({
   selector: 'ish-basket-items-summary',

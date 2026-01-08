@@ -1,3 +1,4 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,17 +14,16 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { filter, map, take, withLatestFrom } from 'rxjs/operators';
 
+import { DirectivesModule } from 'ish-core/directives.module';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
+import { PipesModule } from 'ish-core/pipes.module';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
-import { NgIf, AsyncPipe } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { DirectivesModule } from 'ish-core/directives.module';
-import { PipesModule } from 'ish-core/pipes.module';
 import { SelectWishlistFormComponent } from '../select-wishlist-form/select-wishlist-form.component';
 
 /**

@@ -1,12 +1,12 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductTileComponent } from '../product-tile/product-tile.component';
-import { ProductRowComponent } from '../product-row/product-row.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { ProductRowComponent } from 'ish-shared/components/product/product-row/product-row.component';
+import { ProductTileComponent } from 'ish-shared/components/product/product-tile/product-tile.component';
 
 export type ProductItemDisplayType = 'tile' | 'row';
 

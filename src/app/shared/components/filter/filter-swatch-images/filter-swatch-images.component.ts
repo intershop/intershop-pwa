@@ -1,8 +1,8 @@
 import { NgClass, NgFor } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { IconModule } from 'ish-core/icon.module';
 
+import { IconModule } from 'ish-core/icon.module';
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { PipesModule } from 'ish-core/pipes.module';

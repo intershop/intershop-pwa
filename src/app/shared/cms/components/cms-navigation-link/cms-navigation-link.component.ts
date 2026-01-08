@@ -1,9 +1,9 @@
 import { NgClass, NgIf, NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { IconModule } from 'ish-core/icon.module';
-
 import { ContentViewHelper } from 'ish-core/models/content-view/content-view.helper';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';

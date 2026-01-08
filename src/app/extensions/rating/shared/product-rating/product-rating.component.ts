@@ -1,4 +1,6 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -6,9 +8,8 @@ import { filter, map } from 'rxjs/operators';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductHelper } from 'ish-core/models/product/product.helper';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+
 import { ProductRatingStarComponent } from '../product-rating-star/product-rating-star.component';
-import { NgIf, AsyncPipe, NgFor } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 
 /**
  * The Product Rating Component renders rating stars for a product (besides variation masters) with rounded average rating as number. *

@@ -15,9 +15,10 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { IconModule } from 'ish-core/icon.module';
 import { Subject, race, take } from 'rxjs';
 import { v4 as uuid } from 'uuid';
+
+import { IconModule } from 'ish-core/icon.module';
 
 export interface ModalOptions extends NgbModalOptions {
   /**

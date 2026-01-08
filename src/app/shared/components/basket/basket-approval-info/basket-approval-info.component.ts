@@ -1,9 +1,9 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { IconModule } from 'ish-core/icon.module';
-
 import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.model';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 

@@ -1,10 +1,11 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { CompareFacade } from '../../facades/compare.facade';
-import { TranslateModule } from '@ngx-translate/core';
+
 import { ProductCompareListComponent } from './product-compare-list/product-compare-list.component';
-import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'ish-compare-page',

@@ -1,7 +1,7 @@
-import { NgFor, NgIf, NgClass } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IconModule } from 'ish-core/icon.module';
 
+import { IconModule } from 'ish-core/icon.module';
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { URLFormParams } from 'ish-core/utils/url-form-params';

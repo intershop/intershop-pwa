@@ -1,4 +1,6 @@
+import { AsyncPipe, NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, map, shareReplay } from 'rxjs/operators';
@@ -6,8 +8,6 @@ import { v4 as uuid } from 'uuid';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FormsService } from 'ish-shared/forms/utils/forms.service';
-import { AsyncPipe, NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'ish-product-quantity',

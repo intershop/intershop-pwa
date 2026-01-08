@@ -1,15 +1,15 @@
+import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { CMSFacade } from 'ish-core/facades/cms.facade';
+import { IconModule } from 'ish-core/icon.module';
 import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
-import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
-import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { IconModule } from 'ish-core/icon.module';
 import { ContentPageRoutePipe } from 'ish-core/routing/content-page/content-page-route.pipe';
-import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
 
 @Component({
   selector: 'ish-cms-navigation-page',

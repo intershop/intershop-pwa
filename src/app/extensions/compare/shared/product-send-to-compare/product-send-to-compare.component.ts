@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { CompareFacade } from '../../facades/compare.facade';
-import { TranslateModule } from '@ngx-translate/core';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'ish-product-send-to-compare',

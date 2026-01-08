@@ -1,19 +1,21 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { SelectedProductContextFacade } from 'ish-core/facades/selected-product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { RecentlyExportsModule } from '../../extensions/recently/exports/recently-exports.module';
-import { ProductLinksComponent } from './product-links/product-links.component';
-import { ProductMasterVariationsComponent } from './product-master-variations/product-master-variations.component';
-import { ProductDetailInfoComponent } from './product-detail-info/product-detail-info.component';
-import { RetailSetPartsComponent } from './retail-set-parts/retail-set-parts.component';
-import { ProductBundlePartsComponent } from './product-bundle-parts/product-bundle-parts.component';
-import { ProductDetailComponent } from './product-detail/product-detail.component';
-import { NgIf, AsyncPipe } from '@angular/common';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+
+import { RecentlyExportsModule } from '../../extensions/recently/exports/recently-exports.module';
+
+import { ProductBundlePartsComponent } from './product-bundle-parts/product-bundle-parts.component';
+import { ProductDetailInfoComponent } from './product-detail-info/product-detail-info.component';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { ProductLinksComponent } from './product-links/product-links.component';
+import { ProductMasterVariationsComponent } from './product-master-variations/product-master-variations.component';
+import { RetailSetPartsComponent } from './retail-set-parts/retail-set-parts.component';
 
 @Component({
   selector: 'ish-product-page',
