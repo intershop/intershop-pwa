@@ -13,9 +13,9 @@ import {
   getDeviceType,
   getICMBaseURL,
   getPaypalConfig,
+  getPaypalPayLaterPreference,
   getPipelineEndpoint,
   getRestEndpoint,
-  showPaypalPayLaterInformation,
 } from 'ish-core/store/core/configuration';
 import { businessError, getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
 import { selectPath } from 'ish-core/store/core/router';
@@ -164,6 +164,6 @@ export class AppFacade {
    * @returns
    */
   showPaypalPayLaterInformation$(page: PaypalPageTypes): Observable<boolean> {
-    return this.store.pipe(select(showPaypalPayLaterInformation(page)));
+    return this.store.pipe(select(getPaypalPayLaterPreference(page)));
   }
 }

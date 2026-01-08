@@ -169,7 +169,7 @@ export const getStaticEndpoint = createSelector(
 
 export const getPaypalConfig = getServerConfigParameter<PaypalConfig>('payment.paypal');
 
-export const showPaypalPayLaterInformation = (page: PaypalPageTypes) =>
+export const getPaypalPayLaterPreference = (page: PaypalPageTypes) =>
   createSelector(getServerConfigParameter<PaypalConfig>('payment.paypal'), (paypalConfig): boolean => {
     if (!paypalConfig?.payLaterPreferences?.PayLaterEnabled) {
       return false;
