@@ -20,18 +20,4 @@
     color: $text-color-tertiary;
     text-transform: uppercase;
   }
-
-  .language-switch.accordion .language-switch-container {
-    left: 30px !important;
-    padding-bottom: 0;
-
-    ul {
-      padding: divide($space-default * 2, 3);
-      margin-bottom: 0;
-
-      li a {
-        font-family: $font-family-bold;
-      }
-    }
-  }
 }

@@ -2,7 +2,6 @@
 <div
   *ngIf="locale$ | async as locale"
   class="language-switch"
-  [ngClass]="view"
   ngbDropdown
   placement="{{ placement === 'up' ? 'top-right' : 'bottom-right' }}"
 >
@@ -13,9 +12,12 @@
     aria-haspopup="menu"
     [attr.aria-label]="('language_switch.label' | translate) + ('locale.' + locale + '.long' | translate)"
   >
-    <fa-icon [icon]="['fas', 'globe-americas']" class="header-icon" />
+    <span class="sticky-header-icon">
+      <fa-icon [icon]="['fas', 'globe-americas']" class="header-icon mb-1" />
+    </span>
     <span class="language-switch-current-selection d-inline"
-      >{{ 'locale.' + locale + '.long' | translate }}<span class="switch_arrow"></span
+      >{{ 'locale.' + locale + (deviceType === 'mobile' ? '.short' : '.long') | translate
+      }}<span class="switch_arrow"></span
     ></span>
   </button>
   <div ngbDropdownMenu class="language-switch-container dropdown-menu" role="menu" style="left: 0 !important">

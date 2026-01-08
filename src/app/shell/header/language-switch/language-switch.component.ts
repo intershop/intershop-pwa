@@ -4,15 +4,19 @@ import { Observable } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 
+/**
+ * The Language Switch Component shows a dropdown allowing to switch the current language/locale.
+ */
 @Component({
   selector: 'ish-language-switch',
   templateUrl: './language-switch.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LanguageSwitchComponent implements OnInit {
-  @Input() view: '' | 'accordion' = '';
+  @Input() deviceType: DeviceType = 'desktop';
   /**
    * determines position of dropbox
    */

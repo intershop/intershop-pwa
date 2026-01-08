@@ -64,8 +64,8 @@
       </div>
     </ng-template>
 
-    <div class="language-switch-container d-none d-md-block">
-      <ish-language-switch *ngIf="!isSticky" data-testing-id="language-switch-desktop" />
+    <div class="language-switch-container">
+      <ish-language-switch *ngIf="!isSticky" [deviceType]="deviceType" data-testing-id="language-switch-desktop" />
     </div>
     <ish-login-status *ngIf="isSticky || deviceType === 'mobile'" view="small" />
 
