@@ -19,7 +19,6 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
-import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
 import { AddressDoctorExportsModule } from '../extensions/address-doctor/exports/address-doctor-exports.module';
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
@@ -380,8 +379,7 @@ const standaloneComponents = [
   exports: [...importExportModules, ...standaloneComponents],
 })
 export class SharedModule {
-  constructor(moduleLoader: ModuleLoaderService, featureEventNotifier: FeatureEventService, injector: Injector) {
-    moduleLoader.init(injector);
+  constructor(featureEventNotifier: FeatureEventService, injector: Injector) {
     featureEventNotifier.setupAvailableResultListener(injector);
   }
 }
