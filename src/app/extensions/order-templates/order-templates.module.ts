@@ -12,10 +12,10 @@ import { SelectOrderTemplateModalComponent } from './shared/select-order-templat
 
 @NgModule({
   imports: [
-    SharedModule,
     ProductAddToOrderTemplateComponent,
-    SelectOrderTemplateModalComponent,
     SelectOrderTemplateFormComponent,
+    SelectOrderTemplateModalComponent,
+    SharedModule,
   ],
   declarations: [
     BasketCreateOrderTemplateComponent,

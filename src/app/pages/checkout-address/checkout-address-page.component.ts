@@ -1,6 +1,8 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { filter, first, map, take } from 'rxjs/operators';
 
@@ -11,11 +13,10 @@ import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { AsyncPipe, NgIf } from '@angular/common';
-import { CheckoutAddressComponent } from './checkout-address/checkout-address.component';
-import { CheckoutAddressAnonymousComponent } from './checkout-address-anonymous/checkout-address-anonymous.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
-import { TranslateModule } from '@ngx-translate/core';
+
+import { CheckoutAddressAnonymousComponent } from './checkout-address-anonymous/checkout-address-anonymous.component';
+import { CheckoutAddressComponent } from './checkout-address/checkout-address.component';
 
 /**
  * The Checkout Address Page Component renders the checkout address page of a logged in user.

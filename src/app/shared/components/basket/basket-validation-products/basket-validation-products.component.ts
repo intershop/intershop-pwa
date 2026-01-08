@@ -1,8 +1,8 @@
 import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';

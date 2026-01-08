@@ -1,3 +1,4 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
@@ -9,7 +10,6 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
-import { AsyncPipe, NgIf } from '@angular/common';
 
 @Component({
   selector: 'ish-select-order-template-form',

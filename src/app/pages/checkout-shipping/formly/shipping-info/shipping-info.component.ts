@@ -1,11 +1,11 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
-import { AsyncPipe, NgIf } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 
 @Component({
   selector: 'ish-shipping-info',

@@ -1,14 +1,14 @@
+import { AsyncPipe, NgClass, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { IconModule } from 'ish-core/icon.module';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
-import { AsyncPipe, NgClass, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { IconModule } from 'ish-core/icon.module';
-import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 
 @Component({
   selector: 'ish-cms-navigation-category',

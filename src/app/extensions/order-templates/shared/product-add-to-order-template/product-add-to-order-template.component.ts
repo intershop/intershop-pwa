@@ -1,18 +1,18 @@
+import { AsyncPipe, NgClass, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { IconModule } from 'ish-core/icon.module';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { SelectOrderTemplateModalComponent } from '../select-order-template-modal/select-order-template-modal.component';
-import { IconModule } from 'ish-core/icon.module';
-import { AsyncPipe, NgClass, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 
 /**
  * The Product Add To Order Template Component adds a product to a order template.

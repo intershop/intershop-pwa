@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { RouterLink } from '@angular/router';
 import { NgIf } from '@angular/common';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+
 import { ProductContextAccessDirective } from 'ish-core/directives/product-context-access.directive';
 
 @Component({

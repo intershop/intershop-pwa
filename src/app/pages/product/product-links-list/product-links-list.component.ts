@@ -1,13 +1,13 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Observable, combineLatest, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.helper';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
-import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 
 /**
  * The Product Link List Component

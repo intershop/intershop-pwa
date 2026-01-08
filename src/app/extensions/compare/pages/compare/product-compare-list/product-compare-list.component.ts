@@ -1,26 +1,26 @@
+import { AsyncPipe, NgFor, NgIf, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable, ReplaySubject, combineLatest } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
-
-import { CompareFacade } from '../../../facades/compare.facade';
-import { TranslateModule } from '@ngx-translate/core';
-import { RatingExportsModule } from '../../../../rating/exports/rating-exports.module';
-import { FeatureToggleModule } from '../../../../../core/feature-toggle.module';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ProductImageComponent } from '../../../../../shared/components/product/product-image/product-image.component';
-import { ProductComparePagingComponent as ProductComparePagingComponent_1 } from '../product-compare-paging/product-compare-paging.component';
-import { NgIf, NgFor, AsyncPipe, SlicePipe } from '@angular/common';
-import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
-import { ProductAttributesComponent } from 'ish-shared/components/product/product-attributes/product-attributes.component';
-import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
+import { ProductAttributesComponent } from 'ish-shared/components/product/product-attributes/product-attributes.component';
+import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
+import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
+import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
+
+import { RatingExportsModule } from '../../../../rating/exports/rating-exports.module';
+import { CompareFacade } from '../../../facades/compare.facade';
+import { ProductComparePagingComponent as ProductComparePagingComponent_1 } from '../product-compare-paging/product-compare-paging.component';
 
 /**
  * The Product Compare List Component

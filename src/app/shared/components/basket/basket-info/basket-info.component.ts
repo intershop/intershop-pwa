@@ -1,10 +1,10 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 
 /**
  * Displays basket info messages, e.g. if a basket operation has only partly been executed

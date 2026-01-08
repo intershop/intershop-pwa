@@ -1,18 +1,18 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { Price } from 'ish-core/models/price/price.model';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { AsyncPipe, NgIf } from '@angular/common';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
-import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
-import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
-import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { ProductVariationSelectComponent } from 'ish-shared/components/product/product-variation-select/product-variation-select.component';
-import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
+import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
+import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
 import { ProductQuantityLabelComponent } from 'ish-shared/components/product/product-quantity-label/product-quantity-label.component';
+import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
+import { ProductVariationSelectComponent } from 'ish-shared/components/product/product-variation-select/product-variation-select.component';
 
 /**
  * The Line Item Edit Dialog Component displays an edit-dialog of a line items to edit quantity and variation.

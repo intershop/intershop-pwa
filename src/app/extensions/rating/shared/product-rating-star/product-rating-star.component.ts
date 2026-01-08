@@ -1,5 +1,6 @@
 import { NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+
 import { IconModule } from 'ish-core/icon.module';
 
 export type RatingFilledType = 'full' | 'half' | 'empty';

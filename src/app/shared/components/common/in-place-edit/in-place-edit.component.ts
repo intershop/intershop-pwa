@@ -14,9 +14,10 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
-import { IconModule } from 'ish-core/icon.module';
 import { fromEvent } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+
+import { IconModule } from 'ish-core/icon.module';
 
 @Component({
   selector: 'ish-in-place-edit',

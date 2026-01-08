@@ -1,13 +1,13 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { ContentNavigationComponent } from 'ish-shared/cms/components/content-navigation/content-navigation.component';
+import { ContentSlotComponent } from 'ish-shared/cms/components/content-slot/content-slot.component';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
-import { AsyncPipe, NgIf } from '@angular/common';
-import { ContentNavigationComponent } from '../content-navigation/content-navigation.component';
-import { ContentSlotComponent } from '../content-slot/content-slot.component';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 
 /**

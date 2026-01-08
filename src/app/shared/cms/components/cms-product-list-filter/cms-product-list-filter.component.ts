@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -6,7 +7,6 @@ import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
 
 @Component({

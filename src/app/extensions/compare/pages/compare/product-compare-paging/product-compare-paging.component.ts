@@ -1,6 +1,6 @@
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgIf } from '@angular/common';
 
 /**
  * The Product Compare Paging Component

@@ -1,14 +1,14 @@
+import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit, forwardRef } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { IconModule } from 'ish-core/icon.module';
 import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
 import { InjectSingle } from 'ish-core/utils/injection';
-import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { IconModule } from 'ish-core/icon.module';
-import { RouterLink } from '@angular/router';
 
 /**
  * The Sub Category Navigation Component displays second level category navigation.

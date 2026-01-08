@@ -1,10 +1,10 @@
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Requisition } from 'projects/requisition-management/src/app/models/requisition/requisition.model';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Order } from 'ish-core/models/order/order.model';
-import { NgIf } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 
 @Component({

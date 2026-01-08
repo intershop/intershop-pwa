@@ -1,16 +1,16 @@
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { IconModule } from 'ish-core/icon.module';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 import { whenFalsy } from 'ish-core/utils/operators';
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { IconModule } from 'ish-core/icon.module';
 
 /**
  * Displays an add to cart button with an icon or a text label. After clicking the button a loading animation is displayed

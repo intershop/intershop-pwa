@@ -20,7 +20,7 @@ describe('Compare Page Component', () => {
   beforeEach(async () => {
     compareFacade = mock(CompareFacade);
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), ComparePageComponent, MockComponent(ProductCompareListComponent)],
+      imports: [ComparePageComponent, MockComponent(ProductCompareListComponent), TranslateModule.forRoot()],
       providers: [{ provide: CompareFacade, useFactory: () => instance(compareFacade) }],
     }).compileComponents();
   });

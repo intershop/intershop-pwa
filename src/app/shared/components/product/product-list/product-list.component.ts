@@ -1,15 +1,13 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-
-import { TranslateModule } from '@ngx-translate/core';
-
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
-import { ProductItemComponent } from '../product-item/product-item.component';
-import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
+import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 /**
  * The Product List Component displays a list of products.

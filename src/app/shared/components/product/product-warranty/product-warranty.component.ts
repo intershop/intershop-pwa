@@ -1,13 +1,13 @@
+import { AsyncPipe, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable, map, shareReplay, take } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { Warranty } from 'ish-core/models/warranty/warranty.model';
-import { AsyncPipe, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
-import { ProductWarrantyDetailsComponent } from '../product-warranty-details/product-warranty-details.component';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { Warranty } from 'ish-core/models/warranty/warranty.model';
+import { ProductWarrantyDetailsComponent } from 'ish-shared/components/product/product-warranty-details/product-warranty-details.component';
 
 /**
  * The Product Warranty Component displays either a form element (select box or radio buttons), so the user can select a warranty or displays the selected warranty.

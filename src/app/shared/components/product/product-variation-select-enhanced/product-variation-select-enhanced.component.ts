@@ -1,11 +1,11 @@
+import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
-import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'ish-product-variation-select-enhanced',

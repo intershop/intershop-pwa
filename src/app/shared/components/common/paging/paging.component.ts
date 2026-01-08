@@ -1,6 +1,7 @@
 import { NgClass, NgFor, NgIf, ViewportScroller } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { IconModule } from 'ish-core/icon.module';
 
 @Component({
