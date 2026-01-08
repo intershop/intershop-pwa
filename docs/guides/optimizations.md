@@ -34,7 +34,6 @@ The build can be customized in the file [`webpack.custom.ts`](../../templates/we
 If the PWA is built using `production` configuration (either by building with `--configuration=<other>,production` or by building the Docker image with `--build-arg configuration=<other>,production`), the following optimizations are applied:
 
 - Angular CLI [build-optimizer](https://github.com/angular/angular-cli/tree/master/packages/angular_devkit/build_optimizer#angular-build-optimizer)
-- Webpack [SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin/) is instructed to produce only `main`, `vendor`, `polyfills` and one `common` bundle for the code for optimized compression and download of the application.
 - All `data-testing` attributes are removed from the HTML templates to reduce output.
 - [PurgeCSS](https://purgecss.com) is used to remove unused CSS classes from the CSS output.
 
