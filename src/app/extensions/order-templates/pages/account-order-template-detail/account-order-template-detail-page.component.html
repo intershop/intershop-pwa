@@ -45,7 +45,7 @@
         </div>
       </div>
       <div class="list-body">
-        @for (item of orderTemplate.items; track trackByFn(i, item); let i = $index) {
+        @for (item of orderTemplate.items; track item.id; let i = $index) {
         <div class="list-item-row list-item-row-big">
           <ish-account-order-template-detail-line-item
             ishProductContext

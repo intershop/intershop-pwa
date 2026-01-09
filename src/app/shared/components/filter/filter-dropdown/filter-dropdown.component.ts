@@ -31,10 +31,6 @@ export class FilterDropdownComponent implements OnInit {
     this.applyFilter.emit({ searchParameter: facet.searchParameter });
   }
 
-  trackByFn(_: number, item: Facet) {
-    return item.name;
-  }
-
   ngOnInit() {
     this.initPlaceHolder();
   }

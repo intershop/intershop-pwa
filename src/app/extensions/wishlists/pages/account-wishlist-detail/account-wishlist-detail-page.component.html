@@ -62,7 +62,7 @@
     </div>
   </div>
   <div class="list-body">
-    @for (item of wishlist.items; track trackByFn($index, item)) {
+    @for (item of wishlist.items; track item.id) {
     <div class="list-item-row">
       <ish-wishlist-line-item
         ishProductContext

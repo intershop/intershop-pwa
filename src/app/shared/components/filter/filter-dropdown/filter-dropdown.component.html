@@ -11,7 +11,7 @@
   </button>
 
   <div ngbDropdownMenu [attr.aria-labelledby]="'dropdownMenuLink-' + filterElement.id">
-    @for (facet of filterElement.facets; track trackByFn($index, facet)) {
+    @for (facet of filterElement.facets; track facet.name) {
     <button
       ngbDropdownItem
       type="button"

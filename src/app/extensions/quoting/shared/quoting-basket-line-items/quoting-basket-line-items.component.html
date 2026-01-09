@@ -1,4 +1,4 @@
-@for (item of lineItems$ | async; track trackByFn($index, item)) { @if (item[0] !== 'undefined') {
+@for (item of lineItems$ | async; track item[0]) { @if (item[0] !== 'undefined') {
 <div class="d-flex align-items-center justify-content-between flex-wrap">
   <h2>
     {{ 'quote.basket_items.label' | translate : { '0': getName(item[0]) | async } }}

@@ -15,7 +15,7 @@
     <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.total.heading' | translate }}</div>
   </div>
   <div class="list-body">
-    @for (pli of lineItems; track trackByFn($index, pli)) {
+    @for (pli of lineItems; track pli.productSKU) {
     <ish-quote-line-item-list-element
       [lineItem]="pli"
       ishProductContext

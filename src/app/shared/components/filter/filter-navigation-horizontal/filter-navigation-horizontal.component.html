@@ -2,7 +2,7 @@
 
 @if (filterNavigation) {
 <div class="row justify-content-start">
-  @for (element of filterNavigation.filter; track trackByFn($index, element)) {
+  @for (element of filterNavigation.filter; track element.id) {
   <div class="filter-dropdown col-sm-6 col-md-3">
     <ish-filter-dropdown [filterElement]="element" (applyFilter)="applyFilter.emit($event)" />
   </div>
