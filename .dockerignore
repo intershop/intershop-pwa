@@ -28,9 +28,7 @@
 **/*.rej
 **/*.orig
 /dev.bat
-**/playwright-auth-state.json
 **/.lighthouseci/
-**/test-results/
 
 # from dist/.gitignore
 /dist/**/*

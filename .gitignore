@@ -40,7 +40,5 @@ Thumbs.db
 # batch file for personal development purposes
 /dev.bat
 
-# Playwright / Lighthouse auth state & artifacts
-playwright-auth-state.json
+# Lighthouse
 .lighthouseci/
-test-results/

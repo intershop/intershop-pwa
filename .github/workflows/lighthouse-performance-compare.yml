@@ -3,13 +3,14 @@ name: Lighthouse Performance Compare
 on:
   workflow_dispatch:
     inputs:
-      issue-number:
-        description: 'PR number to comment on'
-        required: false
       baseline_branch:
         description: 'Branch to fetch baseline artifacts from'
         required: false
         default: develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   actions: read
@@ -18,186 +19,92 @@ permissions:
 
 jobs:
   lighthouse-performance-compare:
+    name: Lighthouse Performance Compare
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
-          node-version: 22.17.1
+          node-version-file: package.json
           cache: npm
 
       - name: Setup Chrome
-        id: chrome
         uses: browser-actions/setup-chrome@v2
+        id: chrome
         with:
           chrome-version: stable
           install-dependencies: true
 
-      - name: Debug baseline branch resolution
-        run: |
-          echo "event_name=${{ github.event_name }}"
-          echo "ref_name=${{ github.ref_name }}"
-          echo "base_ref=${{ github.base_ref }}"
-          echo "head_ref=${{ github.head_ref }}"
-          echo "inputs.baseline_branch=${{ inputs.baseline_branch }}"
-
-      - name: Configure npm for reliability
-        run: |
-          npm config set fetch-retries 5
-          npm config set fetch-retry-mintimeout 20000
-          npm config set fetch-retry-maxtimeout 120000
-
-      - name: Install deps
+      - name: Install dependencies
         run: npm ci
 
-      - name: Build SSR
-        run: npm run build
+      - name: Run docker compose to start SSR and nginx
+        uses: hoverkraft-tech/compose-action@v2
+        with:
+          compose-file: '.github/lighthouse/docker-compose.yml'
+          up-flags: '--build'
 
-      - name: Run Lighthouse CI (desktop + mobile)
+      - name: Warm up nginx cache
+        run: |
+          sleep 10 # additional wait to ensure docker services are ready
+          urls=$(jq -r '.ci.collect.url[]' .github/lighthouse/configurations/performance-desktop.lighthouserc.json)
+          for url in $urls; do
+            echo "Warming up $url"
+            curl -s "$url" >/dev/null
+          done
+
+      - name: Run Lighthouse CI performance audits (desktop + mobile)
         env:
           LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LHCI_COLLECT__CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
         run: |
-          set -euo pipefail
-          export DISABLE_MOCK_DATA=true
+          echo "Lighthouse CI (desktop)"
+          npx lhci autorun --config=.github/lighthouse/configurations/performance-desktop.lighthouserc.json
+          mv .lighthouseci lighthouse-desktop-current
 
-          # Build nginx image
-          docker build -t intershop-pwa-nginx nginx/
-
-          # Start SSR server
-          npm run start:ssr-dev -- --host 0.0.0.0 &
-          SERVER_PID=$!
-          trap 'echo "Stopping servers"; kill $SERVER_PID' EXIT
-
-          # Wait for SSR server to be ready
-          echo "Waiting for SSR server on port 4200..."
-          for i in {1..180}; do
-            curl -fsS http://localhost:4200/home >/dev/null && break || sleep 1
-          done
-
-          # Start nginx proxy
-          docker run -d --name nginx-ssr \
-            -p 8080:80 \
-            --add-host host.docker.internal:host-gateway \
-            -v $(pwd)/nginx/multi-channel.yaml:/etc/nginx/multi-channel.yaml \
-            -e UPSTREAM_PWA=http://host.docker.internal:4200 \
-            -e MULTI_CHANNEL_SOURCE=file:///etc/nginx/multi-channel.yaml \
-            -e CACHE=0 \
-            intershop-pwa-nginx
-
-          # Wait for nginx to be ready
-          echo "Waiting for nginx on port 8080..."
-          for i in {1..60}; do
-            curl -fsS http://localhost:8080/home >/dev/null && break || sleep 1
-          done
-
-          # Warm up nginx cache for each URL
-          echo "Warming up nginx cache..."
-          urls=$(jq -r '.ci.collect.url[]' .github/lighthouse/performance-desktop.lighthouserc.json)
-          for url in $urls; do
-            echo "Warming up $url"
-            for i in {1..5}; do
-              curl -s "$url" >/dev/null
-            done
-          done
-
-          npx lhci autorun --config=.github/lighthouse/performance-desktop.lighthouserc.json
-          mkdir -p current-desktop && cp -r .lighthouseci/* current-desktop/ || true
-          rm -rf .lighthouseci
-          npx lhci autorun --config=.github/lighthouse/performance-mobile.lighthouserc.json
-          mkdir -p current-mobile && cp -r .lighthouseci/* current-mobile/ || true
-
-      - name: Download baseline desktop artifact
-        uses: dawidd6/action-download-artifact@v6
-        with:
-          workflow: lighthouse-performance-baseline.yml
-          branch: ${{ github.event_name == 'workflow_dispatch' && inputs.baseline_branch || (github.event_name == 'pull_request' && github.base_ref) || github.ref_name }}
-          name: lighthouse-desktop-reports
-          path: baseline-desktop
-          if_no_artifact_found: warn
-
-      - name: Download baseline mobile artifact
-        uses: dawidd6/action-download-artifact@v6
-        with:
-          workflow: lighthouse-performance-baseline.yml
-          branch: ${{ github.event_name == 'workflow_dispatch' && inputs.baseline_branch || (github.event_name == 'pull_request' && github.base_ref) || github.ref_name }}
-          name: lighthouse-mobile-reports
-          path: baseline-mobile
-          if_no_artifact_found: warn
-
-      - name: Fallback download baseline desktop (PR head branch)
-        if: github.event_name == 'pull_request'
-        uses: dawidd6/action-download-artifact@v6
-        with:
-          workflow: lighthouse-performance-baseline.yml
-          branch: ${{ github.head_ref }}
-          name: lighthouse-desktop-reports
-          path: baseline-desktop-fallback
-          if_no_artifact_found: warn
-
-      - name: Fallback download baseline mobile (PR head branch)
-        if: github.event_name == 'pull_request'
-        uses: dawidd6/action-download-artifact@v6
-        with:
-          workflow: lighthouse-performance-baseline.yml
-          branch: ${{ github.head_ref }}
-          name: lighthouse-mobile-reports
-          path: baseline-mobile-fallback
-          if_no_artifact_found: warn
-
-      - name: Normalize baseline folders (prefer base branch, fallback to head)
-        run: |
-          set -euo pipefail
-          has_json() { find "$1" -type f -name 'lhr-*.json' | grep -q .; }
-          if ! has_json baseline-desktop && [ -d baseline-desktop-fallback ]; then
-            mkdir -p baseline-desktop
-            cp -R baseline-desktop-fallback/** baseline-desktop/ 2>/dev/null || true
-          fi
-          if ! has_json baseline-mobile && [ -d baseline-mobile-fallback ]; then
-            mkdir -p baseline-mobile
-            cp -R baseline-mobile-fallback/** baseline-mobile/ 2>/dev/null || true
-          fi
-          echo "::group::Inspect baseline-desktop"; ls -laR baseline-desktop || true; echo "::endgroup::"
-          echo "::group::Inspect baseline-mobile";  ls -laR baseline-mobile  || true; echo "::endgroup::"
-
-      - name: Generate comparison markdown
-        run: |
-          node .github/scripts/lighthouse/lighthouse-performance-compare.js \
-            --aggregate=median \
-            --baseline-desktop baseline-desktop \
-            --current-desktop current-desktop \
-            --baseline-mobile baseline-mobile \
-            --current-mobile current-mobile \
-            --out lighthouse-performance-comparison.md
+          echo "Lighthouse CI (mobile)"
+          npx lhci autorun --config=.github/lighthouse/configurations/performance-mobile.lighthouserc.json
+          mv .lighthouseci lighthouse-mobile-current
 
       - name: Upload current Lighthouse reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: current-lighthouse-reports
+          name: lighthouse-reports-current
           path: |
-            current-desktop/
-            current-mobile/
+            lighthouse-desktop-current
+            lighthouse-mobile-current
           if-no-files-found: warn
 
-      - name: Resolve PR number (by input/commit/run)
-        id: resolve-pr
-        uses: actions/github-script@v7
-        env:
-          ISSUE_NUMBER: ${{ inputs['issue-number'] }}
-          COMPARE_COMMIT: ${{ github.sha }}
-          COMPARE_RUN_NUMBER: ''
+      - name: Download baseline Lighthouse reports
+        uses: dawidd6/action-download-artifact@v12
         with:
-          script: |
-            const run = require('./.github/scripts/lighthouse/resolve-pr.js');
-            return run({ github, context, core });
-          result-encoding: string
+          workflow: lighthouse-performance-baseline.yml
+          branch: ${{ github.event_name == 'workflow_dispatch' && inputs.baseline_branch || github.ref_name }}
+          name: lighthouse-reports-baseline
+          if_no_artifact_found: warn
 
-      - name: Comment results on PR
-        if: ${{ steps.resolve-pr.outputs.result != '' }}
-        uses: peter-evans/create-or-update-comment@v4
+      - name: Generate comparison markdown
+        run: |
+          node .github/lighthouse/scripts/lighthouse-performance-compare.js
+
+          # Write comparison results to GitHub Step Summary
+          cat lighthouse-performance-comparison.md >$GITHUB_STEP_SUMMARY
+
+      - name: Find pull request
+        uses: juliangruber/find-pull-request-action@v1
+        id: find-pull-request
         with:
-          issue-number: ${{ steps.resolve-pr.outputs.result }}
+          branch: ${{ github.ref_name }}
+
+      - name: Comment results on pull request
+        if: ${{ steps.find-pull-request.outputs.number != '' }}
+        uses: peter-evans/create-or-update-comment@v5
+        with:
+          issue-number: ${{ steps.find-pull-request.outputs.number }}
           body-file: lighthouse-performance-comparison.md
