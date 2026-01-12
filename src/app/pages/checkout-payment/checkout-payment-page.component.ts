@@ -97,11 +97,7 @@ export class CheckoutPaymentPageComponent implements OnInit {
 
   private isPaymentRedirectRequired() {
     if (this.basketPayment) {
-      return (
-        this.basketPayment.capabilities?.includes('RedirectBeforeCheckout') &&
-        this.basketPayment.redirectUrl &&
-        this.basketPayment.redirectRequired
-      );
+      return this.basketPayment.capabilities?.includes('RedirectBeforeCheckout') && this.basketPayment.redirectRequired;
     }
   }
 }
