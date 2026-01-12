@@ -28,8 +28,10 @@
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $thescheme;
 
-      {{- if (getenv "CACHE_CLEARER" | strings.ToLower | regexp.Match "on|1|true|yes") }}
+      {{- if (getenv "CACHE" | strings.ToLower | regexp.Match "on|1|true|yes") }}
+      {{- if not (getenv "CACHE_CLEARER" | strings.ToLower | regexp.Match "off|0|false|no") }}
         proxy_cache {{ $channel }};
+      {{- end }}
       {{- end -}}
 
         add_header X-icm-channel {{ $channel }} always;
@@ -81,7 +83,8 @@
       {{- end -}}
 {{- end }}
 
-{{- if (getenv "CACHE_CLEARER" | strings.ToLower | regexp.Match "on|1|true|yes") }}
+{{- if (getenv "CACHE" | strings.ToLower | regexp.Match "on|1|true|yes") }}
+{{- if not (getenv "CACHE_CLEARER" | strings.ToLower | regexp.Match "off|0|false|no") }}
 {{- $channels := dict -}}
 {{- range $domain, $mapping := (ds "domains") }}
   {{- if (has $mapping "channel") }}
@@ -99,6 +102,7 @@
 {{- $uniqueChannels := keys $channels }}
 {{- range $uniqueChannels }}
 proxy_cache_path /tmp/cache/{{ . }} levels=1:2 keys_zone={{ . }}:1m max_size=1g inactive=60m use_temp_path=off;
+{{- end }}
 {{- end }}
 {{- end }}
 
