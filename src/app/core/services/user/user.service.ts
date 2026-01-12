@@ -146,7 +146,7 @@ export class UserService {
               }
             : {
                 type: 'PrivateCustomer',
-                ...body.customer,
+                customerNo: body.customer.customerNo,
                 ...(body.user
                   ? {
                       firstName: body.user.firstName,
@@ -172,7 +172,7 @@ export class UserService {
             captcha: pick(body, ['captcha', 'captchaAction']),
           })
           .pipe(
-            map<void, CustomerUserType>(() => ({ customer: body.customer, user: body.user })),
+            map(() => ({ customer: body.customer, user: body.user })),
             concatMap(customerUser => this.updateCustomerBudgetType(customerUser, body.credentials))
           )
       )
@@ -190,8 +190,8 @@ export class UserService {
     }
 
     const changedUser: object = {
-      type: body.customer.isBusinessCustomer ? 'SMBCustomer' : 'PrivateCustomer',
-      ...body.customer,
+      type: body.customer.isBusinessCustomer ? 'SMBCustomerUser' : 'PrivateCustomer',
+      ...(body.customer.isBusinessCustomer ? {} : { customerNo: body.customer.customerNo }),
       ...body.user,
       preferredInvoiceToAddress: { urn: body.user.preferredInvoiceToAddressUrn },
       preferredShipToAddress: { urn: body.user.preferredShipToAddressUrn },

@@ -27,6 +27,8 @@ describe('User Service', () => {
     id_token: 'DEMO@id-token',
   } as TokenResponse;
 
+  const user = { firstName: 'John', lastName: 'Doe', email: 'john.doe@test.de' } as User;
+
   let userService: UserService;
   let apiServiceMock: ApiService;
   let apiTokenServiceMock: ApiTokenService;
@@ -200,11 +202,29 @@ describe('User Service', () => {
         customer: { customerNo: '4711', isBusinessCustomer: false } as Customer,
         address: {} as Address,
         credentials: { login: 'patricia@test.intershop.de', password: 'xyz' } as Credentials,
-        user: {} as User,
+        user,
       } as CustomerRegistrationType;
 
       userService.createUser(payload).subscribe(() => {
-        verify(apiServiceMock.post('privatecustomers', anything(), anything())).once();
+        const [path, body] = capture(apiServiceMock.post).first();
+        expect(path).toBe('privatecustomers');
+        expect(body).toMatchInlineSnapshot(`
+          {
+            "address": {
+              "mainDivision": undefined,
+            },
+            "credentials": {
+              "login": "patricia@test.intershop.de",
+              "password": "xyz",
+            },
+            "customerNo": "4711",
+            "email": "john.doe@test.de",
+            "firstName": "John",
+            "lastName": "Doe",
+            "preferredLanguage": "en_US",
+            "type": "PrivateCustomer",
+          }
+        `);
         done();
       });
     });
@@ -217,11 +237,34 @@ describe('User Service', () => {
         customer: { customerNo: '4711', isBusinessCustomer: true, budgetPriceType: 'net' } as Customer,
         address: {} as Address,
         credentials: { login: 'pmiller@test.intershop.de', password: 'xyz' } as Credentials,
-        user: {} as User,
+        user,
       } as CustomerRegistrationType;
 
       userService.createUser(payload).subscribe(() => {
-        verify(apiServiceMock.post('customers', anything(), anything())).once();
+        const [path, body] = capture(apiServiceMock.post).first();
+        expect(path).toBe('customers');
+        expect(body).toMatchInlineSnapshot(`
+          {
+            "address": {
+              "mainDivision": undefined,
+            },
+            "budgetPriceType": "net",
+            "credentials": {
+              "login": "pmiller@test.intershop.de",
+              "password": "xyz",
+            },
+            "customerNo": "4711",
+            "isBusinessCustomer": true,
+            "type": "SMBCustomer",
+            "user": {
+              "email": "john.doe@test.de",
+              "firstName": "John",
+              "lastName": "Doe",
+              "preferredLanguage": "en_US",
+            },
+          }
+        `);
+
         verify(apiServiceMock.put('customers/-', anything(), anything())).once();
         done();
       });
@@ -248,11 +291,32 @@ describe('User Service', () => {
     it("should update a individual user when 'updateUser' is called", done => {
       const payload = {
         customer: { customerNo: '4711', isBusinessCustomer: false } as Customer,
-        user: {} as User,
+        user,
       } as CustomerUserType;
 
       userService.updateUser(payload).subscribe(() => {
-        verify(apiServiceMock.put('customers/-', anything(), anything())).once();
+        const [path, body] = capture(apiServiceMock.put).first();
+        expect(path).toBe('customers/-');
+        expect(body).toMatchInlineSnapshot(`
+          {
+            "customerNo": "4711",
+            "email": "john.doe@test.de",
+            "firstName": "John",
+            "lastName": "Doe",
+            "preferredInvoiceToAddress": {
+              "urn": undefined,
+            },
+            "preferredInvoiceToAddressUrn": undefined,
+            "preferredLanguage": "en_US",
+            "preferredPaymentInstrument": {},
+            "preferredPaymentInstrumentId": undefined,
+            "preferredShipToAddress": {
+              "urn": undefined,
+            },
+            "preferredShipToAddressUrn": undefined,
+            "type": "PrivateCustomer",
+          }
+        `);
         done();
       });
     });
@@ -260,11 +324,31 @@ describe('User Service', () => {
     it("should update a business user when 'updateUser' is called", done => {
       const payload = {
         customer: { customerNo: '4711', isBusinessCustomer: true } as Customer,
-        user: {} as User,
+        user,
       } as CustomerUserType;
 
       userService.updateUser(payload).subscribe(() => {
-        verify(apiServiceMock.put('customers/-/users/-', anything(), anything())).once();
+        const [path, body] = capture(apiServiceMock.put).first();
+        expect(path).toBe('customers/-/users/-');
+        expect(body).toMatchInlineSnapshot(`
+          {
+            "email": "john.doe@test.de",
+            "firstName": "John",
+            "lastName": "Doe",
+            "preferredInvoiceToAddress": {
+              "urn": undefined,
+            },
+            "preferredInvoiceToAddressUrn": undefined,
+            "preferredLanguage": "en_US",
+            "preferredPaymentInstrument": {},
+            "preferredPaymentInstrumentId": undefined,
+            "preferredShipToAddress": {
+              "urn": undefined,
+            },
+            "preferredShipToAddressUrn": undefined,
+            "type": "SMBCustomerUser",
+          }
+        `);
         done();
       });
     });
