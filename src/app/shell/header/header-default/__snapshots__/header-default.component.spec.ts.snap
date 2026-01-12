@@ -17,8 +17,11 @@ exports[`Header Default Component should render normal header adequately for des
       tabindex="-1"
       aria-label="search.searchbox.button.sticky_header.aria_label"
     ></a>
-    <div class="language-switch-container d-none d-md-block">
-      <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
+    <div class="language-switch-container">
+      <ish-language-switch
+        data-testing-id="language-switch-desktop"
+        ng-reflect-device-type="desktop"
+      ></ish-language-switch>
     </div>
     <ish-mini-basket
       data-testing-id="mini-basket-desktop"
@@ -97,8 +100,11 @@ exports[`Header Default Component should render normal header adequately for mob
         ng-reflect-device-type="mobile"
       ></ish-search-box>
     </div>
-    <div class="language-switch-container d-none d-md-block">
-      <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
+    <div class="language-switch-container">
+      <ish-language-switch
+        data-testing-id="language-switch-desktop"
+        ng-reflect-device-type="mobile"
+      ></ish-language-switch>
     </div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
     ><ish-mini-basket
@@ -166,8 +172,11 @@ exports[`Header Default Component should render normal header adequately for tab
       tabindex="-1"
       aria-label="search.searchbox.button.sticky_header.aria_label"
     ></a>
-    <div class="language-switch-container d-none d-md-block">
-      <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
+    <div class="language-switch-container">
+      <ish-language-switch
+        data-testing-id="language-switch-desktop"
+        ng-reflect-device-type="tablet"
+      ></ish-language-switch>
     </div>
     <ish-mini-basket
       data-testing-id="mini-basket-desktop"
@@ -234,7 +243,7 @@ exports[`Header Default Component should render sticky header adequately for des
       aria-label="search.searchbox.button.sticky_header.aria_label"
       ><fa-icon class="header-icon" ng-reflect-icon="fas,search"></fa-icon
     ></a>
-    <div class="language-switch-container d-none d-md-block"></div>
+    <div class="language-switch-container"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
     ><ish-mini-basket
       data-testing-id="mini-basket-desktop"
@@ -307,7 +316,7 @@ exports[`Header Default Component should render sticky header adequately for mob
         ng-reflect-device-type="mobile"
       ></ish-search-box>
     </div>
-    <div class="language-switch-container d-none d-md-block"></div>
+    <div class="language-switch-container"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
     ><ish-mini-basket
       data-testing-id="mini-basket-desktop"
@@ -367,7 +376,7 @@ exports[`Header Default Component should render sticky header adequately for tab
       aria-label="search.searchbox.button.sticky_header.aria_label"
       ><fa-icon class="header-icon" ng-reflect-icon="fas,search"></fa-icon
     ></a>
-    <div class="language-switch-container d-none d-md-block"></div>
+    <div class="language-switch-container"></div>
     <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
     ><ish-mini-basket
       data-testing-id="mini-basket-desktop"

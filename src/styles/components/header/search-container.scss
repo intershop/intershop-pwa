@@ -338,6 +338,7 @@
     &.header-search-container {
       @include media-breakpoint-down(md) {
         top: $header-height-mobile;
+        z-index: 9000;
         width: 100%;
         padding: 0;
       }

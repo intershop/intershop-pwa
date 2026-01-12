@@ -1,84 +1,52 @@
 .language-switch {
-  margin-left: ($space-default * 2);
   font-family: $font-family-bold;
   font-size: $font-size-sm;
 
   .dropdown-menu {
     position: absolute;
-    min-width: 50px;
   }
 
   .language-switch-button {
-    //mobile
-    padding: 0;
-    margin: 13px 0 $space-default -1px;
+    padding: 0 3px;
+    margin: 13px 6px $space-default 0;
     font-family: $font-family-bold;
     font-size: 12px;
     text-transform: uppercase;
     cursor: pointer;
-  }
 
-  //language selector not as accordion
-  &:not(.accordion) {
-    .language-switch-button {
+    @media (min-width: $screen-sm-min) {
       display: block;
       padding: ($space-default * 0.5) $space-default 9px ($space-default * 0.5);
       margin: 2px 0 0;
       color: $text-color-quinary !important;
     }
-
-    .language-switch-menu-container {
-      padding: 15px;
-      margin: -15px;
-    }
-
-    .language-switch-container {
-      left: 0 !important;
-      z-index: 9999;
-      padding: divide($space-default * 2, 3) $space-default;
-      background: $color-inverse;
-      box-shadow: 0 4px 3px 0 rgb(0 0 0 / 0.2);
-
-      ul {
-        padding-left: 0;
-        margin-bottom: 0;
-        list-style: none;
-
-        li {
-          font-family: $font-family-regular;
-          font-size: $font-size-corporate;
-          line-height: ($line-height-base * 1.5);
-
-          a:hover {
-            color: $CORPORATE-SECONDARY;
-          }
-        }
-      }
-    }
   }
 
-  //language selector as accordion
-  &.accordion {
-    margin-left: 0;
+  .language-switch-menu-container {
+    padding: 15px;
+    margin: -15px;
+  }
 
-    .language-switch-container {
-      position: relative;
-      top: 0 !important;
-      left: 0 !important;
-      width: 100%;
-      padding-top: 0;
-      margin-top: 0;
+  .language-switch-container {
+    left: 0 !important;
+    z-index: 9999;
+    padding: divide($space-default * 2, 3) $space-default;
+    background: $color-inverse;
+    box-shadow: 0 4px 3px 0 rgb(0 0 0 / 0.2);
 
-      ul {
-        list-style: none;
-      }
+    ul {
+      padding-left: 0;
+      margin-bottom: 0;
+      list-style: none;
 
       li {
-        line-height: 25px;
-      }
+        font-family: $font-family-regular;
+        font-size: $font-size-corporate;
+        line-height: ($line-height-base * 1.5);
 
-      a {
-        font-size: 12px;
+        a:hover {
+          color: $CORPORATE-SECONDARY;
+        }
       }
     }
   }

@@ -55,6 +55,9 @@ The `logoutUserSuccess` action is now designated as API-specific and should only
 For resetting user-related state without API calls (e.g., forced logout or session cleanup), use the new `resetUserData` action instead.
 This ensures clearer separation between API events and state management.
 
+The language switch component has been moved from the mobile user information dropdown to the main header navigation for better accessibility and user experience.
+Accordingly, the language switch accordion view and its associated component input variable have been removed.
+
 ## From 9.0.0 to 9.1.0
 
 Catalogs (root-level categories in ICM terminology) with _Show In Menu_ being disabled are now hidden from the main header navigation.
