@@ -16,6 +16,7 @@ kb_sync_latest_only
 - [Deviation from Standard Angular Test Frameworks](#deviation-from-standard-angular-test-frameworks)
 - [PageObject Pattern](#pageobject-pattern)
 - [Handling Test Data](#handling-test-data)
+- [Further Help](#further-help)
 
 ## Different Levels of Testing
 
@@ -118,3 +119,7 @@ If the supplied test cases should be reused for projects, the test data has to b
 The end-to-end tests have to be adapted as well.
 Styling and structural changes have to be handled in the _PageObjects_, which are then used across all Specs.
 If behavior of the customization differs from the blueprint store, the Specs have to be adapted as well.
+
+## Further Help
+
+The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video about [PWA Testing](https://public.academy.intershop.com/plus/catalog/courses/393).

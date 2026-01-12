@@ -30,6 +30,9 @@ For more information refer to:
 - [Angular - Internationalization (i18n)](https://angular.io/guide/i18n)
 - [ng-bootstrap Angular 9 support](https://github.com/ng-bootstrap/ng-bootstrap/issues/3537#issuecomment-586472803)
 
+> [!TIP]
+> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video [how to do localization in ICM and PWA](https://public.academy.intershop.com/plus/catalog/courses/459).
+
 ## Usage Examples
 
 Although ngx-translate provides pipe and directive to localize texts, we want to use a pipe-only approach.
@@ -162,7 +165,7 @@ Usage in HTML:
 <span [innerHTML]="'common.header.contact_no.text' | translate"></span>
 ```
 
-> [!WARNING]  
+> [!WARNING]
 > Be aware to HTML encode possibly malicious HTML code since the `[innerHTML]` value will not automatically be sanitized.
 > This is especially important if non validated user input is rendered directly.
 > To HTML encode content we provide the `htmlEncode` pipe.

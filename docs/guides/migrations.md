@@ -130,6 +130,9 @@ The PayPal payment integration via [Intershop PayPal Complete Payments Service C
 The PayPal integration is enabled in the PWA via ICM backend configuration.
 For more details, see [Guide - PayPal](./paypal.md).
 
+> [!TIP]
+> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video [how to migrate from version 8.0.0 to version 9.0.0](https://public.academy.intershop.com/plus/catalog/courses/454).
+
 ## From 7.1.0 to 8.0.0
 
 The Intershop PWA now uses Node.js 22.17.1 LTS with the corresponding npm version 10.9.2.
@@ -207,6 +210,9 @@ To address token handling issues that occurred in Hybrid Approach scenarios, the
 The easiest way to migrate is to provide an empty object as parameter, e.g., `loadUserByAPIToken({})`.
 To actually fix the Hybrid Approach token handling issues, the `apiToken` that is used to initialize the token handling is now provided with `loadUserByAPIToken({ apiToken: cookie.apiToken })` in the `restore$` functionality of the `ApiTokenService`.
 The provided `apiToken` is now also used in the `getBasketByToken` method of the `BasketService` and the `getOrderByToken` method of the `OrderService` to initialize the token handling correctly by fetching new tokens from ICM in these cases too.
+
+> [!TIP]
+> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video [how to migrate from version 7.0.0 to version 8.0.0](https://public.academy.intershop.com/plus/catalog/courses/452).
 
 ## From 7.0.0 to 7.1.0
 
