@@ -342,6 +342,7 @@ You can use the `CACHE_CLEARER_POLL_INTERVAL` environment variable to adjust the
 When the ICM page cache is invalidated, the cache clearer script notices the new page cache ID and deletes the cached files for the invalidated site (channel).
 In addition, cached REST calls configured with `CACHE_ICM_CALLS` are cleared by triggering a `PURGE` request to the SSR server.
 In Kubernetes deployments, the script discovers the SSR pods with the Endpoints REST API and sends a purge request to each pod.
+If `ICM_BASE_URL_SSR` is set, the Kubernetes internal backend request routing is used for the polling instead of the `ICM_BASE_URL`.
 
 Prerequisites for using this feature:
 
