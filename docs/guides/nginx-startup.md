@@ -334,7 +334,8 @@ The value supplied must be in the `time` format that is supported by [NGINX prox
 
 ### Cache Clearing
 
-Setting `CACHE_CLEARER` to `on` creates separate NGINX cache paths for each channel configured in the `MULTI_CHANNEL` configuration by adding separate `proxy_cache_path` and `proxy_cache` directives for each channel location.
+Cache clearing is **enabled by default** when the `CACHE` feature is active (that is, when `CACHE` is set to `on`, `1`, `true` or `yes`) and creates separate NGINX cache paths for each channel configured in the `MULTI_CHANNEL` configuration by adding separate `proxy_cache_path` and `proxy_cache` directives for each channel location.
+To disable cache clearing, either disable caching entirely by setting `CACHE` to `off`, or keep caching enabled but turn off cache clearing explicitly by setting `CACHE_CLEARER` to `off`.
 The `cache_clearer.sh` script is started to monitor ICM page cache information by polling the `$ICM_BASE_URL/INTERSHOP/wastatistics` every 15 seconds.
 You can use the `CACHE_CLEARER_POLL_INTERVAL` environment variable to adjust the polling interval.
 When the ICM page cache is invalidated, the cache clearer script notices the new page cache ID and deletes the cached files for the invalidated site (channel).
