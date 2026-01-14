@@ -1,5 +1,5 @@
 # synchronize-marker:docker-cache-share:begin
-FROM node:22.17.1-alpine AS buildstep
+FROM node:22.22.0-alpine AS buildstep
 ENV CI=true
 WORKDIR /workspace
 COPY package.json package-lock.json /workspace/
@@ -27,7 +27,7 @@ RUN npm run build:multi server
 RUN node scripts/compile-docker-scripts
 COPY dist/* /workspace/dist/
 
-FROM node:22.17.1-alpine
+FROM node:22.22.0-alpine
 RUN apk add --no-cache tini
 COPY --from=buildstep /workspace/dist /dist
 RUN cd dist && npm install
