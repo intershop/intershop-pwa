@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: 22.17.1
+  NODE_VERSION: 22.22.0
 
 jobs:
   AutomatedUpdate:
@@ -32,7 +32,7 @@ jobs:
         with:
           ref: develop
 
-      - name: Use Node.js 22
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}

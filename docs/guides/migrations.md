@@ -9,6 +9,8 @@ kb_sync_latest_only
 
 ## From 9.1.0 to 10.0.0
 
+The Intershop PWA now uses Node.js 22.22.0 LTS with the corresponding npm version 10.9.4.
+
 With Intershop PWA 10.0.0, the SCSS variables were cleaned up.
 Hard-coded color codes were removed and replaced with the appropriate variables.
 Color variables are used in the appropriate places, and the gray color scale was adjusted.
