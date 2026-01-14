@@ -1,5 +1,6 @@
 {
   "GHSA-58c5-g7wp-6w37": "Ignored since there probably won't be a fix for Angular 16",
   "GHSA-v4hv-rgfq-gp49": "Ignored since there probably won't be a fix for Angular 16",
-  "GHSA-68x2-mx4q-78m7": "Ignored since there probably won't be a fix for Angular 16"
+  "GHSA-68x2-mx4q-78m7": "Ignored since there probably won't be a fix for Angular 16",
+  "GHSA-jrmj-c5cx-3cw6": "Ignored since there probably won't be a fix for Angular 16"
 }
