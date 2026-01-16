@@ -104,6 +104,7 @@ export interface ProductContext {
   label: string;
   categoryId: string;
   displayProperties: Partial<ProductContextDisplayProperties>;
+  inventory: ProductInventory;
 
   // lazy
   links: ProductLinksDictionary;
@@ -112,7 +113,6 @@ export interface ProductContext {
   variations: VariationProduct[];
   variationCount: number;
   productMaster: VariationProductMaster;
-  inventory: ProductInventory;
 
   // quantity
   quantity: number;
@@ -323,8 +323,13 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     this.connect(
       'hasProductError',
       this.select('product').pipe(
-        map(product => !!product && (!!product.failed || !product.available)),
-        distinctUntilChanged()
+        distinctUntilChanged(),
+        switchMap(product =>
+          this.select('inventory').pipe(
+            map(inventory => !!product && (!!product.failed || !inventory?.inStock)),
+            distinctUntilChanged()
+          )
+        )
       )
     );
 

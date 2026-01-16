@@ -7,37 +7,12 @@ describe('Product Inventory Mapper', () => {
         ProductInventoryMapper.fromData({
           sku: 'abc',
           inStock: true,
-          stockLevel: { value: 100 },
           availableStock: 50,
-          availability: true,
-          availabilityMessage: 'Available now',
         })
       ).toMatchInlineSnapshot(`
         {
-          "availability": true,
-          "availabilityMessage": "Available now",
-          "availableStock": 100,
+          "availableStock": 50,
           "inStock": true,
-          "sku": "abc",
-        }
-      `);
-    });
-
-    it('should fallback to availableStock when stockLevel is not provided', () => {
-      expect(
-        ProductInventoryMapper.fromData({
-          sku: 'abc',
-          inStock: false,
-          availableStock: 25,
-          availability: false,
-          availabilityMessage: 'Out of stock',
-        })
-      ).toMatchInlineSnapshot(`
-        {
-          "availability": false,
-          "availabilityMessage": "Out of stock",
-          "availableStock": 25,
-          "inStock": false,
           "sku": "abc",
         }
       `);
@@ -55,8 +30,6 @@ describe('Product Inventory Mapper', () => {
         })
       ).toMatchInlineSnapshot(`
         {
-          "availability": undefined,
-          "availabilityMessage": undefined,
           "availableStock": undefined,
           "inStock": true,
           "sku": "xyz",

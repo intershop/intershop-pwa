@@ -5,6 +5,7 @@ import { anything, instance, mock, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
 import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
@@ -51,8 +52,9 @@ describe('Product Links List Component', () => {
   });
 
   it('should render only available products  if stocks filtering is on', () => {
-    when(shoppingFacade.product$(anything(), anything())).thenCall(sku =>
-      of({ sku, available: sku !== 'sku2' } as ProductView)
+    when(shoppingFacade.product$(anything(), anything())).thenCall(sku => of({ sku } as ProductView));
+    when(shoppingFacade.productInventory$(anything())).thenCall(sku =>
+      of({ sku, inStock: sku !== 'sku2' } as ProductInventory)
     );
 
     component.displayOnlyAvailableProducts = true;

@@ -186,9 +186,6 @@ export class ProductHelper {
     product = {
       ...newProduct,
       ...product,
-      // list of product properties that should be updated
-      available: newProduct.available ?? product.available,
-      availableStock: newProduct.availableStock ?? product.availableStock,
     };
     return product as AllProductTypes;
   }

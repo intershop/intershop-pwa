@@ -22,7 +22,7 @@ import { ProductCompletenessLevel } from 'ish-core/models/product/product.helper
 })
 export class ProductLinksListComponent implements OnChanges {
   /**
-   * list of products which are assigned to the specific product link type
+   * list of product SKUs which are assigned to the specific product link type
    */
   @Input({ required: true }) links: ProductLinks;
   /**
@@ -41,8 +41,13 @@ export class ProductLinksListComponent implements OnChanges {
   ngOnChanges() {
     this.productSKUs$ = this.displayOnlyAvailableProducts
       ? combineLatest(
-          this.links.products.map(sku => this.shoppingFacade.product$(sku, ProductCompletenessLevel.List))
-        ).pipe(map(products => products.filter(p => p.available).map(p => p.sku)))
+          this.links.products.map(sku =>
+            combineLatest([
+              this.shoppingFacade.product$(sku, ProductCompletenessLevel.List),
+              this.shoppingFacade.productInventory$(sku),
+            ]).pipe(map(([_, inventory]) => ({ sku, available: inventory?.inStock ?? false })))
+          )
+        ).pipe(map(results => results.filter(r => r.available).map(r => r.sku)))
       : of(this.links.products);
   }
 }

@@ -1,5 +1,5 @@
 <div *ngIf="visible$ | async" class="product-availability">
-  <ng-container *ngIf="available$ | async; else outOfStock">
+  <ng-container *ngIf="(available$ | async) !== false; else outOfStock">
     <span class="product-in-stock">
       {{ 'product.instock.text' | translate }}
       <ng-container *ngIf="availableStock$ | async as stock" class="availableStock">({{ stock }})</ng-container>

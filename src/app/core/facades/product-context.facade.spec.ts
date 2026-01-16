@@ -39,9 +39,7 @@ describe('Product Context Facade', () => {
     shoppingFacade = mock(ShoppingFacade);
     when(shoppingFacade.category$(anything())).thenReturn(of(undefined));
     when(shoppingFacade.productVariationCount$(anything())).thenReturn(of(undefined));
-    when(shoppingFacade.productInventory$(anything())).thenReturn(
-      of({ sku: '123', inStock: true } as ProductInventory)
-    );
+    when(shoppingFacade.productInventory$(anything())).thenReturn(of(undefined));
 
     const appFacade = mock(AppFacade);
     when(appFacade.serverSetting$(anything())).thenReturn(of(undefined));
@@ -94,14 +92,12 @@ describe('Product Context Facade', () => {
         minOrderQuantity: 10,
         maxOrderQuantity: 100,
         stepQuantity: 10,
-        available: false,
         readyForShipmentMin: 0,
         readyForShipmentMax: 2,
       } as ProductView;
 
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
-
-      when(shoppingFacade.productInventory$(anything())).thenReturn(of(undefined));
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: false } as ProductInventory));
       context.set('sku', () => '123');
     });
 
@@ -115,6 +111,9 @@ describe('Product Context Facade', () => {
           "children": {},
           "hasProductError": true,
           "hasQuantityError": false,
+          "inventory": {
+            "inStock": false,
+          },
           "label": null,
           "loading": false,
           "maxQuantity": 100,
@@ -133,11 +132,11 @@ describe('Product Context Facade', () => {
     it('should set correct display properties for out-of-stock product', () => {
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
         {
-          "addToBasket": false,
+          "addToBasket": true,
           "addToCompare": true,
           "addToNotification": true,
-          "addToOrderTemplate": false,
-          "addToQuote": false,
+          "addToOrderTemplate": true,
+          "addToQuote": true,
           "addToWishlist": true,
           "bundleParts": false,
           "description": true,
@@ -145,10 +144,10 @@ describe('Product Context Facade', () => {
           "name": true,
           "price": true,
           "promotions": true,
-          "quantity": false,
+          "quantity": true,
           "readOnly": undefined,
           "retailSetParts": false,
-          "shipment": false,
+          "shipment": true,
           "sku": true,
           "variations": false,
         }
@@ -166,13 +165,12 @@ describe('Product Context Facade', () => {
         minOrderQuantity: 10,
         maxOrderQuantity: 100,
         stepQuantity: 10,
-        available: true,
         readyForShipmentMin: 0,
         readyForShipmentMax: 2,
       } as ProductView;
 
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
-
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
       context.set('sku', () => '123');
     });
 
@@ -186,6 +184,9 @@ describe('Product Context Facade', () => {
           "children": {},
           "hasProductError": false,
           "hasQuantityError": false,
+          "inventory": {
+            "inStock": true,
+          },
           "label": null,
           "loading": false,
           "maxQuantity": 100,
@@ -502,7 +503,6 @@ describe('Product Context Facade', () => {
           minOrderQuantity: 1,
           maxOrderQuantity: 100,
           type: 'RetailSet',
-          available: true,
         } as ProductView)
       );
       when(shoppingFacade.productParts$(anything())).thenReturn(
@@ -511,6 +511,7 @@ describe('Product Context Facade', () => {
           { sku: 'p2', quantity: 1 },
         ])
       );
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
       context.set('sku', () => '123');
     });
 
@@ -547,10 +548,10 @@ describe('Product Context Facade', () => {
           "name": true,
           "price": true,
           "promotions": true,
-          "quantity": false,
+          "quantity": true,
           "readOnly": undefined,
           "retailSetParts": true,
-          "shipment": false,
+          "shipment": true,
           "sku": true,
           "variations": false,
         }
@@ -571,7 +572,6 @@ describe('Product Context Facade', () => {
           minOrderQuantity: 1,
           maxOrderQuantity: 100,
           type: 'Bundle',
-          available: true,
           readyForShipmentMin: 0,
           readyForShipmentMax: 2,
         } as ProductView)
@@ -583,6 +583,7 @@ describe('Product Context Facade', () => {
         ])
       );
       context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
       context.set('sku', () => '123');
     });
 
@@ -640,12 +641,11 @@ describe('Product Context Facade', () => {
         minOrderQuantity: 1,
         maxOrderQuantity: 100,
         type: 'VariationProduct',
-        available: true,
         readyForShipmentMin: 0,
         readyForShipmentMax: 2,
       } as ProductView;
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
-
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
       context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
       context.set('sku', () => '123');
     });
@@ -685,11 +685,10 @@ describe('Product Context Facade', () => {
         completenessLevel: ProductCompletenessLevel.Detail,
         minOrderQuantity: 1,
         maxOrderQuantity: 100,
-        available: true,
         type: 'VariationProductMaster',
       } as ProductView;
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
-
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
       context.set('sku', () => '123');
     });
 
@@ -726,16 +725,15 @@ describe('Product Context Facade', () => {
       product = {
         sku: '123',
         completenessLevel: ProductCompletenessLevel.Detail,
-        available: true,
       } as ProductView;
 
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
-
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
       context.set('sku', () => '123');
     });
 
     it('should set "addToBasket" to "false" for a product without a price', () => {
-      expect(context.get('displayProperties', 'addToBasket')).toMatchInlineSnapshot(`false`);
+      expect(context.get('displayProperties', 'addToBasket')).toMatchInlineSnapshot(`true`);
     });
 
     it('should set "addToBasket" to "true" for a product with price', () => {
@@ -749,11 +747,10 @@ describe('Product Context Facade', () => {
           sku: '456',
           completenessLevel: ProductCompletenessLevel.Detail,
           type: 'RetailSet',
-          available: true,
         } as ProductView)
       );
       context.set('sku', () => '456');
-
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
       expect(context.get('displayProperties', 'addToBasket')).toMatchInlineSnapshot(`true`);
     });
   });
@@ -824,13 +821,12 @@ describe('Product Context Facade', () => {
         minOrderQuantity: 10,
         maxOrderQuantity: 100,
         stepQuantity: 10,
-        available: true,
         readyForShipmentMin: 0,
         readyForShipmentMax: 2,
       } as ProductView;
 
       when(shoppingFacade.product$(anyString(), anything())).thenCall(sku => of({ ...product, sku }));
-
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
       const appFacade = mock(AppFacade);
       when(appFacade.serverSetting$(anything())).thenReturn(of(undefined));
 

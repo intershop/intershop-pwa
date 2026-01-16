@@ -13,9 +13,7 @@ export class ProductInventoryMapper {
     return {
       sku: data.sku,
       inStock: data.inStock,
-      availableStock: data.stockLevel?.value ?? data.availableStock,
-      availability: data.availability,
-      availabilityMessage: data.availabilityMessage,
+      availableStock: data.availableStock,
     };
   }
 }

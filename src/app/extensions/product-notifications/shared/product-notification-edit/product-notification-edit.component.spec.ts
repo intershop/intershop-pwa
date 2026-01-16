@@ -7,6 +7,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
 
 import { ProductNotificationEditDialogComponent } from '../product-notification-edit-dialog/product-notification-edit-dialog.component';
 
@@ -74,7 +75,7 @@ describe('Product Notification Edit Component', () => {
   });
 
   it('should display price notification localization button text if the product is available', () => {
-    when(context.select('product', 'available')).thenReturn(of(true));
+    when(context.select('inventory')).thenReturn(of({ inStock: true } as ProductInventory));
     when(context.select('displayProperties', 'addToNotification')).thenReturn(of(true));
     component.displayType = 'button';
     fixture.detectChanges();
@@ -82,7 +83,7 @@ describe('Product Notification Edit Component', () => {
   });
 
   it('should display stock notification localization button text if the product is not available', () => {
-    when(context.select('product', 'available')).thenReturn(of(false));
+    when(context.select('inventory')).thenReturn(of({ inStock: false } as ProductInventory));
     when(context.select('displayProperties', 'addToNotification')).thenReturn(of(true));
     component.displayType = 'button';
     fixture.detectChanges();

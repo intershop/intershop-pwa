@@ -45,8 +45,10 @@ export class ProductNotificationEditComponent implements OnInit {
   // keep-localization-pattern: ^product\.notification\..*\.notification\.button.*
   buttonKey(key: string): Observable<string> {
     return this.context
-      .select('product', 'available')
-      .pipe(map(available => `product.notification.${available ? 'price' : 'stock'}.notification.button.${key}`));
+      .select('inventory')
+      .pipe(
+        map(inventory => `product.notification.${inventory?.inStock ? 'price' : 'stock'}.notification.button.${key}`)
+      );
   }
 
   // if the user is not logged in display login dialog, else open notification dialog

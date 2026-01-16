@@ -17,6 +17,7 @@ describe('Product Inventory Component', () => {
   beforeEach(async () => {
     context = mock(ProductContextFacade);
     when(context.select('displayProperties', 'inventory')).thenReturn(of(true));
+    when(context.select('inventory', 'availableStock')).thenReturn(of(-1));
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],

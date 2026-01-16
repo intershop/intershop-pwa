@@ -177,9 +177,7 @@ export class ShoppingFacade {
   productInventory$(sku: string | Observable<string>) {
     return toObservable(sku).pipe(
       whenTruthy(),
-      switchMap(plainSKU =>
-        this.store.pipe(select(getProductInventory(plainSKU)), distinctUntilChanged(), whenTruthy())
-      )
+      switchMap(plainSKU => this.store.pipe(select(getProductInventory(plainSKU)), distinctUntilChanged()))
     );
   }
 

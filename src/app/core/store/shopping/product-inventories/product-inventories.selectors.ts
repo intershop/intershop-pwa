@@ -11,6 +11,9 @@ const getProductInventoryState = createSelector(getShoppingState, (state: Shoppi
 
 const { selectEntities } = productInventoryAdapter.getSelectors(getProductInventoryState);
 
+export const { selectEntities: getProductInventoryEntities } =
+  productInventoryAdapter.getSelectors(getProductInventoryState);
+
 export const getProductInventory = (sku: string) =>
   createSelectorFactory<object, ProductInventory>(projector => resultMemoize(projector, isEqual))(
     selectEntities,

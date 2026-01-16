@@ -83,7 +83,6 @@ describe('Products Selectors', () => {
           completenessLevel: ProductCompletenessLevel.Detail,
           manufacturer: 'Microsoft',
           name: 'Updated product',
-          available: false,
         } as Product;
         store$.dispatch(loadProductSuccess({ product: newProd }));
 
@@ -98,12 +97,11 @@ describe('Products Selectors', () => {
           completenessLevel: ProductCompletenessLevel.List,
           manufacturer: 'Microsoft',
           name: 'Updated product',
-          available: false,
         } as Product;
         store$.dispatch(loadProductSuccess({ product: newProd }));
 
         expect(getProductEntities(store$.state)).toEqual({
-          [prod.sku]: { ...prod, available: false, manufacturer: 'Microsoft', availableStock: undefined },
+          [prod.sku]: { ...prod, manufacturer: 'Microsoft' },
         });
       });
     });
