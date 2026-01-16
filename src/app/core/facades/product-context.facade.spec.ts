@@ -132,11 +132,11 @@ describe('Product Context Facade', () => {
     it('should set correct display properties for out-of-stock product', () => {
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
         {
-          "addToBasket": true,
+          "addToBasket": false,
           "addToCompare": true,
           "addToNotification": true,
-          "addToOrderTemplate": true,
-          "addToQuote": true,
+          "addToOrderTemplate": false,
+          "addToQuote": false,
           "addToWishlist": true,
           "bundleParts": false,
           "description": true,
@@ -144,10 +144,10 @@ describe('Product Context Facade', () => {
           "name": true,
           "price": true,
           "promotions": true,
-          "quantity": true,
+          "quantity": false,
           "readOnly": undefined,
           "retailSetParts": false,
-          "shipment": true,
+          "shipment": false,
           "sku": true,
           "variations": false,
         }
@@ -548,10 +548,10 @@ describe('Product Context Facade', () => {
           "name": true,
           "price": true,
           "promotions": true,
-          "quantity": true,
+          "quantity": false,
           "readOnly": undefined,
           "retailSetParts": true,
-          "shipment": true,
+          "shipment": false,
           "sku": true,
           "variations": false,
         }
@@ -733,7 +733,7 @@ describe('Product Context Facade', () => {
     });
 
     it('should set "addToBasket" to "false" for a product without a price', () => {
-      expect(context.get('displayProperties', 'addToBasket')).toMatchInlineSnapshot(`true`);
+      expect(context.get('displayProperties', 'addToBasket')).toMatchInlineSnapshot(`false`);
     });
 
     it('should set "addToBasket" to "true" for a product with price', () => {
@@ -766,7 +766,7 @@ describe('Product Context Facade', () => {
 
     class ProviderA implements ExternalDisplayPropertiesProvider {
       setup(
-        context$: Observable<Pick<ProductContext, 'product' | 'prices'>>
+        context$: Observable<Pick<ProductContext, 'product' | 'prices' | 'inventory'>>
       ): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return context$.pipe(
           map(({ product }) =>
@@ -786,7 +786,7 @@ describe('Product Context Facade', () => {
 
     class ProviderB implements ExternalDisplayPropertiesProvider {
       setup(
-        context$: Observable<Pick<ProductContext, 'product' | 'prices'>>
+        context$: Observable<Pick<ProductContext, 'product' | 'prices' | 'inventory'>>
       ): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return context$.pipe(
           map(() => ({
@@ -799,7 +799,7 @@ describe('Product Context Facade', () => {
 
     class ProviderC implements ExternalDisplayPropertiesProvider {
       setup(
-        context$: Observable<Pick<ProductContext, 'product' | 'prices'>>
+        context$: Observable<Pick<ProductContext, 'product' | 'prices' | 'inventory'>>
       ): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return context$.pipe(
           switchMap(() => someOther$),

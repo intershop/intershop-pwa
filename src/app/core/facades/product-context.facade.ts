@@ -85,7 +85,7 @@ const defaultDisplayProperties: ProductContextDisplayProperties<true | undefined
 
 export interface ExternalDisplayPropertiesProvider {
   setup(
-    context$: Observable<Pick<ProductContext, 'product' | 'prices'>>
+    context$: Observable<Pick<ProductContext, 'product' | 'prices' | 'inventory'>>
   ): Observable<Partial<ProductContextDisplayProperties<false>>>;
 }
 
@@ -370,7 +370,7 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     ].map(edp =>
       edp.setup(
         this.select().pipe(
-          map(context => pick(context, 'product', 'prices')),
+          map(context => pick(context, 'product', 'prices', 'inventory')),
           distinctUntilChanged(isEqual)
         )
       )
