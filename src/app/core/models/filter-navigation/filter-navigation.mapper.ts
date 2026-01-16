@@ -12,10 +12,10 @@ import { FilterNavigation } from './filter-navigation.model';
 @Injectable({ providedIn: 'root' })
 export class FilterNavigationMapper {
   private icmStaticURL: string;
-  private currentLocale: string;
+  private currentLocale = '-';
   constructor(store: Store) {
     store.pipe(select(getICMStaticURL)).subscribe(url => (this.icmStaticURL = url));
-    store.pipe(select(getCurrentLocale)).subscribe(locale => (this.currentLocale = locale));
+    store.pipe(select(getCurrentLocale)).subscribe(locale => (this.currentLocale = locale || '-'));
   }
 
   fromData(data: FilterNavigationData): FilterNavigation {

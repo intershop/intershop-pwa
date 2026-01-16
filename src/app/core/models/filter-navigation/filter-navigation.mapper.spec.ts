@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
-import { getICMStaticURL } from 'ish-core/store/core/configuration';
+import { getCurrentLocale, getICMStaticURL } from 'ish-core/store/core/configuration';
 
 import { FilterNavigationData } from './filter-navigation.interface';
 import { FilterNavigationMapper } from './filter-navigation.mapper';
@@ -16,6 +16,7 @@ describe('Filter Navigation Mapper', () => {
         provideMockStore({
           selectors: [
             { selector: getICMStaticURL, value: 'http://www.example.org/INTERSHOP/static/WFS/Test-Channel-Site/rest' },
+            { selector: getCurrentLocale, value: 'de_DE' },
           ],
         }),
       ],
@@ -82,7 +83,7 @@ describe('Filter Navigation Mapper', () => {
       } as FilterNavigationData;
 
       // Override the private currentLocale property to undefined
-      (mapper as unknown as { currentLocale: string | undefined }).currentLocale = undefined;
+      (mapper as unknown as { currentLocale: string }).currentLocale = undefined;
 
       const model = mapper.fromData(data);
       expect(model.filter[0].facets[0].mappedValue).toBe(
@@ -106,12 +107,9 @@ describe('Filter Navigation Mapper', () => {
         ],
       } as FilterNavigationData;
 
-      // Override the private currentLocale property to 'en_US'
-      (mapper as unknown as { currentLocale: string | 'en_US' }).currentLocale = 'en_US';
-
       const model = mapper.fromData(data);
       expect(model.filter[0].facets[0].mappedValue).toBe(
-        'url(http://www.example.org/INTERSHOP/static/WFS/Test-Channel-Site/rest/image-unit/en_US/subfolder/image.jpg)'
+        'url(http://www.example.org/INTERSHOP/static/WFS/Test-Channel-Site/rest/image-unit/de_DE/subfolder/image.jpg)'
       );
     });
   });
