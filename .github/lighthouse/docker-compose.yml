@@ -1,0 +1,22 @@
+# docker compose -f ".github/lighthouse/docker-compose.yml" up --build
+
+services:
+  pwa:
+    image: intershophub/intershop-pwa-ssr
+    build:
+      context: ../../.
+    environment:
+      ICM_BASE_URL: 'https://develop.icm.intershop.de'
+
+  nginx:
+    image: intershophub/intershop-pwa-nginx
+    build: ../../nginx
+    depends_on:
+      - pwa
+    ports:
+      - '4200:80'
+    environment:
+      UPSTREAM_PWA: 'http://pwa:4200'
+      ICM_BASE_URL: 'https://develop.icm.intershop.de'
+      NGINX_ENTRYPOINT_QUIET_LOGS: 1
+      CACHE: 1

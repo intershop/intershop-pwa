@@ -28,6 +28,7 @@
 **/*.rej
 **/*.orig
 /dev.bat
+**/.lighthouseci/
 
 # from dist/.gitignore
 /dist/**/*

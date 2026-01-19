@@ -1,0 +1,110 @@
+name: Lighthouse Performance Compare
+
+on:
+  workflow_dispatch:
+    inputs:
+      baseline_branch:
+        description: 'Branch to fetch baseline artifacts from'
+        required: false
+        default: develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: write
+
+jobs:
+  lighthouse-performance-compare:
+    name: Lighthouse Performance Compare
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+          cache: npm
+
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v2
+        id: chrome
+        with:
+          chrome-version: stable
+          install-dependencies: true
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run docker compose to start SSR and nginx
+        uses: hoverkraft-tech/compose-action@v2
+        with:
+          compose-file: '.github/lighthouse/docker-compose.yml'
+          up-flags: '--build'
+
+      - name: Warm up nginx cache
+        run: |
+          sleep 10 # additional wait to ensure docker services are ready
+          urls=$(jq -r '.ci.collect.url[]' .github/lighthouse/configurations/performance-desktop.lighthouserc.json)
+          for url in $urls; do
+            echo "Warming up $url"
+            curl -s "$url" >/dev/null
+          done
+
+      - name: Run Lighthouse CI performance audits (desktop + mobile)
+        env:
+          LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LHCI_COLLECT__CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+        run: |
+          echo "Lighthouse CI (desktop)"
+          npx lhci autorun --config=.github/lighthouse/configurations/performance-desktop.lighthouserc.json
+          mv .lighthouseci lighthouse-desktop-current
+
+          echo "Lighthouse CI (mobile)"
+          npx lhci autorun --config=.github/lighthouse/configurations/performance-mobile.lighthouserc.json
+          mv .lighthouseci lighthouse-mobile-current
+
+      - name: Upload current Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports-current
+          path: |
+            lighthouse-desktop-current
+            lighthouse-mobile-current
+          if-no-files-found: warn
+
+      - name: Download baseline Lighthouse reports
+        uses: dawidd6/action-download-artifact@v12
+        with:
+          workflow: lighthouse-performance-baseline.yml
+          branch: ${{ github.event_name == 'workflow_dispatch' && inputs.baseline_branch || github.ref_name }}
+          name: lighthouse-reports-baseline
+          if_no_artifact_found: warn
+
+      - name: Generate comparison markdown
+        run: |
+          node .github/lighthouse/scripts/lighthouse-performance-compare.js
+
+          # Write comparison results to GitHub Step Summary
+          cat lighthouse-performance-comparison.md >$GITHUB_STEP_SUMMARY
+
+      - name: Find pull request
+        uses: juliangruber/find-pull-request-action@v1
+        id: find-pull-request
+        with:
+          branch: ${{ github.ref_name }}
+
+      - name: Comment results on pull request
+        if: ${{ steps.find-pull-request.outputs.number != '' }}
+        uses: peter-evans/create-or-update-comment@v5
+        with:
+          issue-number: ${{ steps.find-pull-request.outputs.number }}
+          body-file: lighthouse-performance-comparison.md

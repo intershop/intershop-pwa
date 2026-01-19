@@ -1,0 +1,88 @@
+name: Lighthouse Performance Baseline
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+    paths:
+      - 'src/**'
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  lighthouse-performance-baseline:
+    name: Lighthouse Performance Baseline
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+          cache: npm
+
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v2
+        id: chrome
+        with:
+          chrome-version: stable
+          install-dependencies: true
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run docker compose to start SSR and nginx
+        uses: hoverkraft-tech/compose-action@v2
+        with:
+          compose-file: '.github/lighthouse/docker-compose.yml'
+          up-flags: '--build'
+
+      - name: Warm up nginx cache
+        run: |
+          sleep 10 # additional wait to ensure docker services are ready
+          urls=$(jq -r '.ci.collect.url[]' .github/lighthouse/configurations/performance-desktop.lighthouserc.json)
+          for url in $urls; do
+            echo "Warming up $url"
+            curl -s "$url" >/dev/null
+          done
+
+      - name: Run Lighthouse CI performance audits (desktop + mobile)
+        env:
+          LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LHCI_COLLECT__CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+        run: |
+          echo "Lighthouse CI (desktop)"
+          npx lhci autorun --config=.github/lighthouse/configurations/performance-desktop.lighthouserc.json
+          mv .lighthouseci lighthouse-desktop-baseline
+
+          echo "Lighthouse CI (mobile)"
+          npx lhci autorun --config=.github/lighthouse/configurations/performance-mobile.lighthouserc.json
+          mv .lighthouseci lighthouse-mobile-baseline
+
+      - name: Upload baseline Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: lighthouse-reports-baseline
+          path: |
+            lighthouse-desktop-baseline
+            lighthouse-mobile-baseline
+          if-no-files-found: warn
+
+      - name: Generate performance baseline markdown
+        run: |
+          node .github/lighthouse/scripts/lighthouse-performance-baseline.js
+
+          # Write baseline results to GitHub Step Summary
+          cat lighthouse-performance-baseline.md >$GITHUB_STEP_SUMMARY
