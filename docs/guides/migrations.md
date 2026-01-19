@@ -67,6 +67,18 @@ Set `CACHE_CLEARER` to `off` to disable this feature.
 The SPARQUE services use API version 4 now for all REST calls.
 Find the corresponding migration notes in the [SPARQUE API Wrapper Migration Guide](https://docs.sparque.ai/wrapper/migration_guides/migration_guide_wrapper_1x9x0.html).
 
+**Product inventory** data are now fetched by separate `inventories` REST calls instead of using the information fetched with the products REST call.
+The product attributes `'inStock'` and `'availableStock'` have been deprecated and will be removed in the next major release.
+
+**Migration Steps**:
+
+1. Replace deprecated product attributes: Update any code that accesses `product.inStock` or `product.availableStock` directly.
+2. Use facade methods instead:
+   - For general inventory access, use `ShoppingFacade.productInventory$(sku)`.
+   - For product context-specific access, use `ProductContextFacade` selectors like `context.select('inventory', 'inStock')` or `context.select('inventory', 'availableStock')`.
+
+This change makes it possible to cache product data for a longer time and fetches only inventory data on-demand.
+
 ## From 9.0.0 to 9.1.0
 
 Catalogs (root-level categories in ICM terminology) with _Show In Menu_ being disabled are now hidden from the main header navigation.
