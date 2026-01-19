@@ -1,0 +1,60 @@
+{
+  "ci": {
+    "collect": {
+      "numberOfRuns": 1,
+      "url": [
+        "http://localhost:4200/home",
+        "http://localhost:4200/computers-ctgComputers",
+        "http://localhost:4200/computers/notebooks-and-pcs/notebooks-ctgComputers.1835.151",
+        "http://localhost:4200/computers/notebooks-and-pcs/notebooks/microsoft-surface-book-2-256gb-152-prd201807231-04-ctgComputers.1835.151",
+        "http://localhost:4200/quick-order",
+        "http://localhost:4200/register",
+        "http://localhost:4200/basket",
+        "http://localhost:4200/page/page.helpdesk.pagelet2-Page",
+        "http://localhost:4200/page/page.demodisclaimer",
+        "http://localhost:4200/compare"
+      ],
+      "settings": {
+        "formFactor": "mobile",
+        "throttlingMethod": "provided",
+        "chromeFlags": "--no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --disable-gpu --headless=new --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-renderer-backgrounding --disable-features=TranslateUI --disable-ipc-flooding-protection",
+        "skipAudits": ["uses-http2"],
+        "onlyCategories": ["accessibility"]
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:accessibility": ["error", { "minScore": 1.0 }],
+        "label-content-name-mismatch": "warn",
+        "empty-heading": "warn",
+        "identical-links-same-purpose": "warn",
+        "color-contrast": "error",
+        "image-alt": "error",
+        "button-name": "error",
+        "link-name": "error"
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage",
+      "outputDir": ".lighthouseci"
+    }
+  },
+  "pages": {
+    "http://localhost:4200/home": ["Home", 100],
+    "http://localhost:4200/computers-ctgComputers": ["Category", 100],
+    "http://localhost:4200/computers/notebooks-and-pcs/notebooks-ctgComputers.1835.151": [
+      "Product List",
+      100
+    ],
+    "http://localhost:4200/computers/notebooks-and-pcs/notebooks/microsoft-surface-book-2-256gb-152-prd201807231-04-ctgComputers.1835.151": [
+      "Product Detail",
+      100
+    ],
+    "http://localhost:4200/quick-order": ["Quick Order", 100],
+    "http://localhost:4200/register": ["Registration", 100],
+    "http://localhost:4200/basket": ["Shopping Basket", 100],
+    "http://localhost:4200/page/page.helpdesk.pagelet2-Page": ["Helpdesk", 100],
+    "http://localhost:4200/page/page.demodisclaimer": ["Demo Disclaimer", 100],
+    "http://localhost:4200/compare": ["Product Comparison", 100]
+  }
+}
