@@ -65,6 +65,7 @@ services:
       # CACHE_CLEARER: 0 # Set to 1 to enable cache clearer based on ICM webadapter statistics
       # LOG_ALL: 'false'
       # LOGFORMAT: 'json'
+      # LOGLEVEL: 'warn' # info, warn, error - default: warn
       # SSL: 1
       # SSL_MKCERT_OFF: 1
       # SSR: 0

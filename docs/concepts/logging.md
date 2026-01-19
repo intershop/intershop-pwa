@@ -12,6 +12,7 @@ kb_sync_latest_only
   - [Log Level Configuration](#log-level-configuration)
 - [NGINX](#nginx)
   - [Log Format](#log-format-1)
+  - [Log Level Configuration](#log-level-configuration-1)
 - [Container Log Management](#container-log-management)
 - [Further References](#further-references)
 
@@ -87,6 +88,7 @@ services:
     environment:
       # LOG_ALL: 'false'
       # LOGFORMAT: 'json'
+      # LOGLEVEL: 'warn'
       # DEBUG: 1
 ```
 
@@ -103,6 +105,7 @@ services:
     environment:
       LOG_ALL: 'false'
       # LOGFORMAT: 'json'
+      # LOGLEVEL: 'warn'
       # DEBUG: 1
 ```
 
@@ -112,6 +115,27 @@ NGINX supports two log formats controlled by the environment variable `LOGFORMAT
 
 - No `LOGFORMAT` variable (default): The container uses `main` as its default format
 - `LOGFORMAT='json'`: The container uses nginx's built-in JSON logging compliant with the [Elastic Common Schema (ECS) v8.11](https://www.elastic.co/guide/en/ecs/current/index.html) specification
+
+### Log Level Configuration
+
+The `LOGLEVEL` environment variable controls which log messages are output based on HTTP status code severity:
+
+- `info` - Logs all responses (2xx, 3xx, 4xx, 5xx)
+- `warn` - Logs warnings and errors only: 4xx and 5xx (default)
+- `error` - Logs errors only: 5xx
+
+When commented out (default), the log level `warn` is used.
+
+> **Note:** `LOGLEVEL` works in combination with `LOG_ALL`. Both filters must allow logging for a request to be logged:
+>
+> | LOG_ALL | LOGLEVEL | Logged Status Codes |
+> | ------- | -------- | ------------------- |
+> | on      | info     | 2xx, 3xx, 4xx, 5xx  |
+> | on      | warn     | 4xx, 5xx            |
+> | on      | error    | 5xx                 |
+> | off     | info     | 4xx, 5xx            |
+> | off     | warn     | 4xx, 5xx            |
+> | off     | error    | 5xx                 |
 
 ## Container Log Management
 

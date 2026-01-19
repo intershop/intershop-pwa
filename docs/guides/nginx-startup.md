@@ -459,6 +459,7 @@ cache:
 | ------------------------ | ------ | ------- | -------------------------------------------------------- |
 | NGINX_WORKER_PROCESSES   | string | `auto`  | overwrite the default `worker_processes` configuration   |
 | NGINX_WORKER_CONNECTIONS | string | `1024`  | overwrite the default `worker_connections` configuration |
+| LOGLEVEL                 | string | `warn`  | Sets log level threshold: `info`, `warn`, `error`        |
 
 ## Further References
 
