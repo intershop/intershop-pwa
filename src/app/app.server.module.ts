@@ -10,81 +10,81 @@ import { SSRCacheInterceptor } from 'ish-core/interceptors/ssr-cache.interceptor
 import { SSRLogInterceptor } from 'ish-core/interceptors/ssr-log.interceptor';
 import { SSRMockInterceptor } from 'ish-core/interceptors/ssr-mock.interceptor';
 import { SSRPrometheusInterceptor } from 'ish-core/interceptors/ssr-prometheus.interceptor';
-import { logECS } from 'ish-core/utils/ssr-logging.utils';
+import { LogLevel, logECS, shouldLog } from 'ish-core/utils/ssr-logging.utils';
 
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
+function logErrorPlainText(error: unknown): void {
+  let level: LogLevel = 'error';
+  let message: string;
+
+  if (error instanceof HttpErrorResponse) {
+    level = error.status >= 500 ? 'error' : 'warn';
+    message = error.message;
+  } else if (error instanceof Error) {
+    message = `${error.name} ${error.message} ${error.stack?.split('\n')?.[1]?.trim()}`;
+  } else if (typeof error === 'object') {
+    try {
+      message = JSON.stringify(error);
+    } catch (_) {
+      message = '(cannot stringify)';
+    }
+  } else {
+    message = String(error);
+  }
+
+  if (shouldLog(level)) {
+    const logMethod = level === 'error' ? console.error : console.warn;
+    logMethod(level.toUpperCase(), message);
+  }
+}
+
+function buildEcsLogData(error: unknown): { level: LogLevel; message: string; extra: Record<string, unknown> } {
+  if (error instanceof HttpErrorResponse) {
+    return {
+      level: error.status >= 500 ? 'error' : 'warn',
+      message: `ERROR: ${error.message}`,
+      extra: {
+        error: { message: error.message, type: 'HttpErrorResponse' },
+        http: { response: { status_code: error.status } },
+        url: { original: error.url },
+      },
+    };
+  }
+  if (error instanceof Error) {
+    return {
+      level: 'error',
+      message: `ERROR: ${error.message}`,
+      extra: { error: { message: error.message, type: error.name, stack_trace: error.stack } },
+    };
+  }
+  if (typeof error === 'object') {
+    try {
+      const jsonStr = JSON.stringify(error);
+      return { level: 'error', message: `ERROR: ${jsonStr}`, extra: { error: { details: jsonStr } } };
+    } catch (_) {
+      return { level: 'error', message: 'ERROR (cannot stringify)', extra: { error: { message: 'cannot stringify' } } };
+    }
+  }
+  return { level: 'error', message: `ERROR: ${String(error)}`, extra: { error: { message: String(error) } } };
+}
+
 class SSRErrorHandler implements ErrorHandler {
   handleError(error: unknown): void {
     const isJsonLogging = process.env.LOGFORMAT?.toLowerCase() === 'json';
 
     if (!isJsonLogging) {
-      // Original logging behavior for non-JSON mode
-      if (error instanceof HttpErrorResponse) {
-        console.error('ERROR', error.message);
-      } else if (error instanceof Error) {
-        console.error('ERROR', error.name, error.message, error.stack?.split('\n')?.[1]?.trim());
-      } else if (typeof error === 'object') {
-        try {
-          console.error('ERROR', JSON.stringify(error));
-        } catch (_) {
-          // do not log the error if it can't be stringified, it floods the log with irrelevant information
-          console.error('ERROR (cannot stringify)');
-        }
-      } else {
-        console.error('ERROR', error);
-      }
+      logErrorPlainText(error);
       return;
     }
 
-    // ECS logging for JSON mode
-    let message: string;
-    let extra: Record<string, unknown> | undefined;
-
-    if (error instanceof HttpErrorResponse) {
-      message = `ERROR: ${error.message}`;
-      extra = {
-        error: {
-          message: error.message,
-          type: 'HttpErrorResponse',
-        },
-        http: {
-          response: { status_code: error.status },
-        },
-        url: { original: error.url },
-      };
-    } else if (error instanceof Error) {
-      message = `ERROR: ${error.message}`;
-      extra = {
-        error: {
-          message: error.message,
-          type: error.name,
-          stack_trace: error.stack,
-        },
-      };
-    } else if (typeof error === 'object') {
-      try {
-        message = `ERROR: ${JSON.stringify(error)}`;
-        extra = {
-          error: { details: JSON.stringify(error) },
-        };
-      } catch (_) {
-        message = 'ERROR (cannot stringify)';
-        extra = {
-          error: { message: 'cannot stringify' },
-        };
-      }
-    } else {
-      message = `ERROR: ${String(error)}`;
-      extra = {
-        error: { message: String(error) },
-      };
+    const { level, message, extra } = buildEcsLogData(error);
+    if (shouldLog(level)) {
+      logECS(level, message, 'app.server.module', extra);
     }
-
-    logECS('error', message, 'app.server.module', extra);
   }
 }
 

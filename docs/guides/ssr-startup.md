@@ -71,6 +71,7 @@ Make sure to use them as written in the table below.
 |                     | LOGGING               | switch               | Enables extra log output                                                                         |
 |                     | LOG_ALL               | switch               | Logs success and error messages (if false, only errors)                                          |
 |                     | LOGFORMAT             | string               | Enables ECS-compliant JSON logging when set to `json` (default: plain text)                      |
+|                     | LOGLEVEL              | string               | Sets log level threshold: `info`, `warn`, `error` (default: `warn`)                              |
 |                     | SOURCE_MAPS           | switch               | Exposes source maps if activated                                                                 |
 | **Hybrid Approach** | SSR_HYBRID            | any                  | Enables running PWA and ICM in the [Hybrid Approach][concept-hybrid]                             |
 |                     | SSR_HYBRID_BACKEND    | URL                  | When running in K8S, this contains the ICM WA service URL. For none K8S you can use ICM_BASE_URL |

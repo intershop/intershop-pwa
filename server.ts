@@ -22,6 +22,7 @@ import {
   getLogger,
   isPinoLogger,
   loggingEnabled,
+  shouldLog,
   useJsonFormat,
 } from './src/app/core/utils/ssr-logging.utils';
 import {
@@ -274,8 +275,20 @@ export function app() {
           const morgan = require('morgan');
           // see https://github.com/expressjs/morgan#predefined-formats
           return morgan('tiny', {
-            skip: (req: express.Request, res: express.Response) =>
-              req.originalUrl.startsWith('/INTERSHOP/static') || (res.statusCode < 400 && !logAll),
+            skip: (req: express.Request, res: express.Response) => {
+              // Skip static assets
+              if (req.originalUrl.startsWith('/INTERSHOP/static')) {
+                return true;
+              }
+
+              // For error responses, check appropriate log level
+              if (res.statusCode >= 400) {
+                return res.statusCode >= 500 ? !shouldLog('error') : !shouldLog('warn');
+              }
+
+              // For successful responses, check info level and logAll
+              return !shouldLog('info') || !logAll;
+            },
           });
         }
 
@@ -287,12 +300,12 @@ export function app() {
           },
           customLogLevel: (_req: express.Request, res: express.Response, err?: Error) => {
             if (res.statusCode >= 500 || err) {
-              return 'error';
+              return shouldLog('error') ? 'error' : 'silent';
             }
             if (res.statusCode >= 400) {
-              return 'warn';
+              return shouldLog('warn') ? 'warn' : 'silent';
             }
-            if (logAll) {
+            if (logAll && shouldLog('info')) {
               return 'info';
             }
             return 'silent';
@@ -592,7 +605,8 @@ export function app() {
 
     const url = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
 
-    if (loggingEnabled && !useJsonFormat && logAll) {
+    if (loggingEnabled && !useJsonFormat && logAll && shouldLog('info')) {
+      // Use our logging system to respect LOGLEVEL
       console.log(`SSR ${req.originalUrl}`);
     }
 
@@ -629,7 +643,7 @@ export function app() {
           res.status(500).send('SSR rendering failed');
         }
 
-        if (loggingEnabled && !useJsonFormat && (logAll || res.statusCode >= 400)) {
+        if (loggingEnabled && !useJsonFormat && (logAll || res.statusCode >= 400) && shouldLog('info')) {
           console.log(`RES ${res.statusCode} ${req.originalUrl}`);
         }
       })

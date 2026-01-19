@@ -9,6 +9,7 @@ kb_sync_latest_only
 
 - [Server-Side Rendering (SSR)](#server-side-rendering-ssr)
   - [Log Format](#log-format)
+  - [Log Level Configuration](#log-level-configuration)
 - [NGINX](#nginx)
   - [Log Format](#log-format-1)
 - [Container Log Management](#container-log-management)
@@ -26,9 +27,11 @@ services:
       LOGGING: 'true'
       # LOG_ALL: 'false'
       # LOGFORMAT: 'json'
+      # LOGLEVEL: 'warn'
 ```
 
 `LOG_ALL` applies only to outbound requests from the SSR application.
+
 When commented out (default), the [Dockerfile](../../Dockerfile) default `LOG_ALL=on` is used, which causes all outbound HTTP requests to ICM to be logged.
 
 To disable all SSR application logs:
@@ -62,6 +65,16 @@ When using the default plain text format (no `LOGFORMAT` variable), additional S
 
 - `SSR <url>` is logged at the beginning of SSR processing
 - `RES <status> <url>` is logged at the end of SSR processing
+
+### Log Level Configuration
+
+The `LOGLEVEL` environment variable controls which log messages are output based on severity:
+
+- `info` - Logs all messages (info, warn, error)
+- `warn` - Logs warnings and errors only (default)
+- `error` - Logs errors only
+
+When commented out (default), the log level `warn` is used.
 
 ## NGINX
 

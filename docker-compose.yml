@@ -21,6 +21,7 @@ services:
       LOGGING: 'true'
       # LOG_ALL: 'false'
       # LOGFORMAT: 'json'
+      # LOGLEVEL: 'info' # info, warn, error - default: warn
       SOURCE_MAPS: 'true'
       # SSR_HYBRID: 'true'
       # PROXY_ICM: 'true'

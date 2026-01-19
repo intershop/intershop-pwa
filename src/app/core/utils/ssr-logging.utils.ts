@@ -4,10 +4,51 @@ import pino, { Logger } from 'pino';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pkg = SSR ? require('../../../../package.json') : { version: 'unknown' };
 
+// Log levels in order of severity (lower index = more verbose)
+export type LogLevel = 'info' | 'warn' | 'error';
+
+const LOG_LEVEL_PRIORITY: Record<LogLevel, number> = {
+  info: 0,
+  warn: 1,
+  error: 2,
+};
+
+/**
+ * Parse the LOGLEVEL environment variable.
+ * Valid values: 'info', 'warn', 'error' (case-insensitive)
+ * Default: 'warn'
+ */
+function parseLogLevel(): LogLevel {
+  const envLevel = SSR ? process.env.LOGLEVEL?.toLowerCase() : undefined;
+  if (envLevel === 'info' || envLevel === 'warn' || envLevel === 'error') {
+    return envLevel;
+  }
+  return 'warn'; // Default log level
+}
+
 // Environment configuration - only access process in SSR context
 export const loggingEnabled = SSR && /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase() || '');
 
 export const useJsonFormat = SSR && /on|1|true|yes/.test(process.env.LOGFORMAT?.toLowerCase() || '');
+
+/**
+ * The configured log level threshold. Only messages at this level or higher severity will be logged.
+ * Configured via LOGLEVEL environment variable. Default: 'warn'
+ */
+const configuredLogLevel: LogLevel = parseLogLevel();
+
+/**
+ * Check if a message at the given level should be logged based on the configured log level.
+ *
+ * @param level - The level of the message to check
+ * @returns true if the message should be logged, false otherwise
+ */
+export function shouldLog(level: LogLevel): boolean {
+  if (!loggingEnabled) {
+    return false;
+  }
+  return LOG_LEVEL_PRIORITY[level] >= LOG_LEVEL_PRIORITY[configuredLogLevel];
+}
 
 const SERVICE_NAME = SSR ? process.env.name || 'intershop-pwa-ssr' : 'intershop-pwa-ssr';
 
@@ -38,23 +79,33 @@ type NoOpLogger = {
   child(bindings?: unknown): AppLogger;
 };
 
-// ECS format logger options
-const loggerOptions: pino.LoggerOptions = ecsFormat({
-  serviceName: SERVICE_NAME,
-  serviceVersion: SERVICE_VERSION,
-  serviceNodeName: SERVICE_NODE_NAME,
-  convertReqRes: true, // Enable HTTP request/response conversion
-  convertErr: true, // Enable error conversion
-  apmIntegration: false, // Disable Elastic APM (Application Performance Monitoring) agent integration
-});
+// ECS format logger options with configured log level
+const loggerOptions: pino.LoggerOptions = {
+  ...ecsFormat({
+    serviceName: SERVICE_NAME,
+    serviceVersion: SERVICE_VERSION,
+    serviceNodeName: SERVICE_NODE_NAME,
+    convertReqRes: true, // Enable HTTP request/response conversion
+    convertErr: true, // Enable error conversion
+    apmIntegration: false, // Disable Elastic APM (Application Performance Monitoring) agent integration
+  }),
+  level: configuredLogLevel, // Set pino's log level from configuration
+};
 
 // Wrapper to convert structured logging to plain text when using console
+// Respects the configured log level for non-JSON mode
 const createConsoleWrapper = (consoleLogger: typeof console): ConsoleLogger => {
   const wrapper: Partial<ConsoleLogger> = {};
 
   const createMethod =
     (method: 'info' | 'warn' | 'error' | 'debug' | 'trace') =>
     (first: unknown, ...rest: unknown[]) => {
+      // Check if this log level should be logged based on configured threshold
+      // Map debug/trace to info for level checking (they are below info)
+      const levelToCheck: LogLevel = method === 'debug' || method === 'trace' ? 'info' : (method as LogLevel);
+      if (!shouldLog(levelToCheck)) {
+        return;
+      }
       if (typeof first === 'object' && first !== undefined && rest.length > 0) {
         consoleLogger[method](...rest);
       } else {
@@ -148,7 +199,7 @@ export function logECS(
   source: string,
   extra?: Record<string, unknown>
 ): void {
-  if (!loggingEnabled) {
+  if (!shouldLog(level)) {
     return;
   }
 
