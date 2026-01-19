@@ -5,10 +5,10 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { productInventoriesApiActions } from './product-inventories.actions';
-import { getProductInventory } from './product-inventories.selectors';
+import { productInventoryApiActions } from './product-inventory.actions';
+import { getProductInventory, getProductInventoryEntities } from './product-inventory.selectors';
 
-describe('Product Inventories Selectors', () => {
+describe('Product Inventory Selectors', () => {
   let store$: StoreWithSnapshots;
 
   beforeEach(() => {
@@ -22,6 +22,7 @@ describe('Product Inventories Selectors', () => {
 
   describe('with empty state', () => {
     it('should not select any product inventory when used', () => {
+      expect(getProductInventoryEntities(store$.state)).toBeEmpty();
       expect(getProductInventory('sku')(store$.state)).toBeUndefined();
     });
   });
@@ -29,9 +30,10 @@ describe('Product Inventories Selectors', () => {
   describe('with LoadProductInventorySuccess state', () => {
     const inventoryDetails: ProductInventory = { sku: 'sku' } as ProductInventory;
     beforeEach(() => {
-      store$.dispatch(productInventoriesApiActions.loadProductInventoriesSuccess({ inventory: [inventoryDetails] }));
+      store$.dispatch(productInventoryApiActions.loadProductInventorySuccess({ inventory: [inventoryDetails] }));
     });
     it('should add the product inventory to the state', fakeAsync(() => {
+      expect(getProductInventoryEntities(store$.state)).toMatchObject({ sku: inventoryDetails });
       expect(getProductInventory('sku')(store$.state)).toEqual(inventoryDetails);
     }));
   });

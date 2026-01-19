@@ -10,8 +10,8 @@ import { CategoriesEffects } from './categories/categories.effects';
 import { categoriesReducer } from './categories/categories.reducer';
 import { FilterEffects } from './filter/filter.effects';
 import { filterReducer } from './filter/filter.reducer';
-import { ProductInventoriesEffects } from './product-inventories/product-inventories.effects';
-import { productInventoryReducer } from './product-inventories/product-inventories.reducer';
+import { ProductInventoryEffects } from './product-inventory/product-inventory.effects';
+import { productInventoryReducer } from './product-inventory/product-inventory.reducer';
 import { ProductListingEffects } from './product-listing/product-listing.effects';
 import { productListingReducer } from './product-listing/product-listing.reducer';
 import { ProductPricesEffects } from './product-prices/product-prices.effects';
@@ -47,7 +47,7 @@ const shoppingEffects = [
   SearchEffects,
   FilterEffects,
   PromotionsEffects,
-  ProductInventoriesEffects,
+  ProductInventoryEffects,
   ProductListingEffects,
   ProductPricesEffects,
   RecommendationsEffects,

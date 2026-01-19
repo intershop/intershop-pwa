@@ -750,7 +750,6 @@ describe('Product Context Facade', () => {
         } as ProductView)
       );
       context.set('sku', () => '456');
-      when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
       expect(context.get('displayProperties', 'addToBasket')).toMatchInlineSnapshot(`true`);
     });
   });

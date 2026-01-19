@@ -31,7 +31,6 @@ import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadCategory } from 'ish-core/store/shopping/categories';
 import { getFilterById, loadFilterSuccess, loadProductsForFilter } from 'ish-core/store/shopping/filter';
-import { productInventoriesInternalActions } from 'ish-core/store/shopping/product-inventories';
 import { getProductListingItemsPerPage, setProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
@@ -318,16 +317,6 @@ export class ProductsEffects {
           )
         )
       )
-    )
-  );
-
-  loadProductInventoryAfterProductSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadProductSuccess),
-      mapToPayloadProperty('product'),
-      mapToProperty('sku'),
-      whenTruthy(),
-      map(sku => productInventoriesInternalActions.loadProductInventories({ skus: [sku] }))
     )
   );
 

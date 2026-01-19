@@ -34,7 +34,7 @@ import {
   loadTopLevelCategories,
 } from 'ish-core/store/shopping/categories';
 import { getAvailableFilter } from 'ish-core/store/shopping/filter';
-import { getProductInventory } from 'ish-core/store/shopping/product-inventories';
+import { getProductInventory } from 'ish-core/store/shopping/product-inventory';
 import {
   getProductListingLoading,
   getProductListingView,

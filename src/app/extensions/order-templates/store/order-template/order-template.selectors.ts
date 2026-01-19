@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { getProductInventoryEntities } from 'ish-core/store/shopping/product-inventories';
+import { getProductInventoryEntities } from 'ish-core/store/shopping/product-inventory/product-inventory.selectors';
 
 import { getOrderTemplatesState } from '../order-templates-store';
 
