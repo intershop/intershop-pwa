@@ -27,13 +27,10 @@ export interface Product {
   defaultCategoryId?: string;
   packingUnit: string;
 
-  /**
-   *   @deprecated use the 'inStock' attribute from product inventory instead
-   */
+  /** @deprecated use the 'inStock' attribute from product inventory instead */
   available: boolean;
-  /**
-   *   @deprecated use the 'availableStock' attribute from product inventory instead
-   */
+
+  /** @deprecated use the 'availableStock' attribute from product inventory instead */
   availableStock?: number;
 
   // properties added in model

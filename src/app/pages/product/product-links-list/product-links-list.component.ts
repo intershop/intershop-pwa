@@ -43,6 +43,7 @@ export class ProductLinksListComponent implements OnChanges {
       ? combineLatest(
           this.links.products.map(sku =>
             combineLatest([
+              // make sure to load product and inventory data
               this.shoppingFacade.product$(sku, ProductCompletenessLevel.List),
               this.shoppingFacade.productInventory$(sku),
             ]).pipe(map(([_, inventory]) => ({ sku, available: inventory?.inStock ?? false })))

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject }
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map, startWith, take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -44,11 +44,10 @@ export class ProductNotificationEditComponent implements OnInit {
 
   // keep-localization-pattern: ^product\.notification\..*\.notification\.button.*
   buttonKey(key: string): Observable<string> {
-    return this.context
-      .select('inventory')
-      .pipe(
-        map(inventory => `product.notification.${inventory?.inStock ? 'price' : 'stock'}.notification.button.${key}`)
-      );
+    return this.context.select('inventory', 'inStock').pipe(
+      startWith(true), // default to 'price notifications until inventory is loaded
+      map(inStock => `product.notification.${inStock ? 'price' : 'stock'}.notification.button.${key}`)
+    );
   }
 
   // if the user is not logged in display login dialog, else open notification dialog

@@ -105,6 +105,7 @@ export class ProductLinksCarouselComponent {
           if (displayOnlyAvailableProducts) {
             return products.map((sku, index) =>
               combineLatest([
+                // make sure to load product and inventory data
                 this.shoppingFacade.product$(sku, ProductCompletenessLevel.List).pipe(whenTruthy()),
                 this.shoppingFacade.productInventory$(sku).pipe(whenTruthy()),
               ]).pipe(

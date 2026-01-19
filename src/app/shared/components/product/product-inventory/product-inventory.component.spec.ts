@@ -17,6 +17,7 @@ describe('Product Inventory Component', () => {
   beforeEach(async () => {
     context = mock(ProductContextFacade);
     when(context.select('displayProperties', 'inventory')).thenReturn(of(true));
+    when(context.select('inventory', 'inStock')).thenReturn(of(true));
     when(context.select('inventory', 'availableStock')).thenReturn(of(-1));
 
     await TestBed.configureTestingModule({
@@ -44,7 +45,6 @@ describe('Product Inventory Component', () => {
 
   it('should show In Stock when product available', () => {
     translate.set('product.instock.text', 'In Stock');
-    when(context.select('inventory', 'inStock')).thenReturn(of(true));
 
     fixture.detectChanges();
     expect(element.querySelector('.product-availability').textContent).toContain('In Stock');

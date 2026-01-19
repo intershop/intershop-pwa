@@ -31,7 +31,7 @@ export class InventoryService {
     }
 
     let params = new HttpParams();
-    skus.map(sku => (params = params.append('sku', sku)));
+    params = skus.reduce((p, sku) => p.append('sku', sku), params);
 
     return this.apiService
       .get<{ data: ProductInventoryData[] }>(`inventories`, { headers: this.inventoryHeaders, params })
