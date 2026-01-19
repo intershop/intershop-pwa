@@ -351,7 +351,7 @@ Prerequisites for using this feature:
 - The NGINX cache clearing cannot be used together with the [Shared Redis Cache](#shared-redis-cache).
 
 > [!TIP]
-> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video about [page cache invalidation in a PWA with SSR](https://public.academy.intershop.com/plus/catalog/courses/455).
+> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video tutorial on [page cache invalidation in a PWA with SSR](https://public.academy.intershop.com/plus/catalog/courses/455).
 
 ### Shared Redis Cache
 

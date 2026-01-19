@@ -31,7 +31,7 @@ For more information refer to:
 - [ng-bootstrap Angular 9 support](https://github.com/ng-bootstrap/ng-bootstrap/issues/3537#issuecomment-586472803)
 
 > [!TIP]
-> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video [how to do localization in ICM and PWA](https://public.academy.intershop.com/plus/catalog/courses/459).
+> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video tutorial on [how to do localization in ICM and PWA](https://public.academy.intershop.com/plus/catalog/courses/459).
 
 ## Usage Examples
 

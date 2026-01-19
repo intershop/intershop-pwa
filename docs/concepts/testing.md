@@ -122,4 +122,4 @@ If behavior of the customization differs from the blueprint store, the Specs hav
 
 ## Further Help
 
-The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video about [PWA Testing](https://public.academy.intershop.com/plus/catalog/courses/393).
+The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video tutorial on [PWA testing](https://public.academy.intershop.com/plus/catalog/courses/393).

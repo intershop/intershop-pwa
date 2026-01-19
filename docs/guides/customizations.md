@@ -262,7 +262,9 @@ If you stick to the guidelines in this chapter, the process of updating should r
 Also remember to use `npm install` after importing a change that modified the `package.json` and `package-lock.json`, and run tests and linting in the process.
 
 Reading through the [migrations.md](./migrations.md) and the [CHANGELOG.md](../../CHANGELOG.md) - here especially the 'Breaking Changes' section - should be the first step before any migration.
-The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers under the category _Progressive Web App_ videos for the different migrations that may be helpful.
+
+> [!TIP]
+> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers migration‑related video tutorials in the _Progressive Web App_ category.
 
 Begin any migration with adding the Intershop PWA GitHub repository as an additional remote if this is not already the case.
 

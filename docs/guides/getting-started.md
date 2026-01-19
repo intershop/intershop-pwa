@@ -156,6 +156,6 @@ A list of the available Angular CLI schematics can be fetched with `ng generate 
 
 ## Further Help
 
-The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers videos for the different topics related to PWA that may be helpful.
+The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers video tutorials on various topics related to PWA.
 
 To get more help on the Angular CLI, use `ng help` or check out the [Angular CLI Documentation](https://github.com/angular/angular-cli/wiki).

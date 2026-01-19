@@ -30,7 +30,7 @@ The PWA largely meets this standard.
 This guide outlines multiple methods for checking website accessibility and applying the Web Content Accessibility Guidelines (WCAG) 2.2.
 
 > [!TIP]
-> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video about [PWA and Accessibility](https://public.academy.intershop.com/plus/catalog/courses/437) (subject to a fee).
+> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video tutorial on [PWA and accessibility](https://public.academy.intershop.com/plus/catalog/courses/437) (subject to a fee).
 
 ## Workflow
 
