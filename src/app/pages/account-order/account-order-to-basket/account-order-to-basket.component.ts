@@ -1,9 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { TranslateModule } from '@ngx-translate/core';
 import { map } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { IconModule } from 'ish-core/icon.module';
 import { Order } from 'ish-core/models/order/order.model';
 
 /**
@@ -16,6 +19,8 @@ import { Order } from 'ish-core/models/order/order.model';
   selector: 'ish-account-order-to-basket',
   templateUrl: './account-order-to-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, IconModule, TranslateModule],
 })
 export class AccountOrderToBasketComponent {
   @Input({ required: true }) order: Order;

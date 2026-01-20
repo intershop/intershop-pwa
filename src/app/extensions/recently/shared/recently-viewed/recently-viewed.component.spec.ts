@@ -34,13 +34,25 @@ describe('Recently Viewed Component', () => {
         MockComponent(SkipContentLinkComponent),
         MockPipe(TranslatePipe),
         RecentlyViewedComponent,
+        RouterTestingModule.withRoutes([{ path: 'recently', component: RecentlyViewedComponent }]),
       ],
       providers: [
         { provide: RecentlyFacade, useFactory: () => instance(recentlyFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
         provideRouter([{ path: 'recently', component: RecentlyViewedComponent }]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(RecentlyViewedComponent, {
+        set: {
+          imports: [
+            MockComponent(ProductsListComponent),
+            MockComponent(SkipContentLinkComponent),
+            MockDirective(BrowserLazyViewDirective),
+            MockPipe(TranslatePipe),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

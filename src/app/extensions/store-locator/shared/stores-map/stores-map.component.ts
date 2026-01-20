@@ -6,6 +6,7 @@ import { StoreLocatorFacade } from '../../facades/store-locator.facade';
   selector: 'ish-stores-map',
   templateUrl: './stores-map.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
 })
 export class StoresMapComponent implements AfterViewInit {
   @ViewChild('mapContainer') mapContainer: ElementRef;

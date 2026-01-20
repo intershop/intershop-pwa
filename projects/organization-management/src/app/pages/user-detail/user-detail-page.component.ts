@@ -1,16 +1,34 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
+import { IconModule } from 'ish-core/icon.module';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bRole } from '../../models/b2b-role/b2b-role.model';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
+import { UserDetailBudgetComponent } from './user-detail-budget/user-detail-budget.component';
+
 @Component({
   selector: 'ish-user-detail-page',
   templateUrl: './user-detail-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    IconModule,
+    NgFor,
+    NgIf,
+    RouterModule,
+    ServerSettingPipe,
+    TranslateModule,
+    UserDetailBudgetComponent,
+  ],
 })
 export class UserDetailPageComponent implements OnInit {
   user$: Observable<B2bUser>;

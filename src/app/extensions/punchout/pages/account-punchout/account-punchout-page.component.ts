@@ -1,18 +1,42 @@
+import { AsyncPipe, NgFor, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { PunchoutFacade } from '../../facades/punchout.facade';
 import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-user.model';
+
+import { AccountPunchoutHeaderComponent } from './account-punchout-header/account-punchout-header.component';
 
 @Component({
   selector: 'ish-account-punchout-page',
   templateUrl: './account-punchout-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AccountPunchoutHeaderComponent,
+    AsyncPipe,
+    FontAwesomeModule,
+    LoadingComponent,
+    ModalDialogComponent,
+    NgFor,
+    NgIf,
+    NgSwitch,
+    NgSwitchCase,
+    RouterModule,
+    ServerSettingPipe,
+    TranslateModule,
+  ],
 })
 export class AccountPunchoutPageComponent implements OnInit {
   punchoutTypes$: Observable<PunchoutType[]>;

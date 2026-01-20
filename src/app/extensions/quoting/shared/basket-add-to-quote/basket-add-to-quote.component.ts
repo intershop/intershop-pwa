@@ -1,9 +1,13 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { TranslateModule } from '@ngx-translate/core';
+
+import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
@@ -15,6 +19,8 @@ import { QuotingFacade } from '../../facades/quoting.facade';
   selector: 'ish-basket-add-to-quote',
   templateUrl: './basket-add-to-quote.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, AuthorizationToggleDirective, NgIf, TranslateModule],
 })
 @GenerateLazyComponent()
 export class BasketAddToQuoteComponent implements OnInit {

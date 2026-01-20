@@ -1,6 +1,8 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -15,6 +17,8 @@ import { OrderTemplatePreferencesDialogComponent } from '../order-template-prefe
   selector: 'ish-basket-create-order-template',
   templateUrl: './basket-create-order-template.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgClass, TranslateModule, OrderTemplatePreferencesDialogComponent],
 })
 /**
  * The Basket Create Order Template displays a button which adds the current cart to to a new order template.

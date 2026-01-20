@@ -7,16 +7,18 @@ import { authGuard } from 'ish-core/guards/auth.guard';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () =>
-      import('./account-order-template/account-order-template-page.module').then(m => m.AccountOrderTemplatePageModule),
+    loadComponent: () =>
+      import('./account-order-template/account-order-template-page.component').then(
+        m => m.AccountOrderTemplatePageComponent
+      ),
     canActivate: [featureToggleGuard, authGuard],
     data: { feature: 'orderTemplates', breadcrumbData: [{ key: 'account.ordertemplates.link' }] },
   },
   {
     path: ':orderTemplateName',
-    loadChildren: () =>
-      import('./account-order-template-detail/account-order-template-detail-page.module').then(
-        m => m.AccountOrderTemplateDetailPageModule
+    loadComponent: () =>
+      import('./account-order-template-detail/account-order-template-detail-page.component').then(
+        m => m.AccountOrderTemplateDetailPageComponent
       ),
     canActivate: [featureToggleGuard, authGuard],
     data: { feature: 'orderTemplates' },

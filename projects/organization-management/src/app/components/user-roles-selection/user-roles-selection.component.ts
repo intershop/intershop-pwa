@@ -1,3 +1,4 @@
+import { AsyncPipe, KeyValuePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, forwardRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
@@ -7,9 +8,13 @@ import {
   FormControl,
   FormGroup,
   NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
 } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable, ReplaySubject, noop } from 'rxjs';
 import { first, map, shareReplay, startWith, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+
+import { IconModule } from 'ish-core/icon.module';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
@@ -24,6 +29,8 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
       useExisting: forwardRef(() => UserRolesSelectionComponent),
     },
   ],
+  standalone: true,
+  imports: [AsyncPipe, IconModule, KeyValuePipe, NgClass, NgFor, NgIf, ReactiveFormsModule, TranslateModule],
 })
 export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit {
   @Input() staticRoles: string[];

@@ -8,10 +8,14 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 /**
@@ -22,6 +26,15 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   selector: 'ish-account-profile-password',
   templateUrl: './account-profile-password.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    ErrorMessageComponent,
+    FormSubmitDirective,
+    FormlyModule,
+    ReactiveFormsModule,
+    RouterModule,
+    TranslateModule,
+  ],
 })
 export class AccountProfilePasswordComponent implements OnInit, OnChanges {
   @Input() error: HttpError;

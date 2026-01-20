@@ -1,4 +1,7 @@
+import { AsyncPipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 import { Observable, combineLatest, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -7,6 +10,13 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+import { NotRoleToggleDirective } from 'ish-core/directives/not-role-toggle.directive';
+import { DatePipe } from 'ish-core/pipes/date.pipe';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { ProductRatingStarComponent } from '../product-rating-star/product-rating-star.component';
+import { ProductReviewCreateDialogComponent } from '../product-review-create-dialog/product-review-create-dialog.component';
 
 import { ProductReviewsFacade } from '../../facades/product-reviews.facade';
 import { ProductReview } from '../../models/product-reviews/product-review.model';
@@ -16,6 +26,22 @@ import { RatingFilledType } from '../product-rating-star/product-rating-star.com
   selector: 'ish-product-reviews',
   templateUrl: './product-reviews.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    DatePipe,
+    ErrorMessageComponent,
+    LoadingComponent,
+    ModalDialogComponent,
+    NgFor,
+    NgIf,
+    NgTemplateOutlet,
+    NotRoleToggleDirective,
+    ProductRatingStarComponent,
+    ProductReviewCreateDialogComponent,
+    RouterLink,
+    TranslateModule,
+  ],
 })
 @GenerateLazyComponent()
 export class ProductReviewsComponent implements OnInit, OnDestroy {

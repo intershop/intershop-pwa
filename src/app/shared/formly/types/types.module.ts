@@ -50,7 +50,6 @@ const fieldComponents = [
   SelectFieldComponent,
   TextareaFieldComponent,
   TextInputFieldComponent,
-  SearchSelectFieldComponent,
   NumberFieldComponent,
 ];
 
@@ -65,6 +64,7 @@ const fieldComponents = [
     NgxMaskDirective,
     NgxMaskPipe,
     ReactiveFormsModule,
+    SearchSelectFieldComponent,
     TranslateModule,
 
     FormlyBaseModule.forChild({
@@ -229,6 +229,6 @@ const fieldComponents = [
     { provide: NgbDatepickerI18n, useClass: IshDatepickerI18n },
   ],
   declarations: [...fieldComponents],
-  exports: [...fieldComponents],
+  exports: [...fieldComponents, SearchSelectFieldComponent],
 })
 export class TypesModule {}

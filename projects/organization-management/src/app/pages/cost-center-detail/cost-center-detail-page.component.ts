@@ -1,17 +1,38 @@
+import { AsyncPipe, NgIf, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { User } from 'ish-core/models/user/user.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { OrderListComponent } from 'ish-shared/components/order/order-list/order-list.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
+import { OrganizationManagementModule } from '../../organization-management.module';
 
 @Component({
   selector: 'ish-cost-center-detail-page',
   templateUrl: './cost-center-detail-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    ErrorMessageComponent,
+    FontAwesomeModule,
+    NgIf,
+    OrderListComponent,
+    OrganizationManagementModule,
+    PricePipe,
+    RouterModule,
+    SlicePipe,
+    TranslateModule,
+  ],
 })
 export class CostCenterDetailPageComponent implements OnInit {
   costCenter$: Observable<CostCenter>;

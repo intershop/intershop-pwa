@@ -1,5 +1,12 @@
+import { importProvidersFrom } from '@angular/core';
 import { Routes } from '@angular/router';
 
-import { DataRequestPageComponent } from './data-request-page.component';
+import { FormlyModule as IshFormlyModule } from 'ish-shared/formly/formly.module';
 
-export const dataRequestPageRoutes: Routes = [{ path: '**', component: DataRequestPageComponent }];
+export const dataRequestPageRoutes: Routes = [
+  {
+    path: '**',
+    loadComponent: () => import('./data-request-page.component').then(m => m.DataRequestPageComponent),
+    providers: [importProvidersFrom(IshFormlyModule)],
+  },
+];

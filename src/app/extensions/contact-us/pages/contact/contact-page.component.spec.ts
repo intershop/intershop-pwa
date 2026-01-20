@@ -1,13 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
-
-import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 
 import { ContactUsFacade } from '../../facades/contact-us.facade';
 
-import { ContactConfirmationComponent } from './contact-confirmation/contact-confirmation.component';
 import { ContactPageComponent } from './contact-page.component';
 
 describe('Contact Page Component', () => {
@@ -17,12 +14,7 @@ describe('Contact Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [
-        ContactPageComponent,
-        MockComponent(BreadcrumbComponent),
-        MockComponent(ContactConfirmationComponent),
-      ],
+      imports: [ContactPageComponent, RouterTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: ContactUsFacade, useFactory: () => instance(mock(ContactUsFacade)) }],
     }).compileComponents();
   });

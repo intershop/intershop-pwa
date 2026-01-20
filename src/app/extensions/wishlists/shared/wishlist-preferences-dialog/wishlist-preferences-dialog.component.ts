@@ -8,9 +8,10 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
@@ -29,6 +30,8 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
   selector: 'ish-wishlist-preferences-dialog',
   templateUrl: './wishlist-preferences-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [FormlyModule, ReactiveFormsModule, TranslateModule],
 })
 export class WishlistPreferencesDialogComponent implements OnInit {
   /**

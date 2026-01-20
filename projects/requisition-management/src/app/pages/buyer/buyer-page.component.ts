@@ -1,10 +1,19 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterModule } from '@angular/router';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
-import { RequisitionColumnsType } from '../../components/requisitions-list/requisitions-list.component';
+import {
+  RequisitionColumnsType,
+  RequisitionsListComponent,
+} from '../../components/requisitions-list/requisitions-list.component';
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 import { Requisition, RequisitionStatus } from '../../models/requisition/requisition.model';
 
@@ -12,6 +21,17 @@ import { Requisition, RequisitionStatus } from '../../models/requisition/requisi
   selector: 'ish-buyer-page',
   templateUrl: './buyer-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    ErrorMessageComponent,
+    LoadingComponent,
+    NgIf,
+    NgbNavModule,
+    RequisitionsListComponent,
+    RouterModule,
+    TranslateModule,
+  ],
 })
 export class BuyerPageComponent implements OnInit {
   requisitions$: Observable<Requisition[]>;

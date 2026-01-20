@@ -2,6 +2,7 @@ import { importProvidersFrom } from '@angular/core';
 import { Routes } from '@angular/router';
 import { FormlyModule } from '@ngx-formly/core';
 
+import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 import { authGuard } from 'ish-core/guards/auth.guard';
 import { errorStatusGuard } from 'ish-core/guards/error-status.guard';
 import { identityProviderInviteGuard } from 'ish-core/guards/identity-provider-invite.guard';
@@ -12,6 +13,10 @@ import { noServerSideRenderingGuard } from 'ish-core/guards/no-server-side-rende
 import { FormlyAddressFormsModule } from 'ish-shared/formly-address-forms/formly-address-forms.module';
 import { FieldLibraryModule } from 'ish-shared/formly/field-library/field-library.module';
 import { FormlyModule as IshFormlyModule } from 'ish-shared/formly/formly.module';
+
+import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
+import { ContactUsStoreModule } from '../extensions/contact-us/store/contact-us-store.module';
+import { RecentlyStoreModule } from '../extensions/recently/store/recently-store.module';
 
 import { accountPageRoutes } from './account/account-page.module';
 import { checkoutChildRoutes } from './checkout/checkout-page.module';
@@ -157,7 +162,6 @@ export const appRoutes: Routes = [
   {
     path: 'forgotPassword',
     loadChildren: () => import('./forgot-password/forgot-password-page.routes').then(m => m.forgotPasswordPageRoutes),
-    providers: [importProvidersFrom(IshFormlyModule)],
     data: {
       meta: {
         title: 'account.forgotdata.password_retrieval.heading',
@@ -169,7 +173,6 @@ export const appRoutes: Routes = [
     // route for handling confirmation of user data and account deletion requests
     path: 'gdpr-requests',
     children: dataRequestPageRoutes,
-    providers: [importProvidersFrom(IshFormlyModule)],
     data: {
       meta: {
         title: 'personal.data.request.title',
@@ -180,11 +183,119 @@ export const appRoutes: Routes = [
   {
     path: 'cookies',
     children: cookiesPageRoutes,
-    providers: [importProvidersFrom(IshFormlyModule)],
   },
   {
     path: 'cobrowse',
     canActivate: [coBrowsePageGuard],
     children: [],
+  },
+
+  // ============================================
+  // Extension Routes - Lazy Loaded
+  // ============================================
+
+  // Compare Extension
+  {
+    path: 'compare',
+    loadComponent: () =>
+      import('../extensions/compare/pages/compare/compare-page.component').then(c => c.ComparePageComponent),
+    canActivate: [featureToggleGuard],
+    data: {
+      feature: 'compare',
+      meta: {
+        title: 'product.compare.link',
+        robots: 'noindex, nofollow',
+      },
+    },
+  },
+
+  // Quickorder Extension
+  {
+    path: 'quick-order',
+    loadComponent: () =>
+      import('../extensions/quickorder/pages/quickorder/quickorder-page.component').then(
+        c => c.QuickorderPageComponent
+      ),
+    canActivate: [featureToggleGuard],
+    data: {
+      feature: 'quickorder',
+      breadcrumbData: [{ key: 'quickorder.page.breadcrumb' }],
+      meta: {
+        title: 'quickorder.page.breadcrumb',
+        robots: 'noindex, nofollow',
+      },
+    },
+  },
+
+  // Quoting Extension
+  {
+    path: 'addProductToQuoteRequest',
+    loadChildren: () => import('../extensions/quoting/pages/add-to-quote.routes').then(m => m.addToQuoteRoutes),
+  },
+
+  // Punchout Extension
+  {
+    path: 'punchout',
+    canActivate: [featureToggleGuard],
+    data: { feature: 'punchout' },
+    loadChildren: () =>
+      import('../extensions/punchout/pages/punchout-account-routing.module').then(m => m.PunchoutAccountRoutingModule),
+  },
+
+  // Store Locator Extension
+  {
+    path: 'store-finder',
+    canActivate: [featureToggleGuard],
+    loadComponent: () =>
+      import('../extensions/store-locator/pages/store-locator/store-locator-page.component').then(
+        m => m.StoreLocatorPageComponent
+      ),
+    data: {
+      feature: 'storeLocator',
+      meta: {
+        title: 'store_locator.title',
+        robots: 'noindex, nofollow',
+      },
+    },
+  },
+
+  // Recently Extension
+  {
+    path: 'recently',
+    loadComponent: () =>
+      import('../extensions/recently/pages/recently/recently-page.component').then(m => m.RecentlyPageComponent),
+    canActivate: [featureToggleGuard],
+    providers: [importProvidersFrom(RecentlyStoreModule)],
+    data: {
+      feature: 'recently',
+      meta: {
+        title: 'application.recentlyViewed.heading',
+        robots: 'noindex, nofollow',
+      },
+      breadcrumbData: [{ key: 'application.recentlyViewed.breadcrumb.label' }],
+    },
+  },
+
+  // Contact Us Extension
+  {
+    path: 'contact',
+    loadComponent: () =>
+      import('../extensions/contact-us/pages/contact/contact-page.component').then(m => m.ContactPageComponent),
+    canActivate: [featureToggleGuard],
+    providers: [importProvidersFrom(ContactUsStoreModule, CaptchaExportsModule)],
+    data: {
+      feature: 'contactUs',
+      meta: {
+        title: 'helpdesk.contact_us.heading',
+        robots: 'index, nofollow',
+      },
+      breadcrumbData: [{ key: 'helpdesk.contact_us.link' }],
+    },
+  },
+
+  // Wishlist Sharing Extension
+  {
+    path: 'wishlists',
+    loadChildren: () => import('../extensions/wishlists/pages/wishlist-sharing.routes').then(m => m.routes),
   },
 ];

@@ -8,10 +8,12 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { WishlistSharing } from '../../models/wishlist-sharing/wishlist-sharing.model';
@@ -29,6 +31,8 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
   selector: 'ish-wishlist-sharing-dialog',
   templateUrl: './wishlist-sharing-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [FormlyModule, ReactiveFormsModule, ServerHtmlDirective, TranslateModule],
 })
 export class WishlistSharingDialogComponent implements OnInit {
   /**

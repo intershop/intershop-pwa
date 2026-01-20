@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
@@ -14,6 +15,8 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
   selector: 'ish-cost-center-buyer-edit-dialog',
   templateUrl: './cost-center-buyer-edit-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [FormlyModule, ReactiveFormsModule, TranslateModule],
 })
 export class CostCenterBuyerEditDialogComponent implements OnInit {
   model: { buyerName: string; budgetValue: number; budgetPeriod: string };

@@ -1,5 +1,7 @@
-import { NgModule } from '@angular/core';
+import { NgModule, importProvidersFrom } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+import { RequisitionManagementStoreModule } from '../store/requisition-management-store.module';
 
 /**
  * routes for the requisition management
@@ -15,9 +17,12 @@ export const routes: Routes = [
         robots: 'noindex, nofollow',
       },
     },
-    loadChildren: () => import('./approver/approver-page.module').then(m => m.ApproverPageModule),
+    loadComponent: () => import('./approver/approver-page.component').then(m => m.ApproverPageComponent),
   },
-  { path: 'buyer', loadChildren: () => import('./buyer/buyer-page.module').then(m => m.BuyerPageModule) },
+  {
+    path: 'buyer',
+    loadComponent: () => import('./buyer/buyer-page.component').then(m => m.BuyerPageComponent),
+  },
   {
     path: 'approver/:requisitionId',
     data: {
@@ -26,17 +31,18 @@ export const routes: Routes = [
         robots: 'noindex, nofollow',
       },
     },
-    loadChildren: () =>
-      import('./requisition-detail/requisition-detail-page.module').then(m => m.RequisitionDetailPageModule),
+    loadComponent: () =>
+      import('./requisition-detail/requisition-detail-page.component').then(m => m.RequisitionDetailPageComponent),
   },
   {
     path: 'buyer/:requisitionId',
-    loadChildren: () =>
-      import('./requisition-detail/requisition-detail-page.module').then(m => m.RequisitionDetailPageModule),
+    loadComponent: () =>
+      import('./requisition-detail/requisition-detail-page.component').then(m => m.RequisitionDetailPageComponent),
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
+  providers: [importProvidersFrom(RequisitionManagementStoreModule)],
 })
 export class RequisitionManagementRoutingModule {}

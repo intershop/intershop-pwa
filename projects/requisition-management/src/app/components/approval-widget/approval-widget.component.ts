@@ -1,18 +1,36 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { Price, PriceHelper } from 'ish-core/models/price/price.model';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 import { Requisition } from '../../models/requisition/requisition.model';
+import { RequisitionManagementStoreModule } from '../../store/requisition-management-store.module';
 
 @Component({
   selector: 'ish-approval-widget',
   templateUrl: './approval-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    InfoBoxComponent,
+    LoadingComponent,
+    NgIf,
+    PricePipe,
+    RequisitionManagementStoreModule,
+    RouterModule,
+    TranslateModule,
+  ],
 })
 @GenerateLazyComponent()
 export class ApprovalWidgetComponent implements OnInit {

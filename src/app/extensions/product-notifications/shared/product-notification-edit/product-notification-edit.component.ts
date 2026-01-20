@@ -1,11 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map, startWith, take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { IconModule } from 'ish-core/icon.module';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
@@ -25,6 +28,8 @@ import { ProductNotificationEditDialogComponent } from '../product-notification-
   selector: 'ish-product-notification-edit',
   templateUrl: './product-notification-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, IconModule, ProductNotificationEditDialogComponent, TranslateModule],
 })
 @GenerateLazyComponent()
 export class ProductNotificationEditComponent implements OnInit {

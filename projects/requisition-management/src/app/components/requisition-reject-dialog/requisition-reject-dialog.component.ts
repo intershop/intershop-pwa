@@ -7,9 +7,12 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+
+import { DirectivesModule } from 'ish-core/directives.module';
 
 /**
  * The Wishlist Reject Approval Dialog shows the modal to reject a requisition.
@@ -23,6 +26,8 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
   selector: 'ish-requisition-reject-dialog',
   templateUrl: './requisition-reject-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [DirectivesModule, FormlyModule, ReactiveFormsModule, TranslateModule],
 })
 export class RequisitionRejectDialogComponent implements OnInit {
   /**

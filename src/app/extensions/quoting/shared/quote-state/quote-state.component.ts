@@ -1,4 +1,6 @@
+import { AsyncPipe, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
@@ -14,6 +16,8 @@ import { QuoteStatus } from '../../models/quoting/quoting.model';
   selector: 'ish-quote-state',
   templateUrl: './quote-state.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, TranslateModule, AsyncPipe],
 })
 export class QuoteStateComponent implements OnChanges {
   @Input({ required: true }) quoteId: string;
