@@ -350,6 +350,9 @@ Prerequisites for using this feature:
 - The service account of the `intershop-pwa-nginx` container should have `get` permission on the `endpoints` resource to ensure the cache clearing for all SSR pods.
 - The NGINX cache clearing cannot be used together with the [Shared Redis Cache](#shared-redis-cache).
 
+> [!TIP]
+> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video tutorial on [page cache invalidation in a PWA with SSR](https://public.academy.intershop.com/plus/catalog/courses/455).
+
 ### Shared Redis Cache
 
 Each NGINX instance has its own cache, so in a deployment with multiple NGINX instances (for redundancy), the cache hit rate is significantly lower than it could be.

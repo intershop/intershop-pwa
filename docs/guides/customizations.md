@@ -263,6 +263,9 @@ Also remember to use `npm install` after importing a change that modified the `p
 
 Reading through the [migrations.md](./migrations.md) and the [CHANGELOG.md](../../CHANGELOG.md) - here especially the 'Breaking Changes' section - should be the first step before any migration.
 
+> [!TIP]
+> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers migration‑related video tutorials in the _Progressive Web App_ category.
+
 Begin any migration with adding the Intershop PWA GitHub repository as an additional remote if this is not already the case.
 
 ```
