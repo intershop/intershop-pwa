@@ -8,17 +8,19 @@ kb_sync_latest_only
 # Logging
 
 - [Server-Side Rendering (SSR)](#server-side-rendering-ssr)
+  - [Enable Logging](#enable-logging)
+  - [Disable Logging](#disable-logging)
   - [Log Format](#log-format)
-  - [Log Level Configuration](#log-level-configuration)
 - [NGINX](#nginx)
+  - [Enable Logging](#enable-logging-1)
+  - [Disable Logging](#disable-logging-1)
   - [Log Format](#log-format-1)
-  - [Log Level Configuration](#log-level-configuration-1)
 - [Container Log Management](#container-log-management)
 - [Further References](#further-references)
 
 ## Server-Side Rendering (SSR)
 
-The _express.js_ server that handles Angular Universal Server-Side Rendering can log extended information to the console when the environment variable `LOGGING=true` is set (default).
+The _express.js_ server that handles Angular Universal Server-Side Rendering can log extended information to the console.
 
 ```yaml
 # docker-compose.yml
@@ -31,9 +33,31 @@ services:
       # LOGLEVEL: 'warn'
 ```
 
-`LOG_ALL` applies only to outbound requests from the SSR application.
+### Enable Logging
 
-When commented out (default), the [Dockerfile](../../Dockerfile) default `LOG_ALL=on` is used, which causes all outbound HTTP requests to ICM to be logged.
+`LOGGING=true` enables logging.
+
+`LOG_ALL` applies to outbound HTTP requests from the SSR application to the ICM.
+When commented out (default), the [Dockerfile](../../Dockerfile) default `LOG_ALL=true` is used.
+
+The outbound HTTP request logs are filtered by the `LOGLEVEL` setting:
+
+| LOG_ALL | LOGLEVEL | Logged Status Codes |
+| ------- | -------- | ------------------- |
+| true    | info     | 2xx, 3xx, 4xx, 5xx  |
+| true    | warn     | 4xx, 5xx            |
+| true    | error    | 5xx                 |
+| false   | info     | 4xx, 5xx            |
+| false   | warn     | 4xx, 5xx            |
+| false   | error    | 5xx                 |
+
+Other SSR logs (application errors, startup messages, SSR rendering failures) are filtered by `LOGLEVEL` only, independent of `LOG_ALL`.
+
+When `LOGLEVEL` is commented out (default), the log level `warn` is used.
+
+### Disable Logging
+
+`LOGGING=false` disables logging where `LOG_ALL` and `LOGLEVEL` are ignored.
 
 To disable all SSR application logs:
 
@@ -54,7 +78,7 @@ services:
 The SSR application supports two log formats controlled by the environment variable `LOGFORMAT`:
 
 - No `LOGFORMAT` variable (default): Requests to the SSR process are logged using [morgan](https://github.com/expressjs/morgan) (see configuration in _server.ts_) in the format: `<method> <url> <status> <bytes> - <duration> ms`
-- `LOGFORMAT='json'`: Uses [pino](https://github.com/pinojs/pino) for high-performance structured JSON logs compliant with the [Elastic Common Schema (ECS) v8.11](https://www.elastic.co/guide/en/ecs/current/index.html) specification, including log levels `info`, `warn`, and `error`
+- `LOGFORMAT=json`: Uses [pino](https://github.com/pinojs/pino) for high-performance structured JSON logs compliant with the [Elastic Common Schema (ECS) v8.11](https://www.elastic.co/guide/en/ecs/current/index.html) specification, including log levels `info`, `warn`, and `error`
 
 Both log formats include the following common log entries:
 
@@ -66,16 +90,6 @@ When using the default plain text format (no `LOGFORMAT` variable), additional S
 
 - `SSR <url>` is logged at the beginning of SSR processing
 - `RES <status> <url>` is logged at the end of SSR processing
-
-### Log Level Configuration
-
-The `LOGLEVEL` environment variable controls which log messages are output based on severity:
-
-- `info` - Logs all messages (info, warn, error)
-- `warn` - Logs warnings and errors only (default)
-- `error` - Logs errors only
-
-When commented out (default), the log level `warn` is used.
 
 ## NGINX
 
@@ -92,9 +106,28 @@ services:
       # DEBUG: 1
 ```
 
-When `LOG_ALL` is commented out (default), the NGINX [Dockerfile](../../nginx/Dockerfile) default `LOG_ALL=on` is used, which logs all requests.
+### Enable Logging
 
-Additionally, the environment variable `DEBUG=true` provides even more debugging output in the NGINX logs.
+`LOG_ALL=true` enables the logging of incoming requests to NGINX.
+There is no `LOGGING` variable for NGINX.
+When commented out (default), the NGINX [Dockerfile](../../nginx/Dockerfile) default `LOG_ALL=true` is used.
+
+The incoming HTTP request logs are filtered by the `LOGLEVEL` setting:
+
+| LOG_ALL | LOGLEVEL | Logged Status Codes |
+| ------- | -------- | ------------------- |
+| true    | info     | 2xx, 3xx, 4xx, 5xx  |
+| true    | warn     | 4xx, 5xx            |
+| true    | error    | 5xx                 |
+| false   | info     | 4xx, 5xx            |
+| false   | warn     | 4xx, 5xx            |
+| false   | error    | 5xx                 |
+
+When commented out (default), the log level `warn` is used.
+
+> NOTE: Additionally, the environment variable `DEBUG=true` provides even more debugging output in the NGINX logs.
+
+### Disable Logging
 
 To disable all NGINX logs (except 4xx/5xx errors):
 
@@ -114,28 +147,7 @@ services:
 NGINX supports two log formats controlled by the environment variable `LOGFORMAT`:
 
 - No `LOGFORMAT` variable (default): The container uses `main` as its default format
-- `LOGFORMAT='json'`: The container uses nginx's built-in JSON logging compliant with the [Elastic Common Schema (ECS) v8.11](https://www.elastic.co/guide/en/ecs/current/index.html) specification
-
-### Log Level Configuration
-
-The `LOGLEVEL` environment variable controls which log messages are output based on HTTP status code severity:
-
-- `info` - Logs all responses (2xx, 3xx, 4xx, 5xx)
-- `warn` - Logs warnings and errors only: 4xx and 5xx (default)
-- `error` - Logs errors only: 5xx
-
-When commented out (default), the log level `warn` is used.
-
-> **Note:** `LOGLEVEL` works in combination with `LOG_ALL`. Both filters must allow logging for a request to be logged:
->
-> | LOG_ALL | LOGLEVEL | Logged Status Codes |
-> | ------- | -------- | ------------------- |
-> | on      | info     | 2xx, 3xx, 4xx, 5xx  |
-> | on      | warn     | 4xx, 5xx            |
-> | on      | error    | 5xx                 |
-> | off     | info     | 4xx, 5xx            |
-> | off     | warn     | 4xx, 5xx            |
-> | off     | error    | 5xx                 |
+- `LOGFORMAT=json`: The container uses nginx's built-in JSON logging compliant with the [Elastic Common Schema (ECS) v8.11](https://www.elastic.co/guide/en/ecs/current/index.html) specification
 
 ## Container Log Management
 
