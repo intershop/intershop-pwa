@@ -11,43 +11,25 @@ import { StateManagementModule } from 'ish-core/state-management.module';
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
-import { CompareRoutingModule } from './extensions/compare/pages/compare-routing.module';
-import { CompareStoreModule } from './extensions/compare/store/compare-store.module';
-import { ContactUsRoutingModule } from './extensions/contact-us/pages/contact-us-routing.module';
 import { CopilotExportsModule } from './extensions/copilot/exports/copilot-exports.module';
-import { PunchoutRoutingModule } from './extensions/punchout/pages/punchout-routing.module';
-import { QuickorderRoutingModule } from './extensions/quickorder/pages/quickorder-routing.module';
-import { QuotingRoutingModule } from './extensions/quoting/pages/quoting-routing.module';
-import { RecentlyRoutingModule } from './extensions/recently/pages/recently-routing.module';
-import { StoreLocatorRoutingModule } from './extensions/store-locator/pages/store-locator-routing.module';
-import { WishlistSharingRoutingModule } from './extensions/wishlists/pages/wishlist-sharing-routing.module';
-import { AppLastRoutingModule } from './pages/app-last-routing.module';
 import { AppRoutingModule } from './pages/app-routing.module';
 import { ShellModule } from './shell/shell.module';
 
 @NgModule({
   declarations: [AppComponent],
-  /* eslint-disable @angular-eslint/sort-ngmodule-metadata-arrays */
   imports: [
-    StateManagementModule,
-    BrowserModule,
+    // Core modules - must be loaded synchronously
+    AppRoutingModule,
     BrowserAnimationsModule,
+    BrowserModule,
+    CopilotExportsModule,
     CoreModule,
     ShellModule,
-    CopilotExportsModule,
-    AppRoutingModule,
-    QuickorderRoutingModule,
-    QuotingRoutingModule,
-    PunchoutRoutingModule,
-    StoreLocatorRoutingModule,
-    RecentlyRoutingModule,
-    CompareRoutingModule,
-    ContactUsRoutingModule,
-    WishlistSharingRoutingModule,
-    AppLastRoutingModule,
-    CompareStoreModule,
+    // Routing - includes all routes (app routes + extension routes + app-last routes)
+    StateManagementModule,
+    // Note: Extension routing modules and AppLastRoutingModule are now integrated into appRoutes
+    // CompareStoreModule is loaded lazily via LAZY_FEATURE_MODULE
   ],
-  /* eslint-enable @angular-eslint/sort-ngmodule-metadata-arrays */
   bootstrap: [AppComponent],
   providers: [
     { provide: UrlSerializer, useClass: PWAUrlSerializer },

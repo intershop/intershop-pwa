@@ -26,13 +26,18 @@ describe('Recently Page Component', () => {
     when(recentlyFacade.recentlyViewedProducts$).thenReturn(of(['sku1', 'sku2']));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [MockComponent(BreadcrumbComponent), MockComponent(ProductsListComponent), RecentlyPageComponent],
+      imports: [RecentlyPageComponent, TranslateModule.forRoot()],
       providers: [
         { provide: RecentlyFacade, useFactory: () => instance(recentlyFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(RecentlyPageComponent, {
+        set: {
+          imports: [MockComponent(BreadcrumbComponent), MockComponent(ProductsListComponent), TranslateModule],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

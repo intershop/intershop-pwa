@@ -12,21 +12,17 @@ import { ProductContextDirective } from './directives/product-context.directive'
 import { ScrollDirective } from './directives/scroll.directive';
 import { ServerHtmlDirective } from './directives/server-html.directive';
 
-const declaredDirectives = [
-  BrowserLazyViewDirective,
-  ClickOutsideDirective,
-  FocusOutsideDirective,
-  FormSubmitDirective,
-  IntersectionObserverDirective,
-];
+const declaredDirectives = [ClickOutsideDirective, FocusOutsideDirective, IntersectionObserverDirective];
 
 const standaloneDirectives = [
+  BrowserLazyViewDirective,
   ProductContextAccessDirective,
   ProductContextDirective,
   ServerHtmlDirective,
   ScrollDirective,
   LazyLoadingContentDirective,
   IdentityProviderCapabilityDirective,
+  FormSubmitDirective,
 ];
 
 @NgModule({

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { identityProviderPasswordGuard } from 'ish-core/guards/identity-provider-password.guard';
-import { SharedModule } from 'ish-shared/shared.module';
 
 import { RequestReminderFormComponent } from './request-reminder-form/request-reminder-form.component';
 import { RequestReminderComponent } from './request-reminder/request-reminder.component';
@@ -26,7 +25,6 @@ const forgotPasswordPageRoutes: Routes = [
     RequestReminderComponent,
     RouterModule.forChild(forgotPasswordPageRoutes),
     RequestReminderFormComponent,
-    SharedModule,
     UpdatePasswordComponent,
     UpdatePasswordFormComponent,
   ],

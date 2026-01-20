@@ -1,7 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { IconModule } from 'ish-core/icon.module';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
@@ -21,6 +25,8 @@ import { ProductNotification } from '../../models/product-notification/product-n
   selector: 'ish-product-notification-delete',
   templateUrl: './product-notification-delete.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, IconModule, ModalDialogComponent, ServerHtmlDirective, TranslateModule],
 })
 export class ProductNotificationDeleteComponent implements OnInit {
   @Input({ required: true }) productNotification: ProductNotification;

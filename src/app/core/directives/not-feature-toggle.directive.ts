@@ -18,6 +18,7 @@ import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle
  */
 @Directive({
   selector: '[ishNotFeature]',
+  standalone: true,
 })
 export class NotFeatureToggleDirective {
   private feature$ = new BehaviorSubject<'always' | 'never' | FeatureToggleType>(undefined);

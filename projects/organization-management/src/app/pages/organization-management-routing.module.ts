@@ -1,11 +1,15 @@
-import { NgModule } from '@angular/core';
+import { NgModule, importProvidersFrom } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { FormlyModule } from '@ngx-formly/core';
 
 import { authorizationToggleGuard } from 'ish-core/authorization-toggle.module';
 import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 
 import { fetchUsersGuard } from '../guards/fetch-users.guard';
 import { redirectFirstToParentGuard } from '../guards/redirect-first-to-parent.guard';
+import { OrganizationManagementStoreModule } from '../store/organization-management-store.module';
+
+import { CostCenterBuyersRepeatFieldComponent } from './cost-center-buyers/cost-center-buyers-repeat-field/cost-center-buyers-repeat-field.component';
 
 /**
  * routes for the organization management
@@ -16,8 +20,10 @@ export const routes: Routes = [
   { path: '', redirectTo: 'cost-centers', pathMatch: 'full' },
   {
     path: 'settings',
-    loadChildren: () =>
-      import('./organization-settings/organization-settings-page.module').then(m => m.OrganizationSettingsPageModule),
+    loadComponent: () =>
+      import('./organization-settings/organization-settings-page.component').then(
+        m => m.OrganizationSettingsPageComponent
+      ),
     data: {
       meta: {
         title: 'account.organization.org_settings',
@@ -29,16 +35,16 @@ export const routes: Routes = [
   },
   {
     path: 'settings/company',
-    loadChildren: () =>
-      import('./organization-settings-company/organization-settings-company-page.module').then(
-        m => m.OrganizationSettingsCompanyPageModule
+    loadComponent: () =>
+      import('./organization-settings-company/organization-settings-company-page.component').then(
+        m => m.OrganizationSettingsCompanyPageComponent
       ),
     data: { permission: 'APP_B2B_MANAGE_USERS' },
     canActivate: [authorizationToggleGuard],
   },
   {
     path: 'users',
-    loadChildren: () => import('./users/users-page.module').then(m => m.UsersPageModule),
+    loadComponent: () => import('./users/users-page.component').then(m => m.UsersPageComponent),
     data: {
       meta: {
         title: 'account.organization.user_management',
@@ -50,19 +56,19 @@ export const routes: Routes = [
   },
   {
     path: 'users/create',
-    loadChildren: () => import('./user-create/user-create-page.module').then(m => m.UserCreatePageModule),
+    loadComponent: () => import('./user-create/user-create-page.component').then(m => m.UserCreatePageComponent),
     data: { permission: 'APP_B2B_MANAGE_USERS' },
     canActivate: [redirectFirstToParentGuard, authorizationToggleGuard],
   },
   {
     path: 'users/import',
-    loadChildren: () => import('./user-import/user-import-page.module').then(m => m.UserImportPageModule),
+    loadComponent: () => import('./user-import/user-import-page.component').then(m => m.UserImportPageComponent),
     data: { permission: 'APP_B2B_MANAGE_USERS' },
     canActivate: [redirectFirstToParentGuard, authorizationToggleGuard],
   },
   {
     path: 'users/:B2BCustomerLogin',
-    loadChildren: () => import('./user-detail/user-detail-page.module').then(m => m.UserDetailPageModule),
+    loadComponent: () => import('./user-detail/user-detail-page.component').then(m => m.UserDetailPageComponent),
     canActivate: [fetchUsersGuard, authorizationToggleGuard],
     data: {
       onlyInitialUsers: true,
@@ -71,20 +77,22 @@ export const routes: Routes = [
   },
   {
     path: 'users/:B2BCustomerLogin/profile',
-    loadChildren: () =>
-      import('./user-edit-profile/user-edit-profile-page.module').then(m => m.UserEditProfilePageModule),
+    loadComponent: () =>
+      import('./user-edit-profile/user-edit-profile-page.component').then(m => m.UserEditProfilePageComponent),
     canActivate: [redirectFirstToParentGuard, authorizationToggleGuard],
     data: { permission: 'APP_B2B_MANAGE_USERS' },
   },
   {
     path: 'users/:B2BCustomerLogin/roles',
-    loadChildren: () => import('./user-edit-roles/user-edit-roles-page.module').then(m => m.UserEditRolesPageModule),
+    loadComponent: () =>
+      import('./user-edit-roles/user-edit-roles-page.component').then(m => m.UserEditRolesPageComponent),
     canActivate: [redirectFirstToParentGuard, authorizationToggleGuard],
     data: { permission: 'APP_B2B_MANAGE_USERS' },
   },
   {
     path: 'users/:B2BCustomerLogin/budget',
-    loadChildren: () => import('./user-edit-budget/user-edit-budget-page.module').then(m => m.UserEditBudgetPageModule),
+    loadComponent: () =>
+      import('./user-edit-budget/user-edit-budget-page.component').then(m => m.UserEditBudgetPageComponent),
     canActivate: [redirectFirstToParentGuard, authorizationToggleGuard],
     data: { permission: 'APP_B2B_MANAGE_USERS' },
   },
@@ -98,39 +106,48 @@ export const routes: Routes = [
       },
       feature: 'costCenters',
     },
-    loadChildren: () => import('./cost-centers/cost-centers-page.module').then(m => m.CostCentersPageModule),
+    loadComponent: () => import('./cost-centers/cost-centers-page.component').then(m => m.CostCentersPageComponent),
   },
   {
     path: 'cost-centers/create',
-    loadChildren: () =>
-      import('./cost-center-create/cost-center-create-page.module').then(m => m.CostCenterCreatePageModule),
+    loadComponent: () =>
+      import('./cost-center-create/cost-center-create-page.component').then(m => m.CostCenterCreatePageComponent),
     canActivate: [redirectFirstToParentGuard],
   },
   {
     path: 'cost-centers/import',
-    loadChildren: () =>
-      import('./cost-center-import/cost-center-import-page.module').then(m => m.CostCenterImportPageModule),
+    loadComponent: () =>
+      import('./cost-center-import/cost-center-import-page.component').then(m => m.CostCenterImportPageComponent),
     canActivate: [redirectFirstToParentGuard],
   },
   {
     path: 'cost-centers/:CostCenterId',
-    loadChildren: () =>
-      import('./cost-center-detail/cost-center-detail-page.module').then(m => m.CostCenterDetailPageModule),
+    loadComponent: () =>
+      import('./cost-center-detail/cost-center-detail-page.component').then(m => m.CostCenterDetailPageComponent),
   },
   {
     path: 'cost-centers/:CostCenterId/edit',
-    loadChildren: () => import('./cost-center-edit/cost-center-edit-page.module').then(m => m.CostCenterEditPageModule),
+    loadComponent: () =>
+      import('./cost-center-edit/cost-center-edit-page.component').then(m => m.CostCenterEditPageComponent),
     canActivate: [redirectFirstToParentGuard],
   },
   {
     path: 'cost-centers/:CostCenterId/buyers',
-    loadChildren: () =>
-      import('./cost-center-buyers/cost-center-buyers-page.module').then(m => m.CostCenterBuyersPageModule),
+    loadComponent: () =>
+      import('./cost-center-buyers/cost-center-buyers-page.component').then(m => m.CostCenterBuyersPageComponent),
     canActivate: [redirectFirstToParentGuard, fetchUsersGuard],
+    providers: [
+      importProvidersFrom(
+        FormlyModule.forChild({
+          types: [{ name: 'repeatCostCenterBuyers', component: CostCenterBuyersRepeatFieldComponent }],
+        })
+      ),
+    ],
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
+  providers: [importProvidersFrom(OrganizationManagementStoreModule)],
 })
 export class OrganizationManagementRoutingModule {}

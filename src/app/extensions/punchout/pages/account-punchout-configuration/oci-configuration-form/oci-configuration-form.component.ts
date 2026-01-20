@@ -1,11 +1,19 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable, filter, map, shareReplay, take } from 'rxjs';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
+import { IconModule } from 'ish-core/icon.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { PunchoutFacade } from '../../../facades/punchout.facade';
@@ -15,6 +23,21 @@ import { OciConfigurationItem } from '../../../models/oci-configuration-item/oci
   selector: 'ish-oci-configuration-form',
   templateUrl: './oci-configuration-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    ErrorMessageComponent,
+    FormSubmitDirective,
+    FormlyModule,
+    LoadingComponent,
+    NgIf,
+    ReactiveFormsModule,
+    RouterLink,
+    TranslateModule,
+    NgFor,
+    NgbPopoverModule,
+    IconModule,
+  ],
 })
 export class OciConfigurationFormComponent implements OnInit {
   form: FormGroup = new FormGroup({});

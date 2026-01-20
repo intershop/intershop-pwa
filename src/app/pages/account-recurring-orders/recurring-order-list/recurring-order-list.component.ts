@@ -1,9 +1,17 @@
+import { CdkTableModule } from '@angular/cdk/table';
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { RouterModule } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { IconModule } from 'ish-core/icon.module';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.model';
+import { DatePipe } from 'ish-core/pipes/date.pipe';
+import { FrequencyPipe } from 'ish-core/pipes/frequency.pipe';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { SwitchComponent } from 'ish-shared/components/common/switch/switch.component';
 
 export type RecurringOrderColumnsType =
   | 'recurringOrderNo'
@@ -19,6 +27,19 @@ export type RecurringOrderColumnsType =
   selector: 'ish-recurring-order-list',
   templateUrl: './recurring-order-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CdkTableModule,
+    DatePipe,
+    FrequencyPipe,
+    IconModule,
+    ModalDialogComponent,
+    NgIf,
+    PricePipe,
+    RouterModule,
+    SwitchComponent,
+    TranslateModule,
+  ],
 })
 export class RecurringOrderListComponent {
   @Input({ required: true }) recurringOrders: RecurringOrder[];

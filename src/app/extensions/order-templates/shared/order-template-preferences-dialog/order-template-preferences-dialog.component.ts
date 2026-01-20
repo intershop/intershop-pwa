@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,11 +9,13 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { OrderTemplate } from '../../models/order-template/order-template.model';
@@ -29,6 +32,8 @@ import { OrderTemplate } from '../../models/order-template/order-template.model'
   selector: 'ish-order-template-preferences-dialog',
   templateUrl: './order-template-preferences-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, FormlyModule, FormSubmitDirective, ReactiveFormsModule, TranslateModule],
 })
 export class OrderTemplatePreferencesDialogComponent implements OnInit {
   /**

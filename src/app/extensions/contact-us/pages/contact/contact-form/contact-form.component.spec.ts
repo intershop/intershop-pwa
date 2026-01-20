@@ -28,8 +28,7 @@ describe('Contact Form Component', () => {
     when(mockAppFacade.serverSetting$<boolean>(anyString())).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      declarations: [ContactFormComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [ContactFormComponent, FormlyTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(mockAppFacade) },

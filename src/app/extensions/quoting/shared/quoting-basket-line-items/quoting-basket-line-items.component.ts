@@ -1,10 +1,13 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { groupBy } from 'lodash-es';
 import { Observable, map } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
 
@@ -12,6 +15,8 @@ import { QuotingFacade } from '../../facades/quoting.facade';
   selector: 'ish-quoting-basket-line-items',
   templateUrl: './quoting-basket-line-items.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, LineItemListComponent, NgFor, NgIf, TranslateModule],
 })
 @GenerateLazyComponent()
 export class QuotingBasketLineItemsComponent implements OnInit {

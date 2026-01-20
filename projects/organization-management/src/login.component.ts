@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { LoginFormComponent } from 'ish-shared/components/login/login-form/login-form.component';
+
 @Component({
   template: `
     <div class="container">
@@ -8,5 +10,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [LoginFormComponent],
 })
 export class LoginComponent {}

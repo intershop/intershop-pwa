@@ -16,14 +16,14 @@ import { punchoutTypesReducer } from './punchout-types/punchout-types.reducer';
 import { PunchoutUsersEffects } from './punchout-users/punchout-users.effects';
 import { punchoutUsersReducer } from './punchout-users/punchout-users.reducer';
 
-const punchoutReducers: ActionReducerMap<PunchoutState> = {
+export const punchoutReducers: ActionReducerMap<PunchoutState> = {
   ociConfiguration: ociConfigurationReducer,
   punchoutUsers: punchoutUsersReducer,
   punchoutTypes: punchoutTypesReducer,
   cxmlConfiguration: cxmlConfigurationReducer,
 };
 
-const punchoutEffects = [
+export const punchoutEffects = [
   OciConfigurationEffects,
   PunchoutUsersEffects,
   PunchoutFunctionsEffects,

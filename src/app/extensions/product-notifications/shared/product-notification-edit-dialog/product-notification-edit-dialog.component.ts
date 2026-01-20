@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,18 +10,22 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { UntypedFormGroup } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable, of, shareReplay, switchMap } from 'rxjs';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 
 import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
+import { ProductNotificationEditFormComponent } from '../product-notification-edit-form/product-notification-edit-form.component';
 
 /**
  * The Product Notification Edit Dialog Component shows the customer a dialog to either create,
@@ -41,6 +46,15 @@ import { ProductNotification } from '../../models/product-notification/product-n
   selector: 'ish-product-notification-edit-dialog',
   templateUrl: './product-notification-edit-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormSubmitDirective,
+    ProductImageComponent,
+    ProductNotificationEditFormComponent,
+    ReactiveFormsModule,
+    TranslateModule,
+  ],
 })
 export class ProductNotificationEditDialogComponent implements OnInit {
   @Input() productNotification: ProductNotification;

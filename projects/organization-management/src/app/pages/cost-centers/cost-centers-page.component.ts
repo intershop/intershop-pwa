@@ -1,14 +1,24 @@
+import { CdkTableModule } from '@angular/cdk/table';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, combineLatest, map, of, take } from 'rxjs';
 
+import { IconModule } from 'ish-core/icon.module';
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { PagingComponent } from 'ish-shared/components/common/paging/paging.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { CostCenterQuery } from '../../models/cost-center-query/cost-center-query.model';
+import { OrganizationManagementModule } from '../../organization-management.module';
+
+import { CostCentersFilterComponent } from './cost-centers-filter/cost-centers-filter.component';
 
 type CostCenterColumnsType = 'costCenterId' | 'costCenterName' | 'costCenterManager' | 'costCenterBudget' | 'actions';
 
@@ -16,6 +26,21 @@ type CostCenterColumnsType = 'costCenterId' | 'costCenterName' | 'costCenterMana
   selector: 'ish-cost-centers-page',
   templateUrl: './cost-centers-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    CdkTableModule,
+    CostCentersFilterComponent,
+    LoadingComponent,
+    ModalDialogComponent,
+    NgClass,
+    NgIf,
+    OrganizationManagementModule,
+    PagingComponent,
+    RouterModule,
+    TranslateModule,
+    IconModule,
+  ],
 })
 export class CostCentersPageComponent implements OnInit {
   costCenters$: Observable<CostCenter[]>;

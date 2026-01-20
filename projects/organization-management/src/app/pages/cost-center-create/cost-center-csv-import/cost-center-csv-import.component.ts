@@ -1,3 +1,4 @@
+import { NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -9,7 +10,8 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { CostCenterBase } from 'ish-core/models/cost-center/cost-center.model';
 import { CsvImportData, CsvImportHandler, CsvImportStatus } from 'ish-core/utils/csv/csv.import-handler';
@@ -20,6 +22,8 @@ import { OrganizationManagementFacade } from '../../../facades/organization-mana
   selector: 'ish-cost-center-csv-import',
   templateUrl: './cost-center-csv-import.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgSwitch, NgSwitchCase, NgSwitchDefault, ReactiveFormsModule, TranslateModule],
 })
 export class CostCenterCsvImportComponent implements OnInit {
   csvForm: FormGroup;

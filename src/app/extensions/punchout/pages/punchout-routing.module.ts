@@ -1,14 +1,19 @@
-import { NgModule } from '@angular/core';
+import { NgModule, importProvidersFrom } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 
+import { PunchoutStoreModule } from '../store/punchout-store.module';
+
+import { punchoutPageGuard } from './punchout/punchout-page.guard';
+
 const routes: Routes = [
   {
     path: 'punchout',
-    canActivate: [featureToggleGuard],
+    canActivate: [featureToggleGuard, punchoutPageGuard],
     data: { feature: 'punchout' },
-    loadChildren: () => import('./punchout/punchout-page.module').then(m => m.PunchoutPageModule),
+    providers: [importProvidersFrom(PunchoutStoreModule)],
+    children: [],
   },
 ];
 

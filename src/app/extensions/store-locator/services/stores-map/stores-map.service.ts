@@ -9,9 +9,18 @@ import { StoreLocation } from '../../models/store-location/store-location.model'
 import { getGMAKey } from '../../store/store-locator-config';
 import { getHighlightedStore, getStores, highlightStore } from '../../store/stores';
 
-type IconConfiguration = { default: string; highlight: string };
+type IconConfiguration = { default: string; highlight?: string };
 
-export const STORE_MAP_ICON_CONFIGURATION = new InjectionToken<IconConfiguration>('Store Map Icon Configuration');
+const STORE_MAP_ICON_DEFAULTS: IconConfiguration = {
+  default:
+    'https://www.google.com/maps/vt/icon/name=assets/icons/poi/tactile/pinlet_outline_v4-2-medium.png,assets/icons/poi/tactile/pinlet_v4-2-medium.png,assets/icons/poi/quantum/pinlet/shoppingcart_pinlet-2-medium.png&highlight=4285f4,5491f5,ffffff?scale=1',
+  highlight: undefined,
+};
+
+export const STORE_MAP_ICON_CONFIGURATION = new InjectionToken<IconConfiguration>('Store Map Icon Configuration', {
+  providedIn: 'root',
+  factory: () => STORE_MAP_ICON_DEFAULTS,
+});
 
 @Injectable({ providedIn: 'root' })
 export class StoresMapService {

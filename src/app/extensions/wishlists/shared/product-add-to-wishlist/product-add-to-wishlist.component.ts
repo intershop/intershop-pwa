@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf, NgSwitch } from '@angular/common';
+import { AsyncPipe, NgClass, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
@@ -19,7 +19,16 @@ import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wi
   templateUrl: './product-add-to-wishlist.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgClass, NgSwitch, IconModule, TranslateModule, AsyncPipe, SelectWishlistModalComponent],
+  imports: [
+    NgIf,
+    NgClass,
+    NgSwitch,
+    IconModule,
+    TranslateModule,
+    AsyncPipe,
+    SelectWishlistModalComponent,
+    NgSwitchCase,
+  ],
 })
 /**
  * The Product Add To Wishlist Component adds a product to a wishlist.

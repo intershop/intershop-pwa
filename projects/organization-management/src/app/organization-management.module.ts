@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 
-import { SharedModule } from 'ish-shared/shared.module';
-
 import { BudgetInfoComponent } from './components/budget-info/budget-info.component';
 import { BudgetWidgetComponent } from './components/budget-widget/budget-widget.component';
 import { BuyersSelectComponent } from './components/buyers-select/buyers-select.component';
@@ -32,8 +30,22 @@ const exportedComponents = [
 ];
 
 @NgModule({
-  declarations: [...exportedComponents, BudgetWidgetComponent, CostCenterWidgetComponent],
-  imports: [OrganizationManagementStoreModule, SharedModule],
+  imports: [
+    BudgetInfoComponent,
+    BudgetWidgetComponent,
+    BuyersSelectComponent,
+    CostCenterBudgetComponent,
+    CostCenterBuyerEditDialogComponent,
+    CostCenterFormComponent,
+    CostCenterUsersListComponent,
+    CostCenterWidgetComponent,
+    OrganizationManagementStoreModule,
+    UserBudgetComponent,
+    UserBudgetFormComponent,
+    UserProfileFormComponent,
+    UserRolesBadgesComponent,
+    UserRolesSelectionComponent,
+  ],
   exports: [...exportedComponents],
 })
 export class OrganizationManagementModule {}

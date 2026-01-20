@@ -1,15 +1,32 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
+import { DirectivesModule } from 'ish-core/directives.module';
 import { CostCenter, CostCenterBase } from 'ish-core/models/cost-center/cost-center.model';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
+import { OrganizationManagementModule } from '../../organization-management.module';
 
 @Component({
   selector: 'ish-cost-center-edit-page',
   templateUrl: './cost-center-edit-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    DirectivesModule,
+    LoadingComponent,
+    NgIf,
+    OrganizationManagementModule,
+    ReactiveFormsModule,
+    RouterModule,
+    TranslateModule,
+  ],
 })
 export class CostCenterEditPageComponent implements OnInit {
   loading$: Observable<boolean>;

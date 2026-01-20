@@ -1,3 +1,4 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -11,13 +12,15 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { UntypedFormGroup } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { NgbCollapseModule, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable, distinctUntilChanged, map, shareReplay, takeUntil } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { IconModule } from 'ish-core/icon.module';
 import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { whenFalsy } from 'ish-core/utils/operators';
 
@@ -123,6 +126,8 @@ function urlToQuery(params: UrlModel): Partial<OrderListQuery> {
   selector: 'ish-account-order-filters',
   templateUrl: './account-order-filters.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, FormlyModule, IconModule, NgIf, NgbCollapseModule, ReactiveFormsModule, TranslateModule],
   providers: [{ provide: NgbDateAdapter, useClass: OrderDateFilterAdapter }],
 })
 export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {

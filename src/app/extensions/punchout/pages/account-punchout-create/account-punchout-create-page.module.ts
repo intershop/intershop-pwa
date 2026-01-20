@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { PunchoutModule } from '../../punchout.module';
-
 import { AccountPunchoutCreatePageComponent } from './account-punchout-create-page.component';
 
 const accountPunchoutCreatePageRoutes: Routes = [
@@ -19,7 +17,6 @@ const accountPunchoutCreatePageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [PunchoutModule, RouterModule.forChild(accountPunchoutCreatePageRoutes)],
-  declarations: [AccountPunchoutCreatePageComponent],
+  imports: [RouterModule.forChild(accountPunchoutCreatePageRoutes)],
 })
 export class AccountPunchoutCreatePageModule {}

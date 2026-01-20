@@ -1,8 +1,10 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
-import { TranslateService } from '@ngx-translate/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable, merge } from 'rxjs';
 import { take, withLatestFrom } from 'rxjs/operators';
 
@@ -10,6 +12,8 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PriceHelper } from 'ish-core/models/price/price.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
@@ -23,6 +27,17 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
   selector: 'ish-cost-center-buyers-page',
   templateUrl: './cost-center-buyers-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    ErrorMessageComponent,
+    FormlyModule,
+    LoadingComponent,
+    NgIf,
+    ReactiveFormsModule,
+    RouterModule,
+    TranslateModule,
+  ],
 })
 export class CostCenterBuyersPageComponent implements OnInit {
   loading$: Observable<boolean>;

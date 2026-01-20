@@ -27,8 +27,8 @@ export const accountPageRoutes: Routes = [
           },
           breadcrumbData: [{ key: 'account.saved_addresses.link' }],
         },
-        loadChildren: () =>
-          import('../account-addresses/account-addresses-page.module').then(m => m.AccountAddressesPageModule),
+        loadComponent: () =>
+          import('../account-addresses/account-addresses-page.component').then(m => m.AccountAddressesPageComponent),
       },
       {
         path: 'orders',
@@ -40,9 +40,7 @@ export const accountPageRoutes: Routes = [
           breadcrumbData: [{ key: 'account.order_history.link' }],
         },
         loadChildren: () =>
-          import('../account-order-history/account-order-history-page.module').then(
-            m => m.AccountOrderHistoryPageModule
-          ),
+          import('../account-order-history/account-order-history.routes').then(m => m.accountOrderHistoryRoutes),
       },
       {
         path: 'payment',
@@ -53,8 +51,8 @@ export const accountPageRoutes: Routes = [
           },
           breadcrumbData: [{ key: 'account.payment.link' }],
         },
-        loadChildren: () =>
-          import('../account-payment/account-payment-page.module').then(m => m.AccountPaymentPageModule),
+        loadComponent: () =>
+          import('../account-payment/account-payment-page.component').then(m => m.AccountPaymentPageComponent),
       },
       {
         path: 'profile',
@@ -65,8 +63,7 @@ export const accountPageRoutes: Routes = [
           },
           breadcrumbData: [{ key: 'account.profile.link' }],
         },
-        loadChildren: () =>
-          import('../account-profile/account-profile-page.module').then(m => m.AccountProfilePageModule),
+        loadChildren: () => import('../account-profile/account-profile.routes').then(m => m.accountProfileRoutes),
       },
       {
         path: 'order-templates',
@@ -109,7 +106,7 @@ export const accountPageRoutes: Routes = [
           breadcrumbData: [{ key: 'quote.quotes.link' }],
         },
         loadChildren: () =>
-          import('../../extensions/quoting/pages/quote-list/quote-list-page.module').then(m => m.QuoteListPageModule),
+          import('../../extensions/quoting/pages/quoting-routing.module').then(m => m.QuotingRoutingModule),
       },
       {
         path: 'wishlists',
@@ -120,8 +117,7 @@ export const accountPageRoutes: Routes = [
           },
           breadcrumbData: [{ key: 'account.wishlists.breadcrumb_link' }],
         },
-        loadChildren: () =>
-          import('../../extensions/wishlists/pages/wishlists-routing.module').then(m => m.WishlistsRoutingModule),
+        loadChildren: () => import('../../extensions/wishlists/pages/wishlists.routes').then(m => m.routes),
       },
       {
         path: 'notifications',
@@ -164,15 +160,27 @@ export const accountPageRoutes: Routes = [
           serverSetting: 'recurringOrder.enabled',
           breadcrumbData: [{ key: 'account.recurring_orders.breadcrumb' }],
         },
-        loadChildren: () =>
-          import('../account-recurring-orders/account-recurring-orders-page.module').then(
-            m => m.AccountRecurringOrdersPageModule
-          ),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('../account-recurring-orders/account-recurring-orders-page.component').then(
+                m => m.AccountRecurringOrdersPageComponent
+              ),
+          },
+          {
+            path: ':recurringOrderId',
+            loadComponent: () =>
+              import('../account-recurring-order/account-recurring-order-page.component').then(
+                m => m.AccountRecurringOrderPageComponent
+              ),
+          },
+        ],
       },
       {
-        path: 'content',
-        loadChildren: () =>
-          import('../account-content/account-content-page.module').then(m => m.AccountContentPageModule),
+        path: 'content/:contentPageId',
+        loadComponent: () =>
+          import('../account-content/account-content-page.component').then(m => m.AccountContentPageComponent),
       },
     ],
   },

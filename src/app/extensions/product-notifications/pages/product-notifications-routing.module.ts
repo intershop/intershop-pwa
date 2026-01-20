@@ -7,9 +7,9 @@ import { authGuard } from 'ish-core/guards/auth.guard';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () =>
-      import('./account-product-notifications/account-product-notifications-page.module').then(
-        m => m.AccountProductNotificationsPageModule
+    loadComponent: () =>
+      import('./account-product-notifications/account-product-notifications-page.component').then(
+        m => m.AccountProductNotificationsPageComponent
       ),
     canActivate: [featureToggleGuard, authGuard],
     data: { feature: 'productNotifications' },

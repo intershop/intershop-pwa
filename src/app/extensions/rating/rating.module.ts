@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { ConfigOption, FormlyModule } from '@ngx-formly/core';
 
-import { SharedModule } from 'ish-shared/shared.module';
-
 import { RatingStarsFieldComponent } from './formly/rating-stars-field/rating-stars-field.component';
 import { ProductRatingStarComponent } from './shared/product-rating-star/product-rating-star.component';
 import { ProductRatingComponent } from './shared/product-rating/product-rating.component';
@@ -24,9 +22,11 @@ const ratingFormlyConfig: ConfigOption = {
     FormlyModule.forChild(ratingFormlyConfig),
     ProductRatingComponent,
     ProductRatingStarComponent,
-    SharedModule,
+    ProductReviewCreateDialogComponent,
+    ProductReviewsComponent,
+    RatingStarsFieldComponent,
   ],
-  declarations: [ProductReviewCreateDialogComponent, ProductReviewsComponent, RatingStarsFieldComponent],
-  exports: [ProductRatingComponent, ProductReviewsComponent, SharedModule],
+  declarations: [],
+  exports: [ProductRatingComponent, ProductReviewsComponent],
 })
 export class RatingModule {}

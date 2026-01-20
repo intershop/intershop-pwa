@@ -1,13 +1,21 @@
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, combineLatest, map, shareReplay, take, tap } from 'rxjs';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
-import { OrderColumnsType } from 'ish-shared/components/order/order-list/order-list.component';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { PagingComponent } from 'ish-shared/components/common/paging/paging.component';
+import { OrderColumnsType, OrderListComponent } from 'ish-shared/components/order/order-list/order-list.component';
+
+import { AccountOrderFiltersComponent } from './account-order-filters/account-order-filters.component';
 
 /**
  * The Order History Page Component renders the account history page of a logged in user.
@@ -18,6 +26,19 @@ import { OrderColumnsType } from 'ish-shared/components/order/order-list/order-l
 @Component({
   templateUrl: './account-order-history-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AccountOrderFiltersComponent,
+    AsyncPipe,
+    ContentIncludeComponent,
+    ErrorMessageComponent,
+    NgClass,
+    NgIf,
+    OrderListComponent,
+    PagingComponent,
+    ServerHtmlDirective,
+    TranslateModule,
+  ],
 })
 export class AccountOrderHistoryPageComponent implements OnInit {
   orders$: Observable<Order[]>;

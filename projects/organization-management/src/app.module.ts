@@ -6,36 +6,31 @@ import { RouterModule } from '@angular/router';
 import { CoreModule } from 'ish-core/core.module';
 import { authGuard } from 'ish-core/guards/auth.guard';
 import { identityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
-import { SharedModule } from 'ish-shared/shared.module';
 
 import { AppComponent } from './app.component';
-import { OrganizationManagementModule } from './app/organization-management.module';
-import { LoginComponent } from './login.component';
+import { routes as organizationManagementRoutes } from './app/pages/organization-management-routing.module';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent],
-  exports: [SharedModule],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     CoreModule,
     NoopAnimationsModule,
-    OrganizationManagementModule,
     RouterModule.forRoot([
       {
         path: 'login',
-        component: LoginComponent,
+        loadComponent: () => import('./login.component').then(m => m.LoginComponent),
       },
       {
         path: 'logout',
         canActivate: [identityProviderLogoutGuard],
-        component: LoginComponent,
+        loadComponent: () => import('./login.component').then(m => m.LoginComponent),
       },
       {
         path: 'organization-management',
-        loadChildren: () =>
-          import('./app/pages/organization-management-routing.module').then(m => m.OrganizationManagementRoutingModule),
         canActivate: [authGuard],
         canActivateChild: [authGuard],
+        children: organizationManagementRoutes,
       },
       {
         path: '**',
@@ -43,7 +38,6 @@ import { LoginComponent } from './login.component';
         pathMatch: 'full',
       },
     ]),
-    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

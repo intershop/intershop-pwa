@@ -10,7 +10,7 @@ import { debounceTime, map, tap } from 'rxjs/operators';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
-import { SharedModule } from 'ish-shared/shared.module';
+import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 
 /**
  * The Direct Order Component displays a form to insert a product sku and quantity to add it to the cart.
@@ -21,7 +21,7 @@ import { SharedModule } from 'ish-shared/shared.module';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ProductContextFacade],
   standalone: true,
-  imports: [ReactiveFormsModule, FormlyModule, SharedModule, RouterLink, AsyncPipe, TranslateModule],
+  imports: [ReactiveFormsModule, FormlyModule, RouterLink, AsyncPipe, TranslateModule, ProductQuantityComponent],
 })
 @GenerateLazyComponent()
 export class DirectOrderComponent implements OnInit, AfterViewInit {

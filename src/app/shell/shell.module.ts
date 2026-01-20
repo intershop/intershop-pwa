@@ -13,6 +13,7 @@ import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.
 import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
 
 import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
+import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { SeoExportsModule } from '../extensions/seo/exports/seo-exports.module';
 import { StoreLocatorExportsModule } from '../extensions/store-locator/exports/store-locator-exports.module';
@@ -50,6 +51,7 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     NgbPopoverModule,
     PipesModule,
     QuickorderExportsModule,
+    OrderTemplatesExportsModule,
     RoleToggleModule,
     RouterModule,
     SearchBoxComponent,

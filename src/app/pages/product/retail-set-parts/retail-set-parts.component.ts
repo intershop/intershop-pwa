@@ -6,15 +6,26 @@ import { Observable } from 'rxjs';
 import { DirectivesModule } from 'ish-core/directives.module';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
-import { ProductItemDisplayType } from 'ish-shared/components/product/product-item/product-item.component';
-import { SharedModule } from 'ish-shared/shared.module';
+import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
+import {
+  ProductItemComponent,
+  ProductItemDisplayType,
+} from 'ish-shared/components/product/product-item/product-item.component';
 
 @Component({
   selector: 'ish-retail-set-parts',
   templateUrl: './retail-set-parts.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgFor, SharedModule, DirectivesModule, AsyncPipe, TranslateModule],
+  imports: [
+    NgIf,
+    NgFor,
+    DirectivesModule,
+    AsyncPipe,
+    TranslateModule,
+    ProductAddToBasketComponent,
+    ProductItemComponent,
+  ],
 })
 export class RetailSetPartsComponent implements OnInit {
   @Input() displayType: ProductItemDisplayType = 'row';

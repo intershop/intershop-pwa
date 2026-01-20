@@ -1,23 +1,22 @@
-import { NgModule } from '@angular/core';
+import { NgModule, importProvidersFrom } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { featureToggleGuard } from 'ish-core/feature-toggle.module';
-import { authGuard } from 'ish-core/guards/auth.guard';
+import { QuotingStoreModule } from '../store/quoting-store.module';
 
 const routes: Routes = [
   {
-    path: 'addProductToQuoteRequest',
-    canActivate: [featureToggleGuard, authGuard],
-    loadChildren: () =>
-      import('./quoting-product-add-to-quote-request-routing.module').then(
-        m => m.QuotingProductAddToQuoteRequestRoutingModule
-      ),
-    data: {
-      feature: 'quoting',
-      queryParams: {
-        messageKey: 'quotes',
+    path: '',
+    providers: [importProvidersFrom(QuotingStoreModule)],
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./quote-list/quote-list-page.component').then(c => c.QuoteListPageComponent),
       },
-    },
+      {
+        path: ':quoteId',
+        loadComponent: () => import('./quote/quote-page.component').then(c => c.QuotePageComponent),
+      },
+    ],
   },
 ];
 

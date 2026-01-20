@@ -6,36 +6,31 @@ import { RouterModule } from '@angular/router';
 import { CoreModule } from 'ish-core/core.module';
 import { authGuard } from 'ish-core/guards/auth.guard';
 import { identityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
-import { SharedModule } from 'ish-shared/shared.module';
 
 import { AppComponent } from './app.component';
-import { RequisitionManagementModule } from './app/requisition-management.module';
-import { LoginComponent } from './login.component';
+import { routes as requisitionManagementRoutes } from './app/pages/requisition-management-routing.module';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent],
-  exports: [SharedModule],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     CoreModule,
     NoopAnimationsModule,
-    RequisitionManagementModule,
     RouterModule.forRoot([
       {
         path: 'login',
-        component: LoginComponent,
+        loadComponent: () => import('./login.component').then(m => m.LoginComponent),
       },
       {
         path: 'logout',
         canActivate: [identityProviderLogoutGuard],
-        component: LoginComponent,
+        loadComponent: () => import('./login.component').then(m => m.LoginComponent),
       },
       {
         path: 'requisition-management',
-        loadChildren: () =>
-          import('./app/pages/requisition-management-routing.module').then(m => m.RequisitionManagementRoutingModule),
         canActivate: [authGuard],
         canActivateChild: [authGuard],
+        children: requisitionManagementRoutes,
       },
       {
         path: '**',
@@ -43,7 +38,6 @@ import { LoginComponent } from './login.component';
         pathMatch: 'full',
       },
     ]),
-    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
