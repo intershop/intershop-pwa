@@ -17,13 +17,37 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
+function isHttpErrorLike(error: unknown): error is { name: string; status: number; message: string } {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'name' in error &&
+    error.name === 'HttpErrorResponse' &&
+    'status' in error &&
+    typeof error.status === 'number'
+  );
+}
+
+function getHttpErrorLevel(status: number): LogLevel {
+  // Status 0 = network error (DNS, connection refused, etc.) - treat as error
+  // Status >= 500 = server error - treat as error
+  // Status 4xx = client error - treat as warn
+  if (status === 0 || status >= 500) {
+    return 'error';
+  }
+  return 'warn';
+}
+
 function logErrorPlainText(error: unknown): void {
   let level: LogLevel = 'error';
   let message: string;
 
   if (error instanceof HttpErrorResponse) {
-    level = error.status >= 500 ? 'error' : 'warn';
+    level = getHttpErrorLevel(error.status);
     message = error.message;
+  } else if (isHttpErrorLike(error)) {
+    // Already logged by ICMErrorMapperInterceptor, skip duplicate
+    return;
   } else if (error instanceof Error) {
     message = `${error.name} ${error.message} ${error.stack?.split('\n')?.[1]?.trim()}`;
   } else if (typeof error === 'object') {
@@ -42,10 +66,12 @@ function logErrorPlainText(error: unknown): void {
   }
 }
 
-function buildEcsLogData(error: unknown): { level: LogLevel; message: string; extra: Record<string, unknown> } {
+function buildEcsLogData(
+  error: unknown
+): { level: LogLevel; message: string; extra: Record<string, unknown> } | undefined {
   if (error instanceof HttpErrorResponse) {
     return {
-      level: error.status >= 500 ? 'error' : 'warn',
+      level: getHttpErrorLevel(error.status),
       message: `ERROR: ${error.message}`,
       extra: {
         error: { message: error.message, type: 'HttpErrorResponse' },
@@ -53,6 +79,10 @@ function buildEcsLogData(error: unknown): { level: LogLevel; message: string; ex
         url: { original: error.url },
       },
     };
+  }
+  if (isHttpErrorLike(error)) {
+    // Already logged by ICMErrorMapperInterceptor, skip duplicate
+    return;
   }
   if (error instanceof Error) {
     return {
@@ -81,9 +111,9 @@ class SSRErrorHandler implements ErrorHandler {
       return;
     }
 
-    const { level, message, extra } = buildEcsLogData(error);
-    if (shouldLog(level)) {
-      logECS(level, message, 'app.server.module', extra);
+    const logData = buildEcsLogData(error);
+    if (logData && shouldLog(logData.level)) {
+      logECS(logData.level, logData.message, 'app.server.module', logData.extra);
     }
   }
 }
