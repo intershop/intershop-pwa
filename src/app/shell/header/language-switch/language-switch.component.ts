@@ -1,4 +1,4 @@
-import { AsyncPipe, LocationStrategy, NgClass, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, LocationStrategy, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { MakeHrefPipe } from 'ish-core/pipes/make-href.pipe';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 
@@ -18,7 +19,7 @@ import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
   templateUrl: './language-switch.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgbDropdownModule, NgClass, FontAwesomeModule, NgFor, AsyncPipe, TranslateModule, MakeHrefPipe],
+  imports: [NgIf, NgbDropdownModule, FontAwesomeModule, NgFor, AsyncPipe, TranslateModule, MakeHrefPipe],
 })
 export class LanguageSwitchComponent implements OnInit {
   @Input() deviceType: DeviceType = 'desktop';

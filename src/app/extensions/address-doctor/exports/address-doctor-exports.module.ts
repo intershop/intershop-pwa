@@ -25,5 +25,6 @@ import { LazyAddressDoctorComponent } from './lazy-address-doctor/lazy-address-d
     },
   ],
   exports: [LazyAddressDoctorComponent],
+  declarations: [LazyAddressDoctorComponent],
 })
 export class AddressDoctorExportsModule {}
