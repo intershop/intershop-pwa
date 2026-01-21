@@ -1,6 +1,5 @@
 import { importProvidersFrom } from '@angular/core';
 import { Routes } from '@angular/router';
-import { FormlyModule } from '@ngx-formly/core';
 
 import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 import { authGuard } from 'ish-core/guards/auth.guard';
@@ -10,21 +9,13 @@ import { identityProviderLoginGuard } from 'ish-core/guards/identity-provider-lo
 import { identityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
 import { identityProviderRegisterGuard } from 'ish-core/guards/identity-provider-register.guard';
 import { noServerSideRenderingGuard } from 'ish-core/guards/no-server-side-rendering.guard';
-import { FormlyAddressFormsModule } from 'ish-shared/formly-address-forms/formly-address-forms.module';
-import { FieldLibraryModule } from 'ish-shared/formly/field-library/field-library.module';
-import { FormlyModule as IshFormlyModule } from 'ish-shared/formly/formly.module';
 
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
 import { ContactUsStoreModule } from '../extensions/contact-us/store/contact-us-store.module';
 import { RecentlyStoreModule } from '../extensions/recently/store/recently-store.module';
 
-import { accountPageRoutes } from './account/account-page.module';
 import { checkoutChildRoutes } from './checkout/checkout-page.module';
 import { coBrowsePageGuard } from './co-browse/co-browse-page.guard';
-import { cookiesPageRoutes } from './cookies/cookies-page.module';
-import { dataRequestPageRoutes } from './data-request/data-request-page.module';
-import { loginPageRoutes } from './login/login-page.module';
-import { registrationFormlyConfig, registrationPageRoutes } from './registration/registration-page.module';
 import { RegistrationFormConfigurationService } from './registration/services/registration-form-configuration/registration-form-configuration.service';
 
 export const appRoutes: Routes = [
@@ -85,9 +76,19 @@ export const appRoutes: Routes = [
   },
   {
     path: 'account',
-    children: accountPageRoutes,
+    loadChildren: () =>
+      Promise.all([
+        import('./account/account-page.module'),
+        import('ish-shared/formly/formly.module'),
+        import('ish-shared/formly-address-forms/formly-address-forms.module'),
+      ]).then(([{ accountPageRoutes }, { FormlyModule: IshFormlyModule }, { FormlyAddressFormsModule }]) => {
+        const [rootRoute, ...nestedRoutes] = accountPageRoutes;
+        const providers = importProvidersFrom(IshFormlyModule, FormlyAddressFormsModule);
+        return rootRoute
+          ? [{ ...rootRoute, providers: [...(rootRoute.providers ?? []), providers] }, ...nestedRoutes]
+          : [];
+      }),
     canActivate: [authGuard],
-    providers: [importProvidersFrom(IshFormlyModule, FormlyAddressFormsModule)],
     data: {
       meta: {
         title: 'account.my_account.heading',
@@ -130,12 +131,32 @@ export const appRoutes: Routes = [
   {
     path: 'register',
     canActivate: [identityProviderRegisterGuard],
-    providers: [
-      RegistrationFormConfigurationService,
-      importProvidersFrom(FieldLibraryModule, FormlyAddressFormsModule, IshFormlyModule),
-      importProvidersFrom(FormlyModule.forChild(registrationFormlyConfig)),
-    ],
-    children: registrationPageRoutes,
+    loadChildren: () =>
+      Promise.all([
+        import('./registration/registration-page.module'),
+        import('@ngx-formly/core'),
+        import('ish-shared/formly/formly.module'),
+        import('ish-shared/formly-address-forms/formly-address-forms.module'),
+        import('ish-shared/formly/field-library/field-library.module'),
+      ]).then(
+        ([
+          { registrationFormlyConfig, registrationPageRoutes },
+          { FormlyModule },
+          { FormlyModule: IshFormlyModule },
+          { FormlyAddressFormsModule },
+          { FieldLibraryModule },
+        ]) => {
+          const [rootRoute, ...nestedRoutes] = registrationPageRoutes;
+          const providers = [
+            RegistrationFormConfigurationService,
+            importProvidersFrom(FieldLibraryModule, FormlyAddressFormsModule, IshFormlyModule),
+            importProvidersFrom(FormlyModule.forChild(registrationFormlyConfig)),
+          ];
+          return rootRoute
+            ? [{ ...rootRoute, providers: [...(rootRoute.providers ?? []), ...providers] }, ...nestedRoutes]
+            : [];
+        }
+      ),
     data: {
       meta: {
         title: 'account.register.link',
@@ -145,9 +166,17 @@ export const appRoutes: Routes = [
   },
   {
     path: 'login',
-    children: loginPageRoutes,
+    loadChildren: () =>
+      Promise.all([import('./login/login-page.module'), import('ish-shared/formly/formly.module')]).then(
+        ([{ loginPageRoutes }, { FormlyModule: IshFormlyModule }]) => {
+          const [rootRoute, ...nestedRoutes] = loginPageRoutes;
+          const providers = importProvidersFrom(IshFormlyModule);
+          return rootRoute
+            ? [{ ...rootRoute, providers: [...(rootRoute.providers ?? []), providers] }, ...nestedRoutes]
+            : [];
+        }
+      ),
     canActivate: [identityProviderLoginGuard],
-    providers: [importProvidersFrom(IshFormlyModule)],
   },
   {
     path: 'logout',
@@ -172,7 +201,8 @@ export const appRoutes: Routes = [
   {
     // route for handling confirmation of user data and account deletion requests
     path: 'gdpr-requests',
-    children: dataRequestPageRoutes,
+    loadChildren: () =>
+      import('./data-request/data-request-page.module').then(({ dataRequestPageRoutes }) => dataRequestPageRoutes),
     data: {
       meta: {
         title: 'personal.data.request.title',
@@ -182,7 +212,7 @@ export const appRoutes: Routes = [
   },
   {
     path: 'cookies',
-    children: cookiesPageRoutes,
+    loadChildren: () => import('./cookies/cookies-page.module').then(({ cookiesPageRoutes }) => cookiesPageRoutes),
   },
   {
     path: 'cobrowse',

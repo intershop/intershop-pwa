@@ -10,6 +10,7 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
+import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
 
 import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
@@ -49,9 +50,9 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     NgbCollapseModule,
     NgbDropdownModule,
     NgbPopoverModule,
+    OrderTemplatesExportsModule,
     PipesModule,
     QuickorderExportsModule,
-    OrderTemplatesExportsModule,
     RoleToggleModule,
     RouterModule,
     SearchBoxComponent,
@@ -75,7 +76,7 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
   exports: [...exportedComponents, ShellLazyComponentsModule],
 })
 export class ShellModule {
-  constructor(featureEventNotifier: FeatureEventService, injector: Injector) {
-    featureEventNotifier.setupAvailableResultListener(injector);
+  constructor(moduleLoader: ModuleLoaderService, featureEventNotifier: FeatureEventService, injector: Injector) {
+    moduleLoader.init(injector);
   }
 }
