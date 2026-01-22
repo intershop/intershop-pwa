@@ -81,8 +81,8 @@ environment:
 ### Configuration Parameters Explained
 
 - **serverUrl**: The URL of the SPARQUE server that the PWA will connect to.
-  - PROD: https://api.search.sparque.ai
-  - Early adopters can use our UAT: https://uat.api.search.sparque.ai (New API releases are available here approximately one week earlier.)
+  - PROD: `https://api.search.sparque.ai`
+  - Early adopters can use our UAT: `https://uat.api.search.sparque.ai` (New API releases are available here approximately one week earlier.)
 - **workspaceName**: The name of the workspace configured in SPARQUE Desk.
 - **apiName**: The name of the API to be used for SPARQUE requests. If your project is based on the ISH project template, use `PWA`. Otherwise, use the name defined in SPARQUE Desk.
 - **config**: Optional parameter specifying the SPARQUE REST configuration (defaults to `default` if not provided).
@@ -117,12 +117,12 @@ It is possible to specify the request API version to be used for each individual
 To change to another API version, the affected get method API parameter has to be adapted.
 If a version other than the recommended PWA version is used, the interfaces and mapper used for the request may have to be adapted.
 
-The following example shows the provided `SparqueSuggestionsService` which uses the v2 API version in the `searchSuggestions` method:
+The following example shows the provided `SparqueSuggestionsService` which uses the v4 API version in the `searchSuggestions` method:
 
 ```ts
 export class SparqueSuggestionsService implements SuggestionsServiceInterface {
   // API version for SPARQUE API.
-  private readonly apiVersion = 'v2';
+  private readonly apiVersion = 'v4';
   ...
   searchSuggestions(
     searchTerm: string
@@ -206,7 +206,7 @@ suggestSearch$ =
       this.actions$.pipe(
         ofType(suggestSearch),
         mapToPayloadProperty('searchTerm'),
-        concatMap(searchTerm =>
+        switchMap(searchTerm =>
           this.suggestionsServiceProvider
             .get()
             .searchSuggestions(searchTerm)
@@ -249,8 +249,6 @@ The number of objects to be displayed can be configured individually for each co
 ```ts
 @Input() maxAutoSuggests: number;
 ```
-
-The default settings are 5 elements for keywords and recent search terms, 3 elements each for categories and brands, and 8 elements for products.
 
 ### Recent Search Terms
 

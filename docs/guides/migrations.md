@@ -64,6 +64,9 @@ Accordingly, the language switch accordion view and its associated component inp
 The `CACHE_CLEARER` environment variable behavior changed from opt-in to opt-out.
 Set `CACHE_CLEARER` to `off` to disable this feature.
 
+The SPARQUE services use API version 4 now for all REST calls.
+Find the corresponding migration notes in the [SPARQUE API Wrapper Migration Guide](https://docs.sparque.ai/wrapper/migration_guides/migration_guide_wrapper_1x9x0.html).
+
 ## From 9.0.0 to 9.1.0
 
 Catalogs (root-level categories in ICM terminology) with _Show In Menu_ being disabled are now hidden from the main header navigation.

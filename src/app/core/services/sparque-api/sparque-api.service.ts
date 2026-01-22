@@ -228,7 +228,7 @@ export class SparqueApiService {
    * Automatically handles authentication, parameter mapping, and error handling.
    *
    * @param path        The API endpoint path (relative or absolute URL)
-   * @param apiVersion  The SPARQUE API version to use (e.g., 'v2')
+   * @param apiVersion  The SPARQUE API version to use (e.g., 'v4')
    * @param options     Optional HTTP request configuration
    * @returns           Observable containing the API response
    */

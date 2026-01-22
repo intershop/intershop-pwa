@@ -12,7 +12,7 @@ describe('Sparque Suggestions Service', () => {
   let sparqueSuggestionsService: SparqueSuggestionsService;
   const sparqueApiService = mock(SparqueApiService);
   const sparqueSuggestionsMapper = mock(SparqueSuggestionsMapper);
-  const apiVersion = 'v2';
+  const apiVersion = 'v4';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
