@@ -222,6 +222,30 @@ describe('Basket Service', () => {
     });
   });
 
+  it("should retry with fresh basket data when bucket not found error occurs in 'getBasketEligibleShippingMethods'", done => {
+    const bucketNotFoundError = makeHttpError({
+      errors: [{ code: 'basket.shipping_bucket.not_found.error', message: 'Bucket not found' }],
+    });
+
+    const basketWithNewBucketMockData = {
+      data: {
+        ...basketMockData.data,
+        buckets: ['newBucket123'],
+      },
+    } as BasketData;
+
+    when(apiService.get('eligible-shipping-methods', anything())).thenReturn(throwError(() => bucketNotFoundError));
+    when(apiService.get('', anything())).thenReturn(of(basketWithNewBucketMockData));
+    when(apiService.get('buckets/newBucket123/eligible-shipping-methods', anything())).thenReturn(of({ data: [] }));
+
+    basketService.getBasketEligibleShippingMethods().subscribe(() => {
+      verify(apiService.get('eligible-shipping-methods', anything())).once();
+      verify(apiService.get('', anything())).once(); // getBasket() retry call
+      verify(apiService.get('buckets/newBucket123/eligible-shipping-methods', anything())).once();
+      done();
+    });
+  });
+
   it("should submit a basket for approval when 'submitBasket' is called", done => {
     when(orderService.createOrder(anything(), anything())).thenReturn(
       throwError(() => makeHttpError({ message: 'invalid', status: 422 }))

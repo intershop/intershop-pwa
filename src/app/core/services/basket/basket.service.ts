@@ -18,6 +18,7 @@ import { BasketBaseData, BasketData } from 'ish-core/models/basket/basket.interf
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { CustomFieldData } from 'ish-core/models/custom-field/custom-field.interface';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
@@ -357,25 +358,39 @@ export class BasketService {
    * @returns         The eligible shipping methods.
    */
   getBasketEligibleShippingMethods(bucketId?: string): Observable<ShippingMethod[]> {
-    return bucketId
-      ? this.apiService
-          .currentBasketEndpoint()
-          .get(`buckets/${this.apiService.encodeResourceId(bucketId)}/eligible-shipping-methods`, {
-            headers: this.basketHeaders,
-          })
-          .pipe(
-            unpackEnvelope<ShippingMethodData>('data'),
-            map(data => data.map(ShippingMethodMapper.fromData))
-          )
-      : this.apiService
-          .currentBasketEndpoint()
-          .get('eligible-shipping-methods', {
-            headers: this.basketHeaders,
-          })
-          .pipe(
-            unpackEnvelope<ShippingMethodData>('data'),
-            map(data => data.map(ShippingMethodMapper.fromData))
+    const getShippingMethods = (currentBucketId?: string) =>
+      currentBucketId
+        ? this.apiService
+            .currentBasketEndpoint()
+            .get(`buckets/${this.apiService.encodeResourceId(currentBucketId)}/eligible-shipping-methods`, {
+              headers: this.basketHeaders,
+            })
+            .pipe(
+              unpackEnvelope<ShippingMethodData>('data'),
+              map(data => data.map(ShippingMethodMapper.fromData))
+            )
+        : this.apiService
+            .currentBasketEndpoint()
+            .get('eligible-shipping-methods', {
+              headers: this.basketHeaders,
+            })
+            .pipe(
+              unpackEnvelope<ShippingMethodData>('data'),
+              map(data => data.map(ShippingMethodMapper.fromData))
+            );
+
+    return getShippingMethods(bucketId).pipe(
+      catchError((error: HttpError) => {
+        if (error.errors?.some(err => err.code === 'basket.shipping_bucket.not_found.error')) {
+          // Reload basket and retry shipping methods call with updated bucket ID
+          return this.getBasket().pipe(
+            switchMap(basket => getShippingMethods(basket.bucketId)),
+            catchError(() => throwError(() => error))
           );
+        }
+        return throwError(() => error);
+      })
+    );
   }
 
   /**
