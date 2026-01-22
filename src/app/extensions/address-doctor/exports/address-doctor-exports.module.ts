@@ -8,7 +8,6 @@ import { AddressDoctorEventsService } from '../services/address-doctor-events/ad
 import { LazyAddressDoctorComponent } from './lazy-address-doctor/lazy-address-doctor.component';
 
 @NgModule({
-  imports: [LazyAddressDoctorComponent],
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,

@@ -46,6 +46,7 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2
         with:
           compose-file: '.github/lighthouse/docker-compose.yml'
+          compose-flags: '--progress=plain'
           up-flags: '--build'
 
       - name: Warm up nginx cache
