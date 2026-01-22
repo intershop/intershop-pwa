@@ -1,11 +1,13 @@
-name: Docs
+name: Documentation
 
 on:
   push:
     branches:
       - develop
   pull_request:
-    types: [opened, synchronize]
+    types:
+      - opened
+      - synchronize
 
 env:
   NODE_VERSION: 22.22.0

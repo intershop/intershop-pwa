@@ -3,8 +3,8 @@ name: Reports
 on:
   push:
     branches:
-      - 'reports/**'
-      - 'develop'
+      - develop
+      - reports/**
 
 concurrency:
   group: ${{ github.workflow }}

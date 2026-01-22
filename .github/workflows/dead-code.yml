@@ -1,4 +1,4 @@
-name: DeadCode
+name: Dead Code (Testbed)
 
 on:
   workflow_dispatch:
