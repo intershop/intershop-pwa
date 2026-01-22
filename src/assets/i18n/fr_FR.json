@@ -1059,6 +1059,7 @@
   "customer.credentials.login.not_unique.error": "Un utilisateur avec ce courriel existe déjà. Veuillez vérifier l’exactitude des informations ou entrer un courriel différent.",
   "customer.credentials.passwordreset.invalid_password.error.PasswordExpressionViolation": "Le mot de passe doit comporter un minimum de 7 caractères, comprenant des chiffres et des lettres, sans espaces.",
   "customer.missing_fields.error": "Champs manquants",
+  "customer.wishlist.list_limit_exceeded.error": "La limite a été atteinte. Veuillez supprimer un élément existant avant d’en créer un nouveau.",
   "customer.wishlist.profane_word.error": "Le texte saisi ne peut pas être traité. Les termes jugés inappropriés, injurieux ou vulgaires ne sont pas acceptés. Veuillez saisir un nouveau texte.",
   "designview.add.link.title": "Ajouter",
   "designview.delete.link.title": "Supprimer",
