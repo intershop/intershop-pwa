@@ -1,12 +1,10 @@
-name: DemoServerDown
+name: Demo Server (remove)
 
 on:
-  pull_request:
-    types: [closed]
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
   workflow_dispatch:
+  pull_request:
+    types:
+      - closed
 
 jobs:
   RemoveDemoServer:

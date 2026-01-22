@@ -4,9 +4,17 @@ name: Sync Issue to Azure DevOps
 
 on:
   issues:
-    types: [opened, edited, deleted, closed, reopened]
+    types:
+      - opened
+      - edited
+      - deleted
+      - closed
+      - reopened
   issue_comment:
-    types: [created, edited, deleted]
+    types:
+      - created
+      - edited
+      - deleted
 
 concurrency:
   group: issue-${{ github.event.issue.number }}

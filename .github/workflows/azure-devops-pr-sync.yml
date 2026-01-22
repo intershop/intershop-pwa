@@ -4,9 +4,10 @@ name: Sync Pull Request to Azure DevOps
 
 on:
   pull_request:
-    types: [opened, edited, closed]
-    branches:
-      - 'develop'
+    types:
+      - opened
+      - edited
+      - closed
 
 jobs:
   alert:

@@ -1,4 +1,4 @@
-name: DemoServerUp
+name: Demo Server
 
 on:
   workflow_dispatch:
