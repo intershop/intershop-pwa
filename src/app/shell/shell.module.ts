@@ -9,7 +9,6 @@ import { DirectivesModule } from 'ish-core/directives.module';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
-import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
 
@@ -76,7 +75,7 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
   exports: [...exportedComponents, ShellLazyComponentsModule],
 })
 export class ShellModule {
-  constructor(moduleLoader: ModuleLoaderService, featureEventNotifier: FeatureEventService, injector: Injector) {
+  constructor(moduleLoader: ModuleLoaderService, injector: Injector) {
     moduleLoader.init(injector);
   }
 }
