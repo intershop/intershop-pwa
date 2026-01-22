@@ -19,12 +19,14 @@ jobs:
     continue-on-error: true
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v6
         if: github.ref != 'refs/heads/develop'
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v6
         if: github.ref == 'refs/heads/develop'
         with:
           ref: develop
