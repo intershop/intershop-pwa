@@ -8,9 +8,6 @@ on:
       - upgrade/**
       - update/**
 
-env:
-  NODE_VERSION: 22.22.0
-
 jobs:
   Updates:
     runs-on: ubuntu-latest
@@ -18,10 +15,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: package.json
           cache: npm
 
       - name: Install root dependencies
