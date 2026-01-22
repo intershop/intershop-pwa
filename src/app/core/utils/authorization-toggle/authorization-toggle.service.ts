@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, skipWhile } from 'rxjs/operators';
 
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
-import { whenTruthy } from 'ish-core/utils/operators';
 
 export function checkPermission(userPermissions: string[], permission: string | string[]): boolean {
   if (permission === 'always') {
@@ -14,7 +13,7 @@ export function checkPermission(userPermissions: string[], permission: string | 
   } else {
     // eslint-disable-next-line no-param-reassign
     permission = typeof permission === 'string' ? [permission] : typeof permission === 'undefined' ? [] : permission;
-    return permission.some(id => userPermissions.includes(id));
+    return permission.some(id => userPermissions?.includes(id));
   }
 }
 
@@ -32,9 +31,10 @@ export class AuthorizationToggleService {
       return of(checkPermission([], permission));
     }
     return this.permissions$.pipe(
-      // wait for permissions to be loaded
-      whenTruthy(),
-      map(permissions => checkPermission(permissions, permission))
+      // ignore initial undefined values
+      skipWhile(permissions => permissions === undefined),
+      // react on logout properly
+      map(permissions => (permissions ? checkPermission(permissions, permission) : false))
     );
   }
 }
