@@ -189,6 +189,127 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
       }
     });
 
+    // splitChunks not available for SSR build
+    if (config.optimization.splitChunks) {
+      logger.log('optimizing chunk splitting');
+
+      const cacheGroups = config.optimization.splitChunks.cacheGroups;
+
+      // chunk for all core functionality the user usually doesn't use while just browsing the shop
+      cacheGroups.customer = {
+        minChunks: 1,
+        priority: 30,
+        // add [\\/]src[\\/]app at the beginning of this regex to only include
+        // my-account pages from the PWA core
+        test: /[\\/]pages[\\/](account|checkout|registration|contact|forgot-password)/,
+        chunks: 'async',
+        name: 'customer',
+      };
+
+      // individual bundles for extensions and projects, that should only be loaded when necessary
+      cacheGroups.features = {
+        minChunks: 1,
+        priority: 25,
+        chunks: 'async',
+        name(module: { identifier(): string }) {
+          const identifier = module.identifier() as string;
+
+          // move translation files into own bundles
+          const i18nMatch = /[\\/]assets[\\/]i18n[\\/](.*?)\.json/.exec(identifier);
+          const locale = i18nMatch?.[1];
+
+          if (locale) {
+            return locale.replace('_', '-');
+          }
+
+          const match = /[\\/](extensions|projects)[\\/](.*?)[\\/](src[\\/]app[\\/])?(.*)/.exec(identifier);
+          const feature = match?.[2];
+
+          if (feature) {
+            // include core functionality in common bundle
+            if (['captcha', 'seo', 'tracking', 'recently'].some(f => f === feature)) {
+              return 'common';
+            }
+
+            const effectivePath = match[4];
+
+            // send exports and routing modules to the common module
+            if (effectivePath.startsWith('exports') || effectivePath.endsWith('-routing.module.ts')) {
+              return 'common';
+            }
+
+            return feature;
+          }
+
+          return 'common';
+        },
+      };
+
+      // split heavy third-party libs into async chunks to reduce main/vendor size
+      cacheGroups['lib-swiper'] = {
+        test: /[\\/]node_modules[\\/]swiper[\\/]/,
+        chunks: 'all',
+        name: 'lib-swiper',
+        priority: 40,
+        enforce: true,
+      };
+
+      cacheGroups['lib-formly'] = {
+        test: /[\\/]node_modules[\\/]@ngx-formly[\\/]/,
+        chunks: 'all',
+        name: 'lib-formly',
+        priority: 35,
+        enforce: true,
+      };
+
+      cacheGroups['lib-ng-select'] = {
+        test: /[\\/]node_modules[\\/]@ng-select[\\/]/,
+        chunks: 'all',
+        name: 'lib-ng-select',
+        priority: 34,
+      };
+
+      cacheGroups['lib-fontawesome'] = {
+        test: /[\\/]node_modules[\\/]@fortawesome[\\/]/,
+        chunks: 'all',
+        name: 'lib-fontawesome',
+        priority: 33,
+        enforce: true,
+      };
+
+      cacheGroups['lib-bootstrap'] = {
+        test: /[\\/]node_modules[\\/](?:bootstrap|@ng-bootstrap)[\\/]/,
+        chunks: 'all',
+        name: 'lib-bootstrap',
+        priority: 32,
+        enforce: true,
+      };
+
+      cacheGroups['lib-oauth'] = {
+        test: /[\\/]node_modules[\\/]angular-oauth2-oidc[\\/]/,
+        chunks: 'all',
+        name: 'lib-oauth',
+        priority: 31,
+        enforce: true,
+      };
+
+      cacheGroups['lib-mask'] = {
+        test: /[\\/]node_modules[\\/]ngx-mask[\\/]/,
+        chunks: 'all',
+        name: 'lib-mask',
+        priority: 31,
+        enforce: true,
+      };
+
+      cacheGroups['lib-toastr'] = {
+        test: /[\\/]node_modules[\\/]ngx-toastr[\\/]/,
+        chunks: 'all',
+        name: 'lib-toastr',
+        priority: 31,
+        enforce: true,
+      };
+    }
+
     if (!process.env.TESTING) {
       logger.log('setting up data-testing-id removal');
       // remove testing ids when loading html files
