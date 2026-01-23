@@ -59,7 +59,7 @@ The language switch component has been moved from the mobile user information dr
 Accordingly, the language switch accordion view and its associated component input variable have been removed.
 
 [Nginx Cache Clearing](./nginx-startup.md#cache-clearing) is now enabled by default.
-The CACHE_CLEARER environment variable behavior has changed from opt-in to opt-out - set it to 'off' to disable this feature.
+The `CACHE_CLEARER` environment variable behavior has changed from opt-in to opt-out - set it to `off` to disable this feature.
 
 ## From 9.0.0 to 9.1.0
 

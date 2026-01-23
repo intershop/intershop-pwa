@@ -64,7 +64,7 @@ services:
       ICM_BASE_URL: 'https://develop.icm.intershop.de'
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
       CACHE: 0
-      # CACHE_CLEARER: 1 # Cache clearing is enabled by default when CACHE=1; set to 0 to disable cache clearer based on ICM webadapter statistics
+      # CACHE_CLEARER: 0 # Cache clearing is enabled by default when CACHE=1; set to 0 to disable cache clearer based on ICM webadapter statistics
       # LOG_ALL: 0
       # SSL: 1
       # SSL_MKCERT_OFF: 1
