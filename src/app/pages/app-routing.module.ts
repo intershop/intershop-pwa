@@ -6,6 +6,9 @@ import { SelectivePreloadingStrategy } from 'ish-core/routing/selective-preloadi
 import { appLastRoutes } from './app-last.routes';
 import { appRoutes } from './app.routes';
 
+// Export combined routes for standalone bootstrap
+export { appRoutes, appLastRoutes };
+
 /**
  * Main application routing module.
  * Routes are defined in app.routes.ts and app-last.routes.ts for better tree-shaking and standalone component support.
