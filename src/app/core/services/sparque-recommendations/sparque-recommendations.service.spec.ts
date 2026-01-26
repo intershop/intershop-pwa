@@ -26,10 +26,16 @@ describe('Sparque Recommendations Service', () => {
   ];
 
   const mockRecommendationsResponse = { products: mockSparqueProducts };
+  const apiVersion = 'v4';
 
   beforeEach(() => {
     sparqueApiServiceMock = mock(SparqueApiService);
     sparqueProductMapperMock = mock(SparqueProductMapper);
+
+    when(sparqueApiServiceMock.get('recommendations', apiVersion, anything())).thenReturn(
+      of(mockRecommendationsResponse)
+    );
+    when(sparqueProductMapperMock.fromListData(mockSparqueProducts, anything())).thenReturn(mockProducts);
 
     TestBed.configureTestingModule({
       providers: [
@@ -52,9 +58,6 @@ describe('Sparque Recommendations Service', () => {
         maxCount: 5,
       };
 
-      when(sparqueApiServiceMock.get('recommendations', 'v3', anything())).thenReturn(of(mockRecommendationsResponse));
-      when(sparqueProductMapperMock.fromListData(mockSparqueProducts, anything())).thenReturn(mockProducts);
-
       service.getRecommendations(recommendationsContext).subscribe(result => {
         expect(result).toEqual({
           recommendations: {
@@ -63,7 +66,7 @@ describe('Sparque Recommendations Service', () => {
           },
           products: mockProducts,
         });
-        verify(sparqueApiServiceMock.get('recommendations', 'v3', anything())).once();
+        verify(sparqueApiServiceMock.get('recommendations', apiVersion, anything())).once();
         verify(sparqueProductMapperMock.fromListData(mockSparqueProducts, anything())).once();
         done();
       });
@@ -78,9 +81,6 @@ describe('Sparque Recommendations Service', () => {
         maxCount: 3,
       };
 
-      when(sparqueApiServiceMock.get('recommendations', 'v3', anything())).thenReturn(of(mockRecommendationsResponse));
-      when(sparqueProductMapperMock.fromListData(mockSparqueProducts, anything())).thenReturn(mockProducts);
-
       service.getRecommendations(recommendationsContext).subscribe(result => {
         expect(result).toEqual({
           recommendations: {
@@ -89,7 +89,7 @@ describe('Sparque Recommendations Service', () => {
           },
           products: mockProducts,
         });
-        verify(sparqueApiServiceMock.get('recommendations', 'v3', anything())).once();
+        verify(sparqueApiServiceMock.get('recommendations', apiVersion, anything())).once();
         verify(sparqueProductMapperMock.fromListData(mockSparqueProducts, anything())).once();
         done();
       });
@@ -101,7 +101,7 @@ describe('Sparque Recommendations Service', () => {
         maxCount: 5,
       };
 
-      when(sparqueApiServiceMock.get('recommendations', 'v3', anything())).thenReturn(of({}));
+      when(sparqueApiServiceMock.get('recommendations', apiVersion, anything())).thenReturn(of({}));
       when(sparqueProductMapperMock.fromListData(anything(), anything())).thenReturn([]);
 
       service.getRecommendations(recommendationsContext).subscribe(result => {
@@ -121,9 +121,6 @@ describe('Sparque Recommendations Service', () => {
         strategy: 'trending',
       };
 
-      when(sparqueApiServiceMock.get('recommendations', 'v3', anything())).thenReturn(of(mockRecommendationsResponse));
-      when(sparqueProductMapperMock.fromListData(mockSparqueProducts, anything())).thenReturn(mockProducts);
-
       service.getRecommendations(recommendationsContext).subscribe(result => {
         expect(result).toEqual({
           recommendations: {
@@ -132,7 +129,7 @@ describe('Sparque Recommendations Service', () => {
           },
           products: mockProducts,
         });
-        verify(sparqueApiServiceMock.get('recommendations', 'v3', anything())).once();
+        verify(sparqueApiServiceMock.get('recommendations', apiVersion, anything())).once();
         verify(sparqueProductMapperMock.fromListData(mockSparqueProducts, anything())).once();
         done();
       });
@@ -145,7 +142,7 @@ describe('Sparque Recommendations Service', () => {
       };
 
       const apiError = new Error('API Error');
-      when(sparqueApiServiceMock.get('recommendations', 'v3', anything())).thenReturn(throwError(() => apiError));
+      when(sparqueApiServiceMock.get('recommendations', apiVersion, anything())).thenReturn(throwError(() => apiError));
 
       service.getRecommendations(recommendationsContext).subscribe({
         next: () => fail('should have thrown an error'),
@@ -163,9 +160,6 @@ describe('Sparque Recommendations Service', () => {
         maxCount: 2,
       };
 
-      when(sparqueApiServiceMock.get('recommendations', 'v3', anything())).thenReturn(of(mockRecommendationsResponse));
-      when(sparqueProductMapperMock.fromListData(mockSparqueProducts, anything())).thenReturn(mockProducts);
-
       service.getRecommendations(recommendationsContext).subscribe(result => {
         expect(result).toEqual({
           recommendations: {
@@ -174,7 +168,7 @@ describe('Sparque Recommendations Service', () => {
           },
           products: mockProducts,
         });
-        verify(sparqueApiServiceMock.get('recommendations', 'v3', anything())).once();
+        verify(sparqueApiServiceMock.get('recommendations', apiVersion, anything())).once();
         done();
       });
     });
@@ -185,9 +179,6 @@ describe('Sparque Recommendations Service', () => {
         maxCount: 4,
       };
 
-      when(sparqueApiServiceMock.get('recommendations', 'v3', anything())).thenReturn(of(mockRecommendationsResponse));
-      when(sparqueProductMapperMock.fromListData(mockSparqueProducts, anything())).thenReturn(mockProducts);
-
       service.getRecommendations(recommendationsContext).subscribe(result => {
         expect(result).toEqual({
           recommendations: {
@@ -196,7 +187,7 @@ describe('Sparque Recommendations Service', () => {
           },
           products: mockProducts,
         });
-        verify(sparqueApiServiceMock.get('recommendations', 'v3', anything())).once();
+        verify(sparqueApiServiceMock.get('recommendations', apiVersion, anything())).once();
         done();
       });
     });
@@ -207,7 +198,9 @@ describe('Sparque Recommendations Service', () => {
         maxCount: 5,
       };
 
-      when(sparqueApiServiceMock.get('recommendations', 'v3', anything())).thenReturn(of({ products: undefined }));
+      when(sparqueApiServiceMock.get('recommendations', apiVersion, anything())).thenReturn(
+        of({ products: undefined })
+      );
       when(sparqueProductMapperMock.fromListData(anything(), anything())).thenReturn([]);
 
       service.getRecommendations(recommendationsContext).subscribe(result => {

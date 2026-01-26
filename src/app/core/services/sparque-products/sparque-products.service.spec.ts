@@ -12,7 +12,7 @@ describe('Sparque Products Service', () => {
   let sparqueApiService: SparqueApiService;
   let sparqueProductsService: SparqueProductsService;
   let sparqueSearchMapper: SparqueSearchMapper;
-  const apiVersion = 'v2';
+  const apiVersion = 'v4';
 
   beforeEach(() => {
     sparqueApiService = mock(SparqueApiService);

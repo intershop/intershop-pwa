@@ -22,7 +22,7 @@ import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.ser
 @Injectable({ providedIn: 'root' })
 export class SparqueRecommendationsService implements RecommendationsServiceInterface {
   // API version for Sparque API.
-  private readonly apiVersion = 'v3';
+  private readonly apiVersion = 'v4';
 
   constructor(private sparqueApiService: SparqueApiService, private sparqueProductMapper: SparqueProductMapper) {}
 

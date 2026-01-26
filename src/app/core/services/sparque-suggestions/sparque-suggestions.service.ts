@@ -17,7 +17,7 @@ import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.ser
 @Injectable({ providedIn: 'root' })
 export class SparqueSuggestionsService implements SuggestionsServiceInterface {
   // API version for Sparque API.
-  private readonly apiVersion = 'v2';
+  private readonly apiVersion = 'v4';
   // Maximum number of suggestions to request from the Sparque API.
   private readonly maxNumberOfRequestedSuggestions = '8';
 
