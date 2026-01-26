@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { FORMLY_CONFIG } from '@ngx-formly/core';
 
+import { noServerSideRenderingGuard } from 'ish-core/guards/no-server-side-rendering.guard';
+
 import { checkoutReviewFormlyConfig } from '../checkout-review/checkout-review/checkout-review.component';
 
 import { checkoutPageGuard } from './checkout-page.guard';
@@ -75,5 +77,21 @@ export const checkoutChildRoutes: Routes = [
     path: '',
     pathMatch: 'full',
     redirectTo: 'address',
+  },
+];
+
+export const checkoutPageRoutes: Routes = [
+  {
+    path: '',
+    canActivate: [noServerSideRenderingGuard],
+    loadComponent: () => import('./checkout-page.component').then(c => c.CheckoutPageComponent),
+    data: {
+      headerType: 'checkout',
+      meta: {
+        title: 'seo.title.checkout',
+        robots: 'noindex, nofollow',
+      },
+    },
+    children: checkoutChildRoutes,
   },
 ];

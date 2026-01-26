@@ -13,7 +13,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { formatISO, parseISO } from 'date-fns';
 import { isEqual } from 'lodash-es';
@@ -22,6 +22,7 @@ import { debounceTime, distinctUntilChanged, filter, map, skip } from 'rxjs';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
+import { FormlyModule } from 'ish-shared/formly/formly.module';
 
 interface RecurrenceFormData {
   period: string;

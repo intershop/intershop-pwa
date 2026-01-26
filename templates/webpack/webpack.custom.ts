@@ -251,7 +251,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
         chunks: 'all',
         name: 'lib-swiper',
         priority: 40,
-        enforce: true,
       };
 
       cacheGroups['lib-formly'] = {
@@ -259,7 +258,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
         chunks: 'all',
         name: 'lib-formly',
         priority: 35,
-        enforce: true,
       };
 
       cacheGroups['lib-ng-select'] = {
@@ -274,7 +272,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
         chunks: 'all',
         name: 'lib-fontawesome',
         priority: 33,
-        enforce: true,
       };
 
       cacheGroups['lib-bootstrap'] = {
@@ -282,7 +279,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
         chunks: 'all',
         name: 'lib-bootstrap',
         priority: 32,
-        enforce: true,
       };
 
       cacheGroups['lib-oauth'] = {
@@ -290,7 +286,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
         chunks: 'all',
         name: 'lib-oauth',
         priority: 31,
-        enforce: true,
       };
 
       cacheGroups['lib-mask'] = {
@@ -298,7 +293,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
         chunks: 'all',
         name: 'lib-mask',
         priority: 31,
-        enforce: true,
       };
 
       cacheGroups['lib-toastr'] = {
@@ -306,7 +300,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
         chunks: 'all',
         name: 'lib-toastr',
         priority: 31,
-        enforce: true,
       };
     }
 

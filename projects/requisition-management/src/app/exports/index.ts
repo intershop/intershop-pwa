@@ -1,5 +1,6 @@
 export { RequisitionManagementRoutingModule } from '../pages/requisition-management-routing.module';
 export { RequisitionManagementExportsModule } from './requisition-management-exports.module';
+export { RequisitionManagementStoreModule } from '../store/requisition-management-store.module';
 
 export { RequisitionManagementBreadcrumbService } from '../services/requisition-management-breadcrumb/requisition-management-breadcrumb.service';
 export { LazyCheckoutReceiptRequisitionComponent } from './lazy-checkout-receipt-requisition/lazy-checkout-receipt-requisition.component';

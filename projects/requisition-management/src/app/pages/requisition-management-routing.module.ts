@@ -1,7 +1,6 @@
-import { NgModule, importProvidersFrom } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { RequisitionManagementStoreModule } from '../store/requisition-management-store.module';
 
 /**
  * routes for the requisition management
@@ -43,6 +42,7 @@ export const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  providers: [importProvidersFrom(RequisitionManagementStoreModule)],
+  // Store is now registered globally via app.config.ts to allow reuse on checkout receipt, so no providers here.
+  providers: [],
 })
 export class RequisitionManagementRoutingModule {}
