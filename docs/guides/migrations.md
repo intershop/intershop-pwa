@@ -95,6 +95,10 @@ Migration Steps:
 
 This change allows caching product data for a longer time and fetching more frequently updated inventory data separately on demand.
 
+**Support for internal/backend request routing**
+
+The improved implementation for the environment variable `ICM_BASE_URL_SSR` as well as the introduction of an optional `serverUrlSsr` SPARQUE configuration allows server side rendering to directly use internal backend requests to ICM and SPARQUE when running in the same Kubernetes cluster.
+
 ## From 9.0.0 to 9.1.0
 
 Catalogs (root-level categories in ICM terminology) with _Show In Menu_ being disabled are now hidden from the main header navigation.
