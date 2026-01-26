@@ -8,13 +8,10 @@ import { identityProviderInviteGuard } from 'ish-core/guards/identity-provider-i
 import { identityProviderLoginGuard } from 'ish-core/guards/identity-provider-login.guard';
 import { identityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
 import { identityProviderRegisterGuard } from 'ish-core/guards/identity-provider-register.guard';
-import { noServerSideRenderingGuard } from 'ish-core/guards/no-server-side-rendering.guard';
 
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
 import { ContactUsStoreModule } from '../extensions/contact-us/store/contact-us-store.module';
-import { RecentlyStoreModule } from '../extensions/recently/store/recently-store.module';
 
-import { checkoutChildRoutes } from './checkout/checkout-page.module';
 import { coBrowsePageGuard } from './co-browse/co-browse-page.guard';
 import { RegistrationFormConfigurationService } from './registration/services/registration-form-configuration/registration-form-configuration.service';
 
@@ -117,16 +114,7 @@ export const appRoutes: Routes = [
   },
   {
     path: 'checkout',
-    canActivate: [noServerSideRenderingGuard],
-    loadComponent: () => import('./checkout/checkout-page.component').then(c => c.CheckoutPageComponent),
-    data: {
-      headerType: 'checkout',
-      meta: {
-        title: 'seo.title.checkout',
-        robots: 'noindex, nofollow',
-      },
-    },
-    children: checkoutChildRoutes,
+    loadChildren: () => import('./checkout/checkout-page.module').then(m => m.checkoutPageRoutes),
   },
   {
     path: 'register',
@@ -295,7 +283,6 @@ export const appRoutes: Routes = [
     loadComponent: () =>
       import('../extensions/recently/pages/recently/recently-page.component').then(m => m.RecentlyPageComponent),
     canActivate: [featureToggleGuard],
-    providers: [importProvidersFrom(RecentlyStoreModule)],
     data: {
       feature: 'recently',
       meta: {

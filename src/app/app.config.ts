@@ -10,6 +10,8 @@ import {
 import { provideClientHydration, withNoHttpTransferCache } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { UrlSerializer, provideRouter } from '@angular/router';
+import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
+import { RequisitionManagementStoreModule } from 'requisition-management';
 
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
 import { CoreModule } from 'ish-core/core.module';
@@ -23,11 +25,12 @@ import { CompareExportsModule } from './extensions/compare/exports/compare-expor
 import { CopilotExportsModule } from './extensions/copilot/exports/copilot-exports.module';
 import { OrderTemplatesExportsModule } from './extensions/order-templates/exports/order-templates-exports.module';
 import { QuickorderExportsModule } from './extensions/quickorder/exports/quickorder-exports.module';
+import { RecentlyStoreModule } from './extensions/recently/store/recently-store.module';
 import { SeoExportsModule } from './extensions/seo/exports/seo-exports.module';
 import { StoreLocatorExportsModule } from './extensions/store-locator/exports/store-locator-exports.module';
 import { TrackingExportsModule } from './extensions/tracking/exports/tracking-exports.module';
 import { WishlistsExportsModule } from './extensions/wishlists/exports/wishlists-exports.module';
-import { appRoutes } from './pages/app-routing.module';
+import { appLastRoutes, appRoutes } from './pages/app-routing.module';
 
 function initializeCookieConsent(transferState: TransferState) {
   return () => {
@@ -45,7 +48,7 @@ function initializeModuleLoader(moduleLoader: ModuleLoaderService, injector: Inj
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(appRoutes),
+    provideRouter([...appRoutes, ...appLastRoutes]),
     provideAnimations(),
     provideClientHydration(withNoHttpTransferCache()),
     { provide: UrlSerializer, useClass: PWAUrlSerializer },
@@ -67,6 +70,12 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       CoreModule,
       StateManagementModule,
+      // Formly root providers must be registered once globally
+      FormlyBaseModule.forRoot(),
+      // Requisition feature store is needed by requisition widgets outside the feature route
+      RequisitionManagementStoreModule,
+      // Recently feature store is needed on product pages for recently viewed tracking
+      RecentlyStoreModule,
       CopilotExportsModule,
       CompareExportsModule,
       OrderTemplatesExportsModule,
