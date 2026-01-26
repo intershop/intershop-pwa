@@ -58,8 +58,9 @@ This ensures clearer separation between API events and state management.
 The language switch component has been moved from the mobile user information dropdown to the main header navigation for better accessibility and user experience.
 Accordingly, the language switch accordion view and its associated component input variable have been removed.
 
-[Nginx Cache Clearing](./nginx-startup.md#cache-clearing) is now enabled by default.
-The `CACHE_CLEARER` environment variable behavior has changed from opt-in to opt-out - set it to `off` to disable this feature.
+[NGINX cache clearing](./nginx-startup.md#cache-clearing) is now enabled by default.
+The `CACHE_CLEARER` environment variable behavior changed from opt-in to opt-out.
+Set `CACHE_CLEARER` to `off` to disable this feature.
 
 ## From 9.0.0 to 9.1.0
 
