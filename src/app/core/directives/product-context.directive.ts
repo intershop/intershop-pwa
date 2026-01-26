@@ -113,6 +113,8 @@ export class ProductContextDirective implements OnInit {
   }
 
   ngOnInit() {
-    this.context.set('requiredCompletenessLevel', () => this.completeness);
+    if (this.completeness) {
+      this.context.set('requiredCompletenessLevel', () => this.completeness);
+    }
   }
 }
