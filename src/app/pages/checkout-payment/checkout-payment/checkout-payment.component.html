@@ -48,6 +48,10 @@
                   </label>
                 </ng-container>
               </div>
+              <!-- Paypal Credit Card Privacy Statement -->
+              <div *ngIf="paymentMethod.serviceId === 'PAYPAL_CREDIT_CARD'" class="row">
+                <p [innerHTML]="'checkout.payment.paypal.privacy_statement.message' | translate"></p>
+              </div>
               <!-- Payment parameter form -->
               <div
                 *ngIf="paymentMethod.parameters?.length"
@@ -131,7 +135,6 @@
                           | translate : { paymentMethodName: paymentMethod.displayName }
                       }}
                     </legend>
-
                     <p class="indicates-required" aria-hidden="true">
                       <span class="required">*</span>{{ 'account.required_field.message' | translate }}
                     </p>
@@ -140,7 +143,7 @@
                         <ish-payment-paypal
                           [selectedPaymentMethod]="paymentMethod"
                           [componentType]="getPaypalComponentType(paymentMethod)"
-                          (cancelPayment)="closePaymentInstrumentForm()"
+                          (closeForm)="closePaymentInstrumentForm()"
                         />
                       </ng-template>
                       <ng-template [ngSwitchCase]="'Concardis_CreditCard'">
@@ -240,7 +243,6 @@
           <ish-payment-paypal
             [selectedPaymentMethod]="selectedPayPalMethod()"
             [componentType]="getPaypalComponentType()"
-            (selectPaypalPaymentMethod)="setBasketPayment($event)"
           />
         </ng-template>
       </div>

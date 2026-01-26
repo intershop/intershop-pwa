@@ -61,10 +61,6 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
     return this.featureToggleService.enabled('guestCheckout') || !!this.basket.user;
   }
 
-  setBasketPayment(paymentInstrumentId: string) {
-    this.checkoutFacade.setBasketPayment(paymentInstrumentId);
-  }
-
   getPayPalPaymentMethod(): Observable<PaymentMethod> {
     return this.paymentMethods$.pipe(
       map(paymentMethods =>

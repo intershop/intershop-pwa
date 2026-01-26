@@ -1,31 +1,41 @@
-<div *ngIf="showPayPalComponent" class="row pt-2">
+<div class="row pt-2">
   <div [ngClass]="'col-12'">
     <!-- PayPal Button container -->
-    <div *ngIf="!isCardFieldsComponent(); else cardFieldsContainer" [id]="paypalComponentContainerId"></div>
+    <div *ngIf="componentType !== 2; else cardFieldsContainer" [id]="paypalComponentContainerId"></div>
 
     <!-- PayPal Card Fields containers -->
     <ng-template #cardFieldsContainer>
       <div class="card_container">
+        <!-- <div class="row form-group">
+          <div id="error-message" class="alert alert-danger hide-validation-error"></div>
+        </div> -->
         <div class="row form-group">
-          <div class="col-form-label col-md-4">
+          <div class="col-form-label col-md-4" id="card-name-field-container-label">
             {{ 'checkout.credit_card.holder.label' | translate }}
           </div>
           <div id="card-name-field-container" class="col-sm-6"></div>
           <div class="offset-md-4">
-            <small id="card-name-field-error" class="form-text text-danger" style="display: none"></small>
+            <small id="card-name-field-container-error" class="form-text text-danger hide-validation-error">
+              {{ 'checkout.credit_card.holder.error.invalid' | translate }}
+            </small>
           </div>
         </div>
 
         <div class="row form-group">
-          <div class="col-form-label col-md-4">
+          <div class="col-form-label col-md-4" id="card-number-field-container-label">
             {{ 'checkout.credit_card.number.label' | translate }}
             <span class="required" aria-hidden="true">*</span>
           </div>
           <div id="card-number-field-container" class="col-sm-6"></div>
+          <div class="offset-md-4">
+            <small id="card-number-field-container-error" class="form-text text-danger hide-validation-error">
+              {{ 'checkout.credit_card.number.error.default' | translate }}
+            </small>
+          </div>
         </div>
 
         <div class="row form-group">
-          <div class="col-form-label col-md-4">
+          <div class="col-form-label col-md-4" id="card-expiry-field-container-label">
             {{ 'checkout.credit_card.expiration_date.label' | translate }}
             <span class="required">*</span>
           </div>
@@ -33,11 +43,14 @@
             <div class="row">
               <div id="card-expiry-field-container" class="pe-0 col-md-4"></div>
             </div>
+            <small id="card-expiry-field-container-error" class="form-text text-danger hide-validation-error">
+              {{ 'checkout.credit_card.expiry_date.invalid.error' | translate }}
+            </small>
           </div>
         </div>
 
         <div class="row form-group">
-          <div class="col-form-label col-md-4">
+          <div class="col-form-label col-md-4" id="card-cvv-field-container-label">
             {{ 'checkout.payment.paypal.credit_card.cvc.label' | translate }}
             <span class="required" aria-hidden="true">*</span>
           </div>
@@ -59,35 +72,23 @@
                 </button>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="row form-group">
-          <div class="offset-md-4 col-md-8">
-            <p [innerHTML]="'checkout.payment.paypal.privacy_statement.message' | translate"></p>
+            <small id="card-cvv-field-container-error" class="form-text text-danger hide-validation-error">
+              {{ 'checkout.credit_card.cvc_cvv.error.default' | translate }}
+            </small>
           </div>
         </div>
 
         <div class="row">
           <div class="offset-md-4 col-md-8">
-            <button
-              type="button"
-              class="btn btn-primary"
-              id="card-field-submit-button"
-              (close)="cancelNewPaymentInstrument()"
-            >
-              {{ 'checkout.account.submit.button.label' | translate }}
+            <button type="button" class="btn btn-primary" id="card-field-submit-button" (close)="closeCardFieldsForm()">
+              {{ 'checkout.account.submit.continue.button.label' | translate }}
             </button>
-            <button type="button" class="btn btn-secondary" (click)="cancelNewPaymentInstrument()">
+            <button type="button" class="btn btn-secondary" (click)="closeCardFieldsForm()">
               {{ 'checkout.cancel.button.label' | translate }}
             </button>
           </div>
         </div>
       </div>
-      <div id="result-message"></div>
     </ng-template>
   </div>
-</div>
-<div *ngIf="hasError()" class="alert alert-info">
-  {{ 'checkout.payment.paypal.script.error.message' | translate }}
 </div>

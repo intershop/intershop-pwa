@@ -221,7 +221,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     });
   }
 
-  setBasketPayment(paymentInstrumentId: string) {
+  private setBasketPayment(paymentInstrumentId: string) {
     this.redirectStatus$.next(undefined);
     this.updatePaymentMethod.emit(paymentInstrumentId);
   }

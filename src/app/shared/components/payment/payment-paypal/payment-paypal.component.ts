@@ -10,10 +10,13 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { EMPTY, Observable, switchMap } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
+import { PayPalCardFields } from 'ish-core/utils/sdk/paypal/paypal-components/card-fields/paypal-card-fields';
 import {
   PaypalComponentBuilder,
   PaypalComponentsConfig,
@@ -25,9 +28,13 @@ import {
 } from 'ish-core/utils/sdk/paypal/paypal-config/paypal-config.service';
 
 /**
- * The PaymentPaypalComponent handles the integration of PayPal payment buttons and components
- * throughout the application. It dynamically loads the PayPal SDK, manages payment method selection,
- * and renders PayPal UI components based on the current page context.
+ * Component for rendering PayPal payment components (Buttons, Messages, CardFields).
+ *
+ * This component dynamically loads the PayPal SDK and renders the appropriate PayPal component
+ * based on the configured component type and current page context. It supports:
+ * - **Buttons**: PayPal checkout buttons for standard payments
+ * - **Messages**: Pay Later messaging for promotional content
+ * - **CardFields**: Hosted card input fields for credit card payments
  */
 @Component({
   selector: 'ish-payment-paypal',
@@ -36,121 +43,113 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit {
-  // Component type Messages is set as default
+  /** Type of PayPal component to render. Defaults to Messages. */
   @Input() componentType: PaypalComponentTypes = PaypalComponentTypes.Messages;
-  @Input() selectedPaymentMethod: PaymentMethod;
-  @Output() selectPaypalPaymentMethod = new EventEmitter<string>();
-  @Output() cancelPayment = new EventEmitter<void>();
 
-  showPayPalComponent = false;
-  paypalComponentContainerId = 'paypal-container-';
-  isCardFieldsReady = false;
-  private scriptNamespace: string;
+  /** The selected PayPal payment method configuration. Required for Buttons and CardFields. */
+  @Input() selectedPaymentMethod: PaymentMethod;
+
+  /** Emits when the card fields form should be closed. */
+  @Output() closeForm = new EventEmitter<void>();
+
+  /** Unique container ID for the PayPal component DOM element. */
+  paypalComponentContainerId = 'paypal-container-'.concat(Math.random().toString(36).substring(2, 15));
+
+  /** The identified page type based on the current URL. */
   private page: PaypalPageTypes;
-  private rendered = false;
-  private renderError = false;
+
+  /** Observable for tracking the PayPal script loading state. */
+  private loading$: Observable<ScriptType>;
 
   constructor(
     private destroyRef: DestroyRef,
     private appFacade: AppFacade,
     private paypalConfigService: PaypalConfigService,
     private paypalComponentBuilder: PaypalComponentBuilder,
+    private payPalCardFields: PayPalCardFields,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.setPageType();
+    this.identifyPageType();
 
-    this.appFacade
-      .showPaypalPayLaterInformation$(this.page)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(value => {
-        this.showPayPalComponent =
-          (this.componentType === PaypalComponentTypes.Messages && value) ||
-          this.componentType !== PaypalComponentTypes.Messages;
-        if (this.showPayPalComponent) {
-          this.paypalComponentContainerId = `${this.paypalComponentContainerId}${Math.random()
-            .toString(36)
-            .substring(2, 15)}`;
-          this.scriptNamespace = this.selectedPaymentMethod
-            ? 'PPCP_'.concat(`${this.selectedPaymentMethod.id}`)
-            : 'PPCP_MESSAGES';
-        }
-      });
+    this.loading$ = this.appFacade
+      .showPaypalPayLaterInformation$(this.getPage())
+      .pipe(switchMap(showPaypalPayLaterInformation => this.loadPayPalScript(showPaypalPayLaterInformation)));
+
+    // Subscribe to close form event from PayPal card fields
+    this.payPalCardFields.closeForm$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this.closeForm.emit();
+    });
   }
 
   /**
-   * Lifecycle hook that triggers the PayPal script loading process after the view has been initialized.
-   * This ensures the DOM container element is available before attempting to render the PayPal component.
+   * Loads the PayPal SDK script based on the component type and configuration.
+   *
+   * For Messages components, the script is only loaded if Pay Later information should be shown.
+   * For Buttons and CardFields, the script is loaded with the selected payment method configuration.
+   *
+   * @param showPaypalPayLaterInformation - Whether Pay Later messaging should be displayed
+   * @returns Observable that emits the script loading result, or EMPTY if loading should be skipped
+   */
+  private loadPayPalScript(showPaypalPayLaterInformation: boolean): Observable<ScriptType> {
+    // Do not load PayPal Messages component if Pay Later information is not to be shown
+    if (this.componentType === PaypalComponentTypes.Messages && !showPaypalPayLaterInformation) {
+      return EMPTY;
+    }
+
+    return this.componentType === PaypalComponentTypes.Messages
+      ? this.paypalConfigService.loadPayPalScript('PPCP_MESSAGES', this.page)
+      : this.paypalConfigService.loadPayPalScript(
+          'PPCP_'.concat(`${this.selectedPaymentMethod.id}`),
+          this.page,
+          this.selectedPaymentMethod
+        );
+  }
+
+  /**
+   * Builds and renders the PayPal component after the view has been initialized
+   * and the PayPal SDK script has been successfully loaded.
    */
   ngAfterViewInit(): void {
-    if (this.showPayPalComponent && !this.rendered) {
-      if (this.componentType === PaypalComponentTypes.Messages) {
-        this.paypalConfigService
-          .loadPayPalScript(this.scriptNamespace, this.page)
-          .pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef))
-          .subscribe(() => {
-            this.paypalComponentBuilder
-              .build({
-                scriptNamespace: this.scriptNamespace,
-                componentType: this.componentType,
-                pageType: this.page,
-                containerId: this.paypalComponentContainerId,
-              })
-              .then(() => {
-                this.rendered = true;
-              })
-              .catch((error: string) => {
-                this.renderError = true;
-                console.error('PayPal Messages render failure: ', error);
-              });
-          });
-      } else {
-        this.paypalConfigService
-          .loadPayPalScript(this.scriptNamespace, this.page, this.selectedPaymentMethod)
-          .pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef))
-          .subscribe(() => {
-            let config: PaypalComponentsConfig = {
-              scriptNamespace: this.scriptNamespace,
-              componentType: this.componentType,
-              pageType: this.page,
-              paypalPaymentMethod: this.selectedPaymentMethod,
-            };
-            if (!this.isCardFieldsComponent()) {
-              config = {
-                ...config,
-                containerId: this.paypalComponentContainerId,
-                selectPaypalPaymentMethod: (id: string) => this.selectPaypalPaymentMethod.emit(id),
-              };
-            }
+    this.loading$.pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef)).subscribe(loadingResult => {
+      if (loadingResult.loaded) {
+        const config: PaypalComponentsConfig = {
+          scriptNamespace: this.selectedPaymentMethod
+            ? 'PPCP_'.concat(`${this.selectedPaymentMethod.id}`)
+            : 'PPCP_MESSAGES',
+          componentType: this.componentType,
+          pageType: this.page,
+          paypalPaymentMethod: this.selectedPaymentMethod,
+        };
 
-            this.paypalComponentBuilder
-              .build(config)
-              .then(() => {
-                this.rendered = true;
-              })
-              .catch((error: string) => {
-                this.renderError = true;
-                console.error('PayPal Component render failure: ', error);
-              });
-          });
+        this.paypalComponentBuilder.build(
+          this.componentType === PaypalComponentTypes.CardFields
+            ? config
+            : { ...config, containerId: this.paypalComponentContainerId }
+        );
       }
-    }
+    });
   }
 
-  isCardFieldsComponent() {
-    return this.componentType === PaypalComponentTypes.CardFields;
+  /**
+   * Closes the card fields form by emitting the closeForm event.
+   * This method is called from the template when the user clicks the cancel button.
+   */
+  closeCardFieldsForm() {
+    this.closeForm.emit();
   }
 
-  hasError(): boolean {
-    return this.renderError;
+  private getPage(): PaypalPageTypes {
+    return this.page;
   }
 
-  cancelNewPaymentInstrument() {
-    this.cancelPayment.emit();
-  }
-
-  private setPageType() {
+  /**
+   * Identifies the current page type based on the router URL.
+   * The page type is used to configure the PayPal SDK with the appropriate context
+   * (e.g., 'cart', 'checkout', 'product-details', 'product-listing', 'home').
+   */
+  private identifyPageType() {
     const url = this.router.url;
     if (url.includes('/basket')) {
       this.page = PaypalPageTypes.Cart;

@@ -19,7 +19,7 @@ import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-meth
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { Payment } from 'ish-core/models/payment/payment.model';
-import { Paypal3Ds } from 'ish-core/models/paypal-3ds/paypal-3ds.model';
+import { Paypal3Ds, Paypal3DsData, ThreeDSecureDecisionStatus } from 'ish-core/models/paypal-3ds/paypal-3ds.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -436,15 +436,72 @@ export class PaymentService {
     }
   }
 
-  getPayPalPaymentInstrumentData(paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
+  updatePaymentInstrument(paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
+    const body: {
+      parameters?: {
+        name: string;
+        value: string;
+      }[];
+    } = {
+      parameters: paymentInstrument.parameters?.length
+        ? paymentInstrument.parameters.map(attr => ({ name: attr.name, value: attr.value }))
+        : undefined,
+    };
+
     return this.apiService
       .currentBasketEndpoint()
-      .get<{ data: Paypal3Ds }>('payments/open-tender/paypal-3ds', {
+      .patch<{ data: PaymentInstrument }>(
+        `payment-instruments/${this.apiService.encodeResourceId(paymentInstrument.id)}`,
+        body,
+        { headers: this.basketHeaders }
+      )
+      .pipe(map(({ data }) => data));
+  }
+
+  initializePayPalCreditCartFlow() {
+    let loc = `${location.origin}${this.baseHref}`;
+    // Remove trailing slash if present
+    if (loc.endsWith('/')) {
+      loc = loc.slice(0, -1);
+    }
+
+    return this.store.pipe(select(getCurrentLocale)).pipe(
+      whenTruthy(),
+      take(1),
+      switchMap(currentLocale => {
+        const body = {
+          redirect: {
+            returnUrl: `${loc}/checkout/review;lang=${currentLocale}?redirect=success`,
+            cancelUrl: `${loc}/checkout/payment;lang=${currentLocale}?redirect=cancel`,
+          },
+        };
+
+        return this.apiService
+          .currentBasketEndpoint()
+          .put<{ data: Paypal3Ds }>('payments/open-tender/paypal-3ds', body, {
+            headers: this.basketHeaders,
+          })
+          .pipe(map(response => response.data.orderId));
+      })
+    );
+  }
+
+  getPayPalPaymentInstrumentData(
+    paymentInstrument: PaymentInstrument
+  ): Observable<PaymentInstrument | { errorMessage: string }> {
+    return this.apiService
+      .currentBasketEndpoint()
+      .get<Paypal3DsData>('payments/open-tender/paypal-3ds', {
         headers: this.basketHeaders,
       })
       .pipe(
         map(response => {
           const paypal3Ds = response.data;
+          if (paypal3Ds.threeDSecureDecision === ThreeDSecureDecisionStatus.DECLINE) {
+            return {
+              errorMessage: response.infos[0].message,
+            };
+          }
           return {
             ...paymentInstrument,
             parameters: [
@@ -468,96 +525,6 @@ export class PaymentService {
             ],
           };
         })
-      );
-  }
-
-  updatePaymentInstrument(paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
-    const body: {
-      parameters?: {
-        name: string;
-        value: string;
-      }[];
-    } = {
-      parameters: paymentInstrument.parameters?.length
-        ? paymentInstrument.parameters.map(attr => ({ name: attr.name, value: attr.value }))
-        : undefined,
-    };
-
-    return this.apiService
-      .currentBasketEndpoint()
-      .patch<{ data: PaymentInstrument }>(
-        `payment-instruments/${this.apiService.encodeResourceId(paymentInstrument.id)}`,
-        body,
-        { headers: this.basketHeaders }
-      )
-      .pipe(map(({ data }) => data));
-  }
-
-  initializePayPal3DSecureFlow(): Observable<string> {
-    const loc = `${location.origin}${this.baseHref}`;
-
-    return this.store.pipe(select(getCurrentLocale)).pipe(
-      whenTruthy(),
-      take(1),
-      switchMap(currentLocale => {
-        const body = {
-          redirect: {
-            returnUrl: `${loc}/checkout/payment;lang=${currentLocale}?redirect=success`,
-            cancelUrl: `${loc}/checkout/payment;lang=${currentLocale}?redirect=cancel`,
-          },
-        };
-
-        return this.apiService
-          .currentBasketEndpoint()
-          .put<{ data: Paypal3Ds }>('payments/open-tender/paypal-3ds', body, {
-            headers: this.basketHeaders,
-          })
-          .pipe(map(response => response.data.orderId));
-      })
-    );
-  }
-
-  approvePayPal3DSecure(paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
-    return this.apiService
-      .currentBasketEndpoint()
-      .get<{ data: Paypal3Ds }>('payments/open-tender/paypal-3ds', {
-        headers: this.basketHeaders,
-      })
-      .pipe(
-        map(response => {
-          const paypal3Ds = response.data;
-          return {
-            parameters: [
-              {
-                name: 'orderId',
-                value: paypal3Ds.orderId,
-              },
-              {
-                name: 'brand',
-                value: paypal3Ds.card?.brand || '',
-              },
-              { name: 'expiry', value: paypal3Ds.card?.expiry || '' },
-              {
-                name: 'lastDigits',
-                value: paypal3Ds.card?.lastDigits || '',
-              },
-              {
-                name: 'cardHolder',
-                value: paypal3Ds.card?.name || '',
-              },
-            ],
-          };
-        }),
-        switchMap(body =>
-          this.apiService
-            .currentBasketEndpoint()
-            .patch<{ data: PaymentInstrument }>(
-              `payment-instruments/${this.apiService.encodeResourceId(paymentInstrument.id)}`,
-              body,
-              { headers: this.basketHeaders }
-            )
-            .pipe(map(({ data }) => data))
-        )
       );
   }
 }

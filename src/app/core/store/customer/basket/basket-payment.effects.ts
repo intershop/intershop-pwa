@@ -5,19 +5,24 @@ import { Store, select } from '@ngrx/store';
 import { EMPTY } from 'rxjs';
 import { concatMap, exhaustMap, filter, map, switchMap, take } from 'rxjs/operators';
 
+import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { mapToRouterState } from 'ish-core/store/core/router';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import {
+  continueCheckout,
   continueWithFastCheckout,
   createBasketPayment,
   createBasketPaymentFail,
   createBasketPaymentSuccess,
+  createTemporaryBasketPayment,
   deleteBasketPayment,
   deleteBasketPaymentFail,
   deleteBasketPaymentSuccess,
+  deleteTemporaryBasketPayment,
   loadBasket,
   loadBasketEligiblePaymentMethods,
   loadBasketEligiblePaymentMethodsFail,
@@ -28,14 +33,15 @@ import {
   startRedirectBeforeCheckout,
   startRedirectBeforeCheckoutFail,
   submitPayPalPaymentInstrumentData,
-  submitPayPalPaymentInstrumentDataFail,
-  submitPayPalPaymentInstrumentDataSuccess,
   updateBasketPayment,
   updateBasketPaymentFail,
   updateBasketPaymentSuccess,
   updateConcardisCvcLastUpdated,
   updateConcardisCvcLastUpdatedFail,
   updateConcardisCvcLastUpdatedSuccess,
+  updatePaymentInstrument,
+  updatePaymentInstrumentFail,
+  updatePaymentInstrumentSuccess,
 } from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
@@ -64,9 +70,9 @@ export class BasketPaymentEffects {
   setPaymentAtBasket$ = createEffect(() =>
     this.actions$.pipe(
       ofType(setBasketPayment),
-      mapToPayloadProperty('id'),
-      concatMap(paymentInstrumentId =>
-        this.paymentService.setBasketPayment(paymentInstrumentId).pipe(
+      mapToPayload(),
+      concatMap(payload =>
+        this.paymentService.setBasketPayment(payload.id).pipe(
           map(() => setBasketPaymentSuccess()),
           mapErrorToAction(setBasketPaymentFail)
         )
@@ -86,59 +92,6 @@ export class BasketPaymentEffects {
             return EMPTY;
           }),
           mapErrorToAction(startRedirectBeforeCheckoutFail)
-        )
-      )
-    )
-  );
-
-  // initializePayPal3DSecureFlow$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(initializePayPal3DSecureFlow),
-  //     mapToPayload(),
-  //     switchMap(payload =>
-  //       this.paymentService
-  //         .createBasketPayment({
-  //           id: undefined,
-  //           paymentMethod: payload.paymentMethodId,
-  //           parameters: [
-  //             { name: 'orderId', value: '' },
-  //             { name: 'brand', value: '' },
-  //             { name: 'expiry', value: '' },
-  //             { name: 'lastDigits', value: '' },
-  //             { name: 'name', value: '' },
-  //           ],
-  //         })
-  //         .pipe(
-  //           whenTruthy(),
-  //           switchMap(paymentInstrument =>
-  //             this.paymentService.setBasketPayment(paymentInstrument.id).pipe(
-  //               whenTruthy(),
-  //               switchMap(() =>
-  //                 this.paymentService.initializePayPal3DSecureFlow(paymentInstrument.paymentMethod).pipe(
-  //                   map(paypalOrderId => initializePayPal3DSecureFlowSuccess({ paypalOrderId })),
-  //                   mapErrorToAction(initializePayPal3DSecureFlowFail)
-  //                 )
-  //               )
-  //             )
-  //           )
-  //         )
-  //     )
-  //   )
-  // );
-
-  submitPayPalPaymentInstrumentData$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(submitPayPalPaymentInstrumentData),
-      mapToPayloadProperty('paymentInstrument'),
-      concatMap(paymentInstrument =>
-        this.paymentService.getPayPalPaymentInstrumentData(paymentInstrument).pipe(
-          switchMap(data =>
-            this.paymentService.updatePaymentInstrument(data).pipe(
-              map(() => submitPayPalPaymentInstrumentDataSuccess()),
-              mapErrorToAction(submitPayPalPaymentInstrumentDataFail)
-            )
-          ),
-          mapErrorToAction(submitPayPalPaymentInstrumentDataFail)
         )
       )
     )
@@ -168,6 +121,98 @@ export class BasketPaymentEffects {
           mapErrorToAction(createBasketPaymentFail)
         );
       })
+    )
+  );
+
+  /**
+   * For Paypal credit card it is necessary to create a temporary payment instrument. Means the payment instrument is not transferred to the ngrx store.
+   * Otherwise the paypal iframe us not working correctly because change detection is triggered.
+   */
+  createTemporaryPaypalPaymentInstrument$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(createTemporaryBasketPayment),
+        mapToPayload(),
+        concatMap(payload =>
+          this.paymentService.createBasketPayment(payload.paymentInstrument).pipe(
+            concatMap(pi =>
+              this.paymentService.setBasketPayment(pi.id).pipe(
+                switchMap(() =>
+                  this.paymentService.initializePayPalCreditCartFlow().pipe(
+                    map(orderId => {
+                      if (localStorage.getItem('temporaryPaypalData')) {
+                        localStorage.removeItem('temporaryPaypalData');
+                      }
+                      localStorage.setItem('temporaryPaypalData', orderId.concat('_PI_').concat(pi.id));
+                    })
+                  )
+                ),
+                mapErrorToAction(setBasketPaymentFail)
+              )
+            ),
+            mapErrorToAction(createBasketPaymentFail)
+          )
+        )
+      ),
+    { dispatch: false }
+  );
+
+  /**
+   * Deletes the temporary PayPal payment instrument in case of an error during authorization workflow of PayPal.
+   */
+  deleteTemporaryPaypalPaymentInstrument$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteTemporaryBasketPayment),
+      mapToPayload(),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
+      concatMap(([payload, basket]) =>
+        this.paymentService.deleteBasketPaymentInstrument(basket, payload.paymentInstrument).pipe(
+          map(() => setBasketPaymentFail({ error: { name: 'HttpErrorResponse', message: payload.errorMessage } })),
+          mapErrorToAction(setBasketPaymentFail)
+        )
+      )
+    )
+  );
+
+  /**
+   * Submits PayPal payment instrument data after approval and updates the payment instrument in the store.
+   */
+  submitPayPalPaymentInstrumentDataAfterApproval$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(submitPayPalPaymentInstrumentData),
+      mapToPayload(),
+      concatMap(payload =>
+        this.paymentService.getPayPalPaymentInstrumentData(payload.paymentInstrument).pipe(
+          concatMap(response => {
+            if ('errorMessage' in response && response.errorMessage) {
+              return [
+                deleteTemporaryBasketPayment({
+                  paymentInstrument: payload.paymentInstrument,
+                  errorMessage: response.errorMessage,
+                }),
+              ];
+            }
+            return [
+              updatePaymentInstrument({ paymentInstrument: response as PaymentInstrument }),
+              continueCheckout({ targetStep: CheckoutStepType.Review }),
+            ];
+          }),
+          mapErrorToAction(setBasketPaymentFail)
+        )
+      )
+    )
+  );
+
+  updatePaymentInstrument$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updatePaymentInstrument),
+      mapToPayload(),
+      concatMap(payload =>
+        this.paymentService.updatePaymentInstrument(payload.paymentInstrument).pipe(
+          concatMap(() => [updatePaymentInstrumentSuccess(), loadBasketEligiblePaymentMethods()]),
+          mapErrorToAction(updatePaymentInstrumentFail)
+        )
+      )
     )
   );
 
@@ -234,7 +279,13 @@ export class BasketPaymentEffects {
    */
   loadBasketAfterBasketChangeSuccess$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(setBasketPaymentSuccess, setBasketPaymentFail, updateBasketPaymentSuccess, deleteBasketPaymentSuccess),
+      ofType(
+        setBasketPaymentSuccess,
+        setBasketPaymentFail,
+        updateBasketPaymentSuccess,
+        updatePaymentInstrumentSuccess,
+        deleteBasketPaymentSuccess
+      ),
       map(() => loadBasket())
     )
   );

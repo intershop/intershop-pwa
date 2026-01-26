@@ -1,4 +1,4 @@
-export interface PayPalCardFieldsStyleOptions {
+interface PayPalCardFieldsStyleOptions {
   appearance?: string;
   color?: string;
   direction?: string;
@@ -39,23 +39,19 @@ export interface PayPalCardFieldsStyleOptions {
   '-webkit-transition'?: string;
 }
 
-export type CardFieldsOnApproveData = {
-  orderID: string;
-};
-
-export interface PayPalCardFieldsInputEvents {
+interface PayPalCardFieldsInputEvents {
   onChange?(data: PayPalCardFieldsStateObject): void;
   onFocus?(data: PayPalCardFieldsStateObject): void;
   onBlur?(data: PayPalCardFieldsStateObject): void;
   onInputSubmitRequest?(data: PayPalCardFieldsStateObject): void;
 }
 
-export interface PayPalCardFieldSecurityCode {
+interface PayPalCardFieldSecurityCode {
   code: string;
   size: number;
 }
 
-export interface PayPalCardFieldsCardObject {
+interface PayPalCardFieldsCardObject {
   code: PayPalCardFieldSecurityCode;
   niceType:
     | 'American Express'
@@ -83,18 +79,26 @@ export interface PayPalCardFieldsCardObject {
     | 'hipercard';
 }
 
-export type PayPalCardFieldError =
-  | 'INELIGIBLE_CARD_VENDOR'
-  | 'INVALID_NAME'
-  | 'INVALID_NUMBER'
-  | 'INVALID_EXPIRY'
-  | 'INVALID_CVV';
+export enum PayPalCardFieldError {
+  'INVALID_NAME',
+  'INVALID_NUMBER',
+  'INVALID_EXPIRY',
+  'INVALID_CVV',
+}
 
-export interface PayPalCardFieldCardFieldData {
+interface PayPalCardFieldCardFieldData {
   isFocused: boolean;
   isEmpty: boolean;
   isValid: boolean;
   isPotentiallyValid: boolean;
+}
+
+export interface PayPalStateObject {
+  dispatching: boolean;
+  error: string | null;
+  rejected: boolean;
+  resolved: boolean;
+  value: PayPalCardFieldsStateObject;
 }
 
 export interface PayPalCardFieldsStateObject {
@@ -110,13 +114,13 @@ export interface PayPalCardFieldsStateObject {
   };
 }
 
-export interface PayPalCardFieldsIndividualFieldOptions {
+interface PayPalCardFieldsIndividualFieldOptions {
   placeholder?: string;
   inputEvents?: PayPalCardFieldsInputEvents;
   style?: Record<string, PayPalCardFieldsStyleOptions>;
 }
 
-export interface PayPalCardFieldsIndividualField {
+interface PayPalCardFieldsIndividualField {
   render(container: string | HTMLElement): Promise<void>;
   addClass(className: string): Promise<void>;
   clear(): void;
@@ -128,9 +132,9 @@ export interface PayPalCardFieldsIndividualField {
   close(): Promise<void>;
 }
 
-export interface PayPalComponentBasics {
+interface PayPalComponentBasics {
   createOrder(): Promise<string>;
-  onApprove(data: CardFieldsOnApproveData): void;
+  onApprove(): void;
   onError(err: Record<string, unknown>): void;
   onCancel?(): Promise<void> | void;
   inputEvents?: PayPalCardFieldsInputEvents;
@@ -139,7 +143,7 @@ export interface PayPalComponentBasics {
 }
 
 export interface PayPalCardFieldsComponent extends PayPalComponentBasics {
-  getState(): Promise<PayPalCardFieldsStateObject>;
+  getState(): Promise<PayPalStateObject>;
   isEligible(): boolean;
   submit(): Promise<void>;
   NameField(options?: PayPalCardFieldsIndividualFieldOptions): PayPalCardFieldsIndividualField;

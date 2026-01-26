@@ -7,40 +7,28 @@ import { PaypalComponent } from 'ish-core/utils/sdk/paypal/paypal-model/paypal.i
 
 @Injectable({ providedIn: 'root' })
 export class PayPalMessages {
-  private config: PaypalComponentsConfig;
+  renderMessages(config: PaypalComponentsConfig): Promise<void> {
+    const paypalObject = (window as unknown as Record<string, PaypalComponent>)[config.scriptNamespace];
+    const containerId = config.containerId;
 
-  async renderMessages(config: PaypalComponentsConfig): Promise<void> {
-    this.config = config;
-    // Access PayPal SDK from window object
-    const paypalObject = (window as unknown as Record<string, PaypalComponent>)[this.config.scriptNamespace];
+    // Verify element still exists right before rendering
+    if (!document.getElementById(containerId)) {
+      throw new Error(`Container element '${containerId}' no longer exists in DOM`);
+    }
 
     if (!paypalObject?.Messages) {
-      return Promise.reject(new Error(`PayPal Messages not available on namespace '${this.config.scriptNamespace}'`));
+      throw new Error(
+        `PayPal Messages not available in loaded paypal sdk script with namespace '${config.scriptNamespace}'`
+      );
     }
 
-    try {
-      // Verify element still exists right before rendering
-      const container = document.getElementById(this.config.containerId);
-      if (!container) {
-        throw new Error(`Container element '${this.config.containerId}' no longer exists in DOM`);
-      }
-
-      const messages = paypalObject.Messages(this.getMessages());
-
-      // Render outside Angular zone - PayPal SDK needs direct DOM access
-      await messages.render(`#${this.config.containerId}`);
-
-      return Promise.resolve();
-    } catch (error) {
-      console.error('PayPal messages rendering failed:', error);
-      return Promise.reject(error);
-    }
+    return paypalObject.Messages(this.getMessagesConfig(config)).render(`#${containerId}`);
   }
 
-  private getMessages() {
+  private getMessagesConfig(config: PaypalComponentsConfig) {
     let messageConfig;
 
-    switch (this.config.pageType) {
+    switch (config.pageType) {
       case PaypalPageTypes.Home:
         messageConfig = { style: PAYPAL_MESSAGE_STYLING.home };
         break;
@@ -48,13 +36,13 @@ export class PayPalMessages {
         messageConfig = { style: PAYPAL_MESSAGE_STYLING.category };
         break;
       case PaypalPageTypes.ProductDetails:
-        messageConfig = { amount: this.config.amount, style: PAYPAL_MESSAGE_STYLING.product };
+        messageConfig = { amount: config.amount, style: PAYPAL_MESSAGE_STYLING.product };
         break;
       case PaypalPageTypes.CheckoutPayment:
-        messageConfig = { amount: this.config.amount, style: PAYPAL_MESSAGE_STYLING.checkout };
+        messageConfig = { amount: config.amount, style: PAYPAL_MESSAGE_STYLING.checkout };
         break;
       default:
-        messageConfig = { amount: this.config.amount, style: PAYPAL_MESSAGE_STYLING.cart };
+        messageConfig = { amount: config.amount, style: PAYPAL_MESSAGE_STYLING.cart };
         break;
     }
 

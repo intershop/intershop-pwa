@@ -157,12 +157,6 @@ export class AppFacade {
     return this.store.pipe(select(getRegionsByCountryCode(countryCode)));
   }
 
-  /**
-   * Returns an observable that indicates whether to show PayPal Pay Later information on the given page.
-   * Information can be showing messages or PayPal Pay Later messaging within PayPal buttons.
-   * @param page
-   * @returns
-   */
   showPaypalPayLaterInformation$(page: PaypalPageTypes): Observable<boolean> {
     return this.store.pipe(select(getPaypalPayLaterPreference(page)));
   }

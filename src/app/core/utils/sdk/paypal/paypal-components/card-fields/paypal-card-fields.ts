@@ -1,30 +1,32 @@
 import { Injectable, NgZone } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { switchMap } from 'rxjs';
+import { Subject } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { PaymentService } from 'ish-core/services/payment/payment.service';
-import { whenTruthy } from 'ish-core/utils/operators';
 import { PAYPAL_CART_FIELDS_STYLING } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.styling';
 import {
+  PayPalCardFieldError,
   PayPalCardFieldsComponent,
   PayPalCardFieldsStateObject,
+  PayPalStateObject,
 } from 'ish-core/utils/sdk/paypal/paypal-model/paypal.interface';
 
 @Injectable({ providedIn: 'root' })
 export class PayPalCardFields {
   paymentMethod: PaymentMethod;
-  private paymentInstrument: PaymentInstrument;
-  private cardFieldComponent: PayPalCardFieldsComponent;
+  private temporaryPaymentInstrumentId: string;
+  cardField: PayPalCardFieldsComponent;
 
-  constructor(
-    private ngZone: NgZone,
-    private checkoutFacade: CheckoutFacade,
-    private paymentService: PaymentService,
-    private translateService: TranslateService
-  ) {}
+  /** Emits when the card fields form should be closed */
+  closeForm$ = new Subject<void>();
+
+  // Store rendered field instances for later access
+  private nameFieldInstance: ReturnType<PayPalCardFieldsComponent['NameField']>;
+  private numberFieldInstance: ReturnType<PayPalCardFieldsComponent['NumberField']>;
+  private cvvFieldInstance: ReturnType<PayPalCardFieldsComponent['CVVField']>;
+  private expiryFieldInstance: ReturnType<PayPalCardFieldsComponent['ExpiryField']>;
+
+  constructor(private ngZone: NgZone, private checkoutFacade: CheckoutFacade) {}
 
   /**
    * Creates and renders PayPal card fields in the specified containers.
@@ -47,25 +49,33 @@ export class PayPalCardFields {
       try {
         // Initialize CardFields with MINIMAL configuration - exactly as official PayPal example
         // NO style parameter - this may interfere with keyboard input
-        const cardField = paypalObject.CardFields({
-          createOrder: () => this.ngZone.run(() => this.createOrder()),
-          onApprove: () => this.ngZone.run(() => this.onApprove()),
-          onError: (error: unknown) => this.ngZone.run(() => this.errorHandler(error)),
+        this.cardField = paypalObject.CardFields({
+          createOrder: () => this.ngZone.run(() => this.createOrderCallback()),
+          onApprove: () => this.ngZone.run(() => this.onApproveCallback()),
+          onError: (error: unknown) => this.ngZone.run(() => this.onErrorCallback(error)),
+          inputEvents: {
+            onFocus: (data: PayPalCardFieldsStateObject) => {
+              this.ngZone.run(() => this.handleFieldFocus(data));
+            },
+            onBlur: (data: PayPalCardFieldsStateObject) => {
+              this.ngZone.run(() => this.handleFieldBlur(data));
+            },
+          },
         }) as PayPalCardFieldsComponent;
 
         // Check if card fields are eligible
-        if (cardField.isEligible()) {
+        if (this.cardField.isEligible()) {
           // Store card field component for later access
-          this.cardFieldComponent = cardField;
+          //this.cardFieldComponent = cardField;
 
           // Render individual fields outside Angular zone for proper iframe interaction
-          await this.renderIndividualFields(cardField);
+          await this.renderIndividualFields();
 
           // set payment method for use in createOrder
           this.paymentMethod = paymentMethod;
 
           // Setup submit button handler
-          this.setupSubmitHandler(cardField);
+          this.setupSubmitHandler();
         }
       } catch (error) {
         console.error('PayPal card fields rendering failed:', error);
@@ -82,209 +92,239 @@ export class PayPalCardFields {
    * affect functionality. The warning can be safely ignored or suppressed via
    * Permissions-Policy headers if needed.
    */
-  private async renderIndividualFields(cardField: PayPalCardFieldsComponent): Promise<void> {
-    // Hide any existing error messages
-    this.hideFieldError('card-name-field-error');
-
-    // Render name field
-    const nameField = cardField.NameField({
-      style: PAYPAL_CART_FIELDS_STYLING,
-      placeholder: '',
-      inputEvents: {
-        onChange: (state: PayPalCardFieldsStateObject): void => {
-          if (state.emittedBy === 'name' && state.errors?.includes('INVALID_NAME')) {
-            console.log('FAILURE');
-            this.showFieldError('card-name-field-error', 'blubber');
-          } else {
-            console.log('NO FAILURE');
-            this.hideFieldError('card-name-field-error');
-          }
-        },
-      },
-    });
-    await nameField.render('#card-name-field-container');
-
-    // Render number field
-    const numberField = cardField.NumberField({
+  async renderIndividualFields(): Promise<void> {
+    // Render name field and store instance
+    this.nameFieldInstance = this.cardField.NameField({
       style: PAYPAL_CART_FIELDS_STYLING,
       placeholder: '',
     });
-    await numberField.render('#card-number-field-container');
+    await this.nameFieldInstance.render('#card-name-field-container');
 
-    // Render CVV field
-    const cvvField = cardField.CVVField({
+    // Render number field and store instance
+    this.numberFieldInstance = this.cardField.NumberField({
       style: PAYPAL_CART_FIELDS_STYLING,
       placeholder: '',
     });
-    await cvvField.render('#card-cvv-field-container');
+    await this.numberFieldInstance.render('#card-number-field-container');
 
-    // Render expiry field
-    const expiryField = cardField.ExpiryField({
+    // Render CVV field and store instance
+    this.cvvFieldInstance = this.cardField.CVVField({
       style: PAYPAL_CART_FIELDS_STYLING,
-      placeholder: this.translateService.instant('checkout.credit_card.expiration_date.placeholder'),
+      placeholder: '',
     });
-    await expiryField.render('#card-expiry-field-container');
+    await this.cvvFieldInstance.render('#card-cvv-field-container');
+
+    // Render expiry field and store instance
+    this.expiryFieldInstance = this.cardField.ExpiryField({
+      style: PAYPAL_CART_FIELDS_STYLING,
+    });
+    await this.expiryFieldInstance.render('#card-expiry-field-container');
+  }
+
+  private handleFieldFocus(data: PayPalCardFieldsStateObject): void {
+    switch (data.emittedBy) {
+      case 'name':
+        this.hideFieldError('card-name-field-container');
+        break;
+      case 'number':
+        this.hideFieldError('card-number-field-container');
+        break;
+      case 'cvv':
+        this.hideFieldError('card-cvv-field-container');
+        break;
+      case 'expiry':
+        this.hideFieldError('card-expiry-field-container');
+        break;
+    }
+  }
+
+  private handleFieldBlur(data: PayPalCardFieldsStateObject): void {
+    switch (data.emittedBy) {
+      case 'name':
+        if (!data.fields.cardNameField.isValid) {
+          this.showFieldError('card-name-field-container');
+        }
+        break;
+      case 'number':
+        if (!data.fields.cardNumberField.isValid) {
+          this.showFieldError('card-number-field-container');
+        }
+        break;
+      case 'cvv':
+        if (!data.fields.cardCvvField.isValid) {
+          this.showFieldError('card-cvv-field-container');
+        }
+        break;
+      case 'expiry':
+        if (!data.fields.cardExpiryField.isValid) {
+          this.showFieldError('card-expiry-field-container');
+        }
+        break;
+    }
   }
 
   /**
    * Sets up the submit button event handler for card field submission.
    */
-  private setupSubmitHandler(cardField: PayPalCardFieldsComponent): void {
+  private setupSubmitHandler(): void {
     const submitButton = document.getElementById('card-field-submit-button');
 
     if (submitButton) {
       submitButton.addEventListener('click', () => {
         this.ngZone.run(async () => {
-          try {
-            // Await the submit call to handle 3D Secure authentication properly
-            this.checkoutFacade.initializePayPal3DSecureFlow();
-            await cardField.submit();
-          } catch (error) {
-            // Check if error is due to popup being closed
-            if (error instanceof Error && error.message.includes('Window closed')) {
-              console.warn('3D Secure authentication was cancelled or popup was closed');
-              this.showResultMessage('Payment authentication was cancelled. Please try again.');
-            } else {
-              const state = await cardField.getState();
-              this.handleSubmitError(state);
-            }
-          }
+          this.cardField.submit().catch(() => {
+            this.validationErrorHandler(this.cardField.getState());
+          });
         });
       });
     }
   }
 
   /**
-   * Creates PayPal order through the checkout facade.
-   * official PayPal developer documentation link: https://developer.paypal.com/studio/checkout/advanced/integrate
+   * Paypal Order Id creation callback. Creates a temporary basket payment, stores the orderId temporary in the local storage and submit order id to paypal sdk.
    */
-  async createOrder(): Promise<string> {
+  async createOrderCallback(): Promise<string> {
+    const orderId = this.setStorageListener();
+
+    this.checkoutFacade.createTemporaryBasketPayment({
+      id: undefined,
+      paymentMethod: this.paymentMethod.id,
+    });
+
+    return orderId;
+  }
+
+  /**
+   * Listens for the PayPal order ID in local storage with a timeout.
+   */
+  private setStorageListener(): Promise<string> {
     return new Promise((resolve, reject) => {
-      this.paymentService
-        .createBasketPayment({
-          id: undefined,
-          paymentMethod: this.paymentMethod.id,
-        })
-        .pipe(
-          whenTruthy(),
-          switchMap(paymentInstrument => {
-            this.paymentInstrument = paymentInstrument;
-            return this.paymentService.setBasketPayment(paymentInstrument.id).pipe(
-              whenTruthy(),
-              switchMap(() => this.paymentService.initializePayPal3DSecureFlow())
-            );
-          })
-        )
-        .subscribe({
-          next: orderID => resolve(orderID),
-          error: error => reject(error),
-        });
+      // Check localStorage every 100ms
+      const intervalId = window.setInterval(() => {
+        const temporaryPaypalData = localStorage.getItem('temporaryPaypalData');
+        if (temporaryPaypalData) {
+          const data = temporaryPaypalData.split('_PI_');
+          this.temporaryPaymentInstrumentId = data[1];
+          cleanup();
+          resolve(data[0]);
+          localStorage.removeItem('temporaryPaypalData');
+        }
+      }, 10);
+
+      // Timeout after 3 seconds
+      const timeoutId = window.setTimeout(() => {
+        cleanup();
+        reject(new Error('PayPal order ID not received within 3 seconds'));
+      }, 3000);
+
+      const cleanup = () => {
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+        if (intervalId) {
+          clearInterval(intervalId);
+        }
+      };
     });
   }
 
   /**
    * Handles PayPal payment approval.
    */
-  async onApprove(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.paymentService
-        .approvePayPal3DSecure(this.paymentInstrument)
-        .pipe(whenTruthy())
-        .subscribe({
-          next: () => {
-            // After successful approval, reload eligible payment methods
-            this.checkoutFacade.loadEligiblePaymentMethods();
-            this.checkoutFacade.loadBasketAfterChanges();
-            resolve();
-          },
-          error: error => reject(error),
-        });
+  async onApproveCallback() {
+    this.checkoutFacade.submitPayPalPaymentInstrumentData({
+      id: this.temporaryPaymentInstrumentId,
+      paymentMethod: this.paymentMethod.id,
     });
-  }
-
-  /**
-   * Resets card fields by clearing containers and re-rendering them.
-   */
-  private async resetCardFields(): Promise<void> {
-    if (!this.cardFieldComponent) {
-      return;
-    }
-
-    try {
-      // Clear all field containers
-      const containerIds = [
-        'card-name-field-container',
-        'card-number-field-container',
-        'card-cvv-field-container',
-        'card-expiry-field-container',
-      ];
-
-      containerIds.forEach(id => {
-        const container = document.getElementById(id);
-        if (container) {
-          container.innerHTML = '';
-        }
-      });
-
-      // Re-render fields with empty values
-      await this.renderIndividualFields(this.cardFieldComponent);
-    } catch (error) {
-      console.error('Error resetting card fields:', error);
-    }
+    this.closeForm$.next();
   }
 
   /**
    * Default error handler for PayPal card fields.
    */
-  private errorHandler(error: unknown): void {
-    console.error('PayPal card fields error:', error);
-    this.showResultMessage(`PayPal error: ${error}`);
+  private onErrorCallback(error: unknown): void {
+    console.error('PayPal Card Fields error:', error);
   }
 
   /**
-   * Handles card field submission errors.
+   * Default error handler for PayPal card fields.
    */
-  private handleSubmitError(error: PayPalCardFieldsStateObject): void {
-    console.error('PayPal card fields error:', error);
-    if (error.errors.includes('INVALID_NAME')) {
-      const errorMessages = 'Der verwendete Name ist ungültig.';
-      this.showFieldError('card-name-field-error', errorMessages);
-    }
-
-    this.showResultMessage(`Payment submission failed: ${error}`);
+  private validationErrorHandler(statePromise: Promise<PayPalStateObject>): void {
+    statePromise.then(stateObject => {
+      const cardFieldsState = stateObject?.value ?? (stateObject as unknown as PayPalCardFieldsStateObject);
+      this.handleSubmitError(cardFieldsState);
+    });
   }
 
   /**
-   * Displays error message for a specific field.
+   * Handles card field validation errors.
    */
-  private showFieldError(errorElementId: string, message: string): void {
-    const errorElement = document.getElementById(errorElementId);
-    if (errorElement) {
-      errorElement.textContent = message;
-      errorElement.style.display = 'block';
+  private handleSubmitError(state: PayPalCardFieldsStateObject): void {
+    state.errors.forEach(error => {
+      switch (error) {
+        case PayPalCardFieldError.INVALID_NAME:
+          this.showFieldError('card-name-field-container', 'name');
+          break;
+        case PayPalCardFieldError.INVALID_NUMBER:
+          this.showFieldError('card-number-field-container', 'number');
+          break;
+        case PayPalCardFieldError.INVALID_CVV:
+          this.showFieldError('card-cvv-field-container', 'cvv');
+          break;
+        case PayPalCardFieldError.INVALID_EXPIRY:
+          this.showFieldError('card-expiry-field-container', 'expiry');
+          break;
+      }
+    });
+  }
+
+  /**
+   * Displays error message for a specific field and marks the input as touched/invalid.
+   */
+  private showFieldError(containerId: string, fieldName?: 'name' | 'number' | 'cvv' | 'expiry'): void {
+    const errorElement = document.getElementById(containerId.concat('-error'));
+    const labelElement = document.getElementById(containerId.concat('-label'));
+    if (errorElement && labelElement) {
+      errorElement.classList.remove('hide-validation-error');
+      labelElement.classList.add('text-danger');
+    }
+
+    // Mark the PayPal input field as invalid only if field is never touched before and form is submitted
+    if (fieldName) {
+      const fieldInstance = this.getFieldInstance(fieldName);
+      if (fieldInstance) {
+        fieldInstance.addClass('invalid');
+      }
     }
   }
 
   /**
-   * Hides error message for a specific field.
+   * Hides error message for a specific field and removes touched/invalid state.
    */
-  private hideFieldError(errorElementId: string): void {
-    const errorElement = document.getElementById(errorElementId);
-    if (errorElement) {
-      errorElement.textContent = '';
-      errorElement.style.display = 'none';
+  private hideFieldError(containerId: string): void {
+    const errorElement = document.getElementById(containerId.concat('-error'));
+    const labelElement = document.getElementById(containerId.concat('-label'));
+    if (errorElement && labelElement) {
+      errorElement.classList.add('hide-validation-error');
+      labelElement.classList.remove('text-danger');
     }
   }
 
   /**
-   * Displays result messages to the user.
-   * In a real implementation, this should integrate with the application's notification system.
+   * Returns the field instance for the given field name.
    */
-  private showResultMessage(message: string): void {
-    const container = document.querySelector('#result-message');
-    if (container) {
-      container.innerHTML = message;
+  private getFieldInstance(
+    fieldName: 'name' | 'number' | 'cvv' | 'expiry'
+  ): ReturnType<PayPalCardFieldsComponent['NameField']> | undefined {
+    switch (fieldName) {
+      case 'name':
+        return this.nameFieldInstance;
+      case 'number':
+        return this.numberFieldInstance;
+      case 'cvv':
+        return this.cvvFieldInstance;
+      case 'expiry':
+        return this.expiryFieldInstance;
     }
-    // TODO: Integrate with application's notification/toast system
   }
 }

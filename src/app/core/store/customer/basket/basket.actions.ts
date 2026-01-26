@@ -300,19 +300,14 @@ export const startRedirectBeforeCheckoutFail = createAction(
   httpError()
 );
 
-export const initializePayPal3DSecureFlow = createAction(
-  '[Basket] Initialize PayPal 3D Secure Flow',
-  payload<{ paymentMethodId: string }>()
+export const createTemporaryBasketPayment = createAction(
+  '[Basket] Create a Temporary Basket Payment',
+  payload<{ paymentInstrument: PaymentInstrument }>()
 );
 
-export const initializePayPal3DSecureFlowSuccess = createAction(
-  '[Basket API] Initialize PayPal 3D Secure Flow Success',
-  payload<{ paypalOrderId: string }>()
-);
-
-export const initializePayPal3DSecureFlowFail = createAction(
-  '[Basket API] Initialize PayPal 3D Secure Flow Fail',
-  httpError()
+export const deleteTemporaryBasketPayment = createAction(
+  '[Basket Internal] Delete a Temporary Basket Payment',
+  payload<{ paymentInstrument: PaymentInstrument; errorMessage: string }>()
 );
 
 export const submitPayPalPaymentInstrumentData = createAction(
@@ -320,14 +315,13 @@ export const submitPayPalPaymentInstrumentData = createAction(
   payload<{ paymentInstrument: PaymentInstrument }>()
 );
 
-export const submitPayPalPaymentInstrumentDataSuccess = createAction(
-  '[Basket API] Submit PayPal Payment Instrument Data Success'
+export const updatePaymentInstrument = createAction(
+  '[Basket Internal] Update Payment Instrument',
+  payload<{ paymentInstrument: PaymentInstrument }>()
 );
+export const updatePaymentInstrumentSuccess = createAction('[Basket API] Update Payment Instrument Success');
 
-export const submitPayPalPaymentInstrumentDataFail = createAction(
-  '[Basket API] Submit PayPal Payment Instrument Data Fail',
-  httpError()
-);
+export const updatePaymentInstrumentFail = createAction('[Basket API] Update Payment Instrument Fail', httpError());
 
 export const submitBasket = createAction('[Basket API] Submit a Basket for Approval');
 

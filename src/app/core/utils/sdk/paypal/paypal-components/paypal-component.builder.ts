@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { filter, map, switchMap, take } from 'rxjs';
+import { filter, from, map, switchMap, take } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -17,9 +17,6 @@ import { PayPalMessages } from './messages/paypal-messages';
  * Configuration object for creating PayPal components.
  * Provides all necessary context and callbacks for component initialization.
  *
- * Different component types require different configuration properties:
- * - Buttons: Require `paypalPaymentMethod` and optionally `selectPaypalPaymentMethod`
- * - Messages: Can provide `amount` or it will be calculated based on `pageType`
  */
 export interface PaypalComponentsConfig {
   /** The page context where the component is being used (e.g., 'cart', 'checkout') */
@@ -36,8 +33,6 @@ export interface PaypalComponentsConfig {
   basket?: Basket;
   /** container id of rendering div */
   containerId?: string;
-  /** Callback function to select PayPal as the payment method */
-  selectPaypalPaymentMethod?(id: string): void;
 
   paymentInstrument?(paymentInstrument: PaymentInstrument): void;
 }
@@ -61,20 +56,43 @@ export class PaypalComponentBuilder {
 
   /**
    * Creates a PayPal component based on the provided configuration.
+   *
+   * This method acts as a factory that creates the appropriate PayPal SDK component
+   * (Buttons, Messages, or CardFields) based on the component type specified in the config.
+   * Each component type requires different configuration properties and has different
+   * initialization requirements.
+   *
+   * Component-specific behavior:
+   * - **Buttons**: Renders PayPal payment buttons for checkout, requires basket data
+   * - **Messages**: Renders Pay Later promotional messages, calculates amount based on page context
+   * - **CardFields**: Renders advanced card input fields for credit/debit card payments
+   *
+   * @param config - Configuration object containing all necessary component settings
+   * @returns Observable that completes when the component is successfully rendered
+   * @throws Error if an unsupported component type is provided
    */
-  build(config: PaypalComponentsConfig): Promise<void> {
+  build(config: PaypalComponentsConfig) {
     switch (config.componentType) {
       case PaypalComponentTypes.Buttons:
         return this.payPalButtons.renderButtons({ ...config, basket: this.getBasket() });
       case PaypalComponentTypes.Messages:
         return this.payPalMessages.renderMessages({ ...config, amount: this.getAmount(config) });
       case PaypalComponentTypes.CardFields:
-        return this.payPalCardFields.renderCardFields(config.scriptNamespace, config.paypalPaymentMethod);
+        return from(this.payPalCardFields.renderCardFields(config.scriptNamespace, config.paypalPaymentMethod));
       default:
-        return Promise.reject(new Error(`Unsupported PayPal component type: ${config.componentType}`));
+        return from(Promise.reject(new Error(`Unsupported PayPal component type: ${config.componentType}`)));
     }
   }
 
+  /**
+   * Calculates the appropriate amount to display in PayPal components based on page context.
+   *
+   * The amount calculation logic varies by page type:
+   * - **Product Details**: Uses the product's sale price from the currently selected product
+   * - **Cart/Checkout**: Uses the basket's gross total including all items, taxes, and shipping
+   * @param config - Component configuration containing the page type
+   * @returns The calculated amount as a number, or 0 if no amount can be determined
+   */
   private getAmount(config: PaypalComponentsConfig): number {
     let amount = 0;
     if (config.pageType === PaypalPageTypes.ProductDetails) {
@@ -102,6 +120,18 @@ export class PaypalComponentBuilder {
     return amount;
   }
 
+  /**
+   * Retrieves the current basket object from the checkout facade.
+   *
+   * This method synchronously extracts the basket using a subscription pattern
+   * with `take(1)` to get the latest basket state. The subscription completes
+   * immediately to prevent memory leaks.
+   *
+   * Used by the Buttons component to access basket information during checkout
+   * (line items, totals, payment methods, etc.).
+   *
+   * @returns The current basket object, or undefined if no basket exists
+   */
   private getBasket(): Basket {
     let basket: Basket;
     this.checkoutFacade.basket$.pipe(whenTruthy(), take(1)).subscribe(b => (basket = b));

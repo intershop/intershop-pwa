@@ -171,7 +171,7 @@ export const getPaypalConfig = getServerConfigParameter<PaypalConfig>('payment.p
 
 export const getPaypalPayLaterPreference = (page: PaypalPageTypes) =>
   createSelector(getServerConfigParameter<PaypalConfig>('payment.paypal'), (paypalConfig): boolean => {
-    if (!paypalConfig?.payLaterPreferences?.PayLaterEnabled) {
+    if (!paypalConfig) {
       return false;
     }
 

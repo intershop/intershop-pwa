@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
 import { formatISO } from 'date-fns';
-import { Observable, Subject, combineLatest, iif, merge } from 'rxjs';
+import { Subject, combineLatest, iif, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, sample, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
@@ -11,10 +11,8 @@ import { CustomFieldDefinitionScopes } from 'ish-core/models/custom-field-defini
 import { CustomFields } from 'ish-core/models/custom-field/custom-field.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
-import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PriceType } from 'ish-core/models/price/price.model';
 import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
-import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { selectQueryParam, selectRouteData } from 'ish-core/store/core/router';
 import {
   getCustomFieldDefinition,
@@ -29,6 +27,7 @@ import {
   createBasket,
   createBasketAddress,
   createBasketPayment,
+  createTemporaryBasketPayment,
   deleteBasketAttribute,
   deleteBasketItem,
   deleteBasketItems,
@@ -58,7 +57,6 @@ import {
   setBasketCustomFields,
   setBasketDesiredDeliveryDate,
   setBasketPayment,
-  setBasketPaymentSuccess,
   startCheckout,
   startFastCheckout,
   startRedirectBeforeCheckout,
@@ -83,7 +81,7 @@ import { AccountFacade } from './account.facade';
 export class CheckoutFacade {
   private basketChangeInternal$ = new Subject<void>();
 
-  constructor(private store: Store, private accountFacade: AccountFacade, private paymentService: PaymentService) {
+  constructor(private store: Store, private accountFacade: AccountFacade) {
     if (!SSR) {
       this.store
         .pipe(
@@ -128,10 +126,6 @@ export class CheckoutFacade {
 
   loadBasketWithId(basketId: string) {
     this.store.dispatch(loadBasketWithId({ basketId }));
-  }
-
-  loadBasketAfterChanges() {
-    this.store.dispatch(setBasketPaymentSuccess());
   }
 
   createBasket() {
@@ -312,45 +306,6 @@ export class CheckoutFacade {
     this.store.dispatch(loadBasketEligiblePaymentMethods());
   }
 
-  /**
-   * If a contextCapability is given, it returns the PayPal payment method (capability 'PaypalCheckout') with the appropriate capability.
-   * If no contextCapability is given, it returns an arbitrary PayPal payment method.
-   * @param contextCapability 'FastCheckout' or 'RedirectBeforeCheckout'
-   * @returns Observable<PaymentMethod> or undefined if no PayPal payment method is available
-   */
-  paypalPaymentMethod$(contextCapability?: 'FastCheckout' | 'RedirectBeforeCheckout'): Observable<PaymentMethod> {
-    return this.basket$.pipe(
-      whenTruthy(),
-      take(1),
-      switchMap(() =>
-        this.store.pipe(
-          select(getBasketEligiblePaymentMethods),
-          // fetch payment methods if not yet loaded
-          tap(pms => pms?.length || this.store.dispatch(loadBasketEligiblePaymentMethods())),
-          filter(methods => !!methods?.length),
-          take(1),
-          map(methods =>
-            methods?.find(
-              method =>
-                // TODO: adjust this very special logic when more capabilities are added
-                method.capabilities?.includes('PaypalCheckout') &&
-                !!method.hostedPaymentPageParameters?.length &&
-                (contextCapability
-                  ? contextCapability === 'FastCheckout'
-                    ? method.capabilities?.includes(contextCapability)
-                    : !method.capabilities?.includes('FastCheckout')
-                  : true)
-            )
-          )
-        )
-      )
-    );
-  }
-
-  initializePayPal3DSecureFlow() {
-    return this.paymentService.initializePayPal3DSecureFlow();
-  }
-
   submitPayPalPaymentInstrumentData(paymentInstrument: PaymentInstrument) {
     this.store.dispatch(submitPayPalPaymentInstrumentData({ paymentInstrument }));
   }
@@ -365,6 +320,10 @@ export class CheckoutFacade {
 
   createBasketPayment(paymentInstrument: PaymentInstrument, saveForLater = false) {
     this.store.dispatch(createBasketPayment({ paymentInstrument, saveForLater }));
+  }
+
+  createTemporaryBasketPayment(paymentInstrument: PaymentInstrument) {
+    this.store.dispatch(createTemporaryBasketPayment({ paymentInstrument }));
   }
 
   deleteBasketPayment(paymentInstrument: PaymentInstrument) {
