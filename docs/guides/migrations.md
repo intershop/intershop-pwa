@@ -60,6 +60,10 @@ This ensures clearer separation between API events and state management.
 The language switch component has been moved from the mobile user information dropdown to the main header navigation for better accessibility and user experience.
 Accordingly, the language switch accordion view and its associated component input variable have been removed.
 
+[NGINX cache clearing](./nginx-startup.md#cache-clearing) is now enabled by default.
+The `CACHE_CLEARER` environment variable behavior changed from opt-in to opt-out.
+Set `CACHE_CLEARER` to `off` to disable this feature.
+
 ## From 9.0.0 to 9.1.0
 
 Catalogs (root-level categories in ICM terminology) with _Show In Menu_ being disabled are now hidden from the main header navigation.
