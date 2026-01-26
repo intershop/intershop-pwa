@@ -244,6 +244,39 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
           return 'common';
         },
       };
+
+      // split heavy third-party libs into async chunks to reduce main/vendor siz
+      cacheGroups['lib-fontawesome'] = {
+        test: /[\\/]node_modules[\\/]@fortawesome[\\/]/,
+        chunks: 'all',
+        name: 'lib-fontawesome',
+        priority: 40,
+        enforce: true,
+      };
+
+      cacheGroups['lib-bootstrap'] = {
+        test: /[\\/]node_modules[\\/](?:bootstrap|@ng-bootstrap)[\\/]/,
+        chunks: 'all',
+        name: 'lib-bootstrap',
+        priority: 39,
+        enforce: true,
+      };
+
+      cacheGroups['lib-oauth'] = {
+        test: /[\\/]node_modules[\\/]angular-oauth2-oidc[\\/]/,
+        chunks: 'all',
+        name: 'lib-oauth',
+        priority: 38,
+        enforce: true,
+      };
+
+      cacheGroups['lib-toastr'] = {
+        test: /[\\/]node_modules[\\/]ngx-toastr[\\/]/,
+        chunks: 'all',
+        name: 'lib-toastr',
+        priority: 37,
+        enforce: true,
+      };
     }
 
     if (!process.env.TESTING) {
