@@ -26,8 +26,7 @@
           (click)="filter(facet)"
           [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
         >
-          {{ facet.displayName }}
-          <ng-container *ngIf="facet.level === maxLevel"> ({{ facet.count }}) </ng-container>
+          {{ facet.displayName }}{{ facet.level === maxLevel ? ' (' + facet.count + ')' : '' }}
         </button>
       </ng-template>
     </li>
