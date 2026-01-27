@@ -77,7 +77,8 @@ export class SearchEffects {
 
   searchProducts$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(searchProducts),
+      useCombinedObservableOnAction(this.actions$.pipe(ofType(searchProducts)), personalizationStatusDetermined),
+      whenTruthy(),
       mapToPayload(),
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
       concatLatestFrom(() => this.store.pipe(select(getProductListingItemsPerPage('search')))),

@@ -3,7 +3,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
-import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
+import { logoutUserSuccess, personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { resetSubStatesOnActionsMeta } from 'ish-core/utils/meta-reducers';
 
 import { CategoriesEffects } from './categories/categories.effects';
@@ -58,9 +58,10 @@ const shoppingEffects = [
 export class DefaultShoppingStoreConfig implements StoreConfig<ShoppingState> {
   metaReducers = [
     resetSubStatesOnActionsMeta<ShoppingState>(
-      ['categories', 'products', 'search', 'filter', 'productPrices'],
+      ['categories', 'search', 'filter', 'productPrices'],
       [personalizationStatusDetermined]
     ),
+    resetSubStatesOnActionsMeta<ShoppingState>(['products'], [logoutUserSuccess]),
   ];
 }
 
