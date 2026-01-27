@@ -258,9 +258,12 @@ describe('Products Effects', () => {
   });
 
   describe('loadProductsForCategory$', () => {
-    it('should call service for SKU list', done => {
-      actions$ = of(loadProductsForCategory({ categoryId: '123', sorting: 'name-asc' }));
+    beforeEach(() => {
+      const action = loadProductsForCategory({ categoryId: '123', sorting: 'name-asc' });
+      actions$ = merge(of(personalizationStatusDetermined()), of(action));
+    });
 
+    it('should call service for SKU list', done => {
       effects.loadProductsForCategory$.subscribe(() => {
         verify(productsServiceMock.getCategoryProducts('123', anyNumber(), 'name-asc', anyNumber())).once();
         done();
@@ -268,8 +271,6 @@ describe('Products Effects', () => {
     });
 
     it('should trigger actions for loading content for the product list', done => {
-      actions$ = of(loadProductsForCategory({ categoryId: '123' }));
-
       effects.loadProductsForCategory$.pipe(toArray()).subscribe(actions => {
         expect(actions).toMatchInlineSnapshot(`
           [Products API] Load Product Success:
@@ -278,7 +279,7 @@ describe('Products Effects', () => {
             product: {"sku":"P333"}
           [Product Listing Internal] Set Product Listing Pages:
             1: ["P222","P333"]
-            id: {"type":"category","value":"123"}
+            id: {"type":"category","value":"123","sorting":"name-asc"}
             itemCount: 2
             sortableAttributes: [{"name":"name-asc"},{"name":"name-desc"}]
         `);
@@ -290,11 +291,12 @@ describe('Products Effects', () => {
       when(productsServiceMock.getCategoryProducts(anything(), anyNumber(), anything(), anyNumber())).thenReturn(
         throwError(() => makeHttpError({ message: 'ERROR' }))
       );
-      actions$ = hot('-a-a-a', {
+      actions$ = hot('-p-a-a-a', {
+        p: personalizationStatusDetermined(),
         a: loadProductsForCategory({ categoryId: '123' }),
       });
       expect(effects.loadProductsForCategory$).toBeObservable(
-        cold('-a-a-a', {
+        cold('---a-a-a', {
           a: loadProductsForCategoryFail({
             error: makeHttpError({ message: 'ERROR' }),
             categoryId: '123',

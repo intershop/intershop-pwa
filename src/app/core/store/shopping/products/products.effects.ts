@@ -39,6 +39,7 @@ import {
   mapToPayload,
   mapToPayloadProperty,
   mapToProperty,
+  useCombinedObservableOnAction,
   whenTruthy,
 } from 'ish-core/utils/operators';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
@@ -117,7 +118,11 @@ export class ProductsEffects {
    */
   loadProductsForCategory$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadProductsForCategory),
+      useCombinedObservableOnAction(
+        this.actions$.pipe(ofType(loadProductsForCategory)),
+        personalizationStatusDetermined
+      ),
+      whenTruthy(),
       mapToPayload(),
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
       concatLatestFrom(() => this.store.pipe(select(getProductListingItemsPerPage('category')))),

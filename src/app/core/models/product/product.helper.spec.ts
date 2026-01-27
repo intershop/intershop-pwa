@@ -394,6 +394,7 @@ describe('Product Helper', () => {
           "longDescription": "additional info",
           "manufacturer": "Detail Manufacturer",
           "name": "Detail Product",
+          "promotionIds": undefined,
           "shortDescription": "The best product",
           "sku": "110",
         }
