@@ -63,8 +63,8 @@
                 {
                   "type": "bundle",
                   "name": "vendor",
-                  "maximumWarning": "900kb",
-                  "maximumError": "1000kb"
+                  "maximumWarning": "300kb",
+                  "maximumError": "500kb"
                 },
                 {
                   "type": "initial",
