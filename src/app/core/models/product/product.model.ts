@@ -10,7 +10,6 @@ export interface Product {
   name: string;
   shortDescription: string;
   longDescription: string;
-
   minOrderQuantity: number;
   maxOrderQuantity: number;
   stepQuantity: number;

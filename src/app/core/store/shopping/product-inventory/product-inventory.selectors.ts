@@ -9,13 +9,11 @@ import { productInventoryAdapter } from './product-inventory.reducer';
 
 const getProductInventoryState = createSelector(getShoppingState, (state: ShoppingState) => state.productInventory);
 
-const { selectEntities } = productInventoryAdapter.getSelectors(getProductInventoryState);
-
 export const { selectEntities: getProductInventoryEntities } =
   productInventoryAdapter.getSelectors(getProductInventoryState);
 
 export const getProductInventory = (sku: string) =>
   createSelectorFactory<object, ProductInventory>(projector => resultMemoize(projector, isEqual))(
-    selectEntities,
+    getProductInventoryEntities,
     (entities: Dictionary<ProductInventory>) => entities[sku]
   );

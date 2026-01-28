@@ -11,7 +11,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, map, of, shareReplay, switchMap } from 'rxjs';
+import { Observable, of, shareReplay, switchMap } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -68,7 +68,7 @@ export class ProductNotificationEditDialogComponent implements OnInit {
 
   ngOnInit() {
     this.product$ = this.context.select('product');
-    const productAvailable$ = this.context.select('inventory').pipe(map(inventory => inventory?.inStock ?? false));
+    const productAvailable$ = this.context.select('inventory', 'inStock');
     this.userEmail$ = this.accountFacade.userEmail$;
 
     // determine current currency

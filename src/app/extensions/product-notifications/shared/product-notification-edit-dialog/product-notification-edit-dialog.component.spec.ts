@@ -6,7 +6,6 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
 
 import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
 
@@ -38,7 +37,7 @@ describe('Product Notification Edit Dialog Component', () => {
     }).compileComponents();
 
     when(appFacade.currentCurrency$).thenReturn(of('USD'));
-    when(context.select('inventory')).thenReturn(of({ inStock: true } as ProductInventory));
+    when(context.select('inventory', 'inStock')).thenReturn(of(true));
   });
 
   beforeEach(() => {

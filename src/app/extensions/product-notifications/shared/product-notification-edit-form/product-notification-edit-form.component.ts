@@ -47,7 +47,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
 
   ngOnChanges() {
     if (this.userEmail && this.form) {
-      const inStock = this.context.get('inventory')?.inStock;
+      const inStock = this.context.get('inventory', 'inStock');
       const productPrices = this.context.get('prices');
 
       // fill the form values in the form model, this.productNotification can be "undefined" if no notification exists
