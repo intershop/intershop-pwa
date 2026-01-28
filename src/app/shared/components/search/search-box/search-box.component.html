@@ -7,7 +7,7 @@
     id="header-search-input"
     class="form-control searchTerm search-input"
     (input)="handleInput($event.target)"
-    [value]="inputSearchTerms$ | async"
+    [value]="(inputSearchTerms$ | async) ?? ''"
     (focus)="handleFocus(true)"
     (keydown.enter)="submitSearch(searchInput.value)"
     [attr.aria-label]="'search.searchbox.label' | translate"
