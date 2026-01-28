@@ -8,3 +8,5 @@ export interface Image {
   imageActualWidth: number;
   primaryImage: boolean;
 }
+
+export type ImageLoading = 'lazy' | 'eager';

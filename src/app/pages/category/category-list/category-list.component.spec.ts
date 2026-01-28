@@ -30,10 +30,16 @@ describe('Category List Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul class="category-list row">
         <li class="category-list-item col-6 col-lg-4">
-          <ish-category-tile ng-reflect-category-unique-id="uid1"></ish-category-tile>
+          <ish-category-tile
+            ng-reflect-category-unique-id="uid1"
+            ng-reflect-loading="eager"
+          ></ish-category-tile>
         </li>
         <li class="category-list-item col-6 col-lg-4">
-          <ish-category-tile ng-reflect-category-unique-id="uid2"></ish-category-tile>
+          <ish-category-tile
+            ng-reflect-category-unique-id="uid2"
+            ng-reflect-loading="eager"
+          ></ish-category-tile>
         </li>
       </ul>
     `);
