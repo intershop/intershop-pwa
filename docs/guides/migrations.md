@@ -57,12 +57,12 @@ This table lists all variables that were removed and their replacements:
 **API service `options` method removed**
 
 The deprecated `options` method of the [`api.service`](../../src/app/core/services/api/api.service.ts) has been removed.
-Alternatively, use the `get` method with REST calls of the latest REST interface instead.
+Use the `get` method with REST calls of the latest REST interface instead.
 
 **User logout action changes**
 
 The `logoutUserSuccess` action is now designated as API-specific and should only be dispatched after successful token revocation in `user.effects`.
-For resetting user-related state without API calls (e.g., forced logout or session cleanup), use the new `resetUserData` action instead.
+For resetting a user-related state without API calls (e.g., forced logout or session cleanup), use the new `resetUserData` action instead.
 This ensures clearer separation between API events and state management.
 
 **Language switch relocation**
@@ -93,7 +93,7 @@ Migration Steps:
    - For general inventory access, use `ShoppingFacade.productInventory$(sku)`.
    - For product context-specific access, use `ProductContextFacade` selectors like `context.select('inventory', 'inStock')` or `context.select('inventory', 'availableStock')`.
 
-This change makes it possible to cache product data for a longer time and fetches more frequently updated inventory data separately on-demand.
+This change allows caching product data for a longer time and fetching more frequently updated inventory data separately on demand.
 
 ## From 9.0.0 to 9.1.0
 
