@@ -13,12 +13,13 @@
 <ng-template #image>
   @if (productImage$ | async; as image) { @if (image.effectiveUrl) {
   <img
-    [attr.loading]="loading"
-    class="product-image"
     [src]="image.effectiveUrl"
+    [alt]="altText || (defaultAltText$ | async)"
+    [attr.loading]="loading"
+    [attr.fetchpriority]="loading === 'eager' ? 'high' : null"
     [attr.height]="image.imageActualHeight"
     [attr.width]="image.imageActualWidth"
-    [alt]="altText || (defaultAltText$ | async)"
+    class="product-image"
     itemprop="image"
   />
   } @else {
@@ -29,10 +30,11 @@
 
   <ng-template #noImage>
     <img
-      [attr.loading]="loading"
-      class="product-image"
       src="/assets/img/not-available.svg"
       [alt]="'product.image.not_available.alttext' | translate"
+      [attr.loading]="loading"
+      [attr.fetchpriority]="loading === 'eager' ? 'high' : null"
+      class="product-image"
     />
   </ng-template>
 </ng-template>

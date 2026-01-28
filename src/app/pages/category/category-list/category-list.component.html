@@ -1,7 +1,7 @@
 <ul class="category-list row">
-  @for (categoryId of categories; track categoryId) {
+  @for (categoryId of categories; track categoryId; let i = $index) {
   <li class="category-list-item col-6 col-lg-4">
-    <ish-category-tile [categoryUniqueId]="categoryId" />
+    <ish-category-tile [categoryUniqueId]="categoryId" [loading]="i < 4 ? 'eager' : 'lazy'" />
   </li>
   }
 </ul>

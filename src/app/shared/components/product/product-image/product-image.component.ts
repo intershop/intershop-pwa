@@ -6,7 +6,7 @@ import { Observable, combineLatest, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { Image } from 'ish-core/models/image/image.model';
+import { Image, ImageLoading } from 'ish-core/models/image/image.model';
 
 /**
  * The Product Image Component renders the product image
@@ -45,7 +45,7 @@ export class ProductImageComponent implements OnInit {
   /**
    * The image loading strategy.
    */
-  @Input() loading: 'lazy' | 'eager' | 'auto' = 'lazy';
+  @Input() loading: ImageLoading = 'lazy';
 
   productURL$: Observable<string>;
   productImage$: Observable<Image>;

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
+import { ImageLoading } from 'ish-core/models/image/image.model';
 
 /**
  * The Category Tile Component renders a category tile with the image of the
@@ -21,6 +22,7 @@ export class CategoryTileComponent implements OnInit {
    * The Category to render a tile for
    */
   @Input({ required: true }) categoryUniqueId: string;
+  @Input() loading: ImageLoading;
 
   category$: Observable<CategoryView>;
 

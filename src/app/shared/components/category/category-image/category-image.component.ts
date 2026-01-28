@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { Category } from 'ish-core/models/category/category.model';
+import { ImageLoading } from 'ish-core/models/image/image.model';
 
 /**
  * The Category Image Component renders an HTML tag img of an image of a Category.
@@ -16,6 +17,7 @@ export class CategoryImageComponent implements OnChanges {
    * The category for which the image should be displayed
    */
   @Input({ required: true }) category: Category;
+  @Input() loading: ImageLoading = 'lazy';
 
   categoryImageUrl = '/assets/img/not-available.svg';
 

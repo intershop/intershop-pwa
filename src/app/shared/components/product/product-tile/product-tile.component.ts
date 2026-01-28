@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextDisplayProperties, ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ImageLoading } from 'ish-core/models/image/image.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 @Component({
@@ -10,6 +11,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductTileComponent implements OnInit {
+  @Input() loading: ImageLoading;
   product$: Observable<ProductView>;
 
   constructor(private context: ProductContextFacade) {}
