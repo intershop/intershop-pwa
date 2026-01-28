@@ -33,24 +33,36 @@ describe('Paypal Card Fields', () => {
       render: jest.fn().mockResolvedValue(undefined),
       addClass: jest.fn(),
       removeClass: jest.fn(),
+      setAttribute: jest.fn().mockResolvedValue(undefined),
+      removeAttribute: jest.fn().mockResolvedValue(undefined),
+      clear: jest.fn(),
     };
 
     mockNumberField = {
       render: jest.fn().mockResolvedValue(undefined),
       addClass: jest.fn(),
       removeClass: jest.fn(),
+      setAttribute: jest.fn().mockResolvedValue(undefined),
+      removeAttribute: jest.fn().mockResolvedValue(undefined),
+      clear: jest.fn(),
     };
 
     mockCvvField = {
       render: jest.fn().mockResolvedValue(undefined),
       addClass: jest.fn(),
       removeClass: jest.fn(),
+      setAttribute: jest.fn().mockResolvedValue(undefined),
+      removeAttribute: jest.fn().mockResolvedValue(undefined),
+      clear: jest.fn(),
     };
 
     mockExpiryField = {
       render: jest.fn().mockResolvedValue(undefined),
       addClass: jest.fn(),
       removeClass: jest.fn(),
+      setAttribute: jest.fn().mockResolvedValue(undefined),
+      removeAttribute: jest.fn().mockResolvedValue(undefined),
+      clear: jest.fn(),
     };
 
     // Create mock card field component
@@ -202,20 +214,16 @@ describe('Paypal Card Fields', () => {
       expect(orderId).toBe('ORDER123');
     });
 
-    it('should store payment instrument ID from localStorage for later use in onApproveCallback', done => {
+    it('should store payment instrument ID from localStorage for later use in onApproveCallback', async () => {
       setTimeout(() => {
         localStorage.setItem('temporaryPaypalData', 'ORDER789_PI_INSTRUMENT999');
       }, 5);
 
       service.paymentMethod = mockPaymentMethod;
-      service.createOrderCallback().then(() => {
-        // Verify the payment instrument ID was stored by checking onApproveCallback behavior
-        service.closeForm$.subscribe(() => {
-          done();
-        });
+      await service.createOrderCallback();
 
-        service.onApproveCallback();
-      });
+      // onApproveCallback should complete without errors
+      await expect(service.onApproveCallback()).resolves.not.toThrow();
     });
 
     it('should clean up localStorage after reading order ID', async () => {
@@ -237,36 +245,57 @@ describe('Paypal Card Fields', () => {
   });
 
   describe('onApproveCallback()', () => {
-    it('should submit payment instrument data and close form', done => {
+    it('should submit payment instrument data and clear fields', async () => {
       // Setup: create order first to set temporaryPaymentInstrumentId
       setTimeout(() => {
         localStorage.setItem('temporaryPaypalData', 'ORDER123_PI_INSTRUMENT123');
       }, 5);
 
       service.paymentMethod = mockPaymentMethod;
-      service.createOrderCallback().then(() => {
-        service.closeForm$.subscribe(() => {
-          done();
-        });
+      await service.createOrderCallback();
 
-        service.onApproveCallback();
-      });
+      // Manually set fields for testing resetFieldValues
+      (service as any).fields = {
+        name: { containerId: 'card-name-field-container', instance: mockNameField },
+        number: { containerId: 'card-number-field-container', instance: mockNumberField },
+        cvv: { containerId: 'card-cvv-field-container', instance: mockCvvField },
+        expiry: { containerId: 'card-expiry-field-container', instance: mockExpiryField },
+      };
+
+      await service.onApproveCallback();
+
+      // Verify fields were cleared
+      expect(mockNameField.clear).toHaveBeenCalled();
+      expect(mockNumberField.clear).toHaveBeenCalled();
+      expect(mockCvvField.clear).toHaveBeenCalled();
+      expect(mockExpiryField.clear).toHaveBeenCalled();
     });
 
-    it('should emit closeForm$ event', done => {
+    it('should reset field validation styles after approval', async () => {
       // Setup: create order first to set temporaryPaymentInstrumentId
       setTimeout(() => {
         localStorage.setItem('temporaryPaypalData', 'ORDER456_PI_INSTRUMENT456');
       }, 5);
 
       service.paymentMethod = mockPaymentMethod;
-      service.createOrderCallback().then(() => {
-        service.closeForm$.subscribe(() => {
-          done();
-        });
+      await service.createOrderCallback();
 
-        service.onApproveCallback();
-      });
+      // Manually set fields for testing
+      (service as any).fields = {
+        name: { containerId: 'card-name-field-container', instance: mockNameField },
+        number: { containerId: 'card-number-field-container', instance: mockNumberField },
+        cvv: { containerId: 'card-cvv-field-container', instance: mockCvvField },
+        expiry: { containerId: 'card-expiry-field-container', instance: mockExpiryField },
+      };
+
+      await service.onApproveCallback();
+
+      // Wait for setTimeout in resetFieldValues
+      await new Promise(resolve => setTimeout(resolve, 150));
+
+      // Verify invalid class was removed
+      expect(mockNameField.removeClass).toHaveBeenCalledWith('invalid');
+      expect(mockNumberField.removeClass).toHaveBeenCalledWith('invalid');
     });
   });
 
@@ -301,7 +330,7 @@ describe('Paypal Card Fields', () => {
 
       // Simulate showing error first
       errorElement?.classList.remove('hide-validation-error');
-      labelElement?.classList.add('text-danger');
+      labelElement?.classList.add('validation-error');
 
       // Trigger focus event
       const cardFieldsConfig = (window as any).testNamespace.CardFields.mock.calls[0][0];
@@ -311,7 +340,7 @@ describe('Paypal Card Fields', () => {
       });
 
       expect(errorElement?.classList.contains('hide-validation-error')).toBeTruthy();
-      expect(labelElement?.classList.contains('text-danger')).toBeFalsy();
+      expect(labelElement?.classList.contains('validation-error')).toBeFalsy();
     });
 
     it('should show error on invalid name field blur', async () => {
@@ -328,7 +357,7 @@ describe('Paypal Card Fields', () => {
       });
 
       expect(errorElement?.classList.contains('hide-validation-error')).toBeFalsy();
-      expect(labelElement?.classList.contains('text-danger')).toBeTruthy();
+      expect(labelElement?.classList.contains('validation-error')).toBeTruthy();
     });
 
     it('should not show error on valid name field blur', async () => {
@@ -428,7 +457,7 @@ describe('Paypal Card Fields', () => {
         cards: { type: string }[];
         fields: Record<string, { isEmpty: boolean; isValid: boolean; isFocused: boolean; isPotentiallyValid: boolean }>;
       } = {
-        errors: [PayPalCardFieldError.INVALID_NAME, PayPalCardFieldError.INVALID_NUMBER],
+        errors: [PayPalCardFieldError.InvalidName, PayPalCardFieldError.InvalidNumber],
         isFormValid: false,
         cards: [],
         fields: {
@@ -455,8 +484,8 @@ describe('Paypal Card Fields', () => {
 
       expect(nameError?.classList.contains('hide-validation-error')).toBeFalsy();
       expect(numberError?.classList.contains('hide-validation-error')).toBeFalsy();
-      expect(nameLabel?.classList.contains('text-danger')).toBeTruthy();
-      expect(numberLabel?.classList.contains('text-danger')).toBeTruthy();
+      expect(nameLabel?.classList.contains('validation-error')).toBeTruthy();
+      expect(numberLabel?.classList.contains('validation-error')).toBeTruthy();
     });
 
     it('should add invalid class to name field on submit error', async () => {
@@ -466,7 +495,7 @@ describe('Paypal Card Fields', () => {
         cards: { type: string }[];
         fields: Record<string, { isEmpty: boolean; isValid: boolean; isFocused: boolean; isPotentiallyValid: boolean }>;
       } = {
-        errors: [PayPalCardFieldError.INVALID_NAME],
+        errors: [PayPalCardFieldError.InvalidName],
         isFormValid: false,
         cards: [],
         fields: {
@@ -500,10 +529,10 @@ describe('Paypal Card Fields', () => {
         fields: Record<string, { isEmpty: boolean; isValid: boolean; isFocused: boolean; isPotentiallyValid: boolean }>;
       } = {
         errors: [
-          PayPalCardFieldError.INVALID_NAME,
-          PayPalCardFieldError.INVALID_NUMBER,
-          PayPalCardFieldError.INVALID_CVV,
-          PayPalCardFieldError.INVALID_EXPIRY,
+          PayPalCardFieldError.InvalidName,
+          PayPalCardFieldError.InvalidNumber,
+          PayPalCardFieldError.InvalidCvv,
+          PayPalCardFieldError.InvalidExpiry,
         ],
         isFormValid: false,
         cards: [],
@@ -542,7 +571,7 @@ describe('Paypal Card Fields', () => {
     });
   });
 
-  describe('Error callbacks', () => {
+  describe('Cancel button', () => {
     beforeEach(() => {
       document.body.innerHTML = `
         <div id="card-name-field-container"></div>
@@ -550,21 +579,23 @@ describe('Paypal Card Fields', () => {
         <div id="card-cvv-field-container"></div>
         <div id="card-expiry-field-container"></div>
         <button id="card-field-submit-button">Submit</button>
+        <button id="card-field-cancel-button">Cancel</button>
       `;
     });
 
-    it('should handle PayPal SDK errors', async () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-
+    it('should emit closeForm$ when cancel button is clicked', async () => {
       await service.renderCardFields('testNamespace', mockPaymentMethod);
 
-      const cardFieldsConfig = (window as any).testNamespace.CardFields.mock.calls[0][0];
-      const testError = new Error('PayPal SDK error');
-      cardFieldsConfig.onError(testError);
+      const closeFormSpy = jest.fn();
+      service.closeForm$.subscribe(closeFormSpy);
 
-      expect(consoleSpy).toHaveBeenCalledWith('PayPal Card Fields error:', testError);
+      const cancelButton = document.getElementById('card-field-cancel-button') as HTMLButtonElement;
+      cancelButton.click();
 
-      consoleSpy.mockRestore();
+      // Wait for async operations
+      await new Promise(resolve => setTimeout(resolve, 10));
+
+      expect(closeFormSpy).toHaveBeenCalled();
     });
   });
 
@@ -593,9 +624,12 @@ describe('Paypal Card Fields', () => {
 
       const cardFieldsConfig = (window as any).testNamespace.CardFields.mock.calls[0][0];
 
-      // Should not throw when error elements are missing
+      // Should not throw when error elements are missing (labels exist after renderCardFields)
       expect(() => {
         cardFieldsConfig.inputEvents.onFocus({ emittedBy: 'name' });
+      }).not.toThrow();
+
+      expect(() => {
         cardFieldsConfig.inputEvents.onBlur({
           emittedBy: 'name',
           fields: { cardNameField: { isEmpty: false, isValid: false } },

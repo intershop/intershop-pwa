@@ -80,10 +80,10 @@ interface PayPalCardFieldsCardObject {
 }
 
 export enum PayPalCardFieldError {
-  'INVALID_NAME',
-  'INVALID_NUMBER',
-  'INVALID_EXPIRY',
-  'INVALID_CVV',
+  InvalidName = 'INVALID_NAME',
+  InvalidNumber = 'INVALID_NUMBER',
+  InvalidExpiry = 'INVALID_EXPIRY',
+  InvalidCvv = 'INVALID_CVV',
 }
 
 interface PayPalCardFieldCardFieldData {
@@ -120,7 +120,7 @@ interface PayPalCardFieldsIndividualFieldOptions {
   style?: Record<string, PayPalCardFieldsStyleOptions>;
 }
 
-interface PayPalCardFieldsIndividualField {
+export interface PayPalCardFieldsIndividualField {
   render(container: string | HTMLElement): Promise<void>;
   addClass(className: string): Promise<void>;
   clear(): void;

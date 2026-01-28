@@ -13,9 +13,9 @@
           <div class="col-form-label col-md-4" id="card-name-field-container-label">
             {{ 'checkout.credit_card.holder.label' | translate }}
           </div>
-          <div id="card-name-field-container" class="col-sm-6"></div>
+          <div id="card-name-field-container" class="col-sm-6 fix-height"></div>
           <div class="offset-md-4">
-            <small id="card-name-field-container-error" class="form-text text-danger hide-validation-error">
+            <small id="card-name-field-container-error" class="validation-error hide-validation-error">
               {{ 'checkout.credit_card.holder.error.invalid' | translate }}
             </small>
           </div>
@@ -26,9 +26,9 @@
             {{ 'checkout.credit_card.number.label' | translate }}
             <span class="required" aria-hidden="true">*</span>
           </div>
-          <div id="card-number-field-container" class="col-sm-6"></div>
+          <div id="card-number-field-container" class="col-sm-6 fix-height"></div>
           <div class="offset-md-4">
-            <small id="card-number-field-container-error" class="form-text text-danger hide-validation-error">
+            <small id="card-number-field-container-error" class="validation-error hide-validation-error">
               {{ 'checkout.credit_card.number.error.default' | translate }}
             </small>
           </div>
@@ -41,9 +41,9 @@
           </div>
           <div class="col-md-8">
             <div class="row">
-              <div id="card-expiry-field-container" class="pe-0 col-md-4"></div>
+              <div id="card-expiry-field-container" class="pe-0 col-md-4 fix-height"></div>
             </div>
-            <small id="card-expiry-field-container-error" class="form-text text-danger hide-validation-error">
+            <small id="card-expiry-field-container-error" class="validation-error hide-validation-error">
               {{ 'checkout.credit_card.expiry_date.invalid.error' | translate }}
             </small>
           </div>
@@ -56,7 +56,7 @@
           </div>
           <div class="col-md-8">
             <div class="row">
-              <div id="card-cvv-field-container" class="pe-0 col-md-4"></div>
+              <div id="card-cvv-field-container" class="pe-0 col-md-4 fix-height"></div>
               <div class="ps-0 col-md-8">
                 <ng-template #CVCHelp>
                   <span [innerHTML]="'checkout.credit_card.cvc.popover.content' | translate"></span>
@@ -72,7 +72,7 @@
                 </button>
               </div>
             </div>
-            <small id="card-cvv-field-container-error" class="form-text text-danger hide-validation-error">
+            <small id="card-cvv-field-container-error" class="validation-error hide-validation-error">
               {{ 'checkout.credit_card.cvc_cvv.error.default' | translate }}
             </small>
           </div>
@@ -83,7 +83,7 @@
             <button type="button" class="btn btn-primary" id="card-field-submit-button" (close)="closeCardFieldsForm()">
               {{ 'checkout.account.submit.continue.button.label' | translate }}
             </button>
-            <button type="button" class="btn btn-secondary" (click)="closeCardFieldsForm()">
+            <button type="button" class="btn btn-secondary" id="card-field-cancel-button">
               {{ 'checkout.cancel.button.label' | translate }}
             </button>
           </div>

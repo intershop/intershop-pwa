@@ -5,6 +5,14 @@
   color: $text-color-special;
 }
 
+.fix-height {
+  height: 35px;
+}
+
 .hide-validation-error {
   display: none;
+}
+
+.validation-error {
+  color: $color-special-error;
 }

@@ -147,7 +147,7 @@ export interface Environment {
 
 export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
-  icmBaseURL: 'https://develop.icm.intershop.de',
+  icmBaseURL: 'https://icm-konsum-review-int.icm.intershop.de',
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmServerWeb: 'INTERSHOP/web/WFS',

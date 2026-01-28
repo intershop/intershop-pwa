@@ -7,6 +7,7 @@ import { PAYPAL_CART_FIELDS_STYLING } from 'ish-core/utils/sdk/paypal/paypal-com
 import {
   PayPalCardFieldError,
   PayPalCardFieldsComponent,
+  PayPalCardFieldsIndividualField,
   PayPalCardFieldsStateObject,
   PayPalStateObject,
 } from 'ish-core/utils/sdk/paypal/paypal-model/paypal.interface';
@@ -21,10 +22,13 @@ export class PayPalCardFields {
   closeForm$ = new Subject<void>();
 
   // Store rendered field instances for later access
-  private nameFieldInstance: ReturnType<PayPalCardFieldsComponent['NameField']>;
-  private numberFieldInstance: ReturnType<PayPalCardFieldsComponent['NumberField']>;
-  private cvvFieldInstance: ReturnType<PayPalCardFieldsComponent['CVVField']>;
-  private expiryFieldInstance: ReturnType<PayPalCardFieldsComponent['ExpiryField']>;
+  private fields: Record<
+    string,
+    {
+      containerId: string;
+      instance: PayPalCardFieldsIndividualField;
+    }
+  > = {};
 
   constructor(private ngZone: NgZone, private checkoutFacade: CheckoutFacade) {}
 
@@ -52,7 +56,6 @@ export class PayPalCardFields {
         this.cardField = paypalObject.CardFields({
           createOrder: () => this.ngZone.run(() => this.createOrderCallback()),
           onApprove: () => this.ngZone.run(() => this.onApproveCallback()),
-          onError: (error: unknown) => this.ngZone.run(() => this.onErrorCallback(error)),
           inputEvents: {
             onFocus: (data: PayPalCardFieldsStateObject) => {
               this.ngZone.run(() => this.handleFieldFocus(data));
@@ -65,17 +68,14 @@ export class PayPalCardFields {
 
         // Check if card fields are eligible
         if (this.cardField.isEligible()) {
-          // Store card field component for later access
-          //this.cardFieldComponent = cardField;
-
           // Render individual fields outside Angular zone for proper iframe interaction
           await this.renderIndividualFields();
 
-          // set payment method for use in createOrder
+          // set payment method for use in createOrder and onApprove callbacks
           this.paymentMethod = paymentMethod;
 
-          // Setup submit button handler
-          this.setupSubmitHandler();
+          // Setup submit and cancel button handlers
+          this.setupHandlerForButtons();
         }
       } catch (error) {
         console.error('PayPal card fields rendering failed:', error);
@@ -94,80 +94,75 @@ export class PayPalCardFields {
    */
   async renderIndividualFields(): Promise<void> {
     // Render name field and store instance
-    this.nameFieldInstance = this.cardField.NameField({
-      style: PAYPAL_CART_FIELDS_STYLING,
-      placeholder: '',
-    });
-    await this.nameFieldInstance.render('#card-name-field-container');
+    this.fields.name = {
+      containerId: 'card-name-field-container',
+      instance: this.cardField.NameField({
+        style: PAYPAL_CART_FIELDS_STYLING,
+        placeholder: '',
+      }),
+    };
+    await this.fields.name.instance.render('#card-name-field-container');
 
     // Render number field and store instance
-    this.numberFieldInstance = this.cardField.NumberField({
-      style: PAYPAL_CART_FIELDS_STYLING,
-      placeholder: '',
-    });
-    await this.numberFieldInstance.render('#card-number-field-container');
+    this.fields.number = {
+      containerId: 'card-number-field-container',
+      instance: this.cardField.NumberField({
+        style: PAYPAL_CART_FIELDS_STYLING,
+        placeholder: '',
+      }),
+    };
+    await this.fields.number.instance.render('#card-number-field-container');
 
     // Render CVV field and store instance
-    this.cvvFieldInstance = this.cardField.CVVField({
-      style: PAYPAL_CART_FIELDS_STYLING,
-      placeholder: '',
-    });
-    await this.cvvFieldInstance.render('#card-cvv-field-container');
+    this.fields.cvv = {
+      containerId: 'card-cvv-field-container',
+      instance: this.cardField.CVVField({
+        style: PAYPAL_CART_FIELDS_STYLING,
+        placeholder: '',
+      }),
+    };
+    await this.fields.cvv.instance.render('#card-cvv-field-container');
 
     // Render expiry field and store instance
-    this.expiryFieldInstance = this.cardField.ExpiryField({
-      style: PAYPAL_CART_FIELDS_STYLING,
-    });
-    await this.expiryFieldInstance.render('#card-expiry-field-container');
+    this.fields.expiry = {
+      containerId: 'card-expiry-field-container',
+      instance: this.cardField.ExpiryField({
+        style: PAYPAL_CART_FIELDS_STYLING,
+      }),
+    };
+    await this.fields.expiry.instance.render('#card-expiry-field-container');
   }
 
+  /**
+   * Handles field focus events to hide any existing error messages.
+   */
   private handleFieldFocus(data: PayPalCardFieldsStateObject): void {
-    switch (data.emittedBy) {
-      case 'name':
-        this.hideFieldError('card-name-field-container');
-        break;
-      case 'number':
-        this.hideFieldError('card-number-field-container');
-        break;
-      case 'cvv':
-        this.hideFieldError('card-cvv-field-container');
-        break;
-      case 'expiry':
-        this.hideFieldError('card-expiry-field-container');
-        break;
-    }
+    this.hideFieldError(data.emittedBy);
   }
 
+  /**
+   * Handles field blur events to validate and show errors if necessary.
+   */
   private handleFieldBlur(data: PayPalCardFieldsStateObject): void {
-    switch (data.emittedBy) {
-      case 'name':
-        if (!data.fields.cardNameField.isValid) {
-          this.showFieldError('card-name-field-container');
-        }
-        break;
-      case 'number':
-        if (!data.fields.cardNumberField.isValid) {
-          this.showFieldError('card-number-field-container');
-        }
-        break;
-      case 'cvv':
-        if (!data.fields.cardCvvField.isValid) {
-          this.showFieldError('card-cvv-field-container');
-        }
-        break;
-      case 'expiry':
-        if (!data.fields.cardExpiryField.isValid) {
-          this.showFieldError('card-expiry-field-container');
-        }
-        break;
+    const fieldConfig: Record<string, { fieldState: { isValid: boolean; isEmpty: boolean } }> = {
+      name: { fieldState: data.fields.cardNameField },
+      number: { fieldState: data.fields.cardNumberField },
+      cvv: { fieldState: data.fields.cardCvvField },
+      expiry: { fieldState: data.fields.cardExpiryField },
+    };
+
+    const config = fieldConfig[data.emittedBy];
+    if (config && !config.fieldState.isValid) {
+      config.fieldState.isEmpty ? this.hideFieldError(data.emittedBy) : this.showFieldError(data.emittedBy);
     }
   }
 
   /**
    * Sets up the submit button event handler for card field submission.
    */
-  private setupSubmitHandler(): void {
+  private setupHandlerForButtons(): void {
     const submitButton = document.getElementById('card-field-submit-button');
+    const cancelButton = document.getElementById('card-field-cancel-button');
 
     if (submitButton) {
       submitButton.addEventListener('click', () => {
@@ -175,6 +170,15 @@ export class PayPalCardFields {
           this.cardField.submit().catch(() => {
             this.validationErrorHandler(this.cardField.getState());
           });
+        });
+      });
+    }
+
+    if (cancelButton) {
+      cancelButton.addEventListener('click', () => {
+        this.ngZone.run(() => {
+          this.resetFieldValues();
+          this.closeForm$.next();
         });
       });
     }
@@ -232,18 +236,27 @@ export class PayPalCardFields {
    * Handles PayPal payment approval.
    */
   async onApproveCallback() {
+    this.resetFieldValues();
     this.checkoutFacade.submitPayPalPaymentInstrumentData({
       id: this.temporaryPaymentInstrumentId,
       paymentMethod: this.paymentMethod.id,
     });
-    this.closeForm$.next();
   }
 
-  /**
-   * Default error handler for PayPal card fields.
-   */
-  private onErrorCallback(error: unknown): void {
-    console.error('PayPal Card Fields error:', error);
+  private resetFieldValues(): void {
+    const allFields = Object.keys(this.fields);
+
+    // Clear field values
+    allFields.forEach(key => {
+      this.fields[key].instance.clear();
+    });
+
+    // Remove error styles and possible error messages after a short delay to avoid interfering with PayPal internal validation
+    setTimeout(() => {
+      allFields.forEach(field => {
+        this.hideFieldError(field);
+      });
+    }, 100);
   }
 
   /**
@@ -262,69 +275,58 @@ export class PayPalCardFields {
   private handleSubmitError(state: PayPalCardFieldsStateObject): void {
     state.errors.forEach(error => {
       switch (error) {
-        case PayPalCardFieldError.INVALID_NAME:
-          this.showFieldError('card-name-field-container', 'name');
+        case PayPalCardFieldError.InvalidName:
+          this.showFieldError('name');
           break;
-        case PayPalCardFieldError.INVALID_NUMBER:
-          this.showFieldError('card-number-field-container', 'number');
+        case PayPalCardFieldError.InvalidNumber:
+          this.showFieldError('number');
           break;
-        case PayPalCardFieldError.INVALID_CVV:
-          this.showFieldError('card-cvv-field-container', 'cvv');
+        case PayPalCardFieldError.InvalidCvv:
+          this.showFieldError('cvv');
           break;
-        case PayPalCardFieldError.INVALID_EXPIRY:
-          this.showFieldError('card-expiry-field-container', 'expiry');
+        case PayPalCardFieldError.InvalidExpiry:
+          this.showFieldError('expiry');
           break;
       }
     });
   }
 
   /**
-   * Displays error message for a specific field and marks the input as touched/invalid.
+   * Displays error message for a specific field and marks the input as invalid.
    */
-  private showFieldError(containerId: string, fieldName?: 'name' | 'number' | 'cvv' | 'expiry'): void {
-    const errorElement = document.getElementById(containerId.concat('-error'));
-    const labelElement = document.getElementById(containerId.concat('-label'));
-    if (errorElement && labelElement) {
-      errorElement.classList.remove('hide-validation-error');
-      labelElement.classList.add('text-danger');
-    }
-
-    // Mark the PayPal input field as invalid only if field is never touched before and form is submitted
-    if (fieldName) {
-      const fieldInstance = this.getFieldInstance(fieldName);
-      if (fieldInstance) {
-        fieldInstance.addClass('invalid');
+  private showFieldError(fieldName: string): void {
+    const field = this.fields[fieldName];
+    if (field) {
+      const errorElements = this.getErrorElementsById(field.containerId);
+      if (errorElements?.error && errorElements?.label) {
+        errorElements.error.classList.remove('hide-validation-error');
+        errorElements.label.classList.add('validation-error');
       }
+      field.instance.addClass('invalid');
+      field.instance.setAttribute('aria-invalid', 'true');
     }
   }
 
   /**
-   * Hides error message for a specific field and removes touched/invalid state.
+   * Hides error message, classes and aria attribute for a specific field
    */
-  private hideFieldError(containerId: string): void {
-    const errorElement = document.getElementById(containerId.concat('-error'));
-    const labelElement = document.getElementById(containerId.concat('-label'));
-    if (errorElement && labelElement) {
-      errorElement.classList.add('hide-validation-error');
-      labelElement.classList.remove('text-danger');
+  private hideFieldError(field: string): void {
+    const errorElements = this.getErrorElementsById(this.fields[field].containerId);
+    if (errorElements?.error && errorElements?.label) {
+      errorElements.error.classList.add('hide-validation-error');
+      errorElements.label.classList.remove('validation-error');
     }
+    this.fields[field].instance.removeClass('invalid');
+    this.fields[field].instance.removeAttribute('aria-invalid');
   }
 
   /**
-   * Returns the field instance for the given field name.
+   * Retrieves error and label elements by container ID.
    */
-  private getFieldInstance(
-    fieldName: 'name' | 'number' | 'cvv' | 'expiry'
-  ): ReturnType<PayPalCardFieldsComponent['NameField']> | undefined {
-    switch (fieldName) {
-      case 'name':
-        return this.nameFieldInstance;
-      case 'number':
-        return this.numberFieldInstance;
-      case 'cvv':
-        return this.cvvFieldInstance;
-      case 'expiry':
-        return this.expiryFieldInstance;
-    }
+  private getErrorElementsById(id: string): Record<string, HTMLElement | null> {
+    return {
+      error: document.getElementById(id.concat('-error')),
+      label: document.getElementById(id.concat('-label')),
+    };
   }
 }

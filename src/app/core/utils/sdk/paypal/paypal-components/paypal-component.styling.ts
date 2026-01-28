@@ -69,11 +69,18 @@ export const PAYPAL_CART_FIELDS_STYLING = {
   input: {
     'font-size': '0.875rem',
     'font-weight': '400',
-    'line-height': '1.5',
     'font-family': 'inherit',
     'border-radius': '0',
+    'line-height': '21px',
     padding: '0.375rem 0.75rem',
-    color: 'inherit',
+    border: '1px solid #757575',
   },
-  '.invalid': { color: 'inherit' },
+  'input:focus-visible': {
+    outline: 'revert !important',
+  },
+  'input:focus': {
+    border: '1px solid #757575',
+    'box-shadow': 'none',
+  },
+  '.invalid': { color: '#dc3545', border: '1px solid #dc3545', 'box-shadow': 'none' },
 };
