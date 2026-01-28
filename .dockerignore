@@ -150,7 +150,6 @@ src/assets/mock-data
 
 templates
 !templates/webpack
-!templates/nginx.conf
 
 scripts
 !scripts/build*pwa.js
