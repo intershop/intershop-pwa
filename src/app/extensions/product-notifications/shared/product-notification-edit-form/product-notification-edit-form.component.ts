@@ -4,7 +4,6 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
 
@@ -48,7 +47,7 @@ export class ProductNotificationEditFormComponent implements OnChanges {
 
   ngOnChanges() {
     if (this.userEmail && this.form) {
-      const product = this.context.get('product');
+      const inStock = this.context.get('inventory', 'inStock');
       const productPrices = this.context.get('prices');
 
       // fill the form values in the form model, this.productNotification can be "undefined" if no notification exists
@@ -67,14 +66,14 @@ export class ProductNotificationEditFormComponent implements OnChanges {
 
       // differentiate form with or without a product notification
       this.fields = this.productNotification
-        ? this.getFieldsForProductNotification(this.productNotification, product)
-        : this.getFieldsForNoProductNotification(product);
+        ? this.getFieldsForProductNotification(this.productNotification, inStock)
+        : this.getFieldsForNoProductNotification(inStock);
     }
   }
 
   /** get form fields if a product notification is available */
   // visible-for-testing
-  getFieldsForProductNotification(productNotification: ProductNotification, product: ProductView): FormlyFieldConfig[] {
+  getFieldsForProductNotification(productNotification: ProductNotification, inStock: boolean): FormlyFieldConfig[] {
     return [
       {
         key: 'alertType',
@@ -88,19 +87,15 @@ export class ProductNotificationEditFormComponent implements OnChanges {
       {
         key: 'productNotificationId',
       },
-      ...(productNotification?.type === 'price' || product?.available
-        ? this.getPriceConfigForProductNotification()
-        : []),
-      ...(productNotification?.type === 'stock' || !product?.available
-        ? this.getStockConfigForProductNotification()
-        : []),
+      ...(productNotification?.type === 'price' || inStock ? this.getPriceConfigForProductNotification() : []),
+      ...(productNotification?.type === 'stock' || !inStock ? this.getStockConfigForProductNotification() : []),
       ...this.getEmailConfig(),
     ];
   }
 
   /** wrap form fields in fieldset if a product notification is not available because there are no radio buttons */
   // visible-for-testing
-  getFieldsForNoProductNotification(product: ProductView): FormlyFieldConfig[] {
+  getFieldsForNoProductNotification(inStock: boolean): FormlyFieldConfig[] {
     return [
       {
         key: 'alertType',
@@ -111,12 +106,12 @@ export class ProductNotificationEditFormComponent implements OnChanges {
       {
         type: 'ish-fieldset-field',
         props: {
-          legend: product?.available
+          legend: inStock
             ? 'product.notification.edit.form.price_notification.label'
             : 'product.notification.edit.form.instock_notification.label',
           legendClass: 'row mb-3',
         },
-        fieldGroup: [...(product?.available ? this.getPriceConfig() : []), ...this.getEmailConfig()],
+        fieldGroup: [...(inStock ? this.getPriceConfig() : []), ...this.getEmailConfig()],
       },
     ];
   }

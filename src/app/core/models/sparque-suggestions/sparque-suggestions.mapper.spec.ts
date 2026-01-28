@@ -25,7 +25,6 @@ const products: Partial<Product>[] = [
     sku: 'sku1',
     name: 'Product 1',
     shortDescription: 'Product 1 shortDescription',
-    available: true,
     type: 'Product',
     images: [],
     completenessLevel: 2,
@@ -34,7 +33,6 @@ const products: Partial<Product>[] = [
     sku: 'sku2',
     name: 'Product 2',
     shortDescription: 'Product 2 shortDescription',
-    available: true,
     type: 'Product',
     images: [],
     completenessLevel: 2,
@@ -82,7 +80,6 @@ describe('Sparque Suggestions Mapper', () => {
       expect(result.products).toMatchInlineSnapshot(`
         [
           {
-            "available": true,
             "completenessLevel": 2,
             "images": [],
             "name": "Product 1",
@@ -91,7 +88,6 @@ describe('Sparque Suggestions Mapper', () => {
             "type": "Product",
           },
           {
-            "available": true,
             "completenessLevel": 2,
             "images": [],
             "name": "Product 2",

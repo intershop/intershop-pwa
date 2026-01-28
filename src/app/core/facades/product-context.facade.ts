@@ -20,6 +20,7 @@ import {
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { Image } from 'ish-core/models/image/image.model';
 import { Pricing } from 'ish-core/models/price/price.model';
+import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
 import { ProductLinksDictionary } from 'ish-core/models/product-links/product-links.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -84,7 +85,7 @@ const defaultDisplayProperties: ProductContextDisplayProperties<true | undefined
 
 export interface ExternalDisplayPropertiesProvider {
   setup(
-    context$: Observable<Pick<ProductContext, 'product' | 'prices'>>
+    context$: Observable<Pick<ProductContext, 'product' | 'prices' | 'inventory'>>
   ): Observable<Partial<ProductContextDisplayProperties<false>>>;
 }
 
@@ -103,6 +104,7 @@ export interface ProductContext {
   label: string;
   categoryId: string;
   displayProperties: Partial<ProductContextDisplayProperties>;
+  inventory: ProductInventory;
 
   // lazy
   links: ProductLinksDictionary;
@@ -321,8 +323,13 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     this.connect(
       'hasProductError',
       this.select('product').pipe(
-        map(product => !!product && (!!product.failed || !product.available)),
-        distinctUntilChanged()
+        distinctUntilChanged(),
+        switchMap(product =>
+          this.select('inventory').pipe(
+            map(inventory => !!product && (!!product.failed || !inventory?.inStock)),
+            distinctUntilChanged()
+          )
+        )
       )
     );
 
@@ -363,7 +370,7 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     ].map(edp =>
       edp.setup(
         this.select().pipe(
-          map(context => pick(context, 'product', 'prices')),
+          map(context => pick(context, 'product', 'prices', 'inventory')),
           distinctUntilChanged(isEqual)
         )
       )
@@ -442,6 +449,7 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     k2: K2
   ): Observable<ProductContext[K1][K2]>;
 
+  // eslint-disable-next-line complexity
   select<K1 extends keyof ProductContext, K2 extends keyof ProductContext[K1]>(k1?: K1, k2?: K2) {
     const wrap = <K extends keyof ProductContext>(key: K, obs: Observable<ProductContext[K]>) => {
       if (!this.lazyFieldsInitialized.includes(key)) {
@@ -507,6 +515,9 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
             switchMap(([, sku, fresh]) => this.shoppingFacade.productPrices$(sku, fresh))
           )
         );
+        break;
+      case 'inventory':
+        wrap('inventory', this.shoppingFacade.productInventory$(this.validProductSKU$));
         break;
     }
     return k2 ? super.select(k1, k2) : k1 ? super.select(k1) : super.select();

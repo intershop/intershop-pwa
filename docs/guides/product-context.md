@@ -19,8 +19,6 @@ kb_sync_latest_only
 - [Customizing Display Properties](#customizing-display-properties)
 - [Further References](#further-references)
 
-Product Contexts were introduced in PWA version [0.27](https://github.com/intershop/intershop-pwa/releases/tag/0.27.0).
-
 ## What is a Product Context?
 
 Product contexts provide easy access to all data related to a single product.
@@ -105,12 +103,12 @@ Inject the [`ProductContextFacade`][src-product-context-facade] into your compon
 ```typescript
 @Component({ ... })
 export class MyComponent implements OnInit {
-  available$: Observable<boolean>;
+  productName$: Observable<string>;
 
   constructor(private context: ProductContextFacade) {}
 
   ngOnInit() {
-    this.available$ = this.context.select('product', 'available');
+    this.productName$ = this.context.select('product', 'name');
   }
 
   doSomething() {
@@ -120,7 +118,7 @@ export class MyComponent implements OnInit {
 ```
 
 ```html
-<ng-container *ngIf="available$ | async">...</ng-container>
+<ng-container *ngIf="productName$ | async">...</ng-container>
 ```
 
 ### Use [`ProductContextAccessDirective`][src-product-context-access-directive]

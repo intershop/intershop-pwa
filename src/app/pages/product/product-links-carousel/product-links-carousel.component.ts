@@ -9,7 +9,7 @@ import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { InjectSingle } from 'ish-core/utils/injection';
-import { mapToProperty } from 'ish-core/utils/operators';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 SwiperCore.use([Navigation, Pagination, A11y]);
 
@@ -104,17 +104,21 @@ export class ProductLinksCarouselComponent {
           // prepare lazy observables for all products
           if (displayOnlyAvailableProducts) {
             return products.map((sku, index) =>
-              this.shoppingFacade.product$(sku, ProductCompletenessLevel.List).pipe(
-                tap(product => {
+              combineLatest([
+                // make sure to load product and inventory data
+                this.shoppingFacade.product$(sku, ProductCompletenessLevel.List).pipe(whenTruthy()),
+                this.shoppingFacade.productInventory$(sku).pipe(whenTruthy()),
+              ]).pipe(
+                tap(([product, inventory]) => {
                   // add slide to the hidden list if product is not available
-                  if (!product.available || product.failed) {
+                  if (!inventory?.inStock || product.failed) {
                     this.state.set('hiddenSlides', () =>
                       [...this.state.get('hiddenSlides'), index].filter((v, i, a) => a.indexOf(v) === i)
                     );
                   }
                 }),
-                filter(product => product.available && !product.failed),
-                mapToProperty('sku')
+                filter(([product, inventory]) => inventory?.inStock && !product.failed),
+                map(([product, _]) => product.sku)
               )
             );
           } else {

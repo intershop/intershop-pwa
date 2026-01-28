@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map, shareReplay, startWith } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
@@ -17,7 +17,9 @@ export class ProductInventoryComponent implements OnInit {
 
   ngOnInit() {
     this.visible$ = this.context.select('displayProperties', 'inventory');
-    this.available$ = this.context.select('product', 'available');
-    this.availableStock$ = this.context.select('product', 'availableStock');
+    this.available$ = this.context.select('inventory', 'inStock').pipe(startWith(true), shareReplay(1));
+    this.availableStock$ = this.context
+      .select('inventory', 'availableStock')
+      .pipe(map(stock => (stock > 0 ? stock : 0)));
   }
 }

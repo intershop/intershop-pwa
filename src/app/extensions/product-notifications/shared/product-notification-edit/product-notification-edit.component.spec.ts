@@ -74,7 +74,7 @@ describe('Product Notification Edit Component', () => {
   });
 
   it('should display price notification localization button text if the product is available', () => {
-    when(context.select('product', 'available')).thenReturn(of(true));
+    when(context.select('inventory', 'inStock')).thenReturn(of(true));
     when(context.select('displayProperties', 'addToNotification')).thenReturn(of(true));
     component.displayType = 'button';
     fixture.detectChanges();
@@ -82,7 +82,7 @@ describe('Product Notification Edit Component', () => {
   });
 
   it('should display stock notification localization button text if the product is not available', () => {
-    when(context.select('product', 'available')).thenReturn(of(false));
+    when(context.select('inventory', 'inStock')).thenReturn(of(false));
     when(context.select('displayProperties', 'addToNotification')).thenReturn(of(true));
     component.displayType = 'button';
     fixture.detectChanges();

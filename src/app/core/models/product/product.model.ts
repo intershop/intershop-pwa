@@ -10,8 +10,6 @@ export interface Product {
   name: string;
   shortDescription: string;
   longDescription: string;
-  available: boolean;
-  availableStock?: number;
   minOrderQuantity: number;
   maxOrderQuantity: number;
   stepQuantity: number;
@@ -28,9 +26,14 @@ export interface Product {
   defaultCategoryId?: string;
   packingUnit: string;
 
-  availableWarranties?: Warranty[];
+  /** @deprecated use the 'inStock' attribute from product inventory instead */
+  available: boolean;
+
+  /** @deprecated use the 'availableStock' attribute from product inventory instead */
+  availableStock?: number;
 
   // properties added in model
+  availableWarranties?: Warranty[];
   type: string;
   promotionIds: string[];
   completenessLevel: number;

@@ -9,7 +9,11 @@ kb_sync_latest_only
 
 ## From 9.1.0 to 10.0.0
 
+**Node.js update**
+
 The Intershop PWA now uses Node.js 22.22.0 LTS with the corresponding npm version 10.9.4.
+
+**SCSS variable changes**
 
 With Intershop PWA 10.0.0, the SCSS variables were cleaned up.
 Hard-coded color codes were removed and replaced with the appropriate variables.
@@ -20,7 +24,7 @@ These renamed and removed variables need to be adapted in customized project the
 This table lists all variable name changes you need to adjust in your custom code:
 
 | Renamed variable          | New variable name        | Used for                        |
-| ------------------------- | ------------------------ | ------------------------------- |
+| :------------------------ | :----------------------- | :------------------------------ |
 | $color-corporate          | $bg-color-corporate      | Corporate color for backgrounds |
 | $color-special-primary    | $color-special-error     | Error state color               |
 | $color-special-secondary  | $color-special-warning   | Warning state color             |
@@ -36,7 +40,7 @@ This table lists all variable name changes you need to adjust in your custom cod
 This table lists all variables that were removed and their replacements:
 
 | Removed variable          | Variable replacement |
-| ------------------------- | -------------------- |
+| :------------------------ | :------------------- |
 | $input-accent-color       | $CORPORATE-DARK      |
 | $button-primary-bg        | $CORPORATE-PRIMARY   |
 | $button-primary-border    | $CORPORATE-PRIMARY   |
@@ -50,22 +54,46 @@ This table lists all variables that were removed and their replacements:
 | $datepicker-active-bg     | -                    |
 | $datepicker-active-hover  | -                    |
 
+**API service `options` method removed**
+
 The deprecated `options` method of the [`api.service`](../../src/app/core/services/api/api.service.ts) has been removed.
-Alternatively, use the `get` method with REST calls of the latest REST interface instead.
+Use the `get` method with REST calls of the latest REST interface instead.
+
+**User logout action changes**
 
 The `logoutUserSuccess` action is now designated as API-specific and should only be dispatched after successful token revocation in `user.effects`.
-For resetting user-related state without API calls (e.g., forced logout or session cleanup), use the new `resetUserData` action instead.
+For resetting a user-related state without API calls (e.g., forced logout or session cleanup), use the new `resetUserData` action instead.
 This ensures clearer separation between API events and state management.
+
+**Language switch relocation**
 
 The language switch component has been moved from the mobile user information dropdown to the main header navigation for better accessibility and user experience.
 Accordingly, the language switch accordion view and its associated component input variable have been removed.
+
+**NGINX cache clearing enabled by default**
 
 [NGINX cache clearing](./nginx-startup.md#cache-clearing) is now enabled by default.
 The `CACHE_CLEARER` environment variable behavior changed from opt-in to opt-out.
 Set `CACHE_CLEARER` to `off` to disable this feature.
 
+**SPARQUE API version update**
+
 The SPARQUE services use API version 4 now for all REST calls.
 Find the corresponding migration notes in the [SPARQUE API Wrapper Migration Guide](https://docs.sparque.ai/wrapper/migration_guides/migration_guide_wrapper_1x9x0.html).
+
+**Product inventory handling changes**
+
+Product inventory data is now fetched by separate `inventories` REST calls instead of using the information fetched with the products REST call.
+The product attributes `inStock` and `availableStock` have been deprecated and will be removed in the next major release.
+
+Migration Steps:
+
+1. Replace deprecated product attributes: Update any code that accesses `product.inStock` or `product.availableStock` directly.
+2. Use facade methods instead:
+   - For general inventory access, use `ShoppingFacade.productInventory$(sku)`.
+   - For product context-specific access, use `ProductContextFacade` selectors like `context.select('inventory', 'inStock')` or `context.select('inventory', 'availableStock')`.
+
+This change allows caching product data for a longer time and fetching more frequently updated inventory data separately on demand.
 
 ## From 9.0.0 to 9.1.0
 
