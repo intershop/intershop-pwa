@@ -245,16 +245,28 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
         },
       };
 
-      // split heavy third-party libs into async chunks to reduce main/vendor size
+      // split heavy third-party libs into sensible chunks (reduce Mini-Chunks)
       const thirdPartyLibs = [
-        { name: 'ng-core', test: /[\\/]node_modules[\\/]@angular[\\/]core[\\/]/, priority: 50 },
-        { name: 'ng-common', test: /[\\/]node_modules[\\/]@angular[\\/]common[\\/]/, priority: 50 },
-        { name: 'ng-router', test: /[\\/]node_modules[\\/]@angular[\\/]router[\\/]/, priority: 50 },
-        { name: 'rxjs', test: /[\\/]node_modules[\\/]rxjs[\\/]/, priority: 45 },
-        { name: 'lib-fontawesome', test: /[\\/]node_modules[\\/]@fortawesome[\\/]/, priority: 40 },
-        { name: 'lib-bootstrap', test: /[\\/]node_modules[\\/](?:bootstrap|@ng-bootstrap)[\\/]/, priority: 39 },
-        { name: 'lib-oauth', test: /[\\/]node_modules[\\/]angular-oauth2-oidc[\\/]/, priority: 38 },
-        { name: 'lib-core', test: /[\\/]node_modules[\\/]core[\\/]/, priority: 37 },
+        {
+          name: 'ng-core',
+          test: /[\\/]node_modules[\\/]@angular[\\/](core|common|platform-browser|platform-browser-dynamic|http)[\\/]|[\\/]node_modules[\\/]rxjs[\\/]/,
+          priority: 50,
+        },
+        {
+          name: 'ng-router-forms',
+          test: /[\\/]node_modules[\\/]@angular[\\/](router|forms)[\\/]/,
+          priority: 49,
+        },
+        {
+          name: 'ng-animations',
+          test: /[\\/]node_modules[\\/]@angular[\\/]animations[\\/]/,
+          priority: 48,
+        },
+        {
+          name: 'lib-ui',
+          test: /[\\/]node_modules[\\/](?:@fortawesome|bootstrap|@ng-bootstrap|ngx-toastr|angular-oauth2-oidc)[\\/]/,
+          priority: 45,
+        },
       ];
 
       thirdPartyLibs.forEach(lib => {
