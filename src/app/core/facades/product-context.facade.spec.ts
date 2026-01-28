@@ -10,6 +10,7 @@ import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-g
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
 import { PriceHelper } from 'ish-core/models/price/price.helper';
+import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 
@@ -38,6 +39,7 @@ describe('Product Context Facade', () => {
     shoppingFacade = mock(ShoppingFacade);
     when(shoppingFacade.category$(anything())).thenReturn(of(undefined));
     when(shoppingFacade.productVariationCount$(anything())).thenReturn(of(undefined));
+    when(shoppingFacade.productInventory$(anything())).thenReturn(of(undefined));
 
     const appFacade = mock(AppFacade);
     when(appFacade.serverSetting$(anything())).thenReturn(of(undefined));
@@ -90,13 +92,12 @@ describe('Product Context Facade', () => {
         minOrderQuantity: 10,
         maxOrderQuantity: 100,
         stepQuantity: 10,
-        available: false,
         readyForShipmentMin: 0,
         readyForShipmentMax: 2,
       } as ProductView;
 
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
-
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: false } as ProductInventory));
       context.set('sku', () => '123');
     });
 
@@ -110,6 +111,9 @@ describe('Product Context Facade', () => {
           "children": {},
           "hasProductError": true,
           "hasQuantityError": false,
+          "inventory": {
+            "inStock": false,
+          },
           "label": null,
           "loading": false,
           "maxQuantity": 100,
@@ -161,13 +165,12 @@ describe('Product Context Facade', () => {
         minOrderQuantity: 10,
         maxOrderQuantity: 100,
         stepQuantity: 10,
-        available: true,
         readyForShipmentMin: 0,
         readyForShipmentMax: 2,
       } as ProductView;
 
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
-
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
       context.set('sku', () => '123');
     });
 
@@ -181,6 +184,9 @@ describe('Product Context Facade', () => {
           "children": {},
           "hasProductError": false,
           "hasQuantityError": false,
+          "inventory": {
+            "inStock": true,
+          },
           "label": null,
           "loading": false,
           "maxQuantity": 100,
@@ -497,7 +503,6 @@ describe('Product Context Facade', () => {
           minOrderQuantity: 1,
           maxOrderQuantity: 100,
           type: 'RetailSet',
-          available: true,
         } as ProductView)
       );
       when(shoppingFacade.productParts$(anything())).thenReturn(
@@ -506,6 +511,7 @@ describe('Product Context Facade', () => {
           { sku: 'p2', quantity: 1 },
         ])
       );
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
       context.set('sku', () => '123');
     });
 
@@ -566,7 +572,6 @@ describe('Product Context Facade', () => {
           minOrderQuantity: 1,
           maxOrderQuantity: 100,
           type: 'Bundle',
-          available: true,
           readyForShipmentMin: 0,
           readyForShipmentMax: 2,
         } as ProductView)
@@ -578,6 +583,7 @@ describe('Product Context Facade', () => {
         ])
       );
       context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
       context.set('sku', () => '123');
     });
 
@@ -635,12 +641,11 @@ describe('Product Context Facade', () => {
         minOrderQuantity: 1,
         maxOrderQuantity: 100,
         type: 'VariationProduct',
-        available: true,
         readyForShipmentMin: 0,
         readyForShipmentMax: 2,
       } as ProductView;
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
-
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
       context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
       context.set('sku', () => '123');
     });
@@ -680,11 +685,10 @@ describe('Product Context Facade', () => {
         completenessLevel: ProductCompletenessLevel.Detail,
         minOrderQuantity: 1,
         maxOrderQuantity: 100,
-        available: true,
         type: 'VariationProductMaster',
       } as ProductView;
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
-
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
       context.set('sku', () => '123');
     });
 
@@ -721,11 +725,10 @@ describe('Product Context Facade', () => {
       product = {
         sku: '123',
         completenessLevel: ProductCompletenessLevel.Detail,
-        available: true,
       } as ProductView;
 
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
-
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
       context.set('sku', () => '123');
     });
 
@@ -744,11 +747,9 @@ describe('Product Context Facade', () => {
           sku: '456',
           completenessLevel: ProductCompletenessLevel.Detail,
           type: 'RetailSet',
-          available: true,
         } as ProductView)
       );
       context.set('sku', () => '456');
-
       expect(context.get('displayProperties', 'addToBasket')).toMatchInlineSnapshot(`true`);
     });
   });
@@ -764,7 +765,7 @@ describe('Product Context Facade', () => {
 
     class ProviderA implements ExternalDisplayPropertiesProvider {
       setup(
-        context$: Observable<Pick<ProductContext, 'product' | 'prices'>>
+        context$: Observable<Pick<ProductContext, 'product' | 'prices' | 'inventory'>>
       ): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return context$.pipe(
           map(({ product }) =>
@@ -784,7 +785,7 @@ describe('Product Context Facade', () => {
 
     class ProviderB implements ExternalDisplayPropertiesProvider {
       setup(
-        context$: Observable<Pick<ProductContext, 'product' | 'prices'>>
+        context$: Observable<Pick<ProductContext, 'product' | 'prices' | 'inventory'>>
       ): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return context$.pipe(
           map(() => ({
@@ -797,7 +798,7 @@ describe('Product Context Facade', () => {
 
     class ProviderC implements ExternalDisplayPropertiesProvider {
       setup(
-        context$: Observable<Pick<ProductContext, 'product' | 'prices'>>
+        context$: Observable<Pick<ProductContext, 'product' | 'prices' | 'inventory'>>
       ): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return context$.pipe(
           switchMap(() => someOther$),
@@ -812,19 +813,19 @@ describe('Product Context Facade', () => {
       shoppingFacade = mock(ShoppingFacade);
       when(shoppingFacade.category$(anything())).thenReturn(EMPTY);
       when(shoppingFacade.productVariationCount$(anything())).thenReturn(of(undefined));
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of(undefined));
 
       product = {
         completenessLevel: ProductCompletenessLevel.Detail,
         minOrderQuantity: 10,
         maxOrderQuantity: 100,
         stepQuantity: 10,
-        available: true,
         readyForShipmentMin: 0,
         readyForShipmentMax: 2,
       } as ProductView;
 
       when(shoppingFacade.product$(anyString(), anything())).thenCall(sku => of({ ...product, sku }));
-
+      when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
       const appFacade = mock(AppFacade);
       when(appFacade.serverSetting$(anything())).thenReturn(of(undefined));
 

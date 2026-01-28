@@ -27,7 +27,7 @@ export class AccountOrderTemplateDetailLineItemComponent implements OnInit {
 
     this.context.connect('propagateActive', this.checkBox.valueChanges);
 
-    this.context.hold(this.context.select('product').pipe(map(product => product.available)), available => {
+    this.context.hold(this.context.select('inventory').pipe(map(inventory => inventory?.inStock)), available => {
       this.checkBox.setValue(available);
       if (available) {
         this.checkBox.enable();

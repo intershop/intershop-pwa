@@ -31,8 +31,8 @@ export class LineItemEditComponent implements OnInit {
   show() {
     this.modalDialogRef.show();
 
-    this.context.hold(this.context.select('product'), product => {
-      this.modalDialogRef.options.confirmDisabled = !product.available;
+    this.context.hold(this.context.select('inventory'), inventory => {
+      this.modalDialogRef.options.confirmDisabled = !inventory?.inStock;
     });
 
     this.context.hold(this.modalDialogRef.confirmed, () =>

@@ -37,7 +37,7 @@ describe('Product Notification Edit Dialog Component', () => {
     }).compileComponents();
 
     when(appFacade.currentCurrency$).thenReturn(of('USD'));
-    when(context.select('product', 'available')).thenReturn(of(true));
+    when(context.select('inventory', 'inStock')).thenReturn(of(true));
   });
 
   beforeEach(() => {

@@ -12,6 +12,7 @@ import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { User } from 'ish-core/models/user/user.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
+import { InventoryService } from 'ish-core/services/inventory/inventory.service';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { TokenService } from 'ish-core/services/token/token.service';
@@ -84,6 +85,9 @@ describe('Customer Store', () => {
     const userServiceMock = mock(UserService);
     when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user, pgid }));
 
+    const inventoryServiceMock = mock(InventoryService);
+    when(inventoryServiceMock.getProductInventory(anything())).thenReturn(of([]));
+
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['configuration', 'serverConfig'], true),
@@ -105,6 +109,7 @@ describe('Customer Store', () => {
       providers: [
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
+        { provide: InventoryService, useFactory: () => instance(inventoryServiceMock) },
         { provide: OrderService, useFactory: () => instance(mock(OrderService)) },
         { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
         { provide: TokenService, useFactory: () => instance(mock(TokenService)) },
