@@ -16,6 +16,7 @@ export class CategoryImageComponent implements OnChanges {
    * The category for which the image should be displayed
    */
   @Input({ required: true }) category: Category;
+  @Input() loading: 'lazy' | 'eager' = 'lazy';
 
   categoryImageUrl = '/assets/img/not-available.svg';
 
