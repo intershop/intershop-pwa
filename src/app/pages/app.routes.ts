@@ -42,6 +42,7 @@ export const appRoutes: Routes = [
     loadComponent: () => import('./home/home-page.component').then(c => c.HomePageComponent),
     data: {
       preload: 'eager',
+      wrapperClass: 'homepage',
       meta: {
         title: 'seo.title.home',
         description: 'seo.description.home',
