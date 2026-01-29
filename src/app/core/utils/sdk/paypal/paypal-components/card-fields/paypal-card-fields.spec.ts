@@ -90,7 +90,7 @@ describe('Paypal Card Fields', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, PayPalCardFields],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     });
 
     service = TestBed.inject(PayPalCardFields);
@@ -583,19 +583,15 @@ describe('Paypal Card Fields', () => {
       `;
     });
 
-    it('should emit closeForm$ when cancel button is clicked', async () => {
+    it('should emit closeForm$ when cancel button is clicked', async done => {
       await service.renderCardFields('testNamespace', mockPaymentMethod);
 
-      const closeFormSpy = jest.fn();
-      service.closeForm$.subscribe(closeFormSpy);
+      service.closeForm$.subscribe(() => {
+        done();
+      });
 
       const cancelButton = document.getElementById('card-field-cancel-button') as HTMLButtonElement;
       cancelButton.click();
-
-      // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 10));
-
-      expect(closeFormSpy).toHaveBeenCalled();
     });
   });
 

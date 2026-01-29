@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-paypal/payment-paypal.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
@@ -59,7 +58,6 @@ describe('Product Detail Component', () => {
         MockComponent(ProductQuantityLabelComponent),
         MockComponent(ProductShipmentComponent),
         MockComponent(ProductWarrantyComponent),
-        MockPipe(ServerSettingPipe),
         ProductDetailComponent,
       ],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
@@ -16,7 +15,6 @@ import { PayPalButtons } from './paypal-buttons';
 describe('Paypal Buttons', () => {
   let service: PayPalButtons;
   let checkoutFacade: CheckoutFacade;
-  let router: Router;
 
   const mockPaymentMethod = {
     id: 'ISH_PAYPAL',
@@ -52,7 +50,6 @@ describe('Paypal Buttons', () => {
 
   beforeEach(() => {
     checkoutFacade = mock(CheckoutFacade);
-    router = mock(Router);
 
     // Create mock PayPal Buttons component
     mockPaypalButtons = jest.fn().mockReturnValue({
@@ -65,11 +62,7 @@ describe('Paypal Buttons', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [
-        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
-        { provide: Router, useFactory: () => instance(router) },
-        PayPalButtons,
-      ],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     });
 
     service = TestBed.inject(PayPalButtons);

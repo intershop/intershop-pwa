@@ -51,7 +51,6 @@ describe('Paypal Component Builder', () => {
         { provide: PayPalCardFields, useFactory: () => instance(payPalCardFields) },
         { provide: PayPalMessages, useFactory: () => instance(payPalMessages) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
-        PaypalComponentBuilder,
       ],
     });
 

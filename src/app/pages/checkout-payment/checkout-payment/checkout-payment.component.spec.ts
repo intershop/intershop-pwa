@@ -10,7 +10,6 @@ import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketAddressSummaryComponent } from 'ish-shared/components/basket/basket-address-summary/basket-address-summary.component';
@@ -54,7 +53,6 @@ describe('Checkout Payment Component', () => {
         MockDirective(NgbCollapse),
         MockDirective(ServerHtmlDirective),
         MockPipe(PricePipe),
-        MockPipe(ServerSettingPipe),
         PaymentParameterFormComponent,
       ],
       imports: [
