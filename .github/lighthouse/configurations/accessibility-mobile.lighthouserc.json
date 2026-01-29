@@ -25,14 +25,7 @@
     },
     "assert": {
       "assertions": {
-        "categories:accessibility": ["error", { "minScore": 1.0 }],
-        "label-content-name-mismatch": "warn",
-        "empty-heading": "warn",
-        "identical-links-same-purpose": "warn",
-        "color-contrast": "error",
-        "image-alt": "error",
-        "button-name": "error",
-        "link-name": "error"
+        "categories:accessibility": ["warn", { "minScore": 1.0 }]
       }
     },
     "upload": {

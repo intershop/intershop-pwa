@@ -17,6 +17,7 @@ concurrency:
 env:
   ICM_BASE_URL: https://review.icm.intershop.de
   AZURE_DEMO_RESOURCEGROUP: pwa-gh-review
+  AZURE_WEBAPP_NAME: '' # Set dynamically in "Set Environment" step
 
 jobs:
   build-and-deploy:
@@ -33,7 +34,7 @@ jobs:
         uses: elgohr/Publish-Docker-Github-Action@v5
         env:
           serviceWorker: false
-          displayVersion: ${{ github.event.after }}
+          displayVersion: ${{ github.sha }}
           testing: true
           NODE_OPTIONS: --max_old_space_size=8192
         with:
@@ -89,15 +90,14 @@ jobs:
           cat demo-server-links.md >$GITHUB_STEP_SUMMARY
 
       - name: Find Pull Request
-        if: github.event.pull_request.number == ''
         uses: juliangruber/find-pull-request-action@v1
         id: find-pull-request
         with:
           branch: ${{ github.ref_name }}
 
       - name: Create Demo Server Comment
-        if: github.event.pull_request.number != '' || steps.find-pull-request.outputs.number != ''
+        if: steps.find-pull-request.outputs.number != ''
         uses: peter-evans/create-or-update-comment@v5
         with:
-          issue-number: ${{ github.event.pull_request.number || steps.find-pull-request.outputs.number }}
+          issue-number: ${{ steps.find-pull-request.outputs.number }}
           body-file: demo-server-links.md

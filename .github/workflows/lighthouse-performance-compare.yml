@@ -59,8 +59,6 @@ jobs:
 
       - name: Run Lighthouse CI performance audits (desktop + mobile)
         env:
-          LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LHCI_COLLECT__CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
         run: |
           echo "Lighthouse CI (desktop)"
