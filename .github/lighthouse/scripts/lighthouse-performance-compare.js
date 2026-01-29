@@ -19,10 +19,10 @@ function renderPagePerformanceTable(pages, deskBase, deskCurr, mobBase, mobCurr)
       pages[url][0] || normalizeUrl(url),
       '',
       formatScore(deskCurr.get(url).performance, deskCurr.get(url).reportUrl),
-      formatDelta(deskCurr.get(url).performance, deskBase.get(url).performance),
+      formatDelta(deskCurr.get(url).performance, deskBase.get(url).performance, 3),
       '',
       formatScore(mobCurr.get(url).performance, mobCurr.get(url).reportUrl),
-      formatDelta(mobCurr.get(url).performance, mobBase.get(url).performance),
+      formatDelta(mobCurr.get(url).performance, mobBase.get(url).performance, 3),
     ];
     md += `| ${row.join(' | ')} |\n`;
   }

@@ -4,6 +4,7 @@
       "numberOfRuns": 5,
       "url": [
         "http://localhost:4200/home",
+        "http://localhost:4200/search/notebook",
         "http://localhost:4200/computers-ctgComputers",
         "http://localhost:4200/computers/notebooks-and-pcs/notebooks-ctgComputers.1835.151",
         "http://localhost:4200/computers/notebooks-and-pcs/notebooks/microsoft-surface-book-2-256gb-152-prd201807231-04-ctgComputers.1835.151",
@@ -39,6 +40,7 @@
   },
   "pages": {
     "http://localhost:4200/home": ["Home"],
+    "http://localhost:4200/search/notebook": ["Search"],
     "http://localhost:4200/computers-ctgComputers": ["Category"],
     "http://localhost:4200/computers/notebooks-and-pcs/notebooks-ctgComputers.1835.151": [
       "Product List"
