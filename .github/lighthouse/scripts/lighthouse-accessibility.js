@@ -12,8 +12,8 @@ function renderAccessibilityTable(pagesDesktop, pagesMobile, resultsDesktop, res
   md += `|:---|---:|---:|\n`;
 
   for (const url of Object.keys(pagesDesktop)) {
-    const desktopResult = resultsDesktop.get(url).accessibility;
-    const mobileResult = resultsMobile.get(url).accessibility;
+    const desktopResult = resultsDesktop.get(url)?.accessibility;
+    const mobileResult = resultsMobile.get(url)?.accessibility;
     const desktopThreshold = pagesDesktop[url][1] || 100;
     const mobileThreshold = pagesMobile[url][1] || 100;
 
@@ -24,8 +24,8 @@ function renderAccessibilityTable(pagesDesktop, pagesMobile, resultsDesktop, res
 
     const row = [
       pagesDesktop[url][0] || normalizeUrl(url),
-      formatScore(desktopResult, resultsDesktop.get(url).reportUrl, desktopThreshold),
-      formatScore(mobileResult, resultsMobile.get(url).reportUrl, mobileThreshold),
+      formatScore(desktopResult, resultsDesktop.get(url)?.reportUrl, desktopThreshold),
+      formatScore(mobileResult, resultsMobile.get(url)?.reportUrl, mobileThreshold),
     ];
     md += `| ${row.join(' | ')} |\n`;
   }

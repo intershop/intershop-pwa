@@ -49,14 +49,9 @@ jobs:
         run: npm run serve &
 
       # Run Lighthouse accessibility audits
-      # continue-on-error ensures workflow continues even if Lighthouse encounters errors (e.g., page load failures)
-      # This allows us to get partial results and generate reports even when some URLs fail
       - name: Run Lighthouse CI accessibility audits (desktop + mobile)
         id: run-lighthouse
-        continue-on-error: true
         env:
-          LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LHCI_COLLECT__CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
         run: |
           echo "Lighthouse CI (desktop)"
@@ -92,17 +87,16 @@ jobs:
           echo "allPass=$(cat allPass.txt)" >> $GITHUB_OUTPUT
 
       - name: Find pull request (if the workflow was triggered from a branch context)
-        if: github.event.pull_request.number == ''
         uses: juliangruber/find-pull-request-action@v1
         id: find-pull-request
         with:
           branch: ${{ github.ref_name }}
 
       - name: Comment accessibility results on pull request
-        if: github.event.pull_request.number != '' || steps.find-pull-request.outputs.number != ''
+        if: steps.find-pull-request.outputs.number != ''
         uses: peter-evans/create-or-update-comment@v5
         with:
-          issue-number: ${{ github.event.pull_request.number || steps.find-pull-request.outputs.number }}
+          issue-number: ${{ steps.find-pull-request.outputs.number }}
           body-file: lighthouse-accessibility.md
 
       - name: Fail if accessibility scores below thresholds

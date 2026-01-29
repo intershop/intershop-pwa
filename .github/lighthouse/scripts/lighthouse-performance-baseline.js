@@ -11,8 +11,8 @@ function renderPagePerformanceTable(pages, deskBase, mobBase) {
   for (const url of Object.keys(pages)) {
     const row = [
       pages[url][0] || normalizeUrl(url),
-      formatScore(deskBase.get(url).performance, deskBase.get(url).reportUrl),
-      formatScore(mobBase.get(url).performance, mobBase.get(url).reportUrl),
+      formatScore(deskBase.get(url)?.performance, deskBase.get(url)?.reportUrl),
+      formatScore(mobBase.get(url)?.performance, mobBase.get(url)?.reportUrl),
     ];
     md += `| ${row.join(' | ')} |\n`;
   }
