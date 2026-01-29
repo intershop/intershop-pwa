@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, NgZone, afterNextRender, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Inject, NgZone, afterNextRender, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -6,10 +6,12 @@ import { merge } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
+import { THEME_COLOR } from 'ish-core/configurations/injection-keys';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { InjectSingle } from 'ish-core/utils/injection';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
@@ -51,7 +53,8 @@ export class CopilotComponent {
     private checkoutFacade: CheckoutFacade,
     private compareFacade: CompareFacade,
     private accountFacade: AccountFacade,
-    private orderTemplatesFacade: OrderTemplatesFacade
+    private orderTemplatesFacade: OrderTemplatesFacade,
+    @Inject(THEME_COLOR) private themeColor: InjectSingle<typeof THEME_COLOR>
   ) {
     // afterNextRender = only rendered in browser
     afterNextRender(() => {
@@ -249,13 +252,13 @@ export class CopilotComponent {
   }
 
   /**
-   * Retrieve a set copilot color or the corporate primary color from CSS variables ('--primary' fallback to Bootstrap variable).
+   * Retrieve color for copilot button from CSS custom properties or the theme color as fallback.
    */
   private getPrimaryColor(): string {
     return (
       getComputedStyle(document.documentElement).getPropertyValue('--color-copilot') ||
       getComputedStyle(document.documentElement).getPropertyValue('--corporate-primary') ||
-      getComputedStyle(document.documentElement).getPropertyValue('--primary')
+      this.themeColor // fallback to the theme color defined in environment.ts
     );
   }
 

@@ -33,6 +33,11 @@ $CORPORATE-LIGHT: color.adjust($CORPORATE-PRIMARY, $lightness: 10%);
 $CORPORATE-DARK: color.adjust($CORPORATE-PRIMARY, $lightness: -20%);
 $CORPORATE-SHADOW: #7f9ecc80; // with alpha transparency
 
+// Define CSS custom property for corporate primary color (used by copilot integration)
+:root {
+  --corporate-primary: #{$CORPORATE-PRIMARY};
+}
+
 // General colors
 $color-primary: #222;
 $color-secondary: #2c2d2e;
