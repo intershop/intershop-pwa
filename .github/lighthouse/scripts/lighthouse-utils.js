@@ -138,10 +138,10 @@ function formatScore(score, link, threshold) {
 }
 
 // Formats the difference between current and base scores with emoji indicators
-function formatDelta(curr, base) {
+function formatDelta(curr, base, variance = 0) {
   if (typeof curr !== 'number' || typeof base !== 'number') return '-';
   const diff = curr - base;
-  const emoji = diff > 0 ? '🟩' : diff < 0 ? '🟥' : '';
+  const emoji = diff > variance ? '🟩' : diff < -variance ? '🟥' : '';
   return `${emoji} ${diff > 0 ? '+' : ''}${diff}`;
 }
 
