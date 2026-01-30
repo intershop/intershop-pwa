@@ -122,8 +122,9 @@ server {
     listen 80;
   {{- end }}
 
-    access_log /var/log/nginx-access.log {{ getenv "LOGFORMAT" }};
-    access_log /dev/stdout {{ getenv "LOGFORMAT" }} if=$loggable;
+    # Write access logs to stdout only (no disk logging)
+    # LOGFORMAT: text -> plain text, otherwise json (ECS-compatible) - default: json
+    access_log /dev/stdout {{ if eq (getenv "LOGFORMAT" | strings.ToLower) "text" }}text{{ else }}json{{ end }} if=$loggable;
 
     include /etc/nginx/conf.d/cache-blacklist.conf;
     include /etc/nginx/conf.d/cache-locations.conf;
