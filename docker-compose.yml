@@ -61,7 +61,8 @@ services:
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
       CACHE: 0
       # CACHE_CLEARER: 0 # Cache clearing is enabled by default when CACHE=1; set to 0 to disable cache clearer based on ICM webadapter statistics
-      # LOG_ALL: 0
+      # LOGLEVEL: 'info' # info (all), warn (4xx+5xx), error (5xx) - default: error
+      # LOGFORMAT: 'text' # text, json - default: json (ECS-compatible)
       # SSL: 1
       # SSL_MKCERT_OFF: 1
       # SSR: 0
@@ -105,10 +106,6 @@ services:
       #     - Content-Security-Policy: "default-src https://develop.icm.intershop.de 'self'; style-src 'unsafe-inline' 'self'; font-src data: 'self'; script-src secure.pay1.de 'self'; frame-src secure.pay1.de;"
       #     - X-Frame-Options: 'SAMEORIGIN'
       # REDIS_URI: redis://redis:6379
-
-    # Logging to an External Device (see logging.md)
-    # volumes:
-    #   - d:/pwa/logs:/var/log/
 
     # Provide own SSL certificate files with SSL and SSL_MKCERT_OFF (see nginx-startup.md)
     # volumes:
