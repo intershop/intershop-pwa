@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -31,11 +31,17 @@ export class ProductListingComponent implements OnInit {
   currentPage$: Observable<number>;
   sortBy$: Observable<string>;
 
+  scrollDistance = 2; // = 20%
+
   private productListingId$ = new BehaviorSubject<ProductListingID>(undefined);
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private shoppingFacade: ShoppingFacade, private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private shoppingFacade: ShoppingFacade,
+    private activatedRoute: ActivatedRoute,
+    private elementRef: ElementRef
+  ) {}
 
   ngOnInit() {
     this.viewType$ = this.shoppingFacade.productListingViewType$;
@@ -58,7 +64,16 @@ export class ProductListingComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([page, id]) => {
+        // jump back to the list if only the footer is visible to prevent endless fetching
+        if (direction === 'down' && !SSR && window.innerHeight < 500) {
+          this.elementRef.nativeElement.scrollIntoView({ block: 'end' });
+        }
         this.shoppingFacade.loadMoreProducts(id, page);
+        // decrease the scroll distance percentage if the list gets longer to prevent endless product fetching
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if (!(window as any).Cypress) {
+          this.scrollDistance = 2 / (page + 1);
+        }
       });
   }
 
