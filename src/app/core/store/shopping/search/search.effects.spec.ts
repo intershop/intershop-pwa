@@ -9,6 +9,7 @@ import { SuggestionsServiceProvider } from 'ish-core/service-provider/suggestion
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadMoreProducts, setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
 import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/product-listing.effects';
@@ -60,6 +61,7 @@ describe('Search Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration'], [SearchEffects, ProductListingEffects]),
+        CustomerStoreModule.forTesting('user'),
         RouterTestingModule.withRoutes([
           { path: 'error', children: [] },
           { path: 'search/:searchTerm', children: [] },
