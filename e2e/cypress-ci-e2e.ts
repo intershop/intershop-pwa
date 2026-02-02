@@ -42,7 +42,7 @@ const DEFAULT_CONFIG = {
   },
   group: undefined,
   spec: undefined,
-  env: { ICM_BASE_URL: process.env.ICM_BASE_URL, numRuns: 0 },
+  expose: { ICM_BASE_URL: process.env.ICM_BASE_URL, numRuns: 0 },
 };
 
 const checkMaxRunsReached = (num: number, noOfSpecs: number) => {
@@ -75,7 +75,7 @@ const run = (
   /* eslint-disable-next-line no-param-reassign  */
   num += 1;
   let config = _.cloneDeep(DEFAULT_CONFIG);
-  config = { ...config, env: { ...config.env, numRuns: num } };
+  config = { ...config, expose: { ...config.expose, numRuns: num } };
 
   // activate video only for last run
   if (num >= MAX_NUM_RUNS) {

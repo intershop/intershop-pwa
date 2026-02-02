@@ -21,7 +21,7 @@ if (!icmBaseUrl) {
 console.log('using', icmBaseUrl, 'as ICM_BASE_URL');
 
 cypress.open({
-  env: {
+  expose: {
     ICM_BASE_URL: icmBaseUrl,
   },
   browser: 'chrome' || 'chromium' || 'firefox',

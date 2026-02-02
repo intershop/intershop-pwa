@@ -10,6 +10,7 @@ export default defineConfig({
   requestTimeout: 30000,
   responseTimeout: 30000,
   chromeWebSecurity: false,
+  allowCypressEnv: false,
   e2e: {
     setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginConfigOptions) {
       on('task', {
