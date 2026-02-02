@@ -21,6 +21,7 @@ import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
+import { PayPalDataTransferService } from 'ish-core/utils/sdk/paypal/paypal-data-transfer/paypal-data-transfer.service';
 
 import { BasketPaymentEffects } from './basket-payment.effects';
 import {
@@ -56,6 +57,7 @@ describe('Basket Payment Effects', () => {
   let paymentServiceMock: PaymentService;
   let effects: BasketPaymentEffects;
   let store: Store;
+  let payPalDataTransferService: PayPalDataTransferService;
 
   beforeEach(() => {
     paymentServiceMock = mock(PaymentService);
@@ -74,6 +76,7 @@ describe('Basket Payment Effects', () => {
 
     effects = TestBed.inject(BasketPaymentEffects);
     store = TestBed.inject(Store);
+    payPalDataTransferService = TestBed.inject(PayPalDataTransferService);
   });
 
   describe('loadBasketEligiblePaymentMethods$', () => {
@@ -407,27 +410,12 @@ describe('Basket Payment Effects', () => {
           } as Basket,
         })
       );
-
-      // Clear localStorage before each test
-      localStorage.clear();
-
-      // Mock localStorage methods
-      jest.spyOn(Storage.prototype, 'getItem');
-      jest.spyOn(Storage.prototype, 'setItem');
-      jest.spyOn(Storage.prototype, 'removeItem');
-    });
-
-    afterEach(() => {
-      localStorage.clear();
-      jest.restoreAllMocks();
     });
 
     it('should call the paymentService methods in correct sequence', done => {
       const action = createTemporaryBasketPayment({ paymentInstrument });
       actions$ = of(action);
 
-      // Since this effect has dispatch: false, it completes immediately
-      // Subscribe and wait for completion
       effects.createTemporaryPaypalPaymentInstrument$.subscribe({
         complete: () => {
           verify(paymentServiceMock.createBasketPayment(anything())).once();
@@ -438,37 +426,49 @@ describe('Basket Payment Effects', () => {
       });
     });
 
-    it('should store order ID and payment instrument ID in localStorage', done => {
+    it('should emit order data via PayPalOrderDataService', done => {
       const action = createTemporaryBasketPayment({ paymentInstrument });
       actions$ = of(action);
 
+      const emitSpy = jest.spyOn(payPalDataTransferService, 'emitOrderData');
+
       effects.createTemporaryPaypalPaymentInstrument$.subscribe({
         complete: () => {
-          const storedData = localStorage.getItem('temporaryPaypalData');
-          expect(storedData).toBe('ORDER123_PI_temporaryPaymentInstrumentId');
-          expect(Storage.prototype.setItem).toHaveBeenCalledWith(
-            'temporaryPaypalData',
-            'ORDER123_PI_temporaryPaymentInstrumentId'
-          );
+          expect(emitSpy).toHaveBeenCalledWith({
+            orderId: 'ORDER123',
+            paymentInstrumentId: 'temporaryPaymentInstrumentId',
+          });
           done();
         },
       });
     });
 
-    it('should remove existing temporaryPaypalData before storing new data', done => {
-      localStorage.setItem('temporaryPaypalData', 'oldData');
+    it('should dispatch createBasketPaymentFail on createBasketPayment error', () => {
+      when(paymentServiceMock.createBasketPayment(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'create error' }))
+      );
 
       const action = createTemporaryBasketPayment({ paymentInstrument });
-      actions$ = of(action);
+      const completion = createBasketPaymentFail({ error: makeHttpError({ message: 'create error' }) });
 
-      effects.createTemporaryPaypalPaymentInstrument$.subscribe({
-        complete: () => {
-          expect(Storage.prototype.removeItem).toHaveBeenCalledWith('temporaryPaypalData');
-          const storedData = localStorage.getItem('temporaryPaypalData');
-          expect(storedData).toBe('ORDER123_PI_temporaryPaymentInstrumentId');
-          done();
-        },
-      });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.createTemporaryPaypalPaymentInstrument$).toBeObservable(expected$);
+    });
+
+    it('should dispatch setBasketPaymentFail on setBasketPayment error', () => {
+      when(paymentServiceMock.setBasketPayment(anyString())).thenReturn(
+        throwError(() => makeHttpError({ message: 'set error' }))
+      );
+
+      const action = createTemporaryBasketPayment({ paymentInstrument });
+      const completion = setBasketPaymentFail({ error: makeHttpError({ message: 'set error' }) });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.createTemporaryPaypalPaymentInstrument$).toBeObservable(expected$);
     });
   });
 

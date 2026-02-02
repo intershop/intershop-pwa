@@ -1,9 +1,11 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, firstValueFrom, race, timer } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PAYPAL_CART_FIELDS_STYLING } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.styling';
+import { PayPalDataTransferService } from 'ish-core/utils/sdk/paypal/paypal-data-transfer/paypal-data-transfer.service';
 import {
   PayPalCardFieldError,
   PayPalCardFieldsComponent,
@@ -21,6 +23,9 @@ export class PayPalCardFields {
   /** Emits when the card fields form should be closed */
   closeForm$ = new Subject<void>();
 
+  /** Flag to prevent blur validation during field reset */
+  private isResetting = false;
+
   // Store rendered field instances for later access
   private fields: Record<
     string,
@@ -30,7 +35,11 @@ export class PayPalCardFields {
     }
   > = {};
 
-  constructor(private ngZone: NgZone, private checkoutFacade: CheckoutFacade) {}
+  constructor(
+    private ngZone: NgZone,
+    private checkoutFacade: CheckoutFacade,
+    private payPalDataTransferService: PayPalDataTransferService
+  ) {}
 
   /**
    * Creates and renders PayPal card fields in the specified containers.
@@ -144,6 +153,11 @@ export class PayPalCardFields {
    * Handles field blur events to validate and show errors if necessary.
    */
   private handleFieldBlur(data: PayPalCardFieldsStateObject): void {
+    // Skip validation during field reset to prevent race conditions
+    if (this.isResetting) {
+      return;
+    }
+
     const fieldConfig: Record<string, { fieldState: { isValid: boolean; isEmpty: boolean } }> = {
       name: { fieldState: data.fields.cardNameField },
       number: { fieldState: data.fields.cardNumberField },
@@ -185,10 +199,10 @@ export class PayPalCardFields {
   }
 
   /**
-   * Paypal Order Id creation callback. Creates a temporary basket payment, stores the orderId temporary in the local storage and submit order id to paypal sdk.
+   * Paypal Order Id creation callback. Creates a temporary basket payment and waits for the orderId from the service.
    */
   async createOrderCallback(): Promise<string> {
-    const orderId = this.setStorageListener();
+    const orderId = this.waitForOrderData();
 
     this.checkoutFacade.createTemporaryBasketPayment({
       id: undefined,
@@ -199,37 +213,25 @@ export class PayPalCardFields {
   }
 
   /**
-   * Listens for the PayPal order ID in local storage with a timeout.
+   * Waits for the PayPal order data from the service with a timeout.
+   * Uses RxJS race to implement timeout behavior.
    */
-  private setStorageListener(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      // Check localStorage every 100ms
-      const intervalId = window.setInterval(() => {
-        const temporaryPaypalData = localStorage.getItem('temporaryPaypalData');
-        if (temporaryPaypalData) {
-          const data = temporaryPaypalData.split('_PI_');
-          this.temporaryPaymentInstrumentId = data[1];
-          cleanup();
-          resolve(data[0]);
-          localStorage.removeItem('temporaryPaypalData');
-        }
-      }, 10);
+  private waitForOrderData(): Promise<string> {
+    const orderData$ = this.payPalDataTransferService.orderDataStream$.pipe(
+      take(1),
+      map(data => {
+        this.temporaryPaymentInstrumentId = data.paymentInstrumentId;
+        return data.orderId;
+      })
+    );
 
-      // Timeout after 3 seconds
-      const timeoutId = window.setTimeout(() => {
-        cleanup();
-        reject(new Error('PayPal order ID not received within 3 seconds'));
-      }, 3000);
+    const timeout$ = timer(3000).pipe(
+      map(() => {
+        throw new Error('PayPal order ID not received within 3 seconds');
+      })
+    );
 
-      const cleanup = () => {
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-        }
-        if (intervalId) {
-          clearInterval(intervalId);
-        }
-      };
-    });
+    return firstValueFrom(race(orderData$, timeout$));
   }
 
   /**
@@ -244,6 +246,7 @@ export class PayPalCardFields {
   }
 
   private resetFieldValues(): void {
+    this.isResetting = true;
     const allFields = Object.keys(this.fields);
 
     // Clear field values
@@ -251,12 +254,20 @@ export class PayPalCardFields {
       this.fields[key].instance.clear();
     });
 
-    // Remove error styles and possible error messages after a short delay to avoid interfering with PayPal internal validation
-    setTimeout(() => {
-      allFields.forEach(field => {
-        this.hideFieldError(field);
-      });
-    }, 100);
+    // Remove error styles multiple times to ensure we override PayPal's internal async validation
+    // PayPal SDK sets 'invalid' class internally during blur, timing is unpredictable
+    const removeInvalidClass = () => allFields.forEach(field => this.hideFieldError(field));
+
+    // Multiple attempts at different timings to catch PayPal's async validation
+    const delays = [50, 150, 300];
+    delays.forEach((delay, index) => {
+      setTimeout(() => {
+        removeInvalidClass();
+        if (index === delays.length - 1) {
+          this.isResetting = false;
+        }
+      }, delay);
+    });
   }
 
   /**
@@ -317,7 +328,7 @@ export class PayPalCardFields {
       errorElements.label.classList.remove('validation-error');
     }
     this.fields[field].instance.removeClass('invalid');
-    this.fields[field].instance.removeAttribute('aria-invalid');
+    this.fields[field].instance.setAttribute('aria-invalid', 'false');
   }
 
   /**

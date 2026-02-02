@@ -45,7 +45,7 @@ interface PayPalScriptParams {
   /** Payment method capabilities that determine SDK behavior */
   capabilities?: string[];
   /** PayPal-specific configuration from the application */
-  paypalLaterConfig: PaypalConfig;
+  paypalConfig: PaypalConfig;
   /** The PayPal payment method configuration */
   paymentMethod?: PaymentMethod;
 }
@@ -76,7 +76,7 @@ export class PaypalConfigService {
       this.appFacade.currentCurrency$,
       this.appFacade.payPalConfig$,
     ]).pipe(
-      switchMap(([locale, currency, paypalLaterConfig]) =>
+      switchMap(([locale, currency, paypalConfig]) =>
         iif(
           () => !!paymentMethod,
           defer(() =>
@@ -85,7 +85,7 @@ export class PaypalConfigService {
                 paymentMethod,
                 locale,
                 currency,
-                paypalLaterConfig,
+                paypalConfig,
                 capabilities: paymentMethod?.capabilities,
               }),
               {
@@ -107,7 +107,7 @@ export class PaypalConfigService {
             )
           ),
           defer(() =>
-            this.scriptLoader.load(this.calculateURL({ locale, currency, paypalLaterConfig }), {
+            this.scriptLoader.load(this.calculateURL({ locale, currency, paypalConfig }), {
               attributes: [
                 {
                   name: 'data-namespace',
@@ -147,8 +147,8 @@ export class PaypalConfigService {
    * @returns Query string with parameters for messages-only SDK
    */
   private getScriptQueryParameterForMessages(param: PayPalScriptParams): string {
-    let params = `client-id=${param.paypalLaterConfig.clientId}`;
-    params = `${params}&merchant-id=${param.paypalLaterConfig.merchantId}`;
+    let params = `client-id=${param.paypalConfig.clientId}`;
+    params = `${params}&merchant-id=${param.paypalConfig.merchantId}`;
     params = `${params}&currency=${param.currency}`;
     params = `${params}&locale=${param.locale}`;
     params = `${params}&components=messages`;
@@ -165,10 +165,12 @@ export class PaypalConfigService {
    * @returns Query string with all parameters for full SDK
    */
   private getScriptQueryParameters(param: PayPalScriptParams): string {
-    let params = param.paymentMethod.hostedPaymentPageParameters
-      ?.filter(attr => ['client-id', 'merchant-id'].includes(attr?.name) || attr.name === 'intent')
-      .map(attr => `${attr.name}=${attr.value}`)
-      .join('&');
+    let params = `client-id=${param.paypalConfig.clientId}`;
+    params = `${params}&merchant-id=${param.paypalConfig.merchantId}`;
+    const intentParam = param.paymentMethod.hostedPaymentPageParameters?.find(attr => attr.name === 'intent');
+    if (intentParam) {
+      params = `${params}&intent=${intentParam.value}`;
+    }
     params = `${params}&components=buttons,messages,card-fields`;
     params = `${params}&currency=${param.currency}`;
     params = `${params}&locale=${param.locale}`;
@@ -176,7 +178,7 @@ export class PaypalConfigService {
     if (!param.capabilities.includes('RedirectAfterCheckout')) {
       params = `${params}&commit=false`;
     }
-    if (param.paypalLaterConfig.payLaterPreferences.PayLaterEnabled && !param.capabilities.includes('Paypal3DSecure')) {
+    if (param.paypalConfig.payLaterPreferences.PayLaterEnabled && !param.capabilities.includes('Paypal3DSecure')) {
       params = `${params}&enable-funding=paylater`;
       //TODO: icm must have deliver information which cart type should be disabled for funding
       params = `${params}&disable-funding=card,sepa`;

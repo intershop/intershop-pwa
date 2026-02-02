@@ -11,6 +11,7 @@ import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { mapToRouterState } from 'ish-core/store/core/router';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import { PayPalDataTransferService } from 'ish-core/utils/sdk/paypal/paypal-data-transfer/paypal-data-transfer.service';
 
 import {
   continueCheckout,
@@ -47,7 +48,12 @@ import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
 @Injectable()
 export class BasketPaymentEffects {
-  constructor(private actions$: Actions, private store: Store, private paymentService: PaymentService) {}
+  constructor(
+    private actions$: Actions,
+    private store: Store,
+    private paymentService: PaymentService,
+    private payPalDataTransferService: PayPalDataTransferService
+  ) {}
 
   /**
    * The load basket eligible payment methods effect.
@@ -70,9 +76,9 @@ export class BasketPaymentEffects {
   setPaymentAtBasket$ = createEffect(() =>
     this.actions$.pipe(
       ofType(setBasketPayment),
-      mapToPayload(),
-      concatMap(payload =>
-        this.paymentService.setBasketPayment(payload.id).pipe(
+      mapToPayloadProperty('id'),
+      concatMap(id =>
+        this.paymentService.setBasketPayment(id).pipe(
           map(() => setBasketPaymentSuccess()),
           mapErrorToAction(setBasketPaymentFail)
         )
@@ -128,33 +134,32 @@ export class BasketPaymentEffects {
    * For Paypal credit card it is necessary to create a temporary payment instrument. Means the payment instrument is not transferred to the ngrx store.
    * Otherwise the paypal iframe us not working correctly because change detection is triggered.
    */
-  createTemporaryPaypalPaymentInstrument$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(createTemporaryBasketPayment),
-        mapToPayload(),
-        concatMap(payload =>
-          this.paymentService.createBasketPayment(payload.paymentInstrument).pipe(
-            concatMap(pi =>
-              this.paymentService.setBasketPayment(pi.id).pipe(
-                switchMap(() =>
-                  this.paymentService.initializePayPalCreditCartFlow().pipe(
-                    map(orderId => {
-                      if (localStorage.getItem('temporaryPaypalData')) {
-                        localStorage.removeItem('temporaryPaypalData');
-                      }
-                      localStorage.setItem('temporaryPaypalData', orderId.concat('_PI_').concat(pi.id));
-                    })
-                  )
-                ),
-                mapErrorToAction(setBasketPaymentFail)
-              )
-            ),
-            mapErrorToAction(createBasketPaymentFail)
-          )
+  createTemporaryPaypalPaymentInstrument$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createTemporaryBasketPayment),
+      mapToPayload(),
+      concatMap(payload =>
+        this.paymentService.createBasketPayment(payload.paymentInstrument).pipe(
+          concatMap(pi =>
+            this.paymentService.setBasketPayment(pi.id).pipe(
+              switchMap(() =>
+                this.paymentService.initializePayPalCreditCartFlow().pipe(
+                  concatMap(orderId => {
+                    this.payPalDataTransferService.emitOrderData({
+                      orderId,
+                      paymentInstrumentId: pi.id,
+                    });
+                    return EMPTY;
+                  })
+                )
+              ),
+              mapErrorToAction(setBasketPaymentFail)
+            )
+          ),
+          mapErrorToAction(createBasketPaymentFail)
         )
-      ),
-    { dispatch: false }
+      )
+    )
   );
 
   /**

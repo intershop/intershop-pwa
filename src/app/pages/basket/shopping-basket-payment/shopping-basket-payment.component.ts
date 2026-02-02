@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, map, shareReplay } from 'rxjs';
+import { Observable, map, shareReplay, withLatestFrom } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -17,6 +17,8 @@ import { PaypalComponentTypes } from 'ish-core/utils/sdk/paypal/paypal-config/pa
 })
 export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: BasketView;
+
+  private excludedPaymentMethods = ['ISH_FASTPAY'];
 
   paymentMethods$: Observable<PaymentMethod[]>;
   filteredPaymentMethods$: Observable<PaymentMethod[]>;
@@ -36,7 +38,11 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
 
     this.filteredPaymentMethods$ = this.paymentMethods$.pipe(
       whenTruthy(),
-      map(methods => methods.filter(method => !method.capabilities?.includes('FastCheckout')))
+      map(methods =>
+        methods.filter(
+          method => !method.capabilities?.includes('PaypalCheckout') && !this.excludedPaymentMethods.includes(method.id)
+        )
+      )
     );
     // if page is shown after cancelled/faulty redirect determine error message variable
     this.redirectStatus = this.route.snapshot.queryParamMap.get('redirect');
@@ -63,9 +69,19 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
 
   getPayPalPaymentMethod(): Observable<PaymentMethod> {
     return this.paymentMethods$.pipe(
-      map(paymentMethods =>
-        paymentMethods.find(paymentMethod => paymentMethod.capabilities?.includes('PaypalCheckout'))
-      )
+      withLatestFrom(this.checkoutFacade.basket$),
+      map(([paymentMethods, basket]) => {
+        const paypalMethod = paymentMethods.find(method => method.capabilities?.includes('PaypalCheckout'));
+        // Return PayPal method if basket has no payment
+        if (!basket.payment) {
+          return paypalMethod;
+        }
+        // Return PayPal method if it's the current payment instrument and redirect is required
+        if (basket.payment.paymentInstrument?.id === paypalMethod?.id && basket.payment.redirectRequired) {
+          return paypalMethod;
+        }
+        return;
+      })
     );
   }
 }

@@ -207,17 +207,6 @@ describe('Payment Paypal Component', () => {
     });
   });
 
-  describe('closeCardFieldsForm', () => {
-    it('should emit closeForm event', () => {
-      const closeFormSpy = jest.spyOn(component.closeForm, 'emit');
-      fixture.detectChanges();
-
-      component.closeCardFieldsForm();
-
-      expect(closeFormSpy).toHaveBeenCalled();
-    });
-  });
-
   describe('component configuration', () => {
     it('should have Messages as default component type', () => {
       expect(component.componentType).toBe(PaypalComponentTypes.Messages);

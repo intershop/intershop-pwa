@@ -6,9 +6,6 @@
     <!-- PayPal Card Fields containers -->
     <ng-template #cardFieldsContainer>
       <div class="card_container">
-        <!-- <div class="row form-group">
-          <div id="error-message" class="alert alert-danger hide-validation-error"></div>
-        </div> -->
         <div class="row form-group">
           <div class="col-form-label col-md-4" id="card-name-field-container-label">
             {{ 'checkout.credit_card.holder.label' | translate }}
@@ -80,7 +77,7 @@
 
         <div class="row">
           <div class="offset-md-4 col-md-8">
-            <button type="button" class="btn btn-primary" id="card-field-submit-button" (close)="closeCardFieldsForm()">
+            <button type="button" class="btn btn-primary" id="card-field-submit-button">
               {{ 'checkout.account.submit.continue.button.label' | translate }}
             </button>
             <button type="button" class="btn btn-secondary" id="card-field-cancel-button">

@@ -7,6 +7,9 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { BasketView } from 'ish-core/models/basket/basket.model';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { Payment } from 'ish-core/models/payment/payment.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketPaymentCostInfoComponent } from 'ish-shared/components/basket/basket-payment-cost-info/basket-payment-cost-info.component';
@@ -65,5 +68,102 @@ describe('Shopping Basket Payment Component', () => {
     component.basket.user = BasketMockData.getBasketUser();
     fixture.detectChanges();
     expect(element.querySelector('ish-basket-payment-cost-info')).toBeTruthy();
+  });
+
+  describe('getPayPalPaymentMethod', () => {
+    const paypalPaymentMethod: PaymentMethod = {
+      id: 'ISH_PAYPAL',
+      displayName: 'PayPal',
+      capabilities: ['PaypalCheckout'],
+    } as PaymentMethod;
+
+    beforeEach(() => {
+      when(checkoutFacade.eligibleFastCheckoutPaymentMethods$).thenReturn(of([paypalPaymentMethod]));
+    });
+
+    it('should return PayPal payment method if basket has no payment', done => {
+      const basketWithoutPayment = { ...BasketMockData.getBasket(), payment: undefined } as BasketView;
+      when(checkoutFacade.basket$).thenReturn(of(basketWithoutPayment));
+
+      fixture.detectChanges();
+
+      component.getPayPalPaymentMethod().subscribe(result => {
+        expect(result).toEqual(paypalPaymentMethod);
+        done();
+      });
+    });
+
+    it('should return PayPal payment method if payment instrument matches and redirect is required', done => {
+      const basketWithPaypalPayment = {
+        ...BasketMockData.getBasket(),
+        payment: {
+          paymentInstrument: { id: 'ISH_PAYPAL' },
+          redirectRequired: true,
+        } as Payment,
+      } as BasketView;
+      when(checkoutFacade.basket$).thenReturn(of(basketWithPaypalPayment));
+
+      fixture.detectChanges();
+
+      component.getPayPalPaymentMethod().subscribe(result => {
+        expect(result).toEqual(paypalPaymentMethod);
+        done();
+      });
+    });
+
+    it('should return undefined if payment instrument matches but redirect is not required', done => {
+      const basketWithPaypalPaymentNoRedirect = {
+        ...BasketMockData.getBasket(),
+        payment: {
+          paymentInstrument: { id: 'ISH_PAYPAL' },
+          redirectRequired: false,
+        } as Payment,
+      } as BasketView;
+      when(checkoutFacade.basket$).thenReturn(of(basketWithPaypalPaymentNoRedirect));
+
+      fixture.detectChanges();
+
+      component.getPayPalPaymentMethod().subscribe(result => {
+        expect(result).toBeUndefined();
+        done();
+      });
+    });
+
+    it('should return undefined if payment instrument does not match PayPal', done => {
+      const basketWithOtherPayment = {
+        ...BasketMockData.getBasket(),
+        payment: {
+          paymentInstrument: { id: 'OTHER_PAYMENT' },
+          redirectRequired: true,
+        } as Payment,
+      } as BasketView;
+      when(checkoutFacade.basket$).thenReturn(of(basketWithOtherPayment));
+
+      fixture.detectChanges();
+
+      component.getPayPalPaymentMethod().subscribe(result => {
+        expect(result).toBeUndefined();
+        done();
+      });
+    });
+
+    it('should return undefined if no PayPal payment method is available', done => {
+      const nonPaypalMethod: PaymentMethod = {
+        id: 'ISH_CREDIT_CARD',
+        displayName: 'Credit Card',
+        capabilities: [],
+      } as PaymentMethod;
+      when(checkoutFacade.eligibleFastCheckoutPaymentMethods$).thenReturn(of([nonPaypalMethod]));
+
+      const basketWithoutPayment = { ...BasketMockData.getBasket(), payment: undefined } as BasketView;
+      when(checkoutFacade.basket$).thenReturn(of(basketWithoutPayment));
+
+      fixture.detectChanges();
+
+      component.getPayPalPaymentMethod().subscribe(result => {
+        expect(result).toBeUndefined();
+        done();
+      });
+    });
   });
 });

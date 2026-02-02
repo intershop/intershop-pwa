@@ -132,14 +132,6 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
     });
   }
 
-  /**
-   * Closes the card fields form by emitting the closeForm event.
-   * This method is called from the template when the user clicks the cancel button.
-   */
-  closeCardFieldsForm() {
-    this.closeForm.emit();
-  }
-
   private getPage(): PaypalPageTypes {
     return this.page;
   }

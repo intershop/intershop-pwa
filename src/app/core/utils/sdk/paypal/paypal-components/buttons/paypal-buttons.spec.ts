@@ -42,7 +42,6 @@ describe('Paypal Buttons', () => {
     scriptNamespace: 'testPaypal',
     paypalPaymentMethod: mockPaymentMethod,
     pageType: PaypalPageTypes.CheckoutPayment,
-    basket: mockBasket,
     componentType: PaypalComponentTypes.Buttons,
   };
 
@@ -147,20 +146,15 @@ describe('Paypal Buttons', () => {
       orderID: 'ORDER456',
     };
 
-    const basketAddress = {
-      city: 'Berlin',
-      postalCode: '10115',
-      country: 'DE',
-    } as Address;
-
     let navigateSpy: jest.SpyInstance;
 
     beforeEach(() => {
       navigateSpy = jest.spyOn((service as any).router, 'navigate');
+      when(checkoutFacade.basket$).thenReturn(of(mockBasket));
     });
 
     it('should navigate to review page with correct parameters', () => {
-      service.onApprove(approvalData, basketAddress);
+      service.onApprove(approvalData);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/checkout/review'], {
         queryParams: {
@@ -180,7 +174,7 @@ describe('Paypal Buttons', () => {
         state: '',
       };
 
-      service.onApprove(approvalData, basketAddress);
+      service.onApprove(approvalData);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/checkout/review'], {
         queryParams: {
@@ -200,7 +194,7 @@ describe('Paypal Buttons', () => {
         state: '',
       };
 
-      service.onApprove(approvalData, basketAddress);
+      service.onApprove(approvalData);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/checkout/review'], {
         queryParams: {
@@ -220,7 +214,7 @@ describe('Paypal Buttons', () => {
         state: '',
       };
 
-      service.onApprove(approvalData, basketAddress);
+      service.onApprove(approvalData);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/checkout/review'], {
         queryParams: {
@@ -240,7 +234,7 @@ describe('Paypal Buttons', () => {
         state: '',
       };
 
-      service.onApprove(approvalData, basketAddress);
+      service.onApprove(approvalData);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/checkout/review'], {
         queryParams: {
@@ -260,7 +254,7 @@ describe('Paypal Buttons', () => {
         state: '',
       };
 
-      service.onApprove(approvalData, basketAddress);
+      service.onApprove(approvalData);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/checkout/review'], {
         queryParams: {
@@ -275,7 +269,7 @@ describe('Paypal Buttons', () => {
     it('should not detect address change when payPalShippingAddress is undefined', () => {
       service.payPalShippingAddress = undefined;
 
-      service.onApprove(approvalData, basketAddress);
+      service.onApprove(approvalData);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/checkout/review'], {
         queryParams: {
@@ -288,6 +282,7 @@ describe('Paypal Buttons', () => {
     });
 
     it('should handle undefined basket address', () => {
+      when(checkoutFacade.basket$).thenReturn(of({ ...mockBasket, commonShipToAddress: undefined } as Basket));
       service.payPalShippingAddress = {
         city: 'Berlin',
         postalCode: '10115',
@@ -295,7 +290,7 @@ describe('Paypal Buttons', () => {
         state: '',
       };
 
-      service.onApprove(approvalData, undefined);
+      service.onApprove(approvalData);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/checkout/review'], {
         queryParams: {
@@ -439,7 +434,7 @@ describe('Paypal Buttons', () => {
         await service.renderButtons(mockConfig);
         fail('Should have thrown an error');
       } catch (error) {
-        expect(error.message).toBe("Container element 'paypal-button-container' no exists in DOM");
+        expect(error.message).toBe("Container element 'paypal-button-container' does not exist in DOM");
       }
     });
 

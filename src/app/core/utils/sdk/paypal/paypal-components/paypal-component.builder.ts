@@ -1,9 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { filter, from, map, switchMap, take } from 'rxjs';
+import { Observable, filter, from, map, of, switchMap } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -28,9 +27,7 @@ export interface PaypalComponentsConfig {
   /** PayPal payment method configuration (required for buttons) */
   paypalPaymentMethod?: PaymentMethod;
   /** Amount to be used in the component (required for messages) */
-  amount?: number;
-  /** The current basket object */
-  basket?: Basket;
+  amount$?: Observable<number>;
   /** container id of rendering div */
   containerId?: string;
 
@@ -74,9 +71,9 @@ export class PaypalComponentBuilder {
   build(config: PaypalComponentsConfig) {
     switch (config.componentType) {
       case PaypalComponentTypes.Buttons:
-        return this.payPalButtons.renderButtons({ ...config, basket: this.getBasket() });
+        return this.payPalButtons.renderButtons(config);
       case PaypalComponentTypes.Messages:
-        return this.payPalMessages.renderMessages({ ...config, amount: this.getAmount(config) });
+        return this.payPalMessages.renderMessages({ ...config, amount$: this.getAmount(config) });
       case PaypalComponentTypes.CardFields:
         return from(this.payPalCardFields.renderCardFields(config.scriptNamespace, config.paypalPaymentMethod));
       default:
@@ -93,48 +90,20 @@ export class PaypalComponentBuilder {
    * @param config - Component configuration containing the page type
    * @returns The calculated amount as a number, or 0 if no amount can be determined
    */
-  private getAmount(config: PaypalComponentsConfig): number {
-    let amount = 0;
+  private getAmount(config: PaypalComponentsConfig): Observable<number> {
+    let amount$: Observable<number> = of(0);
     if (config.pageType === PaypalPageTypes.ProductDetails) {
-      this.shoppingFacade.selectedProductId$
-        .pipe(
-          whenTruthy(),
-          switchMap(id => this.shoppingFacade.productPrices$(id).pipe(map(prices => prices.salePrice?.value || 0))),
-          take(1)
-        )
-        .subscribe(value => {
-          amount = value;
-        });
+      amount$ = this.shoppingFacade.selectedProductId$.pipe(
+        whenTruthy(),
+        switchMap(id => this.shoppingFacade.productPrices$(id).pipe(map(prices => prices.salePrice?.value || 0)))
+      );
     } else if (config.pageType === PaypalPageTypes.Cart || config.pageType === PaypalPageTypes.CheckoutPayment) {
-      this.checkoutFacade.basket$
-        .pipe(
-          filter(basket => !!basket),
-          map(basket => basket.totals?.total.gross),
-          take(1)
-        )
-        .subscribe(value => {
-          amount = value;
-        });
+      amount$ = this.checkoutFacade.basket$.pipe(
+        filter(basket => !!basket),
+        map(basket => basket.totals?.total.gross)
+      );
     }
 
-    return amount;
-  }
-
-  /**
-   * Retrieves the current basket object from the checkout facade.
-   *
-   * This method synchronously extracts the basket using a subscription pattern
-   * with `take(1)` to get the latest basket state. The subscription completes
-   * immediately to prevent memory leaks.
-   *
-   * Used by the Buttons component to access basket information during checkout
-   * (line items, totals, payment methods, etc.).
-   *
-   * @returns The current basket object, or undefined if no basket exists
-   */
-  private getBasket(): Basket {
-    let basket: Basket;
-    this.checkoutFacade.basket$.pipe(whenTruthy(), take(1)).subscribe(b => (basket = b));
-    return basket;
+    return amount$;
   }
 }

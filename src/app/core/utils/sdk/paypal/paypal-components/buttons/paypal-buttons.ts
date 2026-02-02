@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { filter, map, race, take, timer } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { Address } from 'ish-core/models/address/address.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalComponentsConfig } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.builder';
@@ -51,23 +50,30 @@ export class PayPalButtons {
     });
   }
 
-  onApprove(data: { payerID: string; orderID: string }, basketAddress: Address) {
-    let shippingAddressChanged = false;
-    if (this.payPalShippingAddress) {
-      const normalize = (val: string) => val?.trim()?.toLowerCase();
-      shippingAddressChanged =
-        normalize(basketAddress?.country) !== normalize(this.payPalShippingAddress?.countryCode) ||
-        normalize(basketAddress?.postalCode) !== normalize(this.payPalShippingAddress?.postalCode) ||
-        normalize(basketAddress?.city) !== normalize(this.payPalShippingAddress?.city);
-    }
+  onApprove(data: { payerID: string; orderID: string }) {
+    this.checkoutFacade.basket$.pipe(take(1)).subscribe(basket => {
+      const basketAddress = basket?.commonShipToAddress;
+      let shippingAddressChanged = false;
 
-    this.router.navigate(['/checkout/review'], {
-      queryParams: {
-        redirect: 'success',
-        token: data.orderID,
-        PayerID: data.payerID,
-        shippingAddressChanged,
-      },
+      if (this.payPalShippingAddress && basketAddress) {
+        const normalize = (val: string) => val?.trim()?.toLowerCase();
+        shippingAddressChanged =
+          normalize(basketAddress.country) !== normalize(this.payPalShippingAddress.countryCode) ||
+          normalize(basketAddress.postalCode) !== normalize(this.payPalShippingAddress.postalCode) ||
+          normalize(basketAddress.city) !== normalize(this.payPalShippingAddress.city);
+      } else if (this.payPalShippingAddress && !basketAddress) {
+        // If PayPal has an address but basket doesn't, address has changed
+        shippingAddressChanged = true;
+      }
+
+      this.router.navigate(['/checkout/review'], {
+        queryParams: {
+          redirect: 'success',
+          token: data.orderID,
+          PayerID: data.payerID,
+          shippingAddressChanged,
+        },
+      });
     });
   }
 
@@ -94,7 +100,7 @@ export class PayPalButtons {
     const paypalObject = (window as unknown as Record<string, PaypalComponent>)[config.scriptNamespace];
     // Verify element exists right before rendering
     if (!document.getElementById(containerId)) {
-      throw new Error(`Container element '${containerId}' no exists in DOM`);
+      throw new Error(`Container element '${containerId}' does not exist in DOM`);
     }
 
     if (!paypalObject?.Buttons) {
@@ -114,7 +120,7 @@ export class PayPalButtons {
           : PAYPAL_BUTTON_STYLING.cart,
       createOrder: () => this.createOrder(config.paypalPaymentMethod),
       onApprove: (data: { payerID: string; orderID: string }) => {
-        this.onApprove(data, config.basket?.commonShipToAddress);
+        this.onApprove(data);
       },
       // in case the shipping address was changed in the paypal overlay
       onShippingAddressChange: (data: { shippingAddress: PayPalShippingAddress }) => {

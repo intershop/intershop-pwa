@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -75,8 +75,6 @@ describe('Paypal Component Builder', () => {
         await builder.build(config);
 
         verify(payPalButtons.renderButtons(anything())).once();
-        const [passedConfig] = capture(payPalButtons.renderButtons).last();
-        expect(passedConfig.basket).toEqual(mockBasket);
       });
     });
 
@@ -108,7 +106,8 @@ describe('Paypal Component Builder', () => {
         await builder.build(config);
 
         const [passedConfig] = capture(payPalMessages.renderMessages).last();
-        expect(passedConfig.amount).toBe(149.99);
+        const amount = await firstValueFrom(passedConfig.amount$);
+        expect(amount).toBe(149.99);
       });
 
       it('should calculate amount from basket total on cart page', async () => {
@@ -122,7 +121,8 @@ describe('Paypal Component Builder', () => {
         await builder.build(config);
 
         const [passedConfig] = capture(payPalMessages.renderMessages).last();
-        expect(passedConfig.amount).toBe(mockBasket.totals.total.gross);
+        const amount = await firstValueFrom(passedConfig.amount$);
+        expect(amount).toBe(mockBasket.totals.total.gross);
       });
 
       it('should calculate amount from basket total on checkout payment page', async () => {
@@ -136,7 +136,8 @@ describe('Paypal Component Builder', () => {
         await builder.build(config);
 
         const [passedConfig] = capture(payPalMessages.renderMessages).last();
-        expect(passedConfig.amount).toBe(mockBasket.totals.total.gross);
+        const amount = await firstValueFrom(passedConfig.amount$);
+        expect(amount).toBe(mockBasket.totals.total.gross);
       });
 
       it('should return 0 amount on home page', async () => {
@@ -150,7 +151,8 @@ describe('Paypal Component Builder', () => {
         await builder.build(config);
 
         const [passedConfig] = capture(payPalMessages.renderMessages).last();
-        expect(passedConfig.amount).toBe(0);
+        const amount = await firstValueFrom(passedConfig.amount$);
+        expect(amount).toBe(0);
       });
 
       it('should return 0 amount on product listing page', async () => {
@@ -164,7 +166,8 @@ describe('Paypal Component Builder', () => {
         await builder.build(config);
 
         const [passedConfig] = capture(payPalMessages.renderMessages).last();
-        expect(passedConfig.amount).toBe(0);
+        const amount = await firstValueFrom(passedConfig.amount$);
+        expect(amount).toBe(0);
       });
 
       it('should handle missing product sale price gracefully', async () => {
@@ -180,7 +183,8 @@ describe('Paypal Component Builder', () => {
         await builder.build(config);
 
         const [passedConfig] = capture(payPalMessages.renderMessages).last();
-        expect(passedConfig.amount).toBe(0);
+        const amount = await firstValueFrom(passedConfig.amount$);
+        expect(amount).toBe(0);
       });
 
       it('should handle missing basket gracefully', async () => {
