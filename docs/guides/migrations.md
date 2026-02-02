@@ -97,7 +97,7 @@ This change allows caching product data for a longer time and fetching more freq
 
 **Support for internal/backend request routing**
 
-The improved implementation for the environment variable `ICM_BASE_URL_SSR` as well as the introduction of an optional `serverUrlSsr` SPARQUE configuration allows server side rendering to directly use internal backend requests to ICM and SPARQUE when running in the same Kubernetes cluster.
+The improved implementation for the environment variable `ICM_BASE_URL_SSR` as well as the introduction of an optional `serverUrlSsr` SPARQUE configuration allows server-side rendering to directly use internal backend requests to ICM and SPARQUE when running in the same Kubernetes cluster.
 
 ## From 9.0.0 to 9.1.0
 
