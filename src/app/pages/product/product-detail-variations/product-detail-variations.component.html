@@ -1,11 +1,9 @@
 <div *ngIf="visible$ | async" class="product-variation-container">
-  <ng-container
-    *ngIf="'preferences.ChannelPreferences.EnableAdvancedVariationHandling' | ishServerSetting; else variationSelect"
-  >
+  <ng-container *ngIf="'preferences.ChannelPreferences.EnableAdvancedVariationHandling' | ishServerSetting">
     <ish-product-variation-display />
     <ish-product-master-link />
   </ng-container>
-  <ng-template #variationSelect>
+  <ng-container *ngIf="('preferences.ChannelPreferences.EnableAdvancedVariationHandling' | ishServerSetting) === false">
     <ish-product-variation-select />
-  </ng-template>
+  </ng-container>
 </div>

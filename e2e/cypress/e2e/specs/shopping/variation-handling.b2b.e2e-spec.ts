@@ -35,6 +35,7 @@ describe('Variation Handling B2B', () => {
     });
 
     it('following link to all variations should redirect to master product', () => {
+      cy.wait(500); // wait to ensure the link is rendered
       at(ProductDetailPage, page => page.gotoMasterProduct());
       at(ProductDetailPage, page => {
         page.sku.should('have.text', _.masterSKU);
