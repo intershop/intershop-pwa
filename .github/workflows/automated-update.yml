@@ -2,12 +2,12 @@ name: Update (Automated)
 
 on:
   workflow_dispatch:
-  pull_request:
-    types:
-      - opened
-      - synchronize
-    paths:
-      - scripts/update-pwa.js
+  # pull_request:
+  #   types:
+  #     - opened
+  #     - synchronize
+  #   paths:
+  #     - scripts/update-pwa.js
 
 concurrency:
   group: ${{ github.workflow }}
