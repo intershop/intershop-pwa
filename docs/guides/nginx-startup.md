@@ -314,8 +314,9 @@ Built-in features can be enabled and disabled:
 - `DEVICE_DETECTION=off` disables user-agent detection (default `on`)
 - `PROMETHEUS=on` enables [Prometheus](https://prometheus.io) metrics exports on port `9113` (default `off`)
 - `SSL=on` to switch on HTTPS. See [HTTPS or SSL](#https-or-ssl) above for further explanation.
+- `LOGLEVEL=info` to log all requests (`warn` for 4xx+5xx, default `error` for 5xx only).
+- `LOGFORMAT=json` to define the log format (`text` or default `json`).
 - `DEBUG=on` to log extra information like path matching.
-- `LOG_ALL=off` to restrict logging to errors.
 - `CACHE_CLEARER=on` to enable caching per ICM sites and do cache clearing when ICM page cache is invalidated (default `off`)
 
 ## Features

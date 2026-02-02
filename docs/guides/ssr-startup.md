@@ -68,8 +68,8 @@ Make sure to use them as written in the table below.
 |                     | MULTI_SITE_LOCALE_MAP | JSON \| false        | Used to map locales to [url modification parameters](../guides/multi-site-configurations.md)         |
 |                     | DEPLOY_URL            | string               | Set a [Deploy URL][concept-deploy-url] (default `/`)                                                 |
 | **Debug** :warning: | TRUST_ICM             | any                  | Use this if ICM is deployed with an insecure certificate                                             |
-|                     | LOGGING               | switch               | Enables extra log output                                                                             |
-|                     | LOG_ALL               | switch               | Logs success and error messages (if false, only errors)                                              |
+|                     | LOGLEVEL              | string               | Log level: `trace`, `debug`, `info`, `warn`, `error`, `fatal` (default: `error`)                     |
+|                     | LOGFORMAT             | string               | Log format: `json` (ECS-compatible) or `text` (default: `json`)                                      |
 |                     | SOURCE_MAPS           | switch               | Exposes source maps if activated                                                                     |
 | **Hybrid Approach** | SSR_HYBRID            | any                  | Enables running PWA and ICM in the [Hybrid Approach][concept-hybrid]                                 |
 |                     | SSR_HYBRID_BACKEND    | URL                  | When running in K8S, this contains the ICM WA service URL. For none K8S you can use ICM_BASE_URL     |
