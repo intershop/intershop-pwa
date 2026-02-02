@@ -169,6 +169,20 @@ Therefore, the styling for all icons must be checked.
 
 For additional information on using Bootstrap Icons, see the [Styling & Behavior](../concepts/styling-behavior.md#icons) documentation.
 
+**SSR and NGINX Logging changes**
+
+With Intershop PWA 10.0.0, we changed the logging of SSR and NGINX which includes breaking changes.
+Both the SSR and NGINX now use structured JSON logs (default) compliant with the [Elastic Common Schema (ECS)](https://www.elastic.co/guide/en/ecs/current/index.html) specification.
+
+Key changes include:
+
+- Containers write logs exclusively to stdout, which also replaces the former "Logging to an External Device" method
+- Logging is now configured exclusively using the `LOGLEVEL` and `LOGFORMAT` environment variables for both SSR and NGINX
+- Removed environment variables `LOGGING` (SSR) and `LOG_ALL` (SSR, NGINX)
+- PM2-specific data is now included as JSON fields instead of prefixes (SSR)
+
+Find more details in the [Concept - Logging](../concepts/logging.md).
+
 ## From 9.0.0 to 9.1.0
 
 Catalogs (root-level categories in ICM terminology) with _Show In Menu_ being disabled are now hidden from the main header navigation.
