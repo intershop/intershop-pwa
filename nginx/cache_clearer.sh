@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Check if ICM_BASE_URL_SSR is set and override ICM_BASE_URL
+if [ -n "$ICM_BASE_URL_SSR" ]; then
+    ICM_BASE_URL="$ICM_BASE_URL_SSR"
+fi
 if [ -z "$ICM_BASE_URL" ]; then
     echo "Error: ICM_BASE_URL is not set."
     exit 1
@@ -32,7 +36,7 @@ echo "Info: Sites from MULTI_CHANNEL configuration found: '$MULTI_CHANNEL_SITES'
 
 # get_endpoints() gets k8s endpoints for upstream pwa service
 # fallback to UPSTREAM_PWA if not on k8s or if k8s endpoints can not be retrieved
-# return codes: 
+# return codes:
 #   0   successfully determined the endpoints
 #   1   not able to determine k8s via /var/run/secrets/kubernetes.io/
 get_endpoints() {
@@ -82,7 +86,7 @@ purge_icm_calls_cache() {
     done
 }
 
-echo "Info: Starting nginx cache clear monitor based on ICM webadapter statistics"
+echo "Info: Starting nginx cache clear monitor based on ICM webadapter statistics from $ICM_BASE_URL"
 ENDPOINTS=$(get_endpoints)
 if [ $? -ne 0 ]; then
     MESSAGE="by using environment UPSTREAM_PWA"
@@ -101,7 +105,6 @@ while true; do
     if [ "$HTTP_STATUS" -ne 200 ]; then
         echo "Error: Webadapter statistics request failed with status: $HTTP_STATUS"
         sleep $CACHE_CLEARER_POLL_INTERVAL
-    
         continue
     fi
 
@@ -148,7 +151,7 @@ while true; do
     #            rm -rf /tmp/cache/*
             fi
         fi
-    fi    
+    fi
 
     sleep $CACHE_CLEARER_POLL_INTERVAL
 

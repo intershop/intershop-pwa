@@ -7,6 +7,7 @@ import { configurationMeta } from 'ish-core/configurations/configuration.meta';
 import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
 import { COOKIE_CONSENT_VERSION, DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
 import { UniversalCacheInterceptor } from 'ish-core/interceptors/universal-cache.interceptor';
+import { UniversalInternalBackendInterceptor } from 'ish-core/interceptors/universal-internal-backend.interceptor';
 import { UniversalLogInterceptor } from 'ish-core/interceptors/universal-log.interceptor';
 import { UniversalMockInterceptor } from 'ish-core/interceptors/universal-mock.interceptor';
 import { UniversalPrometheusInterceptor } from 'ish-core/interceptors/universal-prometheus.interceptor';
@@ -38,6 +39,9 @@ class UniversalErrorHandler implements ErrorHandler {
 const providers = [
   // Conditionally add provideHttpClient(withFetch()) based on environment variable
   ...(/on|1|true|yes/.test(process.env.ALLOW_H2?.toLowerCase()) ? [provideHttpClient(withFetch())] : []),
+  ...(process.env.ICM_BASE_URL_SSR
+    ? [{ provide: HTTP_INTERCEPTORS, useClass: UniversalInternalBackendInterceptor, multi: true }]
+    : []),
   { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: UniversalCacheInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: UniversalLogInterceptor, multi: true },

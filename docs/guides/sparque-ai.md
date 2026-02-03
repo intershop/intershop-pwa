@@ -83,6 +83,7 @@ environment:
 - **serverUrl**: The URL of the SPARQUE server that the PWA will connect to.
   - PROD: `https://api.search.sparque.ai`
   - Early adopters can use our UAT: `https://uat.api.search.sparque.ai` (New API releases are available here approximately one week earlier.)
+- **serverUrlSsr**: The (internal) URL of the SPARQUE server that the PWA SSR connects to when running in the same Kubernetes cluster (optional; if not provided, `serverUrl` is used).
 - **workspaceName**: The name of the workspace configured in SPARQUE Desk.
 - **apiName**: The name of the API to be used for SPARQUE requests. If your project is based on the ISH project template, use `PWA`. Otherwise, use the name defined in SPARQUE Desk.
 - **config**: Optional parameter specifying the SPARQUE REST configuration (defaults to `default` if not provided).
