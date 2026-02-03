@@ -60,8 +60,6 @@ export class PayPalCardFields {
     // Run PayPal SDK operations inside Angular zone to ensure proper event handling
     return this.ngZone.run(async () => {
       try {
-        // Initialize CardFields with MINIMAL configuration - exactly as official PayPal example
-        // NO style parameter - this may interfere with keyboard input
         this.cardField = paypalObject.CardFields({
           createOrder: () => this.ngZone.run(() => this.createOrderCallback()),
           onApprove: () => this.ngZone.run(() => this.onApproveCallback()),
@@ -102,44 +100,46 @@ export class PayPalCardFields {
    * Permissions-Policy headers if needed.
    */
   async renderIndividualFields(): Promise<void> {
-    // Render name field and store instance
-    this.fields.name = {
-      containerId: 'card-name-field-container',
-      instance: this.cardField.NameField({
-        style: PAYPAL_CART_FIELDS_STYLING,
-        placeholder: '',
-      }),
-    };
-    await this.fields.name.instance.render('#card-name-field-container');
+    const fieldConfigs = [
+      {
+        key: 'name',
+        containerId: 'card-name-field-container',
+        factory: () => this.cardField.NameField({ style: PAYPAL_CART_FIELDS_STYLING, placeholder: '' }),
+      },
+      {
+        key: 'number',
+        containerId: 'card-number-field-container',
+        factory: () => this.cardField.NumberField({ style: PAYPAL_CART_FIELDS_STYLING, placeholder: '' }),
+      },
+      {
+        key: 'cvv',
+        containerId: 'card-cvv-field-container',
+        factory: () => this.cardField.CVVField({ style: PAYPAL_CART_FIELDS_STYLING, placeholder: '' }),
+      },
+      {
+        key: 'expiry',
+        containerId: 'card-expiry-field-container',
+        factory: () => this.cardField.ExpiryField({ style: PAYPAL_CART_FIELDS_STYLING }),
+      },
+    ];
 
-    // Render number field and store instance
-    this.fields.number = {
-      containerId: 'card-number-field-container',
-      instance: this.cardField.NumberField({
-        style: PAYPAL_CART_FIELDS_STYLING,
-        placeholder: '',
-      }),
-    };
-    await this.fields.number.instance.render('#card-number-field-container');
+    for (const config of fieldConfigs) {
+      try {
+        const container = document.getElementById(config.containerId);
+        if (!container) {
+          console.warn(`PayPal CardFields: Container '#${config.containerId}' not found in DOM`);
+          continue;
+        }
 
-    // Render CVV field and store instance
-    this.fields.cvv = {
-      containerId: 'card-cvv-field-container',
-      instance: this.cardField.CVVField({
-        style: PAYPAL_CART_FIELDS_STYLING,
-        placeholder: '',
-      }),
-    };
-    await this.fields.cvv.instance.render('#card-cvv-field-container');
-
-    // Render expiry field and store instance
-    this.fields.expiry = {
-      containerId: 'card-expiry-field-container',
-      instance: this.cardField.ExpiryField({
-        style: PAYPAL_CART_FIELDS_STYLING,
-      }),
-    };
-    await this.fields.expiry.instance.render('#card-expiry-field-container');
+        this.fields[config.key] = {
+          containerId: config.containerId,
+          instance: config.factory(),
+        };
+        await this.fields[config.key].instance.render(`#${config.containerId}`);
+      } catch (error) {
+        console.error(`PayPal CardFields: Failed to render '${config.key}' field:`, error);
+      }
+    }
   }
 
   /**

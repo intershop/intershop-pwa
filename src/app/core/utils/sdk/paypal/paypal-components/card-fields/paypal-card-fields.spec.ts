@@ -162,12 +162,18 @@ describe('Paypal Card Fields', () => {
       expect(mockNumberField.render).not.toHaveBeenCalled();
     });
 
-    it('should handle rendering errors gracefully', async () => {
+    it('should handle rendering errors gracefully and continue with other fields', async () => {
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
       const renderError = new Error('Rendering failed');
       mockNameField.render.mockRejectedValue(renderError);
 
-      await expect(service.renderCardFields('testNamespace', mockPaymentMethod)).rejects.toThrow('Rendering failed');
+      await service.renderCardFields('testNamespace', mockPaymentMethod);
+
+      expect(consoleSpy).toHaveBeenCalledWith("PayPal CardFields: Failed to render 'name' field:", renderError);
+      // Other fields should still be rendered
+      expect(mockNumberField.render).toHaveBeenCalled();
+      expect(mockCvvField.render).toHaveBeenCalled();
+      expect(mockExpiryField.render).toHaveBeenCalled();
 
       consoleSpy.mockRestore();
     });

@@ -19,7 +19,10 @@ import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-meth
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { Payment } from 'ish-core/models/payment/payment.model';
-import { Paypal3Ds, Paypal3DsData, ThreeDSecureDecisionStatus } from 'ish-core/models/paypal-3ds/paypal-3ds.model';
+import {
+  PaypalPaymentSourceData,
+  ThreeDSecureDecisionStatus,
+} from 'ish-core/models/paypal-payment-source/paypal-payment-source.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -458,7 +461,7 @@ export class PaymentService {
       .pipe(map(({ data }) => data));
   }
 
-  initializePayPalCreditCartFlow() {
+  initializePayPalExperienceContextFlow() {
     let loc = `${location.origin}${this.baseHref}`;
     // Remove trailing slash if present
     if (loc.endsWith('/')) {
@@ -470,7 +473,7 @@ export class PaymentService {
       take(1),
       switchMap(currentLocale => {
         const body = {
-          redirect: {
+          experienceContext: {
             returnUrl: `${loc}/checkout/review;lang=${currentLocale}?redirect=success`,
             cancelUrl: `${loc}/checkout/payment;lang=${currentLocale}?redirect=cancel`,
           },
@@ -478,7 +481,7 @@ export class PaymentService {
 
         return this.apiService
           .currentBasketEndpoint()
-          .put<{ data: Paypal3Ds }>('payments/open-tender/paypal-3ds', body, {
+          .put<PaypalPaymentSourceData>('payments/open-tender/paypal-experience-context', body, {
             headers: this.basketHeaders,
           })
           .pipe(map(response => response.data.orderId));
@@ -491,13 +494,13 @@ export class PaymentService {
   ): Observable<PaymentInstrument | { errorMessage: string }> {
     return this.apiService
       .currentBasketEndpoint()
-      .get<Paypal3DsData>('payments/open-tender/paypal-3ds', {
+      .get<PaypalPaymentSourceData>('payments/open-tender/paypal-experience-context', {
         headers: this.basketHeaders,
       })
       .pipe(
         map(response => {
-          const paypal3Ds = response.data;
-          if (paypal3Ds.threeDSecureDecision === ThreeDSecureDecisionStatus.DECLINE) {
+          const paypalPaymentSourceRO = response.data;
+          if (paypalPaymentSourceRO.card?.threeDSecureDecision === ThreeDSecureDecisionStatus.DECLINE) {
             return {
               errorMessage: response.infos[0].message,
             };
@@ -507,20 +510,20 @@ export class PaymentService {
             parameters: [
               {
                 name: 'orderId',
-                value: paypal3Ds.orderId,
+                value: paypalPaymentSourceRO.orderId,
               },
               {
                 name: 'brand',
-                value: paypal3Ds.card?.brand || '',
+                value: paypalPaymentSourceRO.card?.brand || '',
               },
-              { name: 'expiry', value: paypal3Ds.card?.expiry || '' },
+              { name: 'expiry', value: paypalPaymentSourceRO.card?.expiry || '' },
               {
                 name: 'lastDigits',
-                value: paypal3Ds.card?.lastDigits || '',
+                value: paypalPaymentSourceRO.card?.lastDigits || '',
               },
               {
                 name: 'cardHolder',
-                value: paypal3Ds.card?.name || '',
+                value: paypalPaymentSourceRO.name || '',
               },
             ],
           };

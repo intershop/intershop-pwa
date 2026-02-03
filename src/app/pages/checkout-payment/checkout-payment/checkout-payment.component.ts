@@ -132,7 +132,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
   }
 
   getPaypalComponentType(method?: PaymentMethod): PaypalComponentTypes {
-    if (method?.capabilities?.includes('Paypal3DSecure')) {
+    if (method?.capabilities?.includes('PaypalExperienceContext')) {
       return PaypalComponentTypes.CardFields;
     } else {
       return PaypalComponentTypes.Buttons;

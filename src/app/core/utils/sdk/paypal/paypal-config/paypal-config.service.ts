@@ -178,7 +178,10 @@ export class PaypalConfigService {
     if (!param.capabilities.includes('RedirectAfterCheckout')) {
       params = `${params}&commit=false`;
     }
-    if (param.paypalConfig.payLaterPreferences.PayLaterEnabled && !param.capabilities.includes('Paypal3DSecure')) {
+    if (
+      param.paypalConfig.payLaterPreferences.PayLaterEnabled &&
+      !param.capabilities.includes('PaypalExperienceContext')
+    ) {
       params = `${params}&enable-funding=paylater`;
       //TODO: icm must have deliver information which cart type should be disabled for funding
       params = `${params}&disable-funding=card,sepa`;

@@ -143,7 +143,7 @@ export class BasketPaymentEffects {
           concatMap(pi =>
             this.paymentService.setBasketPayment(pi.id).pipe(
               switchMap(() =>
-                this.paymentService.initializePayPalCreditCartFlow().pipe(
+                this.paymentService.initializePayPalExperienceContextFlow().pipe(
                   concatMap(orderId => {
                     this.payPalDataTransferService.emitOrderData({
                       orderId,

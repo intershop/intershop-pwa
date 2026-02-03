@@ -399,7 +399,7 @@ describe('Basket Payment Effects', () => {
         of({ id: 'temporaryPaymentInstrumentId' } as PaymentInstrument)
       );
       when(paymentServiceMock.setBasketPayment(anyString())).thenReturn(of(undefined));
-      when(paymentServiceMock.initializePayPalCreditCartFlow()).thenReturn(of('ORDER123'));
+      when(paymentServiceMock.initializePayPalExperienceContextFlow()).thenReturn(of('ORDER123'));
 
       store.dispatch(
         loadBasketSuccess({
@@ -420,7 +420,7 @@ describe('Basket Payment Effects', () => {
         complete: () => {
           verify(paymentServiceMock.createBasketPayment(anything())).once();
           verify(paymentServiceMock.setBasketPayment('temporaryPaymentInstrumentId')).once();
-          verify(paymentServiceMock.initializePayPalCreditCartFlow()).once();
+          verify(paymentServiceMock.initializePayPalExperienceContextFlow()).once();
           done();
         },
       });
