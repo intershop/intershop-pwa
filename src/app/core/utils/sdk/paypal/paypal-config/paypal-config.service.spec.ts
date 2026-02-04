@@ -4,6 +4,7 @@ import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
 import { PaypalConfigService } from './paypal-config.service';
@@ -33,7 +34,7 @@ describe('Paypal Config Service', () => {
 
     when(appFacade.currentLocale$).thenReturn(of('en_US'));
     when(appFacade.currentCurrency$).thenReturn(of('USD'));
-    when(appFacade.payPalConfig$).thenReturn(
+    when(appFacade.serverSetting$<PaypalConfig>('payment.paypal')).thenReturn(
       of({
         clientId: 'test-client-id',
         merchantId: 'test-merchant-id',
@@ -193,7 +194,7 @@ describe('Paypal Config Service', () => {
     });
 
     it('should include enable-funding=paylater when Pay Later is enabled', done => {
-      when(appFacade.payPalConfig$).thenReturn(
+      when(appFacade.serverSetting$<PaypalConfig>('payment.paypal')).thenReturn(
         of({
           clientId: 'test',
           merchantId: 'test',
@@ -216,7 +217,7 @@ describe('Paypal Config Service', () => {
     });
 
     it('should not include enable-funding=paylater when Pay Later is disabled', done => {
-      when(appFacade.payPalConfig$).thenReturn(
+      when(appFacade.serverSetting$<PaypalConfig>('payment.paypal')).thenReturn(
         of({
           clientId: 'test',
           merchantId: 'test',

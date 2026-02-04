@@ -1,4 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Subject, firstValueFrom, race, timer } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
@@ -38,7 +39,8 @@ export class PayPalCardFields {
   constructor(
     private ngZone: NgZone,
     private checkoutFacade: CheckoutFacade,
-    private payPalDataTransferService: PayPalDataTransferService
+    private payPalDataTransferService: PayPalDataTransferService,
+    private translateService: TranslateService
   ) {}
 
   /**
@@ -63,6 +65,9 @@ export class PayPalCardFields {
         this.cardField = paypalObject.CardFields({
           createOrder: () => this.ngZone.run(() => this.createOrderCallback()),
           onApprove: () => this.ngZone.run(() => this.onApproveCallback()),
+          onError: () => {
+            this.ngZone.run(() => this.onErrorCallback());
+          },
           inputEvents: {
             onFocus: (data: PayPalCardFieldsStateObject) => {
               this.ngZone.run(() => this.handleFieldFocus(data));
@@ -204,7 +209,7 @@ export class PayPalCardFields {
   async createOrderCallback(): Promise<string> {
     const orderId = this.waitForOrderData();
 
-    this.checkoutFacade.createTemporaryBasketPayment({
+    this.checkoutFacade.createPaypalCreditCardBasketPayment({
       id: undefined,
       paymentMethod: this.paymentMethod.id,
     });
@@ -239,10 +244,23 @@ export class PayPalCardFields {
    */
   async onApproveCallback() {
     this.resetFieldValues();
-    this.checkoutFacade.submitPayPalPaymentInstrumentData({
+    this.checkoutFacade.submitPaypalPaymentInstrument({
       id: this.temporaryPaymentInstrumentId,
       paymentMethod: this.paymentMethod.id,
     });
+  }
+
+  async onErrorCallback() {
+    if (this.temporaryPaymentInstrumentId) {
+      this.checkoutFacade.deletePaypalPayment(
+        {
+          id: this.temporaryPaymentInstrumentId,
+          paymentMethod: this.paymentMethod.id,
+        },
+        this.translateService.instant('checkout.payment.paypal.error.message')
+      );
+    }
+    this.resetFieldValues();
   }
 
   private resetFieldValues(): void {

@@ -1,3 +1,4 @@
+import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -107,6 +108,7 @@ describe('Customer Store', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
+        { provide: APP_BASE_HREF, useValue: '/' },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
         { provide: InventoryService, useFactory: () => instance(inventoryServiceMock) },

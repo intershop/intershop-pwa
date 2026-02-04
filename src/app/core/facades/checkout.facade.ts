@@ -27,12 +27,13 @@ import {
   createBasket,
   createBasketAddress,
   createBasketPayment,
-  createTemporaryBasketPayment,
+  createPaypalCreditCardBasketPayment,
   deleteBasketAttribute,
   deleteBasketItem,
   deleteBasketItems,
   deleteBasketPayment,
   deleteBasketShippingAddress,
+  deletePaypalCreditCardBasketPayment,
   getBasketEligibleAddresses,
   getBasketEligiblePaymentMethods,
   getBasketEligibleShippingMethods,
@@ -61,7 +62,6 @@ import {
   startFastCheckout,
   startRedirectBeforeCheckout,
   submitOrder,
-  submitPayPalPaymentInstrumentData,
   updateBasket,
   updateBasketAddress,
   updateBasketCostCenter,
@@ -69,6 +69,7 @@ import {
   updateBasketRecurrence,
   updateBasketShippingMethod,
   updateConcardisCvcLastUpdated,
+  updatePaypalCreditCardPaymentInstrument,
 } from 'ish-core/store/customer/basket';
 import { getOrdersError, getSelectedOrder } from 'ish-core/store/customer/orders';
 import { getRecurringOrder } from 'ish-core/store/customer/recurring-orders';
@@ -306,10 +307,6 @@ export class CheckoutFacade {
     this.store.dispatch(loadBasketEligiblePaymentMethods());
   }
 
-  submitPayPalPaymentInstrumentData(paymentInstrument: PaymentInstrument) {
-    this.store.dispatch(submitPayPalPaymentInstrumentData({ paymentInstrument }));
-  }
-
   setBasketPayment(paymentName: string) {
     this.store.dispatch(setBasketPayment({ id: paymentName }));
   }
@@ -322,16 +319,26 @@ export class CheckoutFacade {
     this.store.dispatch(createBasketPayment({ paymentInstrument, saveForLater }));
   }
 
-  createTemporaryBasketPayment(paymentInstrument: PaymentInstrument) {
-    this.store.dispatch(createTemporaryBasketPayment({ paymentInstrument }));
-  }
-
   deleteBasketPayment(paymentInstrument: PaymentInstrument) {
     this.store.dispatch(deleteBasketPayment({ paymentInstrument }));
   }
 
   startRedirectBeforeCheckout() {
     this.store.dispatch(startRedirectBeforeCheckout());
+  }
+
+  // PAYPAL CREDIT CARD
+
+  createPaypalCreditCardBasketPayment(paymentInstrument: PaymentInstrument) {
+    this.store.dispatch(createPaypalCreditCardBasketPayment({ paymentInstrument }));
+  }
+
+  deletePaypalPayment(paymentInstrument: PaymentInstrument, errorMessage?: string) {
+    this.store.dispatch(deletePaypalCreditCardBasketPayment({ paymentInstrument, errorMessage }));
+  }
+
+  submitPaypalPaymentInstrument(paymentInstrument: PaymentInstrument) {
+    this.store.dispatch(updatePaypalCreditCardPaymentInstrument({ paymentInstrument }));
   }
 
   // ADDRESSES

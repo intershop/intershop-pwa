@@ -2,10 +2,8 @@ import { isDevMode } from '@angular/core';
 import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 
-import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { getCoreState } from 'ish-core/store/core/core-store';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
-import { PaypalPageTypes } from 'ish-core/utils/sdk/paypal/paypal-config/paypal-config.service';
 
 import { ConfigurationState } from './configuration.reducer';
 
@@ -166,27 +164,3 @@ export const getStaticEndpoint = createSelector(
         }/${locale}`
       : undefined
 );
-
-export const getPaypalConfig = getServerConfigParameter<PaypalConfig>('payment.paypal');
-
-export const getPaypalPayLaterPreference = (page: PaypalPageTypes) =>
-  createSelector(getServerConfigParameter<PaypalConfig>('payment.paypal'), (paypalConfig): boolean => {
-    if (!paypalConfig) {
-      return false;
-    }
-
-    switch (page) {
-      case PaypalPageTypes.Cart:
-        return paypalConfig.payLaterPreferences.PayLaterMessagingCartEnabled;
-      case PaypalPageTypes.CheckoutPayment:
-        return paypalConfig.payLaterPreferences.PayLaterMessagingPaymentEnabled;
-      case PaypalPageTypes.Home:
-        return paypalConfig.payLaterPreferences.PayLaterMessagingHomeEnabled;
-      case PaypalPageTypes.ProductDetails:
-        return paypalConfig.payLaterPreferences.PayLaterMessagingProductDetailsEnabled;
-      case PaypalPageTypes.ProductListing:
-        return paypalConfig.payLaterPreferences.PayLaterMessagingCategoryEnabled;
-      default:
-        return false;
-    }
-  });

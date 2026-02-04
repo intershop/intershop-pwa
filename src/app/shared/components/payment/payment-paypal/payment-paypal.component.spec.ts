@@ -10,6 +10,7 @@ import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { PayPalCardFields } from 'ish-core/utils/sdk/paypal/paypal-components/card-fields/paypal-card-fields';
 import { PaypalComponentBuilder } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.builder';
 import {
@@ -39,6 +40,16 @@ describe('Payment Paypal Component', () => {
     serviceId: '',
   };
 
+  const paypalConfig: PaypalConfig = {
+    payLaterPreferences: {
+      PayLaterMessagingCartEnabled: true,
+      PayLaterMessagingPaymentEnabled: true,
+      PayLaterMessagingHomeEnabled: true,
+      PayLaterMessagingProductDetailsEnabled: true,
+      PayLaterMessagingCategoryEnabled: true,
+    },
+  } as PaypalConfig;
+
   beforeEach(async () => {
     appFacade = mock(AppFacade);
     paypalConfigService = mock(PaypalConfigService);
@@ -47,7 +58,7 @@ describe('Payment Paypal Component', () => {
     router = mock(Router);
     closeForm$ = new Subject<void>();
 
-    when(appFacade.showPaypalPayLaterInformation$(anything())).thenReturn(of(true));
+    when(appFacade.serverSetting$('payment.paypal')).thenReturn(of(paypalConfig));
     when(paypalConfigService.loadPayPalScript(anything(), anything(), anything())).thenReturn(
       of({ loaded: true } as never)
     );
@@ -125,7 +136,17 @@ describe('Payment Paypal Component', () => {
 
   describe('loadPayPalScript', () => {
     it('should not load PayPal script when component type is Messages and PayLater is not shown', () => {
-      when(appFacade.showPaypalPayLaterInformation$(anything())).thenReturn(of(false));
+      const paypalConfigWithoutPayLater: PaypalConfig = {
+        ...paypalConfig,
+        payLaterPreferences: {
+          PayLaterMessagingCartEnabled: false,
+          PayLaterMessagingPaymentEnabled: false,
+          PayLaterMessagingHomeEnabled: false,
+          PayLaterMessagingProductDetailsEnabled: false,
+          PayLaterMessagingCategoryEnabled: false,
+        },
+      } as PaypalConfig;
+      when(appFacade.serverSetting$('payment.paypal')).thenReturn(of(paypalConfigWithoutPayLater));
       component.componentType = PaypalComponentTypes.Messages;
       resetCalls(paypalConfigService);
 
@@ -135,7 +156,6 @@ describe('Payment Paypal Component', () => {
     });
 
     it('should load PayPal script for Messages component when PayLater is shown', () => {
-      when(appFacade.showPaypalPayLaterInformation$(anything())).thenReturn(of(true));
       component.componentType = PaypalComponentTypes.Messages;
       resetCalls(paypalConfigService);
 

@@ -7,6 +7,7 @@ import { concatMap, exhaustMap, filter, map, switchMap, take } from 'rxjs/operat
 
 import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
+import { PaymentPaypalService } from 'ish-core/services/payment-paypal/payment-paypal.service';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { mapToRouterState } from 'ish-core/store/core/router';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
@@ -19,11 +20,11 @@ import {
   createBasketPayment,
   createBasketPaymentFail,
   createBasketPaymentSuccess,
-  createTemporaryBasketPayment,
+  createPaypalCreditCardBasketPayment,
   deleteBasketPayment,
   deleteBasketPaymentFail,
   deleteBasketPaymentSuccess,
-  deleteTemporaryBasketPayment,
+  deletePaypalCreditCardBasketPayment,
   loadBasket,
   loadBasketEligiblePaymentMethods,
   loadBasketEligiblePaymentMethodsFail,
@@ -33,7 +34,6 @@ import {
   setBasketPaymentSuccess,
   startRedirectBeforeCheckout,
   startRedirectBeforeCheckoutFail,
-  submitPayPalPaymentInstrumentData,
   updateBasketPayment,
   updateBasketPaymentFail,
   updateBasketPaymentSuccess,
@@ -43,6 +43,7 @@ import {
   updatePaymentInstrument,
   updatePaymentInstrumentFail,
   updatePaymentInstrumentSuccess,
+  updatePaypalCreditCardPaymentInstrument,
 } from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
@@ -52,6 +53,7 @@ export class BasketPaymentEffects {
     private actions$: Actions,
     private store: Store,
     private paymentService: PaymentService,
+    private paymentPaypalService: PaymentPaypalService,
     private payPalDataTransferService: PayPalDataTransferService
   ) {}
 
@@ -134,16 +136,16 @@ export class BasketPaymentEffects {
    * For Paypal credit card it is necessary to create a temporary payment instrument. Means the payment instrument is not transferred to the ngrx store.
    * Otherwise the paypal iframe us not working correctly because change detection is triggered.
    */
-  createTemporaryPaypalPaymentInstrument$ = createEffect(() =>
+  createPaypalCreditCardBasketPayment$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(createTemporaryBasketPayment),
+      ofType(createPaypalCreditCardBasketPayment),
       mapToPayload(),
       concatMap(payload =>
         this.paymentService.createBasketPayment(payload.paymentInstrument).pipe(
           concatMap(pi =>
             this.paymentService.setBasketPayment(pi.id).pipe(
               switchMap(() =>
-                this.paymentService.initializePayPalExperienceContextFlow().pipe(
+                this.paymentPaypalService.initializePayPalExperienceContextFlow().pipe(
                   concatMap(orderId => {
                     this.payPalDataTransferService.emitOrderData({
                       orderId,
@@ -165,9 +167,9 @@ export class BasketPaymentEffects {
   /**
    * Deletes the temporary PayPal payment instrument in case of an error during authorization workflow of PayPal.
    */
-  deleteTemporaryPaypalPaymentInstrument$ = createEffect(() =>
+  deletePaypalCreditCardBasketPayment$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(deleteTemporaryBasketPayment),
+      ofType(deletePaypalCreditCardBasketPayment),
       mapToPayload(),
       concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       concatMap(([payload, basket]) =>
@@ -184,14 +186,14 @@ export class BasketPaymentEffects {
    */
   submitPayPalPaymentInstrumentDataAfterApproval$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(submitPayPalPaymentInstrumentData),
+      ofType(updatePaypalCreditCardPaymentInstrument),
       mapToPayload(),
       concatMap(payload =>
-        this.paymentService.getPayPalPaymentInstrumentData(payload.paymentInstrument).pipe(
+        this.paymentPaypalService.getPayPalPaymentInstrument(payload.paymentInstrument).pipe(
           concatMap(response => {
             if ('errorMessage' in response && response.errorMessage) {
               return [
-                deleteTemporaryBasketPayment({
+                deletePaypalCreditCardBasketPayment({
                   paymentInstrument: payload.paymentInstrument,
                   errorMessage: response.errorMessage,
                 }),

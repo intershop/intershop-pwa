@@ -2,18 +2,15 @@ import { getCurrencySymbol } from '@angular/common';
 import { ApplicationRef, Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable, combineLatest, merge, noop } from 'rxjs';
+import { combineLatest, merge, noop } from 'rxjs';
 import { filter, map, sample, shareReplay, startWith, take, withLatestFrom } from 'rxjs/operators';
 
-import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import {
   getAvailableLocales,
   getCurrentCurrency,
   getCurrentLocale,
   getDeviceType,
   getICMBaseURL,
-  getPaypalConfig,
-  getPaypalPayLaterPreference,
   getPipelineEndpoint,
   getRestEndpoint,
 } from 'ish-core/store/core/configuration';
@@ -25,7 +22,6 @@ import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { getAllCountries, loadCountries } from 'ish-core/store/general/countries';
 import { getRegionsByCountryCode, loadRegions } from 'ish-core/store/general/regions';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { PaypalPageTypes } from 'ish-core/utils/sdk/paypal/paypal-config/paypal-config.service';
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {
@@ -52,8 +48,6 @@ export class AppFacade {
 
   getRestEndpoint$ = this.store.pipe(select(getRestEndpoint));
   getPipelineEndpoint$ = this.store.pipe(select(getPipelineEndpoint));
-
-  payPalConfig$: Observable<PaypalConfig> = this.store.pipe(select(getPaypalConfig));
 
   getRestEndpointWithContext$ = combineLatest([
     this.store.pipe(select(getRestEndpoint)),
@@ -155,9 +149,5 @@ export class AppFacade {
   regions$(countryCode: string) {
     this.store.dispatch(loadRegions({ countryCode }));
     return this.store.pipe(select(getRegionsByCountryCode(countryCode)));
-  }
-
-  showPaypalPayLaterInformation$(page: PaypalPageTypes): Observable<boolean> {
-    return this.store.pipe(select(getPaypalPayLaterPreference(page)));
   }
 }

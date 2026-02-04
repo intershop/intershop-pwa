@@ -300,18 +300,18 @@ export const startRedirectBeforeCheckoutFail = createAction(
   httpError()
 );
 
-export const createTemporaryBasketPayment = createAction(
-  '[Basket] Create a Temporary Basket Payment',
+export const createPaypalCreditCardBasketPayment = createAction(
+  '[Basket] Create a Paypal Credit Card Basket Payment',
   payload<{ paymentInstrument: PaymentInstrument }>()
 );
 
-export const deleteTemporaryBasketPayment = createAction(
-  '[Basket Internal] Delete a Temporary Basket Payment',
+export const deletePaypalCreditCardBasketPayment = createAction(
+  '[Basket] Delete a Paypal Credit Card Basket Payment',
   payload<{ paymentInstrument: PaymentInstrument; errorMessage: string }>()
 );
 
-export const submitPayPalPaymentInstrumentData = createAction(
-  '[Basket] Submit PayPal Payment Instrument Data',
+export const updatePaypalCreditCardPaymentInstrument = createAction(
+  '[Basket] Update Paypal Credit Card Payment Instrument',
   payload<{ paymentInstrument: PaymentInstrument }>()
 );
 

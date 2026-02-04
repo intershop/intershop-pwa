@@ -10,7 +10,7 @@
           <div class="col-form-label col-md-4" id="card-name-field-container-label">
             {{ 'checkout.credit_card.holder.label' | translate }}
           </div>
-          <div id="card-name-field-container" class="col-sm-6 fix-height"></div>
+          <div id="card-name-field-container" class="col-md-6 fix-height"></div>
           <div class="offset-md-4">
             <small id="card-name-field-container-error" class="validation-error hide-validation-error">
               {{ 'checkout.credit_card.holder.error.invalid' | translate }}
@@ -23,7 +23,7 @@
             {{ 'checkout.credit_card.number.label' | translate }}
             <span class="required" aria-hidden="true">*</span>
           </div>
-          <div id="card-number-field-container" class="col-sm-6 fix-height"></div>
+          <div id="card-number-field-container" class="col-md-6 fix-height"></div>
           <div class="offset-md-4">
             <small id="card-number-field-container-error" class="validation-error hide-validation-error">
               {{ 'checkout.credit_card.number.error.default' | translate }}
@@ -38,7 +38,7 @@
           </div>
           <div class="col-md-8">
             <div class="row">
-              <div id="card-expiry-field-container" class="pe-0 col-md-4 fix-height"></div>
+              <div id="card-expiry-field-container" class="pe-0 col-4 fix-height"></div>
             </div>
             <small id="card-expiry-field-container-error" class="validation-error hide-validation-error">
               {{ 'checkout.credit_card.expiry_date.invalid.error' | translate }}
@@ -53,8 +53,8 @@
           </div>
           <div class="col-md-8">
             <div class="row">
-              <div id="card-cvv-field-container" class="pe-0 col-md-4 fix-height"></div>
-              <div class="ps-0 col-md-8">
+              <div id="card-cvv-field-container" class="pe-0 col-4 fix-height"></div>
+              <div class="ps-0 col-auto">
                 <ng-template #CVCHelp>
                   <span [innerHTML]="'checkout.credit_card.cvc.popover.content' | translate"></span>
                 </ng-template>

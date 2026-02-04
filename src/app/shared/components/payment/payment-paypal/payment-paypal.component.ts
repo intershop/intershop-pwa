@@ -14,6 +14,7 @@ import { EMPTY, Observable, switchMap } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
 import { PayPalCardFields } from 'ish-core/utils/sdk/paypal/paypal-components/card-fields/paypal-card-fields';
@@ -74,8 +75,8 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
     this.identifyPageType();
 
     this.loading$ = this.appFacade
-      .showPaypalPayLaterInformation$(this.getPage())
-      .pipe(switchMap(showPaypalPayLaterInformation => this.loadPayPalScript(showPaypalPayLaterInformation)));
+      .serverSetting$<PaypalConfig>('payment.paypal')
+      .pipe(switchMap(paypalConfig => this.loadPayPalScript(paypalConfig)));
 
     // Subscribe to close form event from PayPal card fields
     this.payPalCardFields.closeForm$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
@@ -92,9 +93,9 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
    * @param showPaypalPayLaterInformation - Whether Pay Later messaging should be displayed
    * @returns Observable that emits the script loading result, or EMPTY if loading should be skipped
    */
-  private loadPayPalScript(showPaypalPayLaterInformation: boolean): Observable<ScriptType> {
+  private loadPayPalScript(paypalConfig: PaypalConfig): Observable<ScriptType> {
     // Do not load PayPal Messages component if Pay Later information is not to be shown
-    if (this.componentType === PaypalComponentTypes.Messages && !showPaypalPayLaterInformation) {
+    if (this.componentType === PaypalComponentTypes.Messages && !this.showPaypalPayLaterInformation(paypalConfig)) {
       return EMPTY;
     }
 
@@ -155,6 +156,23 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
       }
     } else if (url.includes('/home')) {
       this.page = PaypalPageTypes.Home;
+    }
+  }
+
+  private showPaypalPayLaterInformation(paypalConfig: PaypalConfig): boolean {
+    switch (this.getPage()) {
+      case PaypalPageTypes.Cart:
+        return paypalConfig.payLaterPreferences.PayLaterMessagingCartEnabled;
+      case PaypalPageTypes.CheckoutPayment:
+        return paypalConfig.payLaterPreferences.PayLaterMessagingPaymentEnabled;
+      case PaypalPageTypes.Home:
+        return paypalConfig.payLaterPreferences.PayLaterMessagingHomeEnabled;
+      case PaypalPageTypes.ProductDetails:
+        return paypalConfig.payLaterPreferences.PayLaterMessagingProductDetailsEnabled;
+      case PaypalPageTypes.ProductListing:
+        return paypalConfig.payLaterPreferences.PayLaterMessagingCategoryEnabled;
+      default:
+        return false;
     }
   }
 }

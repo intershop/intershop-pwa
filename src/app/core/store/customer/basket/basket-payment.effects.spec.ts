@@ -13,6 +13,7 @@ import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-in
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { Payment } from 'ish-core/models/payment/payment.model';
+import { PaymentPaypalService } from 'ish-core/services/payment-paypal/payment-paypal.service';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
@@ -30,11 +31,11 @@ import {
   createBasketPayment,
   createBasketPaymentFail,
   createBasketPaymentSuccess,
-  createTemporaryBasketPayment,
+  createPaypalCreditCardBasketPayment,
   deleteBasketPayment,
   deleteBasketPaymentFail,
   deleteBasketPaymentSuccess,
-  deleteTemporaryBasketPayment,
+  deletePaypalCreditCardBasketPayment,
   loadBasket,
   loadBasketEligiblePaymentMethods,
   loadBasketEligiblePaymentMethodsFail,
@@ -45,22 +46,24 @@ import {
   setBasketPaymentSuccess,
   startRedirectBeforeCheckout,
   startRedirectBeforeCheckoutFail,
-  submitPayPalPaymentInstrumentData,
   updateBasketPayment,
   updateBasketPaymentFail,
   updateBasketPaymentSuccess,
   updatePaymentInstrument,
+  updatePaypalCreditCardPaymentInstrument,
 } from './basket.actions';
 
 describe('Basket Payment Effects', () => {
   let actions$: Observable<Action>;
   let paymentServiceMock: PaymentService;
+  let paymentPaypalServiceMock: PaymentPaypalService;
   let effects: BasketPaymentEffects;
   let store: Store;
   let payPalDataTransferService: PayPalDataTransferService;
 
   beforeEach(() => {
     paymentServiceMock = mock(PaymentService);
+    paymentPaypalServiceMock = mock(PaymentPaypalService);
 
     TestBed.configureTestingModule({
       imports: [
@@ -68,6 +71,7 @@ describe('Basket Payment Effects', () => {
         CustomerStoreModule.forTesting('user', 'basket'),
       ],
       providers: [
+        { provide: PaymentPaypalService, useFactory: () => instance(paymentPaypalServiceMock) },
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         BasketPaymentEffects,
         provideMockActions(() => actions$),
@@ -382,7 +386,7 @@ describe('Basket Payment Effects', () => {
     });
   });
 
-  describe('createTemporaryPaypalPaymentInstrument$', () => {
+  describe('createPaypalCreditCardBasketPayment$', () => {
     const paymentInstrument = {
       id: undefined,
       paymentMethod: 'ISH_PAYPAL_CREDIT_CARD',
@@ -399,7 +403,7 @@ describe('Basket Payment Effects', () => {
         of({ id: 'temporaryPaymentInstrumentId' } as PaymentInstrument)
       );
       when(paymentServiceMock.setBasketPayment(anyString())).thenReturn(of(undefined));
-      when(paymentServiceMock.initializePayPalExperienceContextFlow()).thenReturn(of('ORDER123'));
+      when(paymentPaypalServiceMock.initializePayPalExperienceContextFlow()).thenReturn(of('ORDER123'));
 
       store.dispatch(
         loadBasketSuccess({
@@ -413,26 +417,26 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should call the paymentService methods in correct sequence', done => {
-      const action = createTemporaryBasketPayment({ paymentInstrument });
+      const action = createPaypalCreditCardBasketPayment({ paymentInstrument });
       actions$ = of(action);
 
-      effects.createTemporaryPaypalPaymentInstrument$.subscribe({
+      effects.createPaypalCreditCardBasketPayment$.subscribe({
         complete: () => {
           verify(paymentServiceMock.createBasketPayment(anything())).once();
           verify(paymentServiceMock.setBasketPayment('temporaryPaymentInstrumentId')).once();
-          verify(paymentServiceMock.initializePayPalExperienceContextFlow()).once();
+          verify(paymentPaypalServiceMock.initializePayPalExperienceContextFlow()).once();
           done();
         },
       });
     });
 
     it('should emit order data via PayPalOrderDataService', done => {
-      const action = createTemporaryBasketPayment({ paymentInstrument });
+      const action = createPaypalCreditCardBasketPayment({ paymentInstrument });
       actions$ = of(action);
 
       const emitSpy = jest.spyOn(payPalDataTransferService, 'emitOrderData');
 
-      effects.createTemporaryPaypalPaymentInstrument$.subscribe({
+      effects.createPaypalCreditCardBasketPayment$.subscribe({
         complete: () => {
           expect(emitSpy).toHaveBeenCalledWith({
             orderId: 'ORDER123',
@@ -448,13 +452,13 @@ describe('Basket Payment Effects', () => {
         throwError(() => makeHttpError({ message: 'create error' }))
       );
 
-      const action = createTemporaryBasketPayment({ paymentInstrument });
+      const action = createPaypalCreditCardBasketPayment({ paymentInstrument });
       const completion = createBasketPaymentFail({ error: makeHttpError({ message: 'create error' }) });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
-      expect(effects.createTemporaryPaypalPaymentInstrument$).toBeObservable(expected$);
+      expect(effects.createPaypalCreditCardBasketPayment$).toBeObservable(expected$);
     });
 
     it('should dispatch setBasketPaymentFail on setBasketPayment error', () => {
@@ -462,17 +466,17 @@ describe('Basket Payment Effects', () => {
         throwError(() => makeHttpError({ message: 'set error' }))
       );
 
-      const action = createTemporaryBasketPayment({ paymentInstrument });
+      const action = createPaypalCreditCardBasketPayment({ paymentInstrument });
       const completion = setBasketPaymentFail({ error: makeHttpError({ message: 'set error' }) });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
-      expect(effects.createTemporaryPaypalPaymentInstrument$).toBeObservable(expected$);
+      expect(effects.createPaypalCreditCardBasketPayment$).toBeObservable(expected$);
     });
   });
 
-  describe('deleteTemporaryPaypalPaymentInstrument$', () => {
+  describe('deletePaypalCreditCardBasketPayment$', () => {
     const paymentInstrument = {
       id: 'temporaryPaymentInstrumentId',
       paymentMethod: 'ISH_PAYPAL_CREDIT_CARD',
@@ -494,10 +498,10 @@ describe('Basket Payment Effects', () => {
 
     it('should call the paymentService for deleteBasketPaymentInstrument', done => {
       const errorMessage = 'Payment authorization failed';
-      const action = deleteTemporaryBasketPayment({ paymentInstrument, errorMessage });
+      const action = deletePaypalCreditCardBasketPayment({ paymentInstrument, errorMessage });
       actions$ = of(action);
 
-      effects.deleteTemporaryPaypalPaymentInstrument$.subscribe(() => {
+      effects.deletePaypalCreditCardBasketPayment$.subscribe(() => {
         verify(paymentServiceMock.deleteBasketPaymentInstrument(anything(), anything())).once();
         done();
       });
@@ -505,14 +509,14 @@ describe('Basket Payment Effects', () => {
 
     it('should map to action of type SetBasketPaymentFail with error message', () => {
       const errorMessage = 'Payment authorization failed';
-      const action = deleteTemporaryBasketPayment({ paymentInstrument, errorMessage });
+      const action = deletePaypalCreditCardBasketPayment({ paymentInstrument, errorMessage });
       const completion = setBasketPaymentFail({
         error: { name: 'HttpErrorResponse', message: errorMessage },
       });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
-      expect(effects.deleteTemporaryPaypalPaymentInstrument$).toBeObservable(expected$);
+      expect(effects.deletePaypalCreditCardBasketPayment$).toBeObservable(expected$);
     });
 
     it('should map error to action of type SetBasketPaymentFail', () => {
@@ -520,12 +524,12 @@ describe('Basket Payment Effects', () => {
         throwError(() => makeHttpError({ message: 'deletion failed' }))
       );
       const errorMessage = 'Payment authorization failed';
-      const action = deleteTemporaryBasketPayment({ paymentInstrument, errorMessage });
+      const action = deletePaypalCreditCardBasketPayment({ paymentInstrument, errorMessage });
       const completion = setBasketPaymentFail({ error: makeHttpError({ message: 'deletion failed' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.deleteTemporaryPaypalPaymentInstrument$).toBeObservable(expected$);
+      expect(effects.deletePaypalCreditCardBasketPayment$).toBeObservable(expected$);
     });
   });
 
@@ -556,23 +560,23 @@ describe('Basket Payment Effects', () => {
       );
     });
 
-    it('should call the paymentService for getPayPalPaymentInstrumentData', done => {
-      when(paymentServiceMock.getPayPalPaymentInstrumentData(anything())).thenReturn(of(updatedPaymentInstrument));
+    it('should call the paymentService for getPayPalPaymentInstrument', done => {
+      when(paymentPaypalServiceMock.getPayPalPaymentInstrument(anything())).thenReturn(of(updatedPaymentInstrument));
       when(paymentServiceMock.updatePaymentInstrument(anything())).thenReturn(of(undefined));
 
-      const action = submitPayPalPaymentInstrumentData({ paymentInstrument });
+      const action = updatePaypalCreditCardPaymentInstrument({ paymentInstrument });
       actions$ = of(action);
 
       effects.submitPayPalPaymentInstrumentDataAfterApproval$.subscribe(() => {
-        verify(paymentServiceMock.getPayPalPaymentInstrumentData(anything())).once();
+        verify(paymentPaypalServiceMock.getPayPalPaymentInstrument(anything())).once();
         done();
       });
     });
 
     it('should map to UpdatePaymentInstrument and ContinueCheckout actions in case of success', () => {
-      when(paymentServiceMock.getPayPalPaymentInstrumentData(anything())).thenReturn(of(updatedPaymentInstrument));
+      when(paymentPaypalServiceMock.getPayPalPaymentInstrument(anything())).thenReturn(of(updatedPaymentInstrument));
 
-      const action = submitPayPalPaymentInstrumentData({ paymentInstrument });
+      const action = updatePaypalCreditCardPaymentInstrument({ paymentInstrument });
       const completion1 = updatePaymentInstrument({ paymentInstrument: updatedPaymentInstrument });
       const completion2 = continueCheckout({ targetStep: CheckoutStepType.Review });
       actions$ = hot('-a', { a: action });
@@ -581,12 +585,12 @@ describe('Basket Payment Effects', () => {
       expect(effects.submitPayPalPaymentInstrumentDataAfterApproval$).toBeObservable(expected$);
     });
 
-    it('should map to DeleteTemporaryBasketPayment action if error message is returned', () => {
+    it('should map to DeletePaypalCreditCardBasketPayment action if error message is returned', () => {
       const errorResponse = { errorMessage: 'PayPal authorization failed' };
-      when(paymentServiceMock.getPayPalPaymentInstrumentData(anything())).thenReturn(of(errorResponse));
+      when(paymentPaypalServiceMock.getPayPalPaymentInstrument(anything())).thenReturn(of(errorResponse));
 
-      const action = submitPayPalPaymentInstrumentData({ paymentInstrument });
-      const completion = deleteTemporaryBasketPayment({
+      const action = updatePaypalCreditCardPaymentInstrument({ paymentInstrument });
+      const completion = deletePaypalCreditCardBasketPayment({
         paymentInstrument,
         errorMessage: 'PayPal authorization failed',
       });
@@ -597,10 +601,10 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should map error to action of type SetBasketPaymentFail', () => {
-      when(paymentServiceMock.getPayPalPaymentInstrumentData(anything())).thenReturn(
+      when(paymentPaypalServiceMock.getPayPalPaymentInstrument(anything())).thenReturn(
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
-      const action = submitPayPalPaymentInstrumentData({ paymentInstrument });
+      const action = updatePaypalCreditCardPaymentInstrument({ paymentInstrument });
       const completion = setBasketPaymentFail({ error: makeHttpError({ message: 'invalid' }) });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

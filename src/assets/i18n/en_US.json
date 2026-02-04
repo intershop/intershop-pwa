@@ -934,6 +934,7 @@
   "checkout.payment.payment_cost_threshold.text": "free of charge for orders of at least ",
   "checkout.payment.paypal.credit_card.cvc.label": "CVC/CVV",
   "checkout.payment.paypal.credit_card.cvc.popover.title": "Where can I find the CVC/CVV?",
+  "checkout.payment.paypal.error.message": "We could not verify your card. Please try again or use a different card.",
   "checkout.payment.paypal.privacy_statement.message": "By paying with your card, you acknowledge that your data will be processed by PayPal subject to <a href=\"https://www.paypal.com/de/legalhub/paypal/privacy-full\" target=\"_blank\">PayPal Privacy Statement</a> available at PayPal.com.",
   "checkout.payment.paypal.script.error.message": "PayPal is temporarily unavailable. Please try again shortly or select another payment method.",
   "checkout.payment.security_code.missing.error": "Security code is missing.",

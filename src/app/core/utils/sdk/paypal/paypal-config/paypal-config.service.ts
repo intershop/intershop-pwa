@@ -74,7 +74,7 @@ export class PaypalConfigService {
     return combineLatest([
       this.appFacade.currentLocale$,
       this.appFacade.currentCurrency$,
-      this.appFacade.payPalConfig$,
+      this.appFacade.serverSetting$<PaypalConfig>('payment.paypal'),
     ]).pipe(
       switchMap(([locale, currency, paypalConfig]) =>
         iif(
