@@ -247,20 +247,25 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
 
       // split heavy third-party libs into sensible chunks (reduce Mini-Chunks)
       const thirdPartyLibs = [
-        { name: 'ng-core', test: /[\\/]node_modules[\\/]@angular[\\/]core[\\/]/, priority: 50 },
-        { name: 'ng-common', test: /[\\/]node_modules[\\/]@angular[\\/]common[\\/]/, priority: 50 },
-        { name: 'ng-router', test: /[\\/]node_modules[\\/]@angular[\\/]router[\\/]/, priority: 50 },
-        { name: 'rxjs', test: /[\\/]node_modules[\\/]rxjs[\\/]/, priority: 45 },
-        { name: 'lib-fontawesome', test: /[\\/]node_modules[\\/]@fortawesome[\\/]/, priority: 40 },
-        { name: 'lib-bootstrap', test: /[\\/]node_modules[\\/](?:bootstrap|@ng-bootstrap)[\\/]/, priority: 39 },
-        { name: 'lib-oauth', test: /[\\/]node_modules[\\/]angular-oauth2-oidc[\\/]/, priority: 38 },
-        { name: 'lib-core', test: /[\\/]node_modules[\\/]core[\\/]/, priority: 37 },
+        { name: 'ng-core', test: /[\\/]node_modules[\\/]@angular[\\/]core[\\/]/, priority: 50, chunks: 'initial' },
+        { name: 'ng-common', test: /[\\/]node_modules[\\/]@angular[\\/]common[\\/]/, priority: 50, chunks: 'initial' },
+        { name: 'ng-router', test: /[\\/]node_modules[\\/]@angular[\\/]router[\\/]/, priority: 50, chunks: 'initial' },
+        { name: 'rxjs', test: /[\\/]node_modules[\\/]rxjs[\\/]/, priority: 45, chunks: 'all' },
+        { name: 'lib-fontawesome', test: /[\\/]node_modules[\\/]@fortawesome[\\/]/, priority: 40, chunks: 'all' },
+        {
+          name: 'lib-bootstrap',
+          test: /[\\/]node_modules[\\/](?:bootstrap|@ng-bootstrap)[\\/]/,
+          priority: 39,
+          chunks: 'all',
+        },
+        { name: 'lib-oauth', test: /[\\/]node_modules[\\/]angular-oauth2-oidc[\\/]/, priority: 38, chunks: 'all' },
+        { name: 'lib-core', test: /[\\/]node_modules[\\/]core[\\/]/, priority: 37, chunks: 'all' },
       ];
 
       thirdPartyLibs.forEach(lib => {
         cacheGroups[lib.name] = {
           test: lib.test,
-          chunks: 'all',
+          chunks: lib.chunks as 'initial' | 'all',
           name: lib.name,
           priority: lib.priority,
         };
