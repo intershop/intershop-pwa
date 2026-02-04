@@ -1,9 +1,8 @@
-const cp = require('child_process');
-const fs = require('fs');
-const path = require('path');
+const { sync: spawnSync } = require('cross-spawn');
+const { readFileSync, writeFileSync } = require('fs');
 
 const configurations = (
-  process.env.npm_config_active_themes || JSON.parse(fs.readFileSync('package.json')).config['active-themes']
+  process.env.npm_config_active_themes || JSON.parse(readFileSync('package.json')).config['active-themes']
 )
   .split(',')
   .map((theme, index) => ({ theme, port: 4000 + index }));
@@ -33,18 +32,12 @@ if (parallel) {
   console.log(`Using ${cores} cores for multi compile.`);
 }
 
-const result = cp.spawnSync(
-  path.join('node_modules', '.bin', 'npm-run-all' + (process.platform === 'win32' ? '.cmd' : '')),
-  ['--silent', ...parallel, ...builds],
-  {
-    stdio: 'inherit',
-  }
-);
+const result = spawnSync('npm-run-all', ['--silent', ...parallel, ...builds], { stdio: 'inherit' });
 if (result.status !== 0) {
   process.exit(result.status);
 }
 
-fs.writeFileSync(
+writeFileSync(
   'src/ssr/server-scripts/ecosystem-ports.json',
   JSON.stringify(
     configurations.reduce((acc, { theme, port }) => ({ ...acc, [theme]: port }), {}),
@@ -54,7 +47,7 @@ fs.writeFileSync(
 );
 
 configurations.forEach(({ theme }) => {
-  fs.writeFileSync(
+  writeFileSync(
     `dist/${theme}/run-standalone.js`,
     `const path = require('path');
 process.env.BROWSER_FOLDER = path.join(__dirname, 'browser');
