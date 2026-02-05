@@ -155,3 +155,4 @@ scripts
 !scripts/build*pwa.js
 !scripts/init-development-environment.js
 !scripts/compile-docker-scripts.js
+!scripts/inject-lib-chunks.js
