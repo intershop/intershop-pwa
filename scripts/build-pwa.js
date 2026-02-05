@@ -64,7 +64,7 @@ if (client) {
       themeParam = match[1];
     }
   }
-  execSync(`node scripts/inject-lib-chunks ${themeParam}`, {
+  execSync(`node scripts/inject-lib-chunks.js ${themeParam}`, {
     stdio: 'inherit',
   });
 }
