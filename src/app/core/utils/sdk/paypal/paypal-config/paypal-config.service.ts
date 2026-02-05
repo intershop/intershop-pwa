@@ -183,7 +183,8 @@ export class PaypalConfigService {
       !param.capabilities.includes('PaypalExperienceContext')
     ) {
       params = `${params}&enable-funding=paylater`;
-      //TODO: icm must have deliver information which cart type should be disabled for funding
+    }
+    if (!param.capabilities.includes('PaypalExperienceContext')) {
       params = `${params}&disable-funding=card,sepa`;
     }
 

@@ -60,7 +60,10 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   private page: PaypalPageTypes;
 
   /** Observable for tracking the PayPal script loading state. */
-  private loading$: Observable<ScriptType>;
+  private loadingScript$: Observable<ScriptType>;
+
+  /** Observable indicating whether the PayPal iframe is loading. */
+  loadingIframe$: Observable<boolean>;
 
   constructor(
     private destroyRef: DestroyRef,
@@ -74,7 +77,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.identifyPageType();
 
-    this.loading$ = this.appFacade
+    this.loadingScript$ = this.appFacade
       .serverSetting$<PaypalConfig>('payment.paypal')
       .pipe(switchMap(paypalConfig => this.loadPayPalScript(paypalConfig)));
 
@@ -82,6 +85,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
     this.payPalCardFields.closeForm$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.closeForm.emit();
     });
+    this.loadingIframe$ = this.payPalCardFields.loadingIframe$;
   }
 
   /**
@@ -113,7 +117,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
    * and the PayPal SDK script has been successfully loaded.
    */
   ngAfterViewInit(): void {
-    this.loading$.pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef)).subscribe(loadingResult => {
+    this.loadingScript$.pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef)).subscribe(loadingResult => {
       if (loadingResult.loaded) {
         const config: PaypalComponentsConfig = {
           scriptNamespace: this.selectedPaymentMethod

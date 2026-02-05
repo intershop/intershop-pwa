@@ -1,6 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject, firstValueFrom, race, timer } from 'rxjs';
+import { BehaviorSubject, Subject, firstValueFrom, race, timer } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -23,9 +23,13 @@ export class PayPalCardFields {
 
   /** Emits when the card fields form should be closed */
   closeForm$ = new Subject<void>();
-
+  /** Emits true when the card fields is start to submit  */
+  loadingIframe$ = new BehaviorSubject<boolean>(false);
   /** Flag to prevent blur validation during field reset */
   private isResetting = false;
+
+  /** Flag to prevent prevent double submission */
+  private processing = false;
 
   // Store rendered field instances for later access
   private fields: Record<
@@ -148,7 +152,7 @@ export class PayPalCardFields {
   }
 
   /**
-   * Handles field focus events to hide any existing error messages.
+   * Handles field focus events to hide any existing error messages and re-enable submit button.
    */
   private handleFieldFocus(data: PayPalCardFieldsStateObject): void {
     this.hideFieldError(data.emittedBy);
@@ -186,9 +190,13 @@ export class PayPalCardFields {
     if (submitButton) {
       submitButton.addEventListener('click', () => {
         this.ngZone.run(async () => {
-          this.cardField.submit().catch(() => {
-            this.validationErrorHandler(this.cardField.getState());
-          });
+          if (!this.processing) {
+            this.cardField.submit().catch(() => {
+              this.validationErrorHandler(this.cardField.getState());
+            });
+            this.loadingIframe$.next(true);
+            this.processing = true;
+          }
         });
       });
     }
@@ -243,14 +251,17 @@ export class PayPalCardFields {
    * Handles PayPal payment approval.
    */
   async onApproveCallback() {
+    this.loadingIframe$.next(false);
     this.resetFieldValues();
     this.checkoutFacade.submitPaypalPaymentInstrument({
       id: this.temporaryPaymentInstrumentId,
       paymentMethod: this.paymentMethod.id,
     });
+    this.processing = false;
   }
 
   async onErrorCallback() {
+    this.loadingIframe$.next(false);
     if (this.temporaryPaymentInstrumentId) {
       this.checkoutFacade.deletePaypalPayment(
         {
@@ -261,6 +272,7 @@ export class PayPalCardFields {
       );
     }
     this.resetFieldValues();
+    this.processing = false;
   }
 
   private resetFieldValues(): void {
