@@ -55,7 +55,16 @@ if (client) {
   removeServiceWorkerCacheCheck(remainingArgs);
 
   // Inject lib chunks into index.html
-  execSync('node scripts/inject-lib-chunks', {
+  const outputPathArg = remainingArgs.find(arg => arg.startsWith('--output-path'));
+  let themeParam = '';
+  if (outputPathArg) {
+    const outputPath = outputPathArg.split('=')[1];
+    const match = outputPath.match(/^dist\/([^/]+)\/browser$/);
+    if (match) {
+      themeParam = match[1];
+    }
+  }
+  execSync(`node scripts/inject-lib-chunks ${themeParam}`, {
     stdio: 'inherit',
   });
 }
