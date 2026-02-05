@@ -1,7 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
-const distPath = path.join(__dirname, '..', 'dist', 'browser');
+// Support theme argument for multi-build: node scripts/inject-lib-chunks [theme]
+const theme = process.argv[2];
+const distPath = theme
+  ? path.join(__dirname, '..', 'dist', theme, 'browser')
+  : path.join(__dirname, '..', 'dist', 'browser');
 const indexPath = path.join(distPath, 'index.html');
 
 const libChunks = [

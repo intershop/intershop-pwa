@@ -53,6 +53,11 @@ if (client) {
     stdio: 'inherit',
   });
   removeServiceWorkerCacheCheck(remainingArgs);
+
+  // Inject lib chunks into index.html
+  execSync('node scripts/inject-lib-chunks', {
+    stdio: 'inherit',
+  });
 }
 
 if (configuration) {

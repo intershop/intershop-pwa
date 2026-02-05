@@ -18,14 +18,13 @@ RUN npm run postinstall
 ARG serviceWorker
 RUN node schematics/customization/service-worker ${serviceWorker} || true
 COPY templates/webpack/* /workspace/templates/webpack/
+COPY tsconfig.server.json server.ts /workspace/
+COPY babel.config.js /workspace/
 ARG testing=false
 ENV TESTING=${testing}
 ARG activeThemes=
 RUN if [ ! -z "${activeThemes}" ]; then npm pkg set config.active-themes="${activeThemes}"; fi
-RUN npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER
-COPY tsconfig.server.json server.ts /workspace/
-COPY babel.config.js /workspace/
-RUN npm run build:multi server
+RUN npm run build:multi -- --deploy-url=DEPLOY_URL_PLACEHOLDER
 RUN node scripts/compile-docker-scripts
 COPY dist/* /workspace/dist/
 

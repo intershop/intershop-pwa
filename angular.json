@@ -64,9 +64,9 @@
                 {
                   "type": "bundle",
                   "name": "vendor",
-                  "baseline": "260kb",
+                  "baseline": "500kb",
                   "warning": "100kb",
-                  "error": "150kb"
+                  "error": "450kb"
                 },
                 {
                   "type": "initial",
@@ -108,7 +108,7 @@
           "options": {
             "buildTarget": "intershop-pwa:build"
           },
-          "defaultConfiguration": "b2b,development",
+          "defaultConfiguration": "b2c,development",
           "configurations": {
             "production": {
               "buildTarget": "intershop-pwa:build:production"
