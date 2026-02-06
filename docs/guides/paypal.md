@@ -22,7 +22,6 @@ kb_sync_latest_only
     - [Express Checkout Buttons](#express-checkout-buttons)
   - [Card Fields Styling](#card-fields-styling)
 - [Page Types](#page-types)
-- [Integration Points](#integration-points)
 - [Script Loading](#script-loading)
 - [Pay later Configuration](#pay-later-configuration)
 - [Further References](#further-references)
@@ -79,7 +78,10 @@ The [`ish-payment-paypal`][payment-paypal.component.ts] component supports three
 
 ### Buttons
 
-PayPal checkout buttons for initiating standard and express payments.
+This component type is used to display PayPal checkout buttons for both standard and express payments.
+Rendering is performed by [`PaypalButtons`][paypal-buttons.ts].
+This component also provides the callback methods which are requires by the PayPal JavaScript SDK Buttons API.
+The following example shows how to integrate the [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding component type `Buttons` into any component:
 
 ```typescript
 export class ExampleComponent {
@@ -95,8 +97,10 @@ export class ExampleComponent {
 
 ### Messages
 
-Pay Later promotional messages that display financing information.
+This component type is used to display Pay Later messaging on various pages (home, category, product details, cart, checkout) based on the ICM backend configuration.
+Rendering is performed by [`PaypalMessages`][paypal-messages.ts].
 It is not necessary to set the `componentType` input for messages, as it is the default type when no `componentType` is provided.
+The following example shows how to integrate the [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding component type `Messages` into any component:
 
 ```html
 <ish-payment-paypal />
@@ -104,7 +108,10 @@ It is not necessary to set the `componentType` input for messages, as it is the 
 
 ### Card Fields
 
-Hosted card input fields for direct credit/debit card payments (Advanced Card Payments).
+This component type is used to provide card input fields for direct credit/debit card payments (Advanced Card Payments).
+Rendering is performed by [`PaypalCardFields`][paypal-card-fields.ts].
+This component also provides input validation, error handling und the callback methods which are requires by the PayPal JavaScript SDK Buttons API.
+The following example shows how to integrate the [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding component type `CardFields` into any component:
 
 ```typescript
 export class ExampleComponent {
@@ -120,6 +127,7 @@ export class ExampleComponent {
 
 ## Page Types
 
+The page types are required as script loader URL parameters, but also for styling the components and determining the pay later amount to be displayed.
 The PayPal integration automatically detects the current page type based on the URL and configures the SDK accordingly:
 
 | Page Type        | URL Pattern             | SDK `data-page-type` | Amount Source      |
@@ -132,7 +140,7 @@ The PayPal integration automatically detects the current page type based on the 
 
 ## Styling Customization
 
-This section explains how to style PayPal components in the Intershop PWA using the styling possibilities given by PayPal JavaScript SDK.
+This section explains how to style PayPal components in the Intershop PWA using the styling possibilities given by PayPal JavaScript SDK[`PayPal JavaScript SDK`][PayPal JavaScript SDK Reference].
 
 All styling configurations are located in [`paypal-component.styling.ts`][paypal-component.styling.ts].
 
@@ -161,20 +169,6 @@ export const PAYPAL_BUTTON_STYLING = {
 };
 ```
 
-#### Standard Checkout Buttons
-
-| Attribute | Value                                                 |
-| --------- | ----------------------------------------------------- |
-| Use Case  | Standard checkout flow on the checkout payment page   |
-| Features  | Horizontal layout with consistent branding and height |
-
-#### Express Checkout Buttons
-
-| Attribute | Value                                                                |
-| --------- | -------------------------------------------------------------------- |
-| Use Case  | Express checkout scenarios (e.g., quick checkout from the cart page) |
-| Features  | Flexible layout without fixed horizontal constraint                  |
-
 ### Card Fields Styling
 
 Card fields use custom CSS styling to match the application design:
@@ -194,21 +188,11 @@ export const PAYPAL_CART_FIELDS_STYLING = {
 };
 ```
 
-## Integration Points
-
-The `ish-payment-paypal` component is used in the following locations:
-
-| Location              | Component Type      | Purpose                                         |
-| --------------------- | ------------------- | ----------------------------------------------- |
-| Home Page             | Messages            | Display promotional Pay Later messaging         |
-| Category Pages        | Messages            | Display Pay Later messaging in product listings |
-| Product Detail Page   | Messages            | Show financing options for specific product     |
-| Basket/Cart Page      | Messages, Buttons   | Pay Later info and Express Checkout button      |
-| Checkout Payment Page | Buttons, CardFields | Standard checkout with PayPal or card payment   |
-
 ## Script Loading
 
-Each PayPal SDK instance is loaded with a unique namespace to avoid conflicts when multiple instances are needed:
+Depending on the configured component type, the PayPal integration dynamically loads the appropriate SDK instance with the necessary parameters (e.g., `client-id`, `merchant-id`, `currency`, `locale`, `intent`) via the [`PaypalConfigService`][paypal-config.service.ts].
+Since the PayPal SDK URL parameters can differ for each payment method, the script URL is loaded with a unique namespace to avoid conflicts when multiple instances are required.
+The namespace format is `PPCP_<payment_method_id>` for Buttons and Card Fields, and `PPCP_MESSAGES` for Pay Later Messages.
 
 ```typescript
 // Namespace format: PPCP_<payment_method_id> or PPCP_MESSAGES
@@ -266,4 +250,7 @@ this.appFacade.serverSetting$<PaypalConfig>('payment.paypal');
 [paypal-component.styling.ts]: ../../src/app/core/utils/sdk/paypal/paypal-components/paypal-component.styling.ts
 [paypal-config.service.ts]: ../../src/app/core/utils/sdk/paypal/paypal-config/paypal-config.service.ts
 [script-loader.service.ts]: ../../src/app/core/utils/script-loader/script-loader.service.ts
+[paypal-buttons.ts]: ../../src/app/core/utils/sdk/paypal/paypal-components/buttons/paypal-buttons.ts
+[paypal-messages.ts]: ../../src/app/core/utils/sdk/paypal/paypal-components/messages/paypal-messages.ts
+[paypal-card-fields.ts]: ../../src/app/core/utils/sdk/paypal/paypal-components/card-fields/paypal-card-fields.ts
 [PayPal JavaScript SDK Reference]: https://developer.paypal.com/sdk/js/reference

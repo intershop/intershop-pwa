@@ -1,7 +1,7 @@
 /**
  * Styling Configuration for PayPal Messages
  *
- * @see {@link https://developer.paypal.com/docs/checkout/pay-later/us/integrate/customize-messages/} PayPal Style Reference
+ * @see {@link https://developer.paypal.com/sdk/js/reference} PayPal Style Reference
  */
 
 // Styling configuration for Pay Later messages.

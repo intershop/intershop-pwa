@@ -18,19 +18,17 @@ import {
 @Injectable({ providedIn: 'root' })
 export class PayPalCardFields {
   paymentMethod: PaymentMethod;
-  private temporaryPaymentInstrumentId: string;
   cardField: PayPalCardFieldsComponent;
 
   /** Emits when the card fields form should be closed */
   closeForm$ = new Subject<void>();
   /** Emits true when the card fields is start to submit  */
   loadingIframe$ = new BehaviorSubject<boolean>(false);
+  private creditCardPaymentInstrumentId: string;
   /** Flag to prevent blur validation during field reset */
   private isResetting = false;
-
   /** Flag to prevent prevent double submission */
   private processing = false;
-
   // Store rendered field instances for later access
   private fields: Record<
     string,
@@ -102,11 +100,6 @@ export class PayPalCardFields {
 
   /**
    * Renders individual card input fields (name, number, CVV, expiry).
-   *
-   * Note: PayPal SDK may trigger browser warnings about geolocation permissions.
-   * This is expected behavior from PayPal's fraud detection mechanisms and does not
-   * affect functionality. The warning can be safely ignored or suppressed via
-   * Permissions-Policy headers if needed.
    */
   async renderIndividualFields(): Promise<void> {
     const fieldConfigs = [
@@ -181,7 +174,7 @@ export class PayPalCardFields {
   }
 
   /**
-   * Sets up the submit button event handler for card field submission.
+   * Sets up the submit button and cancel button event handler for card field submission/cancellation.
    */
   private setupHandlerForButtons(): void {
     const submitButton = document.getElementById('card-field-submit-button');
@@ -212,7 +205,7 @@ export class PayPalCardFields {
   }
 
   /**
-   * Paypal Order Id creation callback. Creates a temporary basket payment and waits for the orderId from the service.
+   * Paypal Order Id creation callback. Creates a basket payment and waits for the orderId from the service.
    */
   async createOrderCallback(): Promise<string> {
     const orderId = this.waitForOrderData();
@@ -227,13 +220,12 @@ export class PayPalCardFields {
 
   /**
    * Waits for the PayPal order data from the service with a timeout.
-   * Uses RxJS race to implement timeout behavior.
    */
   private waitForOrderData(): Promise<string> {
     const orderData$ = this.payPalDataTransferService.orderDataStream$.pipe(
       take(1),
       map(data => {
-        this.temporaryPaymentInstrumentId = data.paymentInstrumentId;
+        this.creditCardPaymentInstrumentId = data.paymentInstrumentId;
         return data.orderId;
       })
     );
@@ -254,18 +246,21 @@ export class PayPalCardFields {
     this.loadingIframe$.next(false);
     this.resetFieldValues();
     this.checkoutFacade.submitPaypalPaymentInstrument({
-      id: this.temporaryPaymentInstrumentId,
+      id: this.creditCardPaymentInstrumentId,
       paymentMethod: this.paymentMethod.id,
     });
     this.processing = false;
   }
 
+  /**
+   * Handles PayPal payment errors.
+   */
   async onErrorCallback() {
     this.loadingIframe$.next(false);
-    if (this.temporaryPaymentInstrumentId) {
+    if (this.creditCardPaymentInstrumentId) {
       this.checkoutFacade.deletePaypalPayment(
         {
-          id: this.temporaryPaymentInstrumentId,
+          id: this.creditCardPaymentInstrumentId,
           paymentMethod: this.paymentMethod.id,
         },
         this.translateService.instant('checkout.payment.paypal.error.message')

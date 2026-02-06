@@ -32,11 +32,7 @@ import {
  * Component for rendering PayPal payment components (Buttons, Messages, CardFields).
  *
  * This component dynamically loads the PayPal SDK and renders the appropriate PayPal component
- * based on the configured component type and current page context. It supports:
- * - **Buttons**: PayPal checkout buttons for standard payments
- * - **Messages**: Pay Later messaging for promotional content
- * - **CardFields**: Hosted card input fields for credit card payments
- */
+ * based on the configured component type and current page context. It supports Buttons,Messages and CardFields.*/
 @Component({
   selector: 'ish-payment-paypal',
   templateUrl: './payment-paypal.component.html',
@@ -163,6 +159,9 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Determines whether Pay Later messaging should be displayed based on the PayPal configuration and the current page type.
+   */
   private showPaypalPayLaterInformation(paypalConfig: PaypalConfig): boolean {
     switch (this.getPage()) {
       case PaypalPageTypes.Cart:

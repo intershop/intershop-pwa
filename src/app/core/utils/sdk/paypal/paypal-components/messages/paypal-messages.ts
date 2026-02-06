@@ -9,6 +9,7 @@ import { PaypalComponent } from 'ish-core/utils/sdk/paypal/paypal-model/paypal.i
 @Injectable({ providedIn: 'root' })
 export class PayPalMessages {
   private destroyRef = inject(DestroyRef);
+
   renderMessages(config: PaypalComponentsConfig): Promise<void> {
     const paypalObject = (window as unknown as Record<string, PaypalComponent>)[config.scriptNamespace];
     const containerId = config.containerId;

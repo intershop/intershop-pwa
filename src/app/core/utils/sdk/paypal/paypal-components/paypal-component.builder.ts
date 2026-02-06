@@ -36,11 +36,6 @@ export interface PaypalComponentsConfig {
 
 /**
  * Builder service for creating and configuring PayPal SDK components.
- *
- * The service supports different page types:
- * - **cart/checkout**: Uses basket total for amounts
- * - **product-details**: Uses product sale price
- * - **home/product-listing**: Static or promotional content
  */
 @Injectable({ providedIn: 'root' })
 export class PaypalComponentBuilder {
@@ -51,23 +46,7 @@ export class PaypalComponentBuilder {
 
   constructor(private checkoutFacade: CheckoutFacade, private shoppingFacade: ShoppingFacade) {}
 
-  /**
-   * Creates a PayPal component based on the provided configuration.
-   *
-   * This method acts as a factory that creates the appropriate PayPal SDK component
-   * (Buttons, Messages, or CardFields) based on the component type specified in the config.
-   * Each component type requires different configuration properties and has different
-   * initialization requirements.
-   *
-   * Component-specific behavior:
-   * - **Buttons**: Renders PayPal payment buttons for checkout, requires basket data
-   * - **Messages**: Renders Pay Later promotional messages, calculates amount based on page context
-   * - **CardFields**: Renders advanced card input fields for credit/debit card payments
-   *
-   * @param config - Configuration object containing all necessary component settings
-   * @returns Observable that completes when the component is successfully rendered
-   * @throws Error if an unsupported component type is provided
-   */
+  // Creates a PayPal component based on the provided configuration.
   build(config: PaypalComponentsConfig) {
     switch (config.componentType) {
       case PaypalComponentTypes.Buttons:
@@ -81,15 +60,7 @@ export class PaypalComponentBuilder {
     }
   }
 
-  /**
-   * Calculates the appropriate amount to display in PayPal components based on page context.
-   *
-   * The amount calculation logic varies by page type:
-   * - **Product Details**: Uses the product's sale price from the currently selected product
-   * - **Cart/Checkout**: Uses the basket's gross total including all items, taxes, and shipping
-   * @param config - Component configuration containing the page type
-   * @returns The calculated amount as a number, or 0 if no amount can be determined
-   */
+  // Calculates the appropriate amount to display in PayPal components based on page context.
   private getAmount(config: PaypalComponentsConfig): Observable<number> {
     let amount$: Observable<number> = of(0);
     if (config.pageType === PaypalPageTypes.ProductDetails) {
