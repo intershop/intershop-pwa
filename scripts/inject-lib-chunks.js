@@ -40,7 +40,7 @@ if (chunksToInject.length === 0) {
 const mainScriptMatch = html.match(/<script[^>]*src="[^"]*main[^"]*\.js"[^>]*><\/script>/i);
 const mainScriptTag = mainScriptMatch?.[0];
 
-const injectHtml = chunksToInject.map(file => `<script src="${file}" type="module"></script>`).join('');
+const injectHtml = chunksToInject.map(file => `<script src="${file}" type="module" defer></script>`).join('');
 
 if (mainScriptTag) {
   html = html.replace(mainScriptTag, injectHtml + mainScriptTag);
