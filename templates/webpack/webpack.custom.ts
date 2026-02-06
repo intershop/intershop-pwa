@@ -260,7 +260,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
       thirdPartyLibs.forEach(lib => {
         cacheGroups[lib.name] = {
           test: lib.test,
-          chunks: 'all',
+          chunks: 'async',
           name: lib.name,
           priority: lib.priority,
         };
