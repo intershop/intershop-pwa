@@ -382,13 +382,12 @@ export class CheckoutFacade {
   );
 
   /**
-   * Determines the eligible addresses of baskets that have an invoice address.
-   * This ensures that the basket has at least one address.
+   * Determines the eligible addresses of baskets.
    */
   eligibleAddresses$() {
     return this.basket$.pipe(
       whenTruthy(),
-      filter(basket => basket.invoiceToAddress !== undefined),
+      filter(basket => basket.invoiceToAddress !== undefined || basket.user !== undefined),
       take(1),
       tap(() => this.store.dispatch(loadBasketEligibleAddresses())),
       switchMap(() => this.store.pipe(select(getBasketEligibleAddresses)))
