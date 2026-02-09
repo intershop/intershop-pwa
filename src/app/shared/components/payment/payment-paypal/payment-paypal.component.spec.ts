@@ -11,13 +11,13 @@ import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
-import { PayPalCardFields } from 'ish-core/utils/sdk/paypal/paypal-components/card-fields/paypal-card-fields';
-import { PaypalComponentBuilder } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.builder';
+import { PayPalCardFields } from 'ish-core/utils/paypal/paypal-components/card-fields/paypal-card-fields';
+import { PaypalComponentBuilder } from 'ish-core/utils/paypal/paypal-components/paypal-component.builder';
 import {
   PaypalComponentTypes,
   PaypalConfigService,
-  PaypalPageTypes,
-} from 'ish-core/utils/sdk/paypal/paypal-config/paypal-config.service';
+  PaypalPageType,
+} from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 
 import { PaymentPaypalComponent } from './payment-paypal.component';
 
@@ -71,12 +71,19 @@ describe('Payment Paypal Component', () => {
       declarations: [MockComponent(FaIconComponent), MockDirective(NgbPopover), PaymentPaypalComponent],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
-        { provide: PayPalCardFields, useFactory: () => instance(payPalCardFields) },
-        { provide: PaypalComponentBuilder, useFactory: () => instance(paypalComponentBuilder) },
         { provide: PaypalConfigService, useFactory: () => instance(paypalConfigService) },
         { provide: Router, useFactory: () => instance(router) },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(PaymentPaypalComponent, {
+        set: {
+          providers: [
+            { provide: PayPalCardFields, useFactory: () => instance(payPalCardFields) },
+            { provide: PaypalComponentBuilder, useFactory: () => instance(paypalComponentBuilder) },
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -97,31 +104,31 @@ describe('Payment Paypal Component', () => {
     it('should identify page type as CheckoutPayment for checkout/payment URL', () => {
       when(router.url).thenReturn('/checkout/payment');
       fixture.detectChanges();
-      expect((component as any).getPage()).toBe(PaypalPageTypes.CheckoutPayment);
+      expect((component as any).getPage()).toBe(PaypalPageType.CheckoutPayment);
     });
 
     it('should identify page type as Cart for basket URL', () => {
       when(router.url).thenReturn('/basket');
       fixture.detectChanges();
-      expect((component as any).getPage()).toBe(PaypalPageTypes.Cart);
+      expect((component as any).getPage()).toBe(PaypalPageType.Cart);
     });
 
     it('should identify page type as ProductDetails for product detail URL', () => {
       when(router.url).thenReturn('/category-ctg/product-prd');
       fixture.detectChanges();
-      expect((component as any).getPage()).toBe(PaypalPageTypes.ProductDetails);
+      expect((component as any).getPage()).toBe(PaypalPageType.ProductDetails);
     });
 
     it('should identify page type as ProductListing for category URL', () => {
       when(router.url).thenReturn('/category-ctg');
       fixture.detectChanges();
-      expect((component as any).getPage()).toBe(PaypalPageTypes.ProductListing);
+      expect((component as any).getPage()).toBe(PaypalPageType.ProductListing);
     });
 
     it('should identify page type as Home for home URL', () => {
       when(router.url).thenReturn('/home');
       fixture.detectChanges();
-      expect((component as any).getPage()).toBe(PaypalPageTypes.Home);
+      expect((component as any).getPage()).toBe(PaypalPageType.Home);
     });
 
     it('should emit closeForm when PayPalCardFields closeForm$ emits', () => {
@@ -235,7 +242,7 @@ describe('Payment Paypal Component', () => {
     it('should generate unique paypalComponentContainerId', () => {
       const component2 = TestBed.createComponent(PaymentPaypalComponent).componentInstance;
       expect(component.paypalComponentContainerId).not.toBe(component2.paypalComponentContainerId);
-      expect(component.paypalComponentContainerId).toMatch(/^paypal-container-[a-z0-9]+$/);
+      expect(component.paypalComponentContainerId).toMatch(/^paypal-container-[a-z0-9-]+$/);
     });
   });
 });

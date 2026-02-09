@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
+import { ScrollDirective } from 'ish-core/directives/scroll.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -51,6 +52,7 @@ describe('Checkout Payment Component', () => {
         MockComponent(PaymentConcardisCreditcardComponent),
         MockComponent(PaymentSaveCheckboxComponent),
         MockDirective(NgbCollapse),
+        MockDirective(ScrollDirective),
         MockDirective(ServerHtmlDirective),
         MockPipe(PricePipe),
         PaymentParameterFormComponent,

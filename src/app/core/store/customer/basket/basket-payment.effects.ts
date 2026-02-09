@@ -12,7 +12,7 @@ import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { mapToRouterState } from 'ish-core/store/core/router';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
-import { PayPalDataTransferService } from 'ish-core/utils/sdk/paypal/paypal-data-transfer/paypal-data-transfer.service';
+import { PayPalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 
 import {
   continueCheckout,
@@ -147,7 +147,7 @@ export class BasketPaymentEffects {
               switchMap(() =>
                 this.paymentPaypalService.initializePayPalExperienceContextFlow().pipe(
                   concatMap(orderId => {
-                    this.payPalDataTransferService.emitOrderData({
+                    this.payPalDataTransferService.emitPaypalOrderData({
                       orderId,
                       paymentInstrumentId: pi.id,
                     });

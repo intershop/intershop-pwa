@@ -10,23 +10,26 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { EMPTY, Observable, switchMap } from 'rxjs';
+import { EMPTY, Observable, switchMap, take } from 'rxjs';
+import { v4 as uuid } from 'uuid';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
-import { PayPalCardFields } from 'ish-core/utils/sdk/paypal/paypal-components/card-fields/paypal-card-fields';
+import { PayPalButtons } from 'ish-core/utils/paypal/paypal-components/buttons/paypal-buttons';
+import { PayPalCardFields } from 'ish-core/utils/paypal/paypal-components/card-fields/paypal-card-fields';
+import { PayPalMessages } from 'ish-core/utils/paypal/paypal-components/messages/paypal-messages';
 import {
   PaypalComponentBuilder,
   PaypalComponentsConfig,
-} from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.builder';
+} from 'ish-core/utils/paypal/paypal-components/paypal-component.builder';
 import {
   PaypalComponentTypes,
   PaypalConfigService,
-  PaypalPageTypes,
-} from 'ish-core/utils/sdk/paypal/paypal-config/paypal-config.service';
+  PaypalPageType,
+} from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
+import { ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
 
 /**
  * Component for rendering PayPal payment components (Buttons, Messages, CardFields).
@@ -38,6 +41,7 @@ import {
   templateUrl: './payment-paypal.component.html',
   styleUrls: ['./payment-paypal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [PaypalComponentBuilder, PayPalButtons, PayPalCardFields, PayPalMessages],
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   /** Type of PayPal component to render. Defaults to Messages. */
@@ -50,10 +54,10 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   @Output() closeForm = new EventEmitter<void>();
 
   /** Unique container ID for the PayPal component DOM element. */
-  paypalComponentContainerId = 'paypal-container-'.concat(Math.random().toString(36).substring(2, 15));
+  paypalComponentContainerId = 'paypal-container-'.concat(uuid());
 
   /** The identified page type based on the current URL. */
-  private page: PaypalPageTypes;
+  private page: PaypalPageType;
 
   /** Observable for tracking the PayPal script loading state. */
   private loadingScript$: Observable<ScriptType>;
@@ -73,9 +77,11 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.identifyPageType();
 
-    this.loadingScript$ = this.appFacade
-      .serverSetting$<PaypalConfig>('payment.paypal')
-      .pipe(switchMap(paypalConfig => this.loadPayPalScript(paypalConfig)));
+    this.loadingScript$ = this.appFacade.serverSetting$<PaypalConfig>('payment.paypal').pipe(
+      whenTruthy(),
+      take(1),
+      switchMap(paypalConfig => this.loadPayPalScript(paypalConfig))
+    );
 
     // Subscribe to close form event from PayPal card fields
     this.payPalCardFields.closeForm$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
@@ -133,7 +139,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private getPage(): PaypalPageTypes {
+  private getPage(): PaypalPageType {
     return this.page;
   }
 
@@ -145,17 +151,17 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   private identifyPageType() {
     const url = this.router.url;
     if (url.includes('/basket')) {
-      this.page = PaypalPageTypes.Cart;
+      this.page = PaypalPageType.Cart;
     } else if (url.includes('checkout/payment')) {
-      this.page = PaypalPageTypes.CheckoutPayment;
+      this.page = PaypalPageType.CheckoutPayment;
     } else if (url.includes('-ctg')) {
       if (url.includes('-prd')) {
-        this.page = PaypalPageTypes.ProductDetails;
+        this.page = PaypalPageType.ProductDetails;
       } else {
-        this.page = PaypalPageTypes.ProductListing;
+        this.page = PaypalPageType.ProductListing;
       }
     } else if (url.includes('/home')) {
-      this.page = PaypalPageTypes.Home;
+      this.page = PaypalPageType.Home;
     }
   }
 
@@ -164,15 +170,15 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
    */
   private showPaypalPayLaterInformation(paypalConfig: PaypalConfig): boolean {
     switch (this.getPage()) {
-      case PaypalPageTypes.Cart:
+      case PaypalPageType.Cart:
         return paypalConfig.payLaterPreferences.PayLaterMessagingCartEnabled;
-      case PaypalPageTypes.CheckoutPayment:
+      case PaypalPageType.CheckoutPayment:
         return paypalConfig.payLaterPreferences.PayLaterMessagingPaymentEnabled;
-      case PaypalPageTypes.Home:
+      case PaypalPageType.Home:
         return paypalConfig.payLaterPreferences.PayLaterMessagingHomeEnabled;
-      case PaypalPageTypes.ProductDetails:
+      case PaypalPageType.ProductDetails:
         return paypalConfig.payLaterPreferences.PayLaterMessagingProductDetailsEnabled;
-      case PaypalPageTypes.ProductListing:
+      case PaypalPageType.ProductListing:
         return paypalConfig.payLaterPreferences.PayLaterMessagingCategoryEnabled;
       default:
         return false;

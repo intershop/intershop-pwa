@@ -9,7 +9,7 @@ import { ScriptLoaderService, ScriptType } from 'ish-core/utils/script-loader/sc
 /**
  * Enumeration of PayPal page types used for configuring the PayPal SDK parameter data-page-type.
  */
-export enum PaypalPageTypes {
+export enum PaypalPageType {
   /** Shopping cart page where users review their items before checkout */
   Cart = 'cart',
   /** Checkout payment page where users select payment method and complete purchase */

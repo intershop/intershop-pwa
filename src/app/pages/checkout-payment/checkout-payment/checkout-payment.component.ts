@@ -2,14 +2,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild,
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -24,7 +22,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PriceType } from 'ish-core/models/price/price.model';
-import { PaypalComponentTypes } from 'ish-core/utils/sdk/paypal/paypal-config/paypal-config.service';
+import { PaypalComponentTypes } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
@@ -64,8 +62,9 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
 
   redirectStatus$ = new BehaviorSubject<string>(undefined);
 
-  @ViewChild('errorMessage', { read: ElementRef }) errorMessage: ElementRef;
-  @ViewChild('basketErrorMessage', { read: ElementRef }) basketErrorMessage: ElementRef;
+  scrollToMessage = false;
+  // default values to control scrolling behavior
+  scrollSpacing = 64;
 
   private openFormIndex = -1; // index of the open parameter form
 
@@ -104,24 +103,10 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
       // copy objects for runtime checks because formly modifies them, TODO: refactor
       this.filteredPaymentMethods = this.paymentMethods?.map(x => JSON.parse(JSON.stringify(x)));
     }
-
-    // Set focus on error messages when error occurs
+    // Scroll to error messages when error occurs
     if (c.error?.currentValue && !c.error.firstChange) {
-      this.focusErrorMessage();
+      this.scrollToMessage = true;
     }
-  }
-
-  /**
-   * Sets focus on the appropriate error message component
-   */
-  private focusErrorMessage() {
-    setTimeout(() => {
-      if (this.error?.errors?.length && this.basketErrorMessage?.nativeElement) {
-        this.basketErrorMessage.nativeElement.focus();
-      } else if (this.error && this.errorMessage?.nativeElement) {
-        this.errorMessage.nativeElement.focus();
-      }
-    });
   }
 
   get parameterForm(): FormGroup {

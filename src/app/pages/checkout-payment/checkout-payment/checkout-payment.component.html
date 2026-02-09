@@ -1,5 +1,7 @@
 <div class="row" *ngIf="basket">
   <div class="col-md-12">
+    <!-- target element to scroll to the messages -->
+    <div [ishScroll]="scrollToMessage" [scrollSpacing]="scrollSpacing"></div>
     <!-- Messages -->
     <ish-basket-error-message *ngIf="error" [error]="error" />
     <ish-basket-validation-results />

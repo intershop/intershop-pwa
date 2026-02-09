@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 interface PayPalOrderData {
   orderId: string;
@@ -13,14 +13,14 @@ interface PayPalOrderData {
 @Injectable({ providedIn: 'root' })
 export class PayPalDataTransferService {
   // Subject that emits PayPal order data when available.
-  private orderData$ = new Subject<PayPalOrderData>();
+  private paypalOrderData$ = new Subject<PayPalOrderData>();
 
-  get orderDataStream$() {
-    return this.orderData$.asObservable();
+  get paypalOrder$(): Observable<PayPalOrderData> {
+    return this.paypalOrderData$.asObservable();
   }
 
   // Emits PayPal order data to all subscribers.
-  emitOrderData(data: PayPalOrderData): void {
-    this.orderData$.next(data);
+  emitPaypalOrderData(data: PayPalOrderData): void {
+    this.paypalOrderData$.next(data);
   }
 }

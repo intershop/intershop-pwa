@@ -138,6 +138,9 @@ The PayPal integration automatically detects the current page type based on the 
 | Product Listing  | `-ctg` (without `-prd`) | `product-listing`    | -                  |
 | Home             | `/home`                 | `home`               | -                  |
 
+> [!NOTE]
+> When modifying the PWA routes listed above, ensure that the `identifyPageType()` method in [`payment-paypal.component.ts`][payment-paypal.component.ts] is updated accordingly to reflect the new URL patterns.
+
 ## Styling Customization
 
 This section explains how to style PayPal components in the Intershop PWA using the styling possibilities given by PayPal JavaScript SDK[`PayPal JavaScript SDK`][PayPal JavaScript SDK Reference].
@@ -241,16 +244,16 @@ this.appFacade.serverSetting$<PaypalConfig>('payment.paypal');
 ## Further References
 
 - [PayPal JavaScript SDK Reference](https://developer.paypal.com/docs/checkout/reference/customize-sdk/)
-- [`Description of PayPal SDK components`][PayPal JavaScript SDK Reference]
+- [Description of PayPal SDK components][PayPal JavaScript SDK Reference]
 - [PayPal Messages Documentation](https://developer.paypal.com/docs/checkout/pay-later/us/integrate/)
 - [PayPal Advanced Card Payments](https://developer.paypal.com/docs/checkout/advanced/)
 - [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 2](https://knowledge.intershop.com/kb/index.php/Display/455B74)
 
 [payment-paypal.component.ts]: ../../src/app/shared/components/payment/payment-paypal/payment-paypal.component.ts
-[paypal-component.styling.ts]: ../../src/app/core/utils/sdk/paypal/paypal-components/paypal-component.styling.ts
-[paypal-config.service.ts]: ../../src/app/core/utils/sdk/paypal/paypal-config/paypal-config.service.ts
+[paypal-component.styling.ts]: ../../src/app/core/utils/paypal/paypal-components/paypal-component.styling.ts
+[paypal-config.service.ts]: ../../src/app/core/utils/paypal/paypal-config/paypal-config.service.ts
 [script-loader.service.ts]: ../../src/app/core/utils/script-loader/script-loader.service.ts
-[paypal-buttons.ts]: ../../src/app/core/utils/sdk/paypal/paypal-components/buttons/paypal-buttons.ts
-[paypal-messages.ts]: ../../src/app/core/utils/sdk/paypal/paypal-components/messages/paypal-messages.ts
-[paypal-card-fields.ts]: ../../src/app/core/utils/sdk/paypal/paypal-components/card-fields/paypal-card-fields.ts
+[paypal-buttons.ts]: ../../src/app/core/utils/paypal/paypal-components/buttons/paypal-buttons.ts
+[paypal-messages.ts]: ../../src/app/core/utils/paypal/paypal-components/messages/paypal-messages.ts
+[paypal-card-fields.ts]: ../../src/app/core/utils/paypal/paypal-components/card-fields/paypal-card-fields.ts
 [PayPal JavaScript SDK Reference]: https://developer.paypal.com/sdk/js/reference

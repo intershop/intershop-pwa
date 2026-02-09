@@ -8,7 +8,7 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { PaypalComponentTypes, PaypalPageTypes } from 'ish-core/utils/sdk/paypal/paypal-config/paypal-config.service';
+import { PaypalComponentTypes, PaypalPageType } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 
 import { PayPalButtons } from './buttons/paypal-buttons';
 import { PayPalCardFields } from './card-fields/paypal-card-fields';
@@ -51,6 +51,7 @@ describe('Paypal Component Builder', () => {
         { provide: PayPalCardFields, useFactory: () => instance(payPalCardFields) },
         { provide: PayPalMessages, useFactory: () => instance(payPalMessages) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
+        PaypalComponentBuilder,
       ],
     });
 
@@ -65,7 +66,7 @@ describe('Paypal Component Builder', () => {
     describe('PayPal Buttons', () => {
       it('should render buttons component with basket', async () => {
         const config = {
-          pageType: PaypalPageTypes.CheckoutPayment,
+          pageType: PaypalPageType.CheckoutPayment,
           scriptNamespace: 'test-namespace',
           componentType: PaypalComponentTypes.Buttons,
           paypalPaymentMethod: mockPaymentMethod,
@@ -81,7 +82,7 @@ describe('Paypal Component Builder', () => {
     describe('PayPal Messages', () => {
       it('should render messages component on product details page', async () => {
         const config = {
-          pageType: PaypalPageTypes.ProductDetails,
+          pageType: PaypalPageType.ProductDetails,
           scriptNamespace: 'test-namespace',
           componentType: PaypalComponentTypes.Messages,
           containerId: 'paypal-messages-container',
@@ -97,7 +98,7 @@ describe('Paypal Component Builder', () => {
         when(shoppingFacade.productPrices$('product-123')).thenReturn(of({ salePrice: { value: 149.99 } as Price }));
 
         const config = {
-          pageType: PaypalPageTypes.ProductDetails,
+          pageType: PaypalPageType.ProductDetails,
           scriptNamespace: 'test-namespace',
           componentType: PaypalComponentTypes.Messages,
           containerId: 'paypal-messages-container',
@@ -112,7 +113,7 @@ describe('Paypal Component Builder', () => {
 
       it('should calculate amount from basket total on cart page', async () => {
         const config = {
-          pageType: PaypalPageTypes.Cart,
+          pageType: PaypalPageType.Cart,
           scriptNamespace: 'test-namespace',
           componentType: PaypalComponentTypes.Messages,
           containerId: 'paypal-messages-container',
@@ -127,7 +128,7 @@ describe('Paypal Component Builder', () => {
 
       it('should calculate amount from basket total on checkout payment page', async () => {
         const config = {
-          pageType: PaypalPageTypes.CheckoutPayment,
+          pageType: PaypalPageType.CheckoutPayment,
           scriptNamespace: 'test-namespace',
           componentType: PaypalComponentTypes.Messages,
           containerId: 'paypal-messages-container',
@@ -142,7 +143,7 @@ describe('Paypal Component Builder', () => {
 
       it('should return 0 amount on home page', async () => {
         const config = {
-          pageType: PaypalPageTypes.Home,
+          pageType: PaypalPageType.Home,
           scriptNamespace: 'test-namespace',
           componentType: PaypalComponentTypes.Messages,
           containerId: 'paypal-messages-container',
@@ -157,7 +158,7 @@ describe('Paypal Component Builder', () => {
 
       it('should return 0 amount on product listing page', async () => {
         const config = {
-          pageType: PaypalPageTypes.ProductListing,
+          pageType: PaypalPageType.ProductListing,
           scriptNamespace: 'test-namespace',
           componentType: PaypalComponentTypes.Messages,
           containerId: 'paypal-messages-container',
@@ -174,7 +175,7 @@ describe('Paypal Component Builder', () => {
         when(shoppingFacade.productPrices$('test-product-sku')).thenReturn(of({ salePrice: undefined }));
 
         const config = {
-          pageType: PaypalPageTypes.ProductDetails,
+          pageType: PaypalPageType.ProductDetails,
           scriptNamespace: 'test-namespace',
           componentType: PaypalComponentTypes.Messages,
           containerId: 'paypal-messages-container',
@@ -191,7 +192,7 @@ describe('Paypal Component Builder', () => {
         when(checkoutFacade.basket$).thenReturn(of({} as Basket));
 
         const config = {
-          pageType: PaypalPageTypes.Cart,
+          pageType: PaypalPageType.Cart,
           scriptNamespace: 'test-namespace',
           componentType: PaypalComponentTypes.Messages,
           containerId: 'paypal-messages-container',
@@ -206,7 +207,7 @@ describe('Paypal Component Builder', () => {
     describe('PayPal CardFields', () => {
       it('should render card fields component', async () => {
         const config = {
-          pageType: PaypalPageTypes.CheckoutPayment,
+          pageType: PaypalPageType.CheckoutPayment,
           scriptNamespace: 'test-namespace',
           componentType: PaypalComponentTypes.CardFields,
           paypalPaymentMethod: mockPaymentMethod,

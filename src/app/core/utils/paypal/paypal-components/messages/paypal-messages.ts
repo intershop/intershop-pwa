@@ -1,15 +1,27 @@
-import { DestroyRef, Injectable, inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { DestroyRef, Inject, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { PaypalComponentsConfig } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.builder';
-import { PAYPAL_MESSAGE_STYLING } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.styling';
-import { PaypalPageTypes } from 'ish-core/utils/sdk/paypal/paypal-config/paypal-config.service';
-import { PaypalComponent } from 'ish-core/utils/sdk/paypal/paypal-model/paypal.interface';
+import { PaypalComponentsConfig } from 'ish-core/utils/paypal/paypal-components/paypal-component.builder';
+import { PAYPAL_MESSAGE_STYLING } from 'ish-core/utils/paypal/paypal-components/paypal-component.styling';
+import { PaypalPageType } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
+import { PaypalComponent } from 'ish-core/utils/paypal/paypal-model/paypal.model';
 
-@Injectable({ providedIn: 'root' })
+/**
+ * Representation of the PayPal SDK Messages object, responsible for rendering PayPal messages.
+ * Life cycle of this component ends with destroying of parent component PaymentPaypalComponent.
+ **/
+@Injectable()
 export class PayPalMessages {
+  constructor(@Inject(DOCUMENT) private document: Document) {}
+
   private destroyRef = inject(DestroyRef);
 
+  /**
+   * Renders PayPal Messages in the specified container.
+   * @param config
+   * @returns
+   */
   renderMessages(config: PaypalComponentsConfig): Promise<void> {
     const paypalObject = (window as unknown as Record<string, PaypalComponent>)[config.scriptNamespace];
     const containerId = config.containerId;
@@ -27,7 +39,7 @@ export class PayPalMessages {
 
     config.amount$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(amount => {
       // Check if element still exists before each render attempt
-      if (!document.getElementById(containerId)) {
+      if (!this.document.getElementById(containerId)) {
         // Element has been removed from DOM, skip rendering silently
         return;
       }
@@ -44,16 +56,16 @@ export class PayPalMessages {
     let messageConfig;
 
     switch (config.pageType) {
-      case PaypalPageTypes.Home:
+      case PaypalPageType.Home:
         messageConfig = { style: PAYPAL_MESSAGE_STYLING.home };
         break;
-      case PaypalPageTypes.ProductListing:
+      case PaypalPageType.ProductListing:
         messageConfig = { style: PAYPAL_MESSAGE_STYLING.category };
         break;
-      case PaypalPageTypes.ProductDetails:
+      case PaypalPageType.ProductDetails:
         messageConfig = { amount, style: PAYPAL_MESSAGE_STYLING.product };
         break;
-      case PaypalPageTypes.CheckoutPayment:
+      case PaypalPageType.CheckoutPayment:
         messageConfig = { amount, style: PAYPAL_MESSAGE_STYLING.checkout };
         break;
       default:

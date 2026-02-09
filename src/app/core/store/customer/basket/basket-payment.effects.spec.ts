@@ -22,7 +22,7 @@ import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
-import { PayPalDataTransferService } from 'ish-core/utils/sdk/paypal/paypal-data-transfer/paypal-data-transfer.service';
+import { PayPalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 
 import { BasketPaymentEffects } from './basket-payment.effects';
 import {
@@ -434,7 +434,7 @@ describe('Basket Payment Effects', () => {
       const action = createPaypalCreditCardBasketPayment({ paymentInstrument });
       actions$ = of(action);
 
-      const emitSpy = jest.spyOn(payPalDataTransferService, 'emitOrderData');
+      const emitSpy = jest.spyOn(payPalDataTransferService, 'emitPaypalOrderData');
 
       effects.createPaypalCreditCardBasketPayment$.subscribe({
         complete: () => {

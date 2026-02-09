@@ -8,7 +8,7 @@ import { BasketView } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PriceType } from 'ish-core/models/price/price.model';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { PaypalComponentTypes } from 'ish-core/utils/sdk/paypal/paypal-config/paypal-config.service';
+import { PaypalComponentTypes } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 
 @Component({
   selector: 'ish-shopping-basket-payment',
@@ -17,8 +17,6 @@ import { PaypalComponentTypes } from 'ish-core/utils/sdk/paypal/paypal-config/pa
 })
 export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: BasketView;
-
-  private excludedPaymentMethods = ['ISH_FASTPAY'];
 
   paymentMethods$: Observable<PaymentMethod[]>;
   filteredPaymentMethods$: Observable<PaymentMethod[]>;
@@ -38,11 +36,7 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
 
     this.filteredPaymentMethods$ = this.paymentMethods$.pipe(
       whenTruthy(),
-      map(methods =>
-        methods.filter(
-          method => !method.capabilities?.includes('PaypalCheckout') && !this.excludedPaymentMethods.includes(method.id)
-        )
-      )
+      map(methods => methods.filter(method => !method.capabilities?.includes('PaypalCheckout')))
     );
     // if page is shown after cancelled/faulty redirect determine error message variable
     this.redirectStatus = this.route.snapshot.queryParamMap.get('redirect');

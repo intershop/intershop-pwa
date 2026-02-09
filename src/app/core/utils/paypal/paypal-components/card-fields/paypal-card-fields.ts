@@ -1,21 +1,26 @@
-import { Injectable, NgZone } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Subject, firstValueFrom, race, timer } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { PAYPAL_CART_FIELDS_STYLING } from 'ish-core/utils/sdk/paypal/paypal-components/paypal-component.styling';
-import { PayPalDataTransferService } from 'ish-core/utils/sdk/paypal/paypal-data-transfer/paypal-data-transfer.service';
+import { PAYPAL_CART_FIELDS_STYLING } from 'ish-core/utils/paypal/paypal-components/paypal-component.styling';
+import { PayPalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 import {
   PayPalCardFieldError,
   PayPalCardFieldsComponent,
   PayPalCardFieldsIndividualField,
   PayPalCardFieldsStateObject,
   PayPalStateObject,
-} from 'ish-core/utils/sdk/paypal/paypal-model/paypal.interface';
+} from 'ish-core/utils/paypal/paypal-model/paypal.model';
 
-@Injectable({ providedIn: 'root' })
+/**
+ * Representation of the PayPal SDK Card Fields object, responsible for rendering PayPal card fields and handling the associated callbacks for order creation, approval, cancellation, and error handling.
+ * Life cycle of this component ends with destroying of parent component PaymentPaypalComponent.
+ */
+@Injectable()
 export class PayPalCardFields {
   paymentMethod: PaymentMethod;
   cardField: PayPalCardFieldsComponent;
@@ -42,7 +47,8 @@ export class PayPalCardFields {
     private ngZone: NgZone,
     private checkoutFacade: CheckoutFacade,
     private payPalDataTransferService: PayPalDataTransferService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    @Inject(DOCUMENT) private document: Document
   ) {}
 
   /**
@@ -101,7 +107,7 @@ export class PayPalCardFields {
   /**
    * Renders individual card input fields (name, number, CVV, expiry).
    */
-  async renderIndividualFields(): Promise<void> {
+  protected async renderIndividualFields(): Promise<void> {
     const fieldConfigs = [
       {
         key: 'name',
@@ -127,7 +133,7 @@ export class PayPalCardFields {
 
     for (const config of fieldConfigs) {
       try {
-        const container = document.getElementById(config.containerId);
+        const container = this.document.getElementById(config.containerId);
         if (!container) {
           console.warn(`PayPal CardFields: Container '#${config.containerId}' not found in DOM`);
           continue;
@@ -177,8 +183,8 @@ export class PayPalCardFields {
    * Sets up the submit button and cancel button event handler for card field submission/cancellation.
    */
   private setupHandlerForButtons(): void {
-    const submitButton = document.getElementById('card-field-submit-button');
-    const cancelButton = document.getElementById('card-field-cancel-button');
+    const submitButton = this.document.getElementById('card-field-submit-button');
+    const cancelButton = this.document.getElementById('card-field-cancel-button');
 
     if (submitButton) {
       submitButton.addEventListener('click', () => {
@@ -207,7 +213,7 @@ export class PayPalCardFields {
   /**
    * Paypal Order Id creation callback. Creates a basket payment and waits for the orderId from the service.
    */
-  async createOrderCallback(): Promise<string> {
+  protected async createOrderCallback(): Promise<string> {
     const orderId = this.waitForOrderData();
 
     this.checkoutFacade.createPaypalCreditCardBasketPayment({
@@ -222,7 +228,7 @@ export class PayPalCardFields {
    * Waits for the PayPal order data from the service with a timeout.
    */
   private waitForOrderData(): Promise<string> {
-    const orderData$ = this.payPalDataTransferService.orderDataStream$.pipe(
+    const orderData$ = this.payPalDataTransferService.paypalOrder$.pipe(
       take(1),
       map(data => {
         this.creditCardPaymentInstrumentId = data.paymentInstrumentId;
@@ -242,7 +248,7 @@ export class PayPalCardFields {
   /**
    * Handles PayPal payment approval.
    */
-  async onApproveCallback() {
+  protected async onApproveCallback() {
     this.loadingIframe$.next(false);
     this.resetFieldValues();
     this.checkoutFacade.submitPaypalPaymentInstrument({
@@ -255,7 +261,7 @@ export class PayPalCardFields {
   /**
    * Handles PayPal payment errors.
    */
-  async onErrorCallback() {
+  protected async onErrorCallback() {
     this.loadingIframe$.next(false);
     if (this.creditCardPaymentInstrumentId) {
       this.checkoutFacade.deletePaypalPayment(
@@ -361,8 +367,8 @@ export class PayPalCardFields {
    */
   private getErrorElementsById(id: string): Record<string, HTMLElement | null> {
     return {
-      error: document.getElementById(id.concat('-error')),
-      label: document.getElementById(id.concat('-label')),
+      error: this.document.getElementById(id.concat('-error')),
+      label: this.document.getElementById(id.concat('-label')),
     };
   }
 }
