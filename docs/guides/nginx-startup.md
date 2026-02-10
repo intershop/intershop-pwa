@@ -341,7 +341,8 @@ The `cache_clearer.sh` script is started to monitor ICM page cache information b
 You can use the `CACHE_CLEARER_POLL_INTERVAL` environment variable to adjust the polling interval.
 When the ICM page cache is invalidated, the cache clearer script notices the new page cache ID and deletes the cached files for the invalidated site (channel).
 In addition, cached REST calls configured with `CACHE_ICM_CALLS` are cleared by triggering a `PURGE` request to the SSR server.
-In Kubernetes deployments, the script discovers the SSR pods with the Endpoints REST API and sends a purge request to each pod.
+In Kubernetes deployments, the script discovers the SSR Pods with the Endpoints REST API and sends a purge request to each Pod.
+When `ICM_BASE_URL_SSR` is set, the Kubernetes internal backend request routing is used for polling instead of the `ICM_BASE_URL`.
 
 Prerequisites for using this feature:
 
@@ -349,7 +350,7 @@ Prerequisites for using this feature:
 - The `$ICM_BASE_URL/INTERSHOP/wastatistics` can be polled from the NGINX container.
 - ICM page cache is used. Selective ICM page caching does not trigger the NGINX cache clearing as the cache ID for the pagecache does not change.
 - The `MULTI_CHANNEL` configuration cannot use `default` as the channel. Configure real ICM sites in the `channel:` configuration.
-- The service account of the `intershop-pwa-nginx` container should have `get` permission on the `endpoints` resource to ensure the cache clearing for all SSR pods.
+- The service account of the `intershop-pwa-nginx` container should have `get` permission on the `endpoints` resource to ensure the cache clearing for all SSR Pods.
 - The NGINX cache clearing cannot be used together with the [Shared Redis Cache](#shared-redis-cache).
 
 > [!TIP]

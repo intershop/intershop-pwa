@@ -1,6 +1,7 @@
 import { Rule } from '@angular-devkit/schematics';
 import { execSync } from 'child_process';
 import { once } from 'lodash';
+import { join } from 'path';
 
 import { findProjectRoot } from './filesystem';
 
@@ -10,10 +11,26 @@ const registerLintAtEnd = once((root: string) => {
   process.on('exit', () => {
     if (process.env.CI !== 'true') {
       if (lintFiles.length) {
-        console.log('LINTING', lintFiles.length, lintFiles.length === 1 ? 'file' : 'files');
+        process.stdout.write(`\nLINTING ${lintFiles.length} files...`);
+        try {
+          const absolutePaths = lintFiles.map(file => join(root, file));
 
-        execSync(`npx prettier --write --loglevel warn ${lintFiles.join(' ')}`, { cwd: root });
-        execSync(`npx eslint --fix ${lintFiles.join(' ')}`, { cwd: root });
+          // Process files in batches to avoid "command line too long" error
+          const batchSize = 40; // Adjust this number if needed
+          const batches = [];
+          for (let i = 0; i < absolutePaths.length; i += batchSize) {
+            batches.push(absolutePaths.slice(i, i + batchSize));
+          }
+
+          for (let i = 0; i < batches.length; i++) {
+            const batch = batches[i];
+
+            execSync(`npx prettier --write --loglevel warn ${batch.join(' ')}`, { cwd: root });
+            execSync(`npx eslint --fix ${batch.join(' ')}`, { cwd: root });
+          }
+        } catch (error) {
+          process.stderr.write('Error details:', error);
+        }
       }
     } else {
       console.log('LINTING skipped for CI=true');

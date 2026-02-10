@@ -18,11 +18,11 @@ function renderPagePerformanceTable(pages, deskBase, deskCurr, mobBase, mobCurr)
     const row = [
       pages[url][0] || normalizeUrl(url),
       '',
-      formatScore(deskCurr.get(url).performance, deskCurr.get(url).reportUrl),
-      formatDelta(deskCurr.get(url).performance, deskBase.get(url).performance),
+      formatScore(deskCurr.get(url)?.performance, deskCurr.get(url)?.reportUrl),
+      formatDelta(deskCurr.get(url)?.performance, deskBase.get(url)?.performance, 3),
       '',
-      formatScore(mobCurr.get(url).performance, mobCurr.get(url).reportUrl),
-      formatDelta(mobCurr.get(url).performance, mobBase.get(url).performance),
+      formatScore(mobCurr.get(url)?.performance, mobCurr.get(url)?.reportUrl),
+      formatDelta(mobCurr.get(url)?.performance, mobBase.get(url)?.performance, 3),
     ];
     md += `| ${row.join(' | ')} |\n`;
   }

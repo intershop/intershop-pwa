@@ -27,7 +27,7 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 // sparque config keys that should not be appended to the query params
-const SPARQUE_CONFIG_EXCLUDE_PARAMS = ['serverUrl', 'features'];
+const SPARQUE_CONFIG_EXCLUDE_PARAMS = ['serverUrl', 'serverUrlSsr', 'features'];
 
 /**
  * The Sparque API Service handles interaction with the SPARQUE.AI recommendation engine.
@@ -168,6 +168,7 @@ export class SparqueApiService {
   /**
    * Constructs the complete URL for a SPARQUE API endpoint.
    * Handles both relative paths (using SPARQUE server configuration) and absolute URLs.
+   * Uses serverUrlSsr for SSR requests if configured, otherwise falls back to serverUrl.
    *
    * @param path        The API endpoint path
    * @param apiVersion  The SPARQUE API version to use
@@ -181,7 +182,10 @@ export class SparqueApiService {
       this.store.pipe(
         select(getSparqueConfig),
         whenTruthy(),
-        map(config => config.serverUrl.concat('/api/', apiVersion))
+        map(config => {
+          const baseUrl = SSR && config.serverUrlSsr ? config.serverUrlSsr : config.serverUrl;
+          return baseUrl.concat('/api/', apiVersion);
+        })
       ),
       of(`/${path}`),
     ]).pipe(
