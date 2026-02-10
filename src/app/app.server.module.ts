@@ -1,5 +1,5 @@
 import { HTTP_INTERCEPTORS, HttpErrorResponse, provideHttpClient, withFetch } from '@angular/common/http';
-import { ErrorHandler, NgModule, TransferState } from '@angular/core';
+import { ErrorHandler, NgModule, Optional, TransferState } from '@angular/core';
 import { ServerModule, provideServerRendering } from '@angular/platform-server';
 import { META_REDUCERS } from '@ngrx/store';
 
@@ -12,6 +12,7 @@ import { SSRLogInterceptor } from 'ish-core/interceptors/ssr-log.interceptor';
 import { SSRMockInterceptor } from 'ish-core/interceptors/ssr-mock.interceptor';
 import { SSRPrometheusInterceptor } from 'ish-core/interceptors/ssr-prometheus.interceptor';
 import { getLogger } from 'ish-core/utils/ssr-logging/ssr-logging.service';
+import { REQUEST_ID } from 'ish-core/utils/ssr/ssr.tokens';
 
 import { environment } from '../environments/environment';
 
@@ -24,7 +25,8 @@ const logger = getLogger('SSRErrorHandler');
 function isHttpErrorLike(error: unknown): error is { name: string; status: number; message: string; url?: string } {
   return (
     typeof error === 'object' &&
-    error !== undefined &&
+    // eslint-disable-next-line unicorn/no-null
+    error !== null &&
     'name' in error &&
     (error as { name: unknown }).name === 'HttpErrorResponse' &&
     'status' in error &&
@@ -33,9 +35,15 @@ function isHttpErrorLike(error: unknown): error is { name: string; status: numbe
 }
 
 class SSRErrorHandler implements ErrorHandler {
+  constructor(private requestId: string | undefined) {}
+
   handleError(error: unknown): void {
+    // Base data with request ID for tracing
+    const baseData = this.requestId ? { trace: { id: this.requestId } } : {};
+
     if (error instanceof HttpErrorResponse || isHttpErrorLike(error)) {
       const logData = {
+        ...baseData,
         error: { message: error.message },
         http: { response: { status_code: error.status } },
         url: { original: error.url },
@@ -49,18 +57,18 @@ class SSRErrorHandler implements ErrorHandler {
       }
     } else if (error instanceof Error) {
       logger.error(
-        { error: { message: error.message, type: error.name, stack_trace: error.stack } },
+        { ...baseData, error: { message: error.message, type: error.name, stack_trace: error.stack } },
         'Application ERROR'
       );
     } else if (typeof error === 'object') {
       try {
-        logger.error({ error: { message: JSON.stringify(error) } }, 'ERROR');
+        logger.error({ ...baseData, error: { message: JSON.stringify(error) } }, 'ERROR');
       } catch (_) {
         // do not log the error if it can't be stringified, it floods the log with irrelevant information
-        logger.error('ERROR (cannot stringify)');
+        logger.error({ ...baseData }, 'ERROR (cannot stringify)');
       }
     } else {
-      logger.error({ error: { message: String(error) } }, 'ERROR');
+      logger.error({ ...baseData, error: { message: String(error) } }, 'ERROR');
     }
   }
 }
@@ -77,7 +85,11 @@ const providers = [
   { provide: HTTP_INTERCEPTORS, useClass: SSRCacheInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: SSRLogInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: SSRPrometheusInterceptor, multi: true },
-  { provide: ErrorHandler, useClass: SSRErrorHandler },
+  {
+    provide: ErrorHandler,
+    useFactory: (requestId: string | undefined) => new SSRErrorHandler(requestId),
+    deps: [[new Optional(), REQUEST_ID]],
+  },
   { provide: META_REDUCERS, useValue: configurationMeta, multi: true },
   // disable data retention for SSR
   { provide: DATA_RETENTION_POLICY, useValue: {} },

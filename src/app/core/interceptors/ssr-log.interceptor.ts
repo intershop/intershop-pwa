@@ -6,11 +6,13 @@ import {
   HttpRequest,
   HttpResponse,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
+import { InjectSingle } from 'ish-core/utils/injection';
 import { getLogger } from 'ish-core/utils/ssr-logging/ssr-logging.service';
+import { REQUEST_ID } from 'ish-core/utils/ssr/ssr.tokens';
 
 const logger = getLogger('SSRLogInterceptor');
 
@@ -37,6 +39,8 @@ function getHttpRequestUrlLogData(req: HttpRequest<unknown>) {
 
 @Injectable()
 export class SSRLogInterceptor implements HttpInterceptor {
+  constructor(@Optional() @Inject(REQUEST_ID) private requestId: InjectSingle<typeof REQUEST_ID>) {}
+
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { performance } = require('perf_hooks');
@@ -50,6 +54,7 @@ export class SSRLogInterceptor implements HttpInterceptor {
         const size = res instanceof HttpResponse ? JSON.stringify(res.body)?.length : undefined;
 
         const logData = {
+          ...(this.requestId && { trace: { id: this.requestId } }),
           http: {
             request: {
               method: req.method,
