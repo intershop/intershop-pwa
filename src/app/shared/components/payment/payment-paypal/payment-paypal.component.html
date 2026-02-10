@@ -1,7 +1,7 @@
 <div class="row pt-2">
   <div [ngClass]="'col-12'">
     <!-- PayPal Button container -->
-    <div *ngIf="componentType !== 2; else cardFieldsContainer" [id]="paypalComponentContainerId"></div>
+    <div *ngIf="adapterType !== 'CardFields'; else cardFieldsContainer" [id]="paypalComponentContainerId"></div>
 
     <!-- PayPal Card Fields containers -->
     <ng-template #cardFieldsContainer>

@@ -1,14 +1,15 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { concatLatestFrom } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import { concatMap, map, switchMap } from 'rxjs/operators';
 
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
-import { whenTruthy } from 'ish-core/utils/operators';
 
 enum ThreeDSecureDecisionStatus {
   ACCEPT = 'ACCEPT',
@@ -41,38 +42,48 @@ interface PaypalPaymentSourceData {
  */
 @Injectable({ providedIn: 'root' })
 export class PaymentPaypalService {
-  constructor(private apiService: ApiService, private store: Store, @Inject(APP_BASE_HREF) private baseHref: string) {}
+  constructor(
+    private apiService: ApiService,
+    private store: Store,
+    private paymentService: PaymentService,
+    @Inject(APP_BASE_HREF) private baseHref: string
+  ) {}
 
   private basketHeaders = new HttpHeaders({
     'content-type': 'application/json',
     Accept: 'application/vnd.intershop.basket.v1+json',
   });
 
-  initializePayPalExperienceContextFlow() {
+  initializePayPalExperienceContextFlow(
+    paymentInstrument: PaymentInstrument
+  ): Observable<{ orderId: string; paymentInstrumentId: string }> {
     let loc = `${location.origin}${this.baseHref}`;
     // Remove trailing slash if present
     if (loc.endsWith('/')) {
       loc = loc.slice(0, -1);
     }
 
-    return this.store.pipe(select(getCurrentLocale)).pipe(
-      whenTruthy(),
-      take(1),
-      switchMap(currentLocale => {
-        const body = {
-          experienceContext: {
-            returnUrl: `${loc}/checkout/review;lang=${currentLocale}?redirect=success`,
-            cancelUrl: `${loc}/checkout/payment;lang=${currentLocale}?redirect=cancel`,
-          },
-        };
+    return this.paymentService.createBasketPayment(paymentInstrument).pipe(
+      concatMap(pi =>
+        this.paymentService.setBasketPayment(pi.id).pipe(
+          concatLatestFrom(() => this.store.pipe(select(getCurrentLocale))),
+          switchMap(([, currentLocale]) => {
+            const body = {
+              experienceContext: {
+                returnUrl: `${loc}/checkout/review;lang=${currentLocale}?redirect=success`,
+                cancelUrl: `${loc}/checkout/payment;lang=${currentLocale}?redirect=cancel`,
+              },
+            };
 
-        return this.apiService
-          .currentBasketEndpoint()
-          .put<PaypalPaymentSourceData>('payments/open-tender/paypal-experience-context', body, {
-            headers: this.basketHeaders,
+            return this.apiService
+              .currentBasketEndpoint()
+              .put<PaypalPaymentSourceData>('payments/open-tender/paypal-experience-context', body, {
+                headers: this.basketHeaders,
+              })
+              .pipe(map(response => ({ orderId: response.data.orderId, paymentInstrumentId: pi.id })));
           })
-          .pipe(map(response => response.data.orderId));
-      })
+        )
+      )
     );
   }
 

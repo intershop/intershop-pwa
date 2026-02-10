@@ -9,23 +9,19 @@ import {
   Output,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Router } from '@angular/router';
-import { EMPTY, Observable, switchMap, take } from 'rxjs';
+import { EMPTY, Observable, map, shareReplay, switchMap, take } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { PayPalButtons } from 'ish-core/utils/paypal/paypal-components/buttons/paypal-buttons';
-import { PayPalCardFields } from 'ish-core/utils/paypal/paypal-components/card-fields/paypal-card-fields';
-import { PayPalMessages } from 'ish-core/utils/paypal/paypal-components/messages/paypal-messages';
+import { PaypalAdaptersBuilder, PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
+import { PayPalButtonsAdapter } from 'ish-core/utils/paypal/adapters/paypal-buttons/paypal-buttons.adapter';
+import { PayPalCardFieldsAdapter } from 'ish-core/utils/paypal/adapters/paypal-card-fields/paypal-card-fields.adapter';
+import { PayPalMessagesAdapter } from 'ish-core/utils/paypal/adapters/paypal-messages/paypal-messages.adapter';
 import {
-  PaypalComponentBuilder,
-  PaypalComponentsConfig,
-} from 'ish-core/utils/paypal/paypal-components/paypal-component.builder';
-import {
-  PaypalComponentTypes,
+  PaypalAdapterTypes,
   PaypalConfigService,
   PaypalPageType,
 } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
@@ -35,17 +31,20 @@ import { ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
  * Component for rendering PayPal payment components (Buttons, Messages, CardFields).
  *
  * This component dynamically loads the PayPal SDK and renders the appropriate PayPal component
- * based on the configured component type and current page context. It supports Buttons,Messages and CardFields.*/
+ * based on the configured component type and current page context. It supports Buttons, Messages and CardFields.*/
 @Component({
   selector: 'ish-payment-paypal',
   templateUrl: './payment-paypal.component.html',
   styleUrls: ['./payment-paypal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [PaypalComponentBuilder, PayPalButtons, PayPalCardFields, PayPalMessages],
+  providers: [PaypalAdaptersBuilder, PayPalButtonsAdapter, PayPalCardFieldsAdapter, PayPalMessagesAdapter],
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit {
-  /** Type of PayPal component to render. Defaults to Messages. */
-  @Input() componentType: PaypalComponentTypes = PaypalComponentTypes.Messages;
+  /** Type of PayPal adapter to render. Defaults to Messages. */
+  @Input() adapterType: PaypalAdapterTypes = 'Messages';
+
+  /** Type of page to render. */
+  @Input() pageType: PaypalPageType;
 
   /** The selected PayPal payment method configuration. Required for Buttons and CardFields. */
   @Input() selectedPaymentMethod: PaymentMethod;
@@ -56,11 +55,11 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   /** Unique container ID for the PayPal component DOM element. */
   paypalComponentContainerId = 'paypal-container-'.concat(uuid());
 
-  /** The identified page type based on the current URL. */
-  private page: PaypalPageType;
-
   /** Observable for tracking the PayPal script loading state. */
   private loadingScript$: Observable<ScriptType>;
+
+  /** Observable indicating whether the PayPal script was loaded successfully. */
+  scriptLoaded$: Observable<boolean>;
 
   /** Observable indicating whether the PayPal iframe is loading. */
   loadingIframe$: Observable<boolean>;
@@ -69,19 +68,19 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
     private destroyRef: DestroyRef,
     private appFacade: AppFacade,
     private paypalConfigService: PaypalConfigService,
-    private paypalComponentBuilder: PaypalComponentBuilder,
-    private payPalCardFields: PayPalCardFields,
-    private router: Router
+    private paypalAdaptersBuilder: PaypalAdaptersBuilder,
+    private payPalCardFields: PayPalCardFieldsAdapter
   ) {}
 
   ngOnInit(): void {
-    this.identifyPageType();
-
     this.loadingScript$ = this.appFacade.serverSetting$<PaypalConfig>('payment.paypal').pipe(
       whenTruthy(),
       take(1),
-      switchMap(paypalConfig => this.loadPayPalScript(paypalConfig))
+      switchMap(paypalConfig => this.loadPayPalScript(paypalConfig)),
+      shareReplay(1)
     );
+
+    this.scriptLoaded$ = this.loadingScript$.pipe(map(result => result?.loaded ?? false));
 
     // Subscribe to close form event from PayPal card fields
     this.payPalCardFields.closeForm$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
@@ -101,15 +100,15 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
    */
   private loadPayPalScript(paypalConfig: PaypalConfig): Observable<ScriptType> {
     // Do not load PayPal Messages component if Pay Later information is not to be shown
-    if (this.componentType === PaypalComponentTypes.Messages && !this.showPaypalPayLaterInformation(paypalConfig)) {
+    if (this.adapterType === 'Messages' && !this.showPaypalPayLaterInformation(paypalConfig)) {
       return EMPTY;
     }
 
-    return this.componentType === PaypalComponentTypes.Messages
-      ? this.paypalConfigService.loadPayPalScript('PPCP_MESSAGES', this.page)
+    return this.adapterType === 'Messages'
+      ? this.paypalConfigService.loadPayPalScript('PPCP_MESSAGES', this.pageType)
       : this.paypalConfigService.loadPayPalScript(
           'PPCP_'.concat(`${this.selectedPaymentMethod.id}`),
-          this.page,
+          this.pageType,
           this.selectedPaymentMethod
         );
   }
@@ -125,60 +124,32 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
           scriptNamespace: this.selectedPaymentMethod
             ? 'PPCP_'.concat(`${this.selectedPaymentMethod.id}`)
             : 'PPCP_MESSAGES',
-          componentType: this.componentType,
-          pageType: this.page,
+          adapterType: this.adapterType,
+          pageType: this.pageType,
           paypalPaymentMethod: this.selectedPaymentMethod,
         };
 
-        this.paypalComponentBuilder.build(
-          this.componentType === PaypalComponentTypes.CardFields
-            ? config
-            : { ...config, containerId: this.paypalComponentContainerId }
+        this.paypalAdaptersBuilder.build(
+          this.adapterType === 'CardFields' ? config : { ...config, containerId: this.paypalComponentContainerId }
         );
       }
     });
-  }
-
-  private getPage(): PaypalPageType {
-    return this.page;
-  }
-
-  /**
-   * Identifies the current page type based on the router URL.
-   * The page type is used to configure the PayPal SDK with the appropriate context
-   * (e.g., 'cart', 'checkout', 'product-details', 'product-listing', 'home').
-   */
-  private identifyPageType() {
-    const url = this.router.url;
-    if (url.includes('/basket')) {
-      this.page = PaypalPageType.Cart;
-    } else if (url.includes('checkout/payment')) {
-      this.page = PaypalPageType.CheckoutPayment;
-    } else if (url.includes('-ctg')) {
-      if (url.includes('-prd')) {
-        this.page = PaypalPageType.ProductDetails;
-      } else {
-        this.page = PaypalPageType.ProductListing;
-      }
-    } else if (url.includes('/home')) {
-      this.page = PaypalPageType.Home;
-    }
   }
 
   /**
    * Determines whether Pay Later messaging should be displayed based on the PayPal configuration and the current page type.
    */
   private showPaypalPayLaterInformation(paypalConfig: PaypalConfig): boolean {
-    switch (this.getPage()) {
-      case PaypalPageType.Cart:
+    switch (this.pageType) {
+      case 'cart':
         return paypalConfig.payLaterPreferences.PayLaterMessagingCartEnabled;
-      case PaypalPageType.CheckoutPayment:
+      case 'checkout':
         return paypalConfig.payLaterPreferences.PayLaterMessagingPaymentEnabled;
-      case PaypalPageType.Home:
+      case 'home':
         return paypalConfig.payLaterPreferences.PayLaterMessagingHomeEnabled;
-      case PaypalPageType.ProductDetails:
+      case 'product-details':
         return paypalConfig.payLaterPreferences.PayLaterMessagingProductDetailsEnabled;
-      case PaypalPageType.ProductListing:
+      case 'product-listing':
         return paypalConfig.payLaterPreferences.PayLaterMessagingCategoryEnabled;
       default:
         return false;

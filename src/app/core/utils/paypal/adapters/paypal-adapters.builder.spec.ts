@@ -8,20 +8,20 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { PaypalComponentTypes, PaypalPageType } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
+import { PaypalAdapterTypes, PaypalPageType } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 
-import { PayPalButtons } from './buttons/paypal-buttons';
-import { PayPalCardFields } from './card-fields/paypal-card-fields';
-import { PayPalMessages } from './messages/paypal-messages';
-import { PaypalComponentBuilder } from './paypal-component.builder';
+import { PaypalAdaptersBuilder } from './paypal-adapters.builder';
+import { PayPalButtonsAdapter } from './paypal-buttons/paypal-buttons.adapter';
+import { PayPalCardFieldsAdapter } from './paypal-card-fields/paypal-card-fields.adapter';
+import { PayPalMessagesAdapter } from './paypal-messages/paypal-messages.adapter';
 
-describe('Paypal Component Builder', () => {
-  let builder: PaypalComponentBuilder;
+describe('Paypal Adapters Builder', () => {
+  let builder: PaypalAdaptersBuilder;
   let checkoutFacade: CheckoutFacade;
   let shoppingFacade: ShoppingFacade;
-  let payPalButtons: PayPalButtons;
-  let payPalMessages: PayPalMessages;
-  let payPalCardFields: PayPalCardFields;
+  let payPalButtons: PayPalButtonsAdapter;
+  let payPalMessages: PayPalMessagesAdapter;
+  let payPalCardFields: PayPalCardFieldsAdapter;
 
   const mockBasket = BasketMockData.getBasket();
   const mockPaymentMethod = {
@@ -33,9 +33,9 @@ describe('Paypal Component Builder', () => {
   beforeEach(() => {
     checkoutFacade = mock(CheckoutFacade);
     shoppingFacade = mock(ShoppingFacade);
-    payPalButtons = mock(PayPalButtons);
-    payPalMessages = mock(PayPalMessages);
-    payPalCardFields = mock(PayPalCardFields);
+    payPalButtons = mock(PayPalButtonsAdapter);
+    payPalMessages = mock(PayPalMessagesAdapter);
+    payPalCardFields = mock(PayPalCardFieldsAdapter);
 
     when(checkoutFacade.basket$).thenReturn(of(mockBasket));
     when(shoppingFacade.selectedProductId$).thenReturn(of('test-product-sku'));
@@ -47,15 +47,15 @@ describe('Paypal Component Builder', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
-        { provide: PayPalButtons, useFactory: () => instance(payPalButtons) },
-        { provide: PayPalCardFields, useFactory: () => instance(payPalCardFields) },
-        { provide: PayPalMessages, useFactory: () => instance(payPalMessages) },
+        { provide: PayPalButtonsAdapter, useFactory: () => instance(payPalButtons) },
+        { provide: PayPalCardFieldsAdapter, useFactory: () => instance(payPalCardFields) },
+        { provide: PayPalMessagesAdapter, useFactory: () => instance(payPalMessages) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
-        PaypalComponentBuilder,
+        PaypalAdaptersBuilder,
       ],
     });
 
-    builder = TestBed.inject(PaypalComponentBuilder);
+    builder = TestBed.inject(PaypalAdaptersBuilder);
   });
 
   it('should be created', () => {
@@ -66,9 +66,9 @@ describe('Paypal Component Builder', () => {
     describe('PayPal Buttons', () => {
       it('should render buttons component with basket', async () => {
         const config = {
-          pageType: PaypalPageType.CheckoutPayment,
+          pageType: 'checkout' as PaypalPageType,
           scriptNamespace: 'test-namespace',
-          componentType: PaypalComponentTypes.Buttons,
+          adapterType: 'Buttons' as PaypalAdapterTypes,
           paypalPaymentMethod: mockPaymentMethod,
           containerId: 'paypal-buttons-container',
         };
@@ -82,9 +82,9 @@ describe('Paypal Component Builder', () => {
     describe('PayPal Messages', () => {
       it('should render messages component on product details page', async () => {
         const config = {
-          pageType: PaypalPageType.ProductDetails,
+          pageType: 'product-details' as PaypalPageType,
           scriptNamespace: 'test-namespace',
-          componentType: PaypalComponentTypes.Messages,
+          adapterType: 'Messages' as PaypalAdapterTypes,
           containerId: 'paypal-messages-container',
         };
 
@@ -98,9 +98,9 @@ describe('Paypal Component Builder', () => {
         when(shoppingFacade.productPrices$('product-123')).thenReturn(of({ salePrice: { value: 149.99 } as Price }));
 
         const config = {
-          pageType: PaypalPageType.ProductDetails,
+          pageType: 'product-details' as PaypalPageType,
           scriptNamespace: 'test-namespace',
-          componentType: PaypalComponentTypes.Messages,
+          adapterType: 'Messages' as PaypalAdapterTypes,
           containerId: 'paypal-messages-container',
         };
 
@@ -113,9 +113,9 @@ describe('Paypal Component Builder', () => {
 
       it('should calculate amount from basket total on cart page', async () => {
         const config = {
-          pageType: PaypalPageType.Cart,
+          pageType: 'cart' as PaypalPageType,
           scriptNamespace: 'test-namespace',
-          componentType: PaypalComponentTypes.Messages,
+          adapterType: 'Messages' as PaypalAdapterTypes,
           containerId: 'paypal-messages-container',
         };
 
@@ -128,9 +128,9 @@ describe('Paypal Component Builder', () => {
 
       it('should calculate amount from basket total on checkout payment page', async () => {
         const config = {
-          pageType: PaypalPageType.CheckoutPayment,
+          pageType: 'checkout' as PaypalPageType,
           scriptNamespace: 'test-namespace',
-          componentType: PaypalComponentTypes.Messages,
+          adapterType: 'Messages' as PaypalAdapterTypes,
           containerId: 'paypal-messages-container',
         };
 
@@ -143,9 +143,9 @@ describe('Paypal Component Builder', () => {
 
       it('should return 0 amount on home page', async () => {
         const config = {
-          pageType: PaypalPageType.Home,
+          pageType: 'home' as PaypalPageType,
           scriptNamespace: 'test-namespace',
-          componentType: PaypalComponentTypes.Messages,
+          adapterType: 'Messages' as PaypalAdapterTypes,
           containerId: 'paypal-messages-container',
         };
 
@@ -158,9 +158,9 @@ describe('Paypal Component Builder', () => {
 
       it('should return 0 amount on product listing page', async () => {
         const config = {
-          pageType: PaypalPageType.ProductListing,
+          pageType: 'product-listing' as PaypalPageType,
           scriptNamespace: 'test-namespace',
-          componentType: PaypalComponentTypes.Messages,
+          adapterType: 'Messages' as PaypalAdapterTypes,
           containerId: 'paypal-messages-container',
         };
 
@@ -175,9 +175,9 @@ describe('Paypal Component Builder', () => {
         when(shoppingFacade.productPrices$('test-product-sku')).thenReturn(of({ salePrice: undefined }));
 
         const config = {
-          pageType: PaypalPageType.ProductDetails,
+          pageType: 'product-details' as PaypalPageType,
           scriptNamespace: 'test-namespace',
-          componentType: PaypalComponentTypes.Messages,
+          adapterType: 'Messages' as PaypalAdapterTypes,
           containerId: 'paypal-messages-container',
         };
 
@@ -192,9 +192,9 @@ describe('Paypal Component Builder', () => {
         when(checkoutFacade.basket$).thenReturn(of({} as Basket));
 
         const config = {
-          pageType: PaypalPageType.Cart,
+          pageType: 'cart' as PaypalPageType,
           scriptNamespace: 'test-namespace',
-          componentType: PaypalComponentTypes.Messages,
+          adapterType: 'Messages' as PaypalAdapterTypes,
           containerId: 'paypal-messages-container',
         };
 
@@ -207,9 +207,9 @@ describe('Paypal Component Builder', () => {
     describe('PayPal CardFields', () => {
       it('should render card fields component', async () => {
         const config = {
-          pageType: PaypalPageType.CheckoutPayment,
+          pageType: 'checkout' as PaypalPageType,
           scriptNamespace: 'test-namespace',
-          componentType: PaypalComponentTypes.CardFields,
+          adapterType: 'CardFields' as PaypalAdapterTypes,
           paypalPaymentMethod: mockPaymentMethod,
           containerId: 'paypal-cardfields-container',
         };

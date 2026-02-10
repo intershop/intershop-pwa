@@ -25,6 +25,7 @@ import {
   deleteBasketPaymentFail,
   deleteBasketPaymentSuccess,
   deletePaypalCreditCardBasketPayment,
+  emitPaypalOrderId,
   loadBasket,
   loadBasketEligiblePaymentMethods,
   loadBasketEligiblePaymentMethodsFail,
@@ -141,27 +142,33 @@ export class BasketPaymentEffects {
       ofType(createPaypalCreditCardBasketPayment),
       mapToPayload(),
       concatMap(payload =>
-        this.paymentService.createBasketPayment(payload.paymentInstrument).pipe(
-          concatMap(pi =>
-            this.paymentService.setBasketPayment(pi.id).pipe(
-              switchMap(() =>
-                this.paymentPaypalService.initializePayPalExperienceContextFlow().pipe(
-                  concatMap(orderId => {
-                    this.payPalDataTransferService.emitPaypalOrderData({
-                      orderId,
-                      paymentInstrumentId: pi.id,
-                    });
-                    return EMPTY;
-                  })
-                )
-              ),
-              mapErrorToAction(setBasketPaymentFail)
-            )
+        this.paymentPaypalService.initializePayPalExperienceContextFlow(payload.paymentInstrument).pipe(
+          map(response =>
+            emitPaypalOrderId({ orderId: response.orderId, paymentInstrumentId: response.paymentInstrumentId })
           ),
-          mapErrorToAction(createBasketPaymentFail)
+          mapErrorToAction(setBasketPaymentFail)
         )
       )
     )
+  );
+
+  /**
+   * Transfer PayPal order data after successful order ID retrieval.
+   */
+  emitPaypalOrderData$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(emitPaypalOrderId),
+        mapToPayload(),
+        concatMap(payload => {
+          this.payPalDataTransferService.emitPaypalOrderData({
+            orderId: payload.orderId,
+            paymentInstrumentId: payload.paymentInstrumentId,
+          });
+          return EMPTY;
+        })
+      ),
+    { dispatch: false }
   );
 
   /**

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -26,7 +27,7 @@ export class BasketCostSummaryComponent implements OnInit {
   taxTranslation$: Observable<string>;
   invert = PriceHelper.invert;
 
-  constructor(private accountFacade: AccountFacade) {}
+  constructor(private accountFacade: AccountFacade, private router: Router) {}
 
   ngOnInit() {
     this.taxTranslation$ = this.accountFacade.userPriceDisplayType$.pipe(
@@ -37,5 +38,9 @@ export class BasketCostSummaryComponent implements OnInit {
   get hasPaymentCostsTotal(): boolean {
     const paymentCosts = PriceItemHelper.selectType(this.totals?.paymentCostsTotal, 'gross');
     return !!paymentCosts && !!paymentCosts.value;
+  }
+
+  getPayPalPageType(): string {
+    return this.router.url.includes('/basket') ? 'cart' : 'checkout';
   }
 }

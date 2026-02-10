@@ -18,7 +18,11 @@
 
       <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <ish-product-price [showInformationalPrice]="true" [showPriceSavings]="true" />
-        <ish-payment-paypal />
+        <ng-container
+          *ngIf="'payment.paypal.payLaterPreferences.PayLaterMessagingProductDetailsEnabled' | ishServerSetting"
+        >
+          <ish-payment-paypal [pageType]="'product-details'" />
+        </ng-container>
       </div>
 
       <ish-product-inventory />

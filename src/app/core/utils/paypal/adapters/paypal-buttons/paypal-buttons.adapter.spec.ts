@@ -8,16 +8,15 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Address } from 'ish-core/models/address/address.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { PaypalComponentsConfig } from 'ish-core/utils/paypal/paypal-components/paypal-component.builder';
-import { PaypalComponentTypes, PaypalPageType } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
+import { PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
 
-import { PayPalButtons } from './paypal-buttons';
+import { PayPalButtonsAdapter } from './paypal-buttons.adapter';
 
 /**
  * Testable subclass that exposes private methods for testing
  */
 @Injectable()
-class TestablePayPalButtons extends PayPalButtons {
+class TestablePayPalButtons extends PayPalButtonsAdapter {
   testCreateOrder(paymentMethod: PaymentMethod): Promise<string> {
     return this.createOrderCallback(paymentMethod);
   }
@@ -35,7 +34,7 @@ class TestablePayPalButtons extends PayPalButtons {
   }
 }
 
-describe('Paypal Buttons', () => {
+describe('Paypal Buttons Adapter', () => {
   let payPalButtons: TestablePayPalButtons;
   let checkoutFacade: CheckoutFacade;
 
@@ -64,8 +63,8 @@ describe('Paypal Buttons', () => {
     containerId: 'paypal-button-container',
     scriptNamespace: 'testPaypal',
     paypalPaymentMethod: mockPaymentMethod,
-    pageType: PaypalPageType.CheckoutPayment,
-    componentType: PaypalComponentTypes.Buttons,
+    pageType: 'checkout',
+    adapterType: 'Buttons',
   };
 
   let mockPaypalButtons: any;
@@ -438,9 +437,9 @@ describe('Paypal Buttons', () => {
     });
 
     it('should use cart style for non-checkout pages', async () => {
-      const cartConfig = {
+      const cartConfig: PaypalComponentsConfig = {
         ...mockConfig,
-        pageType: PaypalPageType.Cart,
+        pageType: 'cart',
       };
 
       await payPalButtons.renderButtons(cartConfig);

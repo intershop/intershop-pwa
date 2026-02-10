@@ -7,35 +7,17 @@ import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model'
 import { ScriptLoaderService, ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
 
 /**
- * Enumeration of PayPal page types used for configuring the PayPal SDK parameter data-page-type.
+ * PayPal page types used for configuring the PayPal SDK parameter data-page-type.
  */
-export enum PaypalPageType {
-  /** Shopping cart page where users review their items before checkout */
-  Cart = 'cart',
-  /** Checkout payment page where users select payment method and complete purchase */
-  CheckoutPayment = 'checkout',
-  /** Home page, typically used for Pay Later messaging */
-  Home = 'home',
-  /** Product details page showing a single product */
-  ProductDetails = 'product-details',
-  /** Product listing/category page showing multiple products */
-  ProductListing = 'product-listing',
-}
+export type PaypalPageType = 'cart' | 'checkout' | 'home' | 'product-details' | 'product-listing';
 
 /**
- * Enumeration of PayPal component types that can be loaded via the SDK.
+ * PayPal component types that can be loaded via the SDK.
  *
  * These components determine which PayPal UI elements are available in the application.
  * The SDK can be loaded with different combinations of components based on the use case.
  */
-export enum PaypalComponentTypes {
-  /** PayPal payment buttons for initiating checkout */
-  Buttons,
-  /** Pay Later promotional messages and financing information */
-  Messages,
-  /** Advanced card fields for direct credit/debit card payment */
-  CardFields,
-}
+export type PaypalAdapterTypes = 'Buttons' | 'Messages' | 'CardFields';
 
 interface PayPalScriptParams {
   /** The current application locale (e.g., 'en_US', 'de_DE') */

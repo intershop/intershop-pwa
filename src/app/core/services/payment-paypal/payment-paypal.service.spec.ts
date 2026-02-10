@@ -6,24 +6,35 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
 import { getBasketIdOrCurrent } from 'ish-core/store/customer/basket';
 
 import { PaymentPaypalService } from './payment-paypal.service';
 
 describe('Payment Paypal Service', () => {
-  let paymentService: PaymentPaypalService;
+  let paymentPaypalService: PaymentPaypalService;
   let apiServiceMock: ApiService;
+  let paymentServiceMock: PaymentService;
+
+  const mockPaymentInstrument: PaymentInstrument = {
+    id: 'paypal-instrument-id',
+    paymentMethod: 'PayPal',
+  };
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
+    paymentServiceMock = mock(PaymentService);
     when(apiServiceMock.currentBasketEndpoint()).thenReturn(instance(apiServiceMock));
     when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
+    when(paymentServiceMock.createBasketPayment(anything())).thenReturn(of(mockPaymentInstrument));
+    when(paymentServiceMock.setBasketPayment(anyString())).thenReturn(of('en_US'));
 
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
         { provide: APP_BASE_HREF, useFactory: () => '/' },
+        { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         provideMockStore({
           selectors: [
             { selector: getCurrentLocale, value: 'en_US' },
@@ -33,7 +44,7 @@ describe('Payment Paypal Service', () => {
       ],
     });
 
-    paymentService = TestBed.inject(PaymentPaypalService);
+    paymentPaypalService = TestBed.inject(PaymentPaypalService);
   });
 
   describe('PayPal experience context', () => {
@@ -46,7 +57,9 @@ describe('Payment Paypal Service', () => {
         })
       );
 
-      paymentService.initializePayPalExperienceContextFlow().subscribe(orderId => {
+      paymentPaypalService.initializePayPalExperienceContextFlow(mockPaymentInstrument).subscribe(result => {
+        verify(paymentServiceMock.createBasketPayment(mockPaymentInstrument)).once();
+        verify(paymentServiceMock.setBasketPayment('paypal-instrument-id')).once();
         verify(apiServiceMock.put('payments/open-tender/paypal-experience-context', anything(), anything())).once();
         expect(capture(apiServiceMock.put).last()?.[1]).toMatchInlineSnapshot(`
           {
@@ -56,7 +69,7 @@ describe('Payment Paypal Service', () => {
             },
           }
         `);
-        expect(orderId).toEqual('PAYPAL_ORDER_123');
+        expect(result).toEqual({ orderId: 'PAYPAL_ORDER_123', paymentInstrumentId: 'paypal-instrument-id' });
         done();
       });
     });
@@ -76,12 +89,7 @@ describe('Payment Paypal Service', () => {
         })
       );
 
-      const paypalInstrument: PaymentInstrument = {
-        id: 'paypal-instrument-id',
-        paymentMethod: 'PayPal',
-      };
-
-      paymentService.getPayPalPaymentInstrument(paypalInstrument).subscribe(result => {
+      paymentPaypalService.getPayPalPaymentInstrument(mockPaymentInstrument).subscribe(result => {
         verify(apiServiceMock.get('payments/open-tender/paypal-experience-context', anything())).once();
         expect(result).toEqual({
           id: 'paypal-instrument-id',
@@ -112,12 +120,7 @@ describe('Payment Paypal Service', () => {
         })
       );
 
-      const paypalInstrument: PaymentInstrument = {
-        id: 'paypal-instrument-id',
-        paymentMethod: 'PayPal',
-      };
-
-      paymentService.getPayPalPaymentInstrument(paypalInstrument).subscribe(result => {
+      paymentPaypalService.getPayPalPaymentInstrument(mockPaymentInstrument).subscribe(result => {
         expect(result).toEqual({ errorMessage: '3D Secure authentication failed' });
         done();
       });
@@ -133,12 +136,7 @@ describe('Payment Paypal Service', () => {
         })
       );
 
-      const paypalInstrument: PaymentInstrument = {
-        id: 'paypal-instrument-id',
-        paymentMethod: 'PayPal',
-      };
-
-      paymentService.getPayPalPaymentInstrument(paypalInstrument).subscribe(result => {
+      paymentPaypalService.getPayPalPaymentInstrument(mockPaymentInstrument).subscribe(result => {
         expect(result).toEqual({
           id: 'paypal-instrument-id',
           paymentMethod: 'PayPal',

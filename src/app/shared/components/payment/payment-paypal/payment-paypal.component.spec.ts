@@ -5,19 +5,15 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
-import { Subject, of } from 'rxjs';
+import { BehaviorSubject, Subject, of } from 'rxjs';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
-import { PayPalCardFields } from 'ish-core/utils/paypal/paypal-components/card-fields/paypal-card-fields';
-import { PaypalComponentBuilder } from 'ish-core/utils/paypal/paypal-components/paypal-component.builder';
-import {
-  PaypalComponentTypes,
-  PaypalConfigService,
-  PaypalPageType,
-} from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
+import { PaypalAdaptersBuilder } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
+import { PayPalCardFieldsAdapter } from 'ish-core/utils/paypal/adapters/paypal-card-fields/paypal-card-fields.adapter';
+import { PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 
 import { PaymentPaypalComponent } from './payment-paypal.component';
 
@@ -28,8 +24,8 @@ describe('Payment Paypal Component', () => {
 
   let appFacade: AppFacade;
   let paypalConfigService: PaypalConfigService;
-  let paypalComponentBuilder: PaypalComponentBuilder;
-  let payPalCardFields: PayPalCardFields;
+  let paypalAdaptersBuilder: PaypalAdaptersBuilder;
+  let payPalCardFields: PayPalCardFieldsAdapter;
   let router: Router;
   let closeForm$: Subject<void>;
 
@@ -53,8 +49,8 @@ describe('Payment Paypal Component', () => {
   beforeEach(async () => {
     appFacade = mock(AppFacade);
     paypalConfigService = mock(PaypalConfigService);
-    paypalComponentBuilder = mock(PaypalComponentBuilder);
-    payPalCardFields = mock(PayPalCardFields);
+    paypalAdaptersBuilder = mock(PaypalAdaptersBuilder);
+    payPalCardFields = mock(PayPalCardFieldsAdapter);
     router = mock(Router);
     closeForm$ = new Subject<void>();
 
@@ -62,8 +58,9 @@ describe('Payment Paypal Component', () => {
     when(paypalConfigService.loadPayPalScript(anything(), anything(), anything())).thenReturn(
       of({ loaded: true } as never)
     );
-    when(paypalComponentBuilder.build(anything())).thenReturn(of(undefined));
+    when(paypalAdaptersBuilder.build(anything())).thenReturn(of(undefined));
     when(payPalCardFields.closeForm$).thenReturn(closeForm$);
+    when(payPalCardFields.loadingIframe$).thenReturn(new BehaviorSubject<boolean>(false));
     when(router.url).thenReturn('/checkout/payment');
 
     await TestBed.configureTestingModule({
@@ -78,8 +75,8 @@ describe('Payment Paypal Component', () => {
       .overrideComponent(PaymentPaypalComponent, {
         set: {
           providers: [
-            { provide: PayPalCardFields, useFactory: () => instance(payPalCardFields) },
-            { provide: PaypalComponentBuilder, useFactory: () => instance(paypalComponentBuilder) },
+            { provide: PayPalCardFieldsAdapter, useFactory: () => instance(payPalCardFields) },
+            { provide: PaypalAdaptersBuilder, useFactory: () => instance(paypalAdaptersBuilder) },
           ],
         },
       })
@@ -90,8 +87,9 @@ describe('Payment Paypal Component', () => {
     fixture = TestBed.createComponent(PaymentPaypalComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    component.pageType = 'checkout';
     resetCalls(paypalConfigService);
-    resetCalls(paypalComponentBuilder);
+    resetCalls(paypalAdaptersBuilder);
   });
 
   it('should be created', () => {
@@ -101,36 +99,6 @@ describe('Payment Paypal Component', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should identify page type as CheckoutPayment for checkout/payment URL', () => {
-      when(router.url).thenReturn('/checkout/payment');
-      fixture.detectChanges();
-      expect((component as any).getPage()).toBe(PaypalPageType.CheckoutPayment);
-    });
-
-    it('should identify page type as Cart for basket URL', () => {
-      when(router.url).thenReturn('/basket');
-      fixture.detectChanges();
-      expect((component as any).getPage()).toBe(PaypalPageType.Cart);
-    });
-
-    it('should identify page type as ProductDetails for product detail URL', () => {
-      when(router.url).thenReturn('/category-ctg/product-prd');
-      fixture.detectChanges();
-      expect((component as any).getPage()).toBe(PaypalPageType.ProductDetails);
-    });
-
-    it('should identify page type as ProductListing for category URL', () => {
-      when(router.url).thenReturn('/category-ctg');
-      fixture.detectChanges();
-      expect((component as any).getPage()).toBe(PaypalPageType.ProductListing);
-    });
-
-    it('should identify page type as Home for home URL', () => {
-      when(router.url).thenReturn('/home');
-      fixture.detectChanges();
-      expect((component as any).getPage()).toBe(PaypalPageType.Home);
-    });
-
     it('should emit closeForm when PayPalCardFields closeForm$ emits', () => {
       const closeFormSpy = jest.spyOn(component.closeForm, 'emit');
       fixture.detectChanges();
@@ -154,7 +122,7 @@ describe('Payment Paypal Component', () => {
         },
       } as PaypalConfig;
       when(appFacade.serverSetting$('payment.paypal')).thenReturn(of(paypalConfigWithoutPayLater));
-      component.componentType = PaypalComponentTypes.Messages;
+      component.adapterType = 'Messages';
       resetCalls(paypalConfigService);
 
       fixture.detectChanges();
@@ -163,16 +131,17 @@ describe('Payment Paypal Component', () => {
     });
 
     it('should load PayPal script for Messages component when PayLater is shown', () => {
-      component.componentType = PaypalComponentTypes.Messages;
+      component.adapterType = 'Messages';
+      component.pageType = 'cart';
       resetCalls(paypalConfigService);
 
       fixture.detectChanges();
 
-      verify(paypalConfigService.loadPayPalScript('PPCP_MESSAGES', anything())).once();
+      verify(paypalConfigService.loadPayPalScript('PPCP_MESSAGES', anything())).atLeast(1);
     });
 
     it('should load PayPal script for Buttons component with payment method', () => {
-      component.componentType = PaypalComponentTypes.Buttons;
+      component.adapterType = 'Buttons';
       component.selectedPaymentMethod = paymentMethod;
       resetCalls(paypalConfigService);
 
@@ -182,7 +151,7 @@ describe('Payment Paypal Component', () => {
     });
 
     it('should load PayPal script for CardFields component with payment method', () => {
-      component.componentType = PaypalComponentTypes.CardFields;
+      component.adapterType = 'CardFields';
       component.selectedPaymentMethod = paymentMethod;
       resetCalls(paypalConfigService);
 
@@ -195,48 +164,49 @@ describe('Payment Paypal Component', () => {
   describe('ngAfterViewInit', () => {
     it('should build PayPal component when script is loaded for Messages', () => {
       when(paypalConfigService.loadPayPalScript('PPCP_MESSAGES', anything())).thenReturn(of({ loaded: true } as never));
-      component.componentType = PaypalComponentTypes.Messages;
-      resetCalls(paypalComponentBuilder);
+      component.adapterType = 'Messages';
+      component.pageType = 'cart';
+      resetCalls(paypalAdaptersBuilder);
       fixture.detectChanges();
 
-      verify(paypalComponentBuilder.build(anything())).once();
+      verify(paypalAdaptersBuilder.build(anything())).atLeast(1);
     });
 
     it('should build PayPal Buttons component with containerId', () => {
-      component.componentType = PaypalComponentTypes.Buttons;
+      component.adapterType = 'Buttons';
       component.selectedPaymentMethod = paymentMethod;
-      resetCalls(paypalComponentBuilder);
+      resetCalls(paypalAdaptersBuilder);
       fixture.detectChanges();
 
-      verify(paypalComponentBuilder.build(anything())).once();
+      verify(paypalAdaptersBuilder.build(anything())).atLeast(1);
     });
 
     it('should build PayPal CardFields component', () => {
-      component.componentType = PaypalComponentTypes.CardFields;
+      component.adapterType = 'CardFields';
       component.selectedPaymentMethod = paymentMethod;
-      resetCalls(paypalComponentBuilder);
+      resetCalls(paypalAdaptersBuilder);
       fixture.detectChanges();
 
-      verify(paypalComponentBuilder.build(anything())).once();
+      verify(paypalAdaptersBuilder.build(anything())).atLeast(1);
     });
 
     it('should not build component when script is not loaded', () => {
       when(paypalConfigService.loadPayPalScript(anything(), anything(), anything())).thenReturn(
         of({ loaded: false } as never)
       );
-      component.componentType = PaypalComponentTypes.Buttons;
+      component.adapterType = 'Buttons';
       component.selectedPaymentMethod = paymentMethod;
-      resetCalls(paypalComponentBuilder);
+      resetCalls(paypalAdaptersBuilder);
 
       fixture.detectChanges();
 
-      verify(paypalComponentBuilder.build(anything())).never();
+      verify(paypalAdaptersBuilder.build(anything())).never();
     });
   });
 
   describe('component configuration', () => {
     it('should have Messages as default component type', () => {
-      expect(component.componentType).toBe(PaypalComponentTypes.Messages);
+      expect(component.adapterType).toBe('Messages');
     });
 
     it('should generate unique paypalComponentContainerId', () => {

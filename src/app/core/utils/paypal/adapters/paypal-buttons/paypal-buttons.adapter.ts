@@ -6,9 +6,8 @@ import { filter, map, race, take, timer } from 'rxjs';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { PaypalComponentsConfig } from 'ish-core/utils/paypal/paypal-components/paypal-component.builder';
-import { PAYPAL_BUTTON_STYLING } from 'ish-core/utils/paypal/paypal-components/paypal-component.styling';
-import { PaypalPageType } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
+import { PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
+import { PAYPAL_BUTTON_STYLING } from 'ish-core/utils/paypal/adapters/paypal-adapters.styling';
 import { PaypalComponent } from 'ish-core/utils/paypal/paypal-model/paypal.model';
 
 interface PayPalShippingAddress {
@@ -23,7 +22,7 @@ interface PayPalShippingAddress {
  * Life cycle of this component ends with destroying of parent component PaymentPaypalComponent.
  */
 @Injectable()
-export class PayPalButtons {
+export class PayPalButtonsAdapter {
   payPalShippingAddress: PayPalShippingAddress;
 
   constructor(
@@ -56,10 +55,7 @@ export class PayPalButtons {
 
   private getButtonConfig(config: PaypalComponentsConfig) {
     return {
-      style:
-        config.pageType === PaypalPageType.CheckoutPayment
-          ? PAYPAL_BUTTON_STYLING.checkout
-          : PAYPAL_BUTTON_STYLING.cart,
+      style: config.pageType === 'checkout' ? PAYPAL_BUTTON_STYLING.checkout : PAYPAL_BUTTON_STYLING.cart,
       createOrder: () => this.createOrderCallback(config.paypalPaymentMethod),
       onApprove: (data: { payerID: string; orderID: string }) => {
         this.onApproveCallback(data);

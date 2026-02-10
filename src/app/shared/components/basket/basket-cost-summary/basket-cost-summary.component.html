@@ -60,9 +60,17 @@
     </dt>
     <dd class="col-6 total-price">{{ totals.total | ishPrice : 'gross' }}</dd>
 
-    <dd class="col-12">
-      <ish-payment-paypal />
-    </dd>
+    <ng-container
+      *ngIf="
+        getPayPalPageType() === 'cart'
+          ? 'payment.paypal.payLaterPreferences.PayLaterMessagingCartEnabled'
+          : ('payment.paypal.payLaterPreferences.PayLaterMessagingPaymentEnabled' | ishServerSetting)
+      "
+    >
+      <dd class="col-12">
+        <ish-payment-paypal [pageType]="getPayPalPageType()" />
+      </dd>
+    </ng-container>
   </dl>
 </div>
 

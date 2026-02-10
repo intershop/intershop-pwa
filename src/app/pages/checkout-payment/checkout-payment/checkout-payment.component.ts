@@ -22,7 +22,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PriceType } from 'ish-core/models/price/price.model';
-import { PaypalComponentTypes } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
+import { PaypalAdapterTypes } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
@@ -139,11 +139,11 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     return;
   }
 
-  getPaypalComponentType(method?: PaymentMethod): PaypalComponentTypes {
+  getPaypalAdapterType(method?: PaymentMethod): PaypalAdapterTypes {
     if (method?.capabilities?.includes('PaypalExperienceContext')) {
-      return PaypalComponentTypes.CardFields;
+      return 'CardFields';
     } else {
-      return PaypalComponentTypes.Buttons;
+      return 'Buttons';
     }
   }
 

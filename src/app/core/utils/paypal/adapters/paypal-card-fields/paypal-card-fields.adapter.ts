@@ -6,7 +6,7 @@ import { map, take } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { PAYPAL_CART_FIELDS_STYLING } from 'ish-core/utils/paypal/paypal-components/paypal-component.styling';
+import { PAYPAL_CART_FIELDS_STYLING } from 'ish-core/utils/paypal/adapters/paypal-adapters.styling';
 import { PayPalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 import {
   PayPalCardFieldError,
@@ -21,7 +21,7 @@ import {
  * Life cycle of this component ends with destroying of parent component PaymentPaypalComponent.
  */
 @Injectable()
-export class PayPalCardFields {
+export class PayPalCardFieldsAdapter {
   paymentMethod: PaymentMethod;
   cardField: PayPalCardFieldsComponent;
 

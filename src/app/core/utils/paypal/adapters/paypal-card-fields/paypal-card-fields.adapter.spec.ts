@@ -10,10 +10,10 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { PayPalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 import { PayPalCardFieldError } from 'ish-core/utils/paypal/paypal-model/paypal.model';
 
-import { PayPalCardFields } from './paypal-card-fields';
+import { PayPalCardFieldsAdapter } from './paypal-card-fields.adapter';
 
 @Injectable()
-class TestablePayPalCardFields extends PayPalCardFields {
+class TestablePayPalCardFields extends PayPalCardFieldsAdapter {
   testCreateOrderCallback(): Promise<string> {
     return this.createOrderCallback();
   }
@@ -27,7 +27,7 @@ class TestablePayPalCardFields extends PayPalCardFields {
   }
 }
 
-describe('Paypal Card Fields', () => {
+describe('Paypal Card Fields Adapter', () => {
   let payPalCardFields: TestablePayPalCardFields;
   let checkoutFacade: CheckoutFacade;
   let payPalDataTransferService: PayPalDataTransferService;
@@ -113,11 +113,11 @@ describe('Paypal Card Fields', () => {
       imports: [TranslateModule.forRoot()],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
-        { provide: PayPalCardFields, useClass: TestablePayPalCardFields },
+        { provide: PayPalCardFieldsAdapter, useClass: TestablePayPalCardFields },
       ],
     });
 
-    payPalCardFields = TestBed.inject(PayPalCardFields) as TestablePayPalCardFields;
+    payPalCardFields = TestBed.inject(PayPalCardFieldsAdapter) as TestablePayPalCardFields;
     payPalDataTransferService = TestBed.inject(PayPalDataTransferService);
   });
 
