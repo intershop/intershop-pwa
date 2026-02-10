@@ -21,7 +21,13 @@ http {
     include /etc/nginx/mime.types;
     default_type application/octet-stream;
 
-    # ECS 8.11 compliant JSON log format
+    # Request-ID: use incoming X-Request-ID header if present, otherwise use NGINX's built-in $request_id
+    map $http_x_request_id $trace_id {
+        default $http_x_request_id;
+        ""      $request_id;
+    }
+
+    # ECS 8.10 compliant JSON log format
     # Map log.level based on HTTP status code (aligned with SSR)
     # 2xx/3xx → info, 4xx → warn, 5xx → error
     map $status $log_level {
@@ -43,6 +49,7 @@ http {
                                   '"@timestamp":"$time_iso8601",'
                                   '"ecs.version":"8.10.0",'
                                   '"log.logger":"nginx",'
+                                  '"trace":{"id":"$trace_id"},'
                                   '"event":{'
                                     '"kind":"event",'
                                     '"category":["web"],'
@@ -53,7 +60,7 @@ http {
                                   '"http":{'
                                     '"request":{'
                                       '"method":"$request_method",'
-                                      '"id":"$request_id",'
+                                      '"id":"$trace_id",'
                                       '"referrer":"$http_referer",'
                                       '"bytes":$request_length'
                                     '}'
@@ -102,7 +109,8 @@ http {
                                     '}'
                                     ','
                                     '"cache":{"status":"$cache_status"},'
-                                    '"request_time":$request_time'
+                                    '"request_time":$request_time,'
+                                    '"timestamp_ms":$msec'
                                   '}'
                                   ','
                                   '"host":{"name":"$hostname"}'

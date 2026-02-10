@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-imports, complexity, @typescript-eslint/no-var-requires */
 import { CommonEngine } from '@angular/ssr';
+import { randomUUID } from 'crypto';
 import express from 'express';
 import proxy from 'express-http-proxy';
 import robots from 'express-robots-txt';
@@ -13,7 +14,7 @@ import 'zone.js/node';
 import { METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
 import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level';
 import { getLogger } from 'ish-core/utils/ssr-logging/ssr-logging.service';
-import { REQUEST, RESPONSE } from 'ish-core/utils/ssr/ssr.tokens';
+import { REQUEST, REQUEST_ID, RESPONSE } from 'ish-core/utils/ssr/ssr.tokens';
 
 import { icmCallsCache } from './src/app/core/interceptors/ssr-cache.interceptor';
 import {
@@ -28,8 +29,13 @@ import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
 
 const logger = getLogger('Server');
 
+function getRequestId(req: express.Request): string {
+  return (req as unknown as { requestId: string }).requestId;
+}
+
 function getBaseLogData(req: express.Request) {
   return {
+    trace: { id: getRequestId(req) },
     url: {
       original: req.originalUrl,
       path: req.path,
@@ -208,6 +214,16 @@ export function app() {
 
   // Express server
   const server = express();
+
+  // Request tracing
+  server.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+    // Use existing X-Request-ID from NGINX if present, otherwise generate new
+    const requestId = req.get('X-Request-ID') || randomUUID();
+    (req as unknown as { requestId: string }).requestId = requestId;
+    // Return request ID in response header for debugging
+    res.set('X-Request-ID', requestId);
+    next();
+  });
 
   const prometheusRest: { endpoint: string; duration: number }[] = [];
 
@@ -507,6 +523,7 @@ export function app() {
           { provide: APP_BASE_HREF, useValue: baseHref },
           { provide: REQUEST, useValue: req },
           { provide: RESPONSE, useValue: res },
+          { provide: REQUEST_ID, useValue: getRequestId(req) },
         ],
       })
       .then(html => {
