@@ -19,7 +19,7 @@ export type PaypalPageType = 'cart' | 'checkout' | 'home' | 'product-details' | 
  */
 export type PaypalAdapterTypes = 'Buttons' | 'Messages' | 'CardFields';
 
-interface PayPalScriptParams {
+interface PaypalScriptParams {
   /** The current application locale (e.g., 'en_US', 'de_DE') */
   locale: string;
   /** The current currency code (e.g., 'USD', 'EUR') */
@@ -52,7 +52,7 @@ export class PaypalConfigService {
    * @param paymentMethod - Optional PayPal payment method configuration from ICM
    * @returns Observable that emits the loaded script information
    */
-  loadPayPalScript(nameSpace: string, pageType: string, paymentMethod?: PaymentMethod): Observable<ScriptType> {
+  loadPaypalScript(nameSpace: string, pageType: string, paymentMethod?: PaymentMethod): Observable<ScriptType> {
     return combineLatest([
       this.appFacade.currentLocale$,
       this.appFacade.currentCurrency$,
@@ -115,7 +115,7 @@ export class PaypalConfigService {
    * @param param - Script parameters including locale, currency, and optional payment method
    * @returns Complete PayPal SDK URL with all required query parameters
    */
-  private calculateURL(param: PayPalScriptParams): string {
+  private calculateURL(param: PaypalScriptParams): string {
     if (param.paymentMethod) {
       return this.scriptUrl.concat(`?${this.getScriptQueryParameters(param)}`);
     }
@@ -128,7 +128,7 @@ export class PaypalConfigService {
    * @param param - Script parameters including PayPal config, currency, and locale
    * @returns Query string with parameters for messages-only SDK
    */
-  private getScriptQueryParameterForMessages(param: PayPalScriptParams): string {
+  private getScriptQueryParameterForMessages(param: PaypalScriptParams): string {
     let params = `client-id=${param.paypalConfig.clientId}`;
     params = `${params}&merchant-id=${param.paypalConfig.merchantId}`;
     params = `${params}&currency=${param.currency}`;
@@ -146,7 +146,7 @@ export class PaypalConfigService {
    * @param param - Script parameters including payment method, capabilities, currency, and locale
    * @returns Query string with all parameters for full SDK
    */
-  private getScriptQueryParameters(param: PayPalScriptParams): string {
+  private getScriptQueryParameters(param: PaypalScriptParams): string {
     let params = `client-id=${param.paypalConfig.clientId}`;
     params = `${params}&merchant-id=${param.paypalConfig.merchantId}`;
     const intentParam = param.paymentMethod.hostedPaymentPageParameters?.find(attr => attr.name === 'intent');

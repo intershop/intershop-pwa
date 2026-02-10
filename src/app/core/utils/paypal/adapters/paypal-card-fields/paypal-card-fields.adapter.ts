@@ -7,13 +7,13 @@ import { map, take } from 'rxjs/operators';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PAYPAL_CART_FIELDS_STYLING } from 'ish-core/utils/paypal/adapters/paypal-adapters.styling';
-import { PayPalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
+import { PaypalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 import {
-  PayPalCardFieldError,
-  PayPalCardFieldsComponent,
-  PayPalCardFieldsIndividualField,
-  PayPalCardFieldsStateObject,
-  PayPalStateObject,
+  PaypalCardFieldError,
+  PaypalCardFieldsComponent,
+  PaypalCardFieldsIndividualField,
+  PaypalCardFieldsStateObject,
+  PaypalStateObject,
 } from 'ish-core/utils/paypal/paypal-model/paypal.model';
 
 /**
@@ -21,14 +21,21 @@ import {
  * Life cycle of this component ends with destroying of parent component PaymentPaypalComponent.
  */
 @Injectable()
-export class PayPalCardFieldsAdapter {
+export class PaypalCardFieldsAdapter {
   paymentMethod: PaymentMethod;
-  cardField: PayPalCardFieldsComponent;
+  cardField: PaypalCardFieldsComponent;
 
   /** Emits when the card fields form should be closed */
   closeForm$ = new Subject<void>();
   /** Emits true when the card fields is start to submit  */
   loadingIframe$ = new BehaviorSubject<boolean>(false);
+
+  /** Error state observables for each field */
+  nameFieldError$ = new BehaviorSubject<boolean>(false);
+  numberFieldError$ = new BehaviorSubject<boolean>(false);
+  cvvFieldError$ = new BehaviorSubject<boolean>(false);
+  expiryFieldError$ = new BehaviorSubject<boolean>(false);
+
   private creditCardPaymentInstrumentId: string;
   /** Flag to prevent blur validation during field reset */
   private isResetting = false;
@@ -39,14 +46,14 @@ export class PayPalCardFieldsAdapter {
     string,
     {
       containerId: string;
-      instance: PayPalCardFieldsIndividualField;
+      instance: PaypalCardFieldsIndividualField;
     }
   > = {};
 
   constructor(
     private ngZone: NgZone,
     private checkoutFacade: CheckoutFacade,
-    private payPalDataTransferService: PayPalDataTransferService,
+    private paypalDataTransferService: PaypalDataTransferService,
     private translateService: TranslateService,
     @Inject(DOCUMENT) private document: Document
   ) {}
@@ -77,14 +84,14 @@ export class PayPalCardFieldsAdapter {
             this.ngZone.run(() => this.onErrorCallback());
           },
           inputEvents: {
-            onFocus: (data: PayPalCardFieldsStateObject) => {
+            onFocus: (data: PaypalCardFieldsStateObject) => {
               this.ngZone.run(() => this.handleFieldFocus(data));
             },
-            onBlur: (data: PayPalCardFieldsStateObject) => {
+            onBlur: (data: PaypalCardFieldsStateObject) => {
               this.ngZone.run(() => this.handleFieldBlur(data));
             },
           },
-        }) as PayPalCardFieldsComponent;
+        }) as PaypalCardFieldsComponent;
 
         // Check if card fields are eligible
         if (this.cardField.isEligible()) {
@@ -153,14 +160,14 @@ export class PayPalCardFieldsAdapter {
   /**
    * Handles field focus events to hide any existing error messages and re-enable submit button.
    */
-  private handleFieldFocus(data: PayPalCardFieldsStateObject): void {
+  private handleFieldFocus(data: PaypalCardFieldsStateObject): void {
     this.hideFieldError(data.emittedBy);
   }
 
   /**
    * Handles field blur events to validate and show errors if necessary.
    */
-  private handleFieldBlur(data: PayPalCardFieldsStateObject): void {
+  private handleFieldBlur(data: PaypalCardFieldsStateObject): void {
     // Skip validation during field reset to prevent race conditions
     if (this.isResetting) {
       return;
@@ -228,7 +235,7 @@ export class PayPalCardFieldsAdapter {
    * Waits for the PayPal order data from the service with a timeout.
    */
   private waitForOrderData(): Promise<string> {
-    const orderData$ = this.payPalDataTransferService.paypalOrder$.pipe(
+    const orderData$ = this.paypalDataTransferService.paypalOrder$.pipe(
       take(1),
       map(data => {
         this.creditCardPaymentInstrumentId = data.paymentInstrumentId;
@@ -304,9 +311,9 @@ export class PayPalCardFieldsAdapter {
   /**
    * Default error handler for PayPal card fields.
    */
-  private validationErrorHandler(statePromise: Promise<PayPalStateObject>): void {
+  private validationErrorHandler(statePromise: Promise<PaypalStateObject>): void {
     statePromise.then(stateObject => {
-      const cardFieldsState = stateObject?.value ?? (stateObject as unknown as PayPalCardFieldsStateObject);
+      const cardFieldsState = stateObject?.value ?? (stateObject as unknown as PaypalCardFieldsStateObject);
       this.handleSubmitError(cardFieldsState);
     });
   }
@@ -314,19 +321,21 @@ export class PayPalCardFieldsAdapter {
   /**
    * Handles card field validation errors.
    */
-  private handleSubmitError(state: PayPalCardFieldsStateObject): void {
+  private handleSubmitError(state: PaypalCardFieldsStateObject): void {
+    this.loadingIframe$.next(false);
+    this.processing = false;
     state.errors.forEach(error => {
       switch (error) {
-        case PayPalCardFieldError.InvalidName:
+        case PaypalCardFieldError.InvalidName:
           this.showFieldError('name');
           break;
-        case PayPalCardFieldError.InvalidNumber:
+        case PaypalCardFieldError.InvalidNumber:
           this.showFieldError('number');
           break;
-        case PayPalCardFieldError.InvalidCvv:
+        case PaypalCardFieldError.InvalidCvv:
           this.showFieldError('cvv');
           break;
-        case PayPalCardFieldError.InvalidExpiry:
+        case PaypalCardFieldError.InvalidExpiry:
           this.showFieldError('expiry');
           break;
       }
@@ -339,11 +348,7 @@ export class PayPalCardFieldsAdapter {
   private showFieldError(fieldName: string): void {
     const field = this.fields[fieldName];
     if (field) {
-      const errorElements = this.getErrorElementsById(field.containerId);
-      if (errorElements?.error && errorElements?.label) {
-        errorElements.error.classList.remove('hide-validation-error');
-        errorElements.label.classList.add('validation-error');
-      }
+      this.setFieldErrorState(fieldName, true);
       field.instance.addClass('invalid');
       field.instance.setAttribute('aria-invalid', 'true');
     }
@@ -352,23 +357,25 @@ export class PayPalCardFieldsAdapter {
   /**
    * Hides error message, classes and aria attribute for a specific field
    */
-  private hideFieldError(field: string): void {
-    const errorElements = this.getErrorElementsById(this.fields[field].containerId);
-    if (errorElements?.error && errorElements?.label) {
-      errorElements.error.classList.add('hide-validation-error');
-      errorElements.label.classList.remove('validation-error');
+  private hideFieldError(fieldName: string): void {
+    const field = this.fields[fieldName];
+    if (field) {
+      this.setFieldErrorState(fieldName, false);
+      field.instance.removeClass('invalid');
+      field.instance.setAttribute('aria-invalid', 'false');
     }
-    this.fields[field].instance.removeClass('invalid');
-    this.fields[field].instance.setAttribute('aria-invalid', 'false');
   }
 
   /**
-   * Retrieves error and label elements by container ID.
+   * Updates the error state observable for a specific field.
    */
-  private getErrorElementsById(id: string): Record<string, HTMLElement | null> {
-    return {
-      error: this.document.getElementById(id.concat('-error')),
-      label: this.document.getElementById(id.concat('-label')),
+  private setFieldErrorState(fieldName: string, hasError: boolean): void {
+    const errorSubjects: Record<string, BehaviorSubject<boolean>> = {
+      name: this.nameFieldError$,
+      number: this.numberFieldError$,
+      cvv: this.cvvFieldError$,
+      expiry: this.expiryFieldError$,
     };
+    errorSubjects[fieldName]?.next(hasError);
   }
 }

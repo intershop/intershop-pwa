@@ -10,7 +10,7 @@ import { PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-ad
 import { PAYPAL_BUTTON_STYLING } from 'ish-core/utils/paypal/adapters/paypal-adapters.styling';
 import { PaypalComponent } from 'ish-core/utils/paypal/paypal-model/paypal.model';
 
-interface PayPalShippingAddress {
+interface PaypalShippingAddress {
   city: string;
   countryCode: string;
   postalCode: string;
@@ -22,8 +22,8 @@ interface PayPalShippingAddress {
  * Life cycle of this component ends with destroying of parent component PaymentPaypalComponent.
  */
 @Injectable()
-export class PayPalButtonsAdapter {
-  payPalShippingAddress: PayPalShippingAddress;
+export class PaypalButtonsAdapter {
+  paypalShippingAddress: PaypalShippingAddress;
 
   constructor(
     private checkoutFacade: CheckoutFacade,
@@ -61,8 +61,8 @@ export class PayPalButtonsAdapter {
         this.onApproveCallback(data);
       },
       // in case the shipping address was changed in the paypal overlay
-      onShippingAddressChange: (data: { shippingAddress: PayPalShippingAddress }) => {
-        this.payPalShippingAddress = data?.shippingAddress;
+      onShippingAddressChange: (data: { shippingAddress: PaypalShippingAddress }) => {
+        this.paypalShippingAddress = data?.shippingAddress;
       },
       // after the user has cancelled the payment in the paypal overlay
       onCancel: () => {
@@ -107,13 +107,13 @@ export class PayPalButtonsAdapter {
       const basketAddress = basket?.commonShipToAddress;
       let shippingAddressChanged = false;
 
-      if (this.payPalShippingAddress && basketAddress) {
+      if (this.paypalShippingAddress && basketAddress) {
         const normalize = (val: string) => val?.trim()?.toLowerCase();
         shippingAddressChanged =
-          normalize(basketAddress.country) !== normalize(this.payPalShippingAddress.countryCode) ||
-          normalize(basketAddress.postalCode) !== normalize(this.payPalShippingAddress.postalCode) ||
-          normalize(basketAddress.city) !== normalize(this.payPalShippingAddress.city);
-      } else if (this.payPalShippingAddress && !basketAddress) {
+          normalize(basketAddress.country) !== normalize(this.paypalShippingAddress.countryCode) ||
+          normalize(basketAddress.postalCode) !== normalize(this.paypalShippingAddress.postalCode) ||
+          normalize(basketAddress.city) !== normalize(this.paypalShippingAddress.city);
+      } else if (this.paypalShippingAddress && !basketAddress) {
         // If PayPal has an address but basket doesn't, address has changed
         shippingAddressChanged = true;
       }

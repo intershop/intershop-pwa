@@ -62,13 +62,13 @@
 
     <ng-container
       *ngIf="
-        getPayPalPageType() === 'cart'
+        getPaypalPageType() === 'cart'
           ? 'payment.paypal.payLaterPreferences.PayLaterMessagingCartEnabled'
           : ('payment.paypal.payLaterPreferences.PayLaterMessagingPaymentEnabled' | ishServerSetting)
       "
     >
       <dd class="col-12">
-        <ish-payment-paypal [pageType]="getPayPalPageType()" />
+        <ish-payment-paypal [pageType]="getPaypalPageType()" />
       </dd>
     </ng-container>
   </dl>

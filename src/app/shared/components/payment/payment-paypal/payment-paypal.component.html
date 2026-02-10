@@ -12,7 +12,11 @@
           </div>
           <div id="card-name-field-container" class="col-md-6 fix-height"></div>
           <div class="offset-md-4">
-            <small id="card-name-field-container-error" class="validation-error hide-validation-error">
+            <small
+              [ishPaypalError]="nameFieldError$ | async"
+              ishPaypalErrorLabelId="card-name-field-container-label"
+              class="validation-error hide-validation-error"
+            >
               {{ 'checkout.credit_card.holder.error.invalid' | translate }}
             </small>
           </div>
@@ -25,7 +29,11 @@
           </div>
           <div id="card-number-field-container" class="col-md-6 fix-height"></div>
           <div class="offset-md-4">
-            <small id="card-number-field-container-error" class="validation-error hide-validation-error">
+            <small
+              [ishPaypalError]="numberFieldError$ | async"
+              ishPaypalErrorLabelId="card-number-field-container-label"
+              class="validation-error hide-validation-error"
+            >
               {{ 'checkout.credit_card.number.error.default' | translate }}
             </small>
           </div>
@@ -40,7 +48,11 @@
             <div class="row">
               <div id="card-expiry-field-container" class="pe-0 col-4 fix-height"></div>
             </div>
-            <small id="card-expiry-field-container-error" class="validation-error hide-validation-error">
+            <small
+              [ishPaypalError]="expiryFieldError$ | async"
+              ishPaypalErrorLabelId="card-expiry-field-container-label"
+              class="validation-error hide-validation-error"
+            >
               {{ 'checkout.credit_card.expiry_date.invalid.error' | translate }}
             </small>
           </div>
@@ -69,7 +81,11 @@
                 </button>
               </div>
             </div>
-            <small id="card-cvv-field-container-error" class="validation-error hide-validation-error">
+            <small
+              [ishPaypalError]="cvvFieldError$ | async"
+              ishPaypalErrorLabelId="card-cvv-field-container-label"
+              class="validation-error hide-validation-error"
+            >
               {{ 'checkout.credit_card.cvc_cvv.error.default' | translate }}
             </small>
           </div>

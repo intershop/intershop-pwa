@@ -69,7 +69,10 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
           return paypalMethod;
         }
         // Return PayPal method if it's the current payment instrument and redirect is required
-        if (basket.payment.paymentInstrument?.id === paypalMethod?.id && basket.payment.redirectRequired) {
+        if (
+          (basket.payment.paymentInstrument?.id === paypalMethod?.id && basket.payment.redirectRequired) ||
+          basket.payment.paymentInstrument?.id !== paypalMethod?.id
+        ) {
           return paypalMethod;
         }
         return;

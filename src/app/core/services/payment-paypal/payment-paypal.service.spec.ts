@@ -57,7 +57,7 @@ describe('Payment Paypal Service', () => {
         })
       );
 
-      paymentPaypalService.initializePayPalExperienceContextFlow(mockPaymentInstrument).subscribe(result => {
+      paymentPaypalService.initializePaypalExperienceContextFlow(mockPaymentInstrument).subscribe(result => {
         verify(paymentServiceMock.createBasketPayment(mockPaymentInstrument)).once();
         verify(paymentServiceMock.setBasketPayment('paypal-instrument-id')).once();
         verify(apiServiceMock.put('payments/open-tender/paypal-experience-context', anything(), anything())).once();
@@ -89,7 +89,7 @@ describe('Payment Paypal Service', () => {
         })
       );
 
-      paymentPaypalService.getPayPalPaymentInstrument(mockPaymentInstrument).subscribe(result => {
+      paymentPaypalService.getPaypalPaymentInstrument(mockPaymentInstrument).subscribe(result => {
         verify(apiServiceMock.get('payments/open-tender/paypal-experience-context', anything())).once();
         expect(result).toEqual({
           id: 'paypal-instrument-id',
@@ -120,7 +120,7 @@ describe('Payment Paypal Service', () => {
         })
       );
 
-      paymentPaypalService.getPayPalPaymentInstrument(mockPaymentInstrument).subscribe(result => {
+      paymentPaypalService.getPaypalPaymentInstrument(mockPaymentInstrument).subscribe(result => {
         expect(result).toEqual({ errorMessage: '3D Secure authentication failed' });
         done();
       });
@@ -136,7 +136,7 @@ describe('Payment Paypal Service', () => {
         })
       );
 
-      paymentPaypalService.getPayPalPaymentInstrument(mockPaymentInstrument).subscribe(result => {
+      paymentPaypalService.getPaypalPaymentInstrument(mockPaymentInstrument).subscribe(result => {
         expect(result).toEqual({
           id: 'paypal-instrument-id',
           paymentMethod: 'PayPal',

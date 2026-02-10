@@ -9,7 +9,7 @@ import {
   Output,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { EMPTY, Observable, map, shareReplay, switchMap, take } from 'rxjs';
+import { EMPTY, Observable, shareReplay, switchMap, take } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -17,9 +17,9 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalAdaptersBuilder, PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
-import { PayPalButtonsAdapter } from 'ish-core/utils/paypal/adapters/paypal-buttons/paypal-buttons.adapter';
-import { PayPalCardFieldsAdapter } from 'ish-core/utils/paypal/adapters/paypal-card-fields/paypal-card-fields.adapter';
-import { PayPalMessagesAdapter } from 'ish-core/utils/paypal/adapters/paypal-messages/paypal-messages.adapter';
+import { PaypalButtonsAdapter } from 'ish-core/utils/paypal/adapters/paypal-buttons/paypal-buttons.adapter';
+import { PaypalCardFieldsAdapter } from 'ish-core/utils/paypal/adapters/paypal-card-fields/paypal-card-fields.adapter';
+import { PaypalMessagesAdapter } from 'ish-core/utils/paypal/adapters/paypal-messages/paypal-messages.adapter';
 import {
   PaypalAdapterTypes,
   PaypalConfigService,
@@ -37,7 +37,7 @@ import { ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
   templateUrl: './payment-paypal.component.html',
   styleUrls: ['./payment-paypal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [PaypalAdaptersBuilder, PayPalButtonsAdapter, PayPalCardFieldsAdapter, PayPalMessagesAdapter],
+  providers: [PaypalAdaptersBuilder, PaypalButtonsAdapter, PaypalCardFieldsAdapter, PaypalMessagesAdapter],
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   /** Type of PayPal adapter to render. Defaults to Messages. */
@@ -58,35 +58,42 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   /** Observable for tracking the PayPal script loading state. */
   private loadingScript$: Observable<ScriptType>;
 
-  /** Observable indicating whether the PayPal script was loaded successfully. */
-  scriptLoaded$: Observable<boolean>;
-
   /** Observable indicating whether the PayPal iframe is loading. */
   loadingIframe$: Observable<boolean>;
+
+  /** Error state observables for card fields */
+  nameFieldError$: Observable<boolean>;
+  numberFieldError$: Observable<boolean>;
+  cvvFieldError$: Observable<boolean>;
+  expiryFieldError$: Observable<boolean>;
 
   constructor(
     private destroyRef: DestroyRef,
     private appFacade: AppFacade,
     private paypalConfigService: PaypalConfigService,
     private paypalAdaptersBuilder: PaypalAdaptersBuilder,
-    private payPalCardFields: PayPalCardFieldsAdapter
+    private paypalCardFields: PaypalCardFieldsAdapter
   ) {}
 
   ngOnInit(): void {
     this.loadingScript$ = this.appFacade.serverSetting$<PaypalConfig>('payment.paypal').pipe(
       whenTruthy(),
       take(1),
-      switchMap(paypalConfig => this.loadPayPalScript(paypalConfig)),
+      switchMap(paypalConfig => this.loadPaypalScript(paypalConfig)),
       shareReplay(1)
     );
 
-    this.scriptLoaded$ = this.loadingScript$.pipe(map(result => result?.loaded ?? false));
-
     // Subscribe to close form event from PayPal card fields
-    this.payPalCardFields.closeForm$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+    this.paypalCardFields.closeForm$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.closeForm.emit();
     });
-    this.loadingIframe$ = this.payPalCardFields.loadingIframe$;
+    this.loadingIframe$ = this.paypalCardFields.loadingIframe$;
+
+    // Assign error state observables from card fields adapter
+    this.nameFieldError$ = this.paypalCardFields.nameFieldError$;
+    this.numberFieldError$ = this.paypalCardFields.numberFieldError$;
+    this.cvvFieldError$ = this.paypalCardFields.cvvFieldError$;
+    this.expiryFieldError$ = this.paypalCardFields.expiryFieldError$;
   }
 
   /**
@@ -98,15 +105,15 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
    * @param showPaypalPayLaterInformation - Whether Pay Later messaging should be displayed
    * @returns Observable that emits the script loading result, or EMPTY if loading should be skipped
    */
-  private loadPayPalScript(paypalConfig: PaypalConfig): Observable<ScriptType> {
+  private loadPaypalScript(paypalConfig: PaypalConfig): Observable<ScriptType> {
     // Do not load PayPal Messages component if Pay Later information is not to be shown
     if (this.adapterType === 'Messages' && !this.showPaypalPayLaterInformation(paypalConfig)) {
       return EMPTY;
     }
 
     return this.adapterType === 'Messages'
-      ? this.paypalConfigService.loadPayPalScript('PPCP_MESSAGES', this.pageType)
-      : this.paypalConfigService.loadPayPalScript(
+      ? this.paypalConfigService.loadPaypalScript('PPCP_MESSAGES', this.pageType)
+      : this.paypalConfigService.loadPaypalScript(
           'PPCP_'.concat(`${this.selectedPaymentMethod.id}`),
           this.pageType,
           this.selectedPaymentMethod

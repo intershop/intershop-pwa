@@ -10,13 +10,13 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
 
-import { PayPalButtonsAdapter } from './paypal-buttons.adapter';
+import { PaypalButtonsAdapter } from './paypal-buttons.adapter';
 
 /**
  * Testable subclass that exposes private methods for testing
  */
 @Injectable()
-class TestablePayPalButtons extends PayPalButtonsAdapter {
+class TestablePaypalButtons extends PaypalButtonsAdapter {
   testCreateOrder(paymentMethod: PaymentMethod): Promise<string> {
     return this.createOrderCallback(paymentMethod);
   }
@@ -35,7 +35,7 @@ class TestablePayPalButtons extends PayPalButtonsAdapter {
 }
 
 describe('Paypal Buttons Adapter', () => {
-  let payPalButtons: TestablePayPalButtons;
+  let paypalButtons: TestablePaypalButtons;
   let checkoutFacade: CheckoutFacade;
 
   const mockPaymentMethod = {
@@ -83,10 +83,10 @@ describe('Paypal Buttons Adapter', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, TestablePayPalButtons],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, TestablePaypalButtons],
     });
 
-    payPalButtons = TestBed.inject(TestablePayPalButtons);
+    paypalButtons = TestBed.inject(TestablePaypalButtons);
   });
 
   afterEach(() => {
@@ -97,7 +97,7 @@ describe('Paypal Buttons Adapter', () => {
   });
 
   it('should be created', () => {
-    expect(payPalButtons).toBeTruthy();
+    expect(paypalButtons).toBeTruthy();
   });
 
   describe('createOrder()', () => {
@@ -106,7 +106,7 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     it('should set basket payment with payment instrument id', async () => {
-      const orderId = await payPalButtons.testCreateOrder(mockPaymentMethod);
+      const orderId = await paypalButtons.testCreateOrder(mockPaymentMethod);
 
       verify(checkoutFacade.setBasketPayment('test-instrument-id')).once();
       expect(orderId).toBe('ORDER123');
@@ -118,14 +118,14 @@ describe('Paypal Buttons Adapter', () => {
         paymentInstruments: [],
       } as PaymentMethod;
 
-      const orderId = await payPalButtons.testCreateOrder(paymentMethodWithoutInstrument);
+      const orderId = await paypalButtons.testCreateOrder(paymentMethodWithoutInstrument);
 
       verify(checkoutFacade.setBasketPayment('PayPal')).once();
       expect(orderId).toBe('ORDER123');
     });
 
     it('should extract order ID from redirectUrl', async () => {
-      const orderId = await payPalButtons.testCreateOrder(mockPaymentMethod);
+      const orderId = await paypalButtons.testCreateOrder(mockPaymentMethod);
 
       expect(orderId).toBe('ORDER123');
     });
@@ -141,7 +141,7 @@ describe('Paypal Buttons Adapter', () => {
 
       when(checkoutFacade.basket$).thenReturn(of(basketWithDifferentToken));
 
-      const orderId = await payPalButtons.testCreateOrder(mockPaymentMethod);
+      const orderId = await paypalButtons.testCreateOrder(mockPaymentMethod);
 
       expect(orderId).toBe('ORDER999');
     });
@@ -150,7 +150,7 @@ describe('Paypal Buttons Adapter', () => {
       // Basket emits first without payment, then with valid payment
       when(checkoutFacade.basket$).thenReturn(of({ ...mockBasket, payment: undefined } as Basket, mockBasket));
 
-      const orderId = await payPalButtons.testCreateOrder(mockPaymentMethod);
+      const orderId = await paypalButtons.testCreateOrder(mockPaymentMethod);
 
       expect(orderId).toBe('ORDER123');
     });
@@ -158,7 +158,7 @@ describe('Paypal Buttons Adapter', () => {
     it('should reject when basket$ emits error', async () => {
       when(checkoutFacade.basket$).thenReturn(throwError(() => new Error('Basket error')));
 
-      await expect(payPalButtons.testCreateOrder(mockPaymentMethod)).rejects.toThrow('Basket error');
+      await expect(paypalButtons.testCreateOrder(mockPaymentMethod)).rejects.toThrow('Basket error');
     });
   });
 
@@ -171,12 +171,12 @@ describe('Paypal Buttons Adapter', () => {
     let navigateSpy: jest.SpyInstance;
 
     beforeEach(() => {
-      navigateSpy = jest.spyOn((payPalButtons as any).router, 'navigate');
+      navigateSpy = jest.spyOn((paypalButtons as any).router, 'navigate');
       when(checkoutFacade.basket$).thenReturn(of(mockBasket));
     });
 
     it('should navigate to review page with correct parameters', () => {
-      payPalButtons.testOnApproveCallback(approvalData);
+      paypalButtons.testOnApproveCallback(approvalData);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/checkout/review'], {
         queryParams: {
@@ -189,14 +189,14 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     it('should detect shipping address change when country differs', () => {
-      payPalButtons.payPalShippingAddress = {
+      paypalButtons.paypalShippingAddress = {
         city: 'Berlin',
         postalCode: '10115',
         countryCode: 'FR',
         state: '',
       };
 
-      payPalButtons.testOnApproveCallback(approvalData);
+      paypalButtons.testOnApproveCallback(approvalData);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/checkout/review'], {
         queryParams: {
@@ -209,14 +209,14 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     it('should detect shipping address change when postalCode differs', () => {
-      payPalButtons.payPalShippingAddress = {
+      paypalButtons.paypalShippingAddress = {
         city: 'Berlin',
         postalCode: '20095',
         countryCode: 'DE',
         state: '',
       };
 
-      payPalButtons.testOnApproveCallback(approvalData);
+      paypalButtons.testOnApproveCallback(approvalData);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/checkout/review'], {
         queryParams: {
@@ -229,14 +229,14 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     it('should detect shipping address change when city differs', () => {
-      payPalButtons.payPalShippingAddress = {
+      paypalButtons.paypalShippingAddress = {
         city: 'Hamburg',
         postalCode: '10115',
         countryCode: 'DE',
         state: '',
       };
 
-      payPalButtons.testOnApproveCallback(approvalData);
+      paypalButtons.testOnApproveCallback(approvalData);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/checkout/review'], {
         queryParams: {
@@ -249,14 +249,14 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     it('should handle case-insensitive address comparison', () => {
-      payPalButtons.payPalShippingAddress = {
+      paypalButtons.paypalShippingAddress = {
         city: 'BERLIN',
         postalCode: '10115',
         countryCode: 'de',
         state: '',
       };
 
-      payPalButtons.testOnApproveCallback(approvalData);
+      paypalButtons.testOnApproveCallback(approvalData);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/checkout/review'], {
         queryParams: {
@@ -269,14 +269,14 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     it('should handle whitespace in address comparison', () => {
-      payPalButtons.payPalShippingAddress = {
+      paypalButtons.paypalShippingAddress = {
         city: '  Berlin  ',
         postalCode: ' 10115 ',
         countryCode: ' DE ',
         state: '',
       };
 
-      payPalButtons.testOnApproveCallback(approvalData);
+      paypalButtons.testOnApproveCallback(approvalData);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/checkout/review'], {
         queryParams: {
@@ -289,9 +289,9 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     it('should not detect address change when payPalShippingAddress is undefined', () => {
-      payPalButtons.payPalShippingAddress = undefined;
+      paypalButtons.paypalShippingAddress = undefined;
 
-      payPalButtons.testOnApproveCallback(approvalData);
+      paypalButtons.testOnApproveCallback(approvalData);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/checkout/review'], {
         queryParams: {
@@ -305,14 +305,14 @@ describe('Paypal Buttons Adapter', () => {
 
     it('should handle undefined basket address', () => {
       when(checkoutFacade.basket$).thenReturn(of({ ...mockBasket, commonShipToAddress: undefined } as Basket));
-      payPalButtons.payPalShippingAddress = {
+      paypalButtons.paypalShippingAddress = {
         city: 'Berlin',
         postalCode: '10115',
         countryCode: 'DE',
         state: '',
       };
 
-      payPalButtons.testOnApproveCallback(approvalData);
+      paypalButtons.testOnApproveCallback(approvalData);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/checkout/review'], {
         queryParams: {
@@ -329,17 +329,17 @@ describe('Paypal Buttons Adapter', () => {
     let navigateSpy: jest.SpyInstance;
 
     beforeEach(() => {
-      navigateSpy = jest.spyOn((payPalButtons as any).router, 'navigate');
+      navigateSpy = jest.spyOn((paypalButtons as any).router, 'navigate');
     });
 
     it('should delete basket payment when payment instrument exists', () => {
-      payPalButtons.testOnCancelCallback(mockConfig);
+      paypalButtons.testOnCancelCallback(mockConfig);
 
       verify(checkoutFacade.deleteBasketPayment(mockConfig.paypalPaymentMethod.paymentInstruments[0])).once();
     });
 
     it('should navigate to basket page for FastCheckout', () => {
-      payPalButtons.testOnCancelCallback(mockConfig);
+      paypalButtons.testOnCancelCallback(mockConfig);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/basket'], { queryParams: { redirect: 'cancel' } });
     });
@@ -353,7 +353,7 @@ describe('Paypal Buttons Adapter', () => {
         } as PaymentMethod,
       };
 
-      payPalButtons.testOnCancelCallback(configWithoutFastCheckout);
+      paypalButtons.testOnCancelCallback(configWithoutFastCheckout);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/checkout/payment'], { queryParams: { redirect: 'cancel' } });
     });
@@ -368,7 +368,7 @@ describe('Paypal Buttons Adapter', () => {
         } as PaymentMethod,
       };
 
-      payPalButtons.testOnCancelCallback(configWithoutInstrument);
+      paypalButtons.testOnCancelCallback(configWithoutInstrument);
 
       expect(deletePaymentSpy).not.toHaveBeenCalled();
     });
@@ -378,11 +378,11 @@ describe('Paypal Buttons Adapter', () => {
     let navigateSpy: jest.SpyInstance;
 
     beforeEach(() => {
-      navigateSpy = jest.spyOn((payPalButtons as any).router, 'navigate');
+      navigateSpy = jest.spyOn((paypalButtons as any).router, 'navigate');
     });
 
     it('should navigate to basket page for FastCheckout on error', () => {
-      payPalButtons.testOnErrorCallback(mockConfig);
+      paypalButtons.testOnErrorCallback(mockConfig);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/basket'], { queryParams: { redirect: 'failure' } });
     });
@@ -396,7 +396,7 @@ describe('Paypal Buttons Adapter', () => {
         } as PaymentMethod,
       };
 
-      payPalButtons.testOnErrorCallback(configWithoutFastCheckout);
+      paypalButtons.testOnErrorCallback(configWithoutFastCheckout);
 
       expect(navigateSpy).toHaveBeenCalledWith(['/checkout/payment'], { queryParams: { redirect: 'failure' } });
     });
@@ -409,14 +409,14 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     it('should successfully render PayPal buttons', async () => {
-      await payPalButtons.renderButtons(mockConfig);
+      await paypalButtons.renderButtons(mockConfig);
 
       expect(mockPaypalButtons).toHaveBeenCalled();
       expect(mockPaypalButtons().render).toHaveBeenCalledWith('#paypal-button-container');
     });
 
     it('should pass correct configuration to PayPal Buttons', async () => {
-      await payPalButtons.renderButtons(mockConfig);
+      await paypalButtons.renderButtons(mockConfig);
 
       const buttonConfig = mockPaypalButtons.mock.calls[0][0];
 
@@ -429,7 +429,7 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     it('should use checkout style for checkout payment page', async () => {
-      await payPalButtons.renderButtons(mockConfig);
+      await paypalButtons.renderButtons(mockConfig);
 
       const buttonConfig = mockPaypalButtons.mock.calls[0][0];
 
@@ -442,7 +442,7 @@ describe('Paypal Buttons Adapter', () => {
         pageType: 'cart',
       };
 
-      await payPalButtons.renderButtons(cartConfig);
+      await paypalButtons.renderButtons(cartConfig);
 
       const buttonConfig = mockPaypalButtons.mock.calls[0][0];
 
@@ -453,7 +453,7 @@ describe('Paypal Buttons Adapter', () => {
       document.body.innerHTML = '';
 
       try {
-        await payPalButtons.renderButtons(mockConfig);
+        await paypalButtons.renderButtons(mockConfig);
         fail('Should have thrown an error');
       } catch (error) {
         expect(error.message).toBe("Container element 'paypal-button-container' does not exist in DOM");
@@ -464,7 +464,7 @@ describe('Paypal Buttons Adapter', () => {
       delete (window as any).testPaypal.Buttons;
 
       try {
-        await payPalButtons.renderButtons(mockConfig);
+        await paypalButtons.renderButtons(mockConfig);
         fail('Should have thrown an error');
       } catch (error) {
         expect(error.message).toBe(
@@ -480,7 +480,7 @@ describe('Paypal Buttons Adapter', () => {
       };
 
       try {
-        await payPalButtons.renderButtons(invalidConfig);
+        await paypalButtons.renderButtons(invalidConfig);
         fail('Should have thrown an error');
       } catch (error) {
         expect(error.message).toBe(
@@ -490,7 +490,7 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     it('should call createOrder callback', async () => {
-      await payPalButtons.renderButtons(mockConfig);
+      await paypalButtons.renderButtons(mockConfig);
 
       const buttonConfig = mockPaypalButtons.mock.calls[0][0];
       const orderId = await buttonConfig.createOrder();
@@ -499,9 +499,9 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     it('should call onApprove callback', async () => {
-      const navigateSpy = jest.spyOn((payPalButtons as any).router, 'navigate');
+      const navigateSpy = jest.spyOn((paypalButtons as any).router, 'navigate');
 
-      await payPalButtons.renderButtons(mockConfig);
+      await paypalButtons.renderButtons(mockConfig);
 
       const buttonConfig = mockPaypalButtons.mock.calls[0][0];
       buttonConfig.onApprove({ payerID: 'PAYER123', orderID: 'ORDER456' });
@@ -517,7 +517,7 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     it('should update shipping address on onShippingAddressChange callback', async () => {
-      await payPalButtons.renderButtons(mockConfig);
+      await paypalButtons.renderButtons(mockConfig);
 
       const buttonConfig = mockPaypalButtons.mock.calls[0][0];
       const newShippingAddress = {
@@ -529,13 +529,13 @@ describe('Paypal Buttons Adapter', () => {
 
       buttonConfig.onShippingAddressChange({ shippingAddress: newShippingAddress });
 
-      expect(payPalButtons.payPalShippingAddress).toEqual(newShippingAddress);
+      expect(paypalButtons.paypalShippingAddress).toEqual(newShippingAddress);
     });
 
     it('should call onCancel callback', async () => {
-      const navigateSpy = jest.spyOn((payPalButtons as any).router, 'navigate');
+      const navigateSpy = jest.spyOn((paypalButtons as any).router, 'navigate');
 
-      await payPalButtons.renderButtons(mockConfig);
+      await paypalButtons.renderButtons(mockConfig);
 
       const buttonConfig = mockPaypalButtons.mock.calls[0][0];
       buttonConfig.onCancel();
@@ -545,9 +545,9 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     it('should call onError callback', async () => {
-      const navigateSpy = jest.spyOn((payPalButtons as any).router, 'navigate');
+      const navigateSpy = jest.spyOn((paypalButtons as any).router, 'navigate');
 
-      await payPalButtons.renderButtons(mockConfig);
+      await paypalButtons.renderButtons(mockConfig);
 
       const buttonConfig = mockPaypalButtons.mock.calls[0][0];
       buttonConfig.onError();
@@ -563,12 +563,12 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     it('should handle undefined shipping address in onShippingAddressChange', async () => {
-      await payPalButtons.renderButtons(mockConfig);
+      await paypalButtons.renderButtons(mockConfig);
 
       const buttonConfig = mockPaypalButtons.mock.calls[0][0];
       buttonConfig.onShippingAddressChange({ shippingAddress: undefined });
 
-      expect(payPalButtons.payPalShippingAddress).toBeUndefined();
+      expect(paypalButtons.paypalShippingAddress).toBeUndefined();
     });
 
     it('should handle render failure gracefully', async () => {
@@ -577,7 +577,7 @@ describe('Paypal Buttons Adapter', () => {
       });
 
       try {
-        await payPalButtons.renderButtons(mockConfig);
+        await paypalButtons.renderButtons(mockConfig);
         fail('Should have thrown an error');
       } catch (error) {
         expect(error.message).toBe('Render failed');
@@ -590,14 +590,14 @@ describe('Paypal Buttons Adapter', () => {
         <div id="paypal-button-container-2"></div>
       `;
 
-      await payPalButtons.renderButtons(mockConfig);
+      await paypalButtons.renderButtons(mockConfig);
 
       const secondConfig = {
         ...mockConfig,
         containerId: 'paypal-button-container-2',
       };
 
-      await payPalButtons.renderButtons(secondConfig);
+      await paypalButtons.renderButtons(secondConfig);
 
       expect(mockPaypalButtons().render).toHaveBeenCalledWith('#paypal-button-container');
       expect(mockPaypalButtons().render).toHaveBeenCalledWith('#paypal-button-container-2');

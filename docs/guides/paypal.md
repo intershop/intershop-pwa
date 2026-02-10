@@ -48,29 +48,29 @@ To use PayPal payment methods in the Intershop PWA, ensure the following prerequ
 The PayPal integration follows a modular architecture with clear separation of concerns:
 
 ```
-src/app/core/utils/sdk/paypal/
-├── paypal-components/
-│   ├── buttons/            # PayPal Buttons component
-│   ├── card-fields/        # PayPal Card Fields component
-│   ├── messages/           # PayPal Pay Later Messages component
-│   ├── paypal-component.builder.ts    # Factory for creating components
-│   └── paypal-component.styling.ts    # Centralized styling configuration
+src/app/core/utils/paypal/
+├── adapters/
+│   ├── paypal-buttons/           # PayPal Buttons adapter
+│   ├── paypal-card-fields/        # PayPal Card Fields adapter
+│   ├── paypal-messages/           # PayPal Pay Later Messages adapter
+│   ├── paypal-adapters.builder.ts # Factory for creating adapters
+│   └── paypal-adapters.styling.ts # Centralized styling configuration
 ├── paypal-config/
-│   └── paypal-config.service.ts       # SDK loading and configuration
+│   └── paypal-config.service.ts   # SDK loading and configuration
 ├── paypal-data-transfer/
 │   └── paypal-data-transfer.service.ts # Data communication service
 └── paypal-model/
-    └── paypal.interface.ts            # PayPal SDK interfaces
+    └── paypal.model.ts            # PayPal SDK interfaces
 ```
 
 ### Key Components
 
-| Component                   | Location                                              | Purpose                                                        |
-| --------------------------- | ----------------------------------------------------- | -------------------------------------------------------------- |
-| `PaymentPaypalComponent`    | `src/app/shared/components/payment/payment-paypal/`   | Main Angular component for rendering PayPal elements           |
-| `PaypalComponentBuilder`    | `src/app/core/utils/sdk/paypal/paypal-components/`    | Factory service that creates appropriate PayPal SDK components |
-| `PaypalConfigService`       | `src/app/core/utils/sdk/paypal/paypal-config/`        | Handles SDK script loading and URL construction                |
-| `PayPalDataTransferService` | `src/app/core/utils/sdk/paypal/paypal-data-transfer/` | Enables data communication outside NgRx store flow             |
+| Component                   | Location                                            | Purpose                                                      |
+| --------------------------- | --------------------------------------------------- | ------------------------------------------------------------ |
+| `PaymentPaypalComponent`    | `src/app/shared/components/payment/payment-paypal/` | Main Angular component for rendering PayPal elements         |
+| `PaypalAdaptersBuilder`     | `src/app/core/utils/paypal/adapters/`               | Factory service that creates appropriate PayPal SDK adapters |
+| `PaypalConfigService`       | `src/app/core/utils/paypal/paypal-config/`          | Handles SDK script loading and URL construction              |
+| `PaypalDataTransferService` | `src/app/core/utils/paypal/paypal-data-transfer/`   | Enables data communication outside NgRx store flow           |
 
 ## Component Types
 
@@ -79,7 +79,7 @@ The [`ish-payment-paypal`][payment-paypal.component.ts] component supports three
 ### Buttons
 
 This component type is used to display PayPal checkout buttons for both standard and express payments.
-Rendering is performed by [`PaypalButtons`][paypal-buttons.ts].
+Rendering is performed by [`PayPalButtonsAdapter`][paypal-buttons.adapter.ts].
 This component also provides the callback methods which are requires by the PayPal JavaScript SDK Buttons API.
 The following example shows how to integrate the [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding component type `Buttons` into any component:
 
@@ -98,7 +98,7 @@ export class ExampleComponent {
 ### Messages
 
 This component type is used to display Pay Later messaging on various pages (home, category, product details, cart, checkout) based on the ICM backend configuration.
-Rendering is performed by [`PaypalMessages`][paypal-messages.ts].
+Rendering is performed by [`PaypalMessagesAdapter`][paypal-messages.adapter.ts].
 It is not necessary to set the `componentType` input for messages, as it is the default type when no `componentType` is provided.
 The following example shows how to integrate the [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding component type `Messages` into any component:
 
@@ -109,7 +109,7 @@ The following example shows how to integrate the [`ish-payment-paypal`][payment-
 ### Card Fields
 
 This component type is used to provide card input fields for direct credit/debit card payments (Advanced Card Payments).
-Rendering is performed by [`PaypalCardFields`][paypal-card-fields.ts].
+Rendering is performed by [`PaypalCardFieldsAdapter`][paypal-card-fields.adapter.ts].
 This component also provides input validation, error handling und the callback methods which are requires by the PayPal JavaScript SDK Buttons API.
 The following example shows how to integrate the [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding component type `CardFields` into any component:
 
@@ -145,7 +145,7 @@ The PayPal integration automatically detects the current page type based on the 
 
 This section explains how to style PayPal components in the Intershop PWA using the styling possibilities given by PayPal JavaScript SDK[`PayPal JavaScript SDK`][PayPal JavaScript SDK Reference].
 
-All styling configurations are located in [`paypal-component.styling.ts`][paypal-component.styling.ts].
+All styling configurations are located in [`paypal-adapters.styling.ts`][paypal-adapters.styling.ts].
 
 ### Pay Later Message Styling
 
@@ -202,9 +202,9 @@ The namespace format is `PPCP_<payment_method_id>` for Buttons and Card Fields, 
 const paypalObject = window['PPCP_FAST_CHECKOUT'];
 ```
 
-Loading is handled by the [`PaypalConfigService`][paypal-config.service.ts], which constructs the SDK URL with necessary parameters, and uses the [`ScriptLoaderService`][paypal-component.styling.ts] to load the script dynamically.
+Loading is handled by the [`PaypalConfigService`][paypal-config.service.ts], which constructs the SDK URL with necessary parameters, and uses the [`ScriptLoaderService`][script-loader.service.ts] to load the script dynamically.
 
-The [`ScriptLoaderService`][paypal-component.styling.ts] is a core utility service for dynamically loading external JavaScript files into the DOM.
+The [`ScriptLoaderService`][script-loader.service.ts] is a core utility service for dynamically loading external JavaScript files into the DOM.
 It provides the following features:
 
 - **Caching**: Prevents duplicate script loading by maintaining caches for loaded and currently loading scripts
@@ -250,10 +250,10 @@ this.appFacade.serverSetting$<PaypalConfig>('payment.paypal');
 - [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 2](https://knowledge.intershop.com/kb/index.php/Display/455B74)
 
 [payment-paypal.component.ts]: ../../src/app/shared/components/payment/payment-paypal/payment-paypal.component.ts
-[paypal-component.styling.ts]: ../../src/app/core/utils/paypal/paypal-components/paypal-component.styling.ts
+[paypal-adapters.styling.ts]: ../../src/app/core/utils/paypal/adapters/paypal-adapters.styling.ts
 [paypal-config.service.ts]: ../../src/app/core/utils/paypal/paypal-config/paypal-config.service.ts
 [script-loader.service.ts]: ../../src/app/core/utils/script-loader/script-loader.service.ts
-[paypal-buttons.ts]: ../../src/app/core/utils/paypal/paypal-components/buttons/paypal-buttons.ts
-[paypal-messages.ts]: ../../src/app/core/utils/paypal/paypal-components/messages/paypal-messages.ts
-[paypal-card-fields.ts]: ../../src/app/core/utils/paypal/paypal-components/card-fields/paypal-card-fields.ts
+[paypal-buttons.adapter.ts]: ../../src/app/core/utils/paypal/adapters/paypal-buttons/paypal-buttons.adapter.ts
+[paypal-messages.adapter.ts]: ../../src/app/core/utils/paypal/adapters/paypal-messages/paypal-messages.adapter.ts
+[paypal-card-fields.adapter.ts]: ../../src/app/core/utils/paypal/adapters/paypal-card-fields/paypal-card-fields.adapter.ts
 [PayPal JavaScript SDK Reference]: https://developer.paypal.com/sdk/js/reference

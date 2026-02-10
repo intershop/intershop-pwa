@@ -69,18 +69,18 @@ describe('Paypal Config Service', () => {
 
   describe('loadPayPalScript', () => {
     it('should be a function', () => {
-      expect(typeof service.loadPayPalScript).toBe('function');
+      expect(typeof service.loadPaypalScript).toBe('function');
     });
 
     it('should call scriptLoader.load with correct URL and attributes', done => {
-      service.loadPayPalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
         verify(scriptLoader.load(anything(), anything())).once();
         done();
       });
     });
 
     it('should include namespace in script attributes', done => {
-      service.loadPayPalScript('custom-namespace', 'cart', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('custom-namespace', 'cart', mockPaymentMethod).subscribe(() => {
         const [, options] = capture(scriptLoader.load).last();
         const namespaceAttr = options.attributes.find((attr: { name: string }) => attr.name === 'data-namespace');
         expect(namespaceAttr?.value).toBe('custom-namespace');
@@ -89,7 +89,7 @@ describe('Paypal Config Service', () => {
     });
 
     it('should include page type in script attributes', done => {
-      service.loadPayPalScript('test-namespace', 'product-details', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('test-namespace', 'product-details', mockPaymentMethod).subscribe(() => {
         const [, options] = capture(scriptLoader.load).last();
         const pageTypeAttr = options.attributes.find((attr: { name: string }) => attr.name === 'data-page-type');
         expect(pageTypeAttr?.value).toBe('product-details');
@@ -98,7 +98,7 @@ describe('Paypal Config Service', () => {
     });
 
     it('should include partner attribution ID in script attributes', done => {
-      service.loadPayPalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
         const [, options] = capture(scriptLoader.load).last();
         const attrId = options.attributes.find((attr: { name: string }) => attr.name === 'data-partner-attribution-id');
         expect(attrId?.value).toBe('test-attribution-id');
@@ -107,7 +107,7 @@ describe('Paypal Config Service', () => {
     });
 
     it('should include data-* parameters from payment method in script attributes', done => {
-      service.loadPayPalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
         const [, options] = capture(scriptLoader.load).last();
         const dataAttr = options.attributes.find((attr: { name: string }) => attr.name === 'data-client-metadata-id');
         expect(dataAttr?.value).toBe('test-metadata-id');
@@ -116,7 +116,7 @@ describe('Paypal Config Service', () => {
     });
 
     it('should construct URL with client-id parameter', done => {
-      service.loadPayPalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).toContain('client-id=test-client-id');
         done();
@@ -124,7 +124,7 @@ describe('Paypal Config Service', () => {
     });
 
     it('should construct URL with merchant-id parameter', done => {
-      service.loadPayPalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).toContain('merchant-id=test-merchant-id');
         done();
@@ -132,7 +132,7 @@ describe('Paypal Config Service', () => {
     });
 
     it('should construct URL with intent parameter', done => {
-      service.loadPayPalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).toContain('intent=capture');
         done();
@@ -140,7 +140,7 @@ describe('Paypal Config Service', () => {
     });
 
     it('should construct URL with components parameter', done => {
-      service.loadPayPalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).toContain('components=buttons,messages,card-fields');
         done();
@@ -150,7 +150,7 @@ describe('Paypal Config Service', () => {
     it('should construct URL with current locale', done => {
       when(appFacade.currentLocale$).thenReturn(of('de_DE'));
 
-      service.loadPayPalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).toContain('locale=de_DE');
         done();
@@ -160,7 +160,7 @@ describe('Paypal Config Service', () => {
     it('should construct URL with current currency', done => {
       when(appFacade.currentCurrency$).thenReturn(of('EUR'));
 
-      service.loadPayPalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).toContain('currency=EUR');
         done();
@@ -173,7 +173,7 @@ describe('Paypal Config Service', () => {
         capabilities: ['RedirectAfterCheckout'],
       };
 
-      service.loadPayPalScript('test-namespace', 'checkout', paymentMethodWithRedirect).subscribe(() => {
+      service.loadPaypalScript('test-namespace', 'checkout', paymentMethodWithRedirect).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).not.toContain('commit=false');
         done();
@@ -186,7 +186,7 @@ describe('Paypal Config Service', () => {
         capabilities: [] as string[],
       };
 
-      service.loadPayPalScript('test-namespace', 'checkout', paymentMethodWithoutRedirect).subscribe(() => {
+      service.loadPaypalScript('test-namespace', 'checkout', paymentMethodWithoutRedirect).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).toContain('commit=false');
         done();
@@ -209,7 +209,7 @@ describe('Paypal Config Service', () => {
         })
       );
 
-      service.loadPayPalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).toContain('enable-funding=paylater');
         done();
@@ -232,7 +232,7 @@ describe('Paypal Config Service', () => {
         })
       );
 
-      service.loadPayPalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).not.toContain('enable-funding=paylater');
         done();
@@ -240,7 +240,7 @@ describe('Paypal Config Service', () => {
     });
 
     it('should always include disable-funding=card,sepa', done => {
-      service.loadPayPalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).toContain('disable-funding=card,sepa');
         done();
@@ -256,7 +256,7 @@ describe('Paypal Config Service', () => {
         hostedPaymentPageParameters: undefined,
       } as PaymentMethod;
 
-      service.loadPayPalScript('test-namespace', 'checkout', minimalPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('test-namespace', 'checkout', minimalPaymentMethod).subscribe(() => {
         verify(scriptLoader.load(anything(), anything())).once();
         done();
       });
@@ -274,7 +274,7 @@ describe('Paypal Config Service', () => {
       let completedCalls = 0;
 
       pageTypes.forEach(pageType => {
-        service.loadPayPalScript('test-namespace', pageType, mockPaymentMethod).subscribe(() => {
+        service.loadPaypalScript('test-namespace', pageType, mockPaymentMethod).subscribe(() => {
           completedCalls++;
           if (completedCalls === pageTypes.length) {
             done();

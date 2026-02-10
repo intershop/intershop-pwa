@@ -11,17 +11,17 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { PaypalAdapterTypes, PaypalPageType } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 
 import { PaypalAdaptersBuilder } from './paypal-adapters.builder';
-import { PayPalButtonsAdapter } from './paypal-buttons/paypal-buttons.adapter';
-import { PayPalCardFieldsAdapter } from './paypal-card-fields/paypal-card-fields.adapter';
-import { PayPalMessagesAdapter } from './paypal-messages/paypal-messages.adapter';
+import { PaypalButtonsAdapter } from './paypal-buttons/paypal-buttons.adapter';
+import { PaypalCardFieldsAdapter } from './paypal-card-fields/paypal-card-fields.adapter';
+import { PaypalMessagesAdapter } from './paypal-messages/paypal-messages.adapter';
 
 describe('Paypal Adapters Builder', () => {
   let builder: PaypalAdaptersBuilder;
   let checkoutFacade: CheckoutFacade;
   let shoppingFacade: ShoppingFacade;
-  let payPalButtons: PayPalButtonsAdapter;
-  let payPalMessages: PayPalMessagesAdapter;
-  let payPalCardFields: PayPalCardFieldsAdapter;
+  let paypalButtons: PaypalButtonsAdapter;
+  let paypalMessages: PaypalMessagesAdapter;
+  let paypalCardFields: PaypalCardFieldsAdapter;
 
   const mockBasket = BasketMockData.getBasket();
   const mockPaymentMethod = {
@@ -33,23 +33,23 @@ describe('Paypal Adapters Builder', () => {
   beforeEach(() => {
     checkoutFacade = mock(CheckoutFacade);
     shoppingFacade = mock(ShoppingFacade);
-    payPalButtons = mock(PayPalButtonsAdapter);
-    payPalMessages = mock(PayPalMessagesAdapter);
-    payPalCardFields = mock(PayPalCardFieldsAdapter);
+    paypalButtons = mock(PaypalButtonsAdapter);
+    paypalMessages = mock(PaypalMessagesAdapter);
+    paypalCardFields = mock(PaypalCardFieldsAdapter);
 
     when(checkoutFacade.basket$).thenReturn(of(mockBasket));
     when(shoppingFacade.selectedProductId$).thenReturn(of('test-product-sku'));
     when(shoppingFacade.productPrices$('test-product-sku')).thenReturn(of({ salePrice: { value: 49.99 } as Price }));
-    when(payPalButtons.renderButtons(anything())).thenReturn(Promise.resolve());
-    when(payPalMessages.renderMessages(anything())).thenReturn(Promise.resolve());
-    when(payPalCardFields.renderCardFields(anything(), anything())).thenReturn(Promise.resolve());
+    when(paypalButtons.renderButtons(anything())).thenReturn(Promise.resolve());
+    when(paypalMessages.renderMessages(anything())).thenReturn(Promise.resolve());
+    when(paypalCardFields.renderCardFields(anything(), anything())).thenReturn(Promise.resolve());
 
     TestBed.configureTestingModule({
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
-        { provide: PayPalButtonsAdapter, useFactory: () => instance(payPalButtons) },
-        { provide: PayPalCardFieldsAdapter, useFactory: () => instance(payPalCardFields) },
-        { provide: PayPalMessagesAdapter, useFactory: () => instance(payPalMessages) },
+        { provide: PaypalButtonsAdapter, useFactory: () => instance(paypalButtons) },
+        { provide: PaypalCardFieldsAdapter, useFactory: () => instance(paypalCardFields) },
+        { provide: PaypalMessagesAdapter, useFactory: () => instance(paypalMessages) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
         PaypalAdaptersBuilder,
       ],
@@ -75,7 +75,7 @@ describe('Paypal Adapters Builder', () => {
 
         await builder.build(config);
 
-        verify(payPalButtons.renderButtons(anything())).once();
+        verify(paypalButtons.renderButtons(anything())).once();
       });
     });
 
@@ -90,7 +90,7 @@ describe('Paypal Adapters Builder', () => {
 
         await builder.build(config);
 
-        verify(payPalMessages.renderMessages(anything())).once();
+        verify(paypalMessages.renderMessages(anything())).once();
       });
 
       it('should calculate amount from product price on product details page', async () => {
@@ -106,7 +106,7 @@ describe('Paypal Adapters Builder', () => {
 
         await builder.build(config);
 
-        const [passedConfig] = capture(payPalMessages.renderMessages).last();
+        const [passedConfig] = capture(paypalMessages.renderMessages).last();
         const amount = await firstValueFrom(passedConfig.amount$);
         expect(amount).toBe(149.99);
       });
@@ -121,7 +121,7 @@ describe('Paypal Adapters Builder', () => {
 
         await builder.build(config);
 
-        const [passedConfig] = capture(payPalMessages.renderMessages).last();
+        const [passedConfig] = capture(paypalMessages.renderMessages).last();
         const amount = await firstValueFrom(passedConfig.amount$);
         expect(amount).toBe(mockBasket.totals.total.gross);
       });
@@ -136,7 +136,7 @@ describe('Paypal Adapters Builder', () => {
 
         await builder.build(config);
 
-        const [passedConfig] = capture(payPalMessages.renderMessages).last();
+        const [passedConfig] = capture(paypalMessages.renderMessages).last();
         const amount = await firstValueFrom(passedConfig.amount$);
         expect(amount).toBe(mockBasket.totals.total.gross);
       });
@@ -151,7 +151,7 @@ describe('Paypal Adapters Builder', () => {
 
         await builder.build(config);
 
-        const [passedConfig] = capture(payPalMessages.renderMessages).last();
+        const [passedConfig] = capture(paypalMessages.renderMessages).last();
         const amount = await firstValueFrom(passedConfig.amount$);
         expect(amount).toBe(0);
       });
@@ -166,7 +166,7 @@ describe('Paypal Adapters Builder', () => {
 
         await builder.build(config);
 
-        const [passedConfig] = capture(payPalMessages.renderMessages).last();
+        const [passedConfig] = capture(paypalMessages.renderMessages).last();
         const amount = await firstValueFrom(passedConfig.amount$);
         expect(amount).toBe(0);
       });
@@ -183,7 +183,7 @@ describe('Paypal Adapters Builder', () => {
 
         await builder.build(config);
 
-        const [passedConfig] = capture(payPalMessages.renderMessages).last();
+        const [passedConfig] = capture(paypalMessages.renderMessages).last();
         const amount = await firstValueFrom(passedConfig.amount$);
         expect(amount).toBe(0);
       });
@@ -200,7 +200,7 @@ describe('Paypal Adapters Builder', () => {
 
         await builder.build(config);
 
-        verify(payPalMessages.renderMessages(anything())).once();
+        verify(paypalMessages.renderMessages(anything())).once();
       });
     });
 
@@ -216,7 +216,7 @@ describe('Paypal Adapters Builder', () => {
 
         await builder.build(config);
 
-        verify(payPalCardFields.renderCardFields('test-namespace', mockPaymentMethod)).once();
+        verify(paypalCardFields.renderCardFields('test-namespace', mockPaymentMethod)).once();
       });
     });
   });

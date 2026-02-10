@@ -1,4 +1,4 @@
-interface PayPalCardFieldsStyleOptions {
+interface PaypalCardFieldsStyleOptions {
   appearance?: string;
   color?: string;
   direction?: string;
@@ -39,20 +39,20 @@ interface PayPalCardFieldsStyleOptions {
   '-webkit-transition'?: string;
 }
 
-interface PayPalCardFieldsInputEvents {
-  onChange?(data: PayPalCardFieldsStateObject): void;
-  onFocus?(data: PayPalCardFieldsStateObject): void;
-  onBlur?(data: PayPalCardFieldsStateObject): void;
-  onInputSubmitRequest?(data: PayPalCardFieldsStateObject): void;
+interface PaypalCardFieldsInputEvents {
+  onChange?(data: PaypalCardFieldsStateObject): void;
+  onFocus?(data: PaypalCardFieldsStateObject): void;
+  onBlur?(data: PaypalCardFieldsStateObject): void;
+  onInputSubmitRequest?(data: PaypalCardFieldsStateObject): void;
 }
 
-interface PayPalCardFieldSecurityCode {
+interface PaypalCardFieldSecurityCode {
   code: string;
   size: number;
 }
 
-interface PayPalCardFieldsCardObject {
-  code: PayPalCardFieldSecurityCode;
+interface PaypalCardFieldsCardObject {
+  code: PaypalCardFieldSecurityCode;
   niceType:
     | 'American Express'
     | 'Diners Club'
@@ -79,48 +79,48 @@ interface PayPalCardFieldsCardObject {
     | 'hipercard';
 }
 
-export enum PayPalCardFieldError {
+export enum PaypalCardFieldError {
   InvalidName = 'INVALID_NAME',
   InvalidNumber = 'INVALID_NUMBER',
   InvalidExpiry = 'INVALID_EXPIRY',
   InvalidCvv = 'INVALID_CVV',
 }
 
-interface PayPalCardFieldCardFieldData {
+interface PaypalCardFieldCardFieldData {
   isFocused: boolean;
   isEmpty: boolean;
   isValid: boolean;
   isPotentiallyValid: boolean;
 }
 
-export interface PayPalStateObject {
+export interface PaypalStateObject {
   dispatching: boolean;
   error: string | null;
   rejected: boolean;
   resolved: boolean;
-  value: PayPalCardFieldsStateObject;
+  value: PaypalCardFieldsStateObject;
 }
 
-export interface PayPalCardFieldsStateObject {
-  cards: PayPalCardFieldsCardObject[];
+export interface PaypalCardFieldsStateObject {
+  cards: PaypalCardFieldsCardObject[];
   emittedBy?: 'name' | 'number' | 'cvv' | 'expiry';
   isFormValid: boolean;
-  errors: PayPalCardFieldError[];
+  errors: PaypalCardFieldError[];
   fields: {
-    cardCvvField: PayPalCardFieldCardFieldData;
-    cardNumberField: PayPalCardFieldCardFieldData;
-    cardNameField: PayPalCardFieldCardFieldData;
-    cardExpiryField: PayPalCardFieldCardFieldData;
+    cardCvvField: PaypalCardFieldCardFieldData;
+    cardNumberField: PaypalCardFieldCardFieldData;
+    cardNameField: PaypalCardFieldCardFieldData;
+    cardExpiryField: PaypalCardFieldCardFieldData;
   };
 }
 
-interface PayPalCardFieldsIndividualFieldOptions {
+interface PaypalCardFieldsIndividualFieldOptions {
   placeholder?: string;
-  inputEvents?: PayPalCardFieldsInputEvents;
-  style?: Record<string, PayPalCardFieldsStyleOptions>;
+  inputEvents?: PaypalCardFieldsInputEvents;
+  style?: Record<string, PaypalCardFieldsStyleOptions>;
 }
 
-export interface PayPalCardFieldsIndividualField {
+export interface PaypalCardFieldsIndividualField {
   render(container: string | HTMLElement): Promise<void>;
   addClass(className: string): Promise<void>;
   clear(): void;
@@ -132,33 +132,33 @@ export interface PayPalCardFieldsIndividualField {
   close(): Promise<void>;
 }
 
-interface PayPalComponentBasics {
+interface PaypalComponentBasics {
   createOrder(): Promise<string>;
   onApprove(): void;
   onError(err: Record<string, unknown>): void;
   onCancel?(): Promise<void> | void;
-  inputEvents?: PayPalCardFieldsInputEvents;
-  style?: Record<string, PayPalCardFieldsStyleOptions>;
+  inputEvents?: PaypalCardFieldsInputEvents;
+  style?: Record<string, PaypalCardFieldsStyleOptions>;
   render(selector?: string): Promise<void>;
 }
 
-export interface PayPalCardFieldsComponent extends PayPalComponentBasics {
-  getState(): Promise<PayPalStateObject>;
+export interface PaypalCardFieldsComponent extends PaypalComponentBasics {
+  getState(): Promise<PaypalStateObject>;
   isEligible(): boolean;
   submit(): Promise<void>;
-  NameField(options?: PayPalCardFieldsIndividualFieldOptions): PayPalCardFieldsIndividualField;
-  NumberField(options?: PayPalCardFieldsIndividualFieldOptions): PayPalCardFieldsIndividualField;
-  CVVField(options?: PayPalCardFieldsIndividualFieldOptions): PayPalCardFieldsIndividualField;
-  ExpiryField(options?: PayPalCardFieldsIndividualFieldOptions): PayPalCardFieldsIndividualField;
+  NameField(options?: PaypalCardFieldsIndividualFieldOptions): PaypalCardFieldsIndividualField;
+  NumberField(options?: PaypalCardFieldsIndividualFieldOptions): PaypalCardFieldsIndividualField;
+  CVVField(options?: PaypalCardFieldsIndividualFieldOptions): PaypalCardFieldsIndividualField;
+  ExpiryField(options?: PaypalCardFieldsIndividualFieldOptions): PaypalCardFieldsIndividualField;
 }
 
 export interface PaypalComponent {
   /** Creates PayPal payment buttons with checkout functionality */
-  Buttons(options: unknown): PayPalComponentBasics;
+  Buttons(options: unknown): PaypalComponentBasics;
   /** Creates PayPal promotional messages (optional, not all SDK versions include this) */
-  Messages?(options: unknown): PayPalComponentBasics;
+  Messages?(options: unknown): PaypalComponentBasics;
   /** Creates PayPal payment marks for alternative payment methods */
-  Marks(options: unknown): PayPalComponentBasics;
+  Marks(options: unknown): PaypalComponentBasics;
   /** Creates PayPal hosted card input fields */
-  CardFields?(options?: unknown): PayPalCardFieldsComponent;
+  CardFields?(options?: unknown): PaypalCardFieldsComponent;
 }

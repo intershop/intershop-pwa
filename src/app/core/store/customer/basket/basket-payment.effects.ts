@@ -12,7 +12,7 @@ import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { mapToRouterState } from 'ish-core/store/core/router';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
-import { PayPalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
+import { PaypalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 
 import {
   continueCheckout,
@@ -55,7 +55,7 @@ export class BasketPaymentEffects {
     private store: Store,
     private paymentService: PaymentService,
     private paymentPaypalService: PaymentPaypalService,
-    private payPalDataTransferService: PayPalDataTransferService
+    private paypalDataTransferService: PaypalDataTransferService
   ) {}
 
   /**
@@ -142,7 +142,7 @@ export class BasketPaymentEffects {
       ofType(createPaypalCreditCardBasketPayment),
       mapToPayload(),
       concatMap(payload =>
-        this.paymentPaypalService.initializePayPalExperienceContextFlow(payload.paymentInstrument).pipe(
+        this.paymentPaypalService.initializePaypalExperienceContextFlow(payload.paymentInstrument).pipe(
           map(response =>
             emitPaypalOrderId({ orderId: response.orderId, paymentInstrumentId: response.paymentInstrumentId })
           ),
@@ -161,7 +161,7 @@ export class BasketPaymentEffects {
         ofType(emitPaypalOrderId),
         mapToPayload(),
         concatMap(payload => {
-          this.payPalDataTransferService.emitPaypalOrderData({
+          this.paypalDataTransferService.emitPaypalOrderData({
             orderId: payload.orderId,
             paymentInstrumentId: payload.paymentInstrumentId,
           });
@@ -191,12 +191,12 @@ export class BasketPaymentEffects {
   /**
    * Submits PayPal payment instrument data after approval and updates the payment instrument in the store.
    */
-  submitPayPalPaymentInstrumentDataAfterApproval$ = createEffect(() =>
+  submitPaypalPaymentInstrumentDataAfterApproval$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updatePaypalCreditCardPaymentInstrument),
       mapToPayload(),
       concatMap(payload =>
-        this.paymentPaypalService.getPayPalPaymentInstrument(payload.paymentInstrument).pipe(
+        this.paymentPaypalService.getPaypalPaymentInstrument(payload.paymentInstrument).pipe(
           concatMap(response => {
             if ('errorMessage' in response && response.errorMessage) {
               return [

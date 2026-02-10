@@ -129,7 +129,7 @@ describe('Shopping Basket Payment Component', () => {
       });
     });
 
-    it('should return undefined if payment instrument does not match PayPal', done => {
+    it('should return PayPal payment method if payment instrument does not match PayPal', done => {
       const basketWithOtherPayment = {
         ...BasketMockData.getBasket(),
         payment: {
@@ -142,7 +142,7 @@ describe('Shopping Basket Payment Component', () => {
       fixture.detectChanges();
 
       component.getPayPalPaymentMethod().subscribe(result => {
-        expect(result).toBeUndefined();
+        expect(result).toEqual(paypalPaymentMethod);
         done();
       });
     });

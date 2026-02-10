@@ -11,7 +11,7 @@ import { PaypalComponent } from 'ish-core/utils/paypal/paypal-model/paypal.model
  * Life cycle of this component ends with destroying of parent component PaymentPaypalComponent.
  **/
 @Injectable()
-export class PayPalMessagesAdapter {
+export class PaypalMessagesAdapter {
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
   private destroyRef = inject(DestroyRef);

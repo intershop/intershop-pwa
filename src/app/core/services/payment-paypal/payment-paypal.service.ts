@@ -54,7 +54,7 @@ export class PaymentPaypalService {
     Accept: 'application/vnd.intershop.basket.v1+json',
   });
 
-  initializePayPalExperienceContextFlow(
+  initializePaypalExperienceContextFlow(
     paymentInstrument: PaymentInstrument
   ): Observable<{ orderId: string; paymentInstrumentId: string }> {
     let loc = `${location.origin}${this.baseHref}`;
@@ -87,7 +87,7 @@ export class PaymentPaypalService {
     );
   }
 
-  getPayPalPaymentInstrument(
+  getPaypalPaymentInstrument(
     paymentInstrument: PaymentInstrument
   ): Observable<PaymentInstrument | { errorMessage: string }> {
     return this.apiService

@@ -2,18 +2,19 @@
 import { Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { anything, instance, mock, verify } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { PayPalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
-import { PayPalCardFieldError } from 'ish-core/utils/paypal/paypal-model/paypal.model';
+import { PaypalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
+import { PaypalCardFieldError } from 'ish-core/utils/paypal/paypal-model/paypal.model';
 
-import { PayPalCardFieldsAdapter } from './paypal-card-fields.adapter';
+import { PaypalCardFieldsAdapter } from './paypal-card-fields.adapter';
 
 @Injectable()
-class TestablePayPalCardFields extends PayPalCardFieldsAdapter {
+class TestablePaypalCardFields extends PaypalCardFieldsAdapter {
   testCreateOrderCallback(): Promise<string> {
     return this.createOrderCallback();
   }
@@ -28,9 +29,9 @@ class TestablePayPalCardFields extends PayPalCardFieldsAdapter {
 }
 
 describe('Paypal Card Fields Adapter', () => {
-  let payPalCardFields: TestablePayPalCardFields;
+  let paypalCardFields: TestablePaypalCardFields;
   let checkoutFacade: CheckoutFacade;
-  let payPalDataTransferService: PayPalDataTransferService;
+  let paypalDataTransferService: PaypalDataTransferService;
 
   const mockPaymentMethod = {
     id: 'ISH_PAYPAL_CREDIT_CARD',
@@ -113,12 +114,12 @@ describe('Paypal Card Fields Adapter', () => {
       imports: [TranslateModule.forRoot()],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
-        { provide: PayPalCardFieldsAdapter, useClass: TestablePayPalCardFields },
+        { provide: PaypalCardFieldsAdapter, useClass: TestablePaypalCardFields },
       ],
     });
 
-    payPalCardFields = TestBed.inject(PayPalCardFieldsAdapter) as TestablePayPalCardFields;
-    payPalDataTransferService = TestBed.inject(PayPalDataTransferService);
+    paypalCardFields = TestBed.inject(PaypalCardFieldsAdapter) as TestablePaypalCardFields;
+    paypalDataTransferService = TestBed.inject(PaypalDataTransferService);
   });
 
   afterEach(() => {
@@ -129,7 +130,7 @@ describe('Paypal Card Fields Adapter', () => {
   });
 
   it('should be created', () => {
-    expect(payPalCardFields).toBeTruthy();
+    expect(paypalCardFields).toBeTruthy();
   });
 
   describe('renderCardFields()', () => {
@@ -145,7 +146,7 @@ describe('Paypal Card Fields Adapter', () => {
     });
 
     it('should successfully render all card fields', async () => {
-      await payPalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
+      await paypalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
 
       expect((window as any).testNamespace.CardFields).toHaveBeenCalled();
       expect(mockCardField.isEligible).toHaveBeenCalled();
@@ -156,21 +157,21 @@ describe('Paypal Card Fields Adapter', () => {
     });
 
     it('should store payment method after rendering', async () => {
-      await payPalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
+      await paypalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
 
-      expect(payPalCardFields.paymentMethod).toEqual(mockPaymentMethod);
+      expect(paypalCardFields.paymentMethod).toEqual(mockPaymentMethod);
     });
 
     it('should reject when PayPal CardFields is not available', async () => {
       delete (window as any).testNamespace.CardFields;
 
-      await expect(payPalCardFields.renderCardFields('testNamespace', mockPaymentMethod)).rejects.toThrow(
+      await expect(paypalCardFields.renderCardFields('testNamespace', mockPaymentMethod)).rejects.toThrow(
         "PayPal CardFields not available on namespace 'testNamespace'"
       );
     });
 
     it('should reject when namespace does not exist', async () => {
-      await expect(payPalCardFields.renderCardFields('nonExistentNamespace', mockPaymentMethod)).rejects.toThrow(
+      await expect(paypalCardFields.renderCardFields('nonExistentNamespace', mockPaymentMethod)).rejects.toThrow(
         "PayPal CardFields not available on namespace 'nonExistentNamespace'"
       );
     });
@@ -178,7 +179,7 @@ describe('Paypal Card Fields Adapter', () => {
     it('should not render fields when card fields are not eligible', async () => {
       mockCardField.isEligible.mockReturnValue(false);
 
-      await payPalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
+      await paypalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
 
       expect(mockNameField.render).not.toHaveBeenCalled();
       expect(mockNumberField.render).not.toHaveBeenCalled();
@@ -189,7 +190,7 @@ describe('Paypal Card Fields Adapter', () => {
       const renderError = new Error('Rendering failed');
       mockNameField.render.mockRejectedValue(renderError);
 
-      await payPalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
+      await paypalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
 
       expect(consoleSpy).toHaveBeenCalledWith("PayPal CardFields: Failed to render 'name' field:", renderError);
       // Other fields should still be rendered
@@ -205,7 +206,7 @@ describe('Paypal Card Fields Adapter', () => {
       const clickSpy = jest.fn();
       submitButton.addEventListener('click', clickSpy);
 
-      await payPalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
+      await paypalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
 
       submitButton.click();
       expect(clickSpy).toHaveBeenCalled();
@@ -214,12 +215,12 @@ describe('Paypal Card Fields Adapter', () => {
 
   describe('closeForm$ Subject', () => {
     it('should emit when form should be closed', done => {
-      payPalCardFields.closeForm$.subscribe(() => {
+      paypalCardFields.closeForm$.subscribe(() => {
         expect(true).toBeTruthy();
         done();
       });
 
-      payPalCardFields.closeForm$.next();
+      paypalCardFields.closeForm$.next();
     });
   });
 
@@ -227,14 +228,14 @@ describe('Paypal Card Fields Adapter', () => {
     it('should create temporary basket payment', async () => {
       // Simulate service emitting order data
       setTimeout(() => {
-        payPalDataTransferService.emitPaypalOrderData({ orderId: 'ORDER123', paymentInstrumentId: 'INSTRUMENT456' });
+        paypalDataTransferService.emitPaypalOrderData({ orderId: 'ORDER123', paymentInstrumentId: 'INSTRUMENT456' });
       }, 5);
 
-      payPalCardFields.paymentMethod = mockPaymentMethod;
+      paypalCardFields.paymentMethod = mockPaymentMethod;
 
       // Start the promise
 
-      const orderPromise = payPalCardFields.testCreateOrderCallback();
+      const orderPromise = paypalCardFields.testCreateOrderCallback();
 
       // Wait a bit for the async call to happen
       await new Promise(resolve => setTimeout(resolve, 10));
@@ -246,24 +247,24 @@ describe('Paypal Card Fields Adapter', () => {
 
     it('should store payment instrument ID from service for later use in onApproveCallback', async done => {
       setTimeout(() => {
-        payPalDataTransferService.emitPaypalOrderData({ orderId: 'ORDER789', paymentInstrumentId: 'INSTRUMENT999' });
+        paypalDataTransferService.emitPaypalOrderData({ orderId: 'ORDER789', paymentInstrumentId: 'INSTRUMENT999' });
       }, 5);
 
-      payPalCardFields.paymentMethod = mockPaymentMethod;
-      await payPalCardFields.testCreateOrderCallback();
+      paypalCardFields.paymentMethod = mockPaymentMethod;
+      await paypalCardFields.testCreateOrderCallback();
 
       // onApproveCallback should complete without errors
-      await payPalCardFields.testOnApproveCallback();
-      payPalCardFields.loadingIframe$.subscribe(value => {
+      await paypalCardFields.testOnApproveCallback();
+      paypalCardFields.loadingIframe$.subscribe(value => {
         expect(value).toBeFalse();
         done();
       });
     });
 
     it('should reject after timeout when order ID is not received', async () => {
-      payPalCardFields.paymentMethod = mockPaymentMethod;
+      paypalCardFields.paymentMethod = mockPaymentMethod;
 
-      await expect(payPalCardFields.testCreateOrderCallback()).rejects.toThrow(
+      await expect(paypalCardFields.testCreateOrderCallback()).rejects.toThrow(
         'PayPal order ID not received within 3 seconds'
       );
     });
@@ -279,15 +280,15 @@ describe('Paypal Card Fields Adapter', () => {
         <button id="card-field-submit-button">Submit</button>
       `;
 
-      await payPalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
+      await paypalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
     });
 
     it('should set loadingIframe$ to false', async done => {
-      payPalCardFields.loadingIframe$.next(true);
+      paypalCardFields.loadingIframe$.next(true);
 
-      await payPalCardFields.testOnApproveCallback();
+      await paypalCardFields.testOnApproveCallback();
 
-      payPalCardFields.loadingIframe$.pipe(take(1)).subscribe(value => {
+      paypalCardFields.loadingIframe$.pipe(take(1)).subscribe(value => {
         expect(value).toBeFalse();
         done();
       });
@@ -304,7 +305,7 @@ describe('Paypal Card Fields Adapter', () => {
         <button id="card-field-submit-button">Submit</button>
       `;
 
-      await payPalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
+      await paypalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
     });
 
     afterEach(async () => {
@@ -313,11 +314,11 @@ describe('Paypal Card Fields Adapter', () => {
     });
 
     it('should set loadingIframe$ to false', async done => {
-      payPalCardFields.loadingIframe$.next(true);
+      paypalCardFields.loadingIframe$.next(true);
 
-      await payPalCardFields.testOnErrorCallback();
+      await paypalCardFields.testOnErrorCallback();
 
-      payPalCardFields.loadingIframe$.subscribe(value => {
+      paypalCardFields.loadingIframe$.subscribe(value => {
         expect(value).toBeFalse();
         done();
       });
@@ -325,16 +326,16 @@ describe('Paypal Card Fields Adapter', () => {
 
     it('should call deletePaypalPayment when payment instrument id exists', async () => {
       // Set the payment instrument ID manually via internal field
-      (payPalCardFields as any).creditCardPaymentInstrumentId = 'INSTRUMENT456';
-      payPalCardFields.paymentMethod = mockPaymentMethod;
+      (paypalCardFields as any).creditCardPaymentInstrumentId = 'INSTRUMENT456';
+      paypalCardFields.paymentMethod = mockPaymentMethod;
 
-      await payPalCardFields.testOnErrorCallback();
+      await paypalCardFields.testOnErrorCallback();
 
       verify(checkoutFacade.deletePaypalPayment(anything(), anything())).once();
     });
 
     it('should not call deletePaypalPayment when payment instrument id does not exist', async () => {
-      await payPalCardFields.testOnErrorCallback();
+      await paypalCardFields.testOnErrorCallback();
 
       verify(checkoutFacade.deletePaypalPayment(anything(), anything())).never();
     });
@@ -364,14 +365,10 @@ describe('Paypal Card Fields Adapter', () => {
     });
 
     it('should hide error on name field focus', async () => {
-      await payPalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
+      await paypalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
 
-      const errorElement = document.getElementById('card-name-field-container-error');
-      const labelElement = document.getElementById('card-name-field-container-label');
-
-      // Simulate showing error first
-      errorElement?.classList.remove('hide-validation-error');
-      labelElement?.classList.add('validation-error');
+      // Simulate showing error first by setting observable to true
+      paypalCardFields.nameFieldError$.next(true);
 
       // Trigger focus event
       const cardFieldsConfig = (window as any).testNamespace.CardFields.mock.calls[0][0];
@@ -380,15 +377,14 @@ describe('Paypal Card Fields Adapter', () => {
         fields: { cardNameField: { isEmpty: false, isValid: true } },
       });
 
-      expect(errorElement?.classList.contains('hide-validation-error')).toBeTruthy();
-      expect(labelElement?.classList.contains('validation-error')).toBeFalsy();
+      // Verify observable is set to false (error hidden)
+      const errorValue = await firstValueFrom(paypalCardFields.nameFieldError$.pipe(take(1)));
+      expect(errorValue).toBeFalsy();
+      expect(mockNameField.removeClass).toHaveBeenCalledWith('invalid');
     });
 
     it('should show error on invalid name field blur', async () => {
-      await payPalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
-
-      const errorElement = document.getElementById('card-name-field-container-error');
-      const labelElement = document.getElementById('card-name-field-container-label');
+      await paypalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
 
       // Trigger blur event with invalid state
       const cardFieldsConfig = (window as any).testNamespace.CardFields.mock.calls[0][0];
@@ -397,14 +393,14 @@ describe('Paypal Card Fields Adapter', () => {
         fields: { cardNameField: { isEmpty: false, isValid: false } },
       });
 
-      expect(errorElement?.classList.contains('hide-validation-error')).toBeFalsy();
-      expect(labelElement?.classList.contains('validation-error')).toBeTruthy();
+      // Verify observable is set to true (error shown)
+      const errorValue = await firstValueFrom(paypalCardFields.nameFieldError$.pipe(take(1)));
+      expect(errorValue).toBeTruthy();
+      expect(mockNameField.addClass).toHaveBeenCalledWith('invalid');
     });
 
     it('should not show error on valid name field blur', async () => {
-      await payPalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
-
-      const errorElement = document.getElementById('card-name-field-container-error');
+      await paypalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
 
       // Trigger blur event with valid state
       const cardFieldsConfig = (window as any).testNamespace.CardFields.mock.calls[0][0];
@@ -413,27 +409,39 @@ describe('Paypal Card Fields Adapter', () => {
         fields: { cardNameField: { isEmpty: false, isValid: true } },
       });
 
-      expect(errorElement?.classList.contains('hide-validation-error')).toBeTruthy();
+      // Verify observable remains false (no error)
+      const errorValue = await firstValueFrom(paypalCardFields.nameFieldError$.pipe(take(1)));
+      expect(errorValue).toBeFalsy();
     });
 
     it('should handle all field types on focus', async () => {
-      await payPalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
+      await paypalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
 
       const cardFieldsConfig = (window as any).testNamespace.CardFields.mock.calls[0][0];
 
+      // Set all errors to true first
+      paypalCardFields.nameFieldError$.next(true);
+      paypalCardFields.numberFieldError$.next(true);
+      paypalCardFields.cvvFieldError$.next(true);
+      paypalCardFields.expiryFieldError$.next(true);
+
       // Test all field types
-      ['name', 'number', 'cvv', 'expiry'].forEach(fieldType => {
-        const errorElement = document.getElementById(`card-${fieldType}-field-container-error`);
-        errorElement?.classList.remove('hide-validation-error');
+      const fieldObservables: Record<string, typeof paypalCardFields.nameFieldError$> = {
+        name: paypalCardFields.nameFieldError$,
+        number: paypalCardFields.numberFieldError$,
+        cvv: paypalCardFields.cvvFieldError$,
+        expiry: paypalCardFields.expiryFieldError$,
+      };
 
+      for (const fieldType of ['name', 'number', 'cvv', 'expiry']) {
         cardFieldsConfig.inputEvents.onFocus({ emittedBy: fieldType });
-
-        expect(errorElement?.classList.contains('hide-validation-error')).toBeTruthy();
-      });
+        const errorValue = await firstValueFrom(fieldObservables[fieldType].pipe(take(1)));
+        expect(errorValue).toBeFalsy();
+      }
     });
 
     it('should handle all field types on blur with errors', async () => {
-      await payPalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
+      await paypalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
 
       const cardFieldsConfig = (window as any).testNamespace.CardFields.mock.calls[0][0];
 
@@ -443,8 +451,8 @@ describe('Paypal Card Fields Adapter', () => {
         fields: { cardNumberField: { isEmpty: false, isValid: false } },
       });
 
-      let errorElement = document.getElementById('card-number-field-container-error');
-      expect(errorElement?.classList.contains('hide-validation-error')).toBeFalsy();
+      const numberError = await firstValueFrom(paypalCardFields.numberFieldError$.pipe(take(1)));
+      expect(numberError).toBeTruthy();
 
       // Test CVV field
       cardFieldsConfig.inputEvents.onBlur({
@@ -452,8 +460,8 @@ describe('Paypal Card Fields Adapter', () => {
         fields: { cardCvvField: { isEmpty: false, isValid: false } },
       });
 
-      errorElement = document.getElementById('card-cvv-field-container-error');
-      expect(errorElement?.classList.contains('hide-validation-error')).toBeFalsy();
+      const cvvError = await firstValueFrom(paypalCardFields.cvvFieldError$.pipe(take(1)));
+      expect(cvvError).toBeTruthy();
 
       // Test expiry field
       cardFieldsConfig.inputEvents.onBlur({
@@ -461,15 +469,15 @@ describe('Paypal Card Fields Adapter', () => {
         fields: { cardExpiryField: { isEmpty: false, isValid: false } },
       });
 
-      errorElement = document.getElementById('card-expiry-field-container-error');
-      expect(errorElement?.classList.contains('hide-validation-error')).toBeFalsy();
+      const expiryError = await firstValueFrom(paypalCardFields.expiryFieldError$.pipe(take(1)));
+      expect(expiryError).toBeTruthy();
     });
   });
 
   describe('Submit validation errors', () => {
     beforeEach(async () => {
       // Reset processing flag from previous tests
-      (payPalCardFields as any).processing = false;
+      (paypalCardFields as any).processing = false;
 
       document.body.innerHTML = `
         <div id="card-name-field-container">
@@ -491,17 +499,17 @@ describe('Paypal Card Fields Adapter', () => {
         <button id="card-field-submit-button">Submit</button>
       `;
 
-      await payPalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
+      await paypalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
     });
 
     it('should handle submit with validation errors', async () => {
       const state: {
-        errors: PayPalCardFieldError[];
+        errors: PaypalCardFieldError[];
         isFormValid: boolean;
         cards: { type: string }[];
         fields: Record<string, { isEmpty: boolean; isValid: boolean; isFocused: boolean; isPotentiallyValid: boolean }>;
       } = {
-        errors: [PayPalCardFieldError.InvalidName, PayPalCardFieldError.InvalidNumber],
+        errors: [PaypalCardFieldError.InvalidName, PaypalCardFieldError.InvalidNumber],
         isFormValid: false,
         cards: [],
         fields: {
@@ -527,12 +535,12 @@ describe('Paypal Card Fields Adapter', () => {
 
     it('should add invalid class to name field on submit error', async () => {
       const state: {
-        errors: PayPalCardFieldError[];
+        errors: PaypalCardFieldError[];
         isFormValid: boolean;
         cards: { type: string }[];
         fields: Record<string, { isEmpty: boolean; isValid: boolean; isFocused: boolean; isPotentiallyValid: boolean }>;
       } = {
-        errors: [PayPalCardFieldError.InvalidName],
+        errors: [PaypalCardFieldError.InvalidName],
         isFormValid: false,
         cards: [],
         fields: {
@@ -559,16 +567,16 @@ describe('Paypal Card Fields Adapter', () => {
 
     it('should handle all validation error types', async () => {
       const state: {
-        errors: PayPalCardFieldError[];
+        errors: PaypalCardFieldError[];
         isFormValid: boolean;
         cards: { type: string }[];
         fields: Record<string, { isEmpty: boolean; isValid: boolean; isFocused: boolean; isPotentiallyValid: boolean }>;
       } = {
         errors: [
-          PayPalCardFieldError.InvalidName,
-          PayPalCardFieldError.InvalidNumber,
-          PayPalCardFieldError.InvalidCvv,
-          PayPalCardFieldError.InvalidExpiry,
+          PaypalCardFieldError.InvalidName,
+          PaypalCardFieldError.InvalidNumber,
+          PaypalCardFieldError.InvalidCvv,
+          PaypalCardFieldError.InvalidExpiry,
         ],
         isFormValid: false,
         cards: [],
@@ -594,16 +602,15 @@ describe('Paypal Card Fields Adapter', () => {
       expect(mockCvvField.addClass).toHaveBeenCalledWith('invalid');
       expect(mockExpiryField.addClass).toHaveBeenCalledWith('invalid');
 
-      // Verify all error messages are shown
-      const nameError = document.getElementById('card-name-field-container-error');
-      const numberError = document.getElementById('card-number-field-container-error');
-      const cvvError = document.getElementById('card-cvv-field-container-error');
-      const expiryError = document.getElementById('card-expiry-field-container-error');
-
-      expect(nameError?.classList.contains('hide-validation-error')).toBeFalsy();
-      expect(numberError?.classList.contains('hide-validation-error')).toBeFalsy();
-      expect(cvvError?.classList.contains('hide-validation-error')).toBeFalsy();
-      expect(expiryError?.classList.contains('hide-validation-error')).toBeFalsy();
+      // Verify all error observables are set to true
+      const nameError = await firstValueFrom(paypalCardFields.nameFieldError$.pipe(take(1)));
+      const numberError = await firstValueFrom(paypalCardFields.numberFieldError$.pipe(take(1)));
+      const cvvError = await firstValueFrom(paypalCardFields.cvvFieldError$.pipe(take(1)));
+      const expiryError = await firstValueFrom(paypalCardFields.expiryFieldError$.pipe(take(1)));
+      expect(nameError).toBeTruthy();
+      expect(numberError).toBeTruthy();
+      expect(cvvError).toBeTruthy();
+      expect(expiryError).toBeTruthy();
     });
   });
 
@@ -620,9 +627,9 @@ describe('Paypal Card Fields Adapter', () => {
     });
 
     it('should emit closeForm$ when cancel button is clicked', async done => {
-      await payPalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
+      await paypalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
 
-      payPalCardFields.closeForm$.subscribe(() => {
+      paypalCardFields.closeForm$.subscribe(() => {
         done();
       });
 

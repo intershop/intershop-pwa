@@ -8,9 +8,9 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalAdapterTypes, PaypalPageType } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 
-import { PayPalButtonsAdapter } from './paypal-buttons/paypal-buttons.adapter';
-import { PayPalCardFieldsAdapter } from './paypal-card-fields/paypal-card-fields.adapter';
-import { PayPalMessagesAdapter } from './paypal-messages/paypal-messages.adapter';
+import { PaypalButtonsAdapter } from './paypal-buttons/paypal-buttons.adapter';
+import { PaypalCardFieldsAdapter } from './paypal-card-fields/paypal-card-fields.adapter';
+import { PaypalMessagesAdapter } from './paypal-messages/paypal-messages.adapter';
 
 /**
  * Configuration object for creating PayPal components.
@@ -40,9 +40,9 @@ export interface PaypalComponentsConfig {
 @Injectable()
 export class PaypalAdaptersBuilder {
   // payPal sdk objects
-  private payPalCardFields = inject(PayPalCardFieldsAdapter);
-  private payPalButtons = inject(PayPalButtonsAdapter);
-  private payPalMessages = inject(PayPalMessagesAdapter);
+  private paypalCardFields = inject(PaypalCardFieldsAdapter);
+  private paypalButtons = inject(PaypalButtonsAdapter);
+  private paypalMessages = inject(PaypalMessagesAdapter);
 
   constructor(private checkoutFacade: CheckoutFacade, private shoppingFacade: ShoppingFacade) {}
 
@@ -50,11 +50,11 @@ export class PaypalAdaptersBuilder {
   build(config: PaypalComponentsConfig) {
     switch (config.adapterType) {
       case 'Buttons':
-        return this.payPalButtons.renderButtons(config);
+        return this.paypalButtons.renderButtons(config);
       case 'Messages':
-        return this.payPalMessages.renderMessages({ ...config, amount$: this.getAmount(config) });
+        return this.paypalMessages.renderMessages({ ...config, amount$: this.getAmount(config) });
       case 'CardFields':
-        return from(this.payPalCardFields.renderCardFields(config.scriptNamespace, config.paypalPaymentMethod));
+        return from(this.paypalCardFields.renderCardFields(config.scriptNamespace, config.paypalPaymentMethod));
       default:
         return from(Promise.reject(new Error(`Unsupported PayPal component type: ${config.adapterType}`)));
     }
