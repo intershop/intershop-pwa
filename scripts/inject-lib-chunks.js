@@ -7,16 +7,13 @@ const distPath = theme
   : path.join(__dirname, '..', 'dist', 'browser');
 const indexPath = path.join(distPath, 'index.html');
 
-const libChunks = [
-  'ng-core',
-  'ng-common',
-  'ng-router',
-  'rxjs',
-  'lib-fontawesome',
-  'lib-bootstrap',
-  'lib-oauth',
-  'lib-core',
+const criticalLibChunks = [
+  'ng-core', // Required for Angular bootstrap
+  'ng-common', // Required for common directives and pipes
+  'rxjs', // Required for observables throughout the app
 ];
+
+const libChunks = criticalLibChunks;
 
 console.log(`inject-lib-chunks: Processing ${theme ? theme + '/browser/' : ''}index.html`);
 

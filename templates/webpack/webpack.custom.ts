@@ -245,22 +245,57 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
         },
       };
 
-      // split heavy third-party libs into sensible chunks (reduce Mini-Chunks)
-      const thirdPartyLibs = [
-        { name: 'ng-core', test: /[\\/]node_modules[\\/]@angular[\\/]core[\\/]/, priority: 50 },
-        { name: 'ng-common', test: /[\\/]node_modules[\\/]@angular[\\/]common[\\/]/, priority: 50 },
-        { name: 'ng-router', test: /[\\/]node_modules[\\/]@angular[\\/]router[\\/]/, priority: 50 },
-        { name: 'rxjs', test: /[\\/]node_modules[\\/]rxjs[\\/]/, priority: 45 },
-        { name: 'lib-fontawesome', test: /[\\/]node_modules[\\/]@fortawesome[\\/]/, priority: 40 },
-        { name: 'lib-bootstrap', test: /[\\/]node_modules[\\/](?:bootstrap|@ng-bootstrap)[\\/]/, priority: 39 },
-        { name: 'lib-oauth', test: /[\\/]node_modules[\\/]angular-oauth2-oidc[\\/]/, priority: 38 },
-        { name: 'lib-core', test: /[\\/]node_modules[\\/]core[\\/]/, priority: 37 },
+      // split heavy third-party libs into sensible chunks
+      // Critical libs are loaded initially
+      const criticalLibs = [
+        {
+          name: 'ng-core',
+          test: /[\\/]node_modules[\\/]@angular[\\/]core[\\/]/,
+          priority: 50,
+          chunks: 'initial' as const,
+        },
+        {
+          name: 'ng-common',
+          test: /[\\/]node_modules[\\/]@angular[\\/]common[\\/]/,
+          priority: 50,
+          chunks: 'initial' as const,
+        },
+        { name: 'rxjs', test: /[\\/]node_modules[\\/]rxjs[\\/]/, priority: 45, chunks: 'initial' as const },
       ];
 
-      thirdPartyLibs.forEach(lib => {
+      // Non-critical libs are loaded on demand
+      const lazyLibs = [
+        {
+          name: 'ng-router',
+          test: /[\\/]node_modules[\\/]@angular[\\/]router[\\/]/,
+          priority: 50,
+          chunks: 'async' as const,
+        },
+        {
+          name: 'lib-fontawesome',
+          test: /[\\/]node_modules[\\/]@fortawesome[\\/]/,
+          priority: 40,
+          chunks: 'async' as const,
+        },
+        {
+          name: 'lib-bootstrap',
+          test: /[\\/]node_modules[\\/](?:bootstrap|@ng-bootstrap)[\\/]/,
+          priority: 39,
+          chunks: 'async' as const,
+        },
+        {
+          name: 'lib-oauth',
+          test: /[\\/]node_modules[\\/]angular-oauth2-oidc[\\/]/,
+          priority: 38,
+          chunks: 'async' as const,
+        },
+        { name: 'lib-core', test: /[\\/]node_modules[\\/]core[\\/]/, priority: 37, chunks: 'async' as const },
+      ];
+
+      [...criticalLibs, ...lazyLibs].forEach(lib => {
         cacheGroups[lib.name] = {
           test: lib.test,
-          chunks: 'async',
+          chunks: lib.chunks,
           name: lib.name,
           priority: lib.priority,
         };
