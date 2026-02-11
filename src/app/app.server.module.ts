@@ -11,27 +11,56 @@ import { SSRInternalBackendInterceptor } from 'ish-core/interceptors/ssr-interna
 import { SSRLogInterceptor } from 'ish-core/interceptors/ssr-log.interceptor';
 import { SSRMockInterceptor } from 'ish-core/interceptors/ssr-mock.interceptor';
 import { SSRPrometheusInterceptor } from 'ish-core/interceptors/ssr-prometheus.interceptor';
+import { getLogger } from 'ish-core/utils/ssr-logging/ssr-logging.service';
 
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
+const logger = getLogger('SSRErrorHandler');
+
+// Type guard for serialized HttpErrorResponse (prevent doubled encoding issues)
+function isHttpErrorLike(error: unknown): error is { name: string; status: number; message: string; url?: string } {
+  return (
+    typeof error === 'object' &&
+    error !== undefined &&
+    'name' in error &&
+    (error as { name: unknown }).name === 'HttpErrorResponse' &&
+    'status' in error &&
+    'message' in error
+  );
+}
+
 class SSRErrorHandler implements ErrorHandler {
   handleError(error: unknown): void {
-    if (error instanceof HttpErrorResponse) {
-      console.error('ERROR', error.message);
+    if (error instanceof HttpErrorResponse || isHttpErrorLike(error)) {
+      const logData = {
+        error: { message: error.message },
+        http: { response: { status_code: error.status } },
+        url: { original: error.url },
+      };
+      if (error.status >= 500) {
+        logger.error(logData, 'HTTP ERROR');
+      } else if (error.status >= 400) {
+        logger.warn(logData, 'HTTP ERROR');
+      } else {
+        logger.info(logData, 'HTTP ERROR');
+      }
     } else if (error instanceof Error) {
-      console.error('ERROR', error.name, error.message, error.stack?.split('\n')?.[1]?.trim());
+      logger.error(
+        { error: { message: error.message, type: error.name, stack_trace: error.stack } },
+        'Application ERROR'
+      );
     } else if (typeof error === 'object') {
       try {
-        console.error('ERROR', JSON.stringify(error));
+        logger.error({ error: { message: JSON.stringify(error) } }, 'ERROR');
       } catch (_) {
         // do not log the error if it can't be stringified, it floods the log with irrelevant information
-        console.error('ERROR (cannot stringify)');
+        logger.error('ERROR (cannot stringify)');
       }
     } else {
-      console.error('ERROR', error);
+      logger.error({ error: { message: String(error) } }, 'ERROR');
     }
   }
 }

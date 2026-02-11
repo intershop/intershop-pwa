@@ -32,7 +32,8 @@
     "noUnusedParameters": true,
     "noImplicitAny": true,
     "useDefineForClassFields": false,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

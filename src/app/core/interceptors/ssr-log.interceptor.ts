@@ -6,37 +6,77 @@ import {
   HttpRequest,
   HttpResponse,
 } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
+import { getLogger } from 'ish-core/utils/ssr-logging/ssr-logging.service';
+
+const logger = getLogger('SSRLogInterceptor');
+
+function getHttpRequestUrlLogData(req: HttpRequest<unknown>) {
+  let path: string | undefined;
+  let domain: string | undefined;
+
+  try {
+    const url = new URL(req.urlWithParams);
+    path = url.pathname;
+    domain = url.host;
+  } catch {
+    // If URL parsing fails (e.g., relative URL), extract path from urlWithParams
+    const queryIndex = req.urlWithParams.indexOf('?');
+    path = queryIndex >= 0 ? req.urlWithParams.substring(0, queryIndex) : req.urlWithParams;
+  }
+
+  return {
+    original: req.urlWithParams,
+    path,
+    domain,
+  };
+}
+
+@Injectable()
 export class SSRLogInterceptor implements HttpInterceptor {
-  private logging = /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase());
-
-  private logAll = /on|1|true|yes/.test(process.env.LOG_ALL?.toLowerCase());
-
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if (!this.logging) {
-      return next.handle(req);
-    }
-
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { performance } = require('perf_hooks');
 
     const start = performance.now();
 
-    const logger = (res: HttpEvent<unknown>) => {
-      if (
-        (res instanceof HttpResponse || res instanceof HttpErrorResponse) &&
-        (this.logAll || res.status >= 400 || res.status < 200)
-      ) {
-        const duration = (performance.now() - start).toFixed(2);
-        const size = res instanceof HttpResponse ? ` ${JSON.stringify(res.body)?.length}` : '';
+    const logResponse = (res: HttpEvent<unknown>) => {
+      if (res instanceof HttpResponse || res instanceof HttpErrorResponse) {
+        const durationMs = performance.now() - start;
+        const durationNs = Math.round(durationMs * 1_000_000); // ECS event.duration is in nanoseconds
+        const size = res instanceof HttpResponse ? JSON.stringify(res.body)?.length : undefined;
 
-        // eslint-disable-next-line no-console
-        console.log(`${req.method} ${req.urlWithParams} ${res.status}${size} - ${duration} ms`);
+        const logData = {
+          http: {
+            request: {
+              method: req.method,
+            },
+            response: {
+              status_code: res.status,
+              ...(size !== undefined && { body: { bytes: size } }),
+            },
+          },
+          url: getHttpRequestUrlLogData(req),
+          event: {
+            duration: durationNs,
+          },
+        };
+
+        // SSRLogInterceptor is only used for information purposes, so we log all responses as info
+        // SSR error and warning logs are handled in server.ts and app.server.module.ts
+        if (res.status >= 500) {
+          logger.info(logData, `${req.method} (server error)`);
+        } else if (res.status >= 400) {
+          logger.info(logData, `${req.method} (client error)`);
+        } else {
+          logger.info(logData, req.method);
+        }
       }
     };
 
-    return next.handle(req).pipe(tap({ next: logger, error: logger }));
+    return next.handle(req).pipe(tap({ next: logResponse, error: logResponse }));
   }
 }

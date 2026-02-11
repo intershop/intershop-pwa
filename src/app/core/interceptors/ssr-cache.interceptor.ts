@@ -5,8 +5,11 @@ import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { parseTimeToSeconds } from 'ish-core/utils/functions';
+import { getLogger } from 'ish-core/utils/ssr-logging/ssr-logging.service';
 
 const CACHE_CONFIG = process.env.CACHE_ICM_CALLS;
+
+const logger = getLogger('SSRCacheInterceptor');
 
 const config: () => Record<string, string> = once(() => {
   if (CACHE_CONFIG) {
@@ -20,21 +23,21 @@ const config: () => Record<string, string> = once(() => {
     try {
       return JSON.parse(CACHE_CONFIG);
     } catch (err) {
-      console.error('ERROR parsing CACHE_ICM_CALLS:', err.message);
+      logger.error({ err }, 'Error parsing CACHE_ICM_CALLS');
       return {};
     }
   }
   return {};
 });
 
-const cacheTime = memoize((url): number => {
+const cacheTime = memoize((url: string): number => {
   const rule = Object.keys(config()).find(re => new RegExp(re, 'gi').test(url));
   if (rule) {
     const timeString = config()[rule];
     try {
       return parseTimeToSeconds(timeString);
     } catch (err) {
-      console.error('ERROR setting up CACHE_ICM_CALLS:', err.message);
+      logger.error({ err }, 'Error setting up CACHE_ICM_CALLS');
     }
   }
   return 0;

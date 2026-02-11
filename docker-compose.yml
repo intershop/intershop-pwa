@@ -18,8 +18,8 @@ services:
     environment:
       ICM_BASE_URL: 'https://develop.icm.intershop.de'
       # TRUST_ICM: 'true'
-      LOGGING: 'true'
-      # LOG_ALL: 'false'
+      # LOGLEVEL: 'info' # trace, debug, info, warn, error, fatal - default: error
+      # LOGFORMAT: 'text' # text, json - default: json (ECS-compatible)
       SOURCE_MAPS: 'true'
       # SSR_HYBRID: 'true'
       # PROXY_ICM: 'true'
@@ -45,10 +45,6 @@ services:
       #
       # allow backend requests to use HTTP/2 with Fetch API (experimental)
       # ALLOW_H2: 'true'
-
-    # Logging to an External Device (see logging.md)
-    # volumes:
-    #   - d:/pwa/logs:/.pm2/logs/
 
   nginx:
     image: intershophub/intershop-pwa-nginx
