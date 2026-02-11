@@ -934,7 +934,7 @@
   "checkout.payment.paypal.credit_card.cvc.label": "CVC/CVV",
   "checkout.payment.paypal.credit_card.cvc.popover.title": "Où puis-je trouver le CVC/CVV ?",
   "checkout.payment.paypal.error.message": "Nous n'avons pas pu vérifier votre carte. Veuillez réessayer ou utiliser une autre carte.",
-  "checkout.payment.paypal.privacy_statement.message": "En payant avec votre carte, vous acceptez que vos données soient traitées par PayPal conformément à la <a href=\"https://www.paypal.com/de/legalhub/paypal/privacy-full\" target=\"_blank\">déclaration de confidentialité de PayPal</a> disponible sur PayPal.com.",
+  "checkout.payment.paypal.privacy_statement.message": "En payant avec votre carte, vous acceptez que vos données soient traitées par PayPal conformément à la <a href=\"https://www.paypal.com/{{country}}/legalhub/paypal/privacy-full\" target=\"_blank\">déclaration de confidentialité de PayPal</a> disponible sur PayPal.com.",
   "checkout.payment.paypal.script.error.message": "PayPal est temporairement indisponible. Veuillez réessayer sous peu ou choisir un autre mode de paiement.",
   "checkout.payment.security_code.missing.error": "Le code de sécurité manque.",
   "checkout.payment.sorry_message.text": "Nous sommes désolés.",

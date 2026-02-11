@@ -79,7 +79,6 @@ describe('Payment Paypal Component', () => {
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: PaypalConfigService, useFactory: () => instance(paypalConfigService) },
-        { provide: Router, useFactory: () => instance(router) },
       ],
     })
       .overrideComponent(PaymentPaypalComponent, {

@@ -11,7 +11,7 @@ kb_sync_latest_only
 - [Prerequisites](#prerequisites)
 - [Architecture](#Architecture)
   - [Key Components](#key-components)
-- [Component Types](#component-types)
+- [Adapter Types](#adapter-types)
   - [Buttons](#buttons)
   - [Messages](#messages)
   - [Card Fields](#card-fields)
@@ -28,7 +28,7 @@ kb_sync_latest_only
 
 ## Overview
 
-The PWA provides a component with the selector [`ish-payment-paypal`][payment-paypal.component.ts] that dynamically loads the PayPal SDK and renders the appropriate PayPal component based on the configured component type and current page context.
+The PWA provides a component with the selector [`ish-payment-paypal`][payment-paypal.component.ts] that dynamically loads the PayPal SDK and renders the appropriate PayPal component based on the configured adapter type and page type.
 It supports:
 
 - **Buttons**: PayPal checkout buttons for standard payments
@@ -65,135 +65,85 @@ src/app/core/utils/paypal/
 
 ### Key Components
 
-| Component                   | Location                                            | Purpose                                                      |
-| --------------------------- | --------------------------------------------------- | ------------------------------------------------------------ |
-| `PaymentPaypalComponent`    | `src/app/shared/components/payment/payment-paypal/` | Main Angular component for rendering PayPal elements         |
-| `PaypalAdaptersBuilder`     | `src/app/core/utils/paypal/adapters/`               | Factory service that creates appropriate PayPal SDK adapters |
-| `PaypalConfigService`       | `src/app/core/utils/paypal/paypal-config/`          | Handles SDK script loading and URL construction              |
-| `PaypalDataTransferService` | `src/app/core/utils/paypal/paypal-data-transfer/`   | Enables data communication outside NgRx store flow           |
+| Component                 | Location                                                 | Purpose                                                                                                                                 |
+| ------------------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `PaymentPaypalComponent`  | `src/app/shared/components/payment/payment-paypal/`      | Main Angular component for rendering PayPal elements                                                                                    |
+| `PaypalAdaptersBuilder`   | `src/app/core/utils/paypal/adapters/`                    | Factory service that creates appropriate PayPal SDK adapters                                                                            |
+| `PaypalConfigService`     | `src/app/core/utils/paypal/paypal-config/`               | Handles SDK script loading and URL construction                                                                                         |
+| `PaypalCardFieldsAdapter` | `src/app/core/utils/paypal/adapters/paypal-card-fields/` | Representation of the PayPal SDK Card Fields object, responsible for rendering PayPal card fields and handling the associated callbacks |
+| `PaypalButtonsAdapter`    | `src/app/core/utils/paypal/adapters/paypal-buttons/`     | Representation of the PayPal SDK Buttons object, responsible for rendering PayPal Buttons and handling the associated callbacks         |
+| `PaypalMessagesAdapter`   | `src/app/core/utils/paypal/adapters/paypal-messages/`    | Representation of the PayPal SDK Messages object, responsible for rendering PayPal Pay Later messages                                   |
 
-## Component Types
+## Adapter Types
 
-The [`ish-payment-paypal`][payment-paypal.component.ts] component supports three different component types:
+The [`ish-payment-paypal`][payment-paypal.component.ts] component supports three different adapter types:
 
 ### Buttons
 
-This component type is used to display PayPal checkout buttons for both standard and express payments.
-Rendering is performed by [`PayPalButtonsAdapter`][paypal-buttons.adapter.ts].
-This component also provides the callback methods which are requires by the PayPal JavaScript SDK Buttons API.
-The following example shows how to integrate the [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding component type `Buttons` into any component:
-
-```typescript
-export class ExampleComponent {
-  paypalComponentType = PaypalComponentTypes.Buttons;
-  ...
-}
-```
+This adapter type is used to display PayPal checkout buttons for both standard and express payments.
+The rendering is performed by [`PayPalButtonsAdapter`][paypal-buttons.adapter.ts].
+This component also provides the callback methods which is required by the PayPal JavaScript SDK Buttons API.
+To use the `ish-payment-paypal` component with the Buttons adapter type, the `adapterType` input must be set to `Buttons`.
+Additionally, the `pageType` is required to apply the appropriate SDK styling options.
+It is also necessary to specify the `selectedPaymentMethod` so that the component can load the correct SDK for PayPal Buttons.
+The following example shows how to integrate the [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding adapter type `Buttons` into any component:
 
 ```html
-<!-- exapmple.component.html -->
-<ish-payment-paypal [componentType]="paypalComponentType" [selectedPaymentMethod]="paymentMethod" />
+<ish-payment-paypal [selectedPaymentMethod]="paypalPaymentMethod" [adapterType]="'Buttons'" [pageType]="'cart'" />
 ```
 
 ### Messages
 
-This component type is used to display Pay Later messaging on various pages (home, category, product details, cart, checkout) based on the ICM backend configuration.
-Rendering is performed by [`PaypalMessagesAdapter`][paypal-messages.adapter.ts].
-It is not necessary to set the `componentType` input for messages, as it is the default type when no `componentType` is provided.
-The following example shows how to integrate the [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding component type `Messages` into any component:
+This adapter type is used to display Pay Later messaging on various pages (home, category, product details, cart, checkout) based on the ICM backend configuration.
+The rendering is performed by [`PaypalMessagesAdapter`][paypal-messages.adapter.ts].
+It is not necessary to set the `adapterType` input for messages, as it is the default type when no `adapterType` is provided.
+However, the `pageType` input is required to apply the appropriate SDK styling options and to determine the visibility of Pay Later messages based on the ICM backend configuration.
+The following example shows how to integrate the [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding adapter type `Messages` into any component:
 
 ```html
-<ish-payment-paypal />
+<ish-payment-paypal [pageType]="'home'" />
 ```
 
 ### Card Fields
 
-This component type is used to provide card input fields for direct credit/debit card payments (Advanced Card Payments).
-Rendering is performed by [`PaypalCardFieldsAdapter`][paypal-card-fields.adapter.ts].
-This component also provides input validation, error handling und the callback methods which are requires by the PayPal JavaScript SDK Buttons API.
-The following example shows how to integrate the [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding component type `CardFields` into any component:
-
-```typescript
-export class ExampleComponent {
-  paypalComponentType = PaypalComponentTypes.CardFields;
-  ...
-}
-```
+This adapter type is used to provide card input fields for direct credit/debit card payments (Advanced Card Payments).
+The rendering is performed by [`PaypalCardFieldsAdapter`][paypal-card-fields.adapter.ts].
+This component also provides input validation, error handling und the callback methods which is required by the PayPal JavaScript SDK Buttons API.
+The following example shows how to integrate the [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding adapter type `CardFields` into any component:
 
 ```html
-<!-- exapmple.component.hml -->
-<ish-payment-paypal [componentType]="paypalComponentType" [selectedPaymentMethod]="paymentMethod" />
+<ish-payment-paypal [selectedPaymentMethod]="paymentMethod" [adapterType]="'CardFields'" [pageType]="'checkout'" />
 ```
 
 ## Page Types
 
-The page types are required as script loader URL parameters, but also for styling the components and determining the pay later amount to be displayed.
-The PayPal integration automatically detects the current page type based on the URL and configures the SDK accordingly:
+The PageType is required for various processes:
 
-| Page Type        | URL Pattern             | SDK `data-page-type` | Amount Source      |
-| ---------------- | ----------------------- | -------------------- | ------------------ |
-| Cart             | `/basket`               | `cart`               | Basket gross total |
-| Checkout Payment | `checkout/payment`      | `checkout`           | Basket gross total |
-| Product Details  | `-ctg` and `-prd`       | `product-details`    | Product sale price |
-| Product Listing  | `-ctg` (without `-prd`) | `product-listing`    | -                  |
-| Home             | `/home`                 | `home`               | -                  |
-
-> [!NOTE]
-> When modifying the PWA routes listed above, ensure that the `identifyPageType()` method in [`payment-paypal.component.ts`][payment-paypal.component.ts] is updated accordingly to reflect the new URL patterns.
+- **URL parameter**: The page types are required as script loader URL parameter `data-page-type`.
+- **Styling**: Page types allow you to apply different styles to the component.
+- **Pay Later Handling**: The page type is also used to determine the visibility of Pay Later Messages and Buttons, which can be configured separately for each page type in the ICM backend.
 
 ## Styling Customization
 
-This section explains how to style PayPal components in the Intershop PWA using the styling possibilities given by PayPal JavaScript SDK[`PayPal JavaScript SDK`][PayPal JavaScript SDK Reference].
+This section explains how to style PayPal components in the Intershop PWA using the styling options provided by the [`PayPal JavaScript SDK`][PayPal JavaScript SDK Reference].
 
 All styling configurations are located in [`paypal-adapters.styling.ts`][paypal-adapters.styling.ts].
 
 ### Pay Later Message Styling
 
-The styling of PayPal messages depends on the page context.
+The styling of PayPal messages depends on the page type.
 
 ```typescript
+// This example shows the Pay Later messages styling for the component with pageType `home`.
 export const PAYPAL_MESSAGE_STYLING = {
   home: { layout: 'flex', color: 'white-no-border', ratio: '20x1' },
-  category: { layout: 'flex', color: 'white-no-border' },
-  product: { layout: 'text', color: 'black', logo: { type: 'inline' } },
-  cart: { layout: 'text', color: 'black', logo: { type: 'inline' } },
-  checkout: { layout: 'text', color: 'black', logo: { type: 'inline' } },
-};
-```
-
-### Button Styling
-
-PayPal payment buttons are styled differently based on their integration context.
-
-```typescript
-export const PAYPAL_BUTTON_STYLING = {
-  cart: { shape: 'sharp', label: 'paypal', height: 40, tagline: false },
-  checkout: { shape: 'sharp', label: 'paypal', height: 40, tagline: false },
-};
-```
-
-### Card Fields Styling
-
-Card fields use custom CSS styling to match the application design:
-
-```typescript
-export const PAYPAL_CART_FIELDS_STYLING = {
-  body: { padding: '0' },
-  input: {
-    'font-size': '0.875rem',
-    'font-weight': '400',
-    'font-family': 'inherit',
-    'border-radius': '0',
-    padding: '0.375rem 0.75rem',
-    border: '1px solid #757575',
-  },
-  '.invalid': { color: '#dc3545', border: '1px solid #dc3545' },
+  ...
 };
 ```
 
 ## Script Loading
 
-Depending on the configured component type, the PayPal integration dynamically loads the appropriate SDK instance with the necessary parameters (e.g., `client-id`, `merchant-id`, `currency`, `locale`, `intent`) via the [`PaypalConfigService`][paypal-config.service.ts].
+Depending on the configured adapter type, the PayPal integration dynamically loads the appropriate SDK instance with the necessary parameters (e.g., `client-id`, `merchant-id`, `currency`, `locale`, `intent`) via the [`PaypalConfigService`][paypal-config.service.ts].
 Since the PayPal SDK URL parameters can differ for each payment method, the script URL is loaded with a unique namespace to avoid conflicts when multiple instances are required.
 The namespace format is `PPCP_<payment_method_id>` for Buttons and Card Fields, and `PPCP_MESSAGES` for Pay Later Messages.
 
@@ -212,33 +162,20 @@ It provides the following features:
 - **Script attributes**: Supports `type`, `integrity`, `crossorigin`, and custom data attributes
 - **Observable-based API**: Returns an `Observable<ScriptType>` for tracking load status
 
-## Pay later Configuration
+## Pay Later Configuration
 
-The visibility of Pay later messages or pay later buttons is controlled by the icm backend settings of the PayPal Common Configuration Service.
+The visibility of Pay later messages or pay later buttons is controlled by the ICM backend settings of the PayPal Common Configuration Service.
 
 <a target="_blank" href="paypal-pay-later.png"><img src="paypal-pay-later.png" alt="ICM backend PayPal Pay later configuration" width="50%"/></a>
 
-The PayPal configuration is retrieved from the ICM backend via the server settings endpoint:
+The PayPal configuration is retrieved from the ICM backend via the configurations endpoint.
 
-```typescript
-interface PaypalConfig {
-  clientId: string;
-  merchantId: string;
-  payLaterPreferences?: {
-    PayLaterEnabled: boolean;
-    PayLaterMessagingCartEnabled: boolean;
-    PayLaterMessagingCategoryEnabled: boolean;
-    PayLaterMessagingHomeEnabled: boolean;
-    PayLaterMessagingPaymentEnabled: boolean;
-    PayLaterMessagingProductDetailsEnabled: boolean;
-  };
-}
-```
+The following example shows how to integrate the PayPal component on the product details page to display Pay Later messages if the ICM backend settings are to be taken into account:
 
-Access this configuration in your code via:
-
-```typescript
-this.appFacade.serverSetting$<PaypalConfig>('payment.paypal');
+```html
+<ng-container *ngIf="'payment.paypal.payLaterPreferences.PayLaterMessagingProductDetailsEnabled' | ishServerSetting">
+  <ish-payment-paypal [pageType]="'product-details'" />
+</ng-container>
 ```
 
 ## Further References

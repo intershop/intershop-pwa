@@ -93,6 +93,10 @@ export class PaypalCardFieldsAdapter {
           },
         }) as PaypalCardFieldsComponent;
 
+        if (!this.cardField.isEligible()) {
+          console.warn('PayPal CardFields: Not eligible for rendering');
+        }
+
         // Check if card fields are eligible
         if (this.cardField.isEligible()) {
           // Render individual fields outside Angular zone for proper iframe interaction

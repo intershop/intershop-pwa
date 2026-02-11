@@ -52,7 +52,12 @@
               </div>
               <!-- Paypal Credit Card Privacy Statement -->
               <div *ngIf="paymentMethod.serviceId === 'PAYPAL_CREDIT_CARD'" class="row">
-                <p [innerHTML]="'checkout.payment.paypal.privacy_statement.message' | translate"></p>
+                <p
+                  [innerHTML]="
+                    'checkout.payment.paypal.privacy_statement.message'
+                      | translate : { country: getCustomerInvoiceCountryCode() }
+                  "
+                ></p>
               </div>
               <!-- Payment parameter form -->
               <div

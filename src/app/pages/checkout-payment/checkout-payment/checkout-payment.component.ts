@@ -148,6 +148,13 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
   }
 
   /**
+   * Necessary for PayPal Privacy Policy to determine the invoice country code for the buyer, default is 'us' if no invoice address is present
+   */
+  getCustomerInvoiceCountryCode(): string {
+    return this.basket?.invoiceToAddress ? this.basket.invoiceToAddress.countryCode?.toLowerCase() : 'us';
+  }
+
+  /**
    * Determine whether payment parameter form for a payment method is opened or not
    *
    * @param index Numerical index of the parameter form to get info from
