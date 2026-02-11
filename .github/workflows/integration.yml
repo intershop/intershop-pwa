@@ -79,7 +79,8 @@ jobs:
 
       - name: Set Environment
         run: |
-          echo "LOGGING=true" >> $GITHUB_ENV
+          echo "LOGLEVEL=error" >> $GITHUB_ENV
+          echo "LOGFORMAT=text" >> $GITHUB_ENV
 
       - name: Set B2C Environment
         if: matrix.test == 'b2c'
@@ -121,7 +122,6 @@ jobs:
       - name: Set Environment
         run: |
           echo "PWA_BASE_URL=http://localhost:4200" >> $GITHUB_ENV
-          echo "LOGGING=true" >> $GITHUB_ENV
           echo "BROWSER=chrome" >> $GITHUB_ENV
 
       - name: Set B2C Environment

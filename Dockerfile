@@ -36,7 +36,8 @@ RUN cd dist && npm install
 ARG displayVersion=
 LABEL displayVersion="${displayVersion}"
 ENV DISPLAY_VERSION=${displayVersion} NODE_PATH=/dist/node_modules PATH=$PATH:/dist/node_modules/.bin
-ENV LOG_ALL=on
+ENV LOGLEVEL=error
+ENV LOGFORMAT=json
 EXPOSE 4200 9113
 RUN mkdir /.pm2 && chown nobody:nobody /.pm2 && chmod 700 /.pm2 && \
     touch /dist/ecosystem.yml && chown nobody:nobody /dist/ecosystem.yml && chmod 644 /dist/ecosystem.yml
