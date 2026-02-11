@@ -63,12 +63,11 @@ async function main() {
       )
     );
 
-    // Inject lib chunks for each theme's browser build (sequential, fast)
+    // Inject critical split chunks for each built theme.
     configurations.forEach(({ theme }) => {
       const distPath = path.join('dist', theme, 'browser');
       if (fs.existsSync(distPath)) {
-        console.log(`inject-lib-chunks: Processing ${theme}/browser/index.html`);
-        cp.execSync(`node scripts/inject-lib-chunks ${theme}`, { stdio: 'inherit' });
+        cp.execSync(`node scripts/inject-lib-chunks.js ${theme}`, { stdio: 'inherit' });
       }
     });
   }

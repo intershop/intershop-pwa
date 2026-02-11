@@ -245,64 +245,33 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
         },
       };
 
-      // split heavy third-party libs into sensible chunks
-      // Critical libs are loaded initially
-      const criticalLibs = [
-        {
-          name: 'ng-core',
-          test: /[\\/]node_modules[\\/]@angular[\\/]core[\\/]/,
-          priority: 50,
-          chunks: 'initial' as const,
-        },
-        {
-          name: 'ng-common',
-          test: /[\\/]node_modules[\\/]@angular[\\/]common[\\/]/,
-          priority: 50,
-          chunks: 'initial' as const,
-        },
-        { name: 'rxjs', test: /[\\/]node_modules[\\/]rxjs[\\/]/, priority: 45, chunks: 'initial' as const },
-      ];
+      // Keep framework code in one stable chunk to reduce initial script overhead.
+      cacheGroups.framework = {
+        test: /[\\/]node_modules[\\/](?:@angular|rxjs)[\\/]/,
+        chunks: 'all',
+        name: 'framework',
+        priority: 60,
+        enforce: true,
+      };
 
-      // Non-critical libs are loaded on demand
-      const lazyLibs = [
-        {
-          name: 'ng-router',
-          test: /[\\/]node_modules[\\/]@angular[\\/]router[\\/]/,
-          priority: 50,
-          chunks: 'async' as const,
-        },
-        {
-          name: 'lib-fontawesome',
-          test: /[\\/]node_modules[\\/]@fortawesome[\\/]/,
-          priority: 40,
-          chunks: 'async' as const,
-        },
-        {
-          name: 'lib-bootstrap',
-          test: /[\\/]node_modules[\\/](?:bootstrap|@ng-bootstrap)[\\/]/,
-          priority: 39,
-          chunks: 'async' as const,
-        },
-        {
-          name: 'lib-oauth',
-          test: /[\\/]node_modules[\\/]angular-oauth2-oidc[\\/]/,
-          priority: 38,
-          chunks: 'async' as const,
-        },
-        { name: 'lib-core', test: /[\\/]node_modules[\\/]core[\\/]/, priority: 37, chunks: 'async' as const },
-      ];
+      // Auth/OAuth code should only be pulled in when auth-related flows are used.
+      cacheGroups['lib-oauth'] = {
+        test: /[\\/]node_modules[\\/]angular-oauth2-oidc[\\/]/,
+        chunks: 'async',
+        name: 'lib-oauth',
+        priority: 40,
+        reuseExistingChunk: true,
+      };
 
-      [...criticalLibs, ...lazyLibs].forEach(lib => {
-        cacheGroups[lib.name] = {
-          test: lib.test,
-          chunks: lib.chunks,
-          name: lib.name,
-          priority: lib.priority,
-        };
-      });
+      // Group common UI libs into one lazy chunk.
+      cacheGroups['lib-ui'] = {
+        test: /[\\/]node_modules[\\/](?:bootstrap|@ng-bootstrap|@fortawesome|swiper)[\\/]/,
+        chunks: 'async',
+        name: 'lib-ui',
+        priority: 35,
+        reuseExistingChunk: true,
+      };
     }
-
-    // Note: lib-* chunk injection is handled by scripts/inject-lib-chunks.js post-build
 
     if (!process.env.TESTING) {
       logger.log('setting up data-testing-id removal');

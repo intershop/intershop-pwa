@@ -8,6 +8,7 @@ const distPath = theme
 const indexPath = path.join(distPath, 'index.html');
 
 const criticalLibChunks = [
+  'framework', // Framework split chunk from custom splitChunks config
   'ng-core', // Required for Angular bootstrap
   'ng-common', // Required for common directives and pipes
   'rxjs', // Required for observables throughout the app

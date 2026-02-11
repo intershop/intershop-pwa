@@ -54,7 +54,7 @@ if (client) {
   });
   removeServiceWorkerCacheCheck(remainingArgs);
 
-  // Inject lib chunks into index.html
+  // Inject critical split chunks into index.html.
   const outputPathArg = remainingArgs.find(arg => arg.startsWith('--output-path'));
   let themeParam = '';
   if (outputPathArg) {
