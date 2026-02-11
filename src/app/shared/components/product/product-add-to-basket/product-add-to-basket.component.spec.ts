@@ -27,6 +27,7 @@ describe('Product Add To Basket Component', () => {
 
     context = mock(ProductContextFacade);
     when(context.select('displayProperties', 'addToBasket')).thenReturn(of(true));
+    when(context.select('prices')).thenReturn(of({}));
     when(context.select('product')).thenReturn(of({} as ProductView));
     when(context.select('quantity')).thenReturn(of(1));
     when(context.select('hasQuantityError')).thenReturn(of(false));

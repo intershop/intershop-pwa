@@ -56,7 +56,15 @@ export class ProductAddToBasketComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
 
   ngOnInit() {
-    this.visible$ = this.context.select('displayProperties', 'addToBasket');
+    this.visible$ = combineLatest([
+      this.context.select('displayProperties', 'addToBasket'),
+      // manually connect the product context to product prices since they are required to determine the visibility of the add to basket button
+      // this connection is not automatically the case if the product context is not used to display product prices too (e.g. product compare)
+      // the prices itself are not directly used here but in the ProductContextDisplayPropertiesService canBeOrderedWithPrice calculation
+      // start with undefined to trigger the visibility calculation for cases where there is no product context (e.g. order templates)
+      this.context.select('prices').pipe(startWith(undefined)),
+    ]).pipe(map(([addToBasketVisible]) => addToBasketVisible));
+
     this.translationKey$ = this.context.select('product').pipe(
       map(product =>
         ProductHelper.isRetailSet(product) ? 'product.add_to_cart.retailset.link' : 'product.add_to_cart.link'
