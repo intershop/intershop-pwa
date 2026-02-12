@@ -11,7 +11,7 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 interface ScriptType {
   /** The source URL of the script */
   src: string;
-  /** Indicates whether the script has successfully loaded */
+  /** Indicates whether the script has successfully been loaded */
   loaded: boolean;
 }
 
@@ -19,32 +19,19 @@ interface ScriptType {
  * Configuration options for loading a script element.
  */
 interface ScriptLoaderOption {
-  /**
-   * Optionally set a type if it is not a classic Javascript file, e.g. 'module'
-   */
+  /** Type if it is not a classic Javascript file, e.g. 'module' */
   type?: string;
-  /**
-   * Integrity hash and crossOrigin to 'anonymous' (parameter 'crossorigin' ignored in that case)
-   */
+  /** Integrity hash and crossOrigin to 'anonymous' (parameter 'crossorigin' ignored in that case) */
   integrity?: string;
-  /**
-   * Optional value for crossOrigin attribute in script tag
-   */
+  /** Value for crossOrigin attribute in script tag */
   crossorigin?: string;
-  /**
-   * Optional script html element (data) attributes, e.g. <script src="..." data-foo="bar">
-   */
+  /** Script html element (data) attributes, e.g. <script src="..." data-foo="bar"> */
   attributes?: Attribute<string>[];
 }
 
 /**
  * Service for dynamically loading external JavaScript files into the DOM.
  *
- * This service provides a centralized way to load third-party scripts with:
- * - Caching to prevent duplicate script loading
- * - Support for script attributes (type, integrity, crossorigin, custom data attributes)
- * - Observable-based API for tracking load status
- * - Automatic detection of already-loaded scripts in the DOM
  */
 @Injectable({ providedIn: 'root' })
 export class ScriptLoaderService {
@@ -55,18 +42,18 @@ export class ScriptLoaderService {
   private loadingScripts = new Map<string, Observable<ScriptType>>();
 
   constructor(private rendererFactory: RendererFactory2, @Inject(DOCUMENT) private document: Document) {
-    // Get an instance of Renderer2
     this.renderer = this.rendererFactory.createRenderer(undefined, undefined);
   }
 
   /**
-   * Loads an external JavaScript file dynamically into the DOM.
+   * Loads an external JavaScript file dynamically and creates and appends a new script element to the document body.
+   * It prevents duplicate loading of the same script by caching the loading state and result.
+   * The method supports script attributes like type, integrity, crossorigin and custom data attributes.
+   * To load the same script multiple times with different attributes, provide a unique 'data-namespace' attribute.
    *
-   * This method handles the complete lifecycle of script loading:
-   * 1. Checks if the script is already loaded (returns cached observable)
-   * 2. Checks if the script is currently loading (returns in-progress observable)
-   * 3. Checks if the script already exists in the DOM (marks as loaded immediately)
-   * 4. Creates and appends a new script element to the document body
+   * @param url The URL of the script to load.
+   * @param options Optional configuration for the script element.
+   * @returns An Observable that emits the loading state or an error if loading fails.
    */
   load(url: string, options?: ScriptLoaderOption): Observable<ScriptType> {
     // Create a cache key that includes options to handle different script configurations
