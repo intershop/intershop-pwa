@@ -97,6 +97,12 @@
     list-style-type: none;
 
     &.grid-view {
+      a {
+        &.product-title {
+          margin-top: $space-default;
+        }
+      }
+
       &:nth-child(2n + 1) {
         clear: both;
       }
@@ -123,7 +129,6 @@
     &.product-title {
       display: block;
       padding-top: 0;
-      margin-top: $space-default;
       font-family: $font-family-condensedregular;
       font-size: $font-size-lg;
       color: $text-color-primary;
