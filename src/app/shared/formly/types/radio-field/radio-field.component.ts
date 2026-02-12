@@ -1,5 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 /**
  * Basic type for radio buttons
@@ -19,6 +22,8 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   selector: 'ish-radio-field',
   templateUrl: './radio-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
 })
 export class RadioFieldComponent extends FieldType<FieldTypeConfig> {
   get radioName() {

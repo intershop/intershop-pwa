@@ -1,5 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 /**
  * Type for a basic textarea field
@@ -17,6 +20,8 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   selector: 'ish-textarea-field',
   templateUrl: './textarea-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, FormlyModule, ReactiveFormsModule, TranslateModule],
 })
 export class TextareaFieldComponent extends FieldType<FieldTypeConfig> {
   defaultOptions = {
