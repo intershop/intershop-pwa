@@ -56,7 +56,11 @@ export class ScriptLoaderService {
    * @returns An Observable that emits the loading state or an error if loading fails.
    */
   load(url: string, options?: ScriptLoaderOption): Observable<ScriptType> {
-    // Create a cache key that includes options to handle different script configurations
+    if (!url?.trim()) {
+      throw new Error('ScriptLoaderService.load: "url" parameter must be a non-empty string.');
+    }
+
+    // Create a cache key based on the 'data-namespace' attribute if provided, otherwise use the URL
     const cacheKey = this.createCacheKey(url, options);
     // Check if script is already loaded
     if (this.loadedScripts.has(cacheKey)) {
@@ -132,7 +136,7 @@ export class ScriptLoaderService {
   private createCacheKey(url: string, options?: ScriptLoaderOption): string {
     // Use data-namespace attribute value as cache key
     const namespaceAttribute = options?.attributes?.find(attr => attr.name === 'data-namespace');
-    if (namespaceAttribute) {
+    if (namespaceAttribute?.value) {
       return namespaceAttribute.value;
     }
 
