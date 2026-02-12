@@ -31,6 +31,7 @@ const wrapperComponents = [
   imports: [
     CommonModule,
     ComponentsModule,
+    ...wrapperComponents,
     ReactiveFormsModule,
     TranslateModule,
     ValidationMessageComponent,
@@ -47,7 +48,6 @@ const wrapperComponents = [
       ],
     }),
   ],
-  declarations: [...wrapperComponents],
   exports: [...wrapperComponents],
 })
 export class WrappersModule {}

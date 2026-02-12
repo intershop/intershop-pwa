@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FieldType } from '@ngx-formly/core';
+import { CaptchaExportsModule } from 'src/app/extensions/captcha/exports/captcha-exports.module';
 
 /**
  * Type to include the ``ish-lazy-captcha`` component in your fields.
@@ -15,6 +16,8 @@ import { FieldType } from '@ngx-formly/core';
   selector: 'ish-captcha-field',
   templateUrl: './captcha-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CaptchaExportsModule],
 })
 export class CaptchaFieldComponent extends FieldType implements OnInit {
   ngOnInit() {

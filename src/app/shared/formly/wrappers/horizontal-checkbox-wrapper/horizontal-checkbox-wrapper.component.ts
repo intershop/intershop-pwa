@@ -1,5 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
+
+import { FieldTooltipComponent } from '../../components/field-tooltip/field-tooltip.component';
+import { ValidationMessageComponent } from '../../components/validation-message/validation-message.component';
 
 /**
  * Wrapper that works with checkboxes and radio buttons.
@@ -22,6 +27,8 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'ish-horizontal-checkbox-wrapper',
   templateUrl: './horizontal-checkbox-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [CommonModule, FieldTooltipComponent, TranslateModule, ValidationMessageComponent],
 })
 export class HorizontalCheckboxWrapperComponent extends FieldWrapper {
   dprops = {

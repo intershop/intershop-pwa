@@ -1,5 +1,9 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlySelectModule } from '@ngx-formly/core/select';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 
@@ -23,6 +27,8 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
   selector: 'ish-select-field',
   templateUrl: './select-field.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [CommonModule, FormlyModule, FormlySelectModule, ReactiveFormsModule, TranslateModule],
 })
 export class SelectFieldComponent extends FieldType<FieldTypeConfig> {
   defaultOptions = {

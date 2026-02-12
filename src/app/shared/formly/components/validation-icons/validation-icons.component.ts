@@ -1,5 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+
+import { IconModule } from 'ish-core/icon.module';
 
 /**
  * Component that displays either a cross or a check mark to indicate validity.
@@ -12,6 +15,8 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
   selector: 'ish-validation-icons',
   templateUrl: './validation-icons.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [CommonModule, IconModule],
 })
 export class ValidationIconsComponent {
   @Input({ required: true }) field: FormlyFieldConfig;

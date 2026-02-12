@@ -23,13 +23,13 @@ import { AddressFormUSConfiguration } from './configurations/us/address-form-us.
   imports: [
     CommonModule,
     DirectivesModule,
+    FormlyAddressExtensionFormComponent,
     FormlyAddressFormComponent,
     FormlyModule,
     FormsSharedModule,
     ReactiveFormsModule,
     TranslateModule,
   ],
-  declarations: [FormlyAddressExtensionFormComponent],
   exports: [FormlyAddressExtensionFormComponent, FormlyAddressFormComponent],
   providers: [
     AddressFormConfigurationProvider,

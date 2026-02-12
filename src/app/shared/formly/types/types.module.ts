@@ -58,6 +58,7 @@ const fieldComponents = [
     CaptchaExportsModule,
     CommonModule,
     DirectivesModule,
+    ...fieldComponents,
     FormlySelectModule,
     NgbDatepickerModule,
     NgSelectModule,
@@ -228,7 +229,6 @@ const fieldComponents = [
     { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter },
     { provide: NgbDatepickerI18n, useClass: IshDatepickerI18n },
   ],
-  declarations: [...fieldComponents],
   exports: [...fieldComponents, SearchSelectFieldComponent],
 })
 export class TypesModule {}

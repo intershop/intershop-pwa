@@ -1,5 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 /**
@@ -13,6 +15,8 @@ import { of } from 'rxjs';
   selector: 'ish-input-addon-wrapper',
   templateUrl: './input-addon-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, TranslateModule],
 })
 export class InputAddonWrapperComponent extends FieldWrapper {
   get addonLeftText() {
