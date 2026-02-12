@@ -24,6 +24,7 @@ import { environment } from '../environments/environment';
 import { CompareExportsModule } from './extensions/compare/exports/compare-exports.module';
 import { CopilotExportsModule } from './extensions/copilot/exports/copilot-exports.module';
 import { OrderTemplatesExportsModule } from './extensions/order-templates/exports/order-templates-exports.module';
+import { ProductNotificationsExportsModule } from './extensions/product-notifications/exports/product-notifications-exports.module';
 import { QuickorderExportsModule } from './extensions/quickorder/exports/quickorder-exports.module';
 import { RecentlyStoreModule } from './extensions/recently/store/recently-store.module';
 import { SeoExportsModule } from './extensions/seo/exports/seo-exports.module';
@@ -79,6 +80,7 @@ export const appConfig: ApplicationConfig = {
       CopilotExportsModule,
       CompareExportsModule,
       OrderTemplatesExportsModule,
+      ProductNotificationsExportsModule,
       QuickorderExportsModule,
       SeoExportsModule,
       StoreLocatorExportsModule,
