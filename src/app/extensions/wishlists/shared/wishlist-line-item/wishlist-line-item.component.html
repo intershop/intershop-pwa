@@ -40,13 +40,9 @@
 
         <div class="col-12 col-md-5 product-list-actions-container">
           <ish-product-price />
-          <p *ngIf="product.available; else noInStock">
-            {{ 'wishlist.table.in_stock' | translate }}
-          </p>
-          <ng-template #noInStock>
-            <p>{{ 'wishlist.table.not_accessible' | translate }}</p>
-          </ng-template>
-          <div *ngIf="product.available" class="row">
+          <div class="mb-2"><ish-product-inventory /></div>
+
+          <div class="row">
             <div class="col-6 offset-md-6 col-lg-5 offset-lg-0">
               <ish-product-quantity />
             </div>

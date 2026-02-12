@@ -1550,8 +1550,6 @@
   "wishlist.table.added_on": "Added on:",
   "wishlist.table.header.item": "Item description",
   "wishlist.table.header.price": "Price",
-  "wishlist.table.in_stock": "In stock",
-  "wishlist.table.not_accessible": "No longer available",
   "wishlist.table.options.move_to_another_wishlist": "Move to other list",
   "wishlist.table.options.remove": "Remove"
 }

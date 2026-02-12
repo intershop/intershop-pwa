@@ -1550,8 +1550,6 @@
   "wishlist.table.added_on": "Hinzugefügt am:",
   "wishlist.table.header.item": "Artikelbeschreibung",
   "wishlist.table.header.price": "Preis",
-  "wishlist.table.in_stock": "Verfügbar",
-  "wishlist.table.not_accessible": "Nicht mehr verfügbar",
   "wishlist.table.options.move_to_another_wishlist": "In andere Liste verschieben",
   "wishlist.table.options.remove": "Entfernen"
 }
