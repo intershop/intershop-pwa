@@ -5,9 +5,6 @@ services:
     image: intershophub/intershop-pwa-ssr
     build:
       context: ../../.
-      args:
-        NODE_OPTIONS: --max-old-space-size=4096
-        PWA_BUILD_MAX_WORKERS: 1
     environment:
       ICM_BASE_URL: 'https://develop.icm.intershop.de'
 

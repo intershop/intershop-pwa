@@ -244,63 +244,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
           return 'common';
         },
       };
-
-      // split heavy third-party libs into async chunks to reduce main/vendor size
-      cacheGroups['lib-swiper'] = {
-        test: /[\\/]node_modules[\\/]swiper[\\/]/,
-        chunks: 'all',
-        name: 'lib-swiper',
-        priority: 40,
-      };
-
-      cacheGroups['lib-formly'] = {
-        test: /[\\/]node_modules[\\/]@ngx-formly[\\/]/,
-        chunks: 'all',
-        name: 'lib-formly',
-        priority: 35,
-      };
-
-      cacheGroups['lib-ng-select'] = {
-        test: /[\\/]node_modules[\\/]@ng-select[\\/]/,
-        chunks: 'all',
-        name: 'lib-ng-select',
-        priority: 34,
-      };
-
-      cacheGroups['lib-fontawesome'] = {
-        test: /[\\/]node_modules[\\/]@fortawesome[\\/]/,
-        chunks: 'all',
-        name: 'lib-fontawesome',
-        priority: 33,
-      };
-
-      cacheGroups['lib-bootstrap'] = {
-        test: /[\\/]node_modules[\\/](?:bootstrap|@ng-bootstrap)[\\/]/,
-        chunks: 'all',
-        name: 'lib-bootstrap',
-        priority: 32,
-      };
-
-      cacheGroups['lib-oauth'] = {
-        test: /[\\/]node_modules[\\/]angular-oauth2-oidc[\\/]/,
-        chunks: 'all',
-        name: 'lib-oauth',
-        priority: 31,
-      };
-
-      cacheGroups['lib-mask'] = {
-        test: /[\\/]node_modules[\\/]ngx-mask[\\/]/,
-        chunks: 'all',
-        name: 'lib-mask',
-        priority: 31,
-      };
-
-      cacheGroups['lib-toastr'] = {
-        test: /[\\/]node_modules[\\/]ngx-toastr[\\/]/,
-        chunks: 'all',
-        name: 'lib-toastr',
-        priority: 31,
-      };
     }
 
     if (!process.env.TESTING) {

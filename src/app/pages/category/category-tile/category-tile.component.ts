@@ -27,7 +27,6 @@ export class CategoryTileComponent implements OnInit {
    * The Category to render a tile for
    */
   @Input({ required: true }) categoryUniqueId: string;
-  @Input() loading: 'lazy' | 'eager' = 'lazy';
 
   category$: Observable<CategoryView>;
 

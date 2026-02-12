@@ -2,13 +2,12 @@
 
 .homepage {
   header {
-    padding-bottom: 0;
     margin-bottom: 0;
     box-shadow: none;
   }
 
   .wrapper {
-    padding: 0;
+    padding: $space-default 0 0 0;
     background: none;
 
     @include media-breakpoint-down(md) {
@@ -24,7 +23,6 @@
   .main-container {
     padding-right: 0;
     padding-left: 0;
-    margin-top: 0;
 
     img {
       width: 100%;
@@ -39,7 +37,6 @@
 
   .content-container:not(.container) {
     padding: 0;
-    margin-top: 0;
   }
 }
 

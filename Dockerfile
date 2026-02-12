@@ -22,9 +22,7 @@ ARG testing=false
 ENV TESTING=${testing}
 ARG activeThemes=
 RUN if [ ! -z "${activeThemes}" ]; then npm pkg set config.active-themes="${activeThemes}"; fi
-ARG NODE_OPTIONS
-ARG PWA_BUILD_MAX_WORKERS
-RUN NODE_OPTIONS=${NODE_OPTIONS} PWA_BUILD_MAX_WORKERS=${PWA_BUILD_MAX_WORKERS} npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER
+RUN npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER
 COPY tsconfig.server.json server.ts /workspace/
 COPY babel.config.js /workspace/
 RUN npm run build:multi server
