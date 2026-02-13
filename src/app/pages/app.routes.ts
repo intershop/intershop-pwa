@@ -114,7 +114,18 @@ export const appRoutes: Routes = [
   },
   {
     path: 'checkout',
-    loadChildren: () => import('./checkout/checkout-page.module').then(m => m.checkoutPageRoutes),
+    loadChildren: () =>
+      Promise.all([
+        import('./checkout/checkout-page.module'),
+        import('ish-shared/formly/formly.module'),
+        import('ish-shared/formly-address-forms/formly-address-forms.module'),
+      ]).then(([{ checkoutPageRoutes }, { FormlyModule: IshFormlyModule }, { FormlyAddressFormsModule }]) => {
+        const [rootRoute, ...nestedRoutes] = checkoutPageRoutes;
+        const providers = importProvidersFrom(IshFormlyModule, FormlyAddressFormsModule);
+        return rootRoute
+          ? [{ ...rootRoute, providers: [...(rootRoute.providers ?? []), providers] }, ...nestedRoutes]
+          : [];
+      }),
   },
   {
     path: 'register',
