@@ -105,7 +105,7 @@ The script loader service [`script-loader.service.ts`](../../src/app/core/utils/
 The new implementation is fully backward compatible and offers additional improvements for caching:
 
 - Dual-cache system: The service now uses separate caches for loaded scripts (`loadedScripts`) and scripts currently being loaded (`loadingScripts`), preventing duplicate loading requests.
-- DOM-aware loading: Before creating a new script element, the service checks if the script already exists in the DOM and marks it as loaded immediately.
+- DOM-aware loading: Before creating a new script element, the service checks whether the script already exists in the DOM and marks it as loaded immediately.
 - Namespace-based caching: Scripts with a `data-namespace` attribute use the namespace value as cache key instead of the URL. This prevents re-loading scripts with dynamic URLs (e.g., PayPal SDK with changing locale/currency parameters).
 
 ## From 9.0.0 to 9.1.0
