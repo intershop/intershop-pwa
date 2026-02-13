@@ -9,13 +9,20 @@ import {
 } from '@angular/core';
 import { provideClientHydration, withNoHttpTransferCache } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { UrlSerializer, provideRouter } from '@angular/router';
+import {
+  UrlSerializer,
+  provideRouter,
+  withEnabledBlockingInitialNavigation,
+  withInMemoryScrolling,
+  withPreloading,
+} from '@angular/router';
 import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 import { RequisitionManagementStoreModule } from 'requisition-management';
 
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
 import { CoreModule } from 'ish-core/core.module';
 import { PWAUrlSerializer } from 'ish-core/routing/pwa-url.serializer';
+import { SelectivePreloadingStrategy } from 'ish-core/routing/selective-preloading-strategy';
 import { StateManagementModule } from 'ish-core/state-management.module';
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
@@ -49,7 +56,12 @@ function initializeModuleLoader(moduleLoader: ModuleLoaderService, injector: Inj
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter([...appRoutes, ...appLastRoutes]),
+    provideRouter(
+      [...appRoutes, ...appLastRoutes],
+      withEnabledBlockingInitialNavigation(),
+      withInMemoryScrolling({ scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }),
+      withPreloading(SelectivePreloadingStrategy)
+    ),
     provideAnimations(),
     provideClientHydration(withNoHttpTransferCache()),
     { provide: UrlSerializer, useClass: PWAUrlSerializer },
