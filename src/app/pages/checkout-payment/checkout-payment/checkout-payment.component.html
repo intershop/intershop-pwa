@@ -1,8 +1,7 @@
 <div class="row" *ngIf="basket">
   <div class="col-md-12">
     <!-- Messages -->
-    <ish-error-message [error]="error" [toast]="false" />
-    <ish-basket-error-message [error]="error" />
+    <ish-basket-error-message *ngIf="error" [error]="error" />
     <ish-basket-validation-results />
 
     <div *ngIf="redirectStatus$ | async as redirectStatus" role="alert" class="alert alert-danger">

@@ -17,8 +17,7 @@
 
   <div>
     <!-- Error message -->
-    <ish-error-message *ngIf="error?.message" [error]="error" />
-    <ish-basket-error-message [error]="error" />
+    <ish-basket-error-message *ngIf="error" [error]="error" />
 
     <!-- Basket Info messages -->
     <ish-basket-info />

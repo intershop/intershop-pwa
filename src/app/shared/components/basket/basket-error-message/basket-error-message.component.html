@@ -1,6 +1,6 @@
 <ng-container *ngIf="error as basketError">
-  <ng-container *ngIf="basketError.errors as errors">
-    <div *ngFor="let error of errors" [class]="cssClass" data-testing-id="basket-errors">
+  <ng-container *ngIf="basketError.errors?.length; else generalError">
+    <div *ngFor="let error of basketError.errors" [class]="cssClass" data-testing-id="basket-errors">
       <strong>{{ error.message }}</strong>
       <ng-container *ngIf="error.causes as causes">
         <p *ngFor="let cause of causes" role="alert">
@@ -14,4 +14,5 @@
       </ng-container>
     </div>
   </ng-container>
+  <ng-template #generalError> <ish-error-message [error]="error" [toast]="false" /></ng-template>
 </ng-container>

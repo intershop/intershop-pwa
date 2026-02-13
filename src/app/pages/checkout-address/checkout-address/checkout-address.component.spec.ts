@@ -15,7 +15,6 @@ import { BasketRecurrenceSummaryComponent } from 'ish-shared/components/basket/b
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { BasketInvoiceAddressWidgetComponent } from 'ish-shared/components/checkout/basket-invoice-address-widget/basket-invoice-address-widget.component';
 import { BasketShippingAddressWidgetComponent } from 'ish-shared/components/checkout/basket-shipping-address-widget/basket-shipping-address-widget.component';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
 import { CheckoutAddressComponent } from './checkout-address.component';
 
@@ -37,7 +36,6 @@ describe('Checkout Address Component', () => {
         MockComponent(BasketRecurrenceSummaryComponent),
         MockComponent(BasketShippingAddressWidgetComponent),
         MockComponent(BasketValidationResultsComponent),
-        MockComponent(ErrorMessageComponent),
         MockDirective(ServerHtmlDirective),
       ],
       imports: [TranslateModule.forRoot()],
@@ -83,13 +81,13 @@ describe('Checkout Address Component', () => {
   it('should not render an error if no error occurs', () => {
     component.error = undefined;
     fixture.detectChanges();
-    expect(element.querySelector('ish-error-message')).toBeFalsy();
+    expect(element.querySelector('ish-basket-error-message')).toBeFalsy();
   });
 
   it('should render an error if an error occurs', () => {
     component.error = makeHttpError({ status: 404 });
     fixture.detectChanges();
-    expect(element.querySelector('ish-error-message')).toBeTruthy();
+    expect(element.querySelector('ish-basket-error-message')).toBeTruthy();
   });
 
   it('should not render an error if the user has currently no addresses selected', () => {

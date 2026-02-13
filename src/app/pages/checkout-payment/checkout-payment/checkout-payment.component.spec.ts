@@ -21,7 +21,6 @@ import { BasketPaymentCostInfoComponent } from 'ish-shared/components/basket/bas
 import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketRecurrenceSummaryComponent } from 'ish-shared/components/basket/basket-recurrence-summary/basket-recurrence-summary.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoMessageComponent } from 'ish-shared/components/common/info-message/info-message.component';
 
 import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
@@ -48,7 +47,6 @@ describe('Checkout Payment Component', () => {
         MockComponent(BasketPromotionCodeComponent),
         MockComponent(BasketRecurrenceSummaryComponent),
         MockComponent(BasketValidationResultsComponent),
-        MockComponent(ErrorMessageComponent),
         MockComponent(FormlyForm),
         MockComponent(InfoMessageComponent),
         MockComponent(PaymentConcardisCreditcardComponent),
@@ -146,7 +144,7 @@ describe('Checkout Payment Component', () => {
     it('should render an error if an error occurs', () => {
       component.error = makeHttpError({ status: 404 });
       fixture.detectChanges();
-      expect(element.querySelector('ish-error-message')).toBeTruthy();
+      expect(element.querySelector('ish-basket-error-message')).toBeTruthy();
     });
 
     it('should not render an error if the user has currently no payment method selected', () => {
