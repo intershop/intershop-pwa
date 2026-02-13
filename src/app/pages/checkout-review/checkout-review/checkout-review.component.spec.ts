@@ -23,7 +23,6 @@ import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket
 import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { BasketCustomFieldsViewComponent } from 'ish-shared/components/checkout/basket-custom-fields-view/basket-custom-fields-view.component';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
@@ -54,7 +53,6 @@ describe('Checkout Review Component', () => {
         MockComponent(BasketMerchantMessageViewComponent),
         MockComponent(BasketShippingMethodComponent),
         MockComponent(BasketValidationResultsComponent),
-        MockComponent(ErrorMessageComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
         MockComponent(ModalDialogLinkComponent),
@@ -144,7 +142,7 @@ describe('Checkout Review Component', () => {
   it('should display a message if an error occurs', () => {
     component.error = makeHttpError({ status: 400, message: 'Bad request' });
     fixture.detectChanges();
-    expect(element.querySelector('ish-error-message')).toBeTruthy();
+    expect(element.querySelector('ish-basket-error-message')).toBeTruthy();
   });
 
   it('should display an approval required link if necessary', () => {
@@ -158,8 +156,6 @@ describe('Checkout Review Component', () => {
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       [
         "ish-modal-dialog-link",
-        "ish-error-message",
-        "ish-basket-error-message",
         "ish-basket-validation-results",
         "ish-basket-merchant-message-view",
         "ish-info-box",

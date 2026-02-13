@@ -16,7 +16,6 @@ import { BasketInfoComponent } from 'ish-shared/components/basket/basket-info/ba
 import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { ClearBasketComponent } from 'ish-shared/components/basket/clear-basket/clear-basket.component';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
@@ -45,7 +44,6 @@ describe('Shopping Basket Component', () => {
         MockComponent(BasketValidationResultsComponent),
         MockComponent(ClearBasketComponent),
         MockComponent(ContentIncludeComponent),
-        MockComponent(ErrorMessageComponent),
         MockComponent(LazyBasketAddToQuoteComponent),
         MockComponent(LazyBasketCreateOrderTemplateComponent),
         MockComponent(LazyDirectOrderComponent),
@@ -85,6 +83,6 @@ describe('Shopping Basket Component', () => {
   it('should render an error if an error occurs', () => {
     component.error = makeHttpError({ status: 404, message: 'error message' });
     fixture.detectChanges();
-    expect(element.querySelector('ish-error-message')).toBeTruthy();
+    expect(element.querySelector('ish-basket-error-message')).toBeTruthy();
   });
 });
