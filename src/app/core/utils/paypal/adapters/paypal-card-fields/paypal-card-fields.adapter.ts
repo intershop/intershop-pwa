@@ -29,6 +29,8 @@ export class PaypalCardFieldsAdapter {
   closeForm$ = new Subject<void>();
   /** Emits true when the card fields is start to submit  */
   loadingIframe$ = new BehaviorSubject<boolean>(false);
+  /** Emits true when the card fields is start to submit  */
+  renderError$ = new Subject<string>();
 
   /** Error state observables for each field */
   nameFieldError$ = new BehaviorSubject<boolean>(false);
@@ -83,6 +85,9 @@ export class PaypalCardFieldsAdapter {
           onError: () => {
             this.ngZone.run(() => this.onErrorCallback());
           },
+          onCancel: () => {
+            this.ngZone.run(() => this.onCancelCallback());
+          },
           inputEvents: {
             onFocus: (data: PaypalCardFieldsStateObject) => {
               this.ngZone.run(() => this.handleFieldFocus(data));
@@ -119,6 +124,9 @@ export class PaypalCardFieldsAdapter {
    * Renders individual card input fields (name, number, CVV, expiry).
    */
   protected async renderIndividualFields(): Promise<void> {
+    // Clear any existing fields from previous renders
+    this.fields = {};
+
     const fieldConfigs = [
       {
         key: 'name',
@@ -143,21 +151,50 @@ export class PaypalCardFieldsAdapter {
     ];
 
     for (const config of fieldConfigs) {
-      try {
-        const container = this.document.getElementById(config.containerId);
-        if (!container) {
-          console.warn(`PayPal CardFields: Container '#${config.containerId}' not found in DOM`);
-          continue;
-        }
+      await this.renderSingleField(config, 0);
+    }
+  }
 
-        this.fields[config.key] = {
-          containerId: config.containerId,
-          instance: config.factory(),
-        };
-        await this.fields[config.key].instance.render(`#${config.containerId}`);
-      } catch (error) {
-        console.error(`PayPal CardFields: Failed to render '${config.key}' field:`, error);
+  /**
+   * Renders a single card field with retry capability.
+   * @param config - Field configuration
+   * @param attempt - Current attempt number (0-based)
+   */
+  private async renderSingleField(
+    config: { key: string; containerId: string; factory(): PaypalCardFieldsIndividualField },
+    attempt: number
+  ): Promise<void> {
+    const maxRetries = 2;
+    const retryDelay = 300;
+
+    try {
+      const container = this.document.getElementById(config.containerId);
+      if (!container) {
+        console.warn(`PayPal CardFields: Container '#${config.containerId}' not found in DOM`);
+        return;
       }
+
+      // Clear any existing content from previous renders (e.g., after payment instrument deletion)
+      container.innerHTML = '';
+
+      this.fields[config.key] = {
+        containerId: config.containerId,
+        instance: config.factory(),
+      };
+      await this.fields[config.key].instance.render(`#${config.containerId}`);
+
+      // Verify that PayPal SDK actually rendered content in the container
+      if (!container.hasChildNodes() && attempt < maxRetries) {
+        // Retry if we haven't exceeded max attempts
+        delete this.fields[config.key];
+        await new Promise<void>(resolve => setTimeout(resolve, retryDelay));
+        return this.renderSingleField(config, attempt + 1);
+      }
+      if (!container.hasChildNodes() && attempt === maxRetries) {
+        this.renderError$.next('checkout.payment.paypal.script.render.error.message');
+      }
+    } catch (error) {
+      this.renderError$.next('checkout.payment.paypal.script.render.error.message');
     }
   }
 
@@ -285,6 +322,20 @@ export class PaypalCardFieldsAdapter {
     }
     this.resetFieldValues();
     this.processing = false;
+  }
+
+  /**
+   * Handles PayPal payment cancellation.
+   */
+  protected onCancelCallback(): void {
+    this.loadingIframe$.next(false);
+    this.processing = false;
+    if (this.creditCardPaymentInstrumentId) {
+      this.checkoutFacade.deletePaypalPayment({
+        id: this.creditCardPaymentInstrumentId,
+        paymentMethod: this.paymentMethod.id,
+      });
+    }
   }
 
   private resetFieldValues(): void {

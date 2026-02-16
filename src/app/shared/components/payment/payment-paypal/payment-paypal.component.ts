@@ -61,6 +61,9 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   /** Observable indicating whether the PayPal iframe is loading. */
   loadingIframe$: Observable<boolean>;
 
+  /** Observable indicating whether the PayPal iframe is loading. */
+  renderError$: Observable<string>;
+
   /** Error state observables for card fields */
   nameFieldError$: Observable<boolean>;
   numberFieldError$: Observable<boolean>;
@@ -88,6 +91,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
       this.closeForm.emit();
     });
     this.loadingIframe$ = this.paypalCardFields.loadingIframe$;
+    this.renderError$ = this.paypalCardFields.renderError$;
 
     // Assign error state observables from card fields adapter
     this.nameFieldError$ = this.paypalCardFields.nameFieldError$;

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { EMPTY } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { concatMap, exhaustMap, filter, map, switchMap, take } from 'rxjs/operators';
 
 import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
@@ -172,7 +172,8 @@ export class BasketPaymentEffects {
   );
 
   /**
-   * Deletes the temporary PayPal payment instrument in case of an error during authorization workflow of PayPal.
+   * Deletes the temporary PayPal payment instrument. If an error message is provided,
+   * emits setBasketPaymentFail action. Otherwise, no action is dispatched.
    */
   deletePaypalCreditCardBasketPayment$ = createEffect(() =>
     this.actions$.pipe(
@@ -181,7 +182,11 @@ export class BasketPaymentEffects {
       concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
       concatMap(([payload, basket]) =>
         this.paymentService.deleteBasketPaymentInstrument(basket, payload.paymentInstrument).pipe(
-          map(() => setBasketPaymentFail({ error: { name: 'HttpErrorResponse', message: payload.errorMessage } })),
+          concatMap(() =>
+            payload.errorMessage
+              ? of(setBasketPaymentFail({ error: { name: 'HttpErrorResponse', message: payload.errorMessage } }))
+              : EMPTY
+          ),
           mapErrorToAction(setBasketPaymentFail)
         )
       )

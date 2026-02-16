@@ -26,6 +26,10 @@ class TestablePaypalCardFields extends PaypalCardFieldsAdapter {
   testOnErrorCallback(): Promise<void> {
     return (this as any).onErrorCallback();
   }
+
+  testOnCancelCallback(): void {
+    return (this as any).onCancelCallback();
+  }
 }
 
 describe('Paypal Card Fields Adapter', () => {
@@ -51,7 +55,14 @@ describe('Paypal Card Fields Adapter', () => {
 
     // Create mock field instances with required methods
     mockNameField = {
-      render: jest.fn().mockResolvedValue(undefined),
+      render: jest.fn().mockImplementation((selector: string) => {
+        // Simulate PayPal SDK adding an iframe to the container
+        const container = document.querySelector(selector);
+        if (container) {
+          container.innerHTML = '<iframe src="about:blank"></iframe>';
+        }
+        return Promise.resolve(undefined);
+      }),
       addClass: jest.fn(),
       removeClass: jest.fn(),
       setAttribute: jest.fn().mockResolvedValue(undefined),
@@ -60,7 +71,13 @@ describe('Paypal Card Fields Adapter', () => {
     };
 
     mockNumberField = {
-      render: jest.fn().mockResolvedValue(undefined),
+      render: jest.fn().mockImplementation((selector: string) => {
+        const container = document.querySelector(selector);
+        if (container) {
+          container.innerHTML = '<iframe src="about:blank"></iframe>';
+        }
+        return Promise.resolve(undefined);
+      }),
       addClass: jest.fn(),
       removeClass: jest.fn(),
       setAttribute: jest.fn().mockResolvedValue(undefined),
@@ -69,7 +86,13 @@ describe('Paypal Card Fields Adapter', () => {
     };
 
     mockCvvField = {
-      render: jest.fn().mockResolvedValue(undefined),
+      render: jest.fn().mockImplementation((selector: string) => {
+        const container = document.querySelector(selector);
+        if (container) {
+          container.innerHTML = '<iframe src="about:blank"></iframe>';
+        }
+        return Promise.resolve(undefined);
+      }),
       addClass: jest.fn(),
       removeClass: jest.fn(),
       setAttribute: jest.fn().mockResolvedValue(undefined),
@@ -78,7 +101,13 @@ describe('Paypal Card Fields Adapter', () => {
     };
 
     mockExpiryField = {
-      render: jest.fn().mockResolvedValue(undefined),
+      render: jest.fn().mockImplementation((selector: string) => {
+        const container = document.querySelector(selector);
+        if (container) {
+          container.innerHTML = '<iframe src="about:blank"></iframe>';
+        }
+        return Promise.resolve(undefined);
+      }),
       addClass: jest.fn(),
       removeClass: jest.fn(),
       setAttribute: jest.fn().mockResolvedValue(undefined),
@@ -185,20 +214,22 @@ describe('Paypal Card Fields Adapter', () => {
       expect(mockNumberField.render).not.toHaveBeenCalled();
     });
 
-    it('should handle rendering errors gracefully and continue with other fields', async () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+    it('should handle rendering errors gracefully and emit renderError$', async () => {
       const renderError = new Error('Rendering failed');
       mockNameField.render.mockRejectedValue(renderError);
 
+      let emittedError: string | undefined;
+      paypalCardFields.renderError$.subscribe(error => {
+        emittedError = error;
+      });
+
       await paypalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
 
-      expect(consoleSpy).toHaveBeenCalledWith("PayPal CardFields: Failed to render 'name' field:", renderError);
+      expect(emittedError).toBe('checkout.payment.paypal.script.render.error.message');
       // Other fields should still be rendered
       expect(mockNumberField.render).toHaveBeenCalled();
       expect(mockCvvField.render).toHaveBeenCalled();
       expect(mockExpiryField.render).toHaveBeenCalled();
-
-      consoleSpy.mockRestore();
     });
 
     it('should setup submit button event listener', async () => {
@@ -338,6 +369,46 @@ describe('Paypal Card Fields Adapter', () => {
       await paypalCardFields.testOnErrorCallback();
 
       verify(checkoutFacade.deletePaypalPayment(anything(), anything())).never();
+    });
+  });
+
+  describe('onCancelCallback()', () => {
+    beforeEach(async () => {
+      document.body.innerHTML = `
+        <div id="card-name-field-container"></div>
+        <div id="card-number-field-container"></div>
+        <div id="card-cvv-field-container"></div>
+        <div id="card-expiry-field-container"></div>
+        <button id="card-field-submit-button">Submit</button>
+      `;
+
+      await paypalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
+    });
+
+    it('should set loadingIframe$ to false', done => {
+      paypalCardFields.loadingIframe$.next(true);
+
+      paypalCardFields.testOnCancelCallback();
+
+      paypalCardFields.loadingIframe$.pipe(take(1)).subscribe(value => {
+        expect(value).toBeFalse();
+        done();
+      });
+    });
+
+    it('should call deletePaypalPayment without error message when payment instrument id exists', () => {
+      (paypalCardFields as any).creditCardPaymentInstrumentId = 'INSTRUMENT456';
+      paypalCardFields.paymentMethod = mockPaymentMethod;
+
+      paypalCardFields.testOnCancelCallback();
+
+      verify(checkoutFacade.deletePaypalPayment(anything())).once();
+    });
+
+    it('should not call deletePaypalPayment when payment instrument id does not exist', () => {
+      paypalCardFields.testOnCancelCallback();
+
+      verify(checkoutFacade.deletePaypalPayment(anything())).never();
     });
   });
 

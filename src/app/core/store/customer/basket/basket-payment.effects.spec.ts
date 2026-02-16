@@ -533,6 +533,14 @@ describe('Basket Payment Effects', () => {
       expect(effects.deletePaypalCreditCardBasketPayment$).toBeObservable(expected$);
     });
 
+    it('should not emit any action when no error message is provided', () => {
+      const action = deletePaypalCreditCardBasketPayment({ paymentInstrument, errorMessage: undefined });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('--');
+
+      expect(effects.deletePaypalCreditCardBasketPayment$).toBeObservable(expected$);
+    });
+
     it('should map error to action of type SetBasketPaymentFail', () => {
       when(paymentServiceMock.deleteBasketPaymentInstrument(anything(), anything())).thenReturn(
         throwError(() => makeHttpError({ message: 'deletion failed' }))

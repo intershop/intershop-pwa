@@ -7,6 +7,13 @@
     <ng-template #cardFieldsContainer>
       <div class="card_container">
         <div class="row form-group">
+          <!-- Render error message for card fields -->
+          <div *ngIf="renderError$ | async as errorMessageKey" class="col-12">
+            <div role="alert" class="alert alert-danger">
+              <span [ishServerHtml]="errorMessageKey | translate"></span>
+            </div>
+          </div>
+
           <div class="col-form-label col-md-4" id="card-name-field-container-label">
             {{ 'checkout.credit_card.holder.label' | translate }}
           </div>

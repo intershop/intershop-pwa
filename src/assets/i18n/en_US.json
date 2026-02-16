@@ -937,6 +937,7 @@
   "checkout.payment.paypal.error.message": "We could not verify your card. Please try again or use a different card.",
   "checkout.payment.paypal.privacy_statement.message": "By paying with your card, you acknowledge that your data will be processed by PayPal subject to <a href=\"https://www.paypal.com/{{country}}/legalhub/paypal/privacy-full\" target=\"_blank\">PayPal Privacy Statement</a> available at PayPal.com.",
   "checkout.payment.paypal.script.error.message": "PayPal is temporarily unavailable. Please try again shortly or select another payment method.",
+  "checkout.payment.paypal.script.render.error.message": "Unfortunately, something went wrong. <a href=\"javascript:location.reload()\" class=\"alert-link\">Reload this page</a> or select another payment method.",
   "checkout.payment.security_code.missing.error": "Security code is missing.",
   "checkout.payment.sorry_message.text": "We’re sorry.",
   "checkout.pli.desc.heading": "Item description",
