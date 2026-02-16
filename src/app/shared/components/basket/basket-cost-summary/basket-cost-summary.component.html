@@ -63,7 +63,7 @@
     <ng-container
       *ngIf="
         getPaypalPageType() === 'cart'
-          ? 'payment.paypal.payLaterPreferences.PayLaterMessagingCartEnabled'
+          ? ('payment.paypal.payLaterPreferences.PayLaterMessagingCartEnabled' | ishServerSetting)
           : ('payment.paypal.payLaterPreferences.PayLaterMessagingPaymentEnabled' | ishServerSetting)
       "
     >

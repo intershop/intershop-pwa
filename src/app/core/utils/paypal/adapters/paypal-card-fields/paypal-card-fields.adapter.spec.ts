@@ -218,13 +218,11 @@ describe('Paypal Card Fields Adapter', () => {
       const renderError = new Error('Rendering failed');
       mockNameField.render.mockRejectedValue(renderError);
 
-      let emittedError: string | undefined;
-      paypalCardFields.renderError$.subscribe(error => {
-        emittedError = error;
-      });
+      const errorPromise = firstValueFrom(paypalCardFields.renderError$.pipe(take(1)));
 
       await paypalCardFields.renderCardFields('testNamespace', mockPaymentMethod);
 
+      const emittedError = await errorPromise;
       expect(emittedError).toBe('checkout.payment.paypal.script.render.error.message');
       // Other fields should still be rendered
       expect(mockNumberField.render).toHaveBeenCalled();
