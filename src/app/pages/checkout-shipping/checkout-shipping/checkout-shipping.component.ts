@@ -34,7 +34,7 @@ export class CheckoutShippingComponent implements OnInit {
 
     this.setupBasketShippingMethodUpdates();
 
-    this.setupShippingMethodPreselection();
+    this.setupShippingMethodPreSelection();
   }
 
   private setupFormConfigConstruction() {
@@ -71,7 +71,7 @@ export class CheckoutShippingComponent implements OnInit {
    * set shipping selection to the corresponding basket value (important in case of an error)
    * track selected method in form and model to ensure correct initialization after formly form generation
    */
-  private setupShippingMethodPreselection() {
+  private setupShippingMethodPreSelection() {
     this.checkoutFacade
       .getValidShippingMethod$()
       .pipe(withLatestFrom(this.basket$), takeUntilDestroyed(this.destroyRef))
