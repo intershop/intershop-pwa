@@ -63,7 +63,7 @@ const useAsyncSynchronizationInTestsRule: TSESLint.RuleModule<keyof typeof messa
       return {};
     }
     return {
-      'CallExpression > MemberExpression[property.name="subscribe"]'(node: TSESTree.PropertyDefinition) {
+      'CallExpression > MemberExpression[property.name="subscribe"]'(node: TSESTree.MemberExpression) {
         // check if arguments contain done callback or partial subscriber with done callback
         const callExp = node.parent as TSESTree.CallExpression;
         if (callExp.arguments.some(arg => isDoneCallback(arg) || isDoneCallbackPartialSubscriber(arg))) {

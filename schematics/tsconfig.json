@@ -1,27 +1,28 @@
 {
-  "extends": "../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "dist",
     "rootDir": "src/",
-    "lib": ["es2017", "dom"],
-    "target": "es2015",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "strict": false,
-    "strictFunctionTypes": false,
+    "lib": ["ES2022"],
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "isolatedModules": true,
+    "strict": true,
+    "strictNullChecks": false, // TODO: enable and fix ~196 null-safety issues
+    "strictFunctionTypes": false, // TODO: enable and fix tsquery Node[] callback typings
+    "useUnknownInCatchVariables": false, // TODO: enable and fix catch clause typings
     "noEmitOnError": false,
-    "skipDefaultLibCheck": true,
     "skipLibCheck": true,
-    "sourceMap": false,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
     "types": ["jest", "jest-extended", "node"],
-    // @lint rules
     "noFallthroughCasesInSwitch": true,
     "noUnusedParameters": true,
-    // "noUnusedLocals": true,
+    "noUnusedLocals": true,
     "paths": {
-      "schemas/*": ["dist/*"],
-      "tslib": ["node_modules/tslib/tslib.d.ts"]
+      "schemas/*": ["dist/*"]
     }
   },
   "include": ["src/**/*.ts"],
