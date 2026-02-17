@@ -44,7 +44,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   @Input() adapterType: PaypalAdapterTypes = 'Messages';
 
   /** Type of page to render. */
-  @Input() pageType: PaypalPageType;
+  @Input({ required: true }) pageType: PaypalPageType;
 
   /** The selected PayPal payment method configuration. Required for Buttons and CardFields. */
   @Input() selectedPaymentMethod: PaymentMethod;

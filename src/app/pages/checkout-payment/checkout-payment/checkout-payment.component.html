@@ -1,7 +1,5 @@
 <div class="row" *ngIf="basket">
   <div class="col-md-12">
-    <!-- target element to scroll to the messages -->
-    <div [ishScroll]="scrollToMessage" [scrollSpacing]="scrollSpacing"></div>
     <!-- Messages -->
     <ish-basket-error-message *ngIf="error" [error]="error" />
     <ish-basket-validation-results />
@@ -150,7 +148,7 @@
                         <ish-payment-paypal
                           [selectedPaymentMethod]="paymentMethod"
                           [adapterType]="getPaypalAdapterType(paymentMethod)"
-                          [pageType]="'checkout'"
+                          pageType="checkout"
                           (closeForm)="closePaymentInstrumentForm()"
                         />
                       </ng-template>
@@ -234,7 +232,7 @@
       <ish-basket-cost-summary [totals]="basket.totals" />
 
       <div class="d-grid">
-        <ng-container *ngIf="selectedPayPalMethod() === undefined; else PaypalButton">
+        <ng-container *ngIf="!selectedPayPalMethod(); else PaypalButton">
           <div *ngIf="nextDisabled" id="checkout-button-help" aria-live="polite" class="visually-hidden">
             {{ 'checkout.continue.validation.message' | translate }}
           </div>
@@ -250,8 +248,8 @@
         <ng-template #PaypalButton>
           <ish-payment-paypal
             [selectedPaymentMethod]="selectedPayPalMethod()"
-            [pageType]="'checkout'"
             [adapterType]="getPaypalAdapterType()"
+            pageType="checkout"
           />
         </ng-template>
       </div>

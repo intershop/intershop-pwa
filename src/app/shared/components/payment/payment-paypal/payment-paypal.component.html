@@ -21,7 +21,7 @@
           <div class="offset-md-4">
             <small
               [ishPaypalError]="nameFieldError$ | async"
-              ishPaypalErrorLabelId="card-name-field-container-label"
+              labelId="card-name-field-container-label"
               class="validation-error hide-validation-error"
             >
               {{ 'checkout.credit_card.holder.error.invalid' | translate }}
@@ -38,7 +38,7 @@
           <div class="offset-md-4">
             <small
               [ishPaypalError]="numberFieldError$ | async"
-              ishPaypalErrorLabelId="card-number-field-container-label"
+              labelId="card-number-field-container-label"
               class="validation-error hide-validation-error"
             >
               {{ 'checkout.credit_card.number.error.default' | translate }}
@@ -57,7 +57,7 @@
             </div>
             <small
               [ishPaypalError]="expiryFieldError$ | async"
-              ishPaypalErrorLabelId="card-expiry-field-container-label"
+              labelId="card-expiry-field-container-label"
               class="validation-error hide-validation-error"
             >
               {{ 'checkout.credit_card.expiry_date.invalid.error' | translate }}
@@ -90,7 +90,7 @@
             </div>
             <small
               [ishPaypalError]="cvvFieldError$ | async"
-              ishPaypalErrorLabelId="card-cvv-field-container-label"
+              labelId="card-cvv-field-container-label"
               class="validation-error hide-validation-error"
             >
               {{ 'checkout.credit_card.cvc_cvv.error.default' | translate }}

@@ -1,4 +1,6 @@
 <ng-container *ngIf="error as basketError">
+  <!-- target element to scroll to the messages -->
+  <div [ishScroll]="scrollToMessage" [scrollSpacing]="scrollSpacing"></div>
   <ng-container *ngIf="basketError.errors?.length; else generalError">
     <div *ngFor="let error of basketError.errors" [class]="cssClass" data-testing-id="basket-errors">
       <strong>{{ error.message }}</strong>

@@ -51,6 +51,8 @@ import {
   updateBasketPaymentFail,
   updateBasketPaymentSuccess,
   updatePaymentInstrument,
+  updatePaymentInstrumentFail,
+  updatePaymentInstrumentSuccess,
   updatePaypalCreditCardPaymentInstrument,
 } from './basket.actions';
 
@@ -632,6 +634,67 @@ describe('Basket Payment Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.submitPaypalPaymentInstrumentDataAfterApproval$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updatePaymentInstrument$', () => {
+    const paymentInstrument = {
+      id: 'paypalPaymentInstrumentId',
+      paymentMethod: 'ISH_PAYPAL_CREDIT_CARD',
+    } as PaymentInstrument;
+
+    const updatedPaymentInstrument = {
+      ...paymentInstrument,
+      parameters: [
+        {
+          name: 'payerId',
+          value: 'PAYER123',
+        },
+      ],
+    } as PaymentInstrument;
+
+    beforeEach(() => {
+      store.dispatch(
+        loadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+          } as Basket,
+        })
+      );
+      when(paymentServiceMock.updatePaymentInstrument(anything())).thenReturn(of(updatedPaymentInstrument));
+    });
+
+    it('should call the paymentService for updatePaymentInstrument', done => {
+      const action = updatePaymentInstrument({ paymentInstrument });
+      actions$ = of(action);
+
+      effects.updatePaymentInstrument$.subscribe(() => {
+        verify(paymentServiceMock.updatePaymentInstrument(anything())).once();
+        done();
+      });
+    });
+
+    it('should map to UpdatePaymentInstrumentSuccess and loadBasketEligiblePaymentMethods actions in case of success', () => {
+      const action = updatePaymentInstrument({ paymentInstrument });
+      const completion1 = updatePaymentInstrumentSuccess();
+      const completion2 = loadBasketEligiblePaymentMethods();
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.updatePaymentInstrument$).toBeObservable(expected$);
+    });
+
+    it('should map error to action of type UpdatePaymentInstrumentFail', () => {
+      when(paymentServiceMock.updatePaymentInstrument(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
+      const action = updatePaymentInstrument({ paymentInstrument });
+      const completion = updatePaymentInstrumentFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updatePaymentInstrument$).toBeObservable(expected$);
     });
   });
 

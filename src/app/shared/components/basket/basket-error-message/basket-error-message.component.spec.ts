@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
+import { ScrollDirective } from 'ish-core/directives/scroll.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
@@ -13,7 +14,7 @@ describe('Basket Error Message Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BasketErrorMessageComponent, MockComponent(ErrorMessageComponent)],
+      declarations: [BasketErrorMessageComponent, MockComponent(ErrorMessageComponent), MockDirective(ScrollDirective)],
     }).compileComponents();
   });
 

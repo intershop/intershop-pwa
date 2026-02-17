@@ -223,7 +223,16 @@ describe('Payment Service', () => {
       });
     });
 
-    it("should update payment instrument from basket when 'updateBasketPaymentInstrument' is called", done => {
+    it("should update a payment instrument when 'updatePaymentInstrument' is called", done => {
+      when(apiServiceMock.patch(anyString(), anything(), anything())).thenReturn(of({}));
+
+      paymentService.updatePaymentInstrument(paymentInstrument).subscribe(() => {
+        verify(apiServiceMock.patch(`payment-instruments/${paymentInstrument.id}`, anything(), anything())).once();
+        done();
+      });
+    });
+
+    it("should update payment instrument from basket when 'updateConcardisCvcLastUpdated' is called", done => {
       when(apiServiceMock.patch(anyString(), anything(), anything())).thenReturn(of({}));
       paymentService.updateConcardisCvcLastUpdated(creditCardPaymentInstrument).subscribe(() => {
         verify(

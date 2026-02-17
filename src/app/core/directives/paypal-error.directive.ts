@@ -6,23 +6,23 @@ import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } fro
  *
  * @example
  * <div id="my-label">Label</div>
- * <small [ishPaypalError]="hasError" ishPaypalErrorLabelId="my-label">Error message</small>
+ * <small [ishPaypalError]="hasError" labelId="my-label">Error message</small>
  */
 @Directive({
   selector: '[ishPaypalError]',
 })
 export class PaypalErrorDirective implements OnChanges {
   /** When true, shows the error message and marks the label as invalid */
-  @Input() ishPaypalError = false;
+  @Input('ishPaypalError') hasError = false;
 
   /** ID of the associated label element to toggle validation-error class */
-  @Input() ishPaypalErrorLabelId: string;
+  @Input({ required: true }) labelId: string;
 
   constructor(private elementRef: ElementRef<HTMLElement>, private renderer: Renderer2) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.ishPaypalError) {
-      this.updateErrorState(this.ishPaypalError);
+      this.updateErrorState(this.hasError);
     }
   }
 
@@ -31,7 +31,7 @@ export class PaypalErrorDirective implements OnChanges {
    */
   private updateErrorState(showError: boolean): void {
     const errorElement = this.elementRef.nativeElement;
-    const labelElement = this.ishPaypalErrorLabelId ? document.getElementById(this.ishPaypalErrorLabelId) : undefined;
+    const labelElement = this.labelId ? document.getElementById(this.labelId) : undefined;
 
     if (showError) {
       this.renderer.removeClass(errorElement, 'hide-validation-error');

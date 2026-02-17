@@ -62,10 +62,6 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
 
   redirectStatus$ = new BehaviorSubject<string>(undefined);
 
-  scrollToMessage = false;
-  // default values to control scrolling behavior
-  scrollSpacing = 64;
-
   private openFormIndex = -1; // index of the open parameter form
 
   private destroyRef = inject(DestroyRef);
@@ -102,10 +98,6 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     if (c.paymentMethods) {
       // copy objects for runtime checks because formly modifies them, TODO: refactor
       this.filteredPaymentMethods = this.paymentMethods?.map(x => JSON.parse(JSON.stringify(x)));
-    }
-    // Scroll to error messages when error occurs
-    if (c.error?.currentValue && !c.error.firstChange) {
-      this.scrollToMessage = true;
     }
   }
 

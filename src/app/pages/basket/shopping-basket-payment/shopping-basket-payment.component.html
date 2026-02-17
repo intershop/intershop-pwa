@@ -34,11 +34,7 @@
       </li>
       <li *ngIf="'payment.paypal' | ishServerSetting">
         <ng-container *ngIf="getPayPalPaymentMethod() | async as paypalPaymentMethod">
-          <ish-payment-paypal
-            [selectedPaymentMethod]="paypalPaymentMethod"
-            [adapterType]="'Buttons'"
-            [pageType]="'cart'"
-          />
+          <ish-payment-paypal [selectedPaymentMethod]="paypalPaymentMethod" adapterType="Buttons" pageType="cart" />
         </ng-container>
       </li>
     </ng-container>
