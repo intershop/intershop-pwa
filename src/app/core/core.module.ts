@@ -1,5 +1,5 @@
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ErrorHandler, NgModule, Optional, SkipSelf } from '@angular/core';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { TranslateModule } from '@ngx-translate/core';
@@ -19,11 +19,12 @@ import { StateManagementModule } from './state-management.module';
 import { DefaultErrorHandler } from './utils/default-error-handler';
 
 @NgModule({
+  // exports needed to use the cookie banner in the AppComponent
+  exports: [TranslateModule],
   imports: [
     AppearanceModule,
     ConfigurationModule,
     FeatureToggleModule,
-    HttpClientModule,
     IdentityProviderModule,
     InternationalizationModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: SERVICE_WORKER }),
@@ -48,9 +49,8 @@ import { DefaultErrorHandler } from './utils/default-error-handler';
       useFactory: (s: PlatformLocation, baseHref: string) => baseHref || s.getBaseHrefFromDOM(),
       deps: [PlatformLocation, [new Optional(), new SkipSelf(), APP_BASE_HREF]],
     },
+    provideHttpClient(withInterceptorsFromDi()),
   ],
-  // exports needed to use the cookie banner in the AppComponent
-  exports: [TranslateModule],
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {

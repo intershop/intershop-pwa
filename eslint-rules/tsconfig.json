@@ -1,16 +1,18 @@
 {
   "compilerOptions": {
+    "strict": true,
+    "strictNullChecks": false, // TODO: enable and fix ~28 null-safety issues
+    "noImplicitAny": false, // TODO: enable and fix ~10 implicit any issues
     "declaration": false,
-    "experimentalDecorators": true,
     "isolatedModules": true,
-    "lib": ["dom", "es2015", "es6"],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noImplicitAny": false,
-    "noLib": false,
+    "lib": ["ES2022"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "outDir": "./dist",
-    "removeComments": true,
-    "target": "es2015",
+    "skipLibCheck": true,
+    "target": "ES2022",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
     "types": ["node", "jest"]
   },
   "include": ["src/**/*.ts"]

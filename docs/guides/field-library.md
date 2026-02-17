@@ -231,7 +231,7 @@ export class AddressFormEXConfiguration extends AddressFormConfiguration {
 The following is a list of reusable field configurations available in the PWA.
 
 <!-- Don't edit the following tables manually.
-They are automatically updated using sync-formly-docs.ts -->
+They are automatically updated using sync-formly-docs.mts -->
 <!-- sync-start -->
 
 | Configuration ID | Type                 | Description                                                                                 |

@@ -3,7 +3,6 @@
   "compilerOptions": {
     "outDir": "./node_modules/.out-tsc/app",
     "types": [],
-    "module": "ESNext"
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
   "include": ["src/typings.d.ts"]

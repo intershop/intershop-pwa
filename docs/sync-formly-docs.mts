@@ -1,6 +1,6 @@
 import { execSync } from 'child_process';
 import { readFileSync, writeFileSync } from 'fs';
-import { kebabCase } from 'lodash';
+import { kebabCase } from 'lodash-es';
 
 const folder = 'src/app/shared/formly/field-library';
 

@@ -1,7 +1,6 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "emitDecoratorMetadata": true,
     "outDir": "./node_modules/.out-tsc/all",
     "types": ["jest", "jest-extended", "node"]
   },
