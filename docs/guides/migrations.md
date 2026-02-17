@@ -99,6 +99,15 @@ This change allows caching product data for a longer time and fetching more freq
 
 The improved implementation for the environment variable `ICM_BASE_URL_SSR` as well as the introduction of an optional `serverUrlSsr` SPARQUE configuration allows server-side rendering to directly use internal backend requests to ICM and SPARQUE when running in the same Kubernetes cluster.
 
+**Script loader changes**
+
+The script loader service [`script-loader.service.ts`](../../src/app/core/utils/script-loader/script-loader.service.ts) has been revised.
+The new implementation is fully backward compatible and offers additional improvements for caching:
+
+- Dual-cache system: The service now uses separate caches for loaded scripts (`loadedScripts`) and scripts currently being loaded (`loadingScripts`), preventing duplicate loading requests.
+- DOM-aware loading: Before creating a new script element, the service checks whether the script already exists in the DOM and marks it as loaded immediately.
+- Namespace-based caching: Scripts with a `data-namespace` attribute use the namespace value as cache key instead of the URL. This prevents re-loading scripts with dynamic URLs (e.g., PayPal SDK with changing locale/currency parameters).
+
 ## From 9.0.0 to 9.1.0
 
 Catalogs (root-level categories in ICM terminology) with _Show In Menu_ being disabled are now hidden from the main header navigation.
