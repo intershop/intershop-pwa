@@ -21,7 +21,7 @@ export class PaypalErrorDirective implements OnChanges {
   constructor(private elementRef: ElementRef<HTMLElement>, private renderer: Renderer2) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.ishPaypalError) {
+    if (changes.hasError) {
       this.updateErrorState(this.hasError);
     }
   }
