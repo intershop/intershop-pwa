@@ -847,7 +847,7 @@
   "checkout.credit_card.expiration_year.select.label": "Wählen Sie das Ablaufjahr aus",
   "checkout.credit_card.expiryMonth.error.invalid": "Das Ablaufdatum ist ungültig. Bitte überprüfen Sie Ihre Kartendaten.",
   "checkout.credit_card.expiry_date.invalid.error": "Geben Sie ein gültiges Ablaufdatum ein",
-  "checkout.credit_card.holder.error.invalid": "Bitte geben Sie einen gültigen Namen auf der Karte an.",
+  "checkout.credit_card.holder.error.invalid": "Bitte geben Sie einen gültigen Namen an.",
   "checkout.credit_card.holder.label": "Name auf der Karte",
   "checkout.credit_card.merchantId.error.notFound": "Händler-ID nicht gefunden.",
   "checkout.credit_card.number.error.default": "Geben Sie eine gültige Kreditkartennummer ein",

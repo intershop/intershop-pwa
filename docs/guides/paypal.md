@@ -35,7 +35,7 @@ It supports:
 
 To use PayPal payment methods in the Intershop PWA, ensure that the following prerequisites are met:
 
-1. The [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 2](https://knowledge.intershop.com/kb/index.php/Display/455B74) is installed and configured in Intershop Commerce Management.
+1. The [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 3](https://knowledge.intershop.com/kb/go.php/a/ENFDEVDOC/pages/50477531143/Public+Release+Note+-+PayPal+Complete+Payments+Service+Connector+3) is installed and configured in Intershop Commerce Management.
 2. The PayPal Common Configuration Service is configured in Intershop Commerce Management, and the onboarding process has been successfully completed.
 3. The PayPal payment methods are activated and configured in Intershop Commerce Management.
 
@@ -183,11 +183,10 @@ The following example shows how to integrate the PayPal component on the product
 
 ## Further References
 
-- [PayPal JavaScript SDK Reference](https://developer.paypal.com/docs/checkout/reference/customize-sdk/)
-- [Description of PayPal SDK components][PayPal JavaScript SDK Reference]
-- [PayPal Messages Documentation](https://developer.paypal.com/docs/checkout/pay-later/us/integrate/)
+- [PayPal JavaScript SDK Reference](https://developer.paypal.com/sdk/js/)
+- [PayPal Pay Later Messaging](https://developer.paypal.com/docs/checkout/pay-later/us/integrate/)
 - [PayPal Advanced Card Payments](https://developer.paypal.com/docs/checkout/advanced/)
-- [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 2](https://knowledge.intershop.com/kb/index.php/Display/455B74)
+- [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 3](https://knowledge.intershop.com/kb/go.php/a/ENFDEVDOC/pages/50477531143/Public+Release+Note+-+PayPal+Complete+Payments+Service+Connector+3)
 
 [payment-paypal.component.ts]: ../../src/app/shared/components/payment/payment-paypal/payment-paypal.component.ts
 [paypal-adapters.styling.ts]: ../../src/app/core/utils/paypal/adapters/paypal-adapters.styling.ts

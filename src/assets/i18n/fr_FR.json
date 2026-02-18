@@ -847,7 +847,7 @@
   "checkout.credit_card.expiration_year.select.label": "Veuillez sélectionner l’année d’expiration",
   "checkout.credit_card.expiryMonth.error.invalid": "La date d’expiration n’est pas valide. Veuillez vérifier les données de votre carte.",
   "checkout.credit_card.expiry_date.invalid.error": "Veuillez saisir une date d’expiration valide.",
-  "checkout.credit_card.holder.error.invalid": "Veuillez saisir un nom valide sur la carte.",
+  "checkout.credit_card.holder.error.invalid": "Veuillez saisir un nom valide.",
   "checkout.credit_card.holder.label": "Nom sur la carte",
   "checkout.credit_card.merchantId.error.notFound": "ID marchand introuvable.",
   "checkout.credit_card.number.error.default": "Veuillez saisir un numéro de carte de crédit valide",

@@ -847,7 +847,7 @@
   "checkout.credit_card.expiration_year.select.label": "Select the expiration year",
   "checkout.credit_card.expiryMonth.error.invalid": "The expiration date is invalid. Please verify your card data.",
   "checkout.credit_card.expiry_date.invalid.error": "Please enter a valid expiry date.",
-  "checkout.credit_card.holder.error.invalid": "Please enter a valid name on card.",
+  "checkout.credit_card.holder.error.invalid": "Please enter a valid name.",
   "checkout.credit_card.holder.label": "Name on card",
   "checkout.credit_card.merchantId.error.notFound": "Merchant ID not found.",
   "checkout.credit_card.number.error.default": "Please enter a valid credit card number",
