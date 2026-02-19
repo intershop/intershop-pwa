@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
-import { DirectivesModule } from 'ish-core/directives.module';
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
@@ -20,7 +20,7 @@ import {
   imports: [
     NgIf,
     NgFor,
-    DirectivesModule,
+    ProductContextDirective,
     AsyncPipe,
     TranslateModule,
     ProductAddToBasketComponent,

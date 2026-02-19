@@ -5,6 +5,7 @@ import { Directive, ElementRef, EventEmitter, HostListener, Output } from '@angu
  */
 @Directive({
   selector: '[ishClickOutside]',
+  standalone: true,
 })
 export class ClickOutsideDirective {
   constructor(private elementRef: ElementRef) {}
@@ -18,8 +19,8 @@ export class ClickOutsideDirective {
    * Method to check click outside of the targetElement. Emits true, when a click outside was checked.
    */
   @HostListener('document:click', ['$event.target'])
-  onClick(targetElement: ElementRef): void {
-    const clickedInside = this.elementRef.nativeElement.contains(targetElement);
+  onClick(targetElement: EventTarget | null): void {
+    const clickedInside = targetElement instanceof Node && this.elementRef.nativeElement.contains(targetElement);
     if (!clickedInside) {
       this.isClickedOutside.emit(true);
     }

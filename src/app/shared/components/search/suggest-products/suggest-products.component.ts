@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { TranslatePipe } from '@ngx-translate/core';
 import { ReplaySubject } from 'rxjs';
 
-import { DirectivesModule } from 'ish-core/directives.module';
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { SuggestProductsTileComponent } from 'ish-shared/components/search/suggest-products-tile/suggest-products-tile.component';
 
@@ -11,7 +11,7 @@ import { SuggestProductsTileComponent } from 'ish-shared/components/search/sugge
   selector: 'ish-suggest-products',
   templateUrl: './suggest-products.component.html',
   standalone: true,
-  imports: [DirectivesModule, SlicePipe, TranslatePipe, SuggestProductsTileComponent],
+  imports: [ProductContextDirective, SlicePipe, TranslatePipe, SuggestProductsTileComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestProductsComponent {

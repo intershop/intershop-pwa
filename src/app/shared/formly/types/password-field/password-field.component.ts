@@ -5,7 +5,7 @@ import { FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { EXTRALARGE_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
-import { DirectivesModule } from 'ish-core/directives.module';
+import { FocusOutsideDirective } from 'ish-core/directives/focus-outside.directive';
 import { IconModule } from 'ish-core/icon.module';
 import { InjectSingle } from 'ish-core/utils/injection';
 
@@ -24,7 +24,7 @@ import { InjectSingle } from 'ish-core/utils/injection';
   styleUrls: ['./password-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, DirectivesModule, FormlyModule, IconModule, ReactiveFormsModule, TranslateModule],
+  imports: [CommonModule, FocusOutsideDirective, FormlyModule, IconModule, ReactiveFormsModule, TranslateModule],
 })
 export class PasswordFieldComponent extends FieldType<FieldTypeConfig> {
   showPassword = false;

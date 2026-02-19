@@ -6,7 +6,7 @@ import { OrganizationManagementExportsModule } from 'organization-management';
 import { RequisitionManagementExportsModule } from 'requisition-management';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
-import { DirectivesModule } from 'ish-core/directives.module';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
@@ -36,7 +36,7 @@ import { WishlistsExportsModule } from '../../../extensions/wishlists/exports/wi
     NgIf,
     AuthorizationToggleModule,
     ContentIncludeComponent,
-    DirectivesModule,
+    ServerHtmlDirective,
     FeatureToggleModule,
     IconModule,
     OrderTemplatesExportsModule,

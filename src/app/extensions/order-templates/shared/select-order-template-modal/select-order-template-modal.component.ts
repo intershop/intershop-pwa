@@ -18,7 +18,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 
-import { DirectivesModule } from 'ish-core/directives.module';
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { ProductContextAccessDirective } from 'ish-core/directives/product-context-access.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
@@ -43,7 +43,7 @@ import { SelectOrderTemplateFormComponent } from '../select-order-template-form/
     AsyncPipe,
     HtmlEncodePipe,
     ReactiveFormsModule,
-    DirectivesModule,
+    FormSubmitDirective,
     SelectOrderTemplateFormComponent,
   ],
 })

@@ -17,7 +17,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Observable, concat, of, timer } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
-import { DirectivesModule } from 'ish-core/directives.module';
+import { ClickOutsideDirective } from 'ish-core/directives/click-outside.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -33,7 +33,7 @@ import { ShellLazyComponentsModule } from 'ish-shell/shared/shell-lazy-component
   standalone: true,
   imports: [
     AsyncPipe,
-    DirectivesModule,
+    ClickOutsideDirective,
     FontAwesomeModule,
     NgbDropdownModule,
     NgbPopoverModule,
