@@ -132,7 +132,6 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
    * and the PayPal SDK script has been successfully loaded.
    */
   ngAfterViewInit(): void {
-    console.log('view init paypal component');
     this.loadingScript$.pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef)).subscribe(loadingResult => {
       if (loadingResult.loaded) {
         const config: PaypalComponentsConfig = {
