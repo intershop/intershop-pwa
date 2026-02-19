@@ -37,6 +37,7 @@ declare let Chatbot: any;
   selector: 'ish-copilot',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 @GenerateLazyComponent()
 export class CopilotComponent {
