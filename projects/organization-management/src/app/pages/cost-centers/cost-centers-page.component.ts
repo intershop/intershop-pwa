@@ -14,9 +14,10 @@ import { LoadingComponent } from 'ish-shared/components/common/loading/loading.c
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { PagingComponent } from 'ish-shared/components/common/paging/paging.component';
 
+import { BudgetInfoComponent } from '../../components/budget-info/budget-info.component';
+import { CostCenterBudgetComponent } from '../../components/cost-center-budget/cost-center-budget.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { CostCenterQuery } from '../../models/cost-center-query/cost-center-query.model';
-import { OrganizationManagementModule } from '../../organization-management.module';
 
 import { CostCentersFilterComponent } from './cost-centers-filter/cost-centers-filter.component';
 
@@ -29,13 +30,14 @@ type CostCenterColumnsType = 'costCenterId' | 'costCenterName' | 'costCenterMana
   standalone: true,
   imports: [
     AsyncPipe,
+    BudgetInfoComponent,
     CdkTableModule,
+    CostCenterBudgetComponent,
     CostCentersFilterComponent,
     LoadingComponent,
     ModalDialogComponent,
     NgClass,
     NgIf,
-    OrganizationManagementModule,
     PagingComponent,
     RouterModule,
     TranslateModule,

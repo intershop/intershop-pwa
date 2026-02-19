@@ -9,9 +9,9 @@ import { DirectivesModule } from 'ish-core/directives.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
+import { UserProfileFormComponent } from '../../components/user-profile-form/user-profile-form.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
-import { OrganizationManagementModule } from '../../organization-management.module';
 
 @Component({
   selector: 'ish-user-edit-profile-page',
@@ -23,10 +23,10 @@ import { OrganizationManagementModule } from '../../organization-management.modu
     DirectivesModule,
     LoadingComponent,
     NgIf,
-    OrganizationManagementModule,
     ReactiveFormsModule,
     RouterModule,
     TranslateModule,
+    UserProfileFormComponent,
   ],
 })
 export class UserEditProfilePageComponent implements OnInit {

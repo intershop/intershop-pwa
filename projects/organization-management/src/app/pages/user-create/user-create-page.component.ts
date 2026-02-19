@@ -11,9 +11,11 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
+import { UserBudgetFormComponent } from '../../components/user-budget-form/user-budget-form.component';
+import { UserProfileFormComponent } from '../../components/user-profile-form/user-profile-form.component';
+import { UserRolesSelectionComponent } from '../../components/user-roles-selection/user-roles-selection.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
-import { OrganizationManagementModule } from '../../organization-management.module';
 
 import { UserCsvImportComponent } from './user-csv-import/user-csv-import.component';
 
@@ -27,12 +29,14 @@ import { UserCsvImportComponent } from './user-csv-import/user-csv-import.compon
     DirectivesModule,
     LoadingComponent,
     NgIf,
-    OrganizationManagementModule,
     ReactiveFormsModule,
     RouterModule,
     ServerSettingPipe,
     TranslateModule,
+    UserBudgetFormComponent,
     UserCsvImportComponent,
+    UserProfileFormComponent,
+    UserRolesSelectionComponent,
   ],
 })
 export class UserCreatePageComponent implements OnInit {

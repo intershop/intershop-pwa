@@ -10,7 +10,7 @@ import { CostCenterBase } from 'ish-core/models/cost-center/cost-center.model';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
-import { OrganizationManagementModule } from '../../organization-management.module';
+import { CostCenterFormComponent } from '../../components/cost-center-form/cost-center-form.component';
 
 import { CostCenterCsvImportComponent } from './cost-center-csv-import/cost-center-csv-import.component';
 
@@ -21,11 +21,11 @@ import { CostCenterCsvImportComponent } from './cost-center-csv-import/cost-cent
   standalone: true,
   imports: [
     AsyncPipe,
+    CostCenterFormComponent,
     CostCenterCsvImportComponent,
     DirectivesModule,
     LoadingComponent,
     NgIf,
-    OrganizationManagementModule,
     ReactiveFormsModule,
     RouterModule,
     TranslateModule,
