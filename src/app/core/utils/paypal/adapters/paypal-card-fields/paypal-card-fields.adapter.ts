@@ -76,6 +76,11 @@ export class PaypalCardFieldsAdapter {
       return Promise.reject(new Error(`PayPal CardFields not available on namespace '${scriptNamespace}'`));
     }
 
+    // Reset state for reinitialization
+    this.processing = false;
+    this.isResetting = false;
+    this.creditCardPaymentInstrumentId = undefined;
+
     // Run PayPal SDK operations inside Angular zone to ensure proper event handling
     return this.ngZone.run(async () => {
       try {
@@ -125,7 +130,10 @@ export class PaypalCardFieldsAdapter {
    */
   protected async renderIndividualFields(): Promise<void> {
     // Clear any existing fields from previous renders
-    this.fields = {};
+    this.cleanupExistingFields();
+
+    // Wait for DOM to be fully ready before rendering
+    await new Promise<void>(resolve => setTimeout(resolve, 100));
 
     const fieldConfigs = [
       {
@@ -150,9 +158,25 @@ export class PaypalCardFieldsAdapter {
       },
     ];
 
+    // Render fields sequentially - PayPal SDK may have issues with parallel rendering
     for (const config of fieldConfigs) {
       await this.renderSingleField(config, 0);
     }
+  }
+
+  /**
+   * Cleans up existing field instances before reinitialization.
+   */
+  private cleanupExistingFields(): void {
+    // Clear containers in DOM
+    Object.values(this.fields).forEach(field => {
+      const container = this.document.getElementById(field.containerId);
+      if (container) {
+        container.innerHTML = '';
+      }
+    });
+    // Reset fields record
+    this.fields = {};
   }
 
   /**
@@ -164,8 +188,8 @@ export class PaypalCardFieldsAdapter {
     config: { key: string; containerId: string; factory(): PaypalCardFieldsIndividualField },
     attempt: number
   ): Promise<void> {
-    const maxRetries = 2;
-    const retryDelay = 300;
+    const maxRetries = 3;
+    const retryDelay = 500;
 
     try {
       const container = this.document.getElementById(config.containerId);
@@ -174,14 +198,21 @@ export class PaypalCardFieldsAdapter {
         return;
       }
 
-      // Clear any existing content from previous renders (e.g., after payment instrument deletion)
-      container.innerHTML = '';
+      // Ensure container is empty before rendering
+      if (container.innerHTML) {
+        container.innerHTML = '';
+        // Small delay after clearing to let DOM settle
+        await new Promise<void>(resolve => setTimeout(resolve, 50));
+      }
 
       this.fields[config.key] = {
         containerId: config.containerId,
         instance: config.factory(),
       };
       await this.fields[config.key].instance.render(`#${config.containerId}`);
+
+      // Small delay after render to let iframe initialize
+      await new Promise<void>(resolve => setTimeout(resolve, 100));
 
       // Verify that PayPal SDK actually rendered content in the container
       if (!container.hasChildNodes() && attempt < maxRetries) {
@@ -194,6 +225,12 @@ export class PaypalCardFieldsAdapter {
         this.renderError$.next('checkout.payment.paypal.script.render.error.message');
       }
     } catch (error) {
+      // On error, retry if possible
+      if (attempt < maxRetries) {
+        delete this.fields[config.key];
+        await new Promise<void>(resolve => setTimeout(resolve, retryDelay));
+        return this.renderSingleField(config, attempt + 1);
+      }
       this.renderError$.next('checkout.payment.paypal.script.render.error.message');
     }
   }

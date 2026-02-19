@@ -126,7 +126,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
       this.basket?.payment?.capabilities?.includes('RedirectBeforeCheckout') &&
       this.basket?.payment?.redirectRequired
     ) {
-      return this.paymentMethods.find(pm => pm.id.includes(this.basket.payment.paymentInstrument.id));
+      return this.paymentMethods?.find(pm => pm.id.includes(this.basket.payment.paymentInstrument.id));
     }
     return;
   }
