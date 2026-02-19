@@ -8,8 +8,10 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalAdapterTypes, PaypalPageType } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 
+import { PaypalApplePayAdapter } from './paypal-apple-pay/paypal-apple-pay.adapter';
 import { PaypalButtonsAdapter } from './paypal-buttons/paypal-buttons.adapter';
 import { PaypalCardFieldsAdapter } from './paypal-card-fields/paypal-card-fields.adapter';
+import { PaypalGooglePayAdapter } from './paypal-google-pay/paypal-google-pay.adapter';
 import { PaypalMessagesAdapter } from './paypal-messages/paypal-messages.adapter';
 
 /**
@@ -43,6 +45,8 @@ export class PaypalAdaptersBuilder {
   private paypalCardFields = inject(PaypalCardFieldsAdapter);
   private paypalButtons = inject(PaypalButtonsAdapter);
   private paypalMessages = inject(PaypalMessagesAdapter);
+  private paypalGooglePay = inject(PaypalGooglePayAdapter);
+  private paypalApplePay = inject(PaypalApplePayAdapter);
 
   constructor(private checkoutFacade: CheckoutFacade, private shoppingFacade: ShoppingFacade) {}
 
@@ -55,6 +59,10 @@ export class PaypalAdaptersBuilder {
         return this.paypalMessages.renderMessages({ ...config, amount$: this.getAmount(config) });
       case 'CardFields':
         return from(this.paypalCardFields.renderCardFields(config.scriptNamespace, config.paypalPaymentMethod));
+      case 'Googlepay':
+        return from(this.paypalGooglePay.renderGooglePayButton(config));
+      case 'Applepay':
+        return from(this.paypalApplePay.renderApplePayButton(config));
       default:
         return from(Promise.reject(new Error(`Unsupported PayPal component type: ${config.adapterType}`)));
     }

@@ -17,7 +17,7 @@ export type PaypalPageType = 'cart' | 'checkout' | 'home' | 'product-details' | 
  * These components determine which PayPal UI elements are available in the application.
  * The SDK can be loaded with different combinations of components based on the use case.
  */
-export type PaypalAdapterTypes = 'Buttons' | 'Messages' | 'CardFields';
+export type PaypalAdapterTypes = 'Buttons' | 'Messages' | 'CardFields' | 'Googlepay' | 'Applepay';
 
 interface PaypalScriptParams {
   /** The current application locale (e.g., 'en_US', 'de_DE') */
@@ -117,6 +117,9 @@ export class PaypalConfigService {
    */
   private calculateURL(param: PaypalScriptParams): string {
     if (param.paymentMethod) {
+      if (param.paymentMethod.capabilities.includes('PaypalGooglePay')) {
+        return this.scriptUrl.concat(`?${this.getScriptQueryParameterForGooglePay(param)}`);
+      }
       return this.scriptUrl.concat(`?${this.getScriptQueryParameters(param)}`);
     }
     return this.scriptUrl.concat(`?${this.getScriptQueryParameterForMessages(param)}`);
@@ -139,6 +142,34 @@ export class PaypalConfigService {
   }
 
   /**
+   * Constructs query parameters for the PayPal SDK Google Pay component.
+   *
+   * Google Pay requires specific parameters including intent for proper authorization.
+   * Note: In sandbox environment, buyer-country might be needed for testing.
+   *
+   * @param param - Script parameters including PayPal config, currency, and locale
+   * @returns Query string with parameters for Google Pay SDK
+   */
+  private getScriptQueryParameterForGooglePay(param: PaypalScriptParams): string {
+    let params = `client-id=${param.paypalConfig.clientId}`;
+    params = `${params}&merchant-id=${param.paypalConfig.merchantId}`;
+    params = `${params}&currency=${param.currency}`;
+    params = `${params}&locale=${param.locale}`;
+    params = `${params}&components=googlepay`;
+
+    // Intent is required for Google Pay
+    const intentParam = param.paymentMethod?.hostedPaymentPageParameters?.find(attr => attr.name === 'intent');
+    if (intentParam) {
+      params = `${params}&intent=${intentParam.value}`;
+    } else {
+      // Default to capture if no intent specified
+      params = `${params}&intent=capture`;
+    }
+
+    return params;
+  }
+
+  /**
    * Constructs query parameters for the full PayPal SDK with all components.
    *
    * This is used when a payment method is provided, typically on checkout pages.
@@ -153,7 +184,11 @@ export class PaypalConfigService {
     if (intentParam) {
       params = `${params}&intent=${intentParam.value}`;
     }
-    params = `${params}&components=buttons,messages,card-fields`;
+
+    // Build components list based on capabilities
+    const components = ['buttons', 'messages', 'card-fields'];
+    params = `${params}&components=${components.join(',')}`;
+
     params = `${params}&currency=${param.currency}`;
     params = `${params}&locale=${param.locale}`;
     // default commit value is true

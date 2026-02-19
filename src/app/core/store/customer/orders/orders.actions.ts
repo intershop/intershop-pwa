@@ -15,6 +15,16 @@ export const createOrderSuccess = createAction(
   payload<{ order: Order; basketId: string }>()
 );
 
+export const continueOrderCreation = createAction(
+  '[Orders Internal] Continue Order Creation',
+  payload<{ orderId: string; status: string }>()
+);
+
+export const rollbackOrderCreation = createAction(
+  '[Orders Internal] Roll Back Order Creation',
+  payload<{ orderId: string; status: string }>()
+);
+
 export const loadOrders = createAction('[Orders] Load Orders', payload<{ query: OrderListQuery }>());
 
 export const loadMoreOrders = createAction('[Orders] Load More Orders', payload<{ offset: number; limit: number }>());

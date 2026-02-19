@@ -87,6 +87,33 @@ export class PaymentPaypalService {
     );
   }
 
+  setExperienceContext(orderId: string): Observable<{ orderId: string }> {
+    let loc = `${location.origin}${this.baseHref}`;
+    // Remove trailing slash if present
+    if (loc.endsWith('/')) {
+      loc = loc.slice(0, -1);
+    }
+    return this.store.pipe(select(getCurrentLocale)).pipe(
+      switchMap(([, currentLocale]) => {
+        const body = {
+          experienceContext: {
+            returnUrl: `${loc}/home`,
+            cancelUrl: `${loc}/checkout/payment;lang=${currentLocale}?redirect=cancel`,
+          },
+        };
+
+        return this.apiService
+          .put<PaypalPaymentSourceData>(`orders/${orderId}/payments/open-tender/paypal-experience-context`, body, {
+            headers: new HttpHeaders({
+              'content-type': 'application/json',
+              Accept: 'application/vnd.intershop.order.v1+json',
+            }),
+          })
+          .pipe(map(response => ({ orderId: response.data.orderId })));
+      })
+    );
+  }
+
   getPaypalPaymentInstrument(
     paymentInstrument: PaymentInstrument
   ): Observable<PaymentInstrument | { errorMessage: string }> {

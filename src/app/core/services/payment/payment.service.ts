@@ -137,7 +137,12 @@ export class PaymentService {
       whenTruthy(),
       take(1),
       switchMap(lang => {
-        const loc = `${location.origin}${this.baseHref}`;
+        let loc = `${location.origin}${this.baseHref}`;
+
+        if (loc.endsWith('/')) {
+          loc = loc.slice(0, -1);
+        }
+
         const redirect = {
           successUrl: `${loc}/checkout/review;lang=${lang}?redirect=success`,
           cancelUrl: `${loc}/checkout/payment;lang=${lang}?redirect=cancel`,
@@ -169,13 +174,17 @@ export class PaymentService {
    * @returns                 The payment instrument id.
    */
   private sendRedirectUrlsIfRequired(pm: PaymentMethodBaseData, paymentInstrument: string): Observable<string> {
-    if (!pm?.capabilities?.some(data => ['RedirectBeforeCheckout'].includes(data))) {
+    if (
+      !pm?.capabilities?.some(data =>
+        ['RedirectBeforeCheckout', 'PaypalAlternativeWallet', 'RedirectAfterCheckout'].includes(data)
+      )
+    ) {
       return of(paymentInstrument);
       // send redirect urls if there is a redirect required
     } else {
       return this.sendRedirectUrls(
         paymentInstrument,
-        pm.capabilities.some(data => ['RedirectAfterCheckout'].includes(data))
+        pm.capabilities.some(data => ['RedirectAfterCheckout', 'PaypalAlternativeWallet'].includes(data))
       ).pipe(map(() => paymentInstrument));
     }
   }

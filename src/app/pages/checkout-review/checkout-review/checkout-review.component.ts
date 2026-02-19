@@ -7,15 +7,18 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { FormGroup, NgForm, Validators } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 
 @Component({
   selector: 'ish-checkout-review',
@@ -28,20 +31,35 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
   @Input() submitting: boolean;
   @Output() createOrder = new EventEmitter<void>();
 
+  @ViewChild('tcForm') tcForm: NgForm;
+
   form = new FormGroup({});
   options: FormlyFormOptions = {};
   fields$: Observable<FormlyFieldConfig[]>;
+  paypalPaymentMethod$: Observable<PaymentMethod | undefined>;
 
   model = { termsAndConditions: false };
 
   multipleBuckets = false;
 
-  constructor(private appFacade: AppFacade) {}
+  constructor(private appFacade: AppFacade, private checkoutFacade: CheckoutFacade) {}
 
   ngOnInit() {
     this.fields$ = this.appFacade
       .serverSetting$<boolean>('basket.termsAndConditions')
       .pipe(map(enabled => (enabled ? this.setFields() : [])));
+
+    this.paypalPaymentMethod$ = this.checkoutFacade.basket$.pipe(
+      filter(basket => !!basket?.payment?.paymentInstrument?.id),
+      switchMap(basket =>
+        this.checkoutFacade.eligiblePaymentMethods$().pipe(
+          map(methods => methods?.find(method => method.id === basket.payment?.paymentInstrument?.id)),
+          map(method => (method?.capabilities?.includes('PaypalAlternativeWallet') ? method : undefined))
+        )
+      ),
+      startWith(undefined),
+      shareReplay(1)
+    );
   }
 
   ngOnChanges(changes: SimpleChanges) {

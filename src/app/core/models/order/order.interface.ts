@@ -20,6 +20,12 @@ export interface OrderBaseData extends BasketBaseData {
       type: 'Redirect' | 'Workflow';
       exitReason?: 'waiting_for_pending_payments' | 'redirect_urls_required' | 'recurring.order';
       redirectUrl?: string;
+      redirect?: {
+        parameters: {
+          name: string;
+          value: string;
+        }[];
+      };
     };
   };
   statusCode: string;

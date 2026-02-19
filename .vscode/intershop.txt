@@ -71,6 +71,7 @@ giftwrap
 glyphicon
 glyphicons
 gomplate
+Googlepay
 greaterthan
 grecaptcha
 heapsnapshot

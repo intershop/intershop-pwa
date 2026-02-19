@@ -95,6 +95,29 @@ export class OrderService {
       );
   }
 
+  continueOrderCreation(orderId: string, status: string): Observable<Order> {
+    const params = new HttpParams().set('include', this.allOrderIncludes.join());
+
+    if (!orderId) {
+      return throwError(() => new Error('continueOrderCreation() called without orderId'));
+    }
+
+    return this.apiService
+      .patch<OrderData>(
+        `orders/${orderId}`,
+        { orderCreation: { status } },
+        {
+          headers: this.orderHeaders,
+          params,
+        }
+      )
+      .pipe(
+        map(OrderMapper.fromData),
+        withLatestFrom(this.store.pipe(select(getCurrentLocale))),
+        concatMap(([order, currentLocale]) => this.sendRedirectUrlsIfRequired(order, currentLocale))
+      );
+  }
+
   /**
    *  Checks, if RedirectUrls are requested by the server and sends them if it is necessary.
    *

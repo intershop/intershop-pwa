@@ -13,8 +13,8 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { filter, shareReplay } from 'rxjs/operators';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -22,6 +22,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PriceType } from 'ish-core/models/price/price.model';
+import { PaypalEligibilityChecker } from 'ish-core/utils/paypal/adapters/paypal-eligibility/paypal-eligibility-checker';
 import { PaypalAdapterTypes } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
@@ -62,6 +63,9 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
 
   redirectStatus$ = new BehaviorSubject<string>(undefined);
 
+  // Cache for PayPal eligibility observables to avoid multiple subscriptions per payment method
+  private paypalEligibilityCache = new Map<string, Observable<boolean>>();
+
   private openFormIndex = -1; // index of the open parameter form
 
   private destroyRef = inject(DestroyRef);
@@ -98,6 +102,8 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     if (c.paymentMethods) {
       // copy objects for runtime checks because formly modifies them, TODO: refactor
       this.filteredPaymentMethods = this.paymentMethods?.map(x => JSON.parse(JSON.stringify(x)));
+      // Clear eligibility cache when payment methods change to avoid stale results
+      this.paypalEligibilityCache.clear();
     }
   }
 
@@ -120,6 +126,9 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     this.parameterForm.reset();
   }
 
+  /**
+   * Returns a payment method if basket payment has paypal capabilities and redirect required, otherwise undefined
+   */
   selectedPayPalMethod(): PaymentMethod {
     if (
       this.basket?.payment?.capabilities?.includes('PaypalCheckout') &&
@@ -131,12 +140,37 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     return;
   }
 
+  /**
+   * Estimate the PayPal adapter type for a given payment method based on its capabilities.
+   */
   getPaypalAdapterType(method?: PaymentMethod): PaypalAdapterTypes {
     if (method?.capabilities?.includes('PaypalExperienceContext')) {
       return 'CardFields';
     } else {
       return 'Buttons';
     }
+  }
+
+  /**
+   * Checks if the selected PayPal payment method is eligible for use. In case the method is not a PayPal method
+   * or has no capabilities, it is considered eligible by default.
+   * Results are cached and shared to prevent multiple polling intervals per payment method.
+   */
+  isPaypalPaymentMethodEligible$(method?: PaymentMethod): Observable<boolean> {
+    if (!method?.capabilities) {
+      return of(true);
+    }
+    if (
+      method.capabilities.includes('PaypalExperienceContext') ||
+      method.capabilities.includes('PaypalAlternativeWallet')
+    ) {
+      // Use cached observable if available, otherwise create and cache a new one
+      if (!this.paypalEligibilityCache.has(method.id)) {
+        this.paypalEligibilityCache.set(method.id, PaypalEligibilityChecker.isEligible$(method).pipe(shareReplay(1)));
+      }
+      return this.paypalEligibilityCache.get(method.id);
+    }
+    return of(true);
   }
 
   /**

@@ -17,8 +17,10 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalAdaptersBuilder, PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
+import { PaypalApplePayAdapter } from 'ish-core/utils/paypal/adapters/paypal-apple-pay/paypal-apple-pay.adapter';
 import { PaypalButtonsAdapter } from 'ish-core/utils/paypal/adapters/paypal-buttons/paypal-buttons.adapter';
 import { PaypalCardFieldsAdapter } from 'ish-core/utils/paypal/adapters/paypal-card-fields/paypal-card-fields.adapter';
+import { PaypalGooglePayAdapter } from 'ish-core/utils/paypal/adapters/paypal-google-pay/paypal-google-pay.adapter';
 import { PaypalMessagesAdapter } from 'ish-core/utils/paypal/adapters/paypal-messages/paypal-messages.adapter';
 import {
   PaypalAdapterTypes,
@@ -37,7 +39,14 @@ import { ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
   templateUrl: './payment-paypal.component.html',
   styleUrls: ['./payment-paypal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [PaypalAdaptersBuilder, PaypalButtonsAdapter, PaypalCardFieldsAdapter, PaypalMessagesAdapter],
+  providers: [
+    PaypalAdaptersBuilder,
+    PaypalApplePayAdapter,
+    PaypalButtonsAdapter,
+    PaypalCardFieldsAdapter,
+    PaypalGooglePayAdapter,
+    PaypalMessagesAdapter,
+  ],
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   /** Type of PayPal adapter to render. Defaults to Messages. */

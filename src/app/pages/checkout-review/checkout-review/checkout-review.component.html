@@ -20,7 +20,8 @@
 <div *ngIf="basket" class="row">
   <!-- Error Message-->
   <div class="col-md-12">
-    <ish-basket-error-message *ngIf="error" [error]="error" />
+    <ish-error-message [error]="error" [toast]="false" />
+    <ish-basket-error-message [error]="error" />
     <div *ngIf="multipleBuckets" role="alert" class="alert alert-danger">
       {{ 'checkout.shipping.no_methods.message' | translate }}
     </div>
@@ -76,7 +77,9 @@
         editRouterLink="/checkout/address"
         class="infobox-wrapper col-md-6"
       >
-        <ish-address [address]="basket.invoiceToAddress" [displayEmail]="true" />
+        <ng-container *ngIf="basket.invoiceToAddress as invoiceToAddress">
+          <ish-address [address]="invoiceToAddress" [displayEmail]="true" />
+        </ng-container>
       </ish-info-box>
 
       <!-- Shipping Address -->
@@ -85,7 +88,9 @@
         editRouterLink="/checkout/address"
         class="infobox-wrapper col-md-6"
       >
-        <ish-address [address]="basket.commonShipToAddress" />
+        <ng-container *ngIf="basket.commonShipToAddress as commonShipToAddress">
+          <ish-address [address]="commonShipToAddress" />
+        </ng-container>
       </ish-info-box>
     </div>
 
@@ -119,8 +124,8 @@
     </p>
 
     <!-- Line Items -->
-    <ish-skip-content-link *ngIf="basket.lineItems?.length > 0">
-      <ish-line-item-list [lineItems]="basket.lineItems" [editable]="false" />
+    <ish-skip-content-link *ngIf="(basket?.lineItems?.length ?? 0) > 0">
+      <ish-line-item-list [lineItems]="basket.lineItems || []" [editable]="false" />
     </ish-skip-content-link>
   </div>
 
@@ -130,8 +135,9 @@
 
     <div class="cost-summary">
       <ish-basket-cost-summary [totals]="basket.totals" />
+
       <form [formGroup]="form" ishFormSubmit #tcForm="ngForm" (ngSubmit)="submitOrder()">
-        <formly-form [form]="form" [model]="model" [fields]="fields$ | async" [options]="options" />
+        <formly-form [form]="form" [model]="model" [fields]="(fields$ | async) || []" [options]="options" />
         <div class="d-grid">
           <div
             *ngIf="(form.invalid && tcForm.submitted) || multipleBuckets || submitting"
@@ -141,21 +147,44 @@
           >
             {{ 'checkout.order_review.submit.validation.message' | translate }}
           </div>
-          <button
-            class="btn btn-lg btn-block btn-primary"
-            [attr.aria-describedby]="
-              (form.invalid && tcForm.submitted) || multipleBuckets || submitting ? 'checkout-button-help' : null
-            "
-            type="submit"
+          <ng-container
+            *ngIf="!(('payment.paypal' | ishServerSetting) && (paypalPaymentMethod$ | async)); else paypalButton"
           >
-            <ng-container *ngIf="submitting">
-              <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pe-3" />
+            <button
+              class="btn btn-lg btn-block btn-primary"
+              [attr.aria-describedby]="
+                (form.invalid && tcForm.submitted) || multipleBuckets || submitting ? 'checkout-button-help' : null
+              "
+              type="submit"
+            >
+              <ng-container *ngIf="submitting">
+                <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pe-3" />
+              </ng-container>
+              {{
+                (basket.recurrence
+                  ? 'checkout.order_review.recurring.send.button'
+                  : 'checkout.order_review.send.button'
+                ) | translate
+              }}
+            </button>
+          </ng-container>
+          <ng-template #paypalButton>
+            <ng-container *ngIf="paypalPaymentMethod$ | async as paypalMethod">
+              <div
+                role="button"
+                tabindex="0"
+                (click)="(form.invalid || multipleBuckets || submitting) && tcForm.onSubmit($any($event))"
+                (keydown.enter)="(form.invalid || multipleBuckets || submitting) && tcForm.onSubmit($any($event))"
+              >
+                <ish-payment-paypal
+                  [class.pe-none]="form.invalid || multipleBuckets || submitting"
+                  [adapterType]="'Googlepay'"
+                  [pageType]="'checkout'"
+                  [selectedPaymentMethod]="paypalMethod"
+                />
+              </div>
             </ng-container>
-            {{
-              (basket.recurrence ? 'checkout.order_review.recurring.send.button' : 'checkout.order_review.send.button')
-                | translate
-            }}
-          </button>
+          </ng-template>
         </div>
       </form>
     </div>

@@ -16,6 +16,7 @@ import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import {
+  continueOrderCreation,
   createOrder,
   createOrderFail,
   createOrderSuccess,
@@ -27,6 +28,7 @@ import {
   loadOrders,
   loadOrdersFail,
   loadOrdersSuccess,
+  rollbackOrderCreation,
   selectOrder,
   selectOrderAfterRedirect,
   selectOrderAfterRedirectFail,
@@ -52,6 +54,34 @@ export class OrdersEffects {
       concatLatestFrom(() => this.store.pipe(select(getCurrentBasketId))),
       mergeMap(([, basketId]) =>
         this.orderService.createOrder(basketId, true).pipe(
+          map(order => createOrderSuccess({ order, basketId })),
+          mapErrorToAction(createOrderFail)
+        )
+      )
+    )
+  );
+
+  continueOrderCreation = createEffect(() =>
+    this.actions$.pipe(
+      ofType(continueOrderCreation),
+      mapToPayload(),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasketId))),
+      switchMap(([payload, basketId]) =>
+        this.orderService.continueOrderCreation(payload.orderId, payload.status).pipe(
+          map(order => createOrderSuccess({ order, basketId })),
+          mapErrorToAction(createOrderFail)
+        )
+      )
+    )
+  );
+
+  rollbackOrderCreation = createEffect(() =>
+    this.actions$.pipe(
+      ofType(rollbackOrderCreation),
+      mapToPayload(),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasketId))),
+      switchMap(([payload, basketId]) =>
+        this.orderService.continueOrderCreation(payload.orderId, payload.status).pipe(
           map(order => createOrderSuccess({ order, basketId })),
           mapErrorToAction(createOrderFail)
         )
