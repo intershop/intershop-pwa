@@ -342,7 +342,6 @@ export class CopilotComponent {
    * @param toolInput The copilot tool call input information.
    */
 
-  // eslint-disable-next-line complexity
   private handlePWAOrderTemplateToolCall(toolInput: { [key: string]: string }) {
     const { operation, sku, orderTemplateId, title, quantity } = toolInput || {};
 
@@ -380,7 +379,7 @@ export class CopilotComponent {
     try {
       const parsed = JSON.parse(toolOutput);
 
-      if (typeof parsed === 'object' && parsed && parsed.showOnPWA !== undefined && parsed.query) {
+      if (typeof parsed === 'object' && parsed?.showOnPWA !== undefined && parsed.query) {
         const query = parsed.query;
 
         if (query?.trim()) {

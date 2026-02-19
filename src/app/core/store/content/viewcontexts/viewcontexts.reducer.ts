@@ -32,7 +32,7 @@ const initialState: ViewcontextsState = viewcontextsAdapter.getInitialState({});
 export const viewcontextsReducer = createReducer(
   initialState,
 
-  on(loadViewContextEntrypointSuccess, (state, action) => {
+  on(loadViewContextEntrypointSuccess, (state, action): ViewcontextsState => {
     const { entrypoint, viewContextId, callParameters } = action.payload;
 
     return {

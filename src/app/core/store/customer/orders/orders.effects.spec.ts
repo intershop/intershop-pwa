@@ -476,7 +476,6 @@ describe('Orders Effects', () => {
     }));
 
     it('should set the breadcrumb of the selected order', done => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       actions$ = of(routerTestNavigatedAction({}));
 
       effects.setOrderBreadcrumb$.subscribe(action => {
@@ -617,8 +616,7 @@ describe('Orders Effects', () => {
         when(orderServiceMock.continueOrderCreation(anyString())).thenReturn(
           throwError(() => makeHttpError({ message: 'error' }))
         );
-        const action = processPaypalOrderCreation({ orderId: 'ORDER123' });
-        actions$ = of(action);
+        actions$ = of(processPaypalOrderCreation({ orderId: 'ORDER123' }));
 
         effects.continuePaypalOrderCreation$.subscribe(action => {
           expect(action).toEqual(createOrderFail({ error: makeHttpError({ message: 'error' }) }));

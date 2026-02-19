@@ -75,7 +75,9 @@ function addSingleTranslation(
 export const configurationReducer = createReducer(
   initialState,
   on(applyConfiguration, (state, action): ConfigurationState => ({ ...state, ...action.payload })),
-  on(loadSingleServerTranslationSuccess, (state, action) =>
-    addSingleTranslation(state, action.payload.lang, action.payload.key, action.payload.translation)
+  on(
+    loadSingleServerTranslationSuccess,
+    (state, action): ConfigurationState =>
+      addSingleTranslation(state, action.payload.lang, action.payload.key, action.payload.translation)
   )
 );

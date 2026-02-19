@@ -240,7 +240,7 @@ export class PaypalConfigService {
               }) as Promise<{ result: boolean }>
             )
           ),
-          map(result => result.result)
+          map(readyToPay => readyToPay.result)
         );
       })
     );

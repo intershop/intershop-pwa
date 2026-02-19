@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('jest-preset-angular/setup-jest');
 
 import { CompilerOptions } from '@angular/core';

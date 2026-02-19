@@ -52,7 +52,7 @@ export class StatePropertiesService {
                 return JSON.parse(value);
               } else if (isYAML(value)) {
                 // import js-yaml with require so it doesn't turn up in the client bundle
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
+                // eslint-disable-next-line @typescript-eslint/no-require-imports
                 return require('js-yaml').load(value);
               }
             }

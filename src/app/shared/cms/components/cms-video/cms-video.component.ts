@@ -74,7 +74,7 @@ export class CMSVideoComponent implements CMSComponent, OnInit {
   // visible-for-testing
   tryProcessYouTubeVideo(): boolean {
     const youTubeVideoRegex =
-      /(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/i;
+      /(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/i;
     if (youTubeVideoRegex.test(this.video)) {
       const videoId = youTubeVideoRegex.exec(this.video)[1];
       const videoUrl = new URL(`https://www.youtube.com/embed/${videoId}`);
@@ -96,7 +96,7 @@ export class CMSVideoComponent implements CMSComponent, OnInit {
   // visible-for-testing
   tryProcessVimeoVideo(): boolean {
     const vimeoVideoRegex =
-      /(http|https)?:\/\/(www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|)(\d+)(?:|\/\?)/i;
+      /(http|https)?:\/\/(www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^/]*)\/videos\/|)(\d+)(?:|\/\?)/i;
     if (vimeoVideoRegex.test(this.video)) {
       const videoId = vimeoVideoRegex.exec(this.video)[4];
       const videoUrl = new URL(`https://player.vimeo.com/video/${videoId}`);

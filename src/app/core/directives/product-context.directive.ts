@@ -24,17 +24,15 @@ export class ProductContextDirective implements OnInit {
 
   constructor(@SkipSelf() @Optional() parentContext: ProductContextFacade, private context: ProductContextFacade) {
     if (parentContext) {
-      function removeFromParent(parent: ProductContext['children'], id: IdType) {
+      const removeFromParent = (parent: ProductContext['children'], id: IdType) => {
         delete parent[id];
-      }
+      };
 
-      function addToParent(parent: ProductContext['children'], id: IdType, context: ProductContext) {
+      const addToParent = (parent: ProductContext['children'], id: IdType, context: ProductContext) => {
         parent[id] = context;
-      }
+      };
 
-      function isId(id: IdType): boolean {
-        return id !== undefined;
-      }
+      const isId = (id: IdType): boolean => id !== undefined;
 
       parentContext.connect(
         'children',

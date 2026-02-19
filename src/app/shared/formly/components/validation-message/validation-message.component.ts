@@ -47,7 +47,7 @@ export class ValidationMessageComponent implements OnInit, OnChanges, OnDestroy 
   get errorMessage(): string | Observable<string> {
     const fieldForm = this.field.formControl;
     for (const error in fieldForm.errors) {
-      if (fieldForm.errors.hasOwnProperty(error)) {
+      if (Object.hasOwn(fieldForm.errors, error)) {
         // eslint-disable-next-line unicorn/no-null
         if (fieldForm.errors[error] !== null && typeof fieldForm.errors[error] === 'object') {
           if (fieldForm.errors[error].errorPath) {
@@ -67,7 +67,7 @@ export class ValidationMessageComponent implements OnInit, OnChanges, OnDestroy 
   private determineErrorMessage(error: string): string | Observable<string> {
     let message = this.config.getValidatorMessage(error);
 
-    if (this.field.validation?.messages && this.field.validation.messages[error]) {
+    if (this.field.validation?.messages?.[error]) {
       message = this.field.validation.messages[error];
     }
 

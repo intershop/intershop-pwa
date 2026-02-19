@@ -1,7 +1,6 @@
 export class LinkParser {
   private static linkRegexp = /^(unsafe:)?([a-z]+):\/\/(.*?)(@.*)?$/;
 
-  // eslint-disable-next-line complexity
   static parseLink(link: string, baseHref?: string): string {
     if (LinkParser.linkRegexp.test(link)) {
       const [, , protocol, value, unitName] = LinkParser.linkRegexp.exec(link);

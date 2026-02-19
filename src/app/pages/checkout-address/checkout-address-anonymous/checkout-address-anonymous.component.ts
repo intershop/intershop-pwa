@@ -113,6 +113,6 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
   }
 
   get isShippingAddressFormExpanded() {
-    return this.form && this.form.get('shipOptions').value.shipOption === 'shipToDifferentAddress';
+    return this.form?.get('shipOptions').value.shipOption === 'shipToDifferentAddress';
   }
 }

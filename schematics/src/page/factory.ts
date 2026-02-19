@@ -55,7 +55,6 @@ function addRouteToArray(
   }
 }
 
-// eslint-disable-next-line complexity
 async function determineRoutingModule(
   host: Tree,
   options: { name?: string; project?: string; extension?: string; lazy?: boolean }
@@ -67,7 +66,7 @@ async function determineRoutingModule(
   let child: string;
   let subPaging: boolean;
 
-  const match = options.name.match(/(.*)\-([a-z0-9]+)/);
+  const match = options.name.match(/(.*)-([a-z0-9]+)/);
   if (options.lazy && match?.[1] && match[2]) {
     const parent = match[1];
     const possibleChild = match[2];

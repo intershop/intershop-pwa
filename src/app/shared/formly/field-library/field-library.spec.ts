@@ -1,4 +1,3 @@
-/* eslint-disable ish-custom-rules/ordered-imports */
 import { TestBed } from '@angular/core/testing';
 
 import { FIELD_LIBRARY_CONFIGURATION, FIELD_LIBRARY_CONFIGURATION_GROUP, FieldLibrary } from './field-library';

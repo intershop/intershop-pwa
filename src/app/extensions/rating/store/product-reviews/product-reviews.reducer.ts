@@ -39,8 +39,11 @@ export const productReviewsReducer = createReducer(
   unsetLoadingAndErrorOn(loadProductReviewsSuccess, createProductReviewSuccess, deleteProductReviewSuccess),
   setErrorOn(loadProductReviewsFail, createProductReviewFail, deleteProductReviewFail),
   on(resetProductReviewError, loadProductReviews, (state): ProductReviewsState => ({ ...state, error: undefined })),
-  on(loadProductReviewsSuccess, (state, action) => productReviewsAdapter.upsertOne(action.payload.reviews, state)),
-  on(createProductReviewSuccess, (state, action) => {
+  on(
+    loadProductReviewsSuccess,
+    (state, action): ProductReviewsState => productReviewsAdapter.upsertOne(action.payload.reviews, state)
+  ),
+  on(createProductReviewSuccess, (state, action): ProductReviewsState => {
     const productReviews: ProductReviewsModel = {
       sku: action.payload.reviews.sku,
       reviews: state.entities[action.payload.reviews.sku]?.reviews?.concat(action.payload.reviews.reviews),
@@ -48,7 +51,7 @@ export const productReviewsReducer = createReducer(
 
     return productReviewsAdapter.upsertOne(productReviews, state);
   }),
-  on(deleteProductReviewSuccess, (state, action) => {
+  on(deleteProductReviewSuccess, (state, action): ProductReviewsState => {
     const productReviews: ProductReviewsModel = {
       sku: action.payload.sku,
       reviews: state.entities[action.payload.sku]?.reviews?.filter(review => review.id !== action.payload.review.id),

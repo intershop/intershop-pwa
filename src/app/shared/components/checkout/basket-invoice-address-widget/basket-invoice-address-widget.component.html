@@ -52,7 +52,7 @@
     [resetForm]="collapseChange | async"
     [extension]="(isLoggedIn$ | async) === false"
     (save)="saveAddress($event)"
-    (cancel)="cancelEditAddress()"
+    (cancelForm)="cancelEditAddress()"
   />
 </div>
 

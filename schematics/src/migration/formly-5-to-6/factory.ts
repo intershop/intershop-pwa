@@ -165,7 +165,6 @@ function overwriteInTemplate(host: Tree, tsFile: string, searchTerm: string) {
     return;
   }
 
-  // eslint-disable-next-line prettier/prettier
   const overwrite = [...PROPERTY_REPLACEMENTS, ...FIELD_TYPE_REPLACEMENTS].reduce(
     (prev, curr) =>
       prev.replace(new RegExp(searchTerm.replace('PLACEHOLDER', curr.search.join('\\.')), 'g'), curr.replace),
@@ -196,7 +195,6 @@ function getUsedImportName(source: SourceFile, importName: string, libraryName: 
     .find(i => !!i);
 }
 
-/* eslint-disable complexity */
 export function migrateFormly(options: Options): Rule {
   return async host => {
     if (!options.project) {

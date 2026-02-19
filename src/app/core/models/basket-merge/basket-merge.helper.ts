@@ -6,7 +6,6 @@ import { BasketMergeData } from './basket-merge.interface';
  * class is required to transform BasketMergeData into BasketData format
  */
 export class BasketMergeHelper {
-  // eslint-disable-next-line complexity
   static transform(basketMergeData: BasketMergeData): BasketData {
     return {
       data: basketMergeData.included

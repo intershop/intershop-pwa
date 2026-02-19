@@ -66,9 +66,7 @@ const useCorrectComponentOverridesRule: TSESLint.RuleModule<keyof typeof message
         },
       };
     } else if (/\.component\.[a-z]+\.spec\.ts$/.test(fileName)) {
-      function getText(node) {
-        return context.sourceCode.getText(node);
-      }
+      const getText = (node: TSESTree.Node) => context.sourceCode.getText(node);
 
       const expectTemplateOverride = fs.existsSync(context.filename.replace(/\.spec\.ts$/, '.html'));
       let hasCorrectTemplateOverride = false;

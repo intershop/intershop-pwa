@@ -21,7 +21,7 @@ export const countriesReducer = createReducer(
       ...state,
     })
   ),
-  on(loadCountriesSuccess, (state, action) => {
+  on(loadCountriesSuccess, (state, action): CountriesState => {
     const { countries } = action.payload;
 
     return countryAdapter.setAll(countries, state);

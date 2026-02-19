@@ -93,7 +93,7 @@ export const costCentersReducer = createReducer(
     updateCostCenterBuyerFail,
     deleteCostCenterBuyerFail
   ),
-  on(loadCostCentersSuccess, (state, action) => {
+  on(loadCostCentersSuccess, (state, action): CostCentersState => {
     const { costCenters, paging } = action.payload;
 
     const updatedCostCenters = costCenters.map((costCenter, index) => ({
@@ -108,14 +108,14 @@ export const costCentersReducer = createReducer(
       paging,
     };
   }),
-  on(loadCostCenterSuccess, (state, action) => {
+  on(loadCostCenterSuccess, (state, action): CostCentersState => {
     const { costCenter } = action.payload;
 
     return {
       ...costCentersAdapter.upsertOne(costCenter, state),
     };
   }),
-  on(addCostCenterSuccess, (state, action) => {
+  on(addCostCenterSuccess, (state, action): CostCentersState => {
     const { costCenter } = action.payload;
 
     return {
@@ -152,35 +152,35 @@ export const costCentersReducer = createReducer(
       importTotal: action.payload.totalCostCenters,
     })
   ),
-  on(updateCostCenterSuccess, (state, action) => {
+  on(updateCostCenterSuccess, (state, action): CostCentersState => {
     const { costCenter } = action.payload;
 
     return {
       ...costCentersAdapter.upsertOne(costCenter, state),
     };
   }),
-  on(deleteCostCenterSuccess, (state, action) => {
+  on(deleteCostCenterSuccess, (state, action): CostCentersState => {
     const { id } = action.payload;
 
     return {
       ...costCentersAdapter.removeOne(id, state),
     };
   }),
-  on(addCostCenterBuyersSuccess, (state, action) => {
+  on(addCostCenterBuyersSuccess, (state, action): CostCentersState => {
     const { costCenter } = action.payload;
 
     return {
       ...costCentersAdapter.upsertOne(costCenter, state),
     };
   }),
-  on(updateCostCenterBuyerSuccess, (state, action) => {
+  on(updateCostCenterBuyerSuccess, (state, action): CostCentersState => {
     const { costCenter } = action.payload;
 
     return {
       ...costCentersAdapter.upsertOne(costCenter, state),
     };
   }),
-  on(deleteCostCenterBuyerSuccess, (state, action) => {
+  on(deleteCostCenterBuyerSuccess, (state, action): CostCentersState => {
     const { costCenter } = action.payload;
 
     return {

@@ -89,7 +89,7 @@ export const productListingReducer = createReducer(
   setLoadingOn(searchProducts, loadProductsForCategory, loadProductsForFilter, loadProductsForMaster),
   unsetLoadingOn(setProductListingPages),
   unsetLoadingAndErrorOn(searchProductsFail, loadProductsForCategoryFail, loadProductsForMasterFail),
-  on(setProductListingPages, (state, action) => {
+  on(setProductListingPages, (state, action): ProductListingState => {
     const pages =
       action.payload.pages ||
       calculatePages({ ...state.entities[serializeProductListingID(action.payload.id)], ...action.payload });

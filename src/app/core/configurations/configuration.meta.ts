@@ -20,7 +20,6 @@ class SimpleParamMap {
   }
 }
 
-// eslint-disable-next-line complexity
 function extractConfigurationParameters(state: ConfigurationState, paramMap: SimpleParamMap) {
   const keys: (keyof ConfigurationState)[] = [
     'channel',

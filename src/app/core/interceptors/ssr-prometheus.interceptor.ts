@@ -37,7 +37,7 @@ export class SSRPrometheusInterceptor implements HttpInterceptor {
   private endpointCategory(path: string): string {
     const pathSegments = path
       // clear leading slash and before (usually ...;loc=...;cur=...)
-      .replace(/^[^\/]*\//, '')
+      .replace(/^[^/]*\//, '')
       // clear trailing slash
       .replace(/\/$/, '')
       .split('/');
@@ -64,13 +64,13 @@ export class SSRPrometheusInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { performance } = require('perf_hooks');
 
     const start = performance.now();
 
     const tracker = (args: [HttpEvent<unknown>, string]) => {
-      if (args && args.length === 2) {
+      if (args?.length === 2) {
         const [res, restEndPoint] = args;
 
         if ((res instanceof HttpResponse || res instanceof HttpErrorResponse) && req.url.startsWith(restEndPoint)) {

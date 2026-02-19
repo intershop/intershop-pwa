@@ -38,12 +38,9 @@ export class ProductContextDisplayPropertiesService implements ExternalDisplayPr
           addToNotification: !ProductHelper.isRetailSet(product) && !ProductHelper.isMasterProduct(product),
         };
 
-        return (
-          Object.entries(calc)
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
-            .filter(([, v]) => v === false)
-            .reduce((acc, [k, v]) => ({ ...acc, [k]: v as false }), {})
-        );
+        return Object.entries(calc)
+          .filter(([, v]) => v === false)
+          .reduce((acc, [k, v]) => ({ ...acc, [k]: v as false }), {});
       })
     );
   }

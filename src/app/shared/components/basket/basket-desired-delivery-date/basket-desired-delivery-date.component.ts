@@ -66,13 +66,13 @@ export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
         validation: {
           messages: {
             ngbDate: error => {
-              if (error.hasOwnProperty('invalid')) {
+              if (Object.hasOwn(error, 'invalid')) {
                 return 'checkout.desired_delivery_date.error.date';
               }
-              if (error.hasOwnProperty('minDate')) {
+              if (Object.hasOwn(error, 'minDate')) {
                 return 'checkout.desired_delivery_date.error.min_date';
               }
-              if (error.hasOwnProperty('maxDate')) {
+              if (Object.hasOwn(error, 'maxDate')) {
                 return 'checkout.desired_delivery_date.error.max_date';
               }
               return;

@@ -15,7 +15,8 @@ const initialState: ProductInventoryState = productInventoryAdapter.getInitialSt
 
 export const productInventoryReducer = createReducer(
   initialState,
-  on(productInventoryApiActions.loadProductInventorySuccess, (state, action) =>
-    productInventoryAdapter.upsertMany(action.payload.inventory, state)
+  on(
+    productInventoryApiActions.loadProductInventorySuccess,
+    (state, action): ProductInventoryState => productInventoryAdapter.upsertMany(action.payload.inventory, state)
   )
 );

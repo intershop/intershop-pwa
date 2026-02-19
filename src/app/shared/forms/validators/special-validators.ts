@@ -37,7 +37,7 @@ export class SpecialValidators {
   }
 
   static noSpecialChars(control: FormControl): { [error: string]: { valid: boolean } } {
-    const noSpecialCharsPattern = /^[^\<\>\&\@\;\%\*\#\|\_\[\]\!\?\~\+\{\}\(\)\:]*$/;
+    const noSpecialCharsPattern = /^[^<>&@;%*#|_[\]!?~+{}():]*$/;
     return noSpecialCharsPattern.test(control.value) ? undefined : { noSpecialChars: { valid: false } };
   }
 
@@ -45,7 +45,7 @@ export class SpecialValidators {
    * Prevent "<" and ">" to avoid usage of HTML tags.
    */
   static noHtmlTags(control: FormControl): { [error: string]: { valid: boolean } } {
-    const noHtmlTagsPattern = /^[^\<\>]*$/;
+    const noHtmlTagsPattern = /^[^<>]*$/;
     return noHtmlTagsPattern.test(control.value) ? undefined : { noHtmlTags: { valid: false } };
   }
 
@@ -67,7 +67,7 @@ export class SpecialValidators {
      * - no IPs allowed for login emails
      * - only some special characters allowed
      */
-    return /^([\w\-\~\+]+\.)*[\w\-\~\+]+@(([\w][\w\-]*)?[\w]\.)+[a-zA-Z]{2,}$/.test(control.value)
+    return /^([\w~+-]+\.)*[\w~+-]+@(([\w][\w-]*)?[\w]\.)+[a-zA-Z]{2,}$/.test(control.value)
       ? undefined
       : { email: { valid: false } };
   }
@@ -77,7 +77,7 @@ export class SpecialValidators {
      * (see "email" validator)
      * - comma-separated list of email addresses
      */
-    return /^([\w\-\~\+]+\.)*[\w\-\~\+]+@(([\w][\w\-]*)?[\w]\.)+[a-zA-Z]{2,}(,\s*([\w\-\~\+]+\.)*[\w\-\~\+]+@(([\w][\w\-]*)?[\w]\.)+[a-zA-Z]{2,})*$/.test(
+    return /^([\w~+-]+\.)*[\w~+-]+@(([\w][\w-]*)?[\w]\.)+[a-zA-Z]{2,}(,\s*([\w~+-]+\.)*[\w~+-]+@(([\w][\w-]*)?[\w]\.)+[a-zA-Z]{2,})*$/.test(
       control.value
     )
       ? undefined

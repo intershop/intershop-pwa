@@ -29,7 +29,7 @@
         <ish-formly-customer-address-form
           [resetForm]="isCreateAddressFormCollapsed"
           (save)="createAddress($event)"
-          (cancel)="hideCreateAddressForm()"
+          (cancelForm)="hideCreateAddressForm()"
         />
       </div>
     </div>
@@ -189,7 +189,7 @@
               [address]="address"
               [resetForm]="isUpdateAddressFormCollapsed(address)"
               (save)="updateAddress($event)"
-              (cancel)="hideUpdateAddressForm()"
+              (cancelForm)="hideUpdateAddressForm()"
             />
           </div>
         </div>

@@ -1,10 +1,10 @@
-import { getCurrencySymbol } from '@angular/common';
 import { ApplicationRef, Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, merge, noop } from 'rxjs';
 import { filter, map, sample, shareReplay, startWith, take, withLatestFrom } from 'rxjs/operators';
 
+import { PriceHelper } from 'ish-core/models/price/price.helper';
 import {
   getAvailableLocales,
   getCurrentCurrency,
@@ -140,7 +140,7 @@ export class AppFacade {
     return this.currentLocale$.pipe(
       whenTruthy(),
       withLatestFrom(this.currentCurrency$),
-      map(([locale, defaultCurrency]) => getCurrencySymbol(currency || defaultCurrency, 'narrow', locale))
+      map(([locale, defaultCurrency]) => PriceHelper.getCurrencySymbol(currency || defaultCurrency, 'narrow', locale))
     );
   }
 

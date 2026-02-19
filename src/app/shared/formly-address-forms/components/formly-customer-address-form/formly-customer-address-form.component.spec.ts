@@ -65,9 +65,9 @@ describe('Formly Customer Address Form Component', () => {
   });
 
   it('should throw cancel event when cancel is clicked', () => {
-    const emitter = spy(component.cancel);
+    const emitter = spy(component.cancelForm);
 
-    component.cancelForm();
+    component.emitCancelForm();
 
     verify(emitter.emit()).once();
   });
