@@ -19,10 +19,10 @@ import { REQUEST, REQUEST_ID, RESPONSE } from 'ish-core/utils/ssr/ssr.tokens';
 import { icmCallsCache } from './src/app/core/interceptors/ssr-cache.interceptor';
 import {
   APP_BASE_HREF,
-  AppServerModule,
   HYBRID_MAPPING_TABLE,
   ICM_CONFIG_MATCH,
   ICM_WEB_URL,
+  bootstrap,
   environment,
 } from './src/main.server';
 import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
@@ -229,7 +229,7 @@ export function app() {
 
   // setup Angular SSR engine
   const commonEngine = new CommonEngine({
-    bootstrap: AppServerModule,
+    bootstrap,
     providers: [
       { provide: 'SSR_HYBRID', useValue: !!process.env.SSR_HYBRID },
       { provide: 'PROMETHEUS_REST', useValue: prometheusRest },

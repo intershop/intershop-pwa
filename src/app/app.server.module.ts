@@ -1,6 +1,7 @@
 import { HTTP_INTERCEPTORS, HttpErrorResponse, provideHttpClient, withFetch } from '@angular/common/http';
-import { ErrorHandler, NgModule, Optional, TransferState } from '@angular/core';
-import { provideServerRendering } from '@angular/platform-server';
+import { APP_INITIALIZER, ApplicationConfig, ErrorHandler, Optional, TransferState, importProvidersFrom } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { ServerModule, provideServerRendering } from '@angular/platform-server';
 import { META_REDUCERS } from '@ngrx/store';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
@@ -94,14 +95,26 @@ const providers = [
   { provide: DATA_RETENTION_POLICY, useValue: {} },
 ];
 
-@NgModule({
-  imports: [AppModule],
-  providers,
-  bootstrap: [AppComponent],
-})
-export class AppServerModule {
-  constructor(transferState: TransferState) {
+function initializeServerTransferState(transferState: TransferState) {
+  return () => {
     transferState.set(DISPLAY_VERSION, process.env.DISPLAY_VERSION);
     transferState.set(COOKIE_CONSENT_VERSION, process.env.COOKIE_CONSENT_VERSION || environment.cookieConsentVersion);
-  }
+  };
+}
+
+const serverConfig: ApplicationConfig = {
+  providers: [
+    importProvidersFrom(AppModule, ServerModule),
+    ...providers,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeServerTransferState,
+      deps: [TransferState],
+      multi: true,
+    },
+  ],
+};
+
+export function bootstrap() {
+  return bootstrapApplication(AppComponent, serverConfig);
 }

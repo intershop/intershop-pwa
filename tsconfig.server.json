@@ -6,8 +6,5 @@
     "types": ["node"],
     "noImplicitAny": false
   },
-  "files": ["src/main.server.ts", "server.ts"],
-  "angularCompilerOptions": {
-    "entryModule": "./src/app/app.server.module#AppServerModule"
-  }
+  "files": ["src/main.server.ts", "server.ts"]
 }
