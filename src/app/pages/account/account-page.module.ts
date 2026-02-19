@@ -139,7 +139,7 @@ export const accountPageRoutes: Routes = [
         data: {
           permission: 'APP_B2B_MANAGE_COSTCENTER',
         },
-        loadChildren: () => import('organization-management').then(m => m.OrganizationManagementRoutingModule),
+        loadChildren: () => import('organization-management').then(m => m.organizationManagementRoutes),
       },
       {
         path: 'requisitions',
@@ -151,7 +151,7 @@ export const accountPageRoutes: Routes = [
           },
           permission: 'APP_B2B_PURCHASE',
         },
-        loadChildren: () => import('requisition-management').then(m => m.RequisitionManagementRoutingModule),
+        loadChildren: () => import('requisition-management').then(m => m.requisitionManagementRoutes),
       },
       {
         path: 'recurring-orders',

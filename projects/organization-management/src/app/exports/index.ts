@@ -1,6 +1,6 @@
 export { LazyBudgetInfoComponent } from './lazy-budget-info/lazy-budget-info.component';
 
-export { OrganizationManagementRoutingModule } from '../pages/organization-management-routing.module';
+export { organizationManagementRoutes } from '../pages/organization-management-routing.module';
 export { OrganizationManagementExportsModule } from './organization-management-exports.module';
 export { OrganizationManagementBreadcrumbService } from '../services/organization-management-breadcrumb/organization-management-breadcrumb.service';
 
