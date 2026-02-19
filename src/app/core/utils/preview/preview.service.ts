@@ -52,7 +52,7 @@ export class PreviewService {
 
   /**
    * Start method that sets up SFE communication.
-   * Needs to be called *once* for the whole application, e.g. in the `AppModule` constructor.
+   * Needs to be called *once* for the whole application, e.g. via an `APP_INITIALIZER`.
    */
   private init() {
     if (!this.shouldInit()) {
