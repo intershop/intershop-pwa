@@ -14,8 +14,6 @@ import { CategoryRoutePipe } from './routing/category/category-route.pipe';
 import { ContentPageRoutePipe } from './routing/content-page/content-page-route.pipe';
 import { ProductRoutePipe } from './routing/product/product-route.pipe';
 
-const pipes = [HighlightPipe, ProductRoutePipe, SanitizePipe];
-
 const standalonePipes = [
   FrequencyPipe,
   ServerSettingPipe,
@@ -28,11 +26,13 @@ const standalonePipes = [
   DatePipe,
   CategoryRoutePipe,
   HtmlEncodePipe,
+  HighlightPipe,
+  ProductRoutePipe,
+  SanitizePipe,
 ];
 
 @NgModule({
   imports: [...standalonePipes],
-  declarations: [...pipes],
-  exports: [...pipes, ...standalonePipes],
+  exports: [...standalonePipes],
 })
 export class PipesModule {}

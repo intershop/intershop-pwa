@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IconModule } from 'ish-core/icon.module';
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { SanitizePipe } from 'ish-core/pipes/sanitize.pipe';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 /**
@@ -21,7 +21,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
   templateUrl: './filter-swatch-images.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, NgFor, IconModule, TranslateModule, PipesModule],
+  imports: [NgClass, NgFor, IconModule, TranslateModule, SanitizePipe],
 })
 export class FilterSwatchImagesComponent {
   /**
