@@ -11,8 +11,8 @@ import { AppComponent } from './app.component';
 import { routes as organizationManagementRoutes } from './app/pages/organization-management-routing.module';
 
 @NgModule({
-  declarations: [AppComponent],
   imports: [
+    AppComponent,
     BrowserModule,
     CoreModule,
     NoopAnimationsModule,
@@ -40,6 +40,5 @@ import { routes as organizationManagementRoutes } from './app/pages/organization
     ]),
   ],
   providers: [],
-  bootstrap: [AppComponent],
 })
 export class AppModule {}
