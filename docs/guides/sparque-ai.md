@@ -108,7 +108,7 @@ Example for the specification of multiple domain configuration in an NGINX Docke
     apiName: <used sparque api>
     config: <sparque REST configuration e.g. production>
     channelId: <channel configured in sparque workspace>
-    features: ['search', 'suggestions', 'recommendations']
+    features: search,suggestions,recommendations
   ...
 ```
 

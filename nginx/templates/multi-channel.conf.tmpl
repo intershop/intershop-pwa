@@ -15,7 +15,7 @@
         {{- $icmScheme := "" }}{{ if (has . "icmScheme") }}{{ $icmScheme = join ( coll.Slice "icmScheme" .icmScheme ) "=" }}{{ end }}
         {{- $icmPort := "" }}{{ if (has . "icmPort") }}{{ $icmPort = join ( coll.Slice "icmPort" .icmPort ) "=" }}{{ end }}
         {{- $icmHost := "default" }}{{ if (has . "icmHost") }}{{ $icmHost = .icmHost }}{{ end }}
-        {{- $sparque := "" }}{{ if (has . "sparque") }}{{ range $key, $value := .sparque }}{{ $sparque = print $sparque $key "=" ($value | urlquery) "," }}{{ end }}{{ end }}
+        {{- $sparque := "" }}{{ if (has . "sparque") }}{{ range $key, $value := .sparque }}{{ $sparque = print $sparque $key "=" ($value | urlquery) "," }}{{ end }}{{ $sparque = strings.TrimSuffix "," $sparque }}{{ end }}
 
         {{- $protected := true }}{{ if (has . "protected") }}{{ $protected = .protected }}{{ end }}
       {{- if $protected }}
