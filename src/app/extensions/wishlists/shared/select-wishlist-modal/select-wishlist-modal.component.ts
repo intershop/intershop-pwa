@@ -20,7 +20,7 @@ import { filter, map, take, withLatestFrom } from 'rxjs/operators';
 
 import { DirectivesModule } from 'ish-core/directives.module';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { HtmlEncodePipe } from 'ish-core/pipes/html-encode.pipe';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
@@ -39,7 +39,7 @@ import { SelectWishlistFormComponent } from '../select-wishlist-form/select-wish
     TranslateModule,
     AsyncPipe,
     ReactiveFormsModule,
-    PipesModule,
+    HtmlEncodePipe,
     DirectivesModule,
     SelectWishlistFormComponent,
   ],

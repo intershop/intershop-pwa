@@ -22,7 +22,7 @@ import { DirectivesModule } from 'ish-core/directives.module';
 import { ProductContextAccessDirective } from 'ish-core/directives/product-context-access.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { HtmlEncodePipe } from 'ish-core/pipes/html-encode.pipe';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { SelectOrderTemplateFormComponent } from '../select-order-template-form/select-order-template-form.component';
@@ -41,7 +41,7 @@ import { SelectOrderTemplateFormComponent } from '../select-order-template-form/
     ProductContextAccessDirective,
     ServerHtmlDirective,
     AsyncPipe,
-    PipesModule,
+    HtmlEncodePipe,
     ReactiveFormsModule,
     DirectivesModule,
     SelectOrderTemplateFormComponent,
