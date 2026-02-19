@@ -1,5 +1,13 @@
 import { HTTP_INTERCEPTORS, HttpErrorResponse, provideHttpClient, withFetch } from '@angular/common/http';
-import { APP_INITIALIZER, ApplicationConfig, ErrorHandler, Optional, TransferState, importProvidersFrom } from '@angular/core';
+import {
+  APP_INITIALIZER,
+  ApplicationConfig,
+  ErrorHandler,
+  Optional,
+  TransferState,
+  importProvidersFrom,
+  mergeApplicationConfig,
+} from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { ServerModule, provideServerRendering } from '@angular/platform-server';
 import { META_REDUCERS } from '@ngrx/store';
@@ -18,7 +26,7 @@ import { REQUEST_ID } from 'ish-core/utils/ssr/ssr.tokens';
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
-import { AppModule } from './app.module';
+import { appConfig } from './app.config';
 
 const logger = getLogger('SSRErrorHandler');
 
@@ -104,7 +112,7 @@ function initializeServerTransferState(transferState: TransferState) {
 
 const serverConfig: ApplicationConfig = {
   providers: [
-    importProvidersFrom(AppModule, ServerModule),
+    importProvidersFrom(ServerModule),
     ...providers,
     {
       provide: APP_INITIALIZER,
@@ -115,6 +123,8 @@ const serverConfig: ApplicationConfig = {
   ],
 };
 
+const config = mergeApplicationConfig(appConfig, serverConfig);
+
 export function bootstrap() {
-  return bootstrapApplication(AppComponent, serverConfig);
+  return bootstrapApplication(AppComponent, config);
 }
