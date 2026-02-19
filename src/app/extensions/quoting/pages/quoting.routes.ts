@@ -1,9 +1,9 @@
-import { NgModule, importProvidersFrom } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { importProvidersFrom } from '@angular/core';
+import { Routes } from '@angular/router';
 
 import { QuotingStoreModule } from '../store/quoting-store.module';
 
-const routes: Routes = [
+export const quotingRoutes: Routes = [
   {
     path: '',
     providers: [importProvidersFrom(QuotingStoreModule)],
@@ -19,8 +19,3 @@ const routes: Routes = [
     ],
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-})
-export class QuotingRoutingModule {}
