@@ -3,13 +3,14 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
 @Component({
   selector: 'ish-basket-error-message',
   templateUrl: './basket-error-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgFor, TranslateModule],
+  imports: [NgIf, NgFor, TranslateModule, ErrorMessageComponent],
 })
 export class BasketErrorMessageComponent {
   @Input({ required: true }) error: HttpError;
