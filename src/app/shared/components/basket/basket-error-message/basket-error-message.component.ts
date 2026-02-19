@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ReplaySubject, asyncScheduler, scheduled, switchMap } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
 /**
  * Displays basket-related HTTP error messages and automatically scrolls
@@ -14,7 +15,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
   templateUrl: './basket-error-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgFor, TranslateModule],
+  imports: [NgIf, NgFor, TranslateModule, ErrorMessageComponent],
 })
 export class BasketErrorMessageComponent implements OnChanges {
   @Input({ required: true }) error: HttpError;
