@@ -3,6 +3,7 @@ import {
   APP_ID,
   APP_INITIALIZER,
   ApplicationConfig,
+  EnvironmentProviders,
   Injector,
   TransferState,
   importProvidersFrom,
@@ -17,7 +18,7 @@ import {
   withPreloading,
 } from '@angular/router';
 import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
-import { RequisitionManagementStoreModule } from 'requisition-management';
+import { provideRequisitionManagementStore } from 'requisition-management';
 
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
 import { CoreModule } from 'ish-core/core.module';
@@ -54,6 +55,13 @@ function initializeModuleLoader(moduleLoader: ModuleLoaderService, injector: Inj
   };
 }
 
+function provideFeatureStores(): EnvironmentProviders[] {
+  return [
+    // Requisition feature store is needed by requisition widgets outside the feature route
+    provideRequisitionManagementStore(),
+  ];
+}
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(
@@ -85,8 +93,6 @@ export const appConfig: ApplicationConfig = {
       StateManagementModule,
       // Formly root providers must be registered once globally
       FormlyBaseModule.forRoot(),
-      // Requisition feature store is needed by requisition widgets outside the feature route
-      RequisitionManagementStoreModule,
       // Recently feature store is needed on product pages for recently viewed tracking
       RecentlyStoreModule,
       CopilotExportsModule,
@@ -99,5 +105,6 @@ export const appConfig: ApplicationConfig = {
       TrackingExportsModule,
       WishlistsExportsModule
     ),
+    ...provideFeatureStores(),
   ],
 };

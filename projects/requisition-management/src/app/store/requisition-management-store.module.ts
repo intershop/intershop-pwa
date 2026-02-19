@@ -1,4 +1,4 @@
-import { Injectable, InjectionToken, NgModule } from '@angular/core';
+import { EnvironmentProviders, NgModule, importProvidersFrom } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
@@ -13,26 +13,30 @@ const requisitionManagementReducers: ActionReducerMap<RequisitionManagementState
   requisitions: requisitionsReducer,
 };
 
+const requisitionManagementFeature = 'requisitionManagement';
+
 const requisitionManagementEffects = [RequisitionsEffects];
 
-@Injectable()
-export class RequisitionManagementStoreConfig implements StoreConfig<RequisitionManagementState> {
-  metaReducers = [resetOnLogoutMeta];
+const requisitionManagementStoreConfig: StoreConfig<RequisitionManagementState> = {
+  metaReducers: [resetOnLogoutMeta],
+};
+
+export function provideRequisitionManagementStore(): EnvironmentProviders {
+  return importProvidersFrom(
+    StoreModule.forFeature(
+      requisitionManagementFeature,
+      requisitionManagementReducers,
+      requisitionManagementStoreConfig
+    ),
+    EffectsModule.forFeature(requisitionManagementEffects)
+  );
 }
 
-export const REQUISITION_MANAGEMENT_STORE_CONFIG = new InjectionToken<StoreConfig<RequisitionManagementState>>(
-  'requisitionManagementStoreConfig'
-);
-
 @NgModule({
-  imports: [
-    EffectsModule.forFeature(requisitionManagementEffects),
-    StoreModule.forFeature('requisitionManagement', requisitionManagementReducers, REQUISITION_MANAGEMENT_STORE_CONFIG),
-  ],
-  providers: [{ provide: REQUISITION_MANAGEMENT_STORE_CONFIG, useClass: RequisitionManagementStoreConfig }],
+  providers: [provideRequisitionManagementStore()],
 })
 export class RequisitionManagementStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<RequisitionManagementState>)[]) {
-    return StoreModule.forFeature('requisitionManagement', pick(requisitionManagementReducers, reducers));
+    return StoreModule.forFeature(requisitionManagementFeature, pick(requisitionManagementReducers, reducers));
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable, InjectionToken, NgModule } from '@angular/core';
+import { EnvironmentProviders, NgModule, importProvidersFrom } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
@@ -19,30 +19,30 @@ const organizationManagementReducers: ActionReducerMap<OrganizationManagementSta
   budget: budgetReducer,
 };
 
+const organizationManagementFeature = 'organizationManagement';
+
 const organizationManagementEffects = [UsersEffects, CostCentersEffects, BudgetEffects];
 
-@Injectable()
-export class DefaultOrganizationManagementStoreConfig implements StoreConfig<OrganizationManagementState> {
-  metaReducers = [resetOnLogoutMeta];
+const organizationManagementStoreConfig: StoreConfig<OrganizationManagementState> = {
+  metaReducers: [resetOnLogoutMeta],
+};
+
+export function provideOrganizationManagementStore(): EnvironmentProviders {
+  return importProvidersFrom(
+    StoreModule.forFeature(
+      organizationManagementFeature,
+      organizationManagementReducers,
+      organizationManagementStoreConfig
+    ),
+    EffectsModule.forFeature(organizationManagementEffects)
+  );
 }
 
-export const ORGANIZATION_MANAGEMENT_STORE_CONFIG = new InjectionToken<StoreConfig<OrganizationManagementState>>(
-  'organizationManagementStoreConfig'
-);
-
 @NgModule({
-  imports: [
-    EffectsModule.forFeature(organizationManagementEffects),
-    StoreModule.forFeature(
-      'organizationManagement',
-      organizationManagementReducers,
-      ORGANIZATION_MANAGEMENT_STORE_CONFIG
-    ),
-  ],
-  providers: [{ provide: ORGANIZATION_MANAGEMENT_STORE_CONFIG, useClass: DefaultOrganizationManagementStoreConfig }],
+  providers: [provideOrganizationManagementStore()],
 })
 export class OrganizationManagementStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<OrganizationManagementState>)[]) {
-    return StoreModule.forFeature('organizationManagement', pick(organizationManagementReducers, reducers));
+    return StoreModule.forFeature(organizationManagementFeature, pick(organizationManagementReducers, reducers));
   }
 }
