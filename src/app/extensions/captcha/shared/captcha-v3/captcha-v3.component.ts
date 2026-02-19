@@ -6,7 +6,7 @@ import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaV3Module } from 'ng
 import { timer } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
 
-import { DirectivesModule } from 'ish-core/directives.module';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -25,7 +25,7 @@ import {
   templateUrl: './captcha-v3.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [DirectivesModule, RecaptchaV3Module, TranslateModule],
+  imports: [RecaptchaV3Module, ServerHtmlDirective, TranslateModule],
   providers: [
     {
       provide: RECAPTCHA_V3_SITE_KEY,

@@ -4,7 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { DirectivesModule } from 'ish-core/directives.module';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 
 import { FormControlFeedbackComponent } from './components/form-control-feedback/form-control-feedback.component';
@@ -15,7 +14,6 @@ const exportedComponents = [FormControlFeedbackComponent, ShowFormFeedbackDirect
 @NgModule({
   imports: [
     CommonModule,
-    DirectivesModule,
     FeatureToggleModule,
     FormControlFeedbackComponent,
     IconModule,

@@ -7,7 +7,7 @@ import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 
-import { DirectivesModule } from 'ish-core/directives.module';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { IconModule } from 'ish-core/icon.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
@@ -26,7 +26,7 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    DirectivesModule,
+    ServerHtmlDirective,
     IconModule,
     FormlyModule,
     ModalDialogComponent,

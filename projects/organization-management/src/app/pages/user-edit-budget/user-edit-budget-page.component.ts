@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
-import { DirectivesModule } from 'ish-core/directives.module';
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -23,7 +23,7 @@ import { UserBudget } from '../../models/user-budget/user-budget.model';
   standalone: true,
   imports: [
     AsyncPipe,
-    DirectivesModule,
+    FormSubmitDirective,
     ErrorMessageComponent,
     LoadingComponent,
     NgIf,

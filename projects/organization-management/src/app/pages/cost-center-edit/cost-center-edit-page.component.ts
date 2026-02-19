@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
-import { DirectivesModule } from 'ish-core/directives.module';
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { CostCenter, CostCenterBase } from 'ish-core/models/cost-center/cost-center.model';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
@@ -20,7 +20,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
   imports: [
     AsyncPipe,
     CostCenterFormComponent,
-    DirectivesModule,
+    FormSubmitDirective,
     LoadingComponent,
     NgIf,
     ReactiveFormsModule,

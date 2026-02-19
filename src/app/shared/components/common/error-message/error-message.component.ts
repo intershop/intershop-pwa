@@ -2,7 +2,7 @@ import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { DirectivesModule } from 'ish-core/directives.module';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { MessageFacade } from 'ish-core/facades/message.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -17,7 +17,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
   templateUrl: './error-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, TranslateModule, DirectivesModule],
+  imports: [NgIf, TranslateModule, ServerHtmlDirective],
 })
 export class ErrorMessageComponent implements OnChanges {
   @Input({ required: true }) error: Partial<HttpError>;

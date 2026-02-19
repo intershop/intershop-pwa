@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
-import { DirectivesModule } from 'ish-core/directives.module';
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
@@ -20,7 +20,7 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
   standalone: true,
   imports: [
     AsyncPipe,
-    DirectivesModule,
+    FormSubmitDirective,
     LoadingComponent,
     NgIf,
     ReactiveFormsModule,

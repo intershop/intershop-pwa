@@ -15,7 +15,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { CaptchaExportsModule } from 'src/app/extensions/captcha/exports/captcha-exports.module';
 
-import { DirectivesModule } from 'ish-core/directives.module';
+import { IconModule } from 'ish-core/icon.module';
 import { SpecialValidators, formlyValidation } from 'ish-shared/forms/validators/special-validators';
 
 import { CaptchaFieldComponent } from './captcha-field/captcha-field.component';
@@ -57,7 +57,6 @@ const fieldComponents = [
   imports: [
     CaptchaExportsModule,
     CommonModule,
-    DirectivesModule,
     ...fieldComponents,
     FormlySelectModule,
     NgbDatepickerModule,

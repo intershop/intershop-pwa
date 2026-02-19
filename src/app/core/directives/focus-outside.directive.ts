@@ -5,6 +5,7 @@ import { Directive, ElementRef, EventEmitter, HostListener, Output } from '@angu
  */
 @Directive({
   selector: '[ishFocusOutside]',
+  standalone: true,
 })
 export class FocusOutsideDirective {
   constructor(private elementRef: ElementRef) {}
@@ -18,8 +19,8 @@ export class FocusOutsideDirective {
    * Method to check if focus is outside of the targetElement. Emits true when focus moves outside.
    */
   @HostListener('document:focusin', ['$event.target'])
-  onFocusIn(targetElement: ElementRef): void {
-    if (!this.elementRef.nativeElement.contains(targetElement)) {
+  onFocusIn(targetElement: EventTarget | null): void {
+    if (!(targetElement instanceof Node) || !this.elementRef.nativeElement.contains(targetElement)) {
       this.isFocusedOutside.emit(true);
     }
   }

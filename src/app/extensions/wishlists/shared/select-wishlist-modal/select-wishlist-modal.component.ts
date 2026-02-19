@@ -18,7 +18,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { filter, map, take, withLatestFrom } from 'rxjs/operators';
 
-import { DirectivesModule } from 'ish-core/directives.module';
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
+import { ProductContextAccessDirective } from 'ish-core/directives/product-context-access.directive';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { HtmlEncodePipe } from 'ish-core/pipes/html-encode.pipe';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -37,10 +39,12 @@ import { SelectWishlistFormComponent } from '../select-wishlist-form/select-wish
   imports: [
     NgIf,
     TranslateModule,
+    ProductContextAccessDirective,
+    ServerHtmlDirective,
     AsyncPipe,
     ReactiveFormsModule,
     HtmlEncodePipe,
-    DirectivesModule,
+    FormSubmitDirective,
     SelectWishlistFormComponent,
   ],
 })

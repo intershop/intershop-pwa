@@ -5,12 +5,12 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
-import { DirectivesModule } from 'ish-core/directives.module';
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { CostCenterBase } from 'ish-core/models/cost-center/cost-center.model';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
-import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { CostCenterFormComponent } from '../../components/cost-center-form/cost-center-form.component';
+import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
 import { CostCenterCsvImportComponent } from './cost-center-csv-import/cost-center-csv-import.component';
 
@@ -23,7 +23,7 @@ import { CostCenterCsvImportComponent } from './cost-center-csv-import/cost-cent
     AsyncPipe,
     CostCenterFormComponent,
     CostCenterCsvImportComponent,
-    DirectivesModule,
+    FormSubmitDirective,
     LoadingComponent,
     NgIf,
     ReactiveFormsModule,

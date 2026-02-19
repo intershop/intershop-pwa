@@ -5,7 +5,7 @@ import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 
-import { DirectivesModule } from 'ish-core/directives.module';
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -20,7 +20,14 @@ import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
   templateUrl: './organization-settings-company.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [DirectivesModule, ErrorMessageComponent, FormlyModule, ReactiveFormsModule, RouterModule, TranslateModule],
+  imports: [
+    FormSubmitDirective,
+    ErrorMessageComponent,
+    FormlyModule,
+    ReactiveFormsModule,
+    RouterModule,
+    TranslateModule,
+  ],
 })
 export class OrganizationSettingsCompanyComponent implements OnInit {
   @Input({ required: true }) currentCustomer: Customer;

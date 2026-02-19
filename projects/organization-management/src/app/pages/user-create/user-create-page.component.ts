@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
-import { DirectivesModule } from 'ish-core/directives.module';
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
@@ -26,7 +26,7 @@ import { UserCsvImportComponent } from './user-csv-import/user-csv-import.compon
   standalone: true,
   imports: [
     AsyncPipe,
-    DirectivesModule,
+    FormSubmitDirective,
     LoadingComponent,
     NgIf,
     ReactiveFormsModule,
