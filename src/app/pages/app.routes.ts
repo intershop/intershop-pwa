@@ -11,6 +11,7 @@ import { identityProviderRegisterGuard } from 'ish-core/guards/identity-provider
 
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
 import { ContactUsStoreModule } from '../extensions/contact-us/store/contact-us-store.module';
+import { FormlyModule as IshFormlyModule } from 'ish-shared/formly/formly.module';
 
 import { coBrowsePageGuard } from './co-browse/co-browse-page.guard';
 import { RegistrationFormConfigurationService } from './registration/services/registration-form-configuration/registration-form-configuration.service';
@@ -310,7 +311,7 @@ export const appRoutes: Routes = [
     loadComponent: () =>
       import('../extensions/contact-us/pages/contact/contact-page.component').then(m => m.ContactPageComponent),
     canActivate: [featureToggleGuard],
-    providers: [importProvidersFrom(ContactUsStoreModule, CaptchaExportsModule)],
+    providers: [importProvidersFrom(ContactUsStoreModule, CaptchaExportsModule, IshFormlyModule)],
     data: {
       feature: 'contactUs',
       meta: {

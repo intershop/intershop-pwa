@@ -3,12 +3,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  EnvironmentInjector,
   Injector,
   Input,
   OnInit,
   ViewChild,
   ViewContainerRef,
-  createNgModule,
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -35,6 +35,7 @@ import { CaptchaFacade, CaptchaTopic } from '../../facades/captcha.facade';
   selector: 'ish-lazy-captcha',
   templateUrl: './lazy-captcha.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
 })
 export class LazyCaptchaComponent implements OnInit, AfterViewInit {
   @ViewChild('anchor', { read: ViewContainerRef, static: true }) anchor: ViewContainerRef;
@@ -53,7 +54,11 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private captchaFacade: CaptchaFacade, private injector: Injector) {}
+  constructor(
+    private captchaFacade: CaptchaFacade,
+    private injector: Injector,
+    private environmentInjector: EnvironmentInjector
+  ) {}
 
   ngOnInit() {
     this.sanityCheck();
@@ -73,13 +78,14 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit {
         if (version === 3) {
           this.actionFormControl.setValue(this.topic);
 
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          const { CaptchaV3Component, CaptchaV3ComponentModule } = await import(
+          const { CaptchaV3Component: captchaV3Component } = await import(
             '../../shared/captcha-v3/captcha-v3.component'
           );
 
-          const moduleRef = createNgModule(CaptchaV3ComponentModule, this.injector);
-          const componentRef = this.anchor.createComponent(CaptchaV3Component, { ngModuleRef: moduleRef });
+          const componentRef = this.anchor.createComponent(captchaV3Component, {
+            injector: this.injector,
+            environmentInjector: this.environmentInjector,
+          });
 
           componentRef.instance.parentForm = this.form as FormGroup;
           componentRef.changeDetectorRef.markForCheck();
@@ -87,13 +93,14 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit {
           this.formControl.setValidators([Validators.required]);
           this.formControl.updateValueAndValidity();
 
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          const { CaptchaV2Component, CaptchaV2ComponentModule } = await import(
+          const { CaptchaV2Component: captchaV2Component } = await import(
             '../../shared/captcha-v2/captcha-v2.component'
           );
 
-          const moduleRef = createNgModule(CaptchaV2ComponentModule, this.injector);
-          const componentRef = this.anchor.createComponent(CaptchaV2Component, { ngModuleRef: moduleRef });
+          const componentRef = this.anchor.createComponent(captchaV2Component, {
+            injector: this.injector,
+            environmentInjector: this.environmentInjector,
+          });
 
           componentRef.instance.cssClass = this.cssClass;
           componentRef.instance.parentForm = this.form as FormGroup;

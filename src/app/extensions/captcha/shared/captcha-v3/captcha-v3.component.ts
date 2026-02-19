@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, Input, NgModule, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -24,6 +24,15 @@ import {
   selector: 'ish-captcha-v3',
   templateUrl: './captcha-v3.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [DirectivesModule, RecaptchaV3Module, TranslateModule],
+  providers: [
+    {
+      provide: RECAPTCHA_V3_SITE_KEY,
+      useFactory: getSynchronizedSiteKey,
+      deps: [SitekeyProviderService],
+    },
+  ],
 })
 export class CaptchaV3Component implements OnInit {
   @Input({ required: true }) parentForm: FormGroup;
@@ -69,16 +78,3 @@ export class CaptchaV3Component implements OnInit {
     }
   }
 }
-
-@NgModule({
-  imports: [DirectivesModule, RecaptchaV3Module, TranslateModule],
-  declarations: [CaptchaV3Component],
-  providers: [
-    {
-      provide: RECAPTCHA_V3_SITE_KEY,
-      useFactory: getSynchronizedSiteKey,
-      deps: [SitekeyProviderService],
-    },
-  ],
-})
-export class CaptchaV3ComponentModule {}
