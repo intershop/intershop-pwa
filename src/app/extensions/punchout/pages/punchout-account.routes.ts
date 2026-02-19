@@ -1,5 +1,5 @@
-import { NgModule, importProvidersFrom } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { importProvidersFrom } from '@angular/core';
+import { Routes } from '@angular/router';
 import { FormlyModule } from '@ngx-formly/core';
 
 import { PunchoutStoreModule } from '../store/punchout-store.module';
@@ -7,7 +7,7 @@ import { PunchoutStoreModule } from '../store/punchout-store.module';
 import { ociConfigurationFormlyConfig } from './account-punchout-configuration/account-punchout-configuration-page.component';
 import { cxmlConfigurationFormlyConfig } from './account-punchout-cxml-configuration/account-punchout-cxml-configuration-page.component';
 
-const routes: Routes = [
+export const punchoutAccountRoutes: Routes = [
   {
     path: '',
     providers: [importProvidersFrom(PunchoutStoreModule)],
@@ -68,8 +68,3 @@ const routes: Routes = [
     ],
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-})
-export class PunchoutAccountRoutingModule {}

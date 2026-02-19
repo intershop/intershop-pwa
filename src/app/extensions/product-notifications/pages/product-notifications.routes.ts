@@ -1,12 +1,12 @@
-import { NgModule, importProvidersFrom } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { importProvidersFrom } from '@angular/core';
+import { Routes } from '@angular/router';
 
 import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 import { authGuard } from 'ish-core/guards/auth.guard';
 
 import { ProductNotificationsStoreModule } from '../store/product-notifications-store.module';
 
-const routes: Routes = [
+export const productNotificationsRoutes: Routes = [
   {
     path: '',
     loadComponent: () =>
@@ -18,8 +18,3 @@ const routes: Routes = [
     providers: [importProvidersFrom(ProductNotificationsStoreModule)],
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-})
-export class ProductNotificationsRoutingModule {}

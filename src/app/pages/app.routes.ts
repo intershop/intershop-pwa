@@ -8,10 +8,10 @@ import { identityProviderInviteGuard } from 'ish-core/guards/identity-provider-i
 import { identityProviderLoginGuard } from 'ish-core/guards/identity-provider-login.guard';
 import { identityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
 import { identityProviderRegisterGuard } from 'ish-core/guards/identity-provider-register.guard';
+import { FormlyModule as IshFormlyModule } from 'ish-shared/formly/formly.module';
 
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
 import { ContactUsStoreModule } from '../extensions/contact-us/store/contact-us-store.module';
-import { FormlyModule as IshFormlyModule } from 'ish-shared/formly/formly.module';
 
 import { coBrowsePageGuard } from './co-browse/co-browse-page.guard';
 import { RegistrationFormConfigurationService } from './registration/services/registration-form-configuration/registration-form-configuration.service';
@@ -269,7 +269,7 @@ export const appRoutes: Routes = [
     canActivate: [featureToggleGuard],
     data: { feature: 'punchout' },
     loadChildren: () =>
-      import('../extensions/punchout/pages/punchout-account-routing.module').then(m => m.PunchoutAccountRoutingModule),
+      import('../extensions/punchout/pages/punchout-account.routes').then(m => m.punchoutAccountRoutes),
   },
 
   // Store Locator Extension

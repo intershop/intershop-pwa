@@ -1,10 +1,9 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 
 import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 import { authGuard } from 'ish-core/guards/auth.guard';
 
-const routes: Routes = [
+export const orderTemplatesRoutes: Routes = [
   {
     path: '',
     loadComponent: () =>
@@ -24,8 +23,3 @@ const routes: Routes = [
     data: { feature: 'orderTemplates' },
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-})
-export class OrderTemplatesRoutingModule {}

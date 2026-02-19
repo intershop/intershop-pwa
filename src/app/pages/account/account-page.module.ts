@@ -75,9 +75,7 @@ export const accountPageRoutes: Routes = [
           breadcrumbData: [{ key: 'account.ordertemplates.link' }],
         },
         loadChildren: () =>
-          import('../../extensions/order-templates/pages/order-templates-routing.module').then(
-            m => m.OrderTemplatesRoutingModule
-          ),
+          import('../../extensions/order-templates/pages/order-templates.routes').then(m => m.orderTemplatesRoutes),
       },
       {
         path: 'punchout',
@@ -92,9 +90,7 @@ export const accountPageRoutes: Routes = [
           breadcrumbData: [{ key: 'account.punchout.link' }],
         },
         loadChildren: () =>
-          import('../../extensions/punchout/pages/punchout-account-routing.module').then(
-            m => m.PunchoutAccountRoutingModule
-          ),
+          import('../../extensions/punchout/pages/punchout-account.routes').then(m => m.punchoutAccountRoutes),
       },
       {
         path: 'quotes',
@@ -105,8 +101,7 @@ export const accountPageRoutes: Routes = [
           },
           breadcrumbData: [{ key: 'quote.quotes.link' }],
         },
-        loadChildren: () =>
-          import('../../extensions/quoting/pages/quoting-routing.module').then(m => m.QuotingRoutingModule),
+        loadChildren: () => import('../../extensions/quoting/pages/quoting.routes').then(m => m.quotingRoutes),
       },
       {
         path: 'wishlists',
@@ -129,8 +124,8 @@ export const accountPageRoutes: Routes = [
           breadcrumbData: [{ key: 'account.notifications.breadcrumb_link' }],
         },
         loadChildren: () =>
-          import('../../extensions/product-notifications/pages/product-notifications-routing.module').then(
-            m => m.ProductNotificationsRoutingModule
+          import('../../extensions/product-notifications/pages/product-notifications.routes').then(
+            m => m.productNotificationsRoutes
           ),
       },
       {
