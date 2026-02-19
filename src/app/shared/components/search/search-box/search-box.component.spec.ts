@@ -1,4 +1,3 @@
-/* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { ReplaySubject, Subject, of } from 'rxjs';

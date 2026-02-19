@@ -72,7 +72,7 @@ export class QuickorderCsvFormComponent implements OnInit {
         }))
         .filter(record => record.sku && !isNaN(record.quantity));
       this.status = 'Valid';
-    } catch (error) {
+    } catch {
       this.status = 'InvalidData';
       this.productsFromCsv = [];
     }

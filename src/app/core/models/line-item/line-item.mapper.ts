@@ -12,7 +12,6 @@ import { LineItemData } from './line-item.interface';
 import { LineItem } from './line-item.model';
 
 export class LineItemMapper {
-  // eslint-disable-next-line complexity
   static fromData(
     data: LineItemData,
     rebateData?: { [id: string]: BasketRebateData },

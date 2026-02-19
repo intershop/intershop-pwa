@@ -75,7 +75,7 @@ export class CategoryMapper {
       // category path categories do not contain a categoryRef
       count++;
     }
-    if (categoryData.categoryPath && categoryData.categoryPath.length === 1) {
+    if (categoryData.categoryPath?.length === 1) {
       // root categories have no images but a single-entry categoryPath
       count++;
     }

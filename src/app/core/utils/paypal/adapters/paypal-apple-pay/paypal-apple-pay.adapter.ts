@@ -320,7 +320,7 @@ export class PaypalApplePayAdapter {
         domainName: window.location.hostname,
       });
       session.completeMerchantValidation(payload.merchantSession);
-    } catch (error) {
+    } catch {
       await this.continueICMOrderCreation(this.orderContext.orderId);
       session.abort();
       this.loading = false;
@@ -349,7 +349,7 @@ export class PaypalApplePayAdapter {
       } else {
         session.completePayment({ status: ApplePaySession.STATUS_FAILURE });
       }
-    } catch (error) {
+    } catch {
       this.checkoutFacade.processPaypalOrderCreation(this.orderContext.orderId);
       session.completePayment({ status: ApplePaySession.STATUS_FAILURE });
     } finally {

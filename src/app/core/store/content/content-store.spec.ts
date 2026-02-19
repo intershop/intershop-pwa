@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Store, select } from '@ngrx/store';
 import { identity, of } from 'rxjs';
@@ -32,8 +32,11 @@ describe('Content Store', () => {
     );
 
     TestBed.configureTestingModule({
-      imports: [ContentStoreModule, CoreStoreModule.forTesting([], true), HttpClientTestingModule],
-      providers: [{ provide: CMSService, useFactory: () => instance(cmsService) }],
+      imports: [ContentStoreModule, CoreStoreModule.forTesting([], true)],
+      providers: [
+        { provide: CMSService, useFactory: () => instance(cmsService) },
+        provideHttpClient(withInterceptorsFromDi()),
+      ],
     });
 
     store = TestBed.inject(Store);

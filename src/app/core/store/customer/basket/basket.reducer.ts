@@ -226,31 +226,40 @@ export const basketReducer = createReducer(
       submittedBasket: undefined,
     };
   }),
-  on(updateBasketItemSuccess, (state, action) => ({
-    ...state,
-    basket: {
-      ...state.basket,
-      lineItems: state.basket.lineItems.map(item =>
-        item.id === action.payload.lineItem.id ? action.payload.lineItem : item
-      ),
-    },
-    info: action.payload.info,
-    validationResults: initialValidationResults,
-  })),
-  on(deleteBasketItemSuccess, (state, action) => ({
-    ...state,
-    basket: { ...state.basket, lineItems: state.basket.lineItems.filter(item => item.id !== action.payload.itemId) },
-    info: action.payload.info,
-    validationResults: initialValidationResults,
-  })),
-  on(addItemsToBasketSuccess, (state, action) => ({
-    ...state,
-    basket: { ...state.basket, lineItems: unionBy(action.payload.lineItems, state.basket.lineItems ?? [], 'id') },
-    info: action.payload.info,
-    error: { name: 'HttpErrorResponse' as const, errors: action.payload.errors },
-    lastTimeProductAdded: new Date().getTime(),
-    submittedBasket: undefined,
-  })),
+  on(
+    updateBasketItemSuccess,
+    (state, action): BasketState => ({
+      ...state,
+      basket: {
+        ...state.basket,
+        lineItems: state.basket.lineItems.map(item =>
+          item.id === action.payload.lineItem.id ? action.payload.lineItem : item
+        ),
+      },
+      info: action.payload.info,
+      validationResults: initialValidationResults,
+    })
+  ),
+  on(
+    deleteBasketItemSuccess,
+    (state, action): BasketState => ({
+      ...state,
+      basket: { ...state.basket, lineItems: state.basket.lineItems.filter(item => item.id !== action.payload.itemId) },
+      info: action.payload.info,
+      validationResults: initialValidationResults,
+    })
+  ),
+  on(
+    addItemsToBasketSuccess,
+    (state, action): BasketState => ({
+      ...state,
+      basket: { ...state.basket, lineItems: unionBy(action.payload.lineItems, state.basket.lineItems ?? [], 'id') },
+      info: action.payload.info,
+      error: { name: 'HttpErrorResponse' as const, errors: action.payload.errors },
+      lastTimeProductAdded: new Date().getTime(),
+      submittedBasket: undefined,
+    })
+  ),
   on(
     setBasketPaymentSuccess,
     createBasketPaymentSuccess,

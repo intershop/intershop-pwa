@@ -20,7 +20,6 @@ import { readIntoSourceFile } from '../utils/filesystem';
 import { applyLintFix } from '../utils/lint-fix';
 import { insertImport } from '../utils/registration';
 
-// eslint-disable-next-line complexity
 export async function determineStoreLocation(
   host: Tree,
   options: {

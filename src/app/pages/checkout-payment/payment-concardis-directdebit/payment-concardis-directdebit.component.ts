@@ -61,7 +61,8 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
         Object.keys(currentValues).forEach(key => {
           if (
             currentValues[key] !== prevValues[key] &&
-            this.options.formState.changedSinceErrors?.hasOwnProperty(key)
+            this.options.formState.changedSinceErrors &&
+            Object.hasOwn(this.options.formState.changedSinceErrors, key)
           ) {
             this.options.formState.changedSinceErrors[key] = true;
             this.parameterForm.get(key).updateValueAndValidity();

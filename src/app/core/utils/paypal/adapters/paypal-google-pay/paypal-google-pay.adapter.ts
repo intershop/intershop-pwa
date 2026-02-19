@@ -259,7 +259,7 @@ export class PaypalGooglePayAdapter {
       } else {
         return await this.continueICMOrderCreation();
       }
-    } catch (error) {
+    } catch {
       return await this.continueICMOrderCreation();
     }
   }

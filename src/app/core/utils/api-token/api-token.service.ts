@@ -433,7 +433,7 @@ export class ApiTokenService {
     if (cookieContent) {
       try {
         return JSON.parse(cookieContent);
-      } catch (err) {
+      } catch {
         // ignore
       }
     }

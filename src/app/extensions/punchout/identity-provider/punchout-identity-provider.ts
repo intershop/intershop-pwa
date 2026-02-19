@@ -1,4 +1,4 @@
-/* eslint-disable etc/no-deprecated */
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';

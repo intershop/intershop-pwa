@@ -85,8 +85,8 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
     this.elementRef.nativeElement.removeAttribute('ng-reflect-ish-server-html');
   }
 
-  @HostListener('click', ['$event'])
   // eslint-disable-next-line complexity
+  @HostListener('click', ['$event'])
   onClick(event: MouseEvent) {
     // go along path of click but not further up than self
     for (let el = event.target as HTMLElement; el && el !== this.elementRef.nativeElement; el = el.parentElement) {

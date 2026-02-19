@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-imports, complexity, @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-require-imports */
 import { CommonEngine } from '@angular/ssr';
 import { randomUUID } from 'crypto';
 import express from 'express';
@@ -152,7 +152,7 @@ export function app() {
     if (icmProtocol === 'https') {
       const https = require('https');
 
-      const [, icmHost, icmPort] = /^(.*?):?([0-9]+)?[\/]*$/.exec(icmBase);
+      const [, icmHost, icmPort] = /^(.*?):?([0-9]+)?[/]*$/.exec(icmBase);
 
       const options = {
         host: icmHost,
@@ -507,7 +507,7 @@ export function app() {
     }
 
     // find last baseHref parameter
-    const regex = /baseHref=([^;\?\#]*)/g;
+    const regex = /baseHref=([^;?#]*)/g;
     let baseHref = '/';
     for (let match: RegExpExecArray; (match = regex.exec(req.originalUrl)); ) {
       baseHref = match[1].replace(/%25/g, '%').replace(/%2F/g, '/');

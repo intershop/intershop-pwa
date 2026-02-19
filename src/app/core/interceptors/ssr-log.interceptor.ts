@@ -42,7 +42,7 @@ export class SSRLogInterceptor implements HttpInterceptor {
   constructor(@Optional() @Inject(REQUEST_ID) private requestId: InjectSingle<typeof REQUEST_ID>) {}
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { performance } = require('perf_hooks');
 
     const start = performance.now();

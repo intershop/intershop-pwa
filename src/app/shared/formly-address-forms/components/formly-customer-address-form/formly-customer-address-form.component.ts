@@ -42,7 +42,7 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
   @Input() extension = false;
 
   @Output() save = new EventEmitter<Address>();
-  @Output() cancel = new EventEmitter();
+  @Output() cancelForm = new EventEmitter();
 
   form: FormGroup;
   extensionForm: FormGroup = new FormGroup({});
@@ -109,7 +109,7 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
     }
   }
 
-  cancelForm() {
-    this.cancel.emit();
+  emitCancelForm() {
+    this.cancelForm.emit();
   }
 }

@@ -38,7 +38,7 @@ export class CategoryTreeHelper {
     }
 
     // set category as root if it has just one element in categoryPath
-    const rootIds = category.categoryPath && category.categoryPath.length === 1 ? [category.uniqueId] : [];
+    const rootIds = category.categoryPath?.length === 1 ? [category.uniqueId] : [];
 
     const nodes = { [category.uniqueId]: { ...category } };
 

@@ -120,7 +120,6 @@ export class PaymentConcardisComponent implements OnInit, OnChanges {
   /**
    * determine errorMessages on the basis of the error code
    */
-  // eslint-disable-next-line complexity
   getErrorMessage(code: number, paymentMethod: string, fieldType: string, defaultMessage: string): string {
     let messageKey: string;
 

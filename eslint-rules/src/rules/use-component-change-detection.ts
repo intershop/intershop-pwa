@@ -43,9 +43,7 @@ const useComponentChangeDetectionRule: TSESLint.RuleModule<keyof typeof messages
 };
 
 function configurationArgumentsContainChangeDetection(config: TSESTree.CallExpressionArgument[]): boolean {
-  return (
-    config && config[0].type === AST_NODE_TYPES.ObjectExpression && objectContainsProperty(config[0], 'changeDetection')
-  );
+  return config?.[0].type === AST_NODE_TYPES.ObjectExpression && objectContainsProperty(config[0], 'changeDetection');
 }
 
 export default useComponentChangeDetectionRule;

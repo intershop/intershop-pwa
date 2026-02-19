@@ -21,7 +21,6 @@ const privateDestroyRefFieldRule: TSESLint.RuleModule<keyof typeof messages> = {
     schema: [],
   },
   create: context => ({
-    // eslint-disable-next-line complexity
     'PropertyDefinition[value.type="CallExpression"]'(node: TSESTree.PropertyDefinition) {
       if (!isType(node.parent.parent as TSESTree.ClassDeclaration, ['Component', 'Directive', 'Pipe'])) {
         return;

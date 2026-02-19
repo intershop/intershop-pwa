@@ -22,7 +22,7 @@ export const pagesReducer = createReducer(
   initialState,
   setLoadingOn(loadContentPage),
   unsetLoadingOn(loadContentPageFail, loadContentPageSuccess),
-  on(loadContentPageSuccess, (state, action) => {
+  on(loadContentPageSuccess, (state, action): PagesState => {
     const { page } = action.payload;
 
     return {

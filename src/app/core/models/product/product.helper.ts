@@ -91,28 +91,28 @@ export class ProductHelper {
    * Check if product is a retail set
    */
   static isRetailSet(product: Partial<AllProductTypes>): product is ProductRetailSet {
-    return product && product.type === 'RetailSet';
+    return product?.type === 'RetailSet';
   }
 
   /**
    * Check if product is a master product
    */
   static isMasterProduct(product: Partial<AllProductTypes>): product is VariationProductMaster & ProductView {
-    return product && product.type === 'VariationProductMaster';
+    return product?.type === 'VariationProductMaster';
   }
 
   /**
    * Check if product is a variation product
    */
   static isVariationProduct(product: Partial<AllProductTypes>): product is VariationProduct & ProductView {
-    return product && product.type === 'VariationProduct';
+    return product?.type === 'VariationProduct';
   }
 
   /**
    * Check if product is a product bundle
    */
   static isProductBundle(product: Partial<AllProductTypes>): product is ProductBundle {
-    return product && product.type === 'Bundle';
+    return product?.type === 'Bundle';
   }
 
   /**

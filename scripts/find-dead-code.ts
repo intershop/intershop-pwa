@@ -451,7 +451,7 @@ function checkNode(node: Node) {
     node
       .getMembers()
       .filter(m => !Node.isConstructorDeclaration(m))
-      /* eslint-disable-next-line no-bitwise */
+
       .filter(m => !(m.getCombinedModifierFlags() & ts.ModifierFlags.Private))
       .forEach(checkNode);
   } else if (Node.isInterfaceDeclaration(node) && Node.hasName(node) && classMethodCheckRegex.test(node.getName())) {

@@ -41,25 +41,25 @@ export function override(options: Options): Rule {
     }
 
     if (options.html) {
-      const target = from.replace(/([^\\\/]+).ts$/, `$1.${options.theme}.html`);
+      const target = from.replace(/([^\\/]+).ts$/, `$1.${options.theme}.html`);
       host.create(target, 'OVERRIDE');
     }
 
     const operations = [];
 
     if (options.scss) {
-      const originalScss = from.replace(/([^\\\/]+).ts$/, '$1.scss');
+      const originalScss = from.replace(/([^\\/]+).ts$/, '$1.scss');
       if (!host.exists(originalScss)) {
         host.create(originalScss, '/* empty file for overriding with file replacements */');
         operations.push(setStyleUrls(from, [originalScss]));
       }
 
-      const target = from.replace(/([^\\\/]+).ts$/, `$1.${options.theme}.scss`);
+      const target = from.replace(/([^\\/]+).ts$/, `$1.${options.theme}.scss`);
       host.create(target, `/* style definitions for overriding with theme "${options.theme}" */`);
     }
 
     if (options.ts) {
-      const target = from.replace(/([^\\\/]+).ts$/, `$1.${options.theme}.ts`);
+      const target = from.replace(/([^\\/]+).ts$/, `$1.${options.theme}.ts`);
       operations.push(copyFile(from, target));
     }
 

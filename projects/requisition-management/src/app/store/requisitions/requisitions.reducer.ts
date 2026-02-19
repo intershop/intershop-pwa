@@ -51,16 +51,20 @@ export const requisitionsReducer = createReducer(
   setLoadingOn(loadRequisitions, loadRequisition, updateRequisitionStatus),
   unsetLoadingAndErrorOn(loadRequisitionsSuccess, loadRequisitionSuccess, updateRequisitionStatusSuccess),
   setErrorOn(loadRequisitionsFail, loadRequisitionFail, updateRequisitionStatusFail),
-  on(loadRequisitionsSuccess, (state, action) =>
-    requisitionsAdapter.upsertMany(action.payload.requisitions, {
-      ...state,
-      filters: {
-        ...state.filters,
-        [action.payload.view + action.payload.status]: action.payload.requisitions.map(requisition => requisition.id),
-      },
-    })
+  on(
+    loadRequisitionsSuccess,
+    (state, action): RequisitionsState =>
+      requisitionsAdapter.upsertMany(action.payload.requisitions, {
+        ...state,
+        filters: {
+          ...state.filters,
+          [action.payload.view + action.payload.status]: action.payload.requisitions.map(requisition => requisition.id),
+        },
+      })
   ),
-  on(loadRequisitionSuccess, updateRequisitionStatusSuccess, (state, action) =>
-    requisitionsAdapter.upsertOne(action.payload.requisition, state)
+  on(
+    loadRequisitionSuccess,
+    updateRequisitionStatusSuccess,
+    (state, action): RequisitionsState => requisitionsAdapter.upsertOne(action.payload.requisition, state)
   )
 );

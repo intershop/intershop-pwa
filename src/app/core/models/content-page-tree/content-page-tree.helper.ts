@@ -26,7 +26,7 @@ export class ContentPageTreeHelper {
     }
 
     // set element as root if it has just one element in its path
-    const rootIds = element.path && element.path.length === 1 ? [element.contentPageId] : [];
+    const rootIds = element.path?.length === 1 ? [element.contentPageId] : [];
 
     // add edges from elementPath
     const edges: { [id: string]: string[] } = {};

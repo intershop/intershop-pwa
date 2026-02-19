@@ -64,6 +64,33 @@ export class PriceHelper {
     return { currency, value, type: 'Money' };
   }
 
+  /**
+   * Returns the currency symbol for the given currency code in the specified format and locale.
+   * This method replaces the deprecated Angular getCurrencySymbol function.
+   *
+   * @param code The currency code (e.g., 'USD', 'EUR')
+   * @param format The format: 'wide' for full name, 'narrow' for narrow symbol, 'symbol' for standard symbol
+   * @param locale The locale string (optional, defaults to undefined)
+   * @returns The currency symbol or code if formatting fails
+   */
+  static getCurrencySymbol(code: string, format: 'wide' | 'narrow' | 'symbol', locale?: string): string {
+    try {
+      const currencyDisplay = format === 'narrow' ? 'narrowSymbol' : 'symbol';
+      // Convert underscore locale format (en_US) to hyphen format (en-US) for Intl API
+      const normalizedLocale = locale?.replace(/_/g, '-');
+      const formatter = new Intl.NumberFormat(normalizedLocale, {
+        style: 'currency',
+        currency: code,
+        currencyDisplay,
+      });
+      const parts = formatter.formatToParts(0);
+      const symbolPart = parts.find(part => part.type === 'currency');
+      return symbolPart ? symbolPart.value : code;
+    } catch {
+      return code;
+    }
+  }
+
   private static sanityChecks(p1: Price, p2: Price) {
     if (!p1 || !p2) {
       throw new Error('cannot handle undefined inputs');

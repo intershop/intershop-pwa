@@ -1,5 +1,11 @@
-import { HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpParams,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -56,8 +62,6 @@ describe('Sparque Api Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        // https://angular.io/guide/http#testing-http-requests
-        imports: [HttpClientTestingModule],
         providers: [
           {
             provide: AccountFacade,
@@ -70,6 +74,8 @@ describe('Sparque Api Service', () => {
             },
           },
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
           provideMockStore({
             selectors: [
               { selector: isServerConfigurationLoaded, value: true },
@@ -177,9 +183,10 @@ describe('Sparque Api Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
         providers: [
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
           provideMockStore({
             selectors: [
               { selector: isServerConfigurationLoaded, value: true },
@@ -229,7 +236,6 @@ describe('Sparque Api Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
         providers: [
           {
             provide: AccountFacade,
@@ -242,6 +248,8 @@ describe('Sparque Api Service', () => {
             },
           },
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
           provideMockStore({
             selectors: [
               { selector: isServerConfigurationLoaded, value: true },
@@ -334,9 +342,10 @@ describe('Sparque Api Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
         providers: [
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
           provideMockStore({
             selectors: [
               { selector: getCurrentLocale, value: 'en_US' },
@@ -440,7 +449,6 @@ describe('Sparque Api Service', () => {
 
     it('should use customer customerNo as user for regular customers', () => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
         providers: [
           {
             provide: AccountFacade,
@@ -453,6 +461,8 @@ describe('Sparque Api Service', () => {
             },
           },
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
           provideMockStore({
             selectors: [
               { selector: getCurrentLocale, value: 'en_US' },
@@ -475,7 +485,6 @@ describe('Sparque Api Service', () => {
 
     it('should use user businessPartnerNo as user for business customers', () => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
         providers: [
           {
             provide: AccountFacade,
@@ -488,6 +497,8 @@ describe('Sparque Api Service', () => {
             },
           },
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
           provideMockStore({
             selectors: [
               { selector: getCurrentLocale, value: 'en_US' },
@@ -510,9 +521,10 @@ describe('Sparque Api Service', () => {
 
     it('should include authorization header when user is identified and token is available', () => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
         providers: [
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
           provideMockStore({
             selectors: [
               { selector: getCurrentLocale, value: 'en_US' },
@@ -535,9 +547,10 @@ describe('Sparque Api Service', () => {
       when(apiTokenServiceMock.apiToken$).thenReturn(new BehaviorSubject<string>(undefined));
 
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
         providers: [
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
           provideMockStore({
             selectors: [
               { selector: getCurrentLocale, value: 'en_US' },
@@ -561,9 +574,10 @@ describe('Sparque Api Service', () => {
       when(apiTokenServiceMock.apiToken$).thenReturn(new BehaviorSubject<string>(undefined));
 
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
         providers: [
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
           provideMockStore({
             selectors: [
               { selector: getCurrentLocale, value: 'en_US' },
@@ -584,7 +598,6 @@ describe('Sparque Api Service', () => {
 
     it('should URL encode special characters in user parameter', () => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
         providers: [
           {
             provide: AccountFacade,
@@ -597,6 +610,8 @@ describe('Sparque Api Service', () => {
             },
           },
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
           provideMockStore({
             selectors: [
               { selector: getCurrentLocale, value: 'en_US' },
@@ -620,9 +635,10 @@ describe('Sparque Api Service', () => {
 
     it('should handle undefined businessPartnerNo for business customers by not adding user parameter', () => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
         providers: [
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
           provideMockStore({
             selectors: [
               { selector: getCurrentLocale, value: 'en_US' },
@@ -644,7 +660,6 @@ describe('Sparque Api Service', () => {
 
     it('should use customerNo when businessPartnerNo is undefined for business customers', () => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
         providers: [
           {
             provide: AccountFacade,
@@ -660,6 +675,8 @@ describe('Sparque Api Service', () => {
             },
           },
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
           provideMockStore({
             selectors: [
               { selector: getCurrentLocale, value: 'en_US' },
@@ -689,7 +706,6 @@ describe('Sparque Api Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
         providers: [
           {
             provide: AccountFacade,
@@ -702,6 +718,8 @@ describe('Sparque Api Service', () => {
             },
           },
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
           provideMockStore({
             selectors: [
               { selector: getCurrentLocale, value: 'en_US' },

@@ -6,7 +6,7 @@ import { SpecialHttpErrorHandler } from 'ish-core/interceptors/icm-error-mapper.
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { InjectSingle } from 'ish-core/utils/injection';
 
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-restricted-types */
 
 @Injectable()
 export class LoginUserErrorHandler implements SpecialHttpErrorHandler {

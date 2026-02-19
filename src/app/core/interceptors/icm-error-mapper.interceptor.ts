@@ -6,7 +6,7 @@ import { catchError } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-restricted-types */
 
 export interface SpecialHttpErrorHandler {
   test(error: HttpErrorResponse, request: HttpRequest<unknown>): boolean;

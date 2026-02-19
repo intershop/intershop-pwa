@@ -29,7 +29,7 @@ export const recurringOrdersReducer = createReducer(
     recurringOrdersApiActions.loadRecurringOrdersSuccess,
     recurringOrdersApiActions.deleteRecurringOrderSuccess
   ),
-  on(recurringOrdersApiActions.loadRecurringOrdersSuccess, (state, action) => {
+  on(recurringOrdersApiActions.loadRecurringOrdersSuccess, (state, action): RecurringOrdersState => {
     const { recurringOrders } = action.payload;
     return recurringOrdersAdapter.upsertMany(recurringOrders, {
       ...state,
@@ -42,9 +42,9 @@ export const recurringOrdersReducer = createReducer(
   on(
     recurringOrdersApiActions.loadRecurringOrderSuccess,
     recurringOrdersApiActions.updateRecurringOrderSuccess,
-    (state, action) => recurringOrdersAdapter.upsertOne(action.payload.recurringOrder, state)
+    (state, action): RecurringOrdersState => recurringOrdersAdapter.upsertOne(action.payload.recurringOrder, state)
   ),
-  on(recurringOrdersApiActions.deleteRecurringOrderSuccess, (state, action) => {
+  on(recurringOrdersApiActions.deleteRecurringOrderSuccess, (state, action): RecurringOrdersState => {
     const { recurringOrderId } = action.payload;
     return recurringOrdersAdapter.removeOne(recurringOrderId, {
       ...state,

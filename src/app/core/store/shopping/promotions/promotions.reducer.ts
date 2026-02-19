@@ -15,7 +15,7 @@ const initialState: PromotionsState = promotionAdapter.getInitialState({});
 
 export const promotionsReducer = createReducer(
   initialState,
-  on(loadPromotionSuccess, (state, action) => {
+  on(loadPromotionSuccess, (state, action): PromotionsState => {
     const promotion = action.payload.promotion;
     return promotionAdapter.upsertOne(promotion, state);
   })

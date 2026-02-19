@@ -25,7 +25,6 @@ export class CMSContainerComponent implements CMSComponent, OnChanges {
     this.containerClasses += this.pagelet.stringParam('CSSClass', '');
   }
 
-  // eslint-disable-next-line complexity
   private getGridCSS(grid: string): string {
     let gridCSS = '';
 
