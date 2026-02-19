@@ -79,13 +79,19 @@ export const appRoutes: Routes = [
         import('./account/account-page.module'),
         import('ish-shared/formly/formly.module'),
         import('ish-shared/formly-address-forms/formly-address-forms.module'),
-      ]).then(([{ accountPageRoutes }, { FormlyModule: IshFormlyModule }, { FormlyAddressFormsModule }]) => {
-        const [rootRoute, ...nestedRoutes] = accountPageRoutes;
-        const providers = importProvidersFrom(IshFormlyModule, FormlyAddressFormsModule);
-        return rootRoute
-          ? [{ ...rootRoute, providers: [...(rootRoute.providers ?? []), providers] }, ...nestedRoutes]
-          : [];
-      }),
+      ]).then(
+        ([
+          { accountPageRoutes },
+          { FormlyModule: ishFormlyModule },
+          { FormlyAddressFormsModule: formlyAddressFormsModule },
+        ]) => {
+          const [rootRoute, ...nestedRoutes] = accountPageRoutes;
+          const providers = importProvidersFrom(ishFormlyModule, formlyAddressFormsModule);
+          return rootRoute
+            ? [{ ...rootRoute, providers: [...(rootRoute.providers ?? []), providers] }, ...nestedRoutes]
+            : [];
+        }
+      ),
     canActivate: [authGuard],
     data: {
       meta: {
@@ -120,13 +126,19 @@ export const appRoutes: Routes = [
         import('./checkout/checkout-page.module'),
         import('ish-shared/formly/formly.module'),
         import('ish-shared/formly-address-forms/formly-address-forms.module'),
-      ]).then(([{ checkoutPageRoutes }, { FormlyModule: IshFormlyModule }, { FormlyAddressFormsModule }]) => {
-        const [rootRoute, ...nestedRoutes] = checkoutPageRoutes;
-        const providers = importProvidersFrom(IshFormlyModule, FormlyAddressFormsModule);
-        return rootRoute
-          ? [{ ...rootRoute, providers: [...(rootRoute.providers ?? []), providers] }, ...nestedRoutes]
-          : [];
-      }),
+      ]).then(
+        ([
+          { checkoutPageRoutes },
+          { FormlyModule: ishFormlyModule },
+          { FormlyAddressFormsModule: formlyAddressFormsModule },
+        ]) => {
+          const [rootRoute, ...nestedRoutes] = checkoutPageRoutes;
+          const providers = importProvidersFrom(ishFormlyModule, formlyAddressFormsModule);
+          return rootRoute
+            ? [{ ...rootRoute, providers: [...(rootRoute.providers ?? []), providers] }, ...nestedRoutes]
+            : [];
+        }
+      ),
   },
   {
     path: 'register',
@@ -141,16 +153,16 @@ export const appRoutes: Routes = [
       ]).then(
         ([
           { registrationFormlyConfig, registrationPageRoutes },
-          { FormlyModule },
-          { FormlyModule: IshFormlyModule },
-          { FormlyAddressFormsModule },
-          { FieldLibraryModule },
+          { FormlyModule: formlyModule },
+          { FormlyModule: ishFormlyModule },
+          { FormlyAddressFormsModule: formlyAddressFormsModule },
+          { FieldLibraryModule: fieldLibraryModule },
         ]) => {
           const [rootRoute, ...nestedRoutes] = registrationPageRoutes;
           const providers = [
             RegistrationFormConfigurationService,
-            importProvidersFrom(FieldLibraryModule, FormlyAddressFormsModule, IshFormlyModule),
-            importProvidersFrom(FormlyModule.forChild(registrationFormlyConfig)),
+            importProvidersFrom(fieldLibraryModule, formlyAddressFormsModule, ishFormlyModule),
+            importProvidersFrom(formlyModule.forChild(registrationFormlyConfig)),
           ];
           return rootRoute
             ? [{ ...rootRoute, providers: [...(rootRoute.providers ?? []), ...providers] }, ...nestedRoutes]
@@ -168,9 +180,9 @@ export const appRoutes: Routes = [
     path: 'login',
     loadChildren: () =>
       Promise.all([import('./login/login-page.module'), import('ish-shared/formly/formly.module')]).then(
-        ([{ loginPageRoutes }, { FormlyModule: IshFormlyModule }]) => {
+        ([{ loginPageRoutes }, { FormlyModule: ishFormlyModule }]) => {
           const [rootRoute, ...nestedRoutes] = loginPageRoutes;
-          const providers = importProvidersFrom(IshFormlyModule);
+          const providers = importProvidersFrom(ishFormlyModule);
           return rootRoute
             ? [{ ...rootRoute, providers: [...(rootRoute.providers ?? []), providers] }, ...nestedRoutes]
             : [];
