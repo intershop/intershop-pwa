@@ -13,9 +13,9 @@ import { whenTruthy } from 'ish-core/utils/operators';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
+import { UserRolesSelectionComponent } from '../../components/user-roles-selection/user-roles-selection.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
-import { OrganizationManagementModule } from '../../organization-management.module';
 
 @Component({
   selector: 'ish-user-edit-roles-page',
@@ -27,10 +27,10 @@ import { OrganizationManagementModule } from '../../organization-management.modu
     ErrorMessageComponent,
     LoadingComponent,
     NgIf,
-    OrganizationManagementModule,
     ReactiveFormsModule,
     RouterModule,
     TranslateModule,
+    UserRolesSelectionComponent,
   ],
 })
 export class UserEditRolesPageComponent implements OnInit {

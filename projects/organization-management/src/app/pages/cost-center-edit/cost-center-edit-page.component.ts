@@ -9,8 +9,8 @@ import { DirectivesModule } from 'ish-core/directives.module';
 import { CostCenter, CostCenterBase } from 'ish-core/models/cost-center/cost-center.model';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
+import { CostCenterFormComponent } from '../../components/cost-center-form/cost-center-form.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
-import { OrganizationManagementModule } from '../../organization-management.module';
 
 @Component({
   selector: 'ish-cost-center-edit-page',
@@ -19,10 +19,10 @@ import { OrganizationManagementModule } from '../../organization-management.modu
   standalone: true,
   imports: [
     AsyncPipe,
+    CostCenterFormComponent,
     DirectivesModule,
     LoadingComponent,
     NgIf,
-    OrganizationManagementModule,
     ReactiveFormsModule,
     RouterModule,
     TranslateModule,

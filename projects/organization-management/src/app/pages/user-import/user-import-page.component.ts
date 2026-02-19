@@ -10,7 +10,7 @@ import { LoadingComponent } from 'ish-shared/components/common/loading/loading.c
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
-import { OrganizationManagementModule } from '../../organization-management.module';
+import { UserRolesBadgesComponent } from '../users/user-roles-badges/user-roles-badges.component';
 
 @Component({
   selector: 'ish-user-import-page',
@@ -23,10 +23,10 @@ import { OrganizationManagementModule } from '../../organization-management.modu
     LoadingComponent,
     NgClass,
     NgIf,
-    OrganizationManagementModule,
     RouterModule,
     TranslateModule,
     PricePipe,
+    UserRolesBadgesComponent,
   ],
 })
 export class UserImportPageComponent implements OnInit {

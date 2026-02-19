@@ -13,8 +13,9 @@ import { User } from 'ish-core/models/user/user.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { OrderListComponent } from 'ish-shared/components/order/order-list/order-list.component';
 
+import { CostCenterBudgetComponent } from '../../components/cost-center-budget/cost-center-budget.component';
+import { CostCenterUsersListComponent } from '../../components/cost-center-users-list/cost-center-users-list.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
-import { OrganizationManagementModule } from '../../organization-management.module';
 
 @Component({
   selector: 'ish-cost-center-detail-page',
@@ -23,11 +24,12 @@ import { OrganizationManagementModule } from '../../organization-management.modu
   standalone: true,
   imports: [
     AsyncPipe,
+    CostCenterBudgetComponent,
+    CostCenterUsersListComponent,
     ErrorMessageComponent,
     FontAwesomeModule,
     NgIf,
     OrderListComponent,
-    OrganizationManagementModule,
     PricePipe,
     RouterModule,
     SlicePipe,
