@@ -191,7 +191,10 @@
     "typescript": "~5.4.5",
     "xliff": "^6.3.0"
   },
-   "overrides": {
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.9.0"
+  },
+  "overrides": {
     "express-robots-txt": {
       "express": "^5.2.1"
    }
