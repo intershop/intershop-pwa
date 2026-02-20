@@ -6,6 +6,7 @@ import {
   FieldArrayType,
   FieldType,
   FieldWrapper,
+  FormlyField,
   FormlyFieldConfig,
   FormlyForm,
   FormlyModule,
@@ -172,7 +173,10 @@ class NumberFieldComponent extends FieldType {}
   ],
   imports: [
     CommonModule,
+    FormlyField,
+    FormlyForm,
     FormlyModule.forRoot({
+      formlyForm: FormlyForm,
       types: [
         {
           name: 'ish-text-input-field',
@@ -245,11 +249,12 @@ class NumberFieldComponent extends FieldType {}
         { name: 'description', component: DummyWrapperComponent },
         { name: 'form-field-radio-horizontal', component: DummyWrapperComponent },
       ],
-    }),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any),
     FormlySelectModule,
     ReactiveFormsModule,
   ],
-  exports: [FormlyForm, ReactiveFormsModule],
+  exports: [FormlyField, FormlyForm, ReactiveFormsModule],
 })
 export class FormlyTestingModule {
   static withPresetMocks(libraryMockTypes: string[] = []): ModuleWithProviders<FormlyTestingModule> {
