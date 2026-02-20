@@ -361,7 +361,7 @@ export function app() {
     ICM_WEB_URL.replace(/\$<(\w+)>/g, (match, group) => config[group] || match);
 
   if (process.env.SSR_HYBRID) {
-    server.use('*', hybridRedirect);
+    server.use(/.*/, hybridRedirect);
   }
 
   const icmProxy = proxy(SSR_HYBRID_BACKEND, {
@@ -462,7 +462,7 @@ export function app() {
     next();
   });
   server.get(
-    '*.*',
+    /.*\..*/,
     express.static(BROWSER_FOLDER, {
       setHeaders: (res, path) => {
         res.set('Cache-Control', defaultCacheControl(path));
@@ -613,7 +613,7 @@ export function app() {
   };
 
   // All regular routes use the Angular engine with Cache-Control header
-  server.use('*', setCacheControlHeader, angularCommonEngine);
+  server.use(/.*/, setCacheControlHeader, angularCommonEngine);
 
   logger.info({ url: { original: ICM_BASE_URL } }, 'ICM_BASE_URL configured');
 

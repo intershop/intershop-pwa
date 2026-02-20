@@ -89,7 +89,7 @@
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
     "date-fns": "^4.1.0",
-    "express": "^4.22.1",
+    "express": "^5.2.1",
     "express-http-proxy": "^2.1.2",
     "express-robots-txt": "^1.0.0",
     "file-replace-loader": "^1.4.2",
@@ -135,7 +135,6 @@
     "@schematics/angular": "^18.2.21",
     "@types/eslint": "^8.56.12",
     "@types/estree": "^1.0.8",
-    "@types/express": "^4.17.25",
     "@types/express-http-proxy": "^1.6.7",
     "@types/google.maps": "^3.58.1",
     "@types/jest": "^29.5.14",
@@ -191,6 +190,11 @@
     "ts-node": "~10.9.2",
     "typescript": "~5.4.5",
     "xliff": "^6.3.0"
+  },
+   "overrides": {
+    "express-robots-txt": {
+      "express": "^5.2.1"
+   }
   },
   "lint-staged": {
     "docs/**/*.md": [
