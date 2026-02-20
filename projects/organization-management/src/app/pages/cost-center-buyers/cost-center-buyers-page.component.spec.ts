@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConfigOption, FormlyModule } from '@ngx-formly/core';
+import { FORMLY_CONFIG } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -22,27 +22,25 @@ describe('Cost Center Buyers Page Component', () => {
   let appFacade: AppFacade;
   let organizationManagementFacade: OrganizationManagementFacade;
 
-  const formlyConfig: ConfigOption = {
-    types: [
-      {
-        name: 'repeatCostCenterBuyers',
-        component: CostCenterBuyersRepeatFieldComponent,
-      },
-    ],
-  };
-
   beforeEach(async () => {
     appFacade = mock(AppFacade);
     organizationManagementFacade = mock(OrganizationManagementFacade);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyModule.forChild(formlyConfig), FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslateModule.forRoot()],
       declarations: [
         CostCenterBuyersPageComponent,
         MockComponent(ErrorMessageComponent),
         MockComponent(LoadingComponent),
       ],
       providers: [
+        {
+          provide: FORMLY_CONFIG,
+          multi: true,
+          useValue: {
+            types: [{ name: 'repeatCostCenterBuyers', component: CostCenterBuyersRepeatFieldComponent }],
+          },
+        },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
       ],
