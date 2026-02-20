@@ -1,3 +1,4 @@
+import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -13,15 +14,12 @@ import { Product, ProductCompletenessLevel } from 'ish-core/models/product/produ
 import { User } from 'ish-core/models/user/user.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { InventoryService } from 'ish-core/services/inventory/inventory.service';
-import { OrderService } from 'ish-core/services/order/order.service';
-import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { TokenService } from 'ish-core/services/token/token.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
-import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { addProductToBasket, loadBasketSuccess, startCheckout } from './basket';
@@ -107,11 +105,9 @@ describe('Customer Store', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
+        { provide: APP_BASE_HREF, useValue: '/' },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
-        { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
         { provide: InventoryService, useFactory: () => instance(inventoryServiceMock) },
-        { provide: OrderService, useFactory: () => instance(mock(OrderService)) },
-        { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
         { provide: TokenService, useFactory: () => instance(mock(TokenService)) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
         provideStoreSnapshots(),

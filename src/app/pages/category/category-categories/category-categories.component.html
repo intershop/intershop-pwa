@@ -16,10 +16,10 @@
           <ish-category-navigation [uniqueId]="category.categoryPath[0]" />
         </nav>
         <div
-          *ngIf="'preferences.PayPalCheckoutPreferences.PayLaterMessagingCategoryEnabled' | ishServerSetting"
+          *ngIf="'payment.paypal.payLaterPreferences.PayLaterMessagingCategoryEnabled' | ishServerSetting"
           class="mt-2"
         >
-          <ish-payment-paypal-messages [pageType]="'product-listing'" />
+          <ish-payment-paypal pageType="product-listing" />
         </div>
         <!-- DISABLED VIEW CONTEXT --
         <div class="marketing-area">

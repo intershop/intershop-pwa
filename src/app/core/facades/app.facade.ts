@@ -2,17 +2,15 @@ import { getCurrencySymbol } from '@angular/common';
 import { ApplicationRef, Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable, combineLatest, merge, noop } from 'rxjs';
+import { combineLatest, merge, noop } from 'rxjs';
 import { filter, map, sample, shareReplay, startWith, take, withLatestFrom } from 'rxjs/operators';
 
-import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import {
   getAvailableLocales,
   getCurrentCurrency,
   getCurrentLocale,
   getDeviceType,
   getICMBaseURL,
-  getPaypalConfig,
   getPipelineEndpoint,
   getRestEndpoint,
 } from 'ish-core/store/core/configuration';
@@ -50,8 +48,6 @@ export class AppFacade {
 
   getRestEndpoint$ = this.store.pipe(select(getRestEndpoint));
   getPipelineEndpoint$ = this.store.pipe(select(getPipelineEndpoint));
-
-  payPalConfig$: Observable<PaypalConfig> = this.store.pipe(select(getPaypalConfig));
 
   getRestEndpointWithContext$ = combineLatest([
     this.store.pipe(select(getRestEndpoint)),

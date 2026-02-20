@@ -7,11 +7,13 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { Payment } from 'ish-core/models/payment/payment.model';
+import { PaymentPaypalService } from 'ish-core/services/payment-paypal/payment-paypal.service';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
@@ -20,16 +22,21 @@ import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
+import { PaypalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 
 import { BasketPaymentEffects } from './basket-payment.effects';
 import {
+  continueCheckout,
   continueWithFastCheckout,
   createBasketPayment,
   createBasketPaymentFail,
   createBasketPaymentSuccess,
+  createPaypalCreditCardBasketPayment,
   deleteBasketPayment,
   deleteBasketPaymentFail,
   deleteBasketPaymentSuccess,
+  deletePaypalCreditCardBasketPayment,
+  emitPaypalOrderId,
   loadBasket,
   loadBasketEligiblePaymentMethods,
   loadBasketEligiblePaymentMethodsFail,
@@ -43,16 +50,24 @@ import {
   updateBasketPayment,
   updateBasketPaymentFail,
   updateBasketPaymentSuccess,
+  updatePaymentInstrument,
+  updatePaymentInstrumentFail,
+  updatePaymentInstrumentSuccess,
+  updatePaypalCreditCardPaymentInstrument,
 } from './basket.actions';
 
 describe('Basket Payment Effects', () => {
   let actions$: Observable<Action>;
   let paymentServiceMock: PaymentService;
+  let paymentPaypalServiceMock: PaymentPaypalService;
+  let paypalDataTransferServiceMock: PaypalDataTransferService;
   let effects: BasketPaymentEffects;
   let store: Store;
 
   beforeEach(() => {
     paymentServiceMock = mock(PaymentService);
+    paymentPaypalServiceMock = mock(PaymentPaypalService);
+    paypalDataTransferServiceMock = mock(PaypalDataTransferService);
 
     TestBed.configureTestingModule({
       imports: [
@@ -60,7 +75,9 @@ describe('Basket Payment Effects', () => {
         CustomerStoreModule.forTesting('user', 'basket'),
       ],
       providers: [
+        { provide: PaymentPaypalService, useFactory: () => instance(paymentPaypalServiceMock) },
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
+        { provide: PaypalDataTransferService, useFactory: () => instance(paypalDataTransferServiceMock) },
         BasketPaymentEffects,
         provideMockActions(() => actions$),
       ],
@@ -370,6 +387,314 @@ describe('Basket Payment Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasketEligiblePaymentMethodsAfterChange$).toBeObservable(expected$);
+    });
+  });
+
+  describe('createPaypalCreditCardBasketPayment$', () => {
+    const paymentInstrument = {
+      id: undefined,
+      paymentMethod: 'ISH_PAYPAL_CREDIT_CARD',
+      parameters: [
+        {
+          name: 'token',
+          value: 'testToken',
+        },
+      ],
+    } as PaymentInstrument;
+
+    beforeEach(() => {
+      when(paymentPaypalServiceMock.initializePaypalExperienceContextFlow(anything())).thenReturn(
+        of({ orderId: 'ORDER123', paymentInstrumentId: 'temporaryPaymentInstrumentId' })
+      );
+
+      store.dispatch(
+        loadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+            payment: undefined,
+          } as Basket,
+        })
+      );
+    });
+
+    it('should call the paymentPaypalService initializePaypalExperienceContextFlow', done => {
+      const action = createPaypalCreditCardBasketPayment({ paymentInstrument });
+      actions$ = of(action);
+
+      effects.createPaypalCreditCardBasketPayment$.subscribe({
+        complete: () => {
+          verify(paymentPaypalServiceMock.initializePaypalExperienceContextFlow(anything())).once();
+          done();
+        },
+      });
+    });
+
+    it('should dispatch emitPaypalOrderId action on success', done => {
+      const action = createPaypalCreditCardBasketPayment({ paymentInstrument });
+      const completion = emitPaypalOrderId({
+        orderId: 'ORDER123',
+        paymentInstrumentId: 'temporaryPaymentInstrumentId',
+      });
+      actions$ = of(action);
+
+      effects.createPaypalCreditCardBasketPayment$.subscribe({
+        next: resultAction => {
+          expect(resultAction).toEqual(completion);
+          done();
+        },
+      });
+    });
+
+    it('should dispatch setBasketPaymentFail on initializePaypalExperienceContextFlow error', () => {
+      when(paymentPaypalServiceMock.initializePaypalExperienceContextFlow(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'experience context error' }))
+      );
+
+      const action = createPaypalCreditCardBasketPayment({ paymentInstrument });
+      const completion = setBasketPaymentFail({ error: makeHttpError({ message: 'experience context error' }) });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.createPaypalCreditCardBasketPayment$).toBeObservable(expected$);
+    });
+  });
+
+  describe('emitPaypalOrderData$', () => {
+    it('should call emitPaypalOrderData on PaypalDataTransferService when emitPaypalOrderId action is dispatched', done => {
+      const action = emitPaypalOrderId({ orderId: 'ORDER123', paymentInstrumentId: 'PI123' });
+      actions$ = of(action);
+
+      effects.emitPaypalOrderData$.subscribe({
+        complete: () => {
+          verify(paypalDataTransferServiceMock.emitPaypalOrderData(anything())).once();
+          done();
+        },
+      });
+    });
+
+    it('should pass correct payload to emitPaypalOrderData', done => {
+      const action = emitPaypalOrderId({ orderId: 'PAYPAL_ORDER_456', paymentInstrumentId: 'INSTRUMENT_789' });
+      actions$ = of(action);
+
+      const emitSpy = jest.spyOn(TestBed.inject(PaypalDataTransferService), 'emitPaypalOrderData');
+
+      effects.emitPaypalOrderData$.subscribe({
+        complete: () => {
+          expect(emitSpy).toHaveBeenCalledWith({
+            orderId: 'PAYPAL_ORDER_456',
+            paymentInstrumentId: 'INSTRUMENT_789',
+          });
+          done();
+        },
+      });
+    });
+  });
+
+  describe('deletePaypalCreditCardBasketPayment$', () => {
+    const paymentInstrument = {
+      id: 'temporaryPaymentInstrumentId',
+      paymentMethod: 'ISH_PAYPAL_CREDIT_CARD',
+    } as PaymentInstrument;
+
+    const basket = {
+      id: 'BID',
+      lineItems: [],
+      payment: {
+        paymentInstrument,
+      } as Payment,
+    } as Basket;
+
+    beforeEach(() => {
+      when(paymentServiceMock.deleteBasketPaymentInstrument(anything(), anything())).thenReturn(of(undefined));
+
+      store.dispatch(loadBasketSuccess({ basket }));
+    });
+
+    it('should call the paymentService for deleteBasketPaymentInstrument', done => {
+      const errorMessage = 'Payment authorization failed';
+      const action = deletePaypalCreditCardBasketPayment({ paymentInstrument, errorMessage });
+      actions$ = of(action);
+
+      effects.deletePaypalCreditCardBasketPayment$.subscribe(() => {
+        verify(paymentServiceMock.deleteBasketPaymentInstrument(anything(), anything())).once();
+        done();
+      });
+    });
+
+    it('should map to action of type SetBasketPaymentFail with error message', () => {
+      const errorMessage = 'Payment authorization failed';
+      const action = deletePaypalCreditCardBasketPayment({ paymentInstrument, errorMessage });
+      const completion = setBasketPaymentFail({
+        error: { name: 'HttpErrorResponse', message: errorMessage },
+      });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.deletePaypalCreditCardBasketPayment$).toBeObservable(expected$);
+    });
+
+    it('should not emit any action when no error message is provided', () => {
+      const action = deletePaypalCreditCardBasketPayment({ paymentInstrument, errorMessage: undefined });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('--');
+
+      expect(effects.deletePaypalCreditCardBasketPayment$).toBeObservable(expected$);
+    });
+
+    it('should map error to action of type SetBasketPaymentFail', () => {
+      when(paymentServiceMock.deleteBasketPaymentInstrument(anything(), anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'deletion failed' }))
+      );
+      const errorMessage = 'Payment authorization failed';
+      const action = deletePaypalCreditCardBasketPayment({ paymentInstrument, errorMessage });
+      const completion = setBasketPaymentFail({ error: makeHttpError({ message: 'deletion failed' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.deletePaypalCreditCardBasketPayment$).toBeObservable(expected$);
+    });
+  });
+
+  describe('submitPayPalPaymentInstrumentDataAfterApproval$', () => {
+    const paymentInstrument = {
+      id: 'paypalPaymentInstrumentId',
+      paymentMethod: 'ISH_PAYPAL_CREDIT_CARD',
+    } as PaymentInstrument;
+
+    const updatedPaymentInstrument = {
+      ...paymentInstrument,
+      parameters: [
+        {
+          name: 'payerId',
+          value: 'PAYER123',
+        },
+      ],
+    } as PaymentInstrument;
+
+    beforeEach(() => {
+      store.dispatch(
+        loadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+          } as Basket,
+        })
+      );
+    });
+
+    it('should call the paymentService for getPaypalPaymentInstrument', done => {
+      when(paymentPaypalServiceMock.getPaypalPaymentInstrument(anything())).thenReturn(of(updatedPaymentInstrument));
+      when(paymentServiceMock.updatePaymentInstrument(anything())).thenReturn(of(undefined));
+
+      const action = updatePaypalCreditCardPaymentInstrument({ paymentInstrument });
+      actions$ = of(action);
+
+      effects.submitPaypalPaymentInstrumentDataAfterApproval$.subscribe(() => {
+        verify(paymentPaypalServiceMock.getPaypalPaymentInstrument(anything())).once();
+        done();
+      });
+    });
+
+    it('should map to UpdatePaymentInstrument and ContinueCheckout actions in case of success', () => {
+      when(paymentPaypalServiceMock.getPaypalPaymentInstrument(anything())).thenReturn(of(updatedPaymentInstrument));
+
+      const action = updatePaypalCreditCardPaymentInstrument({ paymentInstrument });
+      const completion1 = updatePaymentInstrument({ paymentInstrument: updatedPaymentInstrument });
+      const completion2 = continueCheckout({ targetStep: CheckoutStepType.Review });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.submitPaypalPaymentInstrumentDataAfterApproval$).toBeObservable(expected$);
+    });
+
+    it('should map to DeletePaypalCreditCardBasketPayment action if error message is returned', () => {
+      const errorResponse = { errorMessage: 'PayPal authorization failed' };
+      when(paymentPaypalServiceMock.getPaypalPaymentInstrument(anything())).thenReturn(of(errorResponse));
+
+      const action = updatePaypalCreditCardPaymentInstrument({ paymentInstrument });
+      const completion = deletePaypalCreditCardBasketPayment({
+        paymentInstrument,
+        errorMessage: 'PayPal authorization failed',
+      });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.submitPaypalPaymentInstrumentDataAfterApproval$).toBeObservable(expected$);
+    });
+
+    it('should map error to action of type SetBasketPaymentFail', () => {
+      when(paymentPaypalServiceMock.getPaypalPaymentInstrument(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
+      const action = updatePaypalCreditCardPaymentInstrument({ paymentInstrument });
+      const completion = setBasketPaymentFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.submitPaypalPaymentInstrumentDataAfterApproval$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updatePaymentInstrument$', () => {
+    const paymentInstrument = {
+      id: 'paypalPaymentInstrumentId',
+      paymentMethod: 'ISH_PAYPAL_CREDIT_CARD',
+    } as PaymentInstrument;
+
+    const updatedPaymentInstrument = {
+      ...paymentInstrument,
+      parameters: [
+        {
+          name: 'payerId',
+          value: 'PAYER123',
+        },
+      ],
+    } as PaymentInstrument;
+
+    beforeEach(() => {
+      store.dispatch(
+        loadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+          } as Basket,
+        })
+      );
+      when(paymentServiceMock.updatePaymentInstrument(anything())).thenReturn(of(updatedPaymentInstrument));
+    });
+
+    it('should call the paymentService for updatePaymentInstrument', done => {
+      const action = updatePaymentInstrument({ paymentInstrument });
+      actions$ = of(action);
+
+      effects.updatePaymentInstrument$.subscribe(() => {
+        verify(paymentServiceMock.updatePaymentInstrument(anything())).once();
+        done();
+      });
+    });
+
+    it('should map to UpdatePaymentInstrumentSuccess and loadBasketEligiblePaymentMethods actions in case of success', () => {
+      const action = updatePaymentInstrument({ paymentInstrument });
+      const completion1 = updatePaymentInstrumentSuccess();
+      const completion2 = loadBasketEligiblePaymentMethods();
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.updatePaymentInstrument$).toBeObservable(expected$);
+    });
+
+    it('should map error to action of type UpdatePaymentInstrumentFail', () => {
+      when(paymentServiceMock.updatePaymentInstrument(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
+      const action = updatePaymentInstrument({ paymentInstrument });
+      const completion = updatePaymentInstrumentFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updatePaymentInstrument$).toBeObservable(expected$);
     });
   });
 

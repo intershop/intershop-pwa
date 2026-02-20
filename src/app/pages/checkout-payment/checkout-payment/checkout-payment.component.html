@@ -17,12 +17,6 @@
   <div class="col-md-12 col-lg-8">
     <h2 class="h3">{{ 'checkout.payment.method.select.heading' | translate }}</h2>
 
-    <ish-payment-paypal
-      *ngIf="'preferences.PayPalCheckoutPreferences' | ishServerSetting"
-      [pageType]="'checkout'"
-      (selectPaypalPaymentMethod)="setBasketPayment($event)"
-    />
-
     <!-- display all payment methods -->
     <ng-container *ngIf="basket.totals?.total?.net > 0 || !basket.payment; else zeroTotalInfo">
       <form [formGroup]="paymentForm" class="form-horizontal" (ngSubmit)="submitParameterForm()">
@@ -53,6 +47,15 @@
                     {{ 'checkout.payment.payWith.link' | translate : { '0': paymentMethod.displayName } }}
                   </label>
                 </ng-container>
+              </div>
+              <!-- Paypal Credit Card Privacy Statement -->
+              <div *ngIf="paymentMethod.serviceId === 'PAYPAL_CREDIT_CARD'" class="row">
+                <p
+                  [innerHTML]="
+                    'checkout.payment.paypal.privacy_statement.message'
+                      | translate : { country: getCustomerInvoiceCountryCode() }
+                  "
+                ></p>
               </div>
               <!-- Payment parameter form -->
               <div
@@ -137,11 +140,18 @@
                           | translate : { paymentMethodName: paymentMethod.displayName }
                       }}
                     </legend>
-
                     <p class="indicates-required" aria-hidden="true">
                       <span class="required">*</span>{{ 'account.required_field.message' | translate }}
                     </p>
                     <ng-container [ngSwitch]="paymentMethod.serviceId">
+                      <ng-template [ngSwitchCase]="'PAYPAL_CREDIT_CARD'">
+                        <ish-payment-paypal
+                          [selectedPaymentMethod]="paymentMethod"
+                          [adapterType]="getPaypalAdapterType(paymentMethod)"
+                          pageType="checkout"
+                          (closeForm)="closePaymentInstrumentForm()"
+                        />
+                      </ng-template>
                       <ng-template [ngSwitchCase]="'Concardis_CreditCard'">
                         <ish-payment-concardis-creditcard
                           [paymentMethod]="paymentMethod"
@@ -222,17 +232,26 @@
       <ish-basket-cost-summary [totals]="basket.totals" />
 
       <div class="d-grid">
-        <div *ngIf="nextDisabled" id="checkout-button-help" aria-live="polite" class="visually-hidden">
-          {{ 'checkout.continue.validation.message' | translate }}
-        </div>
-        <button
-          class="btn btn-lg btn-block btn-primary"
-          type="button"
-          [attr.aria-describedby]="nextDisabled ? 'checkout-button-help' : null"
-          (click)="goToNextStep()"
-        >
-          {{ 'checkout.button.label' | translate }}
-        </button>
+        <ng-container *ngIf="!selectedPayPalMethod(); else PaypalButton">
+          <div *ngIf="nextDisabled" id="checkout-button-help" aria-live="polite" class="visually-hidden">
+            {{ 'checkout.continue.validation.message' | translate }}
+          </div>
+          <button
+            class="btn btn-lg btn-block btn-primary"
+            type="button"
+            [attr.aria-describedby]="nextDisabled ? 'checkout-button-help' : null"
+            (click)="goToNextStep()"
+          >
+            {{ 'checkout.button.label' | translate }}
+          </button>
+        </ng-container>
+        <ng-template #PaypalButton>
+          <ish-payment-paypal
+            [selectedPaymentMethod]="selectedPayPalMethod()"
+            [adapterType]="getPaypalAdapterType()"
+            pageType="checkout"
+          />
+        </ng-template>
       </div>
     </div>
     <!-- Privacy policy link -->

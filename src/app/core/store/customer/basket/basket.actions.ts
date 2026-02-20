@@ -300,6 +300,34 @@ export const startRedirectBeforeCheckoutFail = createAction(
   httpError()
 );
 
+export const createPaypalCreditCardBasketPayment = createAction(
+  '[Basket] Create a Paypal Credit Card Basket Payment',
+  payload<{ paymentInstrument: PaymentInstrument }>()
+);
+
+export const emitPaypalOrderId = createAction(
+  '[Basket Internal] Emit Paypal Order ID to Component',
+  payload<{ orderId: string; paymentInstrumentId: string }>()
+);
+
+export const deletePaypalCreditCardBasketPayment = createAction(
+  '[Basket] Delete a Paypal Credit Card Basket Payment',
+  payload<{ paymentInstrument: PaymentInstrument; errorMessage: string }>()
+);
+
+export const updatePaypalCreditCardPaymentInstrument = createAction(
+  '[Basket] Update Paypal Credit Card Payment Instrument',
+  payload<{ paymentInstrument: PaymentInstrument }>()
+);
+
+export const updatePaymentInstrument = createAction(
+  '[Basket Internal] Update Payment Instrument',
+  payload<{ paymentInstrument: PaymentInstrument }>()
+);
+export const updatePaymentInstrumentSuccess = createAction('[Basket API] Update Payment Instrument Success');
+
+export const updatePaymentInstrumentFail = createAction('[Basket API] Update Payment Instrument Fail', httpError());
+
 export const submitBasket = createAction('[Basket API] Submit a Basket for Approval');
 
 export const submitBasketSuccess = createAction('[Basket API] Submit a Basket for Approval Success');

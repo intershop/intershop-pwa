@@ -386,6 +386,38 @@ export class PaymentService {
   }
 
   /**
+   * Updates a payment instrument for the current basket.
+   *
+   * @param paymentInstrument The payment instrument to be updated.
+   * @returns The updated payment instrument.
+   */
+  updatePaymentInstrument(paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
+    if (!paymentInstrument) {
+      return throwError(() => new Error('updatePaymentInstrument() called without paymentInstrument'));
+    }
+
+    const body: {
+      parameters?: {
+        name: string;
+        value: string;
+      }[];
+    } = {
+      parameters: paymentInstrument.parameters?.length
+        ? paymentInstrument.parameters.map(attr => ({ name: attr.name, value: attr.value }))
+        : undefined,
+    };
+
+    return this.apiService
+      .currentBasketEndpoint()
+      .patch<{ data: PaymentInstrument }>(
+        `payment-instruments/${this.apiService.encodeResourceId(paymentInstrument.id)}`,
+        body,
+        { headers: this.basketHeaders }
+      )
+      .pipe(map(({ data }) => data));
+  }
+
+  /**
    * Update CvcLastUpdated in concardis credit card (user/basket) payment instrument.
    *
    * @param paymentInstrument The payment instrument, that is to be updated

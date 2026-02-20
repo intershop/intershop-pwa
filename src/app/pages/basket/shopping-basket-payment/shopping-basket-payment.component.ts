@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, map, shareReplay } from 'rxjs';
+import { Observable, map, shareReplay, withLatestFrom } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -31,6 +31,7 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.priceType$ = this.checkoutFacade.priceType$;
     this.paymentMethods$ = this.checkoutFacade.eligibleFastCheckoutPaymentMethods$.pipe(shareReplay(1));
+
     this.filteredPaymentMethods$ = this.paymentMethods$.pipe(
       whenTruthy(),
       map(methods => methods.filter(method => !method.capabilities?.includes('PaypalCheckout')))
@@ -58,7 +59,24 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
     return this.featureToggleService.enabled('guestCheckout') || !!this.basket.user;
   }
 
-  setBasketPayment(paymentInstrumentId: string) {
-    this.checkoutFacade.setBasketPayment(paymentInstrumentId);
+  getPayPalPaymentMethod(): Observable<PaymentMethod> {
+    return this.paymentMethods$.pipe(
+      withLatestFrom(this.checkoutFacade.basket$),
+      map(([paymentMethods, basket]) => {
+        const paypalMethod = paymentMethods.find(method => method.capabilities?.includes('PaypalCheckout'));
+        // Return PayPal method if basket has no payment
+        if (!basket.payment) {
+          return paypalMethod;
+        }
+        // Return PayPal method if it's the current payment instrument and redirect is required
+        if (
+          (basket.payment.paymentInstrument?.id === paypalMethod?.id && basket.payment.redirectRequired) ||
+          basket.payment.paymentInstrument?.id !== paypalMethod?.id
+        ) {
+          return paypalMethod;
+        }
+        return;
+      })
+    );
   }
 }

@@ -59,9 +59,17 @@
       <span *ngIf="!totals.isEstimated">{{ 'checkout.order.total_cost.label' | translate }}</span>
     </dt>
     <dd class="col-6 total-price">{{ totals.total | ishPrice : 'gross' }}</dd>
-    <ng-container *ngIf="showPaypalMessages$ | async as messaging">
-      <dd *ngIf="messaging.preference | ishServerSetting" class="col-12">
-        <ish-payment-paypal-messages [pageType]="messaging.type" />
+
+    <ng-container
+      *ngIf="
+        (getPaypalPageType() === 'cart'
+          ? 'payment.paypal.payLaterPreferences.PayLaterMessagingCartEnabled'
+          : 'payment.paypal.payLaterPreferences.PayLaterMessagingPaymentEnabled'
+        ) | ishServerSetting
+      "
+    >
+      <dd class="col-12">
+        <ish-payment-paypal [pageType]="getPaypalPageType()" />
       </dd>
     </ng-container>
   </dl>

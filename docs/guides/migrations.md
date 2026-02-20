@@ -99,7 +99,12 @@ This change allows caching product data for a longer time and fetching more freq
 
 The improved implementation for the environment variable `ICM_BASE_URL_SSR` as well as the introduction of an optional `serverUrlSsr` SPARQUE configuration allows server-side rendering to directly use internal backend requests to ICM and SPARQUE when running in the same Kubernetes cluster.
 
-**Script loader changes**
+**PayPal Advanced Credit and Debit Card functionality**
+
+With the introduction of the PayPal Advanced Credit and Debit Card functionality, the previous PayPal implementation has been completely revised.
+Instead of the components `payment-paypal-messages.component.ts` and `payment-paypal.component.ts`, there is now only one component: `payment-paypal.component.ts`.
+This component supports the PayPal message and button functionality, as well as the PayPal Credit Card functionality.
+Additionally, the `PaypalConfigService` has been moved to the following package path: _src/app/core/utils/paypal/paypal-config_.
 
 The script loader service [`script-loader.service.ts`](../../src/app/core/utils/script-loader/script-loader.service.ts) has been revised.
 The new implementation is fully backward compatible and offers additional improvements for caching:

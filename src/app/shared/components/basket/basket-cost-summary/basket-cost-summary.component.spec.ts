@@ -7,10 +7,10 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-paypal/payment-paypal.component';
 
 import { BasketCostSummaryComponent } from './basket-cost-summary.component';
 
@@ -23,22 +23,17 @@ describe('Basket Cost Summary Component', () => {
     const accountFacade = mock(AccountFacade);
     when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
 
-    const checkoutFacade = mock(CheckoutFacade);
-    when(checkoutFacade.checkoutStep$).thenReturn(of(3));
-
     await TestBed.configureTestingModule({
       declarations: [
         BasketCostSummaryComponent,
         MockComponent(FaIconComponent),
+        MockComponent(PaymentPaypalComponent),
         MockDirective(NgbPopover),
-        MockPipe(ServerSettingPipe),
+        MockPipe(ServerSettingPipe, () => true),
         PricePipe,
       ],
       imports: [TranslateModule.forRoot()],
-      providers: [
-        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
-        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
-      ],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });
 

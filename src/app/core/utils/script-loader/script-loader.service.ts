@@ -8,7 +8,7 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 /**
  * Represents a script that has been loaded or is being loaded.
  */
-interface ScriptType {
+export interface ScriptType {
   /** The source URL of the script */
   src: string;
   /** Indicates whether the script has successfully been loaded */
