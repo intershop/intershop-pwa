@@ -132,7 +132,7 @@
     "@lhci/cli": "^0.15.1",
     "@ngrx/eslint-plugin": "^17.2.0",
     "@phenomnomnominal/tsquery": "^6.1.4",
-    "@schematics/angular": "^17.3.17",
+    "@schematics/angular": "^18.2.21",
     "@types/eslint": "^8.56.12",
     "@types/estree": "^1.0.8",
     "@types/express": "^4.17.25",
