@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { ConfigOption, FormlyModule } from '@ngx-formly/core';
+import { FORMLY_CONFIG } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -22,31 +22,26 @@ describe('Oci Configuration Form Component', () => {
   let element: HTMLElement;
   let punchoutFacade: PunchoutFacade;
 
-  const formlyConfig: ConfigOption = {
-    types: [
-      {
-        name: 'repeat-oci-config',
-        component: OciConfigurationRepeatFieldComponent,
-      },
-    ],
-  };
-
   beforeEach(async () => {
     punchoutFacade = mock(PunchoutFacade);
     await TestBed.configureTestingModule({
-      imports: [
-        FormlyModule.forChild(formlyConfig),
-        FormlyTestingModule,
-        NgbPopoverModule,
-        RouterModule,
-        TranslateModule.forRoot(),
-      ],
+      imports: [FormlyTestingModule, NgbPopoverModule, RouterModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(ErrorMessageComponent),
         MockComponent(LoadingComponent),
         OciConfigurationFormComponent,
       ],
-      providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }, provideRouter([])],
+      providers: [
+        {
+          provide: FORMLY_CONFIG,
+          multi: true,
+          useValue: {
+            types: [{ name: 'repeat-oci-config', component: OciConfigurationRepeatFieldComponent }],
+          },
+        },
+        { provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) },
+        provideRouter([]),
+      ],
     }).compileComponents();
   });
 

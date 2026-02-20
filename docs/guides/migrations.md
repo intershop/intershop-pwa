@@ -9,6 +9,11 @@ kb_sync_latest_only
 
 ## From 10.1.0 to 11.0.0
 
+**Formly 7 update**
+
+Formly was updated to version 7.
+For more information see the [Formly migration guide](https://formly.dev/docs/guide/migration).
+
 **CMS view context REST requests with resource set ID**
 
 The REST requests to get CMS view context data now append the resource set ID (the defining view context model's cartridge name) by default to improve performance.

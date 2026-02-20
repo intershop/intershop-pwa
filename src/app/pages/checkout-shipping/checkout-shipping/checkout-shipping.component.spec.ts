@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FieldWrapper, FormlyModule } from '@ngx-formly/core';
+import { FORMLY_CONFIG, FieldWrapper } from '@ngx-formly/core';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
@@ -9,6 +9,13 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { CheckoutShippingComponent } from './checkout-shipping.component';
+
+@Component({
+  // custom selector to prevent component ID collision
+  selector: 'ish-dummy-shipping-wrapper',
+  template: '<ng-template #fieldComponent />',
+})
+class DummyWrapperComponent extends FieldWrapper {}
 
 describe('Checkout Shipping Component', () => {
   let component: CheckoutShippingComponent;
@@ -20,13 +27,17 @@ describe('Checkout Shipping Component', () => {
     checkoutFacade = mock(CheckoutFacade);
     await TestBed.configureTestingModule({
       declarations: [CheckoutShippingComponent],
-      imports: [
-        FormlyModule.forChild({
-          wrappers: [{ name: 'shipping-radio-wrapper', component: DummyWrapperComponent }],
-        }),
-        FormlyTestingModule,
+      imports: [FormlyTestingModule],
+      providers: [
+        {
+          provide: FORMLY_CONFIG,
+          multi: true,
+          useValue: {
+            wrappers: [{ name: 'shipping-radio-wrapper', component: DummyWrapperComponent }],
+          },
+        },
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
       ],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
   });
 
@@ -69,10 +80,3 @@ describe('Checkout Shipping Component', () => {
     expect(arg).toMatchInlineSnapshot(`"other"`);
   });
 });
-
-@Component({
-  // custom selector to prevent component ID collision
-  selector: 'ish-dummy-shipping-wrapper',
-  template: '<ng-template #fieldComponent />',
-})
-class DummyWrapperComponent extends FieldWrapper {}
