@@ -8,10 +8,6 @@ import { identityProviderInviteGuard } from 'ish-core/guards/identity-provider-i
 import { identityProviderLoginGuard } from 'ish-core/guards/identity-provider-login.guard';
 import { identityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
 import { identityProviderRegisterGuard } from 'ish-core/guards/identity-provider-register.guard';
-import { FormlyModule as IshFormlyModule } from 'ish-shared/formly/formly.module';
-
-import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
-import { ContactUsStoreModule } from '../extensions/contact-us/store/contact-us-store.module';
 
 import { coBrowsePageGuard } from './co-browse/co-browse-page.guard';
 import { RegistrationFormConfigurationService } from './registration/services/registration-form-configuration/registration-form-configuration.service';
@@ -320,18 +316,8 @@ export const appRoutes: Routes = [
   // Contact Us Extension
   {
     path: 'contact',
-    loadComponent: () =>
-      import('../extensions/contact-us/pages/contact/contact-page.component').then(m => m.ContactPageComponent),
-    canActivate: [featureToggleGuard],
-    providers: [importProvidersFrom(ContactUsStoreModule, CaptchaExportsModule, IshFormlyModule)],
-    data: {
-      feature: 'contactUs',
-      meta: {
-        title: 'helpdesk.contact_us.heading',
-        robots: 'index, nofollow',
-      },
-      breadcrumbData: [{ key: 'helpdesk.contact_us.link' }],
-    },
+    loadChildren: () =>
+      import('../extensions/contact-us/pages/contact/contact-page.routes').then(m => m.contactPageRoutes),
   },
 
   // Wishlist Sharing Extension
