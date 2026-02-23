@@ -8,7 +8,7 @@ import {
   OAuthSuccessEvent,
   TokenResponse,
 } from 'angular-oauth2-oidc';
-import { BehaviorSubject, Observable, filter, first, from, map, noop, switchMap, take } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, catchError, filter, first, from, map, noop, switchMap, take } from 'rxjs';
 
 import { FetchTokenOptions, GrantType } from 'ish-core/models/token/token.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
@@ -109,7 +109,15 @@ export class TokenService {
           filter(
             event => event instanceof OAuthInfoEvent && event.type === 'token_expires' && event.info === 'access_token'
           ),
-          switchMap(() => from(this.oAuthService.refreshToken()))
+          switchMap(() =>
+            from(this.oAuthService.refreshToken()).pipe(
+              catchError(error => {
+                console.warn('Error refreshing token, clearing session:', error);
+                this.apiTokenService.removeApiToken();
+                return EMPTY;
+              })
+            )
+          )
         )
       )
     );
