@@ -2,7 +2,16 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
-import { debounceTime, distinctUntilChanged, filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  switchMap,
+  take,
+  takeUntil,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
@@ -11,7 +20,7 @@ import {
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { getDeviceType } from 'ish-core/store/core/configuration';
-import { selectQueryParam, selectQueryParams } from 'ish-core/store/core/router';
+import { selectPath, selectQueryParam, selectQueryParams } from 'ish-core/store/core/router';
 import {
   applyFilter,
   loadFilterForCategory,
@@ -94,41 +103,54 @@ export class ProductListingEffects {
       switchMap(({ id, page }) => {
         let initialPage = page; // scope variable (reset after first usage)
         return this.store.pipe(
-          select(selectQueryParams),
-          // filter router changes which have nothing to do with product lists like login
-          filter(
-            params =>
-              !!params?.filters ||
-              !!params?.view ||
-              !!params?.sorting ||
-              !!params?.page ||
-              // allow common tracking parameters from Google, Matomo, Meta
-              Object.keys(params || {}).some(
-                key => key.startsWith('utm_') || key.startsWith('mtm_') || key.endsWith('clid')
-              ) ||
-              // allow empty params
-              Object.keys(params)?.length === 0
-          ),
-          map(params => {
-            const filters = params.filters
-              ? {
-                  ...stringToFormParams(params.filters),
-                  ...(id.type === 'search' ? { searchTerm: [id.value] } : {}),
-                  ...(id.type === 'master' ? { MasterSKU: [id.value] } : {}),
-                }
-              : undefined;
+          select(selectPath),
+          take(1),
+          switchMap(initialPath =>
+            this.store.pipe(
+              select(selectQueryParams),
+              // filter router changes which have nothing to do with product lists like login
+              filter(
+                params =>
+                  !!params?.filters ||
+                  !!params?.view ||
+                  !!params?.sorting ||
+                  !!params?.page ||
+                  // allow common tracking parameters from Google, Matomo, Meta
+                  Object.keys(params || {}).some(
+                    key => key.startsWith('utm_') || key.startsWith('mtm_') || key.endsWith('clid')
+                  ) ||
+                  // allow empty params
+                  Object.keys(params)?.length === 0
+              ),
+              map(params => {
+                const filters = params.filters
+                  ? {
+                      ...stringToFormParams(params.filters),
+                      ...(id.type === 'search' ? { searchTerm: [id.value] } : {}),
+                      ...(id.type === 'master' ? { MasterSKU: [id.value] } : {}),
+                    }
+                  : undefined;
 
-            const p = initialPage || +params.page || undefined; // determine page
+                const p = initialPage || +params.page || undefined; // determine page
 
-            initialPage = 0; // reset scope variable
+                initialPage = 0; // reset scope variable
 
-            return {
-              id: { ...id, filters },
-              sorting: params.sorting || undefined,
-              page: p > 1 ? p : undefined, // same content for 0, 1 & undefined
-              filters,
-            };
-          })
+                return {
+                  id: { ...id, filters },
+                  sorting: params.sorting || undefined,
+                  page: p > 1 ? p : undefined, // same content for 0, 1 & undefined
+                  filters,
+                };
+              }),
+              // stop listening when navigating away from the product listing page
+              takeUntil(
+                this.store.pipe(
+                  select(selectPath),
+                  filter(path => path !== initialPath)
+                )
+              )
+            )
+          )
         );
       }),
       distinctUntilChanged(isEqual),

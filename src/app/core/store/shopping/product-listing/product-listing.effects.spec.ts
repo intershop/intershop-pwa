@@ -29,7 +29,10 @@ describe('Product Listing Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration'], [ProductListingEffects]),
-        RouterTestingModule.withRoutes([{ path: 'some', children: [] }]),
+        RouterTestingModule.withRoutes([
+          { path: 'some', children: [] },
+          { path: 'other', children: [] },
+        ]),
         ShoppingStoreModule.forTesting('productListing'),
       ],
       providers: [
@@ -173,6 +176,17 @@ describe('Product Listing Effects', () => {
         [Filter Internal] Apply Filter:
           searchParameter: {"param":[1]}
       `);
+    }));
+
+    it('should not fire loadMoreProductsForParams when navigating away from the product listing page', fakeAsync(() => {
+      store$.dispatch(loadMoreProducts({ id: { type: 'search', value: 'term' } }));
+      tick(5);
+      store$.reset();
+
+      router.navigateByUrl('/other');
+      tick(500);
+
+      expect(store$.actionsArray(/\[Product Listing/)).toBeEmpty();
     }));
   });
 });
