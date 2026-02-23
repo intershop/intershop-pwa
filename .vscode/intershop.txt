@@ -1,3 +1,4 @@
+aasa
 accountholder
 addtocart
 angulartics
@@ -66,6 +67,7 @@ greaterthan
 grecaptcha
 heapsnapshot
 helpdesk
+hiper
 hoverable
 iban
 icecat
@@ -204,6 +206,7 @@ tsquery
 uncommit
 undiscounted
 unflatten
+unionpay
 upsert
 userid
 viewconf
