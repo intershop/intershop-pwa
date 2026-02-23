@@ -6,6 +6,7 @@ import { Observable, of } from 'rxjs';
 import { anything, capture, instance, mock, when } from 'ts-mockito';
 
 import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
+import { ProductCompletenessLevel } from 'ish-core/models/product/product.helper';
 import { InventoryService } from 'ish-core/services/inventory/inventory.service';
 import { loadProductSuccess } from 'ish-core/store/shopping/products/products.actions';
 
@@ -74,6 +75,15 @@ describe('Product Inventory Effects', () => {
       const completion = productInventoryInternalActions.loadProductInventory({ skus: ['P123'] });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadProductInventoryAfterProductSuccess$).toBeObservable(expected$);
+    });
+
+    it('should not dispatch loadProductInventory when a product has completenessLevel Base', () => {
+      const product = { sku: 'P123', completenessLevel: ProductCompletenessLevel.Base };
+      const action = loadProductSuccess({ product });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-----');
 
       expect(effects.loadProductInventoryAfterProductSuccess$).toBeObservable(expected$);
     });
