@@ -144,7 +144,7 @@
     "@types/webpack": "^5.28.5",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
-    "axios": "^1.13.4",
+    "axios": "^1.13.5",
     "better-npm-audit": "^3.11.0",
     "comment-json": "^4.5.1",
     "conventional-changelog-cli": "^4.1.0",
@@ -192,7 +192,10 @@
     "xliff": "^6.3.0"
   },
   "overrides": {
-    "semver": "^7.7.3"
+    "semver": "^7.7.3",
+    "localtunnel": {
+      "axios": "^0.30.3"
+    }
   },
   "lint-staged": {
     "docs/**/*.md": [
