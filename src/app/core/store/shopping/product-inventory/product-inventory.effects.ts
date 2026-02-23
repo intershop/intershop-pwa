@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { debounceTime, filter, map, mergeMap, toArray, window } from 'rxjs/operators';
 
+import { ProductCompletenessLevel } from 'ish-core/models/product/product.helper';
 import { InventoryService } from 'ish-core/services/inventory/inventory.service';
 import { loadProductSuccess } from 'ish-core/store/shopping/products/products.actions';
 import { mapToPayloadProperty, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
@@ -40,6 +41,7 @@ export class ProductInventoryEffects {
     this.actions$.pipe(
       ofType(loadProductSuccess),
       mapToPayloadProperty('product'),
+      filter(product => product?.completenessLevel !== ProductCompletenessLevel.Base),
       mapToProperty('sku'),
       whenTruthy(),
       map(sku => productInventoryInternalActions.loadProductInventory({ skus: [sku] }))
