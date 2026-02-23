@@ -113,6 +113,17 @@ The new implementation is fully backward compatible and offers additional improv
 - DOM-aware loading: Before creating a new script element, the service checks whether the script already exists in the DOM and marks it as loaded immediately.
 - Namespace-based caching: Scripts with a `data-namespace` attribute use the namespace value as cache key instead of the URL. This prevents re-loading scripts with dynamic URLs (e.g., PayPal SDK with changing locale/currency parameters).
 
+**SPARQUE Multi-Site configuration `features` format**
+
+The format to define the enabled SPARQUE features via [Multi-Site configuration](./sparque-ai.md#multi-site-configurations) was changed and needs to be adapted in the according deployment configuration files.
+This is only relevant for the Multi-Site configuration, for the other configuration options the Array notation stays the same.
+
+```yaml
+  sparque:
+    ...
+    features: search,suggestions,recommendations
+```
+
 ## From 9.0.0 to 9.1.0
 
 Catalogs (root-level categories in ICM terminology) with _Show In Menu_ being disabled are now hidden from the main header navigation.
