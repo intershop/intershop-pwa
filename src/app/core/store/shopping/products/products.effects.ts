@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
-import { Store, select } from '@ngrx/store';
+import { Action, Store, select } from '@ngrx/store';
 import { combineLatest, from, identity } from 'rxjs';
 import {
   concatMap,
@@ -199,38 +199,43 @@ export class ProductsEffects {
               .getFilteredProducts(searchParameter, pageSize, sorting, ((page || 1) - 1) * pageSize)
               .pipe(
                 concatLatestFrom(() => this.productsServiceProvider.isSparqueSearchEnabled()),
-                mergeMap(([{ products, total, filter, sortableAttributes }, isSparque]) => [
-                  ...products.map((product: Product) => loadProductSuccess({ product })),
-                  setProductListingPages(
-                    this.productListingMapper.createPages(
-                      products.map(p => p.sku),
-                      id.type,
-                      id.value,
-                      pageSize,
-                      {
-                        filters: id.filters,
-                        itemCount: total,
-                        startPage: page,
-                        sortableAttributes,
-                        sorting,
-                      }
-                    )
-                  ),
-                  isSparque
-                    ? filter?.length
-                      ? loadFilterSuccess({
-                          filterNavigation: {
-                            filter: this.handleSparqueCategoryFilter(filter, categoryFilter, searchParameter),
-                          },
-                        })
-                      : // in case no filter is returned filter state must contain at least the filters from the search parameter
-                        loadFilterSuccess({
-                          filterNavigation: {
-                            filter: this.getSelectedFilter(searchParameter, products?.length || 0),
-                          },
-                        })
-                    : { type: 'no_filter_action' },
-                ]),
+                mergeMap(([{ products, total, filter, sortableAttributes }, isSparque]) => {
+                  const actions: Action[] = [
+                    ...products.map((product: Product) => loadProductSuccess({ product })),
+                    setProductListingPages(
+                      this.productListingMapper.createPages(
+                        products.map(p => p.sku),
+                        id.type,
+                        id.value,
+                        pageSize,
+                        {
+                          filters: id.filters,
+                          itemCount: total,
+                          startPage: page,
+                          sortableAttributes,
+                          sorting,
+                        }
+                      )
+                    ),
+                  ];
+                  if (isSparque) {
+                    actions.push(
+                      filter?.length
+                        ? loadFilterSuccess({
+                            filterNavigation: {
+                              filter: this.handleSparqueCategoryFilter(filter, categoryFilter, searchParameter),
+                            },
+                          })
+                        : // in case no filter is returned filter state must contain at least the filters from the search parameter
+                          loadFilterSuccess({
+                            filterNavigation: {
+                              filter: this.getSelectedFilter(searchParameter, products?.length || 0),
+                            },
+                          })
+                    );
+                  }
+                  return actions;
+                }),
                 mapErrorToAction(loadProductFail)
               )
           )
