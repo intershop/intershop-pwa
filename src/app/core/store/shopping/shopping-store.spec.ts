@@ -314,7 +314,6 @@ describe('Shopping Store', () => {
             id: {"type":"search","value":"something"}
             itemCount: 2
             sortableAttributes: []
-          no_filter_action
           [Filter API] Load Filter Success:
             filterNavigation: {}
           [Product Inventory Internal] Load Product Inventory:
@@ -563,7 +562,6 @@ describe('Shopping Store', () => {
             id: {"type":"search","value":"something"}
             itemCount: 2
             sortableAttributes: []
-          no_filter_action
           [Filter API] Load Filter Success:
             filterNavigation: {}
           [Product Inventory Internal] Load Product Inventory:
@@ -967,7 +965,6 @@ describe('Shopping Store', () => {
           id: {"type":"search","value":"something"}
           itemCount: 2
           sortableAttributes: []
-        no_filter_action
         [Filter API] Load Filter Success:
           filterNavigation: {}
         [Product Inventory Internal] Load Product Inventory:

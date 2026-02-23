@@ -93,7 +93,7 @@ export class SearchEffects {
                 this.router.navigate([generateProductUrl(products[0])]);
               }
               // provide the data for the search result page
-              return [
+              const actions: Action[] = [
                 ...products.map(product => loadProductSuccess({ product })),
                 setProductListingPages(
                   this.productListingMapper.createPages(
@@ -109,8 +109,11 @@ export class SearchEffects {
                     }
                   )
                 ),
-                filter?.length ? loadFilterSuccess({ filterNavigation: { filter } }) : { type: 'no_filter_action' },
               ];
+              if (filter?.length) {
+                actions.push(loadFilterSuccess({ filterNavigation: { filter } }));
+              }
+              return actions;
             }),
             mapErrorToAction(searchProductsFail)
           )
