@@ -1,11 +1,12 @@
 import {
   ApplicationRef,
   DestroyRef,
+  EnvironmentInjector,
+  EnvironmentProviders,
   Injectable,
   InjectionToken,
-  Injector,
-  Type,
-  createNgModule,
+  Provider,
+  createEnvironmentInjector,
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -16,16 +17,20 @@ import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle
 import { getFeatures } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-declare interface LazyModuleType {
+export interface LazyFeatureProviderType {
   feature: FeatureToggleType;
-  location(): Promise<Type<unknown>>;
+  providers(): Promise<EnvironmentProviders | (Provider | EnvironmentProviders)[]>;
 }
 
-export const LAZY_FEATURE_MODULE = new InjectionToken<LazyModuleType>('lazyModule');
+export const LAZY_FEATURE_PROVIDER = new InjectionToken<LazyFeatureProviderType>('lazyFeatureProvider');
+
+// TODO: remove alias after all feature registrations switched to LAZY_FEATURE_PROVIDER.
+export const LAZY_FEATURE_MODULE = LAZY_FEATURE_PROVIDER;
 
 @Injectable({ providedIn: 'root' })
 export class ModuleLoaderService {
-  private loadedModules: Type<unknown>[] = [];
+  private loadedFeatures: LazyFeatureProviderType[] = [];
+  private loadedInjectors: EnvironmentInjector[] = [];
 
   private destroyRef = inject(DestroyRef);
 
@@ -35,7 +40,7 @@ export class ModuleLoaderService {
     private appRef: ApplicationRef
   ) {}
 
-  init(injector: Injector) {
+  init(injector: EnvironmentInjector) {
     this.store
       .pipe(
         select(getFeatures),
@@ -44,14 +49,18 @@ export class ModuleLoaderService {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
-        const lazyModules = injector.get<LazyModuleType[]>(LAZY_FEATURE_MODULE, []);
-        lazyModules
-          .filter(mod => this.featureToggleService.enabled(mod.feature))
-          .forEach(async mod => {
-            const loaded = await mod.location();
-            if (!this.loadedModules.includes(loaded)) {
-              createNgModule(loaded, injector);
-              this.loadedModules.push(loaded);
+        const lazyFeatures = injector.get<LazyFeatureProviderType[]>(LAZY_FEATURE_PROVIDER, []);
+        lazyFeatures
+          .filter(feature => this.featureToggleService.enabled(feature.feature))
+          .forEach(async feature => {
+            if (!this.loadedFeatures.includes(feature)) {
+              const providers = await feature.providers();
+              const environmentInjector = createEnvironmentInjector(
+                Array.isArray(providers) ? providers : [providers],
+                injector
+              );
+              this.loadedFeatures.push(feature);
+              this.loadedInjectors.push(environmentInjector);
             }
           });
       });

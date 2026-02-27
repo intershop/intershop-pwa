@@ -3,8 +3,8 @@ import {
   APP_ID,
   APP_INITIALIZER,
   ApplicationConfig,
+  EnvironmentInjector,
   EnvironmentProviders,
-  Injector,
   TransferState,
   importProvidersFrom,
 } from '@angular/core';
@@ -29,16 +29,20 @@ import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.
 
 import { environment } from '../environments/environment';
 
-import { CompareExportsModule } from './extensions/compare/exports/compare-exports.module';
-import { CopilotExportsModule } from './extensions/copilot/exports/copilot-exports.module';
-import { OrderTemplatesExportsModule } from './extensions/order-templates/exports/order-templates-exports.module';
-import { ProductNotificationsExportsModule } from './extensions/product-notifications/exports/product-notifications-exports.module';
-import { QuickorderExportsModule } from './extensions/quickorder/exports/quickorder-exports.module';
-import { RecentlyStoreModule } from './extensions/recently/store/recently-store.module';
-import { SeoExportsModule } from './extensions/seo/exports/seo-exports.module';
-import { StoreLocatorExportsModule } from './extensions/store-locator/exports/store-locator-exports.module';
-import { TrackingExportsModule } from './extensions/tracking/exports/tracking-exports.module';
-import { WishlistsExportsModule } from './extensions/wishlists/exports/wishlists-exports.module';
+import { provideAddressDoctorFeature } from './extensions/address-doctor/address-doctor-feature.providers';
+import { provideCaptchaFeature } from './extensions/captcha/captcha-feature.providers';
+import { provideCompareFeature } from './extensions/compare/compare-feature.providers';
+import { provideCopilotFeature } from './extensions/copilot/copilot-feature.providers';
+import { provideOrderTemplatesFeature } from './extensions/order-templates/order-templates-feature.providers';
+import { provideProductNotificationsFeature } from './extensions/product-notifications/product-notifications-feature.providers';
+import { providePunchoutFeature } from './extensions/punchout/punchout-feature.providers';
+import { provideQuotingFeature } from './extensions/quoting/quoting-feature.providers';
+import { provideRatingFeature } from './extensions/rating/rating-feature.providers';
+import { provideRecentlyFeature } from './extensions/recently/recently-feature.providers';
+import { provideSeoFeature } from './extensions/seo/seo-feature.providers';
+import { provideStoreLocatorFeature } from './extensions/store-locator/store-locator-feature.providers';
+import { provideTrackingFeature } from './extensions/tracking/tracking-feature.providers';
+import { provideWishlistsFeature } from './extensions/wishlists/wishlists-feature.providers';
 import { appLastRoutes, appRoutes } from './pages/app-routing.module';
 
 function initializeCookieConsent(transferState: TransferState) {
@@ -49,7 +53,7 @@ function initializeCookieConsent(transferState: TransferState) {
   };
 }
 
-function initializeModuleLoader(moduleLoader: ModuleLoaderService, injector: Injector) {
+function initializeModuleLoader(moduleLoader: ModuleLoaderService, injector: EnvironmentInjector) {
   return () => {
     moduleLoader.init(injector);
   };
@@ -83,28 +87,30 @@ export const appConfig: ApplicationConfig = {
     {
       provide: APP_INITIALIZER,
       useFactory: initializeModuleLoader,
-      deps: [ModuleLoaderService, Injector],
+      deps: [ModuleLoaderService, EnvironmentInjector],
       multi: true,
     },
     // Import providers from existing NgModules during migration
-    // Extension export modules must be imported to register LAZY_FEATURE_MODULE providers
     importProvidersFrom(
       CoreModule,
       StateManagementModule,
       // Formly root providers must be registered once globally
-      FormlyBaseModule.forRoot(),
-      // Recently feature store is needed on product pages for recently viewed tracking
-      RecentlyStoreModule,
-      CopilotExportsModule,
-      CompareExportsModule,
-      OrderTemplatesExportsModule,
-      ProductNotificationsExportsModule,
-      QuickorderExportsModule,
-      SeoExportsModule,
-      StoreLocatorExportsModule,
-      TrackingExportsModule,
-      WishlistsExportsModule
+      FormlyBaseModule.forRoot()
     ),
+    ...provideAddressDoctorFeature(),
+    ...provideCaptchaFeature(),
+    ...provideCopilotFeature(),
+    ...provideCompareFeature(),
+    ...provideOrderTemplatesFeature(),
+    ...providePunchoutFeature(),
+    ...provideProductNotificationsFeature(),
+    ...provideQuotingFeature(),
+    ...provideRatingFeature(),
+    ...provideRecentlyFeature(),
+    ...provideSeoFeature(),
+    ...provideStoreLocatorFeature(),
+    ...provideTrackingFeature(),
+    ...provideWishlistsFeature(),
     ...provideFeatureStores(),
   ],
 };
