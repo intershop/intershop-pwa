@@ -95,7 +95,7 @@ export class OrderService {
       );
   }
 
-  continueOrderCreation(orderId: string, status: string): Observable<Order> {
+  continueOrderCreation(orderId: string): Observable<Order> {
     const params = new HttpParams().set('include', this.allOrderIncludes.join());
 
     if (!orderId) {
@@ -105,7 +105,7 @@ export class OrderService {
     return this.apiService
       .patch<OrderData>(
         `orders/${orderId}`,
-        { orderCreation: { status } },
+        { orderCreation: { status: 'CONTINUE' } },
         {
           headers: this.orderHeaders,
           params,

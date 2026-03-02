@@ -15,14 +15,9 @@ export const createOrderSuccess = createAction(
   payload<{ order: Order; basketId: string }>()
 );
 
-export const continueOrderCreation = createAction(
+export const paypalOrderCreation = createAction(
   '[Orders Internal] Continue Order Creation',
-  payload<{ orderId: string; status: string }>()
-);
-
-export const rollbackOrderCreation = createAction(
-  '[Orders Internal] Roll Back Order Creation',
-  payload<{ orderId: string; status: string }>()
+  payload<{ orderId?: string }>()
 );
 
 export const loadOrders = createAction('[Orders] Load Orders', payload<{ query: OrderListQuery }>());

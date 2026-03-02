@@ -855,6 +855,7 @@
   "checkout.credit_card.number.error.length": "Die Kreditkartennummer sollte eine Länge von 13 bis 16 Zeichen haben. Bitte korrigieren Sie die Kreditkartennummer.",
   "checkout.credit_card.number.error.notNumber": "Die Kreditkartennummer sollte nur Zahlenwerte enthalten. Bitte korrigieren Sie die Kreditkartennummer.",
   "checkout.credit_card.number.label": "Kartennummer",
+  "checkout.credit_card.invalid.error": "Ihre Karte ist ungültig. Bitte wählen Sie eine andere Kreditkarte aus.",
   "checkout.credit_card.security_code.error.required": "Geben Sie die Prüfnummer ein.",
   "checkout.credit_card.type.label": "Kartentyp",
   "checkout.credit_card.user.firstname.missing.error": "Bitte geben Sie den Vornamen des Karteninhabers an.",

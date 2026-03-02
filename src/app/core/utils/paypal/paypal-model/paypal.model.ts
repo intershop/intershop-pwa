@@ -162,7 +162,7 @@ export interface PaypalComponent {
   /** Creates PayPal hosted card input fields */
   CardFields?(options?: unknown): PaypalCardFieldsComponent;
   /** Creates PayPal Google Pay component */
-  Googlepay?(): PaypalGooglePayComponent;
+  Googlepay?(options?: unknown): PaypalGooglePayComponent;
   /** Creates PayPal Apple Pay component */
   Applepay?(): PaypalApplePayComponent;
 }
@@ -171,7 +171,7 @@ export interface PaypalComponent {
  * PayPal Google Pay component interface.
  * Provides methods to configure, confirm orders, and handle 3D Secure authentication.
  */
-export interface PaypalGooglePayComponent {
+export interface PaypalGooglePayComponent extends PaypalComponentBasics {
   /** Fetches the Google Pay configuration from PayPal */
   config(): Promise<GooglePayConfig>;
   /** Confirms the order with PayPal after Google Pay authorization */

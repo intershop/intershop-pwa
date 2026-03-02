@@ -320,6 +320,11 @@ export const updatePaypalCreditCardPaymentInstrument = createAction(
   payload<{ paymentInstrument: PaymentInstrument }>()
 );
 
+export const emitPaypalOrderAuthorizationResult = createAction(
+  '[Basket Internal] Emit Paypal Authorization Result',
+  payload<{ status: 'SUCCESS' | 'ERROR'; intent: string; message: string }>()
+);
+
 export const updatePaymentInstrument = createAction(
   '[Basket Internal] Update Payment Instrument',
   payload<{ paymentInstrument: PaymentInstrument }>()

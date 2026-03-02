@@ -8,6 +8,7 @@ import { instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
@@ -23,6 +24,7 @@ import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket
 import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { BasketCustomFieldsViewComponent } from 'ish-shared/components/checkout/basket-custom-fields-view/basket-custom-fields-view.component';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
@@ -37,9 +39,11 @@ describe('Checkout Review Component', () => {
   let fixture: ComponentFixture<CheckoutReviewComponent>;
   let element: HTMLElement;
   let appFacade: AppFacade;
+  let checkoutFacade: CheckoutFacade;
 
   beforeEach(async () => {
     appFacade = mock(AppFacade);
+    checkoutFacade = mock(CheckoutFacade);
     await TestBed.configureTestingModule({
       declarations: [
         CheckoutReviewComponent,
@@ -53,6 +57,7 @@ describe('Checkout Review Component', () => {
         MockComponent(BasketMerchantMessageViewComponent),
         MockComponent(BasketShippingMethodComponent),
         MockComponent(BasketValidationResultsComponent),
+        MockComponent(ErrorMessageComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
         MockComponent(ModalDialogLinkComponent),
@@ -60,7 +65,10 @@ describe('Checkout Review Component', () => {
         MockDirective(ServerHtmlDirective),
         MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
       ],
-      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
+      providers: [
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+      ],
       imports: [
         FeatureToggleModule.forTesting(),
         FormlyModule.forRoot({
@@ -78,6 +86,8 @@ describe('Checkout Review Component', () => {
     element = fixture.nativeElement;
 
     when(appFacade.serverSetting$<boolean>('basket.termsAndConditions')).thenReturn(of(true));
+    when(checkoutFacade.basket$).thenReturn(of(BasketMockData.getBasket()));
+    when(checkoutFacade.eligiblePaymentMethods$()).thenReturn(of([]));
     component.basket = { ...BasketMockData.getBasket(), costCenter: 'CC123' };
   });
 
@@ -156,6 +166,8 @@ describe('Checkout Review Component', () => {
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       [
         "ish-modal-dialog-link",
+        "ish-error-message",
+        "ish-basket-error-message",
         "ish-basket-validation-results",
         "ish-basket-merchant-message-view",
         "ish-info-box",

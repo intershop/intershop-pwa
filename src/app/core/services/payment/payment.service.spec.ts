@@ -145,9 +145,9 @@ describe('Payment Service', () => {
           {
             "paymentInstrument": "testPayment",
             "redirect": {
-              "cancelUrl": "http://localhost//checkout/payment;lang=en_US?redirect=cancel",
-              "failureUrl": "http://localhost//checkout/payment;lang=en_US?redirect=failure",
-              "successUrl": "http://localhost//checkout/review;lang=en_US?redirect=success",
+              "cancelUrl": "http://localhost/checkout/payment;lang=en_US?redirect=cancel",
+              "failureUrl": "http://localhost/checkout/payment;lang=en_US?redirect=failure",
+              "successUrl": "http://localhost/checkout/review;lang=en_US?redirect=success",
             },
           }
         `);

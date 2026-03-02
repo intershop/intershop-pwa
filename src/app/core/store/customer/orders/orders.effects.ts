@@ -14,9 +14,9 @@ import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { continueCheckoutWithIssues, getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import { PaypalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 
 import {
-  continueOrderCreation,
   createOrder,
   createOrderFail,
   createOrderSuccess,
@@ -28,7 +28,7 @@ import {
   loadOrders,
   loadOrdersFail,
   loadOrdersSuccess,
-  rollbackOrderCreation,
+  paypalOrderCreation,
   selectOrder,
   selectOrderAfterRedirect,
   selectOrderAfterRedirectFail,
@@ -40,6 +40,7 @@ export class OrdersEffects {
   constructor(
     private actions$: Actions,
     private orderService: OrderService,
+    private paypalDataTransferService: PaypalDataTransferService,
     private router: Router,
     private store: Store,
     private translateService: TranslateService
@@ -61,31 +62,40 @@ export class OrdersEffects {
     )
   );
 
-  continueOrderCreation = createEffect(() =>
+  paypalOrderCreation$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(continueOrderCreation),
+      ofType(paypalOrderCreation),
       mapToPayload(),
       concatLatestFrom(() => this.store.pipe(select(getCurrentBasketId))),
-      switchMap(([payload, basketId]) =>
-        this.orderService.continueOrderCreation(payload.orderId, payload.status).pipe(
-          map(order => createOrderSuccess({ order, basketId })),
-          mapErrorToAction(createOrderFail)
-        )
-      )
-    )
-  );
-
-  rollbackOrderCreation = createEffect(() =>
-    this.actions$.pipe(
-      ofType(rollbackOrderCreation),
-      mapToPayload(),
-      concatLatestFrom(() => this.store.pipe(select(getCurrentBasketId))),
-      switchMap(([payload, basketId]) =>
-        this.orderService.continueOrderCreation(payload.orderId, payload.status).pipe(
-          map(order => createOrderSuccess({ order, basketId })),
-          mapErrorToAction(createOrderFail)
-        )
-      )
+      switchMap(([payload, basketId]) => {
+        if (!payload.orderId) {
+          return this.orderService.createOrder(basketId, true).pipe(
+            switchMap(order => {
+              this.paypalDataTransferService.emitPaypalOrderData({
+                orderId: order.id,
+                paypalOrderId:
+                  order.orderCreation.redirect?.parameters.find(p => p.name === 'PayPalOrderID')?.value || '',
+              });
+              return EMPTY;
+            }),
+            mapErrorToAction(createOrderFail)
+          );
+        } else {
+          return this.orderService.continueOrderCreation(payload.orderId).pipe(
+            map(order => {
+              if (order.payment.capabilities.includes('PaypalAlternativeWallet')) {
+                this.paypalDataTransferService.emitPaypalOrderAuthorizationResult({
+                  status: order.orderCreation?.status === 'COMPLETED' ? 'SUCCESS' : 'ERROR',
+                  message: order.orderCreation?.status === 'COMPLETED' ? 'TRANSACTION FAILED' : '',
+                  intent: order.orderCreation?.status === 'COMPLETED' ? 'PAYMENT_AUTHORIZATION' : '',
+                });
+              }
+              return createOrderSuccess({ order, basketId });
+            }),
+            mapErrorToAction(createOrderFail)
+          );
+        }
+      })
     )
   );
 

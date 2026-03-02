@@ -71,12 +71,7 @@ import {
   updateConcardisCvcLastUpdated,
   updatePaypalCreditCardPaymentInstrument,
 } from 'ish-core/store/customer/basket';
-import {
-  continueOrderCreation,
-  getOrdersError,
-  getSelectedOrder,
-  rollbackOrderCreation,
-} from 'ish-core/store/customer/orders';
+import { getOrdersError, getSelectedOrder, paypalOrderCreation } from 'ish-core/store/customer/orders';
 import { getRecurringOrder } from 'ish-core/store/customer/recurring-orders';
 import { getLoggedInUser, getUserCostCenters, loadUserCostCenters } from 'ish-core/store/customer/user';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
@@ -109,12 +104,8 @@ export class CheckoutFacade {
     this.store.dispatch(submitOrder());
   }
 
-  continueOrderCreation(orderId: string) {
-    this.store.dispatch(continueOrderCreation({ orderId, status: 'CONTINUE' }));
-  }
-
-  rollbackOrderCreation(orderId: string) {
-    this.store.dispatch(rollbackOrderCreation({ orderId, status: 'ROLLED_BACK' }));
+  paypalOrderCreation(orderId?: string) {
+    this.store.dispatch(paypalOrderCreation({ orderId }));
   }
 
   continue(targetStep: CheckoutStepType) {

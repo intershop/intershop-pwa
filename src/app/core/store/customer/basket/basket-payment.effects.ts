@@ -25,6 +25,7 @@ import {
   deleteBasketPaymentFail,
   deleteBasketPaymentSuccess,
   deletePaypalCreditCardBasketPayment,
+  emitPaypalOrderAuthorizationResult,
   emitPaypalOrderId,
   loadBasket,
   loadBasketEligiblePaymentMethods,
@@ -164,6 +165,26 @@ export class BasketPaymentEffects {
           this.paypalDataTransferService.emitPaypalOrderData({
             orderId: payload.orderId,
             paymentInstrumentId: payload.paymentInstrumentId,
+          });
+          return EMPTY;
+        })
+      ),
+    { dispatch: false }
+  );
+
+  /**
+   * Transfer PayPal order data after successful order ID retrieval.
+   */
+  emitPaypalOrderAuthorization$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(emitPaypalOrderAuthorizationResult),
+        mapToPayload(),
+        concatMap(payload => {
+          this.paypalDataTransferService.emitPaypalOrderAuthorizationResult({
+            status: payload.status,
+            intent: payload.intent,
+            message: payload.message,
           });
           return EMPTY;
         })
