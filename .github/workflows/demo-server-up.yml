@@ -36,7 +36,7 @@ jobs:
           serviceWorker: false
           displayVersion: ${{ github.sha }}
           testing: true
-          NODE_OPTIONS: --max_old_space_size=8192
+          NODE_OPTIONS: --max-old-space-size=8192
         with:
           name: intershop-pwa-ssr
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
