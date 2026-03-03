@@ -29,7 +29,7 @@
       <option value="default" [selected]="sortBy === 'default'">
         {{ 'product.items.sorting.default.label' | translate }}
       </option>
-      @for (o of sortOptions; track o) {
+      @for (o of sortOptions; track o.value) {
       <option [value]="o.value" [selected]="o.value === sortBy">{{ o.label }}</option>
       }
     </select>

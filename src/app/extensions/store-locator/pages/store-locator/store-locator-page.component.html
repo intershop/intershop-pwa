@@ -31,7 +31,7 @@
 </p>
 <ng-container *ishNotFeature="'maps'">
   <div class="row">
-    @for (store of stores$ | async; track store) {
+    @for (store of stores$ | async; track store.id) {
     <div class="col-md-4 col-xs-12 col-sm-6">
       <ish-store-address [store]="store" />
     </div>
@@ -42,7 +42,7 @@
   <div class="row">
     <div class="col-3 pe-0 overflow-auto d-none d-lg-block map-height">
       <ish-skip-content-link skipToElementId="store-locator-map" />
-      @for (store of stores$ | async; track store) {
+      @for (store of stores$ | async; track store.id) {
       <div
         class="store-entry"
         (click)="highlight(store)"
@@ -63,7 +63,7 @@
     <!-- Tablet/Mobile -->
     <div class="col-12 d-lg-none">
       <div class="row container p-0">
-        @for (store of stores$ | async; track store) {
+        @for (store of stores$ | async; track store.id) {
         <div
           class="col-md-4 col-sm-6 col-xs-12 store-entry"
           (click)="highlight(store)"

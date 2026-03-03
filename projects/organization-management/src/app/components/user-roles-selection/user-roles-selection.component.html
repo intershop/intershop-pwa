@@ -5,8 +5,8 @@
     <div class="col-md-8">
       @if (form$ | async; as form) {
       <div class="row" [formGroup]="form">
-        @for (item of form.controls | keyvalue : unsorted; track item; let i = $index) { @if (role$(item.key) | async;
-        as role) {
+        @for (item of form.controls | keyvalue : unsorted; track item.key; let i = $index) { @if (role$(item.key) |
+        async; as role) {
         <div [ngClass]="{ 'd-none': hideRole(form.get(item.key)) }" class="col-12">
           <div class="form-control-checkbox">
             <div class="form-check form-control">

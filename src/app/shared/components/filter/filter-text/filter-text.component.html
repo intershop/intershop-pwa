@@ -1,5 +1,5 @@
 <ul class="filter-list" [id]="filterElement.id">
-  @for (facet of getFacets(); track facet) {
+  @for (facet of getFacets(); track facet.name) {
   <li class="filter-item filter-layer{{ facet.level }}" [ngClass]="{ 'filter-selected': facet.selected }">
     <!-- selected -->
     @if (facet.selected) {

@@ -1,5 +1,5 @@
 @if (visible$ | async) { @if (variationOptions$ | async; as variationOptions) { @for (group of variationOptions; track
-group) {
+group.id) {
 <div class="product-variation">
   <div class="form-group">
     <label [for]="uuid + group.id" [id]="uuid + group.id + 'label'" class="col-form-label">{{ group.label }}</label>

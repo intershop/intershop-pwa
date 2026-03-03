@@ -11,9 +11,9 @@
         @for (slidePagelets of pageletSlides; track slidePagelets) {
         <ng-template ngbSlide>
           <div class="row">
-            @for (slidePagelet of slidePagelets; track slidePagelet) {
+            @for (slidePageletId of slidePagelets; track slidePageletId) {
             <div [ngClass]="'col-sm-' + itemGridSize">
-              <ish-content-pagelet [pageletId]="slidePagelet" />
+              <ish-content-pagelet [pageletId]="slidePageletId" />
             </div>
             }
           </div>

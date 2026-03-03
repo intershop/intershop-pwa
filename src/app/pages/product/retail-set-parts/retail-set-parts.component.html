@@ -2,7 +2,7 @@
 <div class="retail-product-list">
   <h2 class="h3">{{ 'product.retailSet.products.heading' | translate }}</h2>
   <div class="product-list row">
-    @for (part of parts$ | async; track part; let i = $index) { @if (displayType === 'tile') {
+    @for (part of parts$ | async; track part.sku; let i = $index) { @if (displayType === 'tile') {
     <div class="col-6 col-lg-4 product-list-item grid-view">
       <ish-product-item
         displayType="tile"

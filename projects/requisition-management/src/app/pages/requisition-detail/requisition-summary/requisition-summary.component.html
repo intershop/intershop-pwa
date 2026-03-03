@@ -35,7 +35,9 @@
         } @if (view === 'buyer') { @if (requisition.approval?.statusCode !== 'PENDING') {
         <dt class="col-6">{{ 'approval.detailspage.approver.label' | translate : { '0': customerApproverCount } }}</dt>
         <dd class="col-6">
-          @for (approver of uniqueApprovers; track approver; let i = $index) { @if (i > 0) {, }{{ approver.firstName }}
+          @for (approver of uniqueApprovers; track approver.email; let i = $index) { @if (i > 0) {, }{{
+            approver.firstName
+          }}
           {{ approver.lastName }}
           }
         </dd>
@@ -44,9 +46,8 @@
         <!-- prettier-ignore -->
         <dt class="col-6">{{ 'approval.detailspage.buyer.approver.label' | translate: { '0': customerApproverCount } }}</dt>
         <dd class="col-6">
-          <!-- prettier-ignore -->
-          @for (approver of requisition.approval?.customerApproval?.approvers; track approver; let i = $index)
-          {@if (i > 0) {, }{{ approver.firstName }} {{ approver.lastName }}} @if
+          @for (approver of requisition.approval?.customerApproval?.approvers; track approver.email; let i = $index) {
+          @if (i > 0) {, }{{ approver.firstName }} {{ approver.lastName }}} @if
           (requisition.approval?.customerApproval?.statusCode === 'APPROVED') {
           <fa-icon [icon]="['fas', 'check']" class="ps-3 text-success" />
           }

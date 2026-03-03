@@ -23,7 +23,7 @@
 {{ 'checkout.payment.method.charges.text' | translate }}
 &nbsp;
 {{ paymentMethod.paymentCosts | ishPrice }}
-&nbsp; @for (restriction of paymentMethod.restrictionCauses; track restriction) {
+&nbsp; @for (restriction of paymentMethod.restrictionCauses; track restriction.code) {
 <p class="text-info" data-testing-id="basket-payment-restriction-information">
   {{ restriction.message }}
 </p>

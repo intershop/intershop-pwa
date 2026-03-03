@@ -27,12 +27,12 @@
   @if (savedPaymentMethods?.length || standardPaymentMethods?.length) {
   <div class="payment-methods">
     <h2 class="h3">{{ 'account.payment.further_payments.heading' | translate }}</h2>
-    @for (method of savedPaymentMethods; track method) {
+    @for (method of savedPaymentMethods; track method.id) {
     <div class="panel section" data-testing-id="paymentMethodList">
       <div class="fw-bold">
         {{ method.displayName }}
       </div>
-      @for (payment of method.paymentInstruments; track payment) {
+      @for (payment of method.paymentInstruments; track payment.id) {
       <div class="row">
         <ng-container *ngTemplateOutlet="paymentWidget; context: { pi: payment, isPreferred: false }" />
       </div>
@@ -43,7 +43,7 @@
       <p class="fw-bold">
         {{ 'account.payment.standard_methods' | translate }}
       </p>
-      @for (method of standardPaymentMethods; track method) {
+      @for (method of standardPaymentMethods; track method.id) {
       <div class="pb-2">
         <input
           type="radio"

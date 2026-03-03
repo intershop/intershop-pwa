@@ -7,7 +7,7 @@
     @if ((loading$ | async) !== true) {
     <div class="pb-2">
       @if (orderTemplates$ | async; as orderTemplates) { @if (orderTemplates.length) { @for (orderTemplate of
-      orderTemplates; track orderTemplate) {
+      orderTemplates; track orderTemplate.id) {
       <div class="mb-2">
         <a [routerLink]="['/account/order-templates/', orderTemplate.id]">{{ orderTemplate.title }}</a>
         @if (orderTemplate.items?.length) {

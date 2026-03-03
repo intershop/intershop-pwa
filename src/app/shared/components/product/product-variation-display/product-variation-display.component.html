@@ -1,5 +1,5 @@
 @if (visible$ | async) { @if (product$ | async; as product) { @for (attr of product.variableVariationAttributes; track
-attr) {
+attr.variationAttributeId) {
 <div class="product-variation read-only">
   <span class="product-variation-info span-separator">{{ attr.name }}</span>
   <span>{{ attr | ishVariationAttribute }}</span>

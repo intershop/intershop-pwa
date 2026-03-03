@@ -1,7 +1,7 @@
 <ish-content-design-view-wrapper [slotId]="slot" [pagelet]="pagelet">
   @if (wrapper) {
   <ng-content />
-  } @else { @for (pagelet of pagelet.slot(slot).pageletIDs; track pagelet) {
-  <ish-content-pagelet [pageletId]="pagelet" />
+  } @else { @for (pageletId of pagelet.slot(slot).pageletIDs; track pageletId) {
+  <ish-content-pagelet [pageletId]="pageletId" />
   } }
 </ish-content-design-view-wrapper>

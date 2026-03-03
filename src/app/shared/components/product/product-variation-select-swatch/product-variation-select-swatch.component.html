@@ -1,5 +1,5 @@
 <ul>
-  @for (option of group.options; track option) {
+  @for (option of group.options; track option.value) {
   <li [ngClass]="{ selected: option.active }">
     <a
       (click)="optionChange(group.id, option.value)"

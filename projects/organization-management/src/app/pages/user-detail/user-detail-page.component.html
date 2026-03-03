@@ -48,7 +48,7 @@
     <h2 class="h3">{{ 'account.user.details.profile.role_permissions.heading' | translate }}</h2>
     <div class="row">
       <div class="col-md-12" data-testing-id="user-roles-fields">
-        @for (role of roles$ | async; track role) {
+        @for (role of roles$ | async; track role.id) {
         <dl class="row dl-horizontal dl-separator">
           <dt class="col-md-4">{{ role.displayName }}</dt>
           <dd class="col-md-8">

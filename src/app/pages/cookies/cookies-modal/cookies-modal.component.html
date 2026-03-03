@@ -5,7 +5,7 @@
   </div>
 
   <div class="modal-body">
-    @for (option of cookieConsentOptions?.options | keyvalue : unsorted; track option) {
+    @for (option of cookieConsentOptions?.options | keyvalue : unsorted; track $index) {
     <div class="cookie-option">
       <label class="mb-2">
         <input

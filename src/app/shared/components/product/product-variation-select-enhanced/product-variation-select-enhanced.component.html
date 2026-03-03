@@ -2,12 +2,12 @@
 @if ((deviceType$ | async) === 'desktop') {
 <div ngbDropdown>
   <button ngbDropdownToggle type="button" class="btn variation-select" [id]="uuid + group.id">
-    @for (option of group.options; track option) { @if (option.active) {
+    @for (option of group.options; track option.value) { @if (option.active) {
     <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }" />
     } }
   </button>
   <div ngbDropdownMenu class="variation-options" [attr.aria-labelledby]="uuid + group.id + 'label'">
-    @for (option of group.options; track option) { @if (!option.alternativeCombination || multipleOptions) {
+    @for (option of group.options; track option.value) { @if (!option.alternativeCombination || multipleOptions) {
     <button
       ngbDropdownItem
       type="button"
@@ -23,7 +23,7 @@
 } @else {
 <!-- mobile/tablet: display a list of color codes or swatch images with labels -->
 <div class="mobile-variation-select">
-  @for (option of group.options; track option) {
+  @for (option of group.options; track option.value) {
   <div class="mobile-variation-option">
     <button type="button" class="btn btn-link btn-link-action" (click)="optionChange(group.id, option.value)">
       <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }" />

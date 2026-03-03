@@ -3,7 +3,7 @@
     @if ((loading$ | async) !== true) {
     <div>
       @if (costCenters$ | async; as costCenters) { @if (costCenters.length) { @for (cc of costCenters$ | async; track
-      cc) {
+      cc.id) {
 
       <div class="row mt-0 mb-3">
         <div class="col-12 col-md-5">

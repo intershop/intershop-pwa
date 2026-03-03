@@ -56,7 +56,7 @@
             data-testing-id="requisiton-link"
             >{{ recurringOrder.documentNo }}</a
           ><br />
-          (@for (approval of recurringOrder.approvalStatuses; track approval; let last = $last) {
+          (@for (approval of recurringOrder.approvalStatuses; track approval.approver.email; let last = $last) {
           {{
             'account.recurring_order.details.approved.text'
               | translate
@@ -110,7 +110,7 @@
       <dl class="row dl-horizontal dl-separator">
         <dt class="col-6">{{ 'account.recurring_order.details.last_placed_orders.label' | translate }}</dt>
         <dd class="col-6">
-          @for (order of recurringOrder.lastPlacedOrders; track order) {
+          @for (order of recurringOrder.lastPlacedOrders; track order.id) {
           <div>
             <a [routerLink]="['/account/orders', order.id]">{{ order.documentNumber }}</a>
           </div>

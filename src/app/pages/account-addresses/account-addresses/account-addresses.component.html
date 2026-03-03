@@ -113,7 +113,7 @@
     @if (furtherAddresses?.length > 0) {
     <div class="section" data-testing-id="further-addresses">
       <h2 class="h3">{{ 'account.addresses.heading' | translate }}</h2>
-      @for (currentAddress of furtherAddresses; track currentAddress) {
+      @for (currentAddress of furtherAddresses; track currentAddress.id) {
       <div class="list-item-row">
         <ng-container
           *ngTemplateOutlet="

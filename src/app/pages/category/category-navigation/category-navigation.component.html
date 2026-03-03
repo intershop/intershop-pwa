@@ -3,7 +3,7 @@
   @if (navigationCategories$ | async; as navigationCategories) { @if (navigationCategories.length) {
   <div class="filter-group">
     <ul class="filter-list">
-      @for (category of navigationCategories; track category) {
+      @for (category of navigationCategories; track category.uniqueId) {
       <li class="filter-item">
         <a
           class="filter-item-name link-decoration-hover"

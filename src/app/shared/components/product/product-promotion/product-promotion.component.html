@@ -1,6 +1,6 @@
 @if (visible$ | async) { @if (promotions$ | async; as promotions) {
 <ul class="promotion-list">
-  @for (promotion of promotions; track promotion) { @if (!promotion.disableMessages) {
+  @for (promotion of promotions; track promotion.id) { @if (!promotion.disableMessages) {
   <li class="promotion-list-item">
     @if (displayType === 'simple' || displayType === 'simpleWithDetail') {
     <span class="promotion-short-title" [ishServerHtml]="promotion.title"></span>

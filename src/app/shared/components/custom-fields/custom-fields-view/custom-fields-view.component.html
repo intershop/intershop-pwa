@@ -1,6 +1,6 @@
 @if (data$ | async; as data) {
 <dl class="custom-fields-view">
-  @for (field of data; track field) {
+  @for (field of data; track field.name) {
   <div class="custom-field">
     <dt>{{ field.displayName }}</dt>
     <dd [class.no-value]="!field.value">

@@ -1,7 +1,7 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <ul class="navbar-nav main-navigation-list">
-  @for (category of categories$ | async; track category; let isFirst = $first) {
+  @for (category of categories$ | async; track category.uniqueId; let isFirst = $first) {
   <li
     #subMenu
     class="dropdown"

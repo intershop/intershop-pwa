@@ -38,7 +38,7 @@
   <h3>{{ 'product.reviews.recent_reviews.heading' | translate }}</h3>
   @if (recentProductReviews$ | async; as recentProductReviews) { @if (recentProductReviews?.length) {
   <div>
-    @for (review of recentProductReviews; track review) {
+    @for (review of recentProductReviews; track review.id) {
     <ng-container *ngTemplateOutlet="reviewItem; context: { review: review }" />
     }
   </div>
@@ -62,7 +62,7 @@
     </div>
     <div class="col-md-9">
       <div class="review-item-header-title">
-        @for (fill of getStars(review.rating); track fill) {
+        @for (fill of getStars(review.rating); track $index) {
         <ish-product-rating-star [filled]="fill" />
         }
         <span class="ps-1">{{ review.title }}</span>

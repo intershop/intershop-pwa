@@ -1,6 +1,6 @@
 @if (attachments$ | async; as attachments) { @if (attachments?.length) {
 <div class="product-attachments">
-  @for (attachment of attachments; track attachment) {
+  @for (attachment of attachments; track attachment.key) {
   <div class="product-attachment">
     <strong>{{ attachment.name }}</strong>
     <a class="download-link" [href]="attachment.url" rel="enclosure">{{

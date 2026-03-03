@@ -1,6 +1,6 @@
 @if (basket?.lineItems) {
 <div class="cart-summary">
-  @for (pli of basket.lineItems; track pli; let i = $index) {
+  @for (pli of basket.lineItems; track pli.id; let i = $index) {
   <div class="row cart-summary-checkout">
     @if (isItemVisible(i)) {
     <!-- product name and price -->
@@ -24,7 +24,7 @@
     <!-- promotions -->
     @if (pli.valueRebates?.length) {
     <div class="col-12">
-      @for (rebate of pli.valueRebates; track rebate) {
+      @for (rebate of pli.valueRebates; track rebate.id) {
       <ish-basket-promotion [rebate]="rebate" />
       }
     </div>

@@ -13,7 +13,7 @@
     <span>&laquo;</span>
     }
   </li>
-  @for (p of pageIndices; track p) {
+  @for (p of pageIndices; track p.value) {
   <li>
     <a
       [routerLink]="[]"

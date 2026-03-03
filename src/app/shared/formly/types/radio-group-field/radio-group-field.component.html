@@ -1,4 +1,5 @@
-@if (props.options && props.options | formlySelectOptions : field | async; as opts) { @for (opt of opts; track opt) {
+@if (props.options && props.options | formlySelectOptions : field | async; as opts) { @for (opt of opts; track
+opt.value) {
 <input
   type="radio"
   [formControl]="formControl"

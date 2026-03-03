@@ -40,7 +40,7 @@
             data-testing-id="expirationMonth"
           >
             <option value="">{{ 'account.date.month' | translate }}</option>
-            @for (option of monthOptions; track option) {
+            @for (option of monthOptions; track $index) {
             <option [value]="option.value">{{ option.label | translate }}</option>
             }
           </select>
@@ -58,7 +58,7 @@
             data-testing-id="expirationYear"
           >
             <option value="">{{ 'account.date.year' | translate }}</option>
-            @for (option of yearOptions; track option) {
+            @for (option of yearOptions; track $index) {
             <option [value]="option.value">{{ option.label | translate }}</option>
             }
           </select>

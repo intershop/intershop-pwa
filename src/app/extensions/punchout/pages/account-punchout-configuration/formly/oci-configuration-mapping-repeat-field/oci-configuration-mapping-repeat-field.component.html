@@ -1,4 +1,4 @@
-@for (field of field?.fieldGroup; track field; let i = $index) {
+@for (field of field?.fieldGroup; track field.id; let i = $index) {
 <span [attr.data-testing-id]="'oci-config-mapping-line-' + i">
   <formly-field [field]="field" />
 </span>

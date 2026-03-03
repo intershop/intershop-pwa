@@ -1,7 +1,7 @@
 @if (contentInclude$ | async; as contentInclude) {
 <ish-content-design-view-wrapper [include]="contentInclude">
-  @for (pagelet of contentInclude.pageletIDs; track pagelet) {
-  <ish-content-pagelet [pageletId]="pagelet" />
+  @for (pageletId of contentInclude.pageletIDs; track pageletId) {
+  <ish-content-pagelet [pageletId]="pageletId" />
   }
 </ish-content-design-view-wrapper>
 }

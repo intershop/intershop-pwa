@@ -5,7 +5,7 @@
   @default {
   <div class="product-warranty-title">{{ 'product.warranty.heading.text' | translate }}:</div>
   <div class="product-warranty-list" data-testing-id="product-warranties">
-    @for (warranty of warranties; track warranty) {
+    @for (warranty of warranties; track warranty.id) {
     <div class="mb-2">
       <input
         type="radio"
@@ -38,7 +38,7 @@
     data-testing-id="product-warranties"
   >
     <!-- generate all available warranties in a select box -->
-    @for (warranty of warranties$ | async; track warranty) {
+    @for (warranty of warranties$ | async; track warranty.id) {
     <option
       [value]="warranty.id"
       [selected]="selectedWarrantySku ? selectedWarrantySku === warranty.id : warranty.id === ''"

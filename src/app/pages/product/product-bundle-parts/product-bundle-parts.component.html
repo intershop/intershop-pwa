@@ -2,7 +2,7 @@
 <div class="bundled-product-list">
   <h2 class="h3">{{ 'product.productBundle.products.heading' | translate }}</h2>
   <div class="product-list row">
-    @for (part of parts$ | async; track part) {
+    @for (part of parts$ | async; track part.sku) {
     <div class="col-lg-8 product-list-item list-view">
       <ish-product-item
         displayType="row"

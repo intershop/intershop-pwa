@@ -1,6 +1,6 @@
 @if (navigationCategories$ | async; as categories) {
 <ul class="category-level{{ subCategoriesDepth }}" [ngClass]="{ 'dropdown-menu': subCategoriesDepth === 1 }">
-  @for (subcategory of categories; track subcategory) {
+  @for (subcategory of categories; track subcategory.uniqueId) {
   <li class="main-navigation-level{{ subCategoriesDepth }}-item" [ngClass]="{ open: isOpened(subcategory.uniqueId) }">
     <a
       [routerLink]="subcategory.url"

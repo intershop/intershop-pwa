@@ -1,7 +1,7 @@
 <div class="search-suggest-brands">
   <div class="d-flex justify-content-start headline">{{ 'suggest.brands.headline' | translate }}</div>
   <ul>
-    @for (brand of brands | slice : 0 : maxAutoSuggests; track brand) {
+    @for (brand of brands | slice : 0 : maxAutoSuggests; track brand.brandName) {
     <li>
       <a
         [routerLink]="['search', brand.brandName]"

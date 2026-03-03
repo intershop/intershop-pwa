@@ -1,7 +1,7 @@
 @if (wishlists?.length > 0) {
 <div class="list-body">
   <ng-container *ngTemplateOutlet="wishlistRow; context: { wishlist: preferredWishlist }" />
-  @for (wishlist of wishlists; track wishlist) { @if (!preferredWishlist || wishlist.id !== preferredWishlist.id) {
+  @for (wishlist of wishlists; track wishlist.id) { @if (!preferredWishlist || wishlist.id !== preferredWishlist.id) {
   <ng-container *ngTemplateOutlet="wishlistRow; context: { wishlist: wishlist }" />
   } }
 </div>

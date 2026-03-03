@@ -5,7 +5,7 @@
     <dt class="col-6">{{ 'checkout.cart.subtotal.heading' | translate }}</dt>
     <dd class="col-6" data-testing-id="basket-subtotal">{{ totals.itemTotal | ishPrice }}</dd>
     <!-- list all applied order level promotions -->
-    @if (totals.valueRebates?.length > 0) { @for (rebate of totals.valueRebates; track rebate) { @if
+    @if (totals.valueRebates?.length > 0) { @for (rebate of totals.valueRebates; track rebate.id) { @if
     (rebate?.promotionId) {
     <dt class="col-6">
       <ish-basket-promotion [rebate]="rebate" />
@@ -23,18 +23,18 @@
     </dt>
     <dd class="col-6">{{ totals.undiscountedShippingTotal | ishPrice }}</dd>
     <!-- Shipping promotions -->
-    @if (totals.shippingRebates?.length > 0) { @for (rebate of totals.shippingRebates; track rebate) {
+    @if (totals.shippingRebates?.length > 0) { @for (rebate of totals.shippingRebates; track rebate.id) {
     <dt class="col-6">
       <ish-basket-promotion [rebate]="rebate" />
     </dt>
     <dd class="col-6">{{ invert(rebate.amount) | ishPrice }}</dd>
     } }
     <!-- Item Surcharges -->
-    @for (surcharge of totals.itemSurchargeTotalsByType; track surcharge) {
+    @for (surcharge of totals.itemSurchargeTotalsByType; track surcharge.displayName) {
     <ng-container *ngTemplateOutlet="surchargeItemTemplate; context: { surcharge: surcharge }" />
     }
     <!-- Bucket Surcharges -->
-    @for (surcharge of totals.bucketSurchargeTotalsByType; track surcharge) {
+    @for (surcharge of totals.bucketSurchargeTotalsByType; track surcharge.displayName) {
     <ng-container *ngTemplateOutlet="surchargeItemTemplate; context: { surcharge: surcharge }" />
     }
     <!-- Payment costs -->

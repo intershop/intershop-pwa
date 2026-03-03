@@ -18,7 +18,7 @@
 
 <div class="section">
   <div class="list-body" data-testing-id="user-list">
-    @for (user of users$ | async; track user) { @if (user) {
+    @for (user of users$ | async; track user.email) { @if (user) {
     <div class="list-item-row row mx-0">
       <div class="col-6 col-sm-2 list-item order-1">
         <a [routerLink]="[user.login]" class="d-block">{{ user.firstName }} {{ user.lastName }}</a>

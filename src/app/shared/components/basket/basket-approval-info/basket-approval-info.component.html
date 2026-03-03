@@ -36,7 +36,7 @@
     } @if (approval.customerApproval?.approvers?.length) {
     <p>{{ 'approval.details.customer_approvers.people_allowed' | translate }}</p>
     <table class="table table-sm">
-      @for (approver of approval.customerApproval.approvers; track approver) {
+      @for (approver of approval.customerApproval.approvers; track approver.email) {
       <tr>
         <td class="w-50">{{ approver.firstName }} {{ approver.lastName }}</td>
         <td>
@@ -53,7 +53,7 @@
       }}
     </p>
     <table class="table table-sm">
-      @for (approver of approval.costCenterApproval.approvers; track approver) {
+      @for (approver of approval.costCenterApproval.approvers; track approver.email) {
       <tr>
         <td class="w-50">{{ approver.firstName }} {{ approver.lastName }}</td>
         <td>

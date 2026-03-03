@@ -1,7 +1,7 @@
 <div class="search-suggest-terms">
   <div class="d-flex justify-content-start headline">{{ 'suggest.terms.headline' | translate }}</div>
   <ul>
-    @for (keyword of keywords | slice : 0 : maxAutoSuggests; track keyword) {
+    @for (keyword of keywords | slice : 0 : maxAutoSuggests; track keyword.keyword) {
     <li>
       <button
         type="button"

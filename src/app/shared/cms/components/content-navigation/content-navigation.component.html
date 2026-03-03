@@ -8,7 +8,7 @@
 </ul>
 <!-- the recursively used template to render the tree nodes -->
 <ng-template #pageTreeNode let-treeNodes="treeNodes" let-counter="counter">
-  @for (treeNode of treeNodes; track treeNode) {
+  @for (treeNode of treeNodes; track treeNode.contentPageId) {
   <li [ngClass]="{ 'page-navigation-active': treeNode.contentPageId === currentContentPage.id }">
     <a [routerLink]="treeNode | ishContentPageRoute" [title]="treeNode.name" class="link-decoration-hover">{{
       treeNode.name

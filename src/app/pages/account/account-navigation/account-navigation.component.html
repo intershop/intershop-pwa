@@ -2,7 +2,7 @@
 @if (!(deviceType === 'mobile' || deviceType === 'tablet')) {
 <ul class="account-navigation list-unstyled">
   <ish-account-user-info role="listitem" />
-  @for (item of navItems; track item) {
+  @for (item of navItems; track item.id) {
   <ng-container *ishIsAuthorizedTo="item.permission || 'always'">
     <ng-container *ishHasNotRole="item.notRole">
       @if ((item.feature || 'always' | ishFeature) && (item.serverSetting || 'always' | ishServerSetting)) { @if
@@ -24,7 +24,7 @@
       </li>
       <li [ngbCollapse]="item.isCollapsed">
         <ul class="account-navigation list-unstyled">
-          @for (subItem of item.children; track subItem) {
+          @for (subItem of item.children; track subItem.id) {
           <ng-container *ishIsAuthorizedTo="subItem.permission || 'always'">
             <ng-container *ishHasNotRole="subItem.notRole">
               @if ( (subItem.feature || 'always' | ishFeature) && (subItem.serverSetting || 'always' | ishServerSetting)
@@ -69,13 +69,13 @@
   class="form-control"
   [attr.aria-label]="'account.menu.select.label' | translate"
 >
-  @for (item of navItems; track item) {
+  @for (item of navItems; track item.id) {
   <ng-container *ishIsAuthorizedTo="item.permission || 'always'">
     <ng-container *ishHasNotRole="item.notRole">
       @if ((item.feature || 'always' | ishFeature) && (item.serverSetting || 'always' | ishServerSetting)) { @if
       (item.children) {
       <optgroup [label]="item.localizationKey | translate"></optgroup>
-      @for (subItem of item.children; track subItem) {
+      @for (subItem of item.children; track subItem.id) {
       <ng-container *ishIsAuthorizedTo="subItem.permission || 'always'">
         <ng-container *ishHasNotRole="subItem.notRole">
           @if ( (subItem.feature || 'always' | ishFeature) && (subItem.serverSetting || 'always' | ishServerSetting) ) {

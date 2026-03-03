@@ -1,7 +1,7 @@
 <ul class="category-list row">
-  @for (category of categories; track category) {
+  @for (categoryId of categories; track categoryId) {
   <li class="category-list-item col-6 col-lg-4">
-    <ish-category-tile [categoryUniqueId]="category" />
+    <ish-category-tile [categoryUniqueId]="categoryId" />
   </li>
   }
 </ul>

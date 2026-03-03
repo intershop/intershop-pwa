@@ -35,7 +35,7 @@
 </div>
 } @if (showScaledPrices && d.scaledPrices?.length) {
 <div class="scaled-prices" data-testing-id="scaled-prices">
-  @for (scaledPrice of d.scaledPrices; track scaledPrice; let i = $index; let lastScaledPrice = $last) { @if
+  @for (scaledPrice of d.scaledPrices; track scaledPrice.minQuantity; let i = $index; let lastScaledPrice = $last) { @if
   (lastScaledPrice) {
   <div>
     {{

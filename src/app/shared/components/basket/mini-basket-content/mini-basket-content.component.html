@@ -2,7 +2,7 @@
 <div class="product-rows-block">
   @if (basketError$ | async; as basketError) {
   <ish-basket-error-message [error]="basketError" cssClass="text-danger" />
-  } @for (lineItem of lineItems | slice : 0 : maxItemNumber; track lineItem) {
+  } @for (lineItem of lineItems | slice : 0 : maxItemNumber; track lineItem.id) {
   <div class="product-row">
     <ng-container ishProductContext [sku]="lineItem.productSKU">
       <div class="mini-product-img">

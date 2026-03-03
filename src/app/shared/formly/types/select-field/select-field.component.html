@@ -10,7 +10,8 @@
   [attr.aria-describedby]="props.ariaDescribedByIds"
   [attr.data-testing-id]="field.key"
 >
-  @if (props.options && props.options | formlySelectOptions : field | async; as opts) { @for (opt of opts; track opt) {
+  @if (props.options && props.options | formlySelectOptions : field | async; as opts) { @for (opt of opts; track
+  opt.value) {
   <option [value]="opt.value" [disabled]="opt.disabled">
     {{ opt.label }}
   </option>

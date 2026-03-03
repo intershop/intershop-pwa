@@ -6,7 +6,7 @@
   <div class="col-md-2 list-header-item text-end">{{ 'shopping_cart.total.heading' | translate }}</div>
 </div>
 <div class="list-body">
-  @for (pli of lineItems; track pli) {
+  @for (pli of lineItems; track pli.id) {
   <div class="list-item-row list-item-row-big">
     <div ishProductContext [sku]="pli.productSKU" class="row clearfix">
       <!---Product Image --->

@@ -19,7 +19,7 @@
   </h2>
   @if (punchoutUsers$ | async; as users) { @if (users.length) {
   <div class="list-body" data-testing-id="user-list">
-    @for (user of users; track user) { @if (user) {
+    @for (user of users; track user.id) { @if (user) {
     <div class="list-item-row row mx-0">
       <div class="col-9 col-sm-10 list-item">
         <p>
