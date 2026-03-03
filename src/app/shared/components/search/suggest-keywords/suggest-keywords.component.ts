@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, SlicePipe } from '@angular/common';
+import { AsyncPipe, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ReplaySubject } from 'rxjs';
@@ -10,7 +10,7 @@ import { HighlightPipe } from 'ish-core/pipes/highlight.pipe';
   selector: 'ish-suggest-keywords',
   templateUrl: './suggest-keywords.component.html',
   standalone: true,
-  imports: [AsyncPipe, NgFor, HighlightPipe, SlicePipe, TranslatePipe],
+  imports: [AsyncPipe, HighlightPipe, SlicePipe, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestKeywordsComponent {

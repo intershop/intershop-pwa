@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Observable, ReplaySubject, map } from 'rxjs';
@@ -12,7 +12,7 @@ import { ProductImageComponent } from 'ish-shared/components/product/product-ima
   selector: 'ish-suggest-products-tile',
   templateUrl: './suggest-products-tile.component.html',
   standalone: true,
-  imports: [AsyncPipe, HighlightPipe, RouterLink, NgIf, ProductImageComponent],
+  imports: [AsyncPipe, HighlightPipe, RouterLink, ProductImageComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestProductsTileComponent implements OnInit {
