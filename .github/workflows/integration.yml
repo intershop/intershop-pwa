@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
-  NODE_OPTIONS: --max_old_space_size=10240
+  NODE_OPTIONS: --max-old-space-size=8192
   ICM_BASE_URL: https://review.icm.intershop.de
 
 jobs:

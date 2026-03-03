@@ -1,5 +1,7 @@
 # synchronize-marker:docker-cache-share:begin
 FROM node:22.22.0-alpine AS buildstep
+# increase the `--max-old-space-size` if "FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory" occur during build
+ENV NODE_OPTIONS=--max-old-space-size=8192
 ENV CI=true
 WORKDIR /workspace
 COPY package.json package-lock.json /workspace/
