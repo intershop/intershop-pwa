@@ -6,7 +6,7 @@ import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, map, shareReplay, take, withLatestFrom } from 'rxjs/operators';
-import { AddressDoctorExportsModule } from 'src/app/extensions/address-doctor/exports/address-doctor-exports.module';
+import { AddressDoctorComponent } from 'src/app/extensions/address-doctor/shared/address-doctor/address-doctor.component';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -34,7 +34,7 @@ import { mapToAddressOptions } from 'ish-shared/forms/utils/forms.service';
   standalone: true,
   imports: [
     AddressComponent,
-    AddressDoctorExportsModule,
+    AddressDoctorComponent,
     AsyncPipe,
     ErrorMessageComponent,
     FormlyCustomerAddressFormComponent,

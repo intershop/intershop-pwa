@@ -2,8 +2,8 @@ import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { OrganizationManagementExportsModule } from 'organization-management';
-import { RequisitionManagementExportsModule } from 'requisition-management';
+import { BudgetWidgetComponent, CostCenterWidgetComponent } from 'organization-management';
+import { ApprovalWidgetComponent, RequisitionWidgetComponent } from 'requisition-management';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -17,9 +17,9 @@ import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { OrderWidgetComponent } from 'ish-shared/components/order/order-widget/order-widget.component';
 
-import { OrderTemplatesExportsModule } from '../../../extensions/order-templates/exports/order-templates-exports.module';
-import { QuotingExportsModule } from '../../../extensions/quoting/exports/quoting-exports.module';
-import { WishlistsExportsModule } from '../../../extensions/wishlists/exports/wishlists-exports.module';
+import { OrderTemplateWidgetComponent } from '../../../extensions/order-templates/shared/order-template-widget/order-template-widget.component';
+import { QuoteWidgetComponent } from '../../../extensions/quoting/shared/quote-widget/quote-widget.component';
+import { WishlistWidgetComponent } from '../../../extensions/wishlists/shared/wishlist-widget/wishlist-widget.component';
 
 /**
  * The Account Overview Page Component displays the account overview dashboard of the user's 'MyAccount' section.
@@ -39,17 +39,19 @@ import { WishlistsExportsModule } from '../../../extensions/wishlists/exports/wi
     ServerHtmlDirective,
     FeatureToggleModule,
     IconModule,
-    OrderTemplatesExportsModule,
+    OrderTemplateWidgetComponent,
     OrderWidgetComponent,
-    OrganizationManagementExportsModule,
+    BudgetWidgetComponent,
+    CostCenterWidgetComponent,
     HtmlEncodePipe,
     ServerSettingPipe,
-    QuotingExportsModule,
-    RequisitionManagementExportsModule,
+    QuoteWidgetComponent,
+    RequisitionWidgetComponent,
+    ApprovalWidgetComponent,
     RoleToggleModule,
     RouterModule,
     TranslateModule,
-    WishlistsExportsModule,
+    WishlistWidgetComponent,
   ],
 })
 export class AccountOverviewComponent {

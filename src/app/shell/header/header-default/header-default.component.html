@@ -13,71 +13,68 @@
 
 <div class="header container" [ngClass]="deviceType">
   @if (!isSticky) {
-    <ul class="user-links">
-      @if (!isSticky && deviceType !== 'mobile') {
-        <li>
-          <ish-login-status data-testing-id="user-status-desktop" />
-        </li>
+  <ul class="user-links">
+    @if (!isSticky && deviceType !== 'mobile') {
+    <li>
+      <ish-login-status data-testing-id="user-status-desktop" />
+    </li>
+    }
+    <li *ishFeature="'compare'" class="d-none d-md-block">
+      @defer {
+      <ish-product-compare-status data-testing-id="compare-status-desktop" />
       }
-      <li *ishFeature="'compare'" class="d-none d-md-block">
-        <ish-lazy-product-compare-status data-testing-id="compare-status-desktop" />
-      </li>
-      <li *ishFeature="'quickorder'" class="d-none d-md-block">
-        <ish-lazy-quickorder-link />
-      </li>
-      <li *ishFeature="'wishlists'" class="d-none d-md-block">
-        <ish-lazy-wishlists-link />
-      </li>
-    </ul>
+    </li>
+    <li *ishFeature="'quickorder'" class="d-none d-md-block">
+      @defer {
+      <ish-quickorder-link />
+      }
+    </li>
+    <li *ishFeature="'wishlists'" class="d-none d-md-block">@defer { <ish-wishlists-link /> }</li>
+  </ul>
   }
 
   <div class="header-utility">
     <!-- Sticky Header Search Button -->
     @if (isSticky && deviceType !== 'mobile') {
-      <a
-        class="btn btn-link search-toggler sticky-header-icon"
-        role="button"
-        tabindex="0"
-        [attr.aria-label]="'search.searchbox.button.sticky_header.aria_label' | translate"
-        (click)="scrollTopAndFocusSearch()"
-        (keydown.enter)="scrollTopAndFocusSearch()"
-      >
-        <i class="bi bi-search header-icon"></i>
-      </a>
+    <a
+      class="btn btn-link search-toggler sticky-header-icon"
+      role="button"
+      tabindex="0"
+      [attr.aria-label]="'search.searchbox.button.sticky_header.aria_label' | translate"
+      (click)="scrollTopAndFocusSearch()"
+      (keydown.enter)="scrollTopAndFocusSearch()"
+    >
+      <i class="bi bi-search header-icon"></i>
+    </a>
     } @else {
-      <a
-        class="btn btn-link search-toggler sticky-header-icon"
-        role="button"
-        [attr.aria-label]="'search.searchbox.button.sticky_header.aria_label' | translate"
-        [ngClass]="{ 'active-search': showSearch }"
-        [tabindex]="isSticky ? 0 : -1"
-        (click)="scrollTopAndFocusSearch()"
-        (keydown.enter)="scrollTopAndFocusSearch()"
-      >
-        @if (isSticky) {
-          <i class="bi bi-search header-icon"></i>
-        }
-      </a>
-      @if (isSticky || showSearch) {
-        <div
-          class="search-container header-search-container"
-          [ngClass]="{ show: !isSticky }"
-          [ngbCollapse]="!showSearch"
-        >
-          <ng-container *ngTemplateOutlet="searchBoxTemplate" />
-        </div>
+    <a
+      class="btn btn-link search-toggler sticky-header-icon"
+      role="button"
+      [attr.aria-label]="'search.searchbox.button.sticky_header.aria_label' | translate"
+      [ngClass]="{ 'active-search': showSearch }"
+      [tabindex]="isSticky ? 0 : -1"
+      (click)="scrollTopAndFocusSearch()"
+      (keydown.enter)="scrollTopAndFocusSearch()"
+    >
+      @if (isSticky) {
+      <i class="bi bi-search header-icon"></i>
       }
-    }
+    </a>
+    @if (isSticky || showSearch) {
+    <div class="search-container header-search-container" [ngClass]="{ show: !isSticky }" [ngbCollapse]="!showSearch">
+      <ng-container *ngTemplateOutlet="searchBoxTemplate" />
+    </div>
+    } }
 
     <!-- Sticky Header Mobile Search -->
 
     <div class="language-switch-container">
       @if (!isSticky) {
-        <ish-language-switch data-testing-id="language-switch-desktop" [deviceType]="deviceType" />
+      <ish-language-switch data-testing-id="language-switch-desktop" [deviceType]="deviceType" />
       }
     </div>
     @if (isSticky || deviceType === 'mobile') {
-      <ish-login-status view="small" />
+    <ish-login-status view="small" />
     }
 
     <ish-mini-basket
@@ -96,30 +93,29 @@
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         @if (showDesktopLogoLink) {
-          <a
-            class="logo"
-            data-testing-id="header-home-link-desktop"
-            rel="home"
-            routerLink="/home"
-            [attr.aria-label]="'common.home.link' | translate"
-          ></a>
-        }
-        @if (showMobileLogoLink) {
-          <a
-            class="mobile-logo"
-            data-testing-id="header-home-link-mobile"
-            rel="home"
-            routerLink="/home"
-            [attr.aria-label]="'common.home.link' | translate"
-          ></a>
+        <a
+          class="logo"
+          data-testing-id="header-home-link-desktop"
+          rel="home"
+          routerLink="/home"
+          [attr.aria-label]="'common.home.link' | translate"
+        ></a>
+        } @if (showMobileLogoLink) {
+        <a
+          class="mobile-logo"
+          data-testing-id="header-home-link-mobile"
+          rel="home"
+          routerLink="/home"
+          [attr.aria-label]="'common.home.link' | translate"
+        ></a>
         }
       </div>
     </div>
     <div class="col-md-4">
       @if (deviceType !== 'mobile') {
-        <div class="search-container header-search-container">
-          <ng-container *ngTemplateOutlet="searchBoxTemplate" />
-        </div>
+      <div class="search-container header-search-container">
+        <ng-container *ngTemplateOutlet="searchBoxTemplate" />
+      </div>
       }
     </div>
   </div>

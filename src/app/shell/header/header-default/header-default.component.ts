@@ -4,8 +4,9 @@ import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { CompareExportsModule } from 'src/app/extensions/compare/exports/compare-exports.module';
-import { QuickorderExportsModule } from 'src/app/extensions/quickorder/exports/quickorder-exports.module';
+import { ProductCompareStatusComponent } from 'src/app/extensions/compare/shared/product-compare-status/product-compare-status.component';
+import { QuickorderLinkComponent } from 'src/app/extensions/quickorder/shared/quickorder-link/quickorder-link.component';
+import { WishlistsLinkComponent } from 'src/app/extensions/wishlists/shared/wishlists-link/wishlists-link.component';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
@@ -15,8 +16,6 @@ import { LanguageSwitchComponent as LanguageSwitchComponent_1 } from 'ish-shell/
 import { LoginStatusComponent as LoginStatusComponent_1 } from 'ish-shell/header/login-status/login-status.component';
 import { MiniBasketComponent as MiniBasketComponent_1 } from 'ish-shell/header/mini-basket/mini-basket.component';
 import { UserInformationMobileComponent } from 'ish-shell/header/user-information-mobile/user-information-mobile.component';
-
-import { WishlistsExportsModule } from '../../../extensions/wishlists/exports/wishlists-exports.module';
 
 type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
 
@@ -44,10 +43,10 @@ type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
     NgClass,
     NgIf,
     LoginStatusComponent_1,
+    ProductCompareStatusComponent,
+    QuickorderLinkComponent,
+    WishlistsLinkComponent,
     FeatureToggleModule,
-    CompareExportsModule,
-    QuickorderExportsModule,
-    WishlistsExportsModule,
     FontAwesomeModule,
     NgbCollapseModule,
     NgTemplateOutlet,

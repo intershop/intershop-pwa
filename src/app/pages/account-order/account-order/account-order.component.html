@@ -16,124 +16,124 @@
 <p>{{ 'account.orderdetails.headerDetails.default' | translate }}</p>
 
 @if (order) {
-  <div class="section" data-testing-id="order-summary-info">
-    <dl class="row dl-horizontal dl-separator">
-      <dt class="col-6 col-sm-4 col-md-3">
-        <span>{{ 'account.orderdetails.order_number.label' | translate }}</span>
-      </dt>
-      <dd class="col-6 col-sm-8 col-md-9" data-testing-id="order-number">{{ order.documentNo }}</dd>
-      @if (order.approval) {
-        <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.order.request_id' | translate }}</dt>
-        <dd class="col-6 col-sm-8 col-md-9">
-          <a [routerLink]="['/account/requisitions/buyer', order.id, { status: 'APPROVED' }]">{{
-            order.requisitionNo
-          }}</a>
-          {{
-            'account.orderdetails.approved.text'
-              | translate
-                : {
-                    '0': order.approval.approverFirstName + ' ' + order.approval.approverLastName,
-                    '1': order.approval.date | ishDate: 'shortDate',
-                  }
-          }}
-        </dd>
-      }
-      <dt class="col-6 col-sm-4 col-md-3">{{ 'account.orderdetails.date_of_order.label' | translate }}</dt>
-      <dd class="col-6 col-sm-8 col-md-9" data-testing-id="order-date">{{ order.creationDate | ishDate }}</dd>
-      <dt class="col-6 col-sm-4 col-md-3">{{ 'account.orderdetails.order_status.label' | translate }}</dt>
-      <dd class="col-6 col-sm-8 col-md-9" data-testing-id="order-status">
-        <span class="badge text-bg-info">{{ order.status }}</span>
-      </dd>
-    </dl>
-    @if (order.recurringOrderID) {
-      <span
-        [ishServerHtml]="
-          'account.orderdetails.recurring_order.info'
-            | translate: { link: 'route://account/recurring-orders/' + order.recurringOrderID }
-        "
-      ></span>
+<div class="section" data-testing-id="order-summary-info">
+  <dl class="row dl-horizontal dl-separator">
+    <dt class="col-6 col-sm-4 col-md-3">
+      <span>{{ 'account.orderdetails.order_number.label' | translate }}</span>
+    </dt>
+    <dd class="col-6 col-sm-8 col-md-9" data-testing-id="order-number">{{ order.documentNo }}</dd>
+    @if (order.approval) {
+    <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.order.request_id' | translate }}</dt>
+    <dd class="col-6 col-sm-8 col-md-9">
+      <a [routerLink]="['/account/requisitions/buyer', order.id, { status: 'APPROVED' }]">{{ order.requisitionNo }}</a>
+      {{
+        'account.orderdetails.approved.text'
+          | translate
+            : {
+                '0': order.approval.approverFirstName + ' ' + order.approval.approverLastName,
+                '1': order.approval.date | ishDate : 'shortDate'
+              }
+      }}
+    </dd>
+    }
+    <dt class="col-6 col-sm-4 col-md-3">{{ 'account.orderdetails.date_of_order.label' | translate }}</dt>
+    <dd class="col-6 col-sm-8 col-md-9" data-testing-id="order-date">{{ order.creationDate | ishDate }}</dd>
+    <dt class="col-6 col-sm-4 col-md-3">{{ 'account.orderdetails.order_status.label' | translate }}</dt>
+    <dd class="col-6 col-sm-8 col-md-9" data-testing-id="order-status">
+      <span class="badge text-bg-info">{{ order.status }}</span>
+    </dd>
+  </dl>
+  @if (order.recurringOrderID) {
+  <span
+    [ishServerHtml]="
+      'account.orderdetails.recurring_order.info'
+        | translate : { link: 'route://account/recurring-orders/' + order.recurringOrderID }
+    "
+  ></span>
+  }
+</div>
+} @if (order) {
+<div class="row">
+  <div class="col-md-6">
+    <!-- Add Order Items to Cart Button -->
+    <ish-account-order-to-basket [order]="order" [cssClass]="'mb-3'" />
+    <!-- Create Order-Template from Order Button -->
+    @defer {
+    <ish-order-create-order-template *ishFeature="'orderTemplates'" [lineItems]="order.lineItems" [cssClass]="'mb-3'" />
     }
   </div>
+</div>
+<div class="row">
+  <!-- Buyer-->
+  <ng-container *ishFeature="'businessCustomerRegistration'">
+    <ish-info-box heading="checkout.widget.buyer.heading" class="infobox-wrapper col-md-6">
+      <ish-basket-buyer [object]="order" />
+    </ish-info-box>
+  </ng-container>
+  <!-- Additional Information -->
+  @if (order.costCenter || hasCustomFields()) {
+  <ish-info-box
+    heading="checkout.widget.additional-information.heading"
+    class="infobox-wrapper col-md-6"
+    cssClass="pb-3"
+  >
+    <ish-basket-cost-center-view [data]="order" />
+    <ish-basket-custom-fields-view [data]="order" />
+  </ish-info-box>
+  }
+</div>
+} @if ('shipping.messageToMerchant' | ishServerSetting) {
+<!-- MessageToMerchant-->
+<ish-basket-merchant-message-view [data]="order" />
 }
-@if (order) {
-  <div class="row">
-    <div class="col-md-6">
-      <!-- Add Order Items to Cart Button -->
-      <ish-account-order-to-basket [cssClass]="'mb-3'" [order]="order" />
-      <!-- Create Order-Template from Order Button -->
-      <ish-lazy-order-create-order-template [cssClass]="'mb-3'" [lineItems]="order.lineItems" />
+<div class="row d-flex">
+  <!-- Invoice Address -->
+  <ish-info-box heading="checkout.widget.billing-address.heading" class="infobox-wrapper col-md-6">
+    <ish-address [address]="order.invoiceToAddress" [displayEmail]="true" />
+  </ish-info-box>
+  <!-- Shipping Address -->
+  <ish-info-box heading="checkout.widget.shipping-address.heading" class="infobox-wrapper col-md-6">
+    <ish-address [address]="order.commonShipToAddress" />
+  </ish-info-box>
+</div>
+<div class="row d-flex">
+  <!-- Shipping Method -->
+  <ish-info-box heading="checkout.widget.shipping_method.heading" class="infobox-wrapper col-md-6">
+    <ish-basket-shipping-method [data]="order" />
+  </ish-info-box>
+  <!-- Payment -->
+  <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper col-md-6">
+    @if (order.payment) {
+    <div class="float-end">
+      <p class="badge text-bg-info">{{ order.payment.status }}</p>
     </div>
-  </div>
-  <div class="row">
-    <!-- Buyer-->
-    <ng-container *ishFeature="'businessCustomerRegistration'">
-      <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.buyer.heading">
-        <ish-basket-buyer [object]="order" />
-      </ish-info-box>
-    </ng-container>
-    <!-- Additional Information -->
-    @if (order.costCenter || hasCustomFields()) {
-      <ish-info-box
-        class="infobox-wrapper col-md-6"
-        cssClass="pb-3"
-        heading="checkout.widget.additional-information.heading"
-      >
-        <ish-basket-cost-center-view [data]="order" />
-        <ish-basket-custom-fields-view [data]="order" />
-      </ish-info-box>
-    }
-  </div>
-  @if ('shipping.messageToMerchant' | ishServerSetting) {
-    <!-- MessageToMerchant-->
-    <ish-basket-merchant-message-view [data]="order" />
-  }
-  <div class="row d-flex">
-    <!-- Invoice Address -->
-    <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.billing-address.heading">
-      <ish-address [address]="order.invoiceToAddress" [displayEmail]="true" />
-    </ish-info-box>
-    <!-- Shipping Address -->
-    <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.shipping-address.heading">
-      <ish-address [address]="order.commonShipToAddress" />
-    </ish-info-box>
-  </div>
-  <div class="row d-flex">
-    <!-- Shipping Method -->
-    <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.shipping_method.heading">
-      <ish-basket-shipping-method [data]="order" />
-    </ish-info-box>
-    <!-- Payment -->
-    <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.payment_method.heading">
-      @if (order.payment) {
-        <div class="float-end">
-          <p class="badge text-bg-info">{{ order.payment.status }}</p>
-        </div>
-        <p>
-          {{ order.payment.displayName }}<br />{{ order.payment.paymentInstrument.accountIdentifier }}
-          @if (!order.payment.displayName && !order.payment.paymentInstrument.accountIdentifier) {
-            {{ order.payment.paymentInstrument }}
-          }
-        </p>
+    <p>
+      {{ order.payment.displayName }}<br />{{ order.payment.paymentInstrument.accountIdentifier }}
+      @if (!order.payment.displayName && !order.payment.paymentInstrument.accountIdentifier) {
+      {{ order.payment.paymentInstrument }}
       }
-    </ish-info-box>
-  </div>
-  <!-- Line Items -->
-  @if (order.lineItems?.length > 0) {
-    <ish-line-item-list lineItemViewType="simple" [editable]="false" [lineItems]="order.lineItems" />
-  }
-  <!-- Cost Summary -->
-  <div class="section row">
-    <div class="col-12 col-md-6 offset-md-6">
-      <div class="cost-summary">
-        <h2 class="h3">{{ 'checkout.order_summary.heading' | translate }}</h2>
-        <ish-basket-cost-summary [totals]="order.totals" />
-      </div>
-      <!-- Add Order Items to Cart Button -->
-      <ish-account-order-to-basket [cssClass]="'mb-3'" [order]="order" />
-      <!-- Create Order-Template from Order Button -->
-      <ish-lazy-order-create-order-template [cssClass]="'mb-3'" [lineItems]="order.lineItems" />
+    </p>
+    }
+  </ish-info-box>
+</div>
+<!-- Line Items -->
+@if (order.lineItems?.length > 0) {
+<ish-line-item-list [lineItems]="order.lineItems" [editable]="false" lineItemViewType="simple" />
+}
+<!-- Cost Summary -->
+<div class="section row">
+  <div class="col-12 col-md-6 offset-md-6">
+    <div class="cost-summary">
+      <h2 class="h3">{{ 'checkout.order_summary.heading' | translate }}</h2>
+      <ish-basket-cost-summary [totals]="order.totals" />
     </div>
+    <!-- Add Order Items to Cart Button -->
+    <ish-account-order-to-basket [order]="order" [cssClass]="'mb-3'" />
+    <!-- Create Order-Template from Order Button -->
+    @defer {
+    <ish-order-create-order-template *ishFeature="'orderTemplates'" [lineItems]="order.lineItems" [cssClass]="'mb-3'" />
   </div>
+</div>
 }
 
 <!-- Links -->

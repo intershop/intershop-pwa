@@ -3,11 +3,13 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { CMSModule } from 'ish-shared/cms/cms.module';
-import { ShellLazyComponentsModule } from 'ish-shell/shared/shell-lazy-components.module';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 
-import { StoreLocatorExportsModule } from '../../../extensions/store-locator/exports/store-locator-exports.module';
+import { CopilotComponent } from '../../../extensions/copilot/shared/copilot/copilot.component';
+import { StoreLocatorFooterComponent } from '../../../extensions/store-locator/shared/store-locator-footer/store-locator-footer.component';
 
 /**
  * Footer Component
@@ -19,10 +21,12 @@ import { StoreLocatorExportsModule } from '../../../extensions/store-locator/exp
   standalone: true,
   imports: [
     CMSModule,
+    ContentIncludeComponent,
     RoleToggleModule,
     ServerHtmlDirective,
-    ShellLazyComponentsModule,
-    StoreLocatorExportsModule,
+    FeatureTogglePipe,
+    CopilotComponent,
+    StoreLocatorFooterComponent,
     TranslateModule,
   ],
 })

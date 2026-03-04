@@ -1,10 +1,12 @@
+/* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { OrderTemplatesExportsModule } from 'src/app/extensions/order-templates/exports/order-templates-exports.module';
-import { PunchoutExportsModule } from 'src/app/extensions/punchout/exports/punchout-exports.module';
-import { QuickorderExportsModule } from 'src/app/extensions/quickorder/exports/quickorder-exports.module';
-import { QuotingExportsModule } from 'src/app/extensions/quoting/exports/quoting-exports.module';
+import { BasketCreateOrderTemplateComponent } from 'src/app/extensions/order-templates/shared/basket-create-order-template/basket-create-order-template.component';
+import { PunchoutTransferBasketComponent } from 'src/app/extensions/punchout/shared/punchout-transfer-basket/punchout-transfer-basket.component';
+import { DirectOrderComponent } from 'src/app/extensions/quickorder/shared/direct-order/direct-order.component';
+import { BasketAddToQuoteComponent } from 'src/app/extensions/quoting/shared/basket-add-to-quote/basket-add-to-quote.component';
+import { QuotingBasketLineItemsComponent } from 'src/app/extensions/quoting/shared/quoting-basket-line-items/quoting-basket-line-items.component';
 
 import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
@@ -23,7 +25,6 @@ import { BasketInfoComponent } from 'ish-shared/components/basket/basket-info/ba
 import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { ClearBasketComponent } from 'ish-shared/components/basket/clear-basket/clear-basket.component';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
@@ -58,7 +59,6 @@ import { ShoppingBasketPaymentComponent } from '../shopping-basket-payment/shopp
     ContentIncludeComponent,
     TranslateModule,
     ModalDialogLinkComponent,
-    ErrorMessageComponent,
     NgIf,
     BasketErrorMessageComponent,
     BasketInfoComponent,
@@ -69,18 +69,19 @@ import { ShoppingBasketPaymentComponent } from '../shopping-basket-payment/shopp
     BasketCustomFieldsComponent,
     SkipContentLinkComponent,
     FeatureToggleDirective,
-    QuotingExportsModule,
+    BasketAddToQuoteComponent,
+    QuotingBasketLineItemsComponent,
     LineItemListComponent,
     LoadingComponent,
-    OrderTemplatesExportsModule,
+    BasketCreateOrderTemplateComponent,
     ClearBasketComponent,
-    QuickorderExportsModule,
+    DirectOrderComponent,
     BasketPromotionCodeComponent,
     BasketCostSummaryComponent,
     BasketOrderRecurrenceEditComponent,
     ServerSettingPipe,
     NotRoleToggleDirective,
-    PunchoutExportsModule,
+    PunchoutTransferBasketComponent,
     ShoppingBasketPaymentComponent,
     LazyLoadingContentDirective,
     AuthorizationToggleDirective,

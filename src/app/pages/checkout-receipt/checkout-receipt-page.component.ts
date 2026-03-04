@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { RequisitionManagementExportsModule } from 'requisition-management';
+import { CheckoutReceiptRequisitionComponent } from 'requisition-management';
 import { Observable } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -23,7 +23,7 @@ import { CheckoutReceiptComponent } from './checkout-receipt/checkout-receipt.co
     CheckoutReceiptComponent,
     LoadingComponent,
     CheckoutReceiptOrderComponent,
-    RequisitionManagementExportsModule,
+    CheckoutReceiptRequisitionComponent,
   ],
 })
 export class CheckoutReceiptPageComponent implements OnInit {

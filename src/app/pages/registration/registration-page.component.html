@@ -31,7 +31,9 @@
   </form>
 </div>
 
-<ish-lazy-address-doctor />
+@defer {
+<ish-address-doctor />
+}
 
 @if (loading$ | async) {
   <ish-loading />

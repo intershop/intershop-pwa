@@ -12,8 +12,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.helper';
 import { ProductAttachmentsComponent } from 'ish-shared/components/product/product-attachments/product-attachments.component';
 import { ProductAttributesComponent } from 'ish-shared/components/product/product-attributes/product-attributes.component';
-
-import { RatingExportsModule } from '../../../extensions/rating/exports/rating-exports.module';
+import { ProductReviewsComponent } from '../../../extensions/rating/shared/product-reviews/product-reviews.component';
 
 @Component({
   selector: 'ish-product-detail-info',
@@ -24,7 +23,7 @@ import { RatingExportsModule } from '../../../extensions/rating/exports/rating-e
     NgIf,
     NgbNavModule,
     FeatureToggleModule,
-    RatingExportsModule,
+    ProductReviewsComponent,
     AsyncPipe,
     TranslateModule,
     ProductAttachmentsComponent,

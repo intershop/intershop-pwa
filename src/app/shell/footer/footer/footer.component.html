@@ -1,4 +1,7 @@
 <ng-container *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']">
+  @defer (when ('storeLocator' | ishFeature)) {
+    <ish-store-locator-footer />
+  }
   <div class="footer">
     <div class="footer-custom">
       <div class="container">
@@ -35,7 +38,14 @@
         }
       </ul>
       <div class="clearfix" [ishServerHtml]="'footer.disclaimer' | translate"></div>
-      <div class="clearfix" [ishServerHtml]="'footer.copyright' | translate: { appVersion: appVersion }"></div>
+      @defer {
+        <ish-content-include includeId="include.footer.content.pagelet2-Include" />
+      }
+      <div class="clearfix" [ishServerHtml]="'footer.copyright' | translate : { appVersion: appVersion }"></div>
     </div>
   </div>
 </ng-container>
+
+@defer (when ('copilot' | ishFeature)) {
+  <ish-copilot />
+}

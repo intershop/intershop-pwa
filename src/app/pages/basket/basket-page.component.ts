@@ -1,13 +1,15 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RecentlyExportsModule } from 'src/app/extensions/recently/exports/recently-exports.module';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+
+import { RecentlyViewedComponent } from '../../extensions/recently/shared/recently-viewed/recently-viewed.component';
 
 import { ShoppingBasketEmptyComponent } from './shopping-basket-empty/shopping-basket-empty.component';
 import { ShoppingBasketComponent } from './shopping-basket/shopping-basket.component';
@@ -20,11 +22,12 @@ import { ShoppingBasketComponent } from './shopping-basket/shopping-basket.compo
   imports: [
     ContentIncludeComponent,
     AsyncPipe,
+    FeatureTogglePipe,
     NgIf,
     ShoppingBasketComponent,
     ShoppingBasketEmptyComponent,
     LoadingComponent,
-    RecentlyExportsModule,
+    RecentlyViewedComponent,
   ],
 })
 export class BasketPageComponent implements OnInit {

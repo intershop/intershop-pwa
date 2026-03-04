@@ -24,7 +24,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { ShellLazyComponentsModule } from 'ish-shell/shared/shell-lazy-components.module';
+import { MiniBasketContentComponent } from 'ish-shared/components/basket/mini-basket-content/mini-basket-content.component';
 
 @Component({
   selector: 'ish-mini-basket',
@@ -41,7 +41,7 @@ import { ShellLazyComponentsModule } from 'ish-shell/shared/shell-lazy-component
     NgIf,
     PricePipe,
     RouterLink,
-    ShellLazyComponentsModule,
+    MiniBasketContentComponent,
     TranslateModule,
   ],
 })

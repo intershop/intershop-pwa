@@ -1,13 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { CompareExportsModule } from 'src/app/extensions/compare/exports/compare-exports.module';
-import { QuickorderExportsModule } from 'src/app/extensions/quickorder/exports/quickorder-exports.module';
+import { ProductCompareStatusComponent } from 'src/app/extensions/compare/shared/product-compare-status/product-compare-status.component';
+import { QuickorderLinkComponent } from 'src/app/extensions/quickorder/shared/quickorder-link/quickorder-link.component';
+import { WishlistsLinkComponent } from 'src/app/extensions/wishlists/shared/wishlists-link/wishlists-link.component';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { LanguageSwitchComponent } from 'ish-shell/header/language-switch/language-switch.component';
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
-
-import { WishlistsExportsModule } from '../../../extensions/wishlists/exports/wishlists-exports.module';
 
 @Component({
   selector: 'ish-user-information-mobile',
@@ -17,10 +15,9 @@ import { WishlistsExportsModule } from '../../../extensions/wishlists/exports/wi
   imports: [
     LoginStatusComponent,
     FeatureToggleModule,
-    CompareExportsModule,
-    QuickorderExportsModule,
-    WishlistsExportsModule,
-    LanguageSwitchComponent,
+    ProductCompareStatusComponent,
+    QuickorderLinkComponent,
+    WishlistsLinkComponent,
     TranslateModule,
   ],
 })

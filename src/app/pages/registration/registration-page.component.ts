@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, take, tap } from 'rxjs';
-import { AddressDoctorExportsModule } from 'src/app/extensions/address-doctor/exports/address-doctor-exports.module';
+import { AddressDoctorComponent } from '../../extensions/address-doctor/shared/address-doctor/address-doctor.component';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -36,7 +36,7 @@ import {
     ErrorMessageComponent,
     AsyncPipe,
     TranslateModule,
-    AddressDoctorExportsModule,
+    AddressDoctorComponent,
     LoadingComponent,
     ReactiveFormsModule,
     FormlyModule,

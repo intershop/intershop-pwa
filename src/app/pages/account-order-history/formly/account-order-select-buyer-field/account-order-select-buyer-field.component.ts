@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
-import { OrganizationManagementExportsModule } from 'projects/organization-management/src/app/exports/organization-management-exports.module';
+import { BuyersSelectComponent } from 'organization-management';
 
 import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
 
@@ -12,6 +12,6 @@ import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-
   templateUrl: './account-order-select-buyer-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AuthorizationToggleDirective, FormlyModule, OrganizationManagementExportsModule],
+  imports: [AuthorizationToggleDirective, BuyersSelectComponent, FormlyModule],
 })
 export class AccountOrderSelectBuyerFieldComponent extends FieldType<FieldTypeConfig> {}
