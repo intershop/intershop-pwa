@@ -1,11 +1,10 @@
 export { requisitionManagementRoutes } from '../pages/requisition-management-routing.module';
-export { RequisitionManagementExportsModule } from './requisition-management-exports.module';
 export {
   provideRequisitionManagementStore,
   RequisitionManagementStoreModule,
 } from '../store/requisition-management-store.module';
 
 export { RequisitionManagementBreadcrumbService } from '../services/requisition-management-breadcrumb/requisition-management-breadcrumb.service';
-export { LazyCheckoutReceiptRequisitionComponent } from './lazy-checkout-receipt-requisition/lazy-checkout-receipt-requisition.component';
-export { LazyApprovalWidgetComponent } from './lazy-approval-widget/lazy-approval-widget.component';
-export { LazyRequisitionWidgetComponent } from './lazy-requisition-widget/lazy-requisition-widget.component';
+export { ApprovalWidgetComponent } from '../components/approval-widget/approval-widget.component';
+export { CheckoutReceiptRequisitionComponent } from '../components/checkout-receipt-requisition/checkout-receipt-requisition.component';
+export { RequisitionWidgetComponent } from '../components/requisition-widget/requisition-widget.component';
