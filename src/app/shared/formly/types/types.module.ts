@@ -13,7 +13,6 @@ import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
-import { CaptchaExportsModule } from 'src/app/extensions/captcha/exports/captcha-exports.module';
 
 import { IconModule } from 'ish-core/icon.module';
 import { SpecialValidators, formlyValidation } from 'ish-shared/forms/validators/special-validators';
@@ -55,7 +54,6 @@ const fieldComponents = [
 
 @NgModule({
   imports: [
-    CaptchaExportsModule,
     CommonModule,
     ...fieldComponents,
     FormlySelectModule,

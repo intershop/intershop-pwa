@@ -13,9 +13,11 @@ import { ContentPageletComponent } from 'ish-shared/cms/components/content-pagel
  * For rendering it uses the {@link ContentPageletComponent} for each sub pagelet.
  *
  * @example
- * <ish-content-include includeId="pwa.include.homepage.pagelet2-Include" />
- * or with lazy loading within the application shell
- * <ish-lazy-content-include includeId="include.footer.pagelet2-Include" />
+ * <ish-content-include includeId="pwa.include.homepage.pagelet2-Include"></ish-content-include>
+ * or with defer loading in templates
+ * @defer {
+ *   <ish-content-include includeId="include.footer.pagelet2-Include" />
+ * }
  */
 @Component({
   selector: 'ish-content-include',
