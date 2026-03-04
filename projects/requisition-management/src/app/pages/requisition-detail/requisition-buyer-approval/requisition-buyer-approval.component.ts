@@ -1,7 +1,7 @@
 import { NgClass, NgIf, PercentPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { OrganizationManagementExportsModule } from 'organization-management';
+import { BudgetInfoComponent } from 'organization-management';
 
 import { Price } from 'ish-core/models/price/price.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
@@ -29,7 +29,7 @@ import { BudgetBarComponent } from '../budget-bar/budget-bar.component';
     PercentPipe,
     PricePipe,
     TranslateModule,
-    OrganizationManagementExportsModule,
+    BudgetInfoComponent,
   ],
 })
 export class RequisitionBuyerApprovalComponent implements OnChanges {

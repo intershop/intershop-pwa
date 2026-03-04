@@ -4,7 +4,9 @@
     <h2 class="h3 pe-2">
       {{ 'approval.detailspage.costcenter.approval.heading' | translate }}
     </h2>
-    <ish-lazy-budget-info />
+    @defer {
+    <ish-budget-info />
+    }
   </div>
   <div class="row">
     <div class="col-md-6">

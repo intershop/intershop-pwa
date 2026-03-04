@@ -1,7 +1,7 @@
 import { AsyncPipe, NgClass, NgIf, PercentPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { OrganizationManagementExportsModule } from 'organization-management';
+import { BudgetInfoComponent } from 'organization-management';
 import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -35,7 +35,7 @@ interface BudgetValues {
     PercentPipe,
     PricePipe,
     TranslateModule,
-    OrganizationManagementExportsModule,
+    BudgetInfoComponent,
   ],
 })
 export class RequisitionCostCenterApprovalComponent implements OnInit, OnChanges {

@@ -5,7 +5,9 @@
       <h2 class="h3 pe-2">
         {{ 'approval.detailspage.buyer_budget.heading' | translate }}
       </h2>
-      <ish-lazy-budget-info />
+      @defer {
+      <ish-budget-info />
+      }
     </div>
 
     <div class="row">
