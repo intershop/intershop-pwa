@@ -20,11 +20,19 @@
       <ish-product-inventory />
       @if (editable$ | async) {
       <div class="d-flex align-items-center">
-        <ish-lazy-product-add-to-order-template
+        @defer {
+        <ish-product-add-to-order-template
+          *ishFeature="'orderTemplates'"
           [cssClass]="'btn-link btn-tool add-to-order-template'"
           displayType="icon"
         />
-        <ish-lazy-product-add-to-wishlist [cssClass]="'btn-link btn-tool ms-0'" displayType="icon" />
+        } @defer {
+        <ish-product-add-to-wishlist
+          *ishFeature="'wishlists'"
+          [cssClass]="'btn-link btn-tool ms-0'"
+          displayType="icon"
+        />
+        }
         <button
           type="button"
           class="btn-tool btn-link"

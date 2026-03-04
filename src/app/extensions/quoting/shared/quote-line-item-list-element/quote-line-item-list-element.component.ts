@@ -3,9 +3,10 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { OrderTemplatesExportsModule } from 'src/app/extensions/order-templates/exports/order-templates-exports.module';
-import { WishlistsExportsModule } from 'src/app/extensions/wishlists/exports/wishlists-exports.module';
+import { ProductAddToOrderTemplateComponent } from 'src/app/extensions/order-templates/shared/product-add-to-order-template/product-add-to-order-template.component';
+import { ProductAddToWishlistComponent } from 'src/app/extensions/wishlists/shared/product-add-to-wishlist/product-add-to-wishlist.component';
 
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ProductBundleDisplayComponent } from 'ish-shared/components/product/product-bundle-display/product-bundle-display.component';
@@ -28,8 +29,9 @@ import { QuoteItem, QuoteRequestItem } from '../../models/quoting/quoting.model'
   imports: [
     AsyncPipe,
     FontAwesomeModule,
-    OrderTemplatesExportsModule,
-    WishlistsExportsModule,
+    ProductAddToOrderTemplateComponent,
+    ProductAddToWishlistComponent,
+    FeatureToggleDirective,
     NgClass,
     NgIf,
     PricePipe,
