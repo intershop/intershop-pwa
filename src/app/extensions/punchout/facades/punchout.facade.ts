@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
@@ -6,6 +6,7 @@ import { distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { selectQueryParam } from 'ish-core/store/core/router';
 import { decamelizeString } from 'ish-core/utils/functions';
+import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { CxmlConfiguration } from '../models/cxml-configuration/cxml-configuration.model';
@@ -39,89 +40,115 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class PunchoutFacade {
+  private moduleLoader = inject(ModuleLoaderService);
+
   constructor(private store: Store) {}
 
-  punchoutLoading$ = combineLatest([
-    this.store.pipe(select(getPunchoutLoading)),
-    this.store.pipe(select(getPunchoutTypesLoading)),
-  ]).pipe(map(([loading, typesLoading]) => loading || (typesLoading as boolean)));
+  punchoutLoading$ = this.moduleLoader.whenLoaded('punchout', () =>
+    combineLatest([this.store.pipe(select(getPunchoutLoading)), this.store.pipe(select(getPunchoutTypesLoading))]).pipe(
+      map(([loading, typesLoading]) => loading || (typesLoading as boolean))
+    )
+  );
 
-  punchoutError$ = this.store.pipe(select(getPunchoutError));
-  punchoutTypesError$: Observable<HttpError> = this.store.pipe(select(getPunchoutTypesError));
-  supportedPunchoutTypes$: Observable<PunchoutType[]> = this.store.pipe(select(getPunchoutTypes));
+  punchoutError$ = this.moduleLoader.whenLoaded('punchout', () => this.store.pipe(select(getPunchoutError)));
+  punchoutTypesError$: Observable<HttpError> = this.moduleLoader.whenLoaded('punchout', () =>
+    this.store.pipe(select(getPunchoutTypesError))
+  );
+  supportedPunchoutTypes$: Observable<PunchoutType[]> = this.moduleLoader.whenLoaded('punchout', () =>
+    this.store.pipe(select(getPunchoutTypes))
+  );
 
-  selectedPunchoutType$ = combineLatest([
-    this.store.pipe(select(selectQueryParam('format'))),
-    this.store.pipe(select(getPunchoutTypes)),
-  ]).pipe(
-    filter(([format, types]) => !!format || types?.length > 0),
-    map(([format, types]) => (format as PunchoutType) || types[0]),
-    distinctUntilChanged()
+  selectedPunchoutType$ = this.moduleLoader.whenLoaded('punchout', () =>
+    combineLatest([this.store.pipe(select(selectQueryParam('format'))), this.store.pipe(select(getPunchoutTypes))]).pipe(
+      filter(([format, types]) => !!format || types?.length > 0),
+      map(([format, types]) => (format as PunchoutType) || types[0]),
+      distinctUntilChanged()
+    )
   );
 
   punchoutUsersByRoute$() {
     return this.selectedPunchoutType$.pipe(
       whenTruthy(),
-      switchMap(type => this.store.pipe(select(getPunchoutUsers(type))))
+      switchMap(type => this.moduleLoader.whenLoaded('punchout', () => this.store.pipe(select(getPunchoutUsers(type)))))
     );
   }
 
-  selectedPunchoutUser$ = this.store.pipe(select(getSelectedPunchoutUser));
+  selectedPunchoutUser$ = this.moduleLoader.whenLoaded('punchout', () => this.store.pipe(select(getSelectedPunchoutUser)));
 
   addPunchoutUser(user: PunchoutUser) {
-    this.store.dispatch(addPunchoutUser({ user }));
+    void this.moduleLoader.ensureLoaded('punchout').then(() => this.store.dispatch(addPunchoutUser({ user })));
   }
 
   updatePunchoutUser(user: PunchoutUser) {
-    this.store.dispatch(updatePunchoutUser({ user }));
+    void this.moduleLoader.ensureLoaded('punchout').then(() => this.store.dispatch(updatePunchoutUser({ user })));
   }
 
   deletePunchoutUser(user: PunchoutUser) {
-    this.store.dispatch(deletePunchoutUser({ user }));
+    void this.moduleLoader.ensureLoaded('punchout').then(() => this.store.dispatch(deletePunchoutUser({ user })));
   }
 
   transferBasket() {
-    this.store.dispatch(transferPunchoutBasket());
+    void this.moduleLoader.ensureLoaded('punchout').then(() => this.store.dispatch(transferPunchoutBasket()));
   }
 
   ociConfiguration$() {
-    this.store.dispatch(ociConfigurationActions.loadOCIOptionsAndConfiguration());
-    return this.store.pipe(select(getOciConfiguration));
+    return this.moduleLoader.whenLoaded('punchout', () => {
+      this.store.dispatch(ociConfigurationActions.loadOCIOptionsAndConfiguration());
+      return this.store.pipe(select(getOciConfiguration));
+    });
   }
-  ociConfigurationLoading$ = this.store.pipe(select(getOciConfigurationLoading));
-  ociConfigurationError$ = this.store.pipe(select(getOciConfigurationError));
-  ociFormatterSelectOptions$ = this.store.pipe(
-    select(getOciFormatters),
-    whenTruthy(),
-    map(formatters => formatters.map(f => ({ label: decamelizeString(f), value: f }))),
-    map(options => {
-      options.push({
-        value: '',
-        label: 'account.punchout.configuration.option.none.label',
-      });
-      return options;
-    })
+  ociConfigurationLoading$ = this.moduleLoader.whenLoaded('punchout', () =>
+    this.store.pipe(select(getOciConfigurationLoading))
   );
-  ociPlaceholders$ = this.store.pipe(select(getOciPlaceholders));
+  ociConfigurationError$ = this.moduleLoader.whenLoaded('punchout', () =>
+    this.store.pipe(select(getOciConfigurationError))
+  );
+  ociFormatterSelectOptions$ = this.moduleLoader.whenLoaded('punchout', () =>
+    this.store.pipe(
+      select(getOciFormatters),
+      whenTruthy(),
+      map(formatters => formatters.map(f => ({ label: decamelizeString(f), value: f }))),
+      map(options => {
+        options.push({
+          value: '',
+          label: 'account.punchout.configuration.option.none.label',
+        });
+        return options;
+      })
+    )
+  );
+  ociPlaceholders$ = this.moduleLoader.whenLoaded('punchout', () => this.store.pipe(select(getOciPlaceholders)));
 
   updateOciConfiguration(configuration: OciConfigurationItem[]) {
-    this.store.dispatch(ociConfigurationActions.updateOCIConfiguration({ configuration }));
+    void this.moduleLoader
+      .ensureLoaded('punchout')
+      .then(() => this.store.dispatch(ociConfigurationActions.updateOCIConfiguration({ configuration })));
   }
 
   cxmlConfiguration$() {
-    this.store.dispatch(cxmlConfigurationActions.loadCXMLConfiguration());
-    return this.store.pipe(select(getCxmlConfiguration));
+    return this.moduleLoader.whenLoaded('punchout', () => {
+      this.store.dispatch(cxmlConfigurationActions.loadCXMLConfiguration());
+      return this.store.pipe(select(getCxmlConfiguration));
+    });
   }
 
-  cxmlConfigurationLoading$ = this.store.pipe(select(getCxmlConfigurationLoading));
+  cxmlConfigurationLoading$ = this.moduleLoader.whenLoaded('punchout', () =>
+    this.store.pipe(select(getCxmlConfigurationLoading))
+  );
 
-  cxmlConfigurationError$ = this.store.pipe(select(getCxmlConfigurationError));
+  cxmlConfigurationError$ = this.moduleLoader.whenLoaded('punchout', () =>
+    this.store.pipe(select(getCxmlConfigurationError))
+  );
 
   updateCxmlConfiguration(configuration: CxmlConfiguration[]) {
-    this.store.dispatch(cxmlConfigurationActions.updateCXMLConfiguration({ configuration }));
+    void this.moduleLoader
+      .ensureLoaded('punchout')
+      .then(() => this.store.dispatch(cxmlConfigurationActions.updateCXMLConfiguration({ configuration })));
   }
 
   resetCxmlConfiguration() {
-    this.store.dispatch(cxmlConfigurationActions.resetCXMLConfiguration());
+    void this.moduleLoader
+      .ensureLoaded('punchout')
+      .then(() => this.store.dispatch(cxmlConfigurationActions.resetCXMLConfiguration()));
   }
 }

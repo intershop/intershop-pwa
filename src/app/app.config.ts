@@ -3,7 +3,6 @@ import {
   APP_ID,
   APP_INITIALIZER,
   ApplicationConfig,
-  EnvironmentInjector,
   EnvironmentProviders,
   TransferState,
   importProvidersFrom,
@@ -53,9 +52,9 @@ function initializeCookieConsent(transferState: TransferState) {
   };
 }
 
-function initializeModuleLoader(moduleLoader: ModuleLoaderService, injector: EnvironmentInjector) {
+function initializeModuleLoader(moduleLoader: ModuleLoaderService) {
   return () => {
-    moduleLoader.init(injector);
+    moduleLoader.init();
   };
 }
 
@@ -87,7 +86,7 @@ export const appConfig: ApplicationConfig = {
     {
       provide: APP_INITIALIZER,
       useFactory: initializeModuleLoader,
-      deps: [ModuleLoaderService, EnvironmentInjector],
+      deps: [ModuleLoaderService],
       multi: true,
     },
     // Import providers from existing NgModules during migration
