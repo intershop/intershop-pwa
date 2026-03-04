@@ -19,23 +19,31 @@
 
       <ish-product-inventory />
       @if (editable$ | async) {
-        <div class="d-flex align-items-center">
-          <ish-lazy-product-add-to-order-template
-            displayType="icon"
-            [cssClass]="'btn-link btn-tool add-to-order-template'"
-          />
-          <ish-lazy-product-add-to-wishlist displayType="icon" [cssClass]="'btn-link btn-tool ms-0'" />
-          <button
-            class="btn-tool btn-link"
-            type="button"
-            [attr.data-id]="lineItem.id"
-            [attr.data-testing-id]="'remove-line-item'"
-            title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
-            (click)="onDeleteItem()"
-          >
-            <i class="bi bi-trash-fill"></i>
-          </button>
-        </div>
+      <div class="d-flex align-items-center">
+        @defer {
+        <ish-product-add-to-order-template
+          *ishFeature="'orderTemplates'"
+          displayType="icon"
+          [cssClass]="'btn-link btn-tool add-to-order-template'"
+        />
+        } @defer {
+        <ish-product-add-to-wishlist
+          *ishFeature="'wishlists'"
+          displayType="icon"
+          [cssClass]="'btn-link btn-tool ms-0'"
+        />
+        }
+        <button
+          class="btn-tool btn-link"
+          type="button"
+          [attr.data-id]="lineItem.id"
+          [attr.data-testing-id]="'remove-line-item'"
+          title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
+          (click)="onDeleteItem()"
+        >
+          <i class="bi bi-trash-fill"></i>
+        </button>
+      </div>
       }
     </div>
 
@@ -47,9 +55,9 @@
           [for]="'quote-quantity_' + lineItem.id"
         />
         @if (editable$ | async) {
-          <ish-product-quantity [elementId]="'quote-quantity_' + lineItem.id" />
+        <ish-product-quantity [elementId]="'quote-quantity_' + lineItem.id" />
         } @else {
-          {{ lineItem.quantity.value | number }}
+        {{ lineItem.quantity.value | number }}
         }
       </div>
     </div>
@@ -59,9 +67,9 @@
   <div class="quantity col-xl-2 list-item d-none d-xl-flex">
     <div class="form-group w-100" [ngClass]="{ 'text-end': editable$ | async }">
       @if (editable$ | async) {
-        <ish-product-quantity />
+      <ish-product-quantity />
       } @else {
-        {{ lineItem.quantity.value | number }}
+      {{ lineItem.quantity.value | number }}
       }
     </div>
   </div>
@@ -70,13 +78,13 @@
   <div class="col-md-2 d-none d-md-block list-item column-price single-price">
     <!-- Original Single Base Price  -->
     @if (lineItem.originSingleBasePrice) {
-      <p>{{ 'quote.items.original_price.label' | translate }} {{ lineItem.originSingleBasePrice | ishPrice }}</p>
+    <p>{{ 'quote.items.original_price.label' | translate }} {{ lineItem.originSingleBasePrice | ishPrice }}</p>
     }
 
     <!-- (Suggested) Single Base Price  -->
     <p>
       @if (lineItem.originSingleBasePrice) {
-        {{ 'quote.items.suggested_price.label' | translate }}
+      {{ 'quote.items.suggested_price.label' | translate }}
       }
       {{ lineItem.singleBasePrice | ishPrice }}
     </p>
@@ -84,12 +92,12 @@
   <div class="col-3 col-md-2 list-item column-price">
     <div>
       @if (lineItem.originTotal) {
-        <p>{{ lineItem.originTotal | ishPrice }}</p>
+      <p>{{ lineItem.originTotal | ishPrice }}</p>
       }
 
       <!-- (Suggested) Total Price  -->
       @if (lineItem.originTotal) {
-        <span class="d-md-none">{{ 'quote.items.suggested_price.label' | translate }}</span>
+      <span class="d-md-none">{{ 'quote.items.suggested_price.label' | translate }}</span>
       }
       <div data-testing-id="total-price">{{ lineItem.total | ishPrice }}</div>
     </div>

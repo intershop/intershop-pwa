@@ -18,7 +18,7 @@ import { ProductImageComponent } from 'ish-shared/components/product/product-ima
 import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
 
-import { RatingExportsModule } from '../../../../rating/exports/rating-exports.module';
+import { ProductRatingComponent } from '../../../../rating/shared/product-rating/product-rating.component';
 import { CompareFacade } from '../../../facades/compare.facade';
 import { ProductComparePagingComponent as ProductComparePagingComponent_1 } from '../product-compare-paging/product-compare-paging.component';
 
@@ -42,7 +42,7 @@ import { ProductComparePagingComponent as ProductComparePagingComponent_1 } from
     ProductImageComponent,
     FontAwesomeModule,
     FeatureToggleModule,
-    RatingExportsModule,
+    ProductRatingComponent,
     AsyncPipe,
     SlicePipe,
     TranslateModule,

@@ -31,7 +31,7 @@ declare let Chatbot: any;
  * It also handles the communication between the Chatbot and the PWA.
  *
  * @example
- * <ish-lazy-copilot />
+ * <ish-copilot />
  */
 @Component({
   selector: 'ish-copilot',

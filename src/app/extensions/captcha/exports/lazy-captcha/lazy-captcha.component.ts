@@ -29,10 +29,10 @@ import { CaptchaFacade, CaptchaTopic } from '../../facades/captcha.facade';
  * The parent form supplied must have controls for 'captcha' and 'captchaAction'
  *
  * @example
- * <ish-lazy-captcha cssClass="offset-md-2 col-md-8" topic="contactUs" [form]="form" />
+ * <ish-captcha [form]="form" cssClass="offset-md-2 col-md-8" topic="contactUs" />
  */
 @Component({
-  selector: 'ish-lazy-captcha',
+  selector: 'ish-captcha',
   templateUrl: './lazy-captcha.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
@@ -56,7 +56,6 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit {
 
   constructor(
     private captchaFacade: CaptchaFacade,
-
     private injector: Injector,
     private environmentInjector: EnvironmentInjector
   ) {}
