@@ -39,7 +39,9 @@
         >{{ 'product.reviews.heading' | translate }} ({{ product.numberOfReviews }})</a
       >
       <ng-template ngbNavContent>
-        <ish-lazy-product-reviews />
+        @defer {
+        <ish-product-reviews />
+        }
       </ng-template>
     </ng-container>
     }

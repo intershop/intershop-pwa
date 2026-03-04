@@ -22,7 +22,9 @@
   </button>
 
   <div ngbDropdownMenu class="mini-cart">
-    <ish-lazy-mini-basket-content />
+    @defer {
+    <ish-mini-basket-content />
+    }
   </div>
 </div>
 

@@ -18,10 +18,10 @@ import { ProductQuantityComponent } from 'ish-shared/components/product/product-
 import { ProductShipmentComponent } from 'ish-shared/components/product/product-shipment/product-shipment.component';
 import { ProductWarrantyComponent } from 'ish-shared/components/product/product-warranty/product-warranty.component';
 
-import { LazyProductAddToOrderTemplateComponent } from '../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
-import { LazyProductNotificationEditComponent } from '../../../extensions/product-notifications/exports/lazy-product-notification-edit/lazy-product-notification-edit.component';
-import { LazyProductAddToQuoteComponent } from '../../../extensions/quoting/exports/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
-import { LazyProductRatingComponent } from '../../../extensions/rating/exports/lazy-product-rating/lazy-product-rating.component';
+import { ProductAddToOrderTemplateComponent } from '../../../extensions/order-templates/shared/product-add-to-order-template/product-add-to-order-template.component';
+import { ProductNotificationEditComponent } from '../../../extensions/product-notifications/shared/product-notification-edit/product-notification-edit.component';
+import { ProductAddToQuoteComponent } from '../../../extensions/quoting/shared/product-add-to-quote/product-add-to-quote.component';
+import { ProductRatingComponent } from '../../../extensions/rating/shared/product-rating/product-rating.component';
 import { ProductBrandComponent } from '../product-brand/product-brand.component';
 import { ProductDetailActionsComponent } from '../product-detail-actions/product-detail-actions.component';
 import { ProductDetailVariationsComponent } from '../product-detail-variations/product-detail-variations.component';
@@ -40,15 +40,14 @@ describe('Product Detail Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [
-        MockComponent(LazyProductAddToOrderTemplateComponent),
-        MockComponent(LazyProductAddToQuoteComponent),
-        MockComponent(LazyProductNotificationEditComponent),
-        MockComponent(LazyProductRatingComponent),
-        MockComponent(PaymentPaypalComponent),
         MockComponent(ProductAddToBasketComponent),
+        MockComponent(ProductAddToOrderTemplateComponent),
+        MockComponent(ProductAddToQuoteComponent),
         MockComponent(ProductBrandComponent),
         MockComponent(ProductDetailActionsComponent),
         MockComponent(ProductDetailVariationsComponent),
+        MockComponent(ProductNotificationEditComponent),
+        MockComponent(ProductRatingComponent),
         MockComponent(ProductIdComponent),
         MockComponent(ProductImagesComponent),
         MockComponent(ProductInventoryComponent),
@@ -84,7 +83,7 @@ describe('Product Detail Component', () => {
       [
         "ish-product-detail-actions",
         "ish-product-images",
-        "ish-lazy-product-rating",
+        "ish-product-rating",
         "ish-product-name",
         "ish-product-brand",
         "ish-product-id",
@@ -97,9 +96,9 @@ describe('Product Detail Component', () => {
         "ish-product-quantity-label",
         "ish-product-quantity",
         "ish-product-add-to-basket",
-        "ish-lazy-product-add-to-order-template",
-        "ish-lazy-product-add-to-quote",
-        "ish-lazy-product-notification-edit",
+        "ish-product-add-to-order-template",
+        "ish-product-add-to-quote",
+        "ish-product-notification-edit",
         "ish-product-warranty",
       ]
     `);

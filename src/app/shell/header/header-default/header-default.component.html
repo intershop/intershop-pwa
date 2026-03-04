@@ -20,14 +20,16 @@
     </li>
     }
     <li *ishFeature="'compare'" class="d-none d-md-block">
-      <ish-lazy-product-compare-status data-testing-id="compare-status-desktop" />
+      @defer {
+      <ish-product-compare-status data-testing-id="compare-status-desktop" />
+      }
     </li>
     <li *ishFeature="'quickorder'" class="d-none d-md-block">
-      <ish-lazy-quickorder-link />
+      @defer {
+      <ish-quickorder-link />
+      }
     </li>
-    <li *ishFeature="'wishlists'" class="d-none d-md-block">
-      <ish-lazy-wishlists-link />
-    </li>
+    <li *ishFeature="'wishlists'" class="d-none d-md-block">@defer { <ish-wishlists-link /> }</li>
   </ul>
   }
 

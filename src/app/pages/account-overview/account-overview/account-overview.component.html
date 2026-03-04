@@ -52,36 +52,46 @@
 <!-- Budget, Requisition, Approval & Quoting Widgets -->
 <ng-container *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']">
   <div class="row">
-    @if ('services.OrderApprovalServiceDefinition.runnable' | ishServerSetting) {
-    <ish-lazy-budget-widget class="col-12 col-md-8" />
-    <ish-lazy-requisition-widget class="col-12 col-md-4" />
+    @if ('services.OrderApprovalServiceDefinition.runnable' | ishServerSetting) { @defer {
+    <ish-budget-widget class="col-12 col-md-8" />
+    } @defer { <ish-requisition-widget class="col-12 col-md-4" />
+    }
     <ng-container *ishFeature="'costCenters'">
-      <ish-lazy-cost-center-widget *ishIsAuthorizedTo="'APP_B2B_MANAGE_COSTCENTER'" class="col-12 col-md-8" />
+      @defer {
+      <ish-cost-center-widget *ishIsAuthorizedTo="'APP_B2B_MANAGE_COSTCENTER'" class="col-12 col-md-8" />
+      }
     </ng-container>
     <ng-container>
-      <ish-lazy-approval-widget
+      @defer {
+      <ish-approval-widget
         *ishIsAuthorizedTo="['APP_B2B_ORDER_APPROVAL', 'APP_B2B_MANAGE_COSTCENTER']"
         class="col-12 col-md-4"
       />
+      }
     </ng-container>
     }
 
     <!-- ishFeature directives are needed for styling purposes here -->
-    <ish-lazy-quote-widget *ishFeature="'quoting'" class="col-12 col-md-4" />
-    <ish-lazy-order-template-widget *ishFeature="'orderTemplates'" class="col-12 col-md-4" />
+    @defer {
+    <ish-quote-widget *ishFeature="'quoting'" class="col-12 col-md-4" />
+    } @defer {
+    <ish-order-template-widget *ishFeature="'orderTemplates'" class="col-12 col-md-4" />
+    }
   </div>
 
   <!-- Order Widget - displays latest orders as list -->
   <ish-order-widget />
 
   <!-- Wishlist Widget - displays all unique items from all wishlists (if wishlists feature is enabled) -->
-  <ish-lazy-wishlist-widget />
+  @defer { <ish-wishlist-widget *ishFeature="'wishlists'" /> }
 </ng-container>
 
 <!-- Order Template Widget for punchout users -->
 <ng-container *ishIsAuthorizedTo="['APP_B2B_SEND_PUNCHOUT_BASKET']">
   <div class="row" *ishFeature="'orderTemplates'">
-    <ish-lazy-order-template-widget class="col-12 col-md-4" />
+    @defer {
+    <ish-order-template-widget class="col-12 col-md-4" />
+    }
   </div>
 </ng-container>
 

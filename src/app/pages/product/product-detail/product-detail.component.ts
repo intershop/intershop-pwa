@@ -17,10 +17,11 @@ import { ProductQuantityComponent } from 'ish-shared/components/product/product-
 import { ProductShipmentComponent } from 'ish-shared/components/product/product-shipment/product-shipment.component';
 import { ProductWarrantyComponent } from 'ish-shared/components/product/product-warranty/product-warranty.component';
 
-import { OrderTemplatesExportsModule } from '../../../extensions/order-templates/exports/order-templates-exports.module';
-import { ProductNotificationsExportsModule } from '../../../extensions/product-notifications/exports/product-notifications-exports.module';
-import { QuotingExportsModule } from '../../../extensions/quoting/exports/quoting-exports.module';
-import { RatingExportsModule } from '../../../extensions/rating/exports/rating-exports.module';
+import { ProductAddToOrderTemplateComponent } from '../../../extensions/order-templates/shared/product-add-to-order-template/product-add-to-order-template.component';
+import { ProductNotificationEditComponent } from '../../../extensions/product-notifications/shared/product-notification-edit/product-notification-edit.component';
+import { ProductAddToQuoteComponent } from '../../../extensions/quoting/shared/product-add-to-quote/product-add-to-quote.component';
+import { ProductRatingComponent } from '../../../extensions/rating/shared/product-rating/product-rating.component';
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ProductBrandComponent } from '../product-brand/product-brand.component';
 import { ProductDetailActionsComponent } from '../product-detail-actions/product-detail-actions.component';
 import { ProductDetailVariationsComponent } from '../product-detail-variations/product-detail-variations.component';
@@ -35,12 +36,12 @@ import { ProductImagesComponent } from '../product-images/product-images.compone
     ProductDetailActionsComponent,
     NgIf,
     ProductImagesComponent,
-    RatingExportsModule,
+    ProductRatingComponent,
     ProductBrandComponent,
     ProductDetailVariationsComponent,
-    OrderTemplatesExportsModule,
-    QuotingExportsModule,
-    ProductNotificationsExportsModule,
+    ProductAddToOrderTemplateComponent,
+    ProductAddToQuoteComponent,
+    ProductNotificationEditComponent,
     AsyncPipe,
     ProductNameComponent,
     ProductIdComponent,
@@ -54,6 +55,7 @@ import { ProductImagesComponent } from '../product-images/product-images.compone
     ProductWarrantyComponent,
     PaymentPaypalMessagesComponent,
     ServerSettingPipe,
+    FeatureToggleDirective,
   ],
 })
 export class ProductDetailComponent implements OnInit {

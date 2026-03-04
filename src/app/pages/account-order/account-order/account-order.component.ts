@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { OrderTemplatesExportsModule } from 'src/app/extensions/order-templates/exports/order-templates-exports.module';
+import { OrderCreateOrderTemplateComponent } from 'src/app/extensions/order-templates/shared/order-create-order-template/order-create-order-template.component';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -52,7 +52,7 @@ import { AccountOrderToBasketComponent } from '../account-order-to-basket/accoun
     BasketShippingMethodComponent,
     LineItemListComponent,
     BasketCostSummaryComponent,
-    OrderTemplatesExportsModule,
+    OrderCreateOrderTemplateComponent,
   ],
 })
 export class AccountOrderComponent {

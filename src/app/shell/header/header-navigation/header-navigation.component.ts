@@ -10,8 +10,8 @@ import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { IconModule } from 'ish-core/icon.module';
 import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
 import { InjectSingle } from 'ish-core/utils/injection';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { SubCategoryNavigationComponent } from 'ish-shell/header/sub-category-navigation/sub-category-navigation.component';
-import { ShellLazyComponentsModule } from 'ish-shell/shared/shell-lazy-components.module';
 
 @Component({
   selector: 'ish-header-navigation',
@@ -26,7 +26,7 @@ import { ShellLazyComponentsModule } from 'ish-shell/shared/shell-lazy-component
     NgIf,
     NgStyle,
     RouterLink,
-    ShellLazyComponentsModule,
+    ContentIncludeComponent,
     SubCategoryNavigationComponent,
     TranslateModule,
   ],
