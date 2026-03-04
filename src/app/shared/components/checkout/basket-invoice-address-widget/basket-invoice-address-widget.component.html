@@ -56,6 +56,6 @@
   />
 </div>
 
-@if ((collapseChange | async) === false) {
-<ish-lazy-address-doctor />
-}
+@if ((collapseChange | async) === false) { @defer {
+<ish-address-doctor />
+} }

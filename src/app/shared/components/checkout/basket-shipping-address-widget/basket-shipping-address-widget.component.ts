@@ -7,7 +7,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core/lib/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
-import { AddressDoctorExportsModule } from 'src/app/extensions/address-doctor/exports/address-doctor-exports.module';
+import { AddressDoctorComponent } from '../../../../extensions/address-doctor/shared/address-doctor/address-doctor.component';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -39,7 +39,7 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
     ReactiveFormsModule,
     FormlyModule,
     FormlyCustomerAddressFormComponent,
-    AddressDoctorExportsModule,
+    AddressDoctorComponent,
     NgbCollapseModule,
     AddressComponent,
   ],

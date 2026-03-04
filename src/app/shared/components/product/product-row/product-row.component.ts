@@ -2,13 +2,13 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { CompareExportsModule } from 'src/app/extensions/compare/exports/compare-exports.module';
-import { OrderTemplatesExportsModule } from 'src/app/extensions/order-templates/exports/order-templates-exports.module';
-import { ProductNotificationsExportsModule } from 'src/app/extensions/product-notifications/exports/product-notifications-exports.module';
-import { QuotingExportsModule } from 'src/app/extensions/quoting/exports/quoting-exports.module';
-import { RatingExportsModule } from 'src/app/extensions/rating/exports/rating-exports.module';
-import { WishlistsExportsModule } from 'src/app/extensions/wishlists/exports/wishlists-exports.module';
+import { ProductAddToCompareComponent } from 'src/app/extensions/compare/shared/product-add-to-compare/product-add-to-compare.component';
+import { ProductAddToOrderTemplateComponent } from 'src/app/extensions/order-templates/shared/product-add-to-order-template/product-add-to-order-template.component';
+import { ProductAddToQuoteComponent } from 'src/app/extensions/quoting/shared/product-add-to-quote/product-add-to-quote.component';
+import { ProductRatingComponent } from 'src/app/extensions/rating/shared/product-rating/product-rating.component';
+import { ProductAddToWishlistComponent } from 'src/app/extensions/wishlists/shared/product-add-to-wishlist/product-add-to-wishlist.component';
 
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ProductContextDisplayProperties, ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -46,13 +46,13 @@ import { ProductShipmentComponent } from 'ish-shared/components/product/product-
     ProductQuantityComponent,
     ProductAddToBasketComponent,
     ProductChooseVariationComponent,
-    RatingExportsModule,
-    QuotingExportsModule,
-    OrderTemplatesExportsModule,
-    ProductNotificationsExportsModule,
-    CompareExportsModule,
-    WishlistsExportsModule,
+    ProductAddToCompareComponent,
+    ProductAddToOrderTemplateComponent,
+    ProductAddToQuoteComponent,
+    ProductAddToWishlistComponent,
+    ProductRatingComponent,
     ServerHtmlDirective,
+    FeatureToggleDirective,
   ],
 })
 export class ProductRowComponent implements OnInit {

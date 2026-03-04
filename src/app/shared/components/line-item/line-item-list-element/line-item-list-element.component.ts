@@ -5,9 +5,10 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
 import { Subscription } from 'rxjs';
-import { OrderTemplatesExportsModule } from 'src/app/extensions/order-templates/exports/order-templates-exports.module';
-import { WishlistsExportsModule } from 'src/app/extensions/wishlists/exports/wishlists-exports.module';
+import { ProductAddToOrderTemplateComponent } from 'src/app/extensions/order-templates/shared/product-add-to-order-template/product-add-to-order-template.component';
+import { ProductAddToWishlistComponent } from 'src/app/extensions/wishlists/shared/product-add-to-wishlist/product-add-to-wishlist.component';
 
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -57,8 +58,9 @@ import { ProductVariationDisplayComponent } from 'ish-shared/components/product/
     NgClass,
     ServerSettingPipe,
     NgbPopoverModule,
-    OrderTemplatesExportsModule,
-    WishlistsExportsModule,
+    ProductAddToOrderTemplateComponent,
+    ProductAddToWishlistComponent,
+    FeatureToggleDirective,
     ProductQuantityComponent,
     ProductQuantityLabelComponent,
     DecimalPipe,
