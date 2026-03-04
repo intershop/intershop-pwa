@@ -2,7 +2,7 @@ import { AsyncPipe, NgFor, NgIf, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable, ReplaySubject, combineLatest } from 'rxjs';
+import { Observable, ReplaySubject, combineLatest, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
@@ -59,8 +59,8 @@ export class ProductCompareListComponent implements OnInit {
    * The list of products to compare
    */
   @Input()
-  set compareProducts(val: string[]) {
-    this.compareProductSKUs$.next(val);
+  set compareProducts(val: string[] | null) {
+    this.compareProductSKUs$.next(val ?? []);
   }
 
   /**
@@ -83,13 +83,16 @@ export class ProductCompareListComponent implements OnInit {
   ngOnInit() {
     this.compareProducts$ = this.compareProductSKUs$.pipe(
       tap(skus => {
-        // decrease the current page value if the current page would be empty because of removing a product from compare
-        if ((this.currentPage - 1) * this.itemsPerPage >= skus.length) {
-          this.currentPage = this.currentPage - 1;
+        // keep paging in a valid range when compare items are added or removed
+        const maxPage = Math.max(1, Math.ceil(skus.length / this.itemsPerPage));
+        if (this.currentPage > maxPage) {
+          this.currentPage = maxPage;
         }
       }),
       switchMap(skus =>
-        combineLatest(skus.map(sku => this.shoppingFacade.product$(sku, ProductCompletenessLevel.Detail)))
+        skus.length
+          ? combineLatest(skus.map(sku => this.shoppingFacade.product$(sku, ProductCompletenessLevel.Detail)))
+          : of<ProductView[]>([])
       )
     );
     this.commonAttributeNames$ = this.compareProducts$.pipe(map(ProductHelper.getCommonAttributeNames));

@@ -8,6 +8,7 @@ export function provideSeoFeature(): (Provider | EnvironmentProviders)[] {
       provide: LAZY_FEATURE_MODULE,
       useValue: {
         feature: 'always',
+        loadStrategy: 'appInit',
         providers: () => import('./store/seo-store.module').then(m => importProvidersFrom(m.SeoStoreModule)),
       },
       multi: true,

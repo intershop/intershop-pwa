@@ -1,36 +1,43 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
+import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 import { StoreLocation as StoreModel } from '../models/store-location/store-location.model';
 import { StoresMapService } from '../services/stores-map/stores-map.service';
 import { getError, getHighlightedStore, getLoading, getStores, highlightStore, loadStores } from '../store/stores';
 
 @Injectable({ providedIn: 'root' })
 export class StoreLocatorFacade {
+  private moduleLoader = inject(ModuleLoaderService);
+
   constructor(private mapService: StoresMapService, private store: Store) {}
 
   loadStores(countryCode: string, postalCode: string, city: string) {
-    this.store.dispatch(loadStores({ countryCode, postalCode, city }));
+    void this.moduleLoader
+      .ensureLoaded('storeLocator')
+      .then(() => this.store.dispatch(loadStores({ countryCode, postalCode, city })));
   }
 
   getLoading$() {
-    return this.store.pipe(select(getLoading));
+    return this.moduleLoader.whenLoaded('storeLocator', () => this.store.pipe(select(getLoading)));
   }
 
   getError$() {
-    return this.store.pipe(select(getError));
+    return this.moduleLoader.whenLoaded('storeLocator', () => this.store.pipe(select(getError)));
   }
 
   getStores$() {
-    return this.store.pipe(select(getStores));
+    return this.moduleLoader.whenLoaded('storeLocator', () => this.store.pipe(select(getStores)));
   }
 
   getHighlighted$() {
-    return this.store.pipe(select(getHighlightedStore));
+    return this.moduleLoader.whenLoaded('storeLocator', () => this.store.pipe(select(getHighlightedStore)));
   }
 
   setHighlighted(store: StoreModel) {
-    this.store.dispatch(highlightStore({ storeId: store.id }));
+    void this.moduleLoader.ensureLoaded('storeLocator').then(() =>
+      this.store.dispatch(highlightStore({ storeId: store.id }))
+    );
   }
 
   loadMap(container: HTMLElement) {

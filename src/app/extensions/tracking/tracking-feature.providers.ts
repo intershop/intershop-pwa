@@ -13,6 +13,7 @@ export function provideTrackingFeature(): (Provider | EnvironmentProviders)[] {
       provide: LAZY_FEATURE_MODULE,
       useValue: {
         feature: 'tracking',
+        loadStrategy: 'appInit',
         providers: trackingStoreProviders,
       },
       multi: true,
