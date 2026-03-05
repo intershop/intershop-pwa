@@ -2,7 +2,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 
@@ -34,7 +34,7 @@ export type RequisitionColumnsType =
     PricePipe,
     RequisitionRejectDialogComponent,
     RouterModule,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class RequisitionsListComponent {

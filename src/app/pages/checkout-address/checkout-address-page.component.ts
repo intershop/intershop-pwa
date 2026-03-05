@@ -2,7 +2,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { filter, first, map, take } from 'rxjs/operators';
 
@@ -33,7 +33,7 @@ import { CheckoutAddressComponent } from './checkout-address/checkout-address.co
     CheckoutAddressComponent,
     CheckoutAddressAnonymousComponent,
     LoadingComponent,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class CheckoutAddressPageComponent implements OnInit {

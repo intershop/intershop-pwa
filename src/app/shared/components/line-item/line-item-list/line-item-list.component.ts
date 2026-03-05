@@ -1,6 +1,6 @@
 import { NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
@@ -30,7 +30,7 @@ import { LineItemListElementComponent } from 'ish-shared/components/line-item/li
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    TranslateModule,
+    TranslatePipe,
     PricePipe,
     NgIf,
     LineItemListElementComponent,

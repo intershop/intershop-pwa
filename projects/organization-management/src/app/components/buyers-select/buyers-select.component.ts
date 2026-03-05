@@ -2,7 +2,7 @@ import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
@@ -13,7 +13,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
   templateUrl: './buyers-select.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgFor, TranslateModule, FormlyModule, AsyncPipe, ReactiveFormsModule],
+  imports: [NgIf, NgFor, TranslatePipe, FormlyModule, AsyncPipe, ReactiveFormsModule],
 })
 @GenerateLazyComponent()
 export class BuyersSelectComponent implements OnInit {

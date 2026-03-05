@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /**
  * Type for a basic checkbox field.
@@ -19,6 +19,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './checkbox-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, FormlyModule, ReactiveFormsModule, TranslateModule],
+  imports: [CommonModule, FormlyModule, ReactiveFormsModule, TranslatePipe],
 })
 export class CheckboxFieldComponent extends FieldType<FieldTypeConfig> {}

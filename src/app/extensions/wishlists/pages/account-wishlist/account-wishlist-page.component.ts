@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -22,7 +22,7 @@ import { AccountWishlistListComponent } from './account-wishlist-list/account-wi
     AccountWishlistListComponent,
     AsyncPipe,
     WishlistPreferencesDialogComponent,
-    TranslateModule,
+    TranslatePipe,
     ErrorMessageComponent,
     NgbPopover,
     LoadingComponent,

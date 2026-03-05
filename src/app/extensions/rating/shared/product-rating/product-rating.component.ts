@@ -1,6 +1,6 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -19,7 +19,7 @@ import { ProductRatingStarComponent } from '../product-rating-star/product-ratin
   templateUrl: './product-rating.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, NgFor, ProductRatingStarComponent, TranslateModule],
+  imports: [NgIf, AsyncPipe, NgFor, ProductRatingStarComponent, TranslatePipe],
 })
 @GenerateLazyComponent()
 export class ProductRatingComponent implements OnInit {

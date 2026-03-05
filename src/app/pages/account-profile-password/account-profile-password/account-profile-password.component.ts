@@ -11,7 +11,7 @@ import {
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -33,7 +33,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
     FormlyModule,
     ReactiveFormsModule,
     RouterModule,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class AccountProfilePasswordComponent implements OnInit, OnChanges {

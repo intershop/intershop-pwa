@@ -1,7 +1,7 @@
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, combineLatest, map, shareReplay, take, tap } from 'rxjs';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -37,7 +37,7 @@ import { AccountOrderFiltersComponent } from './account-order-filters/account-or
     OrderListComponent,
     PagingComponent,
     ServerHtmlDirective,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class AccountOrderHistoryPageComponent implements OnInit {

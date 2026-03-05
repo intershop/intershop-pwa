@@ -1,6 +1,6 @@
 import { AsyncPipe, NgClass, NgIf, PercentPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BudgetInfoComponent } from 'organization-management';
 import { Observable } from 'rxjs';
 
@@ -34,7 +34,7 @@ interface BudgetValues {
     OrderRecurrenceComponent,
     PercentPipe,
     PricePipe,
-    TranslateModule,
+    TranslatePipe,
     BudgetInfoComponent,
   ],
 })

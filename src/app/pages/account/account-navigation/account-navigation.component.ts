@@ -2,7 +2,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
 import { NotRoleToggleDirective } from 'ish-core/directives/not-role-toggle.directive';
@@ -39,7 +39,7 @@ export interface NavigationItem {
   imports: [
     NgIf,
     NgFor,
-    TranslateModule,
+    TranslatePipe,
     FeatureTogglePipe,
     ServerSettingPipe,
     NotRoleToggleDirective,

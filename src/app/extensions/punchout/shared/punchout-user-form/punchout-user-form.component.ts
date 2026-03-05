@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
@@ -14,7 +14,7 @@ import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-
   templateUrl: './punchout-user-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [FormlyModule, FormSubmitDirective, ReactiveFormsModule, RouterLink, TranslateModule],
+  imports: [FormlyModule, FormSubmitDirective, ReactiveFormsModule, RouterLink, TranslatePipe],
 })
 export class PunchoutUserFormComponent implements OnInit {
   @Input() punchoutUser: PunchoutUser;

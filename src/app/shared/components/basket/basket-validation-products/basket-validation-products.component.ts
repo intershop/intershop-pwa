@@ -1,6 +1,6 @@
 import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
@@ -30,7 +30,7 @@ import { ProductNameComponent } from 'ish-shared/components/product/product-name
     ProductNameComponent,
     ProductInventoryComponent,
     PricePipe,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class BasketValidationProductsComponent {

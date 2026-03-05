@@ -1,6 +1,6 @@
 import { NgClass, NgFor, NgIf, ViewportScroller } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'ish-paging',
@@ -8,7 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./paging.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgFor, NgClass, TranslateModule],
+  imports: [NgIf, NgFor, NgClass, TranslatePipe],
 })
 export class PagingComponent implements OnChanges {
   @Input({ required: true }) currentPage: number;

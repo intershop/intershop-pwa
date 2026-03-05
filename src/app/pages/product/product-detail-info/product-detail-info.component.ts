@@ -2,7 +2,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, map } from 'rxjs';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -25,7 +25,7 @@ import { ProductReviewsComponent } from '../../../extensions/rating/shared/produ
     FeatureToggleModule,
     ProductReviewsComponent,
     AsyncPipe,
-    TranslateModule,
+    TranslatePipe,
     ProductAttachmentsComponent,
     ProductAttributesComponent,
     ServerHtmlDirective,

@@ -1,6 +1,6 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
@@ -24,7 +24,7 @@ import { ProductItemComponent } from 'ish-shared/components/product/product-item
   templateUrl: './product-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, TranslateModule, LoadingComponent, ProductItemComponent, NgFor, ProductContextDirective],
+  imports: [NgIf, AsyncPipe, TranslatePipe, LoadingComponent, ProductItemComponent, NgFor, ProductContextDirective],
 })
 export class ProductListComponent implements OnInit {
   @Input({ required: true }) products: string[];

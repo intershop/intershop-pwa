@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -29,7 +29,7 @@ import { QuoteViewComponent } from '../../shared/quote-view/quote-view.component
     QuoteInteractionsComponent,
     QuoteViewComponent,
     RouterLink,
-    TranslateModule,
+    TranslatePipe,
     NgSwitchCase,
     NgSwitch,
   ],

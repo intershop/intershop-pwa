@@ -2,7 +2,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest, iif, of } from 'rxjs';
 import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 
@@ -18,7 +18,7 @@ import { QuotingStoreModule } from '../../store/quoting-store.module';
   templateUrl: './quote-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, InfoBoxComponent, LoadingComponent, NgIf, QuotingStoreModule, RouterModule, TranslateModule],
+  imports: [AsyncPipe, InfoBoxComponent, LoadingComponent, NgIf, QuotingStoreModule, RouterModule, TranslatePipe],
 })
 @GenerateLazyComponent()
 export class QuoteWidgetComponent implements OnInit {

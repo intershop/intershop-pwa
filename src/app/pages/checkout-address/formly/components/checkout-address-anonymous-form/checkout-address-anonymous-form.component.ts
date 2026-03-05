@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { FormlyAddressFormsModule } from 'ish-shared/formly-address-forms/formly-address-forms.module';
@@ -13,7 +13,7 @@ import { FormlyAddressFormsModule } from 'ish-shared/formly-address-forms/formly
   templateUrl: './checkout-address-anonymous-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormlyAddressFormsModule, TranslateModule, NgbCollapseModule, FormlyModule],
+  imports: [FormlyAddressFormsModule, TranslatePipe, NgbCollapseModule, FormlyModule],
 })
 export class CheckoutAddressAnonymousFormComponent implements OnInit {
   @Input({ required: true }) parentForm: FormGroup;

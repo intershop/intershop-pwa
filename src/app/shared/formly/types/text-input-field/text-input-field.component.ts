@@ -2,7 +2,7 @@ import { CommonModule, formatNumber } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FieldType, FieldTypeConfig, FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 /**
@@ -20,7 +20,7 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideNgxMask()],
   standalone: true,
-  imports: [CommonModule, FormlyModule, NgxMaskDirective, ReactiveFormsModule, TranslateModule],
+  imports: [CommonModule, FormlyModule, NgxMaskDirective, ReactiveFormsModule, TranslatePipe],
 })
 export class TextInputFieldComponent extends FieldType<FieldTypeConfig> implements OnInit {
   private textInputFieldTypes = ['text', 'email', 'password', 'tel'];

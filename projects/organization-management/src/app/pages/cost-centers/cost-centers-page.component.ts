@@ -3,7 +3,7 @@ import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, combineLatest, map, of, take } from 'rxjs';
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -38,7 +38,7 @@ type CostCenterColumnsType = 'costCenterId' | 'costCenterName' | 'costCenterMana
     NgIf,
     PagingComponent,
     RouterModule,
-    TranslateModule,
+    TranslatePipe,
     ],
 })
 export class CostCentersPageComponent implements OnInit {

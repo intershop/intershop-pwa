@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
@@ -26,7 +26,7 @@ import { ProductListingComponent } from 'ish-shared/components/product/product-l
     SkipContentLinkComponent,
     FilterNavigationComponent,
     NgbCollapse,
-    TranslateModule,
+    TranslatePipe,
     BreadcrumbComponent,
     ProductListingComponent,
   ],

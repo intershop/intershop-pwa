@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 import { AddressDoctorComponent } from '../../../../extensions/address-doctor/shared/address-doctor/address-doctor.component';
@@ -29,7 +29,7 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
   standalone: true,
   imports: [
     AsyncPipe,
-    TranslateModule,
+    TranslatePipe,
     NgIf,
     AddressDoctorComponent,
     FormlyModule,

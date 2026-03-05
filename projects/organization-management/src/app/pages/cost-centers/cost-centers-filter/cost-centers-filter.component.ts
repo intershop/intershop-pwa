@@ -14,7 +14,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 
 import { CostCenterQuery } from '../../../models/cost-center-query/cost-center-query.model';
@@ -69,7 +69,7 @@ function urlToQuery(params: UrlModel): Partial<CostCenterQuery> {
   templateUrl: './cost-centers-filter.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, FormlyModule, ReactiveFormsModule, TranslateModule, NgIf],
+  imports: [AsyncPipe, FormlyModule, ReactiveFormsModule, TranslatePipe, NgIf],
 })
 export class CostCentersFilterComponent implements OnInit, AfterViewInit {
   @Input() fragmentOnRouting: string;

@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbCalendar, NgbDate, NgbDateStruct, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest, isObservable, map, of } from 'rxjs';
 
 /**
@@ -26,7 +26,7 @@ import { Observable, combineLatest, isObservable, map, of } from 'rxjs';
   templateUrl: './date-picker-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, FormlyModule, NgbDatepickerModule, ReactiveFormsModule, TranslateModule],
+  imports: [CommonModule, FormlyModule, NgbDatepickerModule, ReactiveFormsModule, TranslatePipe],
 })
 export class DatePickerFieldComponent extends FieldType<FieldTypeConfig> {
   constructor(private calendar: NgbCalendar) {

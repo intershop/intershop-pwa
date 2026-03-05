@@ -1,6 +1,6 @@
 import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
@@ -10,7 +10,7 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
   templateUrl: './clear-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, TranslateModule, ModalDialogComponent],
+  imports: [NgClass, TranslatePipe, ModalDialogComponent],
 })
 export class ClearBasketComponent {
   @Input() cssClass: string;

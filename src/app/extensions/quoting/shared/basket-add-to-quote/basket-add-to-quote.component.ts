@@ -1,7 +1,7 @@
 import { AsyncPipe, Location, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { NotRoleToggleDirective } from 'ish-core/directives/not-role-toggle.directive';
@@ -18,7 +18,7 @@ import { QuotingFacade } from '../../facades/quoting.facade';
   templateUrl: './basket-add-to-quote.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, NotRoleToggleDirective, NgIf, TranslateModule],
+  imports: [AsyncPipe, NotRoleToggleDirective, NgIf, TranslatePipe],
 })
 @GenerateLazyComponent()
 export class BasketAddToQuoteComponent implements OnInit {

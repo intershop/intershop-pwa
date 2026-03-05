@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ProductCompareStatusComponent } from 'src/app/extensions/compare/shared/product-compare-status/product-compare-status.component';
 import { QuickorderLinkComponent } from 'src/app/extensions/quickorder/shared/quickorder-link/quickorder-link.component';
 import { WishlistsLinkComponent } from 'src/app/extensions/wishlists/shared/wishlists-link/wishlists-link.component';
@@ -18,7 +18,7 @@ import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status
     ProductCompareStatusComponent,
     QuickorderLinkComponent,
     WishlistsLinkComponent,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class UserInformationMobileComponent {}

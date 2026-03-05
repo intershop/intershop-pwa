@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -17,7 +17,7 @@ import { LineItemEditDialogComponent } from 'ish-shared/components/line-item/lin
   templateUrl: './line-item-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslateModule, ModalDialogComponent, NgIf, LineItemEditDialogComponent, AsyncPipe],
+  imports: [TranslatePipe, ModalDialogComponent, NgIf, LineItemEditDialogComponent, AsyncPipe],
 })
 export class LineItemEditComponent implements OnInit {
   @ViewChild('modalDialog') modalDialogRef: ModalDialogComponent<unknown>;

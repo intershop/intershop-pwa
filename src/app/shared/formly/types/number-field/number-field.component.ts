@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /**
  * Type for a number field
@@ -15,7 +15,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./number-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, FormlyModule, ReactiveFormsModule, TranslateModule],
+  imports: [CommonModule, FormlyModule, ReactiveFormsModule, TranslatePipe],
 })
 export class NumberFieldComponent extends FieldType<FieldTypeConfig> implements OnInit {
   cannotIncrease = false;

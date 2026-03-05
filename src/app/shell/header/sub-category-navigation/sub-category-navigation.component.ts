@@ -1,7 +1,7 @@
 import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit, forwardRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
@@ -21,7 +21,7 @@ import { InjectSingle } from 'ish-core/utils/injection';
     forwardRef(() => SubCategoryNavigationComponent),
     NgIf,
     NgFor,
-    TranslateModule,
+    TranslatePipe,
     AsyncPipe,
     NgClass,
     NgStyle,

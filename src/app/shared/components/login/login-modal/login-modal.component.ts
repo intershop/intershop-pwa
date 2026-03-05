@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { IdentityProviderLoginComponent } from 'ish-shared/components/login/identity-provider-login/identity-provider-login.component';
@@ -10,7 +10,7 @@ import { IdentityProviderLoginComponent } from 'ish-shared/components/login/iden
   templateUrl: './login-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, TranslateModule, ServerHtmlDirective, IdentityProviderLoginComponent],
+  imports: [NgIf, TranslatePipe, ServerHtmlDirective, IdentityProviderLoginComponent],
 })
 export class LoginModalComponent {
   @Input() loginMessageKey: string;

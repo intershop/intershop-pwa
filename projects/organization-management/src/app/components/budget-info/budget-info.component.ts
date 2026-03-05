@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -18,7 +18,7 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
   styleUrls: ['./budget-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, NgIf, NgbPopoverModule, TranslateModule, ServerSettingPipe, ServerHtmlDirective],
+  imports: [AsyncPipe, NgIf, NgbPopoverModule, TranslatePipe, ServerSettingPipe, ServerHtmlDirective],
 })
 @GenerateLazyComponent()
 export class BudgetInfoComponent {

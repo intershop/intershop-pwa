@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angu
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
@@ -30,7 +30,7 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
   templateUrl: './login-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ErrorMessageComponent, FormlyModule, AsyncPipe, NgClass, TranslateModule, RouterLink, ReactiveFormsModule],
+  imports: [ErrorMessageComponent, FormlyModule, AsyncPipe, NgClass, TranslatePipe, RouterLink, ReactiveFormsModule],
 })
 export class LoginFormComponent implements OnInit {
   @Input() labelClass: string;

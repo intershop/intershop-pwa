@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import {
   BehaviorSubject,
   Observable,
@@ -58,7 +58,7 @@ import { PAYPAL_BUTTON_STYLING } from './payment-paypal.component.styling';
   styleUrls: ['./payment-paypal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, NgIf, TranslateModule, AsyncPipe],
+  imports: [NgClass, NgIf, TranslatePipe, AsyncPipe],
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy {
   /**

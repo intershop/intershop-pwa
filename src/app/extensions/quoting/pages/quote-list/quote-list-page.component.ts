@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
@@ -16,7 +16,7 @@ import { QuoteListComponent } from './quote-list/quote-list.component';
   templateUrl: './quote-list-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, LoadingComponent, NgIf, QuoteListComponent, TranslateModule],
+  imports: [AsyncPipe, LoadingComponent, NgIf, QuoteListComponent, TranslatePipe],
 })
 export class QuoteListPageComponent implements OnInit {
   loading$: Observable<boolean>;

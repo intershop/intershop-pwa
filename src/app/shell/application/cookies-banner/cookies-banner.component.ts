@@ -2,7 +2,7 @@ import { AnimationEvent } from '@angular/animations';
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, TransferState } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import bottomOutAnimation from 'ish-core/animations/bottom-out.animation';
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
@@ -19,7 +19,7 @@ import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [bottomOutAnimation()],
   standalone: true,
-  imports: [NgIf, ServerHtmlDirective, RouterLink, TranslateModule],
+  imports: [NgIf, ServerHtmlDirective, RouterLink, TranslatePipe],
 })
 export class CookiesBannerComponent implements OnInit {
   showBanner = false;

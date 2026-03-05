@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { CMSModule } from 'ish-shared/cms/cms.module';
@@ -14,7 +14,7 @@ import { PaymentPaypalMessagesComponent } from 'ish-shared/components/checkout/p
   standalone: true,
   imports: [
     ContentIncludeComponent,
-    TranslateModule,
+    TranslatePipe,
     CMSModule,
     NgIf,
     ServerSettingPipe,

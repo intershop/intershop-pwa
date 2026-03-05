@@ -17,7 +17,7 @@ import {
   NgbDateStruct,
 } from '@ng-bootstrap/ng-bootstrap';
 import { FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, isObservable, map, of } from 'rxjs';
 
 function toObservableNumber(days: number | Observable<number>) {
@@ -46,7 +46,7 @@ function toObservableNumber(days: number | Observable<number>) {
   styleUrls: ['./date-range-picker-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, FormlyModule, NgbDatepickerModule, TranslateModule],
+  imports: [CommonModule, FormlyModule, NgbDatepickerModule, TranslatePipe],
 })
 export class DateRangePickerFieldComponent extends FieldType<FieldTypeConfig> implements AfterViewInit {
   hoveredDate: NgbDateStruct;

@@ -12,7 +12,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { NgbDropdown, NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, concat, of, timer } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
@@ -40,7 +40,7 @@ import { MiniBasketContentComponent } from 'ish-shared/components/basket/mini-ba
     PricePipe,
     RouterLink,
     MiniBasketContentComponent,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class MiniBasketComponent implements OnInit {

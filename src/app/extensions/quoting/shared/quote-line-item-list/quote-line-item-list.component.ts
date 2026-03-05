@@ -1,6 +1,6 @@
 import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -25,7 +25,7 @@ import { QuoteLineItemListElementComponent } from '../quote-line-item-list-eleme
     PricePipe,
     ProductContextDirective,
     QuoteLineItemListElementComponent,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class QuoteLineItemListComponent implements OnInit {

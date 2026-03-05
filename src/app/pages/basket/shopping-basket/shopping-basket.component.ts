@@ -1,7 +1,7 @@
 /* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BasketCreateOrderTemplateComponent } from 'src/app/extensions/order-templates/shared/basket-create-order-template/basket-create-order-template.component';
 import { PunchoutTransferBasketComponent } from 'src/app/extensions/punchout/shared/punchout-transfer-basket/punchout-transfer-basket.component';
 import { DirectOrderComponent } from 'src/app/extensions/quickorder/shared/direct-order/direct-order.component';
@@ -57,7 +57,7 @@ import { ShoppingBasketPaymentComponent } from '../shopping-basket-payment/shopp
   standalone: true,
   imports: [
     ContentIncludeComponent,
-    TranslateModule,
+    TranslatePipe,
     ModalDialogLinkComponent,
     NgIf,
     BasketErrorMessageComponent,

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /**
  * Wrapper that adds information text behind the input field.
@@ -17,7 +17,7 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './information-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslatePipe],
 })
 export class InformationWrapperComponent extends FieldWrapper implements OnInit {
   ngOnInit(): void {

@@ -10,7 +10,7 @@ import {
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 
@@ -27,7 +27,7 @@ import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
   templateUrl: './requisition-reject-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormSubmitDirective, FormlyModule, ReactiveFormsModule, TranslateModule],
+  imports: [FormSubmitDirective, FormlyModule, ReactiveFormsModule, TranslatePipe],
 })
 export class RequisitionRejectDialogComponent implements OnInit {
   /**

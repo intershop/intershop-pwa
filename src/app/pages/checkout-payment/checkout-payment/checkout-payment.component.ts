@@ -15,7 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -68,7 +68,7 @@ import { PaymentPayoneCreditcardComponent } from '../payment-payone-creditcard/p
     NgSwitchCase,
     NgSwitch,
     NgSwitchDefault,
-    TranslateModule,
+    TranslatePipe,
     ServerHtmlDirective,
     NgbCollapseModule,
     ReactiveFormsModule,

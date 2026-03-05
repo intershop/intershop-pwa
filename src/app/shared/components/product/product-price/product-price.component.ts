@@ -1,6 +1,6 @@
 import { AsyncPipe, DecimalPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -14,7 +14,7 @@ import { ProductHelper } from 'ish-core/models/product/product.model';
   templateUrl: './product-price.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [NgIf, AsyncPipe, TranslateModule, NgClass, PricePipe, DecimalPipe, NgFor],
+  imports: [NgIf, AsyncPipe, TranslatePipe, NgClass, PricePipe, DecimalPipe, NgFor],
 })
 export class ProductPriceComponent implements OnInit {
   @Input() showInformationalPrice: boolean;

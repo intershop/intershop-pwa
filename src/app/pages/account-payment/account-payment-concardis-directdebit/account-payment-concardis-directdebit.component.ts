@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
@@ -11,7 +11,7 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
   templateUrl: './account-payment-concardis-directdebit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [DatePipe, ModalDialogLinkComponent, NgIf, TranslateModule],
+  imports: [DatePipe, ModalDialogLinkComponent, NgIf, TranslatePipe],
 })
 export class AccountPaymentConcardisDirectdebitComponent {
   @Input({ required: true }) paymentInstrument: PaymentInstrument;

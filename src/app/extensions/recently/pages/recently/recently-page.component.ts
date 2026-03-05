@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -14,7 +14,7 @@ import { RecentlyFacade } from '../../facades/recently.facade';
   templateUrl: './recently-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, BreadcrumbComponent, NgIf, ProductsListComponent, TranslateModule],
+  imports: [AsyncPipe, BreadcrumbComponent, NgIf, ProductsListComponent, TranslatePipe],
 })
 export class RecentlyPageComponent implements OnInit {
   products$: Observable<string[]>;

@@ -2,7 +2,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
@@ -25,7 +25,7 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
     NgIf,
     ReactiveFormsModule,
     RouterModule,
-    TranslateModule,
+    TranslatePipe,
     UserProfileFormComponent,
   ],
 })

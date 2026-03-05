@@ -1,6 +1,6 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
@@ -19,7 +19,7 @@ import { WishlistLineItemComponent } from '../../shared/wishlist-line-item/wishl
     NgFor,
     NgIf,
     ProductContextDirective,
-    TranslateModule,
+    TranslatePipe,
     WishlistLineItemComponent,
   ],
 })

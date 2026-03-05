@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -20,7 +20,7 @@ import { IdentityProviderLoginComponent } from 'ish-shared/components/login/iden
   imports: [
     NgIf,
     LoadingComponent,
-    TranslateModule,
+    TranslatePipe,
     LoadingComponent,
     AsyncPipe,
     IdentityProviderLoginComponent,

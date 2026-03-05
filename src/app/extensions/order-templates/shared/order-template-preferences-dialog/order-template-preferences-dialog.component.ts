@@ -12,7 +12,7 @@ import {
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 
 import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
@@ -33,7 +33,7 @@ import { OrderTemplate } from '../../models/order-template/order-template.model'
   templateUrl: './order-template-preferences-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, FormlyModule, FormSubmitDirective, ReactiveFormsModule, TranslateModule],
+  imports: [CommonModule, FormlyModule, FormSubmitDirective, ReactiveFormsModule, TranslatePipe],
 })
 export class OrderTemplatePreferencesDialogComponent implements OnInit {
   /**

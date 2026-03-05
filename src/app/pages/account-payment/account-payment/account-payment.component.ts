@@ -2,7 +2,7 @@ import { NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnChanges, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { filter } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -30,7 +30,7 @@ import { AccountPaymentConcardisDirectdebitComponent } from '../account-payment-
     NgIf,
     NgTemplateOutlet,
     ReactiveFormsModule,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class AccountPaymentComponent implements OnInit, OnChanges {

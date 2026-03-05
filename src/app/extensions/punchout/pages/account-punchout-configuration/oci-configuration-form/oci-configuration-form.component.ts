@@ -5,7 +5,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, filter, map, shareReplay, take } from 'rxjs';
 
 import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
@@ -32,7 +32,7 @@ import { OciConfigurationItem } from '../../../models/oci-configuration-item/oci
     NgIf,
     ReactiveFormsModule,
     RouterLink,
-    TranslateModule,
+    TranslatePipe,
     NgFor,
     NgbPopoverModule,
     ],

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { OrderCreateOrderTemplateComponent } from 'src/app/extensions/order-templates/shared/order-create-order-template/order-create-order-template.component';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
@@ -37,7 +37,7 @@ import { AccountOrderToBasketComponent } from '../account-order-to-basket/accoun
     CommonModule,
     RouterModule,
     DatePipe,
-    TranslateModule,
+    TranslatePipe,
     ServerHtmlDirective,
     FeatureToggleDirective,
     InfoBoxComponent,

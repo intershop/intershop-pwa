@@ -16,7 +16,7 @@ import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbCollapseModule, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, distinctUntilChanged, map, shareReplay, takeUntil } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -126,7 +126,7 @@ function urlToQuery(params: UrlModel): Partial<OrderListQuery> {
   templateUrl: './account-order-filters.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, FormlyModule, NgIf, NgbCollapseModule, ReactiveFormsModule, TranslateModule],
+  imports: [AsyncPipe, FormlyModule, NgIf, NgbCollapseModule, ReactiveFormsModule, TranslatePipe],
   providers: [{ provide: NgbDateAdapter, useClass: OrderDateFilterAdapter }],
 })
 export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {

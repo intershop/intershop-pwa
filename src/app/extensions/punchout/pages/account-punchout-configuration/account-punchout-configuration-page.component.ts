@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ConfigOption } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { OciConfigurationMappingRepeatFieldComponent } from './formly/oci-configuration-mapping-repeat-field/oci-configuration-mapping-repeat-field.component';
 import { OciConfigurationMappingWrapperComponent } from './formly/oci-configuration-mapping-wrapper/oci-configuration-mapping-wrapper.component';
@@ -12,7 +12,7 @@ import { OciConfigurationFormComponent } from './oci-configuration-form/oci-conf
   templateUrl: './account-punchout-configuration-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [OciConfigurationFormComponent, TranslateModule],
+  imports: [OciConfigurationFormComponent, TranslatePipe],
 })
 export class AccountPunchoutConfigurationPageComponent {}
 

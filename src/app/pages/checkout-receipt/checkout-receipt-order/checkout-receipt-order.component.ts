@@ -1,7 +1,7 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
 import { Order } from 'ish-core/models/order/order.model';
@@ -16,7 +16,7 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
   standalone: true,
   imports: [
     NgIf,
-    TranslateModule,
+    TranslatePipe,
     ModalDialogLinkComponent,
     ContentIncludeComponent,
     RouterLink,

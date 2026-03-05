@@ -2,7 +2,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
 import { NotRoleToggleDirective } from 'ish-core/directives/not-role-toggle.directive';
@@ -37,7 +37,7 @@ type CostCenterBuyersListColumnsType = 'buyerName' | 'orders' | 'pendingOrders' 
     PricePipe,
     RouterModule,
     ServerHtmlDirective,
-    TranslateModule,
+    TranslatePipe,
     ],
 })
 export class CostCenterUsersListComponent implements OnInit {

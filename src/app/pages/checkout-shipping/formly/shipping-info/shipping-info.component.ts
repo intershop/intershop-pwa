@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -12,7 +12,7 @@ import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.
   templateUrl: './shipping-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, TranslateModule, PricePipe, AsyncPipe],
+  imports: [NgIf, TranslatePipe, PricePipe, AsyncPipe],
 })
 export class ShippingInfoComponent implements OnInit {
   @Input({ required: true }) shippingMethodId: string;

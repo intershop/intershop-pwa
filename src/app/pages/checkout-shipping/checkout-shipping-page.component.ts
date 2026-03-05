@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { shareReplay, take } from 'rxjs/operators';
 
@@ -34,7 +34,7 @@ import { CheckoutShippingComponent } from './checkout-shipping/checkout-shipping
   standalone: true,
   imports: [
     NgIf,
-    TranslateModule,
+    TranslatePipe,
     AsyncPipe,
     ServerSettingPipe,
     ErrorMessageComponent,

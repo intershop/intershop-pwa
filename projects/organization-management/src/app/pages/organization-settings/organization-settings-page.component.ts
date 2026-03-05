@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -31,7 +31,7 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
     NgIf,
     ReactiveFormsModule,
     RouterModule,
-    TranslateModule,
+    TranslatePipe,
     ServerSettingPipe,
   ],
 })

@@ -1,7 +1,7 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -32,7 +32,7 @@ import { OrderTemplatesStoreModule } from '../../store/order-templates-store.mod
     ProductAddToBasketComponent,
     ProductContextDirective,
     RouterModule,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 @GenerateLazyComponent()

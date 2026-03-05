@@ -1,6 +1,6 @@
 import { NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
@@ -20,7 +20,7 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
   templateUrl: './promotion-details.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslateModule, NgIf, ModalDialogLinkComponent, NgClass, ServerHtmlDirective],
+  imports: [TranslatePipe, NgIf, ModalDialogLinkComponent, NgClass, ServerHtmlDirective],
 })
 export class PromotionDetailsComponent {
   @Input({ required: true }) promotion: Promotion;

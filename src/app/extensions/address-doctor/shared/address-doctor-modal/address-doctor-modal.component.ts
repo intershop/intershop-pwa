@@ -13,7 +13,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { ModalOptions } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
@@ -23,7 +23,7 @@ import { ModalOptions } from 'ish-shared/components/common/modal-dialog/modal-di
   templateUrl: './address-doctor-modal.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [FormlyModule, ReactiveFormsModule, TranslateModule],
+  imports: [FormlyModule, ReactiveFormsModule, TranslatePipe],
 })
 export class AddressDoctorModalComponent {
   @Input() options: ModalOptions;

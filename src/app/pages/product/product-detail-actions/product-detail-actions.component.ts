@@ -1,6 +1,6 @@
 import { AsyncPipe, DOCUMENT, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { ProductSendToCompareComponent } from 'src/app/extensions/compare/shared/product-send-to-compare/product-send-to-compare.component';
 import { ProductAddToWishlistComponent } from 'src/app/extensions/wishlists/shared/product-add-to-wishlist/product-add-to-wishlist.component';
@@ -20,7 +20,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
     ProductAddToWishlistComponent,
     ProductSendToCompareComponent,
     AsyncPipe,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class ProductDetailActionsComponent implements OnInit {

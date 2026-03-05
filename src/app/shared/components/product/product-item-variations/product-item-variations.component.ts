@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
@@ -15,7 +15,7 @@ import { ProductVariationSelectComponent } from 'ish-shared/components/product/p
   templateUrl: './product-item-variations.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, TranslateModule, ProductVariationDisplayComponent, ProductVariationSelectComponent],
+  imports: [NgIf, AsyncPipe, TranslatePipe, ProductVariationDisplayComponent, ProductVariationSelectComponent],
 })
 export class ProductItemVariationsComponent implements OnInit {
   visible$: Observable<boolean>;

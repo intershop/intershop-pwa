@@ -1,7 +1,7 @@
 import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -26,7 +26,7 @@ import { SubCategoryNavigationComponent } from 'ish-shell/header/sub-category-na
     RouterLink,
     ContentIncludeComponent,
     SubCategoryNavigationComponent,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class HeaderNavigationComponent implements OnInit {

@@ -1,6 +1,6 @@
 import { AsyncPipe, NgFor, NgIf, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, ReplaySubject, combineLatest, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
@@ -43,7 +43,7 @@ import { ProductComparePagingComponent as ProductComparePagingComponent_1 } from
     ProductRatingComponent,
     AsyncPipe,
     SlicePipe,
-    TranslateModule,
+    TranslatePipe,
     ProductNameComponent,
     ProductAttributesComponent,
     ProductPriceComponent,

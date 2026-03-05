@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, TransferState } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -27,7 +27,7 @@ import { StoreLocatorFooterComponent } from '../../../extensions/store-locator/s
     FeatureTogglePipe,
     CopilotComponent,
     StoreLocatorFooterComponent,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class FooterComponent implements OnInit {

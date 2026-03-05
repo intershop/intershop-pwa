@@ -1,6 +1,6 @@
 import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -16,7 +16,7 @@ import { PricePipe } from 'ish-core/models/price/price.pipe';
   templateUrl: './basket-payment-cost-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, PricePipe, TranslateModule, NgFor],
+  imports: [NgIf, PricePipe, TranslatePipe, NgFor],
 })
 export class BasketPaymentCostInfoComponent {
   @Input({ required: true }) paymentMethod: PaymentMethod;

@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -23,7 +23,7 @@ import { RequestReminderFormComponent } from '../request-reminder-form/request-r
   standalone: true,
   imports: [
     NgIf,
-    TranslateModule,
+    TranslatePipe,
     AsyncPipe,
     ServerHtmlDirective,
     ErrorMessageComponent,

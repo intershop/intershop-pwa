@@ -13,7 +13,7 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { fromEvent } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -23,7 +23,7 @@ import { filter, map } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./in-place-edit.component.scss'],
   standalone: true,
-  imports: [NgIf, NgClass, TranslateModule],
+  imports: [NgIf, NgClass, TranslatePipe],
 })
 export class InPlaceEditComponent implements AfterViewInit {
   // localization key, can be used to give the edit-pen icon a more descriptive aria label that describes what will be edited when clicking it
