@@ -2,7 +2,6 @@ import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ErrorHandler, NgModule, Optional, SkipSelf } from '@angular/core';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { AppearanceModule } from './appearance.module';
 import { ConfigurationModule } from './configuration.module';
@@ -19,8 +18,6 @@ import { StateManagementModule } from './state-management.module';
 import { DefaultErrorHandler } from './utils/default-error-handler';
 
 @NgModule({
-  // exports needed to use the cookie banner in the AppComponent
-  exports: [TranslateModule],
   imports: [
     AppearanceModule,
     ConfigurationModule,

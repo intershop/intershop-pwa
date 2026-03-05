@@ -11,8 +11,9 @@ import {
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+
 import { SpecialValidators, formlyValidation } from 'ish-shared/forms/validators/special-validators';
 
 import { CaptchaFieldComponent } from './captcha-field/captcha-field.component';
@@ -61,7 +62,6 @@ const fieldComponents = [
     NgxMaskPipe,
     ReactiveFormsModule,
     SearchSelectFieldComponent,
-    TranslateModule,
 
     FormlyBaseModule.forChild({
       types: [
