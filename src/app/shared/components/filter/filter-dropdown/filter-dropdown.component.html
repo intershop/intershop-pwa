@@ -11,8 +11,8 @@
   </button>
 
   <div ngbDropdownMenu [attr.aria-labelledby]="'dropdownMenuLink-' + filterElement.id">
+    @for (facet of filterElement.facets; track facet.name) {
     <button
-      *ngFor="let facet of filterElement.facets; trackBy: trackByFn"
       ngbDropdownItem
       type="button"
       class="dropdown-item btn btn-link btn-link-action"
@@ -21,8 +21,10 @@
       [attr.aria-current]="facet.selected ? 'true' : undefined"
     >
       {{ facet.displayName }}
-      <ng-container *ngIf="facet.count"> ({{ facet.count }})</ng-container>
-      <fa-icon *ngIf="facet.selected" [icon]="['fas', 'check']" class="icon-checked ps-1" />
+      @if (facet.count) { ({{ facet.count }}) } @if (facet.selected) {
+      <fa-icon [icon]="['fas', 'check']" class="icon-checked ps-1" />
+      }
     </button>
+    }
   </div>
 </div>

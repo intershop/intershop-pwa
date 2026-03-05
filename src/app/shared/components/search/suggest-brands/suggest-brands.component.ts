@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, SlicePipe } from '@angular/common';
+import { AsyncPipe, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -11,7 +11,7 @@ import { HighlightPipe } from 'ish-core/pipes/highlight.pipe';
   selector: 'ish-suggest-brands',
   templateUrl: './suggest-brands.component.html',
   standalone: true,
-  imports: [AsyncPipe, NgFor, HighlightPipe, RouterLink, SlicePipe, TranslatePipe],
+  imports: [AsyncPipe, HighlightPipe, RouterLink, SlicePipe, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestBrandsComponent {

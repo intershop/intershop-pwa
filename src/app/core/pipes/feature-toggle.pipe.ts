@@ -11,7 +11,9 @@ import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle
  * For the corresponding directive, see {@link FeatureToggleDirective}.
  *
  * @example
- * <ish-product-add-to-compare *ngIf="'compare' | ishFeature"> ...</ish-product-add-to-compare>
+ * @if ('compare' | ishFeature) {
+ *   <ish-product-add-to-compare> ...</ish-product-add-to-compare>
+ * }
  */
 @Pipe({ name: 'ishFeature', pure: false })
 export class FeatureTogglePipe implements PipeTransform {

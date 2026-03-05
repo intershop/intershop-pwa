@@ -1,12 +1,10 @@
-<!-- using ngIf instead of ngSwitch to resolve an issue with hydration and duplicate headers for special logins -->
-<ng-container *ngIf="headerType$ | async as headerType; else defaultHeader">
-  <ish-header-simple *ngIf="headerType === 'simple'" />
-  <ish-header-error *ngIf="headerType === 'error'" />
-  <ish-header-checkout *ngIf="headerType === 'checkout'" />
-</ng-container>
-
-<ng-template #defaultHeader>
-  <ish-header-default [isSticky]="isSticky$ | async" [deviceType]="deviceType$ | async" [reset]="reset$ | async" />
-</ng-template>
-
+@switch (headerType$ | async) { @case ('error') {
+<ish-header-error />
+} @case ('simple') {
+<ish-header-simple />
+} @case ('checkout') {
+<ish-header-checkout />
+} @default {
+<ish-header-default [isSticky]="isSticky$ | async" [deviceType]="deviceType$ | async" [reset]="reset$ | async" />
+} }
 <ish-back-to-top />

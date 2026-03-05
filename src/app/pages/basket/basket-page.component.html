@@ -2,22 +2,22 @@
   <ish-content-include includeId="include.basket.base.top.pagelet2-Include" />
 </div>
 
-<ng-container *ngIf="basket$ | async as basket; else emptyBasket">
-  <ng-container *ngIf="basket.lineItems.length; else emptyBasket">
-    <ish-shopping-basket
-      [basket]="basket"
-      [error]="basketError$ | async"
-      [loading]="basketLoading$ | async"
-      (nextStep)="nextStep()"
-    />
-  </ng-container>
-</ng-container>
-
-<ng-template #emptyBasket>
-  <ish-shopping-basket-empty [error]="basketError$ | async" />
-
-  <ish-loading *ngIf="basketLoading$ | async" />
-</ng-template>
+@if (basket$ | async; as basket) { @if (basket.lineItems.length) {
+<ish-shopping-basket
+  [basket]="basket"
+  [error]="basketError$ | async"
+  [loading]="basketLoading$ | async"
+  (nextStep)="nextStep()"
+/>
+} @else {
+<ish-shopping-basket-empty [error]="basketError$ | async" />
+@if (basketLoading$ | async) {
+<ish-loading />
+} } } @else {
+<ish-shopping-basket-empty [error]="basketError$ | async" />
+@if (basketLoading$ | async) {
+<ish-loading />
+} }
 
 <ish-lazy-recently-viewed />
 

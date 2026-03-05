@@ -8,9 +8,7 @@ describe('Validation Icons Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ValidationIconsComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
   });
 
   beforeEach(() => {

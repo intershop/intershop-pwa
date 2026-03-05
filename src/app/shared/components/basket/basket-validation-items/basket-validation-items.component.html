@@ -1,55 +1,53 @@
-<ng-container *ngIf="lineItems?.length">
-  <div class="row list-header d-md-flex">
-    <div class="col-md-6 list-header-item">{{ 'checkout.pli.desc.heading' | translate }}</div>
-    <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.qty.heading' | translate }}</div>
-    <div class="col-md-2 list-header-item column-price">{{ 'checkout.pli.price.heading' | translate }}</div>
-    <div class="col-md-2 list-header-item text-end">{{ 'shopping_cart.total.heading' | translate }}</div>
-  </div>
-  <div class="list-body">
-    <div *ngFor="let pli of lineItems" class="list-item-row list-item-row-big">
-      <div ishProductContext [sku]="pli.productSKU" class="row clearfix">
-        <!---Product Image --->
-        <div class="col-2 list-item">
-          <ish-product-image imageType="S" [link]="true" />
-        </div>
-        <!---Product Description --->
-        <div class="col-5 col-md-4 list-item">
-          <ish-product-name />
-          <p class="product-id">{{ 'product.itemNumber.label' | translate }}&nbsp;{{ pli.productSKU }}</p>
-
-          <!---Out of Stock --->
-          <ish-product-inventory />
-        </div>
-        <div class="col-2 list-item column-price">
-          {{ pli.quantity.value }}
-        </div>
-
-        <!---Product Price --->
-        <div class="d-none d-md-block col-md-2 list-item column-price">
-          <p>{{ pli.singleBasePrice | ishPrice }}</p>
-        </div>
-
-        <!--- Total --->
-        <div class="col-3 col-md-2 list-item text-end">
-          <p>{{ pli.totals.total | ishPrice }}</p>
-
-          <div class="d-none d-lg-block">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              (click)="onDeleteItem(pli.id)"
-              data-testing-id="delete-button"
-            >
-              {{ 'restricted-items.Remove.button' | translate }}
-            </button>
-          </div>
-        </div>
+@if (lineItems?.length) {
+<div class="row list-header d-md-flex">
+  <div class="col-md-6 list-header-item">{{ 'checkout.pli.desc.heading' | translate }}</div>
+  <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.qty.heading' | translate }}</div>
+  <div class="col-md-2 list-header-item column-price">{{ 'checkout.pli.price.heading' | translate }}</div>
+  <div class="col-md-2 list-header-item text-end">{{ 'shopping_cart.total.heading' | translate }}</div>
+</div>
+<div class="list-body">
+  @for (pli of lineItems; track pli.id) {
+  <div class="list-item-row list-item-row-big">
+    <div ishProductContext [sku]="pli.productSKU" class="row clearfix">
+      <!---Product Image --->
+      <div class="col-2 list-item">
+        <ish-product-image imageType="S" [link]="true" />
       </div>
-      <div class="d-lg-none text-end">
-        <button type="button" class="btn btn-secondary" (click)="onDeleteItem(pli.id)">
-          {{ 'restricted-items.Remove.button' | translate }}
-        </button>
+      <!---Product Description --->
+      <div class="col-5 col-md-4 list-item">
+        <ish-product-name />
+        <p class="product-id">{{ 'product.itemNumber.label' | translate }}&nbsp;{{ pli.productSKU }}</p>
+        <!---Out of Stock --->
+        <ish-product-inventory />
+      </div>
+      <div class="col-2 list-item column-price">
+        {{ pli.quantity.value }}
+      </div>
+      <!---Product Price --->
+      <div class="d-none d-md-block col-md-2 list-item column-price">
+        <p>{{ pli.singleBasePrice | ishPrice }}</p>
+      </div>
+      <!--- Total --->
+      <div class="col-3 col-md-2 list-item text-end">
+        <p>{{ pli.totals.total | ishPrice }}</p>
+        <div class="d-none d-lg-block">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="onDeleteItem(pli.id)"
+            data-testing-id="delete-button"
+          >
+            {{ 'restricted-items.Remove.button' | translate }}
+          </button>
+        </div>
       </div>
     </div>
+    <div class="d-lg-none text-end">
+      <button type="button" class="btn btn-secondary" (click)="onDeleteItem(pli.id)">
+        {{ 'restricted-items.Remove.button' | translate }}
+      </button>
+    </div>
   </div>
-</ng-container>
+  }
+</div>
+}

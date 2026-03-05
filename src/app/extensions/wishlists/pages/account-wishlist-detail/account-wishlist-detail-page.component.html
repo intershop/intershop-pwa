@@ -1,97 +1,95 @@
 <!-- Error message -->
 <ish-error-message [error]="wishlistError$ | async" />
 
-<ng-container *ngIf="wishlist$ | async as wishlist">
-  <ng-template #WishlistDescription>
-    <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
-  </ng-template>
-
-  <div class="float-end pt-3">
-    <button
-      type="button"
-      class="btn-tool btn-link"
-      title="{{ 'account.wishlist.header.send_wishlist.label' | translate }}"
-      (click)="shareWishlistDialog.show()"
-      data-testing-id="wishlist-sharing"
-    >
-      <fa-icon [icon]="['fas', 'share-alt']" />
-    </button>
-    <button
-      *ngIf="wishlist.shared"
-      type="button"
-      class="btn-tool btn-link ms-3"
-      title="{{ 'account.wishlist.header.stop_wishlist_sharing.label' | translate }}"
-      (click)="unshareWishlist(wishlist.id)"
-      data-testing-id="wishlist-stop-sharing"
-    >
-      <fa-icon [icon]="['fas', 'pause']" />
-    </button>
-    <button
-      type="button"
-      (click)="editWishlistDialog.show()"
-      class="btn-tool btn-link ms-3"
-      [title]="'account.wishlist.header.edit_wishlist.label' | translate"
-      data-testing-id="wishlist-details-edit"
-    >
-      <fa-icon [icon]="['fas', 'pencil-alt']" />
-    </button>
+@if (wishlist$ | async; as wishlist) {
+<ng-template #WishlistDescription>
+  <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
+</ng-template>
+<div class="float-end pt-3">
+  <button
+    type="button"
+    class="btn-tool btn-link"
+    title="{{ 'account.wishlist.header.send_wishlist.label' | translate }}"
+    (click)="shareWishlistDialog.show()"
+    data-testing-id="wishlist-sharing"
+  >
+    <fa-icon [icon]="['fas', 'share-alt']" />
+  </button>
+  @if (wishlist.shared) {
+  <button
+    type="button"
+    class="btn-tool btn-link ms-3"
+    title="{{ 'account.wishlist.header.stop_wishlist_sharing.label' | translate }}"
+    (click)="unshareWishlist(wishlist.id)"
+    data-testing-id="wishlist-stop-sharing"
+  >
+    <fa-icon [icon]="['fas', 'pause']" />
+  </button>
+  }
+  <button
+    type="button"
+    (click)="editWishlistDialog.show()"
+    class="btn-tool btn-link ms-3"
+    [title]="'account.wishlist.header.edit_wishlist.label' | translate"
+    data-testing-id="wishlist-details-edit"
+  >
+    <fa-icon [icon]="['fas', 'pencil-alt']" />
+  </button>
+</div>
+<h1>
+  <span data-testing-id="wishlist-title">{{ wishlist?.title }}</span>
+  <button
+    type="button"
+    [ngbPopover]="WishlistDescription"
+    placement="bottom-start"
+    class="btn btn-link details-tooltip header-note mt-1"
+    popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
+  >
+    {{ 'account.wishlists.heading.tooltip.link' | translate }}<fa-icon [icon]="['fas', 'info-circle']" />
+  </button>
+</h1>
+@if (wishlist?.preferred) {
+<p data-testing-id="preferred-wishlist-text">
+  {{ 'account.wishlist.header.preferred_wishlist' | translate }}
+</p>
+}
+<div class="container">
+  @if (wishlist.itemsCount && wishlist.itemsCount > 0) {
+  <div class="list-header row">
+    <div class="col-3 col-sm-3 list-header-item">{{ 'wishlist.table.header.item' | translate }}</div>
+    <div class="col-sm-9 col-9 list-header-item column-price">
+      {{ 'wishlist.table.header.price' | translate }}
+    </div>
   </div>
-  <h1>
-    <span data-testing-id="wishlist-title">{{ wishlist?.title }}</span>
-    <button
-      type="button"
-      [ngbPopover]="WishlistDescription"
-      placement="bottom-start"
-      class="btn btn-link details-tooltip header-note mt-1"
-      popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
-    >
-      {{ 'account.wishlists.heading.tooltip.link' | translate }}<fa-icon [icon]="['fas', 'info-circle']" />
-    </button>
-  </h1>
-
-  <p *ngIf="wishlist?.preferred" data-testing-id="preferred-wishlist-text">
-    {{ 'account.wishlist.header.preferred_wishlist' | translate }}
-  </p>
-
-  <div class="container">
-    <ng-container *ngIf="wishlist.itemsCount && wishlist.itemsCount > 0; else noItems">
-      <div class="list-header row">
-        <div class="col-3 col-sm-3 list-header-item">{{ 'wishlist.table.header.item' | translate }}</div>
-        <div class="col-sm-9 col-9 list-header-item column-price">
-          {{ 'wishlist.table.header.price' | translate }}
-        </div>
-      </div>
-      <div class="list-body">
-        <ng-container *ngFor="let item of wishlist.items; trackBy: trackByFn">
-          <div class="list-item-row">
-            <ish-wishlist-line-item
-              ishProductContext
-              [sku]="item.sku"
-              [wishlistItemData]="item"
-              [currentWishlist]="wishlist"
-            />
-          </div>
-        </ng-container>
-      </div>
-    </ng-container>
+  <div class="list-body">
+    @for (item of wishlist.items; track item.id) {
+    <div class="list-item-row">
+      <ish-wishlist-line-item
+        ishProductContext
+        [sku]="item.sku"
+        [wishlistItemData]="item"
+        [currentWishlist]="wishlist"
+      />
+    </div>
+    }
   </div>
-
-  <ng-template #noItems>
-    <p>{{ 'account.wishlist.no_entries' | translate }}</p>
-  </ng-template>
-
-  <ish-wishlist-preferences-dialog
-    #editWishlistDialog
-    [wishlist]="wishlist"
-    (submitWishlist)="editPreferences($event, wishlist.id)"
-  />
-
-  <ish-wishlist-sharing-dialog
-    #shareWishlistDialog
-    [wishlist]="wishlist"
-    (submitWishlistSharing)="shareWishlist($event, wishlist.id)"
-  />
-</ng-container>
+  } @else {
+  <p>{{ 'account.wishlist.no_entries' | translate }}</p>
+  }
+</div>
+<ish-wishlist-preferences-dialog
+  #editWishlistDialog
+  [wishlist]="wishlist"
+  (submitWishlist)="editPreferences($event, wishlist.id)"
+/>
+<ish-wishlist-sharing-dialog
+  #shareWishlistDialog
+  [wishlist]="wishlist"
+  (submitWishlistSharing)="shareWishlist($event, wishlist.id)"
+/>
+}
 
 <a routerLink="/account/wishlists">{{ 'account.wishlist.searchform.return.link' | translate }}</a>
-<ish-loading *ngIf="wishlistLoading$ | async" />
+@if (wishlistLoading$ | async) {
+<ish-loading />
+}

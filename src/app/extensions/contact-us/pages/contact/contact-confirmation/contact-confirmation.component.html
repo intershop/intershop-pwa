@@ -1,16 +1,14 @@
-<ng-container *ngIf="success; else failed">
-  <p data-testing-id="successText">
-    {{ 'helpdesk.contactus.thankyou' | translate }}<br />
-    {{ 'helpdesk.contactus.youwillreceive' | translate }}
-  </p>
-</ng-container>
-
-<ng-template #failed>
-  <div class="alert alert-danger" role="alert">
-    <p>{{ 'helpdesk.mail_not_sent.message' | translate }}</p>
-    <p>{{ 'helpdesk.try_again.message' | translate }}</p>
-  </div>
-</ng-template>
+@if (success) {
+<p data-testing-id="successText">
+  {{ 'helpdesk.contactus.thankyou' | translate }}<br />
+  {{ 'helpdesk.contactus.youwillreceive' | translate }}
+</p>
+} @else {
+<div class="alert alert-danger" role="alert">
+  <p>{{ 'helpdesk.mail_not_sent.message' | translate }}</p>
+  <p>{{ 'helpdesk.try_again.message' | translate }}</p>
+</div>
+}
 
 <p>
   <a routerLink="/home">{{ 'helpdesk.contactus.continueshopping' | translate }}</a>

@@ -1,38 +1,37 @@
 <ul class="filter-list" [id]="filterElement.id">
-  <ng-container *ngFor="let facet of getFacets()">
-    <li class="filter-item filter-layer{{ facet.level }}" [ngClass]="{ 'filter-selected': facet.selected }">
-      <!-- selected -->
-      <ng-container *ngIf="facet.selected; else notSelectedBox">
-        <button
-          type="button"
-          class="btn btn-link btn-link-action link-decoration-hover"
-          (click)="filter(facet)"
-          [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
-          aria-current="true"
-        >
-          <span class="filter-item-name"> {{ facet.displayName }} </span>
-          <span class="count"> ({{ facet.count }}) </span>
-          <ng-container *ngIf="filterElement.displayType === 'text_clear'">
-            <fa-icon [icon]="['fas', 'times']" class="float-end filter-clear" />
-          </ng-container>
-        </button>
-      </ng-container>
-
-      <!-- not selected -->
-      <ng-template #notSelectedBox>
-        <button
-          type="button"
-          class="filter-item-name btn btn-link btn-link-action link-decoration-hover"
-          (click)="filter(facet)"
-          [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
-        >
-          {{ facet.displayName }}{{ facet.level === maxLevel ? ' (' + facet.count + ')' : '' }}
-        </button>
-      </ng-template>
-    </li>
-  </ng-container>
+  @for (facet of getFacets(); track facet.name) {
+  <li class="filter-item filter-layer{{ facet.level }}" [ngClass]="{ 'filter-selected': facet.selected }">
+    <!-- selected -->
+    @if (facet.selected) {
+    <button
+      type="button"
+      class="btn btn-link btn-link-action link-decoration-hover"
+      (click)="filter(facet)"
+      [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
+      aria-current="true"
+    >
+      <span class="filter-item-name"> {{ facet.displayName }} </span>
+      <span class="count"> ({{ facet.count }}) </span>
+      @if (filterElement.displayType === 'text_clear') {
+      <fa-icon [icon]="['fas', 'times']" class="float-end filter-clear" />
+      }
+    </button>
+    <!-- not selected -->
+    } @else {
+    <button
+      type="button"
+      class="filter-item-name btn btn-link btn-link-action link-decoration-hover"
+      (click)="filter(facet)"
+      [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
+    >
+      {{ facet.displayName }}{{ facet.level === maxLevel ? ' (' + facet.count + ')' : '' }}
+    </button>
+    }
+  </li>
+  }
   <!-- show all/less -->
-  <li class="filter-item" *ngIf="filterElement.limitCount !== -1 && facets.length > filterElement.limitCount">
+  @if (filterElement.limitCount !== -1 && facets.length > filterElement.limitCount) {
+  <li class="filter-item">
     <button
       type="button"
       class="btn btn-link btn-link-action"
@@ -46,4 +45,5 @@
       {{ (showAll ? 'search.filter.show_less.link' : 'search.filter.show_all.link') | translate }}
     </button>
   </li>
+  }
 </ul>

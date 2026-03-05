@@ -237,7 +237,9 @@ const routes: Routes = [
 **Pipe**
 
 ```html
-<ish-product-add-to-compare *ngIf="'compare' | ishFeature"> ...</ish-product-add-to-compare>
+@if ('compare' | ishFeature) {
+<ish-product-add-to-compare> ...</ish-product-add-to-compare>
+}
 ```
 
 **Service**

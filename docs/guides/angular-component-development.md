@@ -12,8 +12,6 @@ kb_sync_latest_only
 - [Delegate Complex Component Logic to Services](#delegate-complex-component-logic-to-services)
 - [Put as Little Logic Into `constructor` as Possible - Use `ngOnInit`](#put-as-little-logic-into-constructor-as-possible---use-ngoninit)
 - [Use Property Binding to Bind Dynamic Values to Attributes or Properties](#use-property-binding-to-bind-dynamic-values-to-attributes-or-properties)
-- [Pattern for Conditions (ngIf) with Alternative Template (else) in Component Templates](#pattern-for-conditions-ngif-with-alternative-template-else-in-component-templates)
-- [Pattern for Loops (ngFor) with Changing Data in Component Templates](#pattern-for-loops-ngfor-with-changing-data-in-component-templates)
 - [Do Not Unsubscribe, Use the takeUntilDestroyed Operator Instead](#do-not-unsubscribe-use-the-takeuntildestroyed-operator-instead)
 - [Use `OnPush` Change Detection if Possible](#use-onpush-change-detection-if-possible)
 - [DOM Manipulations](#dom-manipulations)
@@ -75,62 +73,6 @@ There is an exception for direct string value bindings where we use for example 
   <img [src]="base_url + category.images[0].effectiveUrl" />
 </div>
 ```
-
-## Pattern for Conditions (ngIf) with Alternative Template (else) in Component Templates
-
-Also for consistency reasons, we want to establish the following pattern for conditions in component templates:
-
-:warning: **Condition in template**
-
-```typescript
-<ng-container *ngIf="show; else elseBlock">
- ... (template code for if-branch)
-</ng-container>
-
-<ng-template #elseBlock>
-  ... (template code for else-branch)
-</ng-template>
-```
-
-This pattern provides the needed flexibility if used together with handling observables with `*ngIf` and the `async` pipe.
-In this case the condition should look like this:
-
-```typescript
-<ng-container *ngIf="observable$ | async as synchronized; else loading">
-```
-
-## Pattern for Loops (ngFor) with Changing Data in Component Templates
-
-Looping through an array in a component may sometimes be accompanied by side effects if the data within the array are changing.
-
-```html
-<ng-container *ngFor="let element of array$ | async">
-  <another-component [element]="element"></another-component>
-</ng-container>
-```
-
-In case the values of the array$ observable are varying somehow during the lifetime of the component (reordering elements, add/ delete elements, changing properties), all children DOM elements are destroyed and re-initialized with the new data.
-
-To avoid these many and expensive DOM manipulations and persist the children DOM elements the loop elements has to be uniquely identified in the `NgFor` directive.
-This can be achieved by using custom [`trackBy`](https://angular.io/api/core/TrackByFunction) functions within the `ngFor` directive.
-
-```typescript
-@Component({
-  ...
-  template: `
-  <ng-container *ngFor="let element of array$ | async; trackBy: customTrackByFn">
-    <another-component [element]="element"></another-component>
-  </ng-container>`
-})
-export class AnyComponent implements OnInit, OnDestroy {
-  ...
-  customTrackByFn(index, element) {
-    return element.id;
-  }
-}
-```
-
-The custom trackBy function needs to return unique values for all unique inputs.
 
 ## Do Not Unsubscribe, Use the takeUntilDestroyed Operator Instead
 

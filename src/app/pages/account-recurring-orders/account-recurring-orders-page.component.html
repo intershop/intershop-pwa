@@ -22,13 +22,15 @@
 </ul>
 
 <div class="recurring-orders">
-  <ng-container *ngIf="recurringOrders$ | async as recurringOrders">
-    <ish-recurring-order-list
-      [recurringOrders]="recurringOrders"
-      [columnsToDisplay]="columnsToDisplay"
-      [context]="context"
-    />
-  </ng-container>
+  @if (recurringOrders$ | async; as recurringOrders) {
+  <ish-recurring-order-list
+    [recurringOrders]="recurringOrders"
+    [columnsToDisplay]="columnsToDisplay"
+    [context]="context"
+  />
+  }
 </div>
 
-<ish-loading *ngIf="recurringOrdersLoading$ | async" />
+@if (recurringOrdersLoading$ | async) {
+<ish-loading />
+}

@@ -1,4 +1,5 @@
-<li *ngIf="productURL$ | async as productURL">
+@if (productURL$ | async; as productURL) {
+<li>
   <a class="product-image" [routerLink]="productURL" (click)="handleInputFocus()" tabindex="-1">
     <ish-product-image imageType="S" />
   </a>
@@ -8,3 +9,4 @@
     (click)="handleInputFocus()"
   ></a>
 </li>
+}

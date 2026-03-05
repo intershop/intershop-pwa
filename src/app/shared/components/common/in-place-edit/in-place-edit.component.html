@@ -1,45 +1,43 @@
-<ng-container *ngIf="viewMode; else edit">
-  <div class="d-flex flex-row align-items-center">
-    <ng-content select="[viewModeContent]" />
-    <button
-      type="button"
-      class="btn btn-link"
-      [ngClass]="buttonClass"
-      [title]="
-        ariaLabelName === ''
-          ? ('inplace_edit.click_to_edit' | translate)
-          : ('inplace_edit.label' | translate : { '0': ariaLabelName | translate })
-      "
-      (click)="toggleEditMode(true)"
-    >
-      <fa-icon [icon]="['fas', 'pencil-alt']" class="me-auto" />
-    </button>
-  </div>
-</ng-container>
-
-<ng-template #edit>
-  <div class="d-flex flex-row align-items-baseline">
-    <ng-content select="[editModeForm]" />
-    <button
-      type="button"
-      class="btn btn-link"
-      [ngClass]="buttonClass"
-      [title]="'inplace_edit.save' | translate"
-      (click)="confirm()"
-      data-testing-id="confirm"
-      [disabled]="confirmDisabled"
-    >
-      <fa-icon [icon]="['fas', 'check']" />
-    </button>
-    <button
-      type="button"
-      class="btn btn-link"
-      [ngClass]="buttonClass"
-      [title]="'inplace_edit.cancel' | translate"
-      (click)="cancel()"
-      data-testing-id="cancel"
-    >
-      <fa-icon [icon]="['fas', 'times']" />
-    </button>
-  </div>
-</ng-template>
+@if (viewMode) {
+<div class="d-flex flex-row align-items-center">
+  <ng-content select="[viewModeContent]" />
+  <button
+    type="button"
+    class="btn btn-link"
+    [ngClass]="buttonClass"
+    [title]="
+      ariaLabelName === ''
+        ? ('inplace_edit.click_to_edit' | translate)
+        : ('inplace_edit.label' | translate : { '0': ariaLabelName | translate })
+    "
+    (click)="toggleEditMode(true)"
+  >
+    <fa-icon [icon]="['fas', 'pencil-alt']" class="me-auto" />
+  </button>
+</div>
+} @else {
+<div class="d-flex flex-row align-items-baseline">
+  <ng-content select="[editModeForm]" />
+  <button
+    type="button"
+    class="btn btn-link"
+    [ngClass]="buttonClass"
+    [title]="'inplace_edit.save' | translate"
+    (click)="confirm()"
+    data-testing-id="confirm"
+    [disabled]="confirmDisabled"
+  >
+    <fa-icon [icon]="['fas', 'check']" />
+  </button>
+  <button
+    type="button"
+    class="btn btn-link"
+    [ngClass]="buttonClass"
+    [title]="'inplace_edit.cancel' | translate"
+    (click)="cancel()"
+    data-testing-id="cancel"
+  >
+    <fa-icon [icon]="['fas', 'times']" />
+  </button>
+</div>
+}

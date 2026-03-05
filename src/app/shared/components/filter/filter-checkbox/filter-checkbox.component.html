@@ -1,21 +1,19 @@
 <ul class="filter-list" [id]="filterElement.id">
-  <ng-container *ngFor="let facet of getFacets()">
-    <li class="filter-item filter-layer{{ facet.level }}" [ngClass]="{ 'filter-selected': facet.selected }">
-      <div>
-        <label class="filter-item-checkbox-label-native">
-          <input type="checkbox" class="form-check-input" [checked]="facet.selected" (change)="filter(facet)" />
-          <span class="filter-item-name"> {{ facet.displayName }} </span>
-          <span class="count"> ({{ facet.count }}) </span>
-        </label>
-      </div>
-    </li>
-  </ng-container>
-  <li
-    class="filter-item"
-    *ngIf="filterElement.limitCount !== -1 && filterElement.facets.length > filterElement.limitCount"
-  >
+  @for (facet of getFacets(); track facet.name) {
+  <li class="filter-item filter-layer{{ facet.level }}" [ngClass]="{ 'filter-selected': facet.selected }">
+    <div>
+      <label class="filter-item-checkbox-label-native">
+        <input type="checkbox" class="form-check-input" [checked]="facet.selected" (change)="filter(facet)" />
+        <span class="filter-item-name"> {{ facet.displayName }} </span>
+        <span class="count"> ({{ facet.count }}) </span>
+      </label>
+    </div>
+  </li>
+  } @if (filterElement.limitCount !== -1 && filterElement.facets.length > filterElement.limitCount) {
+  <li class="filter-item">
     <button type="button" class="btn btn-link btn-link-action" (click)="showAll = !showAll">
       {{ (showAll ? 'search.filter.show_less.link' : 'search.filter.show_all.link') | translate }}
     </button>
   </li>
+  }
 </ul>

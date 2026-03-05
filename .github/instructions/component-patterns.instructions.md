@@ -9,7 +9,7 @@ applyTo: '**/*.component.ts'
 - Use facades instead of direct service calls where possible
 - Never inject the store directly - use facades instead
 - Implement proper subscription cleanup with `takeUntilDestroyed` pattern
-- Use `trackBy` functions for `*ngFor` performance
+- Use built-in control flow syntax in templates (`@if`, `@for`, etc.)
 - Keep templates simple - delegate business logic to facades
 - Prefer `async` pipe over manual subscriptions
 - Use `formly` forms when creating forms

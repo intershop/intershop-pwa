@@ -1,11 +1,15 @@
-<ng-container *ngIf="attachments$ | async as attachments">
-  <div *ngIf="attachments?.length" class="product-attachments">
-    <div *ngFor="let attachment of attachments" class="product-attachment">
-      <strong>{{ attachment.name }}</strong>
-      <a class="download-link" [href]="attachment.url" rel="enclosure">{{
-        'product.attachments.download.link' | translate
-      }}</a>
-      <p *ngIf="attachment.description" class="product-attachment-description">{{ attachment.description }}</p>
-    </div>
+@if (attachments$ | async; as attachments) { @if (attachments?.length) {
+<div class="product-attachments">
+  @for (attachment of attachments; track attachment.key) {
+  <div class="product-attachment">
+    <strong>{{ attachment.name }}</strong>
+    <a class="download-link" [href]="attachment.url" rel="enclosure">{{
+      'product.attachments.download.link' | translate
+    }}</a>
+    @if (attachment.description) {
+    <p class="product-attachment-description">{{ attachment.description }}</p>
+    }
   </div>
-</ng-container>
+  }
+</div>
+} }

@@ -22,7 +22,6 @@ describe('Horizontal Checkbox Wrapper Component', () => {
         }),
         FormlyTestingComponentsModule,
       ],
-      declarations: [HorizontalCheckboxWrapperComponent],
     }).compileComponents();
   });
 

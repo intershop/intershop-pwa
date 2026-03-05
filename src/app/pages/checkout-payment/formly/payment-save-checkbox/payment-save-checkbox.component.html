@@ -1,1 +1,3 @@
-<formly-form *ngIf="paymentMethod.saveAllowed" [form]="form" [model]="model" [fields]="fields" />
+@if (paymentMethod.saveAllowed) {
+<formly-form [form]="form" [model]="model" [fields]="fields" />
+}

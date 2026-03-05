@@ -5,7 +5,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 import { WishlistSharing } from '../../models/wishlist-sharing/wishlist-sharing.model';
-import { Wishlist, WishlistItem } from '../../models/wishlist/wishlist.model';
+import { Wishlist } from '../../models/wishlist/wishlist.model';
 
 @Component({
   selector: 'ish-account-wishlist-detail-page',
@@ -38,9 +38,5 @@ export class AccountWishlistDetailPageComponent implements OnInit {
 
   shareWishlist(wishlistSharing: WishlistSharing, wishlistId: string) {
     this.wishlistsFacade.shareWishlist(wishlistId, wishlistSharing);
-  }
-
-  trackByFn(_: number, item: WishlistItem) {
-    return item.id;
   }
 }

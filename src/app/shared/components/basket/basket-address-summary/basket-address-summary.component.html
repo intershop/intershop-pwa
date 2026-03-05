@@ -26,9 +26,12 @@
     <h3 class="h5">{{ 'checkout.address.shipping.label' | translate }}</h3>
   </div>
   <div data-testing-id="address-summary-ship-to-address">
-    <address *ngIf="basket.invoiceToAddress.id === basket.commonShipToAddress?.id; else shippingAddress">
+    @if (basket.invoiceToAddress.id === basket.commonShipToAddress?.id) {
+    <address>
       {{ 'checkout.same_as_billing_address.text' | translate }}
     </address>
-    <ng-template #shippingAddress> <ish-address [address]="basket.commonShipToAddress" /> </ng-template>
+    } @else {
+    <ish-address [address]="basket.commonShipToAddress" />
+    }
   </div>
 </div>

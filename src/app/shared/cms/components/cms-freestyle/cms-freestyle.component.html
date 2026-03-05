@@ -1,1 +1,3 @@
-<div *ngIf="pagelet?.hasParam('HTML')" [ishServerHtml]="pagelet.stringParam('HTML')"></div>
+@if (pagelet?.hasParam('HTML')) {
+<div [ishServerHtml]="pagelet.stringParam('HTML')"></div>
+}

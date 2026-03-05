@@ -110,14 +110,14 @@ describe('Quote Handling', () => {
     });
     at(QuoteDetailPage, page => {
       page.breadcrumb.items.should('have.length', 4);
-      page.quoteState.should('have.text', 'Submitted');
+      page.quoteState.should('contain', 'Submitted');
     });
   });
 
   it('user copies quote request', () => {
     at(QuoteDetailPage, page => {
       page.copyQuoteRequest();
-      page.quoteState.should('have.text', 'New');
+      page.quoteState.should('contain', 'New');
       page.totalPrice.should('contain', _.product.price * 4);
     });
   });

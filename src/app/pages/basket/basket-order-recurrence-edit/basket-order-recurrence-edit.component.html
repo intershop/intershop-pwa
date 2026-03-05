@@ -1,4 +1,5 @@
-<div *ngIf="showRecurrenceOptions$ | async" id="order-recurrence">
+@if (showRecurrenceOptions$ | async) {
+<div id="order-recurrence">
   <fieldset class="mt-1">
     <legend class="visually-hidden">{{ 'order.recurrence.form.legend' | translate }}</legend>
     <input
@@ -13,7 +14,6 @@
     <label class="form-check-label" for="order_recurrence_single">{{
       'order.recurrence.single_order.label' | translate
     }}</label>
-
     <div class="mt-2">
       <input
         type="radio"
@@ -43,3 +43,4 @@
     </form>
   </div>
 </div>
+}

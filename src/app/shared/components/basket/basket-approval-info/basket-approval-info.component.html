@@ -1,7 +1,7 @@
-<div *ngIf="approval?.approvalRequired" class="text-end pb-2">
+@if (approval?.approvalRequired) {
+<div class="text-end pb-2">
   <fa-icon [icon]="['fas', 'user-check']" />
   <span class="ps-2" data-testing-id="approval-required">{{ 'approval.cart.approval_required' | translate }}</span>
-
   <!-- details link and dialog -->
   <ish-modal-dialog-link
     linkText="approval.cart.link.details"
@@ -14,7 +14,9 @@
     <ul>
       <li>{{ 'approval.details.conditions.order_spend_limit' | translate }}</li>
       <li>{{ 'approval.details.conditions.budget_limit' | translate }}</li>
-      <li *ngIf="approval.costCenterApproval">{{ 'approval.details.conditions.cost_center' | translate }}</li>
+      @if (approval.costCenterApproval) {
+      <li>{{ 'approval.details.conditions.cost_center' | translate }}</li>
+      }
       <li>{{ 'approval.details.conditions.recurring_order' | translate }}</li>
     </ul>
     <p>
@@ -26,42 +28,41 @@
       "
       [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
     ></p>
-
     <!-- display approvers -->
-    <h3 *ngIf="approval.customerApproval?.approvers?.length || approval.costCenterApproval?.approvers?.length">
+    @if (approval.customerApproval?.approvers?.length || approval.costCenterApproval?.approvers?.length) {
+    <h3>
       {{ 'approval.details.contacts.heading' | translate }}
     </h3>
-
-    <ng-container *ngIf="approval.customerApproval?.approvers?.length">
-      <p>{{ 'approval.details.customer_approvers.people_allowed' | translate }}</p>
-
-      <table class="table table-sm">
-        <tr *ngFor="let approver of approval.customerApproval.approvers">
-          <td class="w-50">{{ approver.firstName }} {{ approver.lastName }}</td>
-          <td>
-            <a href="mailto:{{ approver.email }}" class="link-primary">{{ approver.email }}</a>
-          </td>
-        </tr>
-      </table>
-    </ng-container>
-
-    <ng-container *ngIf="approval.costCenterApproval?.approvers?.length">
-      <p>
-        {{
-          'approval.details.cost_center_approvers.people_allowed'
-            | translate
-              : { '0': approval.costCenterApproval.costCenterName || approval.costCenterApproval.costCenterID }
-        }}
-      </p>
-
-      <table class="table table-sm">
-        <tr *ngFor="let approver of approval.costCenterApproval.approvers">
-          <td class="w-50">{{ approver.firstName }} {{ approver.lastName }}</td>
-          <td>
-            <a href="mailto:{{ approver.email }}" class="link-primary">{{ approver.email }}</a>
-          </td>
-        </tr>
-      </table>
-    </ng-container>
+    } @if (approval.customerApproval?.approvers?.length) {
+    <p>{{ 'approval.details.customer_approvers.people_allowed' | translate }}</p>
+    <table class="table table-sm">
+      @for (approver of approval.customerApproval.approvers; track approver.email) {
+      <tr>
+        <td class="w-50">{{ approver.firstName }} {{ approver.lastName }}</td>
+        <td>
+          <a href="mailto:{{ approver.email }}" class="link-primary">{{ approver.email }}</a>
+        </td>
+      </tr>
+      }
+    </table>
+    } @if (approval.costCenterApproval?.approvers?.length) {
+    <p>
+      {{
+        'approval.details.cost_center_approvers.people_allowed'
+          | translate : { '0': approval.costCenterApproval.costCenterName || approval.costCenterApproval.costCenterID }
+      }}
+    </p>
+    <table class="table table-sm">
+      @for (approver of approval.costCenterApproval.approvers; track approver.email) {
+      <tr>
+        <td class="w-50">{{ approver.firstName }} {{ approver.lastName }}</td>
+        <td>
+          <a href="mailto:{{ approver.email }}" class="link-primary">{{ approver.email }}</a>
+        </td>
+      </tr>
+      }
+    </table>
+    }
   </ish-modal-dialog-link>
 </div>
+}

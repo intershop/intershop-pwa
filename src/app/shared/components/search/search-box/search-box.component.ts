@@ -1,4 +1,4 @@
-import { AsyncPipe, DOCUMENT, NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, DOCUMENT, NgClass } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -48,11 +48,8 @@ import { SuggestSearchTermsComponent } from 'ish-shared/components/search/sugges
   standalone: true,
   imports: [
     FaIconComponent,
-    NgIf,
     AsyncPipe,
     NgClass,
-    NgFor,
-    NgTemplateOutlet,
     TranslatePipe,
     SuggestBrandsComponent,
     SuggestCategoriesComponent,

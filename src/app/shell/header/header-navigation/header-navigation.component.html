@@ -1,8 +1,8 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <ul class="navbar-nav main-navigation-list">
+  @for (category of categories$ | async; track category.uniqueId; let isFirst = $first) {
   <li
-    *ngFor="let category of categories$ | async; first as isFirst"
     #subMenu
     class="dropdown"
     [ngClass]="{ open: isOpened(category.uniqueId), first: isFirst }"
@@ -18,24 +18,28 @@
     >
       {{ category.name }}
     </a>
-    <ng-container *ngIf="isBrowser && mainNavigationMaxSubCategoriesDepth > 0 && category.hasChildren">
-      <a
-        class="dropdown-toggle"
-        (click)="toggleOpen(category.uniqueId)"
-        (keydown.enter)="toggleOpen(category.uniqueId)"
-        role="button"
-        [attr.aria-label]="
-          isOpened(category.uniqueId)
-            ? ('header.navigation.collapse_category.aria_label' | translate : { '0': category.name })
-            : ('header.navigation.expand_category.aria_label' | translate : { '0': category.name })
-        "
-        tabindex="0"
-      >
-        <fa-icon *ngIf="isOpened(category.uniqueId); else closed" [icon]="['fas', 'minus']" />
-        <ng-template #closed> <fa-icon [icon]="['fas', 'plus']" /> </ng-template>
-      </a>
-      <ish-sub-category-navigation [categoryUniqueId]="category.uniqueId" [subCategoriesDepth]="1" [view]="view" />
-    </ng-container>
+    @if (isBrowser && mainNavigationMaxSubCategoriesDepth > 0 && category.hasChildren) {
+    <a
+      class="dropdown-toggle"
+      (click)="toggleOpen(category.uniqueId)"
+      (keydown.enter)="toggleOpen(category.uniqueId)"
+      role="button"
+      [attr.aria-label]="
+        isOpened(category.uniqueId)
+          ? ('header.navigation.collapse_category.aria_label' | translate : { '0': category.name })
+          : ('header.navigation.expand_category.aria_label' | translate : { '0': category.name })
+      "
+      tabindex="0"
+    >
+      @if (isOpened(category.uniqueId)) {
+      <fa-icon [icon]="['fas', 'minus']" />
+      } @else {
+      <fa-icon [icon]="['fas', 'plus']" />
+      }
+    </a>
+    <ish-sub-category-navigation [categoryUniqueId]="category.uniqueId" [subCategoriesDepth]="1" [view]="view" />
+    }
   </li>
+  }
   <ish-lazy-content-include includeId="include.header.navigation.pagelet2-Include" role="listitem" />
 </ul>

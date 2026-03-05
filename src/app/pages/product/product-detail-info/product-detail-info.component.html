@@ -1,4 +1,5 @@
-<div *ngIf="product$ | async as product" class="section">
+@if (product$ | async; as product) {
+<div class="section">
   <nav
     ngbNav
     #nav="ngbNav"
@@ -13,35 +14,36 @@
         <div [ishServerHtml]="product.longDescription"></div>
       </ng-template>
     </ng-container>
-
     <!-- Details -->
-    <ng-container *ngIf="product.attributes?.length" [ngbNavItem]="'DETAILS'">
+    @if (product.attributes?.length) {
+    <ng-container [ngbNavItem]="'DETAILS'">
       <a ngbNavLink>{{ 'product.details.heading' | translate }}</a>
       <ng-template ngbNavContent>
         <ish-product-attributes [product]="product" />
       </ng-template>
     </ng-container>
-
+    }
     <!-- Documents -->
-    <ng-container *ngIf="product.attachments?.length" [ngbNavItem]="'ATTACHMENTS'">
+    @if (product.attachments?.length) {
+    <ng-container [ngbNavItem]="'ATTACHMENTS'">
       <a ngbNavLink>{{ 'product.attachments.heading' | translate }}</a>
       <ng-template ngbNavContent>
         <ish-product-attachments />
       </ng-template>
     </ng-container>
-
+    }
     <!-- Reviews -->
-    <ng-container *ngIf="(isVariationMaster$ | async) === false">
-      <ng-container *ishFeature="'rating'" [ngbNavItem]="'REVIEWS'">
-        <a ngbNavLink data-testing-id="product-reviews-tab"
-          >{{ 'product.reviews.heading' | translate }} ({{ product.numberOfReviews }})</a
-        >
-        <ng-template ngbNavContent>
-          <ish-lazy-product-reviews />
-        </ng-template>
-      </ng-container>
+    @if ((isVariationMaster$ | async) === false) {
+    <ng-container *ishFeature="'rating'" [ngbNavItem]="'REVIEWS'">
+      <a ngbNavLink data-testing-id="product-reviews-tab"
+        >{{ 'product.reviews.heading' | translate }} ({{ product.numberOfReviews }})</a
+      >
+      <ng-template ngbNavContent>
+        <ish-lazy-product-reviews />
+      </ng-template>
     </ng-container>
+    }
   </nav>
-
   <div [ngbNavOutlet]="nav"></div>
 </div>
+}

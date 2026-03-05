@@ -1,6 +1,6 @@
 <div class="cxml-text-container">
+  @if (helpText) {
   <button
-    *ngIf="helpText"
     type="button"
     class="btn btn-link cxml-text-toggle"
     (click)="isCollapsed = !isCollapsed"
@@ -13,6 +13,7 @@
   >
     <fa-icon [icon]="['fas', isCollapsed ? 'chevron-up' : 'chevron-down']" />
   </button>
+  }
 
   <ng-template #fieldComponent />
 

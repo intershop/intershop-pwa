@@ -22,7 +22,6 @@ describe('Oci Configuration Mapping Wrapper Component', () => {
         }),
         FormlyTestingComponentsModule,
       ],
-      declarations: [OciConfigurationMappingWrapperComponent],
     }).compileComponents();
   });
 

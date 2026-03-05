@@ -1,4 +1,5 @@
-<form *ngIf="fields$ | async as fields" [formGroup]="form" (ngSubmit)="submitForm()">
+@if (fields$ | async; as fields) {
+<form [formGroup]="form" (ngSubmit)="submitForm()">
   <div>
     <formly-form [form]="form" [fields]="[fields[0]]" [model]="model$ | async" />
   </div>
@@ -13,13 +14,11 @@
         (click)="expandForm()"
         [attr.aria-expanded]="!formIsCollapsed"
       >
-        <ng-container *ngIf="formIsCollapsed; else hide_filters">
-          {{ 'account.order_history.filter.show' | translate }}<fa-icon [icon]="['fas', 'angle-down']" />
-        </ng-container>
-
-        <ng-template #hide_filters>
-          {{ 'account.order_history.filter.hide' | translate }}<fa-icon [icon]="['fas', 'angle-up']" />
-        </ng-template>
+        @if (formIsCollapsed) {
+        {{ 'account.order_history.filter.show' | translate }}<fa-icon [icon]="['fas', 'angle-down']" />
+        } @else {
+        {{ 'account.order_history.filter.hide' | translate }}<fa-icon [icon]="['fas', 'angle-up']" />
+        }
       </button>
     </div>
     <div class="col-md-8 text-end">
@@ -32,3 +31,4 @@
     </div>
   </div>
 </form>
+}

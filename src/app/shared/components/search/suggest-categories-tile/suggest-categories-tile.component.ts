@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Observable, ReplaySubject } from 'rxjs';
@@ -13,7 +13,7 @@ import { CategoryImageComponent } from 'ish-shared/components/category/category-
   selector: 'ish-suggest-categories-tile',
   templateUrl: './suggest-categories-tile.component.html',
   standalone: true,
-  imports: [AsyncPipe, NgIf, HighlightPipe, PipesModule, CategoryImageComponent, RouterLink],
+  imports: [AsyncPipe, HighlightPipe, PipesModule, CategoryImageComponent, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestCategoriesTileComponent implements OnInit {

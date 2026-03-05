@@ -128,9 +128,20 @@ This is only relevant for the Multi-Site configuration, for the other configurat
 
 With Intershop PWA 10.0.0, we updated the project to Angular 17.
 The upgrade replaces Angular Universal with the new `@angular/ssr` package.
-In addition, several dependencies (including NgRx and `@ngx-translate`) have been updated.
+In addition, the project was migrated to the new Angular control flow syntax.
+Several dependencies (including NgRx and `@ngx-translate`) have been updated.
 
 Key changes include:
+
+- Migrated from structural directives (`ngIf`, `ngFor`, `ngSwitch`) to the new control flow syntax (`@if`, `@for`, `@switch`) for improved performance and readability. Use the [Angular migration control-flow schematic](https://angular.dev/reference/migrations/control-flow) `ng generate @angular/core:control-flow` to automate the migration process.
+- Migrated `trackBy` functions of `for` loops to the new syntax, e.g., `@for (item of items; track item.id)`.
+- Introduced the mandatory `track` expression for all `@for` loops.
+
+> [!NOTE]
+> Consider the optimization suggestion to use a unique identifier of the iterated items (see [Why is `track` in `@for` blocks important?](https://angular.dev/guide/templates/control-flow#why-is-track-in-for-blocks-important) for details).
+>
+> Using only an identifier for an outer `for` loop with nested `for` loops might result in rendering/interaction issues.
+> In such cases the whole object needs to be used as track expression, e.g., `@for (item of items; track item)`.
 
 - Updated the import for `glob` in scripts
 - Refactored test files to use `provideRouter()` instead of the deprecated `RouterTestingModule`

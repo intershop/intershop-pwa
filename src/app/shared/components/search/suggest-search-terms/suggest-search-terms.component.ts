@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, ReplaySubject, map } from 'rxjs';
@@ -10,7 +10,7 @@ import { HighlightPipe } from 'ish-core/pipes/highlight.pipe';
   selector: 'ish-suggest-search-terms',
   templateUrl: './suggest-search-terms.component.html',
   standalone: true,
-  imports: [AsyncPipe, HighlightPipe, NgFor, TranslatePipe],
+  imports: [AsyncPipe, HighlightPipe, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestSearchTermsComponent implements OnInit {

@@ -1,4 +1,5 @@
-<div *ngIf="view$ | async as view">
+@if (view$ | async; as view) {
+<div>
   <div class="float-end">
     <ul class="share-tools">
       <li>
@@ -15,25 +16,26 @@
   </div>
 
   <h1>
-    <ng-container *ngIf="view === 'approver'; else requisitionTitle">{{
-      'approval.detailspage.approval.heading' | translate
-    }}</ng-container>
-    <ng-template #requisitionTitle>{{ 'approval.detailspage.requisition.heading' | translate }}</ng-template>
+    @if (view === 'approver') {
+    {{ 'approval.detailspage.approval.heading' | translate }}
+    } @else {
+    {{ 'approval.detailspage.requisition.heading' | translate }}
+    }
   </h1>
   <ish-error-message [error]="error$ | async" />
 
-  <div
-    *ngIf="requisition$ | async as requisition"
-    class="section loading-container"
-    data-testing-id="order-summary-info"
-  >
+  @if (requisition$ | async; as requisition) {
+  <div class="section loading-container" data-testing-id="order-summary-info">
     <ish-requisition-summary [requisition]="requisition" [view]="view" />
 
     <!-- display approval box in buyer view or for customer approvers only -->
-    <ish-requisition-buyer-approval *ngIf="view === 'buyer'; else customerApprover" [requisition]="requisition" />
-    <ng-template #customerApprover>
-      <ish-requisition-buyer-approval *ishIsAuthorizedTo="'APP_B2B_ORDER_APPROVAL'" [requisition]="requisition" />
-    </ng-template>
+    @if (view === 'buyer') {
+    <ish-requisition-buyer-approval [requisition]="requisition" />
+    } @else {
+
+    <ish-requisition-buyer-approval *ishIsAuthorizedTo="'APP_B2B_ORDER_APPROVAL'" [requisition]="requisition" />
+
+    }
 
     <ish-requisition-cost-center-approval [requisition]="requisition" />
 
@@ -41,10 +43,12 @@
 
     <h1 class="h2">{{ 'approval.detailspage.order_details.heading' | translate }}</h1>
 
-    <div *ngIf="'shipping.messageToMerchant' | ishServerSetting">
+    @if ('shipping.messageToMerchant' | ishServerSetting) {
+    <div>
       <!-- MessageToMerchant-->
       <ish-basket-merchant-message-view [data]="requisition" />
     </div>
+    }
 
     <div class="row d-flex">
       <!-- Invoice Address -->
@@ -56,11 +60,11 @@
       <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper col-md-6">
         <p>
           {{ requisition.payment?.displayName }}<br />{{ requisition.payment?.paymentInstrument?.accountIdentifier }}
-          <ng-container
-            *ngIf="!requisition.payment?.displayName && !requisition.payment?.paymentInstrument?.accountIdentifier"
-          >
-            {{ requisition.payment?.paymentInstrument }}
-          </ng-container>
+          @if (!requisition.payment?.displayName && !requisition.payment?.paymentInstrument?.accountIdentifier) {
+
+          {{ requisition.payment?.paymentInstrument }}
+
+          }
         </p>
       </ish-info-box>
     </div>
@@ -78,12 +82,9 @@
     </div>
 
     <!-- Line Items -->
-    <ish-line-item-list
-      *ngIf="requisition.lineItems?.length > 0"
-      [lineItems]="requisition.lineItems"
-      [editable]="false"
-      lineItemViewType="simple"
-    />
+    @if (requisition.lineItems?.length > 0) {
+    <ish-line-item-list [lineItems]="requisition.lineItems" [editable]="false" lineItemViewType="simple" />
+    }
 
     <!-- order summary -->
     <div class="section row">
@@ -98,7 +99,8 @@
     <ng-container *ngTemplateOutlet="approvalButtonBar; context: { requisition: requisition }" />
 
     <ng-template #approvalButtonBar let-requisition="requisition">
-      <div *ngIf="requisition.approval?.statusCode === 'PENDING' && view === 'approver'" class="section text-end">
+      @if (requisition.approval?.statusCode === 'PENDING' && view === 'approver') {
+      <div class="section text-end">
         <button (click)="approveRequisition()" type="button" class="btn btn-primary">
           {{ 'approval.detailspage.approve.button.label' | translate }}
         </button>
@@ -106,21 +108,29 @@
           {{ 'approval.detailspage.reject.button.label' | translate }}
         </button>
       </div>
+      }
     </ng-template>
     <ish-requisition-reject-dialog #rejectDialog (submitRejectRequisition)="rejectRequisition($event)" />
 
     <div class="section d-flex d-flex justify-content-between">
       <a [routerLink]="['../../' + view, { status: requisition.approval.statusCode }]" class="no-print">
-        <ng-container *ngIf="view === 'buyer'; else backToApprovals">
-          {{ 'approval.detailspage.links.return_to_requisitions' | translate }}
-        </ng-container>
-        <ng-template #backToApprovals>{{ 'approval.detailspage.links.return_to_approvals' | translate }}</ng-template>
+        @if (view === 'buyer') {
+
+        {{ 'approval.detailspage.links.return_to_requisitions' | translate }}
+
+        } @else {
+        {{ 'approval.detailspage.links.return_to_approvals' | translate }}
+        }
       </a>
       <a routerLink="/home" class="no-print" data-testing-id="home-link">{{
         'account.orderdetails.links.continue_shopping' | translate
       }}</a>
     </div>
 
-    <ish-loading *ngIf="loading$ | async" />
+    @if (loading$ | async) {
+    <ish-loading />
+    }
   </div>
+  }
 </div>
+}

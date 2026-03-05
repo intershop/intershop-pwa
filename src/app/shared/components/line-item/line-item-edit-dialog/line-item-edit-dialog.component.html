@@ -1,28 +1,24 @@
 <div class="container line-item-edit-dialog">
-  <ish-loading *ngIf="loading$ | async" />
-
-  <div *ngIf="variation$ | async as variation" class="row">
+  @if (loading$ | async) {
+  <ish-loading />
+  } @if (variation$ | async; as variation) {
+  <div class="row">
     <!-- right box -->
     <div class="col-12 col-md">
       <div class="text-center"><ish-product-image imageType="M" /></div>
     </div>
-
     <!-- left box -->
     <div class="col-12 col-md product-info">
       <!-- sku -->
       <ish-product-id />
-
       <!-- price -->
       <div class="current-price">{{ variationSalePrice$ | async | ishPrice }}</div>
-
       <!-- Availability -->
       <ish-product-inventory />
-
       <!-- select (variation) -->
       <div class="product-variation-container">
         <ish-product-variation-select />
       </div>
-
       <!-- input (quantity) -->
       <div class="form-group">
         <div class="row">
@@ -34,4 +30,5 @@
       </div>
     </div>
   </div>
+  }
 </div>

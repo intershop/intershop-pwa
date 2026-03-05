@@ -39,7 +39,6 @@ describe('Cost Center Buyers Page Component', () => {
       imports: [FormlyModule.forChild(formlyConfig), FormlyTestingModule, TranslateModule.forRoot()],
       declarations: [
         CostCenterBuyersPageComponent,
-        CostCenterBuyersRepeatFieldComponent,
         MockComponent(ErrorMessageComponent),
         MockComponent(LoadingComponent),
       ],

@@ -47,11 +47,11 @@ Unlike regular facades, which are available globally and have only one instance 
 The easiest way to start a product context is by using the [`ProductContextDirective`][src-product-context-directive] on templates:
 
 ```html
-<ng-container *ngFor="let item of lineItems$ | async">
-  <div class="..." ishProductContext [sku]="item.sku">
-    <ish-product-name></ish-product-name>
-  </div>
-</ng-container>
+@for (item of lineItems$ | async; track item.sku) {
+<div class="..." ishProductContext [sku]="item.sku">
+  <ish-product-name></ish-product-name>
+</div>
+}
 ```
 
 What happens here?
@@ -118,7 +118,7 @@ export class MyComponent implements OnInit {
 ```
 
 ```html
-<ng-container *ngIf="productName$ | async">...</ng-container>
+@if (productName$ | async) { ... }
 ```
 
 ### Use [`ProductContextAccessDirective`][src-product-context-access-directive]
@@ -126,14 +126,14 @@ export class MyComponent implements OnInit {
 If access to the context is required in the template without injecting it into the component (i.e. if the component has multiple embedded contexts), the [`ProductContextAccessDirective`][src-product-context-access-directive] can be used:
 
 ```html
-<ng-container *ngFor="let item of lineItems$ | async">
-  <div class="..." ishProductContext [sku]="item.sku">
-    <ng-container *ishProductContextAccess="let product = product; let context = context">
-      {{ product.sku }}
-      <input type="button" (click)="context.doSomething()" />
-    </ng-container>
-  </div>
-</ng-container>
+@for (item of lineItems$ | async; track item.sku) {
+<div class="..." ishProductContext [sku]="item.sku">
+  <ng-container *ishProductContextAccess="let product = product; let context = context">
+    {{ product.sku }}
+    <input type="button" (click)="context.doSomething()" />
+  </ng-container>
+</div>
+}
 ```
 
 In this example, the product context is created for each `item` and afterwards the property `product` from the context is used with `ishProductContextAccess` and thereby made available to the embedded template.

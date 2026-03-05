@@ -16,9 +16,9 @@
       ></span>
     </label>
   </div>
-  <ng-container *ngIf="showError">
-    <div class="validation-message">
-      <ish-validation-message [field]="field" class="validation-message" />
-    </div>
-  </ng-container>
+  @if (showError) {
+  <div class="validation-message">
+    <ish-validation-message [field]="field" class="validation-message" />
+  </div>
+  }
 </div>

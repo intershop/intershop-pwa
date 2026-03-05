@@ -1,11 +1,14 @@
 <div class="row list-item-row" data-testing-id="product-list-item">
   <!-- Errors and Infos -->
-  <div *ngIf="pli.validationError?.message" class="alert alert-inline alert-danger col-12">
+  @if (pli.validationError?.message) {
+  <div class="alert alert-inline alert-danger col-12">
     {{ pli.validationError.message }}
   </div>
-  <div *ngIf="pli.info?.message" class="alert alert-inline alert-info col-12">
+  } @if (pli.info?.message) {
+  <div class="alert alert-inline alert-info col-12">
     {{ pli.info.message }}
   </div>
+  }
 
   <!-- Product Image -->
   <div class="col-2 list-item">
@@ -26,59 +29,48 @@
       <ish-product-bundle-display />
 
       <!-- switch by lineItemViewType -->
-      <ng-container [ngSwitch]="lineItemViewType">
-        <!-- lineItemViewType = 'simple' -->
-        <ng-container *ngSwitchCase="'simple'" />
+      @switch (lineItemViewType) { @case ('simple') { } @case ('availability') {
+      <ish-product-inventory />
+      } @default {
+      <!-- edit variation & quantity -->
+      @if (editable) { @if (!('preferences.ChannelPreferences.EnableAdvancedVariationHandling' | ishServerSetting)) {
+      <ish-line-item-edit
+        ishProductContext
+        [sku]="pli.productSKU"
+        [quantity]="pli.quantity.value"
+        [itemId]="pli.id"
+        (updateItem)="onUpdateItem($event)"
+      />
+      } }
 
-        <!-- lineItemViewType = 'availability' -->
-        <ng-container *ngSwitchCase="'availability'">
-          <ish-product-inventory />
-        </ng-container>
+      <!-- availability -->
+      <ish-product-inventory />
 
-        <!-- default lineItemViewType -->
-        <ng-container *ngSwitchDefault>
-          <!-- edit variation & quantity -->
-          <ng-container *ngIf="editable">
-            <ish-line-item-edit
-              *ngIf="!('preferences.ChannelPreferences.EnableAdvancedVariationHandling' | ishServerSetting)"
-              ishProductContext
-              [sku]="pli.productSKU"
-              [quantity]="pli.quantity.value"
-              [itemId]="pli.id"
-              (updateItem)="onUpdateItem($event)"
-            />
-          </ng-container>
+      <!-- ship window message -->
+      <ish-product-shipment />
 
-          <!-- availability -->
-          <ish-product-inventory />
-
-          <!-- ship window message -->
-          <ish-product-shipment />
-
-          <!-- surcharges -->
-          <div *ngFor="let surcharge of pli.itemSurcharges">
-            {{ surcharge.displayName }} <span *ngIf="!surcharge.displayName">{{ surcharge.text }}</span>
-            <span class="text-nowrap"> {{ surcharge.amount | ishPrice }} </span>
-            <ng-template #SurchargeDescription> <span [innerHTML]="surcharge.description"></span> </ng-template>
-            <button
-              type="button"
-              class="btn btn-link details-tooltip"
-              [ngbPopover]="SurchargeDescription"
-              [popoverTitle]="surcharge.displayName"
-              placement="top"
-            >
-              {{ 'shopping_cart.detail.text' | translate }}<fa-icon [icon]="['fas', 'info-circle']" />
-            </button>
-          </div>
-        </ng-container>
-      </ng-container>
+      <!-- surcharges -->
+      @for (surcharge of pli.itemSurcharges; track $index) {
+      {{ surcharge.displayName }} @if (!surcharge.displayName) {
+      <span>{{ surcharge.text }}</span>
+      }
+      <span class="text-nowrap"> {{ surcharge.amount | ishPrice }} </span>
+      <ng-template #SurchargeDescription> <span [innerHTML]="surcharge.description"></span> </ng-template>
+      <button
+        type="button"
+        class="btn btn-link details-tooltip"
+        [ngbPopover]="SurchargeDescription"
+        [popoverTitle]="surcharge.displayName"
+        placement="top"
+      >
+        {{ 'shopping_cart.detail.text' | translate }}<fa-icon [icon]="['fas', 'info-circle']" />
+      </button>
+      } } }
 
       <!-- promotions -->
-      <div *ngIf="pli.valueRebates?.length">
-        <ng-container *ngFor="let rebate of pli.valueRebates">
-          <ish-basket-promotion [rebate]="rebate" class="list-item-promo" />
-        </ng-container>
-      </div>
+      @if (pli.valueRebates?.length) { @for (rebate of pli.valueRebates; track rebate.id) {
+      <ish-basket-promotion [rebate]="rebate" class="list-item-promo" />
+      } }
     </div>
 
     <!-- mobile quantity -->
@@ -89,8 +81,11 @@
           [for]="'pli-quantity_' + pli.position"
           class="d-xl-none col-form-label"
         />
-        <ish-product-quantity *ngIf="editable; else readonly" [elementId]="'pli-quantity_' + pli.position" />
-        <ng-template #readonly>{{ pli.quantity.value | number }}</ng-template>
+        @if (editable) {
+        <ish-product-quantity [elementId]="'pli-quantity_' + pli.position" />
+        } @else {
+        {{ pli.quantity.value | number }}
+        }
       </div>
     </div>
   </div>
@@ -98,8 +93,11 @@
   <!-- desktop quantity -->
   <div class="quantity col-xl-2 list-item d-none d-xl-flex">
     <div class="form-group w-100 text-end" [ngClass]="{ 'pe-2': !editable }">
-      <ish-product-quantity *ngIf="editable; else readonly" [elementId]="'pli-quantity_' + pli.position" />
-      <ng-template #readonly>{{ pli.quantity.value | number }}</ng-template>
+      @if (editable) {
+      <ish-product-quantity [elementId]="'pli-quantity_' + pli.position" />
+      } @else {
+      {{ pli.quantity.value | number }}
+      }
     </div>
   </div>
 
@@ -110,25 +108,33 @@
       {{ pli.singleBasePrice | ishPrice }}
     </div>
     <!-- Undiscounted single price -->
-    <div *ngIf="oldPrice" class="old-price">
+    @if (oldPrice) {
+    <div class="old-price">
       <span class="price-value">{{ oldPrice | ishPrice }}</span>
     </div>
+    }
   </div>
 
-  <div *ngIf="pli.totals" class="col-3 col-md-2 list-item column-price">
+  @if (pli.totals) {
+  <div class="col-3 col-md-2 list-item column-price">
     <div>
       <!-- (Suggested) Total Price  -->
       <div data-testing-id="total-price">{{ pli.totals.total | ishPrice }}</div>
     </div>
 
     <!-- Value Rebates Total -->
-    <div *ngIf="pli.totals.valueRebatesTotal" class="old-price">
+    @if (pli.totals.valueRebatesTotal) {
+    <div class="old-price">
       <span class="price-value">{{ pli.totals.undiscountedTotal | ishPrice }}</span>
     </div>
+    }
 
     <!-- Gift -->
-    <div *ngIf="pli.isFreeGift" class="list-item-promo">{{ 'checkout.pli.freegift.text' | translate }}</div>
+    @if (pli.isFreeGift) {
+    <div class="list-item-promo">{{ 'checkout.pli.freegift.text' | translate }}</div>
+    }
   </div>
+  }
 
   <!-- display/select warranty if available -->
   <ish-line-item-warranty [pli]="pli" [editable]="editable" class="col-12" />
@@ -143,14 +149,15 @@
   />
 
   <div class="offset-2 col-10 d-flex align-items-end list-item-actions">
+    @if (editable) {
     <ish-lazy-product-add-to-order-template
-      *ngIf="editable"
       [cssClass]="'btn-link btn-tool ps-0 add-to-order-template'"
       displayType="icon"
     />
-    <ish-lazy-product-add-to-wishlist *ngIf="editable" [cssClass]="'btn-link btn-tool'" displayType="icon" />
+    } @if (editable) {
+    <ish-lazy-product-add-to-wishlist [cssClass]="'btn-link btn-tool'" displayType="icon" />
+    } @if (!pli.isFreeGift && editable) {
     <button
-      *ngIf="!pli.isFreeGift && editable"
       type="button"
       class="btn-tool btn-link"
       [attr.data-testing-id]="'remove-line-item'"
@@ -160,5 +167,6 @@
     >
       <fa-icon [icon]="['fas', 'trash-alt']" />
     </button>
+    }
   </div>
 </div>

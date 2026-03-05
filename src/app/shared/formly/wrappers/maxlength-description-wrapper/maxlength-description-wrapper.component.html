@@ -1,4 +1,6 @@
 <ng-template #fieldComponent />
-<small *ngIf="description$ | async as desc" class="form-text" data-testing-id="maxlength-description">
+@if (description$ | async; as desc) {
+<small class="form-text" data-testing-id="maxlength-description">
   {{ desc }}
 </small>
+}

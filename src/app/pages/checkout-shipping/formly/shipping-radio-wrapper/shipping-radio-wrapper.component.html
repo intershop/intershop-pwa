@@ -2,8 +2,8 @@
   <ng-template #fieldComponent />
   <label class="form-check-label" [for]="id" [ngClass]="props.labelClass">
     <ish-shipping-info [shippingMethodId]="props.value" />
+    @if (props.description) {
     <button
-      *ngIf="props.description"
       type="button"
       class="btn btn-link details-tooltip"
       [ngbPopover]="ShippingMethodDescription"
@@ -11,6 +11,7 @@
     >
       {{ 'checkout.detail.text' | translate }}<fa-icon [icon]="['fas', 'info-circle']" />
     </button>
+    }
   </label>
 </div>
 

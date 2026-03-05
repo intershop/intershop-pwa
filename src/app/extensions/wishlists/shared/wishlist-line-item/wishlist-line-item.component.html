@@ -15,7 +15,8 @@
               <span class="col-form-label">{{ 'wishlist.table.added_on' | translate }}</span>
               {{ wishlistItemData?.creationDate | ishDate : 'shortDate' }}
             </div>
-            <div *ngIf="!readOnly" class="mb-2">
+            @if (!readOnly) {
+            <div class="mb-2">
               <button
                 type="button"
                 class="btn-tool btn-link"
@@ -35,6 +36,7 @@
                 <fa-icon [icon]="['fas', 'trash-alt']" />
               </button>
             </div>
+            }
           </div>
         </div>
 

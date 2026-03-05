@@ -1,5 +1,7 @@
 <h1>{{ 'quote.list.heading' | translate }}</h1>
 
-<ish-quote-list *ngIf="quotes" [quotes]="quotes" />
-
-<ish-loading *ngIf="loading$ | async" />
+@if (quotes) {
+<ish-quote-list [quotes]="quotes" />
+} @if (loading$ | async) {
+<ish-loading />
+}

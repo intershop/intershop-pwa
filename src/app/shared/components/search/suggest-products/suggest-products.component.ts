@@ -1,4 +1,4 @@
-import { NgFor, SlicePipe } from '@angular/common';
+import { SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ReplaySubject } from 'rxjs';
@@ -11,7 +11,7 @@ import { SuggestProductsTileComponent } from 'ish-shared/components/search/sugge
   selector: 'ish-suggest-products',
   templateUrl: './suggest-products.component.html',
   standalone: true,
-  imports: [DirectivesModule, NgFor, SlicePipe, TranslatePipe, SuggestProductsTileComponent],
+  imports: [DirectivesModule, SlicePipe, TranslatePipe, SuggestProductsTileComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestProductsComponent {

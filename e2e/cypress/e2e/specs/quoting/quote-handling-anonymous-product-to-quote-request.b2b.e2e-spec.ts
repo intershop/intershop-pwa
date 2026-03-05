@@ -41,7 +41,7 @@ describe('Quote Handling as Anonymous User', () => {
       at(QuoteRequestDialog, dialog => {
         dialog.submitQuoteRequest();
         dialog.productId.eq(0).should('contain', _.product.sku);
-        dialog.quoteState.should('have.text', 'Submitted');
+        dialog.quoteState.should('contain', 'Submitted');
         dialog.hide();
       });
     });

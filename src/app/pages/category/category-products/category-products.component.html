@@ -5,11 +5,12 @@
 >
   <!-- DISABLED VIEW CONTEXT --
   <div class="marketing-area">
+    @if (category.categoryRef) {
     <ish-content-viewcontext
-      *ngIf="category.categoryRef"
       viewContextId="viewcontext.include.family.base.top"
       [callParameters]="{ Category: category.categoryRef }"
     />
+    }
   </div>
   -- DISABLED VIEW CONTEXT -->
 
@@ -35,11 +36,12 @@
 
       <!-- DISABLED VIEW CONTEXT --
       <div class="marketing-area">
+        @if (category.categoryRef) {
         <ish-content-viewcontext
-          *ngIf="category.categoryRef"
           viewContextId="viewcontext.include.family.navigation"
           [callParameters]="{ Category: category.categoryRef }"
         />
+        }
       </div>
       -- DISABLED VIEW CONTEXT -->
     </div>
@@ -49,11 +51,12 @@
 
       <!-- DISABLED VIEW CONTEXT --
       <div class="marketing-area">
+        @if (category.categoryRef) {
         <ish-content-viewcontext
-          *ngIf="category.categoryRef"
           viewContextId="viewcontext.include.family.content.top"
           [callParameters]="{ Category: category.categoryRef }"
         />
+        }
       </div>
       -- DISABLED VIEW CONTEXT -->
 
@@ -65,11 +68,12 @@
 
       <!-- DISABLED VIEW CONTEXT --
       <div class="marketing-area">
+        @if (category.categoryRef) {
         <ish-content-viewcontext
-          *ngIf="category.categoryRef"
           viewContextId="viewcontext.include.family.content.bottom"
           [callParameters]="{ Category: category.categoryRef }"
         />
+        }
       </div>
       -- DISABLED VIEW CONTEXT -->
     </div>
@@ -77,11 +81,12 @@
 
   <!-- DISABLED VIEW CONTEXT --
   <div class="marketing-area">
+    @if (category.categoryRef) {
     <ish-content-viewcontext
-      *ngIf="category.categoryRef"
       viewContextId="viewcontext.include.family.base.bottom"
       [callParameters]="{ Category: category.categoryRef }"
     />
+    }
   </div>
   -- DISABLED VIEW CONTEXT -->
 </div>

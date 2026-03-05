@@ -9,9 +9,8 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { ServerSettingPipe } from './server-setting.pipe';
 
 @Component({
-  template: `<ng-container *ngIf="'service.ABC.runnable' | ishServerSetting">TEST</ng-container>
-    <ng-container *ngIf="'always' | ishServerSetting">[always]</ng-container>
-    <ng-container *ngIf="'never' | ishServerSetting">[never]</ng-container>`,
+  template: `@if ('service.ABC.runnable' | ishServerSetting) { TEST } @if ('always' | ishServerSetting) { [always] } @if
+  ('never' | ishServerSetting) { [never] }`,
 })
 class TestComponent {}
 
@@ -37,14 +36,14 @@ describe('Server Setting Pipe', () => {
     when(appFacade.serverSetting$('service.ABC.runnable')).thenReturn(of(true));
     fixture.detectChanges();
 
-    expect(element).toMatchInlineSnapshot(`TEST[always]`);
+    expect(element).toMatchInlineSnapshot(`TEST [always]`);
   });
 
   it('should render TEST when setting is set to anything truthy', () => {
     when(appFacade.serverSetting$('service.ABC.runnable')).thenReturn(of('ABC'));
     fixture.detectChanges();
 
-    expect(element).toMatchInlineSnapshot(`TEST[always]`);
+    expect(element).toMatchInlineSnapshot(`TEST [always]`);
   });
 
   it('should render nothing when setting is not set', () => {
@@ -69,6 +68,6 @@ describe('Server Setting Pipe', () => {
     tick(1000);
 
     fixture.detectChanges();
-    expect(element).toMatchInlineSnapshot(`TEST[always]`);
+    expect(element).toMatchInlineSnapshot(`TEST [always]`);
   }));
 });

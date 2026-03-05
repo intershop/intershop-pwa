@@ -1,41 +1,34 @@
-<ng-container
-  *ngIf="promotion && (promotion.ruleDescription || promotion.legalContentMessage || promotion.externalUrl)"
+@if (promotion && (promotion.ruleDescription || promotion.legalContentMessage || promotion.externalUrl)) { @if
+(promotion.externalUrl && promotion.useExternalUrl) {
+<a
+  class="details-link promotion-details-link"
+  [href]="promotion.externalUrl"
+  target="_blank"
+  rel="nofollow"
+  [title]="'promotion.detailslink.label' | translate"
+  >{{ 'promotion.detailslink.text' | translate }}</a
 >
-  <ng-container *ngIf="promotion.externalUrl && promotion.useExternalUrl; else modalLink">
-    <a
-      class="details-link promotion-details-link"
-      [href]="promotion.externalUrl"
-      target="_blank"
-      rel="nofollow"
-      [title]="'promotion.detailslink.label' | translate"
-      >{{ 'promotion.detailslink.text' | translate }}</a
-    >
-  </ng-container>
-  <ng-template #modalLink>
-    <!-- details link and dialog -->
-    <ish-modal-dialog-link
-      linkText="promotion.detailslink.text"
-      [options]="{ titleText: 'promotion.detaillist.title' | translate }"
-      [ngClass]="'details-link promotion-details-link'"
-    >
-      <ng-container *ngIf="promotion.longTitle; else title">
-        <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
-        <h3 [ishServerHtml]="promotion.longTitle"></h3>
-      </ng-container>
-      <ng-template #title>
-        <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
-        <h3 [ishServerHtml]="promotion.title"></h3>
-      </ng-template>
-
-      <p *ngIf="promotion.ruleDescription" [ishServerHtml]="promotion.ruleDescription"></p>
-      <p
-        *ngIf="promotion.legalContentMessage"
-        class="text-body-secondary"
-        [ishServerHtml]="promotion.legalContentMessage"
-      ></p>
-      <p *ngIf="promotion.externalUrl">
-        <a [href]="promotion.externalUrl" rel="nofollow" target="_blank">{{ promotion.externalUrl }}</a>
-      </p>
-    </ish-modal-dialog-link>
-  </ng-template>
-</ng-container>
+} @else {
+<!-- details link and dialog -->
+<ish-modal-dialog-link
+  linkText="promotion.detailslink.text"
+  [options]="{ titleText: 'promotion.detaillist.title' | translate }"
+  [ngClass]="'details-link promotion-details-link'"
+>
+  @if (promotion.longTitle) {
+  <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
+  <h3 [ishServerHtml]="promotion.longTitle"></h3>
+  } @else {
+  <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
+  <h3 [ishServerHtml]="promotion.title"></h3>
+  } @if (promotion.ruleDescription) {
+  <p [ishServerHtml]="promotion.ruleDescription"></p>
+  } @if (promotion.legalContentMessage) {
+  <p class="text-body-secondary" [ishServerHtml]="promotion.legalContentMessage"></p>
+  } @if (promotion.externalUrl) {
+  <p>
+    <a [href]="promotion.externalUrl" rel="nofollow" target="_blank">{{ promotion.externalUrl }}</a>
+  </p>
+  }
+</ish-modal-dialog-link>
+} }

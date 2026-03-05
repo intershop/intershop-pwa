@@ -1,13 +1,10 @@
-<ng-container *ngIf="filter$ | async as filterNavigation">
-  <ng-container *ngIf="isSideBar; else horizontal">
-    <ish-filter-navigation-sidebar [filterNavigation]="filterNavigation" (applyFilter)="applyFilter($event)" />
-  </ng-container>
-  <ng-template #horizontal>
-    <ish-filter-navigation-horizontal [filterNavigation]="filterNavigation" (applyFilter)="applyFilter($event)" />
-    <ish-filter-navigation-badges
-      [filterNavigation]="filterNavigation"
-      (applyFilter)="applyFilter($event)"
-      (clearFilters)="clearFilters()"
-    />
-  </ng-template>
-</ng-container>
+@if (filter$ | async; as filterNavigation) { @if (isSideBar) {
+<ish-filter-navigation-sidebar [filterNavigation]="filterNavigation" (applyFilter)="applyFilter($event)" />
+} @else {
+<ish-filter-navigation-horizontal [filterNavigation]="filterNavigation" (applyFilter)="applyFilter($event)" />
+<ish-filter-navigation-badges
+  [filterNavigation]="filterNavigation"
+  (applyFilter)="applyFilter($event)"
+  (clearFilters)="clearFilters()"
+/>
+} }

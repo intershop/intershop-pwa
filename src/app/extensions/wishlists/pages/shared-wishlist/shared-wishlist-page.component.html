@@ -1,7 +1,8 @@
-<div *ngIf="wishlist$ | async as wishlist" class="col-9" data-testing-id="shared-wishlist">
+@if (wishlist$ | async; as wishlist) {
+<div class="col-9" data-testing-id="shared-wishlist">
   <h1>{{ wishlist.title }}</h1>
-
-  <div *ngIf="wishlist.itemsCount; else noItems" class="container">
+  @if (wishlist.itemsCount) {
+  <div class="container">
     <div class="list-header row">
       <div class="col-3 col-sm-3 list-header-item">{{ 'wishlist.table.header.item' | translate }}</div>
       <div class="col-sm-9 col-9 list-header-item column-price">
@@ -9,7 +10,8 @@
       </div>
     </div>
     <div class="list-body">
-      <div *ngFor="let item of wishlist.items; trackBy: trackByFn" class="list-item-row">
+      @for (item of wishlist.items; track item.id) {
+      <div class="list-item-row">
         <ish-wishlist-line-item
           ishProductContext
           [sku]="item.sku"
@@ -18,12 +20,13 @@
           [readOnly]="true"
         />
       </div>
+      }
     </div>
   </div>
-
-  <ng-template #noItems>
-    <p>{{ 'wishlist.no_entries' | translate }}</p>
-  </ng-template>
+  } @else {
+  <p>{{ 'wishlist.no_entries' | translate }}</p>
+  }
 </div>
-
-<ish-loading *ngIf="wishlistLoading$ | async" />
+} @if (wishlistLoading$ | async) {
+<ish-loading />
+}

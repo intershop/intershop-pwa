@@ -1,8 +1,13 @@
-<ng-container [ngSwitch]="state$ | async">
-  <ng-template [ngSwitchCase]="'New'">{{ 'quote.state.new' | translate }}</ng-template>
-  <ng-template [ngSwitchCase]="'Submitted'">{{ 'quote.state.submitted' | translate }}</ng-template>
-  <ng-template [ngSwitchCase]="'Responded'">{{ 'quote.state.responded' | translate }}</ng-template>
-  <ng-template [ngSwitchCase]="'Expired'">{{ 'quote.state.expired' | translate }}</ng-template>
-  <ng-template [ngSwitchCase]="'Rejected'">{{ 'quote.state.rejected' | translate }}</ng-template>
-  <ng-template ngSwitchDefault>{{ 'quote.state.unknown' | translate }}</ng-template>
-</ng-container>
+@switch (state$ | async) { @case ('New') {
+{{ 'quote.state.new' | translate }}
+} @case ('Submitted') {
+{{ 'quote.state.submitted' | translate }}
+} @case ('Responded') {
+{{ 'quote.state.responded' | translate }}
+} @case ('Expired') {
+{{ 'quote.state.expired' | translate }}
+} @case ('Rejected') {
+{{ 'quote.state.rejected' | translate }}
+} @default {
+{{ 'quote.state.unknown' | translate }}
+} }

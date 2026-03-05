@@ -1,5 +1,7 @@
 <h1 class="visually-hidden">{{ 'seo.title.home' | translate }}</h1>
 <ish-content-include includeId="include.homepage.content.pagelet2-Include" />
-<div *ngIf="'payment.paypal.payLaterPreferences.PayLaterMessagingHomeEnabled' | ishServerSetting" class="container">
+@if ('payment.paypal.payLaterPreferences.PayLaterMessagingHomeEnabled' | ishServerSetting) {
+<div class="container">
   <ish-payment-paypal pageType="home" />
 </div>
+}

@@ -1,81 +1,79 @@
-<div *ngIf="visible$ | async" [ngClass]="{ 'has-error': hasQuantityError$ | async }" class="quantity-input">
-  <ng-container [ngSwitch]="type">
-    <ng-template ngSwitchCase="select">
-      <select
-        (change)="change($event.target)"
-        class="form-control"
-        [id]="elementId"
-        [attr.aria-label]="'product.quantity.aria_label' | translate"
-        data-testing-id="quantity"
-      >
-        <option *ngFor="let opt of selectValues$ | async" [value]="opt" [selected]="opt === (quantity$ | async)">
-          {{ opt }}
-        </option>
-      </select>
-    </ng-template>
-    <ng-template ngSwitchCase="input">
-      <input
-        class="form-control"
-        [id]="elementId"
-        data-testing-id="quantity"
-        type="number"
-        pattern="[0-9]*"
-        [value]="quantity$ | async"
-        [min]="min$ | async"
-        [max]="max$ | async"
-        [step]="step$ | async"
-        [attr.aria-label]="'product.quantity.aria_label' | translate"
-        [attr.aria-invalid]="(hasQuantityError$ | async) ? 'true' : undefined"
-        [attr.aria-describedby]="ariaDescribedByIds$ | async"
-        (change)="change($event.target)"
-        (keyup)="change($event.target)"
-      />
-    </ng-template>
-    <ng-template ngSwitchDefault>
-      <div class="counter-input">
-        <button
-          type="button"
-          class="btn btn-link decrease-button"
-          (click)="decrease()"
-          [disabled]="cannotDecrease$ | async"
-          [attr.data-testing-id]="'decrease-quantity-' + elementId"
-          translate
-          tabindex="-1"
-        >
-          product.quantity.decrease.text
-        </button>
-        <button
-          type="button"
-          class="btn btn-link increase-button"
-          (click)="increase()"
-          [disabled]="cannotIncrease$ | async"
-          [attr.data-testing-id]="'increase-quantity-' + elementId"
-          translate
-          tabindex="-1"
-        >
-          product.quantity.increase.text
-        </button>
-        <input
-          class="form-control text-center"
-          [id]="elementId"
-          data-testing-id="quantity"
-          type="number"
-          pattern="[0-9]*"
-          [value]="quantity$ | async"
-          [min]="min$ | async"
-          [max]="max$ | async"
-          [step]="step$ | async"
-          (change)="change($event.target)"
-          (keyup)="change($event.target)"
-          [attr.aria-label]="'product.quantity.aria_label' | translate"
-          [attr.aria-invalid]="(hasQuantityError$ | async) ? 'true' : undefined"
-          [attr.aria-describedby]="ariaDescribedByIds$ | async"
-        />
-      </div>
-    </ng-template>
-  </ng-container>
-
-  <small *ngIf="hasQuantityError$ | async" [id]="elementId + '-validation-error'" class="validation-message">{{
-    quantityError$ | async
-  }}</small>
+@if (visible$ | async) {
+<div [ngClass]="{ 'has-error': hasQuantityError$ | async }" class="quantity-input">
+  @switch (type) { @case ('select') {
+  <select
+    (change)="change($event.target)"
+    class="form-control"
+    [id]="elementId"
+    [attr.aria-label]="'product.quantity.aria_label' | translate"
+    data-testing-id="quantity"
+  >
+    @for (opt of selectValues$ | async; track opt) {
+    <option [value]="opt" [selected]="opt === (quantity$ | async)">
+      {{ opt }}
+    </option>
+    }
+  </select>
+  } @case ('input') {
+  <input
+    class="form-control"
+    [id]="elementId"
+    data-testing-id="quantity"
+    type="number"
+    pattern="[0-9]*"
+    [value]="quantity$ | async"
+    [min]="min$ | async"
+    [max]="max$ | async"
+    [step]="step$ | async"
+    [attr.aria-label]="'product.quantity.aria_label' | translate"
+    [attr.aria-invalid]="(hasQuantityError$ | async) ? 'true' : undefined"
+    [attr.aria-describedby]="ariaDescribedByIds$ | async"
+    (change)="change($event.target)"
+    (keyup)="change($event.target)"
+  />
+  } @default {
+  <div class="counter-input">
+    <button
+      type="button"
+      class="btn btn-link decrease-button"
+      (click)="decrease()"
+      [disabled]="cannotDecrease$ | async"
+      [attr.data-testing-id]="'decrease-quantity-' + elementId"
+      translate
+      tabindex="-1"
+    >
+      product.quantity.decrease.text
+    </button>
+    <button
+      type="button"
+      class="btn btn-link increase-button"
+      (click)="increase()"
+      [disabled]="cannotIncrease$ | async"
+      [attr.data-testing-id]="'increase-quantity-' + elementId"
+      translate
+      tabindex="-1"
+    >
+      product.quantity.increase.text
+    </button>
+    <input
+      class="form-control text-center"
+      [id]="elementId"
+      data-testing-id="quantity"
+      type="number"
+      pattern="[0-9]*"
+      [value]="quantity$ | async"
+      [min]="min$ | async"
+      [max]="max$ | async"
+      [step]="step$ | async"
+      (change)="change($event.target)"
+      (keyup)="change($event.target)"
+      [attr.aria-label]="'product.quantity.aria_label' | translate"
+      [attr.aria-invalid]="(hasQuantityError$ | async) ? 'true' : undefined"
+      [attr.aria-describedby]="ariaDescribedByIds$ | async"
+    />
+  </div>
+  } } @if (hasQuantityError$ | async) {
+  <small [id]="elementId + '-validation-error'" class="validation-message">{{ quantityError$ | async }}</small>
+  }
 </div>
+}

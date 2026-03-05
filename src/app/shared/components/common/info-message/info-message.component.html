@@ -1,3 +1,5 @@
-<div *ngIf="message && !toast" class="alert alert-info" role="alert">
+@if (message && !toast) {
+<div class="alert alert-info" role="alert">
   {{ message | translate }}
 </div>
+}

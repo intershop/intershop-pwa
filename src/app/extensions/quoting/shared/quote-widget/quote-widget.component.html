@@ -4,7 +4,8 @@
   cssClass="infobox-color-widget d-flex flex-column"
 >
   <div class="loading-container mt-auto">
-    <div *ngIf="(loading$ | async) !== true; else loading">
+    @if ((loading$ | async) !== true) {
+    <div>
       <div class="row align-items-end g-0">
         <div class="col">
           <div class="infobox-count" data-testing-id="responded-counter">
@@ -23,7 +24,6 @@
           </div>
         </div>
       </div>
-
       <div class="row">
         <div class="col">
           <a routerLink="/account/quotes" data-testing-id="quote-list-link">
@@ -32,9 +32,8 @@
         </div>
       </div>
     </div>
+    } @else {
+    <ish-loading />
+    }
   </div>
 </ish-info-box>
-
-<ng-template #loading>
-  <ish-loading />
-</ng-template>

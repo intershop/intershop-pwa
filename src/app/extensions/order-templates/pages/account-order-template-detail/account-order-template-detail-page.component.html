@@ -1,7 +1,8 @@
 <!-- Error message -->
 <ish-error-message [error]="orderTemplateError$ | async" />
 
-<ng-container *ngIf="orderTemplate$ | async as orderTemplate" ishProductContext>
+@if (orderTemplate$ | async; as orderTemplate) {
+<ng-container ishProductContext>
   <ish-in-place-edit
     #inPlaceEdit
     (edited)="updateTitle()"
@@ -23,17 +24,14 @@
       />
     </div>
   </ish-in-place-edit>
-
-  <p
-    *ngIf="noOfUnavailableProducts$ | async as noOfUnavailableProducts"
-    data-testing-id="out-of-stock-warning"
-    class="alert alert-info"
-  >
+  @if (noOfUnavailableProducts$ | async; as noOfUnavailableProducts) {
+  <p data-testing-id="out-of-stock-warning" class="alert alert-info">
     {{ 'account.order_template.out_of_stock.warning' | translate : { num: noOfUnavailableProducts } }}
   </p>
-
+  }
   <div class="section">
-    <ng-container *ngIf="orderTemplate.itemsCount && orderTemplate.itemsCount > 0; else noItems" class="section">
+    @if (orderTemplate.itemsCount && orderTemplate.itemsCount > 0) {
+    <ng-container class="section">
       <div class="list-header d-md-flex">
         <div class="col-6 list-header-item">{{ 'account.order_template.table.header.item' | translate }}</div>
         <div class="col-2 list-header-item text-end">
@@ -47,27 +45,31 @@
         </div>
       </div>
       <div class="list-body">
-        <ng-container *ngFor="let item of orderTemplate.items; let i = index; trackBy: trackByFn">
-          <div class="list-item-row list-item-row-big">
-            <ish-account-order-template-detail-line-item
-              ishProductContext
-              [propagateIndex]="i"
-              [sku]="item.sku"
-              [quantity]="item.desiredQuantity.value"
-              [orderTemplateItemData]="item"
-              [currentOrderTemplate]="orderTemplate"
-            />
-          </div>
-        </ng-container>
+        @for (item of orderTemplate.items; track item.id; let i = $index) {
+        <div class="list-item-row list-item-row-big">
+          <ish-account-order-template-detail-line-item
+            ishProductContext
+            [propagateIndex]="i"
+            [sku]="item.sku"
+            [quantity]="item.desiredQuantity.value"
+            [orderTemplateItemData]="item"
+            [currentOrderTemplate]="orderTemplate"
+          />
+        </div>
+        }
       </div>
     </ng-container>
-  </div>
-  <ish-product-add-to-basket *ngIf="orderTemplate.itemsCount" [cssClass]="'btn btn-primary float-end'" />
-
-  <ng-template #noItems>
+    } @else {
     <p>{{ 'account.order_template.no_entries' | translate }}</p>
-  </ng-template>
+    }
+  </div>
+  @if (orderTemplate.itemsCount) {
+  <ish-product-add-to-basket [cssClass]="'btn btn-primary float-end'" />
+  }
 </ng-container>
+}
 
 <a routerLink="/account/order-templates">{{ 'account.order_template.list.link.back' | translate }}</a>
-<ish-loading *ngIf="orderTemplateLoading$ | async" />
+@if (orderTemplateLoading$ | async) {
+<ish-loading />
+}

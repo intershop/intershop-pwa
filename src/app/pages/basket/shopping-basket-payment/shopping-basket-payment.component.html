@@ -1,42 +1,36 @@
-<ul *ngIf="isApplicable()" class="list-unstyled mb-0">
+@if (isApplicable()) {
+<ul class="list-unstyled mb-0">
+  @if (redirectStatus === 'cancel') {
+  <ish-error-message [error]="{ message: 'shopping_cart.payment.canceled.text' | translate }" />
+  } @if (redirectStatus === 'failure') {
   <ish-error-message
-    *ngIf="redirectStatus === 'cancel'"
-    [error]="{ message: 'shopping_cart.payment.canceled.text' | translate }"
-  />
-  <ish-error-message
-    *ngIf="redirectStatus === 'failure'"
     [error]="{
       message: ('checkout.payment.sorry_message.text' | translate) + ' ' + ('checkout.payment.failed.text' | translate)
     }"
   />
-
+  }
   <!-- container for displaying of fast checkout payment methods -->
-  <ng-container *ngIf="paymentMethods$ | async as paymentMethods">
-    <ng-container *ngIf="paymentMethods.length">
-      <li class="d-block text-center pt-1">{{ 'shopping_cart.payment.or.text' | translate }}</li>
-      <li *ngFor="let paymentMethod of filteredPaymentMethods$ | async" class="d-block">
-        <div class="d-grid mt-2">
-          <button
-            type="button"
-            (click)="fastCheckout(paymentMethod.id)"
-            class="btn btn-lg btn-block btn-secondary"
-            [disabled]="paymentMethod.isRestricted"
-          >
-            {{ paymentMethod.displayName }}
-          </button>
-        </div>
-        <!-- payment cost information -->
-        <ish-basket-payment-cost-info
-          [basket]="basket"
-          [paymentMethod]="paymentMethod"
-          [priceType]="priceType$ | async"
-        />
-      </li>
-      <li *ngIf="'payment.paypal' | ishServerSetting">
-        <ng-container *ngIf="getPayPalPaymentMethod() | async as paypalPaymentMethod">
-          <ish-payment-paypal [selectedPaymentMethod]="paypalPaymentMethod" adapterType="Buttons" pageType="cart" />
-        </ng-container>
-      </li>
-    </ng-container>
-  </ng-container>
+  @if (paymentMethods$ | async; as paymentMethods) { @if (paymentMethods.length) {
+  <li class="d-block text-center pt-1">{{ 'shopping_cart.payment.or.text' | translate }}</li>
+  @for (paymentMethod of filteredPaymentMethods$ | async; track paymentMethod.id) {
+  <li class="d-block">
+    <div class="d-grid mt-2">
+      <button
+        type="button"
+        (click)="fastCheckout(paymentMethod.id)"
+        class="btn btn-lg btn-block btn-secondary"
+        [disabled]="paymentMethod.isRestricted"
+      >
+        {{ paymentMethod.displayName }}
+      </button>
+    </div>
+    <!-- payment cost information -->
+    <ish-basket-payment-cost-info [basket]="basket" [paymentMethod]="paymentMethod" [priceType]="priceType$ | async" />
+  </li>
+  } @if ('payment.paypal' | ishServerSetting) { @if (getPayPalPaymentMethod() | async; as paypalPaymentMethod) {
+  <li>
+    <ish-payment-paypal [selectedPaymentMethod]="paypalPaymentMethod" adapterType="Buttons" pageType="cart" />
+  </li>
+  } } } }
 </ul>
+}

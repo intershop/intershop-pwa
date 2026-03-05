@@ -1,81 +1,86 @@
-<ng-container *ngIf="user$ | async as user">
-  <h1>
-    {{ 'account.user.details.heading' | translate }}
-  </h1>
+@if (user$ | async; as user) {
 
-  <div class="row section">
-    <div class="col-10 col-lg-8">
-      <h2 class="h3">{{ 'account.user.details.profile.heading' | translate }}</h2>
-      <div class="row">
-        <div class="col-md-12">
-          <dl class="row dl-horizontal dl-separator">
-            <dt class="col-md-4">{{ 'account.user.details.profile.name' | translate }}</dt>
-            <dd data-testing-id="name-field" class="col-md-8">
-              <ng-container *ngIf="user.title">{{ user.title }} </ng-container> {{ user.firstName }} {{ user.lastName }}
-              <span *ngIf="user.active === false" class="input-help">{{
-                'account.user.list.status.inactive' | translate
-              }}</span>
-            </dd>
-            <dt class="col-md-4">{{ 'account.user.details.profile.email' | translate }}</dt>
-            <dd data-testing-id="email-field" class="col-md-8">{{ user.email }}</dd>
-            <dt class="col-md-4">{{ 'account.user.details.profile.phone' | translate }}</dt>
-            <dd *ngIf="user.phoneHome" class="col-md-8">{{ user.phoneHome }}</dd>
-          </dl>
-        </div>
+<h1>
+  {{ 'account.user.details.heading' | translate }}
+</h1>
+
+<div class="row section">
+  <div class="col-10 col-lg-8">
+    <h2 class="h3">{{ 'account.user.details.profile.heading' | translate }}</h2>
+    <div class="row">
+      <div class="col-md-12">
+        <dl class="row dl-horizontal dl-separator">
+          <dt class="col-md-4">{{ 'account.user.details.profile.name' | translate }}</dt>
+          <dd data-testing-id="name-field" class="col-md-8">
+            @if (user.title) {
+            {{ user.title }}
+            } {{ user.firstName }} {{ user.lastName }}
+            @if (user.active === false) {
+            <span class="input-help">{{ 'account.user.list.status.inactive' | translate }}</span>
+            }
+          </dd>
+          <dt class="col-md-4">{{ 'account.user.details.profile.email' | translate }}</dt>
+          <dd data-testing-id="email-field" class="col-md-8">{{ user.email }}</dd>
+          <dt class="col-md-4">{{ 'account.user.details.profile.phone' | translate }}</dt>
+          @if (user.phoneHome) {
+          <dd class="col-md-8">{{ user.phoneHome }}</dd>
+          }
+        </dl>
       </div>
-    </div>
-
-    <div class="col-2 col-lg-4">
-      <a
-        routerLink="profile"
-        class="btn-tool"
-        [title]="
-          'account.profile.update.link' | translate : { '0': 'account.user.details.profile.heading' | translate }
-        "
-        data-testing-id="edit-user"
-      >
-        <fa-icon [icon]="['fas', 'pencil-alt']" />
-      </a>
     </div>
   </div>
 
-  <div *ngIf="user.roleIDs?.length" class="row section">
-    <div class="col-10 col-lg-8">
-      <h2 class="h3">{{ 'account.user.details.profile.role_permissions.heading' | translate }}</h2>
-      <div class="row">
-        <div class="col-md-12" data-testing-id="user-roles-fields">
-          <dl *ngFor="let role of roles$ | async" class="row dl-horizontal dl-separator">
-            <dt class="col-md-4">{{ role.displayName }}</dt>
-            <dd class="col-md-8">
-              <ul class="ps-3">
-                <li *ngFor="let p of role.permissionDisplayNames">{{ p }}</li>
-              </ul>
-            </dd>
-          </dl>
-        </div>
-      </div>
-    </div>
+  <div class="col-2 col-lg-4">
+    <a
+      routerLink="profile"
+      class="btn-tool"
+      [title]="'account.profile.update.link' | translate : { '0': 'account.user.details.profile.heading' | translate }"
+      data-testing-id="edit-user"
+    >
+      <fa-icon [icon]="['fas', 'pencil-alt']" />
+    </a>
+  </div>
+</div>
 
-    <div class="col-2 col-lg-4">
-      <a
-        routerLink="roles"
-        class="btn-tool"
-        [title]="
-          'account.profile.update.link'
-            | translate : { '0': 'account.user.details.profile.role_permissions.heading' | translate }
-        "
-        data-testing-id="edit-roles"
-      >
-        <fa-icon [icon]="['fas', 'pencil-alt']" />
-      </a>
+@if (user.roleIDs?.length) {
+<div class="row section">
+  <div class="col-10 col-lg-8">
+    <h2 class="h3">{{ 'account.user.details.profile.role_permissions.heading' | translate }}</h2>
+    <div class="row">
+      <div class="col-md-12" data-testing-id="user-roles-fields">
+        @for (role of roles$ | async; track role.id) {
+        <dl class="row dl-horizontal dl-separator">
+          <dt class="col-md-4">{{ role.displayName }}</dt>
+          <dd class="col-md-8">
+            <ul class="ps-3">
+              @for (p of role.permissionDisplayNames; track p) {
+              <li>{{ p }}</li>
+              }
+            </ul>
+          </dd>
+        </dl>
+        }
+      </div>
     </div>
   </div>
 
-  <ish-user-detail-budget
-    *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
-    [budget]="user.userBudget"
-  />
-</ng-container>
+  <div class="col-2 col-lg-4">
+    <a
+      routerLink="roles"
+      class="btn-tool"
+      [title]="
+        'account.profile.update.link'
+          | translate : { '0': 'account.user.details.profile.role_permissions.heading' | translate }
+      "
+      data-testing-id="edit-roles"
+    >
+      <fa-icon [icon]="['fas', 'pencil-alt']" />
+    </a>
+  </div>
+</div>
+} @if ('services.OrderApprovalServiceDefinition.runnable' | ishServerSetting) {
+<ish-user-detail-budget [budget]="user.userBudget" />
+} }
 
 <a routerLink=".." data-testing-id="back-to-user-management">{{
   'account.organization.user_management.back_to_list' | translate

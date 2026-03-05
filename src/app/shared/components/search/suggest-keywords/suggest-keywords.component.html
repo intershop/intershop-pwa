@@ -1,12 +1,14 @@
 <div class="search-suggest-terms">
   <div class="d-flex justify-content-start headline">{{ 'suggest.terms.headline' | translate }}</div>
   <ul>
-    <li *ngFor="let keyword of keywords | slice : 0 : maxAutoSuggests">
+    @for (keyword of keywords | slice : 0 : maxAutoSuggests; track keyword.keyword) {
+    <li>
       <button
         type="button"
         [innerHTML]="keyword.keyword | ishHighlight : (inputTerms$ | async)"
         (click)="submit(keyword.keyword)"
       ></button>
     </li>
+    }
   </ul>
 </div>

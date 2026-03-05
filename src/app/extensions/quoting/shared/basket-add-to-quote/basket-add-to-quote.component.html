@@ -1,22 +1,21 @@
-<ng-container *ngIf="isLoggedIn$ | async; else loginButton">
-  <button
-    type="button"
-    *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']"
-    class="btn btn-secondary"
-    data-testing-id="create-quote-from-basket"
-    (click)="addToQuote()"
-  >
-    {{ 'shopping_cart.quote.create.button' | translate }}
-  </button>
-</ng-container>
-<ng-template #loginButton>
-  <button
-    type="button"
-    class="btn btn-secondary"
-    [title]="'account.login.quotes.message' | translate"
-    (click)="login()"
-    data-testing-id="create-quote-from-basket"
-  >
-    {{ 'shopping_cart.quote.create.button' | translate }}
-  </button>
-</ng-template>
+@if (isLoggedIn$ | async) {
+<button
+  type="button"
+  *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']"
+  class="btn btn-secondary"
+  data-testing-id="create-quote-from-basket"
+  (click)="addToQuote()"
+>
+  {{ 'shopping_cart.quote.create.button' | translate }}
+</button>
+} @else {
+<button
+  type="button"
+  class="btn btn-secondary"
+  [title]="'account.login.quotes.message' | translate"
+  (click)="login()"
+  data-testing-id="create-quote-from-basket"
+>
+  {{ 'shopping_cart.quote.create.button' | translate }}
+</button>
+}

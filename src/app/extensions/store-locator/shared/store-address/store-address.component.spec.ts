@@ -11,9 +11,7 @@ describe('Store Address Component', () => {
   let store: StoreModel;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [StoreAddressComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
   });
 
   beforeEach(() => {

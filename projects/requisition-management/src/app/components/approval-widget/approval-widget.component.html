@@ -4,7 +4,8 @@
   cssClass="infobox-color-widget d-flex flex-column"
 >
   <div class="loading-container mt-auto">
-    <div *ngIf="(requisitionsLoading$ | async) !== true; else loading">
+    @if ((requisitionsLoading$ | async) !== true) {
+    <div>
       <div class="row align-items-end">
         <div class="col">
           <div class="infobox-count-large" data-testing-id="pending-counter">
@@ -12,14 +13,18 @@
           </div>
           {{ 'account.requisitions.widget.pending' | translate }}
         </div>
-        <div class="col text-end" *ngIf="totalAmountApprovals$ | async as amount">
-          <div *ngIf="amount.value > 0">
+        @if (totalAmountApprovals$ | async; as amount) {
+        <div class="col text-end">
+          @if (amount.value > 0) {
+          <div>
             {{ 'account.requisitions.widget.order_total' | translate }}
             <div class="fw-bold" data-testing-id="pending-amount-sum">
               {{ amount | ishPrice : 'gross' }}
             </div>
           </div>
+          }
         </div>
+        }
       </div>
 
       <div class="row">
@@ -30,9 +35,10 @@
         </div>
       </div>
     </div>
+    } @else {
+
+    <ish-loading />
+
+    }
   </div>
 </ish-info-box>
-
-<ng-template #loading>
-  <ish-loading />
-</ng-template>

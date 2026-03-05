@@ -1,6 +1,7 @@
 <h1>{{ 'account.costcenter.details.edit.heading' | translate }}</h1>
 
-<div *ngIf="costCenter$ | async as costCenter">
+@if (costCenter$ | async; as costCenter) {
+<div>
   <form
     [formGroup]="form"
     (ngSubmit)="submitForm(costCenter)"
@@ -27,5 +28,6 @@
     </div>
   </form>
 </div>
-
-<ish-loading *ngIf="loading$ | async" />
+} @if (loading$ | async) {
+<ish-loading />
+}

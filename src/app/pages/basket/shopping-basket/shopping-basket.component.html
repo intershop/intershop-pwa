@@ -17,7 +17,9 @@
 
   <div>
     <!-- Error message -->
-    <ish-basket-error-message *ngIf="error" [error]="error" />
+    @if (error) {
+    <ish-basket-error-message [error]="error" />
+    }
 
     <!-- Basket Info messages -->
     <ish-basket-info />
@@ -26,13 +28,19 @@
     <ish-basket-validation-results />
 
     <!-- Dynamic Promotion Message -->
-    <div *ngIf="basket?.dynamicMessages?.length" class="alert alert-info">
+    @if (basket?.dynamicMessages?.length) {
+    <div class="alert alert-info">
       <ul class="list-unstyled">
-        <li *ngFor="let msg of basket.dynamicMessages">
-          <span *ngIf="msg" [ishServerHtml]="msg"></span>
+        @for (msg of basket.dynamicMessages; track msg) {
+        <li>
+          @if (msg) {
+          <span [ishServerHtml]="msg"></span>
+          }
         </li>
+        }
       </ul>
     </div>
+    }
   </div>
 
   <div class="form-horizontal">
@@ -53,20 +61,22 @@
               <ish-lazy-quoting-basket-line-items />
             </ng-container>
             <ng-template #elseTemplate>
-              <ish-line-item-list *ngIf="basket" [lineItems]="basket.lineItems" />
+              @if (basket) {
+              <ish-line-item-list [lineItems]="basket.lineItems" />
+              }
             </ng-template>
           </ish-skip-content-link>
 
-          <ish-loading *ngIf="loading" />
+          @if (loading) {
+          <ish-loading />
+          }
 
           <div class="button-group clearfix">
             <div class="float-md-start">
               <ish-lazy-basket-add-to-quote />
-              <ish-lazy-basket-create-order-template
-                *ngIf="basket"
-                [cssClass]="'btn btn-secondary'"
-                [products]="basket.lineItems"
-              />
+              @if (basket) {
+              <ish-lazy-basket-create-order-template [cssClass]="'btn btn-secondary'" [products]="basket.lineItems" />
+              }
             </div>
             <ish-clear-basket cssClass="float-md-end" />
           </div>
@@ -94,11 +104,11 @@
           <ish-basket-cost-summary [totals]="basket.totals" />
 
           <ng-container *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']">
-            <ish-loading *ngIf="loading" />
-            <ish-basket-order-recurrence-edit
-              *ngIf="'recurringOrder.enabled' | ishServerSetting"
-              [recurrence]="basket.recurrence"
-            />
+            @if (loading) {
+            <ish-loading />
+            } @if ('recurringOrder.enabled' | ishServerSetting) {
+            <ish-basket-order-recurrence-edit [recurrence]="basket.recurrence" />
+            }
           </ng-container>
 
           <div class="d-grid">

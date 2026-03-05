@@ -1,72 +1,69 @@
 <h2>{{ 'checkout.address.shipping.label' | translate }}</h2>
-<ng-container *ngIf="shippingAddress$ | async as address">
-  <div class="address-box">
-    <ng-container *ngIf="(basketInvoiceAndShippingAddressEqual$ | async) === false">
-      <div class="float-end">
-        <!-- edit shipping address -->
-        <button
-          *ngIf="collapseChange | async"
-          type="button"
-          class="btn-tool btn-link"
-          [title]="'checkout.address.update.title' | translate : { '0': 'checkout.address.shipping.label' | translate }"
-          (click)="showAddressForm(address)"
-          data-testing-id="edit-shipping-address-link"
-        >
-          <fa-icon [icon]="['fas', 'pencil-alt']" />
-        </button>
-
-        <!-- delete shipping address -->
-        <button
-          *ngIf="(basketShippingAddressDeletable$ | async) && (collapseChange | async)"
-          type="button"
-          class="btn-tool btn-link"
-          title="{{ 'checkout.address.delete.button.label' | translate }}"
-          (click)="modalDialog.show(address)"
-        >
-          <fa-icon [icon]="['fas', 'trash-alt']" />
-        </button>
-
-        <ish-modal-dialog
-          #modalDialog
-          [options]="{
-            titleText: 'checkout.address.delete.confirmation.heading' | translate,
-            confirmText: 'checkout.address.button.delete' | translate,
-            rejectText: 'checkout.address.button.cancel' | translate
-          }"
-          (confirmed)="deleteAddress($event)"
-        >
-          <p>{{ 'checkout.address.delete.confirmation.text' | translate }}</p>
-          <small class="text-body-secondary">{{
-            'checkout.address.delete.confirmation.deletionhint' | translate
-          }}</small>
-        </ish-modal-dialog>
-      </div>
-
-      <!-- display shipping address -->
-      <ish-address [address]="address" />
-    </ng-container>
-
-    <p *ngIf="basketInvoiceAndShippingAddressEqual$ | async" data-testing-id="sameAsInvoice" class="section">
-      {{ 'checkout.same_as_billing_address.text' | translate }}
-    </p>
-
-    <p></p>
+@if (shippingAddress$ | async; as address) {
+<div class="address-box">
+  @if ((basketInvoiceAndShippingAddressEqual$ | async) === false) {
+  <div class="float-end">
+    <!-- edit shipping address -->
+    @if (collapseChange | async) {
+    <button
+      type="button"
+      class="btn-tool btn-link"
+      [title]="'checkout.address.update.title' | translate : { '0': 'checkout.address.shipping.label' | translate }"
+      (click)="showAddressForm(address)"
+      data-testing-id="edit-shipping-address-link"
+    >
+      <fa-icon [icon]="['fas', 'pencil-alt']" />
+    </button>
+    }
+    <!-- delete shipping address -->
+    @if ((basketShippingAddressDeletable$ | async) && (collapseChange | async)) {
+    <button
+      type="button"
+      class="btn-tool btn-link"
+      title="{{ 'checkout.address.delete.button.label' | translate }}"
+      (click)="modalDialog.show(address)"
+    >
+      <fa-icon [icon]="['fas', 'trash-alt']" />
+    </button>
+    }
+    <ish-modal-dialog
+      #modalDialog
+      [options]="{
+        titleText: 'checkout.address.delete.confirmation.heading' | translate,
+        confirmText: 'checkout.address.button.delete' | translate,
+        rejectText: 'checkout.address.button.cancel' | translate
+      }"
+      (confirmed)="deleteAddress($event)"
+    >
+      <p>{{ 'checkout.address.delete.confirmation.text' | translate }}</p>
+      <small class="text-body-secondary">{{ 'checkout.address.delete.confirmation.deletionhint' | translate }}</small>
+    </ish-modal-dialog>
   </div>
-
-  <p *ngIf="!address && showErrors" class="text-danger">
-    {{ 'checkout.addresses.no_Selection.shipping.error' | translate }}
+  <!-- display shipping address -->
+  <ish-address [address]="address" />
+  } @if (basketInvoiceAndShippingAddressEqual$ | async) {
+  <p data-testing-id="sameAsInvoice" class="section">
+    {{ 'checkout.same_as_billing_address.text' | translate }}
   </p>
-</ng-container>
+  }
+  <p></p>
+</div>
+@if (!address && showErrors) {
+<p class="text-danger">
+  {{ 'checkout.addresses.no_Selection.shipping.error' | translate }}
+</p>
+} }
 
 <!-- shipping address selection -->
-<ng-container *ngIf="addresses$ | async as addresses">
-  <form *ngIf="addresses.length" [formGroup]="form">
-    <formly-form [form]="form" [fields]="fields" />
-  </form>
-</ng-container>
+@if (addresses$ | async; as addresses) { @if (addresses.length) {
+<form [formGroup]="form">
+  <formly-form [form]="form" [fields]="fields" />
+</form>
+} }
 
 <!-- Add a new Shipping to address -->
-<div *ngIf="displayAddAddressLink$ | async" class="row">
+@if (displayAddAddressLink$ | async) {
+<div class="row">
   <button
     type="button"
     class="btn btn-link w-auto"
@@ -78,6 +75,7 @@
     {{ 'checkout.create_shipping_address.link' | translate }}
   </button>
 </div>
+}
 
 <!-- shipping address form -->
 <div id="shipping-address-panel" [ngbCollapse]="collapseChange | async" data-testing-id="shipping-address-form">
@@ -89,6 +87,6 @@
   />
 </div>
 
-<ng-container *ngIf="(collapseChange | async) === false">
-  <ish-lazy-address-doctor />
-</ng-container>
+@if ((collapseChange | async) === false) {
+<ish-lazy-address-doctor />
+}

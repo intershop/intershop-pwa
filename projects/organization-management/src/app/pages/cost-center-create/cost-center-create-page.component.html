@@ -21,4 +21,6 @@
 
 <ish-cost-center-csv-import />
 
-<ish-loading *ngIf="loading$ | async" />
+@if (loading$ | async) {
+<ish-loading />
+}

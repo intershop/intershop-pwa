@@ -1,4 +1,5 @@
-<div *ngIf="order">
+@if (order) {
+<div>
   <div class="cart-header">
     <h1 class="d-flex flex-wrap align-items-baseline">
       <span id="page-main-content" tabindex="-1" class="cart-header-title">
@@ -19,10 +20,11 @@
       </span>
     </h1>
   </div>
-  <p *ngIf="order.statusCode === 'PENDING'" class="alert alert-info">
+  @if (order.statusCode === 'PENDING') {
+  <p class="alert alert-info">
     {{ 'checkout.receipt.order_pending.message' | translate }}
   </p>
-
+  }
   <!-- Receipt message -->
   <div class="section">
     <p>
@@ -31,12 +33,14 @@
       }}</span
       >&nbsp;
       <strong data-testing-id="order-document-number">
+        @if (order.customerNo) {
         <a
-          *ngIf="order.customerNo; else plainOrderNo"
           [routerLink]="[order.recurrence ? '/account/recurring-orders/' + order.id : '/account/orders/' + order.id]"
           >{{ order.documentNo }}</a
         >
-        <ng-template #plainOrderNo> {{ order.documentNo }}</ng-template>
+        } @else {
+        {{ order.documentNo }}
+        }
       </strong>
     </p>
     <p
@@ -46,3 +50,4 @@
     ></p>
   </div>
 </div>
+}
