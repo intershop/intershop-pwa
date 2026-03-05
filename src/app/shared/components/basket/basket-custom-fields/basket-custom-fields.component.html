@@ -18,7 +18,7 @@
         : 'checkout.custom-fields.basket.add.link.label'
       ) | translate
     }}
-    <i class="bi" [ngClass]="collapsed ? 'bi-chevron-down' : 'bi-chevron-up'"></i>
+    <i [class]="collapsed ? 'bi bi-chevron-down' : 'bi bi-chevron-up'"></i>
   </button>
   <div id="basket-custom-fields-input" [ngbCollapse]="collapsed">
     <form [formGroup]="form" (ngSubmit)="submit()">
