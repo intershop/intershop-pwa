@@ -2,7 +2,6 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { DatePipe as IshDatePipe } from 'ish-core/pipes/date.pipe';
@@ -37,7 +36,6 @@ type QuoteColumnsType =
   standalone: true,
   imports: [
     CdkTableModule,
-    FontAwesomeModule,
     IshDatePipe,
     ModalDialogComponent,
     NgIf,

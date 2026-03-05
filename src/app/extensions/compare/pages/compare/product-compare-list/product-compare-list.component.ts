@@ -1,6 +1,5 @@
 import { AsyncPipe, NgFor, NgIf, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, ReplaySubject, combineLatest, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -40,7 +39,6 @@ import { ProductComparePagingComponent as ProductComparePagingComponent_1 } from
     ProductComparePagingComponent_1,
     NgFor,
     ProductImageComponent,
-    FontAwesomeModule,
     FeatureToggleModule,
     ProductRatingComponent,
     AsyncPipe,

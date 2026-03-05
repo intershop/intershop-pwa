@@ -1,7 +1,6 @@
 import { AsyncPipe, NgIf, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
@@ -27,7 +26,6 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
     CostCenterBudgetComponent,
     CostCenterUsersListComponent,
     ErrorMessageComponent,
-    FontAwesomeModule,
     NgIf,
     OrderListComponent,
     PricePipe,

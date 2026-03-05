@@ -1,6 +1,5 @@
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
@@ -18,7 +17,7 @@ import { CompareFacade } from '../../facades/compare.facade';
   templateUrl: './product-add-to-compare.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgClass, FontAwesomeModule, AsyncPipe, TranslateModule, FeatureTogglePipe],
+  imports: [NgIf, NgClass, AsyncPipe, TranslateModule, FeatureTogglePipe],
 })
 @GenerateLazyComponent()
 export class ProductAddToCompareComponent implements OnInit {

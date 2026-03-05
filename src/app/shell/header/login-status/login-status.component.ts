@@ -1,7 +1,6 @@
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
@@ -13,7 +12,7 @@ import { User } from 'ish-core/models/user/user.model';
   templateUrl: './login-status.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, RouterLink, FontAwesomeModule, NgClass, AsyncPipe, TranslateModule],
+  imports: [NgIf, RouterLink, NgClass, AsyncPipe, TranslateModule],
 })
 export class LoginStatusComponent implements OnInit {
   @Input() logoutOnly = false;

@@ -1,7 +1,6 @@
 import { AsyncPipe, NgFor, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
@@ -26,7 +25,6 @@ import { AccountPunchoutHeaderComponent } from './account-punchout-header/accoun
   imports: [
     AccountPunchoutHeaderComponent,
     AsyncPipe,
-    FontAwesomeModule,
     LoadingComponent,
     ModalDialogComponent,
     NgFor,
