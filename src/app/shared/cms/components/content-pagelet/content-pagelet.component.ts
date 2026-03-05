@@ -9,6 +9,7 @@ import {
   OnChanges,
   OnInit,
   SimpleChange,
+  Type,
   ViewChild,
   ViewContainerRef,
   inject,
@@ -60,8 +61,7 @@ export class ContentPageletComponent implements OnChanges, OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(pagelet => {
-        this.mapComponent(pagelet);
-        this.cdRef.markForCheck();
+        void this.mapComponent(pagelet);
       });
   }
 
@@ -69,23 +69,41 @@ export class ContentPageletComponent implements OnChanges, OnInit {
     this.pageletId$.next(this.pageletId);
   }
 
-  private mapComponent(pagelet: ContentPageletView) {
+  private async mapComponent(pagelet: ContentPageletView) {
     const components = this.injector.get<CMSComponentProvider[]>(CMS_COMPONENT, []);
     const mappedComponent = components.find(c => c.definitionQualifiedName === pagelet.definitionQualifiedName);
 
     if (mappedComponent) {
-      const componentRef = this.createComponent(mappedComponent);
+      const componentType = await this.resolveComponentType(mappedComponent);
+      if (!componentType) {
+        console.warn(`did not find mapping for ${pagelet.id} (${pagelet.definitionQualifiedName})`);
+        return;
+      }
+      const componentRef = this.createComponent(componentType);
       this.initializeComponent(componentRef.instance, pagelet);
+      this.cdRef.markForCheck();
     } else {
       console.warn(`did not find mapping for ${pagelet.id} (${pagelet.definitionQualifiedName})`);
     }
   }
 
-  private createComponent(mappedComponent: CMSComponentProvider) {
+  private createComponent(componentType: Type<CMSComponent>) {
     this.cmsOutlet.clear();
-    return this.cmsOutlet.createComponent(mappedComponent.class, {
+    return this.cmsOutlet.createComponent(componentType, {
       environmentInjector: this.environmentInjector,
     });
+  }
+
+  private async resolveComponentType(mappedComponent: CMSComponentProvider): Promise<Type<CMSComponent> | undefined> {
+    if ('class' in mappedComponent && mappedComponent.class) {
+      return mappedComponent.class;
+    }
+
+    if ('loadComponent' in mappedComponent) {
+      const loadedComponent = await mappedComponent.loadComponent();
+      mappedComponent.class = loadedComponent;
+      return loadedComponent;
+    }
   }
 
   private initializeComponent(instance: CMSComponent, pagelet: ContentPageletView) {
