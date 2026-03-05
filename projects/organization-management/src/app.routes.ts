@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from 'ish-core/guards/auth.guard';
 import { identityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
 
-import { routes as organizationManagementRoutes } from './app/pages/organization-management-routing.module';
+import { routes as organizationManagementRoutes } from './app/pages/organization-management.routes';
 
 export const appRoutes: Routes = [
   {

@@ -1,7 +1,7 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, first } from 'rxjs';
 
@@ -40,10 +40,10 @@ import { OrderRecurrenceComponent } from 'ish-shared/components/order/order-recu
     NgFor,
     NgIf,
     OrderRecurrenceComponent,
-    RouterModule,
     ServerHtmlDirective,
     SwitchComponent,
     TranslatePipe,
+    RouterLink,
   ],
 })
 export class AccountRecurringOrderPageComponent implements OnInit {

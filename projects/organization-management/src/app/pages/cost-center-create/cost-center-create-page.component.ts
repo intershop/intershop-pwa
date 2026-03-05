@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
@@ -27,8 +27,8 @@ import { CostCenterCsvImportComponent } from './cost-center-csv-import/cost-cent
     LoadingComponent,
     NgIf,
     ReactiveFormsModule,
-    RouterModule,
     TranslatePipe,
+    RouterLink,
   ],
 })
 export class CostCenterCreatePageComponent implements OnInit {

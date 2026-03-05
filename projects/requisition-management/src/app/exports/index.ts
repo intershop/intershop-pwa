@@ -1,4 +1,4 @@
-export { requisitionManagementRoutes } from '../pages/requisition-management-routing.module';
+export { requisitionManagementRoutes } from '../pages/requisition-management.routes';
 export {
   provideRequisitionManagementStore,
   RequisitionManagementStoreModule,

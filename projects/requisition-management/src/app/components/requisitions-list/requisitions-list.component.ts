@@ -1,7 +1,7 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
@@ -27,15 +27,7 @@ export type RequisitionColumnsType =
   templateUrl: './requisitions-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    CdkTableModule,
-    DatePipe,
-    NgIf,
-    PricePipe,
-    RequisitionRejectDialogComponent,
-    RouterModule,
-    TranslatePipe,
-  ],
+  imports: [CdkTableModule, DatePipe, NgIf, PricePipe, RequisitionRejectDialogComponent, TranslatePipe, RouterLink],
 })
 export class RequisitionsListComponent {
   /**

@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -24,7 +24,7 @@ import { IdentityProviderLoginComponent } from 'ish-shared/components/login/iden
     LoadingComponent,
     AsyncPipe,
     IdentityProviderLoginComponent,
-    RouterModule,
+    RouterLink,
   ],
 })
 export class LoginPageComponent implements OnInit {

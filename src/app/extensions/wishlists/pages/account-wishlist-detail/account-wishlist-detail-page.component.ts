@@ -1,6 +1,6 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -28,13 +28,13 @@ import { WishlistSharingDialogComponent } from '../../shared/wishlist-sharing-di
     NgIf,
     NgbPopoverModule,
     ProductContextDirective,
-    RouterModule,
     TranslatePipe,
     LoadingComponent,
     ErrorMessageComponent,
     WishlistLineItemComponent,
     WishlistPreferencesDialogComponent,
     WishlistSharingDialogComponent,
+    RouterLink,
   ],
 })
 export class AccountWishlistDetailPageComponent implements OnInit {

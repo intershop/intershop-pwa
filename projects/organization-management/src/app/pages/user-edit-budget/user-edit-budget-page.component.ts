@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
@@ -28,10 +28,10 @@ import { UserBudget } from '../../models/user-budget/user-budget.model';
     LoadingComponent,
     NgIf,
     ReactiveFormsModule,
-    RouterModule,
     ServerSettingPipe,
     TranslatePipe,
     UserBudgetFormComponent,
+    RouterLink,
   ],
 })
 export class UserEditBudgetPageComponent implements OnInit {

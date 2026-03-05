@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
@@ -29,9 +29,9 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
     NgIf,
     OrderListComponent,
     PricePipe,
-    RouterModule,
     SlicePipe,
     TranslatePipe,
+    RouterLink,
   ],
 })
 export class CostCenterDetailPageComponent implements OnInit {

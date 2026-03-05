@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
@@ -30,13 +30,13 @@ import { UserCsvImportComponent } from './user-csv-import/user-csv-import.compon
     LoadingComponent,
     NgIf,
     ReactiveFormsModule,
-    RouterModule,
     ServerSettingPipe,
     TranslatePipe,
     UserBudgetFormComponent,
     UserCsvImportComponent,
     UserProfileFormComponent,
     UserRolesSelectionComponent,
+    RouterLink,
   ],
 })
 export class UserCreatePageComponent implements OnInit {

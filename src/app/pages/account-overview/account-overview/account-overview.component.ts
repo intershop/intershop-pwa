@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BudgetWidgetComponent, CostCenterWidgetComponent } from 'organization-management';
 import { ApprovalWidgetComponent, RequisitionWidgetComponent } from 'requisition-management';
@@ -47,9 +47,9 @@ import { WishlistWidgetComponent } from '../../../extensions/wishlists/shared/wi
     RequisitionWidgetComponent,
     ApprovalWidgetComponent,
     RoleToggleModule,
-    RouterModule,
     TranslatePipe,
     WishlistWidgetComponent,
+    RouterLink,
   ],
 })
 export class AccountOverviewComponent {

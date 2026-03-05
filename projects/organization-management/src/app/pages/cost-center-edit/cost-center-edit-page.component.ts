@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
@@ -24,8 +24,8 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
     LoadingComponent,
     NgIf,
     ReactiveFormsModule,
-    RouterModule,
     TranslatePipe,
+    RouterLink,
   ],
 })
 export class CostCenterEditPageComponent implements OnInit {
