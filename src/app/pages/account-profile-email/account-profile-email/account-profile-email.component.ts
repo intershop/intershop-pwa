@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
@@ -28,7 +28,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
     NgIf,
     ReactiveFormsModule,
     RouterModule,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class AccountProfileEmailComponent implements OnInit {

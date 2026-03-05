@@ -1,7 +1,7 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -34,7 +34,7 @@ import { UserRolesBadgesComponent } from './user-roles-badges/user-roles-badges.
     NgIf,
     RouterModule,
     ServerSettingPipe,
-    TranslateModule,
+    TranslatePipe,
     UserBudgetComponent,
     UserRolesBadgesComponent,
   ],

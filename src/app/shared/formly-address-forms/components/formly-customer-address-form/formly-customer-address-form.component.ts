@@ -11,7 +11,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 
@@ -37,7 +37,7 @@ import { FormlyAddressFormsModule } from 'ish-shared/formly-address-forms/formly
   templateUrl: './formly-customer-address-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [ReactiveFormsModule, TranslateModule, FormlyAddressFormsModule, AsyncPipe, NgIf],
+  imports: [ReactiveFormsModule, TranslatePipe, FormlyAddressFormsModule, AsyncPipe, NgIf],
 })
 export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
   @Input() address: Partial<Address>;

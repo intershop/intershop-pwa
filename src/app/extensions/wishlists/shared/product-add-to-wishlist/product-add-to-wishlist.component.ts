@@ -2,7 +2,7 @@ import { AsyncPipe, NgClass, NgIf, NgSwitch, NgSwitchCase } from '@angular/commo
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -22,7 +22,7 @@ import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wi
     NgIf,
     NgClass,
     NgSwitch,
-    TranslateModule,
+    TranslatePipe,
     AsyncPipe,
     SelectWishlistModalComponent,
     NgSwitchCase,

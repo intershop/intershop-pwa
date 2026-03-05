@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, filter, first, map, shareReplay, switchMap, tap, withLatestFrom } from 'rxjs/operators';
@@ -24,7 +24,7 @@ import { CheckoutPaymentComponent } from './checkout-payment/checkout-payment.co
   templateUrl: './checkout-payment-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, TranslateModule, LoadingComponent, CheckoutPaymentComponent, NgIf],
+  imports: [AsyncPipe, TranslatePipe, LoadingComponent, CheckoutPaymentComponent, NgIf],
 })
 export class CheckoutPaymentPageComponent implements OnInit {
   basket$: Observable<BasketView>;

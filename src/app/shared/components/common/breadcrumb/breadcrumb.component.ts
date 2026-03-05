@@ -1,7 +1,7 @@
 import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -19,7 +19,7 @@ import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.
   templateUrl: './breadcrumb.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, TranslateModule, AsyncPipe, NgClass, RouterLink, NgForOf],
+  imports: [NgIf, TranslatePipe, AsyncPipe, NgClass, RouterLink, NgForOf],
 })
 export class BreadcrumbComponent implements OnInit {
   @Input() separator = '/';

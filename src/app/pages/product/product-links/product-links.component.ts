@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -24,7 +24,7 @@ import { ProductLinksListComponent } from '../product-links-list/product-links-l
   templateUrl: './product-links.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, ProductLinksListComponent, ProductLinksCarouselComponent_1, AsyncPipe, TranslateModule],
+  imports: [NgIf, ProductLinksListComponent, ProductLinksCarouselComponent_1, AsyncPipe, TranslatePipe],
 })
 export class ProductLinksComponent implements OnInit {
   links$: Observable<ProductLinksDictionary>;

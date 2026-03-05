@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -17,7 +17,7 @@ import { LoadingComponent } from 'ish-shared/components/common/loading/loading.c
   templateUrl: './data-request-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, ErrorMessageComponent, AsyncPipe, TranslateModule, ServerHtmlDirective, LoadingComponent],
+  imports: [NgIf, ErrorMessageComponent, AsyncPipe, TranslatePipe, ServerHtmlDirective, LoadingComponent],
 })
 export class DataRequestPageComponent implements OnInit {
   loading$: Observable<boolean>;

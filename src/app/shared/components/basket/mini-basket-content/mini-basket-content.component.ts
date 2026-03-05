@@ -1,7 +1,7 @@
 import { AsyncPipe, NgFor, NgIf, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
@@ -23,7 +23,7 @@ import { ProductNameComponent } from 'ish-shared/components/product/product-name
     ProductNameComponent,
     ProductImageComponent,
     PricePipe,
-    TranslateModule,
+    TranslatePipe,
     NgIf,
     AsyncPipe,
     NgFor,

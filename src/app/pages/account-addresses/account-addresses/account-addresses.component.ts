@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject }
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, map, shareReplay, take, withLatestFrom } from 'rxjs/operators';
 import { AddressDoctorComponent } from 'src/app/extensions/address-doctor/shared/address-doctor/address-doctor.component';
@@ -43,7 +43,7 @@ import { mapToAddressOptions } from 'ish-shared/forms/utils/forms.service';
     NgIf,
     NgTemplateOutlet,
     ReactiveFormsModule,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class AccountAddressesComponent implements OnInit {

@@ -1,7 +1,7 @@
 import { AsyncPipe, NgFor, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 
@@ -33,7 +33,7 @@ import { AccountPunchoutHeaderComponent } from './account-punchout-header/accoun
     NgSwitchCase,
     RouterModule,
     ServerSettingPipe,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class AccountPunchoutPageComponent implements OnInit {

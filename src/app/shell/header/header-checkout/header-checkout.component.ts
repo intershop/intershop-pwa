@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
 
@@ -9,6 +9,6 @@ import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status
   templateUrl: './header-checkout.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [LoginStatusComponent, RouterLink, TranslateModule],
+  imports: [LoginStatusComponent, RouterLink, TranslatePipe],
 })
 export class HeaderCheckoutComponent {}

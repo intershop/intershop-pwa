@@ -2,7 +2,7 @@ import { AsyncPipe, NgClass, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } fro
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -28,7 +28,7 @@ import { SelectOrderTemplateModalComponent } from '../select-order-template-moda
     SelectOrderTemplateModalComponent,
     AsyncPipe,
     NgIf,
-    TranslateModule,
+    TranslatePipe,
     NgClass,
     NgSwitch,
     NgSwitchCase,

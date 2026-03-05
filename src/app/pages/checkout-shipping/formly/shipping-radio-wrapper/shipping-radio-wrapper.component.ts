@@ -2,7 +2,7 @@ import { NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { FieldWrapper } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ShippingInfoComponent } from '../shipping-info/shipping-info.component';
 
@@ -19,6 +19,6 @@ import { ShippingInfoComponent } from '../shipping-info/shipping-info.component'
   templateUrl: './shipping-radio-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, NgbPopoverModule, ShippingInfoComponent, TranslateModule, NgIf],
+  imports: [NgClass, NgbPopoverModule, ShippingInfoComponent, TranslatePipe, NgIf],
 })
 export class ShippingRadioWrapperComponent extends FieldWrapper {}

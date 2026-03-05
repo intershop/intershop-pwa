@@ -1,7 +1,7 @@
 import { AsyncPipe, LocationStrategy, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -19,7 +19,7 @@ import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
   templateUrl: './language-switch.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgbDropdownModule, NgFor, AsyncPipe, TranslateModule, MakeHrefPipe],
+  imports: [NgIf, NgbDropdownModule, NgFor, AsyncPipe, TranslatePipe, MakeHrefPipe],
 })
 export class LanguageSwitchComponent implements OnInit {
   @Input() deviceType: DeviceType = 'desktop';

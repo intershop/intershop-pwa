@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -24,7 +24,7 @@ import { AccountOrderTemplateListComponent } from './account-order-template-list
     ErrorMessageComponent,
     LoadingComponent,
     OrderTemplatePreferencesDialogComponent,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class AccountOrderTemplatePageComponent implements OnInit {

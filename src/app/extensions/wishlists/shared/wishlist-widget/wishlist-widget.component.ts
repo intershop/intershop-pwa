@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextDisplayProperties } from 'ish-core/facades/product-context.facade';
@@ -19,7 +19,7 @@ import { WishlistsFacade } from '../../facades/wishlists.facade';
   templateUrl: './wishlist-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, NgIf, RouterModule, ProductsListComponent, TranslateModule],
+  imports: [AsyncPipe, NgIf, RouterModule, ProductsListComponent, TranslatePipe],
 })
 @GenerateLazyComponent()
 export class WishlistWidgetComponent implements OnInit {

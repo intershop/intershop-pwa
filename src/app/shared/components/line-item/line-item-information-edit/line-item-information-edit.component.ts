@@ -2,7 +2,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, Self } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { RxState } from '@rx-angular/state';
 import { combineLatest } from 'rxjs';
 
@@ -32,7 +32,7 @@ interface ComponentState {
   imports: [
     NgIf,
     AsyncPipe,
-    TranslateModule,
+    TranslatePipe,
     LineItemCustomFieldsComponent,
     NgbCollapse,
     ReactiveFormsModule,

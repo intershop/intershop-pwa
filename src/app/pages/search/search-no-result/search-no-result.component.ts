@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { HtmlEncodePipe } from 'ish-core/pipes/html-encode.pipe';
@@ -22,7 +22,7 @@ import { SearchBoxComponent } from 'ish-shared/components/search/search-box/sear
   imports: [
     ContentIncludeComponent,
     BreadcrumbComponent,
-    TranslateModule,
+    TranslatePipe,
     SearchBoxComponent,
     ServerHtmlDirective,
     HtmlEncodePipe,

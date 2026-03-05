@@ -12,7 +12,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, of, shareReplay, switchMap } from 'rxjs';
 
 import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
@@ -53,7 +53,7 @@ import { ProductNotificationEditFormComponent } from '../product-notification-ed
     ProductImageComponent,
     ProductNotificationEditFormComponent,
     ReactiveFormsModule,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class ProductNotificationEditDialogComponent implements OnInit {

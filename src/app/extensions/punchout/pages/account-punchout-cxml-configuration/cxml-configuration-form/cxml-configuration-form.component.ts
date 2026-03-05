@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@a
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
@@ -26,7 +26,7 @@ import { CxmlConfiguration } from '../../../models/cxml-configuration/cxml-confi
     FormlyModule,
     ReactiveFormsModule,
     RouterLink,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class CxmlConfigurationFormComponent implements OnDestroy, OnInit {

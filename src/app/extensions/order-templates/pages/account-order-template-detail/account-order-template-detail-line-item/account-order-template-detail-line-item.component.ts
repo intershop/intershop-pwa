@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { map } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -37,7 +37,7 @@ import { SelectOrderTemplateModalComponent } from '../../../shared/select-order-
     ProductVariationDisplayComponent,
     ReactiveFormsModule,
     SelectOrderTemplateModalComponent,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class AccountOrderTemplateDetailLineItemComponent implements OnInit {

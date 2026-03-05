@@ -1,7 +1,7 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 
 import { UserBudget } from '../../../models/user-budget/user-budget.model';
@@ -14,7 +14,7 @@ import { UserBudget } from '../../../models/user-budget/user-budget.model';
   templateUrl: './user-detail-budget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, RouterModule, TranslateModule, PricePipe],
+  imports: [NgIf, RouterModule, TranslatePipe, PricePipe],
 })
 export class UserDetailBudgetComponent {
   @Input({ required: true }) budget: UserBudget;

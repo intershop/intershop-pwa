@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map, startWith, take } from 'rxjs/operators';
 
@@ -28,7 +28,7 @@ import { ProductNotificationEditDialogComponent } from '../product-notification-
   templateUrl: './product-notification-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, ProductNotificationEditDialogComponent, TranslateModule],
+  imports: [CommonModule, ProductNotificationEditDialogComponent, TranslatePipe],
 })
 @GenerateLazyComponent()
 export class ProductNotificationEditComponent implements OnInit {

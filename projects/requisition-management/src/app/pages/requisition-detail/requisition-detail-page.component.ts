@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
@@ -47,7 +47,7 @@ import { RequisitionSummaryComponent } from './requisition-summary/requisition-s
     RequisitionSummaryComponent,
     RouterModule,
     ServerSettingPipe,
-    TranslateModule,
+    TranslatePipe,
     RequisitionRejectDialogComponent,
     LoadingComponent,
   ],

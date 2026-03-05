@@ -14,7 +14,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -38,7 +38,7 @@ declare let Flex: any;
   imports: [
     NgIf,
     ReactiveFormsModule,
-    TranslateModule,
+    TranslatePipe,
     NgClass,
     ShowFormFeedbackDirective,
     FormControlFeedbackComponent,

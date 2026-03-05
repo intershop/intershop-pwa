@@ -1,6 +1,6 @@
 import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
@@ -25,7 +25,7 @@ import { ProductNameComponent } from 'ish-shared/components/product/product-name
     NgIf,
     PricePipe,
     ProductImageComponent,
-    TranslateModule,
+    TranslatePipe,
     ProductNameComponent,
     ProductInventoryComponent,
     ProductContextDirective,

@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
@@ -29,7 +29,7 @@ import { RequisitionManagementStoreModule } from '../../store/requisition-manage
     PricePipe,
     RequisitionManagementStoreModule,
     RouterModule,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 @GenerateLazyComponent()

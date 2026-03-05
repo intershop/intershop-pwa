@@ -10,7 +10,7 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { v4 as uuid } from 'uuid';
 
 /**
@@ -46,7 +46,7 @@ import { v4 as uuid } from 'uuid';
   templateUrl: './skip-content-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, TranslateModule],
+  imports: [NgIf, TranslatePipe],
 })
 export class SkipContentLinkComponent implements AfterContentInit, AfterViewInit {
   /**

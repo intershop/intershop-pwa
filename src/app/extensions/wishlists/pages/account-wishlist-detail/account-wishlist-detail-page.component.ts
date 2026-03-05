@@ -2,7 +2,7 @@ import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
@@ -29,7 +29,7 @@ import { WishlistSharingDialogComponent } from '../../shared/wishlist-sharing-di
     NgbPopoverModule,
     ProductContextDirective,
     RouterModule,
-    TranslateModule,
+    TranslatePipe,
     LoadingComponent,
     ErrorMessageComponent,
     WishlistLineItemComponent,

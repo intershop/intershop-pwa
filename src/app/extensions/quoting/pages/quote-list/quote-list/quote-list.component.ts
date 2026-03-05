@@ -2,7 +2,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { DatePipe as IshDatePipe } from 'ish-core/pipes/date.pipe';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
@@ -42,7 +42,7 @@ type QuoteColumnsType =
     QuoteExpirationDateComponent,
     QuoteStateComponent,
     RouterModule,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class QuoteListComponent {

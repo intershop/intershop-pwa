@@ -2,7 +2,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest, debounce, map } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -22,7 +22,7 @@ import { CustomFieldsViewComponent } from 'ish-shared/components/custom-fields/c
   imports: [
     NgIf,
     AsyncPipe,
-    TranslateModule,
+    TranslatePipe,
     CustomFieldsViewComponent,
     NgbCollapse,
     ReactiveFormsModule,

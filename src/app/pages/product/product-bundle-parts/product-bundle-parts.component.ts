@@ -1,6 +1,6 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
@@ -18,7 +18,7 @@ import { ProductItemComponent } from 'ish-shared/components/product/product-item
     NgIf,
     NgFor,
     AsyncPipe,
-    TranslateModule,
+    TranslatePipe,
     ProductAddToBasketComponent,
     ProductItemComponent,
     ProductContextDirective,

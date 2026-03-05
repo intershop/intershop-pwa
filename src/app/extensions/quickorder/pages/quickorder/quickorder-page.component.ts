@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -21,7 +21,7 @@ import { QuickorderCsvFormComponent } from '../../shared/quickorder-csv-form/qui
     QuickorderCsvFormComponent,
     NgIf,
     AsyncPipe,
-    TranslateModule,
+    TranslatePipe,
     BreadcrumbComponent,
     LoadingComponent,
     SkipContentLinkComponent,

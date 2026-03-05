@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } fr
 import { FormsModule, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { NgbModal, NgbModalModule, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, map, tap } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -34,7 +34,7 @@ import { ProductVariationDisplayComponent } from 'ish-shared/components/product/
     ProductNameComponent,
     ProductVariationDisplayComponent,
     ReactiveFormsModule,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class ProductReviewCreateDialogComponent implements OnInit {

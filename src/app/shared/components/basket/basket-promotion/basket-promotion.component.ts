@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -15,7 +15,7 @@ import { PromotionRemoveComponent } from 'ish-shared/components/promotion/promot
   templateUrl: './basket-promotion.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, ServerHtmlDirective, AsyncPipe, TranslateModule, PromotionDetailsComponent, PromotionRemoveComponent],
+  imports: [NgIf, ServerHtmlDirective, AsyncPipe, TranslatePipe, PromotionDetailsComponent, PromotionRemoveComponent],
 })
 export class BasketPromotionComponent implements OnChanges {
   @Input({ required: true }) rebate: BasketRebate;

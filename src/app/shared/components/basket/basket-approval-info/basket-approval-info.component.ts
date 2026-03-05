@@ -1,6 +1,6 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.model';
@@ -15,7 +15,7 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
   templateUrl: './basket-approval-info.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [NgIf, NgFor, TranslateModule, ServerHtmlDirective, ModalDialogLinkComponent, NgClass],
+  imports: [NgIf, NgFor, TranslatePipe, ServerHtmlDirective, ModalDialogLinkComponent, NgClass],
 })
 export class BasketApprovalInfoComponent {
   @Input({ required: true }) approval: BasketApproval;

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
@@ -16,6 +16,6 @@ import { SearchBoxComponent } from 'ish-shared/components/search/search-box/sear
   templateUrl: './error.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslateModule, ServerHtmlDirective, SearchBoxComponent, TranslateModule],
+  imports: [TranslatePipe, ServerHtmlDirective, SearchBoxComponent, TranslatePipe],
 })
 export class ErrorComponent {}

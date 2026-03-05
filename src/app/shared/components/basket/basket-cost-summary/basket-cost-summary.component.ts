@@ -2,7 +2,7 @@ import { AsyncPipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -31,7 +31,7 @@ import { PaymentPaypalMessagesComponent } from 'ish-shared/components/checkout/p
   imports: [
     NgIf,
     NgFor,
-    TranslateModule,
+    TranslatePipe,
     PricePipe,
     BasketPromotionComponent,
     NgTemplateOutlet,

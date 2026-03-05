@@ -1,6 +1,6 @@
 import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ReplaySubject, asyncScheduler, scheduled, switchMap } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -15,7 +15,7 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
   templateUrl: './basket-error-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgFor, TranslateModule, ErrorMessageComponent],
+  imports: [NgIf, NgFor, TranslatePipe, ErrorMessageComponent],
 })
 export class BasketErrorMessageComponent implements OnChanges {
   @Input({ required: true }) error: HttpError;

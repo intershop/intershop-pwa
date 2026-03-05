@@ -8,7 +8,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { FieldArrayType, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { debounceTime, map } from 'rxjs/operators';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
@@ -26,7 +26,7 @@ import { ProductQuantityComponent } from 'ish-shared/components/product/product-
   templateUrl: './quickorder-repeat-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgFor, ProductContextDirective, TranslateModule, ProductQuantityComponent, FormlyModule],
+  imports: [NgFor, ProductContextDirective, TranslatePipe, ProductQuantityComponent, FormlyModule],
 })
 export class QuickorderRepeatFieldComponent extends FieldArrayType implements AfterViewInit {
   @ViewChildren(ProductContextDirective) contexts: QueryList<{ context: ProductContextFacade }>;

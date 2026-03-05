@@ -1,7 +1,7 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { IdentityProviderCapabilityDirective } from 'ish-core/directives/identity-provider-capability.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -18,7 +18,7 @@ import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
     NgIf,
     RouterModule,
     ServerHtmlDirective,
-    TranslateModule,
+    TranslatePipe,
     ServerSettingPipe,
   ],
 })

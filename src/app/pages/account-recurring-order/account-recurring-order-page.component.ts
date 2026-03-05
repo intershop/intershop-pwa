@@ -2,7 +2,7 @@ import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, first } from 'rxjs';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
@@ -43,7 +43,7 @@ import { OrderRecurrenceComponent } from 'ish-shared/components/order/order-recu
     RouterModule,
     ServerHtmlDirective,
     SwitchComponent,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class AccountRecurringOrderPageComponent implements OnInit {

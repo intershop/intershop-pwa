@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 
@@ -8,6 +8,6 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
   templateUrl: './maintenance-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslateModule, ServerHtmlDirective],
+  imports: [TranslatePipe, ServerHtmlDirective],
 })
 export class MaintenancePageComponent {}

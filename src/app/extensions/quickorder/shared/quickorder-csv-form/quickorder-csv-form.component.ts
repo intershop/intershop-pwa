@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
@@ -22,7 +22,7 @@ import { CsvImportData, CsvImportHandler, CsvImportStatus } from 'ish-core/utils
   templateUrl: './quickorder-csv-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ReactiveFormsModule, NgSwitch, NgSwitchCase, NgSwitchDefault, TranslateModule],
+  imports: [ReactiveFormsModule, NgSwitch, NgSwitchCase, NgSwitchDefault, TranslatePipe],
 })
 export class QuickorderCsvFormComponent implements OnInit {
   csvForm: FormGroup;

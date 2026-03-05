@@ -1,7 +1,7 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, map, shareReplay, withLatestFrom } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -24,7 +24,7 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
     NgIf,
     ErrorMessageComponent,
     AsyncPipe,
-    TranslateModule,
+    TranslatePipe,
     BasketPaymentCostInfoComponent,
     NgFor,
     PaymentPaypalComponent,

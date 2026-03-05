@@ -1,6 +1,6 @@
 import { AsyncPipe, NgClass, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest, map } from 'rxjs';
 
 import { ScrollDirective } from 'ish-core/directives/scroll.directive';
@@ -19,7 +19,7 @@ import { PreviewService } from 'ish-core/utils/preview/preview.service';
     NgClass,
     NgSwitch,
     NgIf,
-    TranslateModule,
+    TranslatePipe,
     AsyncPipe,
     NgTemplateOutlet,
     NgSwitchCase,

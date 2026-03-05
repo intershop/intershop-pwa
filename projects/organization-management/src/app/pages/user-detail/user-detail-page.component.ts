@@ -1,7 +1,7 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
@@ -23,7 +23,7 @@ import { UserDetailBudgetComponent } from './user-detail-budget/user-detail-budg
     NgIf,
     RouterModule,
     ServerSettingPipe,
-    TranslateModule,
+    TranslatePipe,
     UserDetailBudgetComponent,
   ],
 })

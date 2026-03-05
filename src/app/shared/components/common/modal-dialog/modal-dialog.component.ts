@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Subject, race, take } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
@@ -63,7 +63,7 @@ export interface ModalOptions extends NgbModalOptions {
   templateUrl: './modal-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, TranslateModule],
+  imports: [NgIf, TranslatePipe],
 })
 export class ModalDialogComponent<T> implements OnDestroy {
   @Input({ required: true }) options: ModalOptions;

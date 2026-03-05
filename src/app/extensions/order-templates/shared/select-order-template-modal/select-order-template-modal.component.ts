@@ -14,7 +14,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 
@@ -37,7 +37,7 @@ import { SelectOrderTemplateFormComponent } from '../select-order-template-form/
   standalone: true,
   imports: [
     NgIf,
-    TranslateModule,
+    TranslatePipe,
     ProductContextAccessDirective,
     ServerHtmlDirective,
     AsyncPipe,

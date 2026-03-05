@@ -1,7 +1,7 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -28,7 +28,7 @@ import { CostCenterBudgetComponent } from '../cost-center-budget/cost-center-bud
     NgIf,
     OrganizationManagementStoreModule,
     RouterModule,
-    TranslateModule,
+    TranslatePipe,
     InfoBoxComponent,
     LoadingComponent,
   ],

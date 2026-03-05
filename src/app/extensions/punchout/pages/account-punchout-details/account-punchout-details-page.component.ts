@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -16,7 +16,7 @@ import { PunchoutUserFormComponent } from '../../shared/punchout-user-form/punch
   templateUrl: './account-punchout-details-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, ErrorMessageComponent, LoadingComponent, NgIf, PunchoutUserFormComponent, TranslateModule],
+  imports: [AsyncPipe, ErrorMessageComponent, LoadingComponent, NgIf, PunchoutUserFormComponent, TranslatePipe],
 })
 export class AccountPunchoutDetailsPageComponent implements OnInit {
   selectedUser$: Observable<PunchoutUser>;

@@ -2,7 +2,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest, map, of } from 'rxjs';
 
 import { PricePipe } from 'ish-core/models/price/price.pipe';
@@ -24,7 +24,7 @@ import { UserRolesBadgesComponent } from '../users/user-roles-badges/user-roles-
     NgClass,
     NgIf,
     RouterModule,
-    TranslateModule,
+    TranslatePipe,
     PricePipe,
     UserRolesBadgesComponent,
   ],

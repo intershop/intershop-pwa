@@ -1,6 +1,6 @@
 import { KeyValuePipe, NgFor } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { COOKIE_CONSENT_OPTIONS } from 'ish-core/configurations/injection-keys';
 import { CookieConsentSettings } from 'ish-core/models/cookies/cookies.model';
@@ -15,7 +15,7 @@ import { InjectSingle } from 'ish-core/utils/injection';
   templateUrl: './cookies-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgFor, TranslateModule, KeyValuePipe],
+  imports: [NgFor, TranslatePipe, KeyValuePipe],
 })
 export class CookiesModalComponent implements OnInit {
   @Output() readonly closeModal = new EventEmitter<void>();

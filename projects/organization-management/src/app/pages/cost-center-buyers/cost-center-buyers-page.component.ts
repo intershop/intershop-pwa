@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable, merge } from 'rxjs';
 import { take, withLatestFrom } from 'rxjs/operators';
 
@@ -36,7 +36,7 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
     NgIf,
     ReactiveFormsModule,
     RouterModule,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class CostCenterBuyersPageComponent implements OnInit {

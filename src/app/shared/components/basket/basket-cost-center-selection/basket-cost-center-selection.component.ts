@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnIn
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { distinctUntilChanged, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
@@ -21,7 +21,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   templateUrl: './basket-cost-center-selection.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, FormlyModule, AsyncPipe, ReactiveFormsModule, TranslateModule],
+  imports: [NgIf, FormlyModule, AsyncPipe, ReactiveFormsModule, TranslatePipe],
 })
 export class BasketCostCenterSelectionComponent implements OnInit {
   form = new UntypedFormGroup({});

@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
@@ -28,7 +28,7 @@ import { UserBudgetComponent } from '../user-budget/user-budget.component';
     NgIf,
     OrganizationManagementStoreModule,
     RouterModule,
-    TranslateModule,
+    TranslatePipe,
     UserBudgetComponent,
     ErrorMessageComponent,
     InfoBoxComponent,

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 
 import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
@@ -26,7 +26,7 @@ import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
     FormlyModule,
     ReactiveFormsModule,
     RouterModule,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class OrganizationSettingsCompanyComponent implements OnInit {

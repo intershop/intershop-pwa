@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -36,7 +36,7 @@ import { OrderRecurrenceComponent } from 'ish-shared/components/order/order-recu
     AddressComponent,
     SkipContentLinkComponent,
     LineItemListComponent,
-    TranslateModule,
+    TranslatePipe,
     BasketCostSummaryComponent,
     BasketCostCenterViewComponent,
     BasketCustomFieldsViewComponent,

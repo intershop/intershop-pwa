@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, take } from 'rxjs';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
@@ -35,7 +35,7 @@ import { AccountOrderTemplateDetailLineItemComponent } from './account-order-tem
     ProductAddToBasketComponent,
     ProductContextDirective,
     RouterModule,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class AccountOrderTemplateDetailPageComponent implements OnInit {

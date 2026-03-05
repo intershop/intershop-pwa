@@ -2,7 +2,7 @@ import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -45,7 +45,7 @@ import { StoresMapComponent } from '../../shared/stores-map/stores-map.component
     SkipContentLinkComponent,
     StoreAddressComponent,
     StoresMapComponent,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class StoreLocatorPageComponent implements OnInit {

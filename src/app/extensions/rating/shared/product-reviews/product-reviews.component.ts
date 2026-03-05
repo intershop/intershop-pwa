@@ -1,7 +1,7 @@
 import { AsyncPipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 import { Observable, combineLatest, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -40,7 +40,7 @@ import { RatingFilledType } from '../product-rating-star/product-rating-star.com
     ProductRatingStarComponent,
     ProductReviewCreateDialogComponent,
     RouterLink,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 @GenerateLazyComponent()

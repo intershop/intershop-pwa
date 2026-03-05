@@ -1,6 +1,6 @@
 import { AsyncPipe, DecimalPipe, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { ProductAddToOrderTemplateComponent } from 'src/app/extensions/order-templates/shared/product-add-to-order-template/product-add-to-order-template.component';
 import { ProductAddToWishlistComponent } from 'src/app/extensions/wishlists/shared/product-add-to-wishlist/product-add-to-wishlist.component';
@@ -41,7 +41,7 @@ import { QuoteItem, QuoteRequestItem } from '../../models/quoting/quoting.model'
     ProductQuantityComponent,
     ProductQuantityLabelComponent,
     ProductVariationDisplayComponent,
-    TranslateModule,
+    TranslatePipe,
     DecimalPipe,
   ],
 })

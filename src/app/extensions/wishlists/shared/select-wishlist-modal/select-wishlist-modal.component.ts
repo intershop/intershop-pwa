@@ -14,7 +14,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { filter, map, take, withLatestFrom } from 'rxjs/operators';
 
@@ -38,7 +38,7 @@ import { SelectWishlistFormComponent } from '../select-wishlist-form/select-wish
   standalone: true,
   imports: [
     NgIf,
-    TranslateModule,
+    TranslatePipe,
     ProductContextAccessDirective,
     ServerHtmlDirective,
     AsyncPipe,

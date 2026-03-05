@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -30,7 +30,7 @@ import { Requisition, RequisitionStatus } from '../../models/requisition/requisi
     NgbNavModule,
     RequisitionsListComponent,
     RouterModule,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class ApproverPageComponent implements OnInit {

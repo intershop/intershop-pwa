@@ -2,7 +2,7 @@ import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
@@ -15,6 +15,6 @@ import { ValidationMessageComponent } from 'ish-shared/formly/components/validat
   templateUrl: './registration-tac-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ValidationMessageComponent, ServerHtmlDirective, TranslateModule, NgIf, ReactiveFormsModule, FormlyModule],
+  imports: [ValidationMessageComponent, ServerHtmlDirective, TranslatePipe, NgIf, ReactiveFormsModule, FormlyModule],
 })
 export class RegistrationTacFieldComponent extends FieldType<FieldTypeConfig> {}

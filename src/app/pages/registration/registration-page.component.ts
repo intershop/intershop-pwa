@@ -5,7 +5,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, take, tap } from 'rxjs';
 import { AddressDoctorComponent } from '../../extensions/address-doctor/shared/address-doctor/address-doctor.component';
 
@@ -35,7 +35,7 @@ import {
   imports: [
     ErrorMessageComponent,
     AsyncPipe,
-    TranslateModule,
+    TranslatePipe,
     AddressDoctorComponent,
     LoadingComponent,
     ReactiveFormsModule,

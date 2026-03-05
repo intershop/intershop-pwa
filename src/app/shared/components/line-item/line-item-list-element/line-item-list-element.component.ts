@@ -2,7 +2,7 @@ import { DecimalPipe, NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefa
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
 import { Subscription } from 'rxjs';
 import { ProductAddToOrderTemplateComponent } from 'src/app/extensions/order-templates/shared/product-add-to-order-template/product-add-to-order-template.component';
@@ -50,7 +50,7 @@ import { ProductVariationDisplayComponent } from 'ish-shared/components/product/
     NgFor,
     PricePipe,
     ProductShipmentComponent,
-    TranslateModule,
+    TranslatePipe,
     LineItemEditComponent,
     ProductContextDirective,
     NgClass,

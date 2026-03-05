@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { ProductAddToCompareComponent } from 'src/app/extensions/compare/shared/product-add-to-compare/product-add-to-compare.component';
 import { ProductAddToOrderTemplateComponent } from 'src/app/extensions/order-templates/shared/product-add-to-order-template/product-add-to-order-template.component';
@@ -34,7 +34,7 @@ import { ProductPromotionComponent } from 'ish-shared/components/product/product
     ProductPromotionComponent,
     NgIf,
     AsyncPipe,
-    TranslateModule,
+    TranslatePipe,
     ProductAddToCompareComponent,
     ProductAddToOrderTemplateComponent,
     ProductAddToQuoteComponent,

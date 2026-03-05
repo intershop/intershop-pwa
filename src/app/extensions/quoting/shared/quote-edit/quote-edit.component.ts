@@ -1,7 +1,7 @@
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 import { Observable } from 'rxjs';
 
@@ -29,7 +29,7 @@ import { QuoteStateComponent } from '../quote-state/quote-state.component';
     QuoteLineItemListComponent,
     QuoteStateComponent,
     ReactiveFormsModule,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class QuoteEditComponent implements OnInit {

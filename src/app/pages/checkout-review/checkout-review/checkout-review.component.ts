@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ConfigOption, FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -61,7 +61,7 @@ export const checkoutReviewFormlyConfig: ConfigOption = {
   standalone: true,
   imports: [
     NgIf,
-    TranslateModule,
+    TranslatePipe,
     ModalDialogLinkComponent,
     ContentIncludeComponent,
     LazyLoadingContentDirective,

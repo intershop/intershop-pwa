@@ -2,7 +2,7 @@ import { NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { FieldWrapper, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 
@@ -17,7 +17,7 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
   styleUrls: ['./cxml-help-text-wrapper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormlyModule, NgbCollapseModule, ServerHtmlDirective, NgIf, NgClass, TranslateModule],
+  imports: [FormlyModule, NgbCollapseModule, ServerHtmlDirective, NgIf, NgClass, TranslatePipe],
 })
 export class CxmlHelpTextWrapperComponent extends FieldWrapper {
   isCollapsed = false;

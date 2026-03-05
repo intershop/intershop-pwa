@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ConfigOption } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
@@ -24,7 +24,7 @@ import { CxmlHelpTextWrapperComponent } from './formly/cxml-help-text-wrapper/cx
     CxmlHelpTextWrapperComponent,
     LoadingComponent,
     NgIf,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class AccountPunchoutCxmlConfigurationPageComponent implements OnInit {

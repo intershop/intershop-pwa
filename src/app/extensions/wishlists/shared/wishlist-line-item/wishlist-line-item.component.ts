@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ProductContextAccessDirective } from 'ish-core/directives/product-context-access.directive';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
@@ -35,7 +35,7 @@ import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wi
     ProductVariationDisplayComponent,
     ProductIdComponent,
     ProductBundleDisplayComponent,
-    TranslateModule,
+    TranslatePipe,
     ProductPriceComponent,
     ProductQuantityComponent,
     ProductAddToBasketComponent,

@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
@@ -12,7 +12,7 @@ import { FrequencyPipe } from 'ish-core/pipes/frequency.pipe';
   styleUrls: ['./order-recurrence.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, TranslateModule, DatePipe, FrequencyPipe],
+  imports: [NgIf, TranslatePipe, DatePipe, FrequencyPipe],
 })
 export class OrderRecurrenceComponent {
   @Input({ required: true }) recurrence: Recurrence;

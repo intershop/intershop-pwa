@@ -10,7 +10,7 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, distinctUntilChanged, filter, map, of, switchMap, take } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -33,7 +33,7 @@ import { PAYPAL_MESSAGE_STYLING } from './payment-paypal-messages.component.styl
   templateUrl: './payment-paypal-messages.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, TranslateModule, AsyncPipe],
+  imports: [NgIf, TranslatePipe, AsyncPipe],
 })
 export class PaymentPaypalMessagesComponent implements OnInit, AfterViewInit, OnDestroy {
   /**

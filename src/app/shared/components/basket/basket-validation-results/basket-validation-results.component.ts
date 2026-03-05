@@ -1,7 +1,7 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { uniq } from 'lodash-es';
 import { Observable, asyncScheduler, scheduled } from 'rxjs';
 import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
@@ -28,7 +28,7 @@ import { BasketValidationProductsComponent } from 'ish-shared/components/basket/
   standalone: true,
   imports: [
     NgIf,
-    TranslateModule,
+    TranslatePipe,
     BasketValidationItemsComponent,
     BasketValidationProductsComponent,
     NgFor,

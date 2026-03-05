@@ -11,7 +11,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -35,7 +35,7 @@ import { SuccessMessageComponent } from 'ish-shared/components/common/success-me
   standalone: true,
   imports: [
     ErrorMessageComponent,
-    TranslateModule,
+    TranslatePipe,
     AsyncPipe,
     SuccessMessageComponent,
     NgbCollapseModule,

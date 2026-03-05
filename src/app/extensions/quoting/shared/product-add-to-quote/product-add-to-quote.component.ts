@@ -1,7 +1,7 @@
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -16,7 +16,7 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
   templateUrl: './product-add-to-quote.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, NgClass, TranslateModule],
+  imports: [NgIf, AsyncPipe, NgClass, TranslatePipe],
 })
 @GenerateLazyComponent()
 export class ProductAddToQuoteComponent implements OnInit {

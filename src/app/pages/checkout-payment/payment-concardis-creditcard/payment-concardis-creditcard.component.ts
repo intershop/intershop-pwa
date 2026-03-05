@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
@@ -37,7 +37,7 @@ declare let PayEngine: any;
     NgIf,
     NgClass,
     NgFor,
-    TranslateModule,
+    TranslatePipe,
     FormControlFeedbackComponent,
     NgbPopoverModule,
     ReactiveFormsModule,

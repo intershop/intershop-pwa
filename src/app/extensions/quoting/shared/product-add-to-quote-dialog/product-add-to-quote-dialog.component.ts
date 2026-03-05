@@ -2,7 +2,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -31,7 +31,7 @@ import { QuoteViewComponent } from '../quote-view/quote-view.component';
     QuoteInteractionsComponent,
     QuoteViewComponent,
     RouterModule,
-    TranslateModule,
+    TranslatePipe,
   ],
   providers: [{ provide: QuoteContextFacade, useClass: ActiveQuoteContextFacade }],
 })

@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -34,7 +34,7 @@ declare let Payone: any;
   templateUrl: './payment-payone-creditcard.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [TranslateModule, ReactiveFormsModule, NgIf, PaymentSaveCheckboxComponent],
+  imports: [TranslatePipe, ReactiveFormsModule, NgIf, PaymentSaveCheckboxComponent],
 })
 export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, OnInit {
   payoneCreditCardForm = new FormGroup({});

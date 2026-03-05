@@ -10,7 +10,7 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, ReplaySubject, noop } from 'rxjs';
 import { first, map, shareReplay, startWith, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -28,7 +28,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
     },
   ],
   standalone: true,
-  imports: [AsyncPipe, KeyValuePipe, NgClass, NgFor, NgIf, ReactiveFormsModule, TranslateModule],
+  imports: [AsyncPipe, KeyValuePipe, NgClass, NgFor, NgIf, ReactiveFormsModule, TranslatePipe],
 })
 export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit {
   @Input() staticRoles: string[];

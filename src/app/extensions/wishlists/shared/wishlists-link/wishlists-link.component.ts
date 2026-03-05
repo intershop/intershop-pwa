@@ -1,7 +1,7 @@
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
@@ -14,7 +14,7 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
   templateUrl: './wishlists-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, NgClass, NgIf, RouterModule, TranslateModule],
+  imports: [AsyncPipe, NgClass, NgIf, RouterModule, TranslatePipe],
 })
 @GenerateLazyComponent()
 export class WishlistsLinkComponent implements OnInit {

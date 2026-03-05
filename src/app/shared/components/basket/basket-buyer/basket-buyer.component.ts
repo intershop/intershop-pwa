@@ -2,7 +2,7 @@ import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 
@@ -17,7 +17,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
   templateUrl: './basket-buyer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, RouterLink, TranslateModule],
+  imports: [NgIf, RouterLink, TranslatePipe],
 })
 export class BasketBuyerComponent implements OnInit {
   @Input({ required: true }) object: Basket | Order;

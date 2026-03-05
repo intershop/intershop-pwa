@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 import { FormGroupDirective, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -33,7 +33,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   standalone: true,
   imports: [
     ErrorMessageComponent,
-    TranslateModule,
+    TranslatePipe,
     NgbCollapseModule,
     ReactiveFormsModule,
     IdentityProviderLoginComponent,

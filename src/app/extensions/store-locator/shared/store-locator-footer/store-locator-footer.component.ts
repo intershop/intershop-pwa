@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 @Component({
@@ -8,7 +8,7 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
   templateUrl: './store-locator-footer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [RouterLink, TranslateModule],
+  imports: [RouterLink, TranslatePipe],
 })
 @GenerateLazyComponent()
 export class StoreLocatorFooterComponent {}

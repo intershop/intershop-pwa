@@ -1,6 +1,6 @@
 import { AsyncPipe, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable, map, shareReplay, take } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
@@ -25,7 +25,7 @@ import { ProductWarrantyDetailsComponent } from 'ish-shared/components/product/p
   standalone: true,
   imports: [
     NgIf,
-    TranslateModule,
+    TranslatePipe,
     NgFor,
     AsyncPipe,
     NgSwitch,

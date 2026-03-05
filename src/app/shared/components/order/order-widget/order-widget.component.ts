@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -19,7 +19,7 @@ import { OrderListComponent } from 'ish-shared/components/order/order-list/order
   templateUrl: './order-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [InfoBoxComponent, OrderListComponent, AsyncPipe, TranslateModule],
+  imports: [InfoBoxComponent, OrderListComponent, AsyncPipe, TranslatePipe],
 })
 export class OrderWidgetComponent implements OnInit {
   orders$: Observable<Order[]>;

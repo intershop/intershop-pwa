@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { Contact } from 'ish-core/models/contact/contact.model';
@@ -25,7 +25,7 @@ import { ContactFormComponent } from './contact-form/contact-form.component';
     ContactFormComponent,
     LoadingComponent,
     NgIf,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class ContactPageComponent implements OnInit, OnDestroy {

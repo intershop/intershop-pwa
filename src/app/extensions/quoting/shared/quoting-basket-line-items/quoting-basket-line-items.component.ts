@@ -1,6 +1,6 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { groupBy } from 'lodash-es';
 import { Observable, map } from 'rxjs';
 
@@ -16,7 +16,7 @@ import { QuotingFacade } from '../../facades/quoting.facade';
   templateUrl: './quoting-basket-line-items.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, LineItemListComponent, NgFor, NgIf, TranslateModule],
+  imports: [AsyncPipe, LineItemListComponent, NgFor, NgIf, TranslatePipe],
 })
 @GenerateLazyComponent()
 export class QuotingBasketLineItemsComponent implements OnInit {

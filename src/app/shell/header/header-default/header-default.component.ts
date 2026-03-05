@@ -2,7 +2,7 @@ import { DOCUMENT, NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ProductCompareStatusComponent } from 'src/app/extensions/compare/shared/product-compare-status/product-compare-status.component';
 import { QuickorderLinkComponent } from 'src/app/extensions/quickorder/shared/quickorder-link/quickorder-link.component';
 import { WishlistsLinkComponent } from 'src/app/extensions/wishlists/shared/wishlists-link/wishlists-link.component';
@@ -53,7 +53,7 @@ type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
     RouterLink,
     HeaderNavigationComponent_1,
     UserInformationMobileComponent,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class HeaderDefaultComponent implements OnChanges {
