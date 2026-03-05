@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ProductContextAccessDirective } from 'ish-core/directives/product-context-access.directive';
-import { IconModule } from 'ish-core/icon.module';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductBundleDisplayComponent } from 'ish-shared/components/product/product-bundle-display/product-bundle-display.component';
@@ -37,7 +36,6 @@ import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wi
     ProductIdComponent,
     ProductBundleDisplayComponent,
     TranslateModule,
-    IconModule,
     ProductPriceComponent,
     ProductQuantityComponent,
     ProductAddToBasketComponent,

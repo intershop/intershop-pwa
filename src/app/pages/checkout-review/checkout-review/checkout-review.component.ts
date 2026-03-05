@@ -81,7 +81,6 @@ export const checkoutReviewFormlyConfig: ConfigOption = {
     BasketCostSummaryComponent,
     FormlyModule,
     ReactiveFormsModule,
-    IconModule,
     BasketShippingMethodComponent,
     BasketCostCenterViewComponent,
     BasketCustomFieldsViewComponent,

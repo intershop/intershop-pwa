@@ -6,7 +6,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
-import { IconModule } from 'ish-core/icon.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
@@ -33,7 +32,6 @@ import { WishlistSharingDialogComponent } from '../../shared/wishlist-sharing-di
     TranslateModule,
     LoadingComponent,
     ErrorMessageComponent,
-    IconModule,
     WishlistLineItemComponent,
     WishlistPreferencesDialogComponent,
     WishlistSharingDialogComponent,

@@ -7,7 +7,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
 import { NotRoleToggleDirective } from 'ish-core/directives/not-role-toggle.directive';
 import { FeatureToggleType } from 'ish-core/feature-toggle.module';
-import { IconModule } from 'ish-core/icon.module';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
@@ -45,7 +44,6 @@ export interface NavigationItem {
     ServerSettingPipe,
     NotRoleToggleDirective,
     AuthorizationToggleDirective,
-    IconModule,
     NgbCollapse,
     RouterLinkActive,
     RouterLink,

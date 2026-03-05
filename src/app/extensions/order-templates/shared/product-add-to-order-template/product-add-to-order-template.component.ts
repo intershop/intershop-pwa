@@ -8,7 +8,6 @@ import { take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
@@ -30,7 +29,6 @@ import { SelectOrderTemplateModalComponent } from '../select-order-template-moda
     AsyncPipe,
     NgIf,
     TranslateModule,
-    IconModule,
     NgClass,
     NgSwitch,
     NgSwitchCase,

@@ -2,8 +2,6 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-
-import { IconModule } from 'ish-core/icon.module';
 import { SortableAttributesType } from 'ish-core/models/product-listing/product-listing.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
@@ -14,7 +12,7 @@ import { ProductListPagingComponent } from 'ish-shared/components/product/produc
   templateUrl: './product-list-toolbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, NgIf, NgFor, RouterLink, IconModule, TranslateModule, ProductListPagingComponent],
+  imports: [NgClass, NgIf, NgFor, RouterLink, TranslateModule, ProductListPagingComponent],
 })
 export class ProductListToolbarComponent implements OnChanges {
   @Input({ required: true }) sortableAttributes: SortableAttributesType[];

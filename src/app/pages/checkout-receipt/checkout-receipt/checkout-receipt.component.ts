@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
-import { IconModule } from 'ish-core/icon.module';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.model';
@@ -37,7 +36,6 @@ import { OrderRecurrenceComponent } from 'ish-shared/components/order/order-recu
     AddressComponent,
     SkipContentLinkComponent,
     LineItemListComponent,
-    IconModule,
     TranslateModule,
     BasketCostSummaryComponent,
     BasketCostCenterViewComponent,

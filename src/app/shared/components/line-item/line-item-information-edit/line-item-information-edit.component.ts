@@ -8,7 +8,6 @@ import { combineLatest } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { CustomFieldsComponentInput } from 'ish-core/models/custom-field/custom-field.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
@@ -35,7 +34,6 @@ interface ComponentState {
     AsyncPipe,
     TranslateModule,
     LineItemCustomFieldsComponent,
-    IconModule,
     NgbCollapse,
     ReactiveFormsModule,
     CustomFieldsFormlyComponent,

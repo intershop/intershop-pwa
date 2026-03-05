@@ -5,8 +5,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, combineLatest, map, of, take } from 'rxjs';
-
-import { IconModule } from 'ish-core/icon.module';
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
@@ -41,8 +39,7 @@ type CostCenterColumnsType = 'costCenterId' | 'costCenterName' | 'costCenterMana
     PagingComponent,
     RouterModule,
     TranslateModule,
-    IconModule,
-  ],
+    ],
 })
 export class CostCentersPageComponent implements OnInit {
   costCenters$: Observable<CostCenter[]>;

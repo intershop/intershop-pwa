@@ -3,8 +3,6 @@ import { ChangeDetectionStrategy, Component, DoCheck, Input } from '@angular/cor
 import { AbstractControl } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { IconModule } from 'ish-core/icon.module';
-
 type FormErrorMessages = Record<string, string>;
 
 @Component({
@@ -12,7 +10,7 @@ type FormErrorMessages = Record<string, string>;
   templateUrl: './form-control-feedback.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [NgIf, IconModule, TranslateModule, NgFor, SlicePipe],
+  imports: [NgIf, TranslateModule, NgFor, SlicePipe],
 })
 export class FormControlFeedbackComponent implements DoCheck {
   @Input({ required: true }) control: AbstractControl;

@@ -2,8 +2,6 @@ import { NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
-
-import { IconModule } from 'ish-core/icon.module';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
@@ -16,7 +14,7 @@ import { OrderTemplatePreferencesDialogComponent } from '../order-template-prefe
   templateUrl: './order-create-order-template.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, TranslateModule, IconModule, OrderTemplatePreferencesDialogComponent, NgIf],
+  imports: [NgClass, TranslateModule, OrderTemplatePreferencesDialogComponent, NgIf],
 })
 /**
  * The Create Order Template from Order displays a button which adds the current order to to a new order template.

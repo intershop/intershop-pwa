@@ -15,7 +15,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -35,7 +34,6 @@ import { SuccessMessageComponent } from 'ish-shared/components/common/success-me
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    IconModule,
     ErrorMessageComponent,
     TranslateModule,
     AsyncPipe,

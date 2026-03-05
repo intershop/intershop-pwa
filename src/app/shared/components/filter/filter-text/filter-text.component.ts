@@ -1,8 +1,6 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-
-import { IconModule } from 'ish-core/icon.module';
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { SanitizePipe } from 'ish-core/pipes/sanitize.pipe';
@@ -21,7 +19,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
   templateUrl: './filter-text.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgFor, NgClass, SanitizePipe, IconModule, TranslateModule],
+  imports: [NgIf, NgFor, NgClass, SanitizePipe, TranslateModule],
 })
 export class FilterTextComponent implements OnInit {
   @Input({ required: true }) filterElement: Filter;

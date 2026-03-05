@@ -6,7 +6,6 @@ import { map } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { Order } from 'ish-core/models/order/order.model';
 
 /**
@@ -20,7 +19,7 @@ import { Order } from 'ish-core/models/order/order.model';
   templateUrl: './account-order-to-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, IconModule, TranslateModule],
+  imports: [CommonModule, TranslateModule],
 })
 export class AccountOrderToBasketComponent {
   @Input({ required: true }) order: Order;

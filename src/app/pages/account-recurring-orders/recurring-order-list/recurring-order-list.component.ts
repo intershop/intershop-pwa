@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.model';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
@@ -32,7 +31,6 @@ export type RecurringOrderColumnsType =
     CdkTableModule,
     DatePipe,
     FrequencyPipe,
-    IconModule,
     ModalDialogComponent,
     NgIf,
     PricePipe,

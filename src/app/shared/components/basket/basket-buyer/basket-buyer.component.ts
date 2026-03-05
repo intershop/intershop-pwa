@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { Order } from 'ish-core/models/order/order.model';
@@ -18,7 +17,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
   templateUrl: './basket-buyer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, RouterLink, IconModule, TranslateModule],
+  imports: [NgIf, RouterLink, TranslateModule],
 })
 export class BasketBuyerComponent implements OnInit {
   @Input({ required: true }) object: Basket | Order;

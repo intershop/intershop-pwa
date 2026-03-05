@@ -6,8 +6,6 @@ import { FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, combineLatest, isObservable, map, of } from 'rxjs';
 
-import { IconModule } from 'ish-core/icon.module';
-
 /**
  * Type for a  date-picker field.
  * Uses NgbDatepicker with custom formatting and parsing.
@@ -28,7 +26,7 @@ import { IconModule } from 'ish-core/icon.module';
   templateUrl: './date-picker-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, FormlyModule, IconModule, NgbDatepickerModule, ReactiveFormsModule, TranslateModule],
+  imports: [CommonModule, FormlyModule, NgbDatepickerModule, ReactiveFormsModule, TranslateModule],
 })
 export class DatePickerFieldComponent extends FieldType<FieldTypeConfig> {
   constructor(private calendar: NgbCalendar) {

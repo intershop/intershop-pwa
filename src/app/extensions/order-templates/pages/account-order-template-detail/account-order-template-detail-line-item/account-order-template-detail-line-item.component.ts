@@ -5,7 +5,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { map } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ProductBundleDisplayComponent } from 'ish-shared/components/product/product-bundle-display/product-bundle-display.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
@@ -28,7 +27,6 @@ import { SelectOrderTemplateModalComponent } from '../../../shared/select-order-
   imports: [
     CommonModule,
     DatePipe,
-    IconModule,
     ProductBundleDisplayComponent,
     ProductIdComponent,
     ProductImageComponent,

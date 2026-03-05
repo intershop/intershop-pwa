@@ -9,7 +9,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Observable, filter, map, shareReplay, take } from 'rxjs';
 
 import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
-import { IconModule } from 'ish-core/icon.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -36,8 +35,7 @@ import { OciConfigurationItem } from '../../../models/oci-configuration-item/oci
     TranslateModule,
     NgFor,
     NgbPopoverModule,
-    IconModule,
-  ],
+    ],
 })
 export class OciConfigurationFormComponent implements OnInit {
   form: FormGroup = new FormGroup({});

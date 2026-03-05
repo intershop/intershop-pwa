@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { CMSFacade } from 'ish-core/facades/cms.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { ContentPageRoutePipe } from 'ish-core/routing/content-page/content-page-route.pipe';
@@ -23,7 +22,6 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
     AsyncPipe,
     RouterLink,
     NgStyle,
-    IconModule,
     NgTemplateOutlet,
     ContentPageRoutePipe,
     ServerHtmlDirective,

@@ -16,7 +16,6 @@ const exportedComponents = [FormControlFeedbackComponent, ShowFormFeedbackDirect
     CommonModule,
     FeatureToggleModule,
     FormControlFeedbackComponent,
-    IconModule,
     ReactiveFormsModule,
     RouterModule,
     ShowFormFeedbackDirective,

@@ -5,7 +5,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
-import { IconModule } from 'ish-core/icon.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
@@ -39,7 +38,6 @@ import { RequisitionSummaryComponent } from './requisition-summary/requisition-s
     BasketMerchantMessageViewComponent,
     BasketShippingMethodComponent,
     ErrorMessageComponent,
-    IconModule,
     InfoBoxComponent,
     LineItemListComponent,
     NgIf,

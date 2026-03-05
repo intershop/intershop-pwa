@@ -3,8 +3,6 @@ import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-
-import { IconModule } from 'ish-core/icon.module';
 import { Order } from 'ish-core/models/order/order.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
@@ -39,7 +37,6 @@ export type OrderColumnsType =
   standalone: true,
   imports: [
     NgIf,
-    IconModule,
     TranslateModule,
     RouterLink,
     PricePipe,

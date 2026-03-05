@@ -6,7 +6,6 @@ import { OrderCreateOrderTemplateComponent } from 'src/app/extensions/order-temp
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { IconModule } from 'ish-core/icon.module';
 import { Order } from 'ish-core/models/order/order.model';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
@@ -37,7 +36,6 @@ import { AccountOrderToBasketComponent } from '../account-order-to-basket/accoun
     AccountOrderToBasketComponent,
     CommonModule,
     RouterModule,
-    IconModule,
     DatePipe,
     TranslateModule,
     ServerHtmlDirective,

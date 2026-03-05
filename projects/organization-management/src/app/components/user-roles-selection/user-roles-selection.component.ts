@@ -14,8 +14,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Observable, ReplaySubject, noop } from 'rxjs';
 import { first, map, shareReplay, startWith, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
-import { IconModule } from 'ish-core/icon.module';
-
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
 @Component({
@@ -30,7 +28,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
     },
   ],
   standalone: true,
-  imports: [AsyncPipe, IconModule, KeyValuePipe, NgClass, NgFor, NgIf, ReactiveFormsModule, TranslateModule],
+  imports: [AsyncPipe, KeyValuePipe, NgClass, NgFor, NgIf, ReactiveFormsModule, TranslateModule],
 })
 export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit {
   @Input() staticRoles: string[];

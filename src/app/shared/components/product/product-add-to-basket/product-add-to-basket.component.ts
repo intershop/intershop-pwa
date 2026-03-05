@@ -8,7 +8,6 @@ import { map, startWith } from 'rxjs/operators';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 import { whenFalsy } from 'ish-core/utils/operators';
 
@@ -23,7 +22,7 @@ import { whenFalsy } from 'ish-core/utils/operators';
   templateUrl: './product-add-to-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, NgIf, AsyncPipe, TranslateModule, IconModule],
+  imports: [NgClass, NgIf, AsyncPipe, TranslateModule],
 })
 export class ProductAddToBasketComponent implements OnInit {
   /**

@@ -3,8 +3,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { IconModule } from 'ish-core/icon.module';
-
 /**
  * Component that renders a tooltip.
  * Takes an Input of type ``{ text: string; link: string; title?: string; class?: string }``.
@@ -23,7 +21,7 @@ import { IconModule } from 'ish-core/icon.module';
   templateUrl: './field-tooltip.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, IconModule, NgbPopoverModule, TranslateModule],
+  imports: [CommonModule, NgbPopoverModule, TranslateModule],
 })
 export class FieldTooltipComponent {
   @Input({ required: true }) tooltipInfo: { text: string; link: string; title?: string; class?: string };

@@ -10,7 +10,6 @@ import { AddressDoctorComponent } from 'src/app/extensions/address-doctor/shared
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { IconModule } from 'ish-core/icon.module';
 import { AddressHelper } from 'ish-core/models/address/address.helper';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -39,7 +38,6 @@ import { mapToAddressOptions } from 'ish-shared/forms/utils/forms.service';
     ErrorMessageComponent,
     FormlyCustomerAddressFormComponent,
     FormlyModule,
-    IconModule,
     ModalDialogComponent,
     NgFor,
     NgIf,

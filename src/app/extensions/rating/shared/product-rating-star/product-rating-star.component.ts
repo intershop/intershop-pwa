@@ -1,8 +1,6 @@
 import { NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { IconModule } from 'ish-core/icon.module';
-
 export type RatingFilledType = 'full' | 'half' | 'empty';
 /**
  * The Product Rating Star Component renders a single rating star.
@@ -16,7 +14,7 @@ export type RatingFilledType = 'full' | 'half' | 'empty';
   styleUrls: ['./product-rating-star.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [IconModule, NgIf, NgClass],
+  imports: [NgIf, NgClass],
 })
 export class ProductRatingStarComponent {
   /**

@@ -5,7 +5,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
@@ -29,7 +28,6 @@ import { UserRolesBadgesComponent } from './user-roles-badges/user-roles-badges.
     AsyncPipe,
     BudgetInfoComponent,
     ErrorMessageComponent,
-    IconModule,
     LoadingComponent,
     ModalDialogComponent,
     NgFor,
