@@ -280,7 +280,7 @@ export class PaypalCardFieldsAdapter {
       take(1),
       map(data => {
         this.creditCardPaymentInstrumentId = data.paymentInstrumentId;
-        return data.orderId;
+        return data.paypalOrderId;
       })
     );
 

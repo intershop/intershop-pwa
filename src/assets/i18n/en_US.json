@@ -855,7 +855,6 @@
   "checkout.credit_card.number.error.length": "The credit card number should have a length between 13-16 characters. Please correct the credit card number.",
   "checkout.credit_card.number.error.notNumber": "The credit card number should only contain numeric values. Please correct the credit card number.",
   "checkout.credit_card.number.label": "Card number",
-  "checkout.credit_card.invalid.error": "Your card is invalid. Please select another credit card.",
   "checkout.credit_card.security_code.error.required": "Please enter a security code",
   "checkout.credit_card.type.label": "Card type",
   "checkout.credit_card.user.firstname.missing.error": "Please enter a cardholder first name.",

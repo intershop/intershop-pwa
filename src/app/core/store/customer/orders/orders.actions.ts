@@ -15,9 +15,11 @@ export const createOrderSuccess = createAction(
   payload<{ order: Order; basketId: string }>()
 );
 
-export const paypalOrderCreation = createAction(
-  '[Orders Internal] Continue Order Creation',
-  payload<{ orderId?: string }>()
+export const startPaypalOrderCreation = createAction('[Orders] Start Paypal Order Creation');
+
+export const continuePaypalOrderCreation = createAction(
+  '[Orders] Continue Paypal Order Creation',
+  payload<{ orderId: string }>()
 );
 
 export const loadOrders = createAction('[Orders] Load Orders', payload<{ query: OrderListQuery }>());

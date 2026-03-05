@@ -11,12 +11,19 @@ import { concatMap, distinctUntilChanged, filter, map, mergeMap, switchMap, take
 import { OrderService } from 'ish-core/services/order/order.service';
 import { ofUrl, selectQueryParam, selectQueryParams, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { continueCheckoutWithIssues, getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
+import {
+  continueCheckoutWithIssues,
+  emitPaypalOrderAuthorizationResult,
+  emitPaypalOrderId,
+  getCurrentBasketId,
+  loadBasket,
+} from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { PaypalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 
 import {
+  continuePaypalOrderCreation,
   createOrder,
   createOrderFail,
   createOrderSuccess,
@@ -28,10 +35,10 @@ import {
   loadOrders,
   loadOrdersFail,
   loadOrdersSuccess,
-  paypalOrderCreation,
   selectOrder,
   selectOrderAfterRedirect,
   selectOrderAfterRedirectFail,
+  startPaypalOrderCreation,
 } from './orders.actions';
 import { getOrder, getOrderListQuery, getSelectedOrder } from './orders.selectors';
 
@@ -62,41 +69,66 @@ export class OrdersEffects {
     )
   );
 
-  paypalOrderCreation$ = createEffect(() =>
+  processPaypalOrderCreation$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(paypalOrderCreation),
-      mapToPayload(),
+      ofType(startPaypalOrderCreation, continuePaypalOrderCreation),
+      map(action => (action.type === startPaypalOrderCreation.type ? { orderId: '' } : action.payload)),
       concatLatestFrom(() => this.store.pipe(select(getCurrentBasketId))),
       switchMap(([payload, basketId]) => {
-        if (!payload.orderId) {
+        if (payload.orderId === '') {
           return this.orderService.createOrder(basketId, true).pipe(
-            switchMap(order => {
-              this.paypalDataTransferService.emitPaypalOrderData({
-                orderId: order.id,
+            map(order =>
+              emitPaypalOrderId({
                 paypalOrderId:
                   order.orderCreation.redirect?.parameters.find(p => p.name === 'PayPalOrderID')?.value || '',
-              });
-              return EMPTY;
-            }),
+                orderId: order.id,
+              })
+            ),
             mapErrorToAction(createOrderFail)
           );
         } else {
           return this.orderService.continueOrderCreation(payload.orderId).pipe(
-            map(order => {
-              if (order.payment.capabilities.includes('PaypalAlternativeWallet')) {
-                this.paypalDataTransferService.emitPaypalOrderAuthorizationResult({
+            mergeMap(order => {
+              const cancelReason = order.infos?.find(info => info.code === 'order.cancelled.info');
+              return [
+                emitPaypalOrderAuthorizationResult({
                   status: order.orderCreation?.status === 'COMPLETED' ? 'SUCCESS' : 'ERROR',
-                  message: order.orderCreation?.status === 'COMPLETED' ? 'TRANSACTION FAILED' : '',
-                  intent: order.orderCreation?.status === 'COMPLETED' ? 'PAYMENT_AUTHORIZATION' : '',
-                });
-              }
-              return createOrderSuccess({ order, basketId });
+                  message:
+                    order.orderCreation?.status === 'COMPLETED'
+                      ? ''
+                      : cancelReason.causes?.length > 0
+                      ? cancelReason.causes[0].message
+                      : '',
+                  intent: order.orderCreation?.status === 'COMPLETED' ? '' : 'PAYMENT_AUTHORIZATION',
+                }),
+                ...(cancelReason ? [] : [createOrderSuccess({ order, basketId })]),
+              ];
             }),
             mapErrorToAction(createOrderFail)
           );
         }
       })
     )
+  );
+
+  /**
+   * Transfer PayPal order data after successful order ID retrieval.
+   */
+  emitPaypalOrderAuthorization$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(emitPaypalOrderAuthorizationResult),
+        mapToPayload(),
+        concatMap(payload => {
+          this.paypalDataTransferService.emitPaypalOrderAuthorizationResult({
+            status: payload.status,
+            intent: payload.intent,
+            message: payload.message,
+          });
+          return EMPTY;
+        })
+      ),
+    { dispatch: false }
   );
 
   /**

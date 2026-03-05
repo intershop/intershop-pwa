@@ -433,7 +433,7 @@ describe('Basket Payment Effects', () => {
     it('should dispatch emitPaypalOrderId action on success', done => {
       const action = createPaypalCreditCardBasketPayment({ paymentInstrument });
       const completion = emitPaypalOrderId({
-        orderId: 'ORDER123',
+        paypalOrderId: 'ORDER123',
         paymentInstrumentId: 'temporaryPaymentInstrumentId',
       });
       actions$ = of(action);
@@ -463,7 +463,7 @@ describe('Basket Payment Effects', () => {
 
   describe('emitPaypalOrderData$', () => {
     it('should call emitPaypalOrderData on PaypalDataTransferService when emitPaypalOrderId action is dispatched', done => {
-      const action = emitPaypalOrderId({ orderId: 'ORDER123', paymentInstrumentId: 'PI123' });
+      const action = emitPaypalOrderId({ paypalOrderId: 'ORDER123', paymentInstrumentId: 'PI123' });
       actions$ = of(action);
 
       effects.emitPaypalOrderData$.subscribe({
@@ -475,7 +475,7 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should pass correct payload to emitPaypalOrderData', done => {
-      const action = emitPaypalOrderId({ orderId: 'PAYPAL_ORDER_456', paymentInstrumentId: 'INSTRUMENT_789' });
+      const action = emitPaypalOrderId({ paypalOrderId: 'PAYPAL_ORDER_456', paymentInstrumentId: 'INSTRUMENT_789' });
       actions$ = of(action);
 
       const emitSpy = jest.spyOn(TestBed.inject(PaypalDataTransferService), 'emitPaypalOrderData');
@@ -483,7 +483,7 @@ describe('Basket Payment Effects', () => {
       effects.emitPaypalOrderData$.subscribe({
         complete: () => {
           expect(emitSpy).toHaveBeenCalledWith({
-            orderId: 'PAYPAL_ORDER_456',
+            paypalOrderId: 'PAYPAL_ORDER_456',
             paymentInstrumentId: 'INSTRUMENT_789',
           });
           done();
