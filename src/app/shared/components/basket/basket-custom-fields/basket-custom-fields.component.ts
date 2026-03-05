@@ -47,7 +47,7 @@ export class BasketCustomFieldsComponent implements OnInit {
       this.checkoutFacade.basket$.pipe(debounce(() => this.checkoutFacade.basketLoading$.pipe(whenFalsy()))),
     ]).pipe(
       map(([customFields, basket]) =>
-        customFields.map(customField => ({ ...customField, value: basket.customFields?.[customField.name] }))
+        customFields.map(customField => ({ ...customField, value: basket?.customFields?.[customField.name] }))
       )
     );
 

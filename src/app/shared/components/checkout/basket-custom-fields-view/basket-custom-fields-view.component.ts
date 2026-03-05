@@ -21,8 +21,8 @@ import { CustomFieldsViewComponent } from 'ish-shared/components/custom-fields/c
   imports: [NgIf, AsyncPipe, CustomFieldsViewComponent],
 })
 export class BasketCustomFieldsViewComponent implements OnInit {
-  @Input({ required: true }) set data(val: Basket | Order | RecurringOrder | Requisition) {
-    this.customFields$.next(val.customFields || {});
+  @Input({ required: true }) set data(val: Basket | Order | RecurringOrder | Requisition | undefined) {
+    this.customFields$.next(val?.customFields || {});
   }
 
   private customFields$ = new ReplaySubject<CustomFields>(1);
