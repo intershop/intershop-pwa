@@ -1,7 +1,6 @@
 import { DOCUMENT } from '@angular/common';
-import { DestroyRef, Inject, Injectable, NgZone } from '@angular/core';
+import { DestroyRef, Inject, Injectable, NgZone, isDevMode } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslateService } from '@ngx-translate/core';
 import { filter, firstValueFrom, take } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -48,7 +47,6 @@ export class PaypalGooglePayAdapter {
     private checkoutFacade: CheckoutFacade,
     private paypalDataTransferService: PaypalDataTransferService,
     private scriptLoaderService: ScriptLoaderService,
-    private translateService: TranslateService,
     @Inject(DOCUMENT) private document: Document
   ) {}
 
@@ -117,20 +115,23 @@ export class PaypalGooglePayAdapter {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(result => {
         if (result.loaded) {
-          Promise.resolve();
+          return Promise.resolve();
         }
+        return Promise.reject(new Error('Failed to load Google Pay SDK'));
       });
   }
 
   /**
    * Get a Google Payments Client instance. In case of multiple calls, the same instance will be returned to avoid unnecessary re-initialization.
+   * Must be called after googlePayConfig is loaded.
    */
   private getGooglePaymentsClient(): GooglePayPaymentClient {
     if (this.googlePaymentClient === undefined) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const googlePayments = (window as any).google.payments.api;
-      return new googlePayments.PaymentsClient({
-        environment: 'TEST',
+      this.googlePaymentClient = new googlePayments.PaymentsClient({
+        environment: isDevMode() ? 'TEST' : 'PRODUCTION',
+        merchantInfo: this.googlePayConfig?.merchantInfo,
         paymentDataCallbacks: {
           onPaymentAuthorized: (paymentData: GooglePayPaymentData) =>
             this.ngZone.run(() => this.onPaymentAuthorizedCallback(paymentData)),
@@ -202,83 +203,46 @@ export class PaypalGooglePayAdapter {
 
   /**
    * Handles the payment authorization callback from Google Pay.
-   * This is called when the user authorizes the payment in the Google Pay sheet.
    */
   private async onPaymentAuthorizedCallback(
     paymentData: GooglePayPaymentData
   ): Promise<GooglePayPaymentAuthorizationResult> {
     // Start ICM order creation
-    this.checkoutFacade.paypalOrderCreation();
+    this.checkoutFacade.processPaypalOrderCreation();
     const orderContent = firstValueFrom(this.paypalDataTransferService.paypalOrder$);
 
-    return this.handlePaypalOrderCreation(
-      (await orderContent).paypalOrderId,
-      (await orderContent).orderId,
-      paymentData
-    );
-  }
-
-  private async handlePaypalOrderCreation(
-    paypalOrderId: string,
-    orderId: string,
-    paymentData: GooglePayPaymentData
-  ): Promise<GooglePayPaymentAuthorizationResult> {
     try {
       const confirmOrderResponse = await this.paypalGooglepay.confirmOrder({
-        orderId: paypalOrderId,
+        orderId: (await orderContent).paypalOrderId,
         paymentMethodData: paymentData.paymentMethodData,
       });
 
       // Handle 3D Secure authentication if required
       if (confirmOrderResponse.status === 'PAYER_ACTION_REQUIRED') {
-        const payerActionResponse = await this.paypalGooglepay.initiatePayerAction({ orderId: paypalOrderId });
-
-        // After 3DS, check liability shift - if not shifted, payment may still proceed
-        // but merchant assumes liability for chargebacks
-        if (payerActionResponse?.liabilityShift !== 'POSSIBLE') {
-          console.warn('3DS liability shift not achieved:', payerActionResponse?.liabilityShift);
-        }
+        await this.paypalGooglepay.initiatePayerAction({ orderId: (await orderContent).paypalOrderId });
       }
-      if (confirmOrderResponse.status !== 'APPROVED') {
-        return {
-          transactionState: 'ERROR',
-          error: {
-            intent: 'PAYMENT_AUTHORIZATION',
-            message: 'Payment authorization failed',
-            reason: confirmOrderResponse.status,
-          },
-        };
-      }
-      return this.completeOrderAfterApproval(orderId);
+      return this.continueICMOrderCreation((await orderContent).orderId);
     } catch (error) {
-      this.completeOrderAfterApproval(orderId);
-      return {
-        transactionState: 'ERROR',
-        error: {
-          intent: 'PAYMENT_AUTHORIZATION',
-          message: this.translateService.instant('checkout.credit_card.invalid.error'),
-          reason: 'ERROR',
-        },
-      };
+      console.error('Error during PayPal order confirmation or payer action:', error);
+      return this.continueICMOrderCreation((await orderContent).orderId);
     }
   }
 
   /**
-   * Completes the order after PayPal approval (either direct or after 3DS).
+   * ICM order creation needs to be continued after Google Pay authorization, regardless of the result of the PayPal order confirmation.
    */
-  private async completeOrderAfterApproval(orderId: string): Promise<GooglePayPaymentAuthorizationResult> {
+  private async continueICMOrderCreation(orderId: string): Promise<GooglePayPaymentAuthorizationResult> {
     const authorizationResult = firstValueFrom(this.paypalDataTransferService.paypalOrderAuthorizationResult$);
 
-    this.checkoutFacade.paypalOrderCreation(orderId);
+    this.checkoutFacade.processPaypalOrderCreation(orderId);
 
     return (await authorizationResult).status === 'SUCCESS'
       ? { transactionState: 'SUCCESS' }
       : {
           transactionState: 'ERROR',
           error: {
-            intent: 'PAYMENT_AUTHORIZATION',
-            message: 'Payment capture failed',
-            reason: 'TRANSACTION FAILED',
+            intent: (await authorizationResult).message,
+            message: (await authorizationResult).message,
           },
         };
   }

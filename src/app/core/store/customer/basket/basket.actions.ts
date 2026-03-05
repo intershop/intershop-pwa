@@ -307,7 +307,7 @@ export const createPaypalCreditCardBasketPayment = createAction(
 
 export const emitPaypalOrderId = createAction(
   '[Basket Internal] Emit Paypal Order ID to Component',
-  payload<{ orderId: string; paymentInstrumentId: string }>()
+  payload<{ paypalOrderId: string; orderId?: string; paymentInstrumentId?: string }>()
 );
 
 export const deletePaypalCreditCardBasketPayment = createAction(

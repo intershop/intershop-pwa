@@ -855,7 +855,6 @@
   "checkout.credit_card.number.error.length": "Le numéro de carte de crédit doit contenir entre 13 et 16 caractères. Veuillez corriger le numéro de carte de crédit.",
   "checkout.credit_card.number.error.notNumber": "Le numéro de carte de crédit ne doit contenir que des valeurs numériques. Veuillez corriger le numéro de carte de crédit.",
   "checkout.credit_card.number.label": "Numéro de carte",
-  "checkout.credit_card.invalid.error": "Votre carte n'est pas valide. Veuillez sélectionner une autre carte de crédit.",
   "checkout.credit_card.security_code.error.required": "Veuillez saisir un code de sécurité",
   "checkout.credit_card.type.label": "Type de carte",
   "checkout.credit_card.user.firstname.missing.error": "Veuillez entrer le prénom du titulaire de la carte.",

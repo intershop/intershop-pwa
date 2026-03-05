@@ -257,7 +257,10 @@ describe('Paypal Card Fields Adapter', () => {
     it('should create temporary basket payment', async () => {
       // Simulate service emitting order data
       setTimeout(() => {
-        paypalDataTransferService.emitPaypalOrderData({ orderId: 'ORDER123', paymentInstrumentId: 'INSTRUMENT456' });
+        paypalDataTransferService.emitPaypalOrderData({
+          paypalOrderId: 'ORDER123',
+          paymentInstrumentId: 'INSTRUMENT456',
+        });
       }, 5);
 
       paypalCardFields.paymentMethod = mockPaymentMethod;
@@ -276,7 +279,10 @@ describe('Paypal Card Fields Adapter', () => {
 
     it('should store payment instrument ID from service for later use in onApproveCallback', async done => {
       setTimeout(() => {
-        paypalDataTransferService.emitPaypalOrderData({ orderId: 'ORDER789', paymentInstrumentId: 'INSTRUMENT999' });
+        paypalDataTransferService.emitPaypalOrderData({
+          paypalOrderId: 'ORDER789',
+          paymentInstrumentId: 'INSTRUMENT999',
+        });
       }, 5);
 
       paypalCardFields.paymentMethod = mockPaymentMethod;

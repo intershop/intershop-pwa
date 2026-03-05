@@ -25,7 +25,6 @@ import {
   deleteBasketPaymentFail,
   deleteBasketPaymentSuccess,
   deletePaypalCreditCardBasketPayment,
-  emitPaypalOrderAuthorizationResult,
   emitPaypalOrderId,
   loadBasket,
   loadBasketEligiblePaymentMethods,
@@ -145,7 +144,7 @@ export class BasketPaymentEffects {
       concatMap(payload =>
         this.paymentPaypalService.initializePaypalExperienceContextFlow(payload.paymentInstrument).pipe(
           map(response =>
-            emitPaypalOrderId({ orderId: response.orderId, paymentInstrumentId: response.paymentInstrumentId })
+            emitPaypalOrderId({ paypalOrderId: response.orderId, paymentInstrumentId: response.paymentInstrumentId })
           ),
           mapErrorToAction(setBasketPaymentFail)
         )
@@ -162,30 +161,18 @@ export class BasketPaymentEffects {
         ofType(emitPaypalOrderId),
         mapToPayload(),
         concatMap(payload => {
-          this.paypalDataTransferService.emitPaypalOrderData({
-            orderId: payload.orderId,
-            paymentInstrumentId: payload.paymentInstrumentId,
-          });
-          return EMPTY;
-        })
-      ),
-    { dispatch: false }
-  );
+          if (payload.paymentInstrumentId) {
+            this.paypalDataTransferService.emitPaypalOrderData({
+              paypalOrderId: payload.paypalOrderId,
+              paymentInstrumentId: payload.paymentInstrumentId,
+            });
+          } else {
+            this.paypalDataTransferService.emitPaypalOrderData({
+              orderId: payload.orderId,
+              paypalOrderId: payload.paypalOrderId,
+            });
+          }
 
-  /**
-   * Transfer PayPal order data after successful order ID retrieval.
-   */
-  emitPaypalOrderAuthorization$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(emitPaypalOrderAuthorizationResult),
-        mapToPayload(),
-        concatMap(payload => {
-          this.paypalDataTransferService.emitPaypalOrderAuthorizationResult({
-            status: payload.status,
-            intent: payload.intent,
-            message: payload.message,
-          });
           return EMPTY;
         })
       ),
