@@ -7,7 +7,6 @@ import { map } from 'rxjs/operators';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
@@ -20,7 +19,6 @@ import { SubCategoryNavigationComponent } from 'ish-shell/header/sub-category-na
   standalone: true,
   imports: [
     AsyncPipe,
-    IconModule,
     NgClass,
     NgFor,
     NgIf,

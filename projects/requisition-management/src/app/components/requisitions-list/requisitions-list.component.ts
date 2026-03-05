@@ -3,8 +3,6 @@ import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-
-import { IconModule } from 'ish-core/icon.module';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 
@@ -32,7 +30,6 @@ export type RequisitionColumnsType =
   imports: [
     CdkTableModule,
     DatePipe,
-    IconModule,
     NgIf,
     PricePipe,
     RequisitionRejectDialogComponent,

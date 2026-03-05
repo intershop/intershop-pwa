@@ -8,7 +8,6 @@ import { map, startWith, take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
@@ -29,7 +28,7 @@ import { ProductNotificationEditDialogComponent } from '../product-notification-
   templateUrl: './product-notification-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, IconModule, ProductNotificationEditDialogComponent, TranslateModule],
+  imports: [CommonModule, ProductNotificationEditDialogComponent, TranslateModule],
 })
 @GenerateLazyComponent()
 export class ProductNotificationEditComponent implements OnInit {

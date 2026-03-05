@@ -20,7 +20,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Observable, distinctUntilChanged, map, shareReplay, takeUntil } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { whenFalsy } from 'ish-core/utils/operators';
 
@@ -127,7 +126,7 @@ function urlToQuery(params: UrlModel): Partial<OrderListQuery> {
   templateUrl: './account-order-filters.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, FormlyModule, IconModule, NgIf, NgbCollapseModule, ReactiveFormsModule, TranslateModule],
+  imports: [AsyncPipe, FormlyModule, NgIf, NgbCollapseModule, ReactiveFormsModule, TranslateModule],
   providers: [{ provide: NgbDateAdapter, useClass: OrderDateFilterAdapter }],
 })
 export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {

@@ -3,8 +3,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-
-import { IconModule } from 'ish-core/icon.module';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -21,7 +19,6 @@ import { UserDetailBudgetComponent } from './user-detail-budget/user-detail-budg
   standalone: true,
   imports: [
     AsyncPipe,
-    IconModule,
     NgFor,
     NgIf,
     RouterModule,

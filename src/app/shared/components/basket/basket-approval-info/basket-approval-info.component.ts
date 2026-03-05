@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/c
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { IconModule } from 'ish-core/icon.module';
 import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.model';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 
@@ -16,7 +15,7 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
   templateUrl: './basket-approval-info.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [NgIf, NgFor, TranslateModule, ServerHtmlDirective, IconModule, ModalDialogLinkComponent, NgClass],
+  imports: [NgIf, NgFor, TranslateModule, ServerHtmlDirective, ModalDialogLinkComponent, NgClass],
 })
 export class BasketApprovalInfoComponent {
   @Input({ required: true }) approval: BasketApproval;

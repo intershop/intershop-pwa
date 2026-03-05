@@ -13,7 +13,6 @@ import { debounceTime, map } from 'rxjs/operators';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 
 /**
@@ -27,7 +26,7 @@ import { ProductQuantityComponent } from 'ish-shared/components/product/product-
   templateUrl: './quickorder-repeat-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgFor, ProductContextDirective, IconModule, TranslateModule, ProductQuantityComponent, FormlyModule],
+  imports: [NgFor, ProductContextDirective, TranslateModule, ProductQuantityComponent, FormlyModule],
 })
 export class QuickorderRepeatFieldComponent extends FieldArrayType implements AfterViewInit {
   @ViewChildren(ProductContextDirective) contexts: QueryList<{ context: ProductContextFacade }>;

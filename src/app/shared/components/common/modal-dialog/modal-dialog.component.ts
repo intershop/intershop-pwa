@@ -18,8 +18,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Subject, race, take } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
-import { IconModule } from 'ish-core/icon.module';
-
 export interface ModalOptions extends NgbModalOptions {
   /**
    * Modal title string.
@@ -65,7 +63,7 @@ export interface ModalOptions extends NgbModalOptions {
   templateUrl: './modal-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, TranslateModule, IconModule],
+  imports: [NgIf, TranslateModule],
 })
 export class ModalDialogComponent<T> implements OnDestroy {
   @Input({ required: true }) options: ModalOptions;

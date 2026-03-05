@@ -8,7 +8,6 @@ import { map } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { PriceHelper } from 'ish-core/models/price/price.model';
@@ -40,7 +39,6 @@ import { PaymentPaypalMessagesComponent } from 'ish-shared/components/checkout/p
     NgTemplateOutlet,
     AsyncPipe,
     ServerSettingPipe,
-    IconModule,
     NgbPopover,
     PaymentPaypalMessagesComponent,
   ],

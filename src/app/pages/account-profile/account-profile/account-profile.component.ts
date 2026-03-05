@@ -5,7 +5,6 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { IdentityProviderCapabilityDirective } from 'ish-core/directives/identity-provider-capability.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { IconModule } from 'ish-core/icon.module';
 import { User } from 'ish-core/models/user/user.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 
@@ -20,7 +19,6 @@ import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
     RouterModule,
     ServerHtmlDirective,
     TranslateModule,
-    IconModule,
     ServerSettingPipe,
   ],
 })

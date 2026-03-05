@@ -13,7 +13,6 @@ const components = [FieldTooltipComponent, ValidationIconsComponent];
   imports: [
     CommonModule,
     FieldTooltipComponent,
-    IconModule,
     NgbPopoverModule,
     TranslateModule,
     ValidationIconsComponent,

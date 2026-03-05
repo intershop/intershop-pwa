@@ -3,8 +3,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { IconModule } from 'ish-core/icon.module';
-
 /**
  * The Info Box Component renders the parent's outlet html in a box.
  * If an edit routerLink is given a link is displayed to route to an edit page
@@ -19,7 +17,7 @@ import { IconModule } from 'ish-core/icon.module';
   templateUrl: './info-box.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, RouterLink, NgClass, IconModule, TranslateModule],
+  imports: [NgIf, RouterLink, NgClass, TranslateModule],
 })
 export class InfoBoxComponent {
   /**

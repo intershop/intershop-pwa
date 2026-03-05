@@ -5,7 +5,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 /**
@@ -17,7 +16,7 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
   templateUrl: './product-add-to-quote.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, NgClass, IconModule, TranslateModule],
+  imports: [NgIf, AsyncPipe, NgClass, TranslateModule],
 })
 @GenerateLazyComponent()
 export class ProductAddToQuoteComponent implements OnInit {

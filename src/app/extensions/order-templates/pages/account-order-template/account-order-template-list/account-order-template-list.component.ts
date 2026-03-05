@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
-import { IconModule } from 'ish-core/icon.module';
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
@@ -25,7 +24,6 @@ type OrderTemplateColumnsType = 'title' | 'creationDate' | 'lineItems' | 'action
     CdkTableModule,
     CommonModule,
     DatePipe,
-    IconModule,
     ModalDialogComponent,
     ProductAddToBasketComponent,
     ProductContextDirective,

@@ -18,7 +18,6 @@ import { map } from 'rxjs/operators';
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
@@ -78,7 +77,6 @@ export const checkoutReviewFormlyConfig: ConfigOption = {
     BasketCostSummaryComponent,
     FormlyModule,
     ReactiveFormsModule,
-    IconModule,
     BasketShippingMethodComponent,
     BasketCostCenterViewComponent,
     BasketCustomFieldsViewComponent,

@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
@@ -15,7 +14,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   templateUrl: './cms-navigation-category.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgClass, NgTemplateOutlet, RouterLink, AsyncPipe, NgStyle, IconModule, ServerHtmlDirective],
+  imports: [NgIf, NgClass, NgTemplateOutlet, RouterLink, AsyncPipe, NgStyle, ServerHtmlDirective],
 })
 export class CMSNavigationCategoryComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;

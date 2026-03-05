@@ -5,8 +5,6 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { range } from 'lodash-es';
-
-import { IconModule } from 'ish-core/icon.module';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
@@ -42,7 +40,6 @@ declare let PayEngine: any;
     TranslateModule,
     FormControlFeedbackComponent,
     NgbPopoverModule,
-    IconModule,
     ReactiveFormsModule,
     ShowFormFeedbackDirective,
     PaymentSaveCheckboxComponent,

@@ -17,15 +17,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { fromEvent } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
-import { IconModule } from 'ish-core/icon.module';
-
 @Component({
   selector: 'ish-in-place-edit',
   templateUrl: './in-place-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./in-place-edit.component.scss'],
   standalone: true,
-  imports: [IconModule, NgIf, NgClass, TranslateModule],
+  imports: [NgIf, NgClass, TranslateModule],
 })
 export class InPlaceEditComponent implements AfterViewInit {
   // localization key, can be used to give the edit-pen icon a more descriptive aria label that describes what will be edited when clicking it

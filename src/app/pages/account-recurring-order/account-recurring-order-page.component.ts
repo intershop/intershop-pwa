@@ -8,7 +8,6 @@ import { Observable, first } from 'rxjs';
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.model';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -36,7 +35,6 @@ import { OrderRecurrenceComponent } from 'ish-shared/components/order/order-recu
     BasketShippingMethodComponent,
     DatePipe,
     FeatureToggleDirective,
-    IconModule,
     InfoBoxComponent,
     LineItemListComponent,
     NgFor,

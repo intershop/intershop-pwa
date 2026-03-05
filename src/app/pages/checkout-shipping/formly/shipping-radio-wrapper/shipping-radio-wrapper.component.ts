@@ -4,8 +4,6 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { FieldWrapper } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { IconModule } from 'ish-core/icon.module';
-
 import { ShippingInfoComponent } from '../shipping-info/shipping-info.component';
 
 /**
@@ -21,6 +19,6 @@ import { ShippingInfoComponent } from '../shipping-info/shipping-info.component'
   templateUrl: './shipping-radio-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, NgbPopoverModule, IconModule, ShippingInfoComponent, TranslateModule, NgIf],
+  imports: [NgClass, NgbPopoverModule, ShippingInfoComponent, TranslateModule, NgIf],
 })
 export class ShippingRadioWrapperComponent extends FieldWrapper {}

@@ -16,8 +16,6 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { range } from 'lodash-es';
-
-import { IconModule } from 'ish-core/icon.module';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
@@ -45,7 +43,6 @@ declare let Flex: any;
     ShowFormFeedbackDirective,
     FormControlFeedbackComponent,
     NgbPopoverModule,
-    IconModule,
     PaymentSaveCheckboxComponent,
   ],
 })

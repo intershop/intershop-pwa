@@ -6,7 +6,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Observable, combineLatest, debounce, map } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { CustomFieldsComponentInput } from 'ish-core/models/custom-field/custom-field.model';
 import { whenFalsy } from 'ish-core/utils/operators';
 import { CustomFieldsFormlyComponent } from 'ish-shared/components/custom-fields/custom-fields-formly/custom-fields-formly.component';
@@ -25,7 +24,6 @@ import { CustomFieldsViewComponent } from 'ish-shared/components/custom-fields/c
     AsyncPipe,
     TranslateModule,
     CustomFieldsViewComponent,
-    IconModule,
     NgbCollapse,
     ReactiveFormsModule,
     CustomFieldsFormlyComponent,

@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { IconModule } from 'ish-core/icon.module';
 import { ContentViewHelper } from 'ish-core/models/content-view/content-view.helper';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
@@ -13,7 +12,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   templateUrl: './cms-navigation-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgClass, RouterLink, NgStyle, IconModule, ServerHtmlDirective],
+  imports: [NgIf, NgClass, RouterLink, NgStyle, ServerHtmlDirective],
 })
 export class CMSNavigationLinkComponent implements CMSComponent {
   @Input({ required: true }) pagelet: ContentPageletView;

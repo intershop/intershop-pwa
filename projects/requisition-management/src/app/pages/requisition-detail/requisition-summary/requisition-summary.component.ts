@@ -2,8 +2,6 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-
-import { IconModule } from 'ish-core/icon.module';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { BasketApprover } from 'ish-core/models/basket-approval/basket-approval.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
@@ -26,8 +24,7 @@ import { Requisition, RequisitionViewer } from '../../../models/requisition/requ
     BasketCustomFieldsViewComponent,
     PricePipe,
     NgClass,
-    IconModule,
-  ],
+    ],
 })
 export class RequisitionSummaryComponent implements OnInit {
   @Input({ required: true }) requisition: Requisition;

@@ -5,7 +5,6 @@ import { Observable, combineLatest, map } from 'rxjs';
 
 import { ScrollDirective } from 'ish-core/directives/scroll.directive';
 import { CMSFacade } from 'ish-core/facades/cms.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { ContentPageletEntryPointView, ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { DesignViewService } from 'ish-core/utils/design-view/design-view.service';
 import { PreviewService } from 'ish-core/utils/preview/preview.service';
@@ -19,7 +18,6 @@ import { PreviewService } from 'ish-core/utils/preview/preview.service';
   imports: [
     NgClass,
     NgSwitch,
-    IconModule,
     NgIf,
     TranslateModule,
     AsyncPipe,

@@ -8,7 +8,6 @@ import { ApprovalWidgetComponent, RequisitionWidgetComponent } from 'requisition
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { IconModule } from 'ish-core/icon.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { HtmlEncodePipe } from 'ish-core/pipes/html-encode.pipe';
@@ -38,7 +37,6 @@ import { WishlistWidgetComponent } from '../../../extensions/wishlists/shared/wi
     ContentIncludeComponent,
     ServerHtmlDirective,
     FeatureToggleModule,
-    IconModule,
     OrderTemplateWidgetComponent,
     OrderWidgetComponent,
     BudgetWidgetComponent,

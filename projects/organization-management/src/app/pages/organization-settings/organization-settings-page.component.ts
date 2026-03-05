@@ -9,7 +9,6 @@ import { pick } from 'lodash-es';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { PriceType } from 'ish-core/models/price/price.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
@@ -27,7 +26,6 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
   standalone: true,
   imports: [
     ServerHtmlDirective,
-    IconModule,
     FormlyModule,
     ModalDialogComponent,
     NgIf,

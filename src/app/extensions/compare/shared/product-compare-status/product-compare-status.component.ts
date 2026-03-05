@@ -4,8 +4,6 @@ import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-
-import { IconModule } from 'ish-core/icon.module';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { CompareFacade } from '../../facades/compare.facade';
@@ -15,7 +13,7 @@ import { CompareFacade } from '../../facades/compare.facade';
   templateUrl: './product-compare-status.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [RouterLink, FontAwesomeModule, NgClass, AsyncPipe, TranslateModule, IconModule],
+  imports: [RouterLink, FontAwesomeModule, NgClass, AsyncPipe, TranslateModule],
 })
 @GenerateLazyComponent()
 export class ProductCompareStatusComponent implements OnInit {

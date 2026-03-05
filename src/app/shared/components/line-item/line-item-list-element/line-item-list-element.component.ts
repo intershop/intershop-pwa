@@ -12,7 +12,6 @@ import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.direc
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { OrderLineItem } from 'ish-core/models/order/order.model';
@@ -52,7 +51,6 @@ import { ProductVariationDisplayComponent } from 'ish-shared/components/product/
     PricePipe,
     ProductShipmentComponent,
     TranslateModule,
-    IconModule,
     LineItemEditComponent,
     ProductContextDirective,
     NgClass,

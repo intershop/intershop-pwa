@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-
-import { IconModule } from 'ish-core/icon.module';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
@@ -22,7 +20,6 @@ import { CategoryNavigationComponent } from '../category-navigation/category-nav
     CategoryNavigationComponent,
     NgbCollapseModule,
     TranslateModule,
-    IconModule,
     FilterNavigationComponent,
     BreadcrumbComponent,
     ProductListingComponent,

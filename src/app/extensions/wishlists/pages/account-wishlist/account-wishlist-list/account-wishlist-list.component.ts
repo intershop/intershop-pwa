@@ -13,8 +13,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs/operators';
-
-import { IconModule } from 'ish-core/icon.module';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { Wishlist } from '../../../models/wishlist/wishlist.model';
@@ -30,7 +28,7 @@ import { Wishlist } from '../../../models/wishlist/wishlist.model';
   templateUrl: './account-wishlist-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgFor, NgIf, NgTemplateOutlet, TranslateModule, RouterLink, NgClass, IconModule, ModalDialogComponent],
+  imports: [NgFor, NgIf, NgTemplateOutlet, TranslateModule, RouterLink, NgClass, ModalDialogComponent],
 })
 export class AccountWishlistListComponent implements OnChanges {
   /**

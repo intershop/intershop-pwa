@@ -31,7 +31,6 @@ import {
 } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -59,7 +58,7 @@ import { PAYPAL_BUTTON_STYLING } from './payment-paypal.component.styling';
   styleUrls: ['./payment-paypal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, NgIf, IconModule, TranslateModule, AsyncPipe],
+  imports: [NgClass, NgIf, TranslateModule, AsyncPipe],
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit, OnDestroy {
   /**

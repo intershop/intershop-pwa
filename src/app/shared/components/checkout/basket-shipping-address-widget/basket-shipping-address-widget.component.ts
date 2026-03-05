@@ -12,7 +12,6 @@ import { AddressDoctorComponent } from '../../../../extensions/address-doctor/sh
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { IconModule } from 'ish-core/icon.module';
 import { Address } from 'ish-core/models/address/address.model';
 import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -34,7 +33,6 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
     NgIf,
     AsyncPipe,
     TranslateModule,
-    IconModule,
     ModalDialogComponent,
     ReactiveFormsModule,
     FormlyModule,
