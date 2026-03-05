@@ -25,8 +25,8 @@ export class LineItemCustomFieldsComponent
   }>
   implements OnInit
 {
-  @Input({ required: true }) set lineItem(val: { customFields?: CustomFields }) {
-    this.set('customFields', () => val.customFields || {});
+  @Input({ required: true }) set lineItem(val: { customFields?: CustomFields } | undefined) {
+    this.set('customFields', () => val?.customFields || {});
   }
   @Input() set editable(val: boolean) {
     this.set('editable', () => val);

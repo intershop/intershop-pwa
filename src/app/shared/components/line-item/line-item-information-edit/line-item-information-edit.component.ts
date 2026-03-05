@@ -43,8 +43,8 @@ interface ComponentState {
   providers: [ProductContextFacade],
 })
 export class LineItemInformationEditComponent extends RxState<ComponentState> implements OnInit {
-  @Input({ required: true }) set lineItem(lineItem: ComponentState['lineItem']) {
-    this.set({ lineItem });
+  @Input({ required: true }) set lineItem(lineItem: ComponentState['lineItem'] | undefined) {
+    this.set({ lineItem: lineItem || {} });
     this.resetContext();
   }
   @Input() editable = false;
@@ -75,12 +75,12 @@ export class LineItemInformationEditComponent extends RxState<ComponentState> im
         customFields.map(field => ({
           name: field.name,
           editable: field.editable,
-          value: customFieldsData[field.name],
+          value: customFieldsData?.[field.name],
         }))
     );
 
     this.connect('editMode', this.select('lineItem', 'customFields'), (_, customFieldsData) =>
-      Object.keys(customFieldsData).length > 0 ? 'edit' : 'add'
+      Object.keys(customFieldsData || {}).length > 0 ? 'edit' : 'add'
     );
   }
 
@@ -90,7 +90,7 @@ export class LineItemInformationEditComponent extends RxState<ComponentState> im
 
   private resetContext() {
     const lineItem = this.get('lineItem');
-    this.context.set({ sku: lineItem.productSKU });
+    this.context.set({ sku: lineItem?.productSKU });
   }
 
   save() {

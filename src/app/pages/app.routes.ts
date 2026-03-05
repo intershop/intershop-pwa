@@ -75,14 +75,23 @@ export const appRoutes: Routes = [
         import('./account/account-page.module'),
         import('ish-shared/formly/formly.module'),
         import('ish-shared/formly-address-forms/formly-address-forms.module'),
+        import('ish-core/store/customer/customer-account-store.module'),
+        import('ish-core/store/general/general-store.module'),
       ]).then(
         ([
           { accountPageRoutes },
           { FormlyModule: ishFormlyModule },
           { FormlyAddressFormsModule: formlyAddressFormsModule },
+          { CustomerAccountStoreModule },
+          { GeneralStoreModule },
         ]) => {
           const [rootRoute, ...nestedRoutes] = accountPageRoutes;
-          const providers = importProvidersFrom(ishFormlyModule, formlyAddressFormsModule);
+          const providers = importProvidersFrom(
+            ishFormlyModule,
+            formlyAddressFormsModule,
+            CustomerAccountStoreModule,
+            GeneralStoreModule
+          );
           return rootRoute
             ? [{ ...rootRoute, providers: [...(rootRoute.providers ?? []), providers] }, ...nestedRoutes]
             : [];
@@ -122,14 +131,23 @@ export const appRoutes: Routes = [
         import('./checkout/checkout-page.module'),
         import('ish-shared/formly/formly.module'),
         import('ish-shared/formly-address-forms/formly-address-forms.module'),
+        import('ish-core/store/customer/customer-account-store.module'),
+        import('ish-core/store/general/general-store.module'),
       ]).then(
         ([
           { checkoutPageRoutes },
           { FormlyModule: ishFormlyModule },
           { FormlyAddressFormsModule: formlyAddressFormsModule },
+          { CustomerAccountStoreModule },
+          { GeneralStoreModule },
         ]) => {
           const [rootRoute, ...nestedRoutes] = checkoutPageRoutes;
-          const providers = importProvidersFrom(ishFormlyModule, formlyAddressFormsModule);
+          const providers = importProvidersFrom(
+            ishFormlyModule,
+            formlyAddressFormsModule,
+            CustomerAccountStoreModule,
+            GeneralStoreModule
+          );
           return rootRoute
             ? [{ ...rootRoute, providers: [...(rootRoute.providers ?? []), providers] }, ...nestedRoutes]
             : [];
@@ -146,6 +164,8 @@ export const appRoutes: Routes = [
         import('ish-shared/formly/formly.module'),
         import('ish-shared/formly-address-forms/formly-address-forms.module'),
         import('ish-shared/formly/field-library/field-library.module'),
+        import('ish-core/store/customer/customer-account-store.module'),
+        import('ish-core/store/general/general-store.module'),
       ]).then(
         ([
           { registrationFormlyConfig, registrationPageRoutes },
@@ -153,11 +173,19 @@ export const appRoutes: Routes = [
           { FormlyModule: ishFormlyModule },
           { FormlyAddressFormsModule: formlyAddressFormsModule },
           { FieldLibraryModule: fieldLibraryModule },
+          { CustomerAccountStoreModule },
+          { GeneralStoreModule },
         ]) => {
           const [rootRoute, ...nestedRoutes] = registrationPageRoutes;
           const providers = [
             RegistrationFormConfigurationService,
-            importProvidersFrom(fieldLibraryModule, formlyAddressFormsModule, ishFormlyModule),
+            importProvidersFrom(
+              fieldLibraryModule,
+              formlyAddressFormsModule,
+              ishFormlyModule,
+              CustomerAccountStoreModule,
+              GeneralStoreModule
+            ),
             importProvidersFrom(formlyModule.forChild(registrationFormlyConfig)),
           ];
           return rootRoute
@@ -283,18 +311,25 @@ export const appRoutes: Routes = [
   // Store Locator Extension
   {
     path: 'store-finder',
-    canActivate: [featureToggleGuard],
-    loadComponent: () =>
-      import('../extensions/store-locator/pages/store-locator/store-locator-page.component').then(
-        m => m.StoreLocatorPageComponent
-      ),
-    data: {
-      feature: 'storeLocator',
-      meta: {
-        title: 'store_locator.title',
-        robots: 'noindex, nofollow',
-      },
-    },
+    loadChildren: () =>
+      Promise.all([
+        import('../extensions/store-locator/pages/store-locator/store-locator-page.component'),
+        import('ish-core/store/general/general-store.module'),
+      ]).then(([{ StoreLocatorPageComponent }, { GeneralStoreModule }]) => [
+        {
+          path: '',
+          component: StoreLocatorPageComponent,
+          canActivate: [featureToggleGuard],
+          providers: [importProvidersFrom(GeneralStoreModule)],
+          data: {
+            feature: 'storeLocator',
+            meta: {
+              title: 'store_locator.title',
+              robots: 'noindex, nofollow',
+            },
+          },
+        },
+      ]),
   },
 
   // Recently Extension
