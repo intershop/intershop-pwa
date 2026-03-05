@@ -2,7 +2,7 @@ import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
@@ -30,9 +30,9 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
     ModalDialogComponent,
     NgIf,
     ReactiveFormsModule,
-    RouterModule,
     TranslatePipe,
     ServerSettingPipe,
+    RouterLink,
   ],
 })
 export class OrganizationSettingsPageComponent implements OnInit {

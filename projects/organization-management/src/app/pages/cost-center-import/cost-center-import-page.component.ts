@@ -1,7 +1,7 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest, map, of } from 'rxjs';
 
@@ -15,7 +15,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
   templateUrl: './cost-center-import-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, CdkTableModule, LoadingComponent, NgClass, NgIf, RouterModule, TranslatePipe],
+  imports: [AsyncPipe, CdkTableModule, LoadingComponent, NgClass, NgIf, TranslatePipe, RouterLink],
 })
 export class CostCenterImportPageComponent implements OnInit {
   importedCostCenters$: Observable<CostCenterImportResult[]> = of([]);

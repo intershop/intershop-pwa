@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { IdentityProviderCapabilityDirective } from 'ish-core/directives/identity-provider-capability.directive';
@@ -16,10 +16,10 @@ import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
   imports: [
     IdentityProviderCapabilityDirective,
     NgIf,
-    RouterModule,
     ServerHtmlDirective,
     TranslatePipe,
     ServerSettingPipe,
+    RouterLink,
   ],
 })
 export class AccountProfileComponent {

@@ -2,7 +2,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest, of } from 'rxjs';
 import { map, shareReplay, switchMap, take } from 'rxjs/operators';
@@ -28,9 +28,9 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
     LoadingComponent,
     NgIf,
     ReactiveFormsModule,
-    RouterModule,
     TranslatePipe,
     UserRolesSelectionComponent,
+    RouterLink,
   ],
 })
 export class UserEditRolesPageComponent implements OnInit {

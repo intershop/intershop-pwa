@@ -1,7 +1,7 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest, map, of } from 'rxjs';
 
@@ -23,10 +23,10 @@ import { UserRolesBadgesComponent } from '../users/user-roles-badges/user-roles-
     LoadingComponent,
     NgClass,
     NgIf,
-    RouterModule,
     TranslatePipe,
     PricePipe,
     UserRolesBadgesComponent,
+    RouterLink,
   ],
 })
 export class UserImportPageComponent implements OnInit {

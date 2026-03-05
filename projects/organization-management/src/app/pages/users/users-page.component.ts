@@ -1,6 +1,6 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
@@ -32,11 +32,11 @@ import { UserRolesBadgesComponent } from './user-roles-badges/user-roles-badges.
     ModalDialogComponent,
     NgFor,
     NgIf,
-    RouterModule,
     ServerSettingPipe,
     TranslatePipe,
     UserBudgetComponent,
     UserRolesBadgesComponent,
+    RouterLink,
   ],
 })
 export class UsersPageComponent implements OnInit {

@@ -1,7 +1,7 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -27,8 +27,8 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
     FormlyModule,
     NgIf,
     ReactiveFormsModule,
-    RouterModule,
     TranslatePipe,
+    RouterLink,
   ],
 })
 export class AccountProfileEmailComponent implements OnInit {

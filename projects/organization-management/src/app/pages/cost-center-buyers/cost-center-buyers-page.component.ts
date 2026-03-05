@@ -2,7 +2,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable, merge } from 'rxjs';
@@ -35,8 +35,8 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
     LoadingComponent,
     NgIf,
     ReactiveFormsModule,
-    RouterModule,
     TranslatePipe,
+    RouterLink,
   ],
 })
 export class CostCenterBuyersPageComponent implements OnInit {

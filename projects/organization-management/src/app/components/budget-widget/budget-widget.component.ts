@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
@@ -27,13 +27,13 @@ import { UserBudgetComponent } from '../user-budget/user-budget.component';
     BudgetInfoComponent,
     NgIf,
     OrganizationManagementStoreModule,
-    RouterModule,
     TranslatePipe,
     UserBudgetComponent,
     ErrorMessageComponent,
     InfoBoxComponent,
     LoadingComponent,
     AuthorizationToggleDirective,
+    RouterLink,
   ],
 })
 @GenerateLazyComponent()

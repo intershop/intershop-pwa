@@ -1,7 +1,7 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -34,9 +34,9 @@ export type RecurringOrderColumnsType =
     ModalDialogComponent,
     NgIf,
     PricePipe,
-    RouterModule,
     SwitchComponent,
     TranslatePipe,
+    RouterLink,
   ],
 })
 export class RecurringOrderListComponent {

@@ -72,7 +72,7 @@ export const appRoutes: Routes = [
     path: 'account',
     loadChildren: () =>
       Promise.all([
-        import('./account/account-page.module'),
+        import('./account/account-page.routes'),
         import('ish-shared/formly/formly.module'),
         import('ish-shared/formly-address-forms/formly-address-forms.module'),
         import('ish-core/store/customer/customer-account-store.module'),
@@ -128,7 +128,7 @@ export const appRoutes: Routes = [
     path: 'checkout',
     loadChildren: () =>
       Promise.all([
-        import('./checkout/checkout-page.module'),
+        import('./checkout/checkout-page.routes'),
         import('ish-shared/formly/formly.module'),
         import('ish-shared/formly-address-forms/formly-address-forms.module'),
         import('ish-core/store/customer/customer-account-store.module'),
@@ -159,7 +159,7 @@ export const appRoutes: Routes = [
     canActivate: [identityProviderRegisterGuard],
     loadChildren: () =>
       Promise.all([
-        import('./registration/registration-page.module'),
+        import('./registration/registration-page.routes'),
         import('@ngx-formly/core'),
         import('ish-shared/formly/formly.module'),
         import('ish-shared/formly-address-forms/formly-address-forms.module'),
@@ -203,7 +203,7 @@ export const appRoutes: Routes = [
   {
     path: 'login',
     loadChildren: () =>
-      Promise.all([import('./login/login-page.module'), import('ish-shared/formly/formly.module')]).then(
+      Promise.all([import('./login/login-page.routes'), import('ish-shared/formly/formly.module')]).then(
         ([{ loginPageRoutes }, { FormlyModule: ishFormlyModule }]) => {
           const [rootRoute, ...nestedRoutes] = loginPageRoutes;
           const providers = importProvidersFrom(ishFormlyModule);
@@ -238,7 +238,7 @@ export const appRoutes: Routes = [
     // route for handling confirmation of user data and account deletion requests
     path: 'gdpr-requests',
     loadChildren: () =>
-      import('./data-request/data-request-page.module').then(({ dataRequestPageRoutes }) => dataRequestPageRoutes),
+      import('./data-request/data-request-page.routes').then(({ dataRequestPageRoutes }) => dataRequestPageRoutes),
     data: {
       meta: {
         title: 'personal.data.request.title',
@@ -248,7 +248,7 @@ export const appRoutes: Routes = [
   },
   {
     path: 'cookies',
-    loadChildren: () => import('./cookies/cookies-page.module').then(({ cookiesPageRoutes }) => cookiesPageRoutes),
+    loadChildren: () => import('./cookies/cookies-page.routes').then(({ cookiesPageRoutes }) => cookiesPageRoutes),
   },
   {
     path: 'cobrowse',

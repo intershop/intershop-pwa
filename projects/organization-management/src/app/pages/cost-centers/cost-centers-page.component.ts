@@ -2,7 +2,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, combineLatest, map, of, take } from 'rxjs';
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
@@ -37,9 +37,9 @@ type CostCenterColumnsType = 'costCenterId' | 'costCenterName' | 'costCenterMana
     NgClass,
     NgIf,
     PagingComponent,
-    RouterModule,
     TranslatePipe,
-    ],
+    RouterLink,
+  ],
 })
 export class CostCentersPageComponent implements OnInit {
   costCenters$: Observable<CostCenter[]>;

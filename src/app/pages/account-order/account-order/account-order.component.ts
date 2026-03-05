@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { OrderCreateOrderTemplateComponent } from 'src/app/extensions/order-templates/shared/order-create-order-template/order-create-order-template.component';
 
@@ -35,7 +35,6 @@ import { AccountOrderToBasketComponent } from '../account-order-to-basket/accoun
   imports: [
     AccountOrderToBasketComponent,
     CommonModule,
-    RouterModule,
     DatePipe,
     TranslatePipe,
     ServerHtmlDirective,
@@ -51,6 +50,7 @@ import { AccountOrderToBasketComponent } from '../account-order-to-basket/accoun
     LineItemListComponent,
     BasketCostSummaryComponent,
     OrderCreateOrderTemplateComponent,
+    RouterLink,
   ],
 })
 export class AccountOrderComponent {

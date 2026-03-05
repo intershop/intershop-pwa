@@ -1,7 +1,6 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
@@ -31,7 +30,6 @@ type ProductNotificationsColumnsType = 'productImage' | 'product' | 'notificatio
     ProductNotificationEditComponent,
     ProductNotificationDeleteComponent,
     ProductPriceComponent,
-    RouterModule,
     TranslatePipe,
     PricePipe,
   ],

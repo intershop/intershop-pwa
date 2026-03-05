@@ -1,7 +1,7 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { DatePipe as IshDatePipe } from 'ish-core/pipes/date.pipe';
@@ -41,8 +41,8 @@ type QuoteColumnsType =
     NgIf,
     QuoteExpirationDateComponent,
     QuoteStateComponent,
-    RouterModule,
     TranslatePipe,
+    RouterLink,
   ],
 })
 export class QuoteListComponent {

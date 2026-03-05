@@ -1,7 +1,7 @@
 import { NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { FormGroupDirective, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -41,7 +41,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
     NgClass,
     FeatureToggleDirective,
     CheckoutAddressAnonymousFormComponent,
-    RouterModule,
+    RouterLink,
   ],
 })
 export class CheckoutAddressAnonymousComponent implements OnChanges {

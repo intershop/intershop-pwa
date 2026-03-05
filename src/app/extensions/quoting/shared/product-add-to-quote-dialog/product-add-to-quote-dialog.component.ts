@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -30,8 +30,8 @@ import { QuoteViewComponent } from '../quote-view/quote-view.component';
     QuoteEditComponent,
     QuoteInteractionsComponent,
     QuoteViewComponent,
-    RouterModule,
     TranslatePipe,
+    RouterLink,
   ],
   providers: [{ provide: QuoteContextFacade, useClass: ActiveQuoteContextFacade }],
 })

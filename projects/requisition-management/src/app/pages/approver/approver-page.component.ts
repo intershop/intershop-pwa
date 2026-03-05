@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -29,8 +29,8 @@ import { Requisition, RequisitionStatus } from '../../models/requisition/requisi
     NgIf,
     NgbNavModule,
     RequisitionsListComponent,
-    RouterModule,
     TranslatePipe,
+    RouterLink,
   ],
 })
 export class ApproverPageComponent implements OnInit {

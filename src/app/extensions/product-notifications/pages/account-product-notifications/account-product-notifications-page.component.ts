@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -29,8 +29,8 @@ import { AccountProductNotificationsListComponent } from './account-product-noti
     ErrorMessageComponent,
     LoadingComponent,
     NgbNavModule,
-    RouterModule,
     TranslatePipe,
+    RouterLink,
   ],
 })
 export class AccountProductNotificationsPageComponent implements OnInit {

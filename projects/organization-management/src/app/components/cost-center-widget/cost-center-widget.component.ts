@@ -1,6 +1,6 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -27,10 +27,10 @@ import { CostCenterBudgetComponent } from '../cost-center-budget/cost-center-bud
     NgFor,
     NgIf,
     OrganizationManagementStoreModule,
-    RouterModule,
     TranslatePipe,
     InfoBoxComponent,
     LoadingComponent,
+    RouterLink,
   ],
 })
 export class CostCenterWidgetComponent implements OnInit {

@@ -42,7 +42,8 @@ import { provideSeoFeature } from './extensions/seo/seo-feature.providers';
 import { provideStoreLocatorFeature } from './extensions/store-locator/store-locator-feature.providers';
 import { provideTrackingFeature } from './extensions/tracking/tracking-feature.providers';
 import { provideWishlistsFeature } from './extensions/wishlists/wishlists-feature.providers';
-import { appLastRoutes, appRoutes } from './pages/app-routing.module';
+import { appLastRoutes } from './pages/app-last.routes';
+import { appRoutes } from './pages/app.routes';
 
 function initializeCookieConsent(transferState: TransferState) {
   return () => {

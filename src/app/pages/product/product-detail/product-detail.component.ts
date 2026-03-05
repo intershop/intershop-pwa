@@ -2,6 +2,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
@@ -21,7 +22,6 @@ import { ProductAddToOrderTemplateComponent } from '../../../extensions/order-te
 import { ProductNotificationEditComponent } from '../../../extensions/product-notifications/shared/product-notification-edit/product-notification-edit.component';
 import { ProductAddToQuoteComponent } from '../../../extensions/quoting/shared/product-add-to-quote/product-add-to-quote.component';
 import { ProductRatingComponent } from '../../../extensions/rating/shared/product-rating/product-rating.component';
-import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ProductBrandComponent } from '../product-brand/product-brand.component';
 import { ProductDetailActionsComponent } from '../product-detail-actions/product-detail-actions.component';
 import { ProductDetailVariationsComponent } from '../product-detail-variations/product-detail-variations.component';
