@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { ComponentsModule } from 'ish-shared/formly/components/components.module';
 import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
@@ -33,7 +32,6 @@ const wrapperComponents = [
     ComponentsModule,
     ...wrapperComponents,
     ReactiveFormsModule,
-    TranslateModule,
     ValidationMessageComponent,
     FormlyBaseModule.forChild({
       wrappers: [

@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
@@ -26,7 +25,6 @@ import { AddressFormUSConfiguration } from './configurations/us/address-form-us.
     FormlyModule,
     FormsSharedModule,
     ReactiveFormsModule,
-    TranslateModule,
   ],
   exports: [FormlyAddressExtensionFormComponent, FormlyAddressFormComponent],
   providers: [

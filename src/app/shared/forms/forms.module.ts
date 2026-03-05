@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 
@@ -19,7 +18,6 @@ const exportedComponents = [FormControlFeedbackComponent, ShowFormFeedbackDirect
     ReactiveFormsModule,
     RouterModule,
     ShowFormFeedbackDirective,
-    TranslateModule,
   ],
   exports: [...exportedComponents],
 })
