@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -13,7 +12,7 @@ import { CompareFacade } from '../../facades/compare.facade';
   templateUrl: './product-send-to-compare.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [RouterLink, FontAwesomeModule, TranslateModule],
+  imports: [RouterLink, TranslateModule],
 })
 @GenerateLazyComponent()
 export class ProductSendToCompareComponent {

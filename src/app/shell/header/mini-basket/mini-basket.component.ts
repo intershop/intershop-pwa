@@ -11,7 +11,6 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbDropdown, NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, concat, of, timer } from 'rxjs';
@@ -34,7 +33,6 @@ import { MiniBasketContentComponent } from 'ish-shared/components/basket/mini-ba
   imports: [
     AsyncPipe,
     ClickOutsideDirective,
-    FontAwesomeModule,
     NgbDropdownModule,
     NgbPopoverModule,
     NgClass,

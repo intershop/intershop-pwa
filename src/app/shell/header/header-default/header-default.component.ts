@@ -1,7 +1,6 @@
 import { DOCUMENT, NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { ProductCompareStatusComponent } from 'src/app/extensions/compare/shared/product-compare-status/product-compare-status.component';
@@ -47,7 +46,6 @@ type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
     QuickorderLinkComponent,
     WishlistsLinkComponent,
     FeatureToggleModule,
-    FontAwesomeModule,
     NgbCollapseModule,
     NgTemplateOutlet,
     LanguageSwitchComponent_1,

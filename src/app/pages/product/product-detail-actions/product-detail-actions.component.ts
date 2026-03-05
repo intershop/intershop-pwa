@@ -1,6 +1,5 @@
 import { AsyncPipe, DOCUMENT, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { ProductSendToCompareComponent } from 'src/app/extensions/compare/shared/product-send-to-compare/product-send-to-compare.component';
@@ -20,7 +19,6 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
     FeatureToggleModule,
     ProductAddToWishlistComponent,
     ProductSendToCompareComponent,
-    FontAwesomeModule,
     AsyncPipe,
     TranslateModule,
   ],
