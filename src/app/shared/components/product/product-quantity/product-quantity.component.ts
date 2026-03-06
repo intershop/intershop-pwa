@@ -1,6 +1,6 @@
 import { AsyncPipe, NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslateDirective, TranslatePipe } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, map, shareReplay } from 'rxjs/operators';
@@ -15,7 +15,17 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
   styleUrls: ['./product-quantity.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, NgFor, NgClass, TranslatePipe, NgSwitch, NgSwitchCase, NgSwitchDefault],
+  imports: [
+    NgIf,
+    AsyncPipe,
+    NgFor,
+    NgClass,
+    TranslateDirective,
+    TranslatePipe,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+  ],
 })
 export class ProductQuantityComponent implements OnInit {
   @Input() type: 'input' | 'select' | 'counter' = 'counter';
