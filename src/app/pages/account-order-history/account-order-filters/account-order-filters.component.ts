@@ -167,7 +167,7 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
               type: 'ish-text-input-field',
               props: {
                 label: 'account.order_history.filter.label.sku',
-                placeholder: 'account.order_history.filter.label.sku',
+                placeholder: 'account.order_history.filter.placeholder.sku',
                 labelClass: 'col-md-6',
                 fieldClass: 'col-md-12',
               },
@@ -264,8 +264,8 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
                 toDate: params?.to ? selectFirst(params.to) : '',
               }
             : undefined,
-        orderNo: params?.orderNo ? selectFirst(params.orderNo) : '',
-        sku: params?.sku ? selectFirst(params.sku) : '',
+        orderNo: params?.orderNo ? selectAll(params.orderNo) : '',
+        sku: params?.sku ? selectAll(params.sku) : '',
         state: params?.from ? selectFirst(params.state) : '',
         buyer: params?.buyer ? selectFirst(params.buyer) : isAdmin ? 'all' : '',
       })),
