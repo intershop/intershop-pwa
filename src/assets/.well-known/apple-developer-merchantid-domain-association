@@ -1,0 +1,7 @@
+PLACEHOLDER - Replace this content with the domain verification string from PayPal Dashboard.
+
+Instructions:
+1. Go to PayPal Developer Dashboard
+2. Navigate to Apple Pay > Domain Registration
+3. Copy the verification string
+4. Replace the entire content of this file with that string (no line breaks)

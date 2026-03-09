@@ -36,6 +36,11 @@
                 "glob": "favicon.ico",
                 "input": "src/assets/themes/theme_placeholder/img/",
                 "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets/.well-known",
+                "output": "/.well-known"
               }
             ],
             "scripts": [],

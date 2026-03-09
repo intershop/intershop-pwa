@@ -163,6 +163,8 @@ export interface PaypalComponent {
   CardFields?(options?: unknown): PaypalCardFieldsComponent;
   /** Creates PayPal Google Pay component */
   Googlepay?(options?: unknown): PaypalGooglePayComponent;
+  /** Creates PayPal Apple Pay component */
+  Applepay?(options?: unknown): PaypalApplePayComponent;
 }
 
 /**
@@ -299,3 +301,121 @@ export interface GooglePayPaymentAuthorizationResult {
     message: string;
   };
 }
+
+// #region Apple Pay Types
+
+/**
+ * PayPal Apple Pay component interface.
+ * Provides methods to configure, confirm orders, and handle 3D Secure authentication.
+ */
+export interface PaypalApplePayComponent extends PaypalComponentBasics {
+  /** Fetches the Apple Pay configuration from PayPal */
+  config(): Promise<ApplePayConfig>;
+  /** Confirms the order with PayPal after Apple Pay authorization */
+  confirmOrder(params: ApplePayConfirmOrderParams): Promise<ApplePayConfirmOrderResponse>;
+  /** Initiates 3D Secure payer action if required */
+  initiatePayerAction(params: ApplePayInitiatePayerActionParams): Promise<ApplePayInitiatePayerActionResponse>;
+}
+
+/** Apple Pay configuration response from PayPal */
+export interface ApplePayConfig {
+  /** Whether Apple Pay is eligible for this merchant */
+  isEligible: boolean;
+  /** Country code for the merchant */
+  countryCode: string;
+  /** Merchant capabilities supported */
+  merchantCapabilities: ApplePayMerchantCapability[];
+  /** Supported card networks */
+  supportedNetworks: string[];
+}
+
+/** Apple Pay merchant capabilities */
+export type ApplePayMerchantCapability = 'supports3DS' | 'supportsCredit' | 'supportsDebit' | 'supportsEMV';
+
+/** Parameters for confirming an Apple Pay order */
+export interface ApplePayConfirmOrderParams {
+  orderId: string;
+  token: ApplePayPaymentToken;
+  billingContact?: ApplePayPaymentContact;
+  shippingContact?: ApplePayPaymentContact;
+}
+
+/** Apple Pay payment token from ApplePaySession */
+export interface ApplePayPaymentToken {
+  paymentData: {
+    data: string;
+    header: {
+      ephemeralPublicKey: string;
+      publicKeyHash: string;
+      transactionId: string;
+    };
+    signature: string;
+    version: string;
+  };
+  paymentMethod: {
+    displayName: string;
+    network: string;
+    type: string;
+  };
+  transactionIdentifier: string;
+}
+
+/** Apple Pay payment contact information */
+export interface ApplePayPaymentContact {
+  givenName?: string;
+  familyName?: string;
+  emailAddress?: string;
+  phoneNumber?: string;
+  addressLines?: string[];
+  locality?: string;
+  administrativeArea?: string;
+  postalCode?: string;
+  countryCode?: string;
+}
+
+/** Response from PayPal confirmOrder for Apple Pay */
+export interface ApplePayConfirmOrderResponse {
+  id: string;
+  status: 'APPROVED' | 'PAYER_ACTION_REQUIRED' | 'COMPLETED' | string;
+  payment_source?: Record<string, unknown>;
+  links?: { href: string; rel: string; method: string }[];
+}
+
+/** Parameters for initiating payer action (3D Secure) */
+export interface ApplePayInitiatePayerActionParams {
+  orderId: string;
+}
+
+/** Response from initiatePayerAction */
+export interface ApplePayInitiatePayerActionResponse {
+  liabilityShift?: 'POSSIBLE' | 'NO' | 'UNKNOWN';
+}
+
+/** Apple Pay payment request for ApplePaySession */
+export interface ApplePayPaymentRequest {
+  countryCode: string;
+  currencyCode: string;
+  merchantCapabilities: ApplePayMerchantCapability[];
+  supportedNetworks: string[];
+  total: {
+    label: string;
+    amount: string;
+    type?: 'final' | 'pending';
+  };
+  requiredBillingContactFields?: ApplePayContactField[];
+  requiredShippingContactFields?: ApplePayContactField[];
+}
+
+/** Apple Pay contact fields that can be requested */
+export type ApplePayContactField = 'email' | 'name' | 'phone' | 'postalAddress' | 'phoneticName';
+
+/** Apple Pay payment authorized event */
+export interface ApplePayPaymentAuthorizedEvent {
+  payment: {
+    token: ApplePayPaymentToken;
+    billingContact?: ApplePayPaymentContact;
+    shippingContact?: ApplePayPaymentContact;
+  };
+}
+
+// #endregion

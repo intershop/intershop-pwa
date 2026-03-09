@@ -17,6 +17,7 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalAdaptersBuilder, PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
+import { PaypalApplePayAdapter } from 'ish-core/utils/paypal/adapters/paypal-apple-pay/paypal-apple-pay.adapter';
 import { PaypalButtonsAdapter } from 'ish-core/utils/paypal/adapters/paypal-buttons/paypal-buttons.adapter';
 import { PaypalCardFieldsAdapter } from 'ish-core/utils/paypal/adapters/paypal-card-fields/paypal-card-fields.adapter';
 import { PaypalGooglePayAdapter } from 'ish-core/utils/paypal/adapters/paypal-google-pay/paypal-google-pay.adapter';
@@ -40,6 +41,7 @@ import { ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     PaypalAdaptersBuilder,
+    PaypalApplePayAdapter,
     PaypalButtonsAdapter,
     PaypalCardFieldsAdapter,
     PaypalGooglePayAdapter,

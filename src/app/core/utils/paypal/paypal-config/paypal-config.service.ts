@@ -120,6 +120,9 @@ export class PaypalConfigService {
       if (param.paymentMethod.capabilities.includes('PaypalGooglePay')) {
         return this.scriptUrl.concat(`?${this.getScriptQueryParameterForGooglePay(param)}`);
       }
+      if (param.paymentMethod.capabilities.includes('PaypalApplePay')) {
+        return this.scriptUrl.concat(`?${this.getScriptQueryParameterForApplePay(param)}`);
+      }
       return this.scriptUrl.concat(`?${this.getScriptQueryParameters(param)}`);
     }
     return this.scriptUrl.concat(`?${this.getScriptQueryParameterForMessages(param)}`);
@@ -161,6 +164,34 @@ export class PaypalConfigService {
     const intentParam = param.paymentMethod?.hostedPaymentPageParameters?.find(attr => attr.name === 'intent');
     if (intentParam) {
       params = `${params}&intent=${intentParam.value}`;
+    } else {
+      // Default to capture if no intent specified
+      params = `${params}&intent=capture`;
+    }
+
+    return params;
+  }
+
+  /**
+   * Constructs query parameters for the PayPal SDK Apple Pay component.
+   *
+   * Apple Pay requires specific parameters including intent for proper authorization.
+   * Note: Apple Pay is only available on Safari and requires HTTPS.
+   *
+   * @param param - Script parameters including PayPal config, currency, and locale
+   * @returns Query string with parameters for Apple Pay SDK
+   */
+  private getScriptQueryParameterForApplePay(param: PaypalScriptParams): string {
+    let params = `client-id=${param.paypalConfig.clientId}`;
+    params = `${params}&merchant-id=${param.paypalConfig.merchantId}`;
+    params = `${params}&currency=${param.currency}`;
+    params = `${params}&locale=${param.locale}`;
+    params = `${params}&components=applepay`;
+
+    // Intent is required for Apple Pay
+    const applePayIntentParam = param.paymentMethod?.hostedPaymentPageParameters?.find(attr => attr.name === 'intent');
+    if (applePayIntentParam) {
+      params = `${params}&intent=${applePayIntentParam.value}`;
     } else {
       // Default to capture if no intent specified
       params = `${params}&intent=capture`;

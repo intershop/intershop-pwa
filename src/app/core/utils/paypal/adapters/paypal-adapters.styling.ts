@@ -91,3 +91,13 @@ export const PAYPAL_GOOGLE_PAY_BUTTON_STYLING = {
   buttonType: 'order',
   buttonSizeMode: 'fill',
 };
+
+// Styling configuration for Apple Pay button.
+export const PAYPAL_APPLE_PAY_BUTTON_STYLING = {
+  /** Button style: 'black', 'white', 'white-outline' */
+  buttonStyle: 'black',
+  /** Button type: 'plain', 'buy', 'set-up', 'donate', 'check-out', 'book', 'subscribe', 'add-money', 'top-up', 'order', 'rent', 'support', 'contribute', 'tip' */
+  buttonType: 'buy',
+  /** Button border radius in pixels */
+  borderRadius: 4,
+};

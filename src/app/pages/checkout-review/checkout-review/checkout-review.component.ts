@@ -19,6 +19,7 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { PaypalAdapterTypes } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 
 @Component({
   selector: 'ish-checkout-review',
@@ -79,6 +80,19 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
 
   hasCustomFields(): boolean {
     return this.basket?.customFields && Object.keys(this.basket.customFields).length > 0;
+  }
+
+  /**
+   * Determine the PayPal adapter type based on payment method capabilities.
+   */
+  getPaypalAdapterType(method?: PaymentMethod): PaypalAdapterTypes {
+    if (method?.capabilities?.includes('PaypalGooglePay')) {
+      return 'Googlepay';
+    }
+    if (method?.capabilities?.includes('PaypalApplePay')) {
+      return 'Applepay';
+    }
+    return 'Buttons';
   }
 
   private setFields() {

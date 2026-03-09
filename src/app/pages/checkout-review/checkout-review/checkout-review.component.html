@@ -178,7 +178,7 @@
               >
                 <ish-payment-paypal
                   [class.pe-none]="form.invalid || multipleBuckets || submitting"
-                  [adapterType]="'Googlepay'"
+                  [adapterType]="getPaypalAdapterType(paypalMethod)"
                   [pageType]="'checkout'"
                   [selectedPaymentMethod]="paypalMethod"
                 />
