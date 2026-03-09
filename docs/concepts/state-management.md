@@ -86,7 +86,7 @@ Context facades provide an elevated access to the state management.
 They store data that is unique to the context (i.e. product context: SKU & quantity of the product), so that this context doesn't have to be provided using further helper methods and `Observable` streams.
 For implementing these context facades, we use the library [@rx-angular/state][rx-angular-state].
 
-Context facades are provided using [`ElementInjector`](https://angular.io/guide/hierarchical-dependency-injection#elementinjector) and can then be used in providing components and their children:
+Context facades are provided using [`ElementInjector`](https://angular.dev/guide/di/hierarchical-dependency-injection#elementinjector) and can then be used in providing components and their children:
 
 - Provided in the `@Component` decorator
 - Provided via directives on the template
@@ -247,7 +247,7 @@ see: [NgRx: Normalizing state](https://timdeschryver.dev/blog/normalizing-state)
 ## State Transfer
 
 The server side application in a typical deployment setup makes necessary REST API calls to pre-render a page for an incoming URL.
-The accumulated NgRx state is then passed to the client side via state transfer using Angular's [TransferState](https://angular.io/api/core/TransferState).
+The accumulated NgRx state is then passed to the client side via state transfer using Angular's [TransferState](https://angular.dev/api/core/TransferState).
 If certain slices of the state should not be passed to the client, you can put an underscore (`_`) in front of the name.
 For reasons of performance, this filtering is limited to a depth of two levels.
 This means feature stores can exclude reducers (in their respective `X-store.module.ts`) and core store slices can exclude properties (in their respective `X.reducer.ts`).

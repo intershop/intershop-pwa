@@ -40,7 +40,7 @@ Product Contexts can also be linked to their parent contexts.
 
 ## How to Introduce Product Context?
 
-Unlike regular facades, which are available globally and have only one instance available at runtime, context facades are provided using [`ElementInjector`](https://angular.io/guide/hierarchical-dependency-injection#elementinjector) and are therefore only available for elements enclosed in the document subtree for which the element introduced the context.
+Unlike regular facades, which are available globally and have only one instance available at runtime, context facades are provided using [`ElementInjector`](https://angular.dev/guide/di/hierarchical-dependency-injection#elementinjector) and are therefore only available for elements enclosed in the document subtree for which the element introduced the context.
 
 ### By Using [`ProductContextDirective`][src-product-context-directive]
 
@@ -68,7 +68,7 @@ Note: [`ProductDetailComponent`](../../src/app/pages/product/product-detail/prod
 ### By Providing [`ProductContextFacade`][src-product-context-facade]
 
 There are cases for which it is not possible to use the directive: For example, when the parent component does not have access to all required information or when the component has to introduce another context by itself.
-In this case the [`ProductContextFacade`][src-product-context-facade] has to be added to the `providers` array of the [`@Component`](https://angular.io/api/core/Component) decorator.
+In this case the [`ProductContextFacade`][src-product-context-facade] has to be added to the `providers` array of the [`@Component`](https://angular.dev/api/core/Component) decorator.
 Afterwards, the SKU for the context has to be initialized:
 
 ```typescript

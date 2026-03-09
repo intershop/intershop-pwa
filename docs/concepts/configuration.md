@@ -42,7 +42,7 @@ In addition, the PWA, when run with Angular SSR, consists of a server-side and a
 
 The standard way of configuring an Angular Application is managing multiple environment files that are part of the project's source tree, usually located in _src/environments_.
 To choose one configuration, you have to supply the parameter when building the Angular Application.
-See [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md) and [Configuring Application Environments](https://angular.io/guide/build#configure-environment-specific-defaults) for further information.
+See [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md) and [Configuring Application Environments](https://angular.dev/tools/cli/environments#configure-environment-specific-defaults) for further information.
 
 Do not access properties supplied with environment files directly in artifacts.
 Instead, provide them via `InjectionTokens` to be used in components, pipes, or services.
@@ -78,7 +78,7 @@ As can be seen here, only build-time and deploy-time configuration parameters ca
 
 When running the application in Angular SSR mode within a _Node.js_ environment, you can additionally access the process environment variables via _process.env_.
 This method provides a way to configure the application at deploy time, e.g., when using Docker images.
-Configuration can then be consumed and passed to the client side via state transfer using Angular's [TransferState](https://angular.io/api/core/TransferState).
+Configuration can then be consumed and passed to the client side via state transfer using Angular's [TransferState](https://angular.dev/api/core/TransferState).
 
 To introduce a new `TransferState` key, add it to the [`state-keys.ts`](../../src/app/core/configurations/state-keys.ts).
 

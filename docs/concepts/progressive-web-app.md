@@ -21,7 +21,7 @@ The manifest in the PWA is theme-specific and can be customized in the file `src
 
 ## Service Worker
 
-[Service workers](https://angular.io/guide/service-worker-intro) are automatically installed into client device browsers after the first visit to the shop and take over all the handling of the application on the client side.
+[Service workers](https://angular.dev/ecosystem/service-workers) are automatically installed into client device browsers after the first visit to the shop and take over all the handling of the application on the client side.
 Possible advanced features supplied are offline capabilities and push notifications.
 After installation, the service worker effectively disables server-side rendering for clients and invokes all rendering on the client itself.
 
@@ -34,7 +34,7 @@ To activate the service worker, run:
 node schematics/customization/service-worker true
 ```
 
-To run the project as a Progressive Web App with an enabled [Service Worker](https://angular.io/guide/service-worker-getting-started), use `npm run start` to build and serve the application.
+To run the project as a Progressive Web App with an enabled [Service Worker](https://angular.dev/ecosystem/service-workers/getting-started), use `npm run start` to build and serve the application.
 Next, open _<http://localhost:4200>_ in your browser and test it or run a PWA audit.
 Currently, only _localhost_ or _127.0.0.1_ functions with the service worker, since _https_ communication is required on all other domains.
 

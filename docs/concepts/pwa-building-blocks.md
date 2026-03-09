@@ -26,7 +26,7 @@ Using another backend is also possible as long as it provides a [compatible REST
 
 ## PWA - Server-Side Rendering (SSR)
 
-In order to facilitate server-side rendering (SSR), the default deployment uses dockerized [_express.js_](https://expressjs.com/) servers running [Angular SSR](https://angular.io/guide/ssr), orchestrated by [PM2](https://pm2.keymetrics.io).
+In order to facilitate server-side rendering (SSR), the default deployment uses dockerized [_express.js_](https://expressjs.com/) servers running [Angular SSR](https://v18.angular.dev/guide/ssr), orchestrated by [PM2](https://pm2.keymetrics.io).
 On a new request, Angular SSR pre-renders the page and instantly provides the browser with meaningful content.
 For an architectural overview of how SSR works in the Intershop PWA, see [Deployment Scenarios](deployment-angular.md).
 Pre-rendering pages enables a number of features:
