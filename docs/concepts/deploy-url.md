@@ -22,7 +22,7 @@ This document describes how to provide the Intershop PWA with a dynamic deploy U
 
 ## Built-in Angular CLI Support
 
-By default, Angular CLI supports setting the deploy URL of the application with the [`build`](https://angular.io/cli/build) command parameter `--deploy-url`.
+By default, Angular CLI supports setting the deploy URL of the application with the [`build`](https://angular.dev/cli/build) command parameter `--deploy-url`.
 As this is only supplied as a build-time setting, the required flexibility for the Intershop PWA cannot be achieved.
 
 For example, if the Intershop PWA Docker image is deployed in multiple environments in an [Intershop CaaS](https://support.intershop.com/kb/index.php/Display/29S118) context, every environment would have to build a new PWA.

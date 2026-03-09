@@ -56,7 +56,7 @@ Performing any of the following checks on a web page will give you a basic under
 
   Page titles are the first thing screen readers read and help people know where they are.
   They describe the content of a website in a concise and appropriate way, and are composed of the individual title of a page, e.g., "About Us" or "News," and a general description of the website, e.g., the company name.
-  They can be set in the [Angular Routing Modules](https://v17.angular.io/guide/router#setting-the-page-title).
+  They can be set in the [Angular Routing Modules](https://v18.angular.dev/guide/routing/common-router-tasks#setting-the-page-title).
 
 - [ ] **3. [Headings](https://www.w3.org/WAI/test-evaluate/easy-checks/headings/)**
 
@@ -108,7 +108,7 @@ Performing any of the following checks on a web page will give you a basic under
   Color contrast refers to the difference between adjacent colors.
   Typically, this is the text and background color.
   Some people cannot read text or find elements if there is insufficient contrast between colors.
-  The contrast between text and background should be above 4.5:1.  
+  The contrast between text and background should be above 4.5:1.
   The [Color Contrast Analyzer](https://developer.paciellogroup.com/color-contrast-checker/) is a tool that allows you to measure the contrasts.
 
 - [ ] **9. [Use of Color](https://www.w3.org/WAI/WCAG21/Understanding/use-of-color.html) ([WCAG 1.4.1](https://w3.org/TR/WCAG21#use-of-color))**

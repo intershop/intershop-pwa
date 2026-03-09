@@ -54,7 +54,7 @@ This is especially important during a major Angular version update.
 
 ### 1. Updating Angular Dependencies
 
-When a new major Angular version should be consumed, follow the steps in the [official update guide](https://update.angular.io) for advanced app complexity.
+When a new major Angular version should be consumed, follow the steps in the [official update guide](https://angular.dev/update-guide) for advanced app complexity.
 
 `ng update` gives an overview of available Angular-specific package updates:
 

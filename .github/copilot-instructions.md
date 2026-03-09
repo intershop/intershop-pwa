@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Angular 17-based Progressive Web App for enterprise commerce. Built for performance, maintainability, SSR, and extensibility.
+Angular 18-based Progressive Web App for enterprise commerce. Built for performance, maintainability, SSR, and extensibility.
 
 ## Technology Stack
 

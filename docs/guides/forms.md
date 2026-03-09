@@ -87,7 +87,7 @@ If a form is very simple (e.g. only one form input field without any special val
 
 ### Validators
 
-For the validation of the form input fields you can use Angular's [Built-in Validators](https://angular.io/api/forms/Validators).
+For the validation of the form input fields you can use Angular's [Built-in Validators](https://angular.dev/api/forms/Validators).
 
 If there is a need for special custom validators, use the class _app/shared/forms/validators/special-validators_ to write your own custom validators.
 
