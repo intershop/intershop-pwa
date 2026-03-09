@@ -9,6 +9,15 @@ kb_sync_latest_only
 
 ## From 10.1.0 to 11.0.0
 
+**Angular 18 update**
+
+With Intershop PWA 11.0.0, the project was updated to Angular 18.
+In addition, several dependencies such as Formly, ESLint, Jest, Prettier and TypeScript have been updated.
+The Angular update replaces the deprecated i18n API - for example `getCurrencySymbol` - with the new `Intl` API.
+For a list of all deprecations, see this [github page](https://github.com/angular/angular/issues/54470).
+
+For more details about the Angular 18 update, see the [Angular Update Guide](https://angular.dev/update-guide?v=17.0-18.0&l=3).
+
 **Formly 7 update**
 
 Formly was updated to version 7.

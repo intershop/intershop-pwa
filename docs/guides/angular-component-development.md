@@ -42,7 +42,7 @@ Only facades should be used in components, as they provide the simplest access t
 
 There should not be any string or URL manipulation, routing mapping or REST endpoint string handling within components.
 This is supposed to be handled by methods of services.
-See also [Angular Style Guide](https://angular.io/guide/styleguide#style-05-15).
+See also [Angular Style Guide](https://angular.dev/style-guide#keep-components-and-directives-focused-on-presentation).
 
 ## Put as Little Logic Into `constructor` as Possible - Use `ngOnInit`
 
@@ -50,7 +50,7 @@ See [The essential difference between Constructor and ngOnInit in Angular](https
 
 ## Use Property Binding to Bind Dynamic Values to Attributes or Properties
 
-See [Explanation of the difference between an HTML attribute and a DOM property](https://angular.io/guide/template-syntax#html-attribute-vs-dom-property).
+See [Binding of dynamic properties and attributes](https://angular.dev/guide/templates/binding#binding-dynamic-properties-and-attributes).
 
 There are often two ways to bind values dynamically to attributes or properties: interpolation or property binding.
 In the PWA we prefer using property binding since this covers more cases in the same way.

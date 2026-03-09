@@ -25,7 +25,7 @@ See [Using State Transfer in Angular 17 SSR](https://medium.com/@saikiranmadduku
 
 Follow the steps in [Guide - Getting Started](../guides/getting-started.md) to build and run the application in SSR mode.
 
-Official documentation for Angular SSR can be found at [https://angular.io/guide/ssr](https://angular.io/guide/ssr).
+Official documentation for Angular SSR can be found at [Angular SSR Guide](https://v18.angular.dev/guide/ssr).
 
 ## robots.txt
 
@@ -36,7 +36,7 @@ To use a custom `robots.txt`, place it as a file in the `dist` folder.
 
 ## Page Metadata
 
-The PWA uses the [Meta service](https://angular.io/api/platform-browser/Meta) for setting tags for title, meta description, robots, canonical links, and open graph information in the page headers.
+The PWA uses the [Meta service](https://angular.dev/api/platform-browser/Meta) for setting tags for title, meta description, robots, canonical links, and open graph information in the page headers.
 For the resource descriptions meta data we use the [Open Graph protocol](https://ogp.me/).
 
 Meta information can be added to the routing in form of the data property `meta`.

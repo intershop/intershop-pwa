@@ -27,7 +27,7 @@ In addition the dependency to Angular's internationalization tools (i18n) is nee
 For more information refer to:
 
 - [NGX-Translate: The internationalization (i18n) library for Angular](https://github.com/ngx-translate/core)
-- [Angular - Internationalization (i18n)](https://angular.io/guide/i18n)
+- [Angular - Internationalization (i18n)](https://angular.dev/guide/i18n)
 - [ng-bootstrap Angular 9 support](https://github.com/ng-bootstrap/ng-bootstrap/issues/3537#issuecomment-586472803)
 
 > [!TIP]
