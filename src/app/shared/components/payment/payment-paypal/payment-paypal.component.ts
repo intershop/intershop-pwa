@@ -80,7 +80,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     if (this.selectedPaymentMethod?.id) {
-      this.paypalComponentContainerId = `paypal-component-container-${this.selectedPaymentMethod.id}`; // Generate unique container ID for each component instanc
+      this.paypalComponentContainerId = `paypal-component-container-${this.selectedPaymentMethod.id}`; // Generate unique container ID for each component instance
     }
     this.loadingScript$ = this.appFacade.serverSetting$<PaypalConfig>('payment.paypal').pipe(
       whenTruthy(),
