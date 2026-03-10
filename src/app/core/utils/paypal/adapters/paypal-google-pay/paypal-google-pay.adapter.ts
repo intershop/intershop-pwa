@@ -179,6 +179,7 @@ export class PaypalGooglePayAdapter {
     // There are certain configurations, particularly in Google Chrome, where
     // the Google Pay pop-up window and the PayPal 3DS iframe overlap.
     // In this case, the customer cannot see the 3DS iframe.
+    console.log('Setting position for Google Pay popup:', window);
     this.setPositionForGooglePayPopup();
 
     try {
@@ -198,8 +199,10 @@ export class PaypalGooglePayAdapter {
    * Intercepts window.open calls to position the Google Pay popup on the left side of the screen.
    */
   private setPositionForGooglePayPopup(): void {
+    console.log('Setting position for Google Pay popup:', window);
     const originalWindowOpen = window.open.bind(window);
     window.open = (url?: string | URL, target?: string, features?: string): Window | null => {
+      console.log('Intercepted window.open call with target:', target);
       if (target === 'gp-js-popup') {
         // Get parent window position and dimensions
         const parentLeft = window.screenX ?? window.screenLeft ?? 0;
@@ -275,7 +278,20 @@ export class PaypalGooglePayAdapter {
       });
       // Handle 3D Secure authentication if required
       if (confirmOrderResponse.status === 'PAYER_ACTION_REQUIRED') {
-        await this.paypalGooglepay.initiatePayerAction({ orderId: (await orderContent).paypalOrderId });
+        const payerActionResult = await this.paypalGooglepay.initiatePayerAction({
+          orderId: (await orderContent).paypalOrderId,
+        });
+
+        // User cancelled 3DS challenge
+        if (payerActionResult.liabilityShift === 'UNKNOWN') {
+          return {
+            transactionState: 'ERROR',
+            error: {
+              intent: 'CANCELED',
+              message: '3DS authentication was cancelled',
+            },
+          };
+        }
       }
 
       return this.continueICMOrderCreation((await orderContent).orderId);
