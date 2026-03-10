@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { DestroyRef, Inject, Injectable, NgZone, isDevMode } from '@angular/core';
+import { DestroyRef, Inject, Injectable, NgZone } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter, firstValueFrom, take } from 'rxjs';
 
@@ -130,7 +130,8 @@ export class PaypalGooglePayAdapter {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const googlePayments = (window as any).google.payments.api;
       this.googlePaymentClient = new googlePayments.PaymentsClient({
-        environment: isDevMode() ? 'TEST' : 'PRODUCTION',
+        //environment: isDevMode() ? 'TEST' : 'PRODUCTION',
+        environment: 'TEST',
         merchantInfo: this.googlePayConfig?.merchantInfo,
         paymentDataCallbacks: {
           onPaymentAuthorized: (paymentData: GooglePayPaymentData) =>
