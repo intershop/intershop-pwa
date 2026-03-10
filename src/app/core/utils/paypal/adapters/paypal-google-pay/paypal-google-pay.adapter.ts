@@ -244,7 +244,9 @@ export class PaypalGooglePayAdapter {
    * Google Pay may render as a modal iframe instead of a popup in certain environments.
    */
   private adjustGooglePayModalZIndex(): void {
-    console.warn('IFRAMES: ', this.document.querySelectorAll<HTMLIFrameElement>('iframe'));
+    console.warn('IFRAMES1');
+    console.warn('IFRAMES2: ', this.document);
+    console.warn('IFRAMES3: ', this.document.querySelectorAll<HTMLIFrameElement>('iframe'));
     console.warn('IFRAME: ', this.document.querySelectorAll<HTMLIFrameElement>('iframe[src*="pay.google.com"]'));
     const observer = new MutationObserver(mutations => {
       mutations.forEach(() => {
