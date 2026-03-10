@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule, Provider } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
+import { ConfigOption, provideFormlyConfig } from '@ngx-formly/core';
 
 import { ComponentsModule } from 'ish-shared/formly/components/components.module';
 import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
@@ -26,6 +26,23 @@ const wrapperComponents = [
   ValidationWrapperComponent,
 ];
 
+const ishFormlyWrapperConfig: ConfigOption = {
+  wrappers: [
+    { name: 'form-field-horizontal', component: HorizontalWrapperComponent },
+    { name: 'form-field-checkbox-horizontal', component: HorizontalCheckboxWrapperComponent },
+    { name: 'input-addon', component: InputAddonWrapperComponent },
+    { name: 'maxlength-description', component: MaxlengthDescriptionWrapperComponent },
+    { name: 'tooltip', component: TooltipWrapperComponent },
+    { name: 'validation', component: ValidationWrapperComponent },
+    { name: 'description', component: DescriptionWrapperComponent },
+    { name: 'information', component: InformationWrapperComponent },
+  ],
+};
+
+export function provideIshFormlyWrappers(): Provider[] {
+  return [provideFormlyConfig(ishFormlyWrapperConfig)];
+}
+
 @NgModule({
   imports: [
     CommonModule,
@@ -33,18 +50,6 @@ const wrapperComponents = [
     ...wrapperComponents,
     ReactiveFormsModule,
     ValidationMessageComponent,
-    FormlyBaseModule.forChild({
-      wrappers: [
-        { name: 'form-field-horizontal', component: HorizontalWrapperComponent },
-        { name: 'form-field-checkbox-horizontal', component: HorizontalCheckboxWrapperComponent },
-        { name: 'input-addon', component: InputAddonWrapperComponent },
-        { name: 'maxlength-description', component: MaxlengthDescriptionWrapperComponent },
-        { name: 'tooltip', component: TooltipWrapperComponent },
-        { name: 'validation', component: ValidationWrapperComponent },
-        { name: 'description', component: DescriptionWrapperComponent },
-        { name: 'information', component: InformationWrapperComponent },
-      ],
-    }),
   ],
   exports: [...wrapperComponents],
 })

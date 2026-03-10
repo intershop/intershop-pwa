@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule, Provider } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 
@@ -17,6 +17,17 @@ import { AddressFormFRConfiguration } from './configurations/fr/address-form-fr.
 import { AddressFormGBConfiguration } from './configurations/gb/address-form-gb.configuration';
 import { AddressFormUSConfiguration } from './configurations/us/address-form-us.configuration';
 
+export function provideIshFormlyAddressForms(): Provider[] {
+  return [
+    AddressFormConfigurationProvider,
+    { provide: ADDRESS_FORM_CONFIGURATION, useClass: AddressFormDEConfiguration, multi: true },
+    { provide: ADDRESS_FORM_CONFIGURATION, useClass: AddressFormDefaultConfiguration, multi: true },
+    { provide: ADDRESS_FORM_CONFIGURATION, useClass: AddressFormUSConfiguration, multi: true },
+    { provide: ADDRESS_FORM_CONFIGURATION, useClass: AddressFormFRConfiguration, multi: true },
+    { provide: ADDRESS_FORM_CONFIGURATION, useClass: AddressFormGBConfiguration, multi: true },
+  ];
+}
+
 @NgModule({
   imports: [
     CommonModule,
@@ -27,13 +38,5 @@ import { AddressFormUSConfiguration } from './configurations/us/address-form-us.
     ReactiveFormsModule,
   ],
   exports: [FormlyAddressExtensionFormComponent, FormlyAddressFormComponent],
-  providers: [
-    AddressFormConfigurationProvider,
-    { provide: ADDRESS_FORM_CONFIGURATION, useClass: AddressFormDEConfiguration, multi: true },
-    { provide: ADDRESS_FORM_CONFIGURATION, useClass: AddressFormDefaultConfiguration, multi: true },
-    { provide: ADDRESS_FORM_CONFIGURATION, useClass: AddressFormUSConfiguration, multi: true },
-    { provide: ADDRESS_FORM_CONFIGURATION, useClass: AddressFormFRConfiguration, multi: true },
-    { provide: ADDRESS_FORM_CONFIGURATION, useClass: AddressFormGBConfiguration, multi: true },
-  ],
 })
 export class FormlyAddressFormsModule {}

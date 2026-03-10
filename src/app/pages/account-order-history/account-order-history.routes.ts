@@ -1,6 +1,6 @@
 import { importProvidersFrom } from '@angular/core';
 import { Routes } from '@angular/router';
-import { FormlyModule } from '@ngx-formly/core';
+import { provideFormlyConfig } from '@ngx-formly/core';
 import { OrganizationManagementStoreModule } from 'projects/organization-management/src/app/store/organization-management-store.module';
 
 import { AccountOrderHistoryPageComponent } from './account-order-history-page.component';
@@ -11,18 +11,16 @@ export const accountOrderHistoryRoutes: Routes = [
     path: '',
     component: AccountOrderHistoryPageComponent,
     providers: [
-      importProvidersFrom(
-        FormlyModule.forChild({
-          types: [
-            {
-              name: 'ish-account-order-select-buyer-field',
-              component: AccountOrderSelectBuyerFieldComponent,
-              wrappers: ['form-field-horizontal', 'validation'],
-            },
-          ],
-        }),
-        OrganizationManagementStoreModule
-      ),
+      provideFormlyConfig({
+        types: [
+          {
+            name: 'ish-account-order-select-buyer-field',
+            component: AccountOrderSelectBuyerFieldComponent,
+            wrappers: ['form-field-horizontal', 'validation'],
+          },
+        ],
+      }),
+      importProvidersFrom(OrganizationManagementStoreModule),
     ],
   },
   {

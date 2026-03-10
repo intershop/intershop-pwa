@@ -1,12 +1,11 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyConfig, FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { FormlyConfig, FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { SkuQuantityType } from 'ish-core/models/product/product.helper';
-import { FormlyModule } from 'ish-shared/formly/formly.module';
 
 import { QuickorderRepeatFieldComponent } from '../formly/quickorder-repeat-field/quickorder-repeat-field.component';
 

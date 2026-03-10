@@ -3,11 +3,11 @@ import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, Output, 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormlyModule } from '@ngx-formly/core';
 import { FormlyFieldConfig } from '@ngx-formly/core/lib/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
-import { AddressDoctorComponent } from '../../../../extensions/address-doctor/shared/address-doctor/address-doctor.component';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -18,8 +18,9 @@ import { whenTruthy } from 'ish-core/utils/operators';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
-import { FormlyModule } from 'ish-shared/formly/formly.module';
 import { FormsService } from 'ish-shared/forms/utils/forms.service';
+
+import { AddressDoctorComponent } from '../../../../extensions/address-doctor/shared/address-doctor/address-doctor.component';
 
 /**
  * Standalone widget component for selecting and setting the basket shipping address in the checkout.

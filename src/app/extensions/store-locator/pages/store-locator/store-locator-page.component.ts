@@ -1,7 +1,7 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -16,7 +16,6 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
-import { FormlyModule } from 'ish-shared/formly/formly.module';
 
 import { StoreLocatorFacade } from '../../facades/store-locator.facade';
 import { StoreLocationHelper } from '../../models/store-location/store-location.helper';
