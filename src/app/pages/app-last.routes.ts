@@ -9,43 +9,115 @@ export const appLastRoutes: Routes = [
   // Legacy routes for backwards compatibility
   {
     path: 'product/:sku',
-    loadComponent: () => import('./product/product-page.component').then(c => c.ProductPageComponent),
     data: { legacy: true, preload: 'eager' },
+    loadChildren: () =>
+      Promise.all([import('./product/product-page.component'), import('ish-shared/formly/formly.module')]).then(
+        ([{ ProductPageComponent }, { provideIshFormly }]) => [
+          {
+            path: '',
+            component: ProductPageComponent,
+            providers: [...provideIshFormly()],
+          },
+        ]
+      ),
   },
   {
     path: 'category/:categoryUniqueId/product/:sku',
-    loadComponent: () => import('./product/product-page.component').then(c => c.ProductPageComponent),
     data: { legacy: true, preload: 'eager' },
+    loadChildren: () =>
+      Promise.all([import('./product/product-page.component'), import('ish-shared/formly/formly.module')]).then(
+        ([{ ProductPageComponent }, { provideIshFormly }]) => [
+          {
+            path: '',
+            component: ProductPageComponent,
+            providers: [...provideIshFormly()],
+          },
+        ]
+      ),
   },
   {
     path: 'category/:categoryUniqueId',
-    loadComponent: () => import('./category/category-page.component').then(c => c.CategoryPageComponent),
+    loadChildren: () =>
+      Promise.all([import('./category/category-page.component'), import('ish-shared/formly/formly.module')]).then(
+        ([{ CategoryPageComponent }, { provideIshFormly }]) => [
+          {
+            path: '',
+            component: CategoryPageComponent,
+            providers: [...provideIshFormly()],
+          },
+        ]
+      ),
     data: { legacy: true, preload: 'eager' },
   },
   {
     path: 'categoryref/:categoryRefId',
-    loadComponent: () => import('./category/category-page.component').then(c => c.CategoryPageComponent),
+    loadChildren: () =>
+      Promise.all([import('./category/category-page.component'), import('ish-shared/formly/formly.module')]).then(
+        ([{ CategoryPageComponent }, { provideIshFormly }]) => [
+          {
+            path: '',
+            component: CategoryPageComponent,
+            providers: [...provideIshFormly()],
+          },
+        ]
+      ),
     data: { legacy: true },
   },
   {
     path: 'page/:contentPageId',
-    loadComponent: () => import('./content/content-page.component').then(c => c.ContentPageComponent),
+    loadChildren: () =>
+      Promise.all([import('./content/content-page.component'), import('ish-shared/formly/formly.module')]).then(
+        ([{ ContentPageComponent }, { provideIshFormly }]) => [
+          {
+            path: '',
+            component: ContentPageComponent,
+            providers: [...provideIshFormly()],
+          },
+        ]
+      ),
     data: { legacy: true },
   },
   // SEO-friendly routes using matchers
   {
     matcher: matchProductRoute,
-    loadComponent: () => import('./product/product-page.component').then(c => c.ProductPageComponent),
     data: { preload: 'eager' },
+    loadChildren: () =>
+      Promise.all([import('./product/product-page.component'), import('ish-shared/formly/formly.module')]).then(
+        ([{ ProductPageComponent }, { provideIshFormly }]) => [
+          {
+            path: '',
+            component: ProductPageComponent,
+            providers: [...provideIshFormly()],
+          },
+        ]
+      ),
   },
   {
     matcher: matchCategoryRoute,
-    loadComponent: () => import('./category/category-page.component').then(c => c.CategoryPageComponent),
+    loadChildren: () =>
+      Promise.all([import('./category/category-page.component'), import('ish-shared/formly/formly.module')]).then(
+        ([{ CategoryPageComponent }, { provideIshFormly }]) => [
+          {
+            path: '',
+            component: CategoryPageComponent,
+            providers: [...provideIshFormly()],
+          },
+        ]
+      ),
     data: { preload: 'eager' },
   },
   {
     matcher: matchContentRoute,
-    loadComponent: () => import('./content/content-page.component').then(c => c.ContentPageComponent),
+    loadChildren: () =>
+      Promise.all([import('./content/content-page.component'), import('ish-shared/formly/formly.module')]).then(
+        ([{ ContentPageComponent }, { provideIshFormly }]) => [
+          {
+            path: '',
+            component: ContentPageComponent,
+            providers: [...provideIshFormly()],
+          },
+        ]
+      ),
     data: { preload: 'lazy' },
   },
   // Fallback route for 404

@@ -1,6 +1,6 @@
 import { importProvidersFrom } from '@angular/core';
 import { Routes } from '@angular/router';
-import { FormlyModule } from '@ngx-formly/core';
+import { provideFormlyConfig } from '@ngx-formly/core';
 
 import { PunchoutStoreModule } from '../store/punchout-store.module';
 
@@ -25,7 +25,7 @@ export const punchoutAccountRoutes: Routes = [
             { key: 'account.punchout.configuration.link' },
           ],
         },
-        providers: [importProvidersFrom(FormlyModule.forChild(ociConfigurationFormlyConfig))],
+        providers: [provideFormlyConfig(ociConfigurationFormlyConfig)],
         loadComponent: () =>
           import('./account-punchout-configuration/account-punchout-configuration-page.component').then(
             m => m.AccountPunchoutConfigurationPageComponent
@@ -39,7 +39,7 @@ export const punchoutAccountRoutes: Routes = [
             { key: 'account.punchout.cxml.configuration.link' },
           ],
         },
-        providers: [importProvidersFrom(FormlyModule.forChild(cxmlConfigurationFormlyConfig))],
+        providers: [provideFormlyConfig(cxmlConfigurationFormlyConfig)],
         loadComponent: () =>
           import('./account-punchout-cxml-configuration/account-punchout-cxml-configuration-page.component').then(
             m => m.AccountPunchoutCxmlConfigurationPageComponent

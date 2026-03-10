@@ -16,7 +16,7 @@ import {
   withInMemoryScrolling,
   withPreloading,
 } from '@angular/router';
-import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
+import { provideFormlyCore } from '@ngx-formly/core';
 import { provideRequisitionManagementStore } from 'requisition-management';
 
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
@@ -91,12 +91,8 @@ export const appConfig: ApplicationConfig = {
       multi: true,
     },
     // Import providers from existing NgModules during migration
-    importProvidersFrom(
-      CoreModule,
-      StateManagementModule,
-      // Formly root providers must be registered once globally
-      FormlyBaseModule.forRoot()
-    ),
+    importProvidersFrom(CoreModule, StateManagementModule),
+    provideFormlyCore(),
     ...provideAddressDoctorFeature(),
     ...provideCaptchaFeature(),
     ...provideCopilotFeature(),

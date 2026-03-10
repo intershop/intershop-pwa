@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
-
-import { FormlyModule } from 'ish-shared/formly/formly.module';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';

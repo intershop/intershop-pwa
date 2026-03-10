@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { FORMLY_CONFIG, FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
+import { NgModule, Provider } from '@angular/core';
+import { FORMLY_CONFIG } from '@ngx-formly/core';
 
 import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
@@ -18,9 +18,8 @@ import { TitleConfiguration } from './configurations/title.configuration';
 import { FIELD_LIBRARY_CONFIGURATION, FIELD_LIBRARY_CONFIGURATION_GROUP, FieldLibrary } from './field-library';
 import { registerLibraryConfigReplacementExtension } from './library-config-replacement.extension';
 
-@NgModule({
-  imports: [CommonModule, FormsSharedModule, FormlyBaseModule.forChild({})],
-  providers: [
+export function provideIshFormlyFieldLibrary(): Provider[] {
+  return [
     FieldLibrary,
     { provide: FIELD_LIBRARY_CONFIGURATION, useClass: TitleConfiguration, multi: true },
     { provide: FIELD_LIBRARY_CONFIGURATION, useClass: FirstNameConfiguration, multi: true },
@@ -49,6 +48,10 @@ import { registerLibraryConfigReplacementExtension } from './library-config-repl
       deps: [FieldLibrary],
       multi: true,
     },
-  ],
+  ];
+}
+
+@NgModule({
+  imports: [CommonModule, FormsSharedModule],
 })
 export class FieldLibraryModule {}

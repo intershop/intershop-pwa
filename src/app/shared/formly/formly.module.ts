@@ -1,29 +1,26 @@
-import { NgModule } from '@angular/core';
-import { FieldType, FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
+import { Provider } from '@angular/core';
+import { ConfigOption, provideFormlyConfig } from '@ngx-formly/core';
 
-import { ComponentsModule } from './components/components.module';
-import { ExtensionsModule } from './extensions/extensions.module';
-import { FieldLibraryModule } from './field-library/field-library.module';
-import { TypesModule } from './types/types.module';
-import { WrappersModule } from './wrappers/wrappers.module';
+import { provideIshFormlyExtensions } from './extensions/extensions.module';
+import { provideIshFormlyFieldLibrary } from './field-library/field-library.module';
+import { provideIshFormlyTypes } from './types/types.module';
+import { provideIshFormlyWrappers } from './wrappers/wrappers.module';
 
-@NgModule({
-  imports: [
-    ComponentsModule,
-    FormlyBaseModule.forChild({
-      extras: {
-        lazyRender: true,
-        showError: (field: FieldType) =>
-          field.formControl?.invalid &&
-          (field.formControl.dirty || field.options.parentForm?.submitted || !!field.field.validation?.show),
-      },
-    }),
-    FieldLibraryModule,
-    // eslint-disable-next-line @angular-eslint/sort-ngmodule-metadata-arrays
-    ExtensionsModule,
-    TypesModule,
-    WrappersModule,
-  ],
-  exports: [ComponentsModule, FormlyBaseModule],
-})
-export class FormlyModule {}
+const ishFormlyConfig: ConfigOption = {
+  extras: {
+    lazyRender: true,
+    showError: field =>
+      field.formControl?.invalid &&
+      (field.formControl.dirty || field.options.parentForm?.submitted || !!field.field.validation?.show),
+  },
+};
+
+export function provideIshFormly(): Provider[] {
+  return [
+    provideFormlyConfig(ishFormlyConfig),
+    ...provideIshFormlyFieldLibrary(),
+    ...provideIshFormlyExtensions(),
+    ...provideIshFormlyTypes(),
+    ...provideIshFormlyWrappers(),
+  ];
+}

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule, Provider } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
   NgbDateAdapter,
@@ -9,7 +9,7 @@ import {
   NgbDatepickerModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
+import { ConfigOption, provideFormlyConfig } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 import { TranslateService } from '@ngx-translate/core';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
@@ -51,6 +51,171 @@ const fieldComponents = [
   NumberFieldComponent,
 ];
 
+const ishFormlyTypeConfig: ConfigOption = {
+  types: [
+    {
+      name: 'ish-text-input-field',
+      component: TextInputFieldComponent,
+      wrappers: ['form-field-horizontal', 'validation'],
+    },
+    {
+      name: 'ish-plain-text-field',
+      component: PlainTextFieldComponent,
+      wrappers: ['form-field-horizontal'],
+    },
+    {
+      name: 'ish-html-text-field',
+      component: HtmlTextFieldComponent,
+      wrappers: ['form-field-horizontal'],
+    },
+    {
+      name: 'ish-email-field',
+      extends: 'ish-text-input-field',
+      defaultOptions: {
+        props: {
+          type: 'email',
+        },
+        validators: {
+          email: formlyValidation('email', SpecialValidators.email),
+        },
+        validation: {
+          messages: {
+            email: 'form.email.error.invalid',
+            required: 'form.email.error.required',
+          },
+        },
+      },
+    },
+    {
+      name: 'ish-phone-field',
+      extends: 'ish-text-input-field',
+      defaultOptions: {
+        props: {
+          attributes: { maxlength: 20 },
+          type: 'tel',
+        },
+        validators: {
+          phone: formlyValidation('phone', SpecialValidators.phone),
+        },
+        validation: {
+          messages: {
+            phone: 'form.phone.error.invalid',
+            required: 'form.phone.error.required',
+          },
+        },
+      },
+    },
+    {
+      name: 'ish-password-field',
+      extends: 'ish-password-novalidate-field',
+      defaultOptions: {
+        props: { attributes: { autocomplete: 'new-password' } },
+        validators: {
+          password: formlyValidation('password', SpecialValidators.password),
+        },
+        validation: {
+          messages: {
+            password: 'form.password.error.invalid',
+            required: 'form.password.error.required',
+          },
+        },
+      },
+    },
+    {
+      name: 'ish-password-novalidate-field',
+      component: PasswordFieldComponent,
+      defaultOptions: {
+        props: { attributes: { autocomplete: 'current-password' } },
+        validation: {
+          messages: {
+            required: 'form.password.error.required',
+          },
+        },
+      },
+      wrappers: ['form-field-horizontal', 'validation'],
+    },
+    {
+      name: 'ish-select-field',
+      component: SelectFieldComponent,
+      wrappers: ['form-field-horizontal', 'validation'],
+    },
+    {
+      name: 'ish-textarea-field',
+      component: TextareaFieldComponent,
+      wrappers: ['form-field-horizontal', 'maxlength-description', 'validation'],
+    },
+    {
+      name: 'ish-checkbox-field',
+      component: CheckboxFieldComponent,
+      wrappers: ['form-field-checkbox-horizontal'],
+    },
+    {
+      name: 'ish-captcha-field',
+      component: CaptchaFieldComponent,
+      defaultOptions: {
+        validation: {
+          messages: {
+            required: 'recaptcha.v2.incorrect.error',
+          },
+        },
+      },
+      wrappers: ['form-field-horizontal', 'validation'],
+    },
+    {
+      name: 'ish-fieldset-field',
+      component: FieldsetFieldComponent,
+    },
+    {
+      name: 'ish-radio-field',
+      component: RadioFieldComponent,
+      wrappers: ['form-field-checkbox-horizontal'],
+    },
+    {
+      name: 'ish-radio-group-field',
+      component: RadioGroupFieldComponent,
+      wrappers: ['form-field-checkbox-horizontal', 'description'],
+    },
+    {
+      name: 'ish-date-picker-field',
+      component: DatePickerFieldComponent,
+      wrappers: ['form-field-horizontal', 'validation'],
+    },
+    {
+      name: 'ish-date-range-picker-field',
+      component: DateRangePickerFieldComponent,
+      wrappers: ['form-field-horizontal', 'validation'],
+    },
+    {
+      name: 'ish-search-select-field',
+      component: SearchSelectFieldComponent,
+      wrappers: ['form-field-horizontal', 'validation'],
+    },
+    {
+      name: 'ish-number-field',
+      component: NumberFieldComponent,
+      defaultOptions: {
+        validation: {
+          messages: {
+            required: 'form.number.error.required',
+            min: 'form.number.error.min',
+          },
+        },
+      },
+      wrappers: ['form-field-horizontal', 'validation'],
+    },
+  ],
+};
+
+export function provideIshFormlyTypes(): Provider[] {
+  return [
+    ...provideNgxMask(),
+    { provide: NgbDateParserFormatter, useClass: LocalizedParserFormatter, deps: [TranslateService] },
+    { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter },
+    { provide: NgbDatepickerI18n, useClass: IshDatepickerI18n },
+    provideFormlyConfig(ishFormlyTypeConfig),
+  ];
+}
+
 @NgModule({
   imports: [
     CommonModule,
@@ -62,167 +227,6 @@ const fieldComponents = [
     NgxMaskPipe,
     ReactiveFormsModule,
     SearchSelectFieldComponent,
-
-    FormlyBaseModule.forChild({
-      types: [
-        {
-          name: 'ish-text-input-field',
-          component: TextInputFieldComponent,
-          wrappers: ['form-field-horizontal', 'validation'],
-        },
-        {
-          name: 'ish-plain-text-field',
-          component: PlainTextFieldComponent,
-          wrappers: ['form-field-horizontal'],
-        },
-        {
-          name: 'ish-html-text-field',
-          component: HtmlTextFieldComponent,
-          wrappers: ['form-field-horizontal'],
-        },
-        {
-          name: 'ish-email-field',
-          extends: 'ish-text-input-field',
-          defaultOptions: {
-            props: {
-              type: 'email',
-            },
-            validators: {
-              email: formlyValidation('email', SpecialValidators.email),
-            },
-            validation: {
-              messages: {
-                email: 'form.email.error.invalid',
-                required: 'form.email.error.required',
-              },
-            },
-          },
-        },
-        {
-          name: 'ish-phone-field',
-          extends: 'ish-text-input-field',
-          defaultOptions: {
-            props: {
-              attributes: { maxlength: 20 },
-              type: 'tel',
-            },
-            validators: {
-              phone: formlyValidation('phone', SpecialValidators.phone),
-            },
-            validation: {
-              messages: {
-                phone: 'form.phone.error.invalid',
-                required: 'form.phone.error.required',
-              },
-            },
-          },
-        },
-        {
-          name: 'ish-password-field',
-          extends: 'ish-password-novalidate-field',
-          defaultOptions: {
-            props: { attributes: { autocomplete: 'new-password' } },
-            validators: {
-              password: formlyValidation('password', SpecialValidators.password),
-            },
-            validation: {
-              messages: {
-                password: 'form.password.error.invalid',
-                required: 'form.password.error.required',
-              },
-            },
-          },
-        },
-        {
-          name: 'ish-password-novalidate-field',
-          component: PasswordFieldComponent,
-          defaultOptions: {
-            props: { attributes: { autocomplete: 'current-password' } },
-            validation: {
-              messages: {
-                required: 'form.password.error.required',
-              },
-            },
-          },
-          wrappers: ['form-field-horizontal', 'validation'],
-        },
-        {
-          name: 'ish-select-field',
-          component: SelectFieldComponent,
-          wrappers: ['form-field-horizontal', 'validation'],
-        },
-        {
-          name: 'ish-textarea-field',
-          component: TextareaFieldComponent,
-          wrappers: ['form-field-horizontal', 'maxlength-description', 'validation'],
-        },
-        {
-          name: 'ish-checkbox-field',
-          component: CheckboxFieldComponent,
-          wrappers: ['form-field-checkbox-horizontal'],
-        },
-        {
-          name: 'ish-captcha-field',
-          component: CaptchaFieldComponent,
-          defaultOptions: {
-            validation: {
-              messages: {
-                required: 'recaptcha.v2.incorrect.error',
-              },
-            },
-          },
-          wrappers: ['form-field-horizontal', 'validation'],
-        },
-        {
-          name: 'ish-fieldset-field',
-          component: FieldsetFieldComponent,
-        },
-        {
-          name: 'ish-radio-field',
-          component: RadioFieldComponent,
-          wrappers: ['form-field-checkbox-horizontal'],
-        },
-        {
-          name: 'ish-radio-group-field',
-          component: RadioGroupFieldComponent,
-          wrappers: ['form-field-checkbox-horizontal', 'description'],
-        },
-        {
-          name: 'ish-date-picker-field',
-          component: DatePickerFieldComponent,
-          wrappers: ['form-field-horizontal', 'validation'],
-        },
-        {
-          name: 'ish-date-range-picker-field',
-          component: DateRangePickerFieldComponent,
-          wrappers: ['form-field-horizontal', 'validation'],
-        },
-        {
-          name: 'ish-search-select-field',
-          component: SearchSelectFieldComponent,
-          wrappers: ['form-field-horizontal', 'validation'],
-        },
-        {
-          name: 'ish-number-field',
-          component: NumberFieldComponent,
-          defaultOptions: {
-            validation: {
-              messages: {
-                required: 'form.number.error.required',
-                min: 'form.number.error.min',
-              },
-            },
-          },
-          wrappers: ['form-field-horizontal', 'validation'],
-        },
-      ],
-    }),
-  ],
-  providers: [
-    provideNgxMask(),
-    { provide: NgbDateParserFormatter, useClass: LocalizedParserFormatter, deps: [TranslateService] },
-    { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter },
-    { provide: NgbDatepickerI18n, useClass: IshDatepickerI18n },
   ],
   exports: [...fieldComponents, SearchSelectFieldComponent],
 })

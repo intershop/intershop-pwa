@@ -1,12 +1,11 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
-import { FormlyModule } from 'ish-shared/formly/formly.module';
 
 /**
  * Type that renders a terms and conditions field, specific for the checkout review form.
