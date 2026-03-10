@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
@@ -27,7 +27,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   templateUrl: './account-profile-password.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ErrorMessageComponent, FormSubmitDirective, FormlyModule, ReactiveFormsModule, TranslatePipe, RouterLink],
+  imports: [ErrorMessageComponent, FormSubmitDirective, FormlyForm, ReactiveFormsModule, TranslatePipe, RouterLink],
 })
 export class AccountProfilePasswordComponent implements OnInit, OnChanges {
   @Input() error: HttpError;

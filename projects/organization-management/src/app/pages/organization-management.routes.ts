@@ -1,6 +1,6 @@
 import { importProvidersFrom } from '@angular/core';
 import { Routes } from '@angular/router';
-import { FormlyModule } from '@ngx-formly/core';
+import { provideFormlyConfig } from '@ngx-formly/core';
 
 import { authorizationToggleGuard } from 'ish-core/authorization-toggle.module';
 import { featureToggleGuard } from 'ish-core/feature-toggle.module';
@@ -141,11 +141,9 @@ export const routes: Routes = [
           import('./cost-center-buyers/cost-center-buyers-page.component').then(m => m.CostCenterBuyersPageComponent),
         canActivate: [redirectFirstToParentGuard, fetchUsersGuard],
         providers: [
-          importProvidersFrom(
-            FormlyModule.forChild({
-              types: [{ name: 'repeatCostCenterBuyers', component: CostCenterBuyersRepeatFieldComponent }],
-            })
-          ),
+          provideFormlyConfig({
+            types: [{ name: 'repeatCostCenterBuyers', component: CostCenterBuyersRepeatFieldComponent }],
+          }),
         ],
       },
     ],

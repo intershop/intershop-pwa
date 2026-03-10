@@ -2,7 +2,7 @@ import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
@@ -32,7 +32,7 @@ import { provideIshFormly } from 'ish-shared/formly/formly.module';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   providers: [...provideIshFormly()],
-  imports: [ErrorMessageComponent, FormlyModule, AsyncPipe, NgClass, TranslatePipe, RouterLink, ReactiveFormsModule],
+  imports: [ErrorMessageComponent, FormlyForm, AsyncPipe, NgClass, TranslatePipe, RouterLink, ReactiveFormsModule],
 })
 export class LoginFormComponent implements OnInit {
   @Input() labelClass: string;

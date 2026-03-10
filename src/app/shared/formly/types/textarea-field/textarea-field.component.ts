@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 /**
@@ -21,7 +21,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './textarea-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, FormlyModule, ReactiveFormsModule, TranslatePipe],
+  imports: [CommonModule, FormlyAttributes, ReactiveFormsModule, TranslatePipe],
 })
 export class TextareaFieldComponent extends FieldType<FieldTypeConfig> {
   defaultOptions = {

@@ -2,7 +2,7 @@ import { AsyncPipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, map, shareReplay, take, withLatestFrom } from 'rxjs/operators';
@@ -37,7 +37,7 @@ import { mapToAddressOptions } from 'ish-shared/forms/utils/forms.service';
     AsyncPipe,
     ErrorMessageComponent,
     FormlyCustomerAddressFormComponent,
-    FormlyModule,
+    FormlyForm,
     ModalDialogComponent,
     NgFor,
     NgIf,

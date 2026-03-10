@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 
@@ -26,7 +26,7 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
   standalone: true,
   imports: [
     ServerHtmlDirective,
-    FormlyModule,
+    FormlyForm,
     ModalDialogComponent,
     NgIf,
     ReactiveFormsModule,

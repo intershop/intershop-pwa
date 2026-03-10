@@ -1,7 +1,7 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
+import { FieldType, FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -15,6 +15,13 @@ import { ValidationMessageComponent } from 'ish-shared/formly/components/validat
   templateUrl: './checkout-review-tac-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ReactiveFormsModule, ServerHtmlDirective, NgIf, TranslatePipe, FormlyModule, ValidationMessageComponent],
+  imports: [
+    ReactiveFormsModule,
+    ServerHtmlDirective,
+    NgIf,
+    TranslatePipe,
+    FormlyAttributes,
+    ValidationMessageComponent,
+  ],
 })
 export class CheckoutReviewTacFieldComponent extends FieldType<FieldTypeConfig> {}

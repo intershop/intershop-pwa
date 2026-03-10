@@ -1,7 +1,7 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 
@@ -14,7 +14,7 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
   templateUrl: './payment-save-checkbox.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, FormlyModule],
+  imports: [NgIf, FormlyForm],
 })
 export class PaymentSaveCheckboxComponent implements OnInit {
   @Input({ required: true }) paymentMethod: PaymentMethod;

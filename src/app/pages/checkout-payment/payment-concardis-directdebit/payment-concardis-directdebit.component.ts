@@ -2,7 +2,7 @@ import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validators } from '@angular/forms';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { pairwise, startWith } from 'rxjs/operators';
 
@@ -31,7 +31,7 @@ declare let PayEngine: any;
   templateUrl: './payment-concardis-directdebit.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [FormlyModule, TranslatePipe, PaymentSaveCheckboxComponent, NgIf],
+  imports: [FormlyForm, TranslatePipe, PaymentSaveCheckboxComponent, NgIf],
 })
 export class PaymentConcardisDirectdebitComponent extends PaymentConcardisComponent implements OnInit {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {

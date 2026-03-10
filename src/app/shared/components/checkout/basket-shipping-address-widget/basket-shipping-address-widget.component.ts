@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, Output, 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyModule } from '@ngx-formly/core';
+import { FormlyForm } from '@ngx-formly/core';
 import { FormlyFieldConfig } from '@ngx-formly/core/lib/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
@@ -36,7 +36,7 @@ import { AddressDoctorComponent } from '../../../../extensions/address-doctor/sh
     TranslatePipe,
     ModalDialogComponent,
     ReactiveFormsModule,
-    FormlyModule,
+    FormlyForm,
     FormlyCustomerAddressFormComponent,
     AddressDoctorComponent,
     NgbCollapseModule,

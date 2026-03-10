@@ -9,7 +9,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { isEqual, parseISO } from 'date-fns';
 
@@ -24,7 +24,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   templateUrl: './basket-desired-delivery-date.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, ReactiveFormsModule, TranslatePipe, SuccessMessageComponent, FormlyModule],
+  imports: [NgIf, ReactiveFormsModule, TranslatePipe, SuccessMessageComponent, FormlyForm],
 })
 export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: Basket;

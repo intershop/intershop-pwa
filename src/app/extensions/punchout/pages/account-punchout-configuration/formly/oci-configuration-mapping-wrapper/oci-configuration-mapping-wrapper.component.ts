@@ -1,6 +1,6 @@
 import { NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FieldWrapper, FormlyModule } from '@ngx-formly/core';
+import { FieldWrapper } from '@ngx-formly/core';
 
 /**
  * The wrapper for displaying two input fields, a map from and a map to field.
@@ -11,6 +11,6 @@ import { FieldWrapper, FormlyModule } from '@ngx-formly/core';
   templateUrl: './oci-configuration-mapping-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormlyModule, NgClass, NgIf],
+  imports: [NgClass, NgIf],
 })
 export class OciConfigurationMappingWrapperComponent extends FieldWrapper {}

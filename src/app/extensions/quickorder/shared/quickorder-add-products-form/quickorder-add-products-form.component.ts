@@ -1,7 +1,7 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyConfig, FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
+import { FormlyConfig, FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -17,7 +17,7 @@ import { QuickorderRepeatFieldComponent } from '../formly/quickorder-repeat-fiel
   templateUrl: './quickorder-add-products-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, ReactiveFormsModule, TranslatePipe, FormlyModule],
+  imports: [NgIf, ReactiveFormsModule, TranslatePipe, FormlyForm],
 })
 export class QuickorderAddProductsFormComponent implements OnInit {
   quickOrderForm: FormGroup = new FormGroup({});

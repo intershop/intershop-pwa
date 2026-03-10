@@ -2,7 +2,7 @@ import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -20,7 +20,7 @@ declare let PayEngine: any;
   templateUrl: './payment-concardis-creditcard-cvc-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, TranslatePipe, ReactiveFormsModule, FormlyModule],
+  imports: [NgIf, TranslatePipe, ReactiveFormsModule, FormlyForm],
 })
 export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcardisComponent implements OnInit {
   @Input({ required: true }) paymentInstrument: PaymentInstrument;

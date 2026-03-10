@@ -1,7 +1,7 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -33,7 +33,7 @@ import { StoresMapComponent } from '../../shared/stores-map/stores-map.component
     AsyncPipe,
     ErrorMessageComponent,
     FeatureToggleDirective,
-    FormlyModule,
+    FormlyForm,
     LoadingComponent,
     NgFor,
     NgIf,

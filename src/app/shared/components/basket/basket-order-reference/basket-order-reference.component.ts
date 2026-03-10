@@ -10,7 +10,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -23,7 +23,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   templateUrl: './basket-order-reference.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, NgIf, FormlyModule, SuccessMessageComponent, ReactiveFormsModule],
+  imports: [TranslatePipe, NgIf, FormlyForm, SuccessMessageComponent, ReactiveFormsModule],
 })
 export class BasketOrderReferenceComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: Basket;

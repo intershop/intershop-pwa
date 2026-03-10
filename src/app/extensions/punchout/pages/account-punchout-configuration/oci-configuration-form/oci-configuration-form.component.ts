@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, filter, map, shareReplay, take } from 'rxjs';
 
@@ -27,7 +27,7 @@ import { OciConfigurationItem } from '../../../models/oci-configuration-item/oci
     AsyncPipe,
     ErrorMessageComponent,
     FormSubmitDirective,
-    FormlyModule,
+    FormlyForm,
     LoadingComponent,
     NgIf,
     ReactiveFormsModule,
@@ -35,7 +35,7 @@ import { OciConfigurationItem } from '../../../models/oci-configuration-item/oci
     TranslatePipe,
     NgFor,
     NgbPopoverModule,
-    ],
+  ],
 })
 export class OciConfigurationFormComponent implements OnInit {
   form: FormGroup = new FormGroup({});

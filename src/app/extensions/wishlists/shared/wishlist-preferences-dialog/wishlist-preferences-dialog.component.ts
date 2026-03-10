@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 
@@ -32,7 +32,7 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
   templateUrl: './wishlist-preferences-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormlyModule, ReactiveFormsModule, TranslatePipe],
+  imports: [FormlyForm, ReactiveFormsModule, TranslatePipe],
 })
 export class WishlistPreferencesDialogComponent implements OnInit {
   /**
