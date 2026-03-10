@@ -179,16 +179,19 @@ export class PaypalGooglePayAdapter {
     // There are certain configurations, particularly in Google Chrome, where
     // the Google Pay pop-up window and the PayPal 3DS iframe overlap.
     // In this case, the customer cannot see the 3DS iframe.
-    console.log('Setting position for Google Pay popup:', window);
+    console.warn('[GPay Debug] onGooglePayButtonClicked - setting position');
     this.setPositionForGooglePayPopup();
+    this.adjustGooglePayModalZIndex();
 
     try {
+      console.warn('[GPay Debug] Calling loadPaymentData');
       await this.getGooglePaymentsClient().loadPaymentData(paymentDataRequest);
+      console.warn('[GPay Debug] loadPaymentData completed');
     } catch (error) {
       this.loading = false;
       // User closed the Google Pay popup without completing payment
       if (error?.statusCode === 'CANCELED') {
-        console.log('Google Pay payment was canceled by the user.');
+        console.warn('[GPay Debug] Payment was canceled by user');
         return;
       }
       throw error;
@@ -199,10 +202,10 @@ export class PaypalGooglePayAdapter {
    * Intercepts window.open calls to position the Google Pay popup on the left side of the screen.
    */
   private setPositionForGooglePayPopup(): void {
-    console.log('Setting position for Google Pay popup:', window);
+    console.warn('[GPay Debug] setPositionForGooglePayPopup called');
     const originalWindowOpen = window.open.bind(window);
     window.open = (url?: string | URL, target?: string, features?: string): Window | null => {
-      console.log('Intercepted window.open call with target:', target);
+      console.warn('[GPay Debug] Intercepted window.open with target:', target);
       if (target === 'gp-js-popup') {
         // Get parent window position and dimensions
         const parentLeft = window.screenX ?? window.screenLeft ?? 0;
@@ -234,6 +237,43 @@ export class PaypalGooglePayAdapter {
       }
       return originalWindowOpen(url, target, features);
     };
+  }
+
+  /**
+   * Observes DOM for Google Pay iframes and adjusts their z-index to prevent overlap with 3DS iframe.
+   * Google Pay may render as a modal iframe instead of a popup in certain environments.
+   */
+  private adjustGooglePayModalZIndex(): void {
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(() => {
+        // Find Google Pay iframes and adjust z-index
+        const iframes = this.document.querySelectorAll<HTMLIFrameElement>('iframe[src*="pay.google.com"]');
+        iframes.forEach(iframe => {
+          if (iframe.style.zIndex !== '2147483646') {
+            console.warn('[GPay Debug] Adjusting iframe z-index');
+            iframe.style.zIndex = '2147483646';
+            // Also adjust parent containers if they exist
+            let parent = iframe.parentElement;
+            while (parent && parent !== this.document.body) {
+              if (getComputedStyle(parent).position === 'fixed' || getComputedStyle(parent).position === 'absolute') {
+                parent.style.zIndex = '2147483646';
+              }
+              parent = parent.parentElement;
+            }
+          }
+        });
+      });
+    });
+
+    observer.observe(this.document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['style', 'class'],
+    });
+
+    // Disconnect observer after payment flow completes (max 5 minutes)
+    setTimeout(() => observer.disconnect(), 300000);
   }
 
   /**
