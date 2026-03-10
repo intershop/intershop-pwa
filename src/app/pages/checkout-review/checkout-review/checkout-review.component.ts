@@ -10,7 +10,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ConfigOption, FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
+import { ConfigOption, FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -79,7 +79,7 @@ export const checkoutReviewFormlyConfig: ConfigOption = {
     SkipContentLinkComponent,
     LineItemListComponent,
     BasketCostSummaryComponent,
-    FormlyModule,
+    FormlyForm,
     ReactiveFormsModule,
     BasketShippingMethodComponent,
     BasketCostCenterViewComponent,

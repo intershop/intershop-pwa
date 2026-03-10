@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
@@ -24,7 +24,7 @@ import { ContactUsFacade } from '../../../facades/contact-us.facade';
   templateUrl: './contact-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, FormSubmitDirective, FormlyModule, NgIf, ReactiveFormsModule, TranslatePipe],
+  imports: [AsyncPipe, FormSubmitDirective, FormlyForm, NgIf, ReactiveFormsModule, TranslatePipe],
 })
 export class ContactFormComponent implements OnInit {
   /** The contact request to send. */

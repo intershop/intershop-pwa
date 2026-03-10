@@ -2,7 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
@@ -21,7 +21,7 @@ import { ProductQuantityComponent } from 'ish-shared/components/product/product-
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ProductContextFacade],
   standalone: true,
-  imports: [ReactiveFormsModule, FormlyModule, RouterLink, AsyncPipe, TranslatePipe, ProductQuantityComponent],
+  imports: [ReactiveFormsModule, FormlyForm, RouterLink, AsyncPipe, TranslatePipe, ProductQuantityComponent],
 })
 @GenerateLazyComponent()
 export class DirectOrderComponent implements OnInit, AfterViewInit {

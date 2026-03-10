@@ -10,7 +10,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -27,7 +27,7 @@ import { SuccessMessageComponent } from 'ish-shared/components/common/success-me
   templateUrl: './basket-merchant-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, SuccessMessageComponent, TranslatePipe, FormlyModule],
+  imports: [ReactiveFormsModule, NgIf, SuccessMessageComponent, TranslatePipe, FormlyForm],
 })
 export class BasketMerchantMessageComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: Basket;

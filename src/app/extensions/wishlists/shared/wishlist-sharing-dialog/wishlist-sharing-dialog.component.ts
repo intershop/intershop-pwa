@@ -1,16 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -32,7 +23,7 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
   templateUrl: './wishlist-sharing-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormlyModule, ReactiveFormsModule, ServerHtmlDirective, TranslatePipe],
+  imports: [FormlyForm, ReactiveFormsModule, ServerHtmlDirective, TranslatePipe],
 })
 export class WishlistSharingDialogComponent implements OnInit {
   /**

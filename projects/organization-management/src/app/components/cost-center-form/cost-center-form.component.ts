@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -20,7 +20,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
   templateUrl: './cost-center-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, FormlyModule, ReactiveFormsModule, ErrorMessageComponent],
+  imports: [AsyncPipe, FormlyForm, ReactiveFormsModule, ErrorMessageComponent],
 })
 export class CostCenterFormComponent implements OnInit {
   @Input({ required: true }) form: FormGroup;

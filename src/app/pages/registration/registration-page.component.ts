@@ -4,10 +4,9 @@ import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, take, tap } from 'rxjs';
-import { AddressDoctorComponent } from '../../extensions/address-doctor/shared/address-doctor/address-doctor.component';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -18,6 +17,8 @@ import { whenTruthy } from 'ish-core/utils/operators';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+
+import { AddressDoctorComponent } from '../../extensions/address-doctor/shared/address-doctor/address-doctor.component';
 
 import {
   RegistrationConfigType,
@@ -39,7 +40,7 @@ import {
     AddressDoctorComponent,
     LoadingComponent,
     ReactiveFormsModule,
-    FormlyModule,
+    FormlyForm,
     NgIf,
   ],
 })

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
@@ -16,7 +16,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   templateUrl: './update-password-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ReactiveFormsModule, FormlyModule, TranslatePipe],
+  imports: [ReactiveFormsModule, FormlyForm, TranslatePipe],
 })
 export class UpdatePasswordFormComponent implements OnInit {
   /**

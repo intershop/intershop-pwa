@@ -3,7 +3,7 @@ import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
@@ -23,7 +23,7 @@ import { CxmlConfiguration } from '../../../models/cxml-configuration/cxml-confi
     AsyncPipe,
     ErrorMessageComponent,
     FormSubmitDirective,
-    FormlyModule,
+    FormlyForm,
     ReactiveFormsModule,
     RouterLink,
     TranslatePipe,

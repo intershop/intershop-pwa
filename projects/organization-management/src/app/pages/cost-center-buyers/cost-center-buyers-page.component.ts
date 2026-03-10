@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable, merge } from 'rxjs';
 import { take, withLatestFrom } from 'rxjs/operators';
@@ -31,7 +31,7 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
   imports: [
     AsyncPipe,
     ErrorMessageComponent,
-    FormlyModule,
+    FormlyForm,
     LoadingComponent,
     NgIf,
     ReactiveFormsModule,

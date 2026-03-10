@@ -13,7 +13,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { formatISO, parseISO } from 'date-fns';
 import { isEqual } from 'lodash-es';
@@ -38,7 +38,7 @@ interface RecurrenceFormData {
   styleUrls: ['./basket-order-recurrence-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, ContentIncludeComponent, NgbCollapse, ReactiveFormsModule, FormlyModule, NgIf, AsyncPipe],
+  imports: [TranslatePipe, ContentIncludeComponent, NgbCollapse, ReactiveFormsModule, FormlyForm, NgIf, AsyncPipe],
 })
 export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
   @Input({ required: true }) recurrence: Recurrence;

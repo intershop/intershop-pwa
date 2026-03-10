@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { RxState } from '@rx-angular/state';
 import { Observable, combineLatest, map, switchMap } from 'rxjs';
 
@@ -23,7 +23,7 @@ interface ComponentState {
   templateUrl: './custom-fields-formly.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, FormlyModule],
+  imports: [AsyncPipe, FormlyForm],
 })
 export class CustomFieldsFormlyComponent extends RxState<ComponentState> implements OnInit, OnChanges {
   @Input({ required: true }) set form(form: ComponentState['form']) {

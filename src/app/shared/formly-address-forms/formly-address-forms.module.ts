@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Provider } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormlyModule } from '@ngx-formly/core';
+import { FormlyAttributes, FormlyField, FormlyForm, FormlyTemplate, FormlyValidationMessage } from '@ngx-formly/core';
 
 import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
@@ -33,7 +33,11 @@ export function provideIshFormlyAddressForms(): Provider[] {
     CommonModule,
     FormlyAddressExtensionFormComponent,
     FormlyAddressFormComponent,
-    FormlyModule,
+    FormlyAttributes,
+    FormlyField,
+    FormlyForm,
+    FormlyTemplate,
+    FormlyValidationMessage,
     FormsSharedModule,
     ReactiveFormsModule,
   ],

@@ -1,6 +1,6 @@
 import { NgFor } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FieldArrayType, FormlyModule } from '@ngx-formly/core';
+import { FieldArrayType, FormlyField } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -8,7 +8,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './oci-configuration-mapping-repeat-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormlyModule, TranslatePipe, NgFor],
+  imports: [FormlyField, TranslatePipe, NgFor],
 })
 export class OciConfigurationMappingRepeatFieldComponent extends FieldArrayType {
   addRow() {

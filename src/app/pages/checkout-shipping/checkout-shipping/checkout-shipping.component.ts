@@ -2,7 +2,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ConfigOption, FormlyConfig, FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { ConfigOption, FormlyConfig, FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
 
@@ -22,7 +22,7 @@ const ShippingWrapperConfig: ConfigOption = {
   templateUrl: './checkout-shipping.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, ReactiveFormsModule, FormlyModule],
+  imports: [NgIf, AsyncPipe, ReactiveFormsModule, FormlyForm],
 })
 export class CheckoutShippingComponent implements OnInit {
   shippingMethods$: Observable<ShippingMethod[]>;

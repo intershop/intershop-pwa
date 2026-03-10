@@ -6,9 +6,7 @@ import {
   FieldArrayType,
   FieldType,
   FieldWrapper,
-  FormlyField,
   FormlyFieldConfig,
-  FormlyForm,
   FormlyModule,
 } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
@@ -174,8 +172,6 @@ class NumberFieldComponent extends FieldType {}
   ],
   imports: [
     CommonModule,
-    FormlyField,
-    FormlyForm,
     FormlyModule.forRoot({
       formlyForm: FormlyForm,
       types: [

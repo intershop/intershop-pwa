@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FieldType, FormlyModule } from '@ngx-formly/core';
+import { FieldType, FormlyField } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 /**
@@ -22,6 +22,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './fieldset-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, FormlyModule, TranslatePipe],
+  imports: [CommonModule, FormlyField, TranslatePipe],
 })
 export class FieldsetFieldComponent extends FieldType {}

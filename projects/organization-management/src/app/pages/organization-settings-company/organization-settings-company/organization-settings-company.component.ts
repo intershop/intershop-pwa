@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 
@@ -20,7 +20,7 @@ import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
   templateUrl: './organization-settings-company.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormSubmitDirective, ErrorMessageComponent, FormlyModule, ReactiveFormsModule, TranslatePipe, RouterLink],
+  imports: [FormSubmitDirective, ErrorMessageComponent, FormlyForm, ReactiveFormsModule, TranslatePipe, RouterLink],
 })
 export class OrganizationSettingsCompanyComponent implements OnInit {
   @Input({ required: true }) currentCustomer: Customer;
