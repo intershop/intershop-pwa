@@ -268,7 +268,9 @@ export class PaypalGooglePayAdapter {
         return await this.continueICMOrderCreation();
       } else if (confirmOrderResponse.status === 'PAYER_ACTION_REQUIRED') {
         // Handle 3D Secure authentication using .then() pattern as recommended
-        return await this.handle3DSecure();
+        this.handle3DSecure();
+        // Return immediately so Google Pay sheet closes
+        return { transactionState: 'SUCCESS' };
       } else {
         // Other status - continue with ICM order creation
         return await this.continueICMOrderCreation();
