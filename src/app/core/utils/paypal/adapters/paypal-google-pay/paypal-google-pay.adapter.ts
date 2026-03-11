@@ -312,14 +312,14 @@ export class PaypalGooglePayAdapter {
     // Remove PayPal contingency iframes (3DS challenge)
     const paypalIframes = this.document.querySelectorAll('iframe[name*="paypal"], iframe[src*="paypal"]');
     paypalIframes.forEach(iframe => {
-      console.log('IFRAME: ', iframe);
+      console.error('IFRAME: ', iframe);
       iframe.remove();
     });
 
     // Remove PayPal modal containers
     const paypalModals = this.document.querySelectorAll('[class*="paypal-overlay"], [id*="paypal-overlay"]');
     paypalModals.forEach(modal => {
-      console.log('Modal: ', modal);
+      console.error('Modal: ', modal);
       modal.remove();
     });
   }
