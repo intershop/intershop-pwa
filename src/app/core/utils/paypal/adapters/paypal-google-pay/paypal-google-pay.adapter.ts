@@ -135,8 +135,7 @@ export class PaypalGooglePayAdapter {
         environment: 'TEST',
         merchantInfo: this.googlePayConfig?.merchantInfo,
         paymentDataCallbacks: {
-          onPaymentAuthorized: (paymentData: GooglePayPaymentData) =>
-            this.ngZone.run(() => this.onPaymentAuthorizedCallback(paymentData)),
+          onPaymentAuthorized: (paymentData: GooglePayPaymentData) => this.onPaymentAuthorizedCallback(paymentData),
         },
       });
     }
@@ -155,7 +154,7 @@ export class PaypalGooglePayAdapter {
       }
     });
     const buttonOptions: GooglePayButtonOptions = {
-      onClick: () => this.ngZone.run(() => this.onGooglePayButtonClicked()),
+      onClick: () => this.onGooglePayButtonClicked(),
       allowedPaymentMethods: this.googlePayConfig.allowedPaymentMethods,
       ...(PAYPAL_GOOGLE_PAY_BUTTON_STYLING as GooglePayButtonOptions),
       buttonLocale,
