@@ -147,6 +147,7 @@ export class PaypalGooglePayAdapter {
    * Renders the Google Pay button in the specified container.
    */
   private renderButton(container: HTMLElement): void {
+    container.innerHTML = '';
     let buttonLocale = 'en';
     this.appFacade.currentLocale$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(locale => {
       if (locale) {
@@ -171,11 +172,14 @@ export class PaypalGooglePayAdapter {
    * when user completes Google Pay authentication.
    */
   private async onGooglePayButtonClicked(): Promise<void> {
-    this.startOrderCreation();
-
-    const paymentDataRequest = await this.getPaymentDataRequest();
-
     try {
+      // Step 1: Start order creation and wait for orderId to be available
+      await this.startOrderCreation();
+
+      // Step 2: Create payment data request with basket information
+      const paymentDataRequest = await this.getPaymentDataRequest();
+
+      // Step 3: Load payment data - this triggers onPaymentAuthorized callback
       await this.getGooglePaymentsClient().loadPaymentData(paymentDataRequest);
     } catch (error) {
       // User closed the Google Pay popup without completing payment
@@ -185,7 +189,6 @@ export class PaypalGooglePayAdapter {
         if (this.orderId) {
           this.checkoutFacade.processPaypalOrderCreation(this.orderId, true);
         }
-        return;
       }
     }
   }
