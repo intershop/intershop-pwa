@@ -54,8 +54,8 @@ class TestablePaypalGooglePayAdapter extends PaypalGooglePayAdapter {
     return (this as any).onPaymentAuthorizedCallback(paymentData);
   }
 
-  testContinueICMOrderCreation(orderId: string): Promise<GooglePayPaymentAuthorizationResult> {
-    return (this as any).continueICMOrderCreation(orderId);
+  testContinueICMOrderCreation(): Promise<GooglePayPaymentAuthorizationResult> {
+    return (this as any).continueICMOrderCreation();
   }
 
   setPaypalGooglepay(component: any): void {
@@ -66,8 +66,12 @@ class TestablePaypalGooglePayAdapter extends PaypalGooglePayAdapter {
     (this as any).googlePayConfig = config;
   }
 
-  setLoading(loading: boolean): void {
-    (this as any).loading = loading;
+  setOrderId(orderId: string): void {
+    (this as any).orderId = orderId;
+  }
+
+  setPaypalOrderId(paypalOrderId: string): void {
+    (this as any).paypalOrderId = paypalOrderId;
   }
 }
 
@@ -336,6 +340,7 @@ describe('Paypal Google Pay Adapter', () => {
   describe('onGooglePayButtonClicked()', () => {
     beforeEach(() => {
       adapter.setGooglePayConfig(mockGooglePayConfig);
+      when(paypalDataTransferService.paypalOrder$).thenReturn(of({ paypalOrderId: 'PAYPAL123', orderId: 'ORDER456' }));
     });
 
     it('should load payment data when button is clicked', async () => {
@@ -344,12 +349,10 @@ describe('Paypal Google Pay Adapter', () => {
       expect(mockGooglePaymentClient.loadPaymentData).toHaveBeenCalled();
     });
 
-    it('should not process if already loading', async () => {
-      adapter.setLoading(true);
-
+    it('should start order creation before loading payment data', async () => {
       await adapter.testOnGooglePayButtonClicked();
 
-      expect(mockGooglePaymentClient.loadPaymentData).not.toHaveBeenCalled();
+      verify(checkoutFacade.processPaypalOrderCreation()).once();
     });
   });
 
@@ -383,41 +386,70 @@ describe('Paypal Google Pay Adapter', () => {
     beforeEach(() => {
       jest.spyOn(window, 'focus').mockImplementation(() => undefined);
       adapter.setPaypalGooglepay(mockPaypalGooglepay);
+      adapter.setOrderId('ORDER456');
+      adapter.setPaypalOrderId('PAYPAL123');
       when(paypalDataTransferService.paypalOrder$).thenReturn(of({ paypalOrderId: 'PAYPAL123', orderId: 'ORDER456' }));
       when(paypalDataTransferService.paypalOrderAuthorizationResult$).thenReturn(
         of({ status: 'SUCCESS', orderId: 'ORDER456' } as PaypalOrderAuthorizationResult)
       );
     });
 
-    it('should trigger order creation when payment is authorized', async () => {
+    it('should confirm order and return SUCCESS when payment is authorized', async () => {
       const result = await adapter.testOnPaymentAuthorizedCallback(mockPaymentData);
 
-      verify(checkoutFacade.processPaypalOrderCreation()).once();
+      expect(mockPaypalGooglepay.confirmOrder).toHaveBeenCalledWith({
+        orderId: 'PAYPAL123',
+        paymentMethodData: mockPaymentData.paymentMethodData,
+      });
+      verify(checkoutFacade.processPaypalOrderCreation('ORDER456')).once();
       expect(result.transactionState).toBe('SUCCESS');
+    });
+
+    it('should initiate payer action when 3DS is required', async () => {
+      mockPaypalGooglepay.confirmOrder.mockResolvedValue({ status: 'PAYER_ACTION_REQUIRED' });
+
+      await adapter.testOnPaymentAuthorizedCallback(mockPaymentData);
+
+      expect(mockPaypalGooglepay.initiatePayerAction).toHaveBeenCalledWith({
+        orderId: 'PAYPAL123',
+      });
     });
   });
 
   describe('continueICMOrderCreation()', () => {
+    beforeEach(() => {
+      adapter.setOrderId('ORDER456');
+    });
+
     it('should return SUCCESS when authorization succeeds', async () => {
       when(paypalDataTransferService.paypalOrderAuthorizationResult$).thenReturn(
         of({ status: 'SUCCESS' } as PaypalOrderAuthorizationResult)
       );
 
-      const result = await adapter.testContinueICMOrderCreation('ORDER456');
+      const result = await adapter.testContinueICMOrderCreation();
 
       verify(checkoutFacade.processPaypalOrderCreation('ORDER456')).once();
       expect(result.transactionState).toBe('SUCCESS');
     });
 
     it('should return ERROR when authorization fails', async () => {
+      when(paypalDataTransferService.paypalOrder$).thenReturn(of({ paypalOrderId: 'PAYPAL123', orderId: 'ORDER456' }));
       when(paypalDataTransferService.paypalOrderAuthorizationResult$).thenReturn(
         of({ status: 'ERROR', message: 'Payment capture failed' } as PaypalOrderAuthorizationResult)
       );
 
-      const result = await adapter.testContinueICMOrderCreation('ORDER456');
+      const result = await adapter.testContinueICMOrderCreation();
 
       expect(result.transactionState).toBe('ERROR');
       expect(result.error?.message).toBe('Payment capture failed');
+    });
+
+    it('should return SUCCESS when orderId is not set', async () => {
+      adapter.setOrderId(undefined);
+
+      const result = await adapter.testContinueICMOrderCreation();
+
+      expect(result.transactionState).toBe('SUCCESS');
     });
   });
 });

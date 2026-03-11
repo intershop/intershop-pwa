@@ -39,7 +39,6 @@ export class PaypalGooglePayAdapter {
   private googlePaymentClient: GooglePayPaymentClient;
   private googlePayConfig: GooglePayConfig;
   private paypalGooglepay: PaypalGooglePayComponent;
-  private loading = false;
   private isCancelled = false;
   private orderId: string;
   private paypalOrderId: string;
@@ -172,33 +171,13 @@ export class PaypalGooglePayAdapter {
    * when user completes Google Pay authentication.
    */
   private async onGooglePayButtonClicked(): Promise<void> {
-    if (this.loading) {
-      return;
-    }
-
-    this.loading = true;
-
-    // Start ICM order creation immediately when button is clicked
-    // This ensures PayPal order ID is available when onPaymentAuthorizedCallback is triggered
-    this.checkoutFacade.processPaypalOrderCreation();
-
-    // Wait for order content to be available before opening Google Pay sheet
-    const orderContent = await firstValueFrom(
-      this.paypalDataTransferService.paypalOrder$.pipe(
-        filter(order => !!order),
-        take(1)
-      )
-    );
-
-    this.orderId = orderContent.orderId;
-    this.paypalOrderId = orderContent.paypalOrderId;
+    this.startOrderCreation();
 
     const paymentDataRequest = await this.getPaymentDataRequest();
 
     try {
       await this.getGooglePaymentsClient().loadPaymentData(paymentDataRequest);
     } catch (error) {
-      this.loading = false;
       // User closed the Google Pay popup without completing payment
       if (error.statusCode === 'CANCELED') {
         this.closePaypal3DSIframe();
@@ -241,14 +220,12 @@ export class PaypalGooglePayAdapter {
    *
    * IMPORTANT: Google Pay requires this callback to resolve within 30 seconds.
    * If not resolved in time, Google Pay shows CALLBACK_TIMED_OUT to the user.
-   * We use a 25-second internal timeout to return a controlled response before
+   * We use a 29-second internal timeout to return a controlled response before
    * Google Pay's hard timeout kicks in.
    */
   private async onPaymentAuthorizedCallback(
     paymentData: GooglePayPaymentData
   ): Promise<GooglePayPaymentAuthorizationResult> {
-    const TIMEOUT_MS = 25000; // 25 seconds - before Google Pay's 30s hard limit
-
     const timeoutPromise = new Promise<GooglePayPaymentAuthorizationResult>(resolve => {
       setTimeout(() => {
         this.closePaypal3DSIframe();
@@ -259,7 +236,7 @@ export class PaypalGooglePayAdapter {
             message: this.translateService.instant('checkout.order_review.payment.googlepay.timeout.message'),
           },
         });
-      }, TIMEOUT_MS);
+      }, 29000);
     });
 
     const paymentPromise = this.executePaymentFlow(paymentData);
@@ -299,29 +276,37 @@ export class PaypalGooglePayAdapter {
       }
       return await this.continueICMOrderCreation();
     } catch (error) {
-      // Even on error, continue ICM order creation to properly handle the failed state
       return await this.continueICMOrderCreation();
     }
   }
 
   /**
-   * Removes PayPal 3DS iframes and modal containers from the DOM.
-   * Uses a delay to allow the SDK to complete its internal cleanup first.
+   * Removes PayPal 3DS iframes from the DOM.
    */
   private closePaypal3DSIframe(): void {
     // Remove PayPal contingency iframes (3DS challenge)
     const paypalIframes = this.document.querySelectorAll('iframe[name*="paypal"], iframe[src*="paypal"]');
     paypalIframes.forEach(iframe => {
-      console.error('IFRAME: ', iframe);
       iframe.remove();
     });
+  }
 
-    // Remove PayPal modal containers
-    const paypalModals = this.document.querySelectorAll('[class*="paypal-overlay"], [id*="paypal-overlay"]');
-    paypalModals.forEach(modal => {
-      console.error('Modal: ', modal);
-      modal.remove();
-    });
+  /**
+   * Start ICM order creation
+   */
+  private async startOrderCreation(): Promise<void> {
+    this.checkoutFacade.processPaypalOrderCreation();
+
+    // Wait for order content to be available before opening Google Pay sheet
+    const orderContent = await firstValueFrom(
+      this.paypalDataTransferService.paypalOrder$.pipe(
+        filter(order => !!order),
+        take(1)
+      )
+    );
+
+    this.orderId = orderContent.orderId;
+    this.paypalOrderId = orderContent.paypalOrderId;
   }
 
   /**
@@ -337,14 +322,17 @@ export class PaypalGooglePayAdapter {
 
     this.checkoutFacade.processPaypalOrderCreation(this.orderId);
 
-    return (await authorizationResult).status === 'SUCCESS'
-      ? { transactionState: 'SUCCESS' }
-      : {
-          transactionState: 'ERROR',
-          error: {
-            intent: (await authorizationResult).message,
-            message: (await authorizationResult).message,
-          },
-        };
+    if ((await authorizationResult).status !== 'SUCCESS') {
+      this.startOrderCreation();
+      return {
+        transactionState: 'ERROR',
+        error: {
+          intent: (await authorizationResult).message,
+          message: (await authorizationResult).message,
+        },
+      };
+    }
+
+    return { transactionState: 'SUCCESS' };
   }
 }
