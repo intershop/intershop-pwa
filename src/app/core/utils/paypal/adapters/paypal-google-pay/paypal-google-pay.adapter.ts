@@ -40,6 +40,7 @@ export class PaypalGooglePayAdapter {
   private googlePayConfig: GooglePayConfig;
   private paypalGooglepay: PaypalGooglePayComponent;
   private loading = false;
+  private isCancelled = false;
   private orderId: string;
   private paypalOrderId: string;
 
@@ -201,6 +202,7 @@ export class PaypalGooglePayAdapter {
       // User closed the Google Pay popup without completing payment
       if (error.statusCode === 'CANCELED') {
         this.closePaypal3DSIframe();
+        this.isCancelled = true;
         if (this.orderId) {
           this.checkoutFacade.processPaypalOrderCreation(this.orderId, true);
         }
@@ -290,6 +292,11 @@ export class PaypalGooglePayAdapter {
       }
 
       // Step 3: Continue with ICM order creation after PayPal authorization
+      if (this.isCancelled) {
+        return {
+          transactionState: 'SUCCESS',
+        };
+      }
       return await this.continueICMOrderCreation();
     } catch (error) {
       // Even on error, continue ICM order creation to properly handle the failed state
@@ -304,11 +311,17 @@ export class PaypalGooglePayAdapter {
   private closePaypal3DSIframe(): void {
     // Remove PayPal contingency iframes (3DS challenge)
     const paypalIframes = this.document.querySelectorAll('iframe[name*="paypal"], iframe[src*="paypal"]');
-    paypalIframes.forEach(iframe => iframe.remove());
+    paypalIframes.forEach(iframe => {
+      console.log('IFRAME: ', iframe);
+      iframe.remove();
+    });
 
     // Remove PayPal modal containers
     const paypalModals = this.document.querySelectorAll('[class*="paypal-overlay"], [id*="paypal-overlay"]');
-    paypalModals.forEach(modal => modal.remove());
+    paypalModals.forEach(modal => {
+      console.log('Modal: ', modal);
+      modal.remove();
+    });
   }
 
   /**
