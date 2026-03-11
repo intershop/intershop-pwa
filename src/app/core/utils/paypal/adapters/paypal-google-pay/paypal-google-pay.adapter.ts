@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { DestroyRef, Inject, Injectable, NgZone } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslateService } from '@ngx-translate/core';
 import { filter, firstValueFrom, take } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -39,6 +40,8 @@ export class PaypalGooglePayAdapter {
   private googlePayConfig: GooglePayConfig;
   private paypalGooglepay: PaypalGooglePayComponent;
   private loading = false;
+  private orderId: string;
+  private paypalOrderId: string;
 
   constructor(
     private ngZone: NgZone,
@@ -47,6 +50,7 @@ export class PaypalGooglePayAdapter {
     private checkoutFacade: CheckoutFacade,
     private paypalDataTransferService: PaypalDataTransferService,
     private scriptLoaderService: ScriptLoaderService,
+    private translateService: TranslateService,
     @Inject(DOCUMENT) private document: Document
   ) {}
 
@@ -82,7 +86,6 @@ export class PaypalGooglePayAdapter {
         try {
           this.googlePayConfig = await this.paypalGooglepay.config();
         } catch (configError) {
-          console.error('Paypal Google Pay configuration could not estimated:', configError);
           return Promise.reject(configError);
         }
 
@@ -100,7 +103,6 @@ export class PaypalGooglePayAdapter {
         this.renderButton(container);
         return Promise.resolve();
       } catch (error) {
-        console.error('Google Pay initialization failed:', error);
         return Promise.reject(error);
       }
     });
@@ -130,7 +132,6 @@ export class PaypalGooglePayAdapter {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const googlePayments = (window as any).google.payments.api;
       this.googlePaymentClient = new googlePayments.PaymentsClient({
-        //environment: isDevMode() ? 'TEST' : 'PRODUCTION',
         environment: 'TEST',
         merchantInfo: this.googlePayConfig?.merchantInfo,
         paymentDataCallbacks: {
@@ -166,6 +167,8 @@ export class PaypalGooglePayAdapter {
   /**
    * Handles the Google Pay button click event.
    * Creates the payment data request and opens the Google Pay payment sheet.
+   * Order creation starts immediately when button is clicked to have PayPal order ID ready
+   * when user completes Google Pay authentication.
    */
   private async onGooglePayButtonClicked(): Promise<void> {
     if (this.loading) {
@@ -173,111 +176,37 @@ export class PaypalGooglePayAdapter {
     }
 
     this.loading = true;
+
+    // Start ICM order creation immediately when button is clicked
+    // This ensures PayPal order ID is available when onPaymentAuthorizedCallback is triggered
+    this.checkoutFacade.processPaypalOrderCreation();
+
+    // Wait for order content to be available before opening Google Pay sheet
+    const orderContent = await firstValueFrom(
+      this.paypalDataTransferService.paypalOrder$.pipe(
+        filter(order => !!order),
+        take(1)
+      )
+    );
+
+    this.orderId = orderContent.orderId;
+    this.paypalOrderId = orderContent.paypalOrderId;
+
     const paymentDataRequest = await this.getPaymentDataRequest();
 
-    // Set postion for Google Pay popup to avoid overlapping with PayPal 3DS iframe.
-    // There are certain configurations, particularly in Google Chrome, where
-    // the Google Pay pop-up window and the PayPal 3DS iframe overlap.
-    // In this case, the customer cannot see the 3DS iframe.
-    console.warn('[GPay Debug] onGooglePayButtonClicked - setting position');
-    this.setPositionForGooglePayPopup();
-    this.adjustGooglePayModalZIndex();
-
     try {
-      console.warn('[GPay Debug] Calling loadPaymentData');
       await this.getGooglePaymentsClient().loadPaymentData(paymentDataRequest);
-      console.warn('[GPay Debug] loadPaymentData completed');
     } catch (error) {
       this.loading = false;
       // User closed the Google Pay popup without completing payment
-      if (error?.statusCode === 'CANCELED') {
-        console.warn('[GPay Debug] Payment was canceled by user');
+      if (error.statusCode === 'CANCELED') {
+        this.closePaypal3DSIframe();
+        if (this.orderId) {
+          this.checkoutFacade.processPaypalOrderCreation(this.orderId, true);
+        }
         return;
       }
-      throw error;
     }
-  }
-
-  /**
-   * Intercepts window.open calls to position the Google Pay popup on the left side of the screen.
-   */
-  private setPositionForGooglePayPopup(): void {
-    console.warn('[GPay Debug] setPositionForGooglePayPopup called');
-    const originalWindowOpen = window.open.bind(window);
-    window.open = (url?: string | URL, target?: string, features?: string): Window | null => {
-      console.warn('[GPay Debug] Intercepted window.open with target:', target);
-      if (target === 'gp-js-popup') {
-        // Get parent window position and dimensions
-        const parentLeft = window.screenX ?? window.screenLeft ?? 0;
-        const parentTop = window.screenY ?? window.screenTop ?? 0;
-        const parentWidth = window.outerWidth;
-        const parentHeight = window.outerHeight;
-
-        const popupWidth = Math.min(Math.round(parentWidth * 0.25), 500);
-        const popupHeight = Math.min(Math.round(parentHeight * 0.4), 600);
-
-        // Position popup 70% from left edge of parent, vertically centered within parent
-        const left = Math.round(parentLeft + parentWidth * 0.7);
-        const top = Math.round(parentTop + (parentHeight - popupHeight) / 2);
-
-        const positionedFeatures = `width=${popupWidth},height=${popupHeight},left=${left},top=${top},scrollbars=yes,resizable=yes`;
-        const popup = originalWindowOpen(url, target, positionedFeatures);
-
-        // Firefox ignores left/top in window.open(), so use moveTo() as fallback
-        if (popup) {
-          try {
-            popup.moveTo(left, top);
-            popup.resizeTo(popupWidth, popupHeight);
-          } catch {
-            // moveTo/resizeTo may fail due to cross-origin restrictions - silently ignore
-          }
-        }
-
-        return popup;
-      }
-      return originalWindowOpen(url, target, features);
-    };
-  }
-
-  /**
-   * Observes DOM for Google Pay iframes and adjusts their z-index to prevent overlap with 3DS iframe.
-   * Google Pay may render as a modal iframe instead of a popup in certain environments.
-   */
-  private adjustGooglePayModalZIndex(): void {
-    console.warn('IFRAMES1');
-    console.warn('IFRAMES2: ', this.document);
-    console.warn('IFRAMES3: ', this.document.querySelectorAll<HTMLIFrameElement>('iframe'));
-    console.warn('IFRAME: ', this.document.querySelectorAll<HTMLIFrameElement>('iframe[src*="pay.google.com"]'));
-    const observer = new MutationObserver(mutations => {
-      mutations.forEach(() => {
-        // Find Google Pay iframes and adjust z-index
-        const iframes = this.document.querySelectorAll<HTMLIFrameElement>('iframe[src*="pay.google.com"]');
-        iframes.forEach(iframe => {
-          if (iframe.style.zIndex !== '2147483646') {
-            console.warn('[GPay Debug] Adjusting iframe z-index');
-            iframe.style.zIndex = '2147483646';
-            // Also adjust parent containers if they exist
-            let parent = iframe.parentElement;
-            while (parent && parent !== this.document.body) {
-              if (getComputedStyle(parent).position === 'fixed' || getComputedStyle(parent).position === 'absolute') {
-                parent.style.zIndex = '2147483646';
-              }
-              parent = parent.parentElement;
-            }
-          }
-        });
-      });
-    });
-
-    observer.observe(this.document.body, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['style', 'class'],
-    });
-
-    // Disconnect observer after payment flow completes (max 5 minutes)
-    setTimeout(() => observer.disconnect(), 300000);
   }
 
   /**
@@ -307,51 +236,93 @@ export class PaypalGooglePayAdapter {
 
   /**
    * Handles the payment authorization callback from Google Pay.
+   *
+   * IMPORTANT: Google Pay requires this callback to resolve within 30 seconds.
+   * If not resolved in time, Google Pay shows CALLBACK_TIMED_OUT to the user.
+   * We use a 25-second internal timeout to return a controlled response before
+   * Google Pay's hard timeout kicks in.
    */
   private async onPaymentAuthorizedCallback(
     paymentData: GooglePayPaymentData
   ): Promise<GooglePayPaymentAuthorizationResult> {
-    // Start ICM order creation
-    this.checkoutFacade.processPaypalOrderCreation();
-    const orderContent = firstValueFrom(this.paypalDataTransferService.paypalOrder$);
+    const TIMEOUT_MS = 25000; // 25 seconds - before Google Pay's 30s hard limit
 
+    const timeoutPromise = new Promise<GooglePayPaymentAuthorizationResult>(resolve => {
+      setTimeout(() => {
+        this.closePaypal3DSIframe();
+        resolve({
+          transactionState: 'ERROR',
+          error: {
+            intent: 'PAYMENT_AUTHORIZATION',
+            message: this.translateService.instant('checkout.order_review.payment.googlepay.timeout.message'),
+          },
+        });
+      }, TIMEOUT_MS);
+    });
+
+    const paymentPromise = this.executePaymentFlow(paymentData);
+
+    return Promise.race([paymentPromise, timeoutPromise]);
+  }
+
+  /**
+   * Executes the actual PayPal payment flow.
+   *
+   * IMPORTANT for 3DS: The confirmOrder and initiatePayerAction calls must be
+   * properly awaited in sequence. If not awaited correctly, the 3DS challenge
+   * popup may appear in the background and be inaccessible on mobile devices.
+   * See: https://developer.paypal.com/docs/multiparty/checkout/apm/google-pay/#strong-customer-authentication-sca
+   */
+  private async executePaymentFlow(paymentData: GooglePayPaymentData): Promise<GooglePayPaymentAuthorizationResult> {
     try {
+      // Step 1: Confirm the order with PayPal using Google Pay payment data
       const confirmOrderResponse = await this.paypalGooglepay.confirmOrder({
-        orderId: (await orderContent).paypalOrderId,
+        orderId: this.paypalOrderId,
         paymentMethodData: paymentData.paymentMethodData,
       });
-      // Handle 3D Secure authentication if required
-      if (confirmOrderResponse.status === 'PAYER_ACTION_REQUIRED') {
-        const payerActionResult = await this.paypalGooglepay.initiatePayerAction({
-          orderId: (await orderContent).paypalOrderId,
-        });
 
-        // User cancelled 3DS challenge
-        if (payerActionResult.liabilityShift === 'UNKNOWN') {
-          return {
-            transactionState: 'ERROR',
-            error: {
-              intent: 'CANCELED',
-              message: '3DS authentication was cancelled',
-            },
-          };
-        }
+      // Step 2: Handle 3D Secure authentication if required
+      // CRITICAL: This must be awaited to ensure 3DS popup appears in foreground
+      if (confirmOrderResponse.status === 'PAYER_ACTION_REQUIRED') {
+        await this.paypalGooglepay.initiatePayerAction({
+          orderId: this.paypalOrderId,
+        });
       }
 
-      return this.continueICMOrderCreation((await orderContent).orderId);
+      // Step 3: Continue with ICM order creation after PayPal authorization
+      return await this.continueICMOrderCreation();
     } catch (error) {
-      console.error('Error during PayPal order confirmation or payer action:', error);
-      return this.continueICMOrderCreation((await orderContent).orderId);
+      // Even on error, continue ICM order creation to properly handle the failed state
+      return await this.continueICMOrderCreation();
     }
+  }
+
+  /**
+   * Removes PayPal 3DS iframes and modal containers from the DOM.
+   * Uses a delay to allow the SDK to complete its internal cleanup first.
+   */
+  private closePaypal3DSIframe(): void {
+    // Remove PayPal contingency iframes (3DS challenge)
+    const paypalIframes = this.document.querySelectorAll('iframe[name*="paypal"], iframe[src*="paypal"]');
+    paypalIframes.forEach(iframe => iframe.remove());
+
+    // Remove PayPal modal containers
+    const paypalModals = this.document.querySelectorAll('[class*="paypal-overlay"], [id*="paypal-overlay"]');
+    paypalModals.forEach(modal => modal.remove());
   }
 
   /**
    * ICM order creation needs to be continued after Google Pay authorization, regardless of the result of the PayPal order confirmation.
    */
-  private async continueICMOrderCreation(orderId: string): Promise<GooglePayPaymentAuthorizationResult> {
+  private async continueICMOrderCreation(): Promise<GooglePayPaymentAuthorizationResult> {
+    if (!this.orderId) {
+      return {
+        transactionState: 'SUCCESS',
+      };
+    }
     const authorizationResult = firstValueFrom(this.paypalDataTransferService.paypalOrderAuthorizationResult$);
 
-    this.checkoutFacade.processPaypalOrderCreation(orderId);
+    this.checkoutFacade.processPaypalOrderCreation(this.orderId);
 
     return (await authorizationResult).status === 'SUCCESS'
       ? { transactionState: 'SUCCESS' }

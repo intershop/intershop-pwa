@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
-interface PaypalOrderData {
+export interface PaypalOrderData {
   paypalOrderId: string;
   orderId?: string;
   paymentInstrumentId?: string;

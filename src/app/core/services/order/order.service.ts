@@ -97,6 +97,7 @@ export class OrderService {
 
   continueOrderCreation(orderId: string): Observable<Order> {
     const params = new HttpParams().set('include', this.allOrderIncludes.join());
+    console.log('Continue order creation for orderId: ', orderId);
 
     if (!orderId) {
       return throwError(() => new Error('continueOrderCreation() called without orderId'));

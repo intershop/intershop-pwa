@@ -19,8 +19,10 @@ export const startPaypalOrderCreation = createAction('[Orders] Start Paypal Orde
 
 export const continuePaypalOrderCreation = createAction(
   '[Orders] Continue Paypal Order Creation',
-  payload<{ orderId: string }>()
+  payload<{ orderId: string; cancellation?: boolean }>()
 );
+
+export const cancelPaypalOrderCreation = createAction('[Orders] Cancel Paypal Order Creation');
 
 export const loadOrders = createAction('[Orders] Load Orders', payload<{ query: OrderListQuery }>());
 

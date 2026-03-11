@@ -907,6 +907,7 @@
   "checkout.order_review.recurring.send.button": "Submit recurring order",
   "checkout.order_review.send.button": "Submit order",
   "checkout.order_review.submit.validation.message": "The order cannot be submitted. Please correct the errors.",
+  "checkout.order_review.payment.googlepay.timeout.message": "Payment processing timed out. Please try again.",
   "checkout.order_summary.heading": "Order summary",
   "checkout.payment.addPayment.form.legend": "Payment instrument form for {{paymentMethodName}}",
   "checkout.payment.addPayment.link": "Add payment instrument",

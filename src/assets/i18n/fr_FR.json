@@ -907,6 +907,7 @@
   "checkout.order_review.recurring.send.button": "Soumettre la commande périodique",
   "checkout.order_review.send.button": "Soumettre la commande",
   "checkout.order_review.submit.validation.message": "La commande ne peut pas être soumise. Veuillez corriger les erreurs.",
+  "checkout.order_review.payment.googlepay.timeout.message": "Le délai de traitement du paiement a expiré. Veuillez réessayer.",
   "checkout.order_summary.heading": "Récapitulatif de la commande",
   "checkout.payment.addPayment.form.legend": "Formulaire de moyen de paiement pour {{paymentMethodName}}",
   "checkout.payment.addPayment.link": "Ajouter un moyen de paiement",

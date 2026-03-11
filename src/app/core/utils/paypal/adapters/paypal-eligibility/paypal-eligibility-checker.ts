@@ -55,13 +55,28 @@ export class PaypalEligibilityChecker {
 
   /**
    * Checks if PayPal Apple Pay is eligible.
-   * Currently always returns `true` as Apple Pay eligibility is determined client-side.
+   * Verifies browser support via ApplePaySession and merchant eligibility via PayPal SDK.
    *
-   * @param _paypalObject$ - Observable of the PayPal SDK component (unused)
-   * @returns Observable that always emits `true`
+   * @param paypalObject$ - Observable of the PayPal SDK component
+   * @returns Observable that emits `true` if Apple Pay is available and eligible
    */
-  static checkPaypalApplePayEligibility(_paypalObject$: Observable<PaypalComponent>): Observable<boolean> {
-    return of(true);
+  static checkPaypalApplePayEligibility(paypalObject$: Observable<PaypalComponent>): Observable<boolean> {
+    // Check browser support first
+    if (
+      typeof ApplePaySession === 'undefined' ||
+      !ApplePaySession.supportsVersion(4) ||
+      !ApplePaySession.canMakePayments()
+    ) {
+      return of(false);
+    }
+
+    // Check PayPal SDK eligibility
+    return paypalObject$.pipe(
+      switchMap(paypalObject =>
+        from(paypalObject.Applepay().config()).pipe(map(applePayConfig => applePayConfig.isEligible))
+      ),
+      catchError(() => of(false))
+    );
   }
 
   /**

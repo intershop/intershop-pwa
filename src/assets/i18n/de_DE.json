@@ -907,6 +907,7 @@
   "checkout.order_review.recurring.send.button": "Wiederkehrende Bestellung absenden",
   "checkout.order_review.send.button": "Bestellung absenden",
   "checkout.order_review.submit.validation.message": "Die Bestellung kann nicht gesendet werden. Bitte korrigieren Sie die Fehler.",
+  "checkout.order_review.payment.googlepay.timeout.message": "Die Zahlungsabwicklung ist abgelaufen. Bitte versuchen Sie es erneut.",
   "checkout.order_summary.heading": "Bestellübersicht",
   "checkout.payment.addPayment.form.legend": "Zahlungsmittelformular für {{paymentMethodName}}",
   "checkout.payment.addPayment.link": "Zahlungsmittel hinzufügen",

@@ -109,8 +109,8 @@ export class CheckoutFacade {
     this.store.dispatch(submitOrder());
   }
 
-  processPaypalOrderCreation(orderId?: string) {
-    this.store.dispatch(orderId ? continuePaypalOrderCreation({ orderId }) : startPaypalOrderCreation());
+  processPaypalOrderCreation(orderId?: string, cancellation?: boolean) {
+    this.store.dispatch(orderId ? continuePaypalOrderCreation({ orderId, cancellation }) : startPaypalOrderCreation());
   }
 
   continue(targetStep: CheckoutStepType) {

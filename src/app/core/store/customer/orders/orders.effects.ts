@@ -6,7 +6,7 @@ import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
 import { EMPTY, from, merge, race } from 'rxjs';
-import { concatMap, distinctUntilChanged, filter, map, mergeMap, switchMap, take } from 'rxjs/operators';
+import { concatMap, distinctUntilChanged, filter, map, mergeMap, switchMap, take, tap } from 'rxjs/operators';
 
 import { OrderService } from 'ish-core/services/order/order.service';
 import { ofUrl, selectQueryParam, selectQueryParams, selectRouteParam } from 'ish-core/store/core/router';
@@ -23,6 +23,7 @@ import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from
 import { PaypalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 
 import {
+  cancelPaypalOrderCreation,
   continuePaypalOrderCreation,
   createOrder,
   createOrderFail,
@@ -86,6 +87,14 @@ export class OrdersEffects {
             ),
             mapErrorToAction(createOrderFail)
           );
+          // in case order creation was already started and the user was cancelled the PayPal popup
+        } else if (payload.cancellation && payload.cancellation) {
+          console.log('Payment cancelled by user');
+          return this.orderService.continueOrderCreation(payload.orderId).pipe(
+            map(() => cancelPaypalOrderCreation()),
+            mapErrorToAction(createOrderFail)
+          );
+          // in case of returning from PayPal after authorization (success or failure)
         } else {
           return this.orderService.continueOrderCreation(payload.orderId).pipe(
             mergeMap(order => {
@@ -109,6 +118,19 @@ export class OrdersEffects {
         }
       })
     )
+  );
+
+  cancelPaypalOrderCreation$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(cancelPaypalOrderCreation),
+        tap(() => console.log('Payment cancelled, redirecting to /checkout/payment')),
+        concatMap(() => {
+          from(this.router.navigate(['/checkout/payment'], { queryParams: { redirect: 'cancel' } }));
+          return EMPTY;
+        })
+      ),
+    { dispatch: false }
   );
 
   /**
@@ -166,9 +188,11 @@ export class OrdersEffects {
     this.actions$.pipe(
       ofType(createOrderSuccess),
       mapToPayloadProperty('order'),
+      tap(() => console.log('ROLLED_BACK check')),
       filter(order => order.orderCreation && order.orderCreation.status === 'ROLLED_BACK'),
       concatMap(order =>
         from(this.router.navigate(['/checkout/payment'], { queryParams: { error: true } })).pipe(
+          tap(success => console.log('Navigation to /checkout/payment success:', success)),
           mergeMap(() => [
             loadBasket(),
             continueCheckoutWithIssues({
