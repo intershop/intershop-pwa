@@ -260,24 +260,37 @@ export class PaypalGooglePayAdapter {
         paymentMethodData: paymentData.paymentMethodData,
       });
 
-      // Step 2: Handle 3D Secure authentication if required
-      // CRITICAL: This must be awaited to ensure 3DS popup appears in foreground
-      if (confirmOrderResponse.status === 'PAYER_ACTION_REQUIRED') {
-        await this.paypalGooglepay.initiatePayerAction({
-          orderId: this.paypalOrderId,
-        });
+      // Step 2: Handle different confirmation statuses
+      if (confirmOrderResponse.status === 'APPROVED') {
+        // Payment approved, continue with ICM order creation
+        return await this.continueICMOrderCreation();
+      } else if (confirmOrderResponse.status === 'PAYER_ACTION_REQUIRED') {
+        // Handle 3D Secure authentication using .then() pattern as recommended
+        return await this.handle3DSecure();
+      } else {
+        // Other status - continue with ICM order creation
+        return await this.continueICMOrderCreation();
       }
-
-      // Step 3: Continue with ICM order creation after PayPal authorization
-      if (this.isCancelled) {
-        return {
-          transactionState: 'SUCCESS',
-        };
-      }
-      return await this.continueICMOrderCreation();
     } catch (error) {
       return await this.continueICMOrderCreation();
     }
+  }
+
+  /**
+   * Handle 3D Secure authentication.
+   * Using Promise .then()/.catch() pattern as recommended by PayPal documentation.
+   */
+  private handle3DSecure(): Promise<GooglePayPaymentAuthorizationResult> {
+    return this.paypalGooglepay
+      .initiatePayerAction({ orderId: this.paypalOrderId })
+      .then(async () =>
+        // 3DS completed - liability shift is handled by backend
+        this.isCancelled ? { transactionState: 'SUCCESS' as const } : await this.continueICMOrderCreation()
+      )
+      .catch(async () =>
+        // 3DS failed - continue with ICM order creation to handle error state
+        this.continueICMOrderCreation()
+      );
   }
 
   /**
