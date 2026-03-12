@@ -1,4 +1,4 @@
-import { EnvironmentProviders, Provider, importProvidersFrom } from '@angular/core';
+import { EnvironmentProviders, Provider } from '@angular/core';
 
 import { FEATURE_EVENT_RESULT_LISTENER } from 'ish-core/utils/feature-event/feature-event.service';
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
@@ -11,8 +11,7 @@ export function provideAddressDoctorFeature(): (Provider | EnvironmentProviders)
       provide: LAZY_FEATURE_MODULE,
       useValue: {
         feature: 'addressDoctor',
-        providers: () =>
-          import('./store/address-doctor-store.module').then(m => importProvidersFrom(m.AddressDoctorStoreModule)),
+        providers: () => import('./store/address-doctor-store.module').then(m => m.provideAddressDoctorStore()),
       },
       multi: true,
     },

@@ -1,4 +1,4 @@
-import { EnvironmentProviders, Provider, importProvidersFrom } from '@angular/core';
+import { EnvironmentProviders, Provider } from '@angular/core';
 
 import { EXTERNAL_DISPLAY_PROPERTY_PROVIDER } from 'ish-core/facades/product-context.facade';
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
@@ -11,7 +11,7 @@ export function providePunchoutFeature(): (Provider | EnvironmentProviders)[] {
       provide: LAZY_FEATURE_MODULE,
       useValue: {
         feature: 'punchout',
-        providers: () => import('./store/punchout-store.module').then(m => importProvidersFrom(m.PunchoutStoreModule)),
+        providers: () => import('./store/punchout-store.module').then(m => m.providePunchoutStore()),
       },
       multi: true,
     },

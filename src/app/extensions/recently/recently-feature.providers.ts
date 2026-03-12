@@ -1,4 +1,4 @@
-import { EnvironmentProviders, Provider, importProvidersFrom } from '@angular/core';
+import { EnvironmentProviders, Provider } from '@angular/core';
 
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
@@ -8,7 +8,7 @@ export function provideRecentlyFeature(): (Provider | EnvironmentProviders)[] {
       provide: LAZY_FEATURE_MODULE,
       useValue: {
         feature: 'recently',
-        providers: () => import('./store/recently-store.module').then(m => importProvidersFrom(m.RecentlyStoreModule)),
+        providers: () => import('./store/recently-store.module').then(m => m.provideRecentlyStore()),
       },
       multi: true,
     },

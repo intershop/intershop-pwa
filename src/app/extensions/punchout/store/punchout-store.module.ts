@@ -1,4 +1,10 @@
-import { Injectable, InjectionToken, NgModule } from '@angular/core';
+import {
+  EnvironmentProviders,
+  Injectable,
+  InjectionToken,
+  importProvidersFrom,
+  makeEnvironmentProviders,
+} from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
@@ -38,13 +44,17 @@ export class PunchoutStoreConfig implements StoreConfig<PunchoutState> {
 
 export const PUNCHOUT_STORE_CONFIG = new InjectionToken<StoreConfig<PunchoutState>>('punchoutStoreConfig');
 
-@NgModule({
-  imports: [
-    EffectsModule.forFeature(punchoutEffects),
-    StoreModule.forFeature('punchout', punchoutReducers, PUNCHOUT_STORE_CONFIG),
-  ],
-  providers: [{ provide: PUNCHOUT_STORE_CONFIG, useClass: PunchoutStoreConfig }],
-})
+const punchoutStoreImports = [
+  EffectsModule.forFeature(punchoutEffects),
+  StoreModule.forFeature('punchout', punchoutReducers, PUNCHOUT_STORE_CONFIG),
+];
+
+const punchoutStoreProviders = [{ provide: PUNCHOUT_STORE_CONFIG, useClass: PunchoutStoreConfig }];
+
+export function providePunchoutStore(): EnvironmentProviders {
+  return makeEnvironmentProviders([importProvidersFrom(...punchoutStoreImports), ...punchoutStoreProviders]);
+}
+
 export class PunchoutStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<PunchoutState>)[]) {
     return StoreModule.forFeature('punchout', pick(punchoutReducers, reducers));

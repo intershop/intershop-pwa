@@ -1,5 +1,12 @@
 import { APP_BASE_HREF } from '@angular/common';
-import { Inject, Injectable, InjectionToken, NgModule } from '@angular/core';
+import {
+  EnvironmentProviders,
+  Inject,
+  Injectable,
+  InjectionToken,
+  importProvidersFrom,
+  makeEnvironmentProviders,
+} from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
@@ -30,13 +37,17 @@ export class DefaultCompareStoreConfig implements StoreConfig<CompareState> {
 
 export const COMPARE_STORE_CONFIG = new InjectionToken<StoreConfig<CompareState>>('compareStoreConfig');
 
-@NgModule({
-  imports: [
-    EffectsModule.forFeature(compareEffects),
-    StoreModule.forFeature('compare', compareReducers, COMPARE_STORE_CONFIG),
-  ],
-  providers: [{ provide: COMPARE_STORE_CONFIG, useClass: DefaultCompareStoreConfig }],
-})
+const compareStoreImports = [
+  EffectsModule.forFeature(compareEffects),
+  StoreModule.forFeature('compare', compareReducers, COMPARE_STORE_CONFIG),
+];
+
+const compareStoreProviders = [{ provide: COMPARE_STORE_CONFIG, useClass: DefaultCompareStoreConfig }];
+
+export function provideCompareStore(): EnvironmentProviders {
+  return makeEnvironmentProviders([importProvidersFrom(...compareStoreImports), ...compareStoreProviders]);
+}
+
 export class CompareStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<CompareState>)[]) {
     return StoreModule.forFeature('compare', pick(compareReducers, reducers));

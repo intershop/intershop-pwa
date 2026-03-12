@@ -1,8 +1,7 @@
-import { importProvidersFrom } from '@angular/core';
 import { Routes } from '@angular/router';
 import { provideFormlyConfig } from '@ngx-formly/core';
 
-import { PunchoutStoreModule } from '../store/punchout-store.module';
+import { providePunchoutStore } from '../store/punchout-store.module';
 
 import { ociConfigurationFormlyConfig } from './account-punchout-configuration/account-punchout-configuration-page.component';
 import { cxmlConfigurationFormlyConfig } from './account-punchout-cxml-configuration/account-punchout-cxml-configuration-page.component';
@@ -10,7 +9,7 @@ import { cxmlConfigurationFormlyConfig } from './account-punchout-cxml-configura
 export const punchoutAccountRoutes: Routes = [
   {
     path: '',
-    providers: [importProvidersFrom(PunchoutStoreModule)],
+    providers: [providePunchoutStore()],
     children: [
       {
         path: '',

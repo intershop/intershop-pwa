@@ -4,7 +4,7 @@ import { Angulartics2Module } from 'angulartics2';
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
 const trackingStoreProviders = () =>
-  import('./store/tracking-store.module').then(module => importProvidersFrom(module.TrackingStoreModule));
+  import('./store/tracking-store.module').then(module => module.provideTrackingStore());
 
 export function provideTrackingFeature(): (Provider | EnvironmentProviders)[] {
   return [

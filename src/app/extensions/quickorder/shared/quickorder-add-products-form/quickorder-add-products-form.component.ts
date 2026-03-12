@@ -6,6 +6,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { SkuQuantityType } from 'ish-core/models/product/product.helper';
+import { provideIshFormly } from 'ish-shared/formly/formly.module';
 
 import { QuickorderRepeatFieldComponent } from '../formly/quickorder-repeat-field/quickorder-repeat-field.component';
 
@@ -18,6 +19,7 @@ import { QuickorderRepeatFieldComponent } from '../formly/quickorder-repeat-fiel
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [NgIf, ReactiveFormsModule, TranslatePipe, FormlyForm],
+  providers: [...provideIshFormly()],
 })
 export class QuickorderAddProductsFormComponent implements OnInit {
   quickOrderForm: FormGroup = new FormGroup({});

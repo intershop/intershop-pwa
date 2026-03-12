@@ -1,12 +1,11 @@
-import { importProvidersFrom } from '@angular/core';
 import { Routes } from '@angular/router';
 
-import { QuotingStoreModule } from '../store/quoting-store.module';
+import { provideQuotingStore } from '../store/quoting-store.module';
 
 export const quotingRoutes: Routes = [
   {
     path: '',
-    providers: [importProvidersFrom(QuotingStoreModule)],
+    providers: [provideQuotingStore()],
     children: [
       {
         path: '',

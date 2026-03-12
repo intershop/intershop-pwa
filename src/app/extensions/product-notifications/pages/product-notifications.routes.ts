@@ -1,10 +1,9 @@
-import { importProvidersFrom } from '@angular/core';
 import { Routes } from '@angular/router';
 
 import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 import { authGuard } from 'ish-core/guards/auth.guard';
 
-import { ProductNotificationsStoreModule } from '../store/product-notifications-store.module';
+import { provideProductNotificationsStore } from '../store/product-notifications-store.module';
 
 export const productNotificationsRoutes: Routes = [
   {
@@ -15,6 +14,6 @@ export const productNotificationsRoutes: Routes = [
       ),
     canActivate: [featureToggleGuard, authGuard],
     data: { feature: 'productNotifications' },
-    providers: [importProvidersFrom(ProductNotificationsStoreModule)],
+    providers: [provideProductNotificationsStore()],
   },
 ];

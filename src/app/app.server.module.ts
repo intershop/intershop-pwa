@@ -8,7 +8,8 @@ import {
   importProvidersFrom,
   mergeApplicationConfig,
 } from '@angular/core';
-import { bootstrapApplication } from '@angular/platform-browser';
+import { BootstrapContext, bootstrapApplication } from '@angular/platform-browser';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ServerModule, provideServerRendering } from '@angular/platform-server';
 import { META_REDUCERS } from '@ngrx/store';
 
@@ -113,6 +114,7 @@ function initializeServerTransferState(transferState: TransferState) {
 const serverConfig: ApplicationConfig = {
   providers: [
     importProvidersFrom(ServerModule),
+    provideNoopAnimations(),
     ...providers,
     {
       provide: APP_INITIALIZER,
@@ -125,6 +127,6 @@ const serverConfig: ApplicationConfig = {
 
 const config = mergeApplicationConfig(appConfig, serverConfig);
 
-export function bootstrap() {
-  return bootstrapApplication(AppComponent, config);
+export function bootstrap(context: BootstrapContext) {
+  return bootstrapApplication(AppComponent, config, context);
 }

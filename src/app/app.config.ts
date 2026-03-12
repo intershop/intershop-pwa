@@ -1,14 +1,5 @@
 /* eslint-disable ish-custom-rules/ban-imports-file-pattern */
-import {
-  APP_ID,
-  APP_INITIALIZER,
-  ApplicationConfig,
-  EnvironmentProviders,
-  TransferState,
-  importProvidersFrom,
-} from '@angular/core';
-import { provideClientHydration, withNoHttpTransferCache } from '@angular/platform-browser';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { APP_ID, APP_INITIALIZER, ApplicationConfig, EnvironmentProviders, TransferState } from '@angular/core';
 import {
   UrlSerializer,
   provideRouter,
@@ -20,11 +11,11 @@ import { provideFormlyCore } from '@ngx-formly/core';
 import { provideRequisitionManagementStore } from 'requisition-management';
 
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
-import { CoreModule } from 'ish-core/core.module';
+import { provideCore } from 'ish-core/core.providers';
 import { PWAUrlSerializer } from 'ish-core/routing/pwa-url.serializer';
 import { SelectivePreloadingStrategy } from 'ish-core/routing/selective-preloading-strategy';
-import { StateManagementModule } from 'ish-core/state-management.module';
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
+import { provideCMS } from 'ish-shared/cms/cms.providers';
 
 import { environment } from '../environments/environment';
 
@@ -74,8 +65,6 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }),
       withPreloading(SelectivePreloadingStrategy)
     ),
-    provideAnimations(),
-    provideClientHydration(withNoHttpTransferCache()),
     { provide: UrlSerializer, useClass: PWAUrlSerializer },
     { provide: APP_ID, useValue: 'intershop-pwa' },
     {
@@ -90,8 +79,8 @@ export const appConfig: ApplicationConfig = {
       deps: [ModuleLoaderService],
       multi: true,
     },
-    // Import providers from existing NgModules during migration
-    importProvidersFrom(CoreModule, StateManagementModule),
+    provideCore(),
+    provideCMS(),
     provideFormlyCore(),
     ...provideAddressDoctorFeature(),
     ...provideCaptchaFeature(),

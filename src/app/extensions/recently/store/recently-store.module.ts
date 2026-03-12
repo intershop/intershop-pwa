@@ -1,5 +1,12 @@
 import { APP_BASE_HREF } from '@angular/common';
-import { Inject, Injectable, InjectionToken, NgModule } from '@angular/core';
+import {
+  EnvironmentProviders,
+  Inject,
+  Injectable,
+  InjectionToken,
+  importProvidersFrom,
+  makeEnvironmentProviders,
+} from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
@@ -32,13 +39,17 @@ export class DefaultRecentlyStoreConfig implements StoreConfig<RecentlyState> {
 
 export const RECENTLY_STORE_CONFIG = new InjectionToken<StoreConfig<RecentlyState>>('recentlyStoreConfig');
 
-@NgModule({
-  imports: [
-    EffectsModule.forFeature(recentlyEffects),
-    StoreModule.forFeature('recently', recentlyReducers, RECENTLY_STORE_CONFIG),
-  ],
-  providers: [{ provide: RECENTLY_STORE_CONFIG, useClass: DefaultRecentlyStoreConfig }],
-})
+const recentlyStoreImports = [
+  EffectsModule.forFeature(recentlyEffects),
+  StoreModule.forFeature('recently', recentlyReducers, RECENTLY_STORE_CONFIG),
+];
+
+const recentlyStoreProviders = [{ provide: RECENTLY_STORE_CONFIG, useClass: DefaultRecentlyStoreConfig }];
+
+export function provideRecentlyStore(): EnvironmentProviders {
+  return makeEnvironmentProviders([importProvidersFrom(...recentlyStoreImports), ...recentlyStoreProviders]);
+}
+
 export class RecentlyStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<RecentlyState>)[]) {
     return StoreModule.forFeature('recently', pick(recentlyReducers, reducers));

@@ -1,4 +1,3 @@
-import { importProvidersFrom } from '@angular/core';
 import { Routes } from '@angular/router';
 import { provideFormlyConfig } from '@ngx-formly/core';
 
@@ -92,14 +91,15 @@ export const appRoutes: Routes = [
           { accountPageRoutes },
           { provideIshFormly },
           { provideIshFormlyAddressForms },
-          { CustomerAccountStoreModule },
-          { GeneralStoreModule },
+          { provideCustomerAccountStore },
+          { provideGeneralStore },
         ]) => {
           const [rootRoute, ...nestedRoutes] = accountPageRoutes;
           const providers = [
             ...provideIshFormly(),
             ...provideIshFormlyAddressForms(),
-            importProvidersFrom(CustomerAccountStoreModule, GeneralStoreModule),
+            provideCustomerAccountStore(),
+            provideGeneralStore(),
           ];
           return rootRoute
             ? [{ ...rootRoute, providers: [...(rootRoute.providers ?? []), ...providers] }, ...nestedRoutes]
@@ -172,14 +172,15 @@ export const appRoutes: Routes = [
           { checkoutPageRoutes },
           { provideIshFormly },
           { provideIshFormlyAddressForms },
-          { CustomerAccountStoreModule },
-          { GeneralStoreModule },
+          { provideCustomerAccountStore },
+          { provideGeneralStore },
         ]) => {
           const [rootRoute, ...nestedRoutes] = checkoutPageRoutes;
           const providers = [
             ...provideIshFormly(),
             ...provideIshFormlyAddressForms(),
-            importProvidersFrom(CustomerAccountStoreModule, GeneralStoreModule),
+            provideCustomerAccountStore(),
+            provideGeneralStore(),
           ];
           return rootRoute
             ? [{ ...rootRoute, providers: [...(rootRoute.providers ?? []), ...providers] }, ...nestedRoutes]
@@ -202,15 +203,16 @@ export const appRoutes: Routes = [
           { registrationFormlyConfig, registrationPageRoutes },
           { provideIshFormly },
           { provideIshFormlyAddressForms },
-          { CustomerAccountStoreModule },
-          { GeneralStoreModule },
+          { provideCustomerAccountStore },
+          { provideGeneralStore },
         ]) => {
           const [rootRoute, ...nestedRoutes] = registrationPageRoutes;
           const providers = [
             RegistrationFormConfigurationService,
             ...provideIshFormly(),
             ...provideIshFormlyAddressForms(),
-            importProvidersFrom(CustomerAccountStoreModule, GeneralStoreModule),
+            provideCustomerAccountStore(),
+            provideGeneralStore(),
             provideFormlyConfig(registrationFormlyConfig),
           ];
           return rootRoute
@@ -335,25 +337,8 @@ export const appRoutes: Routes = [
   // Quickorder Extension
   {
     path: 'quick-order',
-    loadChildren: () =>
-      Promise.all([
-        import('../extensions/quickorder/pages/quickorder/quickorder-page.component'),
-        import('ish-shared/formly/formly.module'),
-      ]).then(([{ QuickorderPageComponent }, { provideIshFormly }]) => [
-        {
-          path: '',
-          component: QuickorderPageComponent,
-          providers: [...provideIshFormly()],
-          data: {
-            feature: 'quickorder',
-            breadcrumbData: [{ key: 'quickorder.page.breadcrumb' }],
-            meta: {
-              title: 'quickorder.page.breadcrumb',
-              robots: 'noindex, nofollow',
-            },
-          },
-        },
-      ]),
+    loadComponent: () =>
+      import('../extensions/quickorder/pages/quickorder/quickorder-page.component').then(m => m.QuickorderPageComponent),
     canActivate: [featureToggleGuard],
     data: {
       feature: 'quickorder',
@@ -396,12 +381,12 @@ export const appRoutes: Routes = [
         import('../extensions/store-locator/pages/store-locator/store-locator-page.component'),
         import('ish-core/store/general/general-store.module'),
         import('ish-shared/formly/formly.module'),
-      ]).then(([{ StoreLocatorPageComponent }, { GeneralStoreModule }, { provideIshFormly }]) => [
+      ]).then(([{ StoreLocatorPageComponent }, { provideGeneralStore }, { provideIshFormly }]) => [
         {
           path: '',
           component: StoreLocatorPageComponent,
           canActivate: [featureToggleGuard],
-          providers: [...provideIshFormly(), importProvidersFrom(GeneralStoreModule)],
+          providers: [...provideIshFormly(), provideGeneralStore()],
           data: {
             feature: 'storeLocator',
             meta: {
