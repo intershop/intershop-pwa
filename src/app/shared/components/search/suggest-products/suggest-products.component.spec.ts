@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 import { ReplaySubject, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -10,7 +9,6 @@ import { CategoryView } from 'ish-core/models/category-view/category-view.model'
 import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { SuggestProductsTileComponent } from 'ish-shared/components/search/suggest-products-tile/suggest-products-tile.component';
 
 import { SuggestProductsComponent } from './suggest-products.component';
 
@@ -31,8 +29,7 @@ describe('Suggest Products Component', () => {
     when(shoppingFacade.productInventory$(anything())).thenReturn(of({} as ProductInventory));
 
     await TestBed.configureTestingModule({
-      imports: [MockComponent(SuggestProductsTileComponent), TranslateModule.forRoot()],
-      declarations: [SuggestProductsComponent],
+      imports: [TranslateModule.forRoot()],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },

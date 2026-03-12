@@ -175,7 +175,7 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
         this.select('sku').pipe(whenTruthy()),
         this.select('requiredCompletenessLevel').pipe(whenTruthy()),
       ]).pipe(
-        debounceTime(0), // prevent duplicate values on init when the completeness level is not set yet
+        debounceTime(0), // coalesce synchronous sku/completeness updates to avoid an extra initial request at the default level
         filter(([sku, level]) => !!sku && !!level),
         switchMap(([sku, level]) =>
           this.shoppingFacade.product$(sku, level).pipe(

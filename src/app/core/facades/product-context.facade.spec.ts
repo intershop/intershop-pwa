@@ -2,7 +2,7 @@ import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/te
 import { TranslateModule } from '@ngx-translate/core';
 import { omit, pick } from 'lodash-es';
 import { BehaviorSubject, EMPTY, Observable, Subject, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
@@ -24,7 +24,7 @@ import {
 } from './product-context.facade';
 import { ShoppingFacade } from './shopping.facade';
 
-const DEBOUNCE_TIME = 1;
+const DEBOUNCE_TIME = 0;
 
 function pickQuantityFields(context: ProductContextFacade) {
   return pick(
@@ -569,8 +569,11 @@ describe('Product Context Facade', () => {
     it('should set parts property for retail set', fakeAsync(() => {
       context.set('sku', () => '123');
       tick(DEBOUNCE_TIME);
-      context.select('parts').subscribe(parts => {
-        expect(parts).toMatchInlineSnapshot(`
+      context
+        .select('parts')
+        .pipe(take(1))
+        .subscribe(parts => {
+          expect(parts).toMatchInlineSnapshot(`
           [
             {
               "quantity": 1,
@@ -582,7 +585,7 @@ describe('Product Context Facade', () => {
             },
           ]
         `);
-      });
+        });
       discardPeriodicTasks();
     }));
 
@@ -648,8 +651,11 @@ describe('Product Context Facade', () => {
       context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
       context.set('sku', () => '123');
       tick(DEBOUNCE_TIME);
-      context.select('parts').subscribe(parts => {
-        expect(parts).toMatchInlineSnapshot(`
+      context
+        .select('parts')
+        .pipe(take(1))
+        .subscribe(parts => {
+          expect(parts).toMatchInlineSnapshot(`
           [
             {
               "quantity": 1,
@@ -661,7 +667,7 @@ describe('Product Context Facade', () => {
             },
           ]
         `);
-      });
+        });
       discardPeriodicTasks();
     }));
 
@@ -814,7 +820,7 @@ describe('Product Context Facade', () => {
       discardPeriodicTasks();
     }));
 
-    it('should set "addToBasket" to "true" for a retail set independend from a price', fakeAsync(() => {
+    it('should set "addToBasket" to "true" for a retail set independent from a price', fakeAsync(() => {
       when(shoppingFacade.product$(anything(), anything())).thenReturn(
         of({
           sku: '456',
