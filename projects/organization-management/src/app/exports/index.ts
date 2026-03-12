@@ -5,5 +5,6 @@ export { CostCenterWidgetComponent } from '../components/cost-center-widget/cost
 
 export { organizationManagementRoutes } from '../pages/organization-management.routes';
 export { OrganizationManagementBreadcrumbService } from '../services/organization-management-breadcrumb/organization-management-breadcrumb.service';
+export { provideOrganizationManagementStore } from '../store/organization-management-store.module';
 
 export { UserBudget } from '../models/user-budget/user-budget.model';

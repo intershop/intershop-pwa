@@ -11,14 +11,13 @@ import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
-import { QuotingStoreModule } from '../../store/quoting-store.module';
 
 @Component({
   selector: 'ish-quote-widget',
   templateUrl: './quote-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, InfoBoxComponent, LoadingComponent, NgIf, QuotingStoreModule, TranslatePipe, RouterLink],
+  imports: [AsyncPipe, InfoBoxComponent, LoadingComponent, NgIf, TranslatePipe, RouterLink],
 })
 @GenerateLazyComponent()
 export class QuoteWidgetComponent implements OnInit {

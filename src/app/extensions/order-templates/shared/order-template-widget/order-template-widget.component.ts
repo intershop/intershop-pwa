@@ -15,7 +15,6 @@ import { ProductAddToBasketComponent } from 'ish-shared/components/product/produ
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate } from '../../models/order-template/order-template.model';
-import { OrderTemplatesStoreModule } from '../../store/order-templates-store.module';
 
 @Component({
   selector: 'ish-order-template-widget',
@@ -28,7 +27,6 @@ import { OrderTemplatesStoreModule } from '../../store/order-templates-store.mod
     LoadingComponent,
     NgFor,
     NgIf,
-    OrderTemplatesStoreModule,
     ProductAddToBasketComponent,
     ProductContextDirective,
     TranslatePipe,
