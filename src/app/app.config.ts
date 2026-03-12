@@ -8,6 +8,7 @@ import {
   withPreloading,
 } from '@angular/router';
 import { provideFormlyCore } from '@ngx-formly/core';
+import { provideOrganizationManagementStore } from 'organization-management';
 import { provideRequisitionManagementStore } from 'requisition-management';
 
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
@@ -52,7 +53,8 @@ function initializeModuleLoader(moduleLoader: ModuleLoaderService) {
 
 function provideFeatureStores(): EnvironmentProviders[] {
   return [
-    // Requisition feature store is needed by requisition widgets outside the feature route
+    // Feature stores needed by widgets outside their dedicated feature routes
+    provideOrganizationManagementStore(),
     provideRequisitionManagementStore(),
   ];
 }

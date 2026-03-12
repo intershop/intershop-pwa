@@ -1,4 +1,4 @@
-import { EnvironmentProviders, NgModule, importProvidersFrom } from '@angular/core';
+import { EnvironmentProviders, importProvidersFrom } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
@@ -32,9 +32,6 @@ export function provideRequisitionManagementStore(): EnvironmentProviders {
   );
 }
 
-@NgModule({
-  providers: [provideRequisitionManagementStore()],
-})
 export class RequisitionManagementStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<RequisitionManagementState>)[]) {
     return StoreModule.forFeature(requisitionManagementFeature, pick(requisitionManagementReducers, reducers));

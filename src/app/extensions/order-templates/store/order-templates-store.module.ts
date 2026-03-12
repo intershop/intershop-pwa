@@ -2,7 +2,6 @@ import {
   EnvironmentProviders,
   Injectable,
   InjectionToken,
-  NgModule,
   importProvidersFrom,
   makeEnvironmentProviders,
 } from '@angular/core';
@@ -42,10 +41,6 @@ export function provideOrderTemplatesStore(): EnvironmentProviders {
   return makeEnvironmentProviders([importProvidersFrom(...orderTemplatesStoreImports), ...orderTemplatesStoreProviders]);
 }
 
-@NgModule({
-  imports: orderTemplatesStoreImports,
-  providers: orderTemplatesStoreProviders,
-})
 export class OrderTemplatesStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<OrderTemplatesState>)[]) {
     return StoreModule.forFeature('orderTemplates', pick(orderTemplatesReducers, reducers));

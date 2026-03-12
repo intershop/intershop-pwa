@@ -14,7 +14,6 @@ import { LoadingComponent } from 'ish-shared/components/common/loading/loading.c
 
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 import { Requisition } from '../../models/requisition/requisition.model';
-import { RequisitionManagementStoreModule } from '../../store/requisition-management-store.module';
 
 @Component({
   selector: 'ish-approval-widget',
@@ -27,7 +26,6 @@ import { RequisitionManagementStoreModule } from '../../store/requisition-manage
     LoadingComponent,
     NgIf,
     PricePipe,
-    RequisitionManagementStoreModule,
     TranslatePipe,
     RouterLink,
   ],

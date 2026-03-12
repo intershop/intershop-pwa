@@ -1,4 +1,4 @@
-import { EnvironmentProviders, NgModule, importProvidersFrom } from '@angular/core';
+import { EnvironmentProviders, importProvidersFrom } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
@@ -38,9 +38,6 @@ export function provideOrganizationManagementStore(): EnvironmentProviders {
   );
 }
 
-@NgModule({
-  providers: [provideOrganizationManagementStore()],
-})
 export class OrganizationManagementStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<OrganizationManagementState>)[]) {
     return StoreModule.forFeature(organizationManagementFeature, pick(organizationManagementReducers, reducers));

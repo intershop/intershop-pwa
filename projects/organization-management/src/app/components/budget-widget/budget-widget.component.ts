@@ -13,7 +13,6 @@ import { LoadingComponent } from 'ish-shared/components/common/loading/loading.c
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { UserBudget } from '../../models/user-budget/user-budget.model';
-import { OrganizationManagementStoreModule } from '../../store/organization-management-store.module';
 import { BudgetInfoComponent } from '../budget-info/budget-info.component';
 import { UserBudgetComponent } from '../user-budget/user-budget.component';
 
@@ -26,7 +25,6 @@ import { UserBudgetComponent } from '../user-budget/user-budget.component';
     AsyncPipe,
     BudgetInfoComponent,
     NgIf,
-    OrganizationManagementStoreModule,
     TranslatePipe,
     UserBudgetComponent,
     ErrorMessageComponent,

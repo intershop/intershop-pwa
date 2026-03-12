@@ -12,7 +12,6 @@ import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
-import { OrganizationManagementStoreModule } from '../../store/organization-management-store.module';
 import { CostCenterBudgetComponent } from '../cost-center-budget/cost-center-budget.component';
 
 @GenerateLazyComponent()
@@ -26,7 +25,6 @@ import { CostCenterBudgetComponent } from '../cost-center-budget/cost-center-bud
     CostCenterBudgetComponent,
     NgFor,
     NgIf,
-    OrganizationManagementStoreModule,
     TranslatePipe,
     InfoBoxComponent,
     LoadingComponent,

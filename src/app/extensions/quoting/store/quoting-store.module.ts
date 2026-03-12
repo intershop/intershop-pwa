@@ -2,7 +2,6 @@ import {
   EnvironmentProviders,
   Injectable,
   InjectionToken,
-  NgModule,
   importProvidersFrom,
   makeEnvironmentProviders,
 } from '@angular/core';
@@ -38,10 +37,6 @@ export function provideQuotingStore(): EnvironmentProviders {
   return makeEnvironmentProviders([importProvidersFrom(...quotingStoreImports), ...quotingStoreProviders]);
 }
 
-@NgModule({
-  imports: quotingStoreImports,
-  providers: quotingStoreProviders,
-})
 export class QuotingStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<QuotingState>)[]) {
     return StoreModule.forFeature('quoting', pick(quotingReducers, reducers));
