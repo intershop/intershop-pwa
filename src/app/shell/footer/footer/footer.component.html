@@ -1,13 +1,14 @@
 <ng-container *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']">
-  @defer (when ('storeLocator' | ishFeature)) {
-  <ish-store-locator-footer />
+  @let storeLocatorEnabled = 'storeLocator' | ishFeature;
+  @if (storeLocatorEnabled) {
+    <ish-store-locator-footer />
+  } @else if (storeLocatorEnabled === undefined) {
+    <div class="footer-top footer-top-skeleton" aria-hidden="true"></div>
   }
   <div class="footer">
     <div class="container">
       <div [ishServerHtml]="'footer.disclaimer' | translate" class="clearfix"></div>
-      @defer {
       <ish-content-include includeId="include.footer.content.pagelet2-Include" />
-      }
       <div [ishServerHtml]="'footer.copyright' | translate : { appVersion: appVersion }" class="clearfix"></div>
     </div>
   </div>

@@ -17,13 +17,13 @@ import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle
  */
 @Pipe({ name: 'ishFeature', pure: false, standalone: true })
 export class FeatureTogglePipe implements PipeTransform {
-  private enabled: boolean;
+  private enabled: boolean | undefined;
   private destroyRef = inject(DestroyRef);
   private subscription: Subscription;
 
   constructor(private featureToggleService: FeatureToggleService, private cdRef: ChangeDetectorRef) {}
 
-  transform(feature: 'always' | 'never' | FeatureToggleType): boolean {
+  transform(feature: 'always' | 'never' | FeatureToggleType): boolean | undefined {
     if (this.subscription) {
       // eslint-disable-next-line ban/ban
       this.subscription.unsubscribe();

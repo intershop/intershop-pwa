@@ -6,6 +6,20 @@ footer {
   clear: both;
   color: $text-color-tertiary;
 
+  .footer-top-skeleton {
+    min-height: 120px;
+    background: $color-primary;
+  }
+
+  ish-content-include {
+    display: block;
+  }
+
+  // Reserve space until CMS include has rendered to avoid footer CLS on mobile.
+  ish-content-include:empty {
+    min-height: 220px;
+  }
+
   // h4 is obsolete, should use .link-group-heading instead
   h4,
   .link-group-heading {
@@ -107,6 +121,16 @@ footer {
 }
 
 @media (max-width: $screen-xs-max) {
+  footer {
+    .footer-top-skeleton {
+      min-height: 128px;
+    }
+
+    ish-content-include:empty {
+      min-height: 280px;
+    }
+  }
+
   .link-group {
     border-bottom: $border-width-default solid $border-color-default;
 
