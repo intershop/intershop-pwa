@@ -1,4 +1,11 @@
-import { Injectable, InjectionToken, NgModule } from '@angular/core';
+import {
+  EnvironmentProviders,
+  Injectable,
+  InjectionToken,
+  NgModule,
+  importProvidersFrom,
+  makeEnvironmentProviders,
+} from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
@@ -24,12 +31,20 @@ export const ORDER_TEMPLATES_STORE_CONFIG = new InjectionToken<StoreConfig<Order
   'orderTemplatesStoreConfig'
 );
 
+const orderTemplatesStoreImports = [
+  EffectsModule.forFeature(orderTemplatesEffects),
+  StoreModule.forFeature('orderTemplates', orderTemplatesReducers, ORDER_TEMPLATES_STORE_CONFIG),
+];
+
+const orderTemplatesStoreProviders = [{ provide: ORDER_TEMPLATES_STORE_CONFIG, useClass: OrderTemplatesStoreConfig }];
+
+export function provideOrderTemplatesStore(): EnvironmentProviders {
+  return makeEnvironmentProviders([importProvidersFrom(...orderTemplatesStoreImports), ...orderTemplatesStoreProviders]);
+}
+
 @NgModule({
-  imports: [
-    EffectsModule.forFeature(orderTemplatesEffects),
-    StoreModule.forFeature('orderTemplates', orderTemplatesReducers, ORDER_TEMPLATES_STORE_CONFIG),
-  ],
-  providers: [{ provide: ORDER_TEMPLATES_STORE_CONFIG, useClass: OrderTemplatesStoreConfig }],
+  imports: orderTemplatesStoreImports,
+  providers: orderTemplatesStoreProviders,
 })
 export class OrderTemplatesStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<OrderTemplatesState>)[]) {

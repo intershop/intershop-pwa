@@ -1,11 +1,14 @@
-import { NgModule } from '@angular/core';
+import { EnvironmentProviders, importProvidersFrom, makeEnvironmentProviders } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 
 import { SeoEffects } from './seo/seo.effects';
 
 const seoEffects = [SeoEffects];
 
-@NgModule({
-  imports: [EffectsModule.forFeature(seoEffects)],
-})
+const seoStoreImports = [EffectsModule.forFeature(seoEffects)];
+
+export function provideSeoStore(): EnvironmentProviders {
+  return makeEnvironmentProviders([importProvidersFrom(...seoStoreImports)]);
+}
+
 export class SeoStoreModule {}

@@ -1,4 +1,4 @@
-import { EnvironmentProviders, Provider, importProvidersFrom } from '@angular/core';
+import { EnvironmentProviders, Provider } from '@angular/core';
 
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
@@ -9,10 +9,7 @@ export function provideProductNotificationsFeature(): (Provider | EnvironmentPro
       multi: true,
       useValue: {
         feature: 'productNotifications',
-        providers: () =>
-          import('./store/product-notifications-store.module').then(m =>
-            importProvidersFrom(m.ProductNotificationsStoreModule)
-          ),
+        providers: () => import('./store/product-notifications-store.module').then(m => m.provideProductNotificationsStore()),
       },
     },
   ];

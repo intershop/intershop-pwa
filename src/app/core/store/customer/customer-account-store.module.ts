@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { EnvironmentProviders, NgModule, importProvidersFrom, makeEnvironmentProviders } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 
 import { AddressesEffects } from './addresses/addresses.effects';
@@ -10,18 +10,22 @@ import { RequisitionManagementEffects } from './requisition-management/requisiti
 import { SsoRegistrationEffects } from './sso-registration/sso-registration.effects';
 import { UserNewsletterEffects } from './user/user-newsletter.effects';
 
+const customerAccountEffects = [
+  AddressesEffects,
+  OrdersEffects,
+  RecurringOrdersEffects,
+  OrganizationManagementEffects,
+  RequisitionManagementEffects,
+  SsoRegistrationEffects,
+  DataRequestsEffects,
+  UserNewsletterEffects,
+];
+
+export function provideCustomerAccountStore(): EnvironmentProviders {
+  return makeEnvironmentProviders([importProvidersFrom(EffectsModule.forFeature(customerAccountEffects))]);
+}
+
 @NgModule({
-  imports: [
-    EffectsModule.forFeature([
-      AddressesEffects,
-      OrdersEffects,
-      RecurringOrdersEffects,
-      OrganizationManagementEffects,
-      RequisitionManagementEffects,
-      SsoRegistrationEffects,
-      DataRequestsEffects,
-      UserNewsletterEffects,
-    ]),
-  ],
+  imports: [EffectsModule.forFeature(customerAccountEffects)],
 })
 export class CustomerAccountStoreModule {}

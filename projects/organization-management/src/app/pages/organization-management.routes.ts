@@ -1,4 +1,3 @@
-import { importProvidersFrom } from '@angular/core';
 import { Routes } from '@angular/router';
 import { provideFormlyConfig } from '@ngx-formly/core';
 
@@ -7,7 +6,7 @@ import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 
 import { fetchUsersGuard } from '../guards/fetch-users.guard';
 import { redirectFirstToParentGuard } from '../guards/redirect-first-to-parent.guard';
-import { OrganizationManagementStoreModule } from '../store/organization-management-store.module';
+import { provideOrganizationManagementStore } from '../store/organization-management-store.module';
 
 import { CostCenterBuyersRepeatFieldComponent } from './cost-center-buyers/cost-center-buyers-repeat-field/cost-center-buyers-repeat-field.component';
 
@@ -19,7 +18,7 @@ import { CostCenterBuyersRepeatFieldComponent } from './cost-center-buyers/cost-
 export const routes: Routes = [
   {
     path: '',
-    providers: [importProvidersFrom(OrganizationManagementStoreModule)],
+    providers: [provideOrganizationManagementStore()],
     children: [
       { path: '', redirectTo: 'cost-centers', pathMatch: 'full' },
       {

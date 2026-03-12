@@ -1,17 +1,16 @@
-import { importProvidersFrom } from '@angular/core';
 import { Routes } from '@angular/router';
 
 import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 
 import { provideCaptchaFeature } from '../../../captcha/captcha-feature.providers';
-import { ContactUsStoreModule } from '../../store/contact-us-store.module';
+import { provideContactUsStore } from '../../store/contact-us-store.module';
 
 export const contactPageRoutes: Routes = [
   {
     path: '',
     loadComponent: () => import('./contact-page.component').then(m => m.ContactPageComponent),
     canActivate: [featureToggleGuard],
-    providers: [importProvidersFrom(ContactUsStoreModule), ...provideCaptchaFeature()],
+    providers: [provideContactUsStore(), ...provideCaptchaFeature()],
     data: {
       feature: 'contactUs',
       meta: {

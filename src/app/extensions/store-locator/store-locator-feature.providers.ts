@@ -1,4 +1,4 @@
-import { EnvironmentProviders, Provider, importProvidersFrom } from '@angular/core';
+import { EnvironmentProviders, Provider } from '@angular/core';
 
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
@@ -8,8 +8,7 @@ export function provideStoreLocatorFeature(): (Provider | EnvironmentProviders)[
       provide: LAZY_FEATURE_MODULE,
       useValue: {
         feature: 'storeLocator',
-        providers: () =>
-          import('./store/store-locator-store.module').then(m => importProvidersFrom(m.StoreLocatorStoreModule)),
+        providers: () => import('./store/store-locator-store.module').then(m => m.provideStoreLocatorStore()),
       },
       multi: true,
     },

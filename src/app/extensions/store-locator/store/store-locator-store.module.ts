@@ -1,4 +1,4 @@
-import { NgModule, Type } from '@angular/core';
+import { EnvironmentProviders, Type, importProvidersFrom, makeEnvironmentProviders } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
@@ -16,12 +16,15 @@ const storeLocatorReducers: ActionReducerMap<StoreLocatorState> = {
 
 const storeLocatorEffects: Type<unknown>[] = [StoresEffects, StoreLocatorConfigEffects];
 
-@NgModule({
-  imports: [
-    EffectsModule.forFeature(storeLocatorEffects),
-    StoreModule.forFeature('storeLocator', storeLocatorReducers),
-  ],
-})
+const storeLocatorStoreImports = [
+  EffectsModule.forFeature(storeLocatorEffects),
+  StoreModule.forFeature('storeLocator', storeLocatorReducers),
+];
+
+export function provideStoreLocatorStore(): EnvironmentProviders {
+  return makeEnvironmentProviders([importProvidersFrom(...storeLocatorStoreImports)]);
+}
+
 export class StoreLocatorStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<StoreLocatorState>)[]) {
     return StoreModule.forFeature('storeLocator', pick(storeLocatorReducers, reducers));

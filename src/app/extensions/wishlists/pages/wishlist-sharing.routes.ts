@@ -1,10 +1,9 @@
-import { importProvidersFrom } from '@angular/core';
 import { Routes } from '@angular/router';
 
 import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 
 import { fetchSharedWishlistGuard } from '../guards/fetch-shared-wishlist.guard';
-import { WishlistsStoreModule } from '../store/wishlists-store.module';
+import { provideWishlistsStore } from '../store/wishlists-store.module';
 
 export const routes: Routes = [
   {
@@ -13,6 +12,6 @@ export const routes: Routes = [
       import('./shared-wishlist/shared-wishlist-page.component').then(m => m.SharedWishlistPageComponent),
     canActivate: [featureToggleGuard, fetchSharedWishlistGuard],
     data: { feature: 'wishlists' },
-    providers: [importProvidersFrom(WishlistsStoreModule)],
+    providers: [provideWishlistsStore()],
   },
 ];

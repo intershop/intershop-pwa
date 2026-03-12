@@ -7,7 +7,7 @@ import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle
 // not-dead-code
 /**
  * provides a compatibility layer for REST API changes in newer ICM versions
- * please enable the interceptor in the `core.module.ts` if needed
+ * please enable the interceptor in `core.providers.ts` if needed
  * e.g. `messageToMerchant` is no longer an environment feature toggle in ICM 11 but controlled by the configurations call
  */
 @Injectable()

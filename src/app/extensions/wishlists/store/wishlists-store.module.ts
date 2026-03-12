@@ -1,4 +1,10 @@
-import { Injectable, InjectionToken, NgModule } from '@angular/core';
+import {
+  EnvironmentProviders,
+  Injectable,
+  InjectionToken,
+  importProvidersFrom,
+  makeEnvironmentProviders,
+} from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
@@ -22,13 +28,17 @@ export class WishlistStoreConfig implements StoreConfig<WishlistsState> {
 
 export const WISHLIST_STORE_CONFIG = new InjectionToken<StoreConfig<WishlistsState>>('wishlistStoreConfig');
 
-@NgModule({
-  imports: [
-    EffectsModule.forFeature(wishlistsEffects),
-    StoreModule.forFeature('wishlists', wishlistsReducers, WISHLIST_STORE_CONFIG),
-  ],
-  providers: [{ provide: WISHLIST_STORE_CONFIG, useClass: WishlistStoreConfig }],
-})
+const wishlistsStoreImports = [
+  EffectsModule.forFeature(wishlistsEffects),
+  StoreModule.forFeature('wishlists', wishlistsReducers, WISHLIST_STORE_CONFIG),
+];
+
+const wishlistsStoreProviders = [{ provide: WISHLIST_STORE_CONFIG, useClass: WishlistStoreConfig }];
+
+export function provideWishlistsStore(): EnvironmentProviders {
+  return makeEnvironmentProviders([importProvidersFrom(...wishlistsStoreImports), ...wishlistsStoreProviders]);
+}
+
 export class WishlistsStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<WishlistsState>)[]) {
     return StoreModule.forFeature('wishlists', pick(wishlistsReducers, reducers));

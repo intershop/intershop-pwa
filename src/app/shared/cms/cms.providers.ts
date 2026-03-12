@@ -1,4 +1,4 @@
-import { NgModule, Provider, Type } from '@angular/core';
+import { EnvironmentProviders, Provider, Type, makeEnvironmentProviders } from '@angular/core';
 
 import { CMS_COMPONENT } from './configurations/injection-keys';
 import { CMSComponent } from './models/cms-component/cms-component.model';
@@ -78,7 +78,6 @@ const CMS_COMPONENT_PROVIDERS: Provider[] = [
   ),
 ];
 
-@NgModule({
-  providers: CMS_COMPONENT_PROVIDERS,
-})
-export class CMSModule {}
+export function provideCMS(): EnvironmentProviders {
+  return makeEnvironmentProviders([...CMS_COMPONENT_PROVIDERS]);
+}

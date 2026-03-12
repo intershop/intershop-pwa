@@ -1,4 +1,4 @@
-import { EnvironmentProviders, Provider, importProvidersFrom } from '@angular/core';
+import { EnvironmentProviders, Provider } from '@angular/core';
 
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
@@ -14,8 +14,7 @@ export function provideOrderTemplatesFeature(): (Provider | EnvironmentProviders
       multi: true,
       useValue: {
         feature: 'orderTemplates',
-        providers: () =>
-          import('./store/order-templates-store.module').then(m => importProvidersFrom(m.OrderTemplatesStoreModule)),
+        providers: () => import('./store/order-templates-store.module').then(m => m.provideOrderTemplatesStore()),
       },
     },
   ];

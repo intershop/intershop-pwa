@@ -1,4 +1,4 @@
-import { EnvironmentProviders, Provider, importProvidersFrom } from '@angular/core';
+import { EnvironmentProviders, Provider } from '@angular/core';
 
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
@@ -9,7 +9,7 @@ export function provideSeoFeature(): (Provider | EnvironmentProviders)[] {
       useValue: {
         feature: 'always',
         loadStrategy: 'appInit',
-        providers: () => import('./store/seo-store.module').then(m => importProvidersFrom(m.SeoStoreModule)),
+        providers: () => import('./store/seo-store.module').then(m => m.provideSeoStore()),
       },
       multi: true,
     },

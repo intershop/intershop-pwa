@@ -1,4 +1,4 @@
-import { EnvironmentProviders, Provider, importProvidersFrom } from '@angular/core';
+import { EnvironmentProviders, Provider } from '@angular/core';
 
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
@@ -8,7 +8,7 @@ export function provideCopilotFeature(): (Provider | EnvironmentProviders)[] {
       provide: LAZY_FEATURE_MODULE,
       useValue: {
         feature: 'copilot',
-        providers: () => import('./store/copilot-store.module').then(m => importProvidersFrom(m.CopilotStoreModule)),
+        providers: () => import('./store/copilot-store.module').then(m => m.provideCopilotStore()),
       },
       multi: true,
     },

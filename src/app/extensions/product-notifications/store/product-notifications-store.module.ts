@@ -1,4 +1,10 @@
-import { Injectable, InjectionToken, NgModule } from '@angular/core';
+import {
+  EnvironmentProviders,
+  Injectable,
+  InjectionToken,
+  importProvidersFrom,
+  makeEnvironmentProviders,
+} from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
@@ -24,13 +30,22 @@ export const PRODUCT_NOTIFICATIONS_STORE_CONFIG = new InjectionToken<StoreConfig
   'productNotificationsStoreConfig'
 );
 
-@NgModule({
-  imports: [
-    EffectsModule.forFeature(productNotificationsEffects),
-    StoreModule.forFeature('productNotifications', productNotificationsReducers, PRODUCT_NOTIFICATIONS_STORE_CONFIG),
-  ],
-  providers: [{ provide: PRODUCT_NOTIFICATIONS_STORE_CONFIG, useClass: ProductNotificationsConfig }],
-})
+const productNotificationsStoreImports = [
+  EffectsModule.forFeature(productNotificationsEffects),
+  StoreModule.forFeature('productNotifications', productNotificationsReducers, PRODUCT_NOTIFICATIONS_STORE_CONFIG),
+];
+
+const productNotificationsStoreProviders = [
+  { provide: PRODUCT_NOTIFICATIONS_STORE_CONFIG, useClass: ProductNotificationsConfig },
+];
+
+export function provideProductNotificationsStore(): EnvironmentProviders {
+  return makeEnvironmentProviders([
+    importProvidersFrom(...productNotificationsStoreImports),
+    ...productNotificationsStoreProviders,
+  ]);
+}
+
 export class ProductNotificationsStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<ProductNotificationsState>)[]) {
     return StoreModule.forFeature('productNotifications', pick(productNotificationsReducers, reducers));
