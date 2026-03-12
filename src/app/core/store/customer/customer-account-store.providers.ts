@@ -1,4 +1,4 @@
-import { EnvironmentProviders, NgModule, importProvidersFrom, makeEnvironmentProviders } from '@angular/core';
+import { EnvironmentProviders, importProvidersFrom, makeEnvironmentProviders } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 
 import { AddressesEffects } from './addresses/addresses.effects';
@@ -25,7 +25,4 @@ export function provideCustomerAccountStore(): EnvironmentProviders {
   return makeEnvironmentProviders([importProvidersFrom(EffectsModule.forFeature(customerAccountEffects))]);
 }
 
-@NgModule({
-  imports: [EffectsModule.forFeature(customerAccountEffects)],
-})
 export class CustomerAccountStoreModule {}

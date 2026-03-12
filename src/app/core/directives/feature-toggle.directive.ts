@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, combineLatest, of } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 
-import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle';
 
 /**
  * Structural directive.
@@ -63,3 +63,4 @@ export class FeatureToggleDirective {
     this.elseSet$.next(true);
   }
 }
+

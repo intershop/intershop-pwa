@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { provideFormlyConfig } from '@ngx-formly/core';
 
-import { featureToggleGuard } from 'ish-core/feature-toggle.module';
+import { featureToggleGuard } from 'ish-core/feature-toggle';
 import { authGuard } from 'ish-core/guards/auth.guard';
 import { errorStatusGuard } from 'ish-core/guards/error-status.guard';
 import { identityProviderInviteGuard } from 'ish-core/guards/identity-provider-invite.guard';
@@ -37,7 +37,7 @@ export const appRoutes: Routes = [
   {
     path: 'home',
     loadChildren: () =>
-      Promise.all([import('./home/home-page.component'), import('ish-shared/formly/formly.module')]).then(
+      Promise.all([import('./home/home-page.component'), import('ish-shared/formly/formly')]).then(
         ([{ HomePageComponent }, { provideIshFormly }]) => [
           {
             path: '',
@@ -82,10 +82,10 @@ export const appRoutes: Routes = [
     loadChildren: () =>
       Promise.all([
         import('./account/account-page.routes'),
-        import('ish-shared/formly/formly.module'),
-        import('ish-shared/formly-address-forms/formly-address-forms.module'),
-        import('ish-core/store/customer/customer-account-store.module'),
-        import('ish-core/store/general/general-store.module'),
+        import('ish-shared/formly/formly'),
+        import('ish-shared/formly-address-forms/formly-address-forms'),
+        import('ish-core/store/customer/customer-account-store.providers'),
+        import('ish-core/store/general/general-store.providers'),
       ]).then(
         ([
           { accountPageRoutes },
@@ -117,7 +117,7 @@ export const appRoutes: Routes = [
   {
     path: 'search/:searchTerm',
     loadChildren: () =>
-      Promise.all([import('./search/search-page.component'), import('ish-shared/formly/formly.module')]).then(
+      Promise.all([import('./search/search-page.component'), import('ish-shared/formly/formly')]).then(
         ([{ SearchPageComponent }, { provideIshFormly }]) => [
           {
             path: '',
@@ -134,7 +134,7 @@ export const appRoutes: Routes = [
   {
     path: 'basket',
     loadChildren: () =>
-      Promise.all([import('./basket/basket-page.component'), import('ish-shared/formly/formly.module')]).then(
+      Promise.all([import('./basket/basket-page.component'), import('ish-shared/formly/formly')]).then(
         ([{ BasketPageComponent }, { provideIshFormly }]) => [
           {
             path: '',
@@ -163,10 +163,10 @@ export const appRoutes: Routes = [
     loadChildren: () =>
       Promise.all([
         import('./checkout/checkout-page.routes'),
-        import('ish-shared/formly/formly.module'),
-        import('ish-shared/formly-address-forms/formly-address-forms.module'),
-        import('ish-core/store/customer/customer-account-store.module'),
-        import('ish-core/store/general/general-store.module'),
+        import('ish-shared/formly/formly'),
+        import('ish-shared/formly-address-forms/formly-address-forms'),
+        import('ish-core/store/customer/customer-account-store.providers'),
+        import('ish-core/store/general/general-store.providers'),
       ]).then(
         ([
           { checkoutPageRoutes },
@@ -194,10 +194,10 @@ export const appRoutes: Routes = [
     loadChildren: () =>
       Promise.all([
         import('./registration/registration-page.routes'),
-        import('ish-shared/formly/formly.module'),
-        import('ish-shared/formly-address-forms/formly-address-forms.module'),
-        import('ish-core/store/customer/customer-account-store.module'),
-        import('ish-core/store/general/general-store.module'),
+        import('ish-shared/formly/formly'),
+        import('ish-shared/formly-address-forms/formly-address-forms'),
+        import('ish-core/store/customer/customer-account-store.providers'),
+        import('ish-core/store/general/general-store.providers'),
       ]).then(
         ([
           { registrationFormlyConfig, registrationPageRoutes },
@@ -230,7 +230,7 @@ export const appRoutes: Routes = [
   {
     path: 'login',
     loadChildren: () =>
-      Promise.all([import('./login/login-page.routes'), import('ish-shared/formly/formly.module')]).then(
+      Promise.all([import('./login/login-page.routes'), import('ish-shared/formly/formly')]).then(
         ([{ loginPageRoutes }, { provideIshFormly }]) => {
           const [rootRoute, ...nestedRoutes] = loginPageRoutes;
           return rootRoute
@@ -255,7 +255,7 @@ export const appRoutes: Routes = [
     loadChildren: () =>
       Promise.all([
         import('./forgot-password/forgot-password-page.routes'),
-        import('ish-shared/formly/formly.module'),
+        import('ish-shared/formly/formly'),
       ]).then(([{ forgotPasswordPageRoutes }, { provideIshFormly }]) => {
         const [rootRoute, ...nestedRoutes] = forgotPasswordPageRoutes;
         return rootRoute
@@ -273,7 +273,7 @@ export const appRoutes: Routes = [
     // route for handling confirmation of user data and account deletion requests
     path: 'gdpr-requests',
     loadChildren: () =>
-      Promise.all([import('./data-request/data-request-page.routes'), import('ish-shared/formly/formly.module')]).then(
+      Promise.all([import('./data-request/data-request-page.routes'), import('ish-shared/formly/formly')]).then(
         ([{ dataRequestPageRoutes }, { provideIshFormly }]) => {
           const [rootRoute, ...nestedRoutes] = dataRequestPageRoutes;
           return rootRoute
@@ -291,7 +291,7 @@ export const appRoutes: Routes = [
   {
     path: 'cookies',
     loadChildren: () =>
-      Promise.all([import('./cookies/cookies-page.routes'), import('ish-shared/formly/formly.module')]).then(
+      Promise.all([import('./cookies/cookies-page.routes'), import('ish-shared/formly/formly')]).then(
         ([{ cookiesPageRoutes }, { provideIshFormly }]) => {
           const [rootRoute, ...nestedRoutes] = cookiesPageRoutes;
           return rootRoute
@@ -316,7 +316,7 @@ export const appRoutes: Routes = [
     loadChildren: () =>
       Promise.all([
         import('../extensions/compare/pages/compare/compare-page.component'),
-        import('ish-shared/formly/formly.module'),
+        import('ish-shared/formly/formly'),
       ]).then(([{ ComparePageComponent }, { provideIshFormly }]) => [
         {
           path: '',
@@ -364,7 +364,7 @@ export const appRoutes: Routes = [
     loadChildren: () =>
       Promise.all([
         import('../extensions/punchout/pages/punchout-account.routes'),
-        import('ish-shared/formly/formly.module'),
+        import('ish-shared/formly/formly'),
       ]).then(([{ punchoutAccountRoutes }, { provideIshFormly }]) => {
         const [rootRoute, ...nestedRoutes] = punchoutAccountRoutes;
         return rootRoute
@@ -379,8 +379,8 @@ export const appRoutes: Routes = [
     loadChildren: () =>
       Promise.all([
         import('../extensions/store-locator/pages/store-locator/store-locator-page.component'),
-        import('ish-core/store/general/general-store.module'),
-        import('ish-shared/formly/formly.module'),
+        import('ish-core/store/general/general-store.providers'),
+        import('ish-shared/formly/formly'),
       ]).then(([{ StoreLocatorPageComponent }, { provideGeneralStore }, { provideIshFormly }]) => [
         {
           path: '',
@@ -404,7 +404,7 @@ export const appRoutes: Routes = [
     loadChildren: () =>
       Promise.all([
         import('../extensions/recently/pages/recently/recently-page.component'),
-        import('ish-shared/formly/formly.module'),
+        import('ish-shared/formly/formly'),
       ]).then(([{ RecentlyPageComponent }, { provideIshFormly }]) => [
         {
           path: '',
@@ -429,7 +429,7 @@ export const appRoutes: Routes = [
     loadChildren: () =>
       Promise.all([
         import('../extensions/contact-us/pages/contact/contact-page.routes'),
-        import('ish-shared/formly/formly.module'),
+        import('ish-shared/formly/formly'),
       ]).then(([{ contactPageRoutes }, { provideIshFormly }]) => {
         const [rootRoute, ...nestedRoutes] = contactPageRoutes;
         return rootRoute
@@ -444,7 +444,7 @@ export const appRoutes: Routes = [
     loadChildren: () =>
       Promise.all([
         import('../extensions/wishlists/pages/wishlist-sharing.routes'),
-        import('ish-shared/formly/formly.module'),
+        import('ish-shared/formly/formly'),
       ]).then(([{ routes }, { provideIshFormly }]) => {
         const [rootRoute, ...nestedRoutes] = routes;
         return rootRoute
@@ -453,3 +453,4 @@ export const appRoutes: Routes = [
       }),
   },
 ];
+

@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatMap, mergeMap } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { SsoRegistrationType } from 'ish-core/models/customer/customer.model';
 import { UserService } from 'ish-core/services/user/user.service';
 import { userNewsletterActions } from 'ish-core/store/customer/user';
@@ -54,3 +54,4 @@ export class SsoRegistrationEffects {
     )
   );
 }
+

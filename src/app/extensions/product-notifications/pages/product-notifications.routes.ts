@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 
-import { featureToggleGuard } from 'ish-core/feature-toggle.module';
+import { featureToggleGuard } from 'ish-core/feature-toggle';
 import { authGuard } from 'ish-core/guards/auth.guard';
 
-import { provideProductNotificationsStore } from '../store/product-notifications-store.module';
+import { provideProductNotificationsStore } from '../store/product-notifications-store.providers';
 
 export const productNotificationsRoutes: Routes = [
   {
@@ -17,3 +17,4 @@ export const productNotificationsRoutes: Routes = [
     providers: [provideProductNotificationsStore()],
   },
 ];
+

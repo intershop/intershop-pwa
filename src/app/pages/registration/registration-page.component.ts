@@ -9,7 +9,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, take, tap } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
@@ -123,3 +123,4 @@ export class RegistrationPageComponent implements OnInit {
     this.form.get('captcha')?.setValue(undefined);
   }
 }
+

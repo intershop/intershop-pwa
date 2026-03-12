@@ -8,7 +8,7 @@ export function provideQuotingFeature(): (Provider | EnvironmentProviders)[] {
       provide: LAZY_FEATURE_MODULE,
       useValue: {
         feature: 'quoting',
-        providers: () => import('./store/quoting-store.module').then(m => m.provideQuotingStore()),
+        providers: () => import('./store/quoting-store.providers').then(m => m.provideQuotingStore()),
       },
       multi: true,
     },
@@ -16,3 +16,4 @@ export function provideQuotingFeature(): (Provider | EnvironmentProviders)[] {
 }
 
 export const QUOTING_FEATURE_PROVIDERS = provideQuotingFeature();
+

@@ -1,4 +1,4 @@
-import { NgModule, Provider } from '@angular/core';
+import { Provider } from '@angular/core';
 import { FORMLY_CONFIG, FormlyConfig, provideFormlyConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -33,5 +33,4 @@ export function provideIshFormlyExtensions(): Provider[] {
   ];
 }
 
-@NgModule({})
 export class ExtensionsModule {}

@@ -7,7 +7,7 @@ import {
   ProductContext,
   ProductContextDisplayProperties,
 } from 'ish-core/facades/product-context.facade';
-import { RoleToggleService } from 'ish-core/role-toggle.module';
+import { RoleToggleService } from 'ish-core/role-toggle';
 
 @Injectable({ providedIn: 'root' })
 export class PunchoutProductContextDisplayPropertiesService implements ExternalDisplayPropertiesProvider {
@@ -30,3 +30,4 @@ export class PunchoutProductContextDisplayPropertiesService implements ExternalD
     );
   }
 }
+

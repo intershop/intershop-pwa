@@ -8,7 +8,7 @@ export function provideRecentlyFeature(): (Provider | EnvironmentProviders)[] {
       provide: LAZY_FEATURE_MODULE,
       useValue: {
         feature: 'recently',
-        providers: () => import('./store/recently-store.module').then(m => m.provideRecentlyStore()),
+        providers: () => import('./store/recently-store.providers').then(m => m.provideRecentlyStore()),
       },
       multi: true,
     },
@@ -16,3 +16,4 @@ export function provideRecentlyFeature(): (Provider | EnvironmentProviders)[] {
 }
 
 export const RECENTLY_FEATURE_PROVIDERS = provideRecentlyFeature();
+

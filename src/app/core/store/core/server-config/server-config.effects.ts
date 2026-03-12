@@ -6,7 +6,7 @@ import { Store, select } from '@ngrx/store';
 import { EMPTY, identity } from 'rxjs';
 import { concatMap, filter, first, map, switchMap, take, takeWhile } from 'rxjs/operators';
 
-import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { applyConfiguration, getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/configuration';
@@ -202,3 +202,4 @@ export class ServerConfigEffects {
     return featureConfig.features?.length || featureConfig.addFeatures?.length ? featureConfig : undefined;
   }
 }
+

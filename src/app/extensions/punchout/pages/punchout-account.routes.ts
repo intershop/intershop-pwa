@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { provideFormlyConfig } from '@ngx-formly/core';
 
-import { providePunchoutStore } from '../store/punchout-store.module';
+import { providePunchoutStore } from '../store/punchout-store.providers';
 
 import { ociConfigurationFormlyConfig } from './account-punchout-configuration/account-punchout-configuration-page.component';
 import { cxmlConfigurationFormlyConfig } from './account-punchout-cxml-configuration/account-punchout-cxml-configuration-page.component';
@@ -67,3 +67,4 @@ export const punchoutAccountRoutes: Routes = [
     ],
   },
 ];
+

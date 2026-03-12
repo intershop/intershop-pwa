@@ -8,7 +8,7 @@ export function provideWishlistsFeature(): (Provider | EnvironmentProviders)[] {
       provide: LAZY_FEATURE_MODULE,
       useValue: {
         feature: 'wishlists',
-        providers: () => import('./store/wishlists-store.module').then(m => m.provideWishlistsStore()),
+        providers: () => import('./store/wishlists-store.providers').then(m => m.provideWishlistsStore()),
       },
       multi: true,
     },
@@ -16,3 +16,4 @@ export function provideWishlistsFeature(): (Provider | EnvironmentProviders)[] {
 }
 
 export const WISHLISTS_FEATURE_PROVIDERS = provideWishlistsFeature();
+

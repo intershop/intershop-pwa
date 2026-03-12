@@ -1,7 +1,13 @@
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
-import { Inject, LOCALE_ID, NgModule, TransferState } from '@angular/core';
+import {
+  APP_INITIALIZER,
+  EnvironmentProviders,
+  LOCALE_ID,
+  TransferState,
+  makeEnvironmentProviders,
+} from '@angular/core';
 import {
   MissingTranslationHandler,
   TranslateCompiler,
@@ -11,7 +17,6 @@ import {
 } from '@ngx-translate/core';
 
 import { SSR_LOCALE } from './configurations/state-keys';
-import { InjectSingle } from './utils/injection';
 import {
   FALLBACK_LANG,
   FallbackMissingTranslationHandler,
@@ -20,9 +25,29 @@ import { ICMTranslateLoader, LOCAL_TRANSLATIONS } from './utils/translate/icm-tr
 import { PWATranslateCompiler } from './utils/translate/pwa-translate-compiler';
 import { TranslationGenerator } from './utils/translate/translations-generator';
 
-@NgModule({
-  providers: [
-    { provide: LOCALE_ID, useValue: 'en-US' },
+function initializeInternationalization(
+  angularDefaultLocale: string,
+  translateService: TranslateService,
+  transferState: TransferState,
+  generator: TranslationGenerator
+) {
+  return () => {
+    registerLocaleData(localeDe);
+    registerLocaleData(localeFr);
+
+    let defaultLang = angularDefaultLocale.replace(/\-/, '_');
+    if (transferState.hasKey(SSR_LOCALE)) {
+      defaultLang = transferState.get(SSR_LOCALE, defaultLang);
+    }
+    translateService.setDefaultLang(defaultLang);
+    translateService.use(defaultLang);
+
+    generator.init();
+  };
+}
+
+export function provideInternationalization(): EnvironmentProviders {
+  return makeEnvironmentProviders([
     provideTranslateService({
       loader: { provide: TranslateLoader, useClass: ICMTranslateLoader },
       missingTranslationHandler: { provide: MissingTranslationHandler, useClass: FallbackMissingTranslationHandler },
@@ -50,22 +75,13 @@ import { TranslationGenerator } from './utils/translate/translations-generator';
       },
     },
     TranslationGenerator,
-  ],
-})
-export class InternationalizationModule {
-  constructor(
-    @Inject(FALLBACK_LANG) fallbackLang: InjectSingle<typeof FALLBACK_LANG>,
-    translateService: TranslateService,
-    transferState: TransferState,
-    generator: TranslationGenerator
-  ) {
-    registerLocaleData(localeDe);
-    registerLocaleData(localeFr);
-
-    const defaultLang = transferState.hasKey(SSR_LOCALE) ? transferState.get(SSR_LOCALE, fallbackLang) : fallbackLang;
-    translateService.setDefaultLang(defaultLang);
-    translateService.use(defaultLang);
-
-    generator.init();
-  }
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeInternationalization,
+      deps: [LOCALE_ID, TranslateService, TransferState, TranslationGenerator],
+      multi: true,
+    },
+  ]);
 }
+
+export class InternationalizationModule {}

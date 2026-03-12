@@ -2,7 +2,7 @@ export { requisitionManagementRoutes } from '../pages/requisition-management.rou
 export {
   provideRequisitionManagementStore,
   RequisitionManagementStoreModule,
-} from '../store/requisition-management-store.module';
+} from '../store/requisition-management-store.providers';
 
 export { RequisitionManagementBreadcrumbService } from '../services/requisition-management-breadcrumb/requisition-management-breadcrumb.service';
 export { ApprovalWidgetComponent } from '../components/approval-widget/approval-widget.component';

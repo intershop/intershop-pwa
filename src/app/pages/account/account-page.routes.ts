@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
-import { authorizationToggleGuard } from 'ish-core/authorization-toggle.module';
-import { featureToggleGuard } from 'ish-core/feature-toggle.module';
+import { authorizationToggleGuard } from 'ish-core/authorization-toggle';
+import { featureToggleGuard } from 'ish-core/feature-toggle';
 import { serverSettingGuard } from 'ish-core/guards/server-setting.guard';
 
 import { AccountOverviewPageComponent } from '../account-overview/account-overview-page.component';
@@ -180,3 +180,4 @@ export const accountPageRoutes: Routes = [
     ],
   },
 ];
+

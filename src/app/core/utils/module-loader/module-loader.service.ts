@@ -13,7 +13,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, defer, from, take } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle';
 import { getFeatures } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -81,3 +81,4 @@ export class ModuleLoaderService {
     this.loadedInjectors.push(environmentInjector);
   }
 }
+

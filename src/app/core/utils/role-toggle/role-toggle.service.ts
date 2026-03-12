@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { getUserRoles } from 'ish-core/store/customer/authorization';
@@ -16,8 +16,8 @@ export function checkRole(roleIds: string[], roleId: string | string[]): boolean
 export class RoleToggleService {
   private roleIds$: Observable<string[]>;
 
-  constructor(store: Store) {
-    this.roleIds$ = store.pipe(select(getUserRoles)).pipe(map(roles => roles.map(role => role.roleId)));
+  constructor(@Optional() store: Store) {
+    this.roleIds$ = store ? store.pipe(select(getUserRoles)).pipe(map(roles => roles.map(role => role.roleId))) : of([]);
   }
 
   hasRole(roleId: string | string[]): Observable<boolean> {

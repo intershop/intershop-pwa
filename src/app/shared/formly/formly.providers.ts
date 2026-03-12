@@ -1,10 +1,10 @@
 import { Provider } from '@angular/core';
 import { ConfigOption, provideFormlyConfig } from '@ngx-formly/core';
 
-import { provideIshFormlyExtensions } from './extensions/extensions.module';
-import { provideIshFormlyFieldLibrary } from './field-library/field-library.module';
-import { provideIshFormlyTypes } from './types/types.module';
-import { provideIshFormlyWrappers } from './wrappers/wrappers.module';
+import { provideIshFormlyExtensions } from './extensions/extensions.providers';
+import { provideIshFormlyFieldLibrary } from './field-library/field-library.providers';
+import { provideIshFormlyTypes } from './types/types.providers';
+import { provideIshFormlyWrappers } from './wrappers/wrappers.providers';
 
 const ishFormlyConfig: ConfigOption = {
   extras: {

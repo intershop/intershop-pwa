@@ -81,8 +81,8 @@
               "ngswConfigPath": "ngsw-config.json",
               "fileReplacements": [
                 {
-                  "replace": "src/app/core/store/store-devtools.module.ts",
-                  "with": "src/app/core/store/store-devtools.module.production.ts"
+                  "replace": "src/app/core/store/store-devtools.providers.ts",
+                  "with": "src/app/core/store/store-devtools.providers.production.ts"
                 }
               ]
             },

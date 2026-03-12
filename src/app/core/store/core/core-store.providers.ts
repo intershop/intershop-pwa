@@ -1,4 +1,4 @@
-import { NgModule, Type } from '@angular/core';
+import { EnvironmentProviders, Type, importProvidersFrom, makeEnvironmentProviders } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 import { ActionReducerMap, MetaReducer, StoreModule } from '@ngrx/store';
@@ -42,24 +42,27 @@ const coreMetaReducers: MetaReducer<CoreState>[] = [
   ...(PRODUCTION_MODE ? [] : [configurationMeta]),
 ];
 
-@NgModule({
-  imports: [
-    StoreModule.forRoot<CoreState>(coreReducers, {
-      metaReducers: coreMetaReducers,
-      runtimeChecks: {
-        strictActionImmutability: NGRX_RUNTIME_CHECKS,
-        strictActionSerializability: NGRX_RUNTIME_CHECKS,
-        strictStateImmutability: NGRX_RUNTIME_CHECKS,
-        strictStateSerializability: NGRX_RUNTIME_CHECKS,
-        strictActionTypeUniqueness: NGRX_RUNTIME_CHECKS,
-      },
-    }),
-    StoreRouterConnectingModule.forRoot({
-      serializer: CustomRouterSerializer,
-    }),
-    EffectsModule.forRoot(coreEffects),
-  ],
-})
+const coreStoreImports = [
+  StoreModule.forRoot<CoreState>(coreReducers, {
+    metaReducers: coreMetaReducers,
+    runtimeChecks: {
+      strictActionImmutability: NGRX_RUNTIME_CHECKS,
+      strictActionSerializability: NGRX_RUNTIME_CHECKS,
+      strictStateImmutability: NGRX_RUNTIME_CHECKS,
+      strictStateSerializability: NGRX_RUNTIME_CHECKS,
+      strictActionTypeUniqueness: NGRX_RUNTIME_CHECKS,
+    },
+  }),
+  StoreRouterConnectingModule.forRoot({
+    serializer: CustomRouterSerializer,
+  }),
+  EffectsModule.forRoot(coreEffects),
+];
+
+export function provideCoreStore(): EnvironmentProviders {
+  return makeEnvironmentProviders([importProvidersFrom(...coreStoreImports)]);
+}
+
 export class CoreStoreModule {
   /**
    * Instantiate {@link CoreStoreModule} for testing.

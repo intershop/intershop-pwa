@@ -2,7 +2,7 @@ import { ChangeDetectorRef, DestroyRef, Pipe, PipeTransform, inject } from '@ang
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subscription } from 'rxjs';
 
-import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle';
 
 /**
  * Pipe
@@ -43,3 +43,4 @@ export class FeatureTogglePipe implements PipeTransform {
     return this.enabled;
   }
 }
+

@@ -11,7 +11,7 @@ export function provideAddressDoctorFeature(): (Provider | EnvironmentProviders)
       provide: LAZY_FEATURE_MODULE,
       useValue: {
         feature: 'addressDoctor',
-        providers: () => import('./store/address-doctor-store.module').then(m => m.provideAddressDoctorStore()),
+        providers: () => import('./store/address-doctor-store.providers').then(m => m.provideAddressDoctorStore()),
       },
       multi: true,
     },
@@ -24,3 +24,4 @@ export function provideAddressDoctorFeature(): (Provider | EnvironmentProviders)
 }
 
 export const ADDRESS_DOCTOR_FEATURE_PROVIDERS = provideAddressDoctorFeature();
+

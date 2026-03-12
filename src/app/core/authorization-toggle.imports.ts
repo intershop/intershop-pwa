@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { ModuleWithProviders } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -6,10 +6,8 @@ import { AuthorizationToggleDirective } from './directives/authorization-toggle.
 import { AuthorizationToggleService, checkPermission } from './utils/authorization-toggle/authorization-toggle.service';
 import { whenTruthy } from './utils/operators';
 
-@NgModule({
-  imports: [AuthorizationToggleDirective],
-  exports: [AuthorizationToggleDirective],
-})
+export const AUTHORIZATION_TOGGLE_IMPORTS = [AuthorizationToggleDirective] as const;
+
 export class AuthorizationToggleModule {
   private static permissions$ = new ReplaySubject<string[]>(1);
 
@@ -39,3 +37,4 @@ export class AuthorizationToggleModule {
 
 export { AuthorizationToggleService } from './utils/authorization-toggle/authorization-toggle.service';
 export { authorizationToggleGuard } from './guards/authorization-toggle.guard';
+export { AuthorizationToggleDirective } from './directives/authorization-toggle.directive';

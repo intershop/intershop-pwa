@@ -9,10 +9,11 @@ export function provideCompareFeature(): (Provider | EnvironmentProviders)[] {
       multi: true,
       useValue: {
         feature: 'compare',
-        providers: () => import('./store/compare-store.module').then(m => m.provideCompareStore()),
+        providers: () => import('./store/compare-store.providers').then(m => m.provideCompareStore()),
       },
     },
   ];
 }
 
 export const COMPARE_FEATURE_PROVIDERS = provideCompareFeature();
+

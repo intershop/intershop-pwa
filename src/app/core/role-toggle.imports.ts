@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { ModuleWithProviders } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -6,10 +6,8 @@ import { NotRoleToggleDirective } from './directives/not-role-toggle.directive';
 import { whenTruthy } from './utils/operators';
 import { RoleToggleService, checkRole } from './utils/role-toggle/role-toggle.service';
 
-@NgModule({
-  imports: [NotRoleToggleDirective],
-  exports: [NotRoleToggleDirective],
-})
+export const ROLE_TOGGLE_IMPORTS = [NotRoleToggleDirective] as const;
+
 export class RoleToggleModule {
   private static roleIds$ = new ReplaySubject<string[]>(1);
 
@@ -38,3 +36,4 @@ export class RoleToggleModule {
 }
 
 export { RoleToggleService } from './utils/role-toggle/role-toggle.service';
+export { NotRoleToggleDirective } from './directives/not-role-toggle.directive';

@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { provideCustomerAccountStore } from 'ish-core/store/customer/customer-account-store.module';
+import { provideCustomerAccountStore } from 'ish-core/store/customer/customer-account-store.providers';
 
 export const dataRequestPageRoutes: Routes = [
   {
@@ -9,3 +9,4 @@ export const dataRequestPageRoutes: Routes = [
     providers: [provideCustomerAccountStore()],
   },
 ];
+

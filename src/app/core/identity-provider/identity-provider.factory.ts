@@ -4,7 +4,7 @@ import { once } from 'lodash-es';
 import { noop } from 'rxjs';
 import { first } from 'rxjs/operators';
 
-import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle';
 import { getIdentityProvider } from 'ish-core/store/core/configuration';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -86,3 +86,4 @@ export class IdentityProviderFactory {
     return this.config?.type;
   }
 }
+

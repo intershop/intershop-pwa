@@ -9,7 +9,7 @@ import { distinctUntilChanged, filter, map, shareReplay, take, withLatestFrom } 
 import { AddressDoctorComponent } from 'src/app/extensions/address-doctor/shared/address-doctor/address-doctor.component';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { AddressHelper } from 'ish-core/models/address/address.helper';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -254,3 +254,4 @@ export class AccountAddressesComponent implements OnInit {
     );
   }
 }
+
