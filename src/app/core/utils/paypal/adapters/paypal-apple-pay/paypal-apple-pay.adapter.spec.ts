@@ -9,10 +9,7 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
-import {
-  PaypalDataTransferService,
-  PaypalOrderAuthorizationResult,
-} from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
+import { PaypalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 import { ApplePayConfig, PaypalComponent } from 'ish-core/utils/paypal/paypal-model/paypal.model';
 
 import { PaypalApplePayAdapter } from './paypal-apple-pay.adapter';
@@ -84,11 +81,6 @@ describe('Paypal Apple Pay Adapter', () => {
 
   let mockPaypalApplepay: any;
 
-  const mockPaypalOrderAuthResult: PaypalOrderAuthorizationResult = {
-    status: 'SUCCESS',
-    message: 'Order authorized successfully',
-  };
-
   beforeEach(() => {
     appFacade = mock(AppFacade);
     destroyRef = mock(DestroyRef);
@@ -124,7 +116,6 @@ describe('Paypal Apple Pay Adapter', () => {
     when(paypalDataTransferService.paypalOrder$).thenReturn(
       of({ paypalOrderId: 'paypal-order-123', orderId: 'order-123' })
     );
-    when(paypalDataTransferService.paypalOrderAuthorizationResult$).thenReturn(of(mockPaypalOrderAuthResult));
     when(checkoutFacade.processPaypalOrderCreation(anything())).thenReturn(undefined);
 
     TestBed.configureTestingModule({

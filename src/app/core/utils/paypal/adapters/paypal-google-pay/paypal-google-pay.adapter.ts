@@ -1,7 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { DestroyRef, Inject, Injectable, NgZone } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslateService } from '@ngx-translate/core';
 import { filter, firstValueFrom, take } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -39,7 +38,6 @@ export class PaypalGooglePayAdapter {
   private googlePaymentClient: GooglePayPaymentClient;
   private googlePayConfig: GooglePayConfig;
   private paypalGooglepay: PaypalGooglePayComponent;
-  private isCancelled = false;
   private orderId: string;
   private paypalOrderId: string;
 
@@ -50,7 +48,6 @@ export class PaypalGooglePayAdapter {
     private checkoutFacade: CheckoutFacade,
     private paypalDataTransferService: PaypalDataTransferService,
     private scriptLoaderService: ScriptLoaderService,
-    private translateService: TranslateService,
     @Inject(DOCUMENT) private document: Document
   ) {}
 
@@ -182,12 +179,8 @@ export class PaypalGooglePayAdapter {
       await this.getGooglePaymentsClient().loadPaymentData(paymentDataRequest);
     } catch (error) {
       // User closed the Google Pay popup without completing payment
-      if (error.statusCode === 'CANCELED') {
-        this.closePaypal3DSIframe();
-        this.isCancelled = true;
-        if (this.orderId) {
-          this.checkoutFacade.processPaypalOrderCreation(this.orderId, true);
-        }
+      if (error.statusCode === 'CANCELED' && this.orderId) {
+        this.checkoutFacade.processPaypalOrderCreation(this.orderId);
       }
     }
   }
@@ -219,93 +212,32 @@ export class PaypalGooglePayAdapter {
 
   /**
    * Handles the payment authorization callback from Google Pay.
-   *
-   * IMPORTANT: Google Pay requires this callback to resolve within 30 seconds.
-   * If not resolved in time, Google Pay shows CALLBACK_TIMED_OUT to the user.
-   * We use a 29-second internal timeout to return a controlled response before
-   * Google Pay's hard timeout kicks in.
    */
   private async onPaymentAuthorizedCallback(
     paymentData: GooglePayPaymentData
   ): Promise<GooglePayPaymentAuthorizationResult> {
-    const timeoutPromise = new Promise<GooglePayPaymentAuthorizationResult>(resolve => {
-      setTimeout(() => {
-        this.closePaypal3DSIframe();
-        resolve({
-          transactionState: 'ERROR',
-          error: {
-            intent: 'PAYMENT_AUTHORIZATION',
-            message: this.translateService.instant('checkout.order_review.payment.googlepay.timeout.message'),
-          },
-        });
-      }, 29000);
-    });
-
-    const paymentPromise = this.executePaymentFlow(paymentData);
-
-    return Promise.race([paymentPromise, timeoutPromise]);
-  }
-
-  /**
-   * Executes the actual PayPal payment flow.
-   *
-   * IMPORTANT for 3DS: The confirmOrder and initiatePayerAction calls must be
-   * properly awaited in sequence. If not awaited correctly, the 3DS challenge
-   * popup may appear in the background and be inaccessible on mobile devices.
-   * See: https://developer.paypal.com/docs/multiparty/checkout/apm/google-pay/#strong-customer-authentication-sca
-   */
-  private async executePaymentFlow(paymentData: GooglePayPaymentData): Promise<GooglePayPaymentAuthorizationResult> {
     try {
-      // Step 1: Confirm the order with PayPal using Google Pay payment data
       const confirmOrderResponse = await this.paypalGooglepay.confirmOrder({
         orderId: this.paypalOrderId,
         paymentMethodData: paymentData.paymentMethodData,
       });
 
-      // Step 2: Handle different confirmation statuses
       if (confirmOrderResponse.status === 'APPROVED') {
-        // Payment approved, continue with ICM order creation
         return await this.continueICMOrderCreation();
       } else if (confirmOrderResponse.status === 'PAYER_ACTION_REQUIRED') {
         // Handle 3D Secure authentication using .then() pattern as recommended
-        this.handle3DSecure();
+        this.paypalGooglepay
+          .initiatePayerAction({ orderId: this.paypalOrderId })
+          .then(async () => await this.continueICMOrderCreation())
+          .catch(async () => await this.continueICMOrderCreation());
         // Return immediately so Google Pay sheet closes
         return { transactionState: 'SUCCESS' };
       } else {
-        // Other status - continue with ICM order creation
         return await this.continueICMOrderCreation();
       }
     } catch (error) {
       return await this.continueICMOrderCreation();
     }
-  }
-
-  /**
-   * Handle 3D Secure authentication.
-   * Using Promise .then()/.catch() pattern as recommended by PayPal documentation.
-   */
-  private handle3DSecure(): Promise<GooglePayPaymentAuthorizationResult> {
-    return this.paypalGooglepay
-      .initiatePayerAction({ orderId: this.paypalOrderId })
-      .then(async () =>
-        // 3DS completed - liability shift is handled by backend
-        this.isCancelled ? { transactionState: 'SUCCESS' as const } : await this.continueICMOrderCreation()
-      )
-      .catch(async () =>
-        // 3DS failed - continue with ICM order creation to handle error state
-        this.continueICMOrderCreation()
-      );
-  }
-
-  /**
-   * Removes PayPal 3DS iframes from the DOM.
-   */
-  private closePaypal3DSIframe(): void {
-    // Remove PayPal contingency iframes (3DS challenge)
-    const paypalIframes = this.document.querySelectorAll('iframe[name*="paypal"], iframe[src*="paypal"]');
-    paypalIframes.forEach(iframe => {
-      iframe.remove();
-    });
   }
 
   /**
@@ -330,26 +262,7 @@ export class PaypalGooglePayAdapter {
    * ICM order creation needs to be continued after Google Pay authorization, regardless of the result of the PayPal order confirmation.
    */
   private async continueICMOrderCreation(): Promise<GooglePayPaymentAuthorizationResult> {
-    if (!this.orderId) {
-      return {
-        transactionState: 'SUCCESS',
-      };
-    }
-    const authorizationResult = firstValueFrom(this.paypalDataTransferService.paypalOrderAuthorizationResult$);
-
     this.checkoutFacade.processPaypalOrderCreation(this.orderId);
-
-    if ((await authorizationResult).status !== 'SUCCESS') {
-      this.startOrderCreation();
-      return {
-        transactionState: 'ERROR',
-        error: {
-          intent: (await authorizationResult).message,
-          message: (await authorizationResult).message,
-        },
-      };
-    }
-
     return { transactionState: 'SUCCESS' };
   }
 }

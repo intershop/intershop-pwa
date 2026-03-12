@@ -280,14 +280,10 @@ export class PaypalApplePayAdapter {
    * ICM order creation needs to be continued after Apple Pay authorization.
    */
   private async continueICMOrderCreation(orderId: string): Promise<{ status: 'SUCCESS' | 'ERROR'; message?: string }> {
-    const authorizationResult = firstValueFrom(this.paypalDataTransferService.paypalOrderAuthorizationResult$);
-
     this.checkoutFacade.processPaypalOrderCreation(orderId);
 
-    const result = await authorizationResult;
     return {
-      status: result.status,
-      message: result.message,
+      status: 'SUCCESS',
     };
   }
 }

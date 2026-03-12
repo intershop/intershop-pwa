@@ -11,6 +11,7 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { PaypalAdapterTypes, PaypalPageType } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 
 import { PaypalAdaptersBuilder } from './paypal-adapters.builder';
+import { PaypalApplePayAdapter } from './paypal-apple-pay/paypal-apple-pay.adapter';
 import { PaypalButtonsAdapter } from './paypal-buttons/paypal-buttons.adapter';
 import { PaypalCardFieldsAdapter } from './paypal-card-fields/paypal-card-fields.adapter';
 import { PaypalGooglePayAdapter } from './paypal-google-pay/paypal-google-pay.adapter';
@@ -24,6 +25,7 @@ describe('Paypal Adapters Builder', () => {
   let paypalMessages: PaypalMessagesAdapter;
   let paypalCardFields: PaypalCardFieldsAdapter;
   let paypalGooglePay: PaypalGooglePayAdapter;
+  let paypalApplePay: PaypalApplePayAdapter;
 
   const mockBasket = BasketMockData.getBasket();
   const mockPaymentMethod = {
@@ -39,6 +41,7 @@ describe('Paypal Adapters Builder', () => {
     paypalMessages = mock(PaypalMessagesAdapter);
     paypalCardFields = mock(PaypalCardFieldsAdapter);
     paypalGooglePay = mock(PaypalGooglePayAdapter);
+    paypalApplePay = mock(PaypalApplePayAdapter);
 
     when(checkoutFacade.basket$).thenReturn(of(mockBasket));
     when(shoppingFacade.selectedProductId$).thenReturn(of('test-product-sku'));
@@ -47,10 +50,12 @@ describe('Paypal Adapters Builder', () => {
     when(paypalMessages.renderMessages(anything())).thenReturn(Promise.resolve());
     when(paypalCardFields.renderCardFields(anything(), anything())).thenReturn(Promise.resolve());
     when(paypalGooglePay.renderGooglePayButton(anything())).thenReturn(Promise.resolve());
+    when(paypalApplePay.renderApplePayButton(anything())).thenReturn(Promise.resolve());
 
     TestBed.configureTestingModule({
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        { provide: PaypalApplePayAdapter, useFactory: () => instance(paypalApplePay) },
         { provide: PaypalButtonsAdapter, useFactory: () => instance(paypalButtons) },
         { provide: PaypalCardFieldsAdapter, useFactory: () => instance(paypalCardFields) },
         { provide: PaypalGooglePayAdapter, useFactory: () => instance(paypalGooglePay) },
