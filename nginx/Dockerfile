@@ -35,7 +35,7 @@ COPY 50x.html /usr/share/nginx/html/
 COPY cache_clearer.sh /
 RUN chmod 700 /cache_clearer.sh
 
-COPY --from=hairyhenderson/gomplate:v4.3.3 /gomplate /gomplate 
+COPY --from=hairyhenderson/gomplate:v4.3.3 /gomplate /gomplate
 RUN chmod 700 /gomplate
 ADD https://github.com/FiloSottile/mkcert/releases/download/v1.4.4/mkcert-v1.4.4-linux-amd64 /usr/bin/mkcert
 RUN chmod 700 /usr/bin/mkcert
@@ -51,5 +51,8 @@ ENV CACHE_DURATION_NGINX_OK=10m
 ENV CACHE_DURATION_NGINX_NF=60m
 ENV LOGFORMAT=main
 ENV LOG_ALL=on
+
+RUN mkdir -p /usr/share/nginx/html/.well-known
+COPY apple-app-site-association/ /usr/share/nginx/html/.well-known/apple-developer-merchantid-domain-association
 
 EXPOSE 80 443 9113
