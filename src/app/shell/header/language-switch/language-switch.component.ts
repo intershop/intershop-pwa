@@ -5,7 +5,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { MakeHrefPipe } from 'ish-core/pipes/make-href.pipe';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
@@ -52,3 +52,4 @@ export class LanguageSwitchComponent implements OnInit {
     }
   }
 }
+

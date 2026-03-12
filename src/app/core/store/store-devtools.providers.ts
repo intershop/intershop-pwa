@@ -5,7 +5,7 @@ import { loadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { loadPromotion } from 'ish-core/store/shopping/promotions';
 import { suggestSearch } from 'ish-core/store/shopping/search';
 
-// remove the 'store-devtools.module.ts' fileReplacements in 'angular.json' to enable Store Devtools in production
+// remove the 'store-devtools.providers.ts' fileReplacements in 'angular.json' to enable Store Devtools in production
 
 export const storeDevtoolsModule = [
   StoreDevtoolsModule.instrument({

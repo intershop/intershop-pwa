@@ -1,9 +1,14 @@
 import { HttpHandler, HttpRequest } from '@angular/common/http';
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import {
+  EnvironmentProviders,
+  ModuleWithProviders,
+  importProvidersFrom,
+  makeEnvironmentProviders,
+} from '@angular/core';
 import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
 import { noop } from 'rxjs';
 
-import { PunchoutIdentityProviderModule } from '../extensions/punchout/identity-provider/punchout-identity-provider.module';
+import { providePunchoutIdentityProvider } from '../extensions/punchout/identity-provider/punchout-identity-provider.providers';
 
 import { Auth0IdentityProvider } from './identity-provider/auth0.identity-provider';
 import { CoBrowseIdentityProvider } from './identity-provider/co-browse.identity-provider';
@@ -21,9 +26,10 @@ export function storageFactory(): OAuthStorage {
   }
 }
 
-@NgModule({
-  imports: [OAuthModule.forRoot({ resourceServer: { sendAccessToken: false } }), PunchoutIdentityProviderModule],
-  providers: [
+export function provideIdentityProvider(): EnvironmentProviders {
+  return makeEnvironmentProviders([
+    importProvidersFrom(OAuthModule.forRoot({ resourceServer: { sendAccessToken: false } })),
+    ...providePunchoutIdentityProvider(),
     { provide: OAuthStorage, useFactory: storageFactory },
     {
       provide: IDENTITY_PROVIDER_IMPLEMENTOR,
@@ -49,8 +55,9 @@ export function storageFactory(): OAuthStorage {
         implementor: CoBrowseIdentityProvider,
       },
     },
-  ],
-})
+  ]);
+}
+
 export class IdentityProviderModule {
   static forTesting(
     capabilities: IdentityProviderCapabilities = { editEmail: true, editPassword: true, editProfile: true }

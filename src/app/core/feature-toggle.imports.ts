@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { ModuleWithProviders } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -6,10 +6,8 @@ import { FeatureToggleDirective } from './directives/feature-toggle.directive';
 import { NotFeatureToggleDirective } from './directives/not-feature-toggle.directive';
 import { FeatureToggleService, FeatureToggleType, checkFeature } from './utils/feature-toggle/feature-toggle.service';
 
-@NgModule({
-  imports: [FeatureToggleDirective, NotFeatureToggleDirective],
-  exports: [FeatureToggleDirective, NotFeatureToggleDirective],
-})
+export const FEATURE_TOGGLE_IMPORTS = [FeatureToggleDirective, NotFeatureToggleDirective] as const;
+
 export class FeatureToggleModule {
   private static features$ = new BehaviorSubject<FeatureToggleType[]>(undefined);
 
@@ -38,3 +36,5 @@ export class FeatureToggleModule {
 
 export { FeatureToggleService, type FeatureToggleType } from './utils/feature-toggle/feature-toggle.service';
 export { featureToggleGuard } from './guards/feature-toggle.guard';
+export { FeatureToggleDirective } from './directives/feature-toggle.directive';
+export { NotFeatureToggleDirective } from './directives/not-feature-toggle.directive';

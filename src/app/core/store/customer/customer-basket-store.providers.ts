@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { EnvironmentProviders, importProvidersFrom, makeEnvironmentProviders } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 
 import { BasketAddressesEffects } from './basket/basket-addresses.effects';
@@ -8,16 +8,19 @@ import { BasketPromotionCodeEffects } from './basket/basket-promotion-code.effec
 import { BasketValidationEffects } from './basket/basket-validation.effects';
 import { BasketEffects } from './basket/basket.effects';
 
-@NgModule({
-  imports: [
-    EffectsModule.forFeature([
-      BasketEffects,
-      BasketItemsEffects,
-      BasketAddressesEffects,
-      BasketPaymentEffects,
-      BasketPromotionCodeEffects,
-      BasketValidationEffects,
-    ]),
-  ],
-})
+const customerBasketStoreImports = [
+  EffectsModule.forFeature([
+    BasketEffects,
+    BasketItemsEffects,
+    BasketAddressesEffects,
+    BasketPaymentEffects,
+    BasketPromotionCodeEffects,
+    BasketValidationEffects,
+  ]),
+];
+
+export function provideCustomerBasketStore(): EnvironmentProviders {
+  return makeEnvironmentProviders([importProvidersFrom(...customerBasketStoreImports)]);
+}
+
 export class CustomerBasketStoreModule {}

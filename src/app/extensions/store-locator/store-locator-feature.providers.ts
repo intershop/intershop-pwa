@@ -8,7 +8,7 @@ export function provideStoreLocatorFeature(): (Provider | EnvironmentProviders)[
       provide: LAZY_FEATURE_MODULE,
       useValue: {
         feature: 'storeLocator',
-        providers: () => import('./store/store-locator-store.module').then(m => m.provideStoreLocatorStore()),
+        providers: () => import('./store/store-locator-store.providers').then(m => m.provideStoreLocatorStore()),
       },
       multi: true,
     },
@@ -16,3 +16,4 @@ export function provideStoreLocatorFeature(): (Provider | EnvironmentProviders)[
 }
 
 export const STORE_LOCATOR_FEATURE_PROVIDERS = provideStoreLocatorFeature();
+

@@ -4,7 +4,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
-import { RoleToggleModule } from 'ish-core/role-toggle.module';
+import { ROLE_TOGGLE_IMPORTS } from 'ish-core/role-toggle';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 
 import { CopilotComponent } from '../../../extensions/copilot/shared/copilot/copilot.component';
@@ -20,7 +20,7 @@ import { StoreLocatorFooterComponent } from '../../../extensions/store-locator/s
   standalone: true,
   imports: [
     ContentIncludeComponent,
-    RoleToggleModule,
+    ...ROLE_TOGGLE_IMPORTS,
     ServerHtmlDirective,
     FeatureTogglePipe,
     CopilotComponent,
@@ -39,3 +39,4 @@ export class FooterComponent implements OnInit {
     }
   }
 }
+

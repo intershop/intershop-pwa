@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule, Provider } from '@angular/core';
+import { Provider } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
   NgbDateAdapter,
@@ -216,18 +216,18 @@ export function provideIshFormlyTypes(): Provider[] {
   ];
 }
 
-@NgModule({
-  imports: [
-    CommonModule,
-    ...fieldComponents,
-    FormlySelectModule,
-    NgbDatepickerModule,
-    NgSelectModule,
-    NgxMaskDirective,
-    NgxMaskPipe,
-    ReactiveFormsModule,
-    SearchSelectFieldComponent,
-  ],
-  exports: [...fieldComponents, SearchSelectFieldComponent],
-})
+export const FORMLY_TYPES_IMPORTS = [
+  CommonModule,
+  ...fieldComponents,
+  FormlySelectModule,
+  NgbDatepickerModule,
+  NgSelectModule,
+  NgxMaskDirective,
+  NgxMaskPipe,
+  ReactiveFormsModule,
+  SearchSelectFieldComponent,
+] as const;
+
+export const FORMLY_TYPES_EXPORTS = [...fieldComponents, SearchSelectFieldComponent] as const;
+
 export class TypesModule {}

@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 
-import { featureToggleGuard } from 'ish-core/feature-toggle.module';
+import { featureToggleGuard } from 'ish-core/feature-toggle';
 
 import { provideCaptchaFeature } from '../../../captcha/captcha-feature.providers';
-import { provideContactUsStore } from '../../store/contact-us-store.module';
+import { provideContactUsStore } from '../../store/contact-us-store.providers';
 
 export const contactPageRoutes: Routes = [
   {
@@ -21,3 +21,4 @@ export const contactPageRoutes: Routes = [
     },
   },
 ];
+

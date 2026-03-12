@@ -1,4 +1,10 @@
-import { Injectable, InjectionToken, NgModule } from '@angular/core';
+import {
+  EnvironmentProviders,
+  Injectable,
+  InjectionToken,
+  importProvidersFrom,
+  makeEnvironmentProviders,
+} from '@angular/core';
 import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
@@ -32,10 +38,14 @@ export class CustomerStoreConfig implements StoreConfig<CustomerState> {
 
 export const CUSTOMER_STORE_CONFIG = new InjectionToken<StoreConfig<CustomerState>>('customerStoreConfig');
 
-@NgModule({
-  imports: [StoreModule.forFeature('_customer', customerReducers, CUSTOMER_STORE_CONFIG)],
-  providers: [{ provide: CUSTOMER_STORE_CONFIG, useClass: CustomerStoreConfig }],
-})
+const customerStoreImports = [StoreModule.forFeature('_customer', customerReducers, CUSTOMER_STORE_CONFIG)];
+
+const customerStoreProviders = [{ provide: CUSTOMER_STORE_CONFIG, useClass: CustomerStoreConfig }];
+
+export function provideCustomerStore(): EnvironmentProviders {
+  return makeEnvironmentProviders([importProvidersFrom(...customerStoreImports), ...customerStoreProviders]);
+}
+
 export class CustomerStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<CustomerState>)[]) {
     return StoreModule.forFeature('_customer', pick(customerReducers, reducers));

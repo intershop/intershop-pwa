@@ -2,7 +2,7 @@ import { Params } from '@angular/router';
 import { RouterNavigationPayload, routerNavigationAction } from '@ngrx/router-store';
 import { ActionReducer } from '@ngrx/store';
 
-import { FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { FeatureToggleType } from 'ish-core/feature-toggle';
 import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { applyConfiguration } from 'ish-core/store/core/configuration';
 import { ConfigurationState, configurationReducer } from 'ish-core/store/core/configuration/configuration.reducer';
@@ -98,3 +98,4 @@ export function configurationMeta(reducer: ActionReducer<CoreState>): ActionRedu
     return reducer(newState, action);
   };
 }
+

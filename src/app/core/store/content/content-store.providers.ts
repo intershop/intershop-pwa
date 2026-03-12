@@ -1,4 +1,10 @@
-import { Injectable, InjectionToken, NgModule } from '@angular/core';
+import {
+  EnvironmentProviders,
+  Injectable,
+  InjectionToken,
+  importProvidersFrom,
+  makeEnvironmentProviders,
+} from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
@@ -38,13 +44,17 @@ export class ContentStoreConfig implements StoreConfig<ContentState> {
 
 export const CONTENT_STORE_CONFIG = new InjectionToken<StoreConfig<ContentState>>('contentStoreConfig');
 
-@NgModule({
-  imports: [
-    EffectsModule.forFeature(contentEffects),
-    StoreModule.forFeature('content', contentReducers, CONTENT_STORE_CONFIG),
-  ],
-  providers: [{ provide: CONTENT_STORE_CONFIG, useClass: ContentStoreConfig }],
-})
+const contentStoreImports = [
+  EffectsModule.forFeature(contentEffects),
+  StoreModule.forFeature('content', contentReducers, CONTENT_STORE_CONFIG),
+];
+
+const contentStoreProviders = [{ provide: CONTENT_STORE_CONFIG, useClass: ContentStoreConfig }];
+
+export function provideContentStore(): EnvironmentProviders {
+  return makeEnvironmentProviders([importProvidersFrom(...contentStoreImports), ...contentStoreProviders]);
+}
+
 export class ContentStoreModule {
   static forTesting(...reducers: (keyof ActionReducerMap<ContentState>)[]) {
     return StoreModule.forFeature('content', pick(contentReducers, reducers));

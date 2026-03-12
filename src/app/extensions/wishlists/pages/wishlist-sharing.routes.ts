@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 
-import { featureToggleGuard } from 'ish-core/feature-toggle.module';
+import { featureToggleGuard } from 'ish-core/feature-toggle';
 
 import { fetchSharedWishlistGuard } from '../guards/fetch-shared-wishlist.guard';
-import { provideWishlistsStore } from '../store/wishlists-store.module';
+import { provideWishlistsStore } from '../store/wishlists-store.providers';
 
 export const routes: Routes = [
   {
@@ -15,3 +15,4 @@ export const routes: Routes = [
     providers: [provideWishlistsStore()],
   },
 ];
+

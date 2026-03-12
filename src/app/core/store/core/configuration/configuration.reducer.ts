@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { FeatureToggleType } from 'ish-core/feature-toggle';
 import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { Translations } from 'ish-core/utils/translate/translations.type';
@@ -76,3 +76,4 @@ export const configurationReducer = createReducer(
     addSingleTranslation(state, action.payload.lang, action.payload.key, action.payload.translation)
   )
 );
+

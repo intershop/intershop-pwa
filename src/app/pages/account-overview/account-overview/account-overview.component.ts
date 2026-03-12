@@ -5,14 +5,14 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { BudgetWidgetComponent, CostCenterWidgetComponent } from 'organization-management';
 import { ApprovalWidgetComponent, RequisitionWidgetComponent } from 'requisition-management';
 
-import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
+import { AUTHORIZATION_TOGGLE_IMPORTS } from 'ish-core/authorization-toggle';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FEATURE_TOGGLE_IMPORTS } from 'ish-core/feature-toggle';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { HtmlEncodePipe } from 'ish-core/pipes/html-encode.pipe';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
-import { RoleToggleModule } from 'ish-core/role-toggle.module';
+import { ROLE_TOGGLE_IMPORTS } from 'ish-core/role-toggle';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { OrderWidgetComponent } from 'ish-shared/components/order/order-widget/order-widget.component';
 
@@ -33,10 +33,10 @@ import { WishlistWidgetComponent } from '../../../extensions/wishlists/shared/wi
   standalone: true,
   imports: [
     NgIf,
-    AuthorizationToggleModule,
+    ...AUTHORIZATION_TOGGLE_IMPORTS,
     ContentIncludeComponent,
     ServerHtmlDirective,
-    FeatureToggleModule,
+    ...FEATURE_TOGGLE_IMPORTS,
     OrderTemplateWidgetComponent,
     OrderWidgetComponent,
     BudgetWidgetComponent,
@@ -46,7 +46,7 @@ import { WishlistWidgetComponent } from '../../../extensions/wishlists/shared/wi
     QuoteWidgetComponent,
     RequisitionWidgetComponent,
     ApprovalWidgetComponent,
-    RoleToggleModule,
+    ...ROLE_TOGGLE_IMPORTS,
     TranslatePipe,
     WishlistWidgetComponent,
     RouterLink,
@@ -56,3 +56,4 @@ export class AccountOverviewComponent {
   @Input({ required: true }) user: User;
   @Input() customer: Customer;
 }
+

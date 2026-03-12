@@ -6,33 +6,22 @@ import {
   Optional,
   Provider,
   SkipSelf,
-  importProvidersFrom,
   makeEnvironmentProviders,
 } from '@angular/core';
-import { ServiceWorkerModule } from '@angular/service-worker';
+import { provideServiceWorker } from '@angular/service-worker';
 
-import { AppearanceModule } from './appearance.module';
-import { ConfigurationModule } from './configuration.module';
-import { FeatureToggleModule } from './feature-toggle.module';
-import { IdentityProviderModule } from './identity-provider.module';
+import { provideAppearance } from './appearance.providers';
+import { provideConfiguration } from './configuration.providers';
+import { provideIdentityProvider } from './identity-provider.providers';
 import { ICMErrorMapperInterceptor } from './interceptors/icm-error-mapper.interceptor';
 import { IdentityProviderInterceptor } from './interceptors/identity-provider.interceptor';
 import { MockInterceptor } from './interceptors/mock.interceptor';
 import { PaymentPayoneInterceptor } from './interceptors/payment-payone.interceptor';
 import { PGIDChangeInterceptor } from './interceptors/pgid-change.interceptor';
 import { PreviewInterceptor } from './interceptors/preview.interceptor';
-import { InternationalizationModule } from './internationalization.module';
+import { provideInternationalization } from './internationalization.providers';
 import { provideStateManagement } from './state-management.providers';
 import { DefaultErrorHandler } from './utils/default-error-handler';
-
-const coreImports = [
-  AppearanceModule,
-  ConfigurationModule,
-  FeatureToggleModule,
-  IdentityProviderModule,
-  InternationalizationModule,
-  ServiceWorkerModule.register('ngsw-worker.js', { enabled: SERVICE_WORKER }),
-];
 
 const coreProviders: (Provider | EnvironmentProviders)[] = [
   // include the ICMCompatibilityInterceptor to add support for REST API changes (e.g. messageToMerchant)
@@ -57,5 +46,14 @@ const coreProviders: (Provider | EnvironmentProviders)[] = [
 ];
 
 export function provideCore(): EnvironmentProviders {
-  return makeEnvironmentProviders([importProvidersFrom(...coreImports), provideStateManagement(), ...coreProviders]);
+  return makeEnvironmentProviders([
+    provideAppearance(),
+    provideConfiguration(),
+    provideIdentityProvider(),
+    provideInternationalization(),
+    provideServiceWorker('ngsw-worker.js', { enabled: SERVICE_WORKER }),
+    provideStateManagement(),
+    ...coreProviders,
+  ]);
 }
+

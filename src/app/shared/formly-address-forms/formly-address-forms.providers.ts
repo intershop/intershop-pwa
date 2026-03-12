@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { NgModule, Provider } from '@angular/core';
+import { Provider } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyAttributes, FormlyField, FormlyForm, FormlyTemplate, FormlyValidationMessage } from '@ngx-formly/core';
 
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+import { FORMS_SHARED_IMPORTS } from 'ish-shared/forms/forms.imports';
 
 import { FormlyAddressExtensionFormComponent } from './components/formly-address-extension-form/formly-address-extension-form.component';
 import { FormlyAddressFormComponent } from './components/formly-address-form/formly-address-form.component';
@@ -28,19 +28,24 @@ export function provideIshFormlyAddressForms(): Provider[] {
   ];
 }
 
-@NgModule({
-  imports: [
-    CommonModule,
-    FormlyAddressExtensionFormComponent,
-    FormlyAddressFormComponent,
-    FormlyAttributes,
-    FormlyField,
-    FormlyForm,
-    FormlyTemplate,
-    FormlyValidationMessage,
-    FormsSharedModule,
-    ReactiveFormsModule,
-  ],
-  exports: [FormlyAddressExtensionFormComponent, FormlyAddressFormComponent],
-})
+export const FORMLY_ADDRESS_FORMS_COMPONENTS = [
+  FormlyAddressExtensionFormComponent,
+  FormlyAddressFormComponent,
+] as const;
+
+export const FORMLY_ADDRESS_FORMS_IMPORTS = [
+  CommonModule,
+  ...FORMLY_ADDRESS_FORMS_COMPONENTS,
+  FormlyAttributes,
+  FormlyField,
+  FormlyForm,
+  FormlyTemplate,
+  FormlyValidationMessage,
+  ...FORMS_SHARED_IMPORTS,
+  ReactiveFormsModule,
+] as const;
+
 export class FormlyAddressFormsModule {}
+
+export { FormlyAddressExtensionFormComponent } from './components/formly-address-extension-form/formly-address-extension-form.component';
+export { FormlyAddressFormComponent } from './components/formly-address-form/formly-address-form.component';

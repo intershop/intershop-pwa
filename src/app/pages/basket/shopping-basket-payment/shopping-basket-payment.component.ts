@@ -5,7 +5,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, map, shareReplay, withLatestFrom } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PriceType } from 'ish-core/models/price/price.model';
@@ -97,3 +97,4 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
     );
   }
 }
+

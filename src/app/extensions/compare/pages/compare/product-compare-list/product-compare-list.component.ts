@@ -7,7 +7,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FEATURE_TOGGLE_IMPORTS } from 'ish-core/feature-toggle';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -39,7 +39,7 @@ import { ProductComparePagingComponent as ProductComparePagingComponent_1 } from
     ProductComparePagingComponent_1,
     NgFor,
     ProductImageComponent,
-    FeatureToggleModule,
+    ...FEATURE_TOGGLE_IMPORTS,
     ProductRatingComponent,
     AsyncPipe,
     SlicePipe,
@@ -122,3 +122,4 @@ export class ProductCompareListComponent implements OnInit {
     this.compareFacade.removeProductFromCompare(sku);
   }
 }
+

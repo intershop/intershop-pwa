@@ -2,11 +2,11 @@ import { AsyncPipe, DOCUMENT, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { ProductSendToCompareComponent } from 'src/app/extensions/compare/shared/product-send-to-compare/product-send-to-compare.component';
-import { ProductAddToWishlistComponent } from 'src/app/extensions/wishlists/shared/product-add-to-wishlist/product-add-to-wishlist.component';
+import { ProductSendToCompareComponent } from '../../../extensions/compare/shared/product-send-to-compare/product-send-to-compare.component';
+import { ProductAddToWishlistComponent } from '../../../extensions/wishlists/shared/product-add-to-wishlist/product-add-to-wishlist.component';
 
 import { ProductContextDisplayProperties, ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FEATURE_TOGGLE_IMPORTS } from 'ish-core/feature-toggle';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 @Component({
@@ -16,7 +16,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
   standalone: true,
   imports: [
     NgIf,
-    FeatureToggleModule,
+    ...FEATURE_TOGGLE_IMPORTS,
     ProductAddToWishlistComponent,
     ProductSendToCompareComponent,
     AsyncPipe,
@@ -39,3 +39,4 @@ export class ProductDetailActionsComponent implements OnInit {
     return this.context.select('displayProperties', key);
   }
 }
+

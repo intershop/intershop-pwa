@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { provideQuotingStore } from '../store/quoting-store.module';
+import { provideQuotingStore } from '../store/quoting-store.providers';
 
 export const quotingRoutes: Routes = [
   {
@@ -18,3 +18,4 @@ export const quotingRoutes: Routes = [
     ],
   },
 ];
+

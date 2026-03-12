@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { NgModule, Provider } from '@angular/core';
+import { Provider } from '@angular/core';
 import { FORMLY_CONFIG } from '@ngx-formly/core';
 
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+import { FORMS_SHARED_IMPORTS } from 'ish-shared/forms/forms.imports';
 
 import { AddressLine1Configuration } from './configurations/address-line-1.configuration';
 import { AddressLine2Configuration } from './configurations/address-line-2.configuration';
@@ -51,7 +51,6 @@ export function provideIshFormlyFieldLibrary(): Provider[] {
   ];
 }
 
-@NgModule({
-  imports: [CommonModule, FormsSharedModule],
-})
+export const FORMLY_FIELD_LIBRARY_IMPORTS = [CommonModule, ...FORMS_SHARED_IMPORTS] as const;
+
 export class FieldLibraryModule {}

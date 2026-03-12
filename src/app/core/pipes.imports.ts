@@ -1,5 +1,3 @@
-import { NgModule } from '@angular/core';
-
 import { AttributeToStringPipe } from './models/attribute/attribute.pipe';
 import { PricePipe } from './models/price/price.pipe';
 import { DatePipe } from './pipes/date.pipe';
@@ -32,8 +30,6 @@ const standalonePipes = [
   SanitizePipe,
 ];
 
-@NgModule({
-  imports: [...standalonePipes],
-  exports: [...standalonePipes],
-})
+export const PIPES_IMPORTS = [...standalonePipes] as const;
+
 export class PipesModule {}

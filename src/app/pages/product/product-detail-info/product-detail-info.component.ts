@@ -7,7 +7,7 @@ import { Observable, map } from 'rxjs';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FEATURE_TOGGLE_IMPORTS } from 'ish-core/feature-toggle';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.helper';
 import { ProductAttachmentsComponent } from 'ish-shared/components/product/product-attachments/product-attachments.component';
@@ -22,7 +22,7 @@ import { ProductReviewsComponent } from '../../../extensions/rating/shared/produ
   imports: [
     NgIf,
     NgbNavModule,
-    FeatureToggleModule,
+    ...FEATURE_TOGGLE_IMPORTS,
     ProductReviewsComponent,
     AsyncPipe,
     TranslatePipe,
@@ -52,3 +52,4 @@ export class ProductDetailInfoComponent implements OnInit {
     this.isVariationMaster$ = this.context.select('product').pipe(map(ProductHelper.isMasterProduct));
   }
 }
+

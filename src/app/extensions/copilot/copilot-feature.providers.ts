@@ -8,7 +8,7 @@ export function provideCopilotFeature(): (Provider | EnvironmentProviders)[] {
       provide: LAZY_FEATURE_MODULE,
       useValue: {
         feature: 'copilot',
-        providers: () => import('./store/copilot-store.module').then(m => m.provideCopilotStore()),
+        providers: () => import('./store/copilot-store.providers').then(m => m.provideCopilotStore()),
       },
       multi: true,
     },
@@ -16,3 +16,4 @@ export function provideCopilotFeature(): (Provider | EnvironmentProviders)[] {
 }
 
 export const COPILOT_FEATURE_PROVIDERS = provideCopilotFeature();
+

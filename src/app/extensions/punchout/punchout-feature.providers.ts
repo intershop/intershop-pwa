@@ -11,7 +11,7 @@ export function providePunchoutFeature(): (Provider | EnvironmentProviders)[] {
       provide: LAZY_FEATURE_MODULE,
       useValue: {
         feature: 'punchout',
-        providers: () => import('./store/punchout-store.module').then(m => m.providePunchoutStore()),
+        providers: () => import('./store/punchout-store.providers').then(m => m.providePunchoutStore()),
       },
       multi: true,
     },
@@ -24,3 +24,4 @@ export function providePunchoutFeature(): (Provider | EnvironmentProviders)[] {
 }
 
 export const PUNCHOUT_FEATURE_PROVIDERS = providePunchoutFeature();
+

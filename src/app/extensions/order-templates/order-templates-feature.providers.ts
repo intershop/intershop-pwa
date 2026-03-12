@@ -14,10 +14,11 @@ export function provideOrderTemplatesFeature(): (Provider | EnvironmentProviders
       multi: true,
       useValue: {
         feature: 'orderTemplates',
-        providers: () => import('./store/order-templates-store.module').then(m => m.provideOrderTemplatesStore()),
+        providers: () => import('./store/order-templates-store.providers').then(m => m.provideOrderTemplatesStore()),
       },
     },
   ];
 }
 
 export const ORDER_TEMPLATES_FEATURE_PROVIDERS = provideOrderTemplatesFeature();
+

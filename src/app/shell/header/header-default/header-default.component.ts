@@ -3,11 +3,11 @@ import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, SimpleCha
 import { RouterLink } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ProductCompareStatusComponent } from 'src/app/extensions/compare/shared/product-compare-status/product-compare-status.component';
-import { QuickorderLinkComponent } from 'src/app/extensions/quickorder/shared/quickorder-link/quickorder-link.component';
-import { WishlistsLinkComponent } from 'src/app/extensions/wishlists/shared/wishlists-link/wishlists-link.component';
+import { ProductCompareStatusComponent } from '../../../extensions/compare/shared/product-compare-status/product-compare-status.component';
+import { QuickorderLinkComponent } from '../../../extensions/quickorder/shared/quickorder-link/quickorder-link.component';
+import { WishlistsLinkComponent } from '../../../extensions/wishlists/shared/wishlists-link/wishlists-link.component';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FEATURE_TOGGLE_IMPORTS } from 'ish-core/feature-toggle';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { SearchBoxComponent as SearchBoxComponent_1 } from 'ish-shared/components/search/search-box/search-box.component';
 import { HeaderNavigationComponent as HeaderNavigationComponent_1 } from 'ish-shell/header/header-navigation/header-navigation.component';
@@ -45,7 +45,7 @@ type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
     ProductCompareStatusComponent,
     QuickorderLinkComponent,
     WishlistsLinkComponent,
-    FeatureToggleModule,
+    ...FEATURE_TOGGLE_IMPORTS,
     NgbCollapseModule,
     NgTemplateOutlet,
     LanguageSwitchComponent_1,
@@ -139,3 +139,4 @@ export class HeaderDefaultComponent implements OnChanges {
     this.document.getElementById('header-search-input').focus();
   }
 }
+

@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 
-import { featureToggleGuard } from 'ish-core/feature-toggle.module';
+import { featureToggleGuard } from 'ish-core/feature-toggle';
 import { authGuard } from 'ish-core/guards/auth.guard';
 
-import { provideWishlistsStore } from '../store/wishlists-store.module';
+import { provideWishlistsStore } from '../store/wishlists-store.providers';
 
 export const routes: Routes = [
   {
@@ -24,3 +24,4 @@ export const routes: Routes = [
     data: { feature: 'wishlists' },
   },
 ];
+

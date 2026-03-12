@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { NgModule, Provider } from '@angular/core';
+import { Provider } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfigOption, provideFormlyConfig } from '@ngx-formly/core';
 
-import { ComponentsModule } from 'ish-shared/formly/components/components.module';
+import { FORMLY_COMPONENTS_IMPORTS } from 'ish-shared/formly/components/components.imports';
 import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
 
 import { DescriptionWrapperComponent } from './description-wrapper/description-wrapper.component';
@@ -43,14 +43,14 @@ export function provideIshFormlyWrappers(): Provider[] {
   return [provideFormlyConfig(ishFormlyWrapperConfig)];
 }
 
-@NgModule({
-  imports: [
-    CommonModule,
-    ComponentsModule,
-    ...wrapperComponents,
-    ReactiveFormsModule,
-    ValidationMessageComponent,
-  ],
-  exports: [...wrapperComponents],
-})
+export const FORMLY_WRAPPERS_IMPORTS = [
+  CommonModule,
+  ...FORMLY_COMPONENTS_IMPORTS,
+  ...wrapperComponents,
+  ReactiveFormsModule,
+  ValidationMessageComponent,
+] as const;
+
+export const FORMLY_WRAPPERS_EXPORTS = [...wrapperComponents] as const;
+
 export class WrappersModule {}

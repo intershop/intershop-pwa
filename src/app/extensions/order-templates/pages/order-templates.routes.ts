@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { featureToggleGuard } from 'ish-core/feature-toggle.module';
+import { featureToggleGuard } from 'ish-core/feature-toggle';
 import { authGuard } from 'ish-core/guards/auth.guard';
 
 export const orderTemplatesRoutes: Routes = [
@@ -23,3 +23,4 @@ export const orderTemplatesRoutes: Routes = [
     data: { feature: 'orderTemplates' },
   },
 ];
+

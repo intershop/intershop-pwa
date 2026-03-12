@@ -9,7 +9,7 @@ export function provideSeoFeature(): (Provider | EnvironmentProviders)[] {
       useValue: {
         feature: 'always',
         loadStrategy: 'appInit',
-        providers: () => import('./store/seo-store.module').then(m => m.provideSeoStore()),
+        providers: () => import('./store/seo-store.providers').then(m => m.provideSeoStore()),
       },
       multi: true,
     },
@@ -17,3 +17,4 @@ export function provideSeoFeature(): (Provider | EnvironmentProviders)[] {
 }
 
 export const SEO_FEATURE_PROVIDERS = provideSeoFeature();
+

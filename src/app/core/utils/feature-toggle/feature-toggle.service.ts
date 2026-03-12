@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
@@ -25,8 +25,12 @@ export function checkFeature(
 export class FeatureToggleService {
   private featureToggles$ = new BehaviorSubject<FeatureToggleType[]>(undefined);
 
-  constructor(store: Store) {
-    store.pipe(select(getFeatures)).subscribe(this.featureToggles$);
+  constructor(@Optional() store: Store) {
+    if (store) {
+      store.pipe(select(getFeatures)).subscribe(this.featureToggles$);
+    } else {
+      this.featureToggles$.next([]);
+    }
   }
 
   /**

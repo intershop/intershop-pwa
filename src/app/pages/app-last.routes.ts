@@ -11,7 +11,7 @@ export const appLastRoutes: Routes = [
     path: 'product/:sku',
     data: { legacy: true, preload: 'eager' },
     loadChildren: () =>
-      Promise.all([import('./product/product-page.component'), import('ish-shared/formly/formly.module')]).then(
+      Promise.all([import('./product/product-page.component'), import('ish-shared/formly/formly')]).then(
         ([{ ProductPageComponent }, { provideIshFormly }]) => [
           {
             path: '',
@@ -25,7 +25,7 @@ export const appLastRoutes: Routes = [
     path: 'category/:categoryUniqueId/product/:sku',
     data: { legacy: true, preload: 'eager' },
     loadChildren: () =>
-      Promise.all([import('./product/product-page.component'), import('ish-shared/formly/formly.module')]).then(
+      Promise.all([import('./product/product-page.component'), import('ish-shared/formly/formly')]).then(
         ([{ ProductPageComponent }, { provideIshFormly }]) => [
           {
             path: '',
@@ -38,7 +38,7 @@ export const appLastRoutes: Routes = [
   {
     path: 'category/:categoryUniqueId',
     loadChildren: () =>
-      Promise.all([import('./category/category-page.component'), import('ish-shared/formly/formly.module')]).then(
+      Promise.all([import('./category/category-page.component'), import('ish-shared/formly/formly')]).then(
         ([{ CategoryPageComponent }, { provideIshFormly }]) => [
           {
             path: '',
@@ -52,7 +52,7 @@ export const appLastRoutes: Routes = [
   {
     path: 'categoryref/:categoryRefId',
     loadChildren: () =>
-      Promise.all([import('./category/category-page.component'), import('ish-shared/formly/formly.module')]).then(
+      Promise.all([import('./category/category-page.component'), import('ish-shared/formly/formly')]).then(
         ([{ CategoryPageComponent }, { provideIshFormly }]) => [
           {
             path: '',
@@ -66,7 +66,7 @@ export const appLastRoutes: Routes = [
   {
     path: 'page/:contentPageId',
     loadChildren: () =>
-      Promise.all([import('./content/content-page.component'), import('ish-shared/formly/formly.module')]).then(
+      Promise.all([import('./content/content-page.component'), import('ish-shared/formly/formly')]).then(
         ([{ ContentPageComponent }, { provideIshFormly }]) => [
           {
             path: '',
@@ -82,7 +82,7 @@ export const appLastRoutes: Routes = [
     matcher: matchProductRoute,
     data: { preload: 'eager' },
     loadChildren: () =>
-      Promise.all([import('./product/product-page.component'), import('ish-shared/formly/formly.module')]).then(
+      Promise.all([import('./product/product-page.component'), import('ish-shared/formly/formly')]).then(
         ([{ ProductPageComponent }, { provideIshFormly }]) => [
           {
             path: '',
@@ -95,7 +95,7 @@ export const appLastRoutes: Routes = [
   {
     matcher: matchCategoryRoute,
     loadChildren: () =>
-      Promise.all([import('./category/category-page.component'), import('ish-shared/formly/formly.module')]).then(
+      Promise.all([import('./category/category-page.component'), import('ish-shared/formly/formly')]).then(
         ([{ CategoryPageComponent }, { provideIshFormly }]) => [
           {
             path: '',
@@ -109,7 +109,7 @@ export const appLastRoutes: Routes = [
   {
     matcher: matchContentRoute,
     loadChildren: () =>
-      Promise.all([import('./content/content-page.component'), import('ish-shared/formly/formly.module')]).then(
+      Promise.all([import('./content/content-page.component'), import('ish-shared/formly/formly')]).then(
         ([{ ContentPageComponent }, { provideIshFormly }]) => [
           {
             path: '',
@@ -133,3 +133,4 @@ export const appLastRoutes: Routes = [
     },
   },
 ];
+

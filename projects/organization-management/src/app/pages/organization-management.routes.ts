@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
 import { provideFormlyConfig } from '@ngx-formly/core';
 
-import { authorizationToggleGuard } from 'ish-core/authorization-toggle.module';
-import { featureToggleGuard } from 'ish-core/feature-toggle.module';
+import { authorizationToggleGuard } from 'ish-core/authorization-toggle';
+import { featureToggleGuard } from 'ish-core/feature-toggle';
 
 import { fetchUsersGuard } from '../guards/fetch-users.guard';
 import { redirectFirstToParentGuard } from '../guards/redirect-first-to-parent.guard';
-import { provideOrganizationManagementStore } from '../store/organization-management-store.module';
+import { provideOrganizationManagementStore } from '../store/organization-management-store.providers';
 
 import { CostCenterBuyersRepeatFieldComponent } from './cost-center-buyers/cost-center-buyers-repeat-field/cost-center-buyers-repeat-field.component';
 
@@ -150,3 +150,4 @@ export const routes: Routes = [
 ];
 
 export const organizationManagementRoutes = routes;
+

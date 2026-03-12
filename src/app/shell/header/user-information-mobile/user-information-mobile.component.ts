@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ProductCompareStatusComponent } from 'src/app/extensions/compare/shared/product-compare-status/product-compare-status.component';
-import { QuickorderLinkComponent } from 'src/app/extensions/quickorder/shared/quickorder-link/quickorder-link.component';
-import { WishlistsLinkComponent } from 'src/app/extensions/wishlists/shared/wishlists-link/wishlists-link.component';
+import { ProductCompareStatusComponent } from '../../../extensions/compare/shared/product-compare-status/product-compare-status.component';
+import { QuickorderLinkComponent } from '../../../extensions/quickorder/shared/quickorder-link/quickorder-link.component';
+import { WishlistsLinkComponent } from '../../../extensions/wishlists/shared/wishlists-link/wishlists-link.component';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FEATURE_TOGGLE_IMPORTS } from 'ish-core/feature-toggle';
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
 
 @Component({
@@ -14,7 +14,7 @@ import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status
   standalone: true,
   imports: [
     LoginStatusComponent,
-    FeatureToggleModule,
+    ...FEATURE_TOGGLE_IMPORTS,
     ProductCompareStatusComponent,
     QuickorderLinkComponent,
     WishlistsLinkComponent,
@@ -22,3 +22,4 @@ import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status
   ],
 })
 export class UserInformationMobileComponent {}
+

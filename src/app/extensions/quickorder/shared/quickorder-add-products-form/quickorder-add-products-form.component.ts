@@ -6,7 +6,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { SkuQuantityType } from 'ish-core/models/product/product.helper';
-import { provideIshFormly } from 'ish-shared/formly/formly.module';
+import { provideIshFormly } from 'ish-shared/formly/formly';
 
 import { QuickorderRepeatFieldComponent } from '../formly/quickorder-repeat-field/quickorder-repeat-field.component';
 
@@ -128,3 +128,4 @@ export class QuickorderAddProductsFormComponent implements OnInit {
     ];
   }
 }
+

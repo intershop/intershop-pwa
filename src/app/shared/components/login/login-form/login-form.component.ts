@@ -11,7 +11,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { provideIshFormly } from 'ish-shared/formly/formly.module';
+import { provideIshFormly } from 'ish-shared/formly/formly';
 
 /**
  * The Login Form Page Container displays a login form using the {@link LoginFormComponent} and signs the user in
@@ -100,3 +100,4 @@ export class LoginFormComponent implements OnInit {
     }
   }
 }
+
