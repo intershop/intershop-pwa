@@ -1,6 +1,7 @@
 import {
   APP_INITIALIZER,
   EnvironmentProviders,
+  ImportProvidersSource,
   Provider,
   TransferState,
   importProvidersFrom,
@@ -19,7 +20,7 @@ import { HybridStoreModule } from './store/hybrid/hybrid-store.module';
 import { ShoppingStoreModule } from './store/shopping/shopping-store.module';
 import { storeDevtoolsModule } from './store/store-devtools.module';
 
-const stateManagementImports = [
+const stateManagementImports: ImportProvidersSource[] = [
   ContentStoreModule,
   CoreStoreModule,
   CustomerBasketStoreModule,
