@@ -13,49 +13,25 @@ describe('Page Schematic', () => {
     appTree = await lastValueFrom(appTree$);
 
     appTree.create(
-      '/src/app/pages/app-routing.module.ts',
+      '/src/app/pages/app.routes.ts',
       `
-      import { NgModule } from '@angular/core';
-
       const routes = [
         { path: 'some', component: Dummy },
         { path: 'other', component: Dummy },
         { path: 'routes', component: Dummy },
-      ]
-
-      @NgModule({
-        imports: [RouterModule.forRoot(routes)],
-        declarations: []
-      })
-      export class AppRoutingModule { }
+      ];
     `
     );
     appTree.create(
-      '/src/app/extensions/feature/pages/feature-routing.module.ts',
+      '/src/app/extensions/feature/pages/feature.routes.ts',
       `
-      import { NgModule } from '@angular/core';
-
-      const featureRoutes = [{ path: 'some', component: Dummy }]
-
-      @NgModule({
-        imports: [RouterModule.forChild(routes)],
-        declarations: []
-      })
-      export class FeatureRoutingModule { }
+      const featureRoutes = [{ path: 'some', component: Dummy }];
     `
     );
     appTree.create(
-      '/src/app/extensions/feature2/pages/feature2-routing.module.ts',
+      '/src/app/extensions/feature2/pages/feature2.routes.ts',
       `
-      import { NgModule } from '@angular/core';
-
-      const feature2Routes = []
-
-      @NgModule({
-        imports: [RouterModule.forChild(routes)],
-        declarations: []
-      })
-      export class Feature2RoutingModule { }
+      const feature2Routes = [];
     `
     );
   });
@@ -65,6 +41,7 @@ describe('Page Schematic', () => {
       name: 'foo',
       project: 'bar',
     };
+
     it('should create a page in root by default', async () => {
       const tree = await schematicRunner.runSchematic('page', defaultOptions, appTree);
       const files = tree.files.filter(x => x.search('foo-page') >= 0);
@@ -76,18 +53,17 @@ describe('Page Schematic', () => {
       ]);
     });
 
-    it('should create a page module with page component declaration', async () => {
+    it('should create page routes and no page module', async () => {
       const tree = await schematicRunner.runSchematic('page', defaultOptions, appTree);
 
-      expect(tree.exists('/src/app/pages/foo/foo-page.module.ts')).toBeTrue();
-      const pageModule = tree.readContent('/src/app/pages/foo/foo-page.module.ts');
-      expect(pageModule).toContain("import { FooPageComponent } from './foo-page.component';");
-      expect(pageModule).toContain("{ path: '', component: FooPageComponent }");
-      expect(pageModule).toMatch(/declarations: \[.*FooPageComponent.*\]/s);
-      expect(pageModule).toContain('export class FooPageModule');
-      expect(pageModule).toMatch(/imports: .*SharedModule/);
+      expect(tree.exists('/src/app/pages/foo/foo-page.routes.ts')).toBeTrue();
+      expect(tree.exists('/src/app/pages/foo/foo-page.module.ts')).toBeFalse();
 
-      expect(tree.readContent('/src/app/pages/foo/foo-page.component.html')).toContain('foo-page works!');
+      const pageRoutes = tree.readContent('/src/app/pages/foo/foo-page.routes.ts');
+      expect(pageRoutes).toContain("import { FooPageComponent } from './foo-page.component';");
+      expect(pageRoutes).toContain(`export const fooPageRoutes: Routes = [{ path: '', component: FooPageComponent }];`);
+      expect(pageRoutes).not.toContain('NgModule');
+      expect(pageRoutes).not.toContain('SharedModule');
     });
 
     it('should create a correct test for the component', async () => {
@@ -96,31 +72,28 @@ describe('Page Schematic', () => {
       expect(componentSpecContent).toContain(`import { FooPageComponent } from './foo-page.component'`);
     });
 
-    it('should lazily register route in app routing module by default', async () => {
+    it('should lazily register route in app routes by default', async () => {
       const tree = await schematicRunner.runSchematic('page', defaultOptions, appTree);
-      const appRoutingModule = tree.readContent('/src/app/pages/app-routing.module.ts');
-      expect(appRoutingModule).toContain(`path: 'foo'`);
-      expect(appRoutingModule).toContain('foo-page.module');
-      expect(appRoutingModule).toContain('FooPageModule');
+      const appRoutes = tree.readContent('/src/app/pages/app.routes.ts');
+      expect(appRoutes).toContain(`path: 'foo'`);
+      expect(appRoutes).toContain(`import('./foo/foo-page.routes')`);
+      expect(appRoutes).toContain('fooPageRoutes');
+      expect(appRoutes).not.toContain('foo-page.module');
+      expect(appRoutes).not.toContain('FooPageModule');
     });
 
-    it('should lazily register route in app routing module override by default', async () => {
-      appTree.create(
-        '/src/app/pages/app-routing.module.all.ts',
-        appTree.readContent('/src/app/pages/app-routing.module.ts')
-      );
+    it('should lazily register route in app routes override by default', async () => {
+      appTree.create('/src/app/pages/app.routes.all.ts', appTree.readContent('/src/app/pages/app.routes.ts'));
 
       const tree = await schematicRunner.runSchematic('page', defaultOptions, appTree);
 
-      const appRoutingModule = tree.readContent('/src/app/pages/app-routing.module.ts');
-      expect(appRoutingModule).not.toContain(`path: 'foo'`);
-      expect(appRoutingModule).not.toContain('foo-page.module');
-      expect(appRoutingModule).not.toContain('FooPageModule');
+      const appRoutes = tree.readContent('/src/app/pages/app.routes.ts');
+      expect(appRoutes).not.toContain(`path: 'foo'`);
 
-      const appRoutingModuleOverride = tree.readContent('/src/app/pages/app-routing.module.all.ts');
-      expect(appRoutingModuleOverride).toContain(`path: 'foo'`);
-      expect(appRoutingModuleOverride).toContain('foo-page.module');
-      expect(appRoutingModuleOverride).toContain('FooPageModule');
+      const appRoutesOverride = tree.readContent('/src/app/pages/app.routes.all.ts');
+      expect(appRoutesOverride).toContain(`path: 'foo'`);
+      expect(appRoutesOverride).toContain(`import('./foo/foo-page.routes')`);
+      expect(appRoutesOverride).toContain('fooPageRoutes');
     });
 
     it('should create a page in extension if supplied', async () => {
@@ -129,22 +102,17 @@ describe('Page Schematic', () => {
       const tree = await schematicRunner.runSchematic('page', options, appTree);
       const files = tree.files.filter(x => x.search('foo-page') >= 0);
       expect(files).toIncludeAllMembers([
-        '/src/app/extensions/feature/pages/foo/foo-page.module.ts',
+        '/src/app/extensions/feature/pages/foo/foo-page.routes.ts',
         '/src/app/extensions/feature/pages/foo/foo-page.component.ts',
         '/src/app/extensions/feature/pages/foo/foo-page.component.html',
         '/src/app/extensions/feature/pages/foo/foo-page.component.spec.ts',
       ]);
 
-      const pageModule = tree.readContent('/src/app/extensions/feature/pages/foo/foo-page.module.ts');
-      expect(pageModule).toContain("import { FooPageComponent } from './foo-page.component';");
-      expect(pageModule).toContain("{ path: '', component: FooPageComponent }");
-      expect(pageModule).toMatch(/declarations: \[.*FooPageComponent.*\]/s);
-      expect(pageModule).toContain('export class FooPageModule');
-      expect(pageModule).toMatch(/imports: .*FeatureModule/);
-
-      expect(tree.readContent('/src/app/extensions/feature/pages/foo/foo-page.component.html')).toContain(
-        'foo-page works!'
-      );
+      const pageRoutes = tree.readContent('/src/app/extensions/feature/pages/foo/foo-page.routes.ts');
+      expect(pageRoutes).toContain("import { FooPageComponent } from './foo-page.component';");
+      expect(pageRoutes).toContain(`export const fooPageRoutes: Routes = [{ path: '', component: FooPageComponent }];`);
+      expect(pageRoutes).not.toContain('FeatureModule');
+      expect(pageRoutes).not.toContain('.module');
     });
 
     it('should create a page in extension if implied by name', async () => {
@@ -153,54 +121,58 @@ describe('Page Schematic', () => {
       const tree = await schematicRunner.runSchematic('page', options, appTree);
       const files = tree.files.filter(x => x.search('foo-page') >= 0);
       expect(files).toIncludeAllMembers([
-        '/src/app/extensions/feature/pages/foo/foo-page.module.ts',
+        '/src/app/extensions/feature/pages/foo/foo-page.routes.ts',
         '/src/app/extensions/feature/pages/foo/foo-page.component.ts',
         '/src/app/extensions/feature/pages/foo/foo-page.component.html',
         '/src/app/extensions/feature/pages/foo/foo-page.component.spec.ts',
       ]);
     });
 
-    it('should lazily register route in feature routing module', async () => {
+    it('should lazily register route in feature routes', async () => {
       const options = { ...defaultOptions, extension: 'feature' };
 
       const tree = await schematicRunner.runSchematic('page', options, appTree);
-      const appRoutingModule = tree.readContent('/src/app/extensions/feature/pages/feature-routing.module.ts');
-      expect(appRoutingModule).toContain(`path: 'foo'`);
-      expect(appRoutingModule).toContain('foo-page.module');
-      expect(appRoutingModule).toContain('FooPageModule');
+      const featureRoutes = tree.readContent('/src/app/extensions/feature/pages/feature.routes.ts');
+      expect(featureRoutes).toContain(`path: 'foo'`);
+      expect(featureRoutes).toContain(`import('./foo/foo-page.routes')`);
+      expect(featureRoutes).toContain('fooPageRoutes');
+      expect(featureRoutes).toContain(`canActivate: [featureToggleGuard], data: { feature: 'feature' }`);
+      expect(featureRoutes).toContain(`feature-toggle`);
+      expect(featureRoutes).not.toContain(`feature-toggle.module`);
     });
 
-    it('should lazily register route in feature routing module when it is the first', async () => {
+    it('should lazily register route in feature routes when it is the first', async () => {
       const options = { ...defaultOptions, extension: 'feature2' };
 
       const tree = await schematicRunner.runSchematic('page', options, appTree);
-      const appRoutingModule = tree.readContent('/src/app/extensions/feature2/pages/feature2-routing.module.ts');
-      expect(appRoutingModule).toContain(`path: 'foo'`);
-      expect(appRoutingModule).toContain('foo-page.module');
-      expect(appRoutingModule).toContain('FooPageModule');
+      const featureRoutes = tree.readContent('/src/app/extensions/feature2/pages/feature2.routes.ts');
+      expect(featureRoutes).toContain(`path: 'foo'`);
+      expect(featureRoutes).toContain(`import('./foo/foo-page.routes')`);
+      expect(featureRoutes).toContain('fooPageRoutes');
+      expect(featureRoutes).toContain(`canActivate: [featureToggleGuard], data: { feature: 'feature2' }`);
     });
 
-    it('should register route in page routing module when subpaging is detected', async () => {
+    it('should register route in page routes when subpaging is detected', async () => {
       appTree = await schematicRunner.runSchematic('page', defaultOptions, appTree);
       const tree = await schematicRunner.runSchematic('page', { ...defaultOptions, name: 'foo-bar' }, appTree);
-      const appRoutingModule = tree.readContent('/src/app/pages/app-routing.module.ts');
-      expect(appRoutingModule).toContain(`path: 'foo'`);
-      expect(appRoutingModule).toContain("import('./foo/foo-page.module')");
-      expect(appRoutingModule).toContain('FooPageModule');
-      expect(appRoutingModule).not.toContain('FooBar');
+      const appRoutes = tree.readContent('/src/app/pages/app.routes.ts');
+      expect(appRoutes).toContain(`path: 'foo'`);
+      expect(appRoutes).toContain("import('./foo/foo-page.routes')");
+      expect(appRoutes).toContain('fooPageRoutes');
+      expect(appRoutes).not.toContain('FooBar');
 
-      const fooRoutingModule = tree.readContent('/src/app/pages/foo/foo-page.module.ts');
-      expect(fooRoutingModule).toContain(`path: 'bar'`);
-      expect(fooRoutingModule).toContain("import('../foo-bar/foo-bar-page.module')");
-      expect(fooRoutingModule).toContain('FooBarPageModule');
+      const fooRoutes = tree.readContent('/src/app/pages/foo/foo-page.routes.ts');
+      expect(fooRoutes).toContain(`path: 'bar'`);
+      expect(fooRoutes).toContain(`import('../foo-bar/foo-bar-page.routes')`);
+      expect(fooRoutes).toContain('fooBarPageRoutes');
     });
 
-    it('should not register route in not existing page routing module even when subpaging is detected', async () => {
+    it('should not register route in non-existing subpage routes even when subpaging is detected', async () => {
       const tree = await schematicRunner.runSchematic('page', { ...defaultOptions, name: 'foo-bar' }, appTree);
-      const appRoutingModule = tree.readContent('/src/app/pages/app-routing.module.ts');
-      expect(appRoutingModule).toContain(`path: 'foo-bar'`);
-      expect(appRoutingModule).toContain("import('./foo-bar/foo-bar-page.module')");
-      expect(appRoutingModule).toContain('FooBarPageModule');
+      const appRoutes = tree.readContent('/src/app/pages/app.routes.ts');
+      expect(appRoutes).toContain(`path: 'foo-bar'`);
+      expect(appRoutes).toContain(`import('./foo-bar/foo-bar-page.routes')`);
+      expect(appRoutes).toContain('fooBarPageRoutes');
     });
   });
 
@@ -222,9 +194,10 @@ describe('Page Schematic', () => {
       expect(tree.readContent('/src/app/pages/foo/foo-page.component.html')).toContain('foo-page works!');
     });
 
-    it('should not create a page module', async () => {
+    it('should not create page routes', async () => {
       const tree = await schematicRunner.runSchematic('page', defaultOptions, appTree);
 
+      expect(tree.exists('/src/app/pages/foo/foo-page.routes.ts')).toBeFalse();
       expect(tree.exists('/src/app/pages/foo/foo-page.module.ts')).toBeFalse();
     });
 
@@ -243,44 +216,46 @@ describe('Page Schematic', () => {
       expect(componentSpecContent).toContain(`import { FooPageComponent } from './foo-page.component'`);
     });
 
-    it('should statically register route in app routing module by default', async () => {
+    it('should statically register route in app routes by default', async () => {
       const tree = await schematicRunner.runSchematic('page', defaultOptions, appTree);
-      const appRoutingModule = tree.readContent('/src/app/pages/app-routing.module.ts');
-      expect(appRoutingModule).toContain("{ path: 'foo', component: FooPageComponent }");
-      expect(appRoutingModule).toContain("import { FooPageComponent } from './foo/foo-page.component'");
+      const appRoutes = tree.readContent('/src/app/pages/app.routes.ts');
+      expect(appRoutes).toContain("{ path: 'foo', component: FooPageComponent }");
+      expect(appRoutes).toContain("import { FooPageComponent } from './foo/foo-page.component'");
     });
 
-    it('should statically register route in feature routing module', async () => {
+    it('should statically register route in feature routes', async () => {
       const options = { ...defaultOptions, extension: 'feature' };
 
       const tree = await schematicRunner.runSchematic('page', options, appTree);
-      const appRoutingModule = tree.readContent('/src/app/extensions/feature/pages/feature-routing.module.ts');
-      expect(appRoutingModule).toContain(
+      const featureRoutes = tree.readContent('/src/app/extensions/feature/pages/feature.routes.ts');
+      expect(featureRoutes).toContain(
         `{ path: 'foo', component: FooPageComponent, canActivate: [featureToggleGuard], data: { feature: 'feature' } }`
       );
-      expect(appRoutingModule).toContain("import { FooPageComponent } from './foo/foo-page.component'");
+      expect(featureRoutes).toContain("import { FooPageComponent } from './foo/foo-page.component'");
+      expect(featureRoutes).toContain(`feature-toggle`);
+      expect(featureRoutes).not.toContain(`feature-toggle.module`);
     });
 
-    it('should statically register route in feature routing module when it is the first', async () => {
+    it('should statically register route in feature routes when it is the first', async () => {
       const options = { ...defaultOptions, extension: 'feature2' };
 
       const tree = await schematicRunner.runSchematic('page', options, appTree);
-      const appRoutingModule = tree.readContent('/src/app/extensions/feature2/pages/feature2-routing.module.ts');
-      expect(appRoutingModule).toContain(
+      const featureRoutes = tree.readContent('/src/app/extensions/feature2/pages/feature2.routes.ts');
+      expect(featureRoutes).toContain(
         `{ path: 'foo', component: FooPageComponent, canActivate: [featureToggleGuard], data: { feature: 'feature2' } }`
       );
-      expect(appRoutingModule).toContain("import { FooPageComponent } from './foo/foo-page.component'");
+      expect(featureRoutes).toContain("import { FooPageComponent } from './foo/foo-page.component'");
     });
 
-    it('should ignore subpaging and register page in same module', async () => {
+    it('should ignore subpaging and register page in same routes file', async () => {
       appTree = await schematicRunner.runSchematic('page', defaultOptions, appTree);
       const tree = await schematicRunner.runSchematic('page', { ...defaultOptions, name: 'foo-bar' }, appTree);
-      const appRoutingModule = tree.readContent('/src/app/pages/app-routing.module.ts');
-      expect(appRoutingModule).toContain(`{ path: 'foo', component: FooPageComponent }`);
-      expect(appRoutingModule).toContain("import { FooPageComponent } from './foo/foo-page.component'");
+      const appRoutes = tree.readContent('/src/app/pages/app.routes.ts');
+      expect(appRoutes).toContain(`{ path: 'foo', component: FooPageComponent }`);
+      expect(appRoutes).toContain("import { FooPageComponent } from './foo/foo-page.component'");
 
-      expect(appRoutingModule).toContain(`{ path: 'foo/bar', component: FooBarPageComponent }`);
-      expect(appRoutingModule).toContain("import { FooBarPageComponent } from './foo-bar/foo-bar-page.component'");
+      expect(appRoutes).toContain(`{ path: 'foo/bar', component: FooBarPageComponent }`);
+      expect(appRoutes).toContain("import { FooBarPageComponent } from './foo-bar/foo-bar-page.component'");
     });
   });
 });

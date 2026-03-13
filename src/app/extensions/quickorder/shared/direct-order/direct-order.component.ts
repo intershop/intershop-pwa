@@ -9,7 +9,6 @@ import { debounceTime, map, tap } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 
 /**
@@ -23,7 +22,6 @@ import { ProductQuantityComponent } from 'ish-shared/components/product/product-
   standalone: true,
   imports: [ReactiveFormsModule, FormlyForm, RouterLink, AsyncPipe, TranslatePipe, ProductQuantityComponent],
 })
-@GenerateLazyComponent()
 export class DirectOrderComponent implements OnInit, AfterViewInit {
   directOrderForm = new UntypedFormGroup({});
   fields: FormlyFieldConfig[];

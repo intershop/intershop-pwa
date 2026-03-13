@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 
 import { ProductContextDisplayProperties } from 'ish-core/facades/product-context.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
@@ -21,7 +20,6 @@ import { WishlistsFacade } from '../../facades/wishlists.facade';
   standalone: true,
   imports: [AsyncPipe, NgIf, ProductsListComponent, TranslatePipe, RouterLink],
 })
-@GenerateLazyComponent()
 export class WishlistWidgetComponent implements OnInit {
   allWishlistsItemsSkus$: Observable<string[]>;
   tileConfiguration: Partial<ProductContextDisplayProperties>;

@@ -6,13 +6,11 @@ import { Observable } from 'rxjs';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { BasketApprovalInfoComponent } from 'ish-shared/components/basket/basket-approval-info/basket-approval-info.component';
 
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 import { Requisition } from '../../models/requisition/requisition.model';
 
-@GenerateLazyComponent()
 @Component({
   selector: 'ish-checkout-receipt-requisition',
   templateUrl: './checkout-receipt-requisition.component.html',

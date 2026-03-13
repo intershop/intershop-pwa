@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 
 import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
@@ -34,7 +33,6 @@ import { UserBudgetComponent } from '../user-budget/user-budget.component';
     RouterLink,
   ],
 })
-@GenerateLazyComponent()
 export class BudgetWidgetComponent implements OnInit {
   userBudget$: Observable<UserBudget>;
   budgetLoading$: Observable<boolean>;

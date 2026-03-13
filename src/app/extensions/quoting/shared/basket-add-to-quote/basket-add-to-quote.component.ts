@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 
 import { NotRoleToggleDirective } from 'ish-core/directives/not-role-toggle.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
 
@@ -20,7 +19,6 @@ import { QuotingFacade } from '../../facades/quoting.facade';
   standalone: true,
   imports: [AsyncPipe, NotRoleToggleDirective, NgIf, TranslatePipe],
 })
-@GenerateLazyComponent()
 export class BasketAddToQuoteComponent implements OnInit {
   isLoggedIn$: Observable<boolean>;
 

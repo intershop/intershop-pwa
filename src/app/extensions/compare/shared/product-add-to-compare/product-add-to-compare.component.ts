@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { CompareFacade } from '../../facades/compare.facade';
 
@@ -19,7 +18,6 @@ import { CompareFacade } from '../../facades/compare.facade';
   standalone: true,
   imports: [NgIf, NgClass, AsyncPipe, TranslatePipe, FeatureTogglePipe],
 })
-@GenerateLazyComponent()
 export class ProductAddToCompareComponent implements OnInit {
   @Input() displayType: 'button' | 'icon' = 'button';
   @Input() cssClass: string;

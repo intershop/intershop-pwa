@@ -2,8 +2,8 @@ import { NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
+
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate } from '../../models/order-template/order-template.model';
@@ -19,8 +19,6 @@ import { OrderTemplatePreferencesDialogComponent } from '../order-template-prefe
 /**
  * The Create Order Template from Order displays a button which adds the current order to to a new order template.
  */
-
-@GenerateLazyComponent()
 export class OrderCreateOrderTemplateComponent {
   @Input({ required: true }) lineItems: LineItemView[];
   @Input() cssClass: string;

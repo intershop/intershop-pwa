@@ -1,9 +1,8 @@
 <ng-container *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']">
-  @let storeLocatorEnabled = 'storeLocator' | ishFeature;
-  @if (storeLocatorEnabled) {
-    <ish-store-locator-footer />
+  @let storeLocatorEnabled = 'storeLocator' | ishFeature; @if (storeLocatorEnabled) {
+  <ish-store-locator-footer />
   } @else if (storeLocatorEnabled === undefined) {
-    <div class="footer-top footer-top-skeleton" aria-hidden="true"></div>
+  <div class="footer-top footer-top-skeleton" aria-hidden="true"></div>
   }
   <div class="footer">
     <div class="container">

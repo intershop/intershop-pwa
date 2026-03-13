@@ -6,7 +6,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 /**
  * The Budget Info Component display an info icon containing a message which budget type (gross or net) is used.
@@ -20,7 +19,6 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
   standalone: true,
   imports: [AsyncPipe, NgIf, NgbPopoverModule, TranslatePipe, ServerSettingPipe, ServerHtmlDirective],
 })
-@GenerateLazyComponent()
 export class BudgetInfoComponent {
   /** translation key for a further message text after the main message */
   @Input() suffix = '';

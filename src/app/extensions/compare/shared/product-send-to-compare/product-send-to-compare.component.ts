@@ -3,7 +3,6 @@ import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { CompareFacade } from '../../facades/compare.facade';
 
@@ -14,7 +13,6 @@ import { CompareFacade } from '../../facades/compare.facade';
   standalone: true,
   imports: [RouterLink, TranslatePipe],
 })
-@GenerateLazyComponent()
 export class ProductSendToCompareComponent {
   constructor(private context: ProductContextFacade, private compareFacade: CompareFacade) {}
 

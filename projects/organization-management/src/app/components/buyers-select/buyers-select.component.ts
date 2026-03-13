@@ -4,8 +4,6 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FormlyAttributes, FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
-
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
 @Component({
@@ -15,7 +13,6 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
   standalone: true,
   imports: [NgIf, NgFor, TranslatePipe, FormlyAttributes, AsyncPipe, ReactiveFormsModule],
 })
-@GenerateLazyComponent()
 export class BuyersSelectComponent implements OnInit {
   @Input({ required: true }) control: FormControl;
   @Input() field: Partial<FormlyFieldConfig>;
