@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -9,9 +10,13 @@ import {
   Output,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 import { EMPTY, Observable, shareReplay, switchMap, take } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
+import { PaypalErrorDirective } from 'ish-core/directives/paypal-error.directive';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
@@ -37,6 +42,8 @@ import { ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
   templateUrl: './payment-paypal.component.html',
   styleUrls: ['./payment-paypal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgClass, AsyncPipe, TranslatePipe, NgbPopover, ServerHtmlDirective, PaypalErrorDirective],
   providers: [PaypalAdaptersBuilder, PaypalButtonsAdapter, PaypalCardFieldsAdapter, PaypalMessagesAdapter],
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit {
