@@ -46,6 +46,10 @@ class TestablePaypalApplePayAdapter extends PaypalApplePayAdapter {
   setLoading(loading: boolean): void {
     (this as any).loading = loading;
   }
+
+  setMerchantId(merchantId: string): void {
+    (this as any).merchantId = merchantId;
+  }
 }
 
 describe('Paypal Apple Pay Adapter', () => {
@@ -208,6 +212,7 @@ describe('Paypal Apple Pay Adapter', () => {
   describe('getPaymentRequest', () => {
     it('should create correct payment request from basket', async () => {
       adapter.setApplePayConfig(mockApplePayConfig);
+      adapter.setMerchantId('Intershop');
 
       const request = await adapter.testGetPaymentRequest();
 

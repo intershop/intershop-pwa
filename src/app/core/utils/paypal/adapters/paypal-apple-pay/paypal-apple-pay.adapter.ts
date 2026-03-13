@@ -7,7 +7,10 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
 import { PAYPAL_APPLE_PAY_BUTTON_STYLING } from 'ish-core/utils/paypal/adapters/paypal-adapters.styling';
-import { PaypalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
+import {
+  PaypalDataTransferService,
+  PaypalOrderData,
+} from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 import {
   ApplePayConfig,
   PaypalApplePayComponent,
@@ -19,12 +22,10 @@ import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.
  * Representation of the PayPal SDK Apple Pay object, responsible for rendering the Apple Pay button
  * and handling the associated callbacks for order creation, approval, and error handling.
  *
- * The Apple Pay integration requires the PayPal JavaScript SDK (with applepay component)
- * and the native ApplePaySession API to work together.
+ * The Apple Pay integration requires both the PayPal JavaScript SDK (with applepay component)
+ * and the Apple Pay JavaScript SDK to work together.
  *
  * Life cycle of this component ends with destroying of parent component PaymentPaypalComponent.
- *
- * @see https://developer.paypal.com/docs/checkout/save-payment-methods/during-purchase/js-sdk/applepay/
  */
 @Injectable()
 export class PaypalApplePayAdapter {
@@ -33,7 +34,8 @@ export class PaypalApplePayAdapter {
   private applePayConfig: ApplePayConfig;
   private paypalApplepay: PaypalApplePayComponent;
   private loading = false;
-  private merchantName = 'Intershop';
+  private merchantId: string;
+  private orderContext: PaypalOrderData;
   private readonly applePaySdkUrl = 'https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js';
 
   constructor(
@@ -55,7 +57,7 @@ export class PaypalApplePayAdapter {
   async renderApplePayButton(config: PaypalComponentsConfig): Promise<void> {
     const containerId = config.containerId;
     const container = this.document.getElementById(containerId);
-    console.log('RENDERING APPLE PAY BUTTON IN CONTAINER', containerId, container);
+    this.merchantId = config.merchantId;
 
     await this.loadApplePaySdk();
 
@@ -103,7 +105,7 @@ export class PaypalApplePayAdapter {
   }
 
   /**
-   * Loads the Google Pay JavaScript SDK.
+   * Loads the Apple Pay JavaScript SDK.
    */
   private async loadApplePaySdk(): Promise<void> {
     this.scriptLoaderService
@@ -121,8 +123,6 @@ export class PaypalApplePayAdapter {
    * Checks if Apple Pay is available in the current browser.
    */
   private isApplePayAvailable(): boolean {
-    console.log('Window:', window);
-    console.log('window.ApplePaySession', (window as Window & { ApplePaySession?: unknown }).ApplePaySession);
     return (
       typeof ApplePaySession !== 'undefined' &&
       ApplePaySession.canMakePayments() &&
@@ -134,14 +134,15 @@ export class PaypalApplePayAdapter {
    * Renders the Apple Pay button in the specified container.
    */
   private renderButton(container: HTMLElement): void {
-    // Get merchant name from configuration
-    this.appFacade.currentLocale$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      // Merchant name could be derived from configuration if needed
+    let locale = 'en';
+    this.appFacade.currentLocale$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(currentLocale => {
+      locale = currentLocale.split('_')[0];
     });
 
     const button = this.document.createElement('apple-pay-button');
 
     // Apply button styling
+    button.setAttribute('locale', locale);
     button.setAttribute('buttonstyle', PAYPAL_APPLE_PAY_BUTTON_STYLING.buttonStyle);
     button.setAttribute('type', PAYPAL_APPLE_PAY_BUTTON_STYLING.buttonType);
     button.style.setProperty('--apple-pay-button-width', '100%');
@@ -208,12 +209,10 @@ export class PaypalApplePayAdapter {
       merchantCapabilities: this.applePayConfig.merchantCapabilities,
       supportedNetworks: this.applePayConfig.supportedNetworks,
       total: {
-        label: this.merchantName,
+        label: this.merchantId,
         amount: basket.totals?.total?.gross?.toString() || '0',
         type: 'final',
       },
-      requiredBillingContactFields: ['postalAddress'],
-      requiredShippingContactFields: ['name', 'phone', 'email', 'postalAddress'],
     };
   }
 
@@ -225,15 +224,15 @@ export class PaypalApplePayAdapter {
     try {
       // Start ICM order creation to get PayPal order ID
       this.checkoutFacade.processPaypalOrderCreation();
-      const orderContent = await firstValueFrom(this.paypalDataTransferService.paypalOrder$);
+      this.orderContext = await firstValueFrom(this.paypalDataTransferService.paypalOrder$);
 
       // PayPal handles the merchant validation through its SDK
       // The validateMerchant endpoint is typically provided by PayPal
-      const merchantSession = await this.validateMerchantWithPaypal(validationURL, orderContent.paypalOrderId);
+      const merchantSession = await this.validateMerchantWithPaypal(validationURL, this.orderContext.paypalOrderId);
 
       session.completeMerchantValidation(merchantSession);
     } catch (error) {
-      console.error('Merchant validation failed:', error);
+      await this.continueICMOrderCreation(this.orderContext.paypalOrderId);
       session.abort();
       this.loading = false;
     }
@@ -263,28 +262,16 @@ export class PaypalApplePayAdapter {
    */
   private async onPaymentAuthorized(event: ApplePayPaymentAuthorizedEvent, session: ApplePaySession): Promise<void> {
     try {
-      const orderContent = await firstValueFrom(this.paypalDataTransferService.paypalOrder$);
-
       // Confirm the order with PayPal
-      const confirmOrderResponse = await this.paypalApplepay.confirmOrder({
-        orderId: orderContent.paypalOrderId,
+      await this.paypalApplepay.confirmOrder({
+        orderId: this.orderContext.paypalOrderId,
         token: event.payment.token,
         billingContact: event.payment.billingContact,
         shippingContact: event.payment.shippingContact,
       });
 
-      // Handle 3D Secure authentication if required
-      if (confirmOrderResponse.status === 'PAYER_ACTION_REQUIRED') {
-        try {
-          await this.paypalApplepay.initiatePayerAction({ orderId: orderContent.paypalOrderId });
-        } catch (payerActionError) {
-          // eslint-disable-next-line no-console
-          console.log('Error during payer action initiation:', payerActionError);
-        }
-      }
-
       // Complete the payment
-      const result = await this.continueICMOrderCreation(orderContent.orderId);
+      const result = await this.continueICMOrderCreation(this.orderContext.orderId);
 
       if (result.status === 'SUCCESS') {
         session.completePayment({ status: ApplePaySession.STATUS_SUCCESS });
@@ -292,7 +279,7 @@ export class PaypalApplePayAdapter {
         session.completePayment({ status: ApplePaySession.STATUS_FAILURE });
       }
     } catch (error) {
-      console.error('Error during Apple Pay payment authorization:', error);
+      this.checkoutFacade.processPaypalOrderCreation(this.orderContext.orderId);
       session.completePayment({ status: ApplePaySession.STATUS_FAILURE });
     } finally {
       this.loading = false;
@@ -302,11 +289,12 @@ export class PaypalApplePayAdapter {
   /**
    * ICM order creation needs to be continued after Apple Pay authorization.
    */
-  private async continueICMOrderCreation(orderId: string): Promise<{ status: 'SUCCESS' | 'ERROR'; message?: string }> {
+  private async continueICMOrderCreation(orderId: string): Promise<{ status: 'SUCCESS' | 'CANCELLED' }> {
+    const orderContext = await firstValueFrom(this.paypalDataTransferService.paypalOrder$);
     this.checkoutFacade.processPaypalOrderCreation(orderId);
 
     return {
-      status: 'SUCCESS',
+      status: orderContext.orderStatus,
     };
   }
 }

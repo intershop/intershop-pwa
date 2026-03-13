@@ -32,6 +32,8 @@ export interface PaypalComponentsConfig {
   amount$?: Observable<number>;
   /** container id of rendering div */
   containerId?: string;
+  /** merchant id */
+  merchantId?: string;
 
   paymentInstrument?(paymentInstrument: PaymentInstrument): void;
 }

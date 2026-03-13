@@ -9,7 +9,7 @@ import {
   Output,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { EMPTY, Observable, shareReplay, switchMap, take } from 'rxjs';
+import { EMPTY, Observable, shareReplay, switchMap, take, tap } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -64,6 +64,9 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   /** Unique container ID for the PayPal component DOM element. */
   paypalComponentContainerId = 'paypal-container-'.concat(uuid());
 
+  /** Merchant ID for PayPal transactions. */
+  merchantId: string;
+
   /** Observable for tracking the PayPal script loading state. */
   private loadingScript$: Observable<ScriptType>;
 
@@ -91,6 +94,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
     this.loadingScript$ = this.appFacade.serverSetting$<PaypalConfig>('payment.paypal').pipe(
       whenTruthy(),
       take(1),
+      tap(paypalConfig => (this.merchantId = paypalConfig.merchantId)),
       switchMap(paypalConfig => this.loadPaypalScript(paypalConfig)),
       shareReplay(1)
     );
@@ -147,6 +151,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
           adapterType: this.adapterType,
           pageType: this.pageType,
           paypalPaymentMethod: this.selectedPaymentMethod,
+          merchantId: this.merchantId,
         };
 
         this.paypalAdaptersBuilder.build(

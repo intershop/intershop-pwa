@@ -88,7 +88,25 @@ export class OrdersEffects {
           return this.orderService.continueOrderCreation(payload.orderId).pipe(
             mergeMap(order => {
               const cancelReason = order.infos?.find(info => info.code === 'order.cancelled.info');
-              return cancelReason ? [cancelPaypalOrderCreation()] : [createOrderSuccess({ order, basketId })];
+              return cancelReason
+                ? [
+                    cancelPaypalOrderCreation(),
+                    emitPaypalOrderId({
+                      paypalOrderId:
+                        order.orderCreation.redirect?.parameters.find(p => p.name === 'PayPalOrderID')?.value || '',
+                      orderId: order.id,
+                      orderStatus: 'CANCELLED',
+                    }),
+                  ]
+                : [
+                    createOrderSuccess({ order, basketId }),
+                    emitPaypalOrderId({
+                      paypalOrderId:
+                        order.orderCreation.redirect?.parameters.find(p => p.name === 'PayPalOrderID')?.value || '',
+                      orderId: order.id,
+                      orderStatus: 'SUCCESS',
+                    }),
+                  ];
             }),
             mapErrorToAction(createOrderFail)
           );

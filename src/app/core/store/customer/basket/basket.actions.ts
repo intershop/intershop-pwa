@@ -17,6 +17,7 @@ import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { BasketUpdateType } from 'ish-core/services/basket/basket.service';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
+import { PaypalOrderData } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 
 export const loadBasket = createAction('[Basket Internal] Load Basket');
 
@@ -307,7 +308,7 @@ export const createPaypalCreditCardBasketPayment = createAction(
 
 export const emitPaypalOrderId = createAction(
   '[Basket Internal] Emit Paypal Order ID to Component',
-  payload<{ paypalOrderId: string; orderId?: string; paymentInstrumentId?: string }>()
+  payload<PaypalOrderData>()
 );
 
 export const deletePaypalCreditCardBasketPayment = createAction(
