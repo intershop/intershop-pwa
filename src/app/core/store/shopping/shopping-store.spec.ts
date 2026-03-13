@@ -337,13 +337,13 @@ describe('Shopping Store', () => {
           expect(store.actionsArray()).toMatchInlineSnapshot(`
             @ngrx/router-store/request: /product/P2
             @ngrx/router-store/navigation: /product/P2
+            @ngrx/router-store/navigated: /product/P2
             [Products] Load Product:
               sku: "P2"
             [Products API] Load Product Success:
               product: {"sku":"P2","name":"nP2"}
             [Product Inventory Internal] Load Product Inventory:
               skus: ["P2"]
-            @ngrx/router-store/navigated: /product/P2
             [Product Inventory API] Load Product Inventory Success:
               inventory: []
           `);
@@ -490,13 +490,13 @@ describe('Shopping Store', () => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
           @ngrx/router-store/request: /category/A.123.456/product/P1
           @ngrx/router-store/navigation: /category/A.123.456/product/P1
+          @ngrx/router-store/navigated: /category/A.123.456/product/P1
           [Products] Load Product:
             sku: "P1"
           [Products API] Load Product Success:
             product: {"sku":"P1","name":"nP1"}
           [Product Inventory Internal] Load Product Inventory:
             skus: ["P1"]
-          @ngrx/router-store/navigated: /category/A.123.456/product/P1
           [Product Inventory API] Load Product Inventory Success:
             inventory: []
         `);
@@ -686,13 +686,13 @@ describe('Shopping Store', () => {
           categoryId: "A.123.456"
         [Categories API] Load Category Success:
           categories: tree(A,A.123,A.123.456)
+        @ngrx/router-store/navigated: /category/A.123.456/product/P1
         [Products] Load Product:
           sku: "P1"
         [Products API] Load Product Success:
           product: {"sku":"P1","name":"nP1"}
         [Product Inventory Internal] Load Product Inventory:
           skus: ["P1"]
-        @ngrx/router-store/navigated: /category/A.123.456/product/P1
         [Product Inventory API] Load Product Inventory Success:
           inventory: []
       `);
@@ -810,13 +810,13 @@ describe('Shopping Store', () => {
         [User Internal] Personalization Status Determined
         @ngrx/router-store/request: /product/P1
         @ngrx/router-store/navigation: /product/P1
+        @ngrx/router-store/navigated: /product/P1
         [Products] Load Product:
           sku: "P1"
         [Products API] Load Product Success:
           product: {"sku":"P1","name":"nP1"}
         [Product Inventory Internal] Load Product Inventory:
           skus: ["P1"]
-        @ngrx/router-store/navigated: /product/P1
         [Product Inventory API] Load Product Inventory Success:
           inventory: []
       `);
@@ -875,12 +875,12 @@ describe('Shopping Store', () => {
           categoryId: "A.123.456"
         [Categories API] Load Category Success:
           categories: tree(A,A.123,A.123.456)
+        @ngrx/router-store/navigated: /category/A.123.456/product/P3
         [Products] Load Product:
           sku: "P3"
         [Products API] Load Product Fail:
           error: {"name":"HttpErrorResponse","message":"error loading product...
           sku: "P3"
-        @ngrx/router-store/cancel: /category/A.123.456/product/P3
         @ngrx/router-store/request: /error
         @ngrx/router-store/navigation: /error
         @ngrx/router-store/navigated: /error

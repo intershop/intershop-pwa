@@ -1,8 +1,8 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { omit, pick } from 'lodash-es';
 import { BehaviorSubject, EMPTY, Observable, Subject, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
@@ -23,6 +23,8 @@ import {
   ProductContextFacade,
 } from './product-context.facade';
 import { ShoppingFacade } from './shopping.facade';
+
+const DEBOUNCE_TIME = 0;
 
 function pickQuantityFields(context: ProductContextFacade) {
   return pick(
@@ -74,12 +76,14 @@ describe('Product Context Facade', () => {
   });
 
   describe('loading', () => {
-    it('should set loading state when accessing product', () => {
+    it('should set loading state when accessing product', fakeAsync(() => {
       when(shoppingFacade.product$(anything(), anything())).thenReturn(EMPTY);
       context.set('sku', () => '123');
+      tick(DEBOUNCE_TIME);
 
       expect(context.get('loading')).toBeTrue();
-    });
+      discardPeriodicTasks();
+    }));
   });
 
   describe('with out-of-stock product', () => {
@@ -98,10 +102,12 @@ describe('Product Context Facade', () => {
 
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
       when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: false } as ProductInventory));
-      context.set('sku', () => '123');
     });
 
-    it('should update context for retrieved product', () => {
+    it('should update context for retrieved product', fakeAsync(() => {
+      context.set('sku', () => '123');
+      tick(DEBOUNCE_TIME);
+
       expect(context.get('product')).toEqual(product);
 
       expect(omit(context.get(), 'displayProperties', 'product')).toMatchInlineSnapshot(`
@@ -127,9 +133,13 @@ describe('Product Context Facade', () => {
           "stepQuantity": 10,
         }
       `);
-    });
+      discardPeriodicTasks();
+    }));
 
-    it('should set correct display properties for out-of-stock product', () => {
+    it('should set correct display properties for out-of-stock product', fakeAsync(() => {
+      context.set('sku', () => '123');
+      tick(DEBOUNCE_TIME);
+
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
         {
           "addToBasket": false,
@@ -152,7 +162,8 @@ describe('Product Context Facade', () => {
           "variations": false,
         }
       `);
-    });
+      discardPeriodicTasks();
+    }));
   });
 
   describe('with a normal product', () => {
@@ -171,10 +182,12 @@ describe('Product Context Facade', () => {
 
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
       when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
-      context.set('sku', () => '123');
     });
 
-    it('should update context for retrieved product', () => {
+    it('should update context for retrieved product', fakeAsync(() => {
+      context.set('sku', () => '123');
+      tick(DEBOUNCE_TIME);
+
       expect(context.get('product')).toEqual(product);
 
       expect(omit(context.get(), 'displayProperties', 'product')).toMatchInlineSnapshot(`
@@ -200,14 +213,20 @@ describe('Product Context Facade', () => {
           "stepQuantity": 10,
         }
       `);
-    });
+      discardPeriodicTasks();
+    }));
 
-    it('should not adapt required completeness level for normal product', () => {
+    it('should not adapt required completeness level for normal product', fakeAsync(() => {
+      context.set('sku', () => '123');
+      tick(DEBOUNCE_TIME);
       expect(context.get('requiredCompletenessLevel')).toEqual(ProductCompletenessLevel.Base);
-    });
+      discardPeriodicTasks();
+    }));
 
     describe('quantity handling', () => {
-      it('should start with min order quantity for product', () => {
+      it('should start with min order quantity for product', fakeAsync(() => {
+        context.set('sku', () => '123');
+        tick(DEBOUNCE_TIME);
         expect(pickQuantityFields(context)).toMatchInlineSnapshot(`
           {
             "allowZeroQuantity": false,
@@ -219,9 +238,12 @@ describe('Product Context Facade', () => {
             "stepQuantity": 10,
           }
         `);
-      });
+        discardPeriodicTasks();
+      }));
 
-      it('should go to error with quantity lower than min order', () => {
+      it('should go to error with quantity lower than min order', fakeAsync(() => {
+        context.set('sku', () => '123');
+        tick(DEBOUNCE_TIME);
         context.set('quantity', () => 1);
         expect(pickQuantityFields(context)).toMatchInlineSnapshot(`
           {
@@ -234,9 +256,12 @@ describe('Product Context Facade', () => {
             "stepQuantity": 10,
           }
         `);
-      });
+        discardPeriodicTasks();
+      }));
 
-      it('should go to error with quantity not multiple of step', () => {
+      it('should go to error with quantity not multiple of step', fakeAsync(() => {
+        context.set('sku', () => '123');
+        tick(DEBOUNCE_TIME);
         context.set('quantity', () => 15);
         expect(pickQuantityFields(context)).toMatchInlineSnapshot(`
           {
@@ -249,9 +274,12 @@ describe('Product Context Facade', () => {
             "stepQuantity": 10,
           }
         `);
-      });
+        discardPeriodicTasks();
+      }));
 
-      it('should not go to error with zero quantity if allowed', () => {
+      it('should not go to error with zero quantity if allowed', fakeAsync(() => {
+        context.set('sku', () => '123');
+        tick(DEBOUNCE_TIME);
         context.set('allowZeroQuantity', () => true);
         context.set('quantity', () => 0);
         expect(pickQuantityFields(context)).toMatchInlineSnapshot(`
@@ -265,9 +293,12 @@ describe('Product Context Facade', () => {
             "stepQuantity": 10,
           }
         `);
-      });
+        discardPeriodicTasks();
+      }));
 
-      it('should go to error if max order quantity is exceeded', () => {
+      it('should go to error if max order quantity is exceeded', fakeAsync(() => {
+        context.set('sku', () => '123');
+        tick(DEBOUNCE_TIME);
         context.set('quantity', () => 1000);
         expect(pickQuantityFields(context)).toMatchInlineSnapshot(`
           {
@@ -280,9 +311,12 @@ describe('Product Context Facade', () => {
             "stepQuantity": 10,
           }
         `);
-      });
+        discardPeriodicTasks();
+      }));
 
-      it('should go to error if quantity is NaN', () => {
+      it('should go to error if quantity is NaN', fakeAsync(() => {
+        context.set('sku', () => '123');
+        tick(DEBOUNCE_TIME);
         context.set('quantity', () => NaN);
         expect(pickQuantityFields(context)).toMatchInlineSnapshot(`
           {
@@ -295,9 +329,12 @@ describe('Product Context Facade', () => {
             "stepQuantity": 10,
           }
         `);
-      });
+        discardPeriodicTasks();
+      }));
 
-      it('should go to error if quantity is null', () => {
+      it('should go to error if quantity is null', fakeAsync(() => {
+        context.set('sku', () => '123');
+        tick(DEBOUNCE_TIME);
         // eslint-disable-next-line unicorn/no-null
         context.set('quantity', (): number => null);
         expect(pickQuantityFields(context)).toMatchInlineSnapshot(`
@@ -311,7 +348,8 @@ describe('Product Context Facade', () => {
             "stepQuantity": 10,
           }
         `);
-      });
+        discardPeriodicTasks();
+      }));
     });
 
     describe('lazy property handling', () => {
@@ -319,18 +357,23 @@ describe('Product Context Facade', () => {
         when(shoppingFacade.productLinks$(anything())).thenReturn(of({}));
       });
 
-      it('should not load product links until subscription', done => {
+      it('should not load product links until subscription', fakeAsync(() => {
+        context.set('sku', () => '123');
+        tick(DEBOUNCE_TIME);
+
         verify(shoppingFacade.productLinks$(anything())).never();
 
         context.select('links').subscribe(() => {
           verify(shoppingFacade.productLinks$(anything())).once();
-          done();
         });
-      });
+        discardPeriodicTasks();
+      }));
     });
 
     describe('display properties', () => {
-      it('should set correct display properties for product', () => {
+      it('should set correct display properties for product', fakeAsync(() => {
+        context.set('sku', () => '123');
+        tick(DEBOUNCE_TIME);
         context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
         expect(context.get('displayProperties')).toMatchInlineSnapshot(`
           {
@@ -354,9 +397,12 @@ describe('Product Context Facade', () => {
             "variations": false,
           }
         `);
-      });
+        discardPeriodicTasks();
+      }));
 
-      it('should include external displayProperty overrides when calculating', () => {
+      it('should include external displayProperty overrides when calculating', fakeAsync(() => {
+        context.set('sku', () => '123');
+        tick(DEBOUNCE_TIME);
         context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
         context.config = {
           readOnly: true,
@@ -385,7 +431,8 @@ describe('Product Context Facade', () => {
             "variations": false,
           }
         `);
-      });
+        discardPeriodicTasks();
+      }));
     });
   });
 
@@ -407,13 +454,14 @@ describe('Product Context Facade', () => {
         } as ProductView;
 
         when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
+      });
 
+      it('should calculate the url property of the product with default category', fakeAsync(() => {
         context.set('sku', () => '123');
-      });
-
-      it('should calculate the url property of the product with default category', () => {
+        tick(DEBOUNCE_TIME);
         expect(context.get('productURL')).toMatchInlineSnapshot(`"/abc/123-prd123-ctgABC"`);
-      });
+        discardPeriodicTasks();
+      }));
     });
 
     describe('with product with context category', () => {
@@ -430,14 +478,15 @@ describe('Product Context Facade', () => {
         when(shoppingFacade.category$(anything())).thenReturn(
           of({ uniqueId: 'ASDF', pathElements: [{ uniqueId: 'ASDF', name: 'ASDF' } as Category] } as CategoryView)
         );
+      });
 
+      it('should calculate the url property of the product with context category', fakeAsync(() => {
         context.set('categoryId', () => 'ASDF');
         context.set('sku', () => '123');
-      });
-
-      it('should calculate the url property of the product with context category', () => {
+        tick(DEBOUNCE_TIME);
         expect(context.get('productURL')).toMatchInlineSnapshot(`"/asdf/123-prd123-ctgASDF"`);
-      });
+        discardPeriodicTasks();
+      }));
     });
 
     describe('with product with context category and default category', () => {
@@ -459,13 +508,15 @@ describe('Product Context Facade', () => {
         when(shoppingFacade.category$(anything())).thenReturn(
           of({ uniqueId: 'ASDF', pathElements: [{ uniqueId: 'ASDF', name: 'ASDF' } as Category] } as CategoryView)
         );
-        context.set('categoryId', () => 'ASDF');
-        context.set('sku', () => '123');
       });
 
-      it('should calculate the url property of the product with context category', () => {
+      it('should calculate the url property of the product with context category', fakeAsync(() => {
+        context.set('categoryId', () => 'ASDF');
+        context.set('sku', () => '123');
+        tick(DEBOUNCE_TIME);
         expect(context.get('productURL')).toMatchInlineSnapshot(`"/asdf/abc123-prd123-ctgASDF"`);
-      });
+        discardPeriodicTasks();
+      }));
     });
   });
 
@@ -485,13 +536,14 @@ describe('Product Context Facade', () => {
       };
 
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
+    });
 
+    it('should calculate the label property of the product', fakeAsync(() => {
       context.set('sku', () => '123');
-    });
-
-    it('should calculate the label property of the product', () => {
+      tick(DEBOUNCE_TIME);
       expect(context.get('label')).toMatchInlineSnapshot(`"sale"`);
-    });
+      discardPeriodicTasks();
+    }));
   });
 
   describe('with a retail set', () => {
@@ -512,12 +564,16 @@ describe('Product Context Facade', () => {
         ])
       );
       when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
-      context.set('sku', () => '123');
     });
 
-    it('should set parts property for retail set', done => {
-      context.select('parts').subscribe(parts => {
-        expect(parts).toMatchInlineSnapshot(`
+    it('should set parts property for retail set', fakeAsync(() => {
+      context.set('sku', () => '123');
+      tick(DEBOUNCE_TIME);
+      context
+        .select('parts')
+        .pipe(take(1))
+        .subscribe(parts => {
+          expect(parts).toMatchInlineSnapshot(`
           [
             {
               "quantity": 1,
@@ -529,11 +585,13 @@ describe('Product Context Facade', () => {
             },
           ]
         `);
-        done();
-      });
-    });
+        });
+      discardPeriodicTasks();
+    }));
 
-    it('should set correct display properties for retail set', () => {
+    it('should set correct display properties for retail set', fakeAsync(() => {
+      context.set('sku', () => '123');
+      tick(DEBOUNCE_TIME);
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
         {
           "addToBasket": true,
@@ -556,11 +614,15 @@ describe('Product Context Facade', () => {
           "variations": false,
         }
       `);
-    });
+      discardPeriodicTasks();
+    }));
 
-    it('should adapt required completeness level to detail', () => {
+    it('should adapt required completeness level to detail', fakeAsync(() => {
+      context.set('sku', () => '123');
+      tick(DEBOUNCE_TIME);
       expect(context.get('requiredCompletenessLevel')).toEqual(ProductCompletenessLevel.Detail);
-    });
+      discardPeriodicTasks();
+    }));
   });
 
   describe('with a bundle', () => {
@@ -582,14 +644,18 @@ describe('Product Context Facade', () => {
           { sku: 'p2', quantity: 2 },
         ])
       );
-      context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
       when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
-      context.set('sku', () => '123');
     });
 
-    it('should set parts property for bundle', done => {
-      context.select('parts').subscribe(parts => {
-        expect(parts).toMatchInlineSnapshot(`
+    it('should set parts property for bundle', fakeAsync(() => {
+      context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
+      context.set('sku', () => '123');
+      tick(DEBOUNCE_TIME);
+      context
+        .select('parts')
+        .pipe(take(1))
+        .subscribe(parts => {
+          expect(parts).toMatchInlineSnapshot(`
           [
             {
               "quantity": 1,
@@ -601,11 +667,14 @@ describe('Product Context Facade', () => {
             },
           ]
         `);
-        done();
-      });
-    });
+        });
+      discardPeriodicTasks();
+    }));
 
-    it('should set correct display properties for bundle', () => {
+    it('should set correct display properties for bundle', fakeAsync(() => {
+      context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
+      context.set('sku', () => '123');
+      tick(DEBOUNCE_TIME);
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
         {
           "addToBasket": true,
@@ -628,7 +697,8 @@ describe('Product Context Facade', () => {
           "variations": false,
         }
       `);
-    });
+      discardPeriodicTasks();
+    }));
   });
 
   describe('with a variation product', () => {
@@ -646,11 +716,12 @@ describe('Product Context Facade', () => {
       } as ProductView;
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
       when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
-      context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
-      context.set('sku', () => '123');
     });
 
-    it('should set correct display properties for variation product', () => {
+    it('should set correct display properties for variation product', fakeAsync(() => {
+      context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
+      context.set('sku', () => '123');
+      tick(DEBOUNCE_TIME);
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
         {
           "addToBasket": true,
@@ -673,7 +744,8 @@ describe('Product Context Facade', () => {
           "variations": true,
         }
       `);
-    });
+      discardPeriodicTasks();
+    }));
   });
 
   describe('with a master product', () => {
@@ -689,10 +761,11 @@ describe('Product Context Facade', () => {
       } as ProductView;
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
       when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
-      context.set('sku', () => '123');
     });
 
-    it('should set correct display properties for master product', () => {
+    it('should set correct display properties for master product', fakeAsync(() => {
+      context.set('sku', () => '123');
+      tick(DEBOUNCE_TIME);
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
         {
           "addToBasket": false,
@@ -715,7 +788,8 @@ describe('Product Context Facade', () => {
           "variations": false,
         }
       `);
-    });
+      discardPeriodicTasks();
+    }));
   });
 
   describe('add to basket handling', () => {
@@ -729,19 +803,24 @@ describe('Product Context Facade', () => {
 
       when(shoppingFacade.product$(anything(), anything())).thenReturn(of(product));
       when(shoppingFacade.productInventory$(anything())).thenReturn(of({ inStock: true } as ProductInventory));
+    });
+
+    it('should set "addToBasket" to "false" for a product without a price', fakeAsync(() => {
       context.set('sku', () => '123');
-    });
-
-    it('should set "addToBasket" to "false" for a product without a price', () => {
+      tick(DEBOUNCE_TIME);
       expect(context.get('displayProperties', 'addToBasket')).toMatchInlineSnapshot(`false`);
-    });
+      discardPeriodicTasks();
+    }));
 
-    it('should set "addToBasket" to "true" for a product with price', () => {
+    it('should set "addToBasket" to "true" for a product with price', fakeAsync(() => {
+      context.set('sku', () => '123');
+      tick(DEBOUNCE_TIME);
       context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
       expect(context.get('displayProperties', 'addToBasket')).toMatchInlineSnapshot(`true`);
-    });
+      discardPeriodicTasks();
+    }));
 
-    it('should set "addToBasket" to "true" for a retail set independend from a price', () => {
+    it('should set "addToBasket" to "true" for a retail set independent from a price', fakeAsync(() => {
       when(shoppingFacade.product$(anything(), anything())).thenReturn(
         of({
           sku: '456',
@@ -750,8 +829,10 @@ describe('Product Context Facade', () => {
         } as ProductView)
       );
       context.set('sku', () => '456');
+      tick(DEBOUNCE_TIME);
       expect(context.get('displayProperties', 'addToBasket')).toMatchInlineSnapshot(`true`);
-    });
+      discardPeriodicTasks();
+    }));
   });
 });
 
@@ -844,9 +925,10 @@ describe('Product Context Facade', () => {
       context = TestBed.inject(ProductContextFacade);
     });
 
-    it('should set correct display properties respecting overrides from providers for product 123', () => {
+    it('should set correct display properties respecting overrides from providers for product 123', fakeAsync(() => {
       context.set('prices', () => ({ salePrice: PriceHelper.empty() }));
       context.set('sku', () => '123');
+      tick(DEBOUNCE_TIME);
 
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
         {
@@ -874,10 +956,12 @@ describe('Product Context Facade', () => {
       someOther$.next(true);
 
       expect(context.get('displayProperties', 'price')).toMatchInlineSnapshot(`false`);
-    });
+      discardPeriodicTasks();
+    }));
 
-    it('should set correct display properties respecting overrides from providers for product 456', () => {
+    it('should set correct display properties respecting overrides from providers for product 456', fakeAsync(() => {
       context.set('sku', () => '456');
+      tick(DEBOUNCE_TIME);
 
       expect(context.get('displayProperties')).toMatchInlineSnapshot(`
         {
@@ -905,10 +989,12 @@ describe('Product Context Facade', () => {
       someOther$.next(true);
 
       expect(context.get('displayProperties', 'price')).toMatchInlineSnapshot(`false`);
-    });
+      discardPeriodicTasks();
+    }));
 
-    it('should include external displayProperty overrides when calculating', () => {
+    it('should include external displayProperty overrides when calculating', fakeAsync(() => {
       context.set('sku', () => '456');
+      tick(DEBOUNCE_TIME);
 
       context.config = {
         readOnly: true,
@@ -937,6 +1023,7 @@ describe('Product Context Facade', () => {
           "variations": false,
         }
       `);
-    });
+      discardPeriodicTasks();
+    }));
   });
 });
