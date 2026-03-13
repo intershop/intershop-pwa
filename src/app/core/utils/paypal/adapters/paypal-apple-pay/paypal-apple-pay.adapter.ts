@@ -13,6 +13,7 @@ import {
   PaypalApplePayComponent,
   PaypalComponent,
 } from 'ish-core/utils/paypal/paypal-model/paypal.model';
+import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
 /**
  * Representation of the PayPal SDK Apple Pay object, responsible for rendering the Apple Pay button
@@ -33,6 +34,7 @@ export class PaypalApplePayAdapter {
   private paypalApplepay: PaypalApplePayComponent;
   private loading = false;
   private merchantName = 'Intershop';
+  private readonly applePaySdkUrl = 'https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js';
 
   constructor(
     private ngZone: NgZone,
@@ -40,6 +42,7 @@ export class PaypalApplePayAdapter {
     private destroyRef: DestroyRef,
     private checkoutFacade: CheckoutFacade,
     private paypalDataTransferService: PaypalDataTransferService,
+    private scriptLoaderService: ScriptLoaderService,
     @Inject(DOCUMENT) private document: Document
   ) {}
 
@@ -52,6 +55,9 @@ export class PaypalApplePayAdapter {
   async renderApplePayButton(config: PaypalComponentsConfig): Promise<void> {
     const containerId = config.containerId;
     const container = this.document.getElementById(containerId);
+    console.log('RENDERING APPLE PAY BUTTON IN CONTAINER', containerId, container);
+
+    await this.loadApplePaySdk();
 
     if (!container) {
       return Promise.reject(new Error(`Container element '${containerId}' not found in DOM`));
@@ -97,9 +103,26 @@ export class PaypalApplePayAdapter {
   }
 
   /**
+   * Loads the Google Pay JavaScript SDK.
+   */
+  private async loadApplePaySdk(): Promise<void> {
+    this.scriptLoaderService
+      .load(this.applePaySdkUrl)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(result => {
+        if (result.loaded) {
+          return Promise.resolve();
+        }
+        return Promise.reject(new Error('Failed to load Google Pay SDK'));
+      });
+  }
+
+  /**
    * Checks if Apple Pay is available in the current browser.
    */
   private isApplePayAvailable(): boolean {
+    console.log('Window:', window);
+    console.log('window.ApplePaySession', (window as Window & { ApplePaySession?: unknown }).ApplePaySession);
     return (
       typeof ApplePaySession !== 'undefined' &&
       ApplePaySession.canMakePayments() &&
