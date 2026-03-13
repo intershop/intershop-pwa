@@ -12,7 +12,6 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { InjectSingle } from 'ish-core/utils/injection';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
 import { CompareFacade } from '../../../compare/facades/compare.facade';
@@ -39,7 +38,6 @@ declare let Chatbot: any;
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-@GenerateLazyComponent()
 export class CopilotComponent {
   private destroyRef = inject(DestroyRef);
 

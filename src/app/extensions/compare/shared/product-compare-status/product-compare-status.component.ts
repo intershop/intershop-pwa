@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { CompareFacade } from '../../facades/compare.facade';
 
@@ -14,7 +13,6 @@ import { CompareFacade } from '../../facades/compare.facade';
   standalone: true,
   imports: [RouterLink, NgClass, AsyncPipe, TranslatePipe],
 })
-@GenerateLazyComponent()
 export class ProductCompareStatusComponent implements OnInit {
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
 

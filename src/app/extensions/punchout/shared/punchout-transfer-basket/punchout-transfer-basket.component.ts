@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
-
 import { PunchoutFacade } from '../../facades/punchout.facade';
 
 @Component({
@@ -12,7 +10,6 @@ import { PunchoutFacade } from '../../facades/punchout.facade';
   standalone: true,
   imports: [TranslatePipe],
 })
-@GenerateLazyComponent()
 export class PunchoutTransferBasketComponent {
   submitted = false;
 

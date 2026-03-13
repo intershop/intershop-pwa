@@ -7,7 +7,6 @@ import { filter, map } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductHelper } from 'ish-core/models/product/product.helper';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { ProductRatingStarComponent } from '../product-rating-star/product-rating-star.component';
 
@@ -21,7 +20,6 @@ import { ProductRatingStarComponent } from '../product-rating-star/product-ratin
   standalone: true,
   imports: [NgIf, AsyncPipe, NgFor, ProductRatingStarComponent, TranslatePipe],
 })
-@GenerateLazyComponent()
 export class ProductRatingComponent implements OnInit {
   @Input() hideNumberOfReviews = false;
 

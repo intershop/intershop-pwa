@@ -61,7 +61,7 @@
     },
     "lazy-component": {
       "factory": "./lazy-component/factory#createLazyComponent",
-      "description": "Create a lazy component for an existing component in an extension.",
+      "description": "Deprecated: use standalone components with Angular @defer blocks.",
       "schema": "./lazy-component/schema.json"
     },
     "store": {

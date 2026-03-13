@@ -6,7 +6,6 @@ import { Observable, map } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
@@ -18,7 +17,6 @@ import { QuotingFacade } from '../../facades/quoting.facade';
   standalone: true,
   imports: [AsyncPipe, LineItemListComponent, NgFor, NgIf, TranslatePipe],
 })
-@GenerateLazyComponent()
 export class QuotingBasketLineItemsComponent implements OnInit {
   lineItems$: Observable<[string, LineItem[]][]>;
 

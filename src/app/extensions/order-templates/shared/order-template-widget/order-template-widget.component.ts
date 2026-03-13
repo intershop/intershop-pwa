@@ -7,7 +7,6 @@ import { map } from 'rxjs/operators';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
@@ -33,7 +32,6 @@ import { OrderTemplate } from '../../models/order-template/order-template.model'
     RouterLink,
   ],
 })
-@GenerateLazyComponent()
 export class OrderTemplateWidgetComponent implements OnInit {
   loading$: Observable<boolean>;
   orderTemplates$: Observable<OrderTemplate[]>;

@@ -35,9 +35,10 @@ function addRouteToArray(
     : '';
 
   if (options.lazy) {
+    const routesExport = `${strings.camelize(options.name)}PageRoutes`;
     const loadChildren = `() => import('${
       options.child ? '..' : '.'
-    }/${dasherizedName}/${dasherizedName}-page.module').then(m => m.${strings.classify(dasherizedName)}PageModule)`;
+    }/${dasherizedName}/${dasherizedName}-page.routes').then(m => m.${routesExport})`;
 
     const recorder = host.beginUpdate(options.routingModule);
     recorder.insertRight(
@@ -66,15 +67,20 @@ async function determineRoutingModule(
   let child: string;
   let subPaging: boolean;
 
-  const match = options.name.match(/(.*)-([a-z0-9]+)/);
+  const findExisting = (candidates: string[]) =>
+    candidates.find(file => host.exists(`${project.sourceRoot}/app/${file}`));
+
+  const match = options.name.match(/(.*)\-([a-z0-9]+)/);
   if (options.lazy && match?.[1] && match[2]) {
     const parent = match[1];
     const possibleChild = match[2];
-    routingModuleLocation = options.extension
-      ? `extensions/${options.extension}/pages/${parent}/${parent}-page.module.ts`
-      : `pages/${parent}/${parent}-page.module.ts`;
+    const subPagingCandidates = options.extension
+      ? [`extensions/${options.extension}/pages/${parent}/${parent}-page.routes.ts`]
+      : [`pages/${parent}/${parent}-page.routes.ts`];
 
-    subPaging = host.exists(`${project.sourceRoot}/app/${routingModuleLocation}`);
+    routingModuleLocation = findExisting(subPagingCandidates);
+
+    subPaging = Boolean(routingModuleLocation);
     if (subPaging) {
       child = possibleChild;
       console.log(`detected subpage, will insert '${child}' as sub page of '${parent}'`);
@@ -82,9 +88,12 @@ async function determineRoutingModule(
   }
 
   if (!subPaging) {
-    routingModuleLocation = options.extension
-      ? `extensions/${options.extension}/pages/${options.extension}-routing.module.ts`
-      : `${project.root ? `pages/${project.root.replace(/^.*?\//g, '')}` : 'pages/app'}-routing.module.ts`;
+    const rootRouteFile = `${project.root ? `pages/${project.root.replace(/^.*?\//g, '')}` : 'pages/app'}.routes.ts`;
+    const routingCandidates = options.extension
+      ? [`extensions/${options.extension}/pages/${options.extension}.routes.ts`]
+      : [rootRouteFile];
+
+    routingModuleLocation = findExisting(routingCandidates) || routingCandidates[0];
   }
 
   let routingModule: string = normalize(`${buildDefaultPath(project)}/${routingModuleLocation}`);
@@ -167,12 +176,12 @@ export function createPage(options: Options): Rule {
     );
 
     operations.push(addRouteToRoutingModule(options));
-    if (options.extension && !host.read(options.routingModule)?.toString().includes('ish-core/feature-toggle.module')) {
+    if (options.extension && !host.read(options.routingModule)?.toString().includes('ish-core/feature-toggle')) {
       operations.push(
         addImportToFile({
           module: options.routingModule,
           artifactName: 'featureToggleGuard',
-          moduleImportPath: '/src/app/core/feature-toggle.module',
+          moduleImportPath: '/src/app/core/feature-toggle',
         })
       );
     }

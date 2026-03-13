@@ -4,7 +4,6 @@ import { Observable, ReplaySubject } from 'rxjs';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageletEntryPointView } from 'ish-core/models/content-view/content-view.model';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { ContentDesignViewWrapperComponent } from 'ish-shared/cms/components/content-design-view-wrapper/content-design-view-wrapper.component';
 import { ContentPageletComponent } from 'ish-shared/cms/components/content-pagelet/content-pagelet.component';
 
@@ -26,7 +25,6 @@ import { ContentPageletComponent } from 'ish-shared/cms/components/content-pagel
   standalone: true,
   imports: [NgIf, AsyncPipe, ContentDesignViewWrapperComponent, ContentPageletComponent, NgFor],
 })
-@GenerateLazyComponent()
 export class ContentIncludeComponent implements OnInit, OnChanges {
   @Input({ required: true }) includeId: string;
 
