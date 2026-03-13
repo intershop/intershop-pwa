@@ -22,6 +22,7 @@ describe('Category Page Component', () => {
 
   beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
+    when(shoppingFacade.selectedCategory$).thenReturn(of(undefined));
     await TestBed.configureTestingModule({
       declarations: [
         CategoryPageComponent,

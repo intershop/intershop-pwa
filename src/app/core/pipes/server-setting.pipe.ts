@@ -1,4 +1,4 @@
-import { DestroyRef, Pipe, PipeTransform, inject } from '@angular/core';
+import { ChangeDetectorRef, DestroyRef, Pipe, PipeTransform, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subscription } from 'rxjs';
 
@@ -11,16 +11,19 @@ import { AppFacade } from 'ish-core/facades/app.facade';
  * If it is set, the Pipe will return a truthy value.
  *
  * @example
- * <example *ngIf="'services.ABC.runnable' | ishServerSetting"> ...</example>
+ * @if ('services.ABC.runnable' | ishServerSetting) {
+ *   <example> ...</example>
+ * }
  */
 @Pipe({ name: 'ishServerSetting', pure: false })
 export class ServerSettingPipe implements PipeTransform {
   private returnValue: unknown;
 
   private destroyRef = inject(DestroyRef);
+
   private sub: Subscription;
 
-  constructor(private appFacade: AppFacade) {}
+  constructor(private appFacade: AppFacade, private cdRef: ChangeDetectorRef) {}
 
   transform(path: string) {
     if (path === 'always') {
@@ -34,6 +37,7 @@ export class ServerSettingPipe implements PipeTransform {
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe(value => {
             this.returnValue = value;
+            this.cdRef.markForCheck();
           });
       }
       return this.returnValue;

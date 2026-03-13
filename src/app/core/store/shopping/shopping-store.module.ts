@@ -3,13 +3,15 @@ import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
-import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
+import { logoutUserSuccess, personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { resetSubStatesOnActionsMeta } from 'ish-core/utils/meta-reducers';
 
 import { CategoriesEffects } from './categories/categories.effects';
 import { categoriesReducer } from './categories/categories.reducer';
 import { FilterEffects } from './filter/filter.effects';
 import { filterReducer } from './filter/filter.reducer';
+import { ProductInventoryEffects } from './product-inventory/product-inventory.effects';
+import { productInventoryReducer } from './product-inventory/product-inventory.reducer';
 import { ProductListingEffects } from './product-listing/product-listing.effects';
 import { productListingReducer } from './product-listing/product-listing.reducer';
 import { ProductPricesEffects } from './product-prices/product-prices.effects';
@@ -32,6 +34,7 @@ const shoppingReducers: ActionReducerMap<ShoppingState> = {
   search: searchReducer,
   filter: filterReducer,
   promotions: promotionsReducer,
+  productInventory: productInventoryReducer,
   productListing: productListingReducer,
   productPrices: productPricesReducer,
   productRecommendations: recommendationsReducer,
@@ -44,6 +47,7 @@ const shoppingEffects = [
   SearchEffects,
   FilterEffects,
   PromotionsEffects,
+  ProductInventoryEffects,
   ProductListingEffects,
   ProductPricesEffects,
   RecommendationsEffects,
@@ -54,9 +58,10 @@ const shoppingEffects = [
 export class DefaultShoppingStoreConfig implements StoreConfig<ShoppingState> {
   metaReducers = [
     resetSubStatesOnActionsMeta<ShoppingState>(
-      ['categories', 'products', 'search', 'filter', 'productPrices'],
+      ['categories', 'search', 'filter', 'productPrices'],
       [personalizationStatusDetermined]
     ),
+    resetSubStatesOnActionsMeta<ShoppingState>(['products'], [logoutUserSuccess]),
   ];
 }
 

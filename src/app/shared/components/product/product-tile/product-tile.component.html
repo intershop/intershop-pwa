@@ -1,28 +1,24 @@
-<ng-container *ngIf="product$ | async as product">
-  <div *ngIf="!product.failed" class="product-tile" [attr.data-testing-sku]="product.sku">
-    <div class="product-image-container">
-      <ish-product-image imageType="M" [link]="true" />
-      <ish-product-label />
-    </div>
-
-    <ish-product-name />
-
-    <ish-lazy-product-rating [hideNumberOfReviews]="true" />
-
-    <ish-product-promotion displayType="simple" />
-
-    <div *ngIf="configuration$('price') | async" class="price-container">
-      <ish-product-price [showInformationalPrice]="true" />
-    </div>
-
-    <ish-product-item-variations />
-
-    <div class="product-tile-actions btn-group">
-      <ish-lazy-product-add-to-quote displayType="icon" [ariaHidden]="true" cssClass="btn-link" />
-      <ish-lazy-product-add-to-compare displayType="icon" [ariaHidden]="true" cssClass="btn-link" />
-      <ish-lazy-product-add-to-order-template displayType="icon" [ariaHidden]="true" cssClass="btn btn-link me-0" />
-      <ish-lazy-product-add-to-wishlist displayType="icon" [ariaHidden]="true" cssClass="btn-link" />
-      <ish-product-add-to-basket displayType="icon" [ariaHidden]="true" cssClass="btn-link" />
-    </div>
+@if (product$ | async; as product) { @if (!product.failed) {
+<div class="product-tile" [attr.data-testing-sku]="product.sku">
+  <div class="product-image-container">
+    <ish-product-image imageType="M" [link]="true" />
+    <ish-product-label />
   </div>
-</ng-container>
+  <ish-product-name />
+  <ish-lazy-product-rating [hideNumberOfReviews]="true" />
+  <ish-product-promotion displayType="simple" />
+  @if (configuration$('price') | async) {
+  <div class="price-container">
+    <ish-product-price [showInformationalPrice]="true" />
+  </div>
+  }
+  <ish-product-item-variations />
+  <div class="product-tile-actions btn-group">
+    <ish-lazy-product-add-to-quote displayType="icon" [ariaHidden]="true" cssClass="btn-link" />
+    <ish-lazy-product-add-to-compare displayType="icon" [ariaHidden]="true" cssClass="btn-link" />
+    <ish-lazy-product-add-to-order-template displayType="icon" [ariaHidden]="true" cssClass="btn btn-link me-0" />
+    <ish-lazy-product-add-to-wishlist displayType="icon" [ariaHidden]="true" cssClass="btn-link" />
+    <ish-product-add-to-basket displayType="icon" [ariaHidden]="true" cssClass="btn-link" />
+  </div>
+</div>
+} }

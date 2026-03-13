@@ -5,6 +5,7 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-category-page',
@@ -18,7 +19,8 @@ export class CategoryPageComponent implements OnInit {
   constructor(private shoppingFacade: ShoppingFacade, private appFacade: AppFacade) {}
 
   ngOnInit() {
-    this.category$ = this.shoppingFacade.selectedCategory$;
+    // prevent flickering after login by waiting for a valid category
+    this.category$ = this.shoppingFacade.selectedCategory$.pipe(whenTruthy());
     this.deviceType$ = this.appFacade.deviceType$;
   }
 }

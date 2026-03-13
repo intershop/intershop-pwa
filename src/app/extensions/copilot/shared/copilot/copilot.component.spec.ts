@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { THEME_COLOR } from 'ish-core/configurations/injection-keys';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -51,8 +52,8 @@ describe('Copilot Component', () => {
         { provide: CompareFacade, useFactory: () => instance(mock(CompareFacade)) },
         { provide: CopilotFacade, useFactory: () => instance(copilotFacade) },
         { provide: OrderTemplatesFacade, useFactory: () => instance(mock(OrderTemplatesFacade)) },
-        { provide: ScriptLoaderService, useFactory: () => instance(scriptLoader) },
         { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
+        { provide: THEME_COLOR, useValue: 'blue' },
         { provide: TranslateService, useFactory: () => instance(translateService) },
       ],
     }).compileComponents();
@@ -65,11 +66,16 @@ describe('Copilot Component', () => {
   });
 
   it('should be created', () => {
-    const copilotSpy = jest.spyOn(component, 'initializeCopilot');
-
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should initialize copilot when loadCopilot is called', () => {
+    const copilotSpy = jest.spyOn(component, 'initializeCopilot');
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (component as any).loadCopilot();
 
     // check whether the Copilot was initialized
     expect(copilotSpy).toHaveBeenCalledOnce();
@@ -82,7 +88,7 @@ describe('Copilot Component', () => {
       [],
       'https://icm/INTERSHOP/rest/WFS/Site/-;loc=en_US;cur=USD',
       'en_US',
-      ''
+      'blue'
     );
   });
 });

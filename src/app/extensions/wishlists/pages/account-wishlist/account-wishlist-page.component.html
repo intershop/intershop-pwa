@@ -12,7 +12,7 @@
         placement="bottom"
         popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
       >
-        {{ 'account.wishlists.heading.tooltip.link' | translate }}<fa-icon [icon]="['fas', 'info-circle']" />
+        {{ 'account.wishlists.heading.tooltip.link' | translate }}<i class="bi bi-info-circle-fill"></i>
       </button>
     </h1>
 
@@ -37,4 +37,6 @@
 
 <ish-wishlist-preferences-dialog #addWishlistDialog (submitWishlist)="addWishlist($event)" />
 
-<ish-loading *ngIf="wishlistLoading$ | async" />
+@if (wishlistLoading$ | async) {
+<ish-loading />
+}

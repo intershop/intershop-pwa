@@ -1,4 +1,4 @@
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { AsyncPipe, DOCUMENT, NgClass } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -12,16 +12,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { IconName } from '@fortawesome/fontawesome-svg-core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, ReplaySubject, map, shareReplay } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { IconModule } from 'ish-core/icon.module';
 import { SearchBoxConfiguration } from 'ish-core/models/search-box-configuration/search-box-configuration.model';
 import { Suggestions } from 'ish-core/models/suggestions/suggestions.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
-import { PipesModule } from 'ish-core/pipes.module';
 import { SuggestBrandsComponent } from 'ish-shared/components/search/suggest-brands/suggest-brands.component';
 import { SuggestCategoriesComponent } from 'ish-shared/components/search/suggest-categories/suggest-categories.component';
 import { SuggestKeywordsComponent } from 'ish-shared/components/search/suggest-keywords/suggest-keywords.component';
@@ -48,10 +45,9 @@ import { SuggestSearchTermsComponent } from 'ish-shared/components/search/sugges
   templateUrl: './search-box.component.html',
   standalone: true,
   imports: [
-    CommonModule,
-    IconModule,
-    PipesModule,
-    TranslateModule,
+    AsyncPipe,
+    NgClass,
+    TranslatePipe,
     SuggestBrandsComponent,
     SuggestCategoriesComponent,
     SuggestKeywordsComponent,
@@ -98,7 +94,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
     @Inject(DOCUMENT) private document: Document
   ) {}
 
-  get usedIcon(): IconName {
+  get usedIcon(): string {
     return this.configuration?.icon || 'search';
   }
 
@@ -168,7 +164,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // reset input when ESC key is pressed and element is focused within the search box
   @HostListener('document:keydown.escape', ['$event'])
-  onEscape(event: KeyboardEvent) {
+  onEscape(event: Event) {
     if (this.searchBox.nativeElement.contains(event.target)) {
       event.preventDefault(); // Optional: Prevent default behavior
       this.resetInput();
@@ -177,18 +173,18 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // remove focus when clicking outside the search box
   @HostListener('document:click', ['$event.target'])
-  onClick(targetElement: undefined): void {
+  onClick(targetElement: EventTarget): void {
     this.blurIfOutside(targetElement);
   }
 
   // remove focus when focused outside the search box
   @HostListener('document:focusin', ['$event.target'])
-  onFocusIn(targetElement: undefined): void {
+  onFocusIn(targetElement: EventTarget): void {
     this.blurIfOutside(targetElement);
   }
 
   // check if the target element is outside the search box
-  private blurIfOutside(targetElement: undefined): void {
+  private blurIfOutside(targetElement: EventTarget): void {
     const clickedOrFocusedInside = this.searchBox.nativeElement.contains(targetElement);
     if (!clickedOrFocusedInside) {
       this.blur();

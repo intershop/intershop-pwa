@@ -63,7 +63,7 @@ cacher.genCacheTtl = function (res, original) {
   return original;
 };
 
-const logging = /on|1|true|yes/.test(process.env.LOGGING?.toLowerCase());
+const logging = /^(trace|debug|info)$/.test(process.env.LOGLEVEL?.toLowerCase());
 
 if (logging) {
   cacher.on('miss', key => {

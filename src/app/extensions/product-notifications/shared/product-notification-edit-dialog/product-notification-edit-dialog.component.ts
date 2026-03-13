@@ -68,7 +68,7 @@ export class ProductNotificationEditDialogComponent implements OnInit {
 
   ngOnInit() {
     this.product$ = this.context.select('product');
-    const productAvailable$ = this.context.select('product', 'available');
+    const productAvailable$ = this.context.select('inventory', 'inStock');
     this.userEmail$ = this.accountFacade.userEmail$;
 
     // determine current currency

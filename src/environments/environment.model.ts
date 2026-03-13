@@ -60,7 +60,7 @@ export interface Environment {
   // Google Maps API Key
   gmaKey?: string;
 
-  // track shop interaction via Google Tag Manager (to be used with 'tracking' feature, works with server side rendering only)
+  // track shop interaction via Google Tag Manager (to be used with 'tracking' feature, works with server-side rendering only)
   gtmToken?: string;
 
   // address doctor integration

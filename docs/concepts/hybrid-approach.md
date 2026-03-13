@@ -246,7 +246,7 @@ The configurations relevant to the Hybrid Approach for running the PWA are:
 - `ICM_BASE_URL` points to ICM https port - `https://icm.example.com:8443`
 - For development scenarios with a self-signed certificate for ICM, this means that you have to set `TRUST_ICM=true`
 - To enable the Hybrid Approach functionality in the SSR process, `SSR_HYBRID=true` must be set
-- `LOGGING=true` helps with analysis and debugging
+- `LOGLEVEL=info` and `LOGFORMAT=text` help with analysis and debugging
 
 > [!NOTE]
 > The PWA SSR process itself does not need to run with SSL/https.
@@ -257,19 +257,19 @@ You can run a local PWA built from the current PWA project sources in a number o
 **Via Docker**
 
 ```bash
-docker build -t dev_pwa . && docker run -it -p 4200:4200 -e ICM_BASE_URL=https://icm.example.com:8443 -e TRUST_ICM=true -e SSR_HYBRID=true -e LOGGING=true --name hybrid-pwa dev_pwa
+docker build -t dev_pwa . && docker run -it -p 4200:4200 -e ICM_BASE_URL=https://icm.example.com:8443 -e TRUST_ICM=true -e SSR_HYBRID=true -e LOGLEVEL=info -e LOGFORMAT=text --name hybrid-pwa dev_pwa
 ```
 
 **Via bash**
 
 ```bash
-ICM_BASE_URL=https://icm.example.com:8443 TRUST_ICM=true SSR_HYBRID=true LOGGING=true npm run start
+ICM_BASE_URL=https://icm.example.com:8443 TRUST_ICM=true SSR_HYBRID=true LOGLEVEL=info LOGFORMAT=text npm run start
 ```
 
 **Via bash with SSR development server with auto compile**
 
 ```bash
-ICM_BASE_URL=https://icm.example.com:8443 TRUST_ICM=true SSR_HYBRID=true LOGGING=true npm run start:ssr-dev
+ICM_BASE_URL=https://icm.example.com:8443 TRUST_ICM=true SSR_HYBRID=true LOGLEVEL=info LOGFORMAT=text npm run dev:ssr
 ```
 
 > [!NOTE]
@@ -279,7 +279,7 @@ ICM_BASE_URL=https://icm.example.com:8443 TRUST_ICM=true SSR_HYBRID=true LOGGING
 > The PWA with Hybrid Approach would then be reachable at `https://pwa.example.com:4200`.
 
 ```bash
-ICM_BASE_URL=https://icm.example.com:8443 TRUST_ICM=true SSR_HYBRID=true LOGGING=true npm run start:ssr-dev -- --ssl
+ICM_BASE_URL=https://icm.example.com:8443 TRUST_ICM=true SSR_HYBRID=true LOGLEVEL=info LOGFORMAT=text npm run dev:ssr -- --ssl
 ```
 
 ### NGINX
@@ -319,7 +319,8 @@ services:
       ICM_BASE_URL: 'https://icm.example.com:8443'
       SSR_HYBRID: 'true'
       TRUST_ICM: 'true'
-      LOGGING: 'true'
+      LOGLEVEL: 'error'
+      LOGFORMAT: 'json'
 
   nginx:
     image: intershophub/intershop-pwa-nginx
@@ -333,6 +334,8 @@ services:
       ICM_BASE_URL: 'https://icm.example.com:8443'
       SSL: 1
       CACHE: 0
+      LOGLEVEL: 'error'
+      LOGFORMAT: 'json'
 ```
 
 ## Further References

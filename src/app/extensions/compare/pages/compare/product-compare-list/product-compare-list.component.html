@@ -1,124 +1,140 @@
-<ng-container *ngIf="compareProducts$ | async as compareProducts">
-  <ish-product-compare-paging
-    [totalItems]="compareProducts.length"
-    [itemsPerPage]="itemsPerPage"
-    [currentPage]="currentPage"
-    (changePage)="changeCurrentPage($event)"
-  />
-
-  <div class="product-list table-compare">
-    <div class="table-responsive">
-      <table class="table" *ngIf="compareProducts | slice : start : end as visibleProducts">
-        <tbody>
-          <!-- Product image & name -->
-          <tr>
-            <th class="legacy-col-6 legacy-col-md-3 no-border" scope="row">
-              <span class="visually-hidden">{{
-                'product.compare.table_header.product_image_and_name.text' | translate
-              }}</span>
-              &nbsp;
-            </th>
-            <td
-              *ngFor="let product of visibleProducts"
-              ishProductContext
-              [sku]="product?.sku"
-              class="legacy-col-6 legacy-col-md-3 no-border"
-            >
-              <div class="product-image">
-                <ish-product-image imageType="M" [link]="true" />
-                <button
-                  type="button"
-                  class="btn-tool btn-link"
-                  [title]="'product.compare.remove.link' | translate : { productName: product.name }"
-                  (click)="removeFromCompare(product.sku)"
-                >
-                  <fa-icon [icon]="['fas', 'trash-alt']" />
-                </button>
-              </div>
-
-              <div>
-                <ish-product-name />
-              </div>
-            </td>
-          </tr>
-          <!-- SKU -->
-          <tr>
-            <th class="legacy-col-6 legacy-col-md-3 no-border" scope="row">
-              <span class="visually-hidden">{{ 'product.compare.table_header.product_id.text' | translate }}</span>
-              &nbsp;
-            </th>
-            <td *ngFor="let product of visibleProducts" class="legacy-col-6 legacy-col-md-3 no-border">
-              <ish-product-id ishProductContext [sku]="product?.sku" />
-            </td>
-          </tr>
-          <!-- Add to cart button -->
-          <tr>
-            <th class="legacy-col-6 legacy-col-md-3" scope="row">
-              <span class="visually-hidden">{{ 'product.compare.table_header.action_row.text' | translate }}</span>
-              &nbsp;
-            </th>
-            <td *ngFor="let product of visibleProducts" class="legacy-col-6 legacy-col-md-3">
-              <ish-product-add-to-basket ishProductContext [sku]="product?.sku" />
-            </td>
-          </tr>
-          <!-- Price -->
-          <tr>
-            <th scope="row">{{ 'product.compare.price.label' | translate }}</th>
-            <td *ngFor="let product of visibleProducts">
-              <ish-product-price ishProductContext [sku]="product?.sku" [showInformationalPrice]="true" />
-            </td>
-          </tr>
-          <!-- Inventory -->
-          <tr>
-            <th scope="row">
-              <span class="visually-hidden">{{ 'product.compare.table_header.inventory.text' | translate }}</span>
-            </th>
-            <td *ngFor="let product of visibleProducts">
-              <ish-product-inventory ishProductContext [sku]="product?.sku" />
-            </td>
-          </tr>
-          <!-- Ratings -->
-          <tr *ishFeature="'rating'">
-            <th scope="row">{{ 'product.compare.ratings.label' | translate }}</th>
-            <td *ngFor="let product of visibleProducts">
-              <ish-lazy-product-rating ishProductContext [sku]="product?.sku" />
-            </td>
-          </tr>
-          <!-- Short description -->
-          <tr>
-            <th scope="row">{{ 'product.short_description.label' | translate }}</th>
-            <td *ngFor="let product of visibleProducts">
-              <div [ishServerHtml]="product.shortDescription"></div>
-            </td>
-          </tr>
-          <!-- Manufacturer -->
-          <tr>
-            <th scope="row">{{ 'product.manufacturer_name.label' | translate }}</th>
-            <td *ngFor="let product of visibleProducts">{{ product.manufacturer }}</td>
-          </tr>
-          <!-- Common Attributes -->
-          <tr *ngFor="let commonAttributeName of commonAttributeNames$ | async">
-            <th scope="row">{{ commonAttributeName }}</th>
-            <td *ngFor="let product of visibleProducts">
-              {{ getAttributeByAttributeName(product?.attributes, commonAttributeName) | ishAttribute : '|' }}
-            </td>
-          </tr>
-          <!-- Specific Attributes -->
-          <tr>
-            <th scope="row">{{ 'product.specific_attributes.label' | translate }}</th>
-            <td *ngFor="let product of visibleProducts">
-              <ish-product-attributes [product]="getProductWithoutCommonAttributes(product, visibleProducts)" />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+@if (compareProducts$ | async; as compareProducts) {
+<ish-product-compare-paging
+  [totalItems]="compareProducts.length"
+  [itemsPerPage]="itemsPerPage"
+  [currentPage]="currentPage"
+  (changePage)="changeCurrentPage($event)"
+/>
+<div class="product-list table-compare">
+  <div class="table-responsive">
+    @if (compareProducts | slice : start : end; as visibleProducts) {
+    <table class="table">
+      <tbody>
+        <!-- Product image & name -->
+        <tr>
+          <th class="legacy-col-6 legacy-col-md-3 no-border" scope="row">
+            <span class="visually-hidden">{{
+              'product.compare.table_header.product_image_and_name.text' | translate
+            }}</span>
+            &nbsp;
+          </th>
+          @for (product of visibleProducts; track product.sku) {
+          <td ishProductContext [sku]="product?.sku" class="legacy-col-6 legacy-col-md-3 no-border">
+            <div class="product-image">
+              <ish-product-image imageType="M" [link]="true" />
+              <button
+                type="button"
+                class="btn-tool btn-link"
+                [title]="'product.compare.remove.link' | translate : { productName: product.name }"
+                (click)="removeFromCompare(product.sku)"
+              >
+                <i class="bi bi-trash-fill"></i>
+              </button>
+            </div>
+            <div>
+              <ish-product-name />
+            </div>
+          </td>
+          }
+        </tr>
+        <!-- SKU -->
+        <tr>
+          <th class="legacy-col-6 legacy-col-md-3 no-border" scope="row">
+            <span class="visually-hidden">{{ 'product.compare.table_header.product_id.text' | translate }}</span>
+            &nbsp;
+          </th>
+          @for (product of visibleProducts; track product.sku) {
+          <td class="legacy-col-6 legacy-col-md-3 no-border">
+            <ish-product-id ishProductContext [sku]="product?.sku" />
+          </td>
+          }
+        </tr>
+        <!-- Add to cart button -->
+        <tr>
+          <th class="legacy-col-6 legacy-col-md-3" scope="row">
+            <span class="visually-hidden">{{ 'product.compare.table_header.action_row.text' | translate }}</span>
+            &nbsp;
+          </th>
+          @for (product of visibleProducts; track product.sku) {
+          <td class="legacy-col-6 legacy-col-md-3">
+            <ish-product-add-to-basket ishProductContext [sku]="product?.sku" />
+          </td>
+          }
+        </tr>
+        <!-- Price -->
+        <tr>
+          <th scope="row">{{ 'product.compare.price.label' | translate }}</th>
+          @for (product of visibleProducts; track product.sku) {
+          <td>
+            <ish-product-price ishProductContext [sku]="product?.sku" [showInformationalPrice]="true" />
+          </td>
+          }
+        </tr>
+        <!-- Inventory -->
+        <tr>
+          <th scope="row">
+            <span class="visually-hidden">{{ 'product.compare.table_header.inventory.text' | translate }}</span>
+          </th>
+          @for (product of visibleProducts; track product.sku) {
+          <td>
+            <ish-product-inventory ishProductContext [sku]="product?.sku" />
+          </td>
+          }
+        </tr>
+        <!-- Ratings -->
+        <tr *ishFeature="'rating'">
+          <th scope="row">{{ 'product.compare.ratings.label' | translate }}</th>
+          @for (product of visibleProducts; track product.sku) {
+          <td>
+            <ish-lazy-product-rating ishProductContext [sku]="product?.sku" />
+          </td>
+          }
+        </tr>
+        <!-- Short description -->
+        <tr>
+          <th scope="row">{{ 'product.short_description.label' | translate }}</th>
+          @for (product of visibleProducts; track product.sku) {
+          <td>
+            <div [ishServerHtml]="product.shortDescription"></div>
+          </td>
+          }
+        </tr>
+        <!-- Manufacturer -->
+        <tr>
+          <th scope="row">{{ 'product.manufacturer_name.label' | translate }}</th>
+          @for (product of visibleProducts; track product.sku) {
+          <td>{{ product.manufacturer }}</td>
+          }
+        </tr>
+        <!-- Common Attributes -->
+        @for (commonAttributeName of commonAttributeNames$ | async; track commonAttributeName) {
+        <tr>
+          <th scope="row">{{ commonAttributeName }}</th>
+          @for (product of visibleProducts; track product.sku) {
+          <td>
+            {{ getAttributeByAttributeName(product?.attributes, commonAttributeName) | ishAttribute : '|' }}
+          </td>
+          }
+        </tr>
+        }
+        <!-- Specific Attributes -->
+        <tr>
+          <th scope="row">{{ 'product.specific_attributes.label' | translate }}</th>
+          @for (product of visibleProducts; track product.sku) {
+          <td>
+            <ish-product-attributes [product]="getProductWithoutCommonAttributes(product, visibleProducts)" />
+          </td>
+          }
+        </tr>
+      </tbody>
+    </table>
+    }
   </div>
-
-  <ish-product-compare-paging
-    [totalItems]="compareProducts.length"
-    [itemsPerPage]="itemsPerPage"
-    [currentPage]="currentPage"
-    (changePage)="changeCurrentPage($event)"
-  />
-</ng-container>
+</div>
+<ish-product-compare-paging
+  [totalItems]="compareProducts.length"
+  [itemsPerPage]="itemsPerPage"
+  [currentPage]="currentPage"
+  (changePage)="changeCurrentPage($event)"
+/>
+}

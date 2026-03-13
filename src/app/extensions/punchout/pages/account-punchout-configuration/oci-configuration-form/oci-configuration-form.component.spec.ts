@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { RouterModule, provideRouter } from '@angular/router';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigOption, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
@@ -39,17 +38,15 @@ describe('Oci Configuration Form Component', () => {
         FormlyModule.forChild(formlyConfig),
         FormlyTestingModule,
         NgbPopoverModule,
-        RouterTestingModule,
+        RouterModule,
         TranslateModule.forRoot(),
       ],
       declarations: [
         MockComponent(ErrorMessageComponent),
-        MockComponent(FaIconComponent),
         MockComponent(LoadingComponent),
         OciConfigurationFormComponent,
-        OciConfigurationRepeatFieldComponent,
       ],
-      providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }],
+      providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }, provideRouter([])],
     }).compileComponents();
   });
 

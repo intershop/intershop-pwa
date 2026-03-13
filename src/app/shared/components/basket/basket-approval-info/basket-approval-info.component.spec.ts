@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
@@ -18,7 +17,6 @@ describe('Basket Approval Info Component', () => {
       imports: [TranslateModule.forRoot()],
       declarations: [
         BasketApprovalInfoComponent,
-        MockComponent(FaIconComponent),
         MockComponent(ModalDialogLinkComponent),
         MockDirective(ServerHtmlDirective),
       ],

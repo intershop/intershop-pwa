@@ -17,7 +17,6 @@ import { BasketItemsSummaryComponent } from 'ish-shared/components/basket/basket
 import { BasketMerchantMessageComponent } from 'ish-shared/components/basket/basket-merchant-message/basket-merchant-message.component';
 import { BasketRecurrenceSummaryComponent } from 'ish-shared/components/basket/basket-recurrence-summary/basket-recurrence-summary.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
 import { CheckoutShippingPageComponent } from './checkout-shipping-page.component';
 import { CheckoutShippingComponent } from './checkout-shipping/checkout-shipping.component';
@@ -41,7 +40,6 @@ describe('Checkout Shipping Page Component', () => {
         MockComponent(BasketRecurrenceSummaryComponent),
         MockComponent(BasketValidationResultsComponent),
         MockComponent(CheckoutShippingComponent),
-        MockComponent(ErrorMessageComponent),
         MockDirective(ServerHtmlDirective),
         MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
       ],
@@ -76,7 +74,7 @@ describe('Checkout Shipping Page Component', () => {
   it('should render an error if an error occurs', () => {
     when(checkoutFacade.basketError$).thenReturn(of(makeHttpError({ status: 404 })));
     fixture.detectChanges();
-    expect(element.querySelector('ish-error-message')).toBeTruthy();
+    expect(element.querySelector('ish-basket-error-message')).toBeTruthy();
   });
 
   it('should not render an error if the user has currently no shipping method selected', () => {

@@ -70,7 +70,7 @@ function extractConfigurationParameters(state: ConfigurationState, paramMap: Sim
 function mapSparqueConfig(sparque: string): SparqueConfig {
   return sparque.split(',').reduce((acc, item) => {
     const [key, value] = item.split('=');
-    acc[key] = decodeURIComponent(value);
+    acc[key] = key === 'features' ? decodeURIComponent(value).split(/,/g) : decodeURIComponent(value);
     return acc;
   }, <SparqueConfig>{});
 }

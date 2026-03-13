@@ -29,7 +29,6 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": true,
             "assets": [
               "src/assets",
               {
@@ -58,25 +57,23 @@
                 {
                   "type": "bundle",
                   "name": "main",
-                  "baseline": "350kb",
-                  "warning": "100kb",
-                  "error": "200kb"
+                  "maximumWarning": "500kb",
+                  "maximumError": "600kb"
                 },
                 {
                   "type": "bundle",
                   "name": "vendor",
-                  "baseline": "800kb",
-                  "warning": "100kb",
-                  "error": "300kb"
+                  "maximumWarning": "900kb",
+                  "maximumError": "1000kb"
                 },
                 {
                   "type": "initial",
-                  "maximumWarning": "1500kb",
+                  "maximumWarning": "1.6mb",
                   "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
+                  "maximumWarning": "5kb",
                   "maximumError": "10kb"
                 }
               ],
@@ -107,28 +104,28 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "intershop-pwa:build"
+            "buildTarget": "intershop-pwa:build"
           },
           "defaultConfiguration": "b2b,development",
           "configurations": {
             "production": {
-              "browserTarget": "intershop-pwa:build:production"
+              "buildTarget": "intershop-pwa:build:production"
             },
             "development": {
-              "browserTarget": "intershop-pwa:build:development"
+              "buildTarget": "intershop-pwa:build:development"
             },
             "b2b": {
-              "browserTarget": "intershop-pwa:build:b2b"
+              "buildTarget": "intershop-pwa:build:b2b"
             },
             "b2c": {
-              "browserTarget": "intershop-pwa:build:b2c"
+              "buildTarget": "intershop-pwa:build:b2c"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "intershop-pwa:build"
+            "buildTarget": "intershop-pwa:build"
           }
         },
         "lint": {
@@ -162,7 +159,7 @@
           }
         },
         "serve-ssr": {
-          "builder": "@nguniversal/builders:ssr-dev-server",
+          "builder": "@angular-devkit/build-angular:ssr-dev-server",
           "options": {
             "browserTarget": "intershop-pwa:build",
             "serverTarget": "intershop-pwa:server"
@@ -223,7 +220,7 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "organization-management:build"
+            "buildTarget": "organization-management:build"
           }
         }
       }
@@ -270,7 +267,7 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "requisition-management:build"
+            "buildTarget": "requisition-management:build"
           }
         }
       }

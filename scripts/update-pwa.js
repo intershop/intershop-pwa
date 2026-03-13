@@ -72,7 +72,7 @@ const coreLibs = [
   '@angular/cdk',
   '@angular/core',
   '@ngrx/store',
-  '@nguniversal/express-engine',
+  '@angular/ssr',
   '@angular-builders/custom-webpack',
   '@rx-angular/state',
   '@phenomnomnominal/tsquery',

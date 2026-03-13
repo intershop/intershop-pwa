@@ -19,7 +19,7 @@ then
   (sleep 5 && /nginx-prometheus-exporter)&
 fi
 
-if env | grep -iqE "^CACHE_CLEARER=(on|1|true|yes)$"
+if env | grep -iqE "^CACHE=(on|1|true|yes)$" && ! env | grep -iqE "^CACHE_CLEARER=(off|0|false|no)$"
 then
   (/cache_clearer.sh)&
 fi

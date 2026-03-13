@@ -1,4 +1,5 @@
-<div *ngIf="budget" class="row section">
+@if (budget) {
+<div class="row section">
   <div class="col-10 col-lg-8">
     <h2 class="h3">{{ 'account.user.details.profile.budget_limits.heading' | translate }}</h2>
 
@@ -6,22 +7,27 @@
       <div class="col-md-12" data-testing-id="user-budget">
         <dl class="row dl-horizontal dl-separator">
           <dt class="col-md-4">{{ 'account.user.new.order_spend_limit.label' | translate }}</dt>
-          <dd data-testing-id="order-spend-limit-field" class="col-md-8" *ngIf="budget.orderSpentLimit; else noLimit">
+          @if (budget.orderSpentLimit) {
+          <dd data-testing-id="order-spend-limit-field" class="col-md-8">
             {{ budget.orderSpentLimit | ishPrice }}
           </dd>
-          <ng-template #noLimit>
-            <dd class="col-md-8">{{ 'account.budget.unlimited' | translate }}</dd>
-          </ng-template>
-          <ng-container *ngIf="budget.budget; else noBudget">
-            <dt class="col-md-4">{{ 'account.budget.label' | translate : { '0': budget.budgetPeriod } }}</dt>
-            <dd class="col-md-8" data-testing-id="budget-field">
-              {{ budget.budget | ishPrice }}
-            </dd>
-          </ng-container>
-          <ng-template #noBudget>
-            <dt class="col-md-4">{{ 'account.user.budget.label' | translate }}</dt>
-            <dd class="col-md-8">{{ 'account.budget.unlimited' | translate }}</dd>
-          </ng-template>
+          } @else {
+
+          <dd class="col-md-8">{{ 'account.budget.unlimited' | translate }}</dd>
+
+          } @if (budget.budget) {
+
+          <dt class="col-md-4">{{ 'account.budget.label' | translate : { '0': budget.budgetPeriod } }}</dt>
+          <dd class="col-md-8" data-testing-id="budget-field">
+            {{ budget.budget | ishPrice }}
+          </dd>
+
+          } @else {
+
+          <dt class="col-md-4">{{ 'account.user.budget.label' | translate }}</dt>
+          <dd class="col-md-8">{{ 'account.budget.unlimited' | translate }}</dd>
+
+          }
         </dl>
       </div>
     </div>
@@ -37,7 +43,8 @@
       "
       data-testing-id="edit-budget"
     >
-      <fa-icon [icon]="['fas', 'pencil-alt']" />
+      <i class="bi bi-pencil-fill"></i>
     </a>
   </div>
 </div>
+}

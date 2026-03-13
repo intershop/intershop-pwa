@@ -4,7 +4,10 @@ import { Pipe, PipeTransform } from '@angular/core';
  * inserts highlighting markup into the text string
  * at the occurrences of the search string.
  */
-@Pipe({ name: 'ishHighlight' })
+@Pipe({
+  name: 'ishHighlight',
+  standalone: true,
+})
 export class HighlightPipe implements PipeTransform {
   transform(text: string, search: string): string {
     if (search && text) {

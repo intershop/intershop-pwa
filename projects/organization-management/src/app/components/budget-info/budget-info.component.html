@@ -7,13 +7,15 @@
   >
   </span
 ></ng-template>
+@if ('services.OrderApprovalServiceDefinition.runnable' | ishServerSetting) {
 <button
-  *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
   type="button"
   class="btn btn-link budget-info"
   [ngbPopover]="BudgetPriceTypeInfo"
+  placement="auto"
   data-testing-id="budgetPriceTypeInfoTestingID"
   [title]="'account.organization.budget_price_type.icon' | translate"
 >
-  <fa-icon [icon]="['fas', 'info-circle']" />
+  <i class="bi bi-info-circle-fill"></i>
 </button>
+}

@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
@@ -69,18 +68,15 @@ describe('Users Effects', () => {
     when(usersService.setUserBudget(anyString(), anything())).thenReturn(of(users[0].userBudget));
 
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(['router']),
-        OrganizationManagementStoreModule.forTesting('users'),
-        RouterTestingModule.withRoutes([
+      imports: [CoreStoreModule.forTesting(['router']), OrganizationManagementStoreModule.forTesting('users')],
+      providers: [
+        { provide: UsersService, useFactory: () => instance(usersService) },
+        provideMockActions(() => actions$),
+        provideRouter([
           { path: 'users/:B2BCustomerLogin', children: [] },
           { path: 'users/:B2BCustomerLogin/edit', children: [] },
           { path: '**', children: [] },
         ]),
-      ],
-      providers: [
-        { provide: UsersService, useFactory: () => instance(usersService) },
-        provideMockActions(() => actions$),
         UsersEffects,
       ],
     });

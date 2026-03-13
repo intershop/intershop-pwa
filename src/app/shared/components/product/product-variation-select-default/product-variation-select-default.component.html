@@ -4,17 +4,11 @@
   [attr.data-testing-id]="group.id"
   (change)="optionChange(group.id, $event.target)"
 >
-  <ng-container *ngFor="let option of group.options">
-    <option
-      *ngIf="!option.alternativeCombination || multipleOptions"
-      [value]="option.value"
-      [selected]="option.active"
-      [attr.data-testing-id]="group.id + '-' + option.value"
-    >
-      {{ option.label }}
-      <ng-container *ngIf="option.alternativeCombination">
-        - {{ 'product.available_in_different_configuration' | translate }}
-      </ng-container>
-    </option>
-  </ng-container>
+  @for (option of group.options; track option.value) { @if (!option.alternativeCombination || multipleOptions) {
+  <option [value]="option.value" [selected]="option.active" [attr.data-testing-id]="group.id + '-' + option.value">
+    {{ option.label }}
+    @if (option.alternativeCombination) { - {{ 'product.available_in_different_configuration' | translate }}
+    }
+  </option>
+  } }
 </select>

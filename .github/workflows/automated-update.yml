@@ -1,20 +1,17 @@
-name: AutomatedUpdate
+name: Update (Automated)
 
 on:
   workflow_dispatch:
   # pull_request:
-  #   types: [opened, synchronize]
+  #   types:
+  #     - opened
+  #     - synchronize
   #   paths:
   #     - scripts/update-pwa.js
-  # schedule:
-  #   - cron: '0 0 * * 1'
 
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
-
-env:
-  NODE_VERSION: 22.17.1
 
 jobs:
   AutomatedUpdate:
@@ -22,20 +19,22 @@ jobs:
     continue-on-error: true
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v6
         if: github.ref != 'refs/heads/develop'
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v6
         if: github.ref == 'refs/heads/develop'
         with:
           ref: develop
 
-      - name: Use Node.js 22
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: package.json
           cache: npm
 
       - name: Create Update Branch

@@ -191,7 +191,7 @@ describe('Product Helper', () => {
     let compareProduct2: Product;
 
     beforeEach(() => {
-      product = { sku: '110', available: true } as Product;
+      product = { sku: '110' } as Product;
       product.attributes = [
         {
           name: 'Optical zoom',
@@ -278,7 +278,6 @@ describe('Product Helper', () => {
                 "name": "Image formats supported",
               },
             ],
-            "available": true,
             "sku": "110",
           }
         `);
@@ -289,7 +288,6 @@ describe('Product Helper', () => {
                 "name": "Focal length (35mm film equivalent)",
               },
             ],
-            "available": true,
             "sku": "110",
           }
         `);
@@ -304,7 +302,6 @@ describe('Product Helper', () => {
                 "name": "Image formats supported",
               },
             ],
-            "available": true,
             "sku": "110",
           }
         `);
@@ -325,34 +322,29 @@ describe('Product Helper', () => {
         name: 'Detail Product',
         manufacturer: 'Detail Manufacturer',
         shortDescription: 'The best product',
-        available: true,
       } as Product;
       listProduct = {
         sku: '110',
         completenessLevel: ProductCompletenessLevel.List,
         name: 'List Product',
         manufacturer: 'List Manufacturer',
-        available: false,
       } as Product;
       stubProduct = {
         sku: '110',
         longDescription: 'additional info',
         completenessLevel: 0,
         name: 'Stub Product',
-        available: false,
       } as Product;
       stubProduct2 = {
         sku: '110',
         completenessLevel: 0,
         name: 'Stub Product 2',
-        available: true,
       } as Product;
     });
 
     it('should return current product information if no new product information is provided', () => {
       expect(ProductHelper.updateProductInformation(detailProduct, undefined)).toMatchInlineSnapshot(`
         {
-          "available": true,
           "completenessLevel": 3,
           "manufacturer": "Detail Manufacturer",
           "name": "Detail Product",
@@ -365,7 +357,6 @@ describe('Product Helper', () => {
     it('should return new product information if no product information exists', () => {
       expect(ProductHelper.updateProductInformation(undefined, stubProduct)).toMatchInlineSnapshot(`
         {
-          "available": false,
           "completenessLevel": 0,
           "longDescription": "additional info",
           "name": "Stub Product",
@@ -377,7 +368,6 @@ describe('Product Helper', () => {
     it('should return new product information if completeness level ist higher', () => {
       expect(ProductHelper.updateProductInformation(listProduct, detailProduct)).toMatchInlineSnapshot(`
         {
-          "available": true,
           "completenessLevel": 3,
           "manufacturer": "Detail Manufacturer",
           "name": "Detail Product",
@@ -390,7 +380,6 @@ describe('Product Helper', () => {
     it('should return new product information if completeness level ist equal', () => {
       expect(ProductHelper.updateProductInformation(stubProduct, stubProduct2)).toMatchInlineSnapshot(`
         {
-          "available": true,
           "completenessLevel": 0,
           "name": "Stub Product 2",
           "sku": "110",
@@ -401,12 +390,11 @@ describe('Product Helper', () => {
     it('should return updated current product information if completeness level ist lower', () => {
       expect(ProductHelper.updateProductInformation(detailProduct, stubProduct)).toMatchInlineSnapshot(`
         {
-          "available": false,
-          "availableStock": undefined,
           "completenessLevel": 3,
           "longDescription": "additional info",
           "manufacturer": "Detail Manufacturer",
           "name": "Detail Product",
+          "promotionIds": undefined,
           "shortDescription": "The best product",
           "sku": "110",
         }

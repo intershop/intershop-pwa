@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -25,11 +24,7 @@ describe('Product Detail Actions Component', () => {
     context = mock(ProductContextFacade);
     await TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting('compare'), TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(FaIconComponent),
-        MockComponent(LazyProductSendToCompareComponent),
-        ProductDetailActionsComponent,
-      ],
+      declarations: [MockComponent(LazyProductSendToCompareComponent), ProductDetailActionsComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
@@ -58,13 +53,13 @@ describe('Product Detail Actions Component', () => {
     it(`should show "email to friend" link when product information is available`, () => {
       fixture.detectChanges();
 
-      expect(element.querySelector('fa-icon[ng-reflect-icon="fas,share-alt"]')).toBeTruthy();
+      expect(element.querySelector('i.bi-share-fill')).toBeTruthy();
     });
 
     it(`should show "print page" link when product information is available`, () => {
       fixture.detectChanges();
 
-      expect(element.querySelector('fa-icon[ng-reflect-icon="fas,print"]')).toBeTruthy();
+      expect(element.querySelector('i.bi-printer-fill')).toBeTruthy();
     });
 
     it(`should show "compare" link when product information is available`, () => {

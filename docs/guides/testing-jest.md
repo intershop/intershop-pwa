@@ -362,7 +362,9 @@ Use `data-testing-id` via attribute binding to implement an identifier used for 
 
 ```html
 <ol class="viewer-nav">
-  <li *ngFor="let section of sections" [attr.data-testing-id]="section.value">{{ section.text }}</li>
+  @for (section of sections; track section.value) {
+  <li [attr.data-testing-id]="section.value">{{ section.text }}</li>
+  }
 </ol>
 ```
 

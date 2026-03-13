@@ -1,1 +1,3 @@
-<formly-field *ngFor="let f of field.fieldGroup" [field]="f" />
+@for (f of field.fieldGroup; track f.id) {
+<formly-field [field]="f" />
+}

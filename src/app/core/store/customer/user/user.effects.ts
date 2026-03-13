@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
@@ -46,6 +47,7 @@ import {
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
+  resetUserData,
   updateCustomer,
   updateCustomerFail,
   updateCustomerSuccess,
@@ -92,7 +94,12 @@ export class UserEffects {
   logoutUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(logoutUser),
-      switchMap(() => this.userService.logoutUser().pipe(map(logoutUserSuccess), mapErrorToAction(logoutUserFail)))
+      switchMap(() =>
+        this.userService.logoutUser().pipe(
+          mergeMap(() => [logoutUserSuccess(), resetUserData()]),
+          mapErrorToAction(logoutUserFail)
+        )
+      )
     )
   );
 

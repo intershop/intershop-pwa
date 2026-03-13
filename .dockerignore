@@ -28,6 +28,7 @@
 **/*.rej
 **/*.orig
 /dev.bat
+**/.lighthouseci/
 
 # from dist/.gitignore
 /dist/**/*
@@ -149,7 +150,6 @@ src/assets/mock-data
 
 templates
 !templates/webpack
-!templates/nginx.conf
 
 scripts
 !scripts/build*pwa.js

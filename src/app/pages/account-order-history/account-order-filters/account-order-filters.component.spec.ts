@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { provideRouter } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
@@ -24,16 +23,9 @@ describe('Account Order Filters Component', () => {
     when(accountFacade.isOrderManager$).thenReturn(of(true));
     when(accountFacade.isLoggedIn$).thenReturn(of(true));
     await TestBed.configureTestingModule({
-      imports: [
-        MockComponent(FaIconComponent),
-        MockComponent(FormlyForm),
-        NgbCollapseModule,
-        ReactiveFormsModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-      ],
+      imports: [MockComponent(FormlyForm), NgbCollapseModule, ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [AccountOrderFiltersComponent],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideRouter([])],
     }).compileComponents();
   });
 

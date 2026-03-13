@@ -1,26 +1,23 @@
-<nav *ngIf="currentPage && lastPage" [attr.aria-label]="'navigation.paging.aria_label' | translate">
+@if (currentPage && lastPage) {
+<nav [attr.aria-label]="'navigation.paging.aria_label' | translate">
   <ul class="pagination">
     <li class="page-item">
       <button
         type="button"
-        class="btn btn-primary mb-0"
+        class="btn btn-primary mb-0 ps-2"
         [disabled]="currentPage === 1"
         (click)="setPage(currentPage - 1)"
         [title]="'navigation.paging.previous_page.label' | translate"
         [attr.aria-disabled]="currentPage === 1"
         data-testing-id="paging-previous-button"
       >
-        <fa-icon [icon]="['fas', 'angle-left']" />
+        <i class="bi bi-chevron-left"></i>
       </button>
     </li>
-    <li
-      *ngFor="let p of pageIndices"
-      class="page-item pt-2"
-      [ngClass]="{ active: p === currentPage }"
-      data-testing-id="paging-link"
-    >
+    @for (p of pageIndices; track p) {
+    <li class="page-item pt-2" [ngClass]="{ active: p === currentPage }" data-testing-id="paging-link">
+      @if (p !== -1) {
       <a
-        *ngIf="p !== -1; else more"
         [attr.aria-current]="p === currentPage ? 'page' : null"
         [title]="
           p === currentPage
@@ -32,20 +29,22 @@
         (keyup.enter)="setPage(p)"
         >{{ p }}</a
       >
-      <ng-template #more>...</ng-template>
+      } @else { ... }
     </li>
+    }
     <li class="page-item">
       <button
         type="button"
-        class="btn btn-primary m-0"
+        class="btn btn-primary m-0 pe-2"
         [disabled]="currentPage === lastPage"
         [title]="'navigation.paging.next_page.label' | translate"
         (click)="setPage(currentPage + 1)"
         [attr.aria-disabled]="currentPage === lastPage"
         data-testing-id="paging-next-button"
       >
-        <fa-icon [icon]="['fas', 'angle-right']" />
+        <i class="bi bi-chevron-right"></i>
       </button>
     </li>
   </ul>
 </nav>
+}

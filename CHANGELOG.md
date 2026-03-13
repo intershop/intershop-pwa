@@ -7,6 +7,90 @@ kb_everyone
 
 # Changelog
 
+## [10.0.0](https://github.com/intershop/intershop-pwa/releases/tag/10.0.0) (2026-03-13)
+
+> [!NOTE]
+> Intershop PWA 10.0.0 was developed and tested with Intershop Commerce Management (ICM) version ICM 14.0.1.
+> It will work with all versions from ICM 14.0.1 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> _PWA 10.0.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
+>
+> The PWA was developed and tested using Node.js version 22.22.0 LTS (including npm 10.9.4), which is the recommended version.
+>
+> Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.12.0 for PWA 10.0.0 deployments.
+
+### Features
+
+- replace Font Awesome icons integration with Bootstrap Icons integration (#1993) ([d6b7501](https://github.com/intershop/intershop-pwa/commit/d6b7501))
+- migration to Angular control flow (#1980) ([d1cca79](https://github.com/intershop/intershop-pwa/commit/d1cca79))
+- PayPal Advanced Credit/Debit Card (#1970) ([37ee9ee](https://github.com/intershop/intershop-pwa/commit/37ee9ee))
+- use separate `/inventories` REST call for inventory information (#1889) ([202a869](https://github.com/intershop/intershop-pwa/commit/202a869))
+- use SPARQUE wrapper API 4 (#2005) ([ae3c0f0](https://github.com/intershop/intershop-pwa/commit/ae3c0f0))
+- integration of Lighthouse CI for accessibility monitoring (#1973) ([05d5106](https://github.com/intershop/intershop-pwa/commit/05d5106))
+- integration of Lighthouse CI for performance monitoring (#1893) ([01c5b51](https://github.com/intershop/intershop-pwa/commit/01c5b51))
+- Bootstrap variables cleanup (#1966) ([6312cbd](https://github.com/intershop/intershop-pwa/commit/6312cbd))
+- **NGINX:** add ECS-compatible logging to NGINX (#2010) ([bc0691c](https://github.com/intershop/intershop-pwa/commit/bc0691c))
+- **NGINX, SSR:** add request tracing to SSR and NGINX (#2010) ([30b813a](https://github.com/intershop/intershop-pwa/commit/30b813a))
+- **SSR:** add ECS-compatible logging to SSR (#2010) ([0b75f49](https://github.com/intershop/intershop-pwa/commit/0b75f49))
+- **SSR:** allow internal k8s communication with ICM/SPARQUE backend (#2002) ([1bc15d3](https://github.com/intershop/intershop-pwa/commit/1bc15d3))
+- **SSR:** enable nginx cache clearing by default (#1996) ([81a9be5](https://github.com/intershop/intershop-pwa/commit/81a9be5))
+
+### Bug Fixes
+
+- product context completeness level initialization - retail set issue (#2027) ([d3d6e6c](https://github.com/intershop/intershop-pwa/commit/d3d6e6c))
+- set `NODE_OPTIONS=--max-old-space-size=8192` for SSR Docker image builds ([f28691a](https://github.com/intershop/intershop-pwa/commit/f28691a))
+- display login link in tablet view (#2028) ([d2b6aeb](https://github.com/intershop/intershop-pwa/commit/d2b6aeb))
+- flickering of the variations display on PDP ([55ea488](https://github.com/intershop/intershop-pwa/commit/55ea488))
+- endless product fetching on long product lists ([eb52cf9](https://github.com/intershop/intershop-pwa/commit/eb52cf9))
+- display product list filters after login/logout ([e13ca2f](https://github.com/intershop/intershop-pwa/commit/e13ca2f))
+- prevent 'null' value in the search box input field ([9bebef6](https://github.com/intershop/intershop-pwa/commit/9bebef6))
+- prevent product REST calls on product list pages after login ([e44598f](https://github.com/intershop/intershop-pwa/commit/e44598f))
+- hydration error in the product list filter ([698c921](https://github.com/intershop/intershop-pwa/commit/698c921))
+- prevent flickering on product list pages ([9b1f6bb](https://github.com/intershop/intershop-pwa/commit/9b1f6bb))
+- prevent unnecessary REST calls after navigation from product lists (#2024) ([6b41122](https://github.com/intershop/intershop-pwa/commit/6b41122))
+- omit inventory calls for products with completenesslevel Base (#2023) ([c0f72c2](https://github.com/intershop/intershop-pwa/commit/c0f72c2))
+- double error messages on checkout pages (#2017) ([fc20158](https://github.com/intershop/intershop-pwa/commit/fc20158))
+- add to cart button missing in product compare (#1862) ([fefdc7a](https://github.com/intershop/intershop-pwa/commit/fefdc7a))
+- show eligible addresses without a preferred user invoice address (#2013) ([42dae61](https://github.com/intershop/intershop-pwa/commit/42dae61))
+- set Prettier `"endOfLine": "lf",` to make `eslint --fix` more reliable ([0842f1b](https://github.com/intershop/intershop-pwa/commit/0842f1b))
+- prevent `synchronize-lazy-components` script errors due to buffer size problems ([d619b16](https://github.com/intershop/intershop-pwa/commit/d619b16))
+- `build-multi-pwa.js` no longer working on Windows ([4ac5016](https://github.com/intershop/intershop-pwa/commit/4ac5016))
+- background color missing for Copilot button ([8c89fa3](https://github.com/intershop/intershop-pwa/commit/8c89fa3))
+- fetch shipping methods directly from basket (#2007) ([1d1160d](https://github.com/intershop/intershop-pwa/commit/1d1160d))
+- remove additional encoding for canonical links to prevent double encoding (#2001) ([e1512ea](https://github.com/intershop/intershop-pwa/commit/e1512ea))
+- authorization-toggle directive after logout (#2000) ([df20113](https://github.com/intershop/intershop-pwa/commit/df20113))
+- use current locale in static filter navigation image URLs (#1999) ([d9b7501](https://github.com/intershop/intershop-pwa/commit/d9b7501))
+- remove redunant data from customer/user request body (#1995) ([ecca8f1](https://github.com/intershop/intershop-pwa/commit/ecca8f1))
+- display of the language switcher on mobile (#1992) ([4ee099d](https://github.com/intershop/intershop-pwa/commit/4ee099d))
+- redirect before checkout with a preferred payment instrument (#1988) ([7fff37d](https://github.com/intershop/intershop-pwa/commit/7fff37d))
+- popover placement on mobile (#1990) ([a1860c5](https://github.com/intershop/intershop-pwa/commit/a1860c5))
+- variations display on variation master page (#1987) ([7620aed](https://github.com/intershop/intershop-pwa/commit/7620aed))
+- **SPARQUE:** improved SPARQUE Multi-Site configuration handling (#2018) ([d617da3](https://github.com/intershop/intershop-pwa/commit/d617da3))
+
+### Documentation
+
+- update logging documentation (#2010) ([8fafbe8](https://github.com/intershop/intershop-pwa/commit/8fafbe8))
+- add documentation for well-known resources and apple app site association (AASA) (#2022) ([3a2884d](https://github.com/intershop/intershop-pwa/commit/3a2884d))
+- migration note + update documentation to Angular 17 ([28be3f4](https://github.com/intershop/intershop-pwa/commit/28be3f4))
+- add links to Intershop Academy videos (#1994) ([83ddb51](https://github.com/intershop/intershop-pwa/commit/83ddb51))
+
+### Build
+
+- update Angular 17 new SSR ([51486f0](https://github.com/intershop/intershop-pwa/commit/51486f0))
+- update Angular 17 dependent dependencies ([e16bf0c](https://github.com/intershop/intershop-pwa/commit/e16bf0c))
+- update Angular 17 dependencies ([5538f93](https://github.com/intershop/intershop-pwa/commit/5538f93))
+
+### BREAKING CHANGES
+
+- **NGINX:** Logging configuration and default log format were changed (see [Migrations / From 9.1.0 to 10.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-910-to-1000) for more details).
+- **SSR:** Logging configuration and default log format were changed (see [Migrations / From 9.1.0 to 10.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-910-to-1000) for more details).
+- Migration to Angular 17 control flow syntax (see [Migrations / From 9.1.0 to 10.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-910-to-1000) for more details).
+- Angular 17 SSR upgrade including necessary migrations (see [Migrations / From 9.1.0 to 10.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-910-to-1000) for more details).
+- Angular 17 dependent dependencies upgrade including necessary migrations (see [Migrations / From 9.1.0 to 10.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-910-to-1000) for more details).
+- Angular 17 upgrade including necessary migrations (see [Migrations / From 9.1.0 to 10.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-910-to-1000) for more details).
+- Inventory information is now fetched by a separate `/inventories` REST call instead of using the information fetched with the products REST call (see [Migrations / From 9.1.0 to 10.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-910-to-1000) for more details).
+
 ## [9.1.0](https://github.com/intershop/intershop-pwa/releases/tag/9.1.0) (2025-12-18)
 
 > [!NOTE]

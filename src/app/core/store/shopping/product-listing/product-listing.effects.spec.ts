@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -10,6 +9,7 @@ import {
 } from 'ish-core/configurations/injection-keys';
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -29,13 +29,14 @@ describe('Product Listing Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration'], [ProductListingEffects]),
-        RouterTestingModule.withRoutes([{ path: 'some', children: [] }]),
+        CustomerStoreModule.forTesting('user'),
         ShoppingStoreModule.forTesting('productListing'),
       ],
       providers: [
         { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },
         { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 7 },
         { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
+        provideRouter([{ path: 'some', children: [] }]),
         provideStoreSnapshots(),
       ],
     });

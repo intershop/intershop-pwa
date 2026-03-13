@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { RouterModule, provideRouter } from '@angular/router';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
@@ -24,7 +23,6 @@ describe('Account Navigation Component', () => {
       declarations: [
         AccountNavigationComponent,
         MockComponent(AccountUserInfoComponent),
-        MockComponent(FaIconComponent),
         MockDirective(NgbCollapse),
         MockPipe(FeatureTogglePipe, () => true),
         MockPipe(ServerSettingPipe, () => true),
@@ -32,9 +30,10 @@ describe('Account Navigation Component', () => {
       imports: [
         AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_USERS', 'APP_B2B_PURCHASE'),
         RoleToggleModule.forTesting(),
-        RouterTestingModule,
+        RouterModule,
         TranslateModule.forRoot(),
       ],
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 

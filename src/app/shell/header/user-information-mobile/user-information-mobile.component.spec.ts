@@ -4,7 +4,6 @@ import { MockComponent } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { LanguageSwitchComponent } from 'ish-shell/header/language-switch/language-switch.component';
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
 
 import { LazyProductCompareStatusComponent } from '../../../extensions/compare/exports/lazy-product-compare-status/lazy-product-compare-status.component';
@@ -22,7 +21,6 @@ describe('User Information Mobile Component', () => {
     await TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting('compare', 'quickorder', 'wishlists'), TranslateModule.forRoot()],
       declarations: [
-        MockComponent(LanguageSwitchComponent),
         MockComponent(LazyProductCompareStatusComponent),
         MockComponent(LazyQuickorderLinkComponent),
         MockComponent(LazyWishlistsLinkComponent),
@@ -54,7 +52,6 @@ describe('User Information Mobile Component', () => {
         "ish-lazy-product-compare-status",
         "ish-lazy-quickorder-link",
         "ish-lazy-wishlists-link",
-        "ish-language-switch",
       ]
     `);
   });

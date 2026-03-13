@@ -6,6 +6,7 @@ import { instance, mock, when } from 'ts-mockito';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
+import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-paypal/payment-paypal.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
@@ -43,6 +44,7 @@ describe('Product Detail Component', () => {
         MockComponent(LazyProductAddToQuoteComponent),
         MockComponent(LazyProductNotificationEditComponent),
         MockComponent(LazyProductRatingComponent),
+        MockComponent(PaymentPaypalComponent),
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductBrandComponent),
         MockComponent(ProductDetailActionsComponent),
@@ -57,7 +59,7 @@ describe('Product Detail Component', () => {
         MockComponent(ProductQuantityLabelComponent),
         MockComponent(ProductShipmentComponent),
         MockComponent(ProductWarrantyComponent),
-        MockPipe(ServerSettingPipe),
+        MockPipe(ServerSettingPipe, () => true),
         ProductDetailComponent,
       ],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
@@ -88,6 +90,7 @@ describe('Product Detail Component', () => {
         "ish-product-id",
         "ish-product-promotion",
         "ish-product-price",
+        "ish-payment-paypal",
         "ish-product-inventory",
         "ish-product-shipment",
         "ish-product-detail-variations",

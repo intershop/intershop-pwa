@@ -9,18 +9,13 @@ describe('Basket Error Message Component', () => {
   let fixture: ComponentFixture<BasketErrorMessageComponent>;
   let element: HTMLElement;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [BasketErrorMessageComponent],
-    }).compileComponents();
-  });
-
   beforeEach(() => {
     fixture = TestBed.createComponent(BasketErrorMessageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
     component.error = {
+      message: 'general_error_message',
       errors: [{ message: 'main_message', causes: [{ message: 'cause_message' }] }],
     } as HttpError;
   });
@@ -37,5 +32,18 @@ describe('Basket Error Message Component', () => {
     expect(element.querySelector('div[data-testing-id=basket-errors]').textContent).toMatchInlineSnapshot(
       `"main_message cause_message"`
     );
+    expect(element.querySelector('ish-error-message')).toBeFalsy();
+  });
+
+  it('should display a general message if the errors array is empty', () => {
+    component.error = {
+      message: 'general_error_message',
+      errors: [],
+    } as HttpError;
+
+    fixture.detectChanges();
+
+    expect(element.querySelector('ish-error-message')).toBeTruthy();
+    expect(element.querySelector('div[data-testing-id=basket-errors]')).toBeFalsy();
   });
 });

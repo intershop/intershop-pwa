@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { LazyBudgetWidgetComponent } from 'organization-management';
@@ -34,7 +33,6 @@ describe('Account Overview Component', () => {
       declarations: [
         AccountOverviewComponent,
         MockComponent(ContentIncludeComponent),
-        MockComponent(FaIconComponent),
         MockComponent(LazyBudgetWidgetComponent),
         MockComponent(LazyRequisitionWidgetComponent),
         MockComponent(LazyWishlistWidgetComponent),
@@ -82,7 +80,7 @@ describe('Account Overview Component', () => {
   it('should display dashboard on page', () => {
     fixture.detectChanges();
     expect(element.querySelector('.account-dashboard')).toBeTruthy();
-    expect(element.querySelectorAll('div.circle-icon fa-icon')).toHaveLength(3);
+    expect(element.querySelectorAll('div.circle-icon i.bi')).toHaveLength(3);
   });
 
   it('should render order widget component on page', () => {

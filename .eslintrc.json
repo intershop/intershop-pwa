@@ -43,7 +43,7 @@
             "style": "camelCase"
           }
         ],
-        // ToDo: no-host-metadata-property rule will be deprecated in Angular 18 and switching off the rule will be the default behavior and can be removed.
+        // TODO: no-host-metadata-property rule will be deprecated in Angular 18 and switching off the rule will be the default behavior and can be removed.
         "@angular-eslint/no-host-metadata-property": "off",
         "@angular-eslint/pipe-prefix": [
           "error",
@@ -184,11 +184,11 @@
           },
           {
             "name": "atob",
-            "message": "This is not available in universal mode. Use https://github.com/jacobwgillespie/b64u"
+            "message": "This is not available in SSR mode. Use https://github.com/jacobwgillespie/b64u"
           },
           {
             "name": "btoa",
-            "message": "This is not available in universal mode. Use https://github.com/jacobwgillespie/b64u"
+            "message": "This is not available in SSR mode. Use https://github.com/jacobwgillespie/b64u"
           }
         ],
         "complexity": [
@@ -321,12 +321,6 @@
               "name": ".*http-error.model",
               "filePattern": "^.*\\.actions\\.ts*$",
               "message": "Do not use \"HttpError\" explicitly, please use \"httpError\" from \"ish-core/utils/action-creators\" instead."
-            },
-            {
-              "importNamePattern": "^IconModule$",
-              "name": "ish-core/icon.module",
-              "filePattern": "^.*\\.spec\\.ts*$",
-              "message": "Use MockComponent(FaIconComponent) in tests instead."
             },
             {
               "importNamePattern": "^FormsSharedModule$",
@@ -894,6 +888,12 @@
       }
     },
     {
+      "files": ["**/*.facade.ts"],
+      "rules": {
+        "@typescript-eslint/member-ordering": "off"
+      }
+    },
+    {
       "files": ["*.js"],
       "extends": ["eslint:recommended", "plugin:prettier/recommended"],
       "env": {
@@ -937,7 +937,8 @@
       "rules": {
         "@angular-eslint/template/no-positive-tabindex": "error",
         "@angular-eslint/template/prefer-self-closing-tags": "error",
-        "@angular-eslint/template/button-has-type": "warn"
+        "@angular-eslint/template/button-has-type": "warn",
+        "@angular-eslint/template/prefer-control-flow": "warn"
       }
     },
     {

@@ -4,6 +4,8 @@
 export interface SparqueConfig {
   // base url of the sparque wrapper server
   serverUrl: string;
+  // optional SSR-specific base url of the sparque wrapper server
+  serverUrlSsr?: string;
   // sparque workspace name
   workspaceName: string;
   // sparque API name

@@ -1,13 +1,13 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { concatMap, map, take, withLatestFrom } from 'rxjs/operators';
+import { map, take, withLatestFrom } from 'rxjs/operators';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductListingID, ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
-import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-product-listing',
@@ -31,11 +31,17 @@ export class ProductListingComponent implements OnInit {
   currentPage$: Observable<number>;
   sortBy$: Observable<string>;
 
+  scrollDistance = 2; // = 20%
+
   private productListingId$ = new BehaviorSubject<ProductListingID>(undefined);
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private shoppingFacade: ShoppingFacade, private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private shoppingFacade: ShoppingFacade,
+    private activatedRoute: ActivatedRoute,
+    private elementRef: ElementRef
+  ) {}
 
   ngOnInit() {
     this.viewType$ = this.shoppingFacade.productListingViewType$;
@@ -43,31 +49,6 @@ export class ProductListingComponent implements OnInit {
     this.currentPage$ = this.activatedRoute.queryParamMap.pipe(map(params => +params.get('page') || 1));
     this.sortBy$ = this.activatedRoute.queryParamMap.pipe(map(params => params.get('sorting')));
     this.productListingView$ = this.shoppingFacade.productListingView$(this.productListingId$);
-
-    // append view queryParam to URL if none is set
-    this.activatedRoute.queryParamMap
-      .pipe(
-        map(params => params.has('view')),
-        take(1),
-        whenFalsy(),
-        concatMap(() => this.viewType$.pipe(whenTruthy(), take(1))),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(view => this.changeViewType(view));
-  }
-
-  /**
-   * Emits the event for switching the view type of the product list.
-   *
-   * @param view The new view type.
-   */
-  private changeViewType(view: ViewType) {
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      replaceUrl: true,
-      queryParamsHandling: 'merge',
-      queryParams: { view },
-    });
   }
 
   /**
@@ -83,7 +64,16 @@ export class ProductListingComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([page, id]) => {
+        // jump back to the list if only the footer is visible to prevent endless fetching
+        if (direction === 'down' && !SSR && window.innerHeight < 500) {
+          this.elementRef.nativeElement.scrollIntoView({ block: 'end' });
+        }
         this.shoppingFacade.loadMoreProducts(id, page);
+        // decrease the scroll distance percentage if the list gets longer to prevent endless product fetching
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if (!(window as any).Cypress) {
+          this.scrollDistance = 2 / (page + 1);
+        }
       });
   }
 

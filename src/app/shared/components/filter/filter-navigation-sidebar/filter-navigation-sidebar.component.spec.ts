@@ -1,13 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { FilterCollapsibleComponent } from 'ish-shared/components/filter/filter-collapsible/filter-collapsible.component';
-import { FilterDropdownComponent } from 'ish-shared/components/filter/filter-dropdown/filter-dropdown.component';
-import { FilterSwatchImagesComponent } from 'ish-shared/components/filter/filter-swatch-images/filter-swatch-images.component';
-import { FilterTextComponent } from 'ish-shared/components/filter/filter-text/filter-text.component';
 
 import { FilterNavigationSidebarComponent } from './filter-navigation-sidebar.component';
 
@@ -15,18 +10,6 @@ describe('Filter Navigation Sidebar Component', () => {
   let component: FilterNavigationSidebarComponent;
   let fixture: ComponentFixture<FilterNavigationSidebarComponent>;
   let element: HTMLElement;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [
-        FilterNavigationSidebarComponent,
-        MockComponent(FilterCollapsibleComponent),
-        MockComponent(FilterDropdownComponent),
-        MockComponent(FilterSwatchImagesComponent),
-        MockComponent(FilterTextComponent),
-      ],
-    }).compileComponents();
-  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FilterNavigationSidebarComponent);

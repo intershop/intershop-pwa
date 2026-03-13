@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
+import { MockDirective, MockPipe } from 'ng-mocks';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
@@ -16,12 +15,7 @@ describe('Basket Items Summary Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        BasketItemsSummaryComponent,
-        MockComponent(FaIconComponent),
-        MockDirective(ProductContextDirective),
-        MockPipe(PricePipe),
-      ],
+      declarations: [BasketItemsSummaryComponent, MockDirective(ProductContextDirective), MockPipe(PricePipe)],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
   });
@@ -52,8 +46,8 @@ describe('Basket Items Summary Component', () => {
 
   it('should not show showAll/HideAll links if there are less items than in collapsedItemsCount specified', () => {
     fixture.detectChanges();
-    expect(element.querySelector('.fa-angle-down')).toBeFalsy();
-    expect(element.querySelector('.fa-angle-up')).toBeFalsy();
+    expect(element.querySelector('.bi-chevron-down')).toBeFalsy();
+    expect(element.querySelector('.bi-chevron-up')).toBeFalsy();
   });
 
   it('should show showAll link if there are more items than in collapsedItemsCount specified', () => {
@@ -61,8 +55,8 @@ describe('Basket Items Summary Component', () => {
     component.basket.lineItems.push(BasketMockData.getBasketItem());
     component.basket.lineItems.push(BasketMockData.getBasketItem());
     fixture.detectChanges();
-    expect(element.querySelector('fa-icon[ng-reflect-icon="fas,angle-down"]')).toBeTruthy();
-    expect(element.querySelector('fa-icon[ng-reflect-icon="fas,angle-up"]')).toBeFalsy();
+    expect(element.querySelector('i.bi-chevron-down')).toBeTruthy();
+    expect(element.querySelector('i.bi-chevron-up')).toBeFalsy();
   });
 
   it('should show hideAll link if there are more items than in collapsedItemsCount specified and items are expanded', () => {
@@ -71,7 +65,7 @@ describe('Basket Items Summary Component', () => {
     component.basket.lineItems.push(BasketMockData.getBasketItem());
     component.basket.lineItems.push(BasketMockData.getBasketItem());
     fixture.detectChanges();
-    expect(element.querySelector('fa-icon[ng-reflect-icon="fas,angle-down"]')).toBeFalsy();
-    expect(element.querySelector('fa-icon[ng-reflect-icon="fas,angle-up"]')).toBeTruthy();
+    expect(element.querySelector('i.bi-chevron-down')).toBeFalsy();
+    expect(element.querySelector('i.bi-chevron-up')).toBeTruthy();
   });
 });

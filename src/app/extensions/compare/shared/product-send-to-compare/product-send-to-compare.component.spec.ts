@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -24,7 +22,7 @@ describe('Product Send To Compare Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [MockComponent(FaIconComponent), ProductSendToCompareComponent],
+      declarations: [ProductSendToCompareComponent],
       providers: [
         { provide: CompareFacade, useFactory: () => instance(compareFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },

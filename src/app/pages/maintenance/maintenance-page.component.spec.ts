@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 
@@ -15,7 +14,7 @@ describe('Maintenance Page Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [MaintenancePageComponent, MockComponent(FaIconComponent), MockDirective(ServerHtmlDirective)],
+      declarations: [MaintenancePageComponent, MockDirective(ServerHtmlDirective)],
     }).compileComponents();
   });
 

@@ -37,7 +37,6 @@ import {
   updatePunchoutUser,
 } from '../store/punchout-users';
 
-/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class PunchoutFacade {
   constructor(private store: Store) {}

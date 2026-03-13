@@ -8,9 +8,7 @@ describe('Product Compare Paging Component', () => {
   let fixture: ComponentFixture<ProductComparePagingComponent>;
   let element: HTMLElement;
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ProductComparePagingComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
   });
 
   beforeEach(() => {

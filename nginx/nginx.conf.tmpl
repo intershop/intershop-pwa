@@ -2,8 +2,8 @@
 user nginx;
 worker_processes {{ getenv "NGINX_WORKER_PROCESSES" "auto" }};
 
-error_log /var/log/nginx-error.log warn;
-error_log /dev/stdout;
+# Write errors to stdout only (no disk logging)
+error_log /dev/stdout warn;
 pid /var/run/nginx.pid;
 
 pcre_jit on;
@@ -20,40 +20,106 @@ env REDIS_URI;
 http {
     include /etc/nginx/mime.types;
     default_type application/octet-stream;
+
+    # Request-ID: use incoming X-Request-ID header if present, otherwise use NGINX's built-in $request_id
+    map $http_x_request_id $trace_id {
+        default $http_x_request_id;
+        ""      $request_id;
+    }
+
+    # ECS 8.10 compliant JSON log format
+    # Map log.level based on HTTP status code (aligned with SSR)
+    # 2xx/3xx → info, 4xx → warn, 5xx → error
+    map $status $log_level {
+        ~^[23] INFO;
+        ~^4 WARN;
+        ~^5 ERROR;
+        default INFO;
+    }
+
+    # Map event.outcome based on HTTP status code
+    map $status $event_outcome {
+        ~^[23] success;
+        ~^[45] failure;
+        default unknown;
+    }
+
     log_format json escape=json '{'
-                                  '"date_access": "$time_iso8601",'
-                                  '"http":'
-                                    '{'
-                                      '"ident": "$remote_user",'
-                                      '"status_code": $status,'
-                                      '"referer": "$http_referer",'
-                                      '"useragent": "$http_user_agent",'
-                                      '"x_forward_for": "$http_x_forwarded_for"'
-                                      '"method": "$request_method",'
-                                      '"request_time": $request_time,'
-                                      '"host": "$http_host",'
-                                      '"uri": "$uri",'
-                                      '"request_id": "$request_id",'
-                                      '"request_length": $request_length,'
-                                      '"request_method": "$request_method",'
-                                      '"protocol": "$server_protocol",'
-                                    '},'
-                                  '"network":'
-                                    '{'
-                                      '"bytes_written": $body_bytes_sent,'
-                                      '"remote_ip": "$remote_addr"'
-                                    '},'
-                                  '"upstream":'
-                                    '{'
-                                      '"address_list": "$upstream_addr",'
-                                      '"status_code": "$upstream_status",'
-                                      '"response_time": "$upstream_response_time",'
-                                      '"response_length": "$upstream_response_length",'
-                                      '"cache_status": "$cache_status"'
+                                  '"log.level":"$log_level",'
+                                  '"@timestamp":"$time_iso8601",'
+                                  '"ecs.version":"8.10.0",'
+                                  '"log.logger":"nginx",'
+                                  '"trace":{"id":"$trace_id"},'
+                                  '"event":{'
+                                    '"kind":"event",'
+                                    '"category":["web"],'
+                                    '"type":["access"],'
+                                    '"outcome":"$event_outcome"'
+                                  '}'
+                                  ','
+                                  '"http":{'
+                                    '"request":{'
+                                      '"method":"$request_method",'
+                                      '"id":"$trace_id",'
+                                      '"referrer":"$http_referer",'
+                                      '"bytes":$request_length'
                                     '}'
+                                    ','
+                                    '"response":{'
+                                      '"status_code":$status,'
+                                      '"body":{"bytes":$body_bytes_sent}'
+                                    '}'
+                                    ','
+                                    '"version":"$server_protocol"'
+                                  '}'
+                                  ','
+                                  '"url":{'
+                                    '"original":"$request_uri",'
+                                    '"path":"$uri",'
+                                    '"domain":"$http_host"'
+                                  '}'
+                                  ','
+                                  '"user_agent":{'
+                                    '"original":"$http_user_agent"'
+                                  '}'
+                                  ','
+                                  '"client":{'
+                                    '"address":"$remote_addr",'
+                                    '"ip":"$remote_addr"'
+                                  '}'
+                                  ','
+                                  '"server":{'
+                                    '"address":"$server_addr",'
+                                    '"ip":"$server_addr",'
+                                    '"port":$server_port'
+                                  '}'
+                                  ','
+                                  '"related":{'
+                                    '"ip":["$remote_addr","$server_addr"]'
+                                  '}'
+                                  ','
+                                  '"network":{"forwarded_ip":"$http_x_forwarded_for"}'
+                                  ','
+                                  '"nginx":{'
+                                    '"upstream":{'
+                                      '"address":"$upstream_addr",'
+                                      '"status":"$upstream_status",'
+                                      '"response_time":"$upstream_response_time",'
+                                      '"response_length":"$upstream_response_length"'
+                                    '}'
+                                    ','
+                                    '"cache":{"status":"$cache_status"},'
+                                    '"request_time":$request_time,'
+                                    '"timestamp_ms":$msec'
+                                  '}'
+                                  ','
+                                  '"host":{"name":"$hostname"}'
+                                  ','
+                                  '"message":"$request_method $request_uri $status $body_bytes_sent - $request_time s"'
                                 '}';
 
-    log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+    # Plain text log format
+    log_format text '$remote_addr - $remote_user [$time_local] "$request" '
                     '$status $body_bytes_sent "$http_referer" '
                     '"$http_user_agent" "$http_x_forwarded_for" '
                     '$upstream_response_time "$cache_status" "$host" "$upstream_response_length" $request_time';
@@ -63,6 +129,7 @@ http {
     keepalive_timeout 65;
 
     include /etc/nginx/conf.d/features.conf;
+    include /etc/nginx/conf.d/loglevel.conf;
 
     # use the scheme from the X-Forwarded-Proto header if present or default to $scheme
     map $http_x_forwarded_proto $thescheme {

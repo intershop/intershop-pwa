@@ -3,9 +3,11 @@
 
   <form [formGroup]="form" (ngSubmit)="submitForm()">
     <div class="row">
-      <div *ngIf="showSuccessMessage" class="col-md-12">
+      @if (showSuccessMessage) {
+      <div class="col-md-12">
         <ish-success-message message="checkout.basket_merchant_message.success.message" [toast]="false" />
       </div>
+      }
 
       <div class="col-md-9">
         <formly-form [form]="form" [fields]="fields" [model]="model" />

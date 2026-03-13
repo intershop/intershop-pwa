@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { RouterModule, provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -62,20 +61,22 @@ describe('Account Recurring Order Page Component', () => {
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketCustomFieldsViewComponent),
         MockComponent(BasketShippingMethodComponent),
-        MockComponent(FaIconComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
         MockComponent(OrderRecurrenceComponent),
-        MockComponent(SwitchComponent),
         MockDirective(ServerHtmlDirective),
         MockPipe(DatePipe),
       ],
       imports: [
         FeatureToggleModule.forTesting('businessCustomerRegistration'),
-        RouterTestingModule.withRoutes([{ path: 'account/requisitions/buyer:RecurringOrderId', children: [] }]),
+        MockComponent(SwitchComponent),
+        RouterModule,
         TranslateModule.forRoot(),
       ],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        provideRouter([{ path: 'account/requisitions/buyer:RecurringOrderId', children: [] }]),
+      ],
     }).compileComponents();
   });
 

@@ -1,4 +1,5 @@
-<div *ngIf="costCenter$ | async as costCenter">
+@if (costCenter$ | async; as costCenter) {
+<div>
   <h1>{{ costCenter.name }}</h1>
 
   <ish-error-message [error]="costCentersError$ | async" />
@@ -12,9 +13,9 @@
             <dt class="col-md-4">{{ 'account.costcenter.id.label' | translate }}</dt>
             <dd data-testing-id="id-field" class="col-md-8">
               {{ costCenter.costCenterId }}
-              <span *ngIf="costCenter.active === false" class="input-help">{{
-                'account.costCenter.status.inactive' | translate
-              }}</span>
+              @if (costCenter.active === false) {
+              <span class="input-help">{{ 'account.costCenter.status.inactive' | translate }}</span>
+              }
             </dd>
             <dt class="col-md-4">{{ 'account.costcenter.name.label' | translate }}</dt>
             <dd data-testing-id="name-field" class="col-md-8">{{ costCenter.name }}</dd>
@@ -34,40 +35,43 @@
       </div>
     </div>
 
-    <div *ngIf="isEditable$ | async" class="col-2 col-lg-4 mt-2">
+    @if (isEditable$ | async) {
+    <div class="col-2 col-lg-4 mt-2">
       <a
         routerLink="edit"
         class="btn-tool"
         [title]="'account.costcenter.update.link' | translate : { '0': costCenter.name }"
         data-testing-id="edit-cost-center"
       >
-        <fa-icon [icon]="['fas', 'pencil-alt']" />
+        <i class="bi bi-pencil-fill"></i>
       </a>
     </div>
+    }
   </div>
 
   <!--- display the order list only if the current user is the manager of this cost center -->
-  <ng-container *ngIf="(user$ | async)?.login === costCenter.costCenterOwner?.login">
-    <h2 class="h3">{{ 'account.costcenter.details.orders.list.title' | translate }}</h2>
-    <ish-order-list
-      [orders]="costCenter?.orders | slice : 0 : 10"
-      [columnsToDisplay]="['creationDate', 'orderNo', 'buyer', 'lineItems', 'status', 'orderTotal']"
-    />
-  </ng-container>
+  @if ((user$ | async)?.login === costCenter.costCenterOwner?.login) {
+
+  <h2 class="h3">{{ 'account.costcenter.details.orders.list.title' | translate }}</h2>
+  <ish-order-list
+    [orders]="costCenter?.orders | slice : 0 : 10"
+    [columnsToDisplay]="['creationDate', 'orderNo', 'buyer', 'lineItems', 'status', 'orderTotal']"
+  />
+
+  }
 
   <h2 class="h3">
     {{ 'account.costcenter.details.buyers.list.title' | translate }}
-    <a
-      *ngIf="isEditable$ | async"
-      routerLink="buyers"
-      class="btn btn-secondary"
-      data-testing-id="add-cost-center-buyers"
-      >{{ 'account.costcenter.details.buyers.action.add' | translate }}</a
-    >
+    @if (isEditable$ | async) {
+    <a routerLink="buyers" class="btn btn-secondary" data-testing-id="add-cost-center-buyers">{{
+      'account.costcenter.details.buyers.action.add' | translate
+    }}</a>
+    }
   </h2>
 
   <ish-cost-center-users-list [costCenter]="costCenter" [isEditable]="isEditable$ | async" />
 </div>
+}
 
 <a routerLink=".." data-testing-id="back-to-cost-center-management">{{
   'account.organization.cost_center_management.back_to_list' | translate

@@ -1,41 +1,42 @@
+@if (pagelet.hasParam('Video')) {
 <div
-  *ngIf="pagelet.hasParam('Video')"
   class="video-container"
   [ngClass]="pagelet.stringParam('CSSClass')"
   [ngStyle]="{ 'width.px': videoWidth, 'height.px': videoHeight }"
 >
-  <ng-container *ngIf="iframeVideoUrl; else nativeVideo">
-    <div class="video-wrapper">
-      <!-- spell-checker: words allowfullscreen -->
-      <iframe
-        [title]="pagelet?.displayName"
-        loading="lazy"
-        [src]="iframeVideoUrl"
-        frameborder="0"
-        allowfullscreen
-      ></iframe>
-    </div>
-  </ng-container>
-
-  <ng-template #nativeVideo>
-    <video
-      #videoPlayer
-      [src]="nativeVideoUrl"
-      class="video"
-      width="100%"
-      height="auto"
-      [autoplay]="autoplay"
-      [controls]="autoplay"
-      [muted]="mute"
-      [poster]="pagelet.stringParam('Image')"
+  @if (iframeVideoUrl) {
+  <div class="video-wrapper">
+    <!-- spell-checker: words allowfullscreen -->
+    <iframe
       [title]="pagelet?.displayName"
-    ></video>
-
-    <div *ngIf="!autoplay && !playing" class="video-text">
-      <h1 *ngIf="pagelet.hasParam('Heading')">{{ pagelet.stringParam('Heading') }}</h1>
-      <button type="button" class="video-link btn btn-link btn-link-action" (click)="playing = true; playVideo()">
-        <fa-icon [icon]="['fas', 'play-circle']" />
-      </button>
-    </div>
-  </ng-template>
+      loading="lazy"
+      [src]="iframeVideoUrl"
+      frameborder="0"
+      allowfullscreen
+    ></iframe>
+  </div>
+  } @else {
+  <video
+    #videoPlayer
+    [src]="nativeVideoUrl"
+    class="video"
+    width="100%"
+    height="auto"
+    [autoplay]="autoplay"
+    [controls]="autoplay"
+    [muted]="mute"
+    [poster]="pagelet.stringParam('Image')"
+    [title]="pagelet?.displayName"
+  ></video>
+  @if (!autoplay && !playing) {
+  <div class="video-text">
+    @if (pagelet.hasParam('Heading')) {
+    <h1>{{ pagelet.stringParam('Heading') }}</h1>
+    }
+    <button type="button" class="video-link btn btn-link btn-link-action" (click)="playing = true; playVideo()">
+      <i class="bi bi-play-circle"></i>
+    </button>
+  </div>
+  } }
 </div>
+}

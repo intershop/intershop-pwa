@@ -25,7 +25,6 @@ import {
   wishlistActions,
 } from '../store/wishlist';
 
-/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class WishlistsFacade {
   constructor(private store: Store) {}

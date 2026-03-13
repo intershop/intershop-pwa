@@ -3,12 +3,15 @@ name: Reports
 on:
   push:
     branches:
-      - 'reports/**'
-      - 'develop'
+      - develop
+      - reports/**
 
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
+
+env:
+  AZURE_DEMO_RESOURCEGROUP: pwa-gh-review
 
 jobs:
   BuildNDeployReports:
@@ -19,7 +22,7 @@ jobs:
       url: https://pwa-gh-review-reports.azurewebsites.net
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Reset .dockerignore
         run: echo node_modules > .dockerignore
@@ -43,8 +46,8 @@ jobs:
 
       - name: Create or Update Reports App Service
         env:
-          APP: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-reports'
-          GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
+          APP: '${{ env.AZURE_DEMO_RESOURCEGROUP }}-reports'
+          GROUP: ${{ env.AZURE_DEMO_RESOURCEGROUP }}
         run: |
           az webapp config container set --resource-group $GROUP --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --docker-custom-image-name $DOCKER_IMAGE_REPORTS || az webapp create --resource-group $GROUP --plan ${{ secrets.AZURE_DEMO_APPSERVICEPLAN }} --name $APP --docker-registry-server-user ${{ secrets.DOCKER_REGISTRY_USERNAME }} --docker-registry-server-password ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --deployment-container-image-name $DOCKER_IMAGE_REPORTS
           az webapp deployment container config -g $GROUP -n $APP --enable-cd true

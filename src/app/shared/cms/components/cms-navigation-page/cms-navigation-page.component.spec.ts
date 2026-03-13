@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
+import { RouterModule, provideRouter } from '@angular/router';
+import { MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -76,14 +75,9 @@ describe('Cms Navigation Page Component', () => {
     cmsFacade = mock(CMSFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [
-        CMSNavigationPageComponent,
-        MockComponent(FaIconComponent),
-        MockDirective(ServerHtmlDirective),
-        MockPipe(ContentPageRoutePipe),
-      ],
-      providers: [{ provide: CMSFacade, useFactory: () => instance(cmsFacade) }],
+      imports: [RouterModule],
+      declarations: [CMSNavigationPageComponent, MockDirective(ServerHtmlDirective), MockPipe(ContentPageRoutePipe)],
+      providers: [{ provide: CMSFacade, useFactory: () => instance(cmsFacade) }, provideRouter([])],
     }).compileComponents();
   });
 
@@ -140,7 +134,7 @@ describe('Cms Navigation Page Component', () => {
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <li class="dropdown">
-        <a> Ebene 1 </a><a class="dropdown-toggle"><fa-icon ng-reflect-icon="fas,plus"></fa-icon></a>
+        <a> Ebene 1 </a><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
         <ul class="category-level1 dropdown-menu">
           <li class="sub-navigation-content">
             <div ng-reflect-ish-server-html="<span>Hello Page</span>"></div>
@@ -163,7 +157,7 @@ describe('Cms Navigation Page Component', () => {
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <li class="dropdown">
-        <a> Ebene 1 </a><a class="dropdown-toggle"><fa-icon ng-reflect-icon="fas,plus"></fa-icon></a>
+        <a> Ebene 1 </a><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
         <ul class="category-level1 dropdown-menu">
           <li class="main-navigation-level1-item"><a style="width: 100%"> Ebene 2 </a></li>
           <li class="sub-navigation-content">
@@ -186,14 +180,13 @@ describe('Cms Navigation Page Component', () => {
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <li class="dropdown">
-        <a> Ebene 1 </a><a class="dropdown-toggle"><fa-icon ng-reflect-icon="fas,plus"></fa-icon></a>
+        <a> Ebene 1 </a><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
         <ul class="category-level1 dropdown-menu">
           <li class="main-navigation-level1-item">
-            <a> Ebene 2 </a><a class="dropdown-toggle"><fa-icon ng-reflect-icon="fas,plus"></fa-icon></a>
+            <a> Ebene 2 </a><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
             <ul class="category-level2">
               <li class="main-navigation-level2-item">
-                <a> Ebene 3 </a
-                ><a class="dropdown-toggle"><fa-icon ng-reflect-icon="fas,plus"></fa-icon></a>
+                <a> Ebene 3 </a><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
                 <ul class="category-level3">
                   <li class="main-navigation-level3-item"><a style="width: 100%"> Ebene 4 </a></li>
                 </ul>

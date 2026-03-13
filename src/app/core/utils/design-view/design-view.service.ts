@@ -69,7 +69,7 @@ export class DesignViewService {
   /**
    * Decides whether to init the Design View capabilities or not.
    * Is used by the init method, so it will only initialize when
-   * (1) there is a window (i.e. the application does not run in SSR/Universal)
+   * (1) there is a window (i.e. the application does not run in SSR context)
    * (2) application does not run on top level window (i.e. it runs in the Design View iframe)
    */
   private shouldInit() {

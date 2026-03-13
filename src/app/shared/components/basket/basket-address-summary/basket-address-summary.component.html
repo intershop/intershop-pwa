@@ -6,7 +6,7 @@
       routerLink="/checkout/address"
       [title]="'checkout.address.update.title' | translate : { '0': 'checkout.address.billing.label' | translate }"
     >
-      <fa-icon [icon]="['fas', 'pencil-alt']" />
+      <i class="bi bi-pencil-fill"></i>
     </a>
     <h3 class="h5 float-start">{{ 'checkout.address.billing.label' | translate }}</h3>
   </div>
@@ -21,14 +21,17 @@
       routerLink="/checkout/address"
       [title]="'checkout.address.update.title' | translate : { '0': 'checkout.address.shipping.label' | translate }"
     >
-      <fa-icon [icon]="['fas', 'pencil-alt']" />
+      <i class="bi bi-pencil-fill"></i>
     </a>
     <h3 class="h5">{{ 'checkout.address.shipping.label' | translate }}</h3>
   </div>
   <div data-testing-id="address-summary-ship-to-address">
-    <address *ngIf="basket.invoiceToAddress.id === basket.commonShipToAddress?.id; else shippingAddress">
+    @if (basket.invoiceToAddress.id === basket.commonShipToAddress?.id) {
+    <address>
       {{ 'checkout.same_as_billing_address.text' | translate }}
     </address>
-    <ng-template #shippingAddress> <ish-address [address]="basket.commonShipToAddress" /> </ng-template>
+    } @else {
+    <ish-address [address]="basket.commonShipToAddress" />
+    }
   </div>
 </div>

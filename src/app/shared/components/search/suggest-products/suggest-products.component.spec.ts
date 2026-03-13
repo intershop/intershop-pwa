@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { ReplaySubject, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -7,6 +6,7 @@ import { anything, instance, mock, when } from 'ts-mockito';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
+import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 
@@ -26,9 +26,10 @@ describe('Suggest Products Component', () => {
     when(appFacade.serverSetting$<number>(anything())).thenReturn(of(10));
     when(shoppingFacade.category$(anything())).thenReturn(of({} as CategoryView));
     when(shoppingFacade.product$(anything(), anything())).thenReturn(of({} as ProductView));
+    when(shoppingFacade.productInventory$(anything())).thenReturn(of({} as ProductInventory));
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },

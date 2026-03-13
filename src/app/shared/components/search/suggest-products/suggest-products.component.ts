@@ -1,19 +1,17 @@
-import { CommonModule } from '@angular/common';
+import { SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ReplaySubject } from 'rxjs';
 
 import { DirectivesModule } from 'ish-core/directives.module';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
-import { PipesModule } from 'ish-core/pipes.module';
 import { SuggestProductsTileComponent } from 'ish-shared/components/search/suggest-products-tile/suggest-products-tile.component';
 
 @Component({
   selector: 'ish-suggest-products',
   templateUrl: './suggest-products.component.html',
   standalone: true,
-  imports: [CommonModule, PipesModule, DirectivesModule, TranslateModule, RouterModule, SuggestProductsTileComponent],
+  imports: [DirectivesModule, SlicePipe, TranslatePipe, SuggestProductsTileComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestProductsComponent {

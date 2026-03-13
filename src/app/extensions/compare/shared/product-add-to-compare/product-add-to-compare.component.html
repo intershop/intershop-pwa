@@ -1,5 +1,5 @@
+@if ((visible$ | async) && ('compare' | ishFeature)) {
 <button
-  *ngIf="(visible$ | async) && ('compare' | ishFeature)"
   type="button"
   class="btn add-to-compare"
   [ngClass]="cssClass"
@@ -9,9 +9,10 @@
   [attr.aria-hidden]="ariaHidden"
   (click)="toggleCompare()"
 >
-  <ng-container *ngIf="displayType === 'icon'; else defaultButton">
-    <fa-icon [icon]="['fas', 'balance-scale']" />
-  </ng-container>
-
-  <ng-template #defaultButton> {{ 'product.compare.link' | translate }} </ng-template>
+  @if (displayType === 'icon') {
+  <i class="bi bi-arrow-left-right"></i>
+  } @else {
+  {{ 'product.compare.link' | translate }}
+  }
 </button>
+}

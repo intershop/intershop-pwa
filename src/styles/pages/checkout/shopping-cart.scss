@@ -153,15 +153,15 @@
 
   .empty-cart-icon-text {
     position: relative;
-    top: -60px;
-    left: -95px;
-    padding: ($space-default * 4) 0 0;
+    top: -36px;
+    left: -90px;
     font-family: $font-family-bold;
     font-size: 70px;
     color: $text-color-tertiary;
   }
 
   h2 {
+    margin-top: ($space-default * 3);
     margin-bottom: ($space-default * 2);
     font-family: $font-family-condensedregular;
   }
@@ -175,7 +175,7 @@
 
   .btn-tool.btn-link {
     display: inline-block;
-    padding: 0 divide($space-default, 3);
+    padding-left: divide($space-default, 3);
     margin-top: ($space-default);
     margin-bottom: 0;
 

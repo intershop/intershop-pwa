@@ -19,7 +19,7 @@ before(() => {
   if (isRecurringOrderConfigured === undefined) {
     cy.request({
       method: 'GET',
-      url: `${Cypress.env('ICM_BASE_URL')}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/configurations`,
+      url: `${Cypress.expose('ICM_BASE_URL')}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/configurations`,
       headers: {
         'content-type': 'application/json',
         Accept: 'application/vnd.intershop.configuration.v1+json',

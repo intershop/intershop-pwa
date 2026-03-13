@@ -16,7 +16,7 @@ if (fs.existsSync(envDevTemplatePath)) {
 /* eslint-disable */
 
 // running out of memory?
-// NODE_OPTIONS=--max_old_space_size=8192
+// NODE_OPTIONS=--max-old-space-size=8192
 
 export const overrides: Partial<Environment> = {
   // icmBaseURL: 'http://localhost:8081'

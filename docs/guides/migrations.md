@@ -7,6 +7,182 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 9.1.0 to 10.0.0
+
+**Node.js update**
+
+The Intershop PWA now uses Node.js 22.22.0 LTS with the corresponding npm version 10.9.4.
+
+**SCSS variable changes**
+
+With Intershop PWA 10.0.0, the SCSS variables were cleaned up.
+Hard-coded color codes were removed and replaced with the appropriate variables.
+Color variables are used in the appropriate places, and the gray color scale was adjusted.
+In addition, some variable names were changed (renamed or removed) to make them more meaningful and to match the Bootstrap variable names.
+These renamed and removed variables need to be adapted in customized project theme styles if the theme styles still rely on the standard SCSS files.
+
+This table lists all variable name changes you need to adjust in your custom code:
+
+| Renamed variable          | New variable name        | Used for                        |
+| :------------------------ | :----------------------- | :------------------------------ |
+| $color-corporate          | $bg-color-corporate      | Corporate color for backgrounds |
+| $color-special-primary    | $color-special-error     | Error state color               |
+| $color-special-secondary  | $color-special-warning   | Warning state color             |
+| $color-special-tertiary   | $color-special-info      | Info state color                |
+| $color-special-quaternary | $color-special-success   | Success state color             |
+| $color-label-sale         | $color-special-sale      | "Sale" label color              |
+| $color-label-topseller    | $color-special-topseller | "Top Seller" label color        |
+| $color-label-new          | $color-special-new       | "New" product label color       |
+| $success-color            | $color-special-success   | Success state color             |
+| $error-color              | $color-special-error     | Error state color               |
+| $gray-400                 | $gray-500                | Part of new sorted gray color   |
+
+This table lists all variables that were removed and their replacements:
+
+| Removed variable          | Variable replacement |
+| :------------------------ | :------------------- |
+| $input-accent-color       | $CORPORATE-DARK      |
+| $button-primary-bg        | $CORPORATE-PRIMARY   |
+| $button-primary-border    | $CORPORATE-PRIMARY   |
+| $button-default-color     | $CORPORATE-PRIMARY   |
+| $button-default-bg        | $color-inverse       |
+| $button-default-border    | $CORPORATE-PRIMARY   |
+| $button-focus-box-shadow  | $CORPORATE-SHADOW    |
+| $datepicker-border-radius | -                    |
+| $datepicker-today-bg      | -                    |
+| $datepicker-today-hover   | -                    |
+| $datepicker-active-bg     | -                    |
+| $datepicker-active-hover  | -                    |
+
+**API service `options` method removed**
+
+The deprecated `options` method of the [`api.service`](../../src/app/core/services/api/api.service.ts) has been removed.
+Use the `get` method with REST calls of the latest REST interface instead.
+
+**User logout action changes**
+
+The `logoutUserSuccess` action is now designated as API-specific and should only be dispatched after successful token revocation in `user.effects`.
+For resetting a user-related state without API calls (e.g., forced logout or session cleanup), use the new `resetUserData` action instead.
+This ensures clearer separation between API events and state management.
+
+**Language switch relocation**
+
+The language switch component has been moved from the mobile user information dropdown to the main header navigation for better accessibility and user experience.
+Accordingly, the language switch accordion view and its associated component input variable have been removed.
+
+**NGINX cache clearing enabled by default**
+
+[NGINX cache clearing](./nginx-startup.md#cache-clearing) is now enabled by default.
+The `CACHE_CLEARER` environment variable behavior changed from opt-in to opt-out.
+Set `CACHE_CLEARER` to `off` to disable this feature.
+
+**SPARQUE API version update**
+
+The SPARQUE services use API version 4 now for all REST calls.
+Find the corresponding migration notes in the [SPARQUE API Wrapper Migration Guide](https://docs.sparque.ai/wrapper/migration_guides/migration_guide_wrapper_1x9x0.html).
+
+**Product inventory handling changes**
+
+Product inventory data is now fetched by separate `inventories` REST calls instead of using the information fetched with the products REST call.
+The product attributes `inStock` and `availableStock` have been deprecated and will be removed in the next major release.
+
+Migration Steps:
+
+1. Replace deprecated product attributes: Update any code that accesses `product.inStock` or `product.availableStock` directly.
+2. Use facade methods instead:
+   - For general inventory access, use `ShoppingFacade.productInventory$(sku)`.
+   - For product context-specific access, use `ProductContextFacade` selectors like `context.select('inventory', 'inStock')` or `context.select('inventory', 'availableStock')`.
+
+This change allows caching product data for a longer time and fetching more frequently updated inventory data separately on demand.
+
+**Support for internal/backend request routing**
+
+The improved implementation for the environment variable `ICM_BASE_URL_SSR` as well as the introduction of an optional `serverUrlSsr` SPARQUE configuration allows server-side rendering to directly use internal backend requests to ICM and SPARQUE when running in the same Kubernetes cluster.
+
+**PayPal Advanced Credit and Debit Card functionality**
+
+With the introduction of the PayPal Advanced Credit and Debit Card functionality, the previous PayPal implementation has been completely revised.
+Instead of the components `payment-paypal-messages.component.ts` and `payment-paypal.component.ts`, there is now only one component: `payment-paypal.component.ts`.
+This component supports the PayPal message and button functionality, as well as the PayPal Credit Card functionality.
+Additionally, the `PaypalConfigService` has been moved to the following package path: _src/app/core/utils/paypal/paypal-config_.
+
+The script loader service [`script-loader.service.ts`](../../src/app/core/utils/script-loader/script-loader.service.ts) has been revised.
+The new implementation is fully backward compatible and offers additional improvements for caching:
+
+- Dual-cache system: The service now uses separate caches for loaded scripts (`loadedScripts`) and scripts currently being loaded (`loadingScripts`), preventing duplicate loading requests.
+- DOM-aware loading: Before creating a new script element, the service checks whether the script already exists in the DOM and marks it as loaded immediately.
+- Namespace-based caching: Scripts with a `data-namespace` attribute use the namespace value as cache key instead of the URL. This prevents re-loading scripts with dynamic URLs (e.g., PayPal SDK with changing locale/currency parameters).
+
+**SPARQUE Multi-Site configuration `features` format**
+
+The format to define the enabled SPARQUE features via [Multi-Site configuration](./sparque-ai.md#multi-site-configurations) was changed and needs to be adapted in the according deployment configuration files.
+This is only relevant for the Multi-Site configuration, for the other configuration options the Array notation stays the same.
+
+```yaml
+  sparque:
+    ...
+    features: search,suggestions,recommendations
+```
+
+**Angular 17 update**
+
+With Intershop PWA 10.0.0, we updated the project to Angular 17.
+The upgrade replaces Angular Universal with the new `@angular/ssr` package.
+In addition, the project was migrated to the new Angular control flow syntax.
+Several dependencies (including NgRx and `@ngx-translate`) have been updated.
+
+Key changes include:
+
+- Migrated from structural directives (`ngIf`, `ngFor`, `ngSwitch`) to the new control flow syntax (`@if`, `@for`, `@switch`) for improved performance and readability. Use the [Angular migration control-flow schematic](https://angular.dev/reference/migrations/control-flow) `ng generate @angular/core:control-flow` to automate the migration process.
+- Migrated `trackBy` functions of `for` loops to the new syntax, e.g., `@for (item of items; track item.id)`.
+- Introduced the mandatory `track` expression for all `@for` loops.
+
+> [!NOTE]
+> Consider the optimization suggestion to use a unique identifier of the iterated items (see [Why is `track` in `@for` blocks important?](https://angular.dev/guide/templates/control-flow#why-is-track-in-for-blocks-important) for details).
+>
+> Using only an identifier for an outer `for` loop with nested `for` loops might result in rendering/interaction issues.
+> In such cases the whole object needs to be used as track expression, e.g., `@for (item of items; track item)`.
+
+- Updated the import for `glob` in scripts
+- Refactored test files to use `provideRouter()` instead of the deprecated `RouterTestingModule`
+- Moved `concatLatestFrom` imports from `@ngrx/effects` to `@ngrx/operators`
+- Removed extra closing tags for empty elements in HTML templates
+- Updated Angular compiler options in `tsconfig.json`
+
+Find more details about the Angular 17 update in the [Angular Update Guide](https://angular.dev/update-guide?v=16.0-17.0&l=3).
+
+**Bootstrap Icons**
+
+With this release, the Intershop PWA migrated from Font Awesome icons to [Bootstrap Icons](https://icons.getbootstrap.com/).
+This change reduces bundle size (size of vendor bundle is reduced by 22%) and aligns the icon library with the Bootstrap framework.
+
+To migrate your custom code, replace Font Awesome `<fa-icon>` components with Bootstrap Icons `<i>` elements:
+
+| Font Awesome (old)                      | Bootstrap Icons (new)                |
+| :-------------------------------------- | :----------------------------------- |
+| `<fa-icon [icon]="['fas', 'print']" />` | `<i class="bi bi-printer-fill"></i>` |
+
+The file `src/app/core/icon.module.ts` is no longer needed and can be removed.
+
+The size of Bootstrap Icons is determined by font size which is inherited from their parent element.
+Therefore, the styling for all icons must be checked.
+
+For additional information on using Bootstrap Icons, see the [Styling & Behavior](../concepts/styling-behavior.md#icons) documentation.
+
+**SSR and NGINX Logging changes**
+
+With Intershop PWA 10.0.0, we changed the logging of SSR and NGINX which includes breaking changes.
+Both the SSR and NGINX now use structured JSON logs (default) compliant with the [Elastic Common Schema (ECS)](https://www.elastic.co/guide/en/ecs/current/index.html) specification.
+
+Key changes include:
+
+- Containers write logs exclusively to stdout, which also replaces the former "Logging to an External Device" method
+- Logging is now configured exclusively using the `LOGLEVEL` and `LOGFORMAT` environment variables for both SSR and NGINX
+- Removed environment variables `LOGGING` (SSR) and `LOG_ALL` (SSR, NGINX)
+- PM2-specific data is now included as JSON fields instead of prefixes (SSR)
+
+Find more details in the [Concept - Logging](../concepts/logging.md).
+
 ## From 9.0.0 to 9.1.0
 
 Catalogs (root-level categories in ICM terminology) with _Show In Menu_ being disabled are now hidden from the main header navigation.
@@ -14,7 +190,7 @@ Catalogs (root-level categories in ICM terminology) with _Show In Menu_ being di
 Intershop PWA 9.1.0 contains a fix to display warranties at recurring order line items.
 This fix requires ICM 14.1.0 with the Recurring Order Extension 2.3.0 (`icm-as-customization-recurringorders:2.3.0`).
 
-The Server Side Rendering (SSR) responses now contain a `Cache-Control: no-cache` header by default.
+The server-side rendering (SSR) responses now contain a `Cache-Control: no-cache` header by default.
 This `Cache-Control` header is ignored by the NGINX cache, but it ensures that browsers do not cache SSR responses.
 Having `Cache-Control: no-cache` is a requirement for the Payment Card Industry Data Security Standard (PCI DSS).
 
@@ -78,6 +254,9 @@ AI (like Github Copilot) can be a great help with these individual migration tas
 The PayPal payment integration via [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 2](https://knowledge.intershop.com/kb/index.php/Display/455B74) was introduced in Intershop PWA 9.0.0.
 The PayPal integration is enabled in the PWA via ICM backend configuration.
 For more details, see [Guide - PayPal](./paypal.md).
+
+> [!TIP]
+> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video tutorial on [how to migrate from version 8.0.0 to version 9.0.0](https://public.academy.intershop.com/plus/catalog/courses/454).
 
 ## From 7.1.0 to 8.0.0
 
@@ -156,6 +335,9 @@ To address token handling issues that occurred in Hybrid Approach scenarios, the
 The easiest way to migrate is to provide an empty object as parameter, e.g., `loadUserByAPIToken({})`.
 To actually fix the Hybrid Approach token handling issues, the `apiToken` that is used to initialize the token handling is now provided with `loadUserByAPIToken({ apiToken: cookie.apiToken })` in the `restore$` functionality of the `ApiTokenService`.
 The provided `apiToken` is now also used in the `getBasketByToken` method of the `BasketService` and the `getOrderByToken` method of the `OrderService` to initialize the token handling correctly by fetching new tokens from ICM in these cases too.
+
+> [!TIP]
+> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video tutorial on [how to migrate from version 7.0.0 to version 8.0.0](https://public.academy.intershop.com/plus/catalog/courses/452).
 
 ## From 7.0.0 to 7.1.0
 

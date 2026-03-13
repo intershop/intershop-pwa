@@ -1,12 +1,13 @@
-# https://github.com/marketplace/actions/sync-pull-requests-to-azure-boards
+# https://github.com/danhellem/github-actions-pr-to-work-item
 
 name: Sync Pull Request to Azure DevOps
 
 on:
   pull_request:
-    types: [opened, edited, closed]
-    branches:
-      - 'develop'
+    types:
+      - opened
+      - edited
+      - closed
 
 jobs:
   alert:

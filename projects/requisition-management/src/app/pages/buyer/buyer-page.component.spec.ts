@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule, provideRouter } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -23,14 +23,14 @@ describe('Buyer Page Component', () => {
   beforeEach(async () => {
     reqFacade = mock(RequisitionManagementFacade);
     await TestBed.configureTestingModule({
-      imports: [NgbNavModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [NgbNavModule, RouterModule, TranslateModule.forRoot()],
       declarations: [
         BuyerPageComponent,
         MockComponent(ErrorMessageComponent),
         MockComponent(LoadingComponent),
         MockComponent(RequisitionsListComponent),
       ],
-      providers: [{ provide: RequisitionManagementFacade, useFactory: () => instance(reqFacade) }],
+      providers: [{ provide: RequisitionManagementFacade, useFactory: () => instance(reqFacade) }, provideRouter([])],
     }).compileComponents();
   });
 

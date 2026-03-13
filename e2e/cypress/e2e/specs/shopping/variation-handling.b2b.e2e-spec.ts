@@ -35,12 +35,11 @@ describe('Variation Handling B2B', () => {
     });
 
     it('following link to all variations should redirect to master product', () => {
+      cy.wait(500); // wait to ensure the link is rendered
       at(ProductDetailPage, page => page.gotoMasterProduct());
       at(ProductDetailPage, page => {
         page.sku.should('have.text', _.masterSKU);
-        // flaky test - has to be enabled again
-        // eslint-disable-next-line etc/no-commented-out-code
-        // page.variations.numberOfItems.should('equal', _.numberOfVariations);
+        page.variations.numberOfItems.should('equal', _.numberOfVariations);
       });
     });
   });
@@ -52,9 +51,7 @@ describe('Variation Handling B2B', () => {
       at(ProductDetailPage, page => {
         page.sku.should('have.text', _.masterSKU);
         page.infoNav('Details').should('be.visible');
-        // flaky test - has to be enabled again
-        // eslint-disable-next-line etc/no-commented-out-code
-        // page.variations.numberOfItems.should('equal', _.numberOfVariations);
+        page.variations.numberOfItems.should('equal', _.numberOfVariations);
       });
     });
   });

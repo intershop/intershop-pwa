@@ -2,12 +2,11 @@
   {{ linkText | translate }}
 </button>
 <ish-modal-dialog #modalDialog [options]="options" (shown)="shown()" (closed)="closed()">
-  <ng-container *ngIf="lazyContent; else contentProjection">
-    <div *ngIf="shown$ | async">
-      <ng-container *ngTemplateOutlet="lazyContent.templateRef" />
-    </div>
-  </ng-container>
-  <ng-template #contentProjection>
-    <ng-content></ng-content>
-  </ng-template>
+  @if (lazyContent) { @if (shown$ | async) {
+  <div>
+    <ng-container *ngTemplateOutlet="lazyContent.templateRef" />
+  </div>
+  } } @else {
+  <ng-content />
+  }
 </ish-modal-dialog>

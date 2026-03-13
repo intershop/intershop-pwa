@@ -1,29 +1,29 @@
-<div *ngIf="wishlists?.length > 0; else noWishlist" class="list-body">
+@if (wishlists?.length > 0) {
+<div class="list-body">
   <ng-container *ngTemplateOutlet="wishlistRow; context: { wishlist: preferredWishlist }" />
-  <ng-container *ngFor="let wishlist of wishlists">
-    <ng-container *ngIf="!preferredWishlist || wishlist.id !== preferredWishlist.id">
-      <ng-container *ngTemplateOutlet="wishlistRow; context: { wishlist: wishlist }" />
-    </ng-container>
-  </ng-container>
+  @for (wishlist of wishlists; track wishlist.id) { @if (!preferredWishlist || wishlist.id !== preferredWishlist.id) {
+  <ng-container *ngTemplateOutlet="wishlistRow; context: { wishlist: wishlist }" />
+  } }
 </div>
-<ng-template #noWishlist>
-  <p>{{ 'account.wishlists.no_wishlists' | translate }}</p>
-</ng-template>
+} @else {
+<p>{{ 'account.wishlists.no_wishlists' | translate }}</p>
+}
 <ng-template #wishlistRow let-wishlist="wishlist">
-  <div *ngIf="wishlist" class="list-item-row row mx-0" data-testing-id="wishlist-list-item-container">
+  @if (wishlist) {
+  <div class="list-item-row row mx-0" data-testing-id="wishlist-list-item-container">
     <div class="col-7 list-item" data-testing-id="wishlist-list-item">
       <a [routerLink]="'/account/wishlists/' + wishlist.id" data-testing-id="wishlist-list-title">{{
         wishlist.title
       }}</a
-      ><span *ngIf="wishlist.preferred" class="input-help ps-3">{{
-        'account.wishlists.table.preferred' | translate
-      }}</span>
+      >@if (wishlist.preferred) {
+      <span class="input-help ps-3">{{ 'account.wishlists.table.preferred' | translate }}</span>
+      } @if (wishlist.shared) {
       <span
-        *ngIf="wishlist.shared"
         class="input-help"
         [ngClass]="{ 'link-separator': wishlist.preferred && wishlist.shared, 'ps-3': !wishlist.preferred }"
         >{{ 'account.wishlists.table.shared' | translate }}</span
       >
+      }
     </div>
     <div class="col-2 list-item">
       {{ 'account.wishlists.items' | translate : { '0': wishlist.itemsCount } }}
@@ -36,10 +36,11 @@
         (click)="openDeleteConfirmationDialog(wishlist, deleteDialog)"
         data-testing-id="delete-wishlist"
       >
-        <fa-icon [icon]="['fas', 'trash-alt']" />
+        <i class="bi bi-trash-fill"></i>
       </button>
     </div>
   </div>
+  }
 </ng-template>
 
 <!-- the title will be set dynamically -->

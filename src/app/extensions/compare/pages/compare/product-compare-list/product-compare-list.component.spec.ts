@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -33,7 +32,7 @@ describe('Product Compare List Component', () => {
   let compareProduct2: ProductView;
 
   beforeEach(async () => {
-    compareProduct1 = createProductView({ sku: '111', available: true } as Product);
+    compareProduct1 = createProductView({ sku: '111' } as Product);
     compareProduct1.attributes = [
       {
         name: 'Optical zoom',
@@ -71,12 +70,10 @@ describe('Product Compare List Component', () => {
     compareFacade = mock(CompareFacade);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [MockComponent(ProductImageComponent), TranslateModule.forRoot()],
       declarations: [
-        MockComponent(FaIconComponent),
         MockComponent(ProductAttributesComponent),
         MockComponent(ProductComparePagingComponent),
-        MockComponent(ProductImageComponent),
         MockComponent(ProductNameComponent),
         MockComponent(ProductPriceComponent),
         MockDirective(FeatureToggleDirective),

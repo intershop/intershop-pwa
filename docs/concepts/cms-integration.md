@@ -20,7 +20,7 @@ kb_sync_latest_only
 The Intershop REST API contains resources reflecting the aspects of Intershop's integrated Content Management System (CMS), i.e.,
 Pagelets, Includes, Pages.
 
-Calling the `/cms` resource will list the available CMS subresources for the different CMS artifacts.
+Calling the `/cms` resource will list the available CMS sub-resources for the different CMS artifacts.
 
 ```json
 {

@@ -20,7 +20,7 @@
       }
     }
 
-    .ng-fa-icon {
+    .bi {
       padding: 0 !important;
       margin-right: ($space-default * 0.5);
       font-size: 17px;
@@ -34,19 +34,19 @@
   }
 
   > .btn-link {
-    padding: ($space-default * 0.5) $space-default;
+    padding: ($space-default * 0.5) $space-default 6.5px;
     white-space: nowrap;
   }
 
   &.show {
-    background: $color-corporate;
+    background: $bg-color-corporate;
 
     > .btn-link {
       span {
         color: $text-color-inverse;
       }
 
-      > .ng-fa-icon {
+      > .bi {
         color: $text-color-inverse !important;
       }
     }

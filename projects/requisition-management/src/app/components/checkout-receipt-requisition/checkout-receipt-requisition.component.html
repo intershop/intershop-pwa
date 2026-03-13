@@ -1,9 +1,11 @@
-<div *ngIf="basket">
+@if (basket) {
+<div>
   <h1>
     <span id="page-main-content" tabindex="-1">{{ 'checkout.cart_for_approval.title' | translate }}</span>
   </h1>
   <div>
-    <p *ngIf="requisition$ | async as req">
+    @if (requisition$ | async; as req) {
+    <p>
       {{ 'checkout.id_of_order.label' | translate
       }}<strong data-testing-id="order-document-number"
         >&nbsp;
@@ -14,9 +16,11 @@
         >
       </strong>
     </p>
+    }
 
     <p>{{ 'approval.cart.order_has_been_submitted' | translate }}</p>
-    <div *ngIf="basket.customerNo; else notifyAnonymous">
+    @if (basket.customerNo) {
+    <div>
       <p
         [ishServerHtml]="
           'approval.cart.once_order_approved'
@@ -25,11 +29,17 @@
       ></p>
       <p [innerHTML]="'approval.cart.notification.mail.text' | translate : { '0': basket.email }"></p>
     </div>
-    <ng-template #notifyAnonymous>
-      <p [innerHTML]="'approval.cart.notification.mail.text' | translate : { '0': basket.invoiceToAddress.email }"></p>
-    </ng-template>
+    } @else {
+
+    <p [innerHTML]="'approval.cart.notification.mail.text' | translate : { '0': basket.invoiceToAddress.email }"></p>
+
+    }
+
     <div>
-      <ish-basket-approval-info *ngIf="basket.approval" [approval]="basket.approval" />
+      @if (basket.approval) {
+      <ish-basket-approval-info [approval]="basket.approval" />
+      }
     </div>
   </div>
 </div>
+}

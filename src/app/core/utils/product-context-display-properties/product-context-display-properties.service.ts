@@ -12,11 +12,11 @@ import { ProductHelper } from 'ish-core/models/product/product.helper';
 @Injectable({ providedIn: 'root' })
 export class ProductContextDisplayPropertiesService implements ExternalDisplayPropertiesProvider {
   setup(
-    context$: Observable<Pick<ProductContext, 'product' | 'prices'>>
+    context$: Observable<Pick<ProductContext, 'product' | 'prices' | 'inventory'>>
   ): Observable<Partial<ProductContextDisplayProperties<false>>> {
     return context$.pipe(
-      map(({ product, prices }) => {
-        const canBeOrdered = !ProductHelper.isMasterProduct(product) && product?.available;
+      map(({ product, prices, inventory }) => {
+        const canBeOrdered = !ProductHelper.isMasterProduct(product) && inventory?.inStock;
         const canBeOrderedWithPrice = canBeOrdered && (!!prices?.salePrice || ProductHelper.isRetailSet(product));
         const canBeOrderedNotRetail = canBeOrdered && !ProductHelper.isRetailSet(product);
 

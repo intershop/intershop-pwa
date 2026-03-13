@@ -1,12 +1,13 @@
-name: DemoServerDown
+name: Demo Server (remove)
 
 on:
-  pull_request:
-    types: [closed]
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
   workflow_dispatch:
+  pull_request:
+    types:
+      - closed
+
+env:
+  AZURE_DEMO_RESOURCEGROUP: pwa-gh-review
 
 jobs:
   RemoveDemoServer:
@@ -22,13 +23,13 @@ jobs:
             REF=${{ github.event.ref }}
           fi
           REF=$( echo $REF | sed -e 's/refs\/heads\///' | sed -e 's/[^a-zA-Z0-9-]/-/g' )
-          APP_NAME=$(printf '%.60s' "${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-$REF")
+          APP_NAME=$(printf '%.60s' "${{ env.AZURE_DEMO_RESOURCEGROUP }}-$REF")
           echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
       - name: Login to Azure
         run: az login --service-principal --username ${{ secrets.AZURE_SP_USERNAME }} --password ${{ secrets.AZURE_SP_PASSWORD }} --tenant ${{ secrets.AZURE_SP_TENANT }}
 
       - name: Remove containerized WebApp
         env:
-          APP: '${{ secrets.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}'
-          GROUP: ${{ secrets.AZURE_DEMO_RESOURCEGROUP }}
+          APP: '${{ env.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}'
+          GROUP: ${{ env.AZURE_DEMO_RESOURCEGROUP }}
         run: test -z "$(az webapp show -g $GROUP -n $APP_NAME)" || az webapp delete -g $GROUP --name $APP_NAME

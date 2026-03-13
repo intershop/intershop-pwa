@@ -1,75 +1,71 @@
-<ng-container *ngIf="isDesignViewMode && type; else cmsOutlet">
-  <div
-    class="design-view-wrapper"
-    [ngClass]="[
-      type,
-      (isPageletSelected$ | async) ? 'pagelet-selected' : '',
-      (isPageletPreviewed$ | async) ? 'pagelet-previewed' : ''
-    ]"
-    [ishScroll]="shouldScroll$ | async"
-    scrollContainer="root"
-    [scrollDuration]="500"
-    [scrollSpacing]="50"
-    (mouseenter)="onPageletHover()"
-    (mouseleave)="onPageletLeave()"
-  >
-    <div class="design-view-wrapper-actions">
-      <ng-container [ngSwitch]="type">
-        <!-- pagelet -->
-        <ng-template [ngSwitchCase]="'pagelet'">
-          <ng-container *ngIf="pagelet$ | async as pagelet">
-            <button
-              type="button"
-              (click)="triggerAction(pagelet.id, 'pageletEdit')"
-              class="btn"
-              title="{{
-                ('designview.edit.link.title' | translate) + (pagelet.displayName ? ' ' + pagelet.displayName : '')
-              }}"
-            >
-              <fa-icon [icon]="['fas', 'pencil-alt']" />
-            </button>
-            <!--
+@if (isDesignViewMode && type) {
+<div
+  class="design-view-wrapper"
+  [ngClass]="[
+    type,
+    (isPageletSelected$ | async) ? 'pagelet-selected' : '',
+    (isPageletPreviewed$ | async) ? 'pagelet-previewed' : ''
+  ]"
+  [ishScroll]="shouldScroll$ | async"
+  scrollContainer="root"
+  [scrollDuration]="500"
+  [scrollSpacing]="50"
+  (mouseenter)="onPageletHover()"
+  (mouseleave)="onPageletLeave()"
+>
+  <div class="design-view-wrapper-actions">
+    @switch (type) {
+    <!-- pagelet -->
+    @case ('pagelet') { @if (pagelet$ | async; as pagelet) {
+    <button
+      type="button"
+      (click)="triggerAction(pagelet.id, 'pageletEdit')"
+      class="btn"
+      title="{{ ('designview.edit.link.title' | translate) + (pagelet.displayName ? ' ' + pagelet.displayName : '') }}"
+    >
+      <i class="bi bi-pencil-fill"></i>
+    </button>
+    <!--
             <button
               (click)="triggerAction(pagelet.id, 'pageletDelete')"
               class="btn"
               title="{{ 'designview.delete.link.title' | translate }}"
-            >
-              <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+              >
+              <i class="bi bi-trash-fill"></i>
             </button>
             -->
-          </ng-container>
-        </ng-template>
-
-        <!-- slot -->
-        <ng-template [ngSwitchCase]="'slot'">
-          <div class="name">{{ pagelet.slot(this.slotId).displayName }}</div>
-          <button
-            type="button"
-            (click)="triggerAction(this.slotId, 'slotAdd')"
-            class="btn"
-            title="{{ 'designview.add.link.title' | translate }}"
-          >
-            <fa-icon [icon]="['fas', 'plus']" />
-          </button>
-        </ng-template>
-        <!-- include -->
-        <ng-template [ngSwitchCase]="'include'">
-          <div class="name">{{ include.displayName }}</div>
-          <button
-            type="button"
-            (click)="triggerAction(include.id, 'includeAdd')"
-            class="btn"
-            title="{{ 'designview.add.link.title' | translate }}"
-          >
-            <fa-icon [icon]="['fas', 'plus']" />
-          </button>
-        </ng-template>
-      </ng-container>
-    </div>
-    <ng-container *ngTemplateOutlet="cmsOutlet" />
+    } }
+    <!-- slot -->
+    @case ('slot') {
+    <div class="name">{{ pagelet.slot(this.slotId).displayName }}</div>
+    <button
+      type="button"
+      (click)="triggerAction(this.slotId, 'slotAdd')"
+      class="btn"
+      title="{{ 'designview.add.link.title' | translate }}"
+    >
+      <i class="bi bi-plus"></i>
+    </button>
+    }
+    <!-- include -->
+    @case ('include') {
+    <div class="name">{{ include.displayName }}</div>
+    <button
+      type="button"
+      (click)="triggerAction(include.id, 'includeAdd')"
+      class="btn"
+      title="{{ 'designview.add.link.title' | translate }}"
+    >
+      <i class="bi bi-plus"></i>
+    </button>
+    } }
   </div>
-</ng-container>
+  <ng-container *ngTemplateOutlet="cmsOutlet" />
+</div>
+} @else {
+<ng-container *ngTemplateOutlet="cmsOutlet" />
+}
 
 <ng-template #cmsOutlet>
-  <ng-content></ng-content>
+  <ng-content />
 </ng-template>

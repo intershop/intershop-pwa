@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { RouterModule, provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -34,14 +33,13 @@ describe('Requisition Detail Page Component', () => {
     context = mock(RequisitionContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [RouterModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(AddressComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketMerchantMessageViewComponent),
         MockComponent(BasketShippingMethodComponent),
         MockComponent(ErrorMessageComponent),
-        MockComponent(FaIconComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(RequisitionCostCenterApprovalComponent),
         MockComponent(RequisitionRejectDialogComponent),
@@ -50,6 +48,7 @@ describe('Requisition Detail Page Component', () => {
         MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
         RequisitionDetailPageComponent,
       ],
+      providers: [provideRouter([])],
     })
       .overrideComponent(RequisitionDetailPageComponent, {
         set: { providers: [{ provide: RequisitionContextFacade, useFactory: () => instance(context) }] },
@@ -76,7 +75,6 @@ describe('Requisition Detail Page Component', () => {
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       [
-        "fa-icon",
         "ish-error-message",
         "ish-requisition-summary",
         "ish-requisition-cost-center-approval",

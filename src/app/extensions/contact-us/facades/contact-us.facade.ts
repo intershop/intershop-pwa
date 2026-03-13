@@ -5,7 +5,6 @@ import { Contact } from 'ish-core/models/contact/contact.model';
 
 import { createContact, getContactLoading, getContactSubjects, getContactSuccess, loadContact } from '../store/contact';
 
-/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class ContactUsFacade {
   constructor(private store: Store) {}

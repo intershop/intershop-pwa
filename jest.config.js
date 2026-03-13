@@ -13,7 +13,6 @@ module.exports = {
       'jest-preset-angular',
       {
         ...defaultTransformerOptions,
-        isolatedModules: true,
       },
     ],
   },

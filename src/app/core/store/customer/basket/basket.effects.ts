@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, from, iif, of } from 'rxjs';
@@ -166,9 +167,8 @@ export class BasketEffects {
   loadBasketEligibleShippingMethods$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadBasketEligibleShippingMethods),
-      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
-      concatMap(([, basket]) =>
-        this.basketService.getBasketEligibleShippingMethods(basket.bucketId).pipe(
+      concatMap(() =>
+        this.basketService.getBasketEligibleShippingMethods().pipe(
           map(result => loadBasketEligibleShippingMethodsSuccess({ shippingMethods: result })),
           mapErrorToAction(loadBasketEligibleShippingMethodsFail)
         )

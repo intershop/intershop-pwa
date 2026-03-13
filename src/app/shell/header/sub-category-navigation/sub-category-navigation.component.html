@@ -1,13 +1,7 @@
-<ul
-  *ngIf="navigationCategories$ | async as categories"
-  class="category-level{{ subCategoriesDepth }}"
-  [ngClass]="{ 'dropdown-menu': subCategoriesDepth === 1 }"
->
-  <li
-    *ngFor="let subcategory of categories"
-    class="main-navigation-level{{ subCategoriesDepth }}-item"
-    [ngClass]="{ open: isOpened(subcategory.uniqueId) }"
-  >
+@if (navigationCategories$ | async; as categories) {
+<ul class="category-level{{ subCategoriesDepth }}" [ngClass]="{ 'dropdown-menu': subCategoriesDepth === 1 }">
+  @for (subcategory of categories; track subcategory.uniqueId) {
+  <li class="main-navigation-level{{ subCategoriesDepth }}-item" [ngClass]="{ open: isOpened(subcategory.uniqueId) }">
     <a
       [routerLink]="subcategory.url"
       [ngStyle]="{
@@ -15,27 +9,32 @@
       }"
       >{{ subcategory.name }}</a
     >
-    <ng-container *ngIf="subCategoriesDepth < mainNavigationMaxSubCategoriesDepth && subcategory.hasChildren">
-      <a
-        class="dropdown-toggle"
-        [ngClass]="{ 'd-none': view === 'full' }"
-        (click)="toggleOpen(subcategory.uniqueId)"
-        (keydown.enter)="toggleOpen(subcategory.uniqueId)"
-        role="button"
-        [attr.aria-label]="
-          isOpened(subcategory.uniqueId)
-            ? ('header.navigation.collapse_category.aria_label' | translate : { '0': subcategory.name })
-            : ('header.navigation.expand_category.aria_label' | translate : { '0': subcategory.name })
-        "
-        tabindex="0"
-      >
-        <fa-icon *ngIf="isOpened(subcategory.uniqueId); else closed" [icon]="['fas', 'minus']" />
-        <ng-template #closed> <fa-icon [icon]="['fas', 'plus']" /> </ng-template>
-      </a>
-      <ish-sub-category-navigation
-        [categoryUniqueId]="subcategory.uniqueId"
-        [subCategoriesDepth]="subCategoriesDepth + 1"
-      />
-    </ng-container>
+    @if (subCategoriesDepth < mainNavigationMaxSubCategoriesDepth && subcategory.hasChildren) {
+    <a
+      class="dropdown-toggle"
+      [ngClass]="{ 'd-none': view === 'full' }"
+      (click)="toggleOpen(subcategory.uniqueId)"
+      (keydown.enter)="toggleOpen(subcategory.uniqueId)"
+      role="button"
+      [attr.aria-label]="
+        isOpened(subcategory.uniqueId)
+          ? ('header.navigation.collapse_category.aria_label' | translate : { '0': subcategory.name })
+          : ('header.navigation.expand_category.aria_label' | translate : { '0': subcategory.name })
+      "
+      tabindex="0"
+    >
+      @if (isOpened(subcategory.uniqueId)) {
+      <i class="bi bi-dash"></i>
+      } @else {
+      <i class="bi bi-plus"></i>
+      }
+    </a>
+    <ish-sub-category-navigation
+      [categoryUniqueId]="subcategory.uniqueId"
+      [subCategoriesDepth]="subCategoriesDepth + 1"
+    />
+    }
   </li>
+  }
 </ul>
+}

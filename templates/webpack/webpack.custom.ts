@@ -169,6 +169,14 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
       SSR: targetOptions.target === 'server',
     })
   );
+
+  // suppress webpack warning for optional elastic-apm-node (Elastic APM - Application Performance Monitoring) dependency in @elastic/ecs-pino-format
+  if (targetOptions.target === 'server') {
+    config.resolve = config.resolve || {};
+    config.resolve.alias = config.resolve.alias || {};
+    (config.resolve.alias as Record<string, string | false>)['elastic-apm-node'] = false;
+  }
+
   logger.log('setting production:', production);
   logger.log('setting serviceWorker:', serviceWorker);
   logger.log('setting ngrxRuntimeChecks:', ngrxRuntimeChecks);
@@ -254,7 +262,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
         safelist: {
           standard: [/(?:((m|p)(t|b|s|e|x|y)?(-(sm|md|lg|xl))?-([0-5]|auto))|((w|h)-(25|50|75|100|auto)))/],
           greedy: [
-            /\bfa\b/,
             /\bmodal\b/,
             /\bdrop/,
             /\bswiper\b/,

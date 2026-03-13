@@ -26,8 +26,8 @@ Using another backend is also possible as long as it provides a [compatible REST
 
 ## PWA - Server-Side Rendering (SSR)
 
-In order to facilitate server-side rendering (SSR), the default deployment uses dockerized [_express.js_](https://expressjs.com/) servers running [Angular Universal](https://angular.io/guide/universal), orchestrated by [PM2](https://pm2.keymetrics.io).
-On a new request, Angular Universal pre-renders the page and instantly provides the browser with meaningful content.
+In order to facilitate server-side rendering (SSR), the default deployment uses dockerized [_express.js_](https://expressjs.com/) servers running [Angular SSR](https://angular.io/guide/ssr), orchestrated by [PM2](https://pm2.keymetrics.io).
+On a new request, Angular SSR pre-renders the page and instantly provides the browser with meaningful content.
 For an architectural overview of how SSR works in the Intershop PWA, see [Deployment Scenarios](deployment-angular.md).
 Pre-rendering pages enables a number of features:
 
@@ -43,7 +43,7 @@ As a first point of contact for any browser requests directed at a default deplo
 Each of these is separately configurable (see [Building and Running nginx Docker Image](../guides/nginx-startup.md)).
 Nginx enables the following features to be used in an Intershop PWA deployment:
 
-- Uncomplicated caching of PWA server-side rendering responses provided by the upstream Angular Universal server.
+- Uncomplicated caching of PWA server-side rendering responses provided by the upstream Angular SSR server.
 - Handling of multiple channels via URL parameters in conjunction with SSR (see [Multi-Site Handling](multi-site-handling.md)).
 - Customizable compression for downstream services.
 - Device type detection to ensure a correct pre-render, adapted to the incoming user agent.
@@ -68,9 +68,9 @@ Read on for a step-by-step walkthrough of the initial connection request.
    1. If the cache is enabled and a cached response is found, the response is returned immediately, go to 6.
    2. If no cached response is available, the SSR process is triggered.
 
-2. The node _express.js_ server runs Angular Universal pre-rendering for the requested URL.
+2. The node _express.js_ server runs Angular SSR pre-rendering for the requested URL.
 
-3. Angular Universal fills the requested page with content retrieved via the ICM REST API.
+3. Angular SSR fills the requested page with content retrieved via the ICM REST API.
 
 4. The response is delivered to nginx, where it is also cached if caching is enabled.
 
@@ -94,7 +94,7 @@ The Intershop PWA supports this functionality and the [default deployment](https
 To enable it, set the `PROXY_ICM` environment variable on the [SSR container](../guides/ssr-startup.md) to a new URL.
 Instead of directing REST calls straight to the ICM (see step seven in the [Default Production Deployment](#default-production-deployment)), traffic is routed through the SSR container.
 The _express.js_ server is set up to proxy requests.
-Upon completing the Angular Universal pre-rendering, all URLs referring explicitly to the used ICM (links, images, configuration) are replaced with URLs to the proxy.
+Upon completing the Angular SSR pre-rendering, all URLs referring explicitly to the used ICM (links, images, configuration) are replaced with URLs to the proxy.
 
 ## Stateless vs. Stateful Building Blocks
 

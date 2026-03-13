@@ -21,7 +21,7 @@
       [title]="'account.profile.update.link' | translate : { '0': 'account.profile.email.heading' | translate }"
       data-testing-id="edit-email"
     >
-      <fa-icon [icon]="['fas', 'pencil-alt']" />
+      <i class="bi bi-pencil-fill"></i>
     </a>
   </div>
 </div>
@@ -46,7 +46,7 @@
       [title]="'account.profile.update.link' | translate : { '0': 'account.profile.password.heading' | translate }"
       data-testing-id="edit-password"
     >
-      <fa-icon [icon]="['fas', 'pencil-alt']" />
+      <i class="bi bi-pencil-fill"></i>
     </a>
   </div>
 </div>
@@ -67,14 +67,14 @@
           <dt class="col-md-4">{{ 'account.profile.phone.label' | translate }}</dt>
           <dd class="col-md-8" data-testing-id="phone-field">{{ user.phoneHome }}</dd>
           <!-- Newsletter -->
-          <ng-container *ngIf="'marketing.newsletterSubscriptionEnabled' | ishServerSetting">
-            <dt class="col-md-4">{{ 'account.profile.newsletter.label' | translate }}</dt>
-            <dd class="col-md-8" data-testing-id="newsletter-info">
-              <ng-container *ngIf="subscribedToNewsletter !== undefined">
-                {{ (subscribedToNewsletter ? 'subscriptions.subscribed' : 'subscriptions.not_subscribed') | translate }}
-              </ng-container>
-            </dd>
-          </ng-container>
+          @if ('marketing.newsletterSubscriptionEnabled' | ishServerSetting) {
+          <dt class="col-md-4">{{ 'account.profile.newsletter.label' | translate }}</dt>
+          <dd class="col-md-8" data-testing-id="newsletter-info">
+            @if (subscribedToNewsletter !== undefined) {
+            {{ (subscribedToNewsletter ? 'subscriptions.subscribed' : 'subscriptions.not_subscribed') | translate }}
+            }
+          </dd>
+          }
           <!-- Birthday
           <dt class="col-md-4">{{ 'account.profile.birthday.label' | translate }}</dt>
           <dd class="col-md-8" data-testing-id="birthday-field">
@@ -93,7 +93,7 @@
       [title]="'account.profile.update.link' | translate : { '0': 'account.profile.detail.heading' | translate }"
       data-testing-id="edit-user"
     >
-      <fa-icon [icon]="['fas', 'pencil-alt']" />
+      <i class="bi bi-pencil-fill"></i>
     </a>
   </div>
 </div>

@@ -15,18 +15,17 @@
     [prefilledAddress]="address"
   />
 
-  <ish-formly-address-extension-form *ngIf="extension" [form]="extensionForm" [model]="extensionModel" />
+  @if (extension) {
+  <ish-formly-address-extension-form [form]="extensionForm" [model]="extensionModel" />
+  }
 
   <div class="row">
     <div class="offset-md-4 col-md-8 offset-lg-0 col-lg-12 offset-lg-4 col-xl-8">
-      <div
-        *ngIf="form.invalid && addressForm.submitted"
-        id="submit-button-help"
-        aria-live="polite"
-        class="visually-hidden"
-      >
+      @if (form.invalid && addressForm.submitted) {
+      <div id="submit-button-help" aria-live="polite" class="visually-hidden">
         {{ 'form.submit.validation.message' | translate }}
       </div>
+      }
       <button
         type="submit"
         class="btn btn-primary"

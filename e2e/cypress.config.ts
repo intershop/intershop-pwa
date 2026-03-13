@@ -1,4 +1,6 @@
 import { defineConfig } from 'cypress';
+import failedLog from 'cypress-failed-log/src/failed';
+import { install as installLogToOutput } from 'cypress-log-to-output';
 
 export default defineConfig({
   viewportWidth: 1024,
@@ -8,12 +10,14 @@ export default defineConfig({
   requestTimeout: 30000,
   responseTimeout: 30000,
   chromeWebSecurity: false,
+  allowCypressEnv: false,
   e2e: {
-    // We've imported your old cypress plugins here.
-    // You may want to clean this up later by importing these.
     setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginConfigOptions) {
-      /* eslint-disable-next-line @typescript-eslint/no-var-requires */
-      return require('./cypress/plugins/index.js')(on, config);
+      on('task', {
+        failed: failedLog(),
+      });
+      installLogToOutput(on);
+      return config;
     },
     baseUrl: 'http://localhost:4200',
     specPattern: 'cypress/e2e/**/*.e2e-spec.ts',

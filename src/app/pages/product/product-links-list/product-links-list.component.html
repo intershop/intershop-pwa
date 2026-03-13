@@ -1,10 +1,12 @@
-<ng-container *ngIf="productSKUs$ | async as productSKUs">
-  <div *ngIf="productSKUs.length" class="product-list-container">
-    <h2>{{ productLinkTitle }}</h2>
-    <div class="product-list">
-      <div *ngFor="let sku of productSKUs" class="product-list-item list-view">
-        <ish-product-item ishProductContext [sku]="sku" displayType="row" />
-      </div>
+@if (productSKUs$ | async; as productSKUs) { @if (productSKUs.length) {
+<div class="product-list-container">
+  <h2>{{ productLinkTitle }}</h2>
+  <div class="product-list">
+    @for (sku of productSKUs; track sku) {
+    <div class="product-list-item list-view">
+      <ish-product-item ishProductContext [sku]="sku" displayType="row" />
     </div>
+    }
   </div>
-</ng-container>
+</div>
+} }

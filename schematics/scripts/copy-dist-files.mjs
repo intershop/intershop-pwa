@@ -1,8 +1,8 @@
 import { copyFileSync, existsSync, mkdirSync, statSync } from 'fs';
-import { sync } from 'glob';
+import glob from 'glob';
 import { dirname } from 'path';
 
-[...sync('src/**/{collection,schema}.json'), ...sync('src/**/files/**')]
+[...glob.sync('src/**/{collection,schema}.json'), ...glob.sync('src/**/files/**')]
   .filter(f => statSync(f).isFile())
   .forEach(file => {
     const target = file.replace(/^src/, 'dist');

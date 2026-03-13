@@ -11,14 +11,11 @@
   </div>
 
   <formly-form [model]="model" [fields]="fields" [options]="options" [form]="quickOrderForm" class="pt-1" />
-  <div
-    id="submit-button-help"
-    aria-live="polite"
-    class="visually-hidden"
-    *ngIf="(quickOrderForm.pristine || quickOrderForm.invalid) && quickOrderIDForm.submitted"
-  >
+  @if ((quickOrderForm.pristine || quickOrderForm.invalid) && quickOrderIDForm.submitted) {
+  <div id="submit-button-help" aria-live="polite" class="visually-hidden">
     {{ 'form.submit.validation.message' | translate }}
   </div>
+  }
   <div class="pb-2">
     <button
       type="submit"

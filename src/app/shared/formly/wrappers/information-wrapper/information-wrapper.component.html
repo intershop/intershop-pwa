@@ -1,5 +1,6 @@
-<div *ngIf="props.customInformation" class="d-flex align-items-center">
-  <ng-template #fieldComponent></ng-template>
+@if (props.customInformation) {
+<div class="d-flex align-items-center">
+  <ng-template #fieldComponent />
   <span
     [id]="id + '-information'"
     class="ms-2"
@@ -10,3 +11,4 @@
     {{ information | translate : args }}
   </span>
 </div>
+}

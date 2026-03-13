@@ -1,4 +1,5 @@
-<li *ngIf="category$ | async as category">
+@if (category$ | async; as category) {
+<li>
   <a class="category-image" [routerLink]="category | ishCategoryRoute" (click)="handleInputFocus()" tabindex="-1">
     <ish-category-image [category]="category" />
   </a>
@@ -8,3 +9,4 @@
     (click)="handleInputFocus()"
   ></a>
 </li>
+}

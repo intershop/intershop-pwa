@@ -11,7 +11,9 @@
         <ish-quickorder-add-products-form />
       </ish-skip-content-link>
       <ish-quickorder-csv-form />
-      <ish-loading *ngIf="loading$ | async" />
+      @if (loading$ | async) {
+      <ish-loading />
+      }
     </div>
   </div>
 </div>

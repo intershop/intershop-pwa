@@ -29,11 +29,12 @@ class CheckboxFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-fieldset-test-field',
-  template: `FieldsetFieldComponent:
-    <div *ngFor="let f of field.fieldGroup">
+  template: `FieldsetFieldComponent: @for (f of field.fieldGroup; track f) {
+    <div>
       {{ getFieldSummary(f) }}
       {{ f.props | json }}
-    </div>`,
+    </div>
+    }`,
 })
 class FieldsetFieldComponent extends FieldType {
   getFieldSummary(f: FormlyFieldConfig): string {
@@ -120,7 +121,7 @@ class DummyLibraryFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-default-field-test-field',
-  template: `<ng-template #fieldComponent> </ng-template>`,
+  template: `<ng-template #fieldComponent />`,
 })
 class DummyWrapperComponent extends FieldWrapper {}
 

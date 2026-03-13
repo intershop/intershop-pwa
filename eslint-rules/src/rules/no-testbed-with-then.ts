@@ -18,14 +18,14 @@ const noTestbedWithThenRule: TSESLint.RuleModule<keyof typeof messages> = {
     schema: [],
   },
   create: context => {
-    if (!normalizePath(context.getFilename()).endsWith('.spec.ts')) {
+    if (!normalizePath(context.filename).endsWith('.spec.ts')) {
       return {};
     }
     return {
-      'MemberExpression[object.name="TestBed"][property.name="configureTestingModule"]'() {
+      'MemberExpression[object.name="TestBed"][property.name="configureTestingModule"]'(node) {
         // filter ancestors manually so we can report an error at the 'then' position
-        const thenNode = context
-          .getAncestors()
+        const thenNode = context.sourceCode
+          .getAncestors(node)
           .filter(
             ancestor =>
               ancestor.type === AST_NODE_TYPES.MemberExpression &&

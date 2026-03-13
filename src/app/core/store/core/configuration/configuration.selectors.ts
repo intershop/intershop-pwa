@@ -2,7 +2,6 @@ import { isDevMode } from '@angular/core';
 import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 
-import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { getCoreState } from 'ish-core/store/core/core-store';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 
@@ -163,20 +162,5 @@ export const getStaticEndpoint = createSelector(
       ? `${state.baseURL}/${state.serverStatic}/${state.channel}/${application}/${
           state.channel.split('-')[0]
         }/${locale}`
-      : undefined
-);
-
-/* returns the paypal configuration if it exists in the configuration
- * if not it returns undefined
- */
-export const getPaypalConfig = createSelector(
-  getServerConfigParameter('preferences.PayPalCheckoutPreferences'),
-  getServerConfigParameter<boolean>('preferences.PayPalCheckoutPreferences.PayLaterEnabled'),
-
-  (paypalConfig, payLaterButtonEnabled): PaypalConfig =>
-    paypalConfig
-      ? {
-          payLaterButtonEnabled: payLaterButtonEnabled ?? false,
-        }
       : undefined
 );

@@ -43,7 +43,7 @@ export class CheckoutPaymentPageComponent implements OnInit {
         pmList?.filter(
           pm =>
             !pm.capabilities ||
-            (!pm.capabilities.includes('FastCheckout') && !pm.capabilities.includes('PaypalCheckout')) ||
+            !pm.capabilities.includes('FastCheckout') ||
             (pm.capabilities &&
               pm.capabilities.includes('FastCheckout') &&
               basket?.payment?.capabilities?.includes('FastCheckout') &&
@@ -97,11 +97,7 @@ export class CheckoutPaymentPageComponent implements OnInit {
 
   private isPaymentRedirectRequired() {
     if (this.basketPayment) {
-      return (
-        this.basketPayment.capabilities?.includes('RedirectBeforeCheckout') &&
-        this.basketPayment.redirectUrl &&
-        this.basketPayment.redirectRequired
-      );
+      return this.basketPayment.capabilities?.includes('RedirectBeforeCheckout') && this.basketPayment.redirectRequired;
     }
   }
 }

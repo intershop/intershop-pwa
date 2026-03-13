@@ -1,38 +1,42 @@
-<ng-container *ngIf="currentPage && pageIndices.length > 1">
-  <ul class="product-list-paging">
-    <li>
-      <ng-container *ngIf="currentPage > 1; else inactiveFirstLink">
-        <a
-          [routerLink]="[]"
-          queryParamsHandling="merge"
-          [queryParams]="{ page: currentPage - 1 }"
-          [fragment]="fragmentOnRouting"
-          >&laquo;</a
-        >
-      </ng-container>
-      <ng-template #inactiveFirstLink><span>&laquo;</span></ng-template>
-    </li>
-    <li *ngFor="let p of pageIndices">
-      <a
-        [routerLink]="[]"
-        queryParamsHandling="merge"
-        [queryParams]="{ page: p.value }"
-        [fragment]="fragmentOnRouting"
-        [ngClass]="{ active: p.value === currentPage }"
-        >{{ p.display }}</a
-      >
-    </li>
-    <li class="pagination-list-next">
-      <ng-container *ngIf="pageIndices[pageIndices.length - 1].value !== currentPage; else inactiveLastLink">
-        <a
-          [routerLink]="[]"
-          queryParamsHandling="merge"
-          [queryParams]="{ page: currentPage + 1 }"
-          [fragment]="fragmentOnRouting"
-          >&raquo;</a
-        >
-      </ng-container>
-      <ng-template #inactiveLastLink><span>&raquo;</span></ng-template>
-    </li>
-  </ul>
-</ng-container>
+@if (currentPage && pageIndices.length > 1) {
+<ul class="product-list-paging">
+  <li>
+    @if (currentPage > 1) {
+    <a
+      [routerLink]="[]"
+      queryParamsHandling="merge"
+      [queryParams]="{ page: currentPage - 1 }"
+      [fragment]="fragmentOnRouting"
+      >&laquo;</a
+    >
+    } @else {
+    <span>&laquo;</span>
+    }
+  </li>
+  @for (p of pageIndices; track p.value) {
+  <li>
+    <a
+      [routerLink]="[]"
+      queryParamsHandling="merge"
+      [queryParams]="{ page: p.value }"
+      [fragment]="fragmentOnRouting"
+      [ngClass]="{ active: p.value === currentPage }"
+      >{{ p.display }}</a
+    >
+  </li>
+  }
+  <li class="pagination-list-next">
+    @if (pageIndices[pageIndices.length - 1].value !== currentPage) {
+    <a
+      [routerLink]="[]"
+      queryParamsHandling="merge"
+      [queryParams]="{ page: currentPage + 1 }"
+      [fragment]="fragmentOnRouting"
+      >&raquo;</a
+    >
+    } @else {
+    <span>&raquo;</span>
+    }
+  </li>
+</ul>
+}

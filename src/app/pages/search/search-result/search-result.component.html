@@ -18,7 +18,7 @@
       (click)="toggle()"
     >
       {{ 'search.mobile.filter.trigger' | translate }}
-      <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" />
+      <i class="bi" [ngClass]="isCollapsed ? 'bi-chevron-down' : 'bi-chevron-up'"></i>
     </button>
   </div>
 

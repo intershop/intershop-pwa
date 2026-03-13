@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 
 import { FacetData } from 'ish-core/models/facet/facet.interface';
 import { FilterData } from 'ish-core/models/filter/filter.interface';
-import { getICMStaticURL } from 'ish-core/store/core/configuration';
+import { getCurrentLocale, getICMStaticURL } from 'ish-core/store/core/configuration';
 import { stringToFormParams } from 'ish-core/utils/url-form-params';
 
 import { FilterNavigationData } from './filter-navigation.interface';
@@ -12,9 +12,10 @@ import { FilterNavigation } from './filter-navigation.model';
 @Injectable({ providedIn: 'root' })
 export class FilterNavigationMapper {
   private icmStaticURL: string;
-
+  private currentLocale = '-';
   constructor(store: Store) {
     store.pipe(select(getICMStaticURL)).subscribe(url => (this.icmStaticURL = url));
+    store.pipe(select(getCurrentLocale)).subscribe(locale => (this.currentLocale = locale || '-'));
   }
 
   fromData(data: FilterNavigationData): FilterNavigation {
@@ -33,12 +34,12 @@ export class FilterNavigationMapper {
   }
 
   /**
-   * parse ish-link to
+   * parse image content reference into static url
    */
   private parseFilterValue(filterEntry: FacetData): string {
     if (filterEntry.mappedType === 'image' && filterEntry.mappedValue) {
       const urlParts = filterEntry.mappedValue.split(':');
-      return `url(${this.icmStaticURL}/${urlParts[0]}/-${urlParts[1]})`;
+      return `url(${this.icmStaticURL}/${urlParts[0]}/${this.currentLocale || '-'}${urlParts[1]})`;
     }
     return filterEntry.mappedValue;
   }

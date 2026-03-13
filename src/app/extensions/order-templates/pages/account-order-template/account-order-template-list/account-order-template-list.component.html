@@ -1,4 +1,5 @@
-<div *ngIf="orderTemplates?.length > 0; else noOrderTemplate" class="section">
+@if (orderTemplates?.length > 0) {
+<div class="section">
   <table
     cdk-table
     [dataSource]="orderTemplates"
@@ -20,7 +21,6 @@
         </a>
       </td>
     </ng-container>
-
     <!-- Creation date -->
     <ng-container cdkColumnDef="creationDate">
       <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-creation-date">
@@ -34,7 +34,6 @@
         {{ orderTemplate.creationDate | ishDate : 'shortDate' }}
       </td>
     </ng-container>
-
     <!-- Number of line items -->
     <ng-container cdkColumnDef="lineItems">
       <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-line-items">
@@ -48,12 +47,12 @@
         {{ 'account.order_template.items' | translate : { '0': orderTemplate.itemsCount } }}
       </td>
     </ng-container>
-
     <!-- Actions -->
     <ng-container cdkColumnDef="actions">
       <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-actions"></th>
       <td cdk-cell *cdkCellDef="let orderTemplate" class="column-price">
-        <a *ngIf="orderTemplate.items?.length" class="btn-tool d-inline-flex align-top">
+        @if (orderTemplate.items?.length) {
+        <a class="btn-tool d-inline-flex align-top">
           <ish-product-add-to-basket
             ishProductContext
             [parts]="getParts(orderTemplate)"
@@ -61,13 +60,14 @@
             cssClass="btn-link p-0"
           />
         </a>
+        }
         <a
           class="btn-tool"
           [title]="'account.order_template.edit.heading' | translate"
           [routerLink]="'/account/order-templates/' + orderTemplate.id"
           data-testing-id="order-template-details-edit"
-          ><fa-icon [icon]="['fas', 'pencil-alt']"
-        /></a>
+          ><i class="bi bi-pencil-fill"></i
+        ></a>
         <button
           type="button"
           class="btn-tool btn-link"
@@ -75,20 +75,18 @@
           (click)="openDeleteConfirmationDialog(orderTemplate, deleteDialog)"
           data-testing-id="delete-order-template"
         >
-          <fa-icon [icon]="['fas', 'trash-alt']" />
+          <i class="bi bi-trash-fill"></i>
         </button>
       </td>
     </ng-container>
-
     <!-- Header and Row Declarations -->
     <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
     <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay" data-testing-id="order-template-list-item"></tr>
   </table>
 </div>
-
-<ng-template #noOrderTemplate>
-  <p data-testing-id="emptyList">{{ 'account.order_template.list.no_templates.text' | translate }}</p>
-</ng-template>
+} @else {
+<p data-testing-id="emptyList">{{ 'account.order_template.list.no_templates.text' | translate }}</p>
+}
 
 <!-- the title will be set dynamically -->
 <ish-modal-dialog

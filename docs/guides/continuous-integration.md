@@ -12,7 +12,10 @@ kb_sync_latest_only
 - [Code Formatting](#code-formatting)
 - [Unit Testing](#unit-testing)
 - [UI Testing](#ui-testing)
-- [Universal Testing](#universal-testing)
+- [Lighthouse Testing](#lighthouse-testing)
+  - [Performance Checks](#performance-checks)
+  - [Accessibility Checks](#accessibility-checks)
+- [Testing Server-Side Rendering](#testing-server-side-rendering)
 - [Static Code Analysis](#static-code-analysis)
 
 This section provides an overview of required continuous integration steps to verify the validity of code contributions.
@@ -58,13 +61,50 @@ This requires a suitable version of Google Chrome to be installed on the CI work
 Run UI tests interactively with `npm run e2e`.
 Before that you have to start up a PWA application.
 
-## Universal Testing
+## Lighthouse Testing
 
-Since Angular Universal is used for server-side pre-rendering of content to tackle SEO concerns, the CI system should also check if server-side rendering is still working.
+[Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci) is used for automated performance and accessibility audits.
+It runs as a GitHub action and generates markdown reports that are displayed directly in the PR comments or in the workflow summary.
+
+**Configuration Files:**
+
+- Performance: `.github/lighthouse/performance-*.lighthouserc.json`
+- Accessibility: `.github/lighthouse/accessibility-*.lighthouserc.json`
+
+All Lighthouse configurations use a custom `pages` block that maps URLs to friendly page names and also adds thresholds for accessibility checks.
+The friendly names appear in generated reports instead of raw URLs, making reports more readable.
+
+> NOTE: The `pages` block is a custom extension, as Lighthouse CI's standard JSON structure does not support per-URL configurations.
+
+### Performance Checks
+
+Performance checks compare the current branch against a baseline branch (by default `develop`) to detect regressions via GitHub Actions workflows:
+
+- `.github/workflows/lighthouse-performance-baseline.yml` generates baseline artifacts from develop branch
+- `.github/workflows/lighthouse-performance-compare.yml` compares current branch against baseline
+
+### Accessibility Checks
+
+Accessibility checks ensure that web pages meet defined accessibility standards (e.g., WCAG) via GitHub Actions workflow:
+
+- `.github/workflows/lighthouse-accessibility.yml` generates accessibility reports for the current branch
+
+Scores must meet or exceed configured thresholds.
+The CI action fails if any page scores below its threshold.
+
+Thresholds below `100` are allowed to accommodate:
+
+- Known accessibility issues in third-party components.
+- Temporary exceptions during development.
+- Unavoidable limitations due to business requirements.
+
+## Testing Server-Side Rendering
+
+Since Angular SSR is used for server-side pre-rendering of content to tackle SEO concerns, the CI system should also check if server-side rendering is still working.
 For this purpose, it must be checked whether the server response contains content from lazy-loaded modules, in other words making sure all modules have produced compliant HTML markup.
 
 This can be done by pointing `curl` to a product detail page and checking if a specific CSS class could be found (via `grep`) in the HTML.
-Have a look into `e2e/test-universal.sh` to see how we are doing that.
+Have a look into `e2e/test-ssr.sh` to see how we are doing that.
 
 ## Static Code Analysis
 

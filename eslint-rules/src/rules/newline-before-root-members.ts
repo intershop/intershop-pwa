@@ -26,7 +26,7 @@ const newlineBeforeRootMembersRule: TSESLint.RuleModule<keyof typeof messages> =
           continue;
         }
 
-        const lines = context.getSourceCode().getLines();
+        const lines = context.sourceCode.getLines();
         const currentLastLine = current.loc.end.line;
 
         if (lines[currentLastLine] === '') {

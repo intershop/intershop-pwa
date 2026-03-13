@@ -34,6 +34,7 @@ import {
   loadTopLevelCategories,
 } from 'ish-core/store/shopping/categories';
 import { getAvailableFilter } from 'ish-core/store/shopping/filter';
+import { getProductInventory } from 'ish-core/store/shopping/product-inventory';
 import {
   getProductListingLoading,
   getProductListingView,
@@ -70,7 +71,6 @@ import { toObservable } from 'ish-core/utils/functions';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { mapToProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
-/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class ShoppingFacade {
   constructor(private store: Store, @Inject(PRICE_UPDATE) private priceUpdate: InjectSingle<typeof PRICE_UPDATE>) {}
@@ -171,6 +171,13 @@ export class ShoppingFacade {
           this.store.pipe(select(getPriceDisplayType)),
         ]).pipe(map(args => PriceItemHelper.selectPricing(...args)))
       )
+    );
+  }
+
+  productInventory$(sku: string | Observable<string>) {
+    return toObservable(sku).pipe(
+      whenTruthy(),
+      switchMap(plainSKU => this.store.pipe(select(getProductInventory(plainSKU)), distinctUntilChanged()))
     );
   }
 

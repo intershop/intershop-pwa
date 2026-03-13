@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -49,12 +48,12 @@ describe('Quoting Effects', () => {
     basketService = mock(BasketService);
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([{ path: 'account/quotes/:id', children: [] }])],
       providers: [
         { provide: BasketService, useFactory: () => instance(basketService) },
         { provide: QuotingService, useFactory: () => instance(quotingService) },
         provideMockActions(() => actions$),
         provideMockStore(),
+        provideRouter([{ path: 'account/quotes/:id', children: [] }]),
         QuotingEffects,
       ],
     });

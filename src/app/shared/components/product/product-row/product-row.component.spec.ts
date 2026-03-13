@@ -41,6 +41,7 @@ describe('Product Row Component', () => {
     when(context.select('displayProperties', 'readOnly')).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
+      imports: [MockComponent(ProductImageComponent)],
       declarations: [
         MockComponent(LazyProductAddToCompareComponent),
         MockComponent(LazyProductAddToOrderTemplateComponent),
@@ -50,7 +51,6 @@ describe('Product Row Component', () => {
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductChooseVariationComponent),
         MockComponent(ProductIdComponent),
-        MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductItemVariationsComponent),
         MockComponent(ProductLabelComponent),

@@ -1,6 +1,7 @@
+import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -12,15 +13,13 @@ import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { User } from 'ish-core/models/user/user.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { OrderService } from 'ish-core/services/order/order.service';
-import { PaymentService } from 'ish-core/services/payment/payment.service';
+import { InventoryService } from 'ish-core/services/inventory/inventory.service';
 import { TokenService } from 'ish-core/services/token/token.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
-import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { addProductToBasket, loadBasketSuccess, startCheckout } from './basket';
@@ -84,12 +83,25 @@ describe('Customer Store', () => {
     const userServiceMock = mock(UserService);
     when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user, pgid }));
 
+    const inventoryServiceMock = mock(InventoryService);
+    when(inventoryServiceMock.getProductInventory(anything())).thenReturn(of([]));
+
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['configuration', 'serverConfig'], true),
         CustomerStoreModule,
         HttpClientTestingModule,
-        RouterTestingModule.withRoutes([
+
+        ShoppingStoreModule,
+        TranslateModule.forRoot(),
+      ],
+      providers: [
+        { provide: APP_BASE_HREF, useValue: '/' },
+        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
+        { provide: InventoryService, useFactory: () => instance(inventoryServiceMock) },
+        { provide: TokenService, useFactory: () => instance(mock(TokenService)) },
+        { provide: UserService, useFactory: () => instance(userServiceMock) },
+        provideRouter([
           {
             path: 'account',
             children: [],
@@ -99,16 +111,6 @@ describe('Customer Store', () => {
             children: [],
           },
         ]),
-        ShoppingStoreModule,
-        TranslateModule.forRoot(),
-      ],
-      providers: [
-        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
-        { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
-        { provide: OrderService, useFactory: () => instance(mock(OrderService)) },
-        { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
-        { provide: TokenService, useFactory: () => instance(mock(TokenService)) },
-        { provide: UserService, useFactory: () => instance(userServiceMock) },
         provideStoreSnapshots(),
       ],
     });

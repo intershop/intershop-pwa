@@ -1,7 +1,11 @@
 <fieldset [ngClass]="props.fieldsetClass">
   <!-- prettier-ignore -->
-  <legend *ngIf="props.legend" [ngClass]="props.legendClass ? props.legendClass : 'visually-hidden'">{{ props.legend | translate }}</legend>
+  @if (props.legend) {
+  <legend [ngClass]="props.legendClass ? props.legendClass : 'visually-hidden'">{{ props.legend | translate }}</legend>
+  }
   <div [ngClass]="props.childClass">
-    <formly-field *ngFor="let f of field.fieldGroup" [field]="f" />
+    @for (f of field.fieldGroup; track f.id) {
+    <formly-field [field]="f" />
+    }
   </div>
 </fieldset>

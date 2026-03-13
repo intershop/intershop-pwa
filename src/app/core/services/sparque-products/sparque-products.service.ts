@@ -17,7 +17,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
 @Injectable({ providedIn: 'root' })
 export class SparqueProductsService implements ProductsServiceInterface {
   // API version for Sparque API.
-  private readonly apiVersion = 'v2';
+  private readonly apiVersion = 'v4';
   // Maximum number of facet options to request from the Sparque API.
   private readonly facetOptionsCount = '10';
 

@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
@@ -35,12 +34,7 @@ describe('Cxml Help Text Wrapper Component', () => {
         FormlyTestingComponentsModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [
-        CxmlHelpTextWrapperComponent,
-        MockComponent(FaIconComponent),
-        MockDirective(NgbCollapse),
-        MockDirective(ServerHtmlDirective),
-      ],
+      declarations: [CxmlHelpTextWrapperComponent, MockDirective(NgbCollapse), MockDirective(ServerHtmlDirective)],
     }).compileComponents();
   });
 

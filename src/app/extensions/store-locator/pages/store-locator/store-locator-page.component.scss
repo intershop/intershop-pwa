@@ -6,12 +6,12 @@
   transition: background-color 0.15s ease-in-out;
 
   &:hover {
-    background-color: #e6e6e6;
+    background-color: $color-tertiary;
   }
 }
 
 .highlight-store {
-  background-color: #e6e6e6;
+  background-color: $color-tertiary;
 }
 
 :host ::ng-deep .map-height {

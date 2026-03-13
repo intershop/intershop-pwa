@@ -1,7 +1,7 @@
 <div [class.has-error]="showError" class="position-relative">
-  <ng-template #fieldComponent></ng-template>
+  <ng-template #fieldComponent />
+  @if (showValidationIcons()) {
   <ish-validation-icons
-    *ngIf="showValidationIcons()"
     [field]="field"
     [showError]="showError"
     [ngClass]="{
@@ -10,7 +10,9 @@
       'validation-offset-date-picker': field.type === 'ish-date-picker-field'
     }"
   />
-  <ng-container *ngIf="showError" class="invalid-feedback d-block">
+  } @if (showError) {
+  <ng-container class="invalid-feedback d-block">
     <ish-validation-message [field]="field" class="validation-message" />
   </ng-container>
+  }
 </div>

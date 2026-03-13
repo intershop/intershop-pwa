@@ -1,4 +1,4 @@
-name: DeadCode
+name: Dead Code (Testbed)
 
 on:
   workflow_dispatch:
@@ -6,22 +6,20 @@ on:
   #   # every sunday at midnight
   #   - cron: '0 0 * * 0'
 
-env:
-  NODE_VERSION: 22.17.1
-
 jobs:
   TestBed:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - name: Use Node.js 22
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: package.json
           cache: npm
 
       - name: Install root dependencies

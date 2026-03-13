@@ -1,0 +1,35 @@
+@import 'variables';
+
+.required {
+  margin-right: 4px;
+  color: $text-color-special;
+}
+
+.fix-height {
+  height: 35px;
+}
+
+.hide-validation-error {
+  display: none;
+}
+
+.validation-error {
+  color: $color-special-error;
+}
+
+// Compensate for PayPal iframe internal padding (7%) on category/listing pages
+// The iframe's .message__content class has padding: 7% which cannot be overridden directly
+:host-context(.category-page),
+:host-context(.family-page) {
+  [id^='paypal-'] {
+    margin-right: -7%;
+    margin-left: -7%;
+  }
+}
+
+// paypal message on home page should have more bottom margin
+:host-context(ish-home-page) {
+  [id^='paypal-'] {
+    margin-bottom: 30px;
+  }
+}

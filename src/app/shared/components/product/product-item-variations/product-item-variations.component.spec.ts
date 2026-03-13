@@ -85,12 +85,18 @@ describe('Product Item Variations Component', () => {
     fixture.detectChanges();
 
     expect(findAllElements(element)).toEqual(['span']);
-    expect(element.textContent).toMatchInlineSnapshot(`" 25 models "`);
+    expect(element.textContent).toMatchInlineSnapshot(`
+      " 25 models
+      "
+    `);
 
     variationCount$.next(1);
     fixture.detectChanges();
 
-    expect(element.textContent).toMatchInlineSnapshot(`" one model "`);
+    expect(element.textContent).toMatchInlineSnapshot(`
+      " one model
+      "
+    `);
   });
 
   describe.each`

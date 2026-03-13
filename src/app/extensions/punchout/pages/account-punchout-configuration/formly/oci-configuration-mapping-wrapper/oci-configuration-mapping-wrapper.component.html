@@ -1,4 +1,6 @@
 <div [ngClass]="props.fieldClass" class="d-flex align-items-top">
-  <fa-icon *ngIf="props.arrowRight" [icon]="['fas', 'arrow-right']" class="pe-1 mt-2 pt-1" />
+  @if (props.arrowRight) {
+  <i class="bi bi-arrow-right pe-1 mt-2 me-1 pt-1"></i>
+  }
   <ng-template #fieldComponent />
 </div>

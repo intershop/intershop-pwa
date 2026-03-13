@@ -35,7 +35,7 @@ git clone https://github.com/intershop/intershop-pwa.git
 After having cloned the project from the Git repository, open a command line in the project folder and run `npm install` to download all required dependencies into your development environment.
 
 The project uses [Angular CLI](https://angular.io/cli) - a command line interface for Angular - that has to be installed globally.
-Run `npm install -g @angular/cli@16` once to globally install Angular CLI on your development machine.
+Run `npm install -g @angular/cli@17` once to globally install Angular CLI on your development machine.
 Make sure to install the Angular CLI version that fits to our current project dependency Angular version.
 
 Use `ng serve --open` to start the development server and open the Progressive Web app in your browser.
@@ -167,14 +167,14 @@ As Angular runs in the browser, all the development tool functionality provided 
 
 ### Tackling Memory Problems
 
-If you encounter problems with `JavaScript heap out of memory`, you will have to increase the heap space size.
-This can be done by setting the environment variable `NODE_OPTIONS=--max_old_space_size=8192`.
+If you encounter `FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory` problems, you will have to increase Node.js heap space size.
+This can be done by setting the environment variable `NODE_OPTIONS=--max-old-space-size=8192` (see [Node.js documentation](https://nodejs.org/api/cli.html#--max-old-space-sizesize-in-mib)).
+If necessary it can be adjusted to even higher values.
+
+> [!IMPORTANT]
+> If this problem occurs when building the SSR image with Docker, the environment variable in the project [`Dockerfile`](../../Dockerfile) has to adapted.
 
 ### Recommended Articles
-
-[Debugging Angular CLI Applications in Visual Studio Code](https://www.digitalocean.com/community/tutorials/how-to-debug-angular-cli-applications-in-visual-studio-code)
-
-- How to configure Visual Studio Code for debugging an Angular application.
 
 [A Guide To Debugging Angular Applications](https://medium.com/@vamsivempati/a-guide-to-debugging-angular-applications-5a36bd88b4cf)
 

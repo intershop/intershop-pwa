@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 
 import { Category } from 'ish-core/models/category/category.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
@@ -43,10 +42,9 @@ describe('Products Selectors', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'serverConfig']),
-        RouterTestingModule.withRoutes([{ path: '**', children: [] }]),
         ShoppingStoreModule.forTesting('products', 'categories', 'productPrices'),
       ],
-      providers: [provideStoreSnapshots()],
+      providers: [provideRouter([{ path: '**', children: [] }]), provideStoreSnapshots()],
     });
 
     store$ = TestBed.inject(StoreWithSnapshots);
@@ -83,7 +81,6 @@ describe('Products Selectors', () => {
           completenessLevel: ProductCompletenessLevel.Detail,
           manufacturer: 'Microsoft',
           name: 'Updated product',
-          available: false,
         } as Product;
         store$.dispatch(loadProductSuccess({ product: newProd }));
 
@@ -98,12 +95,11 @@ describe('Products Selectors', () => {
           completenessLevel: ProductCompletenessLevel.List,
           manufacturer: 'Microsoft',
           name: 'Updated product',
-          available: false,
         } as Product;
         store$.dispatch(loadProductSuccess({ product: newProd }));
 
         expect(getProductEntities(store$.state)).toEqual({
-          [prod.sku]: { ...prod, available: false, manufacturer: 'Microsoft', availableStock: undefined },
+          [prod.sku]: { ...prod, manufacturer: 'Microsoft' },
         });
       });
     });

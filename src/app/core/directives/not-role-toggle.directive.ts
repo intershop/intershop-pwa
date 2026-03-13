@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, DestroyRef, Directive, Input, TemplateRef, ViewContainerRef, inject } from '@angular/core';
+import { ChangeDetectorRef, Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ReplaySubject, Subscription } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { BehaviorSubject, of } from 'rxjs';
+import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 
 import { RoleToggleService } from 'ish-core/utils/role-toggle/role-toggle.service';
 
@@ -22,10 +22,7 @@ import { RoleToggleService } from 'ish-core/utils/role-toggle/role-toggle.servic
   selector: '[ishHasNotRole]',
 })
 export class NotRoleToggleDirective {
-  private subscription: Subscription;
-  private enabled$ = new ReplaySubject<boolean>(1);
-
-  private destroyRef = inject(DestroyRef);
+  private roleId$ = new BehaviorSubject<string | string[]>(undefined);
 
   constructor(
     private templateRef: TemplateRef<unknown>,
@@ -33,25 +30,24 @@ export class NotRoleToggleDirective {
     private roleToggleService: RoleToggleService,
     private cdRef: ChangeDetectorRef
   ) {
-    this.enabled$.pipe(distinctUntilChanged(), takeUntilDestroyed()).subscribe(enabled => {
-      if (enabled) {
-        this.viewContainer.createEmbeddedView(this.templateRef);
-      } else {
-        this.viewContainer.clear();
-      }
-      this.cdRef.markForCheck();
-    });
+    this.roleId$
+      .pipe(
+        switchMap(roleId => (roleId ? this.roleToggleService.hasRole(roleId) : of(false))),
+        map(val => !val),
+        distinctUntilChanged(),
+        takeUntilDestroyed()
+      )
+      .subscribe(enabled => {
+        if (enabled) {
+          this.viewContainer.createEmbeddedView(this.templateRef);
+        } else {
+          this.viewContainer.clear();
+        }
+        this.cdRef.markForCheck();
+      });
   }
 
   @Input() set ishHasNotRole(roleId: string | string[]) {
-    // end previous subscription and newly subscribe
-    if (this.subscription) {
-      // eslint-disable-next-line ban/ban
-      this.subscription.unsubscribe();
-    }
-    this.subscription = this.roleToggleService
-      .hasRole(roleId)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({ next: val => this.enabled$.next(!val) });
+    this.roleId$.next(roleId);
   }
 }

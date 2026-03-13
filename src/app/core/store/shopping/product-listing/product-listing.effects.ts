@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 import { debounceTime, distinctUntilChanged, filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
@@ -12,6 +13,7 @@ import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { getDeviceType } from 'ish-core/store/core/configuration';
 import { selectQueryParam, selectQueryParams } from 'ish-core/store/core/router';
+import { getUserAuthorized } from 'ish-core/store/customer/user';
 import {
   applyFilter,
   loadFilterForCategory,
@@ -82,7 +84,7 @@ export class ProductListingEffects {
    * (initial page)
    *
    * case #2
-   * endless scroll: initialPage is resetted after first usage and params.page will be used for endless scroll
+   * endless scroll: initialPage is reset after first usage and params.page will be used for endless scroll
    *
    * extra
    * the result is also the cache key for caching product lists in loadMoreProducts$
@@ -109,7 +111,8 @@ export class ProductListingEffects {
               // allow empty params
               Object.keys(params)?.length === 0
           ),
-          map(params => {
+          concatLatestFrom(() => this.store.pipe(select(getUserAuthorized))),
+          map(([params, isAuthorized]) => {
             const filters = params.filters
               ? {
                   ...stringToFormParams(params.filters),
@@ -127,8 +130,10 @@ export class ProductListingEffects {
               sorting: params.sorting || undefined,
               page: p > 1 ? p : undefined, // same content for 0, 1 & undefined
               filters,
+              isAuthorized, // change return value after login state changes
             };
-          })
+          }),
+          take(1)
         );
       }),
       distinctUntilChanged(isEqual),
@@ -170,11 +175,13 @@ export class ProductListingEffects {
       ofType(loadMoreProductsForParams),
       mapToPayload(),
       map(({ id, filters }) => ({ type: id.type, value: id.value, filters })),
+      concatLatestFrom(() => this.store.pipe(select(getUserAuthorized))),
       distinctUntilChanged(isEqual),
+
       // TODO: (Sparque handling) temporary solution until the category navigation will be handled by Sparque
       concatLatestFrom(() => this.productsServiceProvider.isSparqueSearchEnabled()),
-      filter(([{ type }, isSparqueSearchEnabled]) => !isSparqueSearchEnabled || type !== 'search'),
-      map(([{ type, value, filters }]) => {
+      filter(([[{ type }, _], isSparqueSearchEnabled]) => !isSparqueSearchEnabled || type !== 'search'),
+      map(([[{ type, value, filters }, _], _isSparqueEnabled]) => {
         if (filters) {
           const searchParameter = filters;
           return applyFilter({ searchParameter });

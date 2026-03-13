@@ -63,11 +63,6 @@
       &:hover {
         color: $text-color-secondary;
       }
-
-      .ng-fa-icon {
-        position: relative;
-        top: 0.5px;
-      }
     }
   }
 }
@@ -289,7 +284,7 @@
       right: 85px;
       width: 20px;
       height: 20px;
-      background: #fff url('/assets/img/loading.gif') center center no-repeat;
+      background: $color-inverse url('/assets/img/loading.gif') center center no-repeat;
       background-size: contain;
     }
   }
@@ -338,6 +333,7 @@
     &.header-search-container {
       @include media-breakpoint-down(md) {
         top: $header-height-mobile;
+        z-index: 9000;
         width: 100%;
         padding: 0;
       }
@@ -357,15 +353,6 @@
 
     @include media-breakpoint-down(md) {
       position: static;
-    }
-
-    &.active-search {
-      color: $text-color-quaternary;
-      background-color: $color-inverse;
-
-      > .ng-fa-icon {
-        color: $text-color-inverse !important;
-      }
     }
   }
 }

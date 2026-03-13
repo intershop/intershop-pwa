@@ -1,16 +1,21 @@
 <ng-template #template>
   <div class="modal-header">
-    <h2 *ngIf="options.titleText" [id]="'modal-title-' + uuid" class="modal-title">
-      <fa-icon *ngIf="options.icon" [icon]="options.icon" class="{{ options.iconClass }} " />{{ options.titleText }}
+    @if (options.titleText) {
+    <h2 [id]="'modal-title-' + uuid" class="modal-title">
+      @if (options.icon) {
+      <i class="bi bi-{{ options.icon }} {{ options.iconClass }} "></i>
+      }{{ options.titleText }}
     </h2>
+    }
     <button type="button" class="btn-close" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
   </div>
 
-  <div class="modal-body"><ng-content></ng-content></div>
+  <div class="modal-body"><ng-content /></div>
 
-  <div *ngIf="options.confirmText || options.rejectText" class="modal-footer">
+  @if (options.confirmText || options.rejectText) {
+  <div class="modal-footer">
+    @if (options.confirmText) {
     <button
-      *ngIf="options.confirmText"
       type="button"
       class="btn btn-primary"
       [disabled]="options.confirmDisabled"
@@ -19,14 +24,11 @@
     >
       {{ options.confirmText }}
     </button>
-    <button
-      *ngIf="options.rejectText"
-      type="button"
-      class="btn btn-secondary"
-      (click)="hide()"
-      data-testing-id="reject"
-    >
+    } @if (options.rejectText) {
+    <button type="button" class="btn btn-secondary" (click)="hide()" data-testing-id="reject">
       {{ options.rejectText }}
     </button>
+    }
   </div>
+  }
 </ng-template>

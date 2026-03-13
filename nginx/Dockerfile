@@ -27,15 +27,17 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 COPY nginx.conf.tmpl /etc/nginx/nginx.conf.tmpl
 COPY features /etc/nginx/features/
+COPY loglevel /etc/nginx/loglevel/
 COPY templates /etc/nginx/templates/
 COPY docker-entrypoint.d/*.sh /docker-entrypoint.d/
+RUN chmod 700 /docker-entrypoint.d/*.sh
 COPY *.yaml /
 COPY 50x.html /usr/share/nginx/html/
 
 COPY cache_clearer.sh /
 RUN chmod 700 /cache_clearer.sh
 
-COPY --from=hairyhenderson/gomplate:v4.3.3 /gomplate /gomplate 
+COPY --from=hairyhenderson/gomplate:v4.3.3 /gomplate /gomplate
 RUN chmod 700 /gomplate
 ADD https://github.com/FiloSottile/mkcert/releases/download/v1.4.4/mkcert-v1.4.4-linux-amd64 /usr/bin/mkcert
 RUN chmod 700 /usr/bin/mkcert
@@ -49,7 +51,7 @@ ENV SSR=on
 ENV SSL=off
 ENV CACHE_DURATION_NGINX_OK=10m
 ENV CACHE_DURATION_NGINX_NF=60m
-ENV LOGFORMAT=main
-ENV LOG_ALL=on
+ENV LOGLEVEL=error
+ENV LOGFORMAT=json
 
 EXPOSE 80 443 9113

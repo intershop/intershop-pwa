@@ -21,13 +21,12 @@ describe('Basket Validation Items Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         BasketValidationItemsComponent,
-        MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductNameComponent),
         MockDirective(ProductContextDirective),
         MockPipe(PricePipe),
       ],
-      imports: [TranslateModule.forRoot()],
+      imports: [MockComponent(ProductImageComponent), TranslateModule.forRoot()],
     }).compileComponents();
   });
 

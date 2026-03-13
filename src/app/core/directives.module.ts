@@ -7,6 +7,7 @@ import { FormSubmitDirective } from './directives/form-submit.directive';
 import { IdentityProviderCapabilityDirective } from './directives/identity-provider-capability.directive';
 import { IntersectionObserverDirective } from './directives/intersection-observer.directive';
 import { LazyLoadingContentDirective } from './directives/lazy-loading-content.directive';
+import { PaypalErrorDirective } from './directives/paypal-error.directive';
 import { ProductContextAccessDirective } from './directives/product-context-access.directive';
 import { ProductContextDirective } from './directives/product-context.directive';
 import { ScrollDirective } from './directives/scroll.directive';
@@ -21,6 +22,7 @@ import { ServerHtmlDirective } from './directives/server-html.directive';
     IdentityProviderCapabilityDirective,
     IntersectionObserverDirective,
     LazyLoadingContentDirective,
+    PaypalErrorDirective,
     ProductContextAccessDirective,
     ProductContextDirective,
     ScrollDirective,
@@ -34,6 +36,7 @@ import { ServerHtmlDirective } from './directives/server-html.directive';
     IdentityProviderCapabilityDirective,
     IntersectionObserverDirective,
     LazyLoadingContentDirective,
+    PaypalErrorDirective,
     ProductContextAccessDirective,
     ProductContextDirective,
     ScrollDirective,

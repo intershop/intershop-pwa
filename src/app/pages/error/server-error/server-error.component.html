@@ -3,15 +3,14 @@
   <div class="error-text">
     <div [ishServerHtml]="'servererror.page.text' | translate"></div>
     <p class="text-body-secondary" (click)="expand()" (keydown.enter)="expand()" tabindex="0">
-      <ng-container [ngSwitch]="httpError?.status">
-        <ng-container *ngSwitchCase="undefined"> {{ stringError | translate }} </ng-container>
-        <ng-container *ngSwitchCase="0"> Server timeout </ng-container>
-        <ng-container *ngSwitchDefault>
-          Error code {{ httpError.status }}<br />
-          {{ type }}
-        </ng-container>
-      </ng-container>
+      @switch (httpError?.status) { @case (undefined) {
+      {{ stringError | translate }}
+      } @case (0) { Server timeout } @default { Error code {{ httpError.status }}<br />
+      {{ type }}
+      } }
     </p>
-    <pre *ngIf="expanded">{{ error | json }}</pre>
+    @if (expanded) {
+    <pre>{{ error | json }}</pre>
+    }
   </div>
 </div>

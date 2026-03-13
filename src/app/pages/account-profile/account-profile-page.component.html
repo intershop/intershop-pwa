@@ -1,5 +1,3 @@
-<ish-account-profile
-  *ngIf="user$ | async as user"
-  [user]="user"
-  [subscribedToNewsletter]="subscribedToNewsletter$ | async"
-/>
+@if (user$ | async; as user) {
+<ish-account-profile [user]="user" [subscribedToNewsletter]="subscribedToNewsletter$ | async" />
+}

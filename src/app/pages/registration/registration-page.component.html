@@ -7,14 +7,11 @@
       <div class="col-md-10 col-lg-8 col-xl-6">
         <div class="row form-group">
           <div class="offset-md-4 col-md-8">
-            <div
-              *ngIf="form.invalid && registrationForm.submitted"
-              id="submit-button-help"
-              aria-live="polite"
-              class="visually-hidden"
-            >
+            @if (form.invalid && registrationForm.submitted) {
+            <div id="submit-button-help" aria-live="polite" class="visually-hidden">
               {{ 'form.submit.validation.message' | translate }}
             </div>
+            }
             <input
               class="btn btn-primary"
               type="submit"
@@ -36,4 +33,6 @@
 
 <ish-lazy-address-doctor />
 
-<ish-loading *ngIf="loading$ | async" />
+@if (loading$ | async) {
+<ish-loading />
+}

@@ -2,13 +2,13 @@ import { Action, ActionReducer, MetaReducer } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 import { identity } from 'rxjs';
 
-import { logoutUserSuccess } from 'ish-core/store/customer/user';
+import { resetUserData } from 'ish-core/store/customer/user';
 
 import { omit } from './functions';
 
 export function resetOnLogoutMeta<S>(reducer: ActionReducer<S>): ActionReducer<S> {
   return (state: S, action: Action) => {
-    if (action.type === logoutUserSuccess.type) {
+    if (action.type === resetUserData.type) {
       return reducer(undefined, action);
     }
     return reducer(state, action);
@@ -36,7 +36,7 @@ function saveMeta<S>(
   lifeTimeMinutes?: number
 ): MetaReducer<S, Action> {
   if (!key?.startsWith('_')) {
-    console.warn('saveMeta:', `store key ${prefix}/${key} is not excluded from universal state transfer.`);
+    console.warn('saveMeta:', `store key ${prefix}/${key} is not excluded from ssr state transfer.`);
   }
   const item = `${baseHref}-${prefix}-${key}`;
   return (reducer): ActionReducer<S> =>

@@ -19,8 +19,8 @@ describe('Error Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [ErrorComponent, MockComponent(SearchBoxComponent), ServerHtmlDirective],
+      imports: [MockComponent(SearchBoxComponent), TranslateModule.forRoot()],
+      declarations: [ErrorComponent, ServerHtmlDirective],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },

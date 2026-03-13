@@ -4,13 +4,28 @@ name: Sync Issue to Azure DevOps
 
 on:
   issues:
-    types: [opened, edited, deleted, closed, reopened, labeled, unlabeled, assigned]
+    types:
+      - opened
+      - edited
+      - deleted
+      - closed
+      - reopened
+  issue_comment:
+    types:
+      - created
+      - edited
+      - deleted
+
+concurrency:
+  group: issue-${{ github.event.issue.number }}
+  cancel-in-progress: false
 
 jobs:
   alert:
     runs-on: ubuntu-latest
     steps:
-      - uses: danhellem/github-actions-issue-to-work-item@master
+      - name: GitHub Issues to Azure DevOps
+        uses: danhellem/github-actions-issue-to-work-item@v2.5
         env:
           ado_token: '${{ secrets.ADO_PERSONAL_ACCESS_TOKEN }}'
           github_token: '${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}'

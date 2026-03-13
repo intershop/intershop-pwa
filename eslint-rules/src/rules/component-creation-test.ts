@@ -26,31 +26,18 @@ const componentCreationTestRule: TSESLint.RuleModule<keyof typeof messages> = {
   create: context => {
     // helper functions
     function findComponentTruthy(node: TSESTree.Node) {
-      return (
-        context
-          .getSourceCode()
-          .getText(node)
-          .search(/.*component.*toBeTruthy.*/) >= 0
-      );
+      return context.sourceCode.getText(node).search(/.*component.*toBeTruthy.*/) >= 0;
     }
     function findElementTruthy(node: TSESTree.Node) {
-      return (
-        context
-          .getSourceCode()
-          .getText(node)
-          .search(/.*lement.*toBeTruthy.*/) >= 0
-      );
+      return context.sourceCode.getText(node).search(/.*lement.*toBeTruthy.*/) >= 0;
     }
     function findFixtureDetectChanges(node: TSESTree.Node) {
       return (
-        context
-          .getSourceCode()
-          .getText(node)
-          .search(/[\s\S]*fixture[\s\S]*detectChanges[\s\S]*not\.toThrow[\s\S]*/) >= 0
+        context.sourceCode.getText(node).search(/[\s\S]*fixture[\s\S]*detectChanges[\s\S]*not\.toThrow[\s\S]*/) >= 0
       );
     }
 
-    if (!(normalizePath(context.getFilename()).search(/.(component|container).spec.ts/) > 0)) {
+    if (!(normalizePath(context.filename).search(/.(component|container).spec.ts/) > 0)) {
       return {};
     }
 

@@ -1,0 +1,48 @@
+{
+  "ci": {
+    "collect": {
+      "numberOfRuns": 5,
+      "url": [
+        "http://localhost:4200/home",
+        "http://localhost:4200/search/notebook",
+        "http://localhost:4200/computers-ctgComputers",
+        "http://localhost:4200/computers/notebooks-and-pcs/notebooks-ctgComputers.1835.151",
+        "http://localhost:4200/computers/notebooks-and-pcs/notebooks/microsoft-surface-book-2-256gb-152-prd201807231-04-ctgComputers.1835.151",
+        "http://localhost:4200/quick-order",
+        "http://localhost:4200/page/page.helpdesk.pagelet2-Page",
+        "http://localhost:4200/page/page.demodisclaimer",
+        "http://localhost:4200/compare"
+      ],
+      "settings": {
+        "preset": "desktop",
+        "chromeFlags": "--no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --disable-gpu --headless=new --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-renderer-backgrounding --disable-web-security --disable-features=TranslateUI --disable-ipc-flooding-protection",
+        "skipAudits": ["uses-http2"],
+        "onlyCategories": ["performance"]
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["warn", { "minScore": 0.9 }]
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage",
+      "outputDir": ".lighthouseci"
+    }
+  },
+  "pages": {
+    "http://localhost:4200/home": ["Home"],
+    "http://localhost:4200/search/notebook": ["Search"],
+    "http://localhost:4200/computers-ctgComputers": ["Category"],
+    "http://localhost:4200/computers/notebooks-and-pcs/notebooks-ctgComputers.1835.151": [
+      "Product List"
+    ],
+    "http://localhost:4200/computers/notebooks-and-pcs/notebooks/microsoft-surface-book-2-256gb-152-prd201807231-04-ctgComputers.1835.151": [
+      "Product Detail"
+    ],
+    "http://localhost:4200/quick-order": ["Quick Order"],
+    "http://localhost:4200/page/page.helpdesk.pagelet2-Page": ["Helpdesk"],
+    "http://localhost:4200/page/page.demodisclaimer": ["Demo Disclaimer"],
+    "http://localhost:4200/compare": ["Product Comparison"]
+  }
+}

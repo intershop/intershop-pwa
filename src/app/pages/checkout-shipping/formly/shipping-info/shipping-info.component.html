@@ -1,22 +1,24 @@
-<ng-container *ngIf="shippingMethod$ | async as shippingMethod">
-  <span>{{ shippingMethod.name }}:</span>&nbsp;
-  <strong *ngIf="shippingMethod.shippingCosts">{{ shippingMethod.shippingCosts | ishPrice }}&nbsp;</strong>
-  <span
-    *ngIf="shippingMethod.shippingTimeMin && shippingMethod.shippingTimeMax"
-    class="form-text form-text-inline d-block"
-  >
-    {{ 'checkout.shipping.delivery_time.description' | translate }}
-    <span *ngIf="shippingMethod.shippingTimeMin === 0 && shippingMethod.shippingTimeMax === 1">
-      {{ 'checkout.shipping.delivery_time.within24' | translate }}
-    </span>
-    <span *ngIf="shippingMethod.shippingTimeMin === 0 && shippingMethod.shippingTimeMax > 1">
-      {{ 'checkout.shipping.delivery_time.within' | translate : { '0': shippingMethod?.shippingTimeMax } }}
-    </span>
-    <span *ngIf="shippingMethod.shippingTimeMin > 0">
-      {{
-        'checkout.shipping.delivery_time'
-          | translate : { '0': shippingMethod.shippingTimeMin, '1': shippingMethod.shippingTimeMax }
-      }}
-    </span>
+@if (shippingMethod$ | async; as shippingMethod) { <span>{{ shippingMethod.name }}:</span>&nbsp; @if
+(shippingMethod.shippingCosts) {
+<strong>{{ shippingMethod.shippingCosts | ishPrice }}&nbsp;</strong>
+} @if (shippingMethod.shippingTimeMin && shippingMethod.shippingTimeMax) {
+<span class="form-text form-text-inline d-block">
+  {{ 'checkout.shipping.delivery_time.description' | translate }}
+  @if (shippingMethod.shippingTimeMin === 0 && shippingMethod.shippingTimeMax === 1) {
+  <span>
+    {{ 'checkout.shipping.delivery_time.within24' | translate }}
   </span>
-</ng-container>
+  } @if (shippingMethod.shippingTimeMin === 0 && shippingMethod.shippingTimeMax > 1) {
+  <span>
+    {{ 'checkout.shipping.delivery_time.within' | translate : { '0': shippingMethod?.shippingTimeMax } }}
+  </span>
+  } @if (shippingMethod.shippingTimeMin > 0) {
+  <span>
+    {{
+      'checkout.shipping.delivery_time'
+        | translate : { '0': shippingMethod.shippingTimeMin, '1': shippingMethod.shippingTimeMax }
+    }}
+  </span>
+  }
+</span>
+} }

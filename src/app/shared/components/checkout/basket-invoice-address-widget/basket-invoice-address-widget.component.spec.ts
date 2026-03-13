@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -40,7 +39,6 @@ describe('Basket Invoice Address Widget Component', () => {
       declarations: [
         BasketInvoiceAddressWidgetComponent,
         MockComponent(AddressComponent),
-        MockComponent(FaIconComponent),
         MockComponent(FormlyCustomerAddressFormComponent),
         MockComponent(LazyAddressDoctorComponent),
         MockDirective(NgbCollapse),
@@ -85,7 +83,6 @@ describe('Basket Invoice Address Widget Component', () => {
 
       expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
         [
-          "fa-icon",
           "ish-address",
           "ish-formly-customer-address-form",
         ]

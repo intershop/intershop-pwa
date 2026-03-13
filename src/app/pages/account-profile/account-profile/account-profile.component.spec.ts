@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
+import { MockDirective, MockPipe } from 'ng-mocks';
 
 import { IdentityProviderCapabilityDirective } from 'ish-core/directives/identity-provider-capability.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -23,7 +22,6 @@ describe('Account Profile Component', () => {
       declarations: [
         AccountProfileComponent,
         IdentityProviderCapabilityDirective,
-        MockComponent(FaIconComponent),
         MockDirective(ServerHtmlDirective),
         MockPipe(ServerSettingPipe, () => true),
       ],

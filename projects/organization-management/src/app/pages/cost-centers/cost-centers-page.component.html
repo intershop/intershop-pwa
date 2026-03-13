@@ -6,165 +6,153 @@
     <ish-budget-info [suffix]="'account.organization.budget_price_type.suffix.info'" />
   </div>
   <div class="ms-auto py-2">
-    <a
-      *ngIf="!!(costCentersError$ | async) === false"
-      routerLink="create"
-      class="btn btn-secondary"
-      data-testing-id="add-cost-center-link"
-      >{{ 'account.costcenter.list.link.add' | translate }}</a
-    >
+    @if (!!(costCentersError$ | async) === false) {
+    <a routerLink="create" class="btn btn-secondary" data-testing-id="add-cost-center-link">{{
+      'account.costcenter.list.link.add' | translate
+    }}</a>
+    }
   </div>
 </div>
 
 <div class="loading-container">
   <ish-cost-centers-filter (modelChange)="loadFilteredCostCenters($event)" />
 
-  <ng-container *ngIf="costCentersForPage$ | async as costCenters">
-    <ng-container *ngIf="costCenters.length > 0; else emptyList">
-      <table
-        cdk-table
-        [dataSource]="costCenters"
-        class="table table-lg mobile-optimized"
-        data-testing-id="costCenter-list"
+  @if (costCentersForPage$ | async; as costCenters) { @if (costCenters.length > 0) {
+
+  <table cdk-table [dataSource]="costCenters" class="table table-lg mobile-optimized" data-testing-id="costCenter-list">
+    <!-- Cost Center Id -->
+    <ng-container cdkColumnDef="costCenterId">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-id">
+        {{ 'account.costcenter.list.header.no' | translate }}
+      </th>
+      <td cdk-cell *cdkCellDef="let costCenter" [attr.data-label]="'account.costcenter.list.header.no' | translate">
+        <a [routerLink]="[costCenter.id]">{{ costCenter.costCenterId }}</a
+        >@if (costCenter.active === false) {
+        <span class="input-help"> {{ 'account.costCenter.status.inactive' | translate }}</span>
+        }
+      </td>
+    </ng-container>
+
+    <!-- Cost Center Name -->
+    <ng-container cdkColumnDef="costCenterName">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-name">
+        {{ 'account.costcenter.list.header.name' | translate }}
+      </th>
+      <td cdk-cell *cdkCellDef="let costCenter" [attr.data-label]="'account.costcenter.list.header.name' | translate">
+        <a [routerLink]="[costCenter.id]">{{ costCenter.name }}</a>
+      </td>
+    </ng-container>
+
+    <!-- Cost Center Manager -->
+    <ng-container cdkColumnDef="costCenterManager">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-manager">
+        {{ 'account.costcenter.list.header.manager' | translate }}
+      </th>
+      <td
+        cdk-cell
+        *cdkCellDef="let costCenter"
+        [attr.data-label]="'account.costcenter.list.header.manager' | translate"
       >
-        <!-- Cost Center Id -->
-        <ng-container cdkColumnDef="costCenterId">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-id">
-            {{ 'account.costcenter.list.header.no' | translate }}
-          </th>
-          <td cdk-cell *cdkCellDef="let costCenter" [attr.data-label]="'account.costcenter.list.header.no' | translate">
-            <a [routerLink]="[costCenter.id]">{{ costCenter.costCenterId }}</a
-            ><span *ngIf="costCenter.active === false" class="input-help">
-              {{ 'account.costCenter.status.inactive' | translate }}</span
-            >
-          </td>
-        </ng-container>
-
-        <!-- Cost Center Name -->
-        <ng-container cdkColumnDef="costCenterName">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-name">
-            {{ 'account.costcenter.list.header.name' | translate }}
-          </th>
-          <td
-            cdk-cell
-            *cdkCellDef="let costCenter"
-            [attr.data-label]="'account.costcenter.list.header.name' | translate"
-          >
-            <a [routerLink]="[costCenter.id]">{{ costCenter.name }}</a>
-          </td>
-        </ng-container>
-
-        <!-- Cost Center Manager -->
-        <ng-container cdkColumnDef="costCenterManager">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-manager">
-            {{ 'account.costcenter.list.header.manager' | translate }}
-          </th>
-          <td
-            cdk-cell
-            *cdkCellDef="let costCenter"
-            [attr.data-label]="'account.costcenter.list.header.manager' | translate"
-          >
-            {{ costCenter.costCenterOwner.firstName }} {{ costCenter.costCenterOwner.lastName }}
-          </td>
-        </ng-container>
-
-        <!-- Cost Center Budget -->
-        <ng-container cdkColumnDef="costCenterBudget">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-budget">
-            {{ 'account.costcenter.list.header.budgetspent' | translate }}
-          </th>
-          <td
-            cdk-cell
-            *cdkCellDef="let costCenter"
-            [attr.data-label]="'account.costcenter.list.header.budgetspent' | translate"
-          >
-            <ish-cost-center-budget [costCenter]="costCenter" />
-          </td>
-        </ng-container>
-
-        <!-- Actions -->
-        <ng-container cdkColumnDef="actions">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-actions"></th>
-          <td cdk-cell *cdkCellDef="let costCenter" class="column-price">
-            <ng-container *ngIf="isEditable(costCenter) | async">
-              <!-- Deactivate -->
-              <button
-                *ngIf="costCenter.active; else activateCostCenter"
-                type="button"
-                class="btn-tool btn-link"
-                title="{{ 'account.costcenter.deactivate.button.title' | translate }}"
-                (click)="openConfirmationDialog(costCenter, deactivateDialog)"
-                data-testing-id="deactivate-cost-center"
-              >
-                <fa-icon [icon]="['fas', 'ban']" />
-              </button>
-
-              <!-- Activate -->
-              <ng-template #activateCostCenter>
-                <button
-                  type="button"
-                  class="btn-tool btn-link"
-                  title="{{ 'account.costcenter.activate.button.title' | translate }}"
-                  (click)="activate(costCenter)"
-                  data-testing-id="activate-cost-center"
-                >
-                  <fa-icon [icon]="['fas', 'check-circle']" />
-                </button>
-              </ng-template>
-
-              <!-- Delete -->
-              <button
-                type="button"
-                class="btn-tool btn-link"
-                [ngClass]="{ inactive: !isDeletable(costCenter) }"
-                title="{{
-                  isDeletable(costCenter)
-                    ? ('account.costcenter.delete.link' | translate)
-                    : ('account.costcenter.delete.disabled.icon' | translate)
-                }}"
-                (click)="openConfirmationDialog(costCenter, deleteDialog)"
-                data-testing-id="delete-cost-center"
-              >
-                <fa-icon [icon]="['fas', 'trash-alt']" />
-              </button>
-            </ng-container>
-          </td>
-        </ng-container>
-
-        <!-- Header and Row Declarations -->
-        <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
-        <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay"></tr>
-      </table>
+        {{ costCenter.costCenterOwner.firstName }} {{ costCenter.costCenterOwner.lastName }}
+      </td>
     </ng-container>
 
-    <ng-container *ngIf="pagingInfo$ | async as paging">
-      <div class="row" *ngIf="paging.total > pageSize">
-        <div class="d-flex w-100 grey-panel align-items-center flex-wrap justify-content-between px-3 py-2 mb-3 mx-3">
-          <span class="text-nowrap">{{
-            'account.costcenter.paging.items.label' | translate : { '0': paging.total }
-          }}</span>
-          <ish-paging
-            [currentPage]="pageNumber$ | async"
-            [lastPage]="getTotalPages(paging.total)"
-            (goToPage)="loadMoreCostCenters($event)"
-          />
-        </div>
-      </div>
+    <!-- Cost Center Budget -->
+    <ng-container cdkColumnDef="costCenterBudget">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-budget">
+        {{ 'account.costcenter.list.header.budgetspent' | translate }}
+      </th>
+      <td
+        cdk-cell
+        *cdkCellDef="let costCenter"
+        [attr.data-label]="'account.costcenter.list.header.budgetspent' | translate"
+      >
+        <ish-cost-center-budget [costCenter]="costCenter" />
+      </td>
     </ng-container>
 
-    <!-- Empty List -->
-    <ng-template #emptyList>
-      <p data-testing-id="emptyList">
-        {{
-          !filtersActive
-            ? ('account.costcenter.list.noitems' | translate)
-            : ('account.costcenter.filter.no_results_found_message' | translate)
-        }}
-      </p>
-    </ng-template>
-  </ng-container>
+    <!-- Actions -->
+    <ng-container cdkColumnDef="actions">
+      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-actions"></th>
+      <td cdk-cell *cdkCellDef="let costCenter" class="column-price">
+        @if (isEditable(costCenter) | async) {
 
-  <ish-loading *ngIf="costCentersLoading$ | async" />
+        <!-- Deactivate -->
+        @if (costCenter.active) {
+        <button
+          type="button"
+          class="btn-tool btn-link"
+          title="{{ 'account.costcenter.deactivate.button.title' | translate }}"
+          (click)="openConfirmationDialog(costCenter, deactivateDialog)"
+          data-testing-id="deactivate-cost-center"
+        >
+          <i class="bi bi-ban"></i>
+        </button>
+        } @else {
+
+        <button
+          type="button"
+          class="btn-tool btn-link"
+          title="{{ 'account.costcenter.activate.button.title' | translate }}"
+          (click)="activate(costCenter)"
+          data-testing-id="activate-cost-center"
+        >
+          <i class="bi bi-check-circle"></i>
+        </button>
+
+        }
+
+        <!-- Activate -->
+
+        <!-- Delete -->
+        <button
+          type="button"
+          class="btn-tool btn-link"
+          [ngClass]="{ inactive: !isDeletable(costCenter) }"
+          title="{{
+            isDeletable(costCenter)
+              ? ('account.costcenter.delete.link' | translate)
+              : ('account.costcenter.delete.disabled.icon' | translate)
+          }}"
+          (click)="openConfirmationDialog(costCenter, deleteDialog)"
+          data-testing-id="delete-cost-center"
+        >
+          <i class="bi bi-trash-fill"></i>
+        </button>
+
+        }
+      </td>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay"></tr>
+  </table>
+
+  } @else {
+  <!-- Empty List -->
+  <p data-testing-id="emptyList">
+    {{
+      !filtersActive
+        ? ('account.costcenter.list.noitems' | translate)
+        : ('account.costcenter.filter.no_results_found_message' | translate)
+    }}
+  </p>
+
+  } @if (pagingInfo$ | async; as paging) { @if (paging.total > pageSize) {
+  <div class="row">
+    <div class="d-flex w-100 grey-panel align-items-center flex-wrap justify-content-between px-3 py-2 mb-3 mx-3">
+      <span class="text-nowrap">{{ 'account.costcenter.paging.items.label' | translate : { '0': paging.total } }}</span>
+      <ish-paging
+        [currentPage]="pageNumber$ | async"
+        [lastPage]="getTotalPages(paging.total)"
+        (goToPage)="loadMoreCostCenters($event)"
+      />
+    </div>
+  </div>
+  } } } @if (costCentersLoading$ | async) {
+  <ish-loading />
+  }
 </div>
 
 <!--  dialogs -->
@@ -189,7 +177,8 @@
   }"
   (confirmed)="deactivate()"
 >
-  <p *ngIf="selectedCostCenter?.pendingOrders || selectedCostCenter?.approvedOrders">
+  @if (selectedCostCenter?.pendingOrders || selectedCostCenter?.approvedOrders) {
+  <p>
     {{
       'account.costcenter.deactivate.text'
         | translate
@@ -200,5 +189,6 @@
             }
     }}
   </p>
+  }
   {{ 'account.costcenter.deactivate.question' | translate }}
 </ish-modal-dialog>

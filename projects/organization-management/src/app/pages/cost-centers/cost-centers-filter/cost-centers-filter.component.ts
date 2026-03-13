@@ -1,4 +1,3 @@
-// eslint-disable-next-line ish-custom-rules/ordered-imports
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -15,6 +14,7 @@ import { UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, of } from 'rxjs';
+
 import { CostCenterQuery } from '../../../models/cost-center-query/cost-center-query.model';
 
 interface FormModel extends Record<string, unknown> {

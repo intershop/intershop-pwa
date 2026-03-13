@@ -1,7 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { of } from 'rxjs';
@@ -45,19 +44,17 @@ describe('Auth0 Identity Provider', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([
-          { path: 'register', children: [] },
-          { path: 'register/sso', children: [] },
-          { path: 'account', children: [] },
-          { path: 'logout', children: [] },
-        ]),
-      ],
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },
         { provide: ApiTokenService, useFactory: () => instance(apiTokenService) },
         { provide: APP_BASE_HREF, useValue: baseHref },
         provideMockStore(),
+        provideRouter([
+          { path: 'register', children: [] },
+          { path: 'register/sso', children: [] },
+          { path: 'account', children: [] },
+          { path: 'logout', children: [] },
+        ]),
       ],
     }).compileComponents();
 
@@ -96,7 +93,7 @@ describe('Auth0 Identity Provider', () => {
       auth0IdentityProvider.init(auth0Config);
       tick(500);
       verify(apiService.post(anything(), anything())).once();
-      expect(capture(storeSpy$.dispatch).first()).toMatchInlineSnapshot(`
+      expect(capture(storeSpy$.dispatch).first()[0]).toMatchInlineSnapshot(`
         [User] Load User by API Token:
           
       `);

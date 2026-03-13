@@ -18,7 +18,6 @@ import {
   updateRequisitionStatusFromList,
 } from '../store/requisitions';
 
-/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class RequisitionManagementFacade {
   constructor(private store: Store, private router: Router) {}

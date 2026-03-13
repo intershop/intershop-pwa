@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
-import { Filter } from 'ish-core/models/filter/filter.model';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 @Component({
@@ -12,8 +11,4 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
 export class FilterNavigationHorizontalComponent {
   @Input({ required: true }) filterNavigation: FilterNavigation;
   @Output() applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
-
-  trackByFn(_: number, item: Filter) {
-    return item.id;
-  }
 }

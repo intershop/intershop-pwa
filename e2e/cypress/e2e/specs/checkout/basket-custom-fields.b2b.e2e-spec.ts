@@ -26,14 +26,14 @@ describe('Edit and Display Custom Fields on Cart and Checkout B2B', () => {
     createB2BUserViaREST(_.user);
     ProductDetailPage.navigateTo(_.sku);
     at(ProductDetailPage, page => {
-      page.addProductToCart();
+      page.addProductToCart().its('response.statusCode').should('equal', 201);
     });
     ProductDetailPage.navigateTo(_.sku2);
   });
 
   it('should display custom form field toggle links on cart page', () => {
     at(ProductDetailPage, page => {
-      page.addProductToCart();
+      page.addProductToCart().its('response.statusCode').should('equal', 201);
       page.header.miniCart.goToCart();
     });
     at(CartPage, page => {
@@ -49,9 +49,12 @@ describe('Edit and Display Custom Fields on Cart and Checkout B2B', () => {
 
   it('should allow the user to enter a basket custom form field value', () => {
     at(CartPage, page => {
-      page.basketCustomFieldsToggleLink.click();
+      page.basketCustomFieldsToggleLink.click({ scrollBehavior: false });
       page.basketCustomFieldsForm.should('be.visible');
-
+      cy.wait(500);
+      cy.scrollTo('top');
+      cy.wait(300);
+      page.basketCustomFieldsForm.find('input').first().scrollIntoView();
       page.submitBasketCustomFieldValue(_.projectNumber);
       page.basketCustomFieldsForm.should('not.be.visible');
       page.basketCustomFields.should('contain', _.projectNumber);
@@ -63,6 +66,7 @@ describe('Edit and Display Custom Fields on Cart and Checkout B2B', () => {
       page.lineItemCustomFieldsToggleLinks.last().click();
       page.lastLineItemCustomFieldsForm.should('be.visible');
 
+      page.lastLineItemCustomFieldsForm.find('input').last().scrollIntoView();
       page.submitLastLineItemCustomFieldValue(_.commissionNumber);
       page.lastLineItemCustomFieldsForm.should('not.be.visible');
       page.getLineItemCustomFields(_.sku2).should('contain', _.commissionNumber);

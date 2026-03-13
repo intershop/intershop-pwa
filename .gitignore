@@ -39,3 +39,6 @@ Thumbs.db
 
 # batch file for personal development purposes
 /dev.bat
+
+# Lighthouse
+.lighthouseci/

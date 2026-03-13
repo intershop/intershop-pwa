@@ -1,13 +1,11 @@
-<ng-container *ngIf="searchTerm$ | async as searchTerm">
-  <!-- search result with products -->
-  <ng-container *ngIf="(numberOfItems$ | async) || (filterParams$ | async); else noResult">
-    <ish-search-result [searchTerm]="searchTerm" [deviceType]="deviceType$ | async" />
-  </ng-container>
-
-  <!-- empty search result -->
-  <ng-template #noResult>
-    <ish-search-no-result *ngIf="(searchLoading$ | async) === false" [searchTerm]="searchTerm" />
-  </ng-template>
-
-  <ish-loading *ngIf="searchLoading$ | async" />
-</ng-container>
+@if (searchTerm$ | async; as searchTerm) {
+<!-- search result with products -->
+@if ((numberOfItems$ | async) || (filterParams$ | async)) {
+<ish-search-result [searchTerm]="searchTerm" [deviceType]="deviceType$ | async" />
+} @else { @if ((searchLoading$ | async) === false) {
+<ish-search-no-result [searchTerm]="searchTerm" />
+} }
+<!-- empty search result -->
+@if (searchLoading$ | async) {
+<ish-loading />
+} }

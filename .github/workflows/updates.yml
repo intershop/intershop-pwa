@@ -7,11 +7,6 @@ on:
       - develop
       - upgrade/**
       - update/**
-  # schedule:
-  #   - cron: '0 0 * * *'
-
-env:
-  NODE_VERSION: 22.17.1
 
 jobs:
   Updates:
@@ -19,11 +14,13 @@ jobs:
     continue-on-error: true
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js 22
-        uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: package.json
           cache: npm
 
       - name: Install root dependencies

@@ -1,4 +1,4 @@
-name: 'MarkConflicts'
+name: Mark Conflicts
 
 on:
   workflow_dispatch:

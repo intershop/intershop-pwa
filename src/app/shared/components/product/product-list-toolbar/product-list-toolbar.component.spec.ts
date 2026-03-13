@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { RouterModule, provideRouter } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockPipe } from 'ng-mocks';
 
 import { ProductListToolbarComponent } from './product-list-toolbar.component';
 
@@ -13,8 +12,9 @@ describe('Product List Toolbar Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(FaIconComponent), MockPipe(TranslatePipe), ProductListToolbarComponent],
-      imports: [RouterTestingModule],
+      declarations: [MockPipe(TranslatePipe), ProductListToolbarComponent],
+      imports: [RouterModule],
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 

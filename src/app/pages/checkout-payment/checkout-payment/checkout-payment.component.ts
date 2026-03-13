@@ -22,6 +22,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PriceType } from 'ish-core/models/price/price.model';
+import { PaypalAdapterTypes } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
@@ -119,6 +120,32 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     this.parameterForm.reset();
   }
 
+  selectedPayPalMethod(): PaymentMethod {
+    if (
+      this.basket?.payment?.capabilities?.includes('PaypalCheckout') &&
+      this.basket?.payment?.capabilities?.includes('RedirectBeforeCheckout') &&
+      this.basket?.payment?.redirectRequired
+    ) {
+      return this.paymentMethods?.find(pm => pm.id.includes(this.basket.payment.paymentInstrument.id));
+    }
+    return;
+  }
+
+  getPaypalAdapterType(method?: PaymentMethod): PaypalAdapterTypes {
+    if (method?.capabilities?.includes('PaypalExperienceContext')) {
+      return 'CardFields';
+    } else {
+      return 'Buttons';
+    }
+  }
+
+  /**
+   * Necessary for PayPal Privacy Policy to determine the invoice country code for the buyer, default is 'us' if no invoice address is present
+   */
+  getCustomerInvoiceCountryCode(): string {
+    return this.basket?.invoiceToAddress ? this.basket.invoiceToAddress.countryCode?.toLowerCase() : 'us';
+  }
+
   /**
    * Determine whether payment parameter form for a payment method is opened or not
    *
@@ -201,7 +228,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     });
   }
 
-  setBasketPayment(paymentInstrumentId: string) {
+  private setBasketPayment(paymentInstrumentId: string) {
     this.redirectStatus$.next(undefined);
     this.updatePaymentMethod.emit(paymentInstrumentId);
   }

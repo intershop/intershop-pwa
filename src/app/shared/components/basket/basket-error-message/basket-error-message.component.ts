@@ -10,4 +10,11 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 export class BasketErrorMessageComponent {
   @Input({ required: true }) error: HttpError;
   @Input() cssClass = 'alert alert-danger';
+
+  // default values to control scrolling behavior
+  scrollSpacing = 64;
+
+  get scrollToMessage(): boolean {
+    return !!this.error;
+  }
 }

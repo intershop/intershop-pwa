@@ -1,16 +1,16 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ReplaySubject } from 'rxjs';
 
 import { Keyword } from 'ish-core/models/keyword/keyword.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { HighlightPipe } from 'ish-core/pipes/highlight.pipe';
 
 @Component({
   selector: 'ish-suggest-keywords',
   templateUrl: './suggest-keywords.component.html',
   standalone: true,
-  imports: [CommonModule, PipesModule, TranslateModule],
+  imports: [AsyncPipe, HighlightPipe, SlicePipe, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestKeywordsComponent {

@@ -258,11 +258,11 @@ a {
   }
 
   &-success {
-    color: $success-color !important;
+    color: $color-special-success !important;
   }
 
   &-error {
-    color: $error-color !important;
+    color: $color-special-error !important;
   }
 }
 
@@ -271,19 +271,6 @@ a {
     margin-right: 7.5px;
     margin-left: 7.5px;
     content: '|';
-  }
-}
-
-.ng-fa-icon {
-  &.footer-icon::before {
-    font-size: 50px;
-    color: $text-color-inverse;
-  }
-}
-
-.top-header {
-  .ng-fa-icon {
-    top: 1px;
   }
 }
 
@@ -382,12 +369,6 @@ img.marketing {
 }
 
 // Detail links and tooltips
-[data-bs-toggle='popover'] {
-  .ng-fa-icon {
-    padding-left: $space-default * 0.25;
-    font-size: 120%;
-  }
-}
 
 .popover-header {
   margin-top: 0;
@@ -437,11 +418,11 @@ img.marketing {
 }
 
 .badge.bg-primary {
-  background-color: $color-special-tertiary !important;
+  background-color: $color-special-info !important;
 }
 
 .badge.border-primary {
-  border-color: $color-special-tertiary !important;
+  border-color: $color-special-info !important;
 }
 
 .alert {

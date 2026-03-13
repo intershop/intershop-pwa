@@ -8,65 +8,120 @@ kb_sync_latest_only
 # Logging
 
 - [Server-Side Rendering (SSR)](#server-side-rendering-ssr)
+  - [Log Level](#log-level)
+  - [Log Format](#log-format)
+  - [Log Details](#log-details)
 - [NGINX](#nginx)
-- [Logging to an External Device](#logging-to-an-external-device)
-  - [PWA (SSR with PM2)](#pwa-ssr-with-pm2)
-  - [NGINX](#nginx-1)
+  - [Log Level](#log-level-1)
+  - [Log Format](#log-format-1)
+  - [Log Debug](#log-debug)
+- [Container Log Management](#container-log-management)
+- [Request Tracing](#request-tracing)
 - [Further References](#further-references)
 
 ## Server-Side Rendering (SSR)
 
-The _express.js_ image serving the Angular Universal Server-Side Rendering can be provisioned to log extended information to the console by supplying the environment variable `LOGGING=true`.
+The _express.js_ server that handles Angular Universal server-side rendering can log extended information.
 
-Information logged to the console includes the following:
+```yaml
+# docker-compose.yml
+services:
+  pwa:
+    environment:
+      LOGLEVEL: 'info' # trace, debug, info, warn, error, fatal - default: error
+      LOGFORMAT: 'json' # text, json - default: json (ECS-compatible)
+```
 
-- Requests to the SSR process are logged with [morgan](https://github.com/expressjs/morgan) (see configuration in _server.ts_) in the form of:
+### Log Level
 
-  `<method> <url> <status> <bytes> - <duration> ms`
+The log level is controlled by the environment variable `LOGLEVEL` with the levels `trace`, `debug`, `info`, `warn`, `error` (default) and `fatal`.
 
-- Requests handled by the SSR process are logged at the beginning with `SSR <url>` and at the end with `RES <status> <url>`.
+When HTTP requests and responses are logged, the log level is determined by the response status code:
 
-- Further the redirect actions of the [Hybrid Approach](./hybrid-approach.md) are logged with `RED <url>`.
+- 2xx and 3xx: `info`
+- 4xx: `warn`
+- 5xx: `error` (default)
 
-- Uncaught `Error` objects thrown in the SSR process, including `HttpErrorResponse` and runtime errors, are printed as well.
+### Log Format
+
+The SSR application supports two log formats controlled by the environment variable `LOGFORMAT`:
+
+- `json` (default): Uses [pino](https://github.com/pinojs/pino) for high-performance structured JSON logs compliant with the [Elastic Common Schema (ECS)](https://www.elastic.co/guide/en/ecs/current/index.html) specification
+- `text`: Uses pino with [pino-pretty](https://github.com/pinojs/pino-pretty) for human-readable text logs
+
+### Log Details
+
+SSR request processing produces two separate log entries with different `message` field values:
+
+- `SSR`: Logged when SSR starts processing a request (always at `info` level)
+- `RES`: Logged when SSR finishes processing and sends the response (log level depends on response status code)
+
+Redirect actions of the [Hybrid Approach](./hybrid-approach.md) are logged with `RED (Hybrid redirect)`.
+
+PM2 process manager logs will still appear regardless of the `LOGLEVEL` configuration, as they are infrastructure-level logs.
 
 ## NGINX
 
-The NGINX image providing multi-channel configuration uses the default logging capabilities of [nginx](https://www.nginx.com/).
-You can enable `json` formatted logging by passing the environment variable `LOGFORMAT=json` to the container.
-If no `LOGFORMAT` variable is passed, the container uses `main` as its default format.
-
-Additionally, the environment variable `DEBUG=true` provides even more debugging output in the NGINX logs.
-
-- [Configure Logging](https://docs.nginx.com/nginx/admin-guide/monitoring/logging/)
-- [Debugging Nginx Configuration](https://easyengine.io/tutorials/nginx/debugging/)
-
-## Logging to an External Device
-
-Within PWA development systems, information from the SSR and NGINX containers can be stored in external log files for analysis purposes.
-When launching your PWA as a Docker image/container, you can copy the log information from the containers which can be stored in the local file system using Docker volumes.
-Enabled volumes allow you to write SSR and NGINX logs in local Unix/Windows directories.
-
-The path is composed as follows:
-
-- `d:/pwa/logs` - The local Windows/Unix directory of the development machine where the logs should be stored.
-- `/var/log/` - The log location in the SSR/NGINX container.
-
-To enable logging to volumes, copy the examples below to the according `docker-compose.yml` sections.
-
-### PWA (SSR with PM2)
+The NGINX image that provides multi-channel configuration uses custom logging formats for structured output.
 
 ```yaml
-volumes:
-  - d:/pwa/logs:/.pm2/logs/
+# docker-compose.yml
+services:
+  nginx:
+    environment:
+      LOGLEVEL: 'info' # info (all), warn (4xx+5xx), error (5xx) - default: error
+      LOGFORMAT: 'json' # text, json - default: json (ECS-compatible)
+      # DEBUG: 1
 ```
 
-### NGINX
+### Log Level
 
-```yaml
-volumes:
-  - d:/pwa/logs:/var/log/
-```
+The log level is controlled by the environment variable `LOGLEVEL` with the levels `info`, `warn` and `error` (default).
+
+HTTP requests and responses are logged with log levels based on the response status code:
+
+- 2xx and 3xx: `info`
+- 4xx: `warn`
+- 5xx: `error` (default)
+
+### Log Format
+
+NGINX supports two log formats controlled by the environment variable `LOGFORMAT`:
+
+- `json` (default): Uses a custom-defined JSON log format compliant with the [Elastic Common Schema (ECS)](https://www.elastic.co/guide/en/ecs/current/index.html) specification
+- `text`: Uses a plain text log format
+
+### Log Debug
+
+The environment variable `DEBUG=1` enables verbose debugging output in the NGINX logs.
+
+## Container Log Management
+
+Both the SSR and NGINX containers write all logs exclusively to stdout.
+
+## Request Tracing
+
+Both NGINX and SSR logs include a `trace.id` field that allows correlating all log entries for a single request across the entire stack.
+
+1. When a request arrives at NGINX, it either uses an incoming `X-Request-ID` header (from an upstream proxy/CDN) or generates a new UUID.
+2. NGINX forwards this ID to SSR via the `X-Request-ID` header.
+3. SSR includes the trace ID in all its logs (SSR start, ICM API calls, response).
+4. The `X-Request-ID` is returned in the response header for client-side debugging.
+
+Simplified log sequence with the same `trace.id` and `LOGLEVEL=info`:
+
+| timestamp      | trace.id | logger            | message                          | url                     |
+| -------------- | -------- | ----------------- | -------------------------------- | ----------------------- |
+| 15:00:57.040   | 2f832... | Server            | SSR                              | /en/home;lang=en_US;... |
+| 15:00:57.284   | 2f832... | SSRLogInterceptor | GET                              | .../configurations      |
+| ...            | ...      | SSRLogInterceptor | GET                              | (more ICM API calls)    |
+| 15:00:57.696   | 2f832... | Server            | RES                              | /en/home;lang=en_US;... |
+| 15:00:57.696   | 2f832... | Server            | GET                              | /en/home;lang=en_US;... |
+| 15:00:57+00:00 | 2f832... | nginx             | GET /en/home 200 16555 - 0.661 s | /en/home                |
+
+When NGINX serves a cached response (`nginx.cache.status` field indicates `HIT`), only the NGINX log entry appears (SSR is not involved).
+
+The nginx logs include a `nginx.timestamp_ms` field containing the Unix epoch timestamp in milliseconds, which can be useful for precise timing analysis and log correlation.
 
 ## Further References
 

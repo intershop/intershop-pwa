@@ -18,7 +18,6 @@ import {
   productNotificationsActions,
 } from '../store/product-notification';
 
-/* eslint-disable @typescript-eslint/member-ordering */
 @Injectable({ providedIn: 'root' })
 export class ProductNotificationsFacade {
   constructor(private store: Store) {}

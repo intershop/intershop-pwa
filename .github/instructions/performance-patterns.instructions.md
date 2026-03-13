@@ -7,7 +7,6 @@ applyTo: '**/*.ts'
 ### Component Performance
 
 - **OnPush Strategy:** Always use `ChangeDetectionStrategy.OnPush`
-- **TrackBy Functions:** Use `trackBy` with `*ngFor` for dynamic lists
 - **Subscription Management:** Unsubscribe properly to prevent memory leaks
 - **Lazy Loading:** Use lazy loading for modules and components
 

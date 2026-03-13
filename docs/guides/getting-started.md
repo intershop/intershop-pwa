@@ -23,10 +23,10 @@ kb_sync_latest_only
 ## Quick Start
 
 Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager.
-Currently Node.js 22.17.1 LTS with the corresponding npm 10.9.2 is used for development.
+Currently Node.js 22.22.0 LTS with the corresponding npm 10.9.4 is used for development.
 
 The project uses [Angular CLI](https://angular.io/cli) which has to be installed globally.
-Run `npm install -g @angular/cli@16` once to globally install Angular CLI on your development machine.
+Run `npm install -g @angular/cli@17` once to globally install Angular CLI on your development machine.
 Make sure to install the Angular CLI version that fits to our current project dependency Angular version.
 
 ### Step 1 - Clone the Project
@@ -64,7 +64,7 @@ ng serve --open
 
 For more information about the development environment configuration, server, and tools consult the according chapters in the [Development Guide](./development.md).
 
-To build and start the Intershop PWA with Server-Side Rendering for testing but without the automatic building and reloading of code changes `npm start` works as well and does not require Angular CLI to be installed.
+To build and start the Intershop PWA with server-side rendering for testing but without the automatic building and reloading of code changes `npm start` works as well and does not require Angular CLI to be installed.
 
 ## Customization
 
@@ -100,7 +100,7 @@ Build it with `docker build -t my_pwa .`.
 To run the PWA with multiple channels you can use the nginx docker image supplied in the sub folder [nginx](../../nginx).
 
 In general, the deployment artifacts of the Intershop PWA are generated to the _dist_ folder of the project.
-Use `npm run build` to generate an Angular Universal enabled version.
+Use `npm run build` to generate an Angular SSR enabled version.
 On the server the _dist/server.js_ script has to be executed with `node`.
 Alternatively, you can use `npm run build client` to get an application using browser rendering.
 All the files under `dist/browser` have to be served statically.
@@ -155,5 +155,7 @@ However, they need to be prefixed to use them, e.g., `ng generate @schematics/an
 A list of the available Angular CLI schematics can be fetched with `ng generate @schematics/angular: --help`.
 
 ## Further Help
+
+The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers video tutorials on various topics related to PWA.
 
 To get more help on the Angular CLI, use `ng help` or check out the [Angular CLI Documentation](https://github.com/angular/angular-cli/wiki).

@@ -15,7 +15,7 @@
         {{- $icmScheme := "" }}{{ if (has . "icmScheme") }}{{ $icmScheme = join ( coll.Slice "icmScheme" .icmScheme ) "=" }}{{ end }}
         {{- $icmPort := "" }}{{ if (has . "icmPort") }}{{ $icmPort = join ( coll.Slice "icmPort" .icmPort ) "=" }}{{ end }}
         {{- $icmHost := "default" }}{{ if (has . "icmHost") }}{{ $icmHost = .icmHost }}{{ end }}
-        {{- $sparque := "" }}{{ if (has . "sparque") }}{{ range $key, $value := .sparque }}{{ $sparque = print $sparque $key "=" ($value | urlquery) "," }}{{ end }}{{ end }}
+        {{- $sparque := "" }}{{ if (has . "sparque") }}{{ range $key, $value := .sparque }}{{ $sparque = print $sparque $key "=" ($value | urlquery) "," }}{{ end }}{{ $sparque = strings.TrimSuffix "," $sparque }}{{ end }}
 
         {{- $protected := true }}{{ if (has . "protected") }}{{ $protected = .protected }}{{ end }}
       {{- if $protected }}
@@ -27,14 +27,18 @@
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $thescheme;
+        proxy_set_header X-Request-ID $trace_id;
 
-      {{- if (getenv "CACHE_CLEARER" | strings.ToLower | regexp.Match "on|1|true|yes") }}
+      {{- if (getenv "CACHE" | strings.ToLower | regexp.Match "on|1|true|yes") }}
+      {{- if not (getenv "CACHE_CLEARER" | strings.ToLower | regexp.Match "off|0|false|no") }}
         proxy_cache {{ $channel }};
+      {{- end }}
       {{- end -}}
 
         add_header X-icm-channel {{ $channel }} always;
         add_header X-icm-default-lang {{ $lang }} always;
         add_header X-ua-device $ua_device always;
+        add_header X-Request-ID $trace_id always;
 
         rewrite ^.*$ $ssr_rewrite;
         set $c_uri $ssr_curi;
@@ -61,6 +65,7 @@
         proxy_buffer_size 128k;
         proxy_buffers 4 256k;
         proxy_busy_buffers_size 256k;
+        proxy_hide_header X-Request-ID;
 {{- end }}
 
 {{- define "OVERRIDE_IDENTITY_PROVIDER_TEMPLATE" }}
@@ -81,7 +86,8 @@
       {{- end -}}
 {{- end }}
 
-{{- if (getenv "CACHE_CLEARER" | strings.ToLower | regexp.Match "on|1|true|yes") }}
+{{- if (getenv "CACHE" | strings.ToLower | regexp.Match "on|1|true|yes") }}
+{{- if not (getenv "CACHE_CLEARER" | strings.ToLower | regexp.Match "off|0|false|no") }}
 {{- $channels := dict -}}
 {{- range $domain, $mapping := (ds "domains") }}
   {{- if (has $mapping "channel") }}
@@ -101,6 +107,7 @@
 proxy_cache_path /tmp/cache/{{ . }} levels=1:2 keys_zone={{ . }}:1m max_size=1g inactive=60m use_temp_path=off;
 {{- end }}
 {{- end }}
+{{- end }}
 
 {{- range $domain, $mapping := (ds "domains") }}
 server {
@@ -118,8 +125,9 @@ server {
     listen 80;
   {{- end }}
 
-    access_log /var/log/nginx-access.log {{ getenv "LOGFORMAT" }};
-    access_log /dev/stdout {{ getenv "LOGFORMAT" }} if=$loggable;
+    # Write access logs to stdout only (no disk logging)
+    # LOGFORMAT: text -> plain text, otherwise json (ECS-compatible) - default: json
+    access_log /dev/stdout {{ if eq (getenv "LOGFORMAT" | strings.ToLower) "text" }}text{{ else }}json{{ end }} if=$loggable;
 
     include /etc/nginx/conf.d/cache-blacklist.conf;
     include /etc/nginx/conf.d/cache-locations.conf;

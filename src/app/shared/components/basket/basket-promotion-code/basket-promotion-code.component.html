@@ -9,16 +9,14 @@
     data-testing-id="promo-collapse-link"
   >
     {{ 'shopping_cart.promotional_code.heading' | translate
-    }}<fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']" class="float-end" />
+    }}<i class="bi float-end" [ngClass]="isCollapsed ? 'bi-chevron-down' : 'bi-chevron-up'"></i>
   </button>
 
   <ish-error-message [error]="promotionError$ | async" [toast]="toast" />
 
-  <ish-success-message
-    *ngIf="displaySuccessMessage"
-    message="shopping_cart.promotion.qualified_promo.text"
-    [toast]="toast"
-  />
+  @if (displaySuccessMessage) {
+  <ish-success-message message="shopping_cart.promotion.qualified_promo.text" [toast]="toast" />
+  }
 
   <div id="promo-code-input" class="promo-code-input" [ngbCollapse]="isCollapsed" data-testing-id="promo-code-form">
     <input

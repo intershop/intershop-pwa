@@ -4,7 +4,8 @@
   [error]="error$ | async"
 />
 
-<div *ngIf="selectedPunchoutType$ | async as selectedType" class="section">
+@if (selectedPunchoutType$ | async; as selectedType) {
+<div class="section">
   <h2 class="mt-1">
     {{ 'account.punchout.user.list.heading' | translate : { '0': selectedType } }}
     <a
@@ -16,85 +17,84 @@
       {{ 'account.punchout.user.add.button.label' | translate }}
     </a>
   </h2>
-
-  <ng-container *ngIf="punchoutUsers$ | async as users; else emptyList">
-    <div *ngIf="users.length; else emptyList" class="list-body" data-testing-id="user-list">
-      <ng-container *ngFor="let user of users">
-        <div *ngIf="user" class="list-item-row row mx-0">
-          <div class="col-9 col-sm-10 list-item">
-            <p>
-              <span class="d-block">{{ user.login }}</span>
-              <span *ngIf="user.active === false" class="input-help">{{
-                'account.user.list.status.inactive' | translate
-              }}</span>
-            </p>
-          </div>
-          <div class="col-3 col-sm-2 list-item text-end">
-            <div class="float-end">
-              <a
-                *ngIf="selectedType === 'cxml' && ('punchout.cxmlUserConfigurationEnabled' | ishServerSetting)"
-                [routerLink]="['cxmlConfiguration', user.id]"
-                [queryParams]="{ format: selectedType }"
-                class="btn-tool"
-                [title]="'account.punchout.configure.link' | translate : { '0': user.login }"
-              >
-                <fa-icon [icon]="['fas', 'cog']" />
-              </a>
-              <a
-                [routerLink]="[user.login]"
-                [queryParams]="{ format: selectedType }"
-                class="btn-tool"
-                [title]="'account.profile.update.link' | translate : { '0': user.login }"
-                data-testing-id="edit-user"
-              >
-                <fa-icon [icon]="['fas', 'pencil-alt']" />
-              </a>
-              <button
-                type="button"
-                class="btn-tool btn-link"
-                [title]="'account.user.delete_user_dialog.header' | translate : { '0': user.login }"
-                (click)="modalDialog.show(user)"
-                data-testing-id="delete-user"
-              >
-                <fa-icon [icon]="['fas', 'trash-alt']" />
-              </button>
-
-              <ish-modal-dialog
-                #modalDialog
-                [options]="{
-                  titleText: 'account.user.delete_user_dialog.header' | translate : { '0': user.login },
-                  confirmText: 'account.user.delete_user_dialog.delete_button.text' | translate,
-                  rejectText: 'account.user.delete_user_dialog.cancel_button.text' | translate
-                }"
-                (confirmed)="deleteUser($event)"
-              >
-                <p>{{ 'account.punchout.user.delete.text' | translate }}</p>
-              </ish-modal-dialog>
-            </div>
-          </div>
+  @if (punchoutUsers$ | async; as users) { @if (users.length) {
+  <div class="list-body" data-testing-id="user-list">
+    @for (user of users; track user.id) { @if (user) {
+    <div class="list-item-row row mx-0">
+      <div class="col-9 col-sm-10 list-item">
+        <p>
+          <span class="d-block">{{ user.login }}</span>
+          @if (user.active === false) {
+          <span class="input-help">{{ 'account.user.list.status.inactive' | translate }}</span>
+          }
+        </p>
+      </div>
+      <div class="col-3 col-sm-2 list-item text-end">
+        <div class="float-end">
+          @if (selectedType === 'cxml' && ('punchout.cxmlUserConfigurationEnabled' | ishServerSetting)) {
+          <a
+            [routerLink]="['cxmlConfiguration', user.id]"
+            [queryParams]="{ format: selectedType }"
+            class="btn-tool"
+            [title]="'account.punchout.configure.link' | translate : { '0': user.login }"
+          >
+            <i class="bi bi-gear-fill"></i>
+          </a>
+          }
+          <a
+            [routerLink]="[user.login]"
+            [queryParams]="{ format: selectedType }"
+            class="btn-tool"
+            [title]="'account.profile.update.link' | translate : { '0': user.login }"
+            data-testing-id="edit-user"
+          >
+            <i class="bi bi-pencil-fill"></i>
+          </a>
+          <button
+            type="button"
+            class="btn-tool btn-link"
+            [title]="'account.user.delete_user_dialog.header' | translate : { '0': user.login }"
+            (click)="modalDialog.show(user)"
+            data-testing-id="delete-user"
+          >
+            <i class="bi bi-trash-fill"></i>
+          </button>
+          <ish-modal-dialog
+            #modalDialog
+            [options]="{
+              titleText: 'account.user.delete_user_dialog.header' | translate : { '0': user.login },
+              confirmText: 'account.user.delete_user_dialog.delete_button.text' | translate,
+              rejectText: 'account.user.delete_user_dialog.cancel_button.text' | translate
+            }"
+            (confirmed)="deleteUser($event)"
+          >
+            <p>{{ 'account.punchout.user.delete.text' | translate }}</p>
+          </ish-modal-dialog>
         </div>
-      </ng-container>
+      </div>
     </div>
-    <ng-container [ngSwitch]="selectedType">
-      <ng-template [ngSwitchCase]="'oci'">
-        <p>
-          {{ 'account.punchout.oci.info.url.helptext' | translate }}
-        </p>
-        <p>{{ ociPunchoutUrl$ | async }}</p>
-      </ng-template>
-      <ng-template [ngSwitchCase]="'cxml'">
-        <p>
-          {{ 'account.punchout.cxml.info.url.helptext' | translate }}
-        </p>
-        <p>{{ cxmlPunchoutUrl$ | async }}</p>
-      </ng-template>
-    </ng-container>
-  </ng-container>
-  <ng-template #emptyList>
-    <p data-testing-id="empty-user-list">
-      {{ 'account.punchout.no_user.text' | translate : { '0': selectedType } }}
-    </p>
-  </ng-template>
+    } }
+  </div>
+  } @else {
+  <p data-testing-id="empty-user-list">
+    {{ 'account.punchout.no_user.text' | translate : { '0': selectedType } }}
+  </p>
+  } @switch (selectedType) { @case ('oci') {
+  <p>
+    {{ 'account.punchout.oci.info.url.helptext' | translate }}
+  </p>
+  <p>{{ ociPunchoutUrl$ | async }}</p>
+  } @case ('cxml') {
+  <p>
+    {{ 'account.punchout.cxml.info.url.helptext' | translate }}
+  </p>
+  <p>{{ cxmlPunchoutUrl$ | async }}</p>
+  } } } @else {
+  <p data-testing-id="empty-user-list">
+    {{ 'account.punchout.no_user.text' | translate : { '0': selectedType } }}
+  </p>
+  }
 </div>
-
-<ish-loading *ngIf="loading$ | async" />
+} @if (loading$ | async) {
+<ish-loading />
+}

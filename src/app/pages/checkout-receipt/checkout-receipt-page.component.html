@@ -1,17 +1,14 @@
-<div
-  *ngIf="{
-    order: order$ | async,
-    basket: submittedBasket$ | async
-  } as data"
-  data-testing-id="checkout-receipt-page"
->
+@if ({ order: order$ | async, basket: submittedBasket$ | async }; as data) {
+<div data-testing-id="checkout-receipt-page">
   <ish-checkout-receipt [order]="data.basket || data.order">
-    <ish-lazy-checkout-receipt-requisition *ngIf="data.basket; else orderReceiptHeader" [basket]="data.basket" />
-
-    <ng-template #orderReceiptHeader>
-      <ish-checkout-receipt-order [order]="data.order" />
-    </ng-template>
+    @if (data.basket) {
+    <ish-lazy-checkout-receipt-requisition [basket]="data.basket" />
+    } @else {
+    <ish-checkout-receipt-order [order]="data.order" />
+    }
   </ish-checkout-receipt>
-
-  <ish-loading *ngIf="loading$ | async" />
+  @if (loading$ | async) {
+  <ish-loading />
+  }
 </div>
+}

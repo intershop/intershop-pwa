@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito';
 
@@ -18,10 +17,10 @@ describe('Auth Guard', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(),
-        CustomerStoreModule.forTesting('user'),
-        RouterTestingModule.withRoutes([
+      imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('user')],
+      providers: [
+        { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
+        provideRouter([
           {
             path: 'account',
             canActivate: [authGuard],
@@ -33,7 +32,6 @@ describe('Auth Guard', () => {
           },
         ]),
       ],
-      providers: [{ provide: CookiesService, useFactory: () => instance(mock(CookiesService)) }],
     }).compileComponents();
   });
 

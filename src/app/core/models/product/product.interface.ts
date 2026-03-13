@@ -14,10 +14,6 @@ export interface ProductData {
   shortDescription: string;
   longDescription: string;
 
-  availability: boolean;
-  inStock: boolean;
-  availableStock?: number;
-
   roundedAverageRating: string;
   numberOfReviews: number;
 
@@ -63,6 +59,11 @@ export interface ProductData {
   promotions?: Link[];
 
   seoAttributes: SeoAttributesData;
+
+  // not used any more, remains for compatibility reasons
+  availability: boolean;
+  inStock: boolean;
+  availableStock?: number;
 }
 
 export interface ProductDataStub {

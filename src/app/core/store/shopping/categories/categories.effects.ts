@@ -1,9 +1,10 @@
 import { Inject, Injectable } from '@angular/core';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
-import { concatMap, filter, map, mergeMap, switchMap } from 'rxjs/operators';
+import { concatMap, distinctUntilChanged, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
@@ -141,6 +142,7 @@ export class CategoriesEffects {
           select(getSelectedCategory),
           whenTruthy(),
           filter(cat => cat.hasOnlineProducts),
+          distinctUntilChanged((cat1, cat2) => cat1.uniqueId === cat2.uniqueId),
           map(({ uniqueId }) => loadMoreProducts({ id: { type: 'category', value: uniqueId } }))
         )
       )

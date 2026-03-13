@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
@@ -10,7 +10,6 @@ import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketAddressSummaryComponent } from 'ish-shared/components/basket/basket-address-summary/basket-address-summary.component';
@@ -21,7 +20,6 @@ import { BasketPaymentCostInfoComponent } from 'ish-shared/components/basket/bas
 import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketRecurrenceSummaryComponent } from 'ish-shared/components/basket/basket-recurrence-summary/basket-recurrence-summary.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoMessageComponent } from 'ish-shared/components/common/info-message/info-message.component';
 
 import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
@@ -48,7 +46,6 @@ describe('Checkout Payment Component', () => {
         MockComponent(BasketPromotionCodeComponent),
         MockComponent(BasketRecurrenceSummaryComponent),
         MockComponent(BasketValidationResultsComponent),
-        MockComponent(ErrorMessageComponent),
         MockComponent(FormlyForm),
         MockComponent(InfoMessageComponent),
         MockComponent(PaymentConcardisCreditcardComponent),
@@ -56,14 +53,10 @@ describe('Checkout Payment Component', () => {
         MockDirective(NgbCollapse),
         MockDirective(ServerHtmlDirective),
         MockPipe(PricePipe),
-        MockPipe(ServerSettingPipe),
         PaymentParameterFormComponent,
       ],
-      imports: [
-        ReactiveFormsModule,
-        RouterTestingModule.withRoutes([{ path: 'checkout/review', children: [] }]),
-        TranslateModule.forRoot(),
-      ],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      providers: [provideRouter([{ path: 'checkout/review', children: [] }])],
     })
       .overrideComponent(CheckoutPaymentComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -146,7 +139,7 @@ describe('Checkout Payment Component', () => {
     it('should render an error if an error occurs', () => {
       component.error = makeHttpError({ status: 404 });
       fixture.detectChanges();
-      expect(element.querySelector('ish-error-message')).toBeTruthy();
+      expect(element.querySelector('ish-basket-error-message')).toBeTruthy();
     });
 
     it('should not render an error if the user has currently no payment method selected', () => {

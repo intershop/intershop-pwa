@@ -1,4 +1,5 @@
-<div *ngIf="visible$ | async" class="add-to-cart">
+@if (visible$ | async) {
+<div class="add-to-cart">
   <button
     type="submit"
     name="addProduct"
@@ -12,18 +13,16 @@
     (click)="addToBasket()"
     data-testing-id="addToCartButton"
   >
-    <ng-container *ngIf="(displaySpinner$ | async) !== true; else spinning">
-      <!-- Add to Cart button -->
-      <ng-container *ngIf="displayIcon; else defaultButton">
-        <fa-icon [icon]="['fas', 'shopping-cart']" />
-      </ng-container>
-
-      <ng-template #defaultButton>{{ translationKey$ | async | translate }}</ng-template>
-    </ng-container>
+    @if ((displaySpinner$ | async) !== true) {
+    <!-- Add to Cart button -->
+    @if (displayIcon) {
+    <i class="bi bi-cart-fill"></i>
+    } @else {{{ translationKey$ | async | translate }}} } @else {
     <!-- button with spinning animation after Add to Cart -->
-    <ng-template #spinning>
-      <fa-icon [icon]="['fas', 'spinner']" [spin]="true" [ngClass]="{ 'pe-3': !displayIcon }" />
-      <span *ngIf="!displayIcon">{{ 'common.button.spinning.label' | translate }}</span>
-    </ng-template>
+    <i class="bi bi-arrow-clockwise spin-icon"></i>
+    @if (!displayIcon) {
+    <span>{{ 'common.button.spinning.label' | translate }}</span>
+    } }
   </button>
 </div>
+}

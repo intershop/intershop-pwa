@@ -1,6 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
@@ -9,6 +8,7 @@ import { SuggestionsServiceProvider } from 'ish-core/service-provider/suggestion
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { loadMoreProducts, setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
 import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/product-listing.effects';
@@ -60,15 +60,16 @@ describe('Search Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['router', 'configuration'], [SearchEffects, ProductListingEffects]),
-        RouterTestingModule.withRoutes([
-          { path: 'error', children: [] },
-          { path: 'search/:searchTerm', children: [] },
-        ]),
+        CustomerStoreModule.forTesting('user'),
         ShoppingStoreModule.forTesting('productListing'),
       ],
       providers: [
         { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
         { provide: SuggestionsServiceProvider, useFactory: () => instance(suggestionsServiceProviderMock) },
+        provideRouter([
+          { path: 'error', children: [] },
+          { path: 'search/:searchTerm', children: [] },
+        ]),
         provideStoreSnapshots(),
       ],
     });

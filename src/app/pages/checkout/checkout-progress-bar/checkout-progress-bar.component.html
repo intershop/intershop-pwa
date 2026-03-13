@@ -1,22 +1,22 @@
 <div class="progress-bar-panel">
   <ul class="progress-steps">
+    @for (checkoutStep of checkoutSteps; track $index) {
     <li
-      *ngFor="let checkoutStep of checkoutSteps"
       [ngClass]="{
         'progress-active': checkoutStep.step === step,
         'progress-complete': checkoutStep.step < step
       }"
     >
-      <ng-container *ngIf="checkoutStepLink(checkoutStep.step); else noLink">
-        <a [routerLink]="checkoutStep.link" class="link-decoration-hover">
-          <div class="progress-number"><fa-icon [icon]="['fas', 'check']" /></div>
-          <span class="progress-label">{{ checkoutStep.labelKey | translate }} </span>
-        </a>
-      </ng-container>
-      <ng-template #noLink>
-        <div class="progress-number">{{ checkoutStep.stepKey | translate }}</div>
+      @if (checkoutStepLink(checkoutStep.step)) {
+      <a [routerLink]="checkoutStep.link" class="link-decoration-hover">
+        <div class="progress-number"><i class="bi bi-check-lg"></i></div>
         <span class="progress-label">{{ checkoutStep.labelKey | translate }} </span>
-      </ng-template>
+      </a>
+      } @else {
+      <div class="progress-number">{{ checkoutStep.stepKey | translate }}</div>
+      <span class="progress-label">{{ checkoutStep.labelKey | translate }} </span>
+      }
     </li>
+    }
   </ul>
 </div>

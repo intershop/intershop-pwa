@@ -18,7 +18,8 @@
       <ish-product-bundle-display />
 
       <ish-product-inventory />
-      <div *ngIf="editable$ | async" class="d-flex align-items-center">
+      @if (editable$ | async) {
+      <div class="d-flex align-items-center">
         <ish-lazy-product-add-to-order-template
           [cssClass]="'btn-link btn-tool add-to-order-template'"
           displayType="icon"
@@ -32,9 +33,10 @@
           title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
           (click)="onDeleteItem()"
         >
-          <fa-icon [icon]="['fas', 'trash-alt']" />
+          <i class="bi bi-trash-fill"></i>
         </button>
       </div>
+      }
     </div>
 
     <!-- mobile quantity -->
@@ -44,13 +46,11 @@
           translationKey="shopping_cart.pli.qty.label"
           [for]="'quote-quantity_' + lineItem.id"
         />
-        <ish-product-quantity
-          *ngIf="editable$ | async; else readonlyQuantity"
-          [elementId]="'quote-quantity_' + lineItem.id"
-        />
-        <ng-template #readonlyQuantity>
-          {{ lineItem.quantity.value | number }}
-        </ng-template>
+        @if (editable$ | async) {
+        <ish-product-quantity [elementId]="'quote-quantity_' + lineItem.id" />
+        } @else {
+        {{ lineItem.quantity.value | number }}
+        }
       </div>
     </div>
   </div>
@@ -58,34 +58,39 @@
   <!-- desktop quantity -->
   <div class="quantity col-xl-2 list-item d-none d-xl-flex">
     <div class="form-group w-100" [ngClass]="{ 'text-end': editable$ | async }">
-      <ish-product-quantity *ngIf="editable$ | async; else readonlyQuantity" />
-      <ng-template #readonlyQuantity>
-        {{ lineItem.quantity.value | number }}
-      </ng-template>
+      @if (editable$ | async) {
+      <ish-product-quantity />
+      } @else {
+      {{ lineItem.quantity.value | number }}
+      }
     </div>
   </div>
 
   <!-- Prices -->
   <div class="col-md-2 d-none d-md-block list-item column-price single-price">
     <!-- Original Single Base Price  -->
-    <p *ngIf="lineItem.originSingleBasePrice">
-      {{ 'quote.items.original_price.label' | translate }} {{ lineItem.originSingleBasePrice | ishPrice }}
-    </p>
+    @if (lineItem.originSingleBasePrice) {
+    <p>{{ 'quote.items.original_price.label' | translate }} {{ lineItem.originSingleBasePrice | ishPrice }}</p>
+    }
 
     <!-- (Suggested) Single Base Price  -->
     <p>
-      <ng-container *ngIf="lineItem.originSingleBasePrice">{{
-        'quote.items.suggested_price.label' | translate
-      }}</ng-container>
+      @if (lineItem.originSingleBasePrice) {
+      {{ 'quote.items.suggested_price.label' | translate }}
+      }
       {{ lineItem.singleBasePrice | ishPrice }}
     </p>
   </div>
   <div class="col-3 col-md-2 list-item column-price">
     <div>
-      <p *ngIf="lineItem.originTotal">{{ lineItem.originTotal | ishPrice }}</p>
+      @if (lineItem.originTotal) {
+      <p>{{ lineItem.originTotal | ishPrice }}</p>
+      }
 
       <!-- (Suggested) Total Price  -->
-      <span *ngIf="lineItem.originTotal" class="d-md-none">{{ 'quote.items.suggested_price.label' | translate }}</span>
+      @if (lineItem.originTotal) {
+      <span class="d-md-none">{{ 'quote.items.suggested_price.label' | translate }}</span>
+      }
       <div data-testing-id="total-price">{{ lineItem.total | ishPrice }}</div>
     </div>
   </div>

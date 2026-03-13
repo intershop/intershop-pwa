@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { Action } from '@ngrx/store/src/models';
@@ -77,7 +78,8 @@ export class SearchEffects {
 
   searchProducts$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(searchProducts),
+      useCombinedObservableOnAction(this.actions$.pipe(ofType(searchProducts)), personalizationStatusDetermined),
+      whenTruthy(),
       mapToPayload(),
       map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
       concatLatestFrom(() => this.store.pipe(select(getProductListingItemsPerPage('search')))),
@@ -93,7 +95,7 @@ export class SearchEffects {
                 this.router.navigate([generateProductUrl(products[0])]);
               }
               // provide the data for the search result page
-              return [
+              const actions: Action[] = [
                 ...products.map(product => loadProductSuccess({ product })),
                 setProductListingPages(
                   this.productListingMapper.createPages(
@@ -109,8 +111,11 @@ export class SearchEffects {
                     }
                   )
                 ),
-                filter?.length ? loadFilterSuccess({ filterNavigation: { filter } }) : { type: 'no_filter_action' },
               ];
+              if (filter?.length) {
+                actions.push(loadFilterSuccess({ filterNavigation: { filter } }));
+              }
+              return actions;
             }),
             mapErrorToAction(searchProductsFail)
           )

@@ -13,17 +13,22 @@
           (change)="onFileChange($event)"
           [attr.aria-label]="'user.csv.import.file.upload.aria_label' | translate"
         />
-        <div [ngSwitch]="status">
-          <small *ngSwitchCase="'InvalidHeader'" class="has-error"
-            ><span class="validation-message">{{ 'user.csv.import.file.invalid.input' | translate }}</span></small
-          >
-          <small *ngSwitchCase="'InvalidFormat'" class="has-error"
-            ><span class="validation-message">{{ 'user.csv.import.file.invalid.format' | translate }}</span></small
-          >
-          <small *ngSwitchCase="'Valid'" class="has-success"
-            ><span class="validation-message">{{ 'user.csv.import.file.uploaded' | translate }}</span></small
-          >
-          <small *ngSwitchDefault></small>
+        <div>
+          @switch (status) { @case ('InvalidHeader') {
+          <small class="has-error">
+            <span class="validation-message">{{ 'user.csv.import.file.invalid.input' | translate }}</span>
+          </small>
+          } @case ('InvalidFormat') {
+          <small class="has-error">
+            <span class="validation-message">{{ 'user.csv.import.file.invalid.format' | translate }}</span>
+          </small>
+          } @case ('Valid') {
+          <small class="has-success">
+            <span class="validation-message">{{ 'user.csv.import.file.uploaded' | translate }}</span>
+          </small>
+          } @default {
+          <small></small>
+          } }
         </div>
         <small
           class="form-text"

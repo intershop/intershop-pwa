@@ -1,56 +1,50 @@
 <div class="product-page clearfix" data-testing-id="product-detail-page" itemscope itemtype="http://schema.org/Product">
-  <ish-loading *ngIf="productLoading$ | async" />
-  <div *ngIf="product$ | async as product">
+  @if (productLoading$ | async) {
+  <ish-loading />
+  } @if (product$ | async; as product) {
+  <div>
     <!-- DISABLED VIEW CONTEXT --
-    <div class="marketing-area">
-      <ish-content-viewcontext
-        viewContextId="viewcontext.include.product.base.top"
-        [callParameters]="{ Product: product.sku }"
-      />
-    </div>
-    -- DISABLED VIEW CONTEXT -->
-
+      <div class="marketing-area">
+        <ish-content-viewcontext
+          viewContextId="viewcontext.include.product.base.top"
+          [callParameters]="{ Product: product.sku }"
+          />
+      </div>
+      -- DISABLED VIEW CONTEXT -->
     <ish-breadcrumb />
-
     <ish-product-detail />
-
     <!-- DISABLED VIEW CONTEXT --
-    <div class="marketing-area">
-      <ish-content-viewcontext
-        viewContextId="viewcontext.include.product.content.top"
-        [callParameters]="{ Product: product.sku }"
-      />
-    </div>
-    -- DISABLED VIEW CONTEXT -->
-
+      <div class="marketing-area">
+        <ish-content-viewcontext
+          viewContextId="viewcontext.include.product.content.top"
+          [callParameters]="{ Product: product.sku }"
+          />
+      </div>
+      -- DISABLED VIEW CONTEXT -->
     <ish-product-bundle-parts />
-
     <ish-retail-set-parts />
-
     <ish-product-detail-info />
-
     <ish-product-master-variations />
-
     <ish-product-links />
-
     <!-- DISABLED VIEW CONTEXT --
-    <div class="marketing-area">
-      <ish-content-viewcontext
-        viewContextId="viewcontext.include.product.content.bottom"
-        [callParameters]="{ Product: product.sku }"
-      />
-    </div>
-    -- DISABLED VIEW CONTEXT -->
-
-    <ish-lazy-recently-viewed *ngIf="(productLoading$ | async) !== true" />
-
+      <div class="marketing-area">
+        <ish-content-viewcontext
+          viewContextId="viewcontext.include.product.content.bottom"
+          [callParameters]="{ Product: product.sku }"
+          />
+      </div>
+      -- DISABLED VIEW CONTEXT -->
+    @if ((productLoading$ | async) !== true) {
+    <ish-lazy-recently-viewed />
+    }
     <!-- DISABLED VIEW CONTEXT --
-    <div class="marketing-area">
-      <ish-content-viewcontext
-        viewContextId="viewcontext.include.product.base.bottom"
-        [callParameters]="{ Product: product.sku }"
-      />
-    </div>
-    -- DISABLED VIEW CONTEXT -->
+      <div class="marketing-area">
+        <ish-content-viewcontext
+          viewContextId="viewcontext.include.product.base.bottom"
+          [callParameters]="{ Product: product.sku }"
+          />
+      </div>
+      -- DISABLED VIEW CONTEXT -->
   </div>
+  }
 </div>

@@ -1,15 +1,15 @@
-<ng-container *ngIf="tooltipInfo">
-  <ng-template #popover>
-    <span [innerHTML]="tooltipInfo.text | translate"></span>
-  </ng-template>
-  <button
-    type="button"
-    [ngbPopover]="popover"
-    [popoverTitle]="tooltipInfo.title | translate"
-    placement="top"
-    class="btn btn-link details-tooltip"
-    [ngClass]="tooltipInfo.class"
-  >
-    {{ tooltipInfo.link | translate }}<fa-icon [icon]="['fas', 'info-circle']" />
-  </button>
-</ng-container>
+@if (tooltipInfo) {
+<ng-template #popover>
+  <span [innerHTML]="tooltipInfo.text | translate"></span>
+</ng-template>
+<button
+  type="button"
+  [ngbPopover]="popover"
+  [popoverTitle]="tooltipInfo.title | translate"
+  placement="top"
+  class="btn btn-link details-tooltip"
+  [ngClass]="tooltipInfo.class"
+>
+  {{ tooltipInfo.link | translate }}<i class="bi bi-info-circle-fill"></i>
+</button>
+}

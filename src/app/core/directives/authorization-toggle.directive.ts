@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, DestroyRef, Directive, Input, TemplateRef, ViewContainerRef, inject } from '@angular/core';
+import { ChangeDetectorRef, Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ReplaySubject, Subscription } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { BehaviorSubject, of } from 'rxjs';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 import { AuthorizationToggleService } from 'ish-core/utils/authorization-toggle/authorization-toggle.service';
 
@@ -22,10 +22,7 @@ import { AuthorizationToggleService } from 'ish-core/utils/authorization-toggle/
   selector: '[ishIsAuthorizedTo]',
 })
 export class AuthorizationToggleDirective {
-  private subscription: Subscription;
-  private enabled$ = new ReplaySubject<boolean>(1);
-
-  private destroyRef = inject(DestroyRef);
+  private permission$ = new BehaviorSubject<string | string[]>(undefined);
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -33,25 +30,23 @@ export class AuthorizationToggleDirective {
     private viewContainer: ViewContainerRef,
     private authorizationToggle: AuthorizationToggleService
   ) {
-    this.enabled$.pipe(distinctUntilChanged(), takeUntilDestroyed()).subscribe(enabled => {
-      if (enabled) {
-        this.viewContainer.createEmbeddedView(this.templateRef);
-      } else {
-        this.viewContainer.clear();
-      }
-      this.cdRef.markForCheck();
-    });
+    this.permission$
+      .pipe(
+        switchMap(permission => (permission ? this.authorizationToggle.isAuthorizedTo(permission) : of(false))),
+        distinctUntilChanged(),
+        takeUntilDestroyed()
+      )
+      .subscribe(enabled => {
+        if (enabled) {
+          this.viewContainer.createEmbeddedView(this.templateRef);
+        } else {
+          this.viewContainer.clear();
+        }
+        this.cdRef.markForCheck();
+      });
   }
 
   @Input() set ishIsAuthorizedTo(permission: string | string[]) {
-    // end previous subscription and subscribe to new permission
-    if (this.subscription) {
-      // eslint-disable-next-line ban/ban
-      this.subscription.unsubscribe();
-    }
-    this.subscription = this.authorizationToggle
-      .isAuthorizedTo(permission)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({ next: val => this.enabled$.next(val) });
+    this.permission$.next(permission);
   }
 }

@@ -7,18 +7,19 @@ on:
       - master
       - develop
   pull_request:
-    types: [opened, synchronize]
+    types:
+      - opened
+      - synchronize
     paths-ignore:
+      - docs/**
       - '**.md'
-      - 'docs/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
-  NODE_VERSION: 22.17.1
-  NODE_OPTIONS: --max_old_space_size=10240
+  NODE_OPTIONS: --max-old-space-size=8192
   ICM_BASE_URL: https://review.icm.intershop.de
 
 jobs:
@@ -28,11 +29,13 @@ jobs:
       TESTING: true
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js 22
-        uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: package.json
           cache: npm
 
       - name: Install root dependencies
@@ -45,12 +48,12 @@ jobs:
         run: npm run build:multi
 
       - name: Upload Build Output
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: dist
           path: dist
 
-  Universal:
+  SSR:
     needs: [Build]
     runs-on: ubuntu-latest
 
@@ -59,22 +62,25 @@ jobs:
         test: ['b2c', 'b2b']
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js 22
-        uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: package.json
           cache: npm
 
       - name: Download Build Output
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: dist
           path: dist
 
       - name: Set Environment
         run: |
-          echo "LOGGING=true" >> $GITHUB_ENV
+          echo "LOGLEVEL=error" >> $GITHUB_ENV
+          echo "LOGFORMAT=text" >> $GITHUB_ENV
 
       - name: Set B2C Environment
         if: matrix.test == 'b2c'
@@ -86,13 +92,13 @@ jobs:
         run: |
           echo "THEME=b2b" >> $GITHUB_ENV
 
-      - name: Test Universal
+      - name: Test SSR
         run: |
           node dist/$THEME/run-standalone &
-          sh e2e/test-universal.sh
+          sh e2e/test-ssr.sh
 
   Cypress:
-    needs: [Build, Universal]
+    needs: [Build, SSR]
     runs-on: ubuntu-latest
 
     strategy:
@@ -102,13 +108,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install e2e dependencies
         run: cd e2e && npm i
 
       - name: Download Build Output
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: dist
           path: dist
@@ -116,7 +122,6 @@ jobs:
       - name: Set Environment
         run: |
           echo "PWA_BASE_URL=http://localhost:4200" >> $GITHUB_ENV
-          echo "LOGGING=true" >> $GITHUB_ENV
           echo "BROWSER=chrome" >> $GITHUB_ENV
 
       - name: Set B2C Environment
@@ -134,7 +139,7 @@ jobs:
           node dist/$THEME/run-standalone &
 
       - name: Cypress
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           install: false
           wait-on: 'http://localhost:4200'
@@ -143,14 +148,14 @@ jobs:
           command: npx ts-node cypress-ci-e2e **/*${{ matrix.test }}*.e2e-spec.ts
 
       - name: Upload Screenshots
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: screenshots_${{ matrix.test }}
           path: e2e/cypress/screenshots
 
       - name: Upload Videos
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: videos_${{ matrix.test }}
@@ -161,7 +166,8 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
       - name: Execute shellspec tests
         run: |
           docker run --rm -v "${{ github.workspace }}/nginx/docker-entrypoint.d:/src" shellspec/shellspec

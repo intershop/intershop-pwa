@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -27,6 +25,7 @@ describe('Product Add To Basket Component', () => {
 
     context = mock(ProductContextFacade);
     when(context.select('displayProperties', 'addToBasket')).thenReturn(of(true));
+    when(context.select('prices')).thenReturn(of({}));
     when(context.select('product')).thenReturn(of({} as ProductView));
     when(context.select('quantity')).thenReturn(of(1));
     when(context.select('hasQuantityError')).thenReturn(of(false));
@@ -34,7 +33,7 @@ describe('Product Add To Basket Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [MockComponent(FaIconComponent), ProductAddToBasketComponent],
+      declarations: [ProductAddToBasketComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
@@ -69,7 +68,7 @@ describe('Product Add To Basket Component', () => {
   it('should show icon button when display type is icon', () => {
     component.displayType = 'icon';
     fixture.detectChanges();
-    expect(element.querySelector('fa-icon')).toBeTruthy();
+    expect(element.querySelector('i.bi')).toBeTruthy();
   });
 
   it('should show disabled button when context has quantity error', () => {

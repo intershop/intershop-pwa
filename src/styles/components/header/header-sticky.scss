@@ -93,14 +93,25 @@
         @include media-breakpoint-down(lg) {
           line-height: $header-height-mobile;
         }
+
+        .bi-person {
+          padding: 0 10px;
+          font-size: 22px;
+          color: $text-color-tertiary;
+        }
       }
 
       .sticky-header-icon {
         align-content: center;
 
-        .ng-fa-icon:not(.searchbox-icon) {
+        .bi:not(.searchbox-icon) {
           padding: 0 10px;
+          font-size: 22px;
           color: $text-color-tertiary;
+
+          &.bi-search {
+            font-size: 18px;
+          }
         }
 
         // mini-basket mobile

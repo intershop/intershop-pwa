@@ -1,7 +1,7 @@
 .ng-select {
   &.ng-select-opened {
     > .ng-select-container {
-      border: solid 2px #000;
+      border: 2px solid $color-dark;
       border-radius: 4px;
 
       .ng-arrow {
@@ -16,7 +16,7 @@
 
   &.ng-select-focused {
     &:not(.ng-select-opened) > .ng-select-container {
-      border: solid 2px #000;
+      border: 2px solid $color-dark;
       border-radius: 4px;
       box-shadow: none;
     }
@@ -65,14 +65,14 @@
   }
 
   &.ng-invalid.ng-dirty:not(.ng-select-opened) .ng-select-container {
-    border-color: $error-color;
+    border-color: $color-special-error;
 
     .ng-arrow {
-      border-color: $error-color transparent transparent;
+      border-color: $color-special-error transparent transparent;
     }
 
     .ng-placeholder {
-      color: $error-color;
+      color: $color-special-error;
     }
   }
 }
@@ -82,7 +82,7 @@
 @-moz-document url-prefix() {
   .ng-select.ng-select-opened > .ng-select-container,
   .ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
-    border: solid 3px #0060df;
+    border: 3px solid #0060df;
     border-radius: 2px;
   }
 }

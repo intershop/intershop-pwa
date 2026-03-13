@@ -16,10 +16,10 @@ const sortTestbedMetadataArraysRule: TSESLint.RuleModule<keyof typeof messages> 
   },
   create(context) {
     function getText(node) {
-      return context.getSourceCode().getText(node);
+      return context.sourceCode.getText(node);
     }
 
-    if (!normalizePath(context.getFilename()).endsWith('.spec.ts')) {
+    if (!normalizePath(context.filename).endsWith('.spec.ts')) {
       return {};
     }
 
@@ -27,7 +27,7 @@ const sortTestbedMetadataArraysRule: TSESLint.RuleModule<keyof typeof messages> 
       'CallExpression[callee.object.name="TestBed"][callee.property.name="configureTestingModule"] > ObjectExpression > Property > ArrayExpression'({
         elements,
       }: TSESTree.ArrayExpression) {
-        // logic from https://github.com/angular-eslint/angular-eslint/blob/master/packages/eslint-plugin/src/rules/sort-ngmodule-metadata-arrays.ts
+        // logic from https://github.com/angular-eslint/angular-eslint/blob/v17.5.3/packages/eslint-plugin/src/rules/sort-ngmodule-metadata-arrays.ts
 
         const unorderedNodes = elements
           .map((current, index, list) => [current, list[index + 1]])

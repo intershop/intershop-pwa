@@ -11,13 +11,12 @@ import {
   NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { SwiperModule } from 'swiper/angular';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { DirectivesModule } from 'ish-core/directives.module';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
@@ -90,8 +89,6 @@ import { MiniBasketContentComponent } from './components/basket/mini-basket-cont
 import { BasketCustomFieldsViewComponent } from './components/checkout/basket-custom-fields-view/basket-custom-fields-view.component';
 import { BasketInvoiceAddressWidgetComponent } from './components/checkout/basket-invoice-address-widget/basket-invoice-address-widget.component';
 import { BasketShippingAddressWidgetComponent } from './components/checkout/basket-shipping-address-widget/basket-shipping-address-widget.component';
-import { PaymentPaypalMessagesComponent } from './components/checkout/payment-paypal-messages/payment-paypal-messages.component';
-import { PaymentPaypalComponent } from './components/checkout/payment-paypal/payment-paypal.component';
 import { AccordionItemComponent } from './components/common/accordion-item/accordion-item.component';
 import { AccordionComponent } from './components/common/accordion/accordion.component';
 import { BreadcrumbComponent } from './components/common/breadcrumb/breadcrumb.component';
@@ -130,6 +127,7 @@ import { LoginModalComponent } from './components/login/login-modal/login-modal.
 import { OrderListComponent } from './components/order/order-list/order-list.component';
 import { OrderRecurrenceComponent } from './components/order/order-recurrence/order-recurrence.component';
 import { OrderWidgetComponent } from './components/order/order-widget/order-widget.component';
+import { PaymentPaypalComponent } from './components/payment/payment-paypal/payment-paypal.component';
 import { ProductAddToBasketComponent } from './components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductAttachmentsComponent } from './components/product/product-attachments/product-attachments.component';
 import { ProductAttributesComponent } from './components/product/product-attributes/product-attributes.component';
@@ -182,8 +180,7 @@ const importExportModules = [
   FormlyAddressFormsModule,
   FormlyModule,
   FormsSharedModule,
-  IconModule,
-  InfiniteScrollModule,
+  InfiniteScrollDirective,
   NgbCarouselModule,
   NgbCollapseModule,
   NgbDropdownModule,
@@ -304,7 +301,6 @@ const exportedComponents = [
   OrderRecurrenceComponent,
   OrderWidgetComponent,
   PaymentPaypalComponent,
-  PaymentPaypalMessagesComponent,
   PagingComponent,
   ProductAddToBasketComponent,
   ProductAttachmentsComponent,

@@ -277,7 +277,7 @@ Explanation of example security policy:
   Inline styles are used at some places in the PWA, and this directive permits them.
 - `font-src data: 'self'`:
   This allows fonts to be loaded from data URIs (`data:`) and the same origin (`'self'`).
-  Due to the usage of “fontawesome”, it is required to define this extra policy to permit these fonts.
+  This is required to load the icon fonts for Bootstrap Icons and other web fonts used by the PWA.
 
 > [!IMPORTANT]
 > The value `https://develop.icm.intershop.de` is used here as an example for the development configuration.
@@ -314,8 +314,9 @@ Built-in features can be enabled and disabled:
 - `DEVICE_DETECTION=off` disables user-agent detection (default `on`)
 - `PROMETHEUS=on` enables [Prometheus](https://prometheus.io) metrics exports on port `9113` (default `off`)
 - `SSL=on` to switch on HTTPS. See [HTTPS or SSL](#https-or-ssl) above for further explanation.
+- `LOGLEVEL=info` to log all requests (`warn` for 4xx+5xx, default `error` for 5xx only).
+- `LOGFORMAT=json` to define the log format (`text` or default `json`).
 - `DEBUG=on` to log extra information like path matching.
-- `LOG_ALL=off` to restrict logging to errors.
 - `CACHE_CLEARER=on` to enable caching per ICM sites and do cache clearing when ICM page cache is invalidated (default `off`)
 
 ## Features
@@ -334,12 +335,15 @@ The value supplied must be in the `time` format that is supported by [NGINX prox
 
 ### Cache Clearing
 
-Setting `CACHE_CLEARER` to `on` creates separate NGINX cache paths for each channel configured in the `MULTI_CHANNEL` configuration by adding separate `proxy_cache_path` and `proxy_cache` directives for each channel location.
+Cache clearing is **enabled by default** when the `CACHE` feature is active (i.e., when `CACHE` is set to `on`, `1`, `true`, or `yes`).
+It creates separate NGINX cache paths for each channel configured in the `MULTI_CHANNEL` configuration by adding separate `proxy_cache_path` and `proxy_cache` directives for each channel location.
+To disable cache clearing, either disable caching entirely by setting `CACHE` to `off`, or keep caching enabled but turn off cache clearing explicitly by setting `CACHE_CLEARER` to `off`.
 The `cache_clearer.sh` script is started to monitor ICM page cache information by polling the `$ICM_BASE_URL/INTERSHOP/wastatistics` every 15 seconds.
 You can use the `CACHE_CLEARER_POLL_INTERVAL` environment variable to adjust the polling interval.
 When the ICM page cache is invalidated, the cache clearer script notices the new page cache ID and deletes the cached files for the invalidated site (channel).
 In addition, cached REST calls configured with `CACHE_ICM_CALLS` are cleared by triggering a `PURGE` request to the SSR server.
-In Kubernetes deployments, the script discovers the SSR pods with the Endpoints REST API and sends a purge request to each pod.
+In Kubernetes deployments, the script discovers the SSR Pods with the Endpoints REST API and sends a purge request to each Pod.
+When `ICM_BASE_URL_SSR` is set, the Kubernetes internal backend request routing is used for polling instead of the `ICM_BASE_URL`.
 
 Prerequisites for using this feature:
 
@@ -347,8 +351,11 @@ Prerequisites for using this feature:
 - The `$ICM_BASE_URL/INTERSHOP/wastatistics` can be polled from the NGINX container.
 - ICM page cache is used. Selective ICM page caching does not trigger the NGINX cache clearing as the cache ID for the pagecache does not change.
 - The `MULTI_CHANNEL` configuration cannot use `default` as the channel. Configure real ICM sites in the `channel:` configuration.
-- The service account of the `intershop-pwa-nginx` container should have `get` permission on the `endpoints` resource to ensure the cache clearing for all SSR pods.
+- The service account of the `intershop-pwa-nginx` container should have `get` permission on the `endpoints` resource to ensure the cache clearing for all SSR Pods.
 - The NGINX cache clearing cannot be used together with the [Shared Redis Cache](#shared-redis-cache).
+
+> [!TIP]
+> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video tutorial on [page cache invalidation in a PWA with SSR](https://public.academy.intershop.com/plus/catalog/courses/455).
 
 ### Shared Redis Cache
 

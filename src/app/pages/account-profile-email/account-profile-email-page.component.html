@@ -4,4 +4,6 @@
   (updateEmail)="updateUserEmail($event)"
 />
 
-<ish-loading *ngIf="userLoading$ | async" />
+@if (userLoading$ | async) {
+<ish-loading />
+}

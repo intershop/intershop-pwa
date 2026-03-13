@@ -48,14 +48,14 @@ describe('Quote Handling as Anonymous User', () => {
       });
       at(QuoteDetailPage, page => {
         page.productId.eq(0).should('contain', _.product.sku);
-        page.quoteState.should('have.text', 'New');
+        page.quoteState.should('contain.text', 'New');
       });
     });
 
     it('user should be able to submit quote request', () => {
       at(QuoteDetailPage, page => {
         page.submitQuoteRequest();
-        page.quoteState.should('have.text', 'Submitted');
+        page.quoteState.should('contain', 'Submitted');
       });
     });
   });

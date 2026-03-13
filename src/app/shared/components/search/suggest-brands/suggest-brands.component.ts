@@ -1,17 +1,17 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ReplaySubject } from 'rxjs';
 
 import { Brand } from 'ish-core/models/brand/brand.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { HighlightPipe } from 'ish-core/pipes/highlight.pipe';
 
 @Component({
   selector: 'ish-suggest-brands',
   templateUrl: './suggest-brands.component.html',
   standalone: true,
-  imports: [CommonModule, PipesModule, TranslateModule, RouterModule],
+  imports: [AsyncPipe, HighlightPipe, RouterLink, SlicePipe, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestBrandsComponent {

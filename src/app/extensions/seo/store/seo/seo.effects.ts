@@ -4,7 +4,6 @@ import { Meta, MetaDefinition, Title } from '@angular/platform-browser';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction, routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { REQUEST } from '@nguniversal/express-engine/tokens';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
 import { Subject, combineLatest, merge, race } from 'rxjs';
@@ -26,6 +25,7 @@ import { getSelectedProduct } from 'ish-core/store/shopping/products';
 import { DomService } from 'ish-core/utils/dom/dom.service';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
+import { REQUEST } from 'ish-core/utils/ssr/ssr.tokens';
 
 @Injectable()
 export class SeoEffects {
@@ -67,10 +67,10 @@ export class SeoEffects {
         switchMap(() =>
           race([
             // PRODUCT PAGE
-            this.productPage$.pipe(map(product => this.baseURL + generateProductUrl(product).substring(1))),
+            this.productPage$.pipe(map(product => encodeURI(this.baseURL + generateProductUrl(product).substring(1)))),
             // CATEGORY / FAMILY PAGE
             this.categoryPage$.pipe(
-              map((category: CategoryView) => this.baseURL + generateCategoryUrl(category).substring(1))
+              map((category: CategoryView) => encodeURI(this.baseURL + generateCategoryUrl(category).substring(1)))
             ),
             // DEFAULT
             this.appRef.isStable.pipe(
@@ -207,9 +207,9 @@ export class SeoEffects {
   private setCanonicalLink(url: string) {
     // the canonical URL of a production system should always be with 'https:'
     // even though the PWA SSR container itself is usually not deployed in an SSL environment so the URLs need manual adaption
-    const canonicalUrl = encodeURI(url.replace('http:', 'https:'));
-    const canonicalLink = this.domService.getOrCreateElement('link[rel="canonical"]', 'link', this.doc.head);
+    const canonicalUrl = url.replace('http:', 'https:');
 
+    const canonicalLink = this.domService.getOrCreateElement('link[rel="canonical"]', 'link', this.doc.head);
     this.domService.setAttribute(canonicalLink, 'rel', 'canonical');
     this.domService.setAttribute(canonicalLink, 'href', canonicalUrl);
 

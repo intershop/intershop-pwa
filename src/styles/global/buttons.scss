@@ -21,8 +21,8 @@
   @include focus-visible-reset();
 
   &-primary {
-    background-color: $button-primary-bg;
-    border-color: $button-primary-border;
+    background-color: $CORPORATE-PRIMARY;
+    border-color: $CORPORATE-PRIMARY;
 
     &:hover,
     &:focus,
@@ -47,8 +47,8 @@
 
     &:not(:disabled):not(.disabled):active,
     &:not(:disabled):not(.disabled).active {
-      background-color: $input-accent-color;
-      border-color: $input-accent-color;
+      background-color: $CORPORATE-DARK;
+      border-color: $CORPORATE-DARK;
       box-shadow: none;
 
       &:focus {
@@ -58,9 +58,9 @@
   }
 
   &-secondary {
-    color: $button-default-color;
-    background-color: $button-default-bg;
-    border-color: $button-default-border;
+    color: $CORPORATE-PRIMARY;
+    background-color: $color-inverse;
+    border-color: $CORPORATE-PRIMARY;
 
     &:hover,
     &:focus,
@@ -78,7 +78,7 @@
     &.disabled,
     &:disabled {
       color: $text-color-secondary;
-      background-color: $button-default-bg;
+      background-color: $color-inverse;
       border-color: $border-color-light;
       box-shadow: none;
       opacity: 0.65;
@@ -86,9 +86,9 @@
 
     &:not(:disabled):not(.disabled):active,
     &:not(:disabled):not(.disabled).active {
-      color: $input-accent-color;
+      color: $CORPORATE-DARK;
       background-color: $color-quaternary;
-      border-color: $input-accent-color;
+      border-color: $CORPORATE-DARK;
       box-shadow: none;
 
       &:focus {
@@ -149,7 +149,7 @@ button.btn-link {
 
 .details-tooltip,
 .btn-link-with-icon {
-  .ng-fa-icon {
+  .bi {
     padding-left: 6px;
   }
 

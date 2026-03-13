@@ -6,13 +6,11 @@
     <ish-budget-info [suffix]="'account.organization.budget_price_type.admin.info'" />
   </div>
   <div class="ms-auto py-2">
-    <a
-      *ngIf="!!(error$ | async) === false"
-      routerLink="create"
-      class="btn btn-secondary"
-      data-testing-id="add-user-link"
-      >{{ 'account.user.list.link.add_user' | translate }}</a
-    >
+    @if (!!(error$ | async) === false) {
+    <a routerLink="create" class="btn btn-secondary" data-testing-id="add-user-link">{{
+      'account.user.list.link.add_user' | translate
+    }}</a>
+    }
   </div>
 </div>
 
@@ -20,57 +18,59 @@
 
 <div class="section">
   <div class="list-body" data-testing-id="user-list">
-    <ng-container *ngFor="let user of users$ | async">
-      <div *ngIf="user" class="list-item-row row mx-0">
-        <div class="col-6 col-sm-2 list-item order-1">
-          <a [routerLink]="[user.login]" class="d-block">{{ user.firstName }} {{ user.lastName }}</a>
-          <span *ngIf="user.active === false" class="input-help">{{
-            'account.user.list.status.inactive' | translate
-          }}</span>
-        </div>
-        <div class="col-5 col-sm-4 list-item order-2">
-          <dl [attr.data-testing-id]="'user-roles-' + user.login">
-            <ish-user-roles-badges [roleIDs]="user.roleIDs" />
-          </dl>
-        </div>
-        <div class="col-12 col-sm-5 list-item order-4 order-sm-3">
-          <ish-user-budget
-            *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting"
-            [budget]="user.userBudget"
-            [attr.data-testing-id]="'user-budget-' + user.login"
-          />
-        </div>
-        <div class="col-1 list-item text-end order-sm-4 order-3">
-          <div *ngIf="user.login !== (currentUser$ | async)?.login" class="float-end">
-            <button
-              type="button"
-              class="btn-tool btn-link"
-              title="{{
-                'account.user.delete_user_dialog.header' | translate : { '0': user.firstName + ' ' + user.lastName }
-              }}"
-              (click)="modalDialog.show(user)"
-              data-testing-id="remove-user"
-            >
-              <fa-icon [icon]="['fas', 'trash-alt']" />
-            </button>
-
-            <ish-modal-dialog
-              #modalDialog
-              [options]="{
-                titleText:
-                  'account.user.delete_user_dialog.header' | translate : { '0': user.firstName + ' ' + user.lastName },
-                confirmText: 'account.user.delete_user_dialog.delete_button.text' | translate,
-                rejectText: 'account.user.delete_user_dialog.cancel_button.text' | translate
-              }"
-              (confirmed)="deleteUser($event)"
-            >
-              <p>{{ 'account.user.delete_user_dialog.are_you_sure_paragraph' | translate }}</p>
-            </ish-modal-dialog>
-          </div>
-        </div>
+    @for (user of users$ | async; track user.email) { @if (user) {
+    <div class="list-item-row row mx-0">
+      <div class="col-6 col-sm-2 list-item order-1">
+        <a [routerLink]="[user.login]" class="d-block">{{ user.firstName }} {{ user.lastName }}</a>
+        @if (user.active === false) {
+        <span class="input-help">{{ 'account.user.list.status.inactive' | translate }}</span>
+        }
       </div>
-    </ng-container>
+      <div class="col-5 col-sm-4 list-item order-2">
+        <dl [attr.data-testing-id]="'user-roles-' + user.login">
+          <ish-user-roles-badges [roleIDs]="user.roleIDs" />
+        </dl>
+      </div>
+      <div class="col-12 col-sm-5 list-item order-4 order-sm-3">
+        @if ('services.OrderApprovalServiceDefinition.runnable' | ishServerSetting) {
+        <ish-user-budget [budget]="user.userBudget" [attr.data-testing-id]="'user-budget-' + user.login" />
+        }
+      </div>
+      <div class="col-1 list-item text-end order-sm-4 order-3">
+        @if (user.login !== (currentUser$ | async)?.login) {
+        <div class="float-end">
+          <button
+            type="button"
+            class="btn-tool btn-link"
+            title="{{
+              'account.user.delete_user_dialog.header' | translate : { '0': user.firstName + ' ' + user.lastName }
+            }}"
+            (click)="modalDialog.show(user)"
+            data-testing-id="remove-user"
+          >
+            <i class="bi bi-trash-fill"></i>
+          </button>
+
+          <ish-modal-dialog
+            #modalDialog
+            [options]="{
+              titleText:
+                'account.user.delete_user_dialog.header' | translate : { '0': user.firstName + ' ' + user.lastName },
+              confirmText: 'account.user.delete_user_dialog.delete_button.text' | translate,
+              rejectText: 'account.user.delete_user_dialog.cancel_button.text' | translate
+            }"
+            (confirmed)="deleteUser($event)"
+          >
+            <p>{{ 'account.user.delete_user_dialog.are_you_sure_paragraph' | translate }}</p>
+          </ish-modal-dialog>
+        </div>
+        }
+      </div>
+    </div>
+    } }
   </div>
 </div>
 
-<ish-loading *ngIf="loading$ | async" />
+@if (loading$ | async) {
+<ish-loading />
+}

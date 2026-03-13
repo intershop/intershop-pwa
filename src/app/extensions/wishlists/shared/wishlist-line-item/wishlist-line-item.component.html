@@ -15,7 +15,8 @@
               <span class="col-form-label">{{ 'wishlist.table.added_on' | translate }}</span>
               {{ wishlistItemData?.creationDate | ishDate : 'shortDate' }}
             </div>
-            <div *ngIf="!readOnly" class="mb-2">
+            @if (!readOnly) {
+            <div class="mb-2">
               <button
                 type="button"
                 class="btn-tool btn-link"
@@ -23,7 +24,7 @@
                 (click)="moveDialog.show()"
                 data-testing-id="move-wishlist"
               >
-                <fa-icon [icon]="['fas', 'arrows-alt']" />
+                <i class="bi bi-arrows-move"></i>
               </button>
               <button
                 type="button"
@@ -32,21 +33,18 @@
                 (click)="removeProductFromWishlist(wishlistItemData.sku)"
                 data-testing-id="delete-wishlist"
               >
-                <fa-icon [icon]="['fas', 'trash-alt']" />
+                <i class="bi bi-trash-fill"></i>
               </button>
             </div>
+            }
           </div>
         </div>
 
         <div class="col-12 col-md-5 product-list-actions-container">
           <ish-product-price />
-          <p *ngIf="product.available; else noInStock">
-            {{ 'wishlist.table.in_stock' | translate }}
-          </p>
-          <ng-template #noInStock>
-            <p>{{ 'wishlist.table.not_accessible' | translate }}</p>
-          </ng-template>
-          <div *ngIf="product.available" class="row">
+          <div class="mb-2"><ish-product-inventory /></div>
+
+          <div class="row">
             <div class="col-6 offset-md-6 col-lg-5 offset-lg-0">
               <ish-product-quantity />
             </div>
