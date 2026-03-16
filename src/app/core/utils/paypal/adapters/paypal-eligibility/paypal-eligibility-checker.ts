@@ -1,7 +1,6 @@
 import { Observable, catchError, distinctUntilChanged, from, interval, map, of, startWith, switchMap } from 'rxjs';
 
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { PaypalGooglePayAdapter } from 'ish-core/utils/paypal/adapters/paypal-google-pay/paypal-google-pay.adapter';
 import { PaypalComponent } from 'ish-core/utils/paypal/paypal-model/paypal.model';
 
 /**
@@ -98,8 +97,8 @@ export class PaypalEligibilityChecker {
             });
             return from(
               googlePaymentClient.isReadyToPay({
-                apiVersion: PaypalGooglePayAdapter.GOOGLE_PAY_API_VERSION,
-                apiVersionMinor: PaypalGooglePayAdapter.GOOGLE_PAY_API_VERSION_MINOR,
+                apiVersion: 2,
+                apiVersionMinor: 0,
                 allowedPaymentMethods: googlePayConfig.allowedPaymentMethods,
               }) as Promise<boolean>
             );

@@ -135,6 +135,8 @@ export const getMultiSiteLocaleMap = createSelector(
 
 export const getSparqueConfig = createSelector(getConfigurationState, state => state.sparque);
 
+export const getPaypalClientConfig = createSelector(getConfigurationState, state => state.paypal);
+
 export const getRestEndpoint = createSelector(
   getICMServerURL,
   getConfigurationState,

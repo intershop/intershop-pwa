@@ -11,6 +11,7 @@ import {
   getCurrentLocale,
   getDeviceType,
   getICMBaseURL,
+  getPaypalClientConfig,
   getPipelineEndpoint,
   getRestEndpoint,
 } from 'ish-core/store/core/configuration';
@@ -149,5 +150,9 @@ export class AppFacade {
   regions$(countryCode: string) {
     this.store.dispatch(loadRegions({ countryCode }));
     return this.store.pipe(select(getRegionsByCountryCode(countryCode)));
+  }
+
+  paypalClientConfig$() {
+    return this.store.pipe(select(getPaypalClientConfig));
   }
 }

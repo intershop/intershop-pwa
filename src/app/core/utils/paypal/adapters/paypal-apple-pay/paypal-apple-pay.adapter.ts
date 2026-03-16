@@ -5,6 +5,7 @@ import { filter, firstValueFrom, take } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { PaypalClientConfig } from 'ish-core/models/paypal-client-config/paypal-client-config';
 import { PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
 import { PAYPAL_APPLE_PAY_BUTTON_STYLING } from 'ish-core/utils/paypal/adapters/paypal-adapters.styling';
 import {
@@ -29,14 +30,13 @@ import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.
  */
 @Injectable()
 export class PaypalApplePayAdapter {
-  static APPLE_PAY_VERSION = 4;
-
   private applePayConfig: ApplePayConfig;
   private paypalApplepay: PaypalApplePayComponent;
   private loading = false;
   private merchantId: string;
   private orderContext: PaypalOrderData;
   private readonly applePaySdkUrl = 'https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js';
+  private applePayApiVersion: number;
 
   constructor(
     private ngZone: NgZone,
@@ -58,6 +58,12 @@ export class PaypalApplePayAdapter {
     const containerId = config.containerId;
     const container = this.document.getElementById(containerId);
     this.merchantId = config.merchantId;
+    this.appFacade
+      .serverSetting$<PaypalClientConfig>('paypal')
+      .pipe(take(1))
+      .subscribe(paypalSettings => {
+        this.applePayApiVersion = paypalSettings.applePay ? Number.parseInt(paypalSettings.applePay.apiVersion, 10) : 4;
+      });
 
     await this.loadApplePaySdk();
 
@@ -126,7 +132,7 @@ export class PaypalApplePayAdapter {
     return (
       typeof ApplePaySession !== 'undefined' &&
       ApplePaySession.canMakePayments() &&
-      ApplePaySession.supportsVersion(PaypalApplePayAdapter.APPLE_PAY_VERSION)
+      ApplePaySession.supportsVersion(this.applePayApiVersion)
     );
   }
 
@@ -168,7 +174,7 @@ export class PaypalApplePayAdapter {
 
     try {
       const paymentRequest = await this.getPaymentRequest();
-      const session = new ApplePaySession(PaypalApplePayAdapter.APPLE_PAY_VERSION, paymentRequest);
+      const session = new ApplePaySession(this.applePayApiVersion, paymentRequest);
 
       session.onvalidatemerchant = async (event: { validationURL: string }) => {
         await this.onValidateMerchant(event.validationURL, session);

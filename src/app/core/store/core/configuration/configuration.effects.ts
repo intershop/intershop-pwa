@@ -9,6 +9,7 @@ import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/config
 import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
 import { SSR_LOCALE } from 'ish-core/configurations/state-keys';
 import { FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { PaypalClientConfig } from 'ish-core/models/paypal-client-config/paypal-client-config';
 import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
@@ -87,6 +88,7 @@ export class ConfigurationEffects {
             'multiSiteLocaleMap'
           ),
           this.stateProperties.getStateOrEnvOrDefault<SparqueConfig>('SPARQUE', 'sparque'),
+          this.stateProperties.getStateOrEnvOrDefault<PaypalClientConfig>('PAYPAL', 'paypal'),
         ]),
         map(
           ([
@@ -102,6 +104,7 @@ export class ConfigurationEffects {
             identityProviders,
             multiSiteLocaleMap,
             sparque,
+            paypal,
           ]) =>
             applyConfiguration({
               baseURL,
@@ -115,6 +118,7 @@ export class ConfigurationEffects {
               identityProviders,
               multiSiteLocaleMap,
               sparque,
+              paypal,
             })
         )
       ),

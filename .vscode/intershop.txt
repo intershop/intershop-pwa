@@ -6,6 +6,7 @@ anonymization
 anonymize
 anonymized
 apitoken
+applepay
 appr
 appserver
 backoffice

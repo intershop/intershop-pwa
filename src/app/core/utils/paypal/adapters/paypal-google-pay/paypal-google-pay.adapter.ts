@@ -31,8 +31,8 @@ import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.
  */
 @Injectable()
 export class PaypalGooglePayAdapter {
-  static GOOGLE_PAY_API_VERSION = 2;
-  static GOOGLE_PAY_API_VERSION_MINOR = 0;
+  private googlePayApiVersion: number[];
+  private googlePayEnvironment: string;
 
   private readonly googlePaySdkUrl = 'https://pay.google.com/gp/p/js/pay.js';
   private googlePaymentClient: GooglePayPaymentClient;
@@ -60,6 +60,15 @@ export class PaypalGooglePayAdapter {
   async renderGooglePayButton(config: PaypalComponentsConfig): Promise<void> {
     const containerId = config.containerId;
     const container = this.document.getElementById(containerId);
+    this.appFacade
+      .paypalClientConfig$()
+      .pipe(take(1))
+      .subscribe(paypalSettings => {
+        this.googlePayApiVersion = paypalSettings.googlePay
+          ? paypalSettings.googlePay.apiVersion?.split('.').map(num => Number.parseInt(num, 10))
+          : [2, 0];
+        this.googlePayEnvironment = paypalSettings.googlePay ? paypalSettings.googlePay.environment : 'TEST';
+      });
 
     if (!container) {
       return Promise.reject(new Error(`Container element '${containerId}' not found in DOM`));
@@ -88,8 +97,8 @@ export class PaypalGooglePayAdapter {
 
         // Check if Google Pay is available
         const isReadyToPay = await this.getGooglePaymentsClient().isReadyToPay({
-          apiVersion: PaypalGooglePayAdapter.GOOGLE_PAY_API_VERSION,
-          apiVersionMinor: PaypalGooglePayAdapter.GOOGLE_PAY_API_VERSION_MINOR,
+          apiVersion: this.googlePayApiVersion[0],
+          apiVersionMinor: this.googlePayApiVersion[1],
           allowedPaymentMethods: this.googlePayConfig.allowedPaymentMethods,
         });
 
@@ -129,7 +138,7 @@ export class PaypalGooglePayAdapter {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const googlePayments = (window as any).google.payments.api;
       this.googlePaymentClient = new googlePayments.PaymentsClient({
-        environment: 'TEST',
+        environment: this.googlePayEnvironment,
         merchantInfo: this.googlePayConfig?.merchantInfo,
         paymentDataCallbacks: {
           onPaymentAuthorized: (paymentData: GooglePayPaymentData) => this.onPaymentAuthorizedCallback(paymentData),
@@ -197,8 +206,8 @@ export class PaypalGooglePayAdapter {
     );
 
     return {
-      apiVersion: PaypalGooglePayAdapter.GOOGLE_PAY_API_VERSION,
-      apiVersionMinor: PaypalGooglePayAdapter.GOOGLE_PAY_API_VERSION_MINOR,
+      apiVersion: this.googlePayApiVersion[0],
+      apiVersionMinor: this.googlePayApiVersion[1],
       allowedPaymentMethods: this.googlePayConfig.allowedPaymentMethods,
       merchantInfo: this.googlePayConfig.merchantInfo,
       transactionInfo: {

@@ -70,6 +70,10 @@ class TestablePaypalGooglePayAdapter extends PaypalGooglePayAdapter {
   setPaypalOrderId(paypalOrderId: string): void {
     (this as any).paypalOrderId = paypalOrderId;
   }
+
+  setGooglePayApiVersion(version: number[]): void {
+    (this as any).googlePayApiVersion = version;
+  }
 }
 
 describe('Paypal Google Pay Adapter', () => {
@@ -173,6 +177,7 @@ describe('Paypal Google Pay Adapter', () => {
     } as unknown as PaypalComponent;
 
     when(appFacade.currentLocale$).thenReturn(of('en_US'));
+    when(appFacade.paypalClientConfig$()).thenReturn(of({ googlePay: { apiVersion: '2.0', environment: 'TEST' } }));
     when(checkoutFacade.basket$).thenReturn(of(mockBasket));
     when(scriptLoaderService.load(anything())).thenReturn(of<ScriptType>({ src: 'test-script', loaded: true }));
 
@@ -337,6 +342,7 @@ describe('Paypal Google Pay Adapter', () => {
   describe('onGooglePayButtonClicked()', () => {
     beforeEach(() => {
       adapter.setGooglePayConfig(mockGooglePayConfig);
+      adapter.setGooglePayApiVersion([2, 0]);
       when(paypalDataTransferService.paypalOrder$).thenReturn(of({ paypalOrderId: 'PAYPAL123', orderId: 'ORDER456' }));
     });
 
@@ -356,6 +362,7 @@ describe('Paypal Google Pay Adapter', () => {
   describe('getPaymentDataRequest()', () => {
     beforeEach(() => {
       adapter.setGooglePayConfig(mockGooglePayConfig);
+      adapter.setGooglePayApiVersion([2, 0]);
     });
 
     it('should create payment data request with basket information', async () => {

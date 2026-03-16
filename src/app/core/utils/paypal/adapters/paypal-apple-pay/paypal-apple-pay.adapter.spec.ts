@@ -116,6 +116,7 @@ describe('Paypal Apple Pay Adapter', () => {
     };
 
     when(appFacade.currentLocale$).thenReturn(of('en_US'));
+    when(appFacade.serverSetting$(anything())).thenReturn(of({ applePay: { apiVersion: '4' } }));
     when(checkoutFacade.basket$).thenReturn(of(mockBasket));
     when(paypalDataTransferService.paypalOrder$).thenReturn(
       of({ paypalOrderId: 'paypal-order-123', orderId: 'order-123' })
