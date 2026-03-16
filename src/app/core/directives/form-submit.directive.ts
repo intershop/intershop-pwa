@@ -14,7 +14,14 @@ export class FormSubmitDirective {
   onFormSubmit() {
     const invalidElements = this.elementRef.nativeElement.querySelectorAll('.ng-invalid');
     if (invalidElements.length) {
-      invalidElements[0].focus();
+      const firstElement = invalidElements[0] as HTMLElement;
+      if (firstElement.tagName.toLowerCase() === 'ng-select') {
+        // Special handling for ng-select: focus the nested input
+        firstElement.querySelector('input')?.focus();
+      } else {
+        // For standard form elements, focus the element directly
+        firstElement.focus();
+      }
     }
   }
 }
