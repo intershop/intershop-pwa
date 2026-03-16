@@ -221,6 +221,7 @@ optgroup {
 
   input,
   select,
+  .ng-select .ng-select-container,
   textarea {
     border-color: $color-special-error;
 
