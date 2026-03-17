@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
@@ -7,15 +7,14 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { PriceHelper } from 'ish-core/models/price/price.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
-import { PaypalPageType } from 'ish-core/utils/paypal-config/paypal-config.service';
+import { PaypalPageType } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 import { BasketPromotionComponent } from 'ish-shared/components/basket/basket-promotion/basket-promotion.component';
-import { PaymentPaypalMessagesComponent } from 'ish-shared/components/checkout/payment-paypal-messages/payment-paypal-messages.component';
+import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-paypal/payment-paypal.component';
 
 /**
  * The Cost Summary Component displays a detailed summary of basket or order costs, respectively.
@@ -31,8 +30,6 @@ import { PaymentPaypalMessagesComponent } from 'ish-shared/components/checkout/p
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
-    NgFor,
     TranslatePipe,
     PricePipe,
     BasketPromotionComponent,
@@ -40,7 +37,7 @@ import { PaymentPaypalMessagesComponent } from 'ish-shared/components/checkout/p
     AsyncPipe,
     ServerSettingPipe,
     NgbPopover,
-    PaymentPaypalMessagesComponent,
+    PaymentPaypalComponent,
   ],
 })
 export class BasketCostSummaryComponent implements OnInit {

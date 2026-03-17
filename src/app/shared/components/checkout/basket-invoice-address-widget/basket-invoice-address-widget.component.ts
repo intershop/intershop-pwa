@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
@@ -31,7 +31,6 @@ import { AddressDoctorComponent } from '../../../../extensions/address-doctor/sh
   imports: [
     AsyncPipe,
     TranslatePipe,
-    NgIf,
     AddressDoctorComponent,
     FormlyForm,
     NgbCollapseModule,
@@ -184,4 +183,3 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit {
     this.collapse = true;
   }
 }
-

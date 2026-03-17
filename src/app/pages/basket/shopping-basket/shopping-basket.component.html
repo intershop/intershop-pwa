@@ -80,11 +80,10 @@
                 <ish-basket-add-to-quote />
                 }
               </ng-container>
-              <ng-container *ishFeature="'orderTemplates'"></ng-container>
+              <ng-container *ishFeature="'orderTemplates'" />
               @if (basket) { @defer {
               <ish-basket-create-order-template [cssClass]="'btn btn-secondary'" [products]="basket.lineItems" />
               } }
-              </ng-container>
             </div>
             <ish-clear-basket cssClass="float-md-end" />
           </div>

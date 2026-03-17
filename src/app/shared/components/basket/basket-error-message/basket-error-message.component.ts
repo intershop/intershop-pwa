@@ -1,7 +1,7 @@
-import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
+import { ScrollDirective } from 'ish-core/directives/scroll.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
@@ -10,7 +10,7 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
   templateUrl: './basket-error-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgFor, TranslatePipe, ErrorMessageComponent],
+  imports: [TranslatePipe, ErrorMessageComponent, ScrollDirective],
 })
 export class BasketErrorMessageComponent {
   @Input({ required: true }) error: HttpError;
