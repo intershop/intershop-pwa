@@ -29,12 +29,13 @@ import { UserRolesBadgesComponent } from './user-roles-badges/user-roles-badges.
     BudgetInfoComponent,
     ErrorMessageComponent,
     LoadingComponent,
-    ModalDialogComponent, 
+    ModalDialogComponent,
     ServerSettingPipe,
     TranslatePipe,
     UserBudgetComponent,
     UserRolesBadgesComponent,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class UsersPageComponent implements OnInit {
   currentUser$: Observable<User>;
@@ -57,5 +58,9 @@ export class UsersPageComponent implements OnInit {
 
   deleteUser(user: B2bUser) {
     this.organizationManagementFacade.deleteUser(user.login);
+  }
+
+  trackByUser(index: number, user: B2bUser): string {
+    return user.login || user.email || `index-${index}`;
   }
 }
