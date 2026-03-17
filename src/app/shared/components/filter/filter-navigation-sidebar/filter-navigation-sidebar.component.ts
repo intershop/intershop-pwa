@@ -1,4 +1,4 @@
-import { NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
@@ -15,8 +15,6 @@ import { FilterTextComponent } from 'ish-shared/components/filter/filter-text/fi
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
-    NgFor,
     NgSwitch,
     NgSwitchCase,
     NgSwitchDefault,
@@ -24,8 +22,7 @@ import { FilterTextComponent } from 'ish-shared/components/filter/filter-text/fi
     FilterSwatchImagesComponent,
     FilterCheckboxComponent,
     FilterDropdownComponent,
-    FilterCollapsibleComponent,
-  ],
+    FilterCollapsibleComponent],
 })
 export class FilterNavigationSidebarComponent {
   @Input({ required: true }) filterNavigation: FilterNavigation;

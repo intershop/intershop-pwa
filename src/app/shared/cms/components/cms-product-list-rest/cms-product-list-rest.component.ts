@@ -1,6 +1,6 @@
 /* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
 // eslint-disable-next-line ish-custom-rules/ban-imports-file-pattern
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -28,7 +28,7 @@ import { ProductsListComponent } from 'ish-shared/components/product/products-li
   templateUrl: './cms-product-list-rest.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgClass, ProductsListComponent, AsyncPipe],
+  imports: [ NgClass, ProductsListComponent, AsyncPipe],
 })
 export class CMSProductListRestComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;

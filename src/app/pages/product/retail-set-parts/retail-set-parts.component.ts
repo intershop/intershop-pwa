@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -18,14 +18,11 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
-    NgFor,
     ProductContextDirective,
     AsyncPipe,
     TranslatePipe,
     ProductAddToBasketComponent,
-    ProductItemComponent,
-  ],
+    ProductItemComponent],
 })
 export class RetailSetPartsComponent implements OnInit {
   @Input() displayType: ProductItemDisplayType = 'row';

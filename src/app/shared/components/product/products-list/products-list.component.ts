@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { isEqual } from 'lodash-es';
 import { Observable, combineLatest, of } from 'rxjs';
@@ -19,15 +19,7 @@ import { ProductsListCarouselComponent } from './products-list-carousel/products
   templateUrl: './products-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    NgIf,
-    AsyncPipe,
-    NgFor,
-    ProductItemComponent,
-    NgClass,
-    ProductContextDirective,
-    ProductsListCarouselComponent,
-  ],
+  imports: [AsyncPipe, ProductItemComponent, NgClass, ProductContextDirective, ProductsListCarouselComponent],
 })
 export class ProductsListComponent implements OnChanges {
   @Input({ required: true }) productSKUs: string[];

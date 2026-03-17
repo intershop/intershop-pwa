@@ -1,4 +1,4 @@
-import { NgClass, NgIf, PercentPipe } from '@angular/common';
+import { NgClass, PercentPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BudgetInfoComponent } from 'organization-management';
@@ -24,13 +24,11 @@ import { BudgetBarComponent } from '../budget-bar/budget-bar.component';
     BudgetBarComponent,
     InfoBoxComponent,
     NgClass,
-    NgIf,
     OrderRecurrenceComponent,
     PercentPipe,
     PricePipe,
     TranslatePipe,
-    BudgetInfoComponent,
-  ],
+    BudgetInfoComponent],
 })
 export class RequisitionBuyerApprovalComponent implements OnChanges {
   @Input({ required: true }) requisition: Requisition;

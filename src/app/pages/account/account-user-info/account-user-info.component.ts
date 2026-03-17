@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import { User } from 'ish-core/models/user/user.model';
   templateUrl: './account-user-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe],
+  imports: [ AsyncPipe],
 })
 export class AccountUserInfoComponent implements OnInit {
   isBusinessUser$: Observable<boolean>;

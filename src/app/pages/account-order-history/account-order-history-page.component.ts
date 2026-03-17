@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -33,12 +33,10 @@ import { AccountOrderFiltersComponent } from './account-order-filters/account-or
     ContentIncludeComponent,
     ErrorMessageComponent,
     NgClass,
-    NgIf,
     OrderListComponent,
     PagingComponent,
     ServerHtmlDirective,
-    TranslatePipe,
-  ],
+    TranslatePipe],
 })
 export class AccountOrderHistoryPageComponent implements OnInit {
   orders$: Observable<Order[]>;

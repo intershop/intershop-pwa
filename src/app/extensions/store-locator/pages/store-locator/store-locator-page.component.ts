@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
@@ -35,8 +35,6 @@ import { StoresMapComponent } from '../../shared/stores-map/stores-map.component
     FeatureToggleDirective,
     FormlyForm,
     LoadingComponent,
-    NgFor,
-    NgIf,
     NotFeatureToggleDirective,
     ReactiveFormsModule,
     ScrollDirective,

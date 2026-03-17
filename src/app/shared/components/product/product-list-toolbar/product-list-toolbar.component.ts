@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -12,7 +12,7 @@ import { ProductListPagingComponent } from 'ish-shared/components/product/produc
   templateUrl: './product-list-toolbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, NgIf, NgFor, RouterLink, TranslatePipe, ProductListPagingComponent],
+  imports: [NgClass,  RouterLink, TranslatePipe, ProductListPagingComponent],
 })
 export class ProductListToolbarComponent implements OnChanges {
   @Input({ required: true }) sortableAttributes: SortableAttributesType[];

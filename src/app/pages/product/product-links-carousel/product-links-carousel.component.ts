@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input } from '@angular/core';
 import { RxState } from '@rx-angular/state';
 import { EMPTY, Observable, combineLatest, of } from 'rxjs';
@@ -32,7 +32,7 @@ SwiperCore.use([Navigation, Pagination, A11y]);
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [RxState],
   standalone: true,
-  imports: [NgIf, SwiperModule, NgFor, AsyncPipe, ProductItemComponent, ProductContextDirective],
+  imports: [ SwiperModule, AsyncPipe, ProductItemComponent, ProductContextDirective],
 })
 export class ProductLinksCarouselComponent {
   /**
@@ -113,8 +113,7 @@ export class ProductLinksCarouselComponent {
               combineLatest([
                 // make sure to load product and inventory data
                 this.shoppingFacade.product$(sku, ProductCompletenessLevel.List).pipe(whenTruthy()),
-                this.shoppingFacade.productInventory$(sku).pipe(whenTruthy()),
-              ]).pipe(
+                this.shoppingFacade.productInventory$(sku).pipe(whenTruthy())]).pipe(
                 tap(([product, inventory]) => {
                   // add slide to the hidden list if product is not available
                   if (!inventory?.inStock || product.failed) {
@@ -132,8 +131,7 @@ export class ProductLinksCarouselComponent {
           }
         })
       ),
-      this.state.select('hiddenSlides'),
-    ]).pipe(map(([products, hiddenSlides]) => products.filter((_, index) => !hiddenSlides.includes(index))));
+      this.state.select('hiddenSlides')]).pipe(map(([products, hiddenSlides]) => products.filter((_, index) => !hiddenSlides.includes(index))));
 
     this.state.connect('products$', filteredProducts$);
   }

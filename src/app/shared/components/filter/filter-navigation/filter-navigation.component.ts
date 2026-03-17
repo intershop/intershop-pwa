@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -16,12 +16,10 @@ import { FilterNavigationSidebarComponent } from 'ish-shared/components/filter/f
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     AsyncPipe,
     FilterNavigationSidebarComponent,
     FilterNavigationHorizontalComponent,
-    FilterNavigationBadgesComponent,
-  ],
+    FilterNavigationBadgesComponent],
 })
 export class FilterNavigationComponent implements OnInit {
   @Input() fragmentOnRouting: string;

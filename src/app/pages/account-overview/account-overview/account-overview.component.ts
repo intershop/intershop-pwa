@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -32,7 +32,6 @@ import { WishlistWidgetComponent } from '../../../extensions/wishlists/shared/wi
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     ...AUTHORIZATION_TOGGLE_IMPORTS,
     ContentIncludeComponent,
     ServerHtmlDirective,
@@ -49,8 +48,7 @@ import { WishlistWidgetComponent } from '../../../extensions/wishlists/shared/wi
     ...ROLE_TOGGLE_IMPORTS,
     TranslatePipe,
     WishlistWidgetComponent,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class AccountOverviewComponent {
   @Input({ required: true }) user: User;

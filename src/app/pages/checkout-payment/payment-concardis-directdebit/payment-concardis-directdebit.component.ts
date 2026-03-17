@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validators } from '@angular/forms';
@@ -31,7 +30,7 @@ declare let PayEngine: any;
   templateUrl: './payment-concardis-directdebit.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [FormlyForm, TranslatePipe, PaymentSaveCheckboxComponent, NgIf],
+  imports: [FormlyForm, TranslatePipe, PaymentSaveCheckboxComponent],
 })
 export class PaymentConcardisDirectdebitComponent extends PaymentConcardisComponent implements OnInit {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {

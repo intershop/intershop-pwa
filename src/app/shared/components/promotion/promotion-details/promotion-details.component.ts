@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -20,7 +20,7 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
   templateUrl: './promotion-details.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, NgIf, ModalDialogLinkComponent, NgClass, ServerHtmlDirective],
+  imports: [TranslatePipe, ModalDialogLinkComponent, NgClass, ServerHtmlDirective],
 })
 export class PromotionDetailsComponent {
   @Input({ required: true }) promotion: Promotion;

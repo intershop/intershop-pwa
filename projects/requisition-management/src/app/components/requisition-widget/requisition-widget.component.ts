@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -19,7 +19,7 @@ import { Requisition } from '../../models/requisition/requisition.model';
   templateUrl: './requisition-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, InfoBoxComponent, LoadingComponent, NgIf, PricePipe, TranslatePipe, RouterLink],
+  imports: [AsyncPipe, InfoBoxComponent, LoadingComponent, PricePipe, TranslatePipe, RouterLink],
 })
 export class RequisitionWidgetComponent implements OnInit {
   numPendingRequisitions$: Observable<number>;

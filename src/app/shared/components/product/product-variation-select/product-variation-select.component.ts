@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { AsyncPipe, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -18,16 +18,13 @@ import { ProductVariationSelectSwatchComponent } from 'ish-shared/components/pro
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     AsyncPipe,
-    NgFor,
     NgSwitch,
     NgSwitchCase,
     NgSwitchDefault,
     ProductVariationSelectSwatchComponent,
     ProductVariationSelectEnhancedComponent,
-    ProductVariationSelectDefaultComponent,
-  ],
+    ProductVariationSelectDefaultComponent],
 })
 export class ProductVariationSelectComponent implements OnInit {
   uuid = uuid();
@@ -40,8 +37,7 @@ export class ProductVariationSelectComponent implements OnInit {
     this.variationOptions$ = combineLatest([
       this.context.select('product').pipe(filter(ProductHelper.isVariationProduct)),
       this.context.select('variations'),
-      this.context.select('productMaster'),
-    ]).pipe(
+      this.context.select('productMaster')]).pipe(
       map(([product, variations, masterProduct]) =>
         ProductVariationHelper.buildVariationOptionGroups(product, masterProduct, variations)
       )

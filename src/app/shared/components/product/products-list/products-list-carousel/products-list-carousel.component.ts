@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@angular/core';
 import SwiperCore, { A11y, Navigation, Pagination } from 'swiper';
 import { SwiperModule } from 'swiper/angular';
@@ -24,7 +24,7 @@ SwiperCore.use([Pagination, Navigation, A11y]);
   templateUrl: './products-list-carousel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgFor, NgClass, ProductItemComponent, ProductContextDirective, SwiperModule],
+  imports: [NgClass, ProductItemComponent, ProductContextDirective, SwiperModule],
 })
 export class ProductsListCarouselComponent implements OnChanges {
   @Input({ required: true }) products: string[];

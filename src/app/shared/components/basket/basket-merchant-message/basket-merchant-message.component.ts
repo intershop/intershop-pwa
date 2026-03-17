@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -27,7 +27,7 @@ import { SuccessMessageComponent } from 'ish-shared/components/common/success-me
   templateUrl: './basket-merchant-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, SuccessMessageComponent, TranslatePipe, FormlyForm],
+  imports: [ReactiveFormsModule, SuccessMessageComponent, TranslatePipe, FormlyForm],
 })
 export class BasketMerchantMessageComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: Basket;
@@ -49,8 +49,7 @@ export class BasketMerchantMessageComponent implements OnInit, OnChanges {
           maxLength: 1000,
           rows: 2,
         },
-      },
-    ];
+      }];
   }
 
   ngOnChanges(changes: SimpleChanges) {

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -33,11 +33,9 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
     ErrorMessageComponent,
     FormlyForm,
     LoadingComponent,
-    NgIf,
     ReactiveFormsModule,
     TranslatePipe,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class CostCenterBuyersPageComponent implements OnInit {
   loading$: Observable<boolean>;
@@ -152,11 +150,9 @@ export class CostCenterBuyersPageComponent implements OnInit {
                 options: FormsService.getCostCenterBudgetPeriodOptions(),
                 ariaLabel: 'account.costcenter.budget.period.select.label',
               },
-            },
-          ],
+            }],
         },
-      },
-    ];
+      }];
   }
 
   toggleItemSelection() {

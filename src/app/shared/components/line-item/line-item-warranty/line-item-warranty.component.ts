@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
@@ -23,7 +23,7 @@ import { ProductWarrantyComponent } from 'ish-shared/components/product/product-
   templateUrl: './line-item-warranty.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ProductWarrantyComponent, PricePipe, NgIf, AsyncPipe],
+  imports: [ProductWarrantyComponent, PricePipe, AsyncPipe],
 })
 export class LineItemWarrantyComponent implements OnInit {
   @Input({ required: true }) pli: Partial<LineItemView & OrderLineItem>;

@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
@@ -9,7 +9,7 @@ import { VariationOptionGroup } from 'ish-core/models/product-variation/variatio
   styleUrls: ['./product-variation-select-swatch.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgFor, NgIf, NgStyle, NgClass],
+  imports: [ NgStyle, NgClass],
 })
 export class ProductVariationSelectSwatchComponent {
   @Input({ required: true }) group: VariationOptionGroup;

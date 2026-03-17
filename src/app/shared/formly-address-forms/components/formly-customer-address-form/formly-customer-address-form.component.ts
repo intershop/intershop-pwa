@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -37,7 +37,7 @@ import { FORMLY_ADDRESS_FORMS_COMPONENTS } from 'ish-shared/formly-address-forms
   templateUrl: './formly-customer-address-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [ReactiveFormsModule, TranslatePipe, ...FORMLY_ADDRESS_FORMS_COMPONENTS, AsyncPipe, NgIf],
+  imports: [ReactiveFormsModule, TranslatePipe, ...FORMLY_ADDRESS_FORMS_COMPONENTS, AsyncPipe],
 })
 export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
   @Input() address: Partial<Address>;

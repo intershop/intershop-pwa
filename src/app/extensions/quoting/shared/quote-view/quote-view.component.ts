@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -24,13 +24,11 @@ import { QuoteStateComponent } from '../quote-state/quote-state.component';
     AsyncPipe,
     InfoMessageComponent,
     DatePipe,
-    NgIf,
     QuoteLineItemListComponent,
     QuoteStateComponent,
     RouterLink,
     TranslatePipe,
-    ServerHtmlDirective,
-  ],
+    ServerHtmlDirective],
 })
 export class QuoteViewComponent implements OnInit {
   quote$: Observable<Quote | QuoteRequest>;

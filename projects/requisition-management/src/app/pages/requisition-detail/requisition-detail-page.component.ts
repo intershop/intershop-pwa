@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -40,7 +40,6 @@ import { RequisitionSummaryComponent } from './requisition-summary/requisition-s
     ErrorMessageComponent,
     InfoBoxComponent,
     LineItemListComponent,
-    NgIf,
     NgTemplateOutlet,
     RequisitionBuyerApprovalComponent,
     RequisitionCostCenterApprovalComponent,
@@ -49,8 +48,7 @@ import { RequisitionSummaryComponent } from './requisition-summary/requisition-s
     TranslatePipe,
     RequisitionRejectDialogComponent,
     LoadingComponent,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class RequisitionDetailPageComponent implements OnInit {
   requisition$: Observable<Requisition>;

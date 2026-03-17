@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -26,13 +26,11 @@ import { UserBudget } from '../../models/user-budget/user-budget.model';
     FormSubmitDirective,
     ErrorMessageComponent,
     LoadingComponent,
-    NgIf,
     ReactiveFormsModule,
     ServerSettingPipe,
     TranslatePipe,
     UserBudgetFormComponent,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class UserEditBudgetPageComponent implements OnInit {
   constructor(private organizationManagementFacade: OrganizationManagementFacade) {}

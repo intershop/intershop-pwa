@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -16,7 +16,7 @@ import { Requisition } from '../../models/requisition/requisition.model';
   templateUrl: './checkout-receipt-requisition.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, NgIf, ServerHtmlDirective, TranslatePipe, BasketApprovalInfoComponent, RouterLink],
+  imports: [AsyncPipe, ServerHtmlDirective, TranslatePipe, BasketApprovalInfoComponent, RouterLink],
 })
 export class CheckoutReceiptRequisitionComponent implements OnInit {
   @Input({ required: true }) basket: Basket;

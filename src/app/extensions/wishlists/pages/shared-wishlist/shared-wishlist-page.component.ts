@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -15,13 +15,10 @@ import { WishlistLineItemComponent } from '../../shared/wishlist-line-item/wishl
   standalone: true,
   imports: [
     AsyncPipe,
-    LoadingComponent,
-    NgFor,
-    NgIf,
+    LoadingComponent, 
     ProductContextDirective,
     TranslatePipe,
-    WishlistLineItemComponent,
-  ],
+    WishlistLineItemComponent],
 })
 export class SharedWishlistPageComponent {
   wishlist$ = this.wishlistsFacade.sharedWishlist$;

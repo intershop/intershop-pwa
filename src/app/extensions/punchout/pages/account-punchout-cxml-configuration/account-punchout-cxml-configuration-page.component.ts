@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ConfigOption } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -23,9 +23,7 @@ import { CxmlHelpTextWrapperComponent } from './formly/cxml-help-text-wrapper/cx
     CxmlConfigurationFormComponent,
     CxmlHelpTextWrapperComponent,
     LoadingComponent,
-    NgIf,
-    TranslatePipe,
-  ],
+    TranslatePipe],
 })
 export class AccountPunchoutCxmlConfigurationPageComponent implements OnInit {
   selectedUser$: Observable<PunchoutUser>;

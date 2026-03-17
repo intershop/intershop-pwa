@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
@@ -28,13 +28,11 @@ import { CheckoutAddressComponent } from './checkout-address/checkout-address.co
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     AsyncPipe,
     CheckoutAddressComponent,
     CheckoutAddressAnonymousComponent,
     LoadingComponent,
-    TranslatePipe,
-  ],
+    TranslatePipe],
 })
 export class CheckoutAddressPageComponent implements OnInit {
   basket$: Observable<BasketView>;

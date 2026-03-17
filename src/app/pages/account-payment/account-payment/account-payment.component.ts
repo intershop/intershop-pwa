@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnChanges, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -25,13 +25,10 @@ import { AccountPaymentConcardisDirectdebitComponent } from '../account-payment-
   standalone: true,
   imports: [
     AccountPaymentConcardisDirectdebitComponent,
-    NgClass,
-    NgFor,
-    NgIf,
+    NgClass, 
     NgTemplateOutlet,
     ReactiveFormsModule,
-    TranslatePipe,
-  ],
+    TranslatePipe],
 })
 export class AccountPaymentComponent implements OnInit, OnChanges {
   @Input({ required: true }) paymentMethods: PaymentMethod[];

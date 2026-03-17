@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -14,7 +14,7 @@ import { OrderTemplatePreferencesDialogComponent } from '../order-template-prefe
   templateUrl: './order-create-order-template.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, TranslatePipe, OrderTemplatePreferencesDialogComponent, NgIf],
+  imports: [NgClass, TranslatePipe, OrderTemplatePreferencesDialogComponent],
 })
 /**
  * The Create Order Template from Order displays a button which adds the current order to to a new order template.

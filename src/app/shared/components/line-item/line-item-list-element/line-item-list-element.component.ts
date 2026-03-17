@@ -1,4 +1,4 @@
-import { DecimalPipe, NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { DecimalPipe, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -37,7 +37,6 @@ import { ProductVariationDisplayComponent } from 'ish-shared/components/product/
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     ProductNameComponent,
     ProductIdComponent,
     ProductImageComponent,
@@ -47,7 +46,6 @@ import { ProductVariationDisplayComponent } from 'ish-shared/components/product/
     NgSwitch,
     NgSwitchCase,
     NgSwitchDefault,
-    NgFor,
     PricePipe,
     ProductShipmentComponent,
     TranslatePipe,
@@ -64,8 +62,7 @@ import { ProductVariationDisplayComponent } from 'ish-shared/components/product/
     DecimalPipe,
     BasketPromotionComponent,
     LineItemWarrantyComponent,
-    LineItemInformationEditComponent,
-  ],
+    LineItemInformationEditComponent],
 })
 export class LineItemListElementComponent implements OnChanges {
   @Input({ required: true }) pli: Partial<LineItemView & OrderLineItem>;

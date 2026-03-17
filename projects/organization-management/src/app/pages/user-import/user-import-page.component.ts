@@ -1,5 +1,5 @@
 import { CdkTableModule } from '@angular/cdk/table';
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -22,12 +22,10 @@ import { UserRolesBadgesComponent } from '../users/user-roles-badges/user-roles-
     CdkTableModule,
     LoadingComponent,
     NgClass,
-    NgIf,
     TranslatePipe,
     PricePipe,
     UserRolesBadgesComponent,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class UserImportPageComponent implements OnInit {
   importedUsers$: Observable<{ user: B2bUser; status: string }[]> = of([]);
@@ -47,8 +45,7 @@ export class UserImportPageComponent implements OnInit {
 
     this.importProgress$ = combineLatest([
       this.organizationManagementFacade.usersImportTotal$,
-      this.importedUsers$,
-    ]).pipe(
+      this.importedUsers$]).pipe(
       map(([totalUsersToImport, importedUsers]) => ({
         total: totalUsersToImport,
         current: importedUsers.length,

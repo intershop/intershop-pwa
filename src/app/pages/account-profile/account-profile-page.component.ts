@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -11,7 +11,7 @@ import { AccountProfileComponent } from './account-profile/account-profile.compo
   templateUrl: './account-profile-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AccountProfileComponent, AsyncPipe, NgIf],
+  imports: [AccountProfileComponent, AsyncPipe],
 })
 export class AccountProfilePageComponent implements OnInit {
   user$: Observable<User>;

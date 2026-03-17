@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
@@ -21,7 +21,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   templateUrl: './basket-cost-center-selection.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, FormlyForm, AsyncPipe, ReactiveFormsModule, TranslatePipe],
+  imports: [ FormlyForm, AsyncPipe, ReactiveFormsModule, TranslatePipe],
 })
 export class BasketCostCenterSelectionComponent implements OnInit {
   form = new UntypedFormGroup({});
@@ -50,8 +50,7 @@ export class BasketCostCenterSelectionComponent implements OnInit {
       this.checkoutFacade.basket$.pipe(
         map(basket => basket?.costCenter),
         distinctUntilChanged()
-      ),
-    ]).pipe(
+      )]).pipe(
       map(([options]) => options),
       map(options => (options.length ? this.getFields(options) : undefined)),
       whenTruthy()
@@ -104,7 +103,6 @@ export class BasketCostCenterSelectionComponent implements OnInit {
           placeholder: options.length > 1 && !this.model?.costCenter ? 'account.option.select.text' : undefined,
           virtualScroll: true,
         },
-      },
-    ];
+      }];
   }
 }

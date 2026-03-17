@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -39,9 +39,7 @@ import { SuccessMessageComponent } from 'ish-shared/components/common/success-me
     AsyncPipe,
     SuccessMessageComponent,
     NgbCollapseModule,
-    ReactiveFormsModule,
-    NgIf,
-  ],
+    ReactiveFormsModule],
 })
 export class BasketPromotionCodeComponent implements OnInit {
   @Input() toast = true;

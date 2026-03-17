@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -20,7 +20,7 @@ import { AccountPaymentComponent } from './account-payment/account-payment.compo
   templateUrl: './account-payment-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AccountPaymentComponent, AsyncPipe, ErrorMessageComponent, LoadingComponent, NgIf, TranslatePipe],
+  imports: [AccountPaymentComponent, AsyncPipe, ErrorMessageComponent, LoadingComponent, TranslatePipe],
 })
 export class AccountPaymentPageComponent implements OnInit {
   paymentMethods$: Observable<PaymentMethod[]>;

@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
@@ -13,7 +13,7 @@ import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/pa
   templateUrl: './payment-parameter-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormlyForm, PaymentSaveCheckboxComponent, TranslatePipe, NgIf],
+  imports: [FormlyForm, PaymentSaveCheckboxComponent, TranslatePipe],
 })
 export class PaymentParameterFormComponent implements OnInit, OnChanges {
   @Input({ required: true }) parentForm: FormGroup;

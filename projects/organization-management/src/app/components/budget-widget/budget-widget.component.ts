@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -23,15 +23,13 @@ import { UserBudgetComponent } from '../user-budget/user-budget.component';
   imports: [
     AsyncPipe,
     BudgetInfoComponent,
-    NgIf,
     TranslatePipe,
     UserBudgetComponent,
     ErrorMessageComponent,
     InfoBoxComponent,
     LoadingComponent,
     AuthorizationToggleDirective,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class BudgetWidgetComponent implements OnInit {
   userBudget$: Observable<UserBudget>;

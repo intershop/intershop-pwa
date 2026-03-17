@@ -1,4 +1,4 @@
-import { NgForOf, NgIf } from '@angular/common';
+import { NgForOf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -32,12 +32,10 @@ import { LineItemListElementComponent } from 'ish-shared/components/line-item/li
   imports: [
     TranslatePipe,
     PricePipe,
-    NgIf,
     LineItemListElementComponent,
     ProductContextDirective,
     PagingComponent,
-    NgForOf,
-  ],
+    NgForOf],
 })
 export class LineItemListComponent implements OnChanges {
   @Input({ required: true }) lineItems: Partial<LineItemView & OrderLineItem>[];

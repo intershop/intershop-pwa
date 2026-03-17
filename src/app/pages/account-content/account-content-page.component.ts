@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
@@ -14,7 +14,7 @@ import { LoadingComponent } from 'ish-shared/components/common/loading/loading.c
   templateUrl: './account-content-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [LoadingComponent, ContentPageletComponent, AsyncPipe, NgIf],
+  imports: [LoadingComponent, ContentPageletComponent, AsyncPipe],
 })
 export class AccountContentPageComponent implements OnInit {
   contentPage$: Observable<ContentPageletEntryPointView>;

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
@@ -12,7 +12,7 @@ import { ProductsListComponent } from 'ish-shared/components/product/products-li
   templateUrl: './cms-product-list-recommendations.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, NgClass, ProductsListComponent],
+  imports: [ AsyncPipe, NgClass, ProductsListComponent],
 })
 export class CMSProductListRecommendationsComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;

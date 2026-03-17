@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
@@ -29,7 +29,7 @@ import { ContentPageletComponent } from 'ish-shared/cms/components/content-pagel
   templateUrl: './content-slot.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgFor, ContentDesignViewWrapperComponent, ContentPageletComponent],
+  imports: [ ContentDesignViewWrapperComponent, ContentPageletComponent],
 })
 export class ContentSlotComponent {
   /**

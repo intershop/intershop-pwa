@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -17,7 +17,7 @@ import { SearchResultComponent } from './search-result/search-result.component';
   templateUrl: './search-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, LoadingComponent, SearchResultComponent, SearchNoResultComponent],
+  imports: [ AsyncPipe, LoadingComponent, SearchResultComponent, SearchNoResultComponent],
 })
 export class SearchPageComponent implements OnInit {
   searchTerm$: Observable<string>;

@@ -1,4 +1,4 @@
-import { AsyncPipe, DOCUMENT, NgIf } from '@angular/common';
+import { AsyncPipe, DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -15,13 +15,11 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     ...FEATURE_TOGGLE_IMPORTS,
     ProductAddToWishlistComponent,
     ProductSendToCompareComponent,
     AsyncPipe,
-    TranslatePipe,
-  ],
+    TranslatePipe],
 })
 export class ProductDetailActionsComponent implements OnInit {
   // TODO: to be removed once channelName information available in system

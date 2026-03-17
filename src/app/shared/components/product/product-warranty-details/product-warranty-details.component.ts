@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -28,15 +28,13 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     AsyncPipe,
     TranslatePipe,
     NgClass,
     ModalDialogLinkComponent,
     LoadingComponent,
     ErrorMessageComponent,
-    ServerHtmlDirective,
-  ],
+    ServerHtmlDirective],
 })
 export class ProductWarrantyDetailsComponent {
   @Input({ required: true }) warranty: Warranty;

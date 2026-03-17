@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/no-null */
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -38,7 +38,7 @@ interface RecurrenceFormData {
   styleUrls: ['./basket-order-recurrence-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, ContentIncludeComponent, NgbCollapse, ReactiveFormsModule, FormlyForm, NgIf, AsyncPipe],
+  imports: [TranslatePipe, ContentIncludeComponent, NgbCollapse, ReactiveFormsModule, FormlyForm, AsyncPipe],
 })
 export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
   @Input({ required: true }) recurrence: Recurrence;
@@ -54,8 +54,7 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
     { value: 'D', label: `order.recurrence.period.days` },
     { value: 'W', label: `order.recurrence.period.weeks` },
     { value: 'M', label: `order.recurrence.period.months` },
-    { value: 'Y', label: `order.recurrence.period.years` },
-  ];
+    { value: 'Y', label: `order.recurrence.period.years` }];
 
   form = new FormGroup({});
   model: RecurrenceFormData;
@@ -88,8 +87,7 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
             fieldClass: 'col-md-12',
             ariaLabel: 'order.recurrence.form.period.aria_label',
           },
-        },
-      ],
+        }],
     },
     {
       key: 'startDate',
@@ -144,8 +142,7 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
             'props.disabled': 'model.ending !== "date"',
             'props.minDays': field => this.calculateMinimumEndDate(field.model.startDate),
           },
-        },
-      ],
+        }],
     },
     {
       fieldGroupClassName: 'row',
@@ -182,10 +179,8 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
           expressions: {
             'props.disabled': 'model.ending !== "repetitions"',
           },
-        },
-      ],
-    },
-  ];
+        }],
+    }];
 
   private destroyRef = inject(DestroyRef);
 

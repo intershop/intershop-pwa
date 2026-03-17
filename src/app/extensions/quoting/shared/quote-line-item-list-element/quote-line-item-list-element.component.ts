@@ -1,4 +1,4 @@
-import { AsyncPipe, DecimalPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, DecimalPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -31,7 +31,6 @@ import { QuoteItem, QuoteRequestItem } from '../../models/quoting/quoting.model'
     ProductAddToWishlistComponent,
     FeatureToggleDirective,
     NgClass,
-    NgIf,
     PricePipe,
     ProductBundleDisplayComponent,
     ProductIdComponent,
@@ -42,8 +41,7 @@ import { QuoteItem, QuoteRequestItem } from '../../models/quoting/quoting.model'
     ProductQuantityLabelComponent,
     ProductVariationDisplayComponent,
     TranslatePipe,
-    DecimalPipe,
-  ],
+    DecimalPipe],
 })
 export class QuoteLineItemListElementComponent implements OnInit {
   @Input({ required: true }) lineItem: Partial<

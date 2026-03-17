@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -28,7 +28,6 @@ import { UserCsvImportComponent } from './user-csv-import/user-csv-import.compon
     AsyncPipe,
     FormSubmitDirective,
     LoadingComponent,
-    NgIf,
     ReactiveFormsModule,
     ServerSettingPipe,
     TranslatePipe,
@@ -36,8 +35,7 @@ import { UserCsvImportComponent } from './user-csv-import/user-csv-import.compon
     UserCsvImportComponent,
     UserProfileFormComponent,
     UserRolesSelectionComponent,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class UserCreatePageComponent implements OnInit {
   loading$: Observable<boolean>;

@@ -1,4 +1,4 @@
-import { NgFor, NgIf, SlicePipe } from '@angular/common';
+import { SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
@@ -9,7 +9,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
   templateUrl: './product-attributes.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgFor, SlicePipe, AttributeToStringPipe],
+  imports: [ SlicePipe, AttributeToStringPipe],
 })
 export class ProductAttributesComponent {
   @Input({ required: true }) product: ProductView;

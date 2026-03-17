@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -11,7 +11,7 @@ import { VariationAttributePipe } from 'ish-core/pipes/variation-attribute.pipe'
   templateUrl: './product-variation-display.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, NgFor, VariationAttributePipe],
+  imports: [ AsyncPipe, VariationAttributePipe],
 })
 export class ProductVariationDisplayComponent implements OnInit {
   product$: Observable<ProductView>;

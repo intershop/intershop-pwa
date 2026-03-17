@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf, SlicePipe } from '@angular/common';
+import { AsyncPipe, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, ReplaySubject, combineLatest, of } from 'rxjs';
@@ -35,9 +35,7 @@ import { ProductComparePagingComponent as ProductComparePagingComponent_1 } from
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     ProductComparePagingComponent_1,
-    NgFor,
     ProductImageComponent,
     ...FEATURE_TOGGLE_IMPORTS,
     ProductRatingComponent,
@@ -49,8 +47,7 @@ import { ProductComparePagingComponent as ProductComparePagingComponent_1 } from
     ProductPriceComponent,
     ProductContextDirective,
     ServerHtmlDirective,
-    AttributeToStringPipe,
-  ],
+    AttributeToStringPipe],
 })
 export class ProductCompareListComponent implements OnInit {
   /**

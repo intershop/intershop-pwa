@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -26,12 +26,10 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
     AsyncPipe,
     ErrorMessageComponent,
     LoadingComponent,
-    NgIf,
     ReactiveFormsModule,
     TranslatePipe,
     UserRolesSelectionComponent,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class UserEditRolesPageComponent implements OnInit {
   selectedUser$: Observable<B2bUser>;

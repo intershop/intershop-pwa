@@ -1,4 +1,4 @@
-import { DOCUMENT, NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
+import { DOCUMENT, NgClass, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
@@ -40,7 +40,6 @@ type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
   imports: [
     SearchBoxComponent_1,
     NgClass,
-    NgIf,
     LoginStatusComponent_1,
     ProductCompareStatusComponent,
     QuickorderLinkComponent,
@@ -53,8 +52,7 @@ type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
     RouterLink,
     HeaderNavigationComponent_1,
     UserInformationMobileComponent,
-    TranslatePipe,
-  ],
+    TranslatePipe],
 })
 export class HeaderDefaultComponent implements OnChanges {
   @Input() isSticky = false;

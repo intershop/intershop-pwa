@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ContentChild, Input, ViewChild } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
@@ -29,7 +29,7 @@ import { ModalDialogComponent, ModalOptions } from 'ish-shared/components/common
   templateUrl: './modal-dialog-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, NgIf, AsyncPipe, ModalDialogComponent, NgTemplateOutlet],
+  imports: [TranslatePipe, AsyncPipe, ModalDialogComponent, NgTemplateOutlet],
 })
 export class ModalDialogLinkComponent {
   /**

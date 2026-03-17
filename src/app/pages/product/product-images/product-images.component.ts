@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { distinctUntilKeyChanged, map, shareReplay, tap } from 'rxjs/operators';
@@ -32,15 +32,12 @@ SwiperCore.use([Navigation, A11y]);
   host: { ngSkipHydration: 'true' },
   standalone: true,
   imports: [
-    NgIf,
-    NgFor,
     NgClass,
     ProductImageComponent_1,
     SwiperModule,
     AsyncPipe,
     ModalDialogComponent,
-    ProductLabelComponent,
-  ],
+    ProductLabelComponent],
 })
 export class ProductImagesComponent implements OnInit {
   @ViewChild('carousel') carousel: SwiperComponent;

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -27,14 +27,11 @@ import { BasketValidationProductsComponent } from 'ish-shared/components/basket/
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
   imports: [
-    NgIf,
     TranslatePipe,
     BasketValidationItemsComponent,
     BasketValidationProductsComponent,
-    NgFor,
     AsyncPipe,
-    ScrollDirective,
-  ],
+    ScrollDirective],
 })
 export class BasketValidationResultsComponent implements OnInit {
   private validationResults$: Observable<BasketValidationResultType>;
@@ -80,8 +77,7 @@ export class BasketValidationResultsComponent implements OnInit {
                 !this.isLineItemMessage(error) &&
                 ![
                   'basket.validation.line_item_shipping_restrictions.error',
-                  'basket.validation.basket_not_covered.error',
-                ].includes(error.code)
+                  'basket.validation.basket_not_covered.error'].includes(error.code)
             )
             .map(error =>
               error.parameters?.shippingRestriction ? error.parameters.shippingRestriction : error.message

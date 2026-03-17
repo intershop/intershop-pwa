@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -39,8 +39,6 @@ import { mapToAddressOptions } from 'ish-shared/forms/utils/forms.service';
     FormlyCustomerAddressFormComponent,
     FormlyForm,
     ModalDialogComponent,
-    NgFor,
-    NgIf,
     NgTemplateOutlet,
     ReactiveFormsModule,
     TranslatePipe,
@@ -254,4 +252,3 @@ export class AccountAddressesComponent implements OnInit {
     );
   }
 }
-

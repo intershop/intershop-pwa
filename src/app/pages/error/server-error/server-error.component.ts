@@ -1,4 +1,4 @@
-import { JsonPipe, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { JsonPipe, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -18,7 +18,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
   templateUrl: './server-error.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, TranslatePipe, NgSwitch, ServerHtmlDirective, NgSwitchCase, NgSwitchDefault, JsonPipe],
+  imports: [ TranslatePipe, NgSwitch, ServerHtmlDirective, NgSwitchCase, NgSwitchDefault, JsonPipe],
 })
 export class ServerErrorComponent {
   /**

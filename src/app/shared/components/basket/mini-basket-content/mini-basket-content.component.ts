@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf, SlicePipe } from '@angular/common';
+import { AsyncPipe, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -23,14 +23,11 @@ import { ProductNameComponent } from 'ish-shared/components/product/product-name
     ProductImageComponent,
     PricePipe,
     TranslatePipe,
-    NgIf,
     AsyncPipe,
-    NgFor,
     ProductContextDirective,
     SlicePipe,
     BasketErrorMessageComponent,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class MiniBasketContentComponent implements OnInit {
   /**

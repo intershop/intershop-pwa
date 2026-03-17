@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Requisition } from 'projects/requisition-management/src/app/models/requisition/requisition.model';
 import { Observable, ReplaySubject, combineLatest, map } from 'rxjs';
@@ -18,7 +18,7 @@ import { CustomFieldsViewComponent } from 'ish-shared/components/custom-fields/c
   templateUrl: './basket-custom-fields-view.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, CustomFieldsViewComponent],
+  imports: [ AsyncPipe, CustomFieldsViewComponent],
 })
 export class BasketCustomFieldsViewComponent implements OnInit {
   @Input({ required: true }) set data(val: Basket | Order | RecurringOrder | Requisition | undefined) {
@@ -34,8 +34,7 @@ export class BasketCustomFieldsViewComponent implements OnInit {
   ngOnInit(): void {
     this.fields$ = combineLatest([
       this.customFields$.asObservable(),
-      this.checkoutFacade.customFieldsForScope$('Basket'),
-    ]).pipe(
+      this.checkoutFacade.customFieldsForScope$('Basket')]).pipe(
       map(([customFields, customFieldsForScope]) =>
         customFieldsForScope.map(({ name, editable }) => ({ name, value: customFields[name], editable }))
       )

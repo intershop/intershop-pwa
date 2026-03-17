@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -29,15 +29,12 @@ import { UserRolesBadgesComponent } from './user-roles-badges/user-roles-badges.
     BudgetInfoComponent,
     ErrorMessageComponent,
     LoadingComponent,
-    ModalDialogComponent,
-    NgFor,
-    NgIf,
+    ModalDialogComponent, 
     ServerSettingPipe,
     TranslatePipe,
     UserBudgetComponent,
     UserRolesBadgesComponent,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class UsersPageComponent implements OnInit {
   currentUser$: Observable<User>;

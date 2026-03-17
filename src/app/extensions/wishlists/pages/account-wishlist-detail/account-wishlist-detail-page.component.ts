@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -23,9 +23,7 @@ import { WishlistSharingDialogComponent } from '../../shared/wishlist-sharing-di
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    AsyncPipe,
-    NgFor,
-    NgIf,
+    AsyncPipe, 
     NgbPopoverModule,
     ProductContextDirective,
     TranslatePipe,
@@ -34,8 +32,7 @@ import { WishlistSharingDialogComponent } from '../../shared/wishlist-sharing-di
     WishlistLineItemComponent,
     WishlistPreferencesDialogComponent,
     WishlistSharingDialogComponent,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class AccountWishlistDetailPageComponent implements OnInit {
   wishlist$: Observable<Wishlist>;

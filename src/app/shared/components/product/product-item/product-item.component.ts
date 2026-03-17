@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -19,7 +19,7 @@ export type ProductItemDisplayType = 'tile' | 'row';
   templateUrl: './product-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ProductTileComponent, ProductRowComponent, LoadingComponent, NgIf, AsyncPipe],
+  imports: [ProductTileComponent, ProductRowComponent, LoadingComponent, AsyncPipe],
 })
 export class ProductItemComponent implements OnInit {
   @Input() displayType: ProductItemDisplayType = 'tile';

@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -34,16 +34,13 @@ declare let PayEngine: any;
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
   imports: [
-    NgIf,
     NgClass,
-    NgFor,
     TranslatePipe,
     FormControlFeedbackComponent,
     NgbPopoverModule,
     ReactiveFormsModule,
     ShowFormFeedbackDirective,
-    PaymentSaveCheckboxComponent,
-  ],
+    PaymentSaveCheckboxComponent],
 })
 export class PaymentConcardisCreditcardComponent extends PaymentConcardisComponent implements OnInit {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
@@ -171,8 +168,7 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
           { name: 'cardType', value: result.attributes.brand },
           { name: 'expirationDate', value: `${result.attributes.expiryMonth}/${result.attributes.expiryYear}` },
           { name: 'cvcLastUpdated', value: new Date().toISOString() },
-          { name: 'token', value: result.paymentInstrumentId },
-        ],
+          { name: 'token', value: result.paymentInstrumentId }],
         saveAllowed: this.paymentMethod.saveAllowed && this.parameterForm.get('saveForLater').value,
       });
     }

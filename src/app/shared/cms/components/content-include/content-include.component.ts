@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 
@@ -23,7 +23,7 @@ import { ContentPageletComponent } from 'ish-shared/cms/components/content-pagel
   templateUrl: './content-include.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, ContentDesignViewWrapperComponent, ContentPageletComponent, NgFor],
+  imports: [ AsyncPipe, ContentDesignViewWrapperComponent, ContentPageletComponent],
 })
 export class ContentIncludeComponent implements OnInit, OnChanges {
   @Input({ required: true }) includeId: string;

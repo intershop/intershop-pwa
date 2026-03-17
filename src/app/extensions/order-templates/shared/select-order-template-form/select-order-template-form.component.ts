@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
@@ -16,7 +16,7 @@ import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
   templateUrl: './select-order-template-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, FormlyForm, AsyncPipe],
+  imports: [ FormlyForm, AsyncPipe],
 })
 export class SelectOrderTemplateFormComponent implements OnInit {
   @Input() formGroup: FormGroup;
@@ -57,8 +57,7 @@ export class SelectOrderTemplateFormComponent implements OnInit {
             noHtmlTags: 'account.name.error.forbidden.html.chars',
           },
         },
-      },
-    ];
+      }];
 
     // formly config for the radio button form (one or more other order templates exist)
     this.multipleFieldConfig$ = this.orderTemplatesOptions$.pipe(
@@ -110,10 +109,8 @@ export class SelectOrderTemplateFormComponent implements OnInit {
               expressions: {
                 'props.disabled': conf => conf.model.orderTemplate !== 'new',
               },
-            },
-          ],
-        },
-      ])
+            }],
+        }])
     );
   }
 }

@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FieldType, FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
@@ -19,9 +19,7 @@ import { ValidationMessageComponent } from 'ish-shared/formly/components/validat
     ValidationMessageComponent,
     ServerHtmlDirective,
     TranslatePipe,
-    NgIf,
     ReactiveFormsModule,
-    FormlyAttributes,
-  ],
+    FormlyAttributes],
 })
 export class RegistrationTacFieldComponent extends FieldType<FieldTypeConfig> {}

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { range } from 'lodash-es';
@@ -18,7 +18,7 @@ import { ProductRatingStarComponent } from '../product-rating-star/product-ratin
   templateUrl: './product-rating.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, NgFor, ProductRatingStarComponent, TranslatePipe],
+  imports: [ AsyncPipe, ProductRatingStarComponent, TranslatePipe],
 })
 export class ProductRatingComponent implements OnInit {
   @Input() hideNumberOfReviews = false;

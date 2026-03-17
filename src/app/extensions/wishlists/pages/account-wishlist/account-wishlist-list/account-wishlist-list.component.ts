@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -28,7 +28,7 @@ import { Wishlist } from '../../../models/wishlist/wishlist.model';
   templateUrl: './account-wishlist-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgFor, NgIf, NgTemplateOutlet, TranslatePipe, RouterLink, NgClass, ModalDialogComponent],
+  imports: [ NgTemplateOutlet, TranslatePipe, RouterLink, NgClass, ModalDialogComponent],
 })
 export class AccountWishlistListComponent implements OnChanges {
   /**

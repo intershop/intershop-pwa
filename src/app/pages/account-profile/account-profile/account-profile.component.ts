@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -15,12 +15,10 @@ import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
   standalone: true,
   imports: [
     IdentityProviderCapabilityDirective,
-    NgIf,
     ServerHtmlDirective,
     TranslatePipe,
     ServerSettingPipe,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class AccountProfileComponent {
   @Input({ required: true }) user: User;

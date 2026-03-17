@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   ApplicationRef,
   ChangeDetectionStrategy,
@@ -25,7 +25,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   templateUrl: './cms-carousel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgClass, ContentPageletComponent, ContentSlotComponent, NgFor, NgbCarouselModule],
+  imports: [ NgClass, ContentPageletComponent, ContentSlotComponent, NgbCarouselModule],
 })
 export class CMSCarouselComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;

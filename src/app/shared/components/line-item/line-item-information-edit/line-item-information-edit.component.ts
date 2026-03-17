@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, Self } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
@@ -30,14 +30,12 @@ interface ComponentState {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     AsyncPipe,
     TranslatePipe,
     LineItemCustomFieldsComponent,
     NgbCollapse,
     ReactiveFormsModule,
-    CustomFieldsFormlyComponent,
-  ],
+    CustomFieldsFormlyComponent],
   providers: [ProductContextFacade],
 })
 export class LineItemInformationEditComponent extends RxState<ComponentState> implements OnInit {
@@ -67,8 +65,7 @@ export class LineItemInformationEditComponent extends RxState<ComponentState> im
       'customFields',
       combineLatest([
         this.checkoutFacade.customFieldsForScope$('BasketLineItem'),
-        this.select('lineItem', 'customFields'),
-      ]),
+        this.select('lineItem', 'customFields')]),
       (_, [customFields, customFieldsData]) =>
         customFields.map(field => ({
           name: field.name,

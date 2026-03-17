@@ -1,5 +1,5 @@
 import { CdkTableModule } from '@angular/cdk/table';
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
@@ -35,11 +35,9 @@ type CostCenterColumnsType = 'costCenterId' | 'costCenterName' | 'costCenterMana
     LoadingComponent,
     ModalDialogComponent,
     NgClass,
-    NgIf,
     PagingComponent,
     TranslatePipe,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class CostCentersPageComponent implements OnInit {
   costCenters$: Observable<CostCenter[]>;
@@ -59,8 +57,7 @@ export class CostCentersPageComponent implements OnInit {
     'costCenterName',
     'costCenterManager',
     'costCenterBudget',
-    'actions',
-  ];
+    'actions'];
 
   /**
    * keep cost center for usage in confirmation dialogs (delete/deactivate)

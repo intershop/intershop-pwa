@@ -1,5 +1,4 @@
 import { CdkTableModule } from '@angular/cdk/table';
-import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -32,7 +31,6 @@ export type RecurringOrderColumnsType =
     DatePipe,
     FrequencyPipe,
     ModalDialogComponent,
-    NgIf,
     PricePipe,
     SwitchComponent,
     TranslatePipe,

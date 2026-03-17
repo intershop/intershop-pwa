@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
+import { AsyncPipe, NgSwitch, NgSwitchCase } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -26,15 +26,12 @@ import { AccountPunchoutHeaderComponent } from './account-punchout-header/accoun
     AccountPunchoutHeaderComponent,
     AsyncPipe,
     LoadingComponent,
-    ModalDialogComponent,
-    NgFor,
-    NgIf,
+    ModalDialogComponent, 
     NgSwitch,
     NgSwitchCase,
     ServerSettingPipe,
     TranslatePipe,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class AccountPunchoutPageComponent implements OnInit {
   punchoutTypes$: Observable<PunchoutType[]>;

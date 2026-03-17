@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+import { AsyncPipe, NgClass, NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit, forwardRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -17,16 +17,7 @@ import { InjectSingle } from 'ish-core/utils/injection';
   templateUrl: './sub-category-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    forwardRef(() => SubCategoryNavigationComponent),
-    NgIf,
-    NgFor,
-    TranslatePipe,
-    AsyncPipe,
-    NgClass,
-    NgStyle,
-    RouterLink,
-  ],
+  imports: [forwardRef(() => SubCategoryNavigationComponent), TranslatePipe, AsyncPipe, NgClass, NgStyle, RouterLink],
 })
 export class SubCategoryNavigationComponent implements OnInit {
   @Input({ required: true }) categoryUniqueId: string;

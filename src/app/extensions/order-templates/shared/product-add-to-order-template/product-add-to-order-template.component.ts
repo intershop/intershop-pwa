@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { AsyncPipe, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
@@ -28,13 +28,11 @@ import { SelectOrderTemplateModalComponent } from '../select-order-template-moda
   imports: [
     SelectOrderTemplateModalComponent,
     AsyncPipe,
-    NgIf,
     TranslatePipe,
     NgClass,
     NgSwitch,
     NgSwitchCase,
-    NgSwitchDefault,
-  ],
+    NgSwitchDefault],
 })
 export class ProductAddToOrderTemplateComponent implements OnInit {
   @Input() displayType: 'icon' | 'link' | 'animated' = 'link';

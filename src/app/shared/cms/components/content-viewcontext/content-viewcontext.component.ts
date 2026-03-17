@@ -1,4 +1,4 @@
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe, NgForOf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -23,7 +23,7 @@ import { ContentPageletComponent } from 'ish-shared/cms/components/content-pagel
   templateUrl: './content-viewcontext.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, ContentPageletComponent, AsyncPipe, NgForOf],
+  imports: [ ContentPageletComponent, AsyncPipe, NgForOf],
 })
 export class ContentViewcontextComponent implements OnChanges {
   /**

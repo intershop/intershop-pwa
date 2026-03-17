@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -36,15 +36,13 @@ declare let Flex: any;
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
   imports: [
-    NgIf,
     ReactiveFormsModule,
     TranslatePipe,
     NgClass,
     ShowFormFeedbackDirective,
     FormControlFeedbackComponent,
     NgbPopoverModule,
-    PaymentSaveCheckboxComponent,
-  ],
+    PaymentSaveCheckboxComponent],
 })
 export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit {
   cyberSourceCreditCardForm: FormGroup;
@@ -219,8 +217,7 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit 
           {
             name: 'expirationDate',
             value: `${payloadJson.content.paymentInformation.card.expirationMonth.value}/${payloadJson.content.paymentInformation.card.expirationYear.value}`,
-          },
-        ],
+          }],
         saveAllowed: this.paymentMethod.saveAllowed && this.cyberSourceCreditCardForm.get('saveForLater').value,
       });
     }

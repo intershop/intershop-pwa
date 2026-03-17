@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
@@ -26,12 +26,10 @@ import { Requisition, RequisitionStatus } from '../../models/requisition/requisi
     AsyncPipe,
     ErrorMessageComponent,
     LoadingComponent,
-    NgIf,
     NgbNavModule,
     RequisitionsListComponent,
     TranslatePipe,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class BuyerPageComponent implements OnInit {
   requisitions$: Observable<Requisition[]>;
@@ -61,8 +59,7 @@ export class BuyerPageComponent implements OnInit {
             'creationDate',
             'approver',
             'approvalDate',
-            'orderTotal',
-          ];
+            'orderTotal'];
           break;
         case 'REJECTED':
           this.columnsToDisplay = [
@@ -71,8 +68,7 @@ export class BuyerPageComponent implements OnInit {
             'approver',
             'rejectionDate',
             'lineItems',
-            'orderTotal',
-          ];
+            'orderTotal'];
           break;
         default:
           this.columnsToDisplay = ['requisitionNo', 'creationDate', 'lineItems', 'orderTotal'];

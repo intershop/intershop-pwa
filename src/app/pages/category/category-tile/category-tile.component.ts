@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -20,7 +20,7 @@ import { CategoryImageComponent } from 'ish-shared/components/category/category-
   templateUrl: './category-tile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, RouterLink, CategoryRoutePipe, CategoryImageComponent],
+  imports: [ AsyncPipe, RouterLink, CategoryRoutePipe, CategoryImageComponent],
 })
 export class CategoryTileComponent implements OnInit {
   /**

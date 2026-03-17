@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -46,8 +46,7 @@ export const checkoutReviewFormlyConfig: ConfigOption = {
     {
       name: 'ish-checkout-review-tac-field',
       component: CheckoutReviewTacFieldComponent,
-    },
-  ],
+    }],
 };
 
 @Component({
@@ -56,7 +55,6 @@ export const checkoutReviewFormlyConfig: ConfigOption = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     TranslatePipe,
     ModalDialogLinkComponent,
     ContentIncludeComponent,
@@ -80,8 +78,7 @@ export const checkoutReviewFormlyConfig: ConfigOption = {
     BasketShippingMethodComponent,
     BasketCostCenterViewComponent,
     BasketCustomFieldsViewComponent,
-    AsyncPipe,
-  ],
+    AsyncPipe],
 })
 export class CheckoutReviewComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: Basket;
@@ -143,7 +140,6 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
             pattern: 'checkout.tac.error.tip',
           },
         },
-      },
-    ];
+      }];
   }
 }

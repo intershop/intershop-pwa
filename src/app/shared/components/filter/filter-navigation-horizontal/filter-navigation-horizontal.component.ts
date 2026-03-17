@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -11,7 +11,7 @@ import { FilterDropdownComponent } from 'ish-shared/components/filter/filter-dro
   templateUrl: './filter-navigation-horizontal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgFor, NgIf, TranslatePipe, FilterDropdownComponent],
+  imports: [ TranslatePipe, FilterDropdownComponent],
 })
 export class FilterNavigationHorizontalComponent {
   @Input({ required: true }) filterNavigation: FilterNavigation;

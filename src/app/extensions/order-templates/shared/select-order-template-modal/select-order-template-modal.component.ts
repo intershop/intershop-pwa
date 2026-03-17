@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -36,7 +36,6 @@ import { SelectOrderTemplateFormComponent } from '../select-order-template-form/
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     TranslatePipe,
     ProductContextAccessDirective,
     ServerHtmlDirective,
@@ -44,8 +43,7 @@ import { SelectOrderTemplateFormComponent } from '../select-order-template-form/
     HtmlEncodePipe,
     ReactiveFormsModule,
     FormSubmitDirective,
-    SelectOrderTemplateFormComponent,
-  ],
+    SelectOrderTemplateFormComponent],
 })
 export class SelectOrderTemplateModalComponent implements OnInit {
   /**

@@ -1,4 +1,4 @@
-import { AsyncPipe, Location, NgIf } from '@angular/common';
+import { AsyncPipe, Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -17,7 +17,7 @@ import { QuotingFacade } from '../../facades/quoting.facade';
   templateUrl: './basket-add-to-quote.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, NotRoleToggleDirective, NgIf, TranslatePipe],
+  imports: [AsyncPipe, NotRoleToggleDirective, TranslatePipe],
 })
 export class BasketAddToQuoteComponent implements OnInit {
   isLoggedIn$: Observable<boolean>;

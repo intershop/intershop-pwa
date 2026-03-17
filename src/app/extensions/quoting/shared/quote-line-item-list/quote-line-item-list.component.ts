@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
@@ -19,14 +19,11 @@ import { QuoteLineItemListElementComponent } from '../quote-line-item-list-eleme
   standalone: true,
   imports: [
     AsyncPipe,
-    NgClass,
-    NgFor,
-    NgIf,
+    NgClass, 
     PricePipe,
     ProductContextDirective,
     QuoteLineItemListElementComponent,
-    TranslatePipe,
-  ],
+    TranslatePipe],
 })
 export class QuoteLineItemListComponent implements OnInit {
   total$: Observable<Price>;

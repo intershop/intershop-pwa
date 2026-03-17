@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+import { AsyncPipe, NgClass, NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -20,8 +20,6 @@ import { SubCategoryNavigationComponent } from 'ish-shell/header/sub-category-na
   imports: [
     AsyncPipe,
     NgClass,
-    NgFor,
-    NgIf,
     NgStyle,
     RouterLink,
     ContentIncludeComponent,

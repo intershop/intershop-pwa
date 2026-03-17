@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { RecaptchaModule } from 'ng-recaptcha-2';
@@ -16,7 +16,7 @@ import { CaptchaFacade } from '../../facades/captcha.facade';
   templateUrl: './captcha-v2.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [AsyncPipe, NgClass, NgIf, RecaptchaModule],
+  imports: [AsyncPipe, NgClass, RecaptchaModule],
 })
 export class CaptchaV2Component implements OnInit {
   @Input({ required: true }) parentForm: FormGroup;

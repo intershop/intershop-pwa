@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -21,15 +21,12 @@ import { ProductNameComponent } from 'ish-shared/components/product/product-name
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgFor,
-    NgIf,
     PricePipe,
     ProductImageComponent,
     TranslatePipe,
     ProductNameComponent,
     ProductInventoryComponent,
-    ProductContextDirective,
-  ],
+    ProductContextDirective],
 })
 export class BasketValidationItemsComponent {
   @Input({ required: true }) lineItems: LineItemView[];

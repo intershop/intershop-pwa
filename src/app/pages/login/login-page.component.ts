@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -18,14 +18,12 @@ import { IdentityProviderLoginComponent } from 'ish-shared/components/login/iden
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     LoadingComponent,
     TranslatePipe,
     LoadingComponent,
     AsyncPipe,
     IdentityProviderLoginComponent,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class LoginPageComponent implements OnInit {
   isLoggedIn$: Observable<boolean>;

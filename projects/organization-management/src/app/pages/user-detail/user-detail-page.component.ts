@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -17,7 +17,7 @@ import { UserDetailBudgetComponent } from './user-detail-budget/user-detail-budg
   templateUrl: './user-detail-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, NgFor, NgIf, ServerSettingPipe, TranslatePipe, UserDetailBudgetComponent, RouterLink],
+  imports: [AsyncPipe,  ServerSettingPipe, TranslatePipe, UserDetailBudgetComponent, RouterLink],
 })
 export class UserDetailPageComponent implements OnInit {
   user$: Observable<B2bUser>;

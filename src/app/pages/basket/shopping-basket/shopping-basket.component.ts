@@ -1,5 +1,5 @@
 /* eslint-disable ish-custom-rules/ban-imports-file-pattern */
-import { NgFor, NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BasketCreateOrderTemplateComponent } from 'src/app/extensions/order-templates/shared/basket-create-order-template/basket-create-order-template.component';
@@ -59,11 +59,9 @@ import { ShoppingBasketPaymentComponent } from '../shopping-basket-payment/shopp
     ContentIncludeComponent,
     TranslatePipe,
     ModalDialogLinkComponent,
-    NgIf,
     BasketErrorMessageComponent,
     BasketInfoComponent,
     BasketValidationResultsComponent,
-    NgFor,
     ServerHtmlDirective,
     BasketCostCenterSelectionComponent,
     BasketCustomFieldsComponent,
@@ -84,8 +82,7 @@ import { ShoppingBasketPaymentComponent } from '../shopping-basket-payment/shopp
     PunchoutTransferBasketComponent,
     ShoppingBasketPaymentComponent,
     LazyLoadingContentDirective,
-    AuthorizationToggleDirective,
-  ],
+    AuthorizationToggleDirective],
 })
 export class ShoppingBasketComponent {
   @Input({ required: true }) basket: BasketView;

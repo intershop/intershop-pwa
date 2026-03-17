@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -19,12 +19,10 @@ import { RecentlyFacade } from '../../facades/recently.facade';
   imports: [
     AsyncPipe,
     BrowserLazyViewDirective,
-    NgIf,
     ProductsListComponent,
     RouterLink,
     SkipContentLinkComponent,
-    TranslatePipe,
-  ],
+    TranslatePipe],
 })
 export class RecentlyViewedComponent implements OnInit {
   recentlyProducts$: Observable<string[]>;

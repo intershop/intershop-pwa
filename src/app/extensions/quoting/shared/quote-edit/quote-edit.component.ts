@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -25,12 +25,10 @@ import { QuoteStateComponent } from '../quote-state/quote-state.component';
     AsyncPipe,
     InPlaceEditComponent,
     NgClass,
-    NgIf,
     QuoteLineItemListComponent,
     QuoteStateComponent,
     ReactiveFormsModule,
-    TranslatePipe,
-  ],
+    TranslatePipe],
 })
 export class QuoteEditComponent implements OnInit {
   quote$: Observable<QuoteRequest>;

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -11,7 +11,7 @@ import { Attachment } from 'ish-core/models/attachment/attachment.model';
   templateUrl: './product-attachments.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, NgFor, TranslatePipe],
+  imports: [ AsyncPipe, TranslatePipe],
 })
 export class ProductAttachmentsComponent implements OnInit {
   attachments$: Observable<Attachment[]>;

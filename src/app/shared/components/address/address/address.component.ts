@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { Address } from 'ish-core/models/address/address.model';
@@ -16,7 +16,7 @@ import { Address } from 'ish-core/models/address/address.model';
   templateUrl: './address.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf],
+  imports: [],
 })
 export class AddressComponent {
   /**

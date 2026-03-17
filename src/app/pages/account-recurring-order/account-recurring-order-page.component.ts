@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
@@ -37,8 +37,6 @@ import { OrderRecurrenceComponent } from 'ish-shared/components/order/order-recu
     FeatureToggleDirective,
     InfoBoxComponent,
     LineItemListComponent,
-    NgFor,
-    NgIf,
     OrderRecurrenceComponent,
     ServerHtmlDirective,
     SwitchComponent,

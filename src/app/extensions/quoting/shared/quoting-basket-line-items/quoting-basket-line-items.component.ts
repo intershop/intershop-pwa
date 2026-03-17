@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { groupBy } from 'lodash-es';
@@ -15,7 +15,7 @@ import { QuotingFacade } from '../../facades/quoting.facade';
   templateUrl: './quoting-basket-line-items.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, LineItemListComponent, NgFor, NgIf, TranslatePipe],
+  imports: [AsyncPipe, LineItemListComponent,  TranslatePipe],
 })
 export class QuotingBasketLineItemsComponent implements OnInit {
   lineItems$: Observable<[string, LineItem[]][]>;

@@ -1,4 +1,4 @@
-import { DOCUMENT, NgClass, NgIf } from '@angular/common';
+import { DOCUMENT, NgClass } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -23,7 +23,7 @@ import { filter, map } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./in-place-edit.component.scss'],
   standalone: true,
-  imports: [NgIf, NgClass, TranslatePipe],
+  imports: [ NgClass, TranslatePipe],
 })
 export class InPlaceEditComponent implements AfterViewInit {
   // localization key, can be used to give the edit-pen icon a more descriptive aria label that describes what will be edited when clicking it

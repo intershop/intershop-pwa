@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CheckoutReceiptRequisitionComponent } from 'requisition-management';
 import { Observable } from 'rxjs';
@@ -18,13 +18,11 @@ import { CheckoutReceiptComponent } from './checkout-receipt/checkout-receipt.co
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     AsyncPipe,
     CheckoutReceiptComponent,
     LoadingComponent,
     CheckoutReceiptOrderComponent,
-    CheckoutReceiptRequisitionComponent,
-  ],
+    CheckoutReceiptRequisitionComponent],
 })
 export class CheckoutReceiptPageComponent implements OnInit {
   order$: Observable<Order | RecurringOrder>;

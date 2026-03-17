@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -18,16 +18,7 @@ import { CostCenterBudgetComponent } from '../cost-center-budget/cost-center-bud
   templateUrl: './cost-center-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    AsyncPipe,
-    CostCenterBudgetComponent,
-    NgFor,
-    NgIf,
-    TranslatePipe,
-    InfoBoxComponent,
-    LoadingComponent,
-    RouterLink,
-  ],
+  imports: [AsyncPipe, CostCenterBudgetComponent, TranslatePipe, InfoBoxComponent, LoadingComponent, RouterLink],
 })
 export class CostCenterWidgetComponent implements OnInit {
   costCenters$: Observable<CostCenter[]>;

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -22,11 +22,9 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
     CostCenterFormComponent,
     FormSubmitDirective,
     LoadingComponent,
-    NgIf,
     ReactiveFormsModule,
     TranslatePipe,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class CostCenterEditPageComponent implements OnInit {
   loading$: Observable<boolean>;

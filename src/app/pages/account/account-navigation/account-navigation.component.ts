@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
@@ -37,8 +37,6 @@ export interface NavigationItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
-    NgFor,
     TranslatePipe,
     FeatureTogglePipe,
     ServerSettingPipe,
@@ -47,8 +45,7 @@ export interface NavigationItem {
     NgbCollapse,
     RouterLinkActive,
     RouterLink,
-    AccountUserInfoComponent,
-  ],
+    AccountUserInfoComponent],
 })
 export class AccountNavigationComponent {
   @Input() deviceType: DeviceType;
