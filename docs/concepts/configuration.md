@@ -264,9 +264,17 @@ Switching features in tests can be triggered by calling [`FeatureToggleModule.sw
 
 ## Setting Default Locale
 
-You can set the default locale statically by modifying the order of the provided locales in the Angular CLI environment files.
-The first locale is always chosen as the default one.
+The default locale is set by providing `LOCALE_ID` in the [`InternationalizationModule`](../../src/app/core/internationalization.module.ts) using BCP 47 format, e.g., `'de-DE'`:
+
+```typescript
+{ provide: LOCALE_ID, useValue: 'de-DE' },
+```
+
+At runtime, the `SSR_LOCALE` transfer state key can override the default locale when running with server-side rendering.
 To set the default locale dynamically, use the URL parameter `lang` when rewriting the URL in the reverse proxy (see [Concept - Multi-Site Handling][concept-multi-site]).
+
+The `fallbackLocales` property in the Angular CLI environment files defines the available translations when there is no connection to the server.
+These locales correspond to the local translation files shipped with the application (e.g., `src/assets/i18n/en_US.json`) and ensure the translation functionality works even if the ICM REST API is unavailable.
 
 ## Extend Locales
 
