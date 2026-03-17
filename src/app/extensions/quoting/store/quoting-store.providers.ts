@@ -2,11 +2,10 @@ import {
   EnvironmentProviders,
   Injectable,
   InjectionToken,
-  importProvidersFrom,
   makeEnvironmentProviders,
 } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { ActionReducerMap, StoreConfig, StoreModule, provideState } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
@@ -26,18 +25,17 @@ export class QuotingStoreConfig implements StoreConfig<QuotingState> {
 
 export const QUOTING_STORE_CONFIG = new InjectionToken<StoreConfig<QuotingState>>('quotingStoreConfig');
 
-const quotingStoreImports = [
-  EffectsModule.forFeature(quotingEffects),
-  StoreModule.forFeature('quoting', quotingReducers, QUOTING_STORE_CONFIG),
-];
-
 const quotingStoreProviders = [{ provide: QUOTING_STORE_CONFIG, useClass: QuotingStoreConfig }];
 
 export function provideQuotingStore(): EnvironmentProviders {
-  return makeEnvironmentProviders([importProvidersFrom(...quotingStoreImports), ...quotingStoreProviders]);
+  return makeEnvironmentProviders([
+    provideState('quoting', quotingReducers, QUOTING_STORE_CONFIG),
+    provideEffects(quotingEffects),
+    ...quotingStoreProviders,
+  ]);
 }
 
-export class QuotingStoreModule {
+export class QuotingStoreProviders {
   static forTesting(...reducers: (keyof ActionReducerMap<QuotingState>)[]) {
     return StoreModule.forFeature('quoting', pick(quotingReducers, reducers));
   }

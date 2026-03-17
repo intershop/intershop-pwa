@@ -1,6 +1,6 @@
-import { EnvironmentProviders, importProvidersFrom } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
+import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
+import { provideEffects } from '@ngrx/effects';
+import { ActionReducerMap, StoreConfig, StoreModule, provideState } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
@@ -22,17 +22,13 @@ const requisitionManagementStoreConfig: StoreConfig<RequisitionManagementState> 
 };
 
 export function provideRequisitionManagementStore(): EnvironmentProviders {
-  return importProvidersFrom(
-    StoreModule.forFeature(
-      requisitionManagementFeature,
-      requisitionManagementReducers,
-      requisitionManagementStoreConfig
-    ),
-    EffectsModule.forFeature(requisitionManagementEffects)
-  );
+  return makeEnvironmentProviders([
+    provideState(requisitionManagementFeature, requisitionManagementReducers, requisitionManagementStoreConfig),
+    provideEffects(requisitionManagementEffects),
+  ]);
 }
 
-export class RequisitionManagementStoreModule {
+export class RequisitionManagementStoreProviders {
   static forTesting(...reducers: (keyof ActionReducerMap<RequisitionManagementState>)[]) {
     return StoreModule.forFeature(requisitionManagementFeature, pick(requisitionManagementReducers, reducers));
   }

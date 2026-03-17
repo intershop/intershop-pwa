@@ -2,11 +2,10 @@ import {
   EnvironmentProviders,
   Injectable,
   InjectionToken,
-  importProvidersFrom,
   makeEnvironmentProviders,
 } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { ActionReducerMap, StoreConfig, StoreModule, provideState } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
@@ -44,18 +43,17 @@ export class ContentStoreConfig implements StoreConfig<ContentState> {
 
 export const CONTENT_STORE_CONFIG = new InjectionToken<StoreConfig<ContentState>>('contentStoreConfig');
 
-const contentStoreImports = [
-  EffectsModule.forFeature(contentEffects),
-  StoreModule.forFeature('content', contentReducers, CONTENT_STORE_CONFIG),
-];
-
 const contentStoreProviders = [{ provide: CONTENT_STORE_CONFIG, useClass: ContentStoreConfig }];
 
 export function provideContentStore(): EnvironmentProviders {
-  return makeEnvironmentProviders([importProvidersFrom(...contentStoreImports), ...contentStoreProviders]);
+  return makeEnvironmentProviders([
+    provideState('content', contentReducers, CONTENT_STORE_CONFIG),
+    provideEffects(contentEffects),
+    ...contentStoreProviders,
+  ]);
 }
 
-export class ContentStoreModule {
+export class ContentStoreProviders {
   static forTesting(...reducers: (keyof ActionReducerMap<ContentState>)[]) {
     return StoreModule.forFeature('content', pick(contentReducers, reducers));
   }

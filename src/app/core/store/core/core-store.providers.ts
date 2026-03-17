@@ -1,7 +1,7 @@
-import { EnvironmentProviders, Type, importProvidersFrom, makeEnvironmentProviders } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
-import { ActionReducerMap, MetaReducer, StoreModule } from '@ngrx/store';
+import { EnvironmentProviders, Type, makeEnvironmentProviders } from '@angular/core';
+import { EffectsModule, provideEffects } from '@ngrx/effects';
+import { StoreRouterConnectingModule, provideRouterStore, routerReducer } from '@ngrx/router-store';
+import { ActionReducerMap, MetaReducer, StoreModule, provideStore } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
@@ -42,30 +42,28 @@ const coreMetaReducers: MetaReducer<CoreState>[] = [
   ...(PRODUCTION_MODE ? [] : [configurationMeta]),
 ];
 
-const coreStoreImports = [
-  StoreModule.forRoot<CoreState>(coreReducers, {
-    metaReducers: coreMetaReducers,
-    runtimeChecks: {
-      strictActionImmutability: NGRX_RUNTIME_CHECKS,
-      strictActionSerializability: NGRX_RUNTIME_CHECKS,
-      strictStateImmutability: NGRX_RUNTIME_CHECKS,
-      strictStateSerializability: NGRX_RUNTIME_CHECKS,
-      strictActionTypeUniqueness: NGRX_RUNTIME_CHECKS,
-    },
-  }),
-  StoreRouterConnectingModule.forRoot({
-    serializer: CustomRouterSerializer,
-  }),
-  EffectsModule.forRoot(coreEffects),
-];
-
 export function provideCoreStore(): EnvironmentProviders {
-  return makeEnvironmentProviders([importProvidersFrom(...coreStoreImports)]);
+  return makeEnvironmentProviders([
+    provideStore<CoreState>(coreReducers, {
+      metaReducers: coreMetaReducers,
+      runtimeChecks: {
+        strictActionImmutability: NGRX_RUNTIME_CHECKS,
+        strictActionSerializability: NGRX_RUNTIME_CHECKS,
+        strictStateImmutability: NGRX_RUNTIME_CHECKS,
+        strictStateSerializability: NGRX_RUNTIME_CHECKS,
+        strictActionTypeUniqueness: NGRX_RUNTIME_CHECKS,
+      },
+    }),
+    provideRouterStore({
+      serializer: CustomRouterSerializer,
+    }),
+    provideEffects(coreEffects),
+  ]);
 }
 
-export class CoreStoreModule {
+export class CoreStoreProviders {
   /**
-   * Instantiate {@link CoreStoreModule} for testing.
+   * Instantiate {@link CoreStoreProviders} for testing.
    *
    * Automatically instantiates router-store if reducer 'router' is requested.
    *

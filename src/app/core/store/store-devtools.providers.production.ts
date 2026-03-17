@@ -1,3 +1,5 @@
-import type { ImportProvidersSource } from '@angular/core';
+import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
 
-export const storeDevtoolsModule: ImportProvidersSource[] = [];
+export function providePwaStoreDevtools(): EnvironmentProviders {
+  return makeEnvironmentProviders([]);
+}

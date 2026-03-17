@@ -1,5 +1,5 @@
-import { EnvironmentProviders, importProvidersFrom, makeEnvironmentProviders } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
+import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
+import { provideEffects } from '@ngrx/effects';
 
 import { AddressesEffects } from './addresses/addresses.effects';
 import { DataRequestsEffects } from './data-requests/data-requests.effects';
@@ -22,7 +22,7 @@ const customerAccountEffects = [
 ];
 
 export function provideCustomerAccountStore(): EnvironmentProviders {
-  return makeEnvironmentProviders([importProvidersFrom(EffectsModule.forFeature(customerAccountEffects))]);
+  return makeEnvironmentProviders([provideEffects(customerAccountEffects)]);
 }
 
-export class CustomerAccountStoreModule {}
+export class CustomerAccountStoreProviders {}

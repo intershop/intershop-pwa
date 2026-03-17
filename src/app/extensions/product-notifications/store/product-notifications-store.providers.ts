@@ -2,11 +2,10 @@ import {
   EnvironmentProviders,
   Injectable,
   InjectionToken,
-  importProvidersFrom,
   makeEnvironmentProviders,
 } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { ActionReducerMap, StoreConfig, StoreModule, provideState } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
@@ -30,23 +29,19 @@ export const PRODUCT_NOTIFICATIONS_STORE_CONFIG = new InjectionToken<StoreConfig
   'productNotificationsStoreConfig'
 );
 
-const productNotificationsStoreImports = [
-  EffectsModule.forFeature(productNotificationsEffects),
-  StoreModule.forFeature('productNotifications', productNotificationsReducers, PRODUCT_NOTIFICATIONS_STORE_CONFIG),
-];
-
 const productNotificationsStoreProviders = [
   { provide: PRODUCT_NOTIFICATIONS_STORE_CONFIG, useClass: ProductNotificationsConfig },
 ];
 
 export function provideProductNotificationsStore(): EnvironmentProviders {
   return makeEnvironmentProviders([
-    importProvidersFrom(...productNotificationsStoreImports),
+    provideState('productNotifications', productNotificationsReducers, PRODUCT_NOTIFICATIONS_STORE_CONFIG),
+    provideEffects(productNotificationsEffects),
     ...productNotificationsStoreProviders,
   ]);
 }
 
-export class ProductNotificationsStoreModule {
+export class ProductNotificationsStoreProviders {
   static forTesting(...reducers: (keyof ActionReducerMap<ProductNotificationsState>)[]) {
     return StoreModule.forFeature('productNotifications', pick(productNotificationsReducers, reducers));
   }

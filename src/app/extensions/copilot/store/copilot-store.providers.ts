@@ -1,6 +1,6 @@
-import { EnvironmentProviders, importProvidersFrom, makeEnvironmentProviders } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreModule } from '@ngrx/store';
+import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
+import { provideEffects } from '@ngrx/effects';
+import { ActionReducerMap, StoreModule, provideState } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { CopilotConfigEffects } from './copilot-config/copilot-config.effects';
@@ -13,16 +13,11 @@ const copilotReducers: ActionReducerMap<CopilotState> = {
 
 const copilotEffects = [CopilotConfigEffects];
 
-const copilotStoreImports = [
-  EffectsModule.forFeature(copilotEffects),
-  StoreModule.forFeature('copilot', copilotReducers),
-];
-
 export function provideCopilotStore(): EnvironmentProviders {
-  return makeEnvironmentProviders([importProvidersFrom(...copilotStoreImports)]);
+  return makeEnvironmentProviders([provideState('copilot', copilotReducers), provideEffects(copilotEffects)]);
 }
 
-export class CopilotStoreModule {
+export class CopilotStoreProviders {
   static forTesting(...reducers: (keyof ActionReducerMap<CopilotState>)[]) {
     return StoreModule.forFeature('copilot', pick(copilotReducers, reducers));
   }

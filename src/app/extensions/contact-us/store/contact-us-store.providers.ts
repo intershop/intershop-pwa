@@ -1,6 +1,6 @@
-import { EnvironmentProviders, importProvidersFrom, makeEnvironmentProviders } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreModule } from '@ngrx/store';
+import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
+import { provideEffects } from '@ngrx/effects';
+import { ActionReducerMap, StoreModule, provideState } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { ContactUsState } from './contact-us-store';
@@ -13,16 +13,11 @@ const contactUsReducers: ActionReducerMap<ContactUsState> = {
 
 const contactUsEffects = [ContactEffects];
 
-const contactUsStoreImports = [
-  EffectsModule.forFeature(contactUsEffects),
-  StoreModule.forFeature('contactUs', contactUsReducers),
-];
-
 export function provideContactUsStore(): EnvironmentProviders {
-  return makeEnvironmentProviders([importProvidersFrom(...contactUsStoreImports)]);
+  return makeEnvironmentProviders([provideState('contactUs', contactUsReducers), provideEffects(contactUsEffects)]);
 }
 
-export class ContactUsStoreModule {
+export class ContactUsStoreProviders {
   static forTesting(...reducers: (keyof ActionReducerMap<ContactUsState>)[]) {
     return StoreModule.forFeature('contactUs', pick(contactUsReducers, reducers));
   }

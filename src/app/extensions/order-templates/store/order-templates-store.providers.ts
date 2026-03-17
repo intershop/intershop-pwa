@@ -2,11 +2,10 @@ import {
   EnvironmentProviders,
   Injectable,
   InjectionToken,
-  importProvidersFrom,
   makeEnvironmentProviders,
 } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { ActionReducerMap, StoreConfig, StoreModule, provideState } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
@@ -30,18 +29,17 @@ export const ORDER_TEMPLATES_STORE_CONFIG = new InjectionToken<StoreConfig<Order
   'orderTemplatesStoreConfig'
 );
 
-const orderTemplatesStoreImports = [
-  EffectsModule.forFeature(orderTemplatesEffects),
-  StoreModule.forFeature('orderTemplates', orderTemplatesReducers, ORDER_TEMPLATES_STORE_CONFIG),
-];
-
 const orderTemplatesStoreProviders = [{ provide: ORDER_TEMPLATES_STORE_CONFIG, useClass: OrderTemplatesStoreConfig }];
 
 export function provideOrderTemplatesStore(): EnvironmentProviders {
-  return makeEnvironmentProviders([importProvidersFrom(...orderTemplatesStoreImports), ...orderTemplatesStoreProviders]);
+  return makeEnvironmentProviders([
+    provideState('orderTemplates', orderTemplatesReducers, ORDER_TEMPLATES_STORE_CONFIG),
+    provideEffects(orderTemplatesEffects),
+    ...orderTemplatesStoreProviders,
+  ]);
 }
 
-export class OrderTemplatesStoreModule {
+export class OrderTemplatesStoreProviders {
   static forTesting(...reducers: (keyof ActionReducerMap<OrderTemplatesState>)[]) {
     return StoreModule.forFeature('orderTemplates', pick(orderTemplatesReducers, reducers));
   }

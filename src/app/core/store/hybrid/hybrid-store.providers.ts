@@ -2,18 +2,17 @@ import {
   APP_INITIALIZER,
   EnvironmentProviders,
   TransferState,
-  importProvidersFrom,
   makeEnvironmentProviders,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { EffectsModule } from '@ngrx/effects';
+import { provideEffects } from '@ngrx/effects';
 
 import { hybridRedirectGuard } from 'ish-core/guards/hybrid-redirect.guard';
 import { addGlobalGuard } from 'ish-core/utils/routing';
 
 import { HybridEffects, SSR_HYBRID_STATE } from './hybrid.effects';
 
-const hybridStoreImports = [EffectsModule.forFeature([HybridEffects])];
+const hybridStoreEffects = [HybridEffects];
 
 function initializeHybridStore(router: Router, transferState: TransferState) {
   return () => {
@@ -26,7 +25,7 @@ function initializeHybridStore(router: Router, transferState: TransferState) {
 
 export function provideHybridStore(): EnvironmentProviders {
   return makeEnvironmentProviders([
-    importProvidersFrom(...hybridStoreImports),
+    provideEffects(hybridStoreEffects),
     {
       provide: APP_INITIALIZER,
       useFactory: initializeHybridStore,
@@ -36,4 +35,4 @@ export function provideHybridStore(): EnvironmentProviders {
   ]);
 }
 
-export class HybridStoreModule {}
+export class HybridStoreProviders {}

@@ -4,8 +4,7 @@ import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.
 
 /**
  * Provider bundle for the Order Templates feature.
- * The actual store setup still happens in OrderTemplatesStoreModule
- * (StoreModule.forFeature / EffectsModule.forFeature).
+ * The actual store setup happens lazily via provider-native store registration.
  */
 export function provideOrderTemplatesFeature(): (Provider | EnvironmentProviders)[] {
   return [
@@ -21,4 +20,3 @@ export function provideOrderTemplatesFeature(): (Provider | EnvironmentProviders
 }
 
 export const ORDER_TEMPLATES_FEATURE_PROVIDERS = provideOrderTemplatesFeature();
-
