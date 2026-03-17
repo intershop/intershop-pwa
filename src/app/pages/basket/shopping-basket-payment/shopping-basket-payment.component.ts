@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -12,8 +12,8 @@ import { PriceType } from 'ish-core/models/price/price.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { BasketPaymentCostInfoComponent } from 'ish-shared/components/basket/basket-payment-cost-info/basket-payment-cost-info.component';
-import { PaymentPaypalComponent } from 'ish-shared/components/checkout/payment-paypal/payment-paypal.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-paypal/payment-paypal.component';
 
 @Component({
   selector: 'ish-shopping-basket-payment',
@@ -21,12 +21,10 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     ErrorMessageComponent,
     AsyncPipe,
     TranslatePipe,
     BasketPaymentCostInfoComponent,
-    NgFor,
     PaymentPaypalComponent,
     ServerSettingPipe,
   ],
@@ -97,4 +95,3 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
     );
   }
 }
-

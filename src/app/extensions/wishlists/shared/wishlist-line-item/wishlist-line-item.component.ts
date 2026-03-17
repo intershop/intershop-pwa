@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -8,6 +7,7 @@ import { ProductAddToBasketComponent } from 'ish-shared/components/product/produ
 import { ProductBundleDisplayComponent } from 'ish-shared/components/product/product-bundle-display/product-bundle-display.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
 import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
+import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
 import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
 import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
@@ -26,7 +26,6 @@ import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wi
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     ProductContextAccessDirective,
     SelectWishlistModalComponent,
     DatePipe,
@@ -37,6 +36,7 @@ import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wi
     ProductBundleDisplayComponent,
     TranslatePipe,
     ProductPriceComponent,
+    ProductInventoryComponent,
     ProductQuantityComponent,
     ProductAddToBasketComponent,
   ],

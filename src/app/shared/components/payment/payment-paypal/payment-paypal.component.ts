@@ -45,7 +45,7 @@ import { ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
   styleUrls: ['./payment-paypal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, AsyncPipe, TranslatePipe, NgbPopover, ServerHtmlDirective, PaypalErrorDirective],
+  imports: [AsyncPipe, NgClass, TranslatePipe, NgbPopover, ServerHtmlDirective, PaypalErrorDirective],
   providers: [
     PaypalAdaptersBuilder,
     PaypalButtonsAdapter,

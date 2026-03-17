@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -37,9 +37,8 @@ import { BasketPaymentCostInfoComponent } from 'ish-shared/components/basket/bas
 import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketRecurrenceSummaryComponent } from 'ish-shared/components/basket/basket-recurrence-summary/basket-recurrence-summary.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
-import { PaymentPaypalComponent } from 'ish-shared/components/checkout/payment-paypal/payment-paypal.component';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoMessageComponent } from 'ish-shared/components/common/info-message/info-message.component';
+import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-paypal/payment-paypal.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { PaymentConcardisCreditcardCvcDetailComponent } from '../payment-concardis-creditcard-cvc-detail/payment-concardis-creditcard-cvc-detail.component';
@@ -62,17 +61,11 @@ import { PaymentPayoneCreditcardComponent } from '../payment-payone-creditcard/p
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
   imports: [
-    NgIf,
     NgClass,
-    NgFor,
-    NgSwitchCase,
-    NgSwitch,
-    NgSwitchDefault,
     TranslatePipe,
     ServerHtmlDirective,
     NgbCollapseModule,
     ReactiveFormsModule,
-    ErrorMessageComponent,
     BasketErrorMessageComponent,
     BasketValidationResultsComponent,
     BasketPaymentCostInfoComponent,

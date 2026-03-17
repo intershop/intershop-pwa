@@ -6,7 +6,7 @@ import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.direc
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
-import { PaymentPaypalMessagesComponent } from 'ish-shared/components/checkout/payment-paypal-messages/payment-paypal-messages.component';
+import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-paypal/payment-paypal.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
@@ -53,7 +53,7 @@ import { ProductImagesComponent } from '../product-images/product-images.compone
     ProductQuantityComponent,
     ProductQuantityLabelComponent,
     ProductWarrantyComponent,
-    PaymentPaypalMessagesComponent,
+    PaymentPaypalComponent,
     ServerSettingPipe,
     FeatureToggleDirective,
   ],
