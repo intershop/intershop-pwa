@@ -12,7 +12,7 @@ import { User } from 'ish-core/models/user/user.model';
   templateUrl: './account-user-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ AsyncPipe],
+  imports: [AsyncPipe],
 })
 export class AccountUserInfoComponent implements OnInit {
   isBusinessUser$: Observable<boolean>;
