@@ -1,6 +1,6 @@
-import { EnvironmentProviders, importProvidersFrom, makeEnvironmentProviders } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreModule } from '@ngrx/store';
+import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
+import { provideEffects } from '@ngrx/effects';
+import { ActionReducerMap, provideState } from '@ngrx/store';
 
 import { TrackingConfigEffects } from './tracking-config/tracking-config.effects';
 import { trackingConfigReducer } from './tracking-config/tracking-config.reducer';
@@ -12,13 +12,8 @@ const trackingReducers: ActionReducerMap<TrackingState> = {
 
 const trackingEffects = [TrackingConfigEffects];
 
-const trackingStoreImports = [
-  StoreModule.forFeature('tracking', trackingReducers),
-  EffectsModule.forFeature(trackingEffects),
-];
-
 export function provideTrackingStore(): EnvironmentProviders {
-  return makeEnvironmentProviders([importProvidersFrom(...trackingStoreImports)]);
+  return makeEnvironmentProviders([provideState('tracking', trackingReducers), provideEffects(trackingEffects)]);
 }
 
-export class TrackingStoreModule {}
+export class TrackingStoreProviders {}

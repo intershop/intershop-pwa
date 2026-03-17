@@ -1,6 +1,6 @@
-import { EnvironmentProviders, importProvidersFrom } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
+import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
+import { provideEffects } from '@ngrx/effects';
+import { ActionReducerMap, StoreConfig, StoreModule, provideState } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
@@ -28,17 +28,13 @@ const organizationManagementStoreConfig: StoreConfig<OrganizationManagementState
 };
 
 export function provideOrganizationManagementStore(): EnvironmentProviders {
-  return importProvidersFrom(
-    StoreModule.forFeature(
-      organizationManagementFeature,
-      organizationManagementReducers,
-      organizationManagementStoreConfig
-    ),
-    EffectsModule.forFeature(organizationManagementEffects)
-  );
+  return makeEnvironmentProviders([
+    provideState(organizationManagementFeature, organizationManagementReducers, organizationManagementStoreConfig),
+    provideEffects(organizationManagementEffects),
+  ]);
 }
 
-export class OrganizationManagementStoreModule {
+export class OrganizationManagementStoreProviders {
   static forTesting(...reducers: (keyof ActionReducerMap<OrganizationManagementState>)[]) {
     return StoreModule.forFeature(organizationManagementFeature, pick(organizationManagementReducers, reducers));
   }

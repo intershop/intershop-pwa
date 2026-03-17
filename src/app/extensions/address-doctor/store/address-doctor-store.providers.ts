@@ -1,6 +1,6 @@
-import { EnvironmentProviders, importProvidersFrom, makeEnvironmentProviders } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreModule } from '@ngrx/store';
+import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
+import { provideEffects } from '@ngrx/effects';
+import { ActionReducerMap, StoreModule, provideState } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { AddressDoctorState } from './address-doctor-store';
@@ -13,16 +13,14 @@ const addressDoctorReducers: ActionReducerMap<AddressDoctorState> = {
 
 const addressDoctorEffects = [AddressDoctorEffects];
 
-const addressDoctorStoreImports = [
-  EffectsModule.forFeature(addressDoctorEffects),
-  StoreModule.forFeature('addressDoctor', addressDoctorReducers),
-];
-
 export function provideAddressDoctorStore(): EnvironmentProviders {
-  return makeEnvironmentProviders([importProvidersFrom(...addressDoctorStoreImports)]);
+  return makeEnvironmentProviders([
+    provideState('addressDoctor', addressDoctorReducers),
+    provideEffects(addressDoctorEffects),
+  ]);
 }
 
-export class AddressDoctorStoreModule {
+export class AddressDoctorStoreProviders {
   static forTesting(...reducers: (keyof ActionReducerMap<AddressDoctorState>)[]) {
     return StoreModule.forFeature('addressDoctor', pick(addressDoctorReducers, reducers));
   }

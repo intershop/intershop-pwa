@@ -4,11 +4,10 @@ import {
   Inject,
   Injectable,
   InjectionToken,
-  importProvidersFrom,
   makeEnvironmentProviders,
 } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { ActionReducerMap, StoreConfig, StoreModule, provideState } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
@@ -37,18 +36,17 @@ export class DefaultCompareStoreConfig implements StoreConfig<CompareState> {
 
 export const COMPARE_STORE_CONFIG = new InjectionToken<StoreConfig<CompareState>>('compareStoreConfig');
 
-const compareStoreImports = [
-  EffectsModule.forFeature(compareEffects),
-  StoreModule.forFeature('compare', compareReducers, COMPARE_STORE_CONFIG),
-];
-
 const compareStoreProviders = [{ provide: COMPARE_STORE_CONFIG, useClass: DefaultCompareStoreConfig }];
 
 export function provideCompareStore(): EnvironmentProviders {
-  return makeEnvironmentProviders([importProvidersFrom(...compareStoreImports), ...compareStoreProviders]);
+  return makeEnvironmentProviders([
+    provideState('compare', compareReducers, COMPARE_STORE_CONFIG),
+    provideEffects(compareEffects),
+    ...compareStoreProviders,
+  ]);
 }
 
-export class CompareStoreModule {
+export class CompareStoreProviders {
   static forTesting(...reducers: (keyof ActionReducerMap<CompareState>)[]) {
     return StoreModule.forFeature('compare', pick(compareReducers, reducers));
   }

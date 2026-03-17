@@ -2,11 +2,10 @@ import {
   EnvironmentProviders,
   Injectable,
   InjectionToken,
-  importProvidersFrom,
   makeEnvironmentProviders,
 } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { ActionReducerMap, StoreConfig, StoreModule, provideState } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { logoutUserSuccess, personalizationStatusChanged } from 'ish-core/store/customer/user';
@@ -73,18 +72,17 @@ export class DefaultShoppingStoreConfig implements StoreConfig<ShoppingState> {
 
 export const SHOPPING_STORE_CONFIG = new InjectionToken<StoreConfig<ShoppingState>>('shoppingStoreConfig');
 
-const shoppingStoreImports = [
-  EffectsModule.forFeature(shoppingEffects),
-  StoreModule.forFeature('shopping', shoppingReducers, SHOPPING_STORE_CONFIG),
-];
-
 const shoppingStoreProviders = [{ provide: SHOPPING_STORE_CONFIG, useClass: DefaultShoppingStoreConfig }];
 
 export function provideShoppingStore(): EnvironmentProviders {
-  return makeEnvironmentProviders([importProvidersFrom(...shoppingStoreImports), ...shoppingStoreProviders]);
+  return makeEnvironmentProviders([
+    provideState('shopping', shoppingReducers, SHOPPING_STORE_CONFIG),
+    provideEffects(shoppingEffects),
+    ...shoppingStoreProviders,
+  ]);
 }
 
-export class ShoppingStoreModule {
+export class ShoppingStoreProviders {
   static forTesting(...reducers: (keyof ActionReducerMap<ShoppingState>)[]) {
     return StoreModule.forFeature('shopping', pick(shoppingReducers, reducers));
   }

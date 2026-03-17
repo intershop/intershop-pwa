@@ -2,11 +2,10 @@ import {
   EnvironmentProviders,
   Injectable,
   InjectionToken,
-  importProvidersFrom,
   makeEnvironmentProviders,
 } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { ActionReducerMap, StoreConfig, StoreModule, provideState } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
@@ -31,18 +30,17 @@ export const PRODUCT_REVIEW_STORE_CONFIG = new InjectionToken<StoreConfig<Produc
   'productReviewStoreConfig'
 );
 
-const productReviewStoreImports = [
-  EffectsModule.forFeature(productReviewsEffects),
-  StoreModule.forFeature('rating', productReviewReducers, PRODUCT_REVIEW_STORE_CONFIG),
-];
-
 const productReviewStoreProviders = [{ provide: PRODUCT_REVIEW_STORE_CONFIG, useClass: ReviewsStoreConfig }];
 
 export function provideProductReviewStore(): EnvironmentProviders {
-  return makeEnvironmentProviders([importProvidersFrom(...productReviewStoreImports), ...productReviewStoreProviders]);
+  return makeEnvironmentProviders([
+    provideState('rating', productReviewReducers, PRODUCT_REVIEW_STORE_CONFIG),
+    provideEffects(productReviewsEffects),
+    ...productReviewStoreProviders,
+  ]);
 }
 
-export class ProductReviewStoreModule {
+export class ProductReviewStoreProviders {
   static forTesting(...reducers: (keyof ActionReducerMap<ProductReviewState>)[]) {
     return StoreModule.forFeature('rating', pick(productReviewReducers, reducers), PRODUCT_REVIEW_STORE_CONFIG);
   }

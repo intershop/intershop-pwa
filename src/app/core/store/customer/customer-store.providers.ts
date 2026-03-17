@@ -2,10 +2,9 @@ import {
   EnvironmentProviders,
   Injectable,
   InjectionToken,
-  importProvidersFrom,
   makeEnvironmentProviders,
 } from '@angular/core';
-import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
+import { ActionReducerMap, StoreConfig, StoreModule, provideState } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { resetOnLogoutMeta } from 'ish-core/utils/meta-reducers';
@@ -38,15 +37,16 @@ export class CustomerStoreConfig implements StoreConfig<CustomerState> {
 
 export const CUSTOMER_STORE_CONFIG = new InjectionToken<StoreConfig<CustomerState>>('customerStoreConfig');
 
-const customerStoreImports = [StoreModule.forFeature('_customer', customerReducers, CUSTOMER_STORE_CONFIG)];
-
 const customerStoreProviders = [{ provide: CUSTOMER_STORE_CONFIG, useClass: CustomerStoreConfig }];
 
 export function provideCustomerStore(): EnvironmentProviders {
-  return makeEnvironmentProviders([importProvidersFrom(...customerStoreImports), ...customerStoreProviders]);
+  return makeEnvironmentProviders([
+    provideState('_customer', customerReducers, CUSTOMER_STORE_CONFIG),
+    ...customerStoreProviders,
+  ]);
 }
 
-export class CustomerStoreModule {
+export class CustomerStoreProviders {
   static forTesting(...reducers: (keyof ActionReducerMap<CustomerState>)[]) {
     return StoreModule.forFeature('_customer', pick(customerReducers, reducers));
   }

@@ -1,6 +1,6 @@
-import { EnvironmentProviders, importProvidersFrom, makeEnvironmentProviders } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreModule } from '@ngrx/store';
+import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
+import { provideEffects } from '@ngrx/effects';
+import { ActionReducerMap, StoreModule, provideState } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
 import { CountriesEffects } from './countries/countries.effects';
@@ -15,16 +15,12 @@ const generalReducers: ActionReducerMap<GeneralState> = {
 };
 
 const generalEffects = [CountriesEffects, RegionsEffects];
-const generalStoreImports = [
-  EffectsModule.forFeature(generalEffects),
-  StoreModule.forFeature('general', generalReducers),
-];
 
 export function provideGeneralStore(): EnvironmentProviders {
-  return makeEnvironmentProviders([importProvidersFrom(...generalStoreImports)]);
+  return makeEnvironmentProviders([provideState('general', generalReducers), provideEffects(generalEffects)]);
 }
 
-export class GeneralStoreModule {
+export class GeneralStoreProviders {
   static forTesting(...reducers: (keyof ActionReducerMap<GeneralState>)[]) {
     return StoreModule.forFeature('general', pick(generalReducers, reducers));
   }

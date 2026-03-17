@@ -1,13 +1,13 @@
-import { EnvironmentProviders, importProvidersFrom, makeEnvironmentProviders } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
+import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
+import { provideEffects } from '@ngrx/effects';
 
 import { AuthorizationEffects } from './authorization/authorization.effects';
 import { UserEffects } from './user/user.effects';
 
-const customerSessionStoreImports = [EffectsModule.forFeature([UserEffects, AuthorizationEffects])];
+const customerSessionEffects = [UserEffects, AuthorizationEffects];
 
 export function provideCustomerSessionStore(): EnvironmentProviders {
-  return makeEnvironmentProviders([importProvidersFrom(...customerSessionStoreImports)]);
+  return makeEnvironmentProviders([provideEffects(customerSessionEffects)]);
 }
 
-export class CustomerSessionStoreModule {}
+export class CustomerSessionStoreProviders {}

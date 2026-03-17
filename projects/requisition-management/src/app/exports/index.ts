@@ -1,7 +1,7 @@
 export { requisitionManagementRoutes } from '../pages/requisition-management.routes';
 export {
   provideRequisitionManagementStore,
-  RequisitionManagementStoreModule,
+  RequisitionManagementStoreProviders,
 } from '../store/requisition-management-store.providers';
 
 export { RequisitionManagementBreadcrumbService } from '../services/requisition-management-breadcrumb/requisition-management-breadcrumb.service';
