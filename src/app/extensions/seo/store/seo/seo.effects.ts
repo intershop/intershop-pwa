@@ -163,7 +163,7 @@ export class SeoEffects {
   seoTitle$ = createEffect(
     () =>
       this.pageTitle$.pipe(
-        delay(0), // ensures asynchronous stream processing to prevent "missing translation" issues
+        delay(50), // ensures asynchronous stream processing to prevent "missing translation" issues
         switchMap(title =>
           combineLatest([
             this.translate.get(title),
@@ -184,7 +184,7 @@ export class SeoEffects {
   seoDescription$ = createEffect(
     () =>
       this.pageDescription$.pipe(
-        delay(0), // ensures asynchronous stream processing to prevent "missing translation" issues
+        delay(50), // ensures asynchronous stream processing to prevent "missing translation" issues
         switchMap(description => this.translate.get(description)),
         tap(description => {
           this.addOrModifyTag({ name: 'description', content: description });
