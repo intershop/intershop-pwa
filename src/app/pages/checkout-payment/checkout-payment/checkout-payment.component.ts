@@ -28,7 +28,6 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { PriceType } from 'ish-core/models/price/price.model';
 import { PaypalAdapterTypes, PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { BasketAddressSummaryComponent } from 'ish-shared/components/basket/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketErrorMessageComponent } from 'ish-shared/components/basket/basket-error-message/basket-error-message.component';
@@ -84,7 +83,6 @@ import { PaymentPayoneCreditcardComponent } from '../payment-payone-creditcard/p
     PricePipe,
     AsyncPipe,
     PaymentPaypalComponent,
-    ServerSettingPipe,
   ],
 })
 export class CheckoutPaymentComponent implements OnInit, OnChanges {
