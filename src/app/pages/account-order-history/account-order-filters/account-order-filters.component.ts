@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -127,7 +127,7 @@ function urlToQuery(params: UrlModel): Partial<OrderListQuery> {
   templateUrl: './account-order-filters.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, FormlyForm, NgIf, NgbCollapseModule, ReactiveFormsModule, TranslatePipe],
+  imports: [AsyncPipe, FormlyForm, NgbCollapseModule, ReactiveFormsModule, TranslatePipe],
   providers: [{ provide: NgbDateAdapter, useClass: OrderDateFilterAdapter }],
 })
 export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {

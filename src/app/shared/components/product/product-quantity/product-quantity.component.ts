@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { AsyncPipe, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslateDirective, TranslatePipe } from '@ngx-translate/core';
 import { range } from 'lodash-es';
@@ -16,16 +16,13 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     AsyncPipe,
-    NgFor,
     NgClass,
     TranslateDirective,
     TranslatePipe,
     NgSwitch,
     NgSwitchCase,
-    NgSwitchDefault,
-  ],
+    NgSwitchDefault],
 })
 export class ProductQuantityComponent implements OnInit {
   @Input() type: 'input' | 'select' | 'counter' = 'counter';

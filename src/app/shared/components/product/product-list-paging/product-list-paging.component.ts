@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
@@ -18,7 +18,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './product-list-paging.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgFor, RouterLink, NgClass],
+  imports: [ RouterLink, NgClass],
 })
 export class ProductListPagingComponent {
   @Input({ required: true }) currentPage: number;

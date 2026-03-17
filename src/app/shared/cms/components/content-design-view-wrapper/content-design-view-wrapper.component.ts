@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgClass, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest, map } from 'rxjs';
@@ -18,13 +18,11 @@ import { PreviewService } from 'ish-core/utils/preview/preview.service';
   imports: [
     NgClass,
     NgSwitch,
-    NgIf,
     TranslatePipe,
     AsyncPipe,
     NgTemplateOutlet,
     NgSwitchCase,
-    ScrollDirective,
-  ],
+    ScrollDirective],
 })
 export class ContentDesignViewWrapperComponent implements OnInit {
   // pagelet parameter
@@ -85,8 +83,7 @@ export class ContentDesignViewWrapperComponent implements OnInit {
 
       this.isPageletPreviewed$ = combineLatest([
         this.cmsFacade.designViewPreviewedPageletId$,
-        this.cmsFacade.designViewSelectedPageletId$,
-      ]).pipe(
+        this.cmsFacade.designViewSelectedPageletId$]).pipe(
         map(
           ([previewedId, selectedId]) =>
             this.isDesignViewMode && this.pageletId === previewedId && this.pageletId !== selectedId

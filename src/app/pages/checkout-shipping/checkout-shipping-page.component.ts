@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -33,7 +33,6 @@ import { CheckoutShippingComponent } from './checkout-shipping/checkout-shipping
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     TranslatePipe,
     AsyncPipe,
     ServerSettingPipe,
@@ -49,8 +48,7 @@ import { CheckoutShippingComponent } from './checkout-shipping/checkout-shipping
     BasketItemsSummaryComponent,
     BasketCostSummaryComponent,
     ServerHtmlDirective,
-    LoadingComponent,
-  ],
+    LoadingComponent],
 })
 export class CheckoutShippingPageComponent implements OnInit {
   loading$: Observable<boolean>;

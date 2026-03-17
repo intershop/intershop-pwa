@@ -1,5 +1,4 @@
 import { CdkTableModule } from '@angular/cdk/table';
-import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -32,7 +31,6 @@ type CostCenterBuyersListColumnsType = 'buyerName' | 'orders' | 'pendingOrders' 
     CdkTableModule,
     CostCenterBuyerEditDialogComponent,
     ModalDialogComponent,
-    NgIf,
     NotRoleToggleDirective,
     PricePipe,
     ServerHtmlDirective,

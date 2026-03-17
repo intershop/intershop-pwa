@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -25,9 +25,7 @@ import { AccountWishlistListComponent } from './account-wishlist-list/account-wi
     TranslatePipe,
     ErrorMessageComponent,
     NgbPopover,
-    LoadingComponent,
-    NgIf,
-  ],
+    LoadingComponent],
 })
 export class AccountWishlistPageComponent implements OnInit {
   /**

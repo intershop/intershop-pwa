@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FieldType, FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
@@ -18,10 +18,8 @@ import { ValidationMessageComponent } from 'ish-shared/formly/components/validat
   imports: [
     ReactiveFormsModule,
     ServerHtmlDirective,
-    NgIf,
     TranslatePipe,
     FormlyAttributes,
-    ValidationMessageComponent,
-  ],
+    ValidationMessageComponent],
 })
 export class CheckoutReviewTacFieldComponent extends FieldType<FieldTypeConfig> {}

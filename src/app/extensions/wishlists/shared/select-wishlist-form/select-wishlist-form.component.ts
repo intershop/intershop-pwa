@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
@@ -16,7 +16,7 @@ import { WishlistsFacade } from '../../facades/wishlists.facade';
   templateUrl: './select-wishlist-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, FormlyForm, AsyncPipe],
+  imports: [ FormlyForm, AsyncPipe],
 })
 export class SelectWishlistFormComponent implements OnInit {
   @Input({ required: true }) formGroup: FormGroup;
@@ -56,8 +56,7 @@ export class SelectWishlistFormComponent implements OnInit {
             noHtmlTags: 'account.name.error.forbidden.html.chars',
           },
         },
-      },
-    ];
+      }];
 
     // formly config for the radio button form (one or more other wishlists exist)
     this.multipleFieldConfig$ = this.wishlistOptions$.pipe(
@@ -109,10 +108,8 @@ export class SelectWishlistFormComponent implements OnInit {
               expressions: {
                 'props.disabled': conf => conf.model.wishlist !== 'new',
               },
-            },
-          ],
-        },
-      ])
+            }],
+        }])
     );
   }
 }

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -16,7 +16,7 @@ import { AccountOrderComponent } from './account-order/account-order.component';
   templateUrl: './account-order-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AccountOrderComponent, AsyncPipe, NgIf],
+  imports: [AccountOrderComponent, AsyncPipe],
 })
 export class AccountOrderPageComponent implements OnInit {
   order$: Observable<Order>;

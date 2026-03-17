@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -32,7 +32,6 @@ import { ProductPromotionComponent } from 'ish-shared/components/product/product
     ProductItemVariationsComponent,
     ProductNameComponent,
     ProductPromotionComponent,
-    NgIf,
     AsyncPipe,
     TranslatePipe,
     ProductAddToCompareComponent,

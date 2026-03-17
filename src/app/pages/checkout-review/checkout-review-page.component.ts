@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -15,7 +15,7 @@ import { CheckoutReviewComponent } from './checkout-review/checkout-review.compo
   templateUrl: './checkout-review-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, LoadingComponent, CheckoutReviewComponent],
+  imports: [ AsyncPipe, LoadingComponent, CheckoutReviewComponent],
 })
 export class CheckoutReviewPageComponent implements OnInit {
   basket$: Observable<BasketView>;

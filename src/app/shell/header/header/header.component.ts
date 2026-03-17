@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Event, NavigationStart, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -18,14 +18,12 @@ import { HeaderSimpleComponent } from 'ish-shell/header/header-simple/header-sim
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     HeaderSimpleComponent,
     HeaderErrorComponent,
     HeaderCheckoutComponent,
     HeaderDefaultComponent,
     BackToTopComponent,
-    AsyncPipe,
-  ],
+    AsyncPipe],
 })
 export class HeaderComponent implements OnInit {
   headerType$: Observable<HeaderType>;

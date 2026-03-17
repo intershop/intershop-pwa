@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf, SlicePipe } from '@angular/common';
+import { AsyncPipe, SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -26,13 +26,11 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
     CostCenterBudgetComponent,
     CostCenterUsersListComponent,
     ErrorMessageComponent,
-    NgIf,
     OrderListComponent,
     PricePipe,
     SlicePipe,
     TranslatePipe,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class CostCenterDetailPageComponent implements OnInit {
   costCenter$: Observable<CostCenter>;

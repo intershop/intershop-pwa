@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { AsyncPipe, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable, map, shareReplay, take } from 'rxjs';
@@ -24,16 +24,13 @@ import { ProductWarrantyDetailsComponent } from 'ish-shared/components/product/p
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     TranslatePipe,
-    NgFor,
     AsyncPipe,
     NgSwitch,
     NgSwitchCase,
     NgSwitchDefault,
     ProductWarrantyDetailsComponent,
-    PricePipe,
-  ],
+    PricePipe],
 })
 export class ProductWarrantyComponent implements OnInit {
   // preselect a warranty

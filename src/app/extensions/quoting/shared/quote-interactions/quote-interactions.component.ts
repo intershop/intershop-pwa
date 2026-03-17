@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -11,7 +11,7 @@ import { Quote, QuoteRequest, QuoteStatus } from '../../models/quoting/quoting.m
   templateUrl: './quote-interactions.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, TranslatePipe, AsyncPipe],
+  imports: [ TranslatePipe, AsyncPipe],
 })
 export class QuoteInteractionsComponent implements OnInit {
   quote$: Observable<Quote | QuoteRequest>;

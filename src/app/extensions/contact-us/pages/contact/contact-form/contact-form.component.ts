@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
@@ -24,7 +24,7 @@ import { ContactUsFacade } from '../../../facades/contact-us.facade';
   templateUrl: './contact-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, FormSubmitDirective, FormlyForm, NgIf, ReactiveFormsModule, TranslatePipe],
+  imports: [AsyncPipe, FormSubmitDirective, FormlyForm, ReactiveFormsModule, TranslatePipe],
 })
 export class ContactFormComponent implements OnInit {
   /** The contact request to send. */
@@ -134,8 +134,7 @@ export class ContactFormComponent implements OnInit {
             required: isCaptchaV2 && isCaptchaTopicEnabled,
             fieldClass: 'offset-md-4 col-md-8',
           },
-        },
-      ])
+        }])
     );
   }
 

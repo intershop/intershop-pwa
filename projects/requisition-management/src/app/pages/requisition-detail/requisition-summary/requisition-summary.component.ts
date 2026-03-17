@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -15,7 +15,7 @@ import { Requisition, RequisitionViewer } from '../../../models/requisition/requ
   templateUrl: './requisition-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [DatePipe, NgFor, NgIf, TranslatePipe, BasketCustomFieldsViewComponent, PricePipe, NgClass, RouterLink],
+  imports: [DatePipe,  TranslatePipe, BasketCustomFieldsViewComponent, PricePipe, NgClass, RouterLink],
 })
 export class RequisitionSummaryComponent implements OnInit {
   @Input({ required: true }) requisition: Requisition;

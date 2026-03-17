@@ -1,8 +1,8 @@
 import { CdkTableModule } from '@angular/cdk/table';
-import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+
 import { Order } from 'ish-core/models/order/order.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
@@ -35,16 +35,7 @@ export type OrderColumnsType =
   templateUrl: './order-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    NgIf,
-    TranslatePipe,
-    RouterLink,
-    PricePipe,
-    LoadingComponent,
-    AddressComponent,
-    DatePipe,
-    CdkTableModule,
-  ],
+  imports: [TranslatePipe, RouterLink, PricePipe, LoadingComponent, AddressComponent, DatePipe, CdkTableModule],
 })
 export class OrderListComponent {
   /**

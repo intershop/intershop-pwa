@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
@@ -28,12 +28,10 @@ import {
     AuthorizationToggleDirective,
     ErrorMessageComponent,
     LoadingComponent,
-    NgIf,
     NgbNavModule,
     RecurringOrderListComponent,
     TranslatePipe,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class AccountRecurringOrdersPageComponent implements OnInit {
   recurringOrders$: Observable<RecurringOrder[]>;
@@ -61,8 +59,7 @@ export class AccountRecurringOrdersPageComponent implements OnInit {
             'nextOrderDate',
             'buyer',
             'orderTotal',
-            'actions',
-          ])
+            'actions'])
         : (this.columnsToDisplay = [
             'recurringOrderNo',
             'creationDate',
@@ -70,8 +67,7 @@ export class AccountRecurringOrdersPageComponent implements OnInit {
             'lastOrderDate',
             'nextOrderDate',
             'orderTotal',
-            'actions',
-          ]);
+            'actions']);
     });
   }
 }

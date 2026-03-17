@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -22,12 +22,10 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
     AsyncPipe,
     FormSubmitDirective,
     LoadingComponent,
-    NgIf,
     ReactiveFormsModule,
     TranslatePipe,
     UserProfileFormComponent,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class UserEditProfilePageComponent implements OnInit {
   loading$: Observable<boolean>;

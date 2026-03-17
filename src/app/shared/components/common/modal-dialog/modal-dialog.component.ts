@@ -1,4 +1,4 @@
-import { DOCUMENT, NgIf } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -63,7 +63,7 @@ export interface ModalOptions extends NgbModalOptions {
   templateUrl: './modal-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, TranslatePipe],
+  imports: [ TranslatePipe],
 })
 export class ModalDialogComponent<T> implements OnDestroy {
   @Input({ required: true }) options: ModalOptions;

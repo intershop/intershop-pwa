@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { FieldWrapper } from '@ngx-formly/core';
@@ -19,6 +19,6 @@ import { ShippingInfoComponent } from '../shipping-info/shipping-info.component'
   templateUrl: './shipping-radio-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, NgbPopoverModule, ShippingInfoComponent, TranslatePipe, NgIf],
+  imports: [NgClass, NgbPopoverModule, ShippingInfoComponent, TranslatePipe],
 })
 export class ShippingRadioWrapperComponent extends FieldWrapper {}

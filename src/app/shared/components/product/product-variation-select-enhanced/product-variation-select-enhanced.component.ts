@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -13,7 +13,7 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
   styleUrls: ['./product-variation-select-enhanced.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, NgFor, NgTemplateOutlet, NgStyle, NgClass, TranslatePipe],
+  imports: [ AsyncPipe, NgTemplateOutlet, NgStyle, NgClass, TranslatePipe],
 })
 export class ProductVariationSelectEnhancedComponent implements OnInit {
   @Input({ required: true }) group: VariationOptionGroup;

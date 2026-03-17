@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -23,14 +23,11 @@ import { OrderTemplate } from '../../models/order-template/order-template.model'
   imports: [
     AsyncPipe,
     InfoBoxComponent,
-    LoadingComponent,
-    NgFor,
-    NgIf,
+    LoadingComponent, 
     ProductAddToBasketComponent,
     ProductContextDirective,
     TranslatePipe,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class OrderTemplateWidgetComponent implements OnInit {
   loading$: Observable<boolean>;

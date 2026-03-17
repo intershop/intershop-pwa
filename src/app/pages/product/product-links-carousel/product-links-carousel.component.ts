@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, Inject, Input, OnDestroy, ViewChild } from '@angular/core';
 import { RxState } from '@rx-angular/state';
 import { Observable, combineLatest, of } from 'rxjs';
@@ -32,7 +32,7 @@ import { ProductItemComponent } from 'ish-shared/components/product/product-item
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [RxState],
   standalone: true,
-  imports: [NgIf, SwiperModule, NgFor, AsyncPipe, ProductItemComponent, ProductContextDirective],
+  imports: [SwiperModule, AsyncPipe, ProductItemComponent, ProductContextDirective],
 })
 export class ProductLinksCarouselComponent implements OnDestroy {
   /**

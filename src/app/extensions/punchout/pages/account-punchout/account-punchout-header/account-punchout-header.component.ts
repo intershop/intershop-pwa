@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
@@ -15,7 +15,7 @@ import { PunchoutType } from '../../../models/punchout-user/punchout-user.model'
   templateUrl: './account-punchout-header.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ErrorMessageComponent, InfoMessageComponent, NgbNavModule, NgFor, NgIf, RouterLink, TranslatePipe],
+  imports: [ErrorMessageComponent, InfoMessageComponent, NgbNavModule,  RouterLink, TranslatePipe],
 })
 export class AccountPunchoutHeaderComponent {
   @Input({ required: true }) selectedType: PunchoutType;

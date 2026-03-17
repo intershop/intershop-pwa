@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -14,7 +14,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   templateUrl: './cms-navigation-category.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgClass, NgTemplateOutlet, RouterLink, AsyncPipe, NgStyle, ServerHtmlDirective],
+  imports: [ NgClass, NgTemplateOutlet, RouterLink, AsyncPipe, NgStyle, ServerHtmlDirective],
 })
 export class CMSNavigationCategoryComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;

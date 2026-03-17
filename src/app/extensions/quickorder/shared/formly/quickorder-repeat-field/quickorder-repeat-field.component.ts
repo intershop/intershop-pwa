@@ -1,4 +1,4 @@
-import { NgFor } from '@angular/common';
+
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -26,7 +26,7 @@ import { ProductQuantityComponent } from 'ish-shared/components/product/product-
   templateUrl: './quickorder-repeat-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgFor, ProductContextDirective, TranslatePipe, ProductQuantityComponent, FormlyField],
+  imports: [ ProductContextDirective, TranslatePipe, ProductQuantityComponent, FormlyField],
 })
 export class QuickorderRepeatFieldComponent extends FieldArrayType implements AfterViewInit {
   @ViewChildren(ProductContextDirective) contexts: QueryList<{ context: ProductContextFacade }>;

@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -19,7 +19,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
   templateUrl: './filter-checkbox.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgFor, NgClass, TranslatePipe, NgIf],
+  imports: [ NgClass, TranslatePipe],
 })
 export class FilterCheckboxComponent {
   @Input({ required: true }) filterElement: Filter;

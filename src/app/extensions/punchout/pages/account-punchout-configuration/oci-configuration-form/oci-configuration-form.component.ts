@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -29,13 +29,10 @@ import { OciConfigurationItem } from '../../../models/oci-configuration-item/oci
     FormSubmitDirective,
     FormlyForm,
     LoadingComponent,
-    NgIf,
     ReactiveFormsModule,
     RouterLink,
     TranslatePipe,
-    NgFor,
-    NgbPopoverModule,
-  ],
+    NgbPopoverModule],
 })
 export class OciConfigurationFormComponent implements OnInit {
   form: FormGroup = new FormGroup({});
@@ -120,8 +117,7 @@ export class OciConfigurationFormComponent implements OnInit {
                   validators: {
                     validation: [
                       SpecialValidators.dependentlyRequired('mapToValue', 'mapFromValue'),
-                      SpecialValidators.dependentlyRequired('mapFromValue', 'mapToValue'),
-                    ],
+                      SpecialValidators.dependentlyRequired('mapFromValue', 'mapToValue')],
                   },
                   fieldGroup: [
                     {
@@ -151,8 +147,7 @@ export class OciConfigurationFormComponent implements OnInit {
                           dependentlyRequired: 'account.punchout.configuration.form.mapping.to.error',
                         },
                       },
-                    },
-                  ],
+                    }],
                 },
               },
 
@@ -165,11 +160,9 @@ export class OciConfigurationFormComponent implements OnInit {
                   options,
                   ariaLabel: 'account.punchout.oci.formatter.aria_label',
                 },
-              },
-            ],
+              }],
           },
-        },
-      ])
+        }])
     );
   }
 

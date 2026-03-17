@@ -1,4 +1,4 @@
-import { NgClass, NgIf, NgStyle } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
@@ -12,7 +12,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   templateUrl: './cms-navigation-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgClass, RouterLink, NgStyle, ServerHtmlDirective],
+  imports: [ NgClass, RouterLink, NgStyle, ServerHtmlDirective],
 })
 export class CMSNavigationLinkComponent implements CMSComponent {
   @Input({ required: true }) pagelet: ContentPageletView;

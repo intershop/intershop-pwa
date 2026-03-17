@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -12,7 +12,7 @@ import { User } from 'ish-core/models/user/user.model';
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, RouterLink, RouterOutlet, TranslatePipe],
+  imports: [ AsyncPipe, RouterLink, RouterOutlet, TranslatePipe],
 })
 export class AppComponent implements OnInit {
   user$: Observable<User>;

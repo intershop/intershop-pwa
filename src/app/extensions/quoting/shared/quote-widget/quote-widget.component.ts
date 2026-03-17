@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
@@ -16,7 +16,7 @@ import { QuotingFacade } from '../../facades/quoting.facade';
   templateUrl: './quote-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, InfoBoxComponent, LoadingComponent, NgIf, TranslatePipe, RouterLink],
+  imports: [AsyncPipe, InfoBoxComponent, LoadingComponent, TranslatePipe, RouterLink],
 })
 export class QuoteWidgetComponent implements OnInit {
   loading$: Observable<boolean>;
@@ -50,8 +50,7 @@ export class QuoteWidgetComponent implements OnInit {
       quotingStates$.pipe(
         map(states => states.filter(state => state === 'Submitted').length),
         distinctUntilChanged()
-      ),
-    ])
+      )])
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(([responded, submitted]) => {
         this.respondedQuotes = responded;

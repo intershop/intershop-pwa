@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -8,7 +8,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './checkout-progress-bar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgFor, NgClass, NgIf, RouterLink, TranslatePipe],
+  imports: [ NgClass, RouterLink, TranslatePipe],
 })
 export class CheckoutProgressBarComponent {
   @Input() step = 1;
@@ -46,8 +46,7 @@ export class CheckoutProgressBarComponent {
       link: '/checkout/receipt',
       labelKey: 'checkout.progress.receipt.label',
       stepKey: 'checkout.progress.step5.text',
-    },
-  ];
+    }];
 
   /**
    * Checks whether a checkout step should be displayed as link or not.

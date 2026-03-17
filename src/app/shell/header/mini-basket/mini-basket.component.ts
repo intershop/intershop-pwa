@@ -1,4 +1,4 @@
-import { AsyncPipe, Location, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, Location, NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -36,12 +36,10 @@ import { MiniBasketContentComponent } from 'ish-shared/components/basket/mini-ba
     NgbDropdownModule,
     NgbPopoverModule,
     NgClass,
-    NgIf,
     PricePipe,
     RouterLink,
     MiniBasketContentComponent,
-    TranslatePipe,
-  ],
+    TranslatePipe],
 })
 export class MiniBasketComponent implements OnInit {
   @ViewChild('miniBasketDropdown', { static: true }) miniBasketDropdown!: NgbDropdown;

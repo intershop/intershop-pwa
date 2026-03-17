@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -17,7 +17,7 @@ import { OrganizationSettingsCompanyComponent } from './organization-settings-co
   templateUrl: './organization-settings-company-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, LoadingComponent, NgIf, OrganizationSettingsCompanyComponent],
+  imports: [AsyncPipe, LoadingComponent, OrganizationSettingsCompanyComponent],
 })
 export class OrganizationSettingsCompanyPageComponent implements OnInit {
   currentCustomer$: Observable<Customer>;

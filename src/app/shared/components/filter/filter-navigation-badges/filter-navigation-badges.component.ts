@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
@@ -9,7 +9,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
   templateUrl: './filter-navigation-badges.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgFor, TranslatePipe],
+  imports: [ TranslatePipe],
 })
 export class FilterNavigationBadgesComponent implements OnChanges {
   @Input({ required: true }) filterNavigation: FilterNavigation;
@@ -27,8 +27,7 @@ export class FilterNavigationBadgesComponent implements OnChanges {
             filterName: filterElement.name,
             displayName,
             searchParameter,
-          })),
-      ],
+          }))],
       []
     );
   }

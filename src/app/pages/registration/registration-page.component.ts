@@ -1,5 +1,5 @@
 /* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
@@ -40,9 +40,7 @@ import {
     AddressDoctorComponent,
     LoadingComponent,
     ReactiveFormsModule,
-    FormlyForm,
-    NgIf,
-  ],
+    FormlyForm],
 })
 export class RegistrationPageComponent implements OnInit {
   error$: Observable<HttpError>;

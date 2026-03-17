@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -69,7 +69,7 @@ function urlToQuery(params: UrlModel): Partial<CostCenterQuery> {
   templateUrl: './cost-centers-filter.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, FormlyForm, ReactiveFormsModule, TranslatePipe, NgIf],
+  imports: [AsyncPipe, FormlyForm, ReactiveFormsModule, TranslatePipe],
 })
 export class CostCentersFilterComponent implements OnInit, AfterViewInit {
   @Input() fragmentOnRouting: string;
@@ -96,8 +96,7 @@ export class CostCentersFilterComponent implements OnInit, AfterViewInit {
           placeholder: 'account.costcenter.filter.label.nameOrId',
           fieldClass: 'col-12',
         },
-      },
-    ];
+      }];
   }
 
   ngAfterViewInit(): void {

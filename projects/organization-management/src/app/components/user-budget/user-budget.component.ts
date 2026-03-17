@@ -1,4 +1,4 @@
-import { NgClass, NgIf, NgStyle, PercentPipe } from '@angular/common';
+import { NgClass, NgStyle, PercentPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -16,7 +16,7 @@ import { UserBudget } from '../../models/user-budget/user-budget.model';
   templateUrl: './user-budget.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [NgIf, TranslatePipe, PricePipe, NgbPopover, PercentPipe, NgClass, NgStyle],
+  imports: [ TranslatePipe, PricePipe, NgbPopover, PercentPipe, NgClass, NgStyle],
 })
 export class UserBudgetComponent implements OnChanges {
   @Input() budget: UserBudget;

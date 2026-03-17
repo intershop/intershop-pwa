@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Requisition } from 'projects/requisition-management/src/app/models/requisition/requisition.model';
 
@@ -16,7 +16,7 @@ import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box
   templateUrl: './basket-merchant-message-view.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [InfoBoxComponent, NgIf],
+  imports: [InfoBoxComponent],
 })
 export class BasketMerchantMessageViewComponent implements OnChanges {
   @Input({ required: true }) data: Basket | Order | Requisition;

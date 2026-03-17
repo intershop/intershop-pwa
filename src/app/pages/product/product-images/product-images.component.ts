@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -39,8 +39,6 @@ import { ProductLabelComponent } from 'ish-shared/components/product/product-lab
   host: { ngSkipHydration: 'true' },
   standalone: true,
   imports: [
-    NgIf,
-    NgFor,
     NgClass,
     ProductImageComponent_1,
     SwiperModule,

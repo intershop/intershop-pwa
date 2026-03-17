@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -22,7 +22,7 @@ import { whenFalsy } from 'ish-core/utils/operators';
   templateUrl: './product-add-to-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, NgIf, AsyncPipe, TranslatePipe],
+  imports: [NgClass, AsyncPipe, TranslatePipe],
 })
 export class ProductAddToBasketComponent implements OnInit {
   /**
@@ -64,8 +64,7 @@ export class ProductAddToBasketComponent implements OnInit {
       // this connection is not automatically the case if the product context is not used to display product prices too (e.g. product compare)
       // the prices itself are not directly used here but in the ProductContextDisplayPropertiesService canBeOrderedWithPrice calculation
       // start with undefined to trigger the visibility calculation for cases where there is no product context (e.g. order templates)
-      this.context.select('prices').pipe(startWith(undefined)),
-    ]).pipe(map(([addToBasketVisible]) => addToBasketVisible));
+      this.context.select('prices').pipe(startWith(undefined))]).pipe(map(([addToBasketVisible]) => addToBasketVisible));
 
     this.translationKey$ = this.context.select('product').pipe(
       map(product =>
@@ -91,8 +90,7 @@ export class ProductAddToBasketComponent implements OnInit {
       hasProductError$,
       hasNoQuantity$,
       this.accountFacade.userLoading$,
-      this.basketLoading$,
-    ]).pipe(map(conditions => conditions.some(c => c)));
+      this.basketLoading$]).pipe(map(conditions => conditions.some(c => c)));
   }
 
   addToBasket() {

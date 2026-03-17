@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -15,7 +15,7 @@ import { MessageFacade } from 'ish-core/facades/message.facade';
   templateUrl: './info-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, TranslatePipe],
+  imports: [ TranslatePipe],
 })
 export class InfoMessageComponent implements OnChanges {
   @Input({ required: true }) message: string;

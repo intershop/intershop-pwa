@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -14,7 +14,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
   templateUrl: './registration-approval.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, NgIf, ServerHtmlDirective, TranslatePipe],
+  imports: [AsyncPipe, ServerHtmlDirective, TranslatePipe],
 })
 export class RegistrationApprovalComponent implements OnInit {
   email$: Observable<string>;

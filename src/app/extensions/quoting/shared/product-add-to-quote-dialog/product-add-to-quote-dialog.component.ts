@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -26,13 +26,11 @@ import { QuoteViewComponent } from '../quote-view/quote-view.component';
     AsyncPipe,
     ErrorMessageComponent,
     LoadingComponent,
-    NgIf,
     QuoteEditComponent,
     QuoteInteractionsComponent,
     QuoteViewComponent,
     TranslatePipe,
-    RouterLink,
-  ],
+    RouterLink],
   providers: [{ provide: QuoteContextFacade, useClass: ActiveQuoteContextFacade }],
 })
 export class ProductAddToQuoteDialogComponent implements OnInit {

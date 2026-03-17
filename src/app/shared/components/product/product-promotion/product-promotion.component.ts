@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -12,7 +12,7 @@ import { PromotionDetailsComponent } from 'ish-shared/components/promotion/promo
   templateUrl: './product-promotion.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgFor, AsyncPipe, PromotionDetailsComponent, ServerHtmlDirective],
+  imports: [ AsyncPipe, PromotionDetailsComponent, ServerHtmlDirective],
 })
 export class ProductPromotionComponent implements OnInit {
   @Input() displayType: 'default' | 'simple' | 'simpleWithDetail' = 'default';

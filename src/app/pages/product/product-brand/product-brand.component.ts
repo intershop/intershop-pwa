@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -10,6 +10,6 @@ import { ProductContextAccessDirective } from 'ish-core/directives/product-conte
   templateUrl: './product-brand.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ProductContextAccessDirective, NgIf, RouterLink, TranslatePipe],
+  imports: [ProductContextAccessDirective, RouterLink, TranslatePipe],
 })
 export class ProductBrandComponent {}

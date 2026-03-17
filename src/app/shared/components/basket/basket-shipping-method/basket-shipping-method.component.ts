@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Requisition } from 'projects/requisition-management/src/app/models/requisition/requisition.model';
@@ -12,7 +12,7 @@ import { DatePipe } from 'ish-core/pipes/date.pipe';
   templateUrl: './basket-shipping-method.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, TranslatePipe, DatePipe],
+  imports: [ TranslatePipe, DatePipe],
 })
 export class BasketShippingMethodComponent implements OnChanges {
   @Input({ required: true }) data: Basket | Order | Requisition;

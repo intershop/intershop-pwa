@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -22,14 +22,12 @@ import { RequestReminderFormComponent } from '../request-reminder-form/request-r
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     TranslatePipe,
     AsyncPipe,
     ServerHtmlDirective,
     ErrorMessageComponent,
     RequestReminderFormComponent,
-    LoadingComponent,
-  ],
+    LoadingComponent],
 })
 export class RequestReminderComponent implements OnInit {
   success$: Observable<boolean>;

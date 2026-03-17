@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -11,7 +11,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   templateUrl: './cms-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, ServerHtmlDirective, ContentSlotComponent],
+  imports: [ ServerHtmlDirective, ContentSlotComponent],
 })
 export class CMSDialogComponent implements CMSComponent {
   @Input() pagelet: ContentPageletView;

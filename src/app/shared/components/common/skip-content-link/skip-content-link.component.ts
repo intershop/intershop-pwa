@@ -1,4 +1,4 @@
-import { DOCUMENT, NgIf } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -46,7 +46,7 @@ import { v4 as uuid } from 'uuid';
   templateUrl: './skip-content-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, TranslatePipe],
+  imports: [ TranslatePipe],
 })
 export class SkipContentLinkComponent implements AfterContentInit, AfterViewInit {
   /**

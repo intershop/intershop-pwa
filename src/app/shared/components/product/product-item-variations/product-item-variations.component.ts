@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
@@ -15,7 +15,7 @@ import { ProductVariationSelectComponent } from 'ish-shared/components/product/p
   templateUrl: './product-item-variations.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, TranslatePipe, ProductVariationDisplayComponent, ProductVariationSelectComponent],
+  imports: [ AsyncPipe, TranslatePipe, ProductVariationDisplayComponent, ProductVariationSelectComponent],
 })
 export class ProductItemVariationsComponent implements OnInit {
   visible$: Observable<boolean>;
@@ -37,8 +37,7 @@ export class ProductItemVariationsComponent implements OnInit {
     );
     this.readOnly$ = combineLatest([
       this.context.select('displayProperties', 'readOnly').pipe(startWith(false)),
-      advancedVariationHandling$,
-    ]).pipe(map(([readOnly, advancedVariationHandling]) => readOnly || advancedVariationHandling));
+      advancedVariationHandling$]).pipe(map(([readOnly, advancedVariationHandling]) => readOnly || advancedVariationHandling));
 
     this.isMasterProduct$ = this.context.select('product').pipe(map(ProductHelper.isMasterProduct));
     this.isVariationProduct$ = this.context.select('product').pipe(map(ProductHelper.isVariationProduct));

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -16,7 +16,7 @@ import { CategoryProductsComponent } from './category-products/category-products
   templateUrl: './category-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, CategoryCategoriesComponent, CategoryProductsComponent],
+  imports: [ AsyncPipe, CategoryCategoriesComponent, CategoryProductsComponent],
 })
 export class CategoryPageComponent implements OnInit {
   category$: Observable<CategoryView>;

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
+import { AsyncPipe, NgSwitch, NgSwitchCase } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -24,15 +24,13 @@ import { QuoteViewComponent } from '../../shared/quote-view/quote-view.component
     AsyncPipe,
     ErrorMessageComponent,
     LoadingComponent,
-    NgIf,
     QuoteEditComponent,
     QuoteInteractionsComponent,
     QuoteViewComponent,
     RouterLink,
     TranslatePipe,
     NgSwitchCase,
-    NgSwitch,
-  ],
+    NgSwitch],
   providers: [{ provide: QuoteContextFacade, useClass: SelectedQuoteContextFacade }],
 })
 export class QuotePageComponent implements OnInit {

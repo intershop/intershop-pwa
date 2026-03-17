@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf, PercentPipe } from '@angular/common';
+import { AsyncPipe, NgClass, PercentPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BudgetInfoComponent } from 'organization-management';
@@ -30,13 +30,11 @@ interface BudgetValues {
     BudgetBarComponent,
     InfoBoxComponent,
     NgClass,
-    NgIf,
     OrderRecurrenceComponent,
     PercentPipe,
     PricePipe,
     TranslatePipe,
-    BudgetInfoComponent,
-  ],
+    BudgetInfoComponent],
 })
 export class RequisitionCostCenterApprovalComponent implements OnInit, OnChanges {
   @Input({ required: true }) requisition: Requisition;

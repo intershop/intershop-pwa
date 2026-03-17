@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -19,13 +19,11 @@ import { QuickorderCsvFormComponent } from '../../shared/quickorder-csv-form/qui
   imports: [
     QuickorderAddProductsFormComponent,
     QuickorderCsvFormComponent,
-    NgIf,
     AsyncPipe,
     TranslatePipe,
     BreadcrumbComponent,
     LoadingComponent,
-    SkipContentLinkComponent,
-  ],
+    SkipContentLinkComponent],
 })
 export class QuickorderPageComponent implements OnInit {
   loading$: Observable<boolean>;

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -15,13 +15,11 @@ import { ProductMasterLinkComponent } from '../product-master-link/product-maste
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     ProductMasterLinkComponent,
     AsyncPipe,
     ServerSettingPipe,
     ProductVariationDisplayComponent,
-    ProductVariationSelectComponent,
-  ],
+    ProductVariationSelectComponent],
 })
 export class ProductDetailVariationsComponent implements OnInit {
   visible$: Observable<boolean>;

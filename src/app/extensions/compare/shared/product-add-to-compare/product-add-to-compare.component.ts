@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -16,7 +16,7 @@ import { CompareFacade } from '../../facades/compare.facade';
   templateUrl: './product-add-to-compare.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgClass, AsyncPipe, TranslatePipe, FeatureTogglePipe],
+  imports: [ NgClass, AsyncPipe, TranslatePipe, FeatureTogglePipe],
 })
 export class ProductAddToCompareComponent implements OnInit {
   @Input() displayType: 'button' | 'icon' = 'button';

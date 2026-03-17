@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -20,7 +20,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './product-compare-paging.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, TranslatePipe],
+  imports: [ TranslatePipe],
 })
 export class ProductComparePagingComponent implements OnChanges {
   /**

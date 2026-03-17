@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -16,7 +16,7 @@ import { AccountAddressesComponent } from './account-addresses/account-addresses
   templateUrl: './account-addresses-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AccountAddressesComponent, AsyncPipe, LoadingComponent, NgIf],
+  imports: [AccountAddressesComponent, AsyncPipe, LoadingComponent],
 })
 export class AccountAddressesPageComponent implements OnInit {
   loading$: Observable<boolean>;

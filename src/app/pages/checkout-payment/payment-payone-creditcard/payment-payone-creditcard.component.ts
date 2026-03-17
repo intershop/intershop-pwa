@@ -1,4 +1,4 @@
-import { DOCUMENT, NgIf } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -34,7 +34,7 @@ declare let Payone: any;
   templateUrl: './payment-payone-creditcard.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [TranslatePipe, ReactiveFormsModule, NgIf, PaymentSaveCheckboxComponent],
+  imports: [TranslatePipe, ReactiveFormsModule, PaymentSaveCheckboxComponent],
 })
 export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, OnInit {
   payoneCreditCardForm = new FormGroup({});
@@ -175,8 +175,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
       this.submitPayment.emit({
         parameters: [
           { name: 'pseudocardpan', value: response.pseudocardpan },
-          { name: 'truncatedcardpan', value: response.truncatedcardpan },
-        ],
+          { name: 'truncatedcardpan', value: response.truncatedcardpan }],
         saveAllowed: this.paymentMethod.saveAllowed && this.payoneCreditCardForm.get('saveForLater').value,
       });
     }

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf, ViewportScroller } from '@angular/common';
+import { AsyncPipe, ViewportScroller } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivationStart, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Observable, combineLatest } from 'rxjs';
@@ -16,7 +16,7 @@ import { ProductListingComponent } from 'ish-shared/components/product/product-l
   templateUrl: './product-master-variations.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, ProductListingComponent, SkipContentLinkComponent, FilterNavigationComponent],
+  imports: [ AsyncPipe, ProductListingComponent, SkipContentLinkComponent, FilterNavigationComponent],
 })
 export class ProductMasterVariationsComponent implements OnInit {
   sku$: Observable<string>;
@@ -37,8 +37,7 @@ export class ProductMasterVariationsComponent implements OnInit {
       this.context.select('variations').pipe(
         map(variations => variations?.length > 0),
         whenTruthy()
-      ),
-    ]).pipe(
+      )]).pipe(
       map(([isMaster, hasVariations]) => isMaster && hasVariations),
       startWith(false)
     );

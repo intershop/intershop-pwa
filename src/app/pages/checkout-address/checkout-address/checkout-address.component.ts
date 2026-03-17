@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, shareReplay } from 'rxjs';
@@ -26,7 +26,6 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     TranslatePipe,
     ErrorMessageComponent,
     BasketErrorMessageComponent,
@@ -36,8 +35,7 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
     BasketRecurrenceSummaryComponent,
     BasketItemsSummaryComponent,
     BasketCostSummaryComponent,
-    ServerHtmlDirective,
-  ],
+    ServerHtmlDirective],
 })
 export class CheckoutAddressComponent implements OnInit {
   @Input({ required: true }) basket: Basket;

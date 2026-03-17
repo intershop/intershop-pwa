@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -34,7 +34,6 @@ import { ProductImagesComponent } from '../product-images/product-images.compone
   standalone: true,
   imports: [
     ProductDetailActionsComponent,
-    NgIf,
     ProductImagesComponent,
     ProductRatingComponent,
     ProductBrandComponent,
@@ -55,8 +54,7 @@ import { ProductImagesComponent } from '../product-images/product-images.compone
     ProductWarrantyComponent,
     PaymentPaypalComponent,
     ServerSettingPipe,
-    FeatureToggleDirective,
-  ],
+    FeatureToggleDirective],
 })
 export class ProductDetailComponent implements OnInit {
   product$: Observable<ProductView>;

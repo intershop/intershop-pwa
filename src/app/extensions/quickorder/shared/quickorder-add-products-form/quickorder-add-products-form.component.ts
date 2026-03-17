@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyConfig, FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
@@ -18,7 +18,7 @@ import { QuickorderRepeatFieldComponent } from '../formly/quickorder-repeat-fiel
   templateUrl: './quickorder-add-products-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, ReactiveFormsModule, TranslatePipe, FormlyForm],
+  imports: [ ReactiveFormsModule, TranslatePipe, FormlyForm],
   providers: [...provideIshFormly()],
 })
 export class QuickorderAddProductsFormComponent implements OnInit {
@@ -121,11 +121,9 @@ export class QuickorderAddProductsFormComponent implements OnInit {
                     }),
                 },
               },
-            },
-          ],
+            }],
         },
-      },
-    ];
+      }];
   }
 }
 

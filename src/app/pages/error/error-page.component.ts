@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -13,7 +13,7 @@ import { ServerErrorComponent } from './server-error/server-error.component';
   templateUrl: './error-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ServerErrorComponent, NgIf, AsyncPipe, ErrorComponent],
+  imports: [ServerErrorComponent, AsyncPipe, ErrorComponent],
 })
 export class ErrorPageComponent implements OnInit {
   error$: Observable<HttpError | string>;

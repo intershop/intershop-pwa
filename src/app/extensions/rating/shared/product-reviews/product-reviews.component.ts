@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -30,16 +30,13 @@ import { ProductReviewCreateDialogComponent } from '../product-review-create-dia
     DatePipe,
     ErrorMessageComponent,
     LoadingComponent,
-    ModalDialogComponent,
-    NgFor,
-    NgIf,
+    ModalDialogComponent, 
     NgTemplateOutlet,
     NotRoleToggleDirective,
     ProductRatingStarComponent,
     ProductReviewCreateDialogComponent,
     RouterLink,
-    TranslatePipe,
-  ],
+    TranslatePipe],
 })
 export class ProductReviewsComponent implements OnInit, OnDestroy {
   recentProductReviews$: Observable<ProductReview[]>;

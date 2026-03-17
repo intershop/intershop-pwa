@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -17,7 +17,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './info-box.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, RouterLink, NgClass, TranslatePipe],
+  imports: [ RouterLink, NgClass, TranslatePipe],
 })
 export class InfoBoxComponent {
   /**

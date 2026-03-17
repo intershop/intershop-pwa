@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
@@ -24,7 +24,6 @@ import { ProductVariationSelectComponent } from 'ish-shared/components/product/p
   standalone: true,
   imports: [
     AsyncPipe,
-    NgIf,
     LoadingComponent,
     ProductImageComponent,
     ProductIdComponent,
@@ -32,8 +31,7 @@ import { ProductVariationSelectComponent } from 'ish-shared/components/product/p
     PricePipe,
     ProductVariationSelectComponent,
     ProductQuantityComponent,
-    ProductQuantityLabelComponent,
-  ],
+    ProductQuantityLabelComponent],
 })
 export class LineItemEditDialogComponent implements OnInit {
   variation$: Observable<ProductView>;

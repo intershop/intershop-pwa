@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FieldType, FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
@@ -14,6 +14,6 @@ import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
   templateUrl: './registration-newsletter-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, ServerSettingPipe, FormlyAttributes, ReactiveFormsModule, TranslatePipe],
+  imports: [ ServerSettingPipe, FormlyAttributes, ReactiveFormsModule, TranslatePipe],
 })
 export class RegistrationNewsletterFieldComponent extends FieldType<FieldTypeConfig> {}

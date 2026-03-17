@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -17,7 +17,7 @@ import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
   styleUrls: ['./budget-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, NgIf, NgbPopoverModule, TranslatePipe, ServerSettingPipe, ServerHtmlDirective],
+  imports: [AsyncPipe, NgbPopoverModule, TranslatePipe, ServerSettingPipe, ServerHtmlDirective],
 })
 export class BudgetInfoComponent {
   /** translation key for a further message text after the main message */

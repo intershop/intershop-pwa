@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -12,7 +12,7 @@ import { ProductCompareListComponent } from './product-compare-list/product-comp
   templateUrl: './compare-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, ProductCompareListComponent, AsyncPipe, TranslatePipe],
+  imports: [ ProductCompareListComponent, AsyncPipe, TranslatePipe],
 })
 export class ComparePageComponent implements OnInit {
   compareProducts$: Observable<string[]>;

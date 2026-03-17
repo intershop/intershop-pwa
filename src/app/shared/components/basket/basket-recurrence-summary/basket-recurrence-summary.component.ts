@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -11,7 +11,7 @@ import { OrderRecurrenceComponent } from 'ish-shared/components/order/order-recu
   styleUrls: ['./basket-recurrence-summary.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, OrderRecurrenceComponent, TranslatePipe],
+  imports: [ OrderRecurrenceComponent, TranslatePipe],
 })
 export class BasketRecurrenceSummaryComponent {
   @Input({ required: true }) recurrence: Recurrence;

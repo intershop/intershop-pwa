@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -12,7 +12,7 @@ import { ProductNameComponent } from 'ish-shared/components/product/product-name
   templateUrl: './product-bundle-display.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, NgFor, AsyncPipe, ProductNameComponent, ProductContextDirective],
+  imports: [ AsyncPipe, ProductNameComponent, ProductContextDirective],
 })
 export class ProductBundleDisplayComponent implements OnInit {
   parts$: Observable<SkuQuantityType[]>;

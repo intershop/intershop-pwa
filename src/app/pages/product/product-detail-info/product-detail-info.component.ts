@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
@@ -20,7 +20,6 @@ import { ProductReviewsComponent } from '../../../extensions/rating/shared/produ
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     NgbNavModule,
     ...FEATURE_TOGGLE_IMPORTS,
     ProductReviewsComponent,
@@ -28,8 +27,7 @@ import { ProductReviewsComponent } from '../../../extensions/rating/shared/produ
     TranslatePipe,
     ProductAttachmentsComponent,
     ProductAttributesComponent,
-    ServerHtmlDirective,
-  ],
+    ServerHtmlDirective],
 })
 export class ProductDetailInfoComponent implements OnInit {
   product$: Observable<ProductView>;

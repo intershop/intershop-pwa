@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -37,7 +37,6 @@ import { SelectWishlistFormComponent } from '../select-wishlist-form/select-wish
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
     TranslatePipe,
     ProductContextAccessDirective,
     ServerHtmlDirective,
@@ -45,8 +44,7 @@ import { SelectWishlistFormComponent } from '../select-wishlist-form/select-wish
     ReactiveFormsModule,
     HtmlEncodePipe,
     FormSubmitDirective,
-    SelectWishlistFormComponent,
-  ],
+    SelectWishlistFormComponent],
 })
 export class SelectWishlistModalComponent implements OnInit {
   /**

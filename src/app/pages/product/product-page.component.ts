@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -25,7 +25,6 @@ import { RetailSetPartsComponent } from './retail-set-parts/retail-set-parts.com
   providers: [{ provide: ProductContextFacade, useClass: SelectedProductContextFacade }],
   standalone: true,
   imports: [
-    NgIf,
     BreadcrumbComponent,
     LoadingComponent,
     ProductDetailComponent,
@@ -36,8 +35,7 @@ import { RetailSetPartsComponent } from './retail-set-parts/retail-set-parts.com
     ProductLinksComponent,
     RecentlyViewedComponent,
     FeatureTogglePipe,
-    AsyncPipe,
-  ],
+    AsyncPipe],
 })
 export class ProductPageComponent implements OnInit {
   productLoading$: Observable<boolean>;

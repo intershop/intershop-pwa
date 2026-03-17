@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,7 +22,7 @@ import { UpdatePasswordFormComponent } from '../update-password-form/update-pass
   templateUrl: './update-password.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ErrorMessageComponent, UpdatePasswordFormComponent, AsyncPipe, TranslatePipe, LoadingComponent, NgIf],
+  imports: [ErrorMessageComponent, UpdatePasswordFormComponent, AsyncPipe, TranslatePipe, LoadingComponent],
 })
 export class UpdatePasswordComponent implements OnInit {
   error$: Observable<HttpError>;

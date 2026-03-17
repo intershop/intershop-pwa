@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -17,7 +17,7 @@ import { AccountProfilePasswordComponent } from './account-profile-password/acco
   templateUrl: './account-profile-password-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AccountProfilePasswordComponent, AsyncPipe, LoadingComponent, NgIf],
+  imports: [AccountProfilePasswordComponent, AsyncPipe, LoadingComponent],
 })
 export class AccountProfilePasswordPageComponent implements OnInit {
   userError$: Observable<HttpError>;

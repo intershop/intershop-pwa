@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -22,7 +22,7 @@ const ShippingWrapperConfig: ConfigOption = {
   templateUrl: './checkout-shipping.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, ReactiveFormsModule, FormlyForm],
+  imports: [ AsyncPipe, ReactiveFormsModule, FormlyForm],
 })
 export class CheckoutShippingComponent implements OnInit {
   shippingMethods$: Observable<ShippingMethod[]>;

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -19,7 +19,7 @@ import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/bre
   templateUrl: './cms-static-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, AsyncPipe, ContentSlotComponent, BreadcrumbComponent, ContentNavigationComponent],
+  imports: [ AsyncPipe, ContentSlotComponent, BreadcrumbComponent, ContentNavigationComponent],
 })
 export class CMSStaticPageComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;

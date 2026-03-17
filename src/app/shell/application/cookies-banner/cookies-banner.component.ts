@@ -1,5 +1,4 @@
 import { AnimationEvent } from '@angular/animations';
-import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, TransferState } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -19,7 +18,7 @@ import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [bottomOutAnimation()],
   standalone: true,
-  imports: [NgIf, ServerHtmlDirective, RouterLink, TranslatePipe],
+  imports: [ServerHtmlDirective, RouterLink, TranslatePipe],
 })
 export class CookiesBannerComponent implements OnInit {
   showBanner = false;

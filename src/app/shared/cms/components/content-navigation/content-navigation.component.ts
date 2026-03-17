@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -18,15 +18,12 @@ import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-cont
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgIf,
-    NgFor,
     NgTemplateOutlet,
     AsyncPipe,
     NgClass,
     RouterLink,
     ContentPageRoutePipe,
-    SkipContentLinkComponent,
-  ],
+    SkipContentLinkComponent],
 })
 export class ContentNavigationComponent implements OnInit {
   /**

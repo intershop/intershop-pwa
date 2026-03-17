@@ -1,4 +1,4 @@
-import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -14,7 +14,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   templateUrl: './cms-image-enhanced.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgIf, RouterLink, NgTemplateOutlet, NgClass, ServerHtmlDirective, TranslatePipe],
+  imports: [ RouterLink, NgTemplateOutlet, NgClass, ServerHtmlDirective, TranslatePipe],
 })
 export class CMSImageEnhancedComponent implements CMSComponent {
   @Input({ required: true }) pagelet: ContentPageletView;

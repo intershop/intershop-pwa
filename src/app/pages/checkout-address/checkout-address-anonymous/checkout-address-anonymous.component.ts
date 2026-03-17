@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { FormGroupDirective, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -37,12 +37,10 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
     NgbCollapseModule,
     ReactiveFormsModule,
     IdentityProviderLoginComponent,
-    NgIf,
     NgClass,
     FeatureToggleDirective,
     CheckoutAddressAnonymousFormComponent,
-    RouterLink,
-  ],
+    RouterLink],
 })
 export class CheckoutAddressAnonymousComponent implements OnChanges {
   @Input({ required: true }) basket: Basket;

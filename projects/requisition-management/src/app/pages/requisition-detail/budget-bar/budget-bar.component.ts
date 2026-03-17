@@ -1,4 +1,4 @@
-import { NgClass, NgIf, NgStyle, PercentPipe } from '@angular/common';
+import { NgClass, NgStyle, PercentPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { Price } from 'ish-core/models/price/price.model';
@@ -21,7 +21,7 @@ import { PricePipe } from 'ish-core/models/price/price.pipe';
   styleUrls: ['./budget-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, NgIf, NgStyle, PercentPipe, PricePipe],
+  imports: [NgClass, NgStyle, PercentPipe, PricePipe],
 })
 export class BudgetBarComponent implements OnChanges {
   @Input({ required: true }) budget: Price;

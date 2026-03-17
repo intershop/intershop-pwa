@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -23,7 +23,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   templateUrl: './basket-order-reference.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, NgIf, FormlyForm, SuccessMessageComponent, ReactiveFormsModule],
+  imports: [TranslatePipe, FormlyForm, SuccessMessageComponent, ReactiveFormsModule],
 })
 export class BasketOrderReferenceComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: Basket;
@@ -62,8 +62,7 @@ export class BasketOrderReferenceComponent implements OnInit, OnChanges {
             noSpecialChars: 'account.name.error.forbidden.chars',
           },
         },
-      },
-    ];
+      }];
   }
 
   ngOnChanges(changes: SimpleChanges) {
