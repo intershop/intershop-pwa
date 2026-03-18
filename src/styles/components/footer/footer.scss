@@ -11,6 +11,14 @@ footer {
     background: $color-primary;
   }
 
+  .footer-disclaimer {
+    min-height: 96px;
+  }
+
+  .footer-copyright {
+    min-height: 48px;
+  }
+
   ish-content-include {
     display: block;
   }
@@ -126,8 +134,16 @@ footer {
       min-height: 128px;
     }
 
+    .footer-disclaimer {
+      min-height: 168px;
+    }
+
+    .footer-copyright {
+      min-height: 56px;
+    }
+
     ish-content-include:empty {
-      min-height: 280px;
+      min-height: 320px;
     }
   }
 
