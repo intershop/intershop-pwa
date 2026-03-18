@@ -19,6 +19,3 @@ export const FORMS_SHARED_IMPORTS = [
 ] as const;
 
 export const FORMS_SHARED_EXPORTS = [...exportedComponents] as const;
-
-export class FormsSharedModule {}
-
