@@ -68,11 +68,10 @@ export class OrdersEffects {
       this.actions$.pipe(
         ofType(createOrderSuccess),
         mapToPayload(),
-        filter(({ order }) => !order?.orderCreation || order.orderCreation.status !== 'ROLLED_BACK'),
+        filter(({ order }) => order?.orderCreation?.status !== 'ROLLED_BACK'),
         concatMap(({ order, basketId }) => {
           if (
-            order.orderCreation &&
-            order.orderCreation.status === 'STOPPED' &&
+            order.orderCreation?.status === 'STOPPED' &&
             order.orderCreation.stopAction.type === 'Redirect' &&
             order.orderCreation.stopAction.redirectUrl
           ) {
@@ -95,7 +94,7 @@ export class OrdersEffects {
     this.actions$.pipe(
       ofType(createOrderSuccess),
       mapToPayloadProperty('order'),
-      filter(order => order.orderCreation && order.orderCreation.status === 'ROLLED_BACK'),
+      filter(order => order.orderCreation?.status === 'ROLLED_BACK'),
       concatMap(order =>
         from(this.router.navigate(['/checkout/payment'], { queryParams: { error: true } })).pipe(
           mergeMap(() => [

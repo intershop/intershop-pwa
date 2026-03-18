@@ -67,7 +67,7 @@ export class ValidationMessageComponent implements OnInit, OnChanges, OnDestroy 
   private determineErrorMessage(error: string): string | Observable<string> {
     let message = this.config.getValidatorMessage(error);
 
-    if (this.field.validation?.messages && this.field.validation.messages[error]) {
+    if (this.field.validation?.messages?.[error]) {
       message = this.field.validation.messages[error];
     }
 

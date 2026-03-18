@@ -104,8 +104,7 @@ export class OrderService {
    */
   private sendRedirectUrlsIfRequired(order: Order, lang: string): Observable<Order> {
     if (
-      order.orderCreation &&
-      order.orderCreation.status === 'STOPPED' &&
+      order.orderCreation?.status === 'STOPPED' &&
       order.orderCreation.stopAction.type === 'Workflow' &&
       order.orderCreation.stopAction.exitReason === 'redirect_urls_required'
     ) {

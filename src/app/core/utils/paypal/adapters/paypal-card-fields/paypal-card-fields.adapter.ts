@@ -224,7 +224,7 @@ export class PaypalCardFieldsAdapter {
       if (!container.hasChildNodes() && attempt === maxRetries) {
         this.renderError$.next('checkout.payment.paypal.script.render.error.message');
       }
-    } catch (error) {
+    } catch {
       // On error, retry if possible
       if (attempt < maxRetries) {
         delete this.fields[config.key];

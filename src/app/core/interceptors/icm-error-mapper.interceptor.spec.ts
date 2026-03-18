@@ -359,7 +359,7 @@ describe('Icm Error Mapper Interceptor', () => {
     test(): boolean {
       return true;
     }
-    // eslint-disable-next-line @typescript-eslint/ban-types
+    // eslint-disable-next-line @typescript-eslint/no-restricted-types
     map(error: HttpErrorResponse, request: HttpRequest<unknown>): Partial<HttpError> {
       return {
         message: `${request.method}:${error.error}`,

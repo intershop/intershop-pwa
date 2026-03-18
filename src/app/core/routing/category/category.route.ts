@@ -29,7 +29,7 @@ const categoryRouteFormat = /^\/(?!category|categoryref\/.*$)(.*?)-?ctg(.*)$/;
  */
 export function matchCategoryRoute(segments: UrlSegment[]): UrlMatchResult {
   // compatibility to old routes
-  if (segments && segments.length === 2 && (segments[0].path === 'category' || segments[0].path === 'categoryref')) {
+  if (segments?.length === 2 && (segments[0].path === 'category' || segments[0].path === 'categoryref')) {
     return { consumed: [] };
   }
 

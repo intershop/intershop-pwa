@@ -18,7 +18,6 @@
         "rxjs",
         "rxjs-angular",
         "ban",
-        "etc",
         "jest",
         "jsdoc",
         "unicorn",
@@ -59,32 +58,6 @@
         "@ngrx/prefix-selectors-with-select": "off",
         "@ngrx/select-style": ["warn", "operator"],
         "@typescript-eslint/ban-tslint-comment": "error",
-        "@typescript-eslint/ban-types": [
-          "error",
-          {
-            "types": {
-              "Object": {
-                "message": "Use {} instead."
-              },
-              "Array": {
-                "message": "Use [] instead."
-              },
-              "String": {
-                "message": "Use 'string'"
-              },
-              "Boolean": {
-                "message": "Use 'boolean'"
-              },
-              "Number": {
-                "message": "Use 'number'"
-              },
-              "HttpErrorResponse": {
-                "message": "HttpErrorResponse should not be used directly."
-              }
-            },
-            "extendDefaults": false
-          }
-        ],
         "@typescript-eslint/dot-notation": "warn",
         "@typescript-eslint/explicit-member-accessibility": [
           "error",
@@ -137,16 +110,32 @@
             "leadingUnderscore": "require"
           }
         ],
+        "@typescript-eslint/no-deprecated": "warn",
         "@typescript-eslint/no-empty-function": "warn",
         "@typescript-eslint/no-empty-interface": "warn",
+        "@typescript-eslint/no-empty-object-type": "off",
         "@typescript-eslint/no-inferrable-types": [
           "warn",
           {
             "ignoreParameters": true
           }
         ],
-        "@typescript-eslint/no-throw-literal": "warn",
-        "@typescript-eslint/no-unnecessary-boolean-literal-compare": "warn",
+        "@typescript-eslint/no-restricted-types": [
+          "error",
+          {
+            "types": {
+              "Object": "Use {} instead.",
+              "Array": "Use T[] instead.",
+              "String": "Use 'string' instead.",
+              "Boolean": "Use 'boolean' instead.",
+              "Number": "Use 'number' instead.",
+              "HttpErrorResponse": "HttpErrorResponse should not be used directly, use httpError from 'ish-core/utils/action-creators' instead."
+            }
+          }
+        ],
+        //  "@typescript-eslint/no-throw-literal": "warn",
+        // "@typescript-eslint/no-unnecessary-boolean-literal-compare": "warn",
+        "@typescript-eslint/no-unsafe-function-type": "off",
         "@typescript-eslint/no-unused-expressions": [
           "warn",
           {
@@ -200,8 +189,6 @@
         "curly": "warn",
         "dot-notation": "off", // disabled in favor of @typescript-eslint/dot-notation
         "eqeqeq": ["error", "always"],
-        "etc/no-commented-out-code": "warn",
-        "etc/no-deprecated": ["warn"],
         "id-blacklist": [
           "error",
           "any",

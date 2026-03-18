@@ -141,8 +141,9 @@
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^22.19.15",
     "@types/webpack": "^5.28.5",
-    "@typescript-eslint/eslint-plugin": "^7.18.0",
-    "@typescript-eslint/parser": "^7.18.0",
+    "@typescript-eslint/eslint-plugin": "^8.57.1",
+    "@typescript-eslint/parser": "^8.57.1",
+    "@typescript-eslint/rule-tester": "^8.57.1",
     "axios": "^1.13.6",
     "better-npm-audit": "^3.11.0",
     "browser-sync": "^3.0.4",
@@ -197,7 +198,7 @@
   "overrides": {
     "express-robots-txt": {
       "express": "^5.2.1"
-   }
+    }
   },
   "lint-staged": {
     "docs/**/*.md": [

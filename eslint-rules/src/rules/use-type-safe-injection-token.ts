@@ -20,7 +20,6 @@ const useTypeSafeInjectionTokenRule: TSESLint.RuleModule<keyof typeof messages> 
     docs: {
       description:
         'Injection tokens in angular should inherit type information from the token itself to prevent using a wrong type where it is injected. By using `InjectSingle` or `InjectMultiple` the type of the token is inferred and can be used to type the injected value.',
-      recommended: 'recommended',
       url: '',
     },
     messages,

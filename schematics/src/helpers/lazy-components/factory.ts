@@ -19,7 +19,7 @@ async function createNewComponents(host: Tree, options: Options) {
     }
     try {
       host.getDir(file).visit(fileVisitor);
-    } catch (err) {
+    } catch {
       // do nothing
     }
   };
@@ -50,7 +50,7 @@ async function deleteOldComponents() {
     try {
       cp.execSync('git status');
       gitAvailable = true;
-    } catch (error) {
+    } catch {
       console.warn('Git is not installed or it is not a Git repository. Skipping deletion.');
     }
 
@@ -68,7 +68,7 @@ async function deleteOldComponents() {
             try {
               console.log(tree.get(file));
               tree.delete(file);
-            } catch (error) {
+            } catch {
               tree.getDir(file).subfiles.forEach(subfile => {
                 tree.delete(`${file}/${subfile}`);
               });

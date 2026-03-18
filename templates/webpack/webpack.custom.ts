@@ -6,7 +6,7 @@ import { basename, dirname, join, normalize, resolve } from 'path';
 import * as ts from 'typescript';
 import { Configuration, DefinePlugin, WebpackPluginInstance } from 'webpack';
 
-/* eslint-disable no-console, @typescript-eslint/no-var-requires, @typescript-eslint/naming-convention */
+/* eslint-disable no-console, @typescript-eslint/no-require-imports, @typescript-eslint/naming-convention */
 
 const { PurgeCSSPlugin } = require('purgecss-webpack-plugin');
 

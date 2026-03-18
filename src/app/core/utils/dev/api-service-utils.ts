@@ -9,7 +9,7 @@ export function logApiCalls(apiServiceMock: ApiService) {
     try {
       const args = capture(apiServiceMock.get).byCallIndex(i);
       console.log('GET', args);
-    } catch (err) {
+    } catch {
       break;
     }
   }
@@ -17,7 +17,7 @@ export function logApiCalls(apiServiceMock: ApiService) {
     try {
       const args = capture(apiServiceMock.post).byCallIndex(i);
       console.log('POST', args);
-    } catch (err) {
+    } catch {
       break;
     }
   }
@@ -25,7 +25,7 @@ export function logApiCalls(apiServiceMock: ApiService) {
     try {
       const args = capture(apiServiceMock.put).byCallIndex(i);
       console.log('PUT', args);
-    } catch (err) {
+    } catch {
       break;
     }
   }

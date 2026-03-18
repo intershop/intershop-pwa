@@ -1,4 +1,4 @@
-/* eslint-disable etc/no-deprecated, unicorn/no-null */
+/* eslint-disable @typescript-eslint/no-deprecated, unicorn/no-null */
 
 // simple browser and version detection: https://stackoverflow.com/questions/5916900/how-can-you-detect-the-version-of-a-browser
 export function browserNameVersion() {

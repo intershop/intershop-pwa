@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-imports, complexity, @typescript-eslint/no-var-requires */
+/* eslint-disable no-restricted-imports, complexity, @typescript-eslint/no-require-imports */
 import { CommonEngine } from '@angular/ssr';
 import { randomUUID } from 'crypto';
 import express from 'express';

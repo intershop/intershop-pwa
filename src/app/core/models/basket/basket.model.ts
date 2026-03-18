@@ -59,11 +59,11 @@ export const createBasketView = (
             ...li,
             validationError:
               validationResults && !validationResults.valid && validationResults.errors
-                ? validationResults.errors.find(error => error.parameters && error.parameters.lineItemId === li.id)
+                ? validationResults.errors.find(error => error.parameters?.lineItemId === li.id)
                 : undefined,
             info:
               basketInfo?.length && basketInfo[0].causes
-                ? basketInfo[0].causes.find(cause => cause.parameters && cause.parameters.lineItemId === li.id)
+                ? basketInfo[0].causes.find(cause => cause.parameters?.lineItemId === li.id)
                 : undefined,
           }))
           .sort(comparePosition)

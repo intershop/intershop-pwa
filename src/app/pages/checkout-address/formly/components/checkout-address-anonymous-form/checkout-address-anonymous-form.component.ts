@@ -25,7 +25,7 @@ export class CheckoutAddressAnonymousFormComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
 
   get isShippingAddressFormExpanded() {
-    return this.shipOptionForm && this.shipOptionForm.get('shipOption').value === 'shipToDifferentAddress';
+    return this.shipOptionForm?.get('shipOption').value === 'shipToDifferentAddress';
   }
 
   constructor(private featureToggleService: FeatureToggleService) {}
