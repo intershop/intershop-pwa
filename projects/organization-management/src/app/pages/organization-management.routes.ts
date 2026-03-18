@@ -6,7 +6,6 @@ import { featureToggleGuard } from 'ish-core/feature-toggle';
 
 import { fetchUsersGuard } from '../guards/fetch-users.guard';
 import { redirectFirstToParentGuard } from '../guards/redirect-first-to-parent.guard';
-import { provideOrganizationManagementStore } from '../store/organization-management-store.providers';
 
 import { CostCenterBuyersRepeatFieldComponent } from './cost-center-buyers/cost-center-buyers-repeat-field/cost-center-buyers-repeat-field.component';
 
@@ -18,7 +17,6 @@ import { CostCenterBuyersRepeatFieldComponent } from './cost-center-buyers/cost-
 export const routes: Routes = [
   {
     path: '',
-    providers: [provideOrganizationManagementStore()],
     children: [
       { path: '', redirectTo: 'cost-centers', pathMatch: 'full' },
       {
@@ -150,4 +148,3 @@ export const routes: Routes = [
 ];
 
 export const organizationManagementRoutes = routes;
-
