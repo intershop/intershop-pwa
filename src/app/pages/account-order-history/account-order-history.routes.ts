@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { provideFormlyConfig } from '@ngx-formly/core';
-import { provideOrganizationManagementStore } from 'projects/organization-management/src/app/store/organization-management-store.providers';
 
 import { AccountOrderHistoryPageComponent } from './account-order-history-page.component';
 import { AccountOrderSelectBuyerFieldComponent } from './formly/account-order-select-buyer-field/account-order-select-buyer-field.component';
@@ -19,7 +18,6 @@ export const accountOrderHistoryRoutes: Routes = [
           },
         ],
       }),
-      provideOrganizationManagementStore(),
     ],
   },
   {
@@ -30,4 +28,3 @@ export const accountOrderHistoryRoutes: Routes = [
     loadComponent: () => import('../account-order/account-order-page.component').then(m => m.AccountOrderPageComponent),
   },
 ];
-
