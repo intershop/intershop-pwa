@@ -1,6 +1,6 @@
 import { HTTP_INTERCEPTORS, HttpErrorResponse, provideHttpClient, withFetch } from '@angular/common/http';
 import { ErrorHandler, NgModule, Optional, TransferState } from '@angular/core';
-import { ServerModule, provideServerRendering } from '@angular/platform-server';
+import { provideServerRendering } from '@angular/platform-server';
 import { META_REDUCERS } from '@ngrx/store';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
@@ -74,7 +74,6 @@ class SSRErrorHandler implements ErrorHandler {
 }
 
 const providers = [
-  // Modern server rendering provider
   provideServerRendering(),
   // Conditionally add provideHttpClient(withFetch()) based on environment variable
   ...(/on|1|true|yes/.test(process.env.ALLOW_H2?.toLowerCase()) ? [provideHttpClient(withFetch())] : []),
@@ -96,7 +95,7 @@ const providers = [
 ];
 
 @NgModule({
-  imports: [AppModule, ServerModule],
+  imports: [AppModule],
   providers,
   bootstrap: [AppComponent],
 })
