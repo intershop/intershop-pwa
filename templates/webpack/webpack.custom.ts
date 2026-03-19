@@ -244,33 +244,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
           return 'common';
         },
       };
-
-      // Keep framework code in one stable chunk to reduce initial script overhead.
-      cacheGroups.framework = {
-        test: /[\\/]node_modules[\\/](?:@angular|rxjs)[\\/]/,
-        chunks: 'all',
-        name: 'framework',
-        priority: 60,
-        enforce: true,
-      };
-
-      // Auth/OAuth code should only be pulled in when auth-related flows are used.
-      cacheGroups['lib-oauth'] = {
-        test: /[\\/]node_modules[\\/]angular-oauth2-oidc[\\/]/,
-        chunks: 'async',
-        name: 'lib-oauth',
-        priority: 40,
-        reuseExistingChunk: true,
-      };
-
-      // Group common UI libs into one lazy chunk.
-      cacheGroups['lib-ui'] = {
-        test: /[\\/]node_modules[\\/](?:bootstrap|@ng-bootstrap|@fortawesome|swiper)[\\/]/,
-        chunks: 'async',
-        name: 'lib-ui',
-        priority: 35,
-        reuseExistingChunk: true,
-      };
     }
 
     if (!process.env.TESTING) {

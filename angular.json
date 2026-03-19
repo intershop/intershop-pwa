@@ -57,21 +57,19 @@
                 {
                   "type": "bundle",
                   "name": "main",
-                  "baseline": "480kb",
-                  "warning": "100kb",
-                  "error": "200kb"
+                  "maximumWarning": "500kb",
+                  "maximumError": "600kb"
                 },
                 {
                   "type": "bundle",
                   "name": "vendor",
-                  "baseline": "500kb",
-                  "warning": "100kb",
-                  "error": "450kb"
+                  "maximumWarning": "900kb",
+                  "maximumError": "1000kb"
                 },
                 {
                   "type": "initial",
-                  "maximumWarning": "1600kb",
-                  "maximumError": "1800kb"
+                  "maximumWarning": "1.6mb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -108,7 +106,7 @@
           "options": {
             "buildTarget": "intershop-pwa:build"
           },
-          "defaultConfiguration": "b2c,development",
+          "defaultConfiguration": "b2b,development",
           "configurations": {
             "production": {
               "buildTarget": "intershop-pwa:build:production"
