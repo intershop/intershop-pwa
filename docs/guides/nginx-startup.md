@@ -29,7 +29,7 @@ kb_sync_latest_only
 - [Environment Variables](#environment-variables)
 - [Further References](#further-references)
 
-We provide an [NGINX](https://nginx.org/) Docker image based on [OpenResty](https://openresty.org/en/) for the [PWA deployment](../concepts/pwa-building-blocks.md#pwa---nginx).
+An [NGINX](https://nginx.org/) Docker image based on [OpenResty](https://openresty.org/en/) for the [PWA deployment](../concepts/pwa-building-blocks.md#pwa---nginx) is provided.
 
 ## Building
 
@@ -44,9 +44,9 @@ Mandatory environment variables:
 For HTTP, the server will run on default port 80.
 For HTTPS, the server will run on default port 443.
 
-We are using an OpenResty Docker image.
-Therefore, we inherit all their configuration capabilities.
-For further information, please refer to [the official OpenResty Docker image page](https://hub.docker.com/r/openresty/openresty)
+An OpenResty Docker image is used.
+Therefore, all their configuration capabilities are inherited.
+For further information, please refer to [the official OpenResty Docker image page](https://hub.docker.com/r/openresty/openresty).
 
 ### HTTPS or SSL
 
@@ -63,7 +63,7 @@ You can now export the local CA by adjusting your docker-compose.yml /home/your-
 ```
 
 If you want to run your NGINX container with HTTPS but want to use your own certificates, e.g., the same certificates that are used for a local ICM deployment for the Hybrid Approach, you can enable `SSL` but need to disable mkcert with `SSL_MKCERT_OFF`.
-Besides this, you need to map the certificate files you want to use in the NGINX container.
+Besides this, you map the certificate files you want to use in the NGINX container.
 
 ```yaml
 nginx:
@@ -95,24 +95,24 @@ nginx:
 ```
 
 IP whitelist entries are added to the NGINX config as [`allow`](https://nginx.org/en/docs/http/ngx_http_access_module.html) statements, which also support IP ranges.
-Please refer to the linked NGINX documentation on how to configure this.
+Refer to the linked NGINX documentation on how to configure this.
 
 After globally activating basic authentication for your setup, you can also disable it selectively per site.
-See [Multi-Site Configurations](../guides/multi-site-configurations.md#Examples) for examples on how to do that.
+See [Multi-Site Configurations](../guides/multi-site-configurations.md#Examples) for examples.
 
 ### Multi-Site
 
 If the NGINX container is run without further configuration, the default Angular CLI environment properties are not overridden.
 Multiple PWA channels can be set up by supplying a [YAML](https://yaml.org) configuration listing all domains the PWA should work for.
 
-For more information on the multi-site syntax, refer to [Multi-Site Configurations](../guides/multi-site-configurations.md#Syntax)
+For more information on the multi-site syntax, see [Multi-Site Configurations](../guides/multi-site-configurations.md#Syntax).
 
 The configuration can be supplied by setting the environment variable `MULTI_CHANNEL`.
 Alternatively, the source can be supplied by setting `MULTI_CHANNEL_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources/).
 If no environment variables for multi-channel configuration are provided, the configuration will fall back to the content of [`nginx/multi-channel.yaml`](../../nginx/multi-channel.yaml), which can also be customized.
 
 > [!WARNING]
-> Multi-Channel configuration with context paths does not work in conjunction with [service workers](../concepts/progressive-web-app.md#service-worker).
+> Multi-channel configuration with context paths does not work in conjunction with [service workers](../concepts/progressive-web-app.md#service-worker).
 
 An extended list of examples can be found in the [Multi-Site Configurations](../guides/multi-site-configurations.md#Syntax) guide.
 
@@ -123,7 +123,7 @@ These parameters can lead to inefficient caching, because even if the same URL i
 
 To prevent this, you can define any number of blacklisted parameters that will be ignored by NGINX during caching.
 
-As with multi-site handling above, the configuration can be supplied by setting the environment variable `CACHING_IGNORE_PARAMS`. <br>
+As with multi-site handling, the configuration can be supplied by setting the environment variable `CACHING_IGNORE_PARAMS`. <br>
 Alternatively, the source can be supplied by setting `CACHING_IGNORE_PARAMS_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources/).
 Be aware that the supplied list of parameters must be declared under a `params` property.
 
@@ -131,16 +131,16 @@ If no environment variables for ignoring parameters are provided, the configurat
 
 ### Access ICM Sitemap
 
-Please refer to [Concept - XML Sitemaps](https://support.intershop.com/kb/index.php/Display/23D962#Concept-XMLSitemaps-XMLSitemapsandIntershopPWA) on how to configure ICM to generate PWA sitemap files where the sitemap XML name has to start with the prefix `sitemap_`, e.g., `sitemap_pwa`.
+Refer to [Concept - XML Sitemaps](https://support.intershop.com/kb/index.php/Display/23D962#Concept-XMLSitemaps-XMLSitemapsandIntershopPWA) on how to configure ICM to generate PWA sitemap files where the sitemap XML name has to start with the prefix `sitemap_`, e.g., `sitemap_pwa`.
 
 ```
 http://foo.com/en/sitemap_pwa.xml
 ```
 
-To make above sitemap index file available under your deployment, you need to add the environment variable `ICM_BASE_URL` to your NGINX container.
+To make above sitemap index file available under your deployment, add the environment variable `ICM_BASE_URL` to your NGINX container.
 Let `ICM_BASE_URL` point to your ICM backend installation, e.g., `https://develop.icm.intershop.de`.
 
-On a local development system, you need to add it to [`docker-compose.yml`](../../docker-compose.yml), e.g.,
+On a local development system, add it to [`docker-compose.yml`](../../docker-compose.yml), e.g.,
 
 ```yaml
 nginx:
@@ -156,10 +156,10 @@ proxy_pass https://develop.icm.intershop.de/INTERSHOP/static/WFS/inSPIRED-inTRON
 }
 ```
 
-The process will utilize your [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax).
+The process will utilize your [multi-site configuration](../guides/multi-site-configurations.md#Syntax).
 Be sure to include `application` if you deviate from standard `rest` application.
 
-The [Multi-Site Configuration](../guides/multi-site-configurations.md#Syntax) has to include the correct channel value (e.g., `inSPIRED-inTRONICS_Business-Site` and `inSPIRED-inTRONICS-Site` instead of `default`), because it is used to generate the correct sitemap URL path, e.g.,
+The [multi-site configuration](../guides/multi-site-configurations.md#Syntax) must include the correct channel value (e.g., `inSPIRED-inTRONICS_Business-Site` and `inSPIRED-inTRONICS-Site` instead of `default`), because it is used to generate the correct sitemap URL path, e.g.,
 
 ```yaml
 nginx:
@@ -277,7 +277,7 @@ Explanation of example security policy:
   Inline styles are used at some places in the PWA, and this directive permits them.
 - `font-src data: 'self'`:
   This allows fonts to be loaded from data URIs (`data:`) and the same origin (`'self'`).
-  This is required to load the icon fonts for Bootstrap Icons and other web fonts used by the PWA.
+  It is required to load the icon fonts for Bootstrap Icons and other web fonts used by the PWA.
 
 > [!IMPORTANT]
 > The value `https://develop.icm.intershop.de` is used here as an example for the development configuration.

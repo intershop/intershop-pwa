@@ -27,6 +27,7 @@ kb_sync_latest_only
   - [Unit Testing with Feature Toggles](#unit-testing-with-feature-toggles)
 - [Setting Default Locale](#setting-default-locale)
 - [Extend Locales](#extend-locales)
+- [Further References](#further-references)
 
 In a complex application like the Intershop Progressive Web App, there are multiple ways and kinds of configuration.
 The complexity increases if you consider that the communication with Intershop Commerce Management has to be coordinated as well.
@@ -44,12 +45,12 @@ To choose one configuration, you have to supply the parameter when building the 
 See [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md) and [Configuring Application Environments](https://angular.io/guide/build#configure-environment-specific-defaults) for further information.
 
 Do not access properties supplied with environment files directly in artifacts.
-Instead, you need to provide them via `InjectionTokens` to be used in components, pipes, or services.
+Instead, provide them via `InjectionTokens` to be used in components, pipes, or services.
 Standard `InjectionTokens` are defined in [`injection-keys.ts`](../../src/app/core/configurations/injection-keys.ts).
 Use this file to create new keys for the standard PWA; project customizations should create their own file next to it.
 
 First, extend the [`environment.model`](../../src/environments/environment.model.ts) to support your new property.
-Then define an `InjectionToken` that can be used to access a certain property later on:
+Then, define an `InjectionToken` that can be used to access a certain property later on:
 
 ```typescript
 export const PROPERTY = createEnvironmentInjectionToken('property');
@@ -75,7 +76,7 @@ As can be seen here, only build-time and deploy-time configuration parameters ca
 
 ### Node.js Environment Variables
 
-When running the application in Angular SSR mode within a _Node.js_ environment, we can additionally access the process environment variables via _process.env_.
+When running the application in Angular SSR mode within a _Node.js_ environment, you can additionally access the process environment variables via _process.env_.
 This method provides a way to configure the application at deploy time, e.g., when using Docker images.
 Configuration can then be consumed and passed to the client side via state transfer using Angular's [TransferState](https://angular.io/api/core/TransferState).
 
@@ -140,7 +141,7 @@ Nevertheless, default values can be provided by environment files and can later 
 
 Everything managed in the NgRx state is accumulated on the server side and sent to the client side with the initial HTML response.
 
-To access these properties, we provide the [`StatePropertiesService`](../../src/app/core/utils/state-transfer/state-properties.service.ts), which takes care of retrieving the configuration either from the configuration state, an environment variable, or the _environment.ts_ (in that order).
+To access these properties, use the [`StatePropertiesService`](../../src/app/core/utils/state-transfer/state-properties.service.ts), which takes care of retrieving the configuration either from the configuration state, an environment variable, or the _environment.ts_ (in that order).
 
 ### Configurations REST Resource
 
@@ -167,7 +168,7 @@ Use the properties `icmChannel` and `icmApplication` in the Angular CLI environm
 
 ## Feature Toggles
 
-To activate additional functionality, we use the concept of feature toggles throughout the application.
+To activate additional functionality, the concept of feature toggles is used throughout the application.
 For instance, there is no general distinction between B2B and B2C applications.
 Each setup can define specific features at any time.
 Of course, the ICM server must supply appropriate REST resources to leverage functionality.
@@ -256,7 +257,7 @@ export class SomeService {
 
 ### Unit Testing with Feature Toggles
 
-With Version 0.21 we introduced [`FeatureToggleModule.forTesting`][feature-toggle-module] which provides a shallow implementation for testing with feature toggles not depending on the state management.
+With Version 0.21, [`FeatureToggleModule.forTesting`][feature-toggle-module] was introduced, which provides a shallow implementation for testing with feature toggles not depending on the state management.
 Use it in the `imports` of the `TestBed` declaration of the unit test.
 Switching features in tests can be triggered by calling [`FeatureToggleModule.switchTestingFeatures`][feature-toggle-module] with a new set of activated feature toggles.
 
@@ -328,7 +329,7 @@ To add other languages except English, German, or French:
    ]
    ```
 
-# Further References
+## Further References
 
 - [Concept - Multi-Site Handling][concept-multi-site]
 - [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md)

@@ -32,7 +32,7 @@ See also: [Using Zones in Angular for better performance](https://blog.thoughtra
 
 Zones wrap asynchronous browser APIs and notify a consumer when an asynchronous task has started or ended.
 Angular takes advantage of these APIs to get notified when any asynchronous task is done.
-This includes things like XHR calls, `setTimeout()` and basically all user events like `click`, `submit`, `mousedown`, etc.
+This includes things like XHR calls, `setTimeout()`, and basically all user events like `click`, `submit`, `mousedown`, etc.
 
 When async events happen in the application, the zone informs Angular, which then triggers change detection.
 
@@ -71,18 +71,18 @@ export class MyComponent {
 Getting to know whether a zone is stable or not is crucial when programmatically accessing the application from the "outside".
 Having a stable zone means that Angular has finished rendering and that we do not expect any async tasks to finish in the near future.
 The Intershop PWA effectively uses this concept for communication with the CMS Design View.
-Also, Angular waits for stability in Service Workers and in server-side rendering.
+Also, Angular waits for stability in service workers and in server-side rendering.
 
 ### Service Workers and SSR
 
 Both `@angular/service-worker` and `@angular/platform-server` use zone stability information internally.
-The Service Worker will not be attached to the page before the zone will have become stable.
+The service worker will not be attached to the page before the zone will have become stable.
 The same applies for server-side rendering: The page will be rendered as soon as the zone is stable.
 This is necessary because data from HTTP requests must be resolved to render meaningful content.
 
 ### Pitfall: The Zone Must Become Stable
 
-For all of those aspects – Design View, Service Workers, and SSR – it is essential to get a stable zone at some point.
+For all of those aspects – Design View, service workers, and SSR – it is essential to get a stable zone at some point.
 If not, those aspects will not work properly, e.g.,
 SSR will never return the rendered HTML and the Design View will never render the component tree view.
 

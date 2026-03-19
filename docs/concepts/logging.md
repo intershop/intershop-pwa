@@ -34,7 +34,7 @@ services:
 
 ### Log Level
 
-The log level is controlled by the environment variable `LOGLEVEL` with the levels `trace`, `debug`, `info`, `warn`, `error` (default) and `fatal`.
+The log level is controlled by the environment variable `LOGLEVEL` with the levels `trace`, `debug`, `info`, `warn`, `error` (default), and `fatal`.
 
 When HTTP requests and responses are logged, the log level is determined by the response status code:
 
@@ -58,7 +58,7 @@ SSR request processing produces two separate log entries with different `message
 
 Redirect actions of the [Hybrid Approach](./hybrid-approach.md) are logged with `RED (Hybrid redirect)`.
 
-PM2 process manager logs will still appear regardless of the `LOGLEVEL` configuration, as they are infrastructure-level logs.
+PM2 process manager logs appear regardless of the `LOGLEVEL` configuration as they are infrastructure-level logs.
 
 ## NGINX
 
@@ -76,7 +76,7 @@ services:
 
 ### Log Level
 
-The log level is controlled by the environment variable `LOGLEVEL` with the levels `info`, `warn` and `error` (default).
+The log level is controlled by the environment variable `LOGLEVEL` with the levels `info`, `warn`, and `error` (default).
 
 HTTP requests and responses are logged with log levels based on the response status code:
 
@@ -93,15 +93,15 @@ NGINX supports two log formats controlled by the environment variable `LOGFORMAT
 
 ### Log Debug
 
-The environment variable `DEBUG=1` enables verbose debugging output in the NGINX logs.
+Setting the environment variable `DEBUG=1` enables verbose debugging output in the NGINX logs.
 
 ## Container Log Management
 
-Both the SSR and NGINX containers write all logs exclusively to stdout.
+Both SSR and NGINX containers write all logs exclusively to `stdout`.
 
 ## Request Tracing
 
-Both NGINX and SSR logs include a `trace.id` field that allows correlating all log entries for a single request across the entire stack.
+Both NGINX and SSR logs include a `trace.id` field for correlating all log entries for a single request across the entire stack.
 
 1. When a request arrives at NGINX, it either uses an incoming `X-Request-ID` header (from an upstream proxy/CDN) or generates a new UUID.
 2. NGINX forwards this ID to SSR via the `X-Request-ID` header.
@@ -121,9 +121,9 @@ Simplified log sequence with the same `trace.id` and `LOGLEVEL=info`:
 
 When NGINX serves a cached response (`nginx.cache.status` field indicates `HIT`), only the NGINX log entry appears (SSR is not involved).
 
-The nginx logs include a `nginx.timestamp_ms` field containing the Unix epoch timestamp in milliseconds, which can be useful for precise timing analysis and log correlation.
+The NGINX logs include a `nginx.timestamp_ms` field containing the Unix epoch timestamp in milliseconds, which can be useful for precise timing analysis and log correlation.
 
 ## Further References
 
 - [Guide - Building and Running Server-Side Rendering](../guides/ssr-startup.md)
-- [Guide - Building and Running nginx Docker Image](../guides/nginx-startup.md)
+- [Guide - Building and Running NGINX Docker Image](../guides/nginx-startup.md)
