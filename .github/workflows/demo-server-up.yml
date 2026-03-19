@@ -2,6 +2,11 @@ name: Demo Server
 
 on:
   workflow_dispatch:
+    inputs:
+      icm_base_url:
+        description: 'ICM Base URL'
+        required: false
+        default: 'https://review.icm.intershop.de'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -15,7 +20,6 @@ concurrency:
 #
 # 2. Change these variables for your configuration:
 env:
-  ICM_BASE_URL: https://review.icm.intershop.de
   AZURE_DEMO_RESOURCEGROUP: pwa-gh-review
   AZURE_WEBAPP_NAME: '' # Set dynamically in "Set Environment" step
 
@@ -58,6 +62,7 @@ jobs:
         run: |
           echo "DOCKER_IMAGE_SSR=${{ steps.ssr.outputs.digest }}" >> $GITHUB_ENV
           echo "DOCKER_IMAGE_NGINX=${{ steps.nginx.outputs.digest }}" >> $GITHUB_ENV
+          echo "ICM_BASE_URL=${{ github.event.inputs.icm_base_url }}" >> $GITHUB_ENV
           printf 'AZURE_WEBAPP_NAME=%.60s' "${{ env.AZURE_DEMO_RESOURCEGROUP }}-$( echo ${{ github.event.ref }} | sed -e 's/refs\/heads\///' | sed -e 's/[^a-zA-Z0-9-]/-/g' )" >> $GITHUB_ENV
 
       - name: Login via Azure CLI
