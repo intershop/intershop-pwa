@@ -172,6 +172,12 @@ export class PaypalApplePayAdapter {
 
     this.loading = true;
 
+    // Start ICM order creation to get PayPal order ID
+    this.checkoutFacade.processPaypalOrderCreation();
+    this.orderContext = await firstValueFrom(
+      this.paypalDataTransferService.paypalOrder$.pipe(filter(order => !!order?.paypalOrderId))
+    );
+
     try {
       const paymentRequest = await this.getPaymentRequest();
       const session = new ApplePaySession(this.applePayApiVersion, paymentRequest);
@@ -228,10 +234,6 @@ export class PaypalApplePayAdapter {
    */
   private async onValidateMerchant(validationURL: string, session: ApplePaySession): Promise<void> {
     try {
-      // Start ICM order creation to get PayPal order ID
-      this.checkoutFacade.processPaypalOrderCreation();
-      this.orderContext = await firstValueFrom(this.paypalDataTransferService.paypalOrder$);
-
       // PayPal handles the merchant validation through its SDK
       // The validateMerchant endpoint is typically provided by PayPal
       const merchantSession = await this.validateMerchantWithPaypal(validationURL, this.orderContext.paypalOrderId);
