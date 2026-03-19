@@ -17,6 +17,7 @@ export type ProductItemDisplayType = 'tile' | 'row';
 @Component({
   selector: 'ish-product-item',
   templateUrl: './product-item.component.html',
+  styleUrls: ['./product-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [ProductTileComponent, ProductRowComponent, LoadingComponent, AsyncPipe],

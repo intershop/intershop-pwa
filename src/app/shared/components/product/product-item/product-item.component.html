@@ -2,6 +2,13 @@
 <ish-product-tile />
 } @if (isRow) {
 <ish-product-row />
-} } @if (loading$ | async) {
-<ish-loading />
+} } @else if (loading$ | async) {
+<div
+  class="product-item-placeholder"
+  [class.product-item-placeholder-tile]="isTile"
+  [class.product-item-placeholder-row]="isRow"
+  aria-hidden="true"
+>
+  <ish-loading [standalone]="true" />
+</div>
 }

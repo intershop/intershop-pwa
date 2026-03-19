@@ -11,6 +11,10 @@
     position: relative;
     text-align: center;
 
+    .product-image-container {
+      min-height: 270px;
+    }
+
     img {
       width: auto;
       padding-bottom: 0;
@@ -44,6 +48,10 @@
   }
 
   .product-tile-list {
+    .product-image-container {
+      min-height: 120px;
+    }
+
     a {
       &.product-title {
         padding-top: 0;
