@@ -9,6 +9,7 @@ import { Address } from 'ish-core/models/address/address.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
+import { PaypalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 
 import { PaypalButtonsAdapter } from './paypal-buttons.adapter';
 
@@ -37,6 +38,7 @@ class TestablePaypalButtons extends PaypalButtonsAdapter {
 describe('Paypal Buttons Adapter', () => {
   let paypalButtons: TestablePaypalButtons;
   let checkoutFacade: CheckoutFacade;
+  let paypalDataTransferService: PaypalDataTransferService;
 
   const mockPaymentMethod = {
     id: 'ISH_PAYPAL',
@@ -71,6 +73,12 @@ describe('Paypal Buttons Adapter', () => {
 
   beforeEach(() => {
     checkoutFacade = mock(CheckoutFacade);
+    paypalDataTransferService = mock(PaypalDataTransferService);
+
+    // Mock paypalOrder$ to emit orderId
+    when(paypalDataTransferService.paypalOrder$).thenReturn(
+      of({ orderId: 'ORDER123', paymentInstrumentId: 'test-instrument-id' })
+    );
 
     // Create mock PayPal Buttons component
     mockPaypalButtons = jest.fn().mockReturnValue({
@@ -83,7 +91,11 @@ describe('Paypal Buttons Adapter', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, TestablePaypalButtons],
+      providers: [
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        { provide: PaypalDataTransferService, useFactory: () => instance(paypalDataTransferService) },
+        TestablePaypalButtons,
+      ],
     });
 
     paypalButtons = TestBed.inject(TestablePaypalButtons);
@@ -101,18 +113,27 @@ describe('Paypal Buttons Adapter', () => {
   });
 
   describe('createOrder()', () => {
+    const basketWithoutToken = {
+      ...mockBasket,
+      payment: {
+        ...mockBasket.payment,
+        redirectUrl: undefined,
+      },
+    } as Basket;
+
     beforeEach(() => {
-      when(checkoutFacade.basket$).thenReturn(of(mockBasket));
+      // Simulate: first emit basket without token, then basket with token
+      when(checkoutFacade.basket$).thenReturn(of(basketWithoutToken, mockBasket));
     });
 
-    it('should set basket payment with payment instrument id', async () => {
+    it('should call getPaypalToken with payment instrument id', async () => {
       const orderId = await paypalButtons.testCreateOrder(mockPaymentMethod);
 
-      verify(checkoutFacade.setBasketPayment('test-instrument-id')).once();
+      verify(checkoutFacade.getPaypalToken('test-instrument-id')).once();
       expect(orderId).toBe('ORDER123');
     });
 
-    it('should set basket payment with serviceId when no payment instrument exists', async () => {
+    it('should call getPaypalToken with serviceId when no payment instrument exists', async () => {
       const paymentMethodWithoutInstrument = {
         ...mockPaymentMethod,
         paymentInstruments: [],
@@ -120,11 +141,20 @@ describe('Paypal Buttons Adapter', () => {
 
       const orderId = await paypalButtons.testCreateOrder(paymentMethodWithoutInstrument);
 
-      verify(checkoutFacade.setBasketPayment('PayPal')).once();
+      verify(checkoutFacade.getPaypalToken('PayPal')).once();
       expect(orderId).toBe('ORDER123');
     });
 
-    it('should extract order ID from redirectUrl', async () => {
+    it('should call getPaypalToken with tokenExists=true when basket has token', async () => {
+      when(checkoutFacade.basket$).thenReturn(of(mockBasket));
+
+      const orderId = await paypalButtons.testCreateOrder(mockPaymentMethod);
+
+      verify(checkoutFacade.getPaypalToken('test-instrument-id')).once();
+      expect(orderId).toBe('ORDER123');
+    });
+
+    it('should get order ID from paypalDataTransferService', async () => {
       const orderId = await paypalButtons.testCreateOrder(mockPaymentMethod);
 
       expect(orderId).toBe('ORDER123');
@@ -139,7 +169,10 @@ describe('Paypal Buttons Adapter', () => {
         },
       } as Basket;
 
-      when(checkoutFacade.basket$).thenReturn(of(basketWithDifferentToken));
+      when(checkoutFacade.basket$).thenReturn(of(basketWithoutToken, basketWithDifferentToken));
+      when(paypalDataTransferService.paypalOrder$).thenReturn(
+        of({ orderId: 'ORDER999', paymentInstrumentId: 'test-instrument-id' })
+      );
 
       const orderId = await paypalButtons.testCreateOrder(mockPaymentMethod);
 
@@ -155,10 +188,10 @@ describe('Paypal Buttons Adapter', () => {
       expect(orderId).toBe('ORDER123');
     });
 
-    it('should reject when basket$ emits error', async () => {
-      when(checkoutFacade.basket$).thenReturn(throwError(() => new Error('Basket error')));
+    it('should reject when paypalOrder$ emits error', async () => {
+      when(paypalDataTransferService.paypalOrder$).thenReturn(throwError(() => new Error('PayPal order error')));
 
-      await expect(paypalButtons.testCreateOrder(mockPaymentMethod)).rejects.toThrow('Basket error');
+      await expect(paypalButtons.testCreateOrder(mockPaymentMethod)).rejects.toThrow('PayPal order error');
     });
   });
 
@@ -490,6 +523,13 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     it('should call createOrder callback', async () => {
+      // createOrderCallback needs a token change: first emit without token, then with token
+      const basketWithoutToken = {
+        ...mockBasket,
+        payment: { ...mockBasket.payment, redirectUrl: undefined },
+      } as Basket;
+      when(checkoutFacade.basket$).thenReturn(of(basketWithoutToken, mockBasket));
+
       await paypalButtons.renderButtons(mockConfig);
 
       const buttonConfig = mockPaypalButtons.mock.calls[0][0];

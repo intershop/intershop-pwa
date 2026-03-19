@@ -3,13 +3,16 @@ import { HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { concatMap, map, switchMap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { concatMap, map, switchMap, take } from 'rxjs/operators';
 
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
+import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
+import { getCurrentBasket } from 'ish-core/store/customer/basket';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 enum ThreeDSecureDecisionStatus {
   ACCEPT = 'ACCEPT',
@@ -127,5 +130,49 @@ export class PaymentPaypalService {
           };
         })
       );
+  }
+
+  /**
+   * Retrieves a PayPal token for the current basket payment.
+   * Uses PATCH to update an existing payment if a token already exists,
+   * otherwise uses PUT to create a new payment.
+   *
+   * @param paymentInstrument The payment instrument ID to use for the payment.
+   * @returns An Observable emitting the PayPal token string.
+   */
+  getPaypalToken(paymentInstrument: string): Observable<string> {
+    if (!paymentInstrument) {
+      return throwError(() => new Error('setBasketPayment() called without paymentInstrument'));
+    }
+
+    return this.store.pipe(select(getCurrentLocale)).pipe(
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
+      whenTruthy(),
+      take(1),
+      switchMap(([lang, basket]) => {
+        let loc = `${location.origin}${this.baseHref}`;
+        // Remove trailing slash if present
+        if (loc.endsWith('/')) {
+          loc = loc.slice(0, -1);
+        }
+        const redirect = {
+          successUrl: `${loc}/checkout/review;lang=${lang}`,
+          cancelUrl: `${loc}/checkout/payment;lang=${lang}?redirect=cancel`,
+          failureUrl: `${loc}/checkout/payment;lang=${lang}?redirect=failure`,
+        };
+
+        const body = { paymentInstrument, redirect };
+
+        return basket.payment?.redirectUrl?.split('token=')[1]
+          ? this.apiService
+              .currentBasketEndpoint()
+              .patch<{ data: PaymentData }>('payments/open-tender', body, { headers: this.basketHeaders })
+              .pipe(map(payment => payment.data.redirect?.redirectUrl?.split('token=')[1]))
+          : this.apiService
+              .currentBasketEndpoint()
+              .put<{ data: PaymentData }>('payments/open-tender', body, { headers: this.basketHeaders })
+              .pipe(map(payment => payment.data.redirect?.redirectUrl?.split('token=')[1]));
+      })
+    );
   }
 }

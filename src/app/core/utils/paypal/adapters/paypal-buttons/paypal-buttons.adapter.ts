@@ -1,13 +1,13 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { filter, map, race, take, timer } from 'rxjs';
+import { map, race, take, timer } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
 import { PAYPAL_BUTTON_STYLING } from 'ish-core/utils/paypal/adapters/paypal-adapters.styling';
+import { PaypalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 import { PaypalComponent } from 'ish-core/utils/paypal/paypal-model/paypal.model';
 
 interface PaypalShippingAddress {
@@ -27,6 +27,7 @@ export class PaypalButtonsAdapter {
 
   constructor(
     private checkoutFacade: CheckoutFacade,
+    private paypalDataTransferService: PaypalDataTransferService,
     private router: Router,
     @Inject(DOCUMENT) private document: Document
   ) {}
@@ -76,21 +77,15 @@ export class PaypalButtonsAdapter {
   }
 
   protected createOrderCallback(paypalPaymentMethod: PaymentMethod): Promise<string> {
-    this.checkoutFacade.setBasketPayment(
-      paypalPaymentMethod.paymentInstruments[0]?.id || paypalPaymentMethod.serviceId
-    );
+    this.checkoutFacade.getPaypalToken(paypalPaymentMethod.paymentInstruments[0]?.id || paypalPaymentMethod.serviceId);
+
     return new Promise((resolve, reject) => {
       race(
-        this.checkoutFacade.basket$.pipe(
-          whenTruthy(),
-          filter(
-            basket =>
-              basket.payment?.capabilities?.includes('PaypalCheckout') && basket.payment.redirectUrl?.includes('token=')
-          ),
-          map(basket => basket.payment.redirectUrl.split('token=')[1]),
+        this.paypalDataTransferService.paypalOrder$.pipe(
+          map(data => data.orderId),
           take(1)
         ),
-        timer(4000).pipe(
+        timer(30000).pipe(
           map(() => {
             throw new Error('PayPal order ID not available');
           })

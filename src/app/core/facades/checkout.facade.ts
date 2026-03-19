@@ -47,6 +47,7 @@ import {
   getBasketValidationResults,
   getCurrentBasket,
   getEligibleFastCheckoutPaymentMethods,
+  getPaypalToken,
   getSubmittedBasket,
   isBasketInvoiceAndShippingAddressEqual,
   loadBasketEligibleAddresses,
@@ -309,6 +310,10 @@ export class CheckoutFacade {
 
   setBasketPayment(paymentName: string) {
     this.store.dispatch(setBasketPayment({ id: paymentName }));
+  }
+
+  getPaypalToken(paymentName: string) {
+    this.store.dispatch(getPaypalToken({ paymentInstrumentId: paymentName }));
   }
 
   startFastCheckout(paymentName: string) {

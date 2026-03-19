@@ -37,6 +37,7 @@ import {
   deleteBasketPaymentSuccess,
   deletePaypalCreditCardBasketPayment,
   emitPaypalOrderId,
+  getPaypalToken,
   loadBasket,
   loadBasketEligiblePaymentMethods,
   loadBasketEligiblePaymentMethodsFail,
@@ -489,6 +490,53 @@ describe('Basket Payment Effects', () => {
           done();
         },
       });
+    });
+  });
+
+  describe('getPaypalToken$', () => {
+    beforeEach(() => {
+      when(paymentPaypalServiceMock.getPaypalToken(anyString())).thenReturn(of('PAYPAL_TOKEN_123'));
+
+      store.dispatch(
+        loadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+            payment: undefined,
+          } as Basket,
+        })
+      );
+    });
+
+    it('should call the paymentPaypalService for getPaypalToken', done => {
+      const action = getPaypalToken({ paymentInstrumentId: 'test-instrument-id' });
+      actions$ = of(action);
+
+      effects.getPaypalToken$.subscribe(() => {
+        verify(paymentPaypalServiceMock.getPaypalToken('test-instrument-id')).once();
+        done();
+      });
+    });
+
+    it('should map to action of type emitPaypalOrderId on success', () => {
+      const action = getPaypalToken({ paymentInstrumentId: 'test-instrument-id' });
+      const completion = emitPaypalOrderId({ orderId: 'PAYPAL_TOKEN_123', paymentInstrumentId: 'test-instrument-id' });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.getPaypalToken$).toBeObservable(expected$);
+    });
+
+    it('should map error to action of type setBasketPaymentFail', () => {
+      when(paymentPaypalServiceMock.getPaypalToken(anyString())).thenReturn(
+        throwError(() => makeHttpError({ message: 'token error' }))
+      );
+      const action = getPaypalToken({ paymentInstrumentId: 'test-instrument-id' });
+      const completion = setBasketPaymentFail({ error: makeHttpError({ message: 'token error' }) });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.getPaypalToken$).toBeObservable(expected$);
     });
   });
 

@@ -266,6 +266,8 @@ export const setBasketPaymentFail = createAction('[Basket API] Set a Payment at 
 
 export const setBasketPaymentSuccess = createAction('[Basket API] Set a Payment at Basket Success');
 
+export const getPaypalToken = createAction('[Basket] Get Paypal Token', payload<{ paymentInstrumentId: string }>());
+
 export const createBasketPayment = createAction(
   '[Basket] Create a Basket Payment',
   payload<{ paymentInstrument: PaymentInstrument; saveForLater: boolean }>()

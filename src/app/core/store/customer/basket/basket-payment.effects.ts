@@ -27,6 +27,7 @@ import {
   deleteBasketPaymentSuccess,
   deletePaypalCreditCardBasketPayment,
   emitPaypalOrderId,
+  getPaypalToken,
   loadBasket,
   loadBasketEligiblePaymentMethods,
   loadBasketEligiblePaymentMethodsFail,
@@ -84,6 +85,19 @@ export class BasketPaymentEffects {
       concatMap(id =>
         this.paymentService.setBasketPayment(id).pipe(
           map(() => setBasketPaymentSuccess()),
+          mapErrorToAction(setBasketPaymentFail)
+        )
+      )
+    )
+  );
+
+  getPaypalToken$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getPaypalToken),
+      mapToPayload(),
+      concatMap(payload =>
+        this.paymentPaypalService.getPaypalToken(payload.paymentInstrumentId).pipe(
+          map(token => emitPaypalOrderId({ orderId: token, paymentInstrumentId: payload.paymentInstrumentId })),
           mapErrorToAction(setBasketPaymentFail)
         )
       )
