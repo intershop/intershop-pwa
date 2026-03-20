@@ -303,8 +303,8 @@ export class UserEffects {
   );
 
   /**
-   * This effect emits the 'personalizationStatusDetermined' action once the PGID is fetched or there is no user apiToken cookie,
-   * and 'personalizationStatusChanged' when the PGID actually changes.
+   * This effect emits the 'personalizationStatusDetermined' action once a PGID is fetched or changed or if there is no user apiToken cookie.
+   * It also emits the 'personalizationStatusChanged' action when the PGID actually changes (this includes changes from an to 'undefined').
    */
   determinePersonalizationStatus$ = createEffect(() => {
     const pgid$ = this.store.pipe(select(getPGID));
@@ -317,7 +317,7 @@ export class UserEffects {
     );
 
     const changed$ = pgid$.pipe(
-      startWith(undefined as string),
+      startWith(undefined),
       pairwise(),
       filter(([prev, curr]) => prev !== curr && (!!curr || !!prev)),
       map(() => personalizationStatusChanged())
