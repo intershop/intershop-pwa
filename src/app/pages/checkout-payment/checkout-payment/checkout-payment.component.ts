@@ -120,6 +120,9 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     this.parameterForm.reset();
   }
 
+  /**
+   * Returns a payment method if basket payment has paypal capabilities and redirect required, otherwise undefined
+   */
   selectedPayPalMethod(): PaymentMethod {
     if (
       this.basket?.payment?.capabilities?.includes('PaypalCheckout') &&
@@ -131,6 +134,9 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     return;
   }
 
+  /**
+   * Estimate the PayPal adapter type for a given payment method based on its capabilities.
+   */
   getPaypalAdapterType(method?: PaymentMethod): PaypalAdapterTypes {
     if (method?.capabilities?.includes('PaypalExperienceContext')) {
       return 'CardFields';
