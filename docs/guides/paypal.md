@@ -25,7 +25,7 @@ kb_sync_latest_only
 ## Overview
 
 The PWA provides a component with the selector [`ish-payment-paypal`][payment-paypal.component.ts] that dynamically loads the PayPal SDK and renders the appropriate PayPal component based on the configured adapter type and page type.
-It supports:
+The component supports:
 
 - **Buttons**: PayPal checkout buttons for standard payments
 - **Messages**: Pay Later messaging for promotional content
@@ -46,17 +46,17 @@ The PayPal integration follows a modular architecture with clear separation of c
 ```
 src/app/core/utils/paypal/
 ├── adapters/
-│   ├── paypal-buttons/           # PayPal Buttons adapter
-│   ├── paypal-card-fields/        # PayPal Card Fields adapter
-│   ├── paypal-messages/           # PayPal Pay Later Messages adapter
-│   ├── paypal-adapters.builder.ts # Factory for creating adapters
-│   └── paypal-adapters.styling.ts # Centralized styling configuration
+│   ├── paypal-buttons/                 # PayPal Buttons adapter
+│   ├── paypal-card-fields/             # PayPal Card Fields adapter
+│   ├── paypal-messages/                # PayPal Pay Later Messages adapter
+│   ├── paypal-adapters.builder.ts      # Factory for creating adapters
+│   └── paypal-adapters.styling.ts      # Centralized styling configuration
 ├── paypal-config/
-│   └── paypal-config.service.ts   # SDK loading and configuration
+│   └── paypal-config.service.ts        # SDK loading and configuration
 ├── paypal-data-transfer/
 │   └── paypal-data-transfer.service.ts # Data communication service
 └── paypal-model/
-    └── paypal.model.ts            # PayPal SDK interfaces
+    └── paypal.model.ts                 # PayPal SDK interfaces
 ```
 
 ### Key Components
@@ -83,9 +83,11 @@ The [`ish-payment-paypal`][payment-paypal.component.ts] component supports three
 This adapter type is used to display PayPal checkout buttons for both standard and express payments.
 The rendering is performed by the [`PayPalButtonsAdapter`][paypal-buttons.adapter.ts].
 This component also provides the callback methods that are required by the PayPal JavaScript SDK Buttons API.
-To use the `ish-payment-paypal` component with the Buttons adapter type, the `adapterType` input must be set to `Buttons`.
-Additionally, the `pageType` is required to apply the appropriate SDK styling options.
-It is also necessary to specify the `selectedPaymentMethod` so that the component can load the correct SDK for PayPal Buttons.
+
+To use the `ish-payment-paypal` component with the Buttons adapter type:
+1. Set the `adapterType` input to `Buttons`.
+2. The `pageType` is required to apply the appropriate SDK styling options.
+3. Specify the `selectedPaymentMethod` so that the component can load the correct SDK for PayPal Buttons.
 
 The following example shows how to integrate [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding adapter type `Buttons` into any component:
 
@@ -155,7 +157,7 @@ The namespace format is `PPCP_<payment_method_id>` for Buttons and Card Fields, 
 const paypalObject = window['PPCP_FAST_CHECKOUT'];
 ```
 
-Loading is handled by the [`PaypalConfigService`][paypal-config.service.ts], which constructs the SDK URL with necessary parameters, and uses the [`ScriptLoaderService`][script-loader.service.ts] to load the script dynamically.
+Loading is handled by the [`PaypalConfigService`][paypal-config.service.ts], which constructs the SDK URL with necessary parameters and uses the [`ScriptLoaderService`][script-loader.service.ts] to load the script dynamically.
 
 The [`ScriptLoaderService`][script-loader.service.ts] is a core utility service for dynamically loading external JavaScript files into the DOM.
 It provides the following features:

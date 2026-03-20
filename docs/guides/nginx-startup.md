@@ -347,7 +347,7 @@ When `ICM_BASE_URL_SSR` is set, the Kubernetes internal backend request routing 
 
 Prerequisites for using this feature:
 
-- `ICM_BASE_URL` is set at the `intershop-pwa-nginx` container
+- `ICM_BASE_URL` is set at the `intershop-pwa-nginx` container.
 - The `$ICM_BASE_URL/INTERSHOP/wastatistics` can be polled from the NGINX container.
 - ICM page cache is used. Selective ICM page caching does not trigger the NGINX cache clearing as the cache ID for the pagecache does not change.
 - The `MULTI_CHANNEL` configuration cannot use `default` as the channel. Configure real ICM sites in the `channel:` configuration.
