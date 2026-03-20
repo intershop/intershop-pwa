@@ -76,12 +76,14 @@ declare class ApplePaySession {
 
   onvalidatemerchant: (event: { validationURL: string }) => void;
   onpaymentauthorized: (event: ApplePayPaymentAuthorizedEvent) => void;
+  onpaymentmethodselected: () => void;
   oncancel: (event: Event) => void;
 
   constructor(version: number, paymentRequest: ApplePayPaymentRequest);
   begin(): void;
   abort(): void;
   completeMerchantValidation(merchantSession: unknown): void;
+  completePaymentMethodSelection(result: { newTotal: ApplePayPaymentRequest['total'] }): void;
   completePayment(result: { status: number }): void;
 }
 /* eslint-enable @typescript-eslint/member-ordering */

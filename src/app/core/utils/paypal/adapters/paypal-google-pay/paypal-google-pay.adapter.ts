@@ -70,6 +70,8 @@ export class PaypalGooglePayAdapter {
         this.googlePayEnvironment = paypalSettings.googlePay ? paypalSettings.googlePay.environment : 'TEST';
       });
 
+    console.log('window.location.hostname:', window.location.hostname);
+
     if (!container) {
       return Promise.reject(new Error(`Container element '${containerId}' not found in DOM`));
     }

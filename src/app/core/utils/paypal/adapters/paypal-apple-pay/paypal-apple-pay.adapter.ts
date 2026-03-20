@@ -148,6 +148,7 @@ export class PaypalApplePayAdapter {
     const button = this.document.createElement('apple-pay-button');
 
     // Apply button styling
+    button.setAttribute('id', 'btn-appl');
     button.setAttribute('locale', locale);
     button.setAttribute('buttonstyle', PAYPAL_APPLE_PAY_BUTTON_STYLING.buttonStyle);
     button.setAttribute('type', PAYPAL_APPLE_PAY_BUTTON_STYLING.buttonType);
@@ -184,6 +185,11 @@ export class PaypalApplePayAdapter {
 
       session.onvalidatemerchant = async (event: { validationURL: string }) => {
         await this.onValidateMerchant(event.validationURL, session);
+      };
+
+      // ── Payment Method Selected ──
+      session.onpaymentmethodselected = () => {
+        session.completePaymentMethodSelection({ newTotal: paymentRequest.total });
       };
 
       session.onpaymentauthorized = async (event: ApplePayPaymentAuthorizedEvent) => {
@@ -257,7 +263,7 @@ export class PaypalApplePayAdapter {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const paypalApplepayAny = this.paypalApplepay as any;
     if (typeof paypalApplepayAny.validateMerchant === 'function') {
-      return paypalApplepayAny.validateMerchant({ validationUrl: validationURL });
+      return paypalApplepayAny.validateMerchant({ validationUrl: validationURL, domain: window.location.hostname });
     }
 
     // Fallback: Return a basic merchant session object
