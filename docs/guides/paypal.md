@@ -85,6 +85,7 @@ The rendering is performed by the [`PayPalButtonsAdapter`][paypal-buttons.adapte
 This component also provides the callback methods that are required by the PayPal JavaScript SDK Buttons API.
 
 To use the `ish-payment-paypal` component with the Buttons adapter type:
+
 1. Set the `adapterType` input to `Buttons`.
 2. The `pageType` is required to apply the appropriate SDK styling options.
 3. Specify the `selectedPaymentMethod` so that the component can load the correct SDK for PayPal Buttons.

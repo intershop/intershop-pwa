@@ -26,12 +26,12 @@ A detailed guide on how to create the `apple-app-site-association` file can be f
 
 Perform the following steps.
 
-1. **Save the AASA File** 
-   
+1. **Save the AASA File**
+
    Place the file `apple-app-site-association` in the `nginx` folder.
 
 2. **Dockerfile Adaption**
-   
+
    Add the following lines to `nginx/Dockerfile`:
 
    ```dockerfile
@@ -57,7 +57,7 @@ Perform the following steps.
    > [!NOTE]
    > The `auth_basic off;` directive ensures that this endpoint remains publicly accessible even when global `BASIC_AUTH` is enabled for the PWA.
 
-1. **Verify the Configuration** 
+4. **Verify the Configuration**
 
    Test the endpoint after deployment:
 

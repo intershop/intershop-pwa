@@ -21,7 +21,7 @@ kb_sync_latest_only
 
 ## Server-Side Rendering (SSR)
 
-The _express.js_ server that handles Angular Universal server-side rendering can log extended information.
+The _express.js_ server that handles Angular's server-side rendering can log extended information.
 
 ```yaml
 # docker-compose.yml

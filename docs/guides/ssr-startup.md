@@ -110,19 +110,37 @@ ng run intershop-pwa:serve-ssr --ssl --ssl-cert ~/work/wildcard-certificates/wil
 As there are multiple calls that are always common for any SSR requests (like retrieving `/configurations`, `/localizations` and category trees), those calls can be cached for a short time inside the PWA SSR process and be reused for multiple pre-renders.
 Set `CACHE_ICM_CALLS=recommended` to setup basic short-time caching for the aforementioned calls.
 
-You can further customize the caching by supplying a JSON structure to the `CACHE_ICM_CALLS` environment variable of the PWA SSR process:
+You can further customize the caching by supplying a JSON structure to the `CACHE_ICM_CALLS` environment variable of the PWA SSR process.
 
-```json
-{
-  "/configurations": "20m",
-  "/variations": "2h",
-  ".*": "2m"
-}
+Example via `docker-compose.yml` configuration:
+
+```yaml
+pwa:
+  environment:
+    CACHE_ICM_CALLS: |
+      {
+        "/configurations": "20m",
+        "/variations": "2h"
+      }
 ```
 
-This example will cache `/configurations` for 20 minutes, product variations for 2 hours, and everything else for 2 minutes.
+Example via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
 
-This feature can also be used to benchmark the SSR render performance locally by caching all ICM calls.
+```yaml
+environment:
+  - name: CACHE_ICM_CALLS
+    value: |
+      {
+        "/configurations": "20m",
+        "/variations": "2h"
+      }
+```
+
+This example will cache `/configurations` for 20 minutes and product `/variations` for 2 hours.
+
+> [!NOTE]
+> This feature can also be used to benchmark the SSR render performance locally by caching all ICM calls e.g. with `".*": "10m"`.
+> This setting of caching everything for 10 minutes is not recommended for production deployments but can be useful for local performance testing to exclude the ICM call times from the measurements.
 
 ## Heap Dumps
 

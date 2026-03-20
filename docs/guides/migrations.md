@@ -106,6 +106,8 @@ Instead of the components `payment-paypal-messages.component.ts` and `payment-pa
 This component supports the PayPal message and button functionality, as well as the PayPal Credit Card functionality.
 Additionally, the `PaypalConfigService` has been moved to the following package path: _src/app/core/utils/paypal/paypal-config_.
 
+**Script loader changes**
+
 The script loader service [`script-loader.service.ts`](../../src/app/core/utils/script-loader/script-loader.service.ts) has been revised.
 The new implementation is fully backward compatible and offers additional improvements for caching:
 
