@@ -8,7 +8,7 @@ kb_sync_latest_only
 # Well-Known Resources
 
 - [Apple App Site Association](#apple-app-site-association)
-  - [How to configure the PWA to serve the AASA file](#how-to-configure-the-pwa-to-serve-the-aasa-file)
+  - [Configuring the PWA to Serve the AASA File](#configuring-the-pwa-to-serve-the-aasa-file)
 - [Further References](#further-references)
 
 The `/.well-known/` directory is a standardized location defined by [RFC 8615](https://datatracker.ietf.org/doc/html/rfc8615).
@@ -22,55 +22,57 @@ This guide explains how to configure the PWA to serve files from the `/.well-kno
 
 A detailed guide on how to create the `apple-app-site-association` file can be found at [Apple Developer: Supporting Associated Domains](https://developer.apple.com/documentation/xcode/supporting-associated-domains).
 
-### How to configure the PWA to serve the AASA file
+### Configuring the PWA to Serve the AASA File
 
-**Save the AASA File**
+Perform the following steps.
 
-Place the file `apple-app-site-association` in the `nginx` folder.
+1. **Save the AASA File**
 
-**Dockerfile Adaption**
+   Place the file `apple-app-site-association` in the `nginx` folder.
 
-Add the following lines to `nginx/Dockerfile`:
+2. **Dockerfile Adaption**
 
-```dockerfile
-RUN mkdir -p /usr/share/nginx/html/.well-known
-COPY apple-app-site-association /usr/share/nginx/html/.well-known/apple-app-site-association
-```
+   Add the following lines to `nginx/Dockerfile`:
 
-**Multi-Channel Configuration**
+   ```dockerfile
+   RUN mkdir -p /usr/share/nginx/html/.well-known
+   COPY apple-app-site-association /usr/share/nginx/html/.well-known/apple-app-site-association
+   ```
 
-Add the following `location` block to the `nginx/templates/multi-channel.conf.tmpl` file within the `server` block and next to the existing `location` blocks:
+3. **Multi-Channel Configuration**
 
-```nginx
-# apple-app-site-association
-location = /.well-known/apple-app-site-association {
-    allow all;
-    auth_basic off;
+   Add the following `location` block to the `nginx/templates/multi-channel.conf.tmpl` file within the `server` block and next to the existing `location` blocks:
 
-    default_type application/json;
-    root /usr/share/nginx/html;
-}
-```
+   ```nginx
+   # apple-app-site-association
+   location = /.well-known/apple-app-site-association {
+       allow all;
+       auth_basic off;
 
-> [!NOTE]
-> The `auth_basic off;` directive ensures that this endpoint remains publicly accessible even when global `BASIC_AUTH` is enabled for the PWA.
+       default_type application/json;
+       root /usr/share/nginx/html;
+   }
+   ```
 
-**Verify the Configuration**
+   > [!NOTE]
+   > The `auth_basic off;` directive ensures that this endpoint remains publicly accessible even when global `BASIC_AUTH` is enabled for the PWA.
 
-Test the endpoint after deployment:
+4. **Verify the Configuration**
 
-```bash
-curl -i https://yourdomain.com/.well-known/apple-app-site-association
-```
+   Test the endpoint after deployment:
 
-The endpoint should return `Content-Type: application/json` with the JSON content.
+   ```bash
+   curl -i https://yourdomain.com/.well-known/apple-app-site-association
+   ```
 
-To test the `apple-app-site-association` file when running the PWA on your local system, you can use the following commands:
+   The endpoint should return `Content-Type: application/json` with the JSON content.
 
-```bash
-docker compose up --build -d
-curl -i http://localhost:4200/.well-known/apple-app-site-association
-```
+   To test the `apple-app-site-association` file when running the PWA on your local system, you can use the following commands:
+
+   ```bash
+   docker compose up --build -d
+   curl -i http://localhost:4200/.well-known/apple-app-site-association
+   ```
 
 ## Further References
 

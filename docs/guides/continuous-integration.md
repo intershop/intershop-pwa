@@ -64,7 +64,7 @@ Before that you have to start up a PWA application.
 ## Lighthouse Testing
 
 [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci) is used for automated performance and accessibility audits.
-It runs as a GitHub action and generates markdown reports that are displayed directly in the PR comments or in the workflow summary.
+It runs as a GitHub action and generates Markdown reports that are displayed directly in the PR comments or in the workflow summary.
 
 **Configuration Files:**
 
@@ -104,11 +104,11 @@ Since Angular SSR is used for server-side pre-rendering of content to tackle SEO
 For this purpose, it must be checked whether the server response contains content from lazy-loaded modules, in other words making sure all modules have produced compliant HTML markup.
 
 This can be done by pointing `curl` to a product detail page and checking if a specific CSS class could be found (via `grep`) in the HTML.
-Have a look into `e2e/test-ssr.sh` to see how we are doing that.
+See `e2e/test-ssr.sh` for information how this is done.
 
 ## Static Code Analysis
 
-SCA tools help to improve code quality, which leads to better maintainability and thus to a reduction of technical debts.
+SCA tools help improve code quality, which leads to better maintainability and thus to a reduction of technical debt.
 
 Intershop uses [`ESLint`](./eslint.md) for static code analysis.
 Run the linting process on the CI with `"npm run lint"`

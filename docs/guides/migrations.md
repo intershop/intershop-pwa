@@ -67,7 +67,7 @@ This ensures clearer separation between API events and state management.
 
 **Language switch relocation**
 
-The language switch component has been moved from the mobile user information dropdown to the main header navigation for better accessibility and user experience.
+The language switch component has been moved from the mobile user information drop-down to the main header navigation for better accessibility and user experience.
 Accordingly, the language switch accordion view and its associated component input variable have been removed.
 
 **NGINX cache clearing enabled by default**
@@ -106,6 +106,8 @@ Instead of the components `payment-paypal-messages.component.ts` and `payment-pa
 This component supports the PayPal message and button functionality, as well as the PayPal Credit Card functionality.
 Additionally, the `PaypalConfigService` has been moved to the following package path: _src/app/core/utils/paypal/paypal-config_.
 
+**Script loader changes**
+
 The script loader service [`script-loader.service.ts`](../../src/app/core/utils/script-loader/script-loader.service.ts) has been revised.
 The new implementation is fully backward compatible and offers additional improvements for caching:
 
@@ -113,10 +115,10 @@ The new implementation is fully backward compatible and offers additional improv
 - DOM-aware loading: Before creating a new script element, the service checks whether the script already exists in the DOM and marks it as loaded immediately.
 - Namespace-based caching: Scripts with a `data-namespace` attribute use the namespace value as cache key instead of the URL. This prevents re-loading scripts with dynamic URLs (e.g., PayPal SDK with changing locale/currency parameters).
 
-**SPARQUE Multi-Site configuration `features` format**
+**SPARQUE multi-site configuration `features` format**
 
-The format to define the enabled SPARQUE features via [Multi-Site configuration](./sparque-ai.md#multi-site-configurations) was changed and needs to be adapted in the according deployment configuration files.
-This is only relevant for the Multi-Site configuration, for the other configuration options the Array notation stays the same.
+The format to define the enabled SPARQUE features via [multi-site configuration](./sparque-ai.md#multi-site-configurations) was changed and needs to be adapted in the according deployment configuration files.
+This is only relevant for the multi-site configuration, for the other configuration options the Array notation stays the same.
 
 ```yaml
   sparque:
@@ -126,12 +128,12 @@ This is only relevant for the Multi-Site configuration, for the other configurat
 
 **Angular 17 update**
 
-With Intershop PWA 10.0.0, we updated the project to Angular 17.
+With Intershop PWA 10.0.0, the project was updated to Angular 17.
 The upgrade replaces Angular Universal with the new `@angular/ssr` package.
 In addition, the project was migrated to the new Angular control flow syntax.
 Several dependencies (including NgRx and `@ngx-translate`) have been updated.
 
-Key changes include:
+Key changes:
 
 - Migrated from structural directives (`ngIf`, `ngFor`, `ngSwitch`) to the new control flow syntax (`@if`, `@for`, `@switch`) for improved performance and readability. Use the [Angular migration control-flow schematic](https://angular.dev/reference/migrations/control-flow) `ng generate @angular/core:control-flow` to automate the migration process.
 - Migrated `trackBy` functions of `for` loops to the new syntax, e.g., `@for (item of items; track item.id)`.
@@ -141,7 +143,7 @@ Key changes include:
 > Consider the optimization suggestion to use a unique identifier of the iterated items (see [Why is `track` in `@for` blocks important?](https://angular.dev/guide/templates/control-flow#why-is-track-in-for-blocks-important) for details).
 >
 > Using only an identifier for an outer `for` loop with nested `for` loops might result in rendering/interaction issues.
-> In such cases the whole object needs to be used as track expression, e.g., `@for (item of items; track item)`.
+> In such cases, the whole object needs to be used as track expression, e.g., `@for (item of items; track item)`.
 
 - Updated the import for `glob` in scripts
 - Refactored test files to use `provideRouter()` instead of the deprecated `RouterTestingModule`
@@ -149,7 +151,7 @@ Key changes include:
 - Removed extra closing tags for empty elements in HTML templates
 - Updated Angular compiler options in `tsconfig.json`
 
-Find more details about the Angular 17 update in the [Angular Update Guide](https://angular.dev/update-guide?v=16.0-17.0&l=3).
+For more details about the Angular 17 update, see [Angular Update Guide](https://angular.dev/update-guide?v=16.0-17.0&l=3).
 
 **Bootstrap Icons**
 
@@ -169,19 +171,19 @@ Therefore, the styling for all icons must be checked.
 
 For additional information on using Bootstrap Icons, see the [Styling & Behavior](../concepts/styling-behavior.md#icons) documentation.
 
-**SSR and NGINX Logging changes**
+**SSR and NGINX logging changes**
 
 With Intershop PWA 10.0.0, we changed the logging of SSR and NGINX which includes breaking changes.
 Both the SSR and NGINX now use structured JSON logs (default) compliant with the [Elastic Common Schema (ECS)](https://www.elastic.co/guide/en/ecs/current/index.html) specification.
 
-Key changes include:
+Key changes:
 
-- Containers write logs exclusively to stdout, which also replaces the former "Logging to an External Device" method
+- Containers write logs exclusively to `stdout`, which also replaces the former "Logging to an External Device" method
 - Logging is now configured exclusively using the `LOGLEVEL` and `LOGFORMAT` environment variables for both SSR and NGINX
 - Removed environment variables `LOGGING` (SSR) and `LOG_ALL` (SSR, NGINX)
 - PM2-specific data is now included as JSON fields instead of prefixes (SSR)
 
-Find more details in the [Concept - Logging](../concepts/logging.md).
+For further details, see [Concept - Logging](../concepts/logging.md).
 
 ## From 9.0.0 to 9.1.0
 
