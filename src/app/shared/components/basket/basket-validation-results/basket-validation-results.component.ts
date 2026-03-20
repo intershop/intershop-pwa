@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { uniq } from 'lodash-es';
-import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { Observable, asyncScheduler, scheduled } from 'rxjs';
+import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
@@ -99,8 +99,10 @@ export class BasketValidationResultsComponent implements OnInit {
       map(results => uniq(results?.infos?.map(info => info.message)).filter(message => !!message))
     );
 
+    // Emits false, then true asynchronously to ensure the directive's ngOnChanges is triggered
     this.scrollToMessage$ = this.validationResults$.pipe(
-      map(results => !!(results?.errors?.length || results?.infos?.length))
+      filter(results => !!(results?.errors?.length || results?.infos?.length)),
+      switchMap(() => scheduled([false, true], asyncScheduler))
     );
   }
 

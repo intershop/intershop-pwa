@@ -1,6 +1,6 @@
 <!-- target element to scroll to the messages -->
 @if (error; as basketError) {
-<div [ishScroll]="scrollToMessage" [scrollSpacing]="scrollSpacing">
+<div [ishScroll]="scrollToMessage$ | async" [scrollSpacing]="scrollSpacing">
   @if (basketError.errors?.length) { @for (error of basketError.errors; track $index) {
   <div [class]="cssClass" data-testing-id="basket-errors">
     <strong>{{ error.message }}</strong>
