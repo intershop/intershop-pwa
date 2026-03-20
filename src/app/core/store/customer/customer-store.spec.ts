@@ -150,6 +150,7 @@ describe('Customer Store', () => {
             customer: {"isBusinessCustomer":false,"customerNo":"test"}
             user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
             pgid: "spgid"
+          [User Internal] Personalization Status Changed
           [Basket API] Merge two baskets in progress
           [Basket API] Merge two baskets Success:
             basket: {"id":"test","lineItems":[1]}

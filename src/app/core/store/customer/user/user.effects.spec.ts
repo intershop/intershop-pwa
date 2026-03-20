@@ -49,6 +49,8 @@ import {
   logoutUser,
   logoutUserFail,
   logoutUserSuccess,
+  personalizationStatusChanged,
+  personalizationStatusDetermined,
   requestPasswordReminder,
   requestPasswordReminderFail,
   requestPasswordReminderSuccess,
@@ -709,6 +711,91 @@ describe('User Effects', () => {
 
       expect(effects.loadUserByAPIToken$).toBeObservable(cold('------'));
     });
+  });
+
+  describe('determinePersonalizationStatus$', () => {
+    it('should dispatch personalizationStatusDetermined when no user API token cookie exists', fakeAsync(() => {
+      when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(false);
+
+      const actions: Action[] = [];
+      effects.determinePersonalizationStatus$.subscribe(action => actions.push(action));
+
+      tick(200);
+
+      expect(actions).toContainEqual(personalizationStatusDetermined());
+    }));
+
+    it('should dispatch personalizationStatusDetermined when PGID is set after login', fakeAsync(() => {
+      when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(true);
+
+      const actions: Action[] = [];
+      effects.determinePersonalizationStatus$.subscribe(action => actions.push(action));
+
+      store.dispatch(
+        loginUserSuccess({
+          customer,
+          user: {} as User,
+          pgid: 'test-pgid',
+        })
+      );
+
+      tick(200);
+
+      expect(actions).toContainEqual(personalizationStatusDetermined());
+    }));
+
+    it('should dispatch personalizationStatusChanged when PGID changes', fakeAsync(() => {
+      when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(true);
+
+      const actions: Action[] = [];
+      effects.determinePersonalizationStatus$.subscribe(action => actions.push(action));
+
+      store.dispatch(
+        loginUserSuccess({
+          customer,
+          user: {} as User,
+          pgid: 'initial-pgid',
+        })
+      );
+
+      tick(200);
+
+      // Simulate PGID change (e.g., after logout and new anonymous session)
+      store.dispatch(
+        loginUserSuccess({
+          customer,
+          user: {} as User,
+          pgid: 'new-pgid',
+        })
+      );
+
+      tick(200);
+
+      expect(actions.filter(a => a.type === personalizationStatusChanged.type).length).toBeGreaterThanOrEqual(1);
+    }));
+
+    it('should dispatch personalizationStatusChanged when PGID is cleared', fakeAsync(() => {
+      when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(true);
+
+      const actions: Action[] = [];
+      effects.determinePersonalizationStatus$.subscribe(action => actions.push(action));
+
+      store.dispatch(
+        loginUserSuccess({
+          customer,
+          user: {} as User,
+          pgid: 'test-pgid',
+        })
+      );
+
+      tick(200);
+
+      store.dispatch(resetUserData());
+
+      tick(200);
+
+      expect(actions.filter(a => a.type === personalizationStatusChanged.type).length).toBeGreaterThanOrEqual(1);
+    }));
   });
 
   describe('loadUserCostCenters$', () => {

@@ -4,8 +4,20 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { from } from 'rxjs';
-import { concatMap, delay, exhaustMap, filter, map, mergeMap, sample, switchMap, withLatestFrom } from 'rxjs/operators';
+import { from, merge } from 'rxjs';
+import {
+  concatMap,
+  delay,
+  exhaustMap,
+  filter,
+  map,
+  mergeMap,
+  pairwise,
+  sample,
+  startWith,
+  switchMap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
@@ -17,7 +29,7 @@ import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
-import { getPGID, personalizationStatusDetermined } from '.';
+import { getPGID, personalizationStatusChanged, personalizationStatusDetermined } from '.';
 import {
   createUser,
   createUserApprovalRequired,
@@ -291,17 +303,28 @@ export class UserEffects {
   );
 
   /**
-   * This effect emits the 'personalizationStatusDetermined' action once the PGID is fetched or there is no user apiToken cookie,
+   * This effect emits the 'personalizationStatusDetermined' action once a PGID is fetched or changed or if there is no user apiToken cookie.
+   * It also emits the 'personalizationStatusChanged' action when the PGID actually changes (this includes changes from an to 'undefined').
    */
-  determinePersonalizationStatus$ = createEffect(() =>
-    this.store.pipe(
-      select(getPGID),
+  determinePersonalizationStatus$ = createEffect(() => {
+    const pgid$ = this.store.pipe(select(getPGID));
+
+    const determined$ = pgid$.pipe(
       map(pgid => !this.apiTokenService.hasUserApiTokenCookie() || pgid),
       whenTruthy(),
       delay(100),
       map(() => personalizationStatusDetermined())
-    )
-  );
+    );
+
+    const changed$ = pgid$.pipe(
+      startWith(undefined),
+      pairwise(),
+      filter(([prev, curr]) => prev !== curr && (!!curr || !!prev)),
+      map(() => personalizationStatusChanged())
+    );
+
+    return merge(determined$, changed$);
+  });
 
   loadUserCostCenters$ = createEffect(() =>
     this.actions$.pipe(
