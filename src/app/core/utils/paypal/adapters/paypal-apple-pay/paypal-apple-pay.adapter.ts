@@ -291,8 +291,11 @@ export class PaypalApplePayAdapter {
     // For the PayPal integration, we rely on PayPal's validateMerchant method if available
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const paypalApplepayAny = this.paypalApplepay as any;
+
+    console.log('Validating merchant with PayPal for URL: ', validationURL);
     if (typeof paypalApplepayAny.validateMerchant === 'function') {
-      return paypalApplepayAny.validateMerchant({ validationUrl: validationURL, domain: window.location.hostname });
+      console.log("Calling PayPal's validateMerchant method");
+      return paypalApplepayAny.validateMerchant({ validationUrl: validationURL, domainName: window.location.hostname });
     }
     console.log('ERROR: PayPal validateMerchant method not available');
 
