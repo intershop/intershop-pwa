@@ -473,6 +473,7 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
             .product$(this.masterProductSKU$, ProductCompletenessLevel.List)
             .pipe(filter(ProductHelper.isMasterProduct))
         );
+        break;
       case 'links':
         wrap('links', this.shoppingFacade.productLinks$(this.validProductSKU$));
         break;

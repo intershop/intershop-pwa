@@ -9,7 +9,7 @@ import { Wishlist, WishlistItem } from './wishlist.model';
 @Injectable({ providedIn: 'root' })
 export class WishlistMapper {
   private static parseIdFromURI(uri: string): string {
-    const match = /wishlists[^\/]*\/([^\?]*)/.exec(uri);
+    const match = /wishlists[^/]*\/([^?]*)/.exec(uri);
     if (match) {
       return match[1];
     } else {

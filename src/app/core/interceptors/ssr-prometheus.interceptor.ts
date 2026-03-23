@@ -37,7 +37,7 @@ export class SSRPrometheusInterceptor implements HttpInterceptor {
   private endpointCategory(path: string): string {
     const pathSegments = path
       // clear leading slash and before (usually ...;loc=...;cur=...)
-      .replace(/^[^\/]*\//, '')
+      .replace(/^[^/]*\//, '')
       // clear trailing slash
       .replace(/\/$/, '')
       .split('/');

@@ -40,7 +40,7 @@ export async function applyNameAndPath(
   const parsedPath = parseName(path || buildDefaultPath(project), name);
   name = parsedPath.name;
   if (artifact) {
-    name = name.replace(new RegExp(`\-?${artifact}$`), '');
+    name = name.replace(new RegExp(`-?${artifact}$`), '');
   }
 
   if (!options.restricted) {

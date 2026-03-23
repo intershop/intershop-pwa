@@ -49,7 +49,7 @@ export class ProductMapper {
   ) {}
 
   static parseSkuFromURI(uri: string): string {
-    const match = /products[^\/]*\/([^\?]*)/.exec(uri);
+    const match = /products[^/]*\/([^?]*)/.exec(uri);
     if (match) {
       return decodeURIComponent(match[1]);
     } else {

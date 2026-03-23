@@ -4,7 +4,7 @@ describe('Default Url Mapping Table', () => {
   describe('ICM_WEB_URL', () => {
     it('should only contain placeholders for supported properties', () => {
       const supported = ['channel', 'lang', 'application', 'currency'];
-      const allReplaced = supported.reduce((acc, val) => acc.replace(`\$<${val}>`, 'something'), ICM_WEB_URL);
+      const allReplaced = supported.reduce((acc, val) => acc.replace(`$<${val}>`, 'something'), ICM_WEB_URL);
       expect(allReplaced).not.toMatch(/\$<.*?>/);
     });
   });

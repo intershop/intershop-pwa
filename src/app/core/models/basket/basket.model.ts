@@ -74,7 +74,7 @@ export const createBasketView = (
 function comparePosition(a: LineItem, b: LineItem) {
   if (a.position < b.position) {
     return -1;
-  } else if (a.position < b.position) {
+  } else if (a.position > b.position) {
     return 1;
   }
   return 0;

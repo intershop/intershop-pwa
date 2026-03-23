@@ -164,7 +164,7 @@ export class CookiesService {
     const cookiesLength = str.length + 1;
     if (cookiesLength > 4096) {
       // eslint-disable-next-line no-console
-      console.log(`Cookie \'${name}\' possibly not set or overflowed because it was too
+      console.log(`Cookie '${name}' possibly not set or overflowed because it was too
       large (${cookiesLength} > 4096 bytes)!`);
     }
     return str;

@@ -90,7 +90,7 @@ export function move(options: Options): Rule {
       if (path !== newPath) {
         return newPath;
       } else if (path.includes('..')) {
-        const match = /(\.\.[\w\/\.\-]+)/.exec(path);
+        const match = /(\.\.[\w/.-]+)/.exec(path);
         if (match) {
           const fromRelative = match[0];
           const fromAbsolute = getAbsolutePath(file, fromRelative);

@@ -85,7 +85,7 @@ export class DesignViewService {
   private listenToHostMessages() {
     fromEvent<MessageEvent>(window, 'message')
       .pipe(
-        filter(e => e.data.hasOwnProperty('type') && e.data.type.startsWith('dv-client')),
+        filter(e => Object.hasOwn(e.data, 'type') && e.data.type.startsWith('dv-client')),
         map(message => message.data)
       )
       .subscribe(message => this.handleHostMessage(message));
