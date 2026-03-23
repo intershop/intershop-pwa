@@ -209,9 +209,9 @@ export class PaypalApplePayAdapter {
       };
 
       // ── Payment Method Selected ──
-      session.onpaymentmethodselected = async () => {
-        await session.completePaymentMethodSelection({ newTotal: paymentRequest.total });
-      };
+      // session.onpaymentmethodselected = async () => {
+      //   await session.completePaymentMethodSelection({ newTotal: paymentRequest.total });
+      // };
 
       session.onpaymentauthorized = async (event: ApplePayPaymentAuthorizedEvent) => {
         await this.onPaymentAuthorized(event, session);
