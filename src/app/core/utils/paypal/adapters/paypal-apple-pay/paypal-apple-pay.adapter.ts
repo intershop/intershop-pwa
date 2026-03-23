@@ -35,8 +35,10 @@ export class PaypalApplePayAdapter {
   private loading = false;
   private merchantId: string;
   private orderContext: PaypalOrderData;
+  private orderContextPromise: Promise<PaypalOrderData>;
   private readonly applePaySdkUrl = 'https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js';
   private applePayApiVersion: number;
+  private cachedBasket: { currency: string; amount: string };
 
   constructor(
     private ngZone: NgZone,
@@ -102,6 +104,9 @@ export class PaypalApplePayAdapter {
         if (!this.applePayConfig.isEligible) {
           return Promise.reject(new Error('Apple Pay is not eligible for this merchant'));
         }
+
+        // Pre-cache basket data for synchronous access in click handler
+        await this.cacheBasketData();
 
         this.renderButton(container);
         return Promise.resolve();
@@ -176,46 +181,44 @@ export class PaypalApplePayAdapter {
   /**
    * Handles the Apple Pay button click event.
    * Creates the payment request and opens the Apple Pay payment sheet.
+   * IMPORTANT: ApplePaySession must be created synchronously from user gesture.
    */
-  private async onApplePayButtonClicked(): Promise<void> {
+  private onApplePayButtonClicked(): void {
     if (this.loading) {
       return;
     }
 
     this.loading = true;
 
-    // Start ICM order creation to get PayPal order ID
+    // Start ICM order creation - but don't await it here to keep user gesture chain
     this.checkoutFacade.processPaypalOrderCreation();
-    this.orderContext = await firstValueFrom(
+    this.orderContextPromise = firstValueFrom(
       this.paypalDataTransferService.paypalOrder$.pipe(filter(order => !!order?.paypalOrderId))
     );
 
     try {
-      console.log('OrderContext:', this.orderContext);
-      const paymentRequest = await this.getPaymentRequest();
+      // Create payment request synchronously using cached data
+      const paymentRequest = this.getPaymentRequestSync();
+      // ApplePaySession MUST be created synchronously from user gesture
       const session = new ApplePaySession(this.applePayApiVersion, paymentRequest);
 
-      console.log('session:', session);
       session.onvalidatemerchant = async (event: { validationURL: string }) => {
+        // Await the order context here (not in click handler)
+        this.orderContext = await this.orderContextPromise;
         await this.onValidateMerchant(event.validationURL, session);
-        console.log('onValidateMerchant');
       };
 
       // ── Payment Method Selected ──
       session.onpaymentmethodselected = async () => {
         await session.completePaymentMethodSelection({ newTotal: paymentRequest.total });
-        console.log('onpaymentmethodselected');
       };
 
       session.onpaymentauthorized = async (event: ApplePayPaymentAuthorizedEvent) => {
         await this.onPaymentAuthorized(event, session);
-        console.log('onpaymentauthorized');
       };
 
       session.oncancel = () => {
         this.loading = false;
-        // eslint-disable-next-line no-console
-        console.log('Apple Pay payment was canceled by the user.');
       };
 
       session.begin();
@@ -227,24 +230,33 @@ export class PaypalApplePayAdapter {
   }
 
   /**
-   * Creates the payment request for Apple Pay from basket data.
+   * Pre-caches basket data for synchronous access in click handler.
    */
-  private async getPaymentRequest(): Promise<ApplePayPaymentRequest> {
+  private async cacheBasketData(): Promise<void> {
     const basket = await firstValueFrom(
       this.checkoutFacade.basket$.pipe(
         filter(b => !!b),
         take(1)
       )
     );
+    this.cachedBasket = {
+      currency: basket.totals?.total?.currency || 'USD',
+      amount: basket.totals?.total?.gross?.toString() || '0',
+    };
+  }
 
+  /**
+   * Creates the payment request synchronously using cached basket data.
+   */
+  private getPaymentRequestSync(): ApplePayPaymentRequest {
     return {
       countryCode: this.applePayConfig.countryCode,
-      currencyCode: basket.totals?.total?.currency || 'USD',
+      currencyCode: this.cachedBasket.currency,
       merchantCapabilities: this.applePayConfig.merchantCapabilities,
       supportedNetworks: this.applePayConfig.supportedNetworks,
       total: {
         label: this.merchantId,
-        amount: basket.totals?.total?.gross?.toString() || '0',
+        amount: this.cachedBasket.amount,
         type: 'final',
       },
     };
