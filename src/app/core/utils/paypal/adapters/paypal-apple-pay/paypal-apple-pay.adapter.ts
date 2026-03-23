@@ -36,7 +36,7 @@ export class PaypalApplePayAdapter {
   private merchantId: string;
   private orderContext: PaypalOrderData;
   private orderContextPromise: Promise<PaypalOrderData>;
-  private readonly applePaySdkUrl = 'https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js';
+  private readonly applePaySdkUrl = 'https://applepay.cdn-apple.com/jsapi/1.latest/apple-pay-sdk.js';
   private applePayApiVersion: number;
   private cachedBasket: { currency: string; amount: string };
 
