@@ -273,7 +273,7 @@ export class PaypalApplePayAdapter {
         validationUrl: validationURL,
         domainName: window.location.hostname,
       });
-      console.log('After paypalApplepay.validateMerchant!');
+      console.log('Result paypalApplepay.validateMerchant: ', merchantSession);
 
       session.completeMerchantValidation(merchantSession);
     } catch (error) {
