@@ -268,9 +268,12 @@ export class PaypalApplePayAdapter {
    */
   private async onValidateMerchant(validationURL: string, session: ApplePaySession): Promise<void> {
     try {
-      // PayPal handles the merchant validation through its SDK
-      // The validateMerchant endpoint is typically provided by PayPal
-      const merchantSession = await this.validateMerchantWithPaypal(validationURL, this.orderContext.paypalOrderId);
+      console.log("Calling PayPal's validateMerchant method");
+      const merchantSession = await this.paypalApplepay.validateMerchant({
+        validationUrl: validationURL,
+        domainName: window.location.hostname,
+      });
+      console.log('After paypalApplepay.validateMerchant!');
 
       session.completeMerchantValidation(merchantSession);
     } catch (error) {
@@ -279,29 +282,6 @@ export class PaypalApplePayAdapter {
       session.abort();
       this.loading = false;
     }
-  }
-
-  /**
-   * Validates the merchant with PayPal.
-   * This is a server-side call that should be handled through PayPal's SDK.
-   */
-  private async validateMerchantWithPaypal(validationURL: string, _paypalOrderId: string): Promise<unknown> {
-    // PayPal SDK handles merchant validation internally
-    // This is typically done through a server call, but PayPal's SDK abstracts this
-    // For the PayPal integration, we rely on PayPal's validateMerchant method if available
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const paypalApplepayAny = this.paypalApplepay as any;
-
-    console.log('Validating merchant with PayPal for URL: ', validationURL);
-    if (typeof paypalApplepayAny.validateMerchant === 'function') {
-      console.log("Calling PayPal's validateMerchant method");
-      return paypalApplepayAny.validateMerchant({ validationUrl: validationURL, domainName: window.location.hostname });
-    }
-    console.log('ERROR: PayPal validateMerchant method not available');
-
-    // Fallback: Return a basic merchant session object
-    // In production, this should be handled by your server
-    throw new Error('PayPal validateMerchant method not available');
   }
 
   /**

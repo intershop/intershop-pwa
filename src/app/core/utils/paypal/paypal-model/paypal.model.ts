@@ -313,8 +313,8 @@ export interface PaypalApplePayComponent extends PaypalComponentBasics {
   config(): Promise<ApplePayConfig>;
   /** Confirms the order with PayPal after Apple Pay authorization */
   confirmOrder(params: ApplePayConfirmOrderParams): Promise<ApplePayConfirmOrderResponse>;
-  /** Initiates 3D Secure payer action if required */
-  initiatePayerAction(params: ApplePayInitiatePayerActionParams): Promise<ApplePayInitiatePayerActionResponse>;
+
+  validateMerchant(params: { validationUrl: string; domainName: string }): Promise<unknown>;
 }
 
 /** Apple Pay configuration response from PayPal */
