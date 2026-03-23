@@ -5,6 +5,7 @@ import { filter, firstValueFrom, take } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { Address } from 'ish-core/models/address/address.model';
 import { PaypalClientConfig } from 'ish-core/models/paypal-client-config/paypal-client-config';
 import { PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
 import { PAYPAL_APPLE_PAY_BUTTON_STYLING } from 'ish-core/utils/paypal/adapters/paypal-adapters.styling';
@@ -14,6 +15,7 @@ import {
 } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 import {
   ApplePayConfig,
+  ApplePayPaymentAuthorizedEvent,
   PaypalApplePayComponent,
   PaypalComponent,
 } from 'ish-core/utils/paypal/paypal-model/paypal.model';
@@ -39,6 +41,8 @@ export class PaypalApplePayAdapter {
   private readonly applePaySdkUrl = 'https://applepay.cdn-apple.com/jsapi/1.latest/apple-pay-sdk.js';
   private applePayApiVersion: number;
   private cachedBasket: { currency: string; amount: string };
+  private billingContact: ApplePayPaymentContact;
+  private shippingContact: ApplePayPaymentContact;
 
   constructor(
     private ngZone: NgZone,
@@ -189,7 +193,7 @@ export class PaypalApplePayAdapter {
     }
 
     this.loading = true;
-
+    this.setBillingAndShippingContact();
     // Start ICM order creation - but don't await it here to keep user gesture chain
     this.checkoutFacade.processPaypalOrderCreation();
     this.orderContextPromise = firstValueFrom(
@@ -205,6 +209,7 @@ export class PaypalApplePayAdapter {
       session.onvalidatemerchant = async (event: { validationURL: string }) => {
         // Await the order context here (not in click handler)
         this.orderContext = await this.orderContextPromise;
+        console.log('Merchant validation started, order context: ', this.orderContext.orderId);
         await this.onValidateMerchant(event.validationURL, session);
       };
 
@@ -212,7 +217,7 @@ export class PaypalApplePayAdapter {
       // session.onpaymentmethodselected = async () => {
       //   await session.completePaymentMethodSelection({ newTotal: paymentRequest.total });
       // };
-
+      console.log('Payment confirmed with PayPal');
       session.onpaymentauthorized = async (event: ApplePayPaymentAuthorizedEvent) => {
         await this.onPaymentAuthorized(event, session);
       };
@@ -269,13 +274,14 @@ export class PaypalApplePayAdapter {
   private async onValidateMerchant(validationURL: string, session: ApplePaySession): Promise<void> {
     try {
       console.log("Calling PayPal's validateMerchant method");
-      const merchantSession = await this.paypalApplepay.validateMerchant({
+      const payload = await this.paypalApplepay.validateMerchant({
         validationUrl: validationURL,
         domainName: window.location.hostname,
       });
-      console.log('Result paypalApplepay.validateMerchant: ', merchantSession);
+      console.log('Result paypalApplepay.validateMerchant: ', payload);
 
-      session.completeMerchantValidation(merchantSession);
+      session.completeMerchantValidation(payload.merchantSession);
+      console.log('Merchant validation completed');
     } catch (error) {
       console.log('ERROR: onValidateMerchant: ', error);
       await this.continueICMOrderCreation(this.orderContext.paypalOrderId);
@@ -290,13 +296,13 @@ export class PaypalApplePayAdapter {
   private async onPaymentAuthorized(event: ApplePayPaymentAuthorizedEvent, session: ApplePaySession): Promise<void> {
     try {
       // Confirm the order with PayPal
-      await this.paypalApplepay.confirmOrder({
+      const result1 = await this.paypalApplepay.confirmOrder({
         orderId: this.orderContext.paypalOrderId,
         token: event.payment.token,
-        billingContact: event.payment.billingContact,
-        shippingContact: event.payment.shippingContact,
+        billingContact: this.billingContact,
+        //shippingContact: event.payment.shippingContact,
       });
-      console.log('Payment confirmed with PayPal');
+      console.log('confirmOrder result: ', result1);
 
       // Complete the payment
       const result = await this.continueICMOrderCreation(this.orderContext.orderId);
@@ -319,11 +325,47 @@ export class PaypalApplePayAdapter {
    * ICM order creation needs to be continued after Apple Pay authorization.
    */
   private async continueICMOrderCreation(orderId: string): Promise<{ status: 'SUCCESS' | 'CANCELLED' }> {
-    const orderContext = await firstValueFrom(this.paypalDataTransferService.paypalOrder$);
     this.checkoutFacade.processPaypalOrderCreation(orderId);
+
+    // Wait for the order status to be updated
+    const orderContext = await firstValueFrom(
+      this.paypalDataTransferService.paypalOrder$.pipe(
+        filter(order => !!order),
+        take(1)
+      )
+    );
 
     return {
       status: orderContext.orderStatus,
+    };
+  }
+
+  private setBillingAndShippingContact(): void {
+    this.checkoutFacade.basket$.pipe(take(1)).subscribe(basket => {
+      console.log('Basket addresses: ', basket.invoiceToAddress);
+      this.billingContact = this.mapAddressToContactAddress(basket.invoiceToAddress);
+      console.log('billingContact: ', this.billingContact);
+      //this.shippingContact = this.mapAddressToContactAddress(basket.commonShipToAddress);
+    });
+  }
+
+  private mapAddressToContactAddress(address: Address): ApplePayPaymentContact {
+    if (!address) {
+      return;
+    }
+
+    const addressLines = [address.addressLine1, address.addressLine2, address.addressLine3].filter(Boolean);
+
+    return {
+      givenName: address.firstName,
+      familyName: address.lastName,
+      emailAddress: address.email,
+      phoneNumber: address.phoneHome || address.phoneMobile || address.phoneBusiness,
+      addressLines,
+      locality: address.city,
+      administrativeArea: address.mainDivisionCode || address.mainDivision,
+      postalCode: address.postalCode,
+      countryCode: address.countryCode,
     };
   }
 }

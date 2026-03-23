@@ -165,6 +165,7 @@ export class BasketPaymentEffects {
             this.paypalDataTransferService.emitPaypalOrderData({
               paypalOrderId: payload.paypalOrderId,
               paymentInstrumentId: payload.paymentInstrumentId,
+              orderStatus: payload.orderStatus,
             });
           } else {
             this.paypalDataTransferService.emitPaypalOrderData({

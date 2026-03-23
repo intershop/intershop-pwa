@@ -314,7 +314,10 @@ export interface PaypalApplePayComponent extends PaypalComponentBasics {
   /** Confirms the order with PayPal after Apple Pay authorization */
   confirmOrder(params: ApplePayConfirmOrderParams): Promise<ApplePayConfirmOrderResponse>;
 
-  validateMerchant(params: { validationUrl: string; domainName: string }): Promise<unknown>;
+  validateMerchant(params: {
+    validationUrl: string;
+    domainName: string;
+  }): Promise<{ merchantSession: AppleMerchantSession }>;
 }
 
 /** Apple Pay configuration response from PayPal */
@@ -327,6 +330,19 @@ export interface ApplePayConfig {
   merchantCapabilities: ApplePayMerchantCapability[];
   /** Supported card networks */
   supportedNetworks: string[];
+}
+
+export interface AppleMerchantSession {
+  /** The merchant session identifier */
+  merchantSessionIdentifier: string;
+  /** The domain name of the merchant */
+  domainName: string;
+  /** The display name of the merchant */
+  displayName: string;
+  /** The epoch time when the session expires */
+  epochTimestamp: number;
+  /** The merchant identifier for Apple Pay */
+  merchantIdentifier: string;
 }
 
 /** Apple Pay merchant capabilities */
