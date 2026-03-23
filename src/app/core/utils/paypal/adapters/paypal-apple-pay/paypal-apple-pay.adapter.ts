@@ -58,12 +58,14 @@ export class PaypalApplePayAdapter {
     const containerId = config.containerId;
     const container = this.document.getElementById(containerId);
     this.merchantId = config.merchantId;
-    this.appFacade
-      .serverSetting$<PaypalClientConfig>('paypal')
-      .pipe(take(1))
-      .subscribe(paypalSettings => {
-        this.applePayApiVersion = paypalSettings.applePay ? Number.parseInt(paypalSettings.applePay.apiVersion, 10) : 4;
-      });
+
+    // Load API version from server settings - await the result before continuing
+    const paypalSettings = await firstValueFrom(
+      this.appFacade.serverSetting$<PaypalClientConfig>('paypal').pipe(take(1))
+    );
+    this.applePayApiVersion = paypalSettings?.applePay?.apiVersion
+      ? Number.parseInt(paypalSettings.applePay.apiVersion, 10)
+      : 4;
 
     await this.loadApplePaySdk();
 
@@ -129,11 +131,20 @@ export class PaypalApplePayAdapter {
    * Checks if Apple Pay is available in the current browser.
    */
   private isApplePayAvailable(): boolean {
-    return (
-      typeof ApplePaySession !== 'undefined' &&
-      ApplePaySession.canMakePayments() &&
-      ApplePaySession.supportsVersion(this.applePayApiVersion)
-    );
+    if (typeof ApplePaySession === 'undefined') {
+      return false;
+    }
+    if (!ApplePaySession.canMakePayments()) {
+      return false;
+    }
+    // Ensure we have a valid API version before checking support
+    const version = this.applePayApiVersion || 4;
+    try {
+      return ApplePaySession.supportsVersion(version);
+    } catch {
+      // supportsVersion may throw if version is invalid
+      return false;
+    }
   }
 
   /**
@@ -180,20 +191,25 @@ export class PaypalApplePayAdapter {
     );
 
     try {
+      console.log('OrderContext:', this.orderContext);
       const paymentRequest = await this.getPaymentRequest();
       const session = new ApplePaySession(this.applePayApiVersion, paymentRequest);
 
+      console.log('session:', session);
       session.onvalidatemerchant = async (event: { validationURL: string }) => {
         await this.onValidateMerchant(event.validationURL, session);
+        console.log('onValidateMerchant');
       };
 
       // ── Payment Method Selected ──
-      session.onpaymentmethodselected = () => {
-        session.completePaymentMethodSelection({ newTotal: paymentRequest.total });
+      session.onpaymentmethodselected = async () => {
+        await session.completePaymentMethodSelection({ newTotal: paymentRequest.total });
+        console.log('onpaymentmethodselected');
       };
 
       session.onpaymentauthorized = async (event: ApplePayPaymentAuthorizedEvent) => {
         await this.onPaymentAuthorized(event, session);
+        console.log('onpaymentauthorized');
       };
 
       session.oncancel = () => {
@@ -246,6 +262,7 @@ export class PaypalApplePayAdapter {
 
       session.completeMerchantValidation(merchantSession);
     } catch (error) {
+      console.log('ERROR: onValidateMerchant: ', error);
       await this.continueICMOrderCreation(this.orderContext.paypalOrderId);
       session.abort();
       this.loading = false;
@@ -265,6 +282,7 @@ export class PaypalApplePayAdapter {
     if (typeof paypalApplepayAny.validateMerchant === 'function') {
       return paypalApplepayAny.validateMerchant({ validationUrl: validationURL, domain: window.location.hostname });
     }
+    console.log('ERROR: PayPal validateMerchant method not available');
 
     // Fallback: Return a basic merchant session object
     // In production, this should be handled by your server
@@ -283,16 +301,18 @@ export class PaypalApplePayAdapter {
         billingContact: event.payment.billingContact,
         shippingContact: event.payment.shippingContact,
       });
+      console.log('Payment confirmed with PayPal');
 
       // Complete the payment
       const result = await this.continueICMOrderCreation(this.orderContext.orderId);
-
+      console.log('Payment confirmed result: ', result);
       if (result.status === 'SUCCESS') {
         session.completePayment({ status: ApplePaySession.STATUS_SUCCESS });
       } else {
         session.completePayment({ status: ApplePaySession.STATUS_FAILURE });
       }
     } catch (error) {
+      console.log('onPaymentAuthorized error: ', error);
       this.checkoutFacade.processPaypalOrderCreation(this.orderContext.orderId);
       session.completePayment({ status: ApplePaySession.STATUS_FAILURE });
     } finally {
