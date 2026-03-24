@@ -42,7 +42,6 @@ export class PaypalApplePayAdapter {
   private applePayApiVersion: number;
   private cachedBasket: { currency: string; amount: string };
   private billingContact: ApplePayPaymentContact;
-  private shippingContact: ApplePayPaymentContact;
 
   constructor(
     private ngZone: NgZone,

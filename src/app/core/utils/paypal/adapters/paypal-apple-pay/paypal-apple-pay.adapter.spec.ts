@@ -31,8 +31,8 @@ class TestablePaypalApplePayAdapter extends PaypalApplePayAdapter {
     return (this as any).onApplePayButtonClicked();
   }
 
-  testGetPaymentRequest(): Promise<ApplePayPaymentRequest> {
-    return (this as any).getPaymentRequest();
+  testGetPaymentRequest(): ApplePayPaymentRequest {
+    return (this as any).getPaymentRequestSync();
   }
 
   setPaypalApplepay(component: any): void {
@@ -211,11 +211,12 @@ describe('Paypal Apple Pay Adapter', () => {
   });
 
   describe('getPaymentRequest', () => {
-    it('should create correct payment request from basket', async () => {
+    it('should create correct payment request from basket', () => {
       adapter.setApplePayConfig(mockApplePayConfig);
       adapter.setMerchantId('Intershop');
+      (adapter as any).cachedBasket = { currency: 'USD', amount: '100' };
 
-      const request = await adapter.testGetPaymentRequest();
+      const request = adapter.testGetPaymentRequest();
 
       expect(request.countryCode).toBe('US');
       expect(request.currencyCode).toBe('USD');
