@@ -208,21 +208,16 @@ export class PaypalApplePayAdapter {
       session.onvalidatemerchant = async (event: { validationURL: string }) => {
         // Await the order context here (not in click handler)
         this.orderContext = await this.orderContextPromise;
-        console.log('Merchant validation started, order context: ', this.orderContext.orderId);
         await this.onValidateMerchant(event.validationURL, session);
       };
 
-      // ── Payment Method Selected ──
-      // session.onpaymentmethodselected = async () => {
-      //   await session.completePaymentMethodSelection({ newTotal: paymentRequest.total });
-      // };
-      console.log('Payment confirmed with PayPal');
       session.onpaymentauthorized = async (event: ApplePayPaymentAuthorizedEvent) => {
         await this.onPaymentAuthorized(event, session);
       };
 
       session.oncancel = () => {
         this.loading = false;
+        this.continueICMOrderCreation(this.orderContext.orderId);
       };
 
       session.begin();
@@ -272,17 +267,12 @@ export class PaypalApplePayAdapter {
    */
   private async onValidateMerchant(validationURL: string, session: ApplePaySession): Promise<void> {
     try {
-      console.log("Calling PayPal's validateMerchant method");
       const payload = await this.paypalApplepay.validateMerchant({
         validationUrl: validationURL,
         domainName: window.location.hostname,
       });
-      console.log('Result paypalApplepay.validateMerchant: ', payload);
-
       session.completeMerchantValidation(payload.merchantSession);
-      console.log('Merchant validation completed');
     } catch (error) {
-      console.log('ERROR: onValidateMerchant: ', error);
       await this.continueICMOrderCreation(this.orderContext.paypalOrderId);
       session.abort();
       this.loading = false;
@@ -295,24 +285,20 @@ export class PaypalApplePayAdapter {
   private async onPaymentAuthorized(event: ApplePayPaymentAuthorizedEvent, session: ApplePaySession): Promise<void> {
     try {
       // Confirm the order with PayPal
-      const result1 = await this.paypalApplepay.confirmOrder({
+      await this.paypalApplepay.confirmOrder({
         orderId: this.orderContext.paypalOrderId,
         token: event.payment.token,
         billingContact: this.billingContact,
-        //shippingContact: event.payment.shippingContact,
       });
-      console.log('confirmOrder result: ', result1);
 
       // Complete the payment
       const result = await this.continueICMOrderCreation(this.orderContext.orderId);
-      console.log('Payment confirmed result: ', result);
       if (result.status === 'SUCCESS') {
         session.completePayment({ status: ApplePaySession.STATUS_SUCCESS });
       } else {
         session.completePayment({ status: ApplePaySession.STATUS_FAILURE });
       }
     } catch (error) {
-      console.log('onPaymentAuthorized error: ', error);
       this.checkoutFacade.processPaypalOrderCreation(this.orderContext.orderId);
       session.completePayment({ status: ApplePaySession.STATUS_FAILURE });
     } finally {
@@ -324,15 +310,16 @@ export class PaypalApplePayAdapter {
    * ICM order creation needs to be continued after Apple Pay authorization.
    */
   private async continueICMOrderCreation(orderId: string): Promise<{ status: 'SUCCESS' | 'CANCELLED' }> {
-    this.checkoutFacade.processPaypalOrderCreation(orderId);
-
-    // Wait for the order status to be updated
-    const orderContext = await firstValueFrom(
+    const orderContextPromise = firstValueFrom(
       this.paypalDataTransferService.paypalOrder$.pipe(
-        filter(order => !!order),
+        filter(order => !!order?.orderStatus),
         take(1)
       )
     );
+
+    this.checkoutFacade.processPaypalOrderCreation(orderId);
+
+    const orderContext = await orderContextPromise;
 
     return {
       status: orderContext.orderStatus,
@@ -341,10 +328,7 @@ export class PaypalApplePayAdapter {
 
   private setBillingAndShippingContact(): void {
     this.checkoutFacade.basket$.pipe(take(1)).subscribe(basket => {
-      console.log('Basket addresses: ', basket.invoiceToAddress);
       this.billingContact = this.mapAddressToContactAddress(basket.invoiceToAddress);
-      console.log('billingContact: ', this.billingContact);
-      //this.shippingContact = this.mapAddressToContactAddress(basket.commonShipToAddress);
     });
   }
 

@@ -68,7 +68,6 @@ export class PaypalEligibilityChecker {
     ) {
       return of(false);
     }
-    console.log('Apple Pay is supported by the browser, checking merchant eligibility with PayPal SDK...');
     // Check PayPal SDK eligibility
     return paypalObject$.pipe(
       switchMap(paypalObject =>
