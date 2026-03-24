@@ -7,6 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { InjectSingle } from 'ish-core/utils/injection';
@@ -32,7 +33,16 @@ import { provideIshFormly } from 'ish-shared/formly/formly';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   providers: [...provideIshFormly()],
-  imports: [ErrorMessageComponent, FormlyForm, AsyncPipe, NgClass, TranslatePipe, RouterLink, ReactiveFormsModule],
+  imports: [
+    ErrorMessageComponent,
+    FormSubmitDirective,
+    FormlyForm,
+    AsyncPipe,
+    NgClass,
+    TranslatePipe,
+    RouterLink,
+    ReactiveFormsModule,
+  ],
 })
 export class LoginFormComponent implements OnInit {
   @Input() labelClass: string;
