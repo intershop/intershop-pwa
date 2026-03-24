@@ -12,11 +12,13 @@
     text-align: center;
 
     .product-image-container {
-      min-height: 270px;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
     }
 
     img {
       width: auto;
+      max-height: 100%;
       padding-bottom: 0;
     }
 
@@ -50,6 +52,8 @@
   .product-tile-list {
     .product-image-container {
       min-height: 120px;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
     }
 
     a {
