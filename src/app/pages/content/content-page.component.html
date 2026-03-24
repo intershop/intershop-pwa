@@ -2,6 +2,8 @@
 <!-- the 'pageid' attribute is needed for the Design View and should not be removed -->
 @if (contentPage.pageletIDs.length) {
 <ish-content-pagelet [pageletId]="contentPage.pageletIDs[0]" [attr.pageid]="contentPage.id" />
-} } @if (contentPageLoading$ | async) {
-<ish-loading />
+} } @else if (contentPageLoading$ | async) {
+<div class="content-page-skeleton" aria-hidden="true">
+  <ish-loading />
+</div>
 }

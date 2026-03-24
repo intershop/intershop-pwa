@@ -2,6 +2,10 @@
   padding: $space-default 0 $space-default 0;
 }
 
+.content-page-skeleton {
+  min-height: 50vh;
+}
+
 ul {
   &.collection {
     padding-left: 0;
