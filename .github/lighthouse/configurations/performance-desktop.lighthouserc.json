@@ -3,7 +3,15 @@
     "collect": {
       "numberOfRuns": 5,
       "url": [
-        "http://localhost:4200/computers/notebooks-and-pcs/notebooks-ctgComputers.1835.151"
+        "http://localhost:4200/home",
+        "http://localhost:4200/search/notebook",
+        "http://localhost:4200/computers-ctgComputers",
+        "http://localhost:4200/computers/notebooks-and-pcs/notebooks-ctgComputers.1835.151",
+        "http://localhost:4200/computers/notebooks-and-pcs/notebooks/microsoft-surface-book-2-256gb-152-prd201807231-04-ctgComputers.1835.151",
+        "http://localhost:4200/quick-order",
+        "http://localhost:4200/page/page.helpdesk.pagelet2-Page",
+        "http://localhost:4200/page/page.demodisclaimer",
+        "http://localhost:4200/compare"
       ],
       "settings": {
         "preset": "desktop",
