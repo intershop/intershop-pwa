@@ -12,6 +12,7 @@
     "
     [tabindex]="ariaHidden ? -1 : 0"
     [attr.aria-hidden]="ariaHidden"
+    (mousedown)="ariaHidden && $event.preventDefault()"
     (click)="openModal(modal)"
     data-testing-id="addToOrderTemplateButton"
   >

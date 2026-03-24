@@ -10,6 +10,7 @@
     [title]="displayIcon ? (translationKey$ | async | translate) : ''"
     [tabindex]="ariaHidden ? -1 : 0"
     [attr.aria-hidden]="ariaHidden"
+    (mousedown)="ariaHidden && $event.preventDefault()"
     (click)="addToBasket()"
     data-testing-id="addToCartButton"
   >

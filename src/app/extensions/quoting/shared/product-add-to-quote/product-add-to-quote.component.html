@@ -8,6 +8,7 @@
     [title]="displayType === 'icon' ? ('quote.add_product_to_quote.button.add_to_quote.label' | translate) : ''"
     [tabindex]="ariaHidden ? -1 : 0"
     [attr.aria-hidden]="ariaHidden"
+    (mousedown)="ariaHidden && $event.preventDefault()"
     (click)="addToQuote()"
     data-testing-id="addToQuoteButton"
   >

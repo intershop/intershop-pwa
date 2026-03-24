@@ -7,6 +7,7 @@
   [title]="displayType === 'icon' ? ('product.compare.link' | translate) : ''"
   [tabindex]="ariaHidden ? -1 : 0"
   [attr.aria-hidden]="ariaHidden"
+  (mousedown)="ariaHidden && $event.preventDefault()"
   (click)="toggleCompare()"
 >
   @if (displayType === 'icon') {
