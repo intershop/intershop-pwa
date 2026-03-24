@@ -24,7 +24,7 @@
     padding-right: 0;
     padding-left: 0;
 
-    img {
+    img:not(.product-image) {
       width: 100%;
     }
 

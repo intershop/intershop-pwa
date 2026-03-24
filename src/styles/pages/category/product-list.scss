@@ -198,7 +198,12 @@
 .product-list-container {
   @include clearfix();
 
+  min-height: 450px;
   padding-bottom: ($space-default * 2);
+
+  @media (max-width: $screen-xs-max) {
+    min-height: 700px;
+  }
 
   a.view-all {
     clear: both;
