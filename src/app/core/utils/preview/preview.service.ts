@@ -43,7 +43,7 @@ export class PreviewService {
         // end listening for PreviewContextID if there is no such parameter at initialization
         timer(3000),
       ]).subscribe(value => {
-        if (!this.previewContextId && value) {
+        if (value) {
           this.previewContextId = value;
         }
       });
