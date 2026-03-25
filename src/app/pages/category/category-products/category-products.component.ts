@@ -32,7 +32,7 @@ export class CategoryProductsComponent implements OnInit, OnChanges {
   @Input({ required: true }) category: CategoryView;
   @Input() deviceType: DeviceType;
 
-  isCollapsed = true;
+  isCollapsed = false;
 
   ngOnInit() {
     this.isCollapsed = this.deviceType === 'mobile';

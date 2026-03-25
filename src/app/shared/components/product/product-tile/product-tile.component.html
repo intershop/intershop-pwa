@@ -5,7 +5,9 @@
     <ish-product-label />
   </div>
   <ish-product-name />
+  @defer {
   <ish-product-rating *ishFeature="'rating'" [hideNumberOfReviews]="true" />
+  }
   <ish-product-promotion displayType="simple" />
   @if (configuration$('price') | async) {
   <div class="price-container">

@@ -11,8 +11,6 @@
     background: none;
 
     @include media-breakpoint-down(md) {
-      // Push footer below the viewport on initial load to prevent CLS
-      min-height: calc(100vh - #{$header-height-mobile});
       padding-top: $search-container-height;
     }
 
@@ -26,7 +24,7 @@
     padding-right: 0;
     padding-left: 0;
 
-    img:not(.product-image) {
+    img {
       width: 100%;
     }
 

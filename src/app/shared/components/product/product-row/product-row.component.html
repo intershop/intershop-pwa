@@ -10,7 +10,9 @@
     <div class="row">
       <div class="col-md-7">
         <ish-product-name />
+        @defer {
         <ish-product-rating *ishFeature="'rating'" [hideNumberOfReviews]="true" />
+        }
         <ish-product-id />
         @if (configuration$('description') | async) {
         <div class="product-description" [ishServerHtml]="product.shortDescription"></div>

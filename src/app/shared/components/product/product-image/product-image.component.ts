@@ -23,13 +23,6 @@ import { Image } from 'ish-core/models/image/image.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductImageComponent implements OnInit {
-  private static readonly DEFAULT_IMAGE_DIMENSIONS: Record<string, { height: number; width: number }> = {
-    S: { width: 120, height: 120 },
-    M: { width: 270, height: 270 },
-    L: { width: 500, height: 500 },
-    ZOOM: { width: 1000, height: 1000 },
-  };
-
   /**
    * The image type (size), i.e. 'S' for the small image.
    */
@@ -77,13 +70,5 @@ export class ProductImageComponent implements OnInit {
     ]).pipe(map(parts => parts.filter(x => !!x).join(' ')));
 
     this.computedQueryParamsHandling = this.queryParamsHandlingInjector ?? this.queryParamsHandling;
-  }
-
-  get fallbackImageWidth() {
-    return ProductImageComponent.DEFAULT_IMAGE_DIMENSIONS[this.imageType]?.width;
-  }
-
-  get fallbackImageHeight() {
-    return ProductImageComponent.DEFAULT_IMAGE_DIMENSIONS[this.imageType]?.height;
   }
 }
