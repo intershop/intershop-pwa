@@ -1,3 +1,8 @@
+@if (shouldShowPlaceholder) {
+<div class="content-pagelet-placeholder content-pagelet-placeholder-featured-products" aria-hidden="true">
+  <ish-loading [standalone]="true" />
+</div>
+}
 <ish-content-design-view-wrapper [pageletId]="pageletId">
   <ng-container #cmsOutlet />
 </ish-content-design-view-wrapper>

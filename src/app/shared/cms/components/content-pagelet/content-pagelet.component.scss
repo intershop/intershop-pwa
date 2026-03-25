@@ -1,0 +1,14 @@
+.content-pagelet-placeholder {
+  display: block;
+  width: 100%;
+}
+
+.content-pagelet-placeholder-featured-products {
+  min-height: 450px;
+}
+
+@media (max-width: 767.98px) {
+  .content-pagelet-placeholder-featured-products {
+    min-height: 700px;
+  }
+}
