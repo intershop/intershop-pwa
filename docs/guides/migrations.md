@@ -7,6 +7,12 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 10.1.0 to 11.0.0
+
+**Node.js update**
+
+The Intershop PWA now uses Node.js 24.14.0 LTS with the corresponding npm version 11.9.0.
+
 ## From 9.1.0 to 10.0.0
 
 **Node.js update**

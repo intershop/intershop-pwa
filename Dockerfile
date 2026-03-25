@@ -1,5 +1,5 @@
 # synchronize-marker:docker-cache-share:begin
-FROM node:22.22.0-alpine AS buildstep
+FROM node:24.14.0-alpine AS buildstep
 # increase the `--max-old-space-size` if "FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory" occur during build
 ENV NODE_OPTIONS=--max-old-space-size=8192
 ENV CI=true
@@ -29,7 +29,7 @@ RUN npm run build:multi server
 RUN node scripts/compile-docker-scripts
 COPY dist/* /workspace/dist/
 
-FROM node:22.22.0-alpine
+FROM node:24.14.0-alpine
 RUN apk add --no-cache tini
 COPY --from=buildstep /workspace/dist /dist
 RUN cd dist && npm install
