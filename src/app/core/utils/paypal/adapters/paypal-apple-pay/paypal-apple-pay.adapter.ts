@@ -123,16 +123,12 @@ export class PaypalApplePayAdapter {
   /**
    * Loads the Apple Pay JavaScript SDK.
    */
-  private async loadApplePaySdk(): Promise<void> {
-    this.scriptLoaderService
-      .load(this.applePaySdkUrl)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(result => {
-        if (result.loaded) {
-          return Promise.resolve();
-        }
-        return Promise.reject(new Error('Failed to load Google Pay SDK'));
-      });
+  private loadApplePaySdk(): Promise<void> {
+    return firstValueFrom(this.scriptLoaderService.load(this.applePaySdkUrl).pipe(take(1))).then(result => {
+      if (!result.loaded) {
+        throw new Error('Failed to load Apple Pay SDK');
+      }
+    });
   }
 
   /**
@@ -215,8 +211,11 @@ export class PaypalApplePayAdapter {
         await this.onPaymentAuthorized(event, session);
       };
 
-      session.oncancel = () => {
+      session.oncancel = async () => {
         this.loading = false;
+        if (!this.orderContext) {
+          this.orderContext = await this.orderContextPromise;
+        }
         this.continueICMOrderCreation(this.orderContext.orderId);
       };
 

@@ -11,6 +11,7 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
 import { PaypalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 import { ApplePayConfig, PaypalComponent } from 'ish-core/utils/paypal/paypal-model/paypal.model';
+import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
 import { PaypalApplePayAdapter } from './paypal-apple-pay.adapter';
 
@@ -58,6 +59,7 @@ describe('Paypal Apple Pay Adapter', () => {
   let destroyRef: DestroyRef;
   let checkoutFacade: CheckoutFacade;
   let paypalDataTransferService: PaypalDataTransferService;
+  let scriptLoaderService: ScriptLoaderService;
 
   const mockBasket = {
     id: 'test-basket',
@@ -90,6 +92,9 @@ describe('Paypal Apple Pay Adapter', () => {
     destroyRef = mock(DestroyRef);
     checkoutFacade = mock(CheckoutFacade);
     paypalDataTransferService = mock(PaypalDataTransferService);
+    scriptLoaderService = mock(ScriptLoaderService);
+
+    when(scriptLoaderService.load(anything())).thenReturn(of({ src: '', loaded: true }));
 
     // Mock PayPal Apple Pay component
     mockPaypalApplepay = {
@@ -130,6 +135,7 @@ describe('Paypal Apple Pay Adapter', () => {
         { provide: DestroyRef, useFactory: () => instance(destroyRef) },
         { provide: DOCUMENT, useValue: document },
         { provide: PaypalDataTransferService, useFactory: () => instance(paypalDataTransferService) },
+        { provide: ScriptLoaderService, useFactory: () => instance(scriptLoaderService) },
         TestablePaypalApplePayAdapter,
       ],
     });
