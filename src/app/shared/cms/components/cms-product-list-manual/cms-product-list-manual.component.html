@@ -1,14 +1,5 @@
 @if (productSKUs?.length) {
-<div
-  class="product-list-container"
-  [ngClass]="pagelet.stringParam('CSSClass')"
-  [class.product-list-container-featured-products]="isFeaturedProductsPagelet"
->
-  @if (showFeaturedProductsPlaceholder) {
-  <div class="cms-product-list-manual-placeholder" aria-hidden="true">
-    <ish-loading [standalone]="true" />
-  </div>
-  }
+<div class="product-list-container" [ngClass]="pagelet.stringParam('CSSClass')">
   @if (pagelet.stringParam('Title')) {
   <h2>{{ pagelet.stringParam('Title') }}</h2>
   }
