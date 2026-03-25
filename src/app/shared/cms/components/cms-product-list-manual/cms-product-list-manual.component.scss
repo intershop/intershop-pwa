@@ -1,0 +1,23 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.product-list-container-featured-products {
+  position: relative;
+  min-height: 450px;
+}
+
+.cms-product-list-manual-placeholder {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  min-height: inherit;
+  pointer-events: none;
+}
+
+@media (max-width: 767.98px) {
+  .product-list-container-featured-products {
+    min-height: 700px;
+  }
+}
