@@ -2,9 +2,7 @@
   "ci": {
     "collect": {
       "numberOfRuns": 5,
-      "url": [
-        "http://localhost:4200/computers/notebooks-and-pcs/notebooks-ctgComputers.1835.151"
-      ],
+      "url": ["http://localhost:4200/home"],
       "settings": {
         "preset": "desktop",
         "chromeFlags": "--no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --disable-gpu --headless=new --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-renderer-backgrounding --disable-web-security --disable-features=TranslateUI --disable-ipc-flooding-protection",

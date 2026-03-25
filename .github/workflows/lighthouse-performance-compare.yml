@@ -8,10 +8,6 @@ on:
         required: false
         default: develop
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.run_id }}
-  cancel-in-progress: false
-
 permissions:
   actions: read
   contents: read
@@ -57,27 +53,46 @@ jobs:
             curl -s "$url" >/dev/null
           done
 
-      - name: Run Lighthouse CI performance audits (desktop + mobile)
+      - name: Run Lighthouse CI performance audit (${{ matrix.device }})
         env:
           LHCI_COLLECT__CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
         run: |
-          echo "Lighthouse CI (desktop)"
-          npx lhci autorun --config=.github/lighthouse/configurations/performance-desktop.lighthouserc.json
-          mv .lighthouseci lighthouse-desktop-current
+          npx lhci autorun --config=${{ matrix.config }}
+          mv .lighthouseci ${{ matrix.output_dir }}
 
-          echo "Lighthouse CI (mobile)"
-          npx lhci autorun --config=.github/lighthouse/configurations/performance-mobile.lighthouserc.json
-          mv .lighthouseci lighthouse-mobile-current
-
-      - name: Upload current Lighthouse reports
+      - name: Upload current Lighthouse reports (${{ matrix.device }})
         if: always()
         uses: actions/upload-artifact@v6
         with:
-          name: lighthouse-reports-current
-          path: |
-            lighthouse-desktop-current
-            lighthouse-mobile-current
+          name: ${{ matrix.output_dir }}
+          path: ${{ matrix.output_dir }}
           if-no-files-found: warn
+
+  lighthouse-performance-compare:
+    name: Lighthouse Performance Compare
+    runs-on: ubuntu-latest
+    needs: lighthouse-performance-current
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+
+      - name: Download current desktop Lighthouse reports
+        uses: actions/download-artifact@v6
+        with:
+          name: lighthouse-desktop-current
+          path: lighthouse-desktop-current
+
+      - name: Download current mobile Lighthouse reports
+        uses: actions/download-artifact@v6
+        with:
+          name: lighthouse-mobile-current
+          path: lighthouse-mobile-current
 
       - name: Download baseline Lighthouse reports
         uses: dawidd6/action-download-artifact@v12

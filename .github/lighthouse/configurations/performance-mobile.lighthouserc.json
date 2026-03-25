@@ -2,11 +2,7 @@
   "ci": {
     "collect": {
       "numberOfRuns": 5,
-      "url": [
-        "http://localhost:4200/home",
-        "http://localhost:4200/computers-ctgComputers",
-        "http://localhost:4200/computers/notebooks-and-pcs/notebooks-ctgComputers.1835.151"
-      ],
+      "url": ["http://localhost:4200/home"],
       "settings": {
         "formFactor": "mobile",
         "throttlingMethod": "devtools",
