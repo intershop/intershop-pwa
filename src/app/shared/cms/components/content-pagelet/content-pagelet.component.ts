@@ -35,7 +35,6 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
 @Component({
   selector: 'ish-content-pagelet',
   templateUrl: './content-pagelet.component.html',
-  styleUrls: ['./content-pagelet.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [ContentDesignViewWrapperComponent],

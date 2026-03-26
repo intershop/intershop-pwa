@@ -11,6 +11,7 @@
     background: none;
 
     @include media-breakpoint-down(md) {
+      min-height: calc(100vh - #{$header-height-mobile});
       padding-top: $search-container-height;
     }
 
