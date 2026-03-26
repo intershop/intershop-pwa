@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, Optional, Output, SkipSelf } from '@angular/core';
+import { Directive, Input, Optional, Output, SkipSelf } from '@angular/core';
 import { ReplaySubject, combineLatest, debounceTime, distinctUntilChanged, pairwise, startWith } from 'rxjs';
 
 import {
@@ -16,14 +16,17 @@ declare type IdType = number | string;
   exportAs: 'ishProductContext',
   standalone: true,
 })
-export class ProductContextDirective implements OnInit {
-  @Input() completeness: ProductCompletenessLevel = ProductCompletenessLevel.List;
+export class ProductContextDirective {
+  private completenessLevel = ProductCompletenessLevel.List;
+
   @Output() skuChange = this.context.select('sku');
   @Output() quantityChange = this.context.select('quantity');
 
   private propIndex$ = new ReplaySubject<IdType>(1);
 
   constructor(@SkipSelf() @Optional() parentContext: ProductContextFacade, private context: ProductContextFacade) {
+    this.context.set('requiredCompletenessLevel', () => this.completenessLevel);
+
     if (parentContext) {
       const removeFromParent = (parent: ProductContext['children'], id: IdType) => {
         delete parent[id];
@@ -64,6 +67,12 @@ export class ProductContextDirective implements OnInit {
         }
       );
     }
+  }
+
+  @Input()
+  set completeness(completeness: ProductCompletenessLevel) {
+    this.completenessLevel = completeness ?? ProductCompletenessLevel.List;
+    this.context.set('requiredCompletenessLevel', () => this.completenessLevel);
   }
 
   @Input()
@@ -111,9 +120,4 @@ export class ProductContextDirective implements OnInit {
     this.context.config = config;
   }
 
-  ngOnInit() {
-    if (this.completeness) {
-      this.context.set('requiredCompletenessLevel', () => this.completeness);
-    }
-  }
 }
