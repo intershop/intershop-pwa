@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
