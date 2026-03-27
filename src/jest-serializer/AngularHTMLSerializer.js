@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const prettier = require('prettier');
+const prettier = require('@prettier/sync');
 
 const print = val => {
   let source;

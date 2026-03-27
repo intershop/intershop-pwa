@@ -23,7 +23,7 @@ const registerLintAtEnd = once((root: string) => {
           }
 
           for (const batch of batches) {
-            execSync(`npx prettier --write --loglevel warn ${batch.join(' ')}`, { cwd: root });
+            execSync(`npx prettier --write --log-level warn ${batch.join(' ')}`, { cwd: root });
             execSync(`npx eslint --fix ${batch.join(' ')}`, { cwd: root });
           }
         } catch (error) {

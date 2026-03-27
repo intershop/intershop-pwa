@@ -28,7 +28,7 @@
     "lint": "ng lint",
     "lint-hard": "node scripts/eslint-hard",
     "sort-i18n": "node scripts/sort-i18n.mjs",
-    "format": "node docs/check-sentence-newline && stylelint \"**/*.{css,scss}\" --fix && prettier --loglevel warn --write \"**/*.*\" && npm run sort-i18n",
+    "format": "node docs/check-sentence-newline && stylelint \"**/*.{css,scss}\" --fix && prettier --log-level warn --write \"**/*.*\" && npm run sort-i18n",
     "compile": "tsc --project tsconfig.all.json --noEmit",
     "dead-code": "npx ts-node scripts/find-dead-code.ts",
     "clean-localizations": "node scripts/clean-up-localizations",
@@ -133,6 +133,7 @@
     "@lhci/cli": "^0.15.1",
     "@ngrx/eslint-plugin": "^21.1.0",
     "@phenomnomnominal/tsquery": "^6.2.0",
+    "@prettier/sync": "^0.6.1",
     "@schematics/angular": "^18.2.21",
     "@smarttools/eslint-plugin-rxjs": "^1.0.22",
     "@types/eslint": "^9.6.1",
@@ -156,7 +157,7 @@
     "eslint-plugin-ish-custom-rules": "file:eslint-rules",
     "eslint-plugin-jest": "^29.15.2",
     "eslint-plugin-jsdoc": "^62.9.0",
-    "eslint-plugin-prettier": "^4.2.5",
+    "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-rxjs-angular-x": "^0.1.2",
     "eslint-plugin-unicorn": "^64.0.0",
     "eslint-plugin-unused-imports": "^4.4.1",
@@ -173,16 +174,16 @@
     "lint-staged": "^16.4.0",
     "ng-mocks": "^14.15.2",
     "npm-run-all2": "^8.0.4",
-    "prettier": "^2.8.8",
+    "prettier": "^3.8.2",
     "purgecss-webpack-plugin": "^8.0.0",
     "sort-json": "^2.0.1",
-    "stylelint": "^16.26.1",
+    "stylelint": "^17.6.0",
     "stylelint-config-recess-order": "^7.7.0",
-    "stylelint-config-recommended-scss": "^16.0.2",
-    "stylelint-config-standard": "^39.0.1",
-    "stylelint-order": "^7.0.1",
-    "stylelint-prettier": "^3.0.0",
-    "stylelint-scss": "^6.14.0",
+    "stylelint-config-recommended-scss": "^17.0.0",
+    "stylelint-config-standard": "^40.0.0",
+    "stylelint-order": "^8.1.1",
+    "stylelint-prettier": "^5.0.3",
+    "stylelint-scss": "^7.0.0",
     "treeify": "^1.1.0",
     "ts-jest": "^29.4.9",
     "ts-mockito": "^2.6.1",
@@ -222,7 +223,7 @@
       "cspell lint --no-summary --no-progress"
     ],
     "*": [
-      "prettier --loglevel warn --write"
+      "prettier --log-level warn --write"
     ],
     "*.{html,js,mjs}": [
       "eslint --fix --max-warnings 0"

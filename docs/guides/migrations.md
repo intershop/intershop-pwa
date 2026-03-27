@@ -86,6 +86,20 @@ Key changes:
 
 For more details about the Jest 30 update, see the [Jest Upgrade Guide](https://jestjs.io/docs/upgrading-to-jest30).
 
+**Prettier 3 and Stylelint 17 update**
+
+With Intershop PWA 11.0.0, Prettier and Stylelint have been updated to the latest versions.
+
+The commits for the dependency updates and the required code style changes and adaptations are provided separately.
+This allows the dependency update commit to be integrated into a customer project while the automatic changes are skipped and executed directly on the custom code.
+
+Run the following commands after updating the formatting and linting dependencies:
+
+```
+npm run format
+ng lint --fix
+```
+
 **CMS view context REST requests with resource set ID**
 
 The REST requests to get CMS view context data now append the resource set ID (the defining view context model's cartridge name) by default to improve performance.
