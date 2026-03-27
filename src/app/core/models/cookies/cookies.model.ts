@@ -1,11 +1,12 @@
 export interface CookieConsentOptions {
-  options: {
-    [id: string]: {
+  options: Record<
+    string,
+    {
       name: string;
       description: string;
       required?: boolean;
-    };
-  };
+    }
+  >;
   allowedCookies?: string[];
 }
 

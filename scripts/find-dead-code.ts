@@ -91,9 +91,9 @@ function checkAction(node: Node) {
       .map(l => l.getLastChild()?.getFirstChild())
       .flat()
       .filter(Boolean)
-      .map(node => {
-        if (Node.isVariableDeclaration(node)) {
-          const actionInitNode = node
+      .map(decl => {
+        if (Node.isVariableDeclaration(decl)) {
+          const actionInitNode = decl
             .getChildrenOfKind(SyntaxKind.CallExpression)
             .map(ce => ce.getArguments()[0])
             .flat()[0];
@@ -110,7 +110,7 @@ function checkAction(node: Node) {
             return;
           }
 
-          return { node, name: node.getName(), type };
+          return { node: decl, name: decl.getName(), type };
         }
       })
       .filter(Boolean);

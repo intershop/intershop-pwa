@@ -5,7 +5,7 @@ export interface ContentPageTreeElement {
 }
 
 export interface ContentPageTree {
-  nodes: { [id: string]: ContentPageTreeElement };
-  edges: { [id: string]: string[] };
+  nodes: Record<string, ContentPageTreeElement>;
+  edges: Record<string, string[]>;
   rootIds: string[];
 }

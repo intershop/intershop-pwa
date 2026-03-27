@@ -48,16 +48,16 @@ export interface OrderBaseData extends BasketBaseData {
 export interface OrderData {
   data: OrderBaseData | OrderBaseData[];
   included?: {
-    invoiceToAddress?: { [urn: string]: AddressData };
-    lineItems?: { [id: string]: OrderItemData };
-    discounts?: { [id: string]: BasketRebateData };
-    lineItems_discounts?: { [id: string]: BasketRebateData };
-    lineItems_warranty?: { [id: string]: BasketWarrantyData };
-    commonShipToAddress?: { [urn: string]: AddressData };
-    commonShippingMethod?: { [id: string]: ShippingMethodData };
-    payments?: { [id: string]: PaymentData };
-    payments_paymentMethod?: { [id: string]: PaymentMethodBaseData };
-    payments_paymentInstrument?: { [id: string]: PaymentInstrument };
+    invoiceToAddress?: Record<string, AddressData>;
+    lineItems?: Record<string, OrderItemData>;
+    discounts?: Record<string, BasketRebateData>;
+    lineItems_discounts?: Record<string, BasketRebateData>;
+    lineItems_warranty?: Record<string, BasketWarrantyData>;
+    commonShipToAddress?: Record<string, AddressData>;
+    commonShippingMethod?: Record<string, ShippingMethodData>;
+    payments?: Record<string, PaymentData>;
+    payments_paymentMethod?: Record<string, PaymentMethodBaseData>;
+    payments_paymentInstrument?: Record<string, PaymentInstrument>;
   };
   infos?: BasketInfo[];
   info?: PagingInfo;

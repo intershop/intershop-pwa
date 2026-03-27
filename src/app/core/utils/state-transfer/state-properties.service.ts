@@ -16,8 +16,8 @@ function isJSON(value: string): boolean {
 function isYAML(value: string) {
   const lines = value.split('\n').filter(x => !!x?.trim());
   return (
-    (lines.length > 1 && value.split('\n').some(line => /:\s*$/.test(line))) ||
-    lines.every(line => line.includes(': ') || lines.every(line => line.trim().startsWith('- ')))
+    (lines.length > 1 && lines.some(line => /:\s*$/.test(line))) ||
+    lines.every(line => line.includes(': ') || line.trim().startsWith('- '))
   );
 }
 

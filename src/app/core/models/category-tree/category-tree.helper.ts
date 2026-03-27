@@ -29,7 +29,7 @@ export class CategoryTreeHelper {
     }
 
     // add edges from categoryPath
-    const edges: { [id: string]: string[] } = {};
+    const edges: Record<string, string[]> = {};
     if (category.categoryPath && category.categoryPath.length >= 2) {
       const path = category.categoryPath;
       for (let i = 0; i < path.length - 1; i++) {
@@ -131,9 +131,9 @@ export class CategoryTreeHelper {
   }
 
   private static mergeNodes(
-    current: { [id: string]: Category },
-    incoming: { [id: string]: Category }
-  ): { [id: string]: Category } {
+    current: Record<string, Category>,
+    incoming: Record<string, Category>
+  ): Record<string, Category> {
     const nodes = { ...current };
     Object.keys(incoming).forEach(key => {
       nodes[key] = { ...CategoryTreeHelper.updateStrategy(current[key], incoming[key]) };
@@ -142,9 +142,9 @@ export class CategoryTreeHelper {
   }
 
   private static mergeCategoryRefs(
-    current: { [id: string]: string },
-    incoming: { [id: string]: Category }
-  ): { [id: string]: string } {
+    current: Record<string, string>,
+    incoming: Record<string, Category>
+  ): Record<string, string> {
     const refs = { ...current };
     Object.keys(incoming).forEach(key => {
       refs[incoming[key]?.categoryRef] = key;
@@ -153,9 +153,9 @@ export class CategoryTreeHelper {
   }
 
   private static mergeEdges(
-    current: { [id: string]: string[] },
-    incoming: { [id: string]: string[] }
-  ): { [id: string]: string[] } {
+    current: Record<string, string[]>,
+    incoming: Record<string, string[]>
+  ): Record<string, string[]> {
     const edges = { ...current };
     Object.keys(incoming).forEach(key => {
       if (current[key]) {
@@ -184,11 +184,11 @@ export class CategoryTreeHelper {
     return t1.length === t2.length && t1.every(e => t2.includes(e));
   }
 
-  private static edgesEqual(t1: { [id: string]: string[] }, t2: { [id: string]: string[] }) {
+  private static edgesEqual(t1: Record<string, string[]>, t2: Record<string, string[]>) {
     return isEqual(t1, t2);
   }
 
-  private static categoriesEqual(t1: { [id: string]: Category }, t2: { [id: string]: Category }) {
+  private static categoriesEqual(t1: Record<string, Category>, t2: Record<string, Category>) {
     const keys1 = Object.keys(t1);
     const keys2 = Object.keys(t2);
     return (

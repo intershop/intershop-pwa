@@ -167,7 +167,7 @@ export function createPage(options: Options): Rule {
     );
 
     operations.push(addRouteToRoutingModule(options));
-    if (options.extension && !new String(host.read(options.routingModule)).includes('ish-core/feature-toggle.module')) {
+    if (options.extension && !host.read(options.routingModule)?.toString().includes('ish-core/feature-toggle.module')) {
       operations.push(
         addImportToFile({
           module: options.routingModule,

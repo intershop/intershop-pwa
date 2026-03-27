@@ -26,7 +26,7 @@ export const getCategory = (uniqueId: string) =>
 export const getCategoryIdByRefId = (categoryRefId: string) =>
   createSelectorFactory<object, string>(projector => defaultMemoize(projector, isEqual))(
     getCategoryRefs,
-    (refs: { [id: string]: string }) => refs[categoryRefId]
+    (refs: Record<string, string>) => refs[categoryRefId]
   );
 
 /**

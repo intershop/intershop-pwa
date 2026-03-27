@@ -50,7 +50,7 @@ let foundError = false;
 
 try {
   execSync(command, { stdio: 'inherit' });
-} catch (error) {
+} catch {
   foundError = true;
 } finally {
   restoreConfig();

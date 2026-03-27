@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /**
  * ATTENTION: This script will refactor only the typescript files, when the implementation contains the recommended technique to complete open subscriptions within components, directives or pipes with a destroy$ subject.
  * Other implementations will not be effected by this script.

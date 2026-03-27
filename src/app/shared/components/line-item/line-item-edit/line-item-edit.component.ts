@@ -18,7 +18,7 @@ export class LineItemEditComponent implements OnInit {
   @ViewChild('modalDialog') modalDialogRef: ModalDialogComponent<unknown>;
 
   @Input({ required: true }) itemId: string;
-  @Output() updateItem = new EventEmitter<LineItemUpdate>();
+  @Output() readonly updateItem = new EventEmitter<LineItemUpdate>();
 
   product$: Observable<ProductView>;
 

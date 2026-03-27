@@ -16,16 +16,16 @@ interface BasketMergeBaseData {
 export interface BasketMergeData {
   data: BasketMergeBaseData;
   included?: {
-    targetBasket: { [id: string]: BasketBaseData };
-    targetBasket_invoiceToAddress?: { [urn: string]: AddressData };
-    targetBasket_lineItems?: { [id: string]: LineItemData };
-    targetBasket_lineItems_warranty?: { [id: string]: BasketWarrantyData };
-    targetBasket_lineItems_discounts?: { [id: string]: BasketRebateData };
-    targetBasket_discounts?: { [id: string]: BasketRebateData };
-    targetBasket_commonShipToAddress?: { [urn: string]: AddressData };
-    targetBasket_commonShippingMethod?: { [id: string]: ShippingMethodData };
-    targetBasket_payments?: { [id: string]: PaymentData };
-    targetBasket_payments_paymentMethod?: { [id: string]: PaymentMethodBaseData };
-    targetBasket_payments_paymentInstrument?: { [id: string]: PaymentInstrument };
+    targetBasket: Record<string, BasketBaseData>;
+    targetBasket_invoiceToAddress?: Record<string, AddressData>;
+    targetBasket_lineItems?: Record<string, LineItemData>;
+    targetBasket_lineItems_warranty?: Record<string, BasketWarrantyData>;
+    targetBasket_lineItems_discounts?: Record<string, BasketRebateData>;
+    targetBasket_discounts?: Record<string, BasketRebateData>;
+    targetBasket_commonShipToAddress?: Record<string, AddressData>;
+    targetBasket_commonShippingMethod?: Record<string, ShippingMethodData>;
+    targetBasket_payments?: Record<string, PaymentData>;
+    targetBasket_payments_paymentMethod?: Record<string, PaymentMethodBaseData>;
+    targetBasket_payments_paymentInstrument?: Record<string, PaymentInstrument>;
   };
 }

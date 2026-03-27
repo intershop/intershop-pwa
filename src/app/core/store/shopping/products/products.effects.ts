@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -205,7 +206,7 @@ export class ProductsEffects {
               .getFilteredProducts(searchParameter, pageSize, sorting, ((page || 1) - 1) * pageSize)
               .pipe(
                 concatLatestFrom(() => this.productsServiceProvider.isSparqueSearchEnabled()),
-                mergeMap(([{ products, total, filter, sortableAttributes }, isSparque]) => {
+                mergeMap(([{ products, total, filter: productFilter, sortableAttributes }, isSparque]) => {
                   const actions: Action[] = [
                     ...products.map((product: Product) => loadProductSuccess({ product })),
                     setProductListingPages(
@@ -226,10 +227,10 @@ export class ProductsEffects {
                   ];
                   if (isSparque) {
                     actions.push(
-                      filter?.length
+                      productFilter?.length
                         ? loadFilterSuccess({
                             filterNavigation: {
-                              filter: this.handleSparqueCategoryFilter(filter, categoryFilter, searchParameter),
+                              filter: this.handleSparqueCategoryFilter(productFilter, categoryFilter, searchParameter),
                             },
                           })
                         : // in case no filter is returned filter state must contain at least the filters from the search parameter
@@ -495,7 +496,7 @@ export class ProductsEffects {
         count: repliedFacets.find(element => element.id === storedCategoryFacet.id)
           ? repliedFacets
               .filter(element => element.id === storedCategoryFacet.id)
-              .flatMap(filter => filter.facets)
+              .flatMap(productFilter => productFilter.facets)
               .map(facet => facet.count)
               .reduce((acc, val) => acc + val, 0)
           : currentCategoryFacetOption.count,
@@ -515,7 +516,7 @@ export class ProductsEffects {
       if (repliedFacets) {
         foundedCategoryFacetOptions = repliedFacets
           .filter(element => element.id === storedCategoryFacet.id)
-          .flatMap(filter => filter.facets)
+          .flatMap(productFilter => productFilter.facets)
           .map(facetOption => ({ ...facetOption, level: currentCategoryFacetOption.level + 1 }));
       }
 

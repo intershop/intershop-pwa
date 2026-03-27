@@ -1,11 +1,13 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as fs from 'fs';
 
 import useCorrectComponentOverridesRule from '../src/rules/use-correct-component-overrides';
 
 import testRule from './rule-tester';
 
-jest.spyOn(fs, 'existsSync').mockImplementation(() => true);
+jest.mock('fs', () => ({
+  ...jest.requireActual('fs'),
+  existsSync: jest.fn(() => true),
+}));
 
 testRule(useCorrectComponentOverridesRule, {
   valid: [

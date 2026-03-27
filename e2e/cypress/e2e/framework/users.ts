@@ -37,7 +37,7 @@ export function createUserViaREST(user: Partial<Registration>) {
   });
 }
 
-export function createBasketViaREST(user: Partial<Registration>, lineItems: { [sku: string]: number }) {
+export function createBasketViaREST(user: Partial<Registration>, lineItems: Record<string, number>) {
   cy.request({
     method: 'POST',
     url: `${Cypress.expose('ICM_BASE_URL')}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/baskets`,

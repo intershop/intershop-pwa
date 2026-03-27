@@ -40,7 +40,7 @@ export class BasketValidationResultsComponent implements OnInit {
 
   constructor(private checkoutFacade: CheckoutFacade) {}
 
-  @Output() continueCheckout = new EventEmitter<void>();
+  @Output() readonly continueCheckout = new EventEmitter<void>();
 
   ngOnInit() {
     // update emitted to display spinning animation

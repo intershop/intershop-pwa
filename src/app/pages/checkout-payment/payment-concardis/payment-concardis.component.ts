@@ -38,8 +38,8 @@ export class PaymentConcardisComponent implements OnInit, OnChanges {
    */
   @Input() activated = false;
 
-  @Output() cancelPayment = new EventEmitter<void>();
-  @Output() submitPayment = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
+  @Output() readonly cancelPayment = new EventEmitter<void>();
+  @Output() readonly submitPayment = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
 
   /**
    * flag to make sure that the init script is executed only once

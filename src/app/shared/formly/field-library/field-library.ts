@@ -9,7 +9,10 @@ export const FIELD_LIBRARY_CONFIGURATION = new InjectionToken<FieldLibraryConfig
   'Reusable Formly Field Configuration'
 );
 
-type ConfigurationGroup = { id: string; shortcutFor: string[] };
+interface ConfigurationGroup {
+  id: string;
+  shortcutFor: string[];
+}
 
 export const FIELD_LIBRARY_CONFIGURATION_GROUP = new InjectionToken<ConfigurationGroup>(
   'Reusable Formly Field Configuration Group'

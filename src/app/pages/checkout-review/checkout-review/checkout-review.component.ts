@@ -29,7 +29,7 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: Basket;
   @Input() error: HttpError;
   @Input() submitting: boolean;
-  @Output() createOrder = new EventEmitter<void>();
+  @Output() readonly createOrder = new EventEmitter<void>();
 
   form = new FormGroup({});
   options: FormlyFormOptions = {};

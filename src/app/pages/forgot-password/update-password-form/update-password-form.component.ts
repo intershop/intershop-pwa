@@ -21,7 +21,7 @@ export class UpdatePasswordFormComponent implements OnInit {
   /**
    * Submit the form data to trigger the request for a password change.
    */
-  @Output() submitPassword = new EventEmitter<{ password: string }>();
+  @Output() readonly submitPassword = new EventEmitter<{ password: string }>();
 
   updatePasswordForm = new FormGroup({});
   fields: FormlyFieldConfig[];

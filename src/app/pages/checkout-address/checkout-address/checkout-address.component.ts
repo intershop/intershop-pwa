@@ -18,7 +18,7 @@ export class CheckoutAddressComponent implements OnInit {
   @Input({ required: true }) basket: Basket;
   @Input() error: HttpError;
 
-  @Output() nextStep = new EventEmitter<void>();
+  @Output() readonly nextStep = new EventEmitter<void>();
 
   eligibleAddresses$: Observable<Address[]>;
 

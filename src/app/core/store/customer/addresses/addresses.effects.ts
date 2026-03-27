@@ -74,8 +74,8 @@ export class AddressesEffects {
       filter(([address, customer]) => !!address || !!customer),
       mergeMap(([address]) =>
         this.addressService.updateCustomerAddress('-', address).pipe(
-          mergeMap(address => [
-            updateCustomerAddressSuccess({ address }),
+          mergeMap(addr => [
+            updateCustomerAddressSuccess({ address: addr }),
             displaySuccessMessage({ message: 'account.addresses.address_updated.message' }),
           ]),
           mapErrorToAction(updateCustomerAddressFail)

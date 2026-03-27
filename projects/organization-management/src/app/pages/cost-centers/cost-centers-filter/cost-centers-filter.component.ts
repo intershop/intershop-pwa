@@ -69,7 +69,7 @@ function urlToQuery(params: UrlModel): Partial<CostCenterQuery> {
 })
 export class CostCentersFilterComponent implements OnInit, AfterViewInit {
   @Input() fragmentOnRouting: string;
-  @Output() modelChange = new EventEmitter<Partial<CostCenterQuery>>();
+  @Output() readonly modelChange = new EventEmitter<Partial<CostCenterQuery>>();
 
   form = new UntypedFormGroup({});
   fields: FormlyFieldConfig[];

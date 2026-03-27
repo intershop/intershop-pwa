@@ -98,7 +98,7 @@ export class CopilotComponent {
    */
   initializeCopilot(
     copilotConfig: CopilotConfig,
-    localizations: { [key: string]: string },
+    localizations: Record<string, string>,
     restEndpoint: string,
     currentLocale: string,
     primaryColor: string
@@ -266,7 +266,7 @@ export class CopilotComponent {
    * Triggers the corresponding basket action in the PWA based on the PWA_basket tool call from the copilot.
    * @param toolInput The copilot tool call input.
    */
-  private handlePWABasketToolCall(toolInput: { [key: string]: string }) {
+  private handlePWABasketToolCall(toolInput: Record<string, string>) {
     const { operation, items } = toolInput || {};
     const skusAndQty = (items?.split(';') ?? []).map(item => {
       const [sku, param] = item.split(':');
@@ -314,10 +314,10 @@ export class CopilotComponent {
    * Triggers the corresponding navigation route in the PWA based on the PWA_navigate_to_page tool call from the copilot.
    * @param toolInput The copilot tool call input information.
    */
-  private handlePWANavigateToPageToolCall(toolInput: { [key: string]: string }) {
+  private handlePWANavigateToPageToolCall(toolInput: Record<string, string>) {
     const { page, sku, categoryId, orderId, orderTemplateId } = toolInput || {};
 
-    const navigationMap: { [key: string]: () => void } = {
+    const navigationMap: Record<string, () => void> = {
       home: () => this.navigate('/'),
       basket: () => this.navigate('/basket'),
       product: () => this.navigate(`/product/${sku}`),
@@ -342,7 +342,7 @@ export class CopilotComponent {
    * @param toolInput The copilot tool call input information.
    */
 
-  private handlePWAOrderTemplateToolCall(toolInput: { [key: string]: string }) {
+  private handlePWAOrderTemplateToolCall(toolInput: Record<string, string>) {
     const { operation, sku, orderTemplateId, title, quantity } = toolInput || {};
 
     switch (operation) {

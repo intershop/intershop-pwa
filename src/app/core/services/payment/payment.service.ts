@@ -112,7 +112,7 @@ export class PaymentService {
     const params = new HttpParams().set('include', 'paymentMethod');
     return this.apiService
       .currentBasketEndpoint()
-      .put<{ data: PaymentInstrument; included: { paymentMethod: { [id: string]: PaymentMethodBaseData } } }>(
+      .put<{ data: PaymentInstrument; included: { paymentMethod: Record<string, PaymentMethodBaseData> } }>(
         'payments/open-tender',
         { paymentInstrument },
         { headers: this.basketHeaders, params }
@@ -216,7 +216,7 @@ export class PaymentService {
    * @param redirect          The payment redirect information (parameters and status).
    * @returns                 The updated payment.
    */
-  updateBasketPayment(params: { [key: string]: string }): Observable<Payment> {
+  updateBasketPayment(params: Record<string, string>): Observable<Payment> {
     if (!params) {
       return throwError(() => new Error('updateBasketPayment() called without parameter data'));
     }

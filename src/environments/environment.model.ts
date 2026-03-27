@@ -110,7 +110,7 @@ export interface Environment {
   fallbackLocales?: string[];
 
   // configuration filtering available locales and their active currencies
-  localeCurrencyOverride?: { [locale: string]: string | string[] };
+  localeCurrencyOverride?: Record<string, string | string[]>;
 
   // multi-site URLs to locales mapping ('undefined' if mapping should not be used)
   multiSiteLocaleMap: MultiSiteLocaleMap;
@@ -124,14 +124,14 @@ export interface Environment {
   cookieConsentVersion?: number;
 
   // client-side configuration for identity providers
-  identityProviders?: {
-    [name: string]:
-      | {
-          type: string;
-          [key: string]: unknown;
-        }
-      | Auth0Config;
-  };
+  identityProviders?: Record<
+    string,
+    | {
+        type: string;
+        [key: string]: unknown;
+      }
+    | Auth0Config
+  >;
 
   // enable and configure data persistence for specific stores (compare, recently)
   dataRetention: DataRetentionPolicy;

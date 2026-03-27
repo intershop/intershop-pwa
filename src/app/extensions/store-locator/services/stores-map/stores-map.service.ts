@@ -9,7 +9,10 @@ import { StoreLocation } from '../../models/store-location/store-location.model'
 import { getGMAKey } from '../../store/store-locator-config';
 import { getHighlightedStore, getStores, highlightStore } from '../../store/stores';
 
-type IconConfiguration = { default: string; highlight: string };
+interface IconConfiguration {
+  default: string;
+  highlight: string;
+}
 
 export const STORE_MAP_ICON_CONFIGURATION = new InjectionToken<IconConfiguration>('Store Map Icon Configuration');
 

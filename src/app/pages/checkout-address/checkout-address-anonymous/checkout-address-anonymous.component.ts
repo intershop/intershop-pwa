@@ -26,7 +26,7 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
   @Input({ required: true }) basket: Basket;
   @Input() error: HttpError;
 
-  @Output() nextStep = new EventEmitter<void>();
+  @Output() readonly nextStep = new EventEmitter<void>();
 
   @ViewChild('addressForm') addressForm: FormGroupDirective;
 

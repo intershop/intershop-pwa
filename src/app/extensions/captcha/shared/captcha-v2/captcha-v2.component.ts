@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, NgModule, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';

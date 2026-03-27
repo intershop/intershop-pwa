@@ -1,1 +1,4 @@
-export type RecentlyViewedProduct = { sku: string; group?: string };
+export interface RecentlyViewedProduct {
+  sku: string;
+  group?: string;
+}

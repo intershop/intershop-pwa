@@ -19,7 +19,7 @@ import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
 export class OrganizationSettingsCompanyComponent implements OnInit {
   @Input({ required: true }) currentCustomer: Customer;
   @Input() error: HttpError;
-  @Output() updateCompanyProfile = new EventEmitter<Customer>();
+  @Output() readonly updateCompanyProfile = new EventEmitter<Customer>();
 
   organizationSettingsCompanyForm = new FormGroup({});
   model: Partial<Customer>;

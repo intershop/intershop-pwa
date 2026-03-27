@@ -53,8 +53,8 @@ export class OciConfigurationEffects {
       mapToPayloadProperty('configuration'),
       concatMap(configuration =>
         this.punchoutService.updateOciConfiguration(configuration).pipe(
-          mergeMap(configuration => [
-            ociConfigurationApiActions.updateOCIConfigurationSuccess({ configuration }),
+          mergeMap(conf => [
+            ociConfigurationApiActions.updateOCIConfigurationSuccess({ configuration: conf }),
             displaySuccessMessage({
               message: 'account.punchout.configuration.save_success.message',
             }),

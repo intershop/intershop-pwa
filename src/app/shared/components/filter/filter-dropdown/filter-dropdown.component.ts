@@ -23,7 +23,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
 export class FilterDropdownComponent implements OnInit {
   @Input({ required: true }) filterElement: Filter;
   @Input() placeholderType: 'groupName' | 'selectedFacets' = 'groupName';
-  @Output() applyFilter: EventEmitter<{ searchParameter: URLFormParams }> = new EventEmitter();
+  @Output() readonly applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
 
   placeholder = '';
 

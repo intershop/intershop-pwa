@@ -36,8 +36,8 @@ export class CxmlConfigurationEffects {
       concatLatestFrom(() => this.store.pipe(select(getSelectedPunchoutUser))),
       concatMap(([configuration, user]) =>
         this.punchoutService.updateCxmlConfiguration(configuration, user.id).pipe(
-          mergeMap(configuration => [
-            cxmlConfigurationApiActions.updateCXMLConfigurationSuccess({ configuration }),
+          mergeMap(conf => [
+            cxmlConfigurationApiActions.updateCXMLConfigurationSuccess({ configuration: conf }),
             displaySuccessMessage({
               message: 'account.punchout.cxml.configuration.save_success.message',
             }),

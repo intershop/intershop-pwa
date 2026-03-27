@@ -15,7 +15,7 @@ import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 })
 export class BasketValidationItemsComponent {
   @Input({ required: true }) lineItems: LineItemView[];
-  @Output() deleteItem = new EventEmitter<string>();
+  @Output() readonly deleteItem = new EventEmitter<string>();
 
   /**
    * Throws deleteItem event when delete button was clicked.

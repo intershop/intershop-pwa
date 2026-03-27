@@ -16,7 +16,7 @@ export class SuggestCategoriesComponent {
   @Input({ required: true }) categories: string[];
   @Input() maxAutoSuggests: number;
   @Input() inputTerms$ = new ReplaySubject<string>(1);
-  @Output() routeChange = new EventEmitter<void>();
+  @Output() readonly routeChange = new EventEmitter<void>();
 
   handleInputFocus(): void {
     this.routeChange.emit();

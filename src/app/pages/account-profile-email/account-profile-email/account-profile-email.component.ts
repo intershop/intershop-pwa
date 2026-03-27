@@ -20,7 +20,7 @@ export class AccountProfileEmailComponent implements OnInit {
   @Input({ required: true }) currentUser: User;
   @Input() error: HttpError;
 
-  @Output() updateEmail = new EventEmitter<{ user: User; credentials: Credentials }>();
+  @Output() readonly updateEmail = new EventEmitter<{ user: User; credentials: Credentials }>();
 
   form = new FormGroup({});
   fields: FormlyFieldConfig[];

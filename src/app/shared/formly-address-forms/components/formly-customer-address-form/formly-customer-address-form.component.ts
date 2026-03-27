@@ -41,8 +41,8 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
   // display address extension form fields
   @Input() extension = false;
 
-  @Output() save = new EventEmitter<Address>();
-  @Output() cancelForm = new EventEmitter();
+  @Output() readonly save = new EventEmitter<Address>();
+  @Output() readonly cancelForm = new EventEmitter();
 
   form: FormGroup;
   extensionForm: FormGroup = new FormGroup({});

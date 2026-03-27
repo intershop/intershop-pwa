@@ -144,7 +144,7 @@ describe('Product Helper', () => {
         sku: 'sku',
         attributeGroups: {
           [AttributeGroupTypes.ProductLabelAttributes]: attributeGroup,
-        } as { [id: string]: AttributeGroup },
+        } as Record<string, AttributeGroup>,
       } as Product;
       const attributes = ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductLabelAttributes);
       expect(attributes).not.toBeEmpty();

@@ -60,6 +60,7 @@ function findPropertyAndReplace(source: SourceFile, expression: Expression<ts.Ex
         } else {
           const identifier = access
             ?.getDescendantsOfKind(SyntaxKind.Identifier)
+            // eslint-disable-next-line @typescript-eslint/no-shadow
             .find(identifier => identifier.getText() === propertyName);
           if (identifier) {
             overwriteProperty(access);

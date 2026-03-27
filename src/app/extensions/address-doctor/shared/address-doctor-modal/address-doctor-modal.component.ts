@@ -25,8 +25,8 @@ import { ModalOptions } from 'ish-shared/components/common/modal-dialog/modal-di
 })
 export class AddressDoctorModalComponent {
   @Input() options: ModalOptions;
-  @Output() confirmAddress = new EventEmitter<Address>();
-  @Output() hidden = new EventEmitter<boolean>();
+  @Output() readonly confirmAddress = new EventEmitter<Address>();
+  @Output() readonly hidden = new EventEmitter<boolean>();
   @ViewChild('template', { static: true }) modalDialogTemplate: TemplateRef<unknown>;
 
   private ngbModal = inject(NgbModal);

@@ -14,10 +14,10 @@ import { InjectSingle } from 'ish-core/utils/injection';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CookiesModalComponent implements OnInit {
-  @Output() closeModal = new EventEmitter<void>();
+  @Output() readonly closeModal = new EventEmitter<void>();
 
   cookieConsentSettings?: CookieConsentSettings;
-  selectedIds: { [id: string]: boolean } = {};
+  selectedIds: Record<string, boolean> = {};
 
   constructor(
     @Inject(COOKIE_CONSENT_OPTIONS) public cookieConsentOptions: InjectSingle<typeof COOKIE_CONSENT_OPTIONS>,

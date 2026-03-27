@@ -165,7 +165,9 @@ export class PWATranslateCompiler implements TranslateCompiler {
 
     // This implementation is mutable by intention
     for (const key in translations) {
-      translations[key] = this.compile(translations[key] as string);
+      if (Object.hasOwn(translations, key)) {
+        translations[key] = this.compile(translations[key] as string);
+      }
     }
     return translations;
   }

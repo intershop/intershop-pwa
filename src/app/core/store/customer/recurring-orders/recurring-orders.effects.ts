@@ -75,7 +75,9 @@ export class RecurringOrdersEffects {
           return this.recurringOrdersService
             .updateRecurringOrder(payload.recurringOrderId, payload.active, context)
             .pipe(
-              mergeMap(recurringOrder => [recurringOrdersApiActions.updateRecurringOrderSuccess({ recurringOrder })]),
+              mergeMap(recOrder => [
+                recurringOrdersApiActions.updateRecurringOrderSuccess({ recurringOrder: recOrder }),
+              ]),
               mapErrorToAction(recurringOrdersApiActions.updateRecurringOrderFail)
             );
         } else {

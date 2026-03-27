@@ -17,7 +17,7 @@ export type CostCenterData = Omit<CostCenter, 'orders'> & {
   }[];
 };
 
-export type CostCenterListData = {
+export interface CostCenterListData {
   data: Link[];
   info: PagingInfo;
-};
+}

@@ -85,7 +85,7 @@ export class BasketMapper {
    *
    * @returns         The basket total.
    */
-  static getTotals(data: BasketBaseData, discounts?: { [id: string]: BasketRebateData }): BasketTotal {
+  static getTotals(data: BasketBaseData, discounts?: Record<string, BasketRebateData>): BasketTotal {
     const totalsData = data.totals;
 
     return totalsData

@@ -19,7 +19,7 @@ import { CategoryImageComponent } from 'ish-shared/components/category/category-
 export class SuggestCategoriesTileComponent implements OnInit {
   @Input({ required: true }) categoryUniqueId: string;
   @Input() inputTerms$ = new ReplaySubject<string>(1);
-  @Output() routeChange = new EventEmitter<void>();
+  @Output() readonly routeChange = new EventEmitter<void>();
 
   category$: Observable<CategoryView>;
 

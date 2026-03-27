@@ -37,7 +37,7 @@ export function matchContentRoute(segments: UrlSegment[]): UrlMatchResult {
   const url = `/${segments.map(s => s.path).join('/')}`;
   if (contentRouteFormat.test(url)) {
     const match = contentRouteFormat.exec(url);
-    const posParams: { [id: string]: UrlSegment } = {};
+    const posParams: Record<string, UrlSegment> = {};
     if (match[2]) {
       posParams.contentPageId = new UrlSegment(match[2], {});
     }

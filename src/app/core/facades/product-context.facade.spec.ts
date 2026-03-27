@@ -849,8 +849,8 @@ describe('Product Context Facade', () => {
         context$: Observable<Pick<ProductContext, 'product' | 'prices' | 'inventory'>>
       ): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return context$.pipe(
-          map(({ product }) =>
-            product?.sku === '456'
+          map(({ product: prod }) =>
+            prod?.sku === '456'
               ? {
                   addToBasket: false,
                   addToCompare: false,

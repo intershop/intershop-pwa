@@ -5,5 +5,5 @@ export interface ContentSlotData {
   definitionQualifiedName: string;
   displayName: string;
   pagelets: ContentPageletData[];
-  configurationParameters?: { [name: string]: ContentConfigurationParameterData };
+  configurationParameters?: Record<string, ContentConfigurationParameterData>;
 }

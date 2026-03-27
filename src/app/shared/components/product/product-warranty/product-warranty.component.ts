@@ -27,7 +27,7 @@ export class ProductWarrantyComponent implements OnInit {
   @Input() selectedWarrantySku: string;
   @Input() viewType: 'radio' | 'select' | 'display' = 'radio';
 
-  @Output() submitWarranty = new EventEmitter<string>();
+  @Output() readonly submitWarranty = new EventEmitter<string>();
 
   uuid: string = uuid();
 

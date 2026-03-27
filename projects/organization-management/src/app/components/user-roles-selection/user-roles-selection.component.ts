@@ -122,7 +122,7 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
     }
   }
 
-  private modelToRoles(values: { [id: string]: boolean }, staticRoles: string[]): string[] {
+  private modelToRoles(values: Record<string, boolean>, staticRoles: string[]): string[] {
     return Object.entries(values)
       .filter(([, value]) => !!value)
       .map(([key]) => key)

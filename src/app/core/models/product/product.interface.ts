@@ -53,7 +53,7 @@ export interface ProductData {
   readyForShipmentMax: number;
   attributes?: Attribute[];
   productTypes: string[];
-  attributeGroups?: { [id: string]: AttributeGroup };
+  attributeGroups?: Record<string, AttributeGroup>;
   defaultCategory?: CategoryData;
 
   promotions?: Link[];
