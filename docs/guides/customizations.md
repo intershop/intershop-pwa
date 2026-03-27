@@ -78,7 +78,7 @@ It will:
 - add initial style files for styling customization under `src/styles/themes/<theme-prefix>`
 - add the theme-prefix to the override schematic `schematics/src/helpers/override/schema.json`
 - change the project prefix for new Angular artifacts from `ish` to `custom`
-- customize ESLint in `.eslintrc.json` to support your new theme files (specifically, the `project-structure` rule)
+- customize ESLint in `eslint.config.mjs` to support your new theme files (specifically, the `project-structure` rule)
 
 > [!NOTE]
 > If only one theme is active, PM2 will run the theme-specific SSR process in cluster mode on the default port (see [Building Multiple Themes](../guides/ssr-startup.md#building-multiple-themes)).

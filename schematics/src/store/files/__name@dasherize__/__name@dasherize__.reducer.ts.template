@@ -34,5 +34,5 @@ export const <%= camelize(name) %>Reducer = createReducer(
   setLoadingOn(<%= camelize(name) %>Actions.load<%= classify(name) %>)<% if(entity) { %>,
   setErrorOn(<%= camelize(name) %>ApiActions.load<%= classify(name) %>Fail),
   unsetLoadingAndErrorOn(<%= camelize(name) %>ApiActions.load<%= classify(name) %>Success),
-  on(<%= camelize(name) %>ApiActions.load<%= classify(name) %>Success, (state, action) => <%= camelize(name) %>Adapter.upsertMany(action.payload.<%= camelize(name) %>, state))<% } %>
+  on(<%= camelize(name) %>ApiActions.load<%= classify(name) %>Success, (state, action): <%= classify(name) %>State => <%= camelize(name) %>Adapter.upsertMany(action.payload.<%= camelize(name) %>, state))<% } %>
 );

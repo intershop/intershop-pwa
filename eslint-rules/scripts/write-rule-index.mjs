@@ -6,7 +6,7 @@ const rules = {};
 
 globSync('src/rules/**/*.ts').forEach(file => {
   const ruleName = basename(file).replace(extname(file), '');
-  const ruleImportPath = `./rules/${basename(file).replace(extname(file), '.js')}`;
+  const ruleImportPath = `./src/rules/${basename(file).replace(extname(file), '.js')}`;
   rules[ruleName] = `require('${ruleImportPath}').default`;
 });
 

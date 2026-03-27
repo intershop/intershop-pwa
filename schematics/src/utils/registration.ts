@@ -11,10 +11,10 @@ import { InsertChange } from '@schematics/angular/utility/change';
 import { buildRelativePath, findModule } from '@schematics/angular/utility/find-module';
 import * as path from 'path';
 import { ObjectLiteralExpression, SyntaxKind } from 'ts-morph';
-import { ImportKind, findImports, forEachToken } from 'tsutils';
 import * as ts from 'typescript';
 
 import { asSchematicsSourceFile, readIntoSourceFile } from './filesystem';
+import { ImportKind, findImports, forEachToken } from './ts-helpers';
 import { createTsMorphProject } from './ts-morph';
 
 export function addExportToNgModule(options: {

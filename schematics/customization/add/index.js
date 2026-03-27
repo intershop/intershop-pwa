@@ -58,31 +58,26 @@ if (setDefault) {
 fs.writeFileSync('./package.json', stringify(packageJson, null, 2));
 execSync('npx prettier --write package.json');
 
-// replace in .eslintrc.json
-const addPrefixToRule = ruleConfig => {
-  if (typeof ruleConfig.prefix === 'string') {
-    ruleConfig.prefix = ['ish'];
-  }
-  ruleConfig.prefix.push('custom');
-  ruleConfig.prefix = ruleConfig.prefix.filter((val, idx, arr) => arr.indexOf(val) === idx);
-};
+// replace in eslint.config.mjs
+let eslintConfig = fs.readFileSync('./eslint.config.mjs', { encoding: 'UTF-8' });
 
-const addPrefixesToRule = ruleConfig => {
-  ruleConfig.prefixes.push('custom');
-  ruleConfig.prefixes = ruleConfig.prefixes.filter((val, idx, arr) => arr.indexOf(val) === idx);
-};
+// Add 'custom' prefix to component-selector and directive-selector rules: prefix: ['ish'] -> prefix: ['ish', 'custom']
+if (!eslintConfig.includes("prefix: ['ish', 'custom']")) {
+  eslintConfig = eslintConfig.replace(/prefix: \['ish'\]/g, "prefix: ['ish', 'custom']");
+}
 
-const eslintJson = parse(fs.readFileSync('./.eslintrc.json', { encoding: 'UTF-8' }));
-const overrideRules = eslintJson.overrides.find(c => c.files.includes('*.ts')).rules;
-addPrefixToRule(overrideRules['@angular-eslint/directive-selector'][1]);
-addPrefixToRule(overrideRules['@angular-eslint/component-selector'][1]);
-addPrefixesToRule(overrideRules['@angular-eslint/pipe-prefix'][1]);
+// Add 'custom' prefix to pipe-prefix rule: prefixes: ['ish'] -> prefixes: ['ish', 'custom']
+if (!eslintConfig.includes("prefixes: ['ish', 'custom']")) {
+  eslintConfig = eslintConfig.replace(/prefixes: \['ish'\]/g, "prefixes: ['ish', 'custom']");
+}
 
-const reusePatterns = overrideRules['ish-custom-rules/project-structure'][1].reusePatterns;
-reusePatterns.theme = reusePatterns.theme.replace('b2b|b2c', `b2b|b2c|${theme}`);
+// Add theme to project-structure reusePatterns.theme: b2b|b2c -> b2b|b2c|newTheme
+if (!eslintConfig.includes(`b2b|b2c|${theme}`)) {
+  eslintConfig = eslintConfig.replace(/\(\?:b2b\|b2c\)/g, `(?:b2b|b2c|${theme})`);
+}
 
-fs.writeFileSync('./.eslintrc.json', stringify(eslintJson, null, 2));
-execSync('npx prettier --write .eslintrc.json');
+fs.writeFileSync('./eslint.config.mjs', eslintConfig);
+execSync('npx prettier --write eslint.config.mjs');
 
 // add environment copy
 if (!fs.existsSync(`src/environments/environment.${theme}.ts`)) {

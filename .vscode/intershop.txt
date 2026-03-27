@@ -188,6 +188,7 @@ setuprequest
 silktide
 sitekey
 skus
+smarttools
 sortings
 sparque
 spgid

@@ -23,6 +23,47 @@ For more details about the Angular 18 update, see the [Angular Update Guide](htt
 Formly was updated to version 7.
 For more information see the [Formly migration guide](https://formly.dev/docs/guide/migration).
 
+**ESLint 9 update**
+
+With the update to ESLint 9, the configuration format changed from the legacy `.eslintrc.json` to the new flat config format `eslint.config.mjs`.
+The separate `.eslintrc.json` files previously located in the `e2e/` and `schematics/` folders have been consolidated into the root `eslint.config.mjs` as file-specific override blocks.
+The new config also includes `eslint:recommended` and `eslint:stylistic` for TypeScript files.
+Some ESLint-related packages were renamed and updated to their latest versions, resulting in changes to the available rules and their default values.
+
+_Plugin changes:_
+
+| Old plugin                   | New plugin                       |
+| :--------------------------- | :------------------------------- |
+| `eslint-plugin-rxjs`         | `@smarttools/eslint-plugin-rxjs` |
+| `eslint-plugin-rxjs-angular` | `eslint-plugin-rxjs-angular-x`   |
+
+_Renamed rules:_
+
+| Old rule                              | New rule                                 |
+| :------------------------------------ | :--------------------------------------- |
+| `@typescript-eslint/ban-types`        | `@typescript-eslint/no-restricted-types` |
+| `@typescript-eslint/no-var-requires`  | `@typescript-eslint/no-require-imports`  |
+| `@typescript-eslint/no-throw-literal` | `no-throw-literal` (base ESLint rule)    |
+| `etc/no-deprecated`                   | `@typescript-eslint/no-deprecated`       |
+
+_New rules that might require code changes:_
+
+| Rule                                                  | Severity                                      |
+| :---------------------------------------------------- | :-------------------------------------------- |
+| `@typescript-eslint/no-shadow`                        | warn                                          |
+| `guard-for-in`                                        | error                                         |
+| `max-classes-per-file`                                | error (off for `*.module.ts` and `*.spec.ts`) |
+| `max-lines` (500)                                     | warn (off for `*.module.ts` and `*.spec.ts`)  |
+| `no-eval` / `no-implied-eval`                         | error                                         |
+| `@angular-eslint/template/cyclomatic-complexity` (10) | warn                                          |
+| `@angular-eslint/template/eqeqeq`                     | error                                         |
+
+_Changed rules:_
+
+| Rule         | Old value | New value                      |
+| :----------- | :-------- | :----------------------------- |
+| `complexity` | `max: 10` | `max: 15, variant: 'modified'` |
+
 **CMS view context REST requests with resource set ID**
 
 The REST requests to get CMS view context data now append the resource set ID (the defining view context model's cartridge name) by default to improve performance.
