@@ -13,13 +13,13 @@ import {
 } from '@angular-devkit/schematics';
 import { buildDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
 import { PWAPageOptionsSchema as Options } from 'schemas/page/schema';
-import { forEachToken, getChildOfKind } from 'tsutils';
 import * as ts from 'typescript';
 
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
 import { readIntoSourceFile } from '../utils/filesystem';
 import { applyLintFix } from '../utils/lint-fix';
 import { addImportToFile } from '../utils/registration';
+import { forEachToken, getChildOfKind } from '../utils/ts-helpers';
 
 function addRouteToArray(
   options: { name?: string; routingModule?: string; child?: string; lazy?: boolean; extension?: string },

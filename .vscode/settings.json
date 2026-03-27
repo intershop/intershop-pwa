@@ -32,8 +32,9 @@
   },
 
   // eslint
+  "eslint.useFlatConfig": true,
   "eslint.options": {
-    "extensions": [".ts", ".html"]
+    "overrideConfigFile": "eslint.config.mjs"
   },
   "eslint.validate": ["javascript", "typescript", "html"],
 

@@ -47,7 +47,7 @@ See [negative patterns instructions](./instructions/negative-patterns.instructio
 
 ## Formatting & Linting
 
-- **Enforced by ESLint/Prettier** - see `.eslintrc.json` and `.prettierrc`
+- **Enforced by ESLint/Prettier** - see `eslint.config.mjs` and `.prettierrc`
 - **Key formatting:** single quotes, 2 spaces, semicolons
 - **Angular prefixes:** Components use `ish-`, directives use `ish`
 - **Format command:** `npm run format`

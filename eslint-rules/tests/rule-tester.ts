@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/naming-convention
 const { RuleTester } = require('@typescript-eslint/rule-tester');
 
-import type { RunTests } from '@typescript-eslint/rule-tester/dist/types';
+import type { RunTests } from '@typescript-eslint/rule-tester';
 import { TSESLint } from '@typescript-eslint/utils';
 import { basename } from 'path';
 
