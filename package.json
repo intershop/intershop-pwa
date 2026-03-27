@@ -92,7 +92,7 @@
     "express": "^4.22.1",
     "express-http-proxy": "^2.1.2",
     "express-robots-txt": "^1.0.0",
-    "file-replace-loader": "^1.4.2",
+    "file-replace-loader": "^1.4.3",
     "js-yaml": "^4.1.1",
     "lodash-es": "^4.17.23",
     "ng-recaptcha": "^13.2.1",
@@ -108,7 +108,7 @@
     "tslib": "^2.8.1",
     "typeface-roboto": "^1.1.13",
     "typeface-roboto-condensed": "^1.1.13",
-    "undici": "^7.24.4",
+    "undici": "^7.24.6",
     "uuid": "^13.0.0",
     "zone.js": "~0.14.10"
   },
@@ -157,7 +157,7 @@
     "eslint-plugin-etc": "^2.0.3",
     "eslint-plugin-ish-custom-rules": "file:eslint-rules",
     "eslint-plugin-jest": "^28.14.0",
-    "eslint-plugin-jsdoc": "^62.8.0",
+    "eslint-plugin-jsdoc": "^62.8.1",
     "eslint-plugin-prettier": "^4.2.5",
     "eslint-plugin-rxjs": "^5.0.3",
     "eslint-plugin-rxjs-angular": "^2.0.1",
@@ -191,6 +191,12 @@
     "ts-node": "~10.9.2",
     "typescript": "~5.4.5",
     "xliff": "^6.3.0"
+  },
+  "overrides": {
+    "ajv@^8.0.0": "8.18.0",
+    "brace-expansion@^5.0.0": "5.0.5",
+    "picomatch@^2.0.0": "2.3.2",
+    "picomatch@^4.0.0": "4.0.4"
   },
   "lint-staged": {
     "docs/**/*.md": [
