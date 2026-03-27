@@ -40,7 +40,7 @@ export class WishlistSharingDialogComponent implements OnInit {
   /**
    * Emits the data of the wishlist sharing.
    */
-  @Output() submitWishlistSharing = new EventEmitter<WishlistSharing>();
+  @Output() readonly submitWishlistSharing = new EventEmitter<WishlistSharing>();
 
   wishListForm = new FormGroup({});
   fields: FormlyFieldConfig[];

@@ -20,8 +20,7 @@ export class MetaDataModule {
     return cy.get(`head meta[${key.startsWith('og:') ? 'property' : 'name'}="${key}"]`).then(el => {
       if (el.length > 1) {
         const contents = [];
-        for (let index = 0; index < el.length; index++) {
-          const element = el[index];
+        for (const element of el) {
           contents.push(element.getAttribute('content'));
         }
         return contents;

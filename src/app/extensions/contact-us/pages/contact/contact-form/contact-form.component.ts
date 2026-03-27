@@ -23,7 +23,7 @@ import { ContactUsFacade } from '../../../facades/contact-us.facade';
 })
 export class ContactFormComponent implements OnInit {
   /** The contact request to send. */
-  @Output() request = new EventEmitter<Contact>();
+  @Output() readonly request = new EventEmitter<Contact>();
 
   /** The form for customer message to the shop. */
   contactForm = new UntypedFormGroup({});

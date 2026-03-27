@@ -10,5 +10,5 @@ const getParametersProductLists = createSelector(getParametersState, parameters 
 export const getParametersProductList = (id: string) =>
   createSelectorFactory<object, string[]>(projector => resultMemoize(projector, isArrayEqual))(
     getParametersProductLists,
-    (productLists: { [id: string]: string[] }): string[] => productLists[id]
+    (productLists: Record<string, string[]>): string[] => productLists[id]
   );

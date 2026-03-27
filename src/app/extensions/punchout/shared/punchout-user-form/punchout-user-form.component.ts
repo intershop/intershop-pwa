@@ -16,7 +16,7 @@ export class PunchoutUserFormComponent implements OnInit {
 
   /** for new users the punchout type is required */
   @Input() punchoutType: PunchoutType;
-  @Output() submitUser = new EventEmitter<PunchoutUser>();
+  @Output() readonly submitUser = new EventEmitter<PunchoutUser>();
 
   form = new UntypedFormGroup({});
   fields: FormlyFieldConfig[];

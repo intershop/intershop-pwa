@@ -14,7 +14,7 @@ import { FormlyTestingExampleComponent } from 'ish-shared/formly/dev/testing/for
 
 import { FormlyAddressFormComponent } from './formly-address-form.component';
 
-const configurations: { [key: string]: FormlyFieldConfig[] } = {
+const configurations: Record<string, FormlyFieldConfig[]> = {
   default: [
     {
       key: 'firstName',

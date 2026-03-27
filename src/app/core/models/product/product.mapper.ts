@@ -32,7 +32,7 @@ function mapPromotionIds(data: Link[]): string[] {
 /**
  * maps an attribute group and its attribute data to the same format as it is used in a single product call
  */
-function mapAttributeGroups(data: ProductDataStub): { [id: string]: AttributeGroup } {
+function mapAttributeGroups(data: ProductDataStub): Record<string, AttributeGroup> {
   return { [data.attributeGroup.name]: { attributes: data.attributeGroup.attributes } };
 }
 

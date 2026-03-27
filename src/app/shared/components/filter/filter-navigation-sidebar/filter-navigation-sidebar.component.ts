@@ -10,15 +10,15 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
 })
 export class FilterNavigationSidebarComponent {
   @Input({ required: true }) filterNavigation: FilterNavigation;
-  @Output() applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
+  @Output() readonly applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
 
   /**
    * keeps the collapsed state of sub components when changing filters
    */
-  collapsedElements: { [id: string]: boolean } = {};
+  collapsedElements: Record<string, boolean> = {};
 
   /**
    * keeps the show all state of sub components when changing filters
    */
-  showAllElements: { [id: string]: boolean } = {};
+  showAllElements: Record<string, boolean> = {};
 }

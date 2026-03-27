@@ -81,18 +81,20 @@ describe('User Effects', () => {
   let router: Router;
   let location: Location;
 
-  const loginResponseData = {
-    customer: {
-      isBusinessCustomer: true,
-      customerNo: 'PC',
-    },
-    user: {},
-  } as CustomerUserType;
-
   const customer = {
-    customerNo: '4711',
+    customerNo: 'PC',
     isBusinessCustomer: true,
   } as Customer;
+
+  const privateCustomer = {
+    customerNo: 'PC',
+    isBusinessCustomer: false,
+  } as Customer;
+
+  const loginResponseData = {
+    customer,
+    user: {},
+  } as CustomerUserType;
 
   const token = {
     access_token: 'DEMO@access-token',
@@ -344,10 +346,7 @@ describe('User Effects', () => {
     });
 
     const customerLoginType = {
-      customer: {
-        isBusinessCustomer: true,
-        customerNo: 'PC',
-      },
+      customer,
       user: {
         email: 'test@intershop.de',
       } as User,
@@ -355,10 +354,7 @@ describe('User Effects', () => {
 
     it('should call the api service when Create event is called', done => {
       const action = createUser({
-        customer: {
-          isBusinessCustomer: true,
-          customerNo: 'PC',
-        },
+        customer,
         user: {
           email: 'test@intershop.de',
         },
@@ -376,7 +372,6 @@ describe('User Effects', () => {
 
     it('should dispatch a createUserSuccess and a loginUserWithToken action on successful user creation', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
-      const customer: Customer = { isBusinessCustomer: true, customerNo: 'PC' };
 
       when(userServiceMock.createUser(anything())).thenReturn(of(customerLoginType));
 
@@ -392,24 +387,20 @@ describe('User Effects', () => {
 
     it('should dispatch a createUserSuccess and a createUserApprovalRequired action if customer approval is enabled', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
-      const customer: Customer = { isBusinessCustomer: false, customerNo: 'PC' };
 
-      const customerLoginType = {
-        customer: {
-          isBusinessCustomer: false,
-          customerNo: 'PC',
-        },
+      const privateCustomerLoginType = {
+        customer: privateCustomer,
         user: {
           firstName: 'Klaus',
           lastName: 'Klausen',
           email: 'test@intershop.de',
         },
       };
-      when(userServiceMock.createUser(anything())).thenReturn(of(customerLoginType));
+      when(userServiceMock.createUser(anything())).thenReturn(of(privateCustomerLoginType));
 
       const action = createUser({ customer, credentials } as CustomerRegistrationType);
-      const completion1 = createUserSuccess({ email: customerLoginType.user.email });
-      const completion2 = createUserApprovalRequired({ email: customerLoginType.user.email });
+      const completion1 = createUserSuccess({ email: privateCustomerLoginType.user.email });
+      const completion2 = createUserApprovalRequired({ email: privateCustomerLoginType.user.email });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-(bc)', { b: completion1, c: completion2 });
@@ -419,11 +410,14 @@ describe('User Effects', () => {
 
     it('should dispatch a subscribeUserToNewsletter action when the newsletter-subscription is checked', () => {
       const credentials: Credentials = { login: '1234', password: 'xxx' };
-      const customer: Customer = { isBusinessCustomer: false, customerNo: 'PC' };
 
       when(userServiceMock.createUser(anything())).thenReturn(of(customerLoginType));
 
-      const action = createUser({ customer, credentials, subscribedToNewsletter: true } as CustomerRegistrationType);
+      const action = createUser({
+        customer: privateCustomer,
+        credentials,
+        subscribedToNewsletter: true,
+      } as CustomerRegistrationType);
       const completion1 = createUserSuccess({ email: customerLoginType.user.email });
       const completion2 = userNewsletterActions.updateUserNewsletterSubscription({
         subscriptionStatus: true,
@@ -468,10 +462,7 @@ describe('User Effects', () => {
     beforeEach(() => {
       store.dispatch(
         loginUserSuccess({
-          customer: {
-            customerNo: '4711',
-            isBusinessCustomer: false,
-          } as Customer,
+          customer,
           user: {} as User,
         })
       );
@@ -531,10 +522,7 @@ describe('User Effects', () => {
     beforeEach(() => {
       store.dispatch(
         loginUserSuccess({
-          customer: {
-            customerNo: '4711',
-            isBusinessCustomer: false,
-          } as Customer,
+          customer: privateCustomer,
           user: {} as User,
         })
       );
@@ -631,10 +619,6 @@ describe('User Effects', () => {
     });
 
     it('should not trigger any action if the customer is a private customer', () => {
-      const privateCustomer = {
-        customerNo: '4712',
-        isBusinessCustomer: false,
-      } as Customer;
       store.dispatch(
         loginUserSuccess({
           customer: privateCustomer,
@@ -802,10 +786,7 @@ describe('User Effects', () => {
     beforeEach(() => {
       store.dispatch(
         loginUserSuccess({
-          customer: {
-            isBusinessCustomer: true,
-            customerNo: 'pmiller',
-          },
+          customer,
           user: { login: 'patricia' } as User,
         })
       );

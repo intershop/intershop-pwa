@@ -17,7 +17,7 @@ export class SuggestKeywordsComponent {
   @Input() keywords: Keyword[];
   @Input() maxAutoSuggests: number;
   @Input() inputTerms$ = new ReplaySubject<string>(1);
-  @Output() submitSearch = new EventEmitter<string>();
+  @Output() readonly submitSearch = new EventEmitter<string>();
 
   submit(term: string) {
     this.submitSearch.emit(term);

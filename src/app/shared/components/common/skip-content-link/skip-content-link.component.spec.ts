@@ -42,10 +42,6 @@ describe('Skip Content Link Component', () => {
   });
 
   it('should be created', () => {
-    const fixture = TestBed.createComponent(SkipContentLinkComponent);
-    const component = fixture.componentInstance;
-    const element = fixture.nativeElement;
-
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();

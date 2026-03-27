@@ -20,10 +20,10 @@ export const productAdapter = createEntityAdapter<AllProductTypes>({
 
 export interface ProductsState extends EntityState<AllProductTypes> {
   failed: string[];
-  links: { [sku: string]: ProductLinksDictionary };
-  parts: { [sku: string]: SkuQuantityType[] };
-  variations: { [sku: string]: string[] };
-  defaultVariation: { [sku: string]: string };
+  links: Record<string, ProductLinksDictionary>;
+  parts: Record<string, SkuQuantityType[]>;
+  variations: Record<string, string[]>;
+  defaultVariation: Record<string, string>;
 }
 
 const initialState: ProductsState = productAdapter.getInitialState({

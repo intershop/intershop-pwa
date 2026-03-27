@@ -67,10 +67,10 @@ describe('Basket Items Service', () => {
       shippingMethod?: string;
     }
 
-    type TestData = {
+    interface TestData {
       multipleShipment: boolean;
       expectedPayload: TestAddLineItemType[];
-    };
+    }
 
     // perform test for possible use cases: multiple and single shipment
     it.each<TestData>([

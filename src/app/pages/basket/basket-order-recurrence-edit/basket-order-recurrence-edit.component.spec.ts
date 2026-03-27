@@ -68,13 +68,6 @@ describe('Basket Order Recurrence Edit Component', () => {
   });
 
   it('should call checkoutFacade.updateBasketRecurrence with recurrence data when updateOrderRecurrence is called', () => {
-    const recurrence: { interval: string; startDate: string; endDate?: string; repetitions?: number } = {
-      interval: 'P1W',
-      startDate: '2023-01-01',
-      endDate: undefined,
-      repetitions: undefined,
-    };
-
     component.updateOrderRecurrence(recurrence);
 
     verify(checkoutFacadeMock.updateBasketRecurrence(recurrence)).once();

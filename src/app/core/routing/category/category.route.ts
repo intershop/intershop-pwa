@@ -40,7 +40,7 @@ export function matchCategoryRoute(segments: UrlSegment[]): UrlMatchResult {
   if (categoryRouteFormat.test(url)) {
     // select categoryUniqueId to render a category component
     const match = categoryRouteFormat.exec(url);
-    const posParams: { [id: string]: UrlSegment } = {};
+    const posParams: Record<string, UrlSegment> = {};
     if (match[2]) {
       posParams.categoryUniqueId = new UrlSegment(match[2], {});
     }

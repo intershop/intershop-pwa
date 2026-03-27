@@ -187,14 +187,16 @@ export class ShoppingFacade {
       filter(ProductHelper.isMasterProduct),
       mapToProperty('sku'),
       distinctUntilChanged(),
-      tap(sku => {
-        this.store.dispatch(loadProductVariationsIfNotLoaded({ sku }));
+      tap(masterSku => {
+        this.store.dispatch(loadProductVariationsIfNotLoaded({ sku: masterSku }));
       })
     );
   }
 
   productVariations$(sku: string | Observable<string>) {
-    return this.lazyLoadVariations(sku).pipe(switchMap(sku => this.store.pipe(select(getProductVariations(sku)))));
+    return this.lazyLoadVariations(sku).pipe(
+      switchMap(varSku => this.store.pipe(select(getProductVariations(varSku))))
+    );
   }
 
   productVariationCount$(sku: string | Observable<string>) {
@@ -215,8 +217,8 @@ export class ShoppingFacade {
 
   // PRODUCT LISTING
 
-  productListingView$(id: ProductListingID | Observable<ProductListingID>) {
-    return toObservable(id).pipe(
+  productListingView$(productListingId: ProductListingID | Observable<ProductListingID>) {
+    return toObservable(productListingId).pipe(
       whenTruthy(),
       tap(id => this.store.dispatch(loadMoreProducts({ id }))),
       switchMap(id => this.store.pipe(select(getProductListingView(id))))

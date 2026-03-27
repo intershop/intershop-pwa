@@ -30,7 +30,7 @@ export class ShoppingBasketComponent {
   @Input() error: HttpError;
   @Input() loading = false;
 
-  @Output() nextStep = new EventEmitter<void>();
+  @Output() readonly nextStep = new EventEmitter<void>();
 
   /**
    * checkout button leads to checkout address page if basket is valid

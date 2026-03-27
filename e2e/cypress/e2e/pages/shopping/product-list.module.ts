@@ -17,8 +17,7 @@ export class ProductListModule {
       .find('ish-product-item [data-testing-sku]')
       .then(array => {
         const skus = [];
-        for (let index = 0; index < array.length; index++) {
-          const element = array[index];
+        for (const element of array) {
           skus.push(element.getAttribute('data-testing-sku'));
         }
         return skus;

@@ -5,8 +5,7 @@ function getAllElementTagsRecursively(el: Element) {
   const returnList: string[] = [];
   returnList.push(el.tagName);
 
-  for (let index = 0; index < el.children.length; index++) {
-    const cel = el.children[index];
+  for (const cel of Array.from(el.children)) {
     returnList.push(...getAllElementTagsRecursively(cel));
   }
   return returnList;

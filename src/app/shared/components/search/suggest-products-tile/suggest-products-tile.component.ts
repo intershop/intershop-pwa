@@ -18,7 +18,7 @@ import { ProductImageComponent } from 'ish-shared/components/product/product-ima
 export class SuggestProductsTileComponent implements OnInit {
   @Input() inputTerms$ = new ReplaySubject<string>(1);
   @Input() deviceType: DeviceType;
-  @Output() routeChange = new EventEmitter<void>();
+  @Output() readonly routeChange = new EventEmitter<void>();
 
   productURL$: Observable<string>;
   productName$: Observable<string>;

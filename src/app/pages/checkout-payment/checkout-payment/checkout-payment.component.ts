@@ -43,13 +43,13 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
   @Input() priceType: PriceType;
   @Input() error: HttpError;
 
-  @Output() updatePaymentMethod = new EventEmitter<string>();
-  @Output() createPaymentInstrument = new EventEmitter<{
+  @Output() readonly updatePaymentMethod = new EventEmitter<string>();
+  @Output() readonly createPaymentInstrument = new EventEmitter<{
     paymentInstrument: PaymentInstrument;
     saveForLater: boolean;
   }>();
-  @Output() deletePaymentInstrument = new EventEmitter<PaymentInstrument>();
-  @Output() nextStep = new EventEmitter<void>();
+  @Output() readonly deletePaymentInstrument = new EventEmitter<PaymentInstrument>();
+  @Output() readonly nextStep = new EventEmitter<void>();
 
   paymentForm: FormGroup;
 

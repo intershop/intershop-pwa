@@ -17,7 +17,7 @@ export class IntersectionObserverDirective implements OnInit {
   @Input() intersectionRoot: HTMLElement;
   @Input() intersectionThreshold: number | number[];
 
-  @Output() visibilityChange = new EventEmitter<IntersectionStatus>();
+  @Output() readonly visibilityChange = new EventEmitter<IntersectionStatus>();
 
   private destroyRef = inject(DestroyRef);
 

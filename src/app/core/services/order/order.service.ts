@@ -20,7 +20,7 @@ export function orderListQueryToHttpParams(query: OrderListQuery): HttpParams {
         if (key === 'include') {
           return acc.set(key, value.join(','));
         } else {
-          return (value as string[]).reduce((acc, value) => acc.append(key, value?.toString()), acc);
+          return (value as string[]).reduce((params, val) => params.append(key, val?.toString()), acc);
         }
       } else if (value !== undefined) {
         return acc.set(key, value.toString());
@@ -210,7 +210,7 @@ export class OrderService {
      @param queryParams  The payment redirect information (parameters and status).
    * @returns            The orderId
    */
-  updateOrderPayment(orderId: string, queryParams: { [key: string]: string }): Observable<string> {
+  updateOrderPayment(orderId: string, queryParams: Record<string, string>): Observable<string> {
     const params = new HttpParams().set('include', this.allOrderIncludes.join());
 
     if (!orderId) {

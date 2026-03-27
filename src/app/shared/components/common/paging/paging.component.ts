@@ -11,7 +11,7 @@ export class PagingComponent implements OnChanges {
   @Input({ required: true }) currentPage: number;
   @Input({ required: true }) lastPage: number;
 
-  @Output() goToPage: EventEmitter<number> = new EventEmitter<number>();
+  @Output() readonly goToPage: EventEmitter<number> = new EventEmitter<number>();
 
   pageIndices: number[] = [];
 

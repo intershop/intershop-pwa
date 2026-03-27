@@ -38,7 +38,7 @@ export class SelectWishlistModalComponent implements OnInit {
   /**
    * submit successful event
    */
-  @Output() submitEmitter = new EventEmitter<{ id: string; title: string }>();
+  @Output() readonly submitEmitter = new EventEmitter<{ id: string; title: string }>();
 
   private wishlistOptions$: Observable<SelectOption[]>;
 

@@ -21,9 +21,7 @@ import { LinkParser } from 'ish-core/utils/link-parser';
   selector: '[ishServerHtml]',
 })
 export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnChanges {
-  @Input() callbacks: {
-    [key: string]: (event?: MouseEvent) => void;
-  };
+  @Input() callbacks: Record<string, (event?: MouseEvent) => void>;
 
   private renderer = inject(Renderer2);
 

@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, Component, DoCheck, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 
-interface FormErrorMessages {
-  [key: string]: string;
-}
+type FormErrorMessages = Record<string, string>;
 
 @Component({
   selector: 'ish-form-control-feedback',

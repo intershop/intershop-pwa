@@ -30,7 +30,7 @@ export class SwitchComponent implements OnChanges {
   // ariaLabel can be used to provide a label for screen readers (translated text is accepted)
   @Input() ariaLabel = '';
 
-  @Output() toggleSwitch = new EventEmitter<{ active: boolean; id: string }>();
+  @Output() readonly toggleSwitch = new EventEmitter<{ active: boolean; id: string }>();
 
   activeState: boolean;
 

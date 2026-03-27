@@ -83,7 +83,7 @@ export class ProductsService implements ProductsServiceInterface {
     return this.apiService
       .get<{
         elements: ProductDataStub[];
-        sortableAttributes: { [id: string]: SortableAttributesType };
+        sortableAttributes: Record<string, SortableAttributesType>;
         categoryUniqueId: string;
         total: number;
       }>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}/products`, { sendSPGID: true, params })
@@ -130,7 +130,7 @@ export class ProductsService implements ProductsServiceInterface {
       .get<{
         elements: ProductDataStub[];
         sortKeys: string[];
-        sortableAttributes: { [id: string]: SortableAttributesType };
+        sortableAttributes: Record<string, SortableAttributesType>;
         total: number;
       }>('products', { sendSPGID: true, params })
       .pipe(
@@ -174,7 +174,7 @@ export class ProductsService implements ProductsServiceInterface {
     return this.apiService
       .get<{
         elements: ProductDataStub[];
-        sortableAttributes: { [id: string]: SortableAttributesType };
+        sortableAttributes: Record<string, SortableAttributesType>;
         total: number;
       }>('products', { sendSPGID: true, params })
       .pipe(
@@ -211,7 +211,7 @@ export class ProductsService implements ProductsServiceInterface {
       .get<{
         total: number;
         elements: ProductDataStub[];
-        sortableAttributes: { [id: string]: SortableAttributesType };
+        sortableAttributes: Record<string, SortableAttributesType>;
       }>(resource, { params, sendSPGID: true })
       .pipe(
         map(x => ({
@@ -223,14 +223,11 @@ export class ProductsService implements ProductsServiceInterface {
           this.appFacade.serverSetting$<boolean>('preferences.ChannelPreferences.EnableAdvancedVariationHandling')
         ),
         map(
-          ([{ products, sortableAttributes, total }, advancedVariationHandling]) =>
-            <SearchResponse>{
-              products: params.has('MasterSKU')
-                ? products
-                : this.postProcessMasters(products, advancedVariationHandling),
-              sortableAttributes,
-              total,
-            }
+          ([{ products, sortableAttributes, total }, advancedVariationHandling]): SearchResponse => ({
+            products: params.has('MasterSKU') ? products : this.postProcessMasters(products, advancedVariationHandling),
+            sortableAttributes,
+            total,
+          })
         )
       );
   }

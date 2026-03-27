@@ -5,8 +5,7 @@ export class SearchBoxModule {
       .get('li button')
       .then(array => {
         const suggestions = [];
-        for (let index = 0; index < array.length; index++) {
-          const element = array[index];
+        for (const element of array) {
           suggestions.push(element.innerText);
         }
         return suggestions;

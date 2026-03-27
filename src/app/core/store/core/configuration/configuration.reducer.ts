@@ -19,15 +19,15 @@ export interface ConfigurationState {
   application?: string;
   hybridApplication?: string;
   identityProvider?: string;
-  identityProviders?: { [id: string]: { type?: string; [key: string]: unknown } };
+  identityProviders?: Record<string, { type?: string; [key: string]: unknown }>;
   features?: FeatureToggleType[];
   addFeatures?: FeatureToggleType[];
   defaultLocale?: string;
   fallbackLocales?: string[];
-  localeCurrencyOverride?: { [locale: string]: string | string[] };
+  localeCurrencyOverride?: Record<string, string | string[]>;
   lang?: string;
   currency?: string;
-  serverTranslations?: { [lang: string]: Translations };
+  serverTranslations?: Record<string, Translations>;
   multiSiteLocaleMap?: Record<string, unknown>;
   sparque?: SparqueConfig;
   paypal?: PaypalClientConfig;

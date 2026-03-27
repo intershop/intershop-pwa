@@ -38,8 +38,8 @@ describe('Product Prices Effects', () => {
       actions$ = of(action);
 
       effects.loadProductPrices$.subscribe(() => {
-        const [skus, customerId] = capture(pricesServiceMock.getProductPrices).last();
-        expect(skus).toEqual(skus);
+        const [capturedSkus, customerId] = capture(pricesServiceMock.getProductPrices).last();
+        expect(capturedSkus).toEqual(skus);
         expect(customerId).toBeUndefined();
         done();
       });

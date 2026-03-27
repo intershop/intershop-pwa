@@ -22,9 +22,7 @@ const registerLintAtEnd = once((root: string) => {
             batches.push(absolutePaths.slice(i, i + batchSize));
           }
 
-          for (let i = 0; i < batches.length; i++) {
-            const batch = batches[i];
-
+          for (const batch of batches) {
             execSync(`npx prettier --write --loglevel warn ${batch.join(' ')}`, { cwd: root });
             execSync(`npx eslint --fix ${batch.join(' ')}`, { cwd: root });
           }

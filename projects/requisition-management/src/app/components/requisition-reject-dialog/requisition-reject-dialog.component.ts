@@ -28,7 +28,7 @@ export class RequisitionRejectDialogComponent implements OnInit {
   /**
    * Emits the reject event with the reject comment.
    */
-  @Output() submitRejectRequisition = new EventEmitter<string>();
+  @Output() readonly submitRejectRequisition = new EventEmitter<string>();
 
   rejectForm = new FormGroup({});
   fields: FormlyFieldConfig[];

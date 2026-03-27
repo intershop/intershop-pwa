@@ -23,7 +23,7 @@ export class FilterSwatchImagesComponent {
    * The filter group.
    */
   @Input({ required: true }) filterElement: Filter;
-  @Output() applyFilter: EventEmitter<{ searchParameter: URLFormParams }> = new EventEmitter();
+  @Output() readonly applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
 
   /**
    * Applies a facet of the filter group and shows the new filtered result.

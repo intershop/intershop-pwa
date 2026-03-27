@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { Injectable, InjectionToken, Injector, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { RxState } from '@rx-angular/state';

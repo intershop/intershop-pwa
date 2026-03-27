@@ -17,8 +17,8 @@ declare type IdType = number | string;
 })
 export class ProductContextDirective implements OnInit {
   @Input() completeness: ProductCompletenessLevel = ProductCompletenessLevel.List;
-  @Output() skuChange = this.context.select('sku');
-  @Output() quantityChange = this.context.select('quantity');
+  @Output() readonly skuChange = this.context.select('sku');
+  @Output() readonly quantityChange = this.context.select('quantity');
 
   private propIndex$ = new ReplaySubject<IdType>(1);
 
@@ -28,8 +28,8 @@ export class ProductContextDirective implements OnInit {
         delete parent[id];
       };
 
-      const addToParent = (parent: ProductContext['children'], id: IdType, context: ProductContext) => {
-        parent[id] = context;
+      const addToParent = (parent: ProductContext['children'], id: IdType, childContext: ProductContext) => {
+        parent[id] = childContext;
       };
 
       const isId = (id: IdType): boolean => id !== undefined;
@@ -40,11 +40,11 @@ export class ProductContextDirective implements OnInit {
           this.propIndex$.pipe(startWith(undefined), distinctUntilChanged(), pairwise()),
           this.context.select().pipe(debounceTime(0)),
         ]),
-        (parent, [[prevId, currId], context]) => {
+        (parent, [[prevId, currId], childContext]) => {
           let newChildren: ProductContext['children'];
 
           // remove previous entry if ID changed
-          if (context.propagateActive && isId(prevId) && prevId !== currId) {
+          if (childContext.propagateActive && isId(prevId) && prevId !== currId) {
             newChildren = { ...parent.children };
             removeFromParent(newChildren, prevId);
           }
@@ -52,8 +52,8 @@ export class ProductContextDirective implements OnInit {
           // propagate current entry
           if (isId(currId)) {
             newChildren ??= { ...parent.children };
-            if (context.propagateActive) {
-              addToParent(newChildren, currId, context);
+            if (childContext.propagateActive) {
+              addToParent(newChildren, currId, childContext);
             } else {
               removeFromParent(newChildren, currId);
             }

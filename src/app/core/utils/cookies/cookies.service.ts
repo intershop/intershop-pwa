@@ -92,8 +92,8 @@ export class CookiesService {
     }
   }
 
-  private cookiesReader(): { [key: string]: unknown } {
-    let lastCookies: { [key: string]: unknown } = {};
+  private cookiesReader(): Record<string, unknown> {
+    let lastCookies: Record<string, unknown> = {};
     let lastCookieString = '';
     let cookiesArray: string[];
     let cookie: string;

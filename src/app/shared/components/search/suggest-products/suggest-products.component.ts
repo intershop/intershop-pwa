@@ -19,7 +19,7 @@ export class SuggestProductsComponent {
   @Input() maxAutoSuggests: number;
   @Input() inputTerms$ = new ReplaySubject<string>(1);
   @Input() deviceType: DeviceType;
-  @Output() routeChange = new EventEmitter<void>();
+  @Output() readonly routeChange = new EventEmitter<void>();
 
   handleInputFocus(): void {
     this.routeChange.emit();

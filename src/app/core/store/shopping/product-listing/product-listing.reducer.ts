@@ -40,9 +40,9 @@ export const adapter = createEntityAdapter<ProductListingType>({
  */
 export interface ProductListingState extends EntityState<ProductListingType> {
   loading: boolean;
-  itemsPerPage: number | { [id: string]: number };
+  itemsPerPage: number | Record<string, number>;
   viewType: ViewType;
-  currentSettings: { [id: string]: Pick<ProductListingID, 'filters' | 'sorting'> };
+  currentSettings: Record<string, Pick<ProductListingID, 'filters' | 'sorting'>>;
 }
 
 const initialState: ProductListingState = adapter.getInitialState({
@@ -67,7 +67,7 @@ function calculatePages(entry: ProductListingType) {
 }
 
 function mergeCurrentSettings(
-  currentSettings: { [id: string]: Pick<ProductListingID, 'filters' | 'sorting'> },
+  currentSettings: Record<string, Pick<ProductListingID, 'filters' | 'sorting'>>,
   id: ProductListingID,
   newSettings: Pick<ProductListingID, 'filters' | 'sorting'>
 ) {

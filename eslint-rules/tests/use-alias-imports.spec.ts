@@ -1,19 +1,21 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as fs from 'fs';
 
 import useAliasImportsRule from '../src/rules/use-alias-imports';
 
 import testRule from './rule-tester';
 
-jest.spyOn(fs, 'readFileSync').mockImplementation(
-  () => `{
+jest.mock('fs', () => ({
+  ...jest.requireActual('fs'),
+  readFileSync: jest.fn(
+    () => `{
   "compilerOptions": {
     "paths": {
       "ish-shared/*": ["src/app/shared/*"]
     }
   }
 }`
-);
+  ),
+}));
 
 testRule(useAliasImportsRule, {
   valid: [

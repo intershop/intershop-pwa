@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { DOCUMENT } from '@angular/common';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
+/* eslint-disable @typescript-eslint/no-require-imports, max-lines */
 import { CommonEngine } from '@angular/ssr';
 import { randomUUID } from 'crypto';
 import express from 'express';
@@ -311,7 +311,7 @@ export function app() {
       const pwaUrlRegex = new RegExp(entry.pwa);
       const icmMatchArray = icmUrlRegex.exec(url);
       if (icmMatchArray && entry.handledBy === 'pwa') {
-        const config: { [is: string]: string } = {
+        const config: Record<string, string> = {
           ...icmMatchArray.groups,
           application: environment.icmApplication || '-',
         };
@@ -322,7 +322,7 @@ export function app() {
           .replace(icmUrlRegex, `/${entry.pwaBuild}`);
         break;
       } else if (pwaUrlRegex.exec(url) && entry.handledBy === 'icm') {
-        const config: { [is: string]: string } = {};
+        const config: Record<string, string> = {};
         if (/;lang=[\w_]+/.test(url)) {
           const [, lang] = /;lang=([\w_]+)/.exec(url);
           config.lang = lang;
@@ -357,7 +357,7 @@ export function app() {
     }
   };
 
-  const buildICMWebURL = (config: { [is: string]: string } = {}): string =>
+  const buildICMWebURL = (config: Record<string, string> = {}): string =>
     ICM_WEB_URL.replace(/\$<(\w+)>/g, (match, group) => config[group] || match);
 
   if (process.env.SSR_HYBRID) {
@@ -408,8 +408,8 @@ export function app() {
   server.get(/\/.*\.js\.map$/, (req, res, next) => {
     if (SOURCE_MAPS_ACTIVE) {
       return express.static(BROWSER_FOLDER, {
-        setHeaders: (res, path) => {
-          res.set('Cache-Control', defaultCacheControl(path));
+        setHeaders: (response, filePath) => {
+          response.set('Cache-Control', defaultCacheControl(filePath));
         },
       })(req, res, next);
     } else {
@@ -576,8 +576,6 @@ export function app() {
   };
 
   if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
-    const onFinished = require('on-finished');
-
     server.use((req, res, next) => {
       const start = Date.now();
       onFinished(res, () => {
@@ -588,13 +586,13 @@ export function app() {
           base_href += '/';
         }
         const cleanUrl = req.originalUrl.replace(/[;?].*/g, '');
-        const path = cleanUrl.replace(base_href, '');
+        const urlPath = cleanUrl.replace(base_href, '');
 
         if (collectDetailedMetrics) {
-          requestCounts.inc({ method: req.method, status_code: res.statusCode, base_href, path });
-          requestDuration.labels({ status_code: res.statusCode, base_href, path }).observe(duration / 1000);
-          prometheusRest.forEach(({ endpoint, duration }) => {
-            restRequestDuration.labels({ endpoint }).observe(duration / 1000);
+          requestCounts.inc({ method: req.method, status_code: res.statusCode, base_href, path: urlPath });
+          requestDuration.labels({ status_code: res.statusCode, base_href, path: urlPath }).observe(duration / 1000);
+          prometheusRest.forEach(({ endpoint, duration: restDuration }) => {
+            restRequestDuration.labels({ endpoint }).observe(restDuration / 1000);
           });
           prometheusRest.length = 0;
         } else {
@@ -625,7 +623,9 @@ export function app() {
 }
 
 if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
-  type MetricsMessage = { topic: string };
+  interface MetricsMessage {
+    topic: string;
+  }
   process.on('message', (msg: MetricsMessage) => {
     if (msg.topic === 'getMetrics') {
       client.register.getMetricsAsJSON().then((data: client.MetricObject[]) => {

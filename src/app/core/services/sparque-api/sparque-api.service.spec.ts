@@ -654,7 +654,7 @@ describe('Sparque Api Service', () => {
       sparqueApiService.get('test', 'v2').subscribe({ next: fail, error: fail, complete: fail });
 
       // When businessPartnerNo is undefined, the service should not add a user parameter
-      const req = httpTestingController.expectOne(req => !req.url.includes('user='));
+      const req = httpTestingController.expectOne(request => !request.url.includes('user='));
       expect(req.request.url).not.toContain('user=');
     });
 

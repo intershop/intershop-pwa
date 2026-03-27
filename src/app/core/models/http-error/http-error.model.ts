@@ -1,8 +1,6 @@
 interface ErrorCause {
   message: string;
-  parameters?: {
-    [id: string]: string;
-  };
+  parameters?: Record<string, string>;
 }
 
 export interface ErrorFeedback {

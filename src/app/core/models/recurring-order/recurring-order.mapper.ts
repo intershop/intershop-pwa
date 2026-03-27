@@ -55,6 +55,7 @@ export class RecurringOrderMapper {
     }));
   }
 
+  // eslint-disable-next-line complexity
   static fromData(payload: RecurringOrderData): RecurringOrder {
     const { data, included } = payload;
 

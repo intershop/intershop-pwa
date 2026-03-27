@@ -11,7 +11,7 @@ export class FilterCollapsibleComponent implements OnInit {
   @Input({ required: true }) filterElement: Filter;
   @Input() collapsed: boolean;
 
-  @Output() collapsedChange = new EventEmitter<boolean>();
+  @Output() readonly collapsedChange = new EventEmitter<boolean>();
 
   isCollapsed = false;
 

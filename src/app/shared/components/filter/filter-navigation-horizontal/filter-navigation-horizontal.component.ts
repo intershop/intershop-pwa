@@ -10,5 +10,5 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
 })
 export class FilterNavigationHorizontalComponent {
   @Input({ required: true }) filterNavigation: FilterNavigation;
-  @Output() applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
+  @Output() readonly applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
 }

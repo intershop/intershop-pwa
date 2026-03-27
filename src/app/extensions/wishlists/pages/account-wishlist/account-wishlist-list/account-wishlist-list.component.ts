@@ -35,7 +35,7 @@ export class AccountWishlistListComponent implements OnChanges {
   /**
    * Emits the id of the wishlist, which is to be deleted.
    */
-  @Output() deleteWishlist = new EventEmitter<string>();
+  @Output() readonly deleteWishlist = new EventEmitter<string>();
 
   preferredWishlist: Wishlist;
 

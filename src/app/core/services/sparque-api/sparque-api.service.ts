@@ -109,7 +109,7 @@ export class SparqueApiService {
       .subscribe(([config, locale, user, customer]) => {
         Object.keys(config).forEach(key => {
           if (!SPARQUE_CONFIG_EXCLUDE_PARAMS.includes(key)) {
-            sparqueParams = sparqueParams.append(key, <string>config[key]);
+            sparqueParams = sparqueParams.append(key, config[key] as string);
           }
         });
         sparqueParams = sparqueParams.append('Locale', locale.replace('_', '-'));

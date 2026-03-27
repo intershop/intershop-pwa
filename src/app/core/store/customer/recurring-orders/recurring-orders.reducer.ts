@@ -12,7 +12,7 @@ export const recurringOrdersAdapter = createEntityAdapter<RecurringOrder>();
 export interface RecurringOrdersState extends EntityState<RecurringOrder> {
   loading: boolean;
   error: HttpError;
-  contexts: { [key: string]: string[] };
+  contexts: Record<string, string[]>;
 }
 
 export const initialState: RecurringOrdersState = recurringOrdersAdapter.getInitialState({

@@ -23,7 +23,7 @@ export class RequestReminderFormComponent implements OnInit {
   /**
    * Submit the form data to trigger the request for a password reminder.
    */
-  @Output() submitPasswordReminder = new EventEmitter<PasswordReminder>();
+  @Output() readonly submitPasswordReminder = new EventEmitter<PasswordReminder>();
   requestReminderForm = new UntypedFormGroup({});
   fields$: Observable<FormlyFieldConfig[]>;
 
