@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { Requisition, RequisitionApproval } from '../../models/requisition/requisition.model';
-import { RequisitionManagementStoreModule } from '../requisition-management-store.module';
+import { RequisitionManagementStoreProviders } from '../requisition-management-store.providers';
 
 import {
   loadRequisition,
@@ -27,7 +27,7 @@ describe('Requisitions Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), RequisitionManagementStoreModule.forTesting('requisitions')],
+      imports: [CoreStoreProviders.forTesting(), RequisitionManagementStoreProviders.forTesting('requisitions')],
       providers: [provideStoreSnapshots()],
     });
 

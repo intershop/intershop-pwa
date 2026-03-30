@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -38,8 +37,7 @@ describe('User Roles Selection Component', () => {
     when(organizationManagementFacade.role$(approverRole.id)).thenReturn(of(approverRole));
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [UserRolesSelectionComponent],
+      imports: [TranslateModule.forRoot(), UserRolesSelectionComponent],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
     }).compileComponents();
   });

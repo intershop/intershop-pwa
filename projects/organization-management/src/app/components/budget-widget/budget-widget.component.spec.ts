@@ -1,5 +1,7 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { RouterLink, provideRouter } from '@angular/router';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -47,18 +49,28 @@ describe('Budget Widget Component', () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [
-        BudgetWidgetComponent,
-        MockComponent(BudgetInfoComponent),
-        MockComponent(ErrorMessageComponent),
-        MockComponent(InfoBoxComponent),
-        MockComponent(LoadingComponent),
-        MockComponent(UserBudgetComponent),
-        MockDirective(AuthorizationToggleDirective),
+      imports: [BudgetWidgetComponent, TranslateModule.forRoot()],
+      providers: [
+        { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
+        provideRouter([]),
       ],
-      providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(BudgetWidgetComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            MockDirective(AuthorizationToggleDirective),
+            MockComponent(BudgetInfoComponent),
+            MockComponent(ErrorMessageComponent),
+            MockComponent(InfoBoxComponent),
+            MockComponent(LoadingComponent),
+            RouterLink,
+            TranslatePipe,
+            MockComponent(UserBudgetComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

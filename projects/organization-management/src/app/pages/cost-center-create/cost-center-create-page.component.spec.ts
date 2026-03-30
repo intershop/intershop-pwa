@@ -1,8 +1,13 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { RouterLink, provideRouter } from '@angular/router';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
+
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { CostCenterFormComponent } from '../../components/cost-center-form/cost-center-form.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
@@ -21,14 +26,27 @@ describe('Cost Center Create Page Component', () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [
-        CostCenterCreatePageComponent,
-        MockComponent(CostCenterCsvImportComponent),
-        MockComponent(CostCenterFormComponent),
+      imports: [CostCenterCreatePageComponent, TranslateModule.forRoot()],
+      providers: [
+        { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
+        provideRouter([]),
       ],
-      providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(CostCenterCreatePageComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            MockComponent(CostCenterFormComponent),
+            MockComponent(CostCenterCsvImportComponent),
+            MockDirective(FormSubmitDirective),
+            MockComponent(LoadingComponent),
+            ReactiveFormsModule,
+            TranslatePipe,
+            RouterLink,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

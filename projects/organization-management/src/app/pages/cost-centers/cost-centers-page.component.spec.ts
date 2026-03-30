@@ -1,7 +1,8 @@
 import { CdkTableModule } from '@angular/cdk/table';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { RouterLink, provideRouter } from '@angular/router';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -10,6 +11,7 @@ import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { PagingComponent } from 'ish-shared/components/common/paging/paging.component';
 
 import { BudgetInfoComponent } from '../../components/budget-info/budget-info.component';
 import { CostCenterBudgetComponent } from '../../components/cost-center-budget/cost-center-budget.component';
@@ -39,20 +41,30 @@ describe('Cost Centers Page Component', () => {
   beforeEach(async () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
     await TestBed.configureTestingModule({
-      imports: [CdkTableModule, RouterModule, TranslateModule.forRoot()],
-      declarations: [
-        CostCentersPageComponent,
-        MockComponent(BudgetInfoComponent),
-        MockComponent(CostCenterBudgetComponent),
-        MockComponent(CostCentersFilterComponent),
-        MockComponent(LoadingComponent),
-        MockComponent(ModalDialogComponent),
-      ],
+      imports: [CostCentersPageComponent, TranslateModule.forRoot()],
       providers: [
         { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
         provideRouter([]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CostCentersPageComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            MockComponent(BudgetInfoComponent),
+            CdkTableModule,
+            MockComponent(CostCenterBudgetComponent),
+            MockComponent(CostCentersFilterComponent),
+            MockComponent(LoadingComponent),
+            MockComponent(ModalDialogComponent),
+            NgClass,
+            MockComponent(PagingComponent),
+            TranslatePipe,
+            RouterLink,
+          ],
+        },
+      })
+      .compileComponents();
 
     when(organizationManagementFacade.costCenters$).thenReturn(of(costCenters));
     when(organizationManagementFacade.costCentersPagingInfo$).thenReturn(of(pagingInfo));
@@ -65,6 +77,7 @@ describe('Cost Centers Page Component', () => {
     element = fixture.nativeElement;
 
     component.columnsToDisplay = ['costCenterId', 'costCenterName', 'costCenterBudget', 'actions'];
+    when(organizationManagementFacade.costCentersLoading$).thenReturn(of(false));
   });
 
   it('should be created', () => {

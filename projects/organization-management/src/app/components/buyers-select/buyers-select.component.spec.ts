@@ -19,8 +19,7 @@ describe('Buyers Select Component', () => {
 
     when(organizationManagementFacade.users$).thenReturn(of([]));
     await TestBed.configureTestingModule({
-      imports: [FormlyModule.forRoot(), ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [BuyersSelectComponent],
+      imports: [BuyersSelectComponent, FormlyModule.forRoot(), ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
     }).compileComponents();
   });
