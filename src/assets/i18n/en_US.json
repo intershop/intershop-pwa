@@ -941,6 +941,7 @@
   "checkout.payment.paypal.script.error.message": "PayPal is temporarily unavailable. Please try again shortly or select another payment method.",
   "checkout.payment.paypal.script.render.error.message": "Unfortunately, something went wrong. <a href=\"javascript:location.reload()\" class=\"alert-link\">Reload this page</a> or select another payment method.",
   "checkout.payment.security_code.missing.error": "Security code is missing.",
+  "checkout.payment.service.unavailable.text": "The payment server is temporarily unavailable. Please try again shortly or select another payment method.",
   "checkout.payment.sorry_message.text": "We’re sorry.",
   "checkout.pli.desc.heading": "Item description",
   "checkout.pli.freegift.text": "Free gift",

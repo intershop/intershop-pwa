@@ -164,12 +164,18 @@ export class PaymentService {
   /**
    *  Checks, if RedirectUrls are requested by the server and sends them if it is necessary.
    *
+   *  Paypal checkout payment method handles the redirect urls in a different way,
+   *  so it is checked if the payment method is paypal checkout to prevent wrong handling.
+   *
    * @param pm                The payment method to determine if redirect is required.
    * @param paymentInstrument The payment instrument id.
    * @returns                 The payment instrument id.
    */
   private sendRedirectUrlsIfRequired(pm: PaymentMethodBaseData, paymentInstrument: string): Observable<string> {
-    if (!pm?.capabilities?.some(data => ['RedirectBeforeCheckout'].includes(data))) {
+    if (
+      !pm?.capabilities?.some(data => ['RedirectBeforeCheckout'].includes(data)) ||
+      pm?.capabilities?.some(data => ['PaypalCheckout'].includes(data))
+    ) {
       return of(paymentInstrument);
       // send redirect urls if there is a redirect required
     } else {

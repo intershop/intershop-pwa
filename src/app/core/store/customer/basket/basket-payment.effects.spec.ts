@@ -42,6 +42,7 @@ import {
   loadBasketEligiblePaymentMethodsFail,
   loadBasketEligiblePaymentMethodsSuccess,
   loadBasketSuccess,
+  loadPaypalToken,
   setBasketPayment,
   setBasketPaymentFail,
   setBasketPaymentSuccess,
@@ -492,6 +493,70 @@ describe('Basket Payment Effects', () => {
     });
   });
 
+  describe('loadPaypalToken$', () => {
+    beforeEach(() => {
+      when(paymentPaypalServiceMock.getPaypalToken(anyString())).thenReturn(of('PAYPAL_TOKEN_123'));
+
+      store.dispatch(
+        loadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+            payment: undefined,
+          } as Basket,
+        })
+      );
+    });
+
+    it('should call the paymentPaypalService for loadPaypalToken', done => {
+      const action = loadPaypalToken({ paymentInstrumentId: 'test-instrument-id' });
+      actions$ = of(action);
+
+      effects.loadPaypalToken$.subscribe(() => {
+        verify(paymentPaypalServiceMock.getPaypalToken('test-instrument-id')).once();
+        done();
+      });
+    });
+
+    it('should map to action of type emitPaypalOrderId on success', done => {
+      const action = loadPaypalToken({ paymentInstrumentId: 'test-instrument-id' });
+      actions$ = of(action);
+
+      const expectedActions = [
+        setBasketPaymentSuccess(),
+        emitPaypalOrderId({ orderId: 'PAYPAL_TOKEN_123', paymentInstrumentId: 'test-instrument-id' }),
+      ];
+
+      const emittedActions: Action[] = [];
+      effects.loadPaypalToken$.subscribe({
+        next: emittedAction => emittedActions.push(emittedAction),
+        complete: () => {
+          expect(emittedActions).toEqual(expectedActions);
+          done();
+        },
+      });
+    });
+
+    it('should map error to action of type emitPaypalOrderId with undefined orderId', done => {
+      when(paymentPaypalServiceMock.getPaypalToken(anyString())).thenReturn(
+        throwError(() => makeHttpError({ message: 'token error' }))
+      );
+      const action = loadPaypalToken({ paymentInstrumentId: 'test-instrument-id' });
+      actions$ = of(action);
+
+      const expectedActions = [emitPaypalOrderId({ orderId: undefined, paymentInstrumentId: 'test-instrument-id' })];
+
+      const emittedActions: Action[] = [];
+      effects.loadPaypalToken$.subscribe({
+        next: emittedAction => emittedActions.push(emittedAction),
+        complete: () => {
+          expect(emittedActions).toEqual(expectedActions);
+          done();
+        },
+      });
+    });
+  });
+
   describe('deletePaypalCreditCardBasketPayment$', () => {
     const paymentInstrument = {
       id: 'temporaryPaymentInstrumentId',
@@ -705,6 +770,10 @@ describe('Basket Payment Effects', () => {
           basket: {
             id: 'BID',
             lineItems: [],
+            payment: {
+              id: 'paypal-payment',
+              capabilities: ['PaypalCheckout'],
+            },
           } as Basket,
         })
       );

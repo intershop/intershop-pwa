@@ -53,6 +53,7 @@ import {
   loadBasketEligiblePaymentMethods,
   loadBasketEligibleShippingMethods,
   loadBasketWithId,
+  loadPaypalToken,
   removePromotionCodeFromBasket,
   setBasketAttribute,
   setBasketCustomFields,
@@ -327,7 +328,11 @@ export class CheckoutFacade {
     this.store.dispatch(startRedirectBeforeCheckout());
   }
 
-  // PAYPAL CREDIT CARD
+  // PAYPAL PAYMENTS
+
+  loadPaypalToken(paymentInstrumentId: string) {
+    this.store.dispatch(loadPaypalToken({ paymentInstrumentId }));
+  }
 
   createPaypalCreditCardBasketPayment(paymentInstrument: PaymentInstrument) {
     this.store.dispatch(createPaypalCreditCardBasketPayment({ paymentInstrument }));
