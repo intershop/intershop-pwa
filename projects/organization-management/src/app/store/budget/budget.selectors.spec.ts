@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Price } from 'ish-core/models/price/price.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { OrganizationManagementStoreModule } from '../organization-management-store.module';
+import { OrganizationManagementStoreProviders } from '../organization-management-store.providers';
 
 import { loadBudget, loadBudgetFail, loadBudgetSuccess } from './budget.actions';
 import { getCurrentUserBudget, getCurrentUserBudgetError, getCurrentUserBudgetLoading } from './budget.selectors';
@@ -35,7 +35,7 @@ describe('Budget Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), OrganizationManagementStoreModule.forTesting('budget')],
+      imports: [CoreStoreProviders.forTesting(), OrganizationManagementStoreProviders.forTesting('budget')],
       providers: [provideStoreSnapshots()],
     });
 

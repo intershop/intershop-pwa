@@ -17,7 +17,8 @@ describe('Cost Center Buyers Repeat Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        FormlyModule.forChild({
+        CostCenterBuyersRepeatFieldComponent,
+        FormlyModule.forRoot({
           types: [
             { name: 'buyerRepeatField', component: CostCenterBuyersRepeatFieldComponent },
             { name: 'example', component: FormlyTestingExampleComponent },
@@ -25,7 +26,6 @@ describe('Cost Center Buyers Repeat Field Component', () => {
         }),
         FormlyTestingComponentsModule,
       ],
-      declarations: [CostCenterBuyersRepeatFieldComponent],
     }).compileComponents();
   });
 

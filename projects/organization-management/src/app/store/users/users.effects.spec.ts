@@ -8,13 +8,13 @@ import { Observable, of, throwError } from 'rxjs';
 import { toArray } from 'rxjs/operators';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 import { UsersService } from '../../services/users/users.service';
-import { OrganizationManagementStoreModule } from '../organization-management-store.module';
+import { OrganizationManagementStoreProviders } from '../organization-management-store.providers';
 
 import {
   addUser,
@@ -68,7 +68,7 @@ describe('Users Effects', () => {
     when(usersService.setUserBudget(anyString(), anything())).thenReturn(of(users[0].userBudget));
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router']), OrganizationManagementStoreModule.forTesting('users')],
+      imports: [CoreStoreProviders.forTesting(['router']), OrganizationManagementStoreProviders.forTesting('users')],
       providers: [
         { provide: UsersService, useFactory: () => instance(usersService) },
         provideMockActions(() => actions$),
