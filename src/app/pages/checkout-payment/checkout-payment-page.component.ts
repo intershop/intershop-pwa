@@ -43,10 +43,8 @@ export class CheckoutPaymentPageComponent implements OnInit {
       map(([pmList, basket]) =>
         pmList?.filter(
           pm =>
-            !pm.capabilities ||
-            !pm.capabilities.includes('FastCheckout') ||
-            (pm.capabilities &&
-              pm.capabilities.includes('FastCheckout') &&
+            !pm.capabilities?.includes('FastCheckout') ||
+            (pm.capabilities?.includes('FastCheckout') &&
               basket?.payment?.capabilities?.includes('FastCheckout') &&
               basket.payment.paymentInstrument.id === pm.id)
         )

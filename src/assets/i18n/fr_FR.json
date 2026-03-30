@@ -942,6 +942,7 @@
   "checkout.payment.paypal.script.error.message": "PayPal est temporairement indisponible. Veuillez réessayer sous peu ou choisir un autre mode de paiement.",
   "checkout.payment.paypal.script.render.error.message": "Malheureusement, quelque chose s’est mal passé. Veuillez <a href=\"javascript:location.reload()\" class=\"alert-link\">recharger cette page</a> ou sélectionner un autre mode de paiement.",
   "checkout.payment.security_code.missing.error": "Le code de sécurité manque.",
+  "checkout.payment.service.unavailable.text": "Le serveur de paiement est temporairement indisponible. Veuillez réessayer sous peu ou sélectionner un autre mode de paiement.",
   "checkout.payment.sorry_message.text": "Nous sommes désolés.",
   "checkout.pli.desc.heading": "Description de l’article",
   "checkout.pli.freegift.text": "Cadeau gratuit",

@@ -4,7 +4,7 @@ import { concatLatestFrom } from '@ngrx/operators';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, of } from 'rxjs';
-import { concatMap, exhaustMap, filter, map, switchMap, take } from 'rxjs/operators';
+import { catchError, concatMap, exhaustMap, filter, map, switchMap, take } from 'rxjs/operators';
 
 import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
@@ -31,6 +31,7 @@ import {
   loadBasketEligiblePaymentMethods,
   loadBasketEligiblePaymentMethodsFail,
   loadBasketEligiblePaymentMethodsSuccess,
+  loadPaypalToken,
   setBasketPayment,
   setBasketPaymentFail,
   setBasketPaymentSuccess,
@@ -47,7 +48,7 @@ import {
   updatePaymentInstrumentSuccess,
   updatePaypalCreditCardPaymentInstrument,
 } from './basket.actions';
-import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
+import { getCurrentBasket } from './basket.selectors';
 
 @Injectable()
 export class BasketPaymentEffects {
@@ -85,6 +86,21 @@ export class BasketPaymentEffects {
         this.paymentService.setBasketPayment(id).pipe(
           map(() => setBasketPaymentSuccess()),
           mapErrorToAction(setBasketPaymentFail)
+        )
+      )
+    )
+  );
+
+  loadPaypalToken$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadPaypalToken),
+      mapToPayloadProperty('paymentInstrumentId'),
+      concatMap(paymentInstrumentId =>
+        this.paymentPaypalService.getPaypalToken(paymentInstrumentId).pipe(
+          concatMap(token => [setBasketPaymentSuccess(), emitPaypalOrderId({ orderId: token, paymentInstrumentId })]),
+          // In case of an error during token retrieval, the information must passed to the adapter
+          // to handle this error in the correct way e.g close the overlay.
+          catchError(() => [emitPaypalOrderId({ orderId: undefined, paymentInstrumentId })])
         )
       )
     )
@@ -252,9 +268,10 @@ export class BasketPaymentEffects {
       ),
       switchMap(routerState =>
         this.store.pipe(
-          select(getCurrentBasketId),
+          select(getCurrentBasket),
           whenTruthy(),
           take(1),
+          filter(basket => !!basket.payment?.capabilities?.includes('PaypalCheckout')),
           map(() => updateBasketPayment({ params: routerState.queryParams }))
         )
       )

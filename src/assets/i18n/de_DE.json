@@ -942,6 +942,7 @@
   "checkout.payment.paypal.script.error.message": "PayPal ist vorübergehend nicht verfügbar. Bitte versuchen Sie es in Kürze erneut oder wählen Sie eine andere Zahlungsmethode aus.",
   "checkout.payment.paypal.script.render.error.message": "Leider ist etwas schiefgegangen. <a href=\"javascript:location.reload()\" class=\"alert-link\">Laden Sie diese Seite neu</a> oder wählen Sie eine andere Zahlungsmethode aus.",
   "checkout.payment.security_code.missing.error": "Kein Sicherheitscode angegeben.",
+  "checkout.payment.service.unavailable.text": "Der Zahlungsserver ist vorübergehend nicht verfügbar. Bitte versuchen Sie es in Kürze erneut oder wählen Sie eine andere Zahlungsmethode aus.",
   "checkout.payment.sorry_message.text": "Es tut uns leid.",
   "checkout.pli.desc.heading": "Artikelbeschreibung",
   "checkout.pli.freegift.text": "Bonusprodukt",

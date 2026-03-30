@@ -2,13 +2,14 @@
 import { Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
-import { instance, mock, verify, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Address } from 'ish-core/models/address/address.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
+import { PaypalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 
 import { PaypalButtonsAdapter } from './paypal-buttons.adapter';
 
@@ -25,18 +26,15 @@ class TestablePaypalButtons extends PaypalButtonsAdapter {
     (this as any).onApproveCallback(data);
   }
 
-  testOnCancelCallback(config: PaypalComponentsConfig): void {
-    (this as any).onCancelCallback(config);
-  }
-
-  testOnErrorCallback(config: PaypalComponentsConfig): void {
-    (this as any).onErrorCallback(config);
+  testOnAbortCallback(config: PaypalComponentsConfig, reason: 'cancel' | 'failure' | 'unavailable' = 'cancel'): void {
+    this.onAbortCallback(config, reason);
   }
 }
 
 describe('Paypal Buttons Adapter', () => {
   let paypalButtons: TestablePaypalButtons;
   let checkoutFacade: CheckoutFacade;
+  let paypalDataTransferService: PaypalDataTransferService;
 
   const mockPaymentMethod = {
     id: 'ISH_PAYPAL',
@@ -59,6 +57,20 @@ describe('Paypal Buttons Adapter', () => {
     } as Address,
   } as Basket;
 
+  const mockBasketWithMatchingPayment = {
+    ...mockBasket,
+    payment: {
+      capabilities: ['PaypalCheckout'],
+      redirectUrl: 'https://paypal.com?token=ORDER123',
+      paymentInstrument: { id: 'test-instrument-id' },
+    },
+  } as Basket;
+
+  const mockBasketWithoutPayment = {
+    ...mockBasket,
+    payment: undefined,
+  } as Basket;
+
   const mockConfig: PaypalComponentsConfig = {
     containerId: 'paypal-button-container',
     scriptNamespace: 'testPaypal',
@@ -71,6 +83,12 @@ describe('Paypal Buttons Adapter', () => {
 
   beforeEach(() => {
     checkoutFacade = mock(CheckoutFacade);
+    paypalDataTransferService = mock(PaypalDataTransferService);
+
+    // Mock paypalOrder$ to emit orderId
+    when(paypalDataTransferService.paypalOrder$).thenReturn(
+      of({ orderId: 'ORDER123', paymentInstrumentId: 'test-instrument-id' })
+    );
 
     // Create mock PayPal Buttons component
     mockPaypalButtons = jest.fn().mockReturnValue({
@@ -83,7 +101,11 @@ describe('Paypal Buttons Adapter', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, TestablePaypalButtons],
+      providers: [
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        { provide: PaypalDataTransferService, useFactory: () => instance(paypalDataTransferService) },
+        TestablePaypalButtons,
+      ],
     });
 
     paypalButtons = TestBed.inject(TestablePaypalButtons);
@@ -101,18 +123,14 @@ describe('Paypal Buttons Adapter', () => {
   });
 
   describe('createOrder()', () => {
-    beforeEach(() => {
-      when(checkoutFacade.basket$).thenReturn(of(mockBasket));
-    });
-
-    it('should set basket payment with payment instrument id', async () => {
+    it('should call loadPaypalToken with payment instrument id', async () => {
       const orderId = await paypalButtons.testCreateOrder(mockPaymentMethod);
 
-      verify(checkoutFacade.setBasketPayment('test-instrument-id')).once();
+      verify(checkoutFacade.loadPaypalToken('test-instrument-id')).once();
       expect(orderId).toBe('ORDER123');
     });
 
-    it('should set basket payment with serviceId when no payment instrument exists', async () => {
+    it('should call loadPaypalToken with serviceId when no payment instrument exists', async () => {
       const paymentMethodWithoutInstrument = {
         ...mockPaymentMethod,
         paymentInstruments: [],
@@ -120,45 +138,38 @@ describe('Paypal Buttons Adapter', () => {
 
       const orderId = await paypalButtons.testCreateOrder(paymentMethodWithoutInstrument);
 
-      verify(checkoutFacade.setBasketPayment('PayPal')).once();
+      verify(checkoutFacade.loadPaypalToken('PayPal')).once();
       expect(orderId).toBe('ORDER123');
     });
 
-    it('should extract order ID from redirectUrl', async () => {
+    it('should get order ID from paypalDataTransferService', async () => {
       const orderId = await paypalButtons.testCreateOrder(mockPaymentMethod);
 
       expect(orderId).toBe('ORDER123');
     });
 
-    it('should handle basket with different token format', async () => {
-      const basketWithDifferentToken = {
-        ...mockBasket,
-        payment: {
-          ...mockBasket.payment,
-          redirectUrl: 'https://paypal.com/checkout?foo=bar&token=ORDER999',
-        },
-      } as Basket;
-
-      when(checkoutFacade.basket$).thenReturn(of(basketWithDifferentToken));
+    it('should resolve with orderId from paypalOrder$ stream', async () => {
+      when(paypalDataTransferService.paypalOrder$).thenReturn(
+        of({ orderId: 'ORDER999', paymentInstrumentId: 'test-instrument-id' })
+      );
 
       const orderId = await paypalButtons.testCreateOrder(mockPaymentMethod);
 
       expect(orderId).toBe('ORDER999');
     });
 
-    it('should wait for basket with valid payment capabilities', async () => {
-      // Basket emits first without payment, then with valid payment
-      when(checkoutFacade.basket$).thenReturn(of({ ...mockBasket, payment: undefined } as Basket, mockBasket));
+    it('should reject when paypalOrder$ emits error', async () => {
+      when(paypalDataTransferService.paypalOrder$).thenReturn(throwError(() => new Error('PayPal order error')));
 
-      const orderId = await paypalButtons.testCreateOrder(mockPaymentMethod);
-
-      expect(orderId).toBe('ORDER123');
+      await expect(paypalButtons.testCreateOrder(mockPaymentMethod)).rejects.toThrow('PayPal order error');
     });
 
-    it('should reject when basket$ emits error', async () => {
-      when(checkoutFacade.basket$).thenReturn(throwError(() => new Error('Basket error')));
+    it('should reject when paypalOrder$ emits empty orderId', async () => {
+      when(paypalDataTransferService.paypalOrder$).thenReturn(
+        of({ orderId: '', paymentInstrumentId: 'test-instrument-id' })
+      );
 
-      await expect(paypalButtons.testCreateOrder(mockPaymentMethod)).rejects.toThrow('Basket error');
+      await expect(paypalButtons.testCreateOrder(mockPaymentMethod)).rejects.toThrow('PayPal order ID is empty');
     });
   });
 
@@ -325,80 +336,89 @@ describe('Paypal Buttons Adapter', () => {
     });
   });
 
-  describe('onCancel()', () => {
+  describe('onAbort()', () => {
     let navigateSpy: jest.SpyInstance;
 
     beforeEach(() => {
       navigateSpy = jest.spyOn((paypalButtons as any).router, 'navigate');
+      when(checkoutFacade.basket$).thenReturn(of(mockBasketWithMatchingPayment, mockBasketWithoutPayment));
     });
 
-    it('should delete basket payment when payment instrument exists', () => {
-      paypalButtons.testOnCancelCallback(mockConfig);
+    describe('onCancel', () => {
+      it('should delete basket payment when payment instrument exists', () => {
+        paypalButtons.testOnAbortCallback(mockConfig, 'cancel');
 
-      verify(checkoutFacade.deleteBasketPayment(mockConfig.paypalPaymentMethod.paymentInstruments[0])).once();
+        verify(checkoutFacade.deleteBasketPayment(mockConfig.paypalPaymentMethod.paymentInstruments[0])).once();
+      });
+
+      it('should navigate to basket page for FastCheckout', () => {
+        paypalButtons.testOnAbortCallback(mockConfig, 'cancel');
+
+        expect(navigateSpy).toHaveBeenCalledWith(['/basket'], { queryParams: { redirect: 'cancel' } });
+      });
+
+      it('should navigate to payment page when not FastCheckout', () => {
+        const configWithoutFastCheckout = {
+          ...mockConfig,
+          paypalPaymentMethod: {
+            ...mockPaymentMethod,
+            capabilities: ['PaypalCheckout'],
+          } as PaymentMethod,
+        };
+
+        paypalButtons.testOnAbortCallback(configWithoutFastCheckout, 'cancel');
+
+        expect(navigateSpy).toHaveBeenCalledWith(['/checkout/payment'], { queryParams: { redirect: 'cancel' } });
+      });
+
+      it('should not delete payment or navigate when no payment instruments exist', () => {
+        const configWithoutInstrument = {
+          ...mockConfig,
+          paypalPaymentMethod: {
+            ...mockPaymentMethod,
+            paymentInstruments: [],
+          } as PaymentMethod,
+        };
+
+        paypalButtons.testOnAbortCallback(configWithoutInstrument, 'cancel');
+
+        verify(checkoutFacade.deleteBasketPayment(anything())).never();
+        expect(navigateSpy).not.toHaveBeenCalled();
+      });
     });
 
-    it('should navigate to basket page for FastCheckout', () => {
-      paypalButtons.testOnCancelCallback(mockConfig);
+    describe('onError', () => {
+      it('should navigate with failure reason when serviceAvailable is true', () => {
+        paypalButtons.serviceAvailable = true;
 
-      expect(navigateSpy).toHaveBeenCalledWith(['/basket'], { queryParams: { redirect: 'cancel' } });
-    });
+        paypalButtons.testOnAbortCallback(mockConfig, 'failure');
 
-    it('should navigate to payment page when not FastCheckout', () => {
-      const configWithoutFastCheckout = {
-        ...mockConfig,
-        paypalPaymentMethod: {
-          ...mockPaymentMethod,
-          capabilities: ['PaypalCheckout'],
-        } as PaymentMethod,
-      };
+        verify(checkoutFacade.deleteBasketPayment(mockConfig.paypalPaymentMethod.paymentInstruments[0])).once();
+        expect(navigateSpy).toHaveBeenCalledWith(['/basket'], { queryParams: { redirect: 'failure' } });
+      });
 
-      paypalButtons.testOnCancelCallback(configWithoutFastCheckout);
+      it('should navigate with unavailable reason when serviceAvailable is false', () => {
+        paypalButtons.serviceAvailable = false;
 
-      expect(navigateSpy).toHaveBeenCalledWith(['/checkout/payment'], { queryParams: { redirect: 'cancel' } });
-    });
+        paypalButtons.testOnAbortCallback(mockConfig, 'unavailable');
 
-    it('should not delete payment when no payment instrument exists', () => {
-      const deletePaymentSpy = jest.spyOn(checkoutFacade, 'deleteBasketPayment');
-      const configWithoutInstrument = {
-        ...mockConfig,
-        paypalPaymentMethod: {
-          ...mockPaymentMethod,
-          paymentInstruments: [],
-        } as PaymentMethod,
-      };
+        verify(checkoutFacade.deleteBasketPayment(mockConfig.paypalPaymentMethod.paymentInstruments[0])).once();
+        expect(navigateSpy).toHaveBeenCalledWith(['/basket'], { queryParams: { redirect: 'unavailable' } });
+      });
 
-      paypalButtons.testOnCancelCallback(configWithoutInstrument);
+      it('should navigate to payment page on error when not FastCheckout', () => {
+        const configWithoutFastCheckout = {
+          ...mockConfig,
+          paypalPaymentMethod: {
+            ...mockPaymentMethod,
+            capabilities: ['PaypalCheckout'],
+          } as PaymentMethod,
+        };
 
-      expect(deletePaymentSpy).not.toHaveBeenCalled();
-    });
-  });
+        paypalButtons.testOnAbortCallback(configWithoutFastCheckout, 'failure');
 
-  describe('onError()', () => {
-    let navigateSpy: jest.SpyInstance;
-
-    beforeEach(() => {
-      navigateSpy = jest.spyOn((paypalButtons as any).router, 'navigate');
-    });
-
-    it('should navigate to basket page for FastCheckout on error', () => {
-      paypalButtons.testOnErrorCallback(mockConfig);
-
-      expect(navigateSpy).toHaveBeenCalledWith(['/basket'], { queryParams: { redirect: 'failure' } });
-    });
-
-    it('should navigate to payment page when not FastCheckout on error', () => {
-      const configWithoutFastCheckout = {
-        ...mockConfig,
-        paypalPaymentMethod: {
-          ...mockPaymentMethod,
-          capabilities: ['PaypalCheckout'],
-        } as PaymentMethod,
-      };
-
-      paypalButtons.testOnErrorCallback(configWithoutFastCheckout);
-
-      expect(navigateSpy).toHaveBeenCalledWith(['/checkout/payment'], { queryParams: { redirect: 'failure' } });
+        expect(navigateSpy).toHaveBeenCalledWith(['/checkout/payment'], { queryParams: { redirect: 'failure' } });
+      });
     });
   });
 
@@ -425,7 +445,6 @@ describe('Paypal Buttons Adapter', () => {
       expect(buttonConfig).toHaveProperty('onApprove');
       expect(buttonConfig).toHaveProperty('onShippingAddressChange');
       expect(buttonConfig).toHaveProperty('onCancel');
-      expect(buttonConfig).toHaveProperty('onError');
     });
 
     it('should use checkout style for checkout payment page', async () => {
@@ -490,6 +509,13 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     it('should call createOrder callback', async () => {
+      // createOrderCallback needs a token change: first emit without token, then with token
+      const basketWithoutToken = {
+        ...mockBasket,
+        payment: { ...mockBasket.payment, redirectUrl: undefined },
+      } as Basket;
+      when(checkoutFacade.basket$).thenReturn(of(basketWithoutToken, mockBasket));
+
       await paypalButtons.renderButtons(mockConfig);
 
       const buttonConfig = mockPaypalButtons.mock.calls[0][0];
@@ -534,6 +560,7 @@ describe('Paypal Buttons Adapter', () => {
 
     it('should call onCancel callback', async () => {
       const navigateSpy = jest.spyOn((paypalButtons as any).router, 'navigate');
+      when(checkoutFacade.basket$).thenReturn(of(mockBasketWithMatchingPayment, mockBasketWithoutPayment));
 
       await paypalButtons.renderButtons(mockConfig);
 
@@ -544,15 +571,32 @@ describe('Paypal Buttons Adapter', () => {
       expect(navigateSpy).toHaveBeenCalledWith(['/basket'], { queryParams: { redirect: 'cancel' } });
     });
 
-    it('should call onError callback', async () => {
+    it('should call onError callback with failure reason', async () => {
       const navigateSpy = jest.spyOn((paypalButtons as any).router, 'navigate');
+      paypalButtons.serviceAvailable = true;
+      when(checkoutFacade.basket$).thenReturn(of(mockBasketWithMatchingPayment, mockBasketWithoutPayment));
 
       await paypalButtons.renderButtons(mockConfig);
 
       const buttonConfig = mockPaypalButtons.mock.calls[0][0];
       buttonConfig.onError();
 
+      verify(checkoutFacade.deleteBasketPayment(mockConfig.paypalPaymentMethod.paymentInstruments[0])).once();
       expect(navigateSpy).toHaveBeenCalledWith(['/basket'], { queryParams: { redirect: 'failure' } });
+    });
+
+    it('should call onError callback with unavailable reason when service is unavailable', async () => {
+      const navigateSpy = jest.spyOn((paypalButtons as any).router, 'navigate');
+      paypalButtons.serviceAvailable = false;
+      when(checkoutFacade.basket$).thenReturn(of(mockBasketWithMatchingPayment, mockBasketWithoutPayment));
+
+      await paypalButtons.renderButtons(mockConfig);
+
+      const buttonConfig = mockPaypalButtons.mock.calls[0][0];
+      buttonConfig.onError();
+
+      verify(checkoutFacade.deleteBasketPayment(mockConfig.paypalPaymentMethod.paymentInstruments[0])).once();
+      expect(navigateSpy).toHaveBeenCalledWith(['/basket'], { queryParams: { redirect: 'unavailable' } });
     });
   });
 
