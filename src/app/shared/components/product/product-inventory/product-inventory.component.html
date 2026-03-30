@@ -8,7 +8,18 @@
     }
     <link itemprop="availability" href="http://schema.org/InStock" />
   </span>
-  } @else {
+  @if (displayType === 'extended') { @if (supplierStock$ | async; as supplierStock) { @if (supplierStock.length > 0) {
+  <div class="pt-2 pb-3">
+    @for (sStock of supplierStock; track $index) {
+    <div class="row">
+      <span class="col-6">{{ sStock.displayName }}:</span>
+      <span class="col-6" [ngClass]="getStockStyling(sStock.availableStock)">{{
+        getStockText(sStock.availableStock)
+      }}</span>
+    </div>
+    }
+  </div>
+  } } } } @else {
   <span class="product-out-of-stock">
     {{ 'product.out_of_stock.text' | translate }}
     <link itemprop="availability" href="http://schema.org/OutOfStock" />

@@ -13,6 +13,7 @@ describe('Product Inventory Mapper', () => {
         {
           "availableStock": 50,
           "inStock": true,
+          "supplierStock": [],
           "sku": "abc",
         }
       `);
@@ -32,6 +33,7 @@ describe('Product Inventory Mapper', () => {
         {
           "availableStock": undefined,
           "inStock": true,
+          "supplierStock": [],
           "sku": "xyz",
         }
       `);

@@ -1,0 +1,42 @@
+@use 'sass:color';
+
+@import 'variables';
+
+/* purgecss start ignore */
+
+.success,
+.warning,
+.danger {
+  position: relative;
+
+  &::before {
+    position: absolute;
+    top: 5px;
+    left: -3px;
+    display: block;
+    width: 12px;
+    height: 12px;
+    content: '';
+    border-radius: 50%;
+  }
+}
+
+.success {
+  &::before {
+    background-color: $success;
+  }
+}
+
+.warning {
+  &::before {
+    background-color: $warning;
+  }
+}
+
+.danger {
+  &::before {
+    background-color: $danger;
+  }
+}
+
+/* purgecss end ignore */
