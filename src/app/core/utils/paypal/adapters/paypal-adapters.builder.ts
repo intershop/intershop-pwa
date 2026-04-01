@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, NgZone, inject } from '@angular/core';
 import { Observable, filter, from, map, of, switchMap } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -44,20 +44,22 @@ export class PaypalAdaptersBuilder {
   private paypalButtons = inject(PaypalButtonsAdapter);
   private paypalMessages = inject(PaypalMessagesAdapter);
 
-  constructor(private checkoutFacade: CheckoutFacade, private shoppingFacade: ShoppingFacade) {}
+  constructor(private checkoutFacade: CheckoutFacade, private shoppingFacade: ShoppingFacade, private ngZone: NgZone) {}
 
   // Creates a PayPal component based on the provided configuration.
   build(config: PaypalComponentsConfig) {
-    switch (config.adapterType) {
-      case 'Buttons':
-        return this.paypalButtons.renderButtons(config);
-      case 'Messages':
-        return this.paypalMessages.renderMessages({ ...config, amount$: this.getAmount(config) });
-      case 'CardFields':
-        return from(this.paypalCardFields.renderCardFields(config.scriptNamespace, config.paypalPaymentMethod));
-      default:
-        return from(Promise.reject(new Error(`Unsupported PayPal component type: ${config.adapterType}`)));
-    }
+    return this.ngZone.runOutsideAngular(() => {
+      switch (config.adapterType) {
+        case 'Buttons':
+          return this.paypalButtons.renderButtons(config);
+        case 'Messages':
+          return this.paypalMessages.renderMessages({ ...config, amount$: this.getAmount(config) });
+        case 'CardFields':
+          return from(this.paypalCardFields.renderCardFields(config.scriptNamespace, config.paypalPaymentMethod));
+        default:
+          return from(Promise.reject(new Error(`Unsupported PayPal component type: ${config.adapterType}`)));
+      }
+    });
   }
 
   // Calculates the appropriate amount to display in PayPal components based on page context.
