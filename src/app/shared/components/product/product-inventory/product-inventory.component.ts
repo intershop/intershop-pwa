@@ -4,10 +4,10 @@ import { Observable, map, shareReplay, startWith } from 'rxjs';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { SupplierStock } from 'ish-core/models/product-inventory/product-inventory.model';
 
-enum StockCategory {
-  Success = 'success',
-  Warning = 'warning',
-  Danger = 'danger',
+enum StockLevel {
+  high = 100,
+  medium = 50,
+  low = 1,
 }
 
 @Component({
@@ -26,12 +26,6 @@ export class ProductInventoryComponent implements OnInit {
 
   constructor(private context: ProductContextFacade) {}
 
-  private stockThresholds = [
-    { limit: 100, category: StockCategory.Success, text: 'available' },
-    { limit: 50, category: StockCategory.Warning, text: 'limited availability' },
-    { limit: 0, category: StockCategory.Danger, text: 'low stock' },
-  ];
-
   ngOnInit() {
     this.visible$ = this.context.select('displayProperties', 'inventory');
     this.available$ = this.context.select('inventory', 'inStock').pipe(startWith(true), shareReplay(1));
@@ -45,21 +39,13 @@ export class ProductInventoryComponent implements OnInit {
     }
   }
 
-  private getStockCategory(count: number): { category: StockCategory; text: string } {
-    for (const threshold of this.stockThresholds) {
-      if (count > threshold.limit) {
-        return { category: threshold.category, text: threshold.text };
-      }
-    }
-    return { category: StockCategory.Danger, text: 'unknown' }; // Fallback
-  }
-
-  getStockStyling(count: number): string {
-    return this.getStockCategory(count).category;
-  }
-
-  getStockText(count: number): string {
-    const { text } = this.getStockCategory(count);
-    return `${text} (${count.toString()})`;
+  getStockLevel(count: number): string {
+    return count >= StockLevel.high
+      ? 'high'
+      : count >= StockLevel.medium
+      ? 'medium'
+      : count >= StockLevel.low
+      ? 'low'
+      : 'none';
   }
 }

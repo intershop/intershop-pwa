@@ -2,11 +2,13 @@
 
 @import 'variables';
 
+.stock-label::after {
+  content: ':';
+}
+
 /* purgecss start ignore */
 
-.success,
-.warning,
-.danger {
+.stock-level {
   position: relative;
 
   &::before {
@@ -19,23 +21,29 @@
     content: '';
     border-radius: 50%;
   }
-}
 
-.success {
-  &::before {
-    background-color: $success;
+  &.high {
+    &::before {
+      background-color: $success;
+    }
   }
-}
 
-.warning {
-  &::before {
-    background-color: $warning;
+  &.medium {
+    &::before {
+      background-color: $warning;
+    }
   }
-}
 
-.danger {
-  &::before {
-    background-color: $danger;
+  &.low {
+    &::before {
+      background-color: $danger;
+    }
+  }
+
+  &.none {
+    &::before {
+      background-color: $gray-300;
+    }
   }
 }
 

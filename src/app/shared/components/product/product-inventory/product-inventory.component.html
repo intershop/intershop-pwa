@@ -8,14 +8,18 @@
     }
     <link itemprop="availability" href="http://schema.org/InStock" />
   </span>
-  @if (displayType === 'extended') { @if (supplierStock$ | async; as supplierStock) { @if (supplierStock.length > 0) {
+  @if (displayType === 'extended') { @if (supplierStock$ | async; as supplierStock) { @if (supplierStock.length) {
   <div class="pt-2 pb-3">
-    @for (sStock of supplierStock; track $index) {
+    @for (supStock of supplierStock; track $index) {
     <div class="row">
-      <span class="col-6">{{ sStock.displayName }}:</span>
-      <span class="col-6" [ngClass]="getStockStyling(sStock.availableStock)">{{
-        getStockText(sStock.availableStock)
-      }}</span>
+      <span class="col-6 stock-label">{{ supStock.displayName }}</span>
+      <span class="col-6 stock-level" [ngClass]="getStockLevel(supStock.availableStock)">
+        <!-- keep-localization-pattern: ^product\.inventory\.stock_level\..*$ -->
+        {{
+          'product.inventory.stock_level.' + getStockLevel(supStock.availableStock)
+            | translate : { count: supStock.availableStock }
+        }}
+      </span>
     </div>
     }
   </div>
