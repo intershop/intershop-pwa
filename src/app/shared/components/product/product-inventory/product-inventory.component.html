@@ -10,7 +10,7 @@
   </span>
   @if (displayType === 'extended') { @if (supplierStock$ | async; as supplierStock) { @if (supplierStock.length) {
   <div class="pt-2 pb-3">
-    @for (supStock of supplierStock; track $index) {
+    @for (supStock of supplierStock; track supStock.id) {
     <div class="row">
       <span class="col-6 stock-label">{{ supStock.displayName }}</span>
       <span class="col-6 stock-level" [ngClass]="getStockLevel(supStock.availableStock)">

@@ -39,7 +39,7 @@ export class ProductInventoryComponent implements OnInit {
     }
   }
 
-  getStockLevel(count: number): string {
+  getStockLevel(count?: number): string {
     return count >= StockLevel.high
       ? 'high'
       : count >= StockLevel.medium

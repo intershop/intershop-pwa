@@ -5,7 +5,7 @@ export interface ProductInventoryData {
   supplierStock?: SupplierStockData[];
 }
 
-export interface SupplierStockData {
+interface SupplierStockData {
   id: string; // supplier id
   displayName: string; // supplier display name
   inStock: boolean;
