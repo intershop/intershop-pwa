@@ -35,7 +35,7 @@ export class ProductInventoryComponent implements OnInit {
     if (this.displayType === 'extended') {
       this.supplierStock$ = this.context
         .select('inventory', 'supplierStock')
-        .pipe(map(stocks => [...stocks].sort((a, b) => a.displayName.localeCompare(b.displayName))));
+        .pipe(map(stocks => [...(stocks ?? [])].sort((a, b) => a.displayName.localeCompare(b.displayName))));
     }
   }
 
