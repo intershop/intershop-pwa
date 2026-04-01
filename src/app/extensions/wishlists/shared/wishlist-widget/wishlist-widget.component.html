@@ -1,22 +1,25 @@
 <div class="section">
-  <h2 class="h3">{{ 'account.wishlists.widget.heading' | translate }}</h2>
-  @if (allWishlistsItemsSkus$ | async; as wishlistsItemsSkus) {
-    @if (wishlistsItemsSkus.length > 0) {
-      <ng-container class="section">
-        <div class="product-list" data-testing-id="wishlistProductsList">
-          <ish-products-list
-            listItemStyle="tile"
-            listStyle="carousel"
-            [listItemConfiguration]="tileConfiguration"
-            [productSKUs]="wishlistsItemsSkus"
-          />
-        </div>
-      </ng-container>
-    } @else {
-      <p>{{ 'account.wishlists.no_items' | translate }}</p>
-    }
-  }
-  <a data-testing-id="emptyWishlistProductsList" routerLink="/account/wishlists">{{
+  @if (getWishlistSelectionStrategy() === 'all' || wishlistName === undefined) {
+  <h2 class="h3">{{ 'account.wishlists.widget.all.heading' | translate }}</h2>
+  } @else {
+  <h2 class="h3">
+    {{ 'account.wishlists.widget.single.heading' | translate : { '0': wishlistName } }}
+  </h2>
+  } @if (allWishlistsItemsSkus$ | async; as wishlistsItemsSkus) { @if (wishlistsItemsSkus.length > 0) {
+  <ng-container class="section">
+    <div class="product-list" data-testing-id="wishlistProductsList">
+      <ish-products-list
+        [productSKUs]="wishlistsItemsSkus"
+        listStyle="carousel"
+        listItemStyle="tile"
+        [listItemConfiguration]="tileConfiguration"
+      />
+    </div>
+  </ng-container>
+  } @else {
+  <p>{{ 'account.wishlists.no_items' | translate }}</p>
+  } }
+  <a routerLink="/account/wishlists" data-testing-id="emptyWishlistProductsList">{{
     'account.overview.wishlist.view_all' | translate
   }}</a>
 </div>

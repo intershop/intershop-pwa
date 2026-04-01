@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 
-import { WishlistData } from './wishlist.interface';
+import { WishlistData, WishlistListElementData } from './wishlist.interface';
 import { Wishlist, WishlistItem } from './wishlist.model';
 
 @Injectable({ providedIn: 'root' })
@@ -15,6 +15,20 @@ export class WishlistMapper {
     } else {
       console.warn(`could not find id in uri '${uri}'`);
       return;
+    }
+  }
+
+  fromListData(wishlistsData: WishlistListElementData[]): Wishlist[] {
+    if (wishlistsData) {
+      return wishlistsData.map(wishlistData => ({
+        id: WishlistMapper.parseIdFromURI(wishlistData.uri),
+        title: wishlistData.title,
+        itemsCount: AttributeHelper.getAttributeValueByAttributeName<number>(wishlistData.attributes, 'itemsCount'),
+        preferred: AttributeHelper.getAttributeValueByAttributeName<boolean>(wishlistData.attributes, 'preferred'),
+        public: AttributeHelper.getAttributeValueByAttributeName<boolean>(wishlistData.attributes, 'public'),
+        shared: AttributeHelper.getAttributeValueByAttributeName<boolean>(wishlistData.attributes, 'shared'),
+        creationDate: AttributeHelper.getAttributeValueByAttributeName<number>(wishlistData.attributes, 'creationDate'),
+      }));
     }
   }
 
@@ -61,12 +75,5 @@ export class WishlistMapper {
         public: wishlist.public,
       };
     }
-  }
-
-  /**
-   * extract ID from URI
-   */
-  fromDataToId(wishlistData: WishlistData): string {
-    return wishlistData ? WishlistMapper.parseIdFromURI(wishlistData.uri) : undefined;
   }
 }

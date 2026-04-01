@@ -1,7 +1,4 @@
-import { createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
-import { uniq } from 'lodash-es';
-
-import { isArrayEqual } from 'ish-core/utils/functions';
+import { createSelector } from '@ngrx/store';
 
 import { Wishlist } from '../../models/wishlist/wishlist.model';
 import { getWishlistsState } from '../wishlists-store';
@@ -29,15 +26,5 @@ export const getSelectedWishlistDetails = createSelector(
 export const getWishlistDetails = (id: string) => createSelector(selectEntities, entities => entities[id]);
 
 export const getPreferredWishlist = createSelector(getAllWishlists, entities => entities.find(e => e.preferred));
-
-/**
- * Gets all unique items from all wishlists
- * Returns an array of the wishlist item product SKUs
- */
-export const getAllWishlistsItemsSkus = createSelectorFactory<object, string[]>(projector =>
-  resultMemoize(projector, isArrayEqual)
-)(getAllWishlists, (wishlists: Wishlist[]): string[] =>
-  uniq(wishlists.map(wishlist => wishlist.items.map(items => items.sku)).flat())
-);
 
 export const getSharedWishlist = createSelector(getWishlistState, (state: WishlistState) => state.sharedWishlist);

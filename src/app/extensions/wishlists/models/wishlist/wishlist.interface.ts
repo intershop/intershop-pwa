@@ -10,3 +10,9 @@ export interface WishlistData extends WishlistHeader {
   name?: string;
   uri?: string;
 }
+
+export interface WishlistListElementData {
+  attributes: Attribute[];
+  title?: string;
+  uri?: string;
+}

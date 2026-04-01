@@ -13,12 +13,13 @@ import {
   createWishlist,
   deleteWishlist,
   getAllWishlists,
-  getAllWishlistsItemsSkus,
   getPreferredWishlist,
   getSelectedWishlistDetails,
   getSharedWishlist,
   getWishlistsError,
   getWishlistsLoading,
+  loadWishlistDetails,
+  loadWishlists,
   moveItemToWishlist,
   removeItemFromWishlist,
   updateWishlist,
@@ -32,10 +33,17 @@ export class WishlistsFacade {
   wishlists$: Observable<Wishlist[]> = this.store.pipe(select(getAllWishlists));
   currentWishlist$: Observable<Wishlist> = this.store.pipe(select(getSelectedWishlistDetails));
   preferredWishlist$: Observable<Wishlist> = this.store.pipe(select(getPreferredWishlist));
-  allWishlistsItemsSkus$: Observable<string[]> = this.store.pipe(select(getAllWishlistsItemsSkus));
   wishlistLoading$: Observable<boolean> = this.store.pipe(select(getWishlistsLoading));
   wishlistError$: Observable<HttpError> = this.store.pipe(select(getWishlistsError));
   sharedWishlist$: Observable<Wishlist> = this.store.pipe(select(getSharedWishlist));
+
+  loadWishlists(): void {
+    this.store.dispatch(loadWishlists());
+  }
+
+  loadWishlistDetails(wishlistIds: string[]): void {
+    this.store.dispatch(loadWishlistDetails({ wishlistIds }));
+  }
 
   wishlistSelectOptions$(filterCurrent = true) {
     return this.wishlists$.pipe(

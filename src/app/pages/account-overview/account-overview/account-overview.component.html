@@ -74,8 +74,8 @@
   <!-- Order Widget - displays latest orders as list -->
   <ish-order-widget />
 
-  <!-- Wishlist Widget - displays all unique items from all wishlists (if wishlists feature is enabled) -->
-  <ish-lazy-wishlist-widget />
+  <!-- Wishlist Widget - displays all unique items from selected wishlists (if wishlists feature is enabled) -->
+  <ish-lazy-wishlist-widget [wishlistSelectionStrategy]="'preferred'" />
 </ng-container>
 
 <!-- Order Template Widget for punchout users -->

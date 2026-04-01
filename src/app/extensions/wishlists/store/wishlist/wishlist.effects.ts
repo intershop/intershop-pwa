@@ -5,8 +5,8 @@ import { concatLatestFrom } from '@ngrx/operators';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { of } from 'rxjs';
-import { debounceTime, filter, map, mergeMap, switchMap } from 'rxjs/operators';
+import { from, of } from 'rxjs';
+import { filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { businessError } from 'ish-core/store/core/error';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
@@ -36,6 +36,9 @@ import {
   deleteWishlist,
   deleteWishlistFail,
   deleteWishlistSuccess,
+  loadWishlistDetails,
+  loadWishlistDetailsFail,
+  loadWishlistDetailsSuccess,
   loadWishlists,
   loadWishlistsFail,
   loadWishlistsSuccess,
@@ -71,6 +74,23 @@ export class WishlistEffects {
         this.wishlistService.getWishlists().pipe(
           map(wishlists => loadWishlistsSuccess({ wishlists })),
           mapErrorToAction(loadWishlistsFail)
+        )
+      )
+    )
+  );
+
+  loadWishlistDetails$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadWishlistDetails),
+      mapToPayloadProperty('wishlistIds'),
+      mergeMap(wishlistIds =>
+        from(wishlistIds).pipe(
+          mergeMap((wishlistId: string) =>
+            this.wishlistService.getWishlist(wishlistId).pipe(
+              map(wishlist => loadWishlistDetailsSuccess({ wishlist })),
+              mapErrorToAction(loadWishlistDetailsFail)
+            )
+          )
         )
       )
     )
@@ -144,7 +164,7 @@ export class WishlistEffects {
       ofType(updateWishlistSuccess, createWishlistSuccess),
       mapToPayloadProperty('wishlist'),
       filter(wishlist => wishlist?.preferred),
-      map(() => loadWishlists())
+      map(wishlist => loadWishlistDetails({ wishlistIds: [wishlist.id] }))
     )
   );
 
@@ -225,15 +245,12 @@ export class WishlistEffects {
     )
   );
 
-  /**
-   * Trigger LoadWishlists action after LoginUserSuccess.
-   */
-  loadWishlistsAfterLogin$ = createEffect(() =>
-    this.store.pipe(
-      select(getUserAuthorized),
-      whenTruthy(),
-      debounceTime(1000),
-      map(() => loadWishlists())
+  loadWishlistDetailsOnWishlistsLoaded$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadWishlistsSuccess),
+      concatLatestFrom(() => this.store.pipe(select(getSelectedWishlistId))),
+      filter(([, selectedId]) => !!selectedId),
+      map(([, selectedId]) => loadWishlistDetails({ wishlistIds: [selectedId] }))
     )
   );
 

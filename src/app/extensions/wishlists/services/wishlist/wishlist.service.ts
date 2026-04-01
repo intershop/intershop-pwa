@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Observable, forkJoin, of, throwError } from 'rxjs';
-import { concatMap, first, map, switchMap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { concatMap, first, map } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
 import { WishlistSharing, WishlistSharingResponse } from '../../models/wishlist-sharing/wishlist-sharing.model';
-import { WishlistData } from '../../models/wishlist/wishlist.interface';
+import { WishlistData, WishlistListElementData } from '../../models/wishlist/wishlist.interface';
 import { WishlistMapper } from '../../models/wishlist/wishlist.mapper';
 import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
 
@@ -28,9 +28,8 @@ export class WishlistService {
       first(),
       concatMap(restResource =>
         this.apiService.get(`${restResource}/-/wishlists`).pipe(
-          unpackEnvelope<WishlistData>(),
-          map(wishlistData => wishlistData.map(data => this.getWishlist(this.wishlistMapper.fromDataToId(data)))),
-          switchMap(obsArray => (obsArray.length ? forkJoin(obsArray) : of([])))
+          unpackEnvelope<WishlistListElementData>(),
+          map(wishlistData => this.wishlistMapper.fromListData(wishlistData))
         )
       )
     );
@@ -42,7 +41,7 @@ export class WishlistService {
    * @param wishlistId  The wishlist id.
    * @returns           The wishlist.
    */
-  private getWishlist(wishlistId: string): Observable<Wishlist> {
+  getWishlist(wishlistId: string): Observable<Wishlist> {
     if (!wishlistId) {
       return throwError(() => new Error('getWishlist() called without wishlistId'));
     }

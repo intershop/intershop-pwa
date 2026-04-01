@@ -5,7 +5,7 @@ import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 import { WishlistSharing, WishlistSharingResponse } from '../../models/wishlist-sharing/wishlist-sharing.model';
 import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
 
-export const loadWishlists = createAction('[Wishlist Internal] Load Wishlists');
+export const loadWishlists = createAction('[Wishlist] Load Wishlists');
 
 export const loadWishlistsSuccess = createAction(
   '[Wishlist API] Load Wishlists Success',
@@ -13,6 +13,18 @@ export const loadWishlistsSuccess = createAction(
 );
 
 export const loadWishlistsFail = createAction('[Wishlist API] Load Wishlists Fail', httpError());
+
+export const loadWishlistDetails = createAction(
+  '[Wishlist] Load Wishlist Details',
+  payload<{ wishlistIds: string[] }>()
+);
+
+export const loadWishlistDetailsSuccess = createAction(
+  '[Wishlist API] Load Wishlist Details Success',
+  payload<{ wishlist: Wishlist }>()
+);
+
+export const loadWishlistDetailsFail = createAction('[Wishlist API] Load Wishlist Details Fail', httpError());
 
 export const createWishlist = createAction('[Wishlist] Create Wishlist', payload<{ wishlist: WishlistHeader }>());
 

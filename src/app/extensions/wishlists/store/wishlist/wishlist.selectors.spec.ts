@@ -23,7 +23,6 @@ import {
 } from './wishlist.actions';
 import {
   getAllWishlists,
-  getAllWishlistsItemsSkus,
   getPreferredWishlist,
   getSelectedWishlistDetails,
   getSelectedWishlistId,
@@ -349,16 +348,6 @@ describe('Wishlist Selectors', () => {
 
     it('should return correct wishlist for given title', () => {
       expect(getPreferredWishlist(store$.state)).toEqual(wishlists[0]);
-    });
-  });
-
-  describe('Get All Wishlists Items SKUs', () => {
-    beforeEach(() => {
-      store$.dispatch(loadWishlistsSuccess({ wishlists }));
-    });
-
-    it('should return correct amount of unique product SKUs', () => {
-      expect(getAllWishlistsItemsSkus(store$.state).sort()).toEqual(['1929544', '1929545', '4729529']);
     });
   });
 });

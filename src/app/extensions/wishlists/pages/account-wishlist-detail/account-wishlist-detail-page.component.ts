@@ -21,6 +21,7 @@ export class AccountWishlistDetailPageComponent implements OnInit {
   constructor(private wishlistsFacade: WishlistsFacade) {}
 
   ngOnInit() {
+    this.wishlistsFacade.loadWishlists();
     this.wishlist$ = this.wishlistsFacade.currentWishlist$;
     this.wishlistLoading$ = this.wishlistsFacade.wishlistLoading$;
     this.wishlistError$ = this.wishlistsFacade.wishlistError$;

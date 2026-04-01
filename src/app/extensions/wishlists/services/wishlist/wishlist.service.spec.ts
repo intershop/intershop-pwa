@@ -38,23 +38,32 @@ describe('Wishlist Service', () => {
 
   it("should get wishlists when 'getWishlists' is called for rest applications", done => {
     when(apiServiceMock.get(`privatecustomers/-/wishlists`)).thenReturn(
-      of({ elements: [{ uri: 'any/wishlists/1234' }] })
+      of({
+        elements: [
+          {
+            uri: 'any/wishlists/1234',
+            title: 'My Wishlist',
+            attributes: [
+              { name: 'itemsCount', value: 2 },
+              { name: 'preferred', value: true },
+            ],
+          },
+        ],
+      })
     );
-    when(apiServiceMock.get(`privatecustomers/-/wishlists/1234`)).thenReturn(of({ id: '1234', preferred: true }));
 
     wishlistService.getWishlists().subscribe(data => {
       verify(apiServiceMock.get(`privatecustomers/-/wishlists`)).once();
-      verify(apiServiceMock.get(`privatecustomers/-/wishlists/1234`)).once();
       expect(data).toMatchInlineSnapshot(`
         [
           {
+            "creationDate": undefined,
             "id": "1234",
-            "items": [],
-            "itemsCount": 0,
+            "itemsCount": 2,
             "preferred": true,
             "public": undefined,
             "shared": undefined,
-            "title": undefined,
+            "title": "My Wishlist",
           },
         ]
       `);
@@ -63,23 +72,34 @@ describe('Wishlist Service', () => {
   });
 
   it("should get wishlists when 'getWishlists' is called for b2c applications", done => {
-    when(apiServiceMock.get(`customers/-/wishlists`)).thenReturn(of({ elements: [{ uri: 'any/wishlists/1234' }] }));
-    when(apiServiceMock.get(`customers/-/wishlists/1234`)).thenReturn(of({ id: '1234', preferred: true }));
     when(appFacade.customerRestResource$).thenReturn(of('customers'));
+    when(apiServiceMock.get(`customers/-/wishlists`)).thenReturn(
+      of({
+        elements: [
+          {
+            uri: 'any/wishlists/1234',
+            title: 'My Wishlist',
+            attributes: [
+              { name: 'itemsCount', value: 2 },
+              { name: 'preferred', value: true },
+            ],
+          },
+        ],
+      })
+    );
 
     wishlistService.getWishlists().subscribe(data => {
       verify(apiServiceMock.get(`customers/-/wishlists`)).once();
-      verify(apiServiceMock.get(`customers/-/wishlists/1234`)).once();
       expect(data).toMatchInlineSnapshot(`
         [
           {
+            "creationDate": undefined,
             "id": "1234",
-            "items": [],
-            "itemsCount": 0,
+            "itemsCount": 2,
             "preferred": true,
             "public": undefined,
             "shared": undefined,
-            "title": undefined,
+            "title": "My Wishlist",
           },
         ]
       `);

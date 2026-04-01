@@ -14,6 +14,9 @@ import {
   deleteWishlist,
   deleteWishlistFail,
   deleteWishlistSuccess,
+  loadWishlistDetails,
+  loadWishlistDetailsFail,
+  loadWishlistDetailsSuccess,
   loadWishlists,
   loadWishlistsFail,
   loadWishlistsSuccess,
@@ -50,6 +53,7 @@ export const wishlistReducer = createReducer(
   initialState,
   setLoadingOn(
     loadWishlists,
+    loadWishlistDetails,
     wishlistActions.loadSharedWishlist,
     createWishlist,
     deleteWishlist,
@@ -59,6 +63,7 @@ export const wishlistReducer = createReducer(
   ),
   setErrorOn(
     loadWishlistsFail,
+    loadWishlistDetailsFail,
     wishlistApiActions.loadSharedWishlistFail,
     deleteWishlistFail,
     createWishlistFail,
@@ -73,11 +78,13 @@ export const wishlistReducer = createReducer(
     removeItemFromWishlistSuccess,
     createWishlistSuccess,
     loadWishlistsSuccess,
+    loadWishlistDetailsSuccess,
     wishlistApiActions.loadSharedWishlistSuccess,
     deleteWishlistSuccess
   ),
   on(
     loadWishlistsFail,
+    loadWishlistDetailsFail,
     deleteWishlistFail,
     createWishlistFail,
     updateWishlistFail,
@@ -92,6 +99,7 @@ export const wishlistReducer = createReducer(
   }),
   on(
     updateWishlistSuccess,
+    loadWishlistDetailsSuccess,
     wishlistApiActions.loadSharedWishlistSuccess,
     addProductToWishlistSuccess,
     removeItemFromWishlistSuccess,
