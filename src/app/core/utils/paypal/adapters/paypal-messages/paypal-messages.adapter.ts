@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { DestroyRef, Inject, Injectable, inject } from '@angular/core';
+import { DestroyRef, Inject, Injectable, NgZone, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
@@ -12,7 +12,7 @@ import { PaypalComponent } from 'ish-core/utils/paypal/paypal-model/paypal.model
  **/
 @Injectable()
 export class PaypalMessagesAdapter {
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  constructor(@Inject(DOCUMENT) private document: Document, private ngZone: NgZone) {}
 
   private destroyRef = inject(DestroyRef);
 
@@ -36,17 +36,20 @@ export class PaypalMessagesAdapter {
       );
     }
 
-    config.amount$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(amount => {
-      // Check if element still exists before each render attempt
-      if (!this.document.getElementById(containerId)) {
-        // Element has been removed from DOM, skip rendering silently
-        return;
-      }
+    // Run subscription outside Angular zone to prevent blocking app stability
+    this.ngZone.runOutsideAngular(() => {
+      config.amount$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(amount => {
+        // Check if element still exists before each render attempt
+        if (!this.document.getElementById(containerId)) {
+          // Element has been removed from DOM, skip rendering silently
+          return;
+        }
 
-      if (amount) {
-        return paypalObject.Messages(this.getMessagesConfig(config, amount)).render(`#${containerId}`);
-      }
-      return paypalObject.Messages(this.getMessagesConfig(config)).render(`#${containerId}`);
+        if (amount) {
+          return paypalObject.Messages(this.getMessagesConfig(config, amount)).render(`#${containerId}`);
+        }
+        return paypalObject.Messages(this.getMessagesConfig(config)).render(`#${containerId}`);
+      });
     });
     return Promise.resolve();
   }

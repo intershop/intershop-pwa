@@ -62,9 +62,11 @@ export class PaypalCardFieldsAdapter {
 
   /**
    * Creates and renders PayPal card fields in the specified containers.
+   * Must be called outside Angular zone (via PaypalAdaptersBuilder) to prevent
+   * Zone.js from tracking PayPal SDK async tasks.
    *
    * @param scriptNamespace - The PayPal SDK namespace on the window object
-   * @param config - Configuration for the card fields
+   * @param paymentMethod - PayPal payment method configuration
    * @returns Promise that resolves when all fields are rendered
    */
   async renderCardFields(scriptNamespace: string, paymentMethod: PaymentMethod): Promise<void> {
@@ -81,48 +83,46 @@ export class PaypalCardFieldsAdapter {
     this.isResetting = false;
     this.creditCardPaymentInstrumentId = undefined;
 
-    // Run PayPal SDK operations inside Angular zone to ensure proper event handling
-    return this.ngZone.run(async () => {
-      try {
-        this.cardField = paypalObject.CardFields({
-          createOrder: () => this.ngZone.run(() => this.createOrderCallback()),
-          onApprove: () => this.ngZone.run(() => this.onApproveCallback()),
-          onError: () => {
-            this.ngZone.run(() => this.onErrorCallback());
+    try {
+      // Create CardFields instance - callbacks use ngZone.run() to re-enter Angular zone for change detection
+      this.cardField = paypalObject.CardFields({
+        createOrder: () => this.ngZone.run(() => this.createOrderCallback()),
+        onApprove: () => this.ngZone.run(() => this.onApproveCallback()),
+        onError: () => {
+          this.ngZone.run(() => this.onErrorCallback());
+        },
+        onCancel: () => {
+          this.ngZone.run(() => this.onCancelCallback());
+        },
+        inputEvents: {
+          onFocus: (data: PaypalCardFieldsStateObject) => {
+            this.ngZone.run(() => this.handleFieldFocus(data));
           },
-          onCancel: () => {
-            this.ngZone.run(() => this.onCancelCallback());
+          onBlur: (data: PaypalCardFieldsStateObject) => {
+            this.ngZone.run(() => this.handleFieldBlur(data));
           },
-          inputEvents: {
-            onFocus: (data: PaypalCardFieldsStateObject) => {
-              this.ngZone.run(() => this.handleFieldFocus(data));
-            },
-            onBlur: (data: PaypalCardFieldsStateObject) => {
-              this.ngZone.run(() => this.handleFieldBlur(data));
-            },
-          },
-        }) as PaypalCardFieldsComponent;
+        },
+      }) as PaypalCardFieldsComponent;
 
-        if (!this.cardField.isEligible()) {
-          console.warn('PayPal CardFields: Not eligible for rendering');
-        }
-
-        // Check if card fields are eligible
-        if (this.cardField.isEligible()) {
-          // Render individual fields outside Angular zone for proper iframe interaction
-          await this.renderIndividualFields();
-
-          // set payment method for use in createOrder and onApprove callbacks
-          this.paymentMethod = paymentMethod;
-
-          // Setup submit and cancel button handlers
-          this.setupHandlerForButtons();
-        }
-      } catch (error) {
-        console.error('PayPal card fields rendering failed:', error);
-        return Promise.reject(error);
+      if (!this.cardField.isEligible()) {
+        console.warn('PayPal CardFields: Not eligible for rendering');
       }
-    });
+
+      // Check if card fields are eligible
+      if (this.cardField.isEligible()) {
+        // Render individual fields
+        await this.renderIndividualFields();
+
+        // set payment method for use in createOrder and onApprove callbacks
+        this.paymentMethod = paymentMethod;
+
+        // Setup submit and cancel button handlers
+        this.setupHandlerForButtons();
+      }
+    } catch (error) {
+      console.error('PayPal card fields rendering failed:', error);
+      return Promise.reject(error);
+    }
   }
 
   /**
@@ -273,15 +273,16 @@ export class PaypalCardFieldsAdapter {
 
     if (submitButton) {
       submitButton.addEventListener('click', () => {
-        this.ngZone.run(async () => {
-          if (!this.processing) {
-            this.cardField.submit().catch(() => {
-              this.validationErrorHandler(this.cardField.getState());
-            });
+        if (!this.processing) {
+          this.ngZone.run(() => {
             this.loadingIframe$.next(true);
-            this.processing = true;
-          }
-        });
+          });
+          this.processing = true;
+          // Keep submit() outside Angular zone to prevent PostRobot communication issues
+          this.cardField.submit().catch(() => {
+            this.validationErrorHandler(this.cardField.getState());
+          });
+        }
       });
     }
 
@@ -406,7 +407,7 @@ export class PaypalCardFieldsAdapter {
   private validationErrorHandler(statePromise: Promise<PaypalStateObject>): void {
     statePromise.then(stateObject => {
       const cardFieldsState = stateObject?.value ?? (stateObject as unknown as PaypalCardFieldsStateObject);
-      this.handleSubmitError(cardFieldsState);
+      this.ngZone.run(() => this.handleSubmitError(cardFieldsState));
     });
   }
 
