@@ -18,6 +18,8 @@ import {
   getOrderTemplateLoading,
   getSelectedOrderTemplateDetails,
   getSelectedOrderTemplateOutOfStockItems,
+  loadOrderTemplateDetails,
+  loadOrderTemplates,
   moveItemToOrderTemplate,
   orderTemplatesActions,
   removeItemFromOrderTemplate,
@@ -55,7 +57,15 @@ export class OrderTemplatesFacade {
     );
   }
 
-  addOrderTemplate(orderTemplate: OrderTemplateHeader): HttpError | void {
+  loadOrderTemplates() {
+    this.store.dispatch(loadOrderTemplates());
+  }
+
+  loadOrderTemplateDetails(orderTemplateId: string) {
+    this.store.dispatch(loadOrderTemplateDetails({ orderTemplateId }));
+  }
+
+  addOrderTemplate(orderTemplate: OrderTemplateHeader): void | HttpError {
     this.store.dispatch(createOrderTemplate({ orderTemplate }));
   }
 

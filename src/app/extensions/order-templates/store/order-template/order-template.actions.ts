@@ -5,7 +5,7 @@ import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 import { OrderTemplate, OrderTemplateHeader } from '../../models/order-template/order-template.model';
 
-export const loadOrderTemplates = createAction('[Order Templates Internal] Load Order Templates');
+export const loadOrderTemplates = createAction('[Order Templates] Load Order Templates');
 
 export const loadOrderTemplatesSuccess = createAction(
   '[Order Templates API] Load Order Templates Success',
@@ -13,6 +13,21 @@ export const loadOrderTemplatesSuccess = createAction(
 );
 
 export const loadOrderTemplatesFail = createAction('[Order Templates API] Load Order Templates Fail', httpError());
+
+export const loadOrderTemplateDetails = createAction(
+  '[Order Templates] Load Order Template Details',
+  payload<{ orderTemplateId: string }>()
+);
+
+export const loadOrderTemplateDetailsSuccess = createAction(
+  '[Order Templates API] Load Order Template Details Success',
+  payload<{ orderTemplate: OrderTemplate }>()
+);
+
+export const loadOrderTemplateDetailsFail = createAction(
+  '[Order Templates API] Load Order Template Details Fail',
+  httpError()
+);
 
 export const createOrderTemplate = createAction(
   '[Order Templates] Create Order Template',

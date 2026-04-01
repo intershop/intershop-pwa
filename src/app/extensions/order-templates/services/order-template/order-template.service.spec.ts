@@ -29,21 +29,20 @@ describe('Order Template Service', () => {
 
   it("should get order templates when 'getOrderTemplates' is called", done => {
     when(apiServiceMock.get(`customers/-/users/-/wishlists`)).thenReturn(
-      of({ elements: [{ uri: 'any/wishlists/1234' }] })
+      of({
+        elements: [{ uri: 'any/wishlists/1234', title: 'My Template', attributes: [{ name: 'itemsCount', value: 2 }] }],
+      })
     );
-    when(apiServiceMock.get(`customers/-/users/-/wishlists/1234`)).thenReturn(of({ id: '1234' }));
 
     orderTemplateService.getOrderTemplates().subscribe(data => {
       verify(apiServiceMock.get(`customers/-/users/-/wishlists`)).once();
-      verify(apiServiceMock.get(`customers/-/users/-/wishlists/1234`)).once();
       expect(data).toMatchInlineSnapshot(`
         [
           {
             "creationDate": undefined,
             "id": "1234",
-            "items": [],
-            "itemsCount": 0,
-            "title": undefined,
+            "itemsCount": 2,
+            "title": "My Template",
           },
         ]
       `);
@@ -103,6 +102,64 @@ describe('Order Template Service', () => {
     });
   });
 
+  it("should add a product to a order template when 'addProductToOrderTemplate' is called", done => {
+    const orderTemplateId = '1234';
+    const sku = 'abcd';
+    const quantity = 3;
+
+    when(
+      apiServiceMock.post(`customers/-/users/-/wishlists/${orderTemplateId}/products/${sku}`, anything(), anything())
+    ).thenReturn(of({}));
+    when(apiServiceMock.get(`customers/-/users/-/wishlists/${orderTemplateId}`)).thenReturn(
+      of({ id: orderTemplateId, title: 'order template title' } as OrderTemplateData)
+    );
+
+    orderTemplateService.addProductToOrderTemplate(orderTemplateId, sku, quantity).subscribe(() => {
+      verify(
+        apiServiceMock.post(`customers/-/users/-/wishlists/${orderTemplateId}/products/${sku}`, anything(), anything())
+      ).once();
+      verify(apiServiceMock.get(`customers/-/users/-/wishlists/${orderTemplateId}`)).once();
+      done();
+    });
+  });
+
+  it("should use default quantity of 1 when 'addProductToOrderTemplate' is called without quantity", done => {
+    const orderTemplateId = '1234';
+    const sku = 'abcd';
+
+    when(
+      apiServiceMock.post(`customers/-/users/-/wishlists/${orderTemplateId}/products/${sku}`, anything(), anything())
+    ).thenReturn(of({}));
+    when(apiServiceMock.get(`customers/-/users/-/wishlists/${orderTemplateId}`)).thenReturn(
+      of({ id: orderTemplateId, title: 'order template title' } as OrderTemplateData)
+    );
+
+    orderTemplateService.addProductToOrderTemplate(orderTemplateId, sku, undefined).subscribe(() => {
+      verify(
+        apiServiceMock.post(`customers/-/users/-/wishlists/${orderTemplateId}/products/${sku}`, anything(), anything())
+      ).once();
+      done();
+    });
+  });
+
+  it("should return an error when 'addProductToOrderTemplate' is called without orderTemplateId", done => {
+    orderTemplateService.addProductToOrderTemplate(undefined, 'sku', 1).subscribe({
+      error: err => {
+        expect(err.message).toContain('addProductToOrderTemplate() called without orderTemplateId');
+        done();
+      },
+    });
+  });
+
+  it("should return an error when 'addProductToOrderTemplate' is called without sku", done => {
+    orderTemplateService.addProductToOrderTemplate('1234', undefined, 1).subscribe({
+      error: err => {
+        expect(err.message).toContain('addProductToOrderTemplate() called without sku');
+        done();
+      },
+    });
+  });
+
   it("should remove a product from a order template when 'removeProductToOrderTemplate' is called", done => {
     const orderTemplateId = '1234';
     const sku = 'abcd';
@@ -116,6 +173,42 @@ describe('Order Template Service', () => {
       verify(apiServiceMock.delete(`customers/-/users/-/wishlists/${orderTemplateId}/products/${sku}`)).once();
       verify(apiServiceMock.get(`customers/-/users/-/wishlists/${orderTemplateId}`)).once();
       done();
+    });
+  });
+
+  it("should return an error when 'removeProductFromOrderTemplate' is called without orderTemplateId", done => {
+    orderTemplateService.removeProductFromOrderTemplate(undefined, 'sku').subscribe({
+      error: err => {
+        expect(err.message).toContain('removeProductFromOrderTemplate() called without orderTemplateId');
+        done();
+      },
+    });
+  });
+
+  it("should return an error when 'removeProductFromOrderTemplate' is called without sku", done => {
+    orderTemplateService.removeProductFromOrderTemplate('1234', undefined).subscribe({
+      error: err => {
+        expect(err.message).toContain('removeProductFromOrderTemplate() called without sku');
+        done();
+      },
+    });
+  });
+
+  it("should return an error when 'getOrderTemplate' is called without orderTemplateId", done => {
+    orderTemplateService.getOrderTemplate(undefined).subscribe({
+      error: err => {
+        expect(err.message).toContain('getOrderTemplate() called without orderTemplateId');
+        done();
+      },
+    });
+  });
+
+  it("should return an error when 'deleteOrderTemplate' is called without orderTemplateId", done => {
+    orderTemplateService.deleteOrderTemplate(undefined).subscribe({
+      error: err => {
+        expect(err.message).toContain('deleteOrderTemplate() called without orderTemplateId');
+        done();
+      },
     });
   });
 });

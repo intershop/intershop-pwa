@@ -32,6 +32,9 @@ import {
   deleteOrderTemplate,
   deleteOrderTemplateFail,
   deleteOrderTemplateSuccess,
+  loadOrderTemplateDetails,
+  loadOrderTemplateDetailsFail,
+  loadOrderTemplateDetailsSuccess,
   loadOrderTemplates,
   loadOrderTemplatesFail,
   loadOrderTemplatesSuccess,
@@ -69,6 +72,19 @@ export class OrderTemplateEffects {
         this.orderTemplateService.getOrderTemplates().pipe(
           map(orderTemplates => loadOrderTemplatesSuccess({ orderTemplates })),
           mapErrorToAction(loadOrderTemplatesFail)
+        )
+      )
+    )
+  );
+
+  loadOrderTemplateDetails$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadOrderTemplateDetails),
+      mapToPayloadProperty('orderTemplateId'),
+      switchMap(orderTemplateId =>
+        this.orderTemplateService.getOrderTemplate(orderTemplateId).pipe(
+          map(orderTemplate => loadOrderTemplateDetailsSuccess({ orderTemplate })),
+          mapErrorToAction(loadOrderTemplateDetailsFail)
         )
       )
     )
@@ -264,17 +280,6 @@ export class OrderTemplateEffects {
       select(selectRouteParam('orderTemplateName')),
       distinctCompareWith(this.store.pipe(select(getSelectedOrderTemplateId))),
       map(id => selectOrderTemplate({ id }))
-    )
-  );
-
-  /**
-   * Trigger LoadOrderTemplates action after LoginUserSuccess.
-   */
-  loadOrderTemplatesAfterLogin$ = createEffect(() =>
-    this.store.pipe(
-      select(getUserAuthorized),
-      whenTruthy(),
-      map(() => loadOrderTemplates())
     )
   );
 

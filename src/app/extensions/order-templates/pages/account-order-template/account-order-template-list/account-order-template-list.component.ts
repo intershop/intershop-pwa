@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject, filter, map } from 'rxjs';
 
-import { SkuQuantityType } from 'ish-core/models/product/product.model';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
@@ -26,6 +28,17 @@ export class AccountOrderTemplateListComponent {
     private orderTemplatesFacade: OrderTemplatesFacade,
     private translate: TranslateService
   ) {}
+  /**
+   * fires 'true' after add To Cart is clicked and basket is loading
+   */
+  displaySpinner$ = new BehaviorSubject(false);
+
+  constructor(
+    private orderTemplatesFacade: OrderTemplatesFacade,
+    private shoppingFacade: ShoppingFacade,
+    private translate: TranslateService,
+    private destroyRef: DestroyRef
+  ) {}
 
   /** Emits the id of the order template to delete. */
   delete(orderTemplateId: string) {
@@ -40,7 +53,29 @@ export class AccountOrderTemplateListComponent {
     modal.show(orderTemplate.id);
   }
 
-  getParts(template: OrderTemplate): SkuQuantityType[] {
-    return template?.items.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value }));
+  loadOrderTemplateDetails(orderTemplateId: string) {
+    this.orderTemplatesFacade.loadOrderTemplateDetails(orderTemplateId);
+  }
+
+  addToBasket(orderTemplateId: string) {
+    this.displaySpinner$.next(true);
+    this.orderTemplatesFacade.orderTemplates$
+      .pipe(
+        map(orderTemplates => {
+          const template = orderTemplates.find(t => t.id === orderTemplateId);
+          if (template && template.itemsCount !== template.items?.length) {
+            this.loadOrderTemplateDetails(orderTemplateId);
+          }
+          return template;
+        }),
+        filter(orderTemplate => orderTemplate && orderTemplate.itemsCount === orderTemplate.items?.length),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(orderTemplate => {
+        this.shoppingFacade.addProductsToBasket(
+          orderTemplate.items.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value }))
+        );
+        this.displaySpinner$.next(false);
+      });
   }
 }

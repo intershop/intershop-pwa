@@ -29,6 +29,7 @@ export class AccountOrderTemplatePageComponent implements OnInit {
   constructor(private orderTemplatesFacade: OrderTemplatesFacade) {}
 
   ngOnInit() {
+    this.orderTemplatesFacade.loadOrderTemplates();
     this.orderTemplates$ = this.orderTemplatesFacade.orderTemplates$;
     this.orderTemplateLoading$ = this.orderTemplatesFacade.orderTemplateLoading$;
     this.orderTemplateError$ = this.orderTemplatesFacade.orderTemplateError$;

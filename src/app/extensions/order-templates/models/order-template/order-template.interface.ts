@@ -9,3 +9,9 @@ export interface OrderTemplateData extends OrderTemplateHeader {
   uri?: string;
   creationDate?: number;
 }
+
+export interface OrderTemplateListElementData {
+  attributes: Attribute[];
+  title?: string;
+  uri?: string;
+}

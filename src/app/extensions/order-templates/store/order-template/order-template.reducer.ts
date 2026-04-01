@@ -16,6 +16,9 @@ import {
   deleteOrderTemplate,
   deleteOrderTemplateFail,
   deleteOrderTemplateSuccess,
+  loadOrderTemplateDetails,
+  loadOrderTemplateDetailsFail,
+  loadOrderTemplateDetailsSuccess,
   loadOrderTemplates,
   loadOrderTemplatesFail,
   loadOrderTemplatesSuccess,
@@ -51,6 +54,7 @@ export const orderTemplateReducer = createReducer(
     createOrderTemplate,
     deleteOrderTemplate,
     loadOrderTemplates,
+    loadOrderTemplateDetails,
     orderTemplatesActions.createOrderTemplateFromLineItems,
     updateOrderTemplate
   ),
@@ -59,6 +63,7 @@ export const orderTemplateReducer = createReducer(
     createOrderTemplateSuccess,
     deleteOrderTemplateSuccess,
     loadOrderTemplatesSuccess,
+    loadOrderTemplateDetailsSuccess,
     orderTemplatesApiActions.createOrderTemplateFromLineItemsSuccess,
     removeItemFromOrderTemplateSuccess,
     updateOrderTemplateSuccess
@@ -68,6 +73,7 @@ export const orderTemplateReducer = createReducer(
     createOrderTemplateFail,
     deleteOrderTemplateFail,
     loadOrderTemplatesFail,
+    loadOrderTemplateDetailsFail,
     orderTemplatesApiActions.createOrderTemplateFromLineItemsFail,
     updateOrderTemplateFail
   ),
@@ -76,6 +82,7 @@ export const orderTemplateReducer = createReducer(
     createOrderTemplateFail,
     deleteOrderTemplateFail,
     loadOrderTemplatesFail,
+    loadOrderTemplateDetailsFail,
     orderTemplatesApiActions.createOrderTemplateFromLineItemsFail,
     updateOrderTemplateFail,
     (state: OrderTemplateState): OrderTemplateState => ({
@@ -90,6 +97,7 @@ export const orderTemplateReducer = createReducer(
   on(
     addProductToOrderTemplateSuccess,
     createOrderTemplateSuccess,
+    loadOrderTemplateDetailsSuccess,
     removeItemFromOrderTemplateSuccess,
     orderTemplatesApiActions.createOrderTemplateFromLineItemsSuccess,
     updateOrderTemplateSuccess,

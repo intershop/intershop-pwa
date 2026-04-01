@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { OrderTemplateData } from './order-template.interface';
+import { OrderTemplateData, OrderTemplateListElementData } from './order-template.interface';
 import { OrderTemplateMapper } from './order-template.mapper';
 import { OrderTemplate } from './order-template.model';
 
@@ -58,6 +58,50 @@ describe('Order Template Mapper', () => {
 
       expect(mapped).toHaveProperty('id', orderTeplateId);
       expect(mapped).toHaveProperty('title', 'title');
+    });
+  });
+
+  describe('fromListData', () => {
+    it('should return undefined when input is falsy', () => {
+      expect(orderTemplateMapper.fromListData(undefined)).toBeUndefined();
+    });
+
+    it('should return empty array when input is empty', () => {
+      expect(orderTemplateMapper.fromListData([])).toBeEmpty();
+    });
+
+    it('should map list element data to order template array', () => {
+      const listData: OrderTemplateListElementData[] = [
+        {
+          uri: 'any/wishlists/1234',
+          title: 'My Template',
+          attributes: [
+            { name: 'itemsCount', value: 3 },
+            { name: 'creationDate', value: 1234567890 },
+          ],
+        },
+        {
+          uri: 'any/wishlists/5678',
+          title: 'Second Template',
+          attributes: [{ name: 'itemsCount', value: 0 }],
+        },
+      ];
+
+      const mapped = orderTemplateMapper.fromListData(listData);
+
+      expect(mapped).toHaveLength(2);
+      expect(mapped[0]).toEqual({
+        id: '1234',
+        title: 'My Template',
+        itemsCount: 3,
+        creationDate: 1234567890,
+      });
+      expect(mapped[1]).toEqual({
+        id: '5678',
+        title: 'Second Template',
+        itemsCount: 0,
+        creationDate: undefined,
+      });
     });
   });
 });
