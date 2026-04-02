@@ -1178,6 +1178,7 @@
   "order.recurrence.start.label": "Beginnt am",
   "order.tracking.error": "Leider konnte keine Bestellung mit Ihren Daten gefunden werden.",
   "order_template.create.heading": "Bestellvorlage anlegen",
+  "password.invalid.password": "Bitte geben Sie ein gültiges Kennwort ein.",
   "payment.error.PaymentInstrumentAlreadyExists": "Das Zahlungsmittel konnte nicht angelegt werden. Zahlungsdaten mit den angegebenen Parametern sind bereits vorhanden.",
   "personal.data.request.confirmation.confirmed.heading": "Bereits bestätigt",
   "personal.data.request.confirmation.confirmed.message": "<p>Sie haben Ihre Anfrage bereits bestätigt und sie wird bearbeitet.</p><p>Bei Fragen wenden Sie sich bitte an unseren Kundenservice unter 1-800-xxx-xxx oder schreiben Sie uns eine Nachricht: <a href=\"route://contact\">Kundenservice</a>.</p>",

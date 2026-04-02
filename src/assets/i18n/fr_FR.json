@@ -1178,6 +1178,7 @@
   "order.recurrence.start.label": "Debute le",
   "order.tracking.error": "Malheureusement, nous n’avons pas pu localiser une commande avec les informations que vous avez fournies.",
   "order_template.create.heading": "Créer un modèle de commande",
+  "password.invalid.password": "Le mot de passe saisi est incorrect.",
   "payment.error.PaymentInstrumentAlreadyExists": "Le moyen de paiement n’a pas pu être mis en place. Les données de paiement avec les paramètres fournis existent déjà.",
   "personal.data.request.confirmation.confirmed.heading": "Déjà vérifiée",
   "personal.data.request.confirmation.confirmed.message": "<p>Vous avez déjà vérifié votre demande et elle est en cours de traitement.</p><p>Pour toute question, veuillez contacter notre service client au 1-800-xxx-xxx ou écrivez un message par <a href=\"route://contact\">Service Client</a>.</p>",
