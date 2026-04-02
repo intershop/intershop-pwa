@@ -7,6 +7,46 @@ kb_everyone
 
 # Changelog
 
+## [10.1.0](https://github.com/intershop/intershop-pwa/releases/tag/10.1.0) (2026-04-02)
+
+> [!NOTE]
+> Intershop PWA 10.1.0 was developed and tested with Intershop Commerce Management (ICM) version ICM 14.0.1.
+> It will work with all versions from ICM 14.0.1 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> _PWA 10.1.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
+>
+> The PWA was developed and tested using Node.js version 22.22.0 LTS (including npm 10.9.4), which is the recommended version.
+>
+> Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.12.0 for PWA 10.1.0 deployments.
+
+### Features
+
+- display inventory supplier stock at product detail if available (#2051) ([00827fb](https://github.com/intershop/intershop-pwa/commit/00827fb))
+- add paypal eligibility check on checkout payment page ([86a1640](https://github.com/intershop/intershop-pwa/commit/86a1640))
+- add ICM base URL input to demo-server-up workflow (#2040) ([d447874](https://github.com/intershop/intershop-pwa/commit/d447874))
+
+### Bug Fixes
+
+- resolve unstable angular zone ([271f8ab](https://github.com/intershop/intershop-pwa/commit/271f8ab))
+- revise estimation of the paypal token ([b740b7f](https://github.com/intershop/intershop-pwa/commit/b740b7f))
+- filter orders by skus/order numbers (#2032) ([86b1c87](https://github.com/intershop/intershop-pwa/commit/86b1c87))
+- update PreviewContextID after query parameter changed (#2046) ([c34ec00](https://github.com/intershop/intershop-pwa/commit/c34ec00))
+- change scrolling behavior in the case of recurring errors ([77d9298](https://github.com/intershop/intershop-pwa/commit/77d9298))
+- add aria label to buttons and add styling for disabled buttons ([0f0d51e](https://github.com/intershop/intershop-pwa/commit/0f0d51e))
+- address form validation display in case of anonymous checkout (#1997, #2036) ([4f66943](https://github.com/intershop/intershop-pwa/commit/4f66943))
+- issues regarding invalid `ng-select` fields (#2036) ([0f4551d](https://github.com/intershop/intershop-pwa/commit/0f4551d))
+- product variation filter on product master pages not working (#2043) ([403bbbd](https://github.com/intershop/intershop-pwa/commit/403bbbd))
+- missing page title translation on reload (#2037) ([341f14b](https://github.com/intershop/intershop-pwa/commit/341f14b))
+- remove duplicated transferState from SSR rendered pages (#2038) ([a06b80c](https://github.com/intershop/intershop-pwa/commit/a06b80c))
+- **NGINX:** add SSL directives required for SNI to sitemap (#2034) ([c1e55cc](https://github.com/intershop/intershop-pwa/commit/c1e55cc))
+
+### Performance Improvements
+
+- category + product image loading improvements (#2035) ([ebfac51](https://github.com/intershop/intershop-pwa/commit/ebfac51))
+- category with subcategories page rendering improvements (#2042) ([743d049](https://github.com/intershop/intershop-pwa/commit/743d049))
+- split heavy third-party libs into async chunks to reduce common/vendor bundle size (#2011) ([236b196](https://github.com/intershop/intershop-pwa/commit/236b196))
+
 ## [10.0.0](https://github.com/intershop/intershop-pwa/releases/tag/10.0.0) (2026-03-13)
 
 > [!NOTE]

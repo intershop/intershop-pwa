@@ -167,12 +167,12 @@ As Angular runs in the browser, all the development tool functionality provided 
 
 ### Tackling Memory Problems
 
-If you encounter `FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory` problems, you will have to increase Node.js heap space size.
+If you encounter `FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory` problems, increase Node.js heap space size.
 This can be done by setting the environment variable `NODE_OPTIONS=--max-old-space-size=8192` (see [Node.js documentation](https://nodejs.org/api/cli.html#--max-old-space-sizesize-in-mib)).
-If necessary it can be adjusted to even higher values.
+If necessary, it can be adjusted to even higher values.
 
 > [!IMPORTANT]
-> If this problem occurs when building the SSR image with Docker, the environment variable in the project [`Dockerfile`](../../Dockerfile) has to adapted.
+> If this problem occurs when building the SSR image with Docker, the environment variable in the project [`Dockerfile`](../../Dockerfile) must be adapted.
 
 ### Recommended Articles
 

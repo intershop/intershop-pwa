@@ -20,7 +20,7 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
   paymentMethods$: Observable<PaymentMethod[]>;
   filteredPaymentMethods$: Observable<PaymentMethod[]>;
   priceType$: Observable<PriceType>;
-  redirectStatus: string;
+  redirectStatus$: Observable<string>;
 
   constructor(
     private checkoutFacade: CheckoutFacade,
@@ -37,7 +37,7 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
       map(methods => methods.filter(method => !method.capabilities?.includes('PaypalCheckout')))
     );
     // if page is shown after cancelled/faulty redirect determine error message variable
-    this.redirectStatus = this.route.snapshot.queryParamMap.get('redirect');
+    this.redirectStatus$ = this.route.queryParamMap.pipe(map(params => params.get('redirect') || ''));
   }
 
   ngOnChanges(changes: SimpleChanges): void {

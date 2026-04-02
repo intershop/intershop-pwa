@@ -55,9 +55,8 @@ describe('Payment Paypal Component', () => {
     closeForm$ = new Subject<void>();
 
     when(appFacade.serverSetting$('payment.paypal')).thenReturn(of(paypalConfig));
-    when(paypalConfigService.loadPaypalScript(anything(), anything(), anything())).thenReturn(
-      of({ loaded: true } as never)
-    );
+    when(paypalConfigService.loadPaypalScript(anything())).thenReturn(of({ loaded: true } as never));
+    when(paypalConfigService.loadPaypalScript(anything(), anything())).thenReturn(of({ loaded: true } as never));
     when(paypalAdaptersBuilder.build(anything())).thenReturn(of(undefined));
     when(paypalCardFields.closeForm$).thenReturn(closeForm$);
     when(paypalCardFields.loadingIframe$).thenReturn(new BehaviorSubject<boolean>(false));
@@ -130,7 +129,7 @@ describe('Payment Paypal Component', () => {
 
       fixture.detectChanges();
 
-      verify(paypalConfigService.loadPaypalScript(anything(), anything(), anything())).never();
+      verify(paypalConfigService.loadPaypalScript(anything(), anything())).never();
     });
 
     it('should load PayPal script for Messages component when PayLater is shown', () => {
@@ -140,7 +139,7 @@ describe('Payment Paypal Component', () => {
 
       fixture.detectChanges();
 
-      verify(paypalConfigService.loadPaypalScript('PPCP_MESSAGES', anything())).atLeast(1);
+      verify(paypalConfigService.loadPaypalScript('cart')).atLeast(1);
     });
 
     it('should load PayPal script for Buttons component with payment method', () => {
@@ -150,7 +149,7 @@ describe('Payment Paypal Component', () => {
 
       fixture.detectChanges();
 
-      verify(paypalConfigService.loadPaypalScript('PPCP_PayPal_CARD', anything(), anything())).once();
+      verify(paypalConfigService.loadPaypalScript('checkout', anything())).once();
     });
 
     it('should load PayPal script for CardFields component with payment method', () => {
@@ -160,13 +159,13 @@ describe('Payment Paypal Component', () => {
 
       fixture.detectChanges();
 
-      verify(paypalConfigService.loadPaypalScript('PPCP_PayPal_CARD', anything(), anything())).once();
+      verify(paypalConfigService.loadPaypalScript('checkout', anything())).once();
     });
   });
 
   describe('ngAfterViewInit', () => {
     it('should build PayPal component when script is loaded for Messages', () => {
-      when(paypalConfigService.loadPaypalScript('PPCP_MESSAGES', anything())).thenReturn(of({ loaded: true } as never));
+      when(paypalConfigService.loadPaypalScript('cart')).thenReturn(of({ loaded: true } as never));
       component.adapterType = 'Messages';
       component.pageType = 'cart';
       resetCalls(paypalAdaptersBuilder);
@@ -194,9 +193,7 @@ describe('Payment Paypal Component', () => {
     });
 
     it('should not build component when script is not loaded', () => {
-      when(paypalConfigService.loadPaypalScript(anything(), anything(), anything())).thenReturn(
-        of({ loaded: false } as never)
-      );
+      when(paypalConfigService.loadPaypalScript(anything(), anything())).thenReturn(of({ loaded: false } as never));
       component.adapterType = 'Buttons';
       component.selectedPaymentMethod = paymentMethod;
       resetCalls(paypalAdaptersBuilder);

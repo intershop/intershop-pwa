@@ -11,6 +11,7 @@ export class ProductInventoryMapper {
       sku: data.sku,
       inStock: data.inStock,
       availableStock: data.availableStock,
+      supplierStock: data.supplierStock || [],
     };
   }
 }

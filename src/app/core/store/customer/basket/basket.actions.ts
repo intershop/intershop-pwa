@@ -320,6 +320,8 @@ export const updatePaypalCreditCardPaymentInstrument = createAction(
   payload<{ paymentInstrument: PaymentInstrument }>()
 );
 
+export const loadPaypalToken = createAction('[Basket] Load Paypal Token', payload<{ paymentInstrumentId: string }>());
+
 export const updatePaymentInstrument = createAction(
   '[Basket Internal] Update Payment Instrument',
   payload<{ paymentInstrument: PaymentInstrument }>()

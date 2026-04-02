@@ -11,6 +11,7 @@ import {
 } from '@ngx-translate/core';
 
 import { SSR_LOCALE } from './configurations/state-keys';
+import { InjectSingle } from './utils/injection';
 import {
   FALLBACK_LANG,
   FallbackMissingTranslationHandler,
@@ -21,13 +22,18 @@ import { TranslationGenerator } from './utils/translate/translations-generator';
 
 @NgModule({
   providers: [
+    { provide: LOCALE_ID, useValue: 'en-US' },
     provideTranslateService({
       loader: { provide: TranslateLoader, useClass: ICMTranslateLoader },
       missingTranslationHandler: { provide: MissingTranslationHandler, useClass: FallbackMissingTranslationHandler },
       useDefaultLang: false,
       compiler: { provide: TranslateCompiler, useClass: PWATranslateCompiler },
     }),
-    { provide: FALLBACK_LANG, useValue: 'en_US' },
+    {
+      provide: FALLBACK_LANG,
+      useFactory: (locale: string) => locale.replace(/-/g, '_'),
+      deps: [LOCALE_ID],
+    },
     {
       provide: LOCAL_TRANSLATIONS,
       useValue: {
@@ -48,7 +54,7 @@ import { TranslationGenerator } from './utils/translate/translations-generator';
 })
 export class InternationalizationModule {
   constructor(
-    @Inject(LOCALE_ID) angularDefaultLocale: string,
+    @Inject(FALLBACK_LANG) fallbackLang: InjectSingle<typeof FALLBACK_LANG>,
     translateService: TranslateService,
     transferState: TransferState,
     generator: TranslationGenerator
@@ -56,10 +62,7 @@ export class InternationalizationModule {
     registerLocaleData(localeDe);
     registerLocaleData(localeFr);
 
-    let defaultLang = angularDefaultLocale.replace(/\-/, '_');
-    if (transferState.hasKey(SSR_LOCALE)) {
-      defaultLang = transferState.get(SSR_LOCALE, defaultLang);
-    }
+    const defaultLang = transferState.hasKey(SSR_LOCALE) ? transferState.get(SSR_LOCALE, fallbackLang) : fallbackLang;
     translateService.setDefaultLang(defaultLang);
     translateService.use(defaultLang);
 

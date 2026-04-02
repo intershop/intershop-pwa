@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -13,6 +13,7 @@ describe('Paypal Config Service', () => {
   let service: PaypalConfigService;
   let appFacade: AppFacade;
   let scriptLoader: ScriptLoaderService;
+  const windowRef = window as unknown as Record<string, unknown>;
 
   const mockPaymentMethod: PaymentMethod = {
     id: 'ISH_PAYPAL',
@@ -73,23 +74,23 @@ describe('Paypal Config Service', () => {
     });
 
     it('should call scriptLoader.load with correct URL and attributes', done => {
-      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('checkout', mockPaymentMethod).subscribe(() => {
         verify(scriptLoader.load(anything(), anything())).once();
         done();
       });
     });
 
     it('should include namespace in script attributes', done => {
-      service.loadPaypalScript('custom-namespace', 'cart', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('cart', mockPaymentMethod).subscribe(() => {
         const [, options] = capture(scriptLoader.load).last();
         const namespaceAttr = options.attributes.find((attr: { name: string }) => attr.name === 'data-namespace');
-        expect(namespaceAttr?.value).toBe('custom-namespace');
+        expect(namespaceAttr?.value).toBe('PPCP_ISH_PAYPAL');
         done();
       });
     });
 
     it('should include page type in script attributes', done => {
-      service.loadPaypalScript('test-namespace', 'product-details', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('product-details', mockPaymentMethod).subscribe(() => {
         const [, options] = capture(scriptLoader.load).last();
         const pageTypeAttr = options.attributes.find((attr: { name: string }) => attr.name === 'data-page-type');
         expect(pageTypeAttr?.value).toBe('product-details');
@@ -98,7 +99,7 @@ describe('Paypal Config Service', () => {
     });
 
     it('should include partner attribution ID in script attributes', done => {
-      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('checkout', mockPaymentMethod).subscribe(() => {
         const [, options] = capture(scriptLoader.load).last();
         const attrId = options.attributes.find((attr: { name: string }) => attr.name === 'data-partner-attribution-id');
         expect(attrId?.value).toBe('test-attribution-id');
@@ -107,7 +108,7 @@ describe('Paypal Config Service', () => {
     });
 
     it('should include data-* parameters from payment method in script attributes', done => {
-      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('checkout', mockPaymentMethod).subscribe(() => {
         const [, options] = capture(scriptLoader.load).last();
         const dataAttr = options.attributes.find((attr: { name: string }) => attr.name === 'data-client-metadata-id');
         expect(dataAttr?.value).toBe('test-metadata-id');
@@ -116,7 +117,7 @@ describe('Paypal Config Service', () => {
     });
 
     it('should construct URL with client-id parameter', done => {
-      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('checkout', mockPaymentMethod).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).toContain('client-id=test-client-id');
         done();
@@ -124,7 +125,7 @@ describe('Paypal Config Service', () => {
     });
 
     it('should construct URL with merchant-id parameter', done => {
-      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('checkout', mockPaymentMethod).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).toContain('merchant-id=test-merchant-id');
         done();
@@ -132,7 +133,7 @@ describe('Paypal Config Service', () => {
     });
 
     it('should construct URL with intent parameter', done => {
-      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('checkout', mockPaymentMethod).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).toContain('intent=capture');
         done();
@@ -140,7 +141,7 @@ describe('Paypal Config Service', () => {
     });
 
     it('should construct URL with components parameter', done => {
-      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('checkout', mockPaymentMethod).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).toContain('components=buttons,messages,card-fields');
         done();
@@ -150,7 +151,7 @@ describe('Paypal Config Service', () => {
     it('should construct URL with current locale', done => {
       when(appFacade.currentLocale$).thenReturn(of('de_DE'));
 
-      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('checkout', mockPaymentMethod).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).toContain('locale=de_DE');
         done();
@@ -160,7 +161,7 @@ describe('Paypal Config Service', () => {
     it('should construct URL with current currency', done => {
       when(appFacade.currentCurrency$).thenReturn(of('EUR'));
 
-      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('checkout', mockPaymentMethod).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).toContain('currency=EUR');
         done();
@@ -173,7 +174,7 @@ describe('Paypal Config Service', () => {
         capabilities: ['RedirectAfterCheckout'],
       };
 
-      service.loadPaypalScript('test-namespace', 'checkout', paymentMethodWithRedirect).subscribe(() => {
+      service.loadPaypalScript('checkout', paymentMethodWithRedirect).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).not.toContain('commit=false');
         done();
@@ -186,7 +187,7 @@ describe('Paypal Config Service', () => {
         capabilities: [] as string[],
       };
 
-      service.loadPaypalScript('test-namespace', 'checkout', paymentMethodWithoutRedirect).subscribe(() => {
+      service.loadPaypalScript('checkout', paymentMethodWithoutRedirect).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).toContain('commit=false');
         done();
@@ -209,7 +210,7 @@ describe('Paypal Config Service', () => {
         })
       );
 
-      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('checkout', mockPaymentMethod).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).toContain('enable-funding=paylater');
         done();
@@ -232,7 +233,7 @@ describe('Paypal Config Service', () => {
         })
       );
 
-      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('checkout', mockPaymentMethod).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).not.toContain('enable-funding=paylater');
         done();
@@ -240,7 +241,7 @@ describe('Paypal Config Service', () => {
     });
 
     it('should always include disable-funding=card,sepa', done => {
-      service.loadPaypalScript('test-namespace', 'checkout', mockPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('checkout', mockPaymentMethod).subscribe(() => {
         const [url] = capture(scriptLoader.load).last();
         expect(url).toContain('disable-funding=card,sepa');
         done();
@@ -256,7 +257,7 @@ describe('Paypal Config Service', () => {
         hostedPaymentPageParameters: undefined,
       } as PaymentMethod;
 
-      service.loadPaypalScript('test-namespace', 'checkout', minimalPaymentMethod).subscribe(() => {
+      service.loadPaypalScript('checkout', minimalPaymentMethod).subscribe(() => {
         verify(scriptLoader.load(anything(), anything())).once();
         done();
       });
@@ -274,13 +275,207 @@ describe('Paypal Config Service', () => {
       let completedCalls = 0;
 
       pageTypes.forEach(pageType => {
-        service.loadPaypalScript('test-namespace', pageType, mockPaymentMethod).subscribe(() => {
+        service.loadPaypalScript(pageType, mockPaymentMethod).subscribe(() => {
           completedCalls++;
           if (completedCalls === pageTypes.length) {
             done();
           }
         });
       });
+    });
+  });
+
+  describe('filterByPaypalEligibility', () => {
+    beforeEach(() => {
+      // Clean up window object before each test
+      delete windowRef.PPCP_ISH_PAYPAL;
+      delete windowRef.PPCP_ISH_PAYPAL_CARD;
+      delete windowRef.PPCP_ISH_PAYPAL_GOOGLEPAY;
+      delete windowRef.PPCP_ISH_PAYPAL_INELIGIBLE;
+    });
+
+    afterEach(() => {
+      // Clean up window object after each test
+      delete windowRef.PPCP_ISH_PAYPAL;
+      delete windowRef.PPCP_ISH_PAYPAL_CARD;
+      delete windowRef.PPCP_ISH_PAYPAL_GOOGLEPAY;
+      delete windowRef.PPCP_ISH_PAYPAL_INELIGIBLE;
+    });
+
+    it('should return empty array when input is null', async () => {
+      // eslint-disable-next-line unicorn/no-null
+      const result = await firstValueFrom(service.filterByPaypalEligibility(null));
+      expect(result).toBeEmpty();
+    });
+
+    it('should return empty array when input is undefined', async () => {
+      const result = await firstValueFrom(service.filterByPaypalEligibility(undefined));
+      expect(result).toBeEmpty();
+    });
+
+    it('should return empty array when input is empty array', async () => {
+      const result = await firstValueFrom(service.filterByPaypalEligibility([]));
+      expect(result).toBeEmpty();
+    });
+
+    it('should pass through non-PayPal payment methods without eligibility check', async () => {
+      const nonPaypalMethod: PaymentMethod = {
+        id: 'INVOICE',
+        serviceId: 'Invoice',
+        displayName: 'Invoice',
+        capabilities: [],
+      } as PaymentMethod;
+
+      const result = await firstValueFrom(service.filterByPaypalEligibility([nonPaypalMethod]));
+
+      expect(result).toEqual([nonPaypalMethod]);
+      verify(scriptLoader.load(anything(), anything())).never();
+    });
+
+    it('should check eligibility for payment methods with PaypalExperienceContext capability', async () => {
+      const paypalMethod: PaymentMethod = {
+        ...mockPaymentMethod,
+        id: 'ISH_PAYPAL_CARD',
+        capabilities: ['PaypalExperienceContext'],
+      };
+
+      windowRef.PPCP_ISH_PAYPAL_CARD = {
+        CardFields: () => ({ isEligible: () => true }),
+      };
+
+      const result = await firstValueFrom(service.filterByPaypalEligibility([paypalMethod]));
+
+      expect(result).toEqual([paypalMethod]);
+      verify(scriptLoader.load(anything(), anything())).once();
+    });
+
+    it('should check eligibility for payment methods with PaypalAlternativeWallet capability', async () => {
+      const paypalGooglePayMethod: PaymentMethod = {
+        ...mockPaymentMethod,
+        id: 'ISH_PAYPAL_GOOGLEPAY',
+        capabilities: ['PaypalAlternativeWallet', 'PaypalGooglePay'],
+      };
+
+      windowRef.PPCP_ISH_PAYPAL_GOOGLEPAY = {
+        Googlepay: () => ({}),
+      };
+
+      const result = await firstValueFrom(service.filterByPaypalEligibility([paypalGooglePayMethod]));
+
+      expect(result).toEqual([paypalGooglePayMethod]);
+      verify(scriptLoader.load(anything(), anything())).once();
+    });
+
+    it('should filter out ineligible PayPal payment methods', async () => {
+      const paypalMethod: PaymentMethod = {
+        ...mockPaymentMethod,
+        id: 'ISH_PAYPAL_CARD',
+        capabilities: ['PaypalExperienceContext'],
+      };
+
+      windowRef.PPCP_ISH_PAYPAL_CARD = {
+        CardFields: () => ({ isEligible: () => false }),
+      };
+
+      const result = await firstValueFrom(service.filterByPaypalEligibility([paypalMethod]));
+
+      expect(result).toBeEmpty();
+    });
+
+    it('should handle mix of eligible and ineligible payment methods', async () => {
+      const invoiceMethod: PaymentMethod = {
+        id: 'INVOICE',
+        serviceId: 'Invoice',
+        displayName: 'Invoice',
+        capabilities: [],
+      } as PaymentMethod;
+
+      const eligiblePaypalMethod: PaymentMethod = {
+        ...mockPaymentMethod,
+        id: 'ISH_PAYPAL_CARD',
+        capabilities: ['PaypalExperienceContext'],
+      };
+
+      const ineligiblePaypalMethod: PaymentMethod = {
+        ...mockPaymentMethod,
+        id: 'ISH_PAYPAL_INELIGIBLE',
+        capabilities: ['PaypalExperienceContext'],
+      };
+
+      windowRef.PPCP_ISH_PAYPAL_CARD = {
+        CardFields: () => ({ isEligible: () => true }),
+      };
+      windowRef.PPCP_ISH_PAYPAL_INELIGIBLE = {
+        CardFields: () => ({ isEligible: () => false }),
+      };
+
+      const result = await firstValueFrom(
+        service.filterByPaypalEligibility([invoiceMethod, eligiblePaypalMethod, ineligiblePaypalMethod])
+      );
+
+      expect(result).toHaveLength(2);
+      expect(result).toContain(invoiceMethod);
+      expect(result).toContain(eligiblePaypalMethod);
+      expect(result).not.toContain(ineligiblePaypalMethod);
+    });
+
+    it('should preserve order of payment methods', async () => {
+      const method1: PaymentMethod = { id: 'METHOD_1', capabilities: [] } as PaymentMethod;
+      const method2: PaymentMethod = { id: 'METHOD_2', capabilities: [] } as PaymentMethod;
+      const method3: PaymentMethod = { id: 'METHOD_3', capabilities: [] } as PaymentMethod;
+
+      const result = await firstValueFrom(service.filterByPaypalEligibility([method1, method2, method3]));
+
+      expect(result).toEqual([method1, method2, method3]);
+    });
+
+    it('should return all methods when all are eligible', async () => {
+      const invoiceMethod: PaymentMethod = {
+        id: 'INVOICE',
+        capabilities: [],
+      } as PaymentMethod;
+
+      const creditCardMethod: PaymentMethod = {
+        id: 'CREDIT_CARD',
+        capabilities: [],
+      } as PaymentMethod;
+
+      const paypalMethod: PaymentMethod = {
+        ...mockPaymentMethod,
+        id: 'ISH_PAYPAL_CARD',
+        capabilities: ['PaypalExperienceContext'],
+      };
+
+      windowRef.PPCP_ISH_PAYPAL_CARD = {
+        CardFields: () => ({ isEligible: () => true }),
+      };
+
+      const result = await firstValueFrom(
+        service.filterByPaypalEligibility([invoiceMethod, creditCardMethod, paypalMethod])
+      );
+
+      expect(result).toHaveLength(3);
+    });
+
+    it('should return only non-PayPal methods when all PayPal methods are ineligible', async () => {
+      const invoiceMethod: PaymentMethod = {
+        id: 'INVOICE',
+        capabilities: [],
+      } as PaymentMethod;
+
+      const paypalMethod: PaymentMethod = {
+        ...mockPaymentMethod,
+        id: 'ISH_PAYPAL_CARD',
+        capabilities: ['PaypalExperienceContext'],
+      };
+
+      windowRef.PPCP_ISH_PAYPAL_CARD = {
+        CardFields: () => ({ isEligible: () => false }),
+      };
+
+      const result = await firstValueFrom(service.filterByPaypalEligibility([invoiceMethod, paypalMethod]));
+
+      expect(result).toEqual([invoiceMethod]);
     });
   });
 });

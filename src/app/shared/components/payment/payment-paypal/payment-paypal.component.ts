@@ -119,12 +119,8 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
     }
 
     return this.adapterType === 'Messages'
-      ? this.paypalConfigService.loadPaypalScript('PPCP_MESSAGES', this.pageType)
-      : this.paypalConfigService.loadPaypalScript(
-          'PPCP_'.concat(`${this.selectedPaymentMethod.id}`),
-          this.pageType,
-          this.selectedPaymentMethod
-        );
+      ? this.paypalConfigService.loadPaypalScript(this.pageType)
+      : this.paypalConfigService.loadPaypalScript(this.pageType, this.selectedPaymentMethod);
   }
 
   /**

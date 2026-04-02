@@ -89,6 +89,8 @@ export const loadUserByAPIToken = createAction('[User] Load User by API Token', 
 
 export const personalizationStatusDetermined = createAction('[User Internal] Personalization Status Determined');
 
+export const personalizationStatusChanged = createAction('[User Internal] Personalization Status Changed');
+
 export const loadUserCostCenters = createAction('[User] Load User Cost Centers');
 
 export const loadUserCostCentersFail = createAction('[User API] Load User Cost Centers Fail', httpError());

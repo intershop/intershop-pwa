@@ -21,9 +21,10 @@
       <source [srcset]="pagelet.stringParam('ImageMD')" media="(max-width: 1199px)" />
       }
       <img
-        [attr.loading]="loading"
         [src]="pagelet.stringParam('Image')"
         [alt]="pagelet.stringParam('AlternateText') || ('image.alt_text.default' | translate)"
+        [attr.loading]="loading"
+        [attr.fetchpriority]="loading === 'eager' ? 'high' : null"
         class="enhanced-image"
       />
     </picture>

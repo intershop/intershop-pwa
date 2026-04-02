@@ -84,33 +84,45 @@
                 class="btn btn-link"
                 [ngbPopover]="CVCHelp"
                 [popoverTitle]="'checkout.payment.paypal.credit_card.cvc.popover.title' | translate"
+                [attr.aria-label]="'checkout.payment.paypal.credit_card.cvc.popover.title' | translate"
                 placement="auto"
               >
                 <i class="bi bi-question-circle"></i>
               </button>
             </div>
+            <small
+              [ishPaypalError]="cvvFieldError$ | async"
+              labelId="card-cvv-field-container-label"
+              class="validation-error hide-validation-error"
+            >
+              {{ 'checkout.credit_card.cvc_cvv.error.default' | translate }}
+            </small>
           </div>
-          <small
-            [ishPaypalError]="cvvFieldError$ | async"
-            labelId="card-cvv-field-container-label"
-            class="validation-error hide-validation-error"
-          >
-            {{ 'checkout.credit_card.cvc_cvv.error.default' | translate }}
-          </small>
         </div>
       </div>
     </div>
 
     <div class="row">
       <div class="offset-md-4 col-md-8">
-        <button type="button" class="btn btn-primary" id="card-field-submit-button">
+        <button
+          type="button"
+          class="btn btn-primary"
+          id="card-field-submit-button"
+          [attr.aria-label]="'checkout.button.continue.label.aria_label' | translate"
+          [disabled]="loadingIframe$ | async"
+        >
           @if ((loadingIframe$ | async) === true) {
           <i class="bi bi-arrow-clockwise spin-icon"></i>
           }
           {{ 'checkout.button.continue.label' | translate }}
         </button>
 
-        <button type="button" class="btn btn-secondary" id="card-field-cancel-button">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          id="card-field-cancel-button"
+          [attr.aria-label]="'checkout.cancel.button.label.aria_label' | translate"
+        >
           {{ 'checkout.cancel.button.label' | translate }}
         </button>
       </div>

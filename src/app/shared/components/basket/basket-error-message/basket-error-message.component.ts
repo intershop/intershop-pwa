@@ -1,20 +1,31 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ReplaySubject, asyncScheduler, scheduled, switchMap } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
+/**
+ * Displays basket-related HTTP error messages and automatically scrolls
+ * the message into view whenever the error input changes.
+ */
 @Component({
   selector: 'ish-basket-error-message',
   templateUrl: './basket-error-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BasketErrorMessageComponent {
+export class BasketErrorMessageComponent implements OnChanges {
   @Input({ required: true }) error: HttpError;
   @Input() cssClass = 'alert alert-danger';
 
   // default values to control scrolling behavior
   scrollSpacing = 64;
 
-  get scrollToMessage(): boolean {
-    return !!this.error;
+  private scrollTrigger$ = new ReplaySubject<void>(1);
+  // Emits false, then true asynchronously to ensure the directive's ngOnChanges is triggered
+  scrollToMessage$ = this.scrollTrigger$.pipe(switchMap(() => scheduled([false, true], asyncScheduler)));
+
+  ngOnChanges() {
+    if (this.error) {
+      this.scrollTrigger$.next();
+    }
   }
 }

@@ -13,8 +13,8 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Observable, Subject, merge } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -60,7 +60,9 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
   // visible-for-testing
   formSubmitted = false;
 
-  redirectStatus$ = new BehaviorSubject<string>(undefined);
+  redirectStatus$: Observable<string>;
+
+  private redirectStatusReset$ = new Subject<string>();
 
   private openFormIndex = -1; // index of the open parameter form
 
@@ -89,7 +91,10 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
       });
 
     // if page is shown after cancelled/faulty redirect determine error message variable
-    this.redirectStatus$.next(this.route.snapshot.queryParamMap.get('redirect'));
+    this.redirectStatus$ = merge(
+      this.route.queryParamMap.pipe(map(params => params.get('redirect') || '')),
+      this.redirectStatusReset$
+    );
   }
 
   ngOnChanges(c: SimpleChanges) {
@@ -120,6 +125,9 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     this.parameterForm.reset();
   }
 
+  /**
+   * Returns a payment method if basket payment has paypal capabilities and redirect required, otherwise undefined
+   */
   selectedPayPalMethod(): PaymentMethod {
     if (
       this.basket?.payment?.capabilities?.includes('PaypalCheckout') &&
@@ -131,6 +139,9 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     return;
   }
 
+  /**
+   * Estimate the PayPal adapter type for a given payment method based on its capabilities.
+   */
   getPaypalAdapterType(method?: PaymentMethod): PaypalAdapterTypes {
     if (method?.capabilities?.includes('PaypalExperienceContext')) {
       return 'CardFields';
@@ -197,7 +208,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     };
 
     this.createPaymentInstrument.emit({ paymentInstrument, saveForLater: body.saveAllowed });
-    this.redirectStatus$.next(undefined);
+    this.redirectStatusReset$.next('');
   }
 
   /**
@@ -229,7 +240,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
   }
 
   private setBasketPayment(paymentInstrumentId: string) {
-    this.redirectStatus$.next(undefined);
+    this.redirectStatusReset$.next('');
     this.updatePaymentMethod.emit(paymentInstrumentId);
   }
 

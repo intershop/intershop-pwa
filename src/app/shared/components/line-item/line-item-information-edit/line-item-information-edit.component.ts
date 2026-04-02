@@ -73,7 +73,7 @@ export class LineItemInformationEditComponent extends RxState<ComponentState> im
 
   private resetContext() {
     const lineItem = this.get('lineItem');
-    this.context.set({ sku: lineItem.productSKU });
+    this.context.set({ sku: lineItem?.productSKU });
   }
 
   save() {

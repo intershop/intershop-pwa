@@ -1,0 +1,48 @@
+@import 'variables';
+
+.stock-label::after {
+  content: ':';
+}
+
+/* purgecss start ignore */
+
+.stock-level {
+  position: relative;
+
+  &::before {
+    position: absolute;
+    top: 5px;
+    left: -3px;
+    display: block;
+    width: 12px;
+    height: 12px;
+    content: '';
+    border-radius: 50%;
+  }
+
+  &.high {
+    &::before {
+      background-color: $success;
+    }
+  }
+
+  &.medium {
+    &::before {
+      background-color: $warning;
+    }
+  }
+
+  &.low {
+    &::before {
+      background-color: $danger;
+    }
+  }
+
+  &.none {
+    &::before {
+      background-color: $gray-300;
+    }
+  }
+}
+
+/* purgecss end ignore */

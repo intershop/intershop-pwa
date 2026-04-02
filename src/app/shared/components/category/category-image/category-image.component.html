@@ -1,1 +1,7 @@
-<img loading="lazy" [src]="categoryImageUrl" itemprop="image" [alt]="category.name" />
+<img
+  [src]="categoryImageUrl"
+  [alt]="category.name"
+  [attr.loading]="loading"
+  [attr.fetchpriority]="loading === 'eager' ? 'high' : null"
+  itemprop="image"
+/>

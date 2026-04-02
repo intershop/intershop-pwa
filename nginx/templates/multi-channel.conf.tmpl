@@ -80,6 +80,10 @@
         {{- $application := "rest" }}{{ if (has . "application") }}{{ $application = .application }}{{ end }}
         {{- $lang := "en_US" }}{{ if (has . "lang") }}{{ $lang = .lang }}{{ end }}
       {{- if $icmBaseUrl }}
+      {{- if ($icmBaseUrl | strings.ToLower | regexp.Match "^https://") }}
+      proxy_ssl_server_name on;
+      proxy_ssl_name $proxy_host;
+      {{- end }}
       proxy_pass {{ $icmBaseUrl }}/INTERSHOP/static/WFS/{{ $channel }}/{{ $application }}/{{ $channel | strings.ReplaceAll "-Site" "" }}/{{ $lang }}/sitemaps/pwa/sitemap_;
       {{- else }}
       rewrite ^{{ $baseHref }}/sitemap.*$ {{ $baseHref }}/;

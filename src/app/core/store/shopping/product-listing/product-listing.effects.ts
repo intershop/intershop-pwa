@@ -1,9 +1,19 @@
 import { Inject, Injectable } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
-import { debounceTime, distinctUntilChanged, filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  switchMap,
+  take,
+  takeUntil,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
@@ -43,7 +53,8 @@ export class ProductListingEffects {
     private defaultViewType: InjectSingle<typeof DEFAULT_PRODUCT_LISTING_VIEW_TYPE>,
     private actions$: Actions,
     private productsServiceProvider: ProductsServiceProvider,
-    private store: Store
+    private store: Store,
+    private router: Router
   ) {}
 
   initializePageSize$ = createEffect(() =>
@@ -95,6 +106,7 @@ export class ProductListingEffects {
       mapToPayload(),
       switchMap(({ id, page }) => {
         let initialPage = page; // scope variable (reset after first usage)
+        const currentPath = this.router.url.split('?')[0]; // capture current path without query params
         return this.store.pipe(
           select(selectQueryParams),
           // filter router changes which have nothing to do with product lists like login
@@ -133,7 +145,15 @@ export class ProductListingEffects {
               isAuthorized, // change return value after login state changes
             };
           }),
-          take(1)
+          // complete only when the actual route path changes, not just query params
+          takeUntil(
+            this.router.events.pipe(
+              filter(
+                (event): event is NavigationStart =>
+                  event instanceof NavigationStart && event.url.split('?')[0] !== currentPath
+              )
+            )
+          )
         );
       }),
       distinctUntilChanged(isEqual),

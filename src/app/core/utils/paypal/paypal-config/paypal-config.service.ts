@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, combineLatest, defer, iif, switchMap } from 'rxjs';
+import { Observable, catchError, combineLatest, defer, iif, map, of, switchMap, tap } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
+import { PaypalComponent } from 'ish-core/utils/paypal/paypal-model/paypal.model';
 import { ScriptLoaderService, ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
 
 /**
@@ -37,6 +38,9 @@ export class PaypalConfigService {
   /** Base URL for the PayPal JavaScript SDK */
   private readonly scriptUrl = 'https://www.paypal.com/sdk/js';
 
+  /** Cache for PayPal payment eligibility results to avoid redundant checks */
+  private readonly eligibilityCache = new Map<string, boolean>();
+
   constructor(private appFacade: AppFacade, private scriptLoader: ScriptLoaderService) {}
 
   /**
@@ -52,7 +56,7 @@ export class PaypalConfigService {
    * @param paymentMethod - Optional PayPal payment method configuration from ICM
    * @returns Observable that emits the loaded script information
    */
-  loadPaypalScript(nameSpace: string, pageType: string, paymentMethod?: PaymentMethod): Observable<ScriptType> {
+  loadPaypalScript(pageType: string, paymentMethod?: PaymentMethod): Observable<ScriptType> {
     return combineLatest([
       this.appFacade.currentLocale$,
       this.appFacade.currentCurrency$,
@@ -75,7 +79,7 @@ export class PaypalConfigService {
                   ...(paymentMethod?.hostedPaymentPageParameters?.filter(attr => attr.name.startsWith('data-')) ?? []),
                   {
                     name: 'data-namespace',
-                    value: nameSpace,
+                    value: this.getPaypalScriptNameSpace(paymentMethod),
                   },
                   { name: 'data-page-type', value: pageType },
                   {
@@ -93,7 +97,7 @@ export class PaypalConfigService {
               attributes: [
                 {
                   name: 'data-namespace',
-                  value: nameSpace,
+                  value: this.getPaypalScriptNameSpace(),
                 },
                 { name: 'data-page-type', value: pageType },
               ],
@@ -102,6 +106,96 @@ export class PaypalConfigService {
         )
       )
     );
+  }
+
+  /**
+   * Filters payment methods by PayPal eligibility asynchronously.
+   * Non-PayPal methods pass through, PayPal methods are checked via SDK.
+   */
+  filterByPaypalEligibility(pmList: PaymentMethod[]): Observable<PaymentMethod[]> {
+    if (!pmList?.length) {
+      return of([]);
+    }
+    const eligibilityChecks$ = pmList.map(pm => {
+      const requiresPaypalCheck =
+        pm.capabilities?.includes('PaypalExperienceContext') || pm.capabilities?.includes('PaypalAlternativeWallet');
+      const eligibility$ = requiresPaypalCheck ? this.checkPaypalPaymentEligibility(pm) : of(true);
+      return eligibility$.pipe(map(isEligible => ({ pm, isEligible })));
+    });
+    return combineLatest(eligibilityChecks$).pipe(map(results => results.filter(r => r.isEligible).map(r => r.pm)));
+  }
+
+  /**
+   * Generates the PayPal SDK namespace based on the payment method ID.
+   */
+  private getPaypalScriptNameSpace(paymentMethod?: PaymentMethod): string {
+    return paymentMethod ? 'PPCP_'.concat(`${paymentMethod.id}`).toUpperCase() : 'PPCP_MESSAGES';
+  }
+
+  /**
+   * Checks if a PayPal payment method is eligible for the current session.
+   * Loads the PayPal SDK and validates eligibility based on the payment method's capabilities
+   * (Card Fields, Google Pay, or Apple Pay).
+   *
+   * This method caches eligibility results to avoid redundant SDK loads and checks.
+   * Once a payment method has been checked, subsequent calls return the cached result.
+   *
+   * @param paymentMethod - The PayPal payment method to check eligibility for
+   * @returns Observable that emits `true` if the payment method is eligible,
+   *          `false` if not eligible or if script loading fails
+   */
+  private checkPaypalPaymentEligibility(paymentMethod: PaymentMethod): Observable<boolean> {
+    const cacheKey = paymentMethod.id;
+
+    if (this.eligibilityCache.has(cacheKey)) {
+      return of(this.eligibilityCache.get(cacheKey));
+    }
+
+    return this.loadPaypalScript('checkout', paymentMethod).pipe(
+      map(script => {
+        if (!script) {
+          return false;
+        }
+        const paypalObject = (window as unknown as Record<string, PaypalComponent>)[
+          'PPCP_'.concat(`${paymentMethod.id}`).toUpperCase()
+        ] as PaypalComponent;
+
+        if (paymentMethod.capabilities.includes('PaypalGooglePay')) {
+          return this.checkPaypalGooglePayEligibility(paypalObject);
+        } else if (paymentMethod.capabilities.includes('PaypalApplePay')) {
+          return this.checkPaypalApplePayEligibility(paypalObject);
+        } else {
+          return this.checkPaypalCardFieldsEligibility(paypalObject);
+        }
+      }),
+      tap(isEligible => this.eligibilityCache.set(cacheKey, isEligible)),
+      catchError(() => {
+        this.eligibilityCache.set(cacheKey, false);
+        return of(false);
+      })
+    );
+  }
+
+  /**
+   * Checks if PayPal Card Fields are eligible for the current session.
+   */
+  private checkPaypalCardFieldsEligibility(paypalObject: PaypalComponent): boolean {
+    return !!paypalObject?.CardFields()?.isEligible();
+  }
+
+  /**
+   * Checks if PayPal Google Pay is eligible by querying the Google Pay API.
+   */
+  private checkPaypalGooglePayEligibility(_paypalObject: PaypalComponent): boolean {
+    return true;
+  }
+
+  /**
+   * Checks if PayPal Apple Pay is eligible.
+   * Currently always returns `true` as Apple Pay eligibility is determined client-side.
+   */
+  private checkPaypalApplePayEligibility(_paypalObject: PaypalComponent): boolean {
+    return true;
   }
 
   /**

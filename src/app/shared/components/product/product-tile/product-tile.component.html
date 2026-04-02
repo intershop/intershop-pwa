@@ -1,7 +1,7 @@
 @if (product$ | async; as product) { @if (!product.failed) {
 <div class="product-tile" [attr.data-testing-sku]="product.sku">
   <div class="product-image-container">
-    <ish-product-image imageType="M" [link]="true" />
+    <ish-product-image imageType="M" [link]="true" [loading]="loading" />
     <ish-product-label />
   </div>
   <ish-product-name />
