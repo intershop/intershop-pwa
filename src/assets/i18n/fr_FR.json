@@ -1220,7 +1220,7 @@
   "product.inventory.stock_level.high": "disponible ({{count}})",
   "product.inventory.stock_level.low": "stock faible ({{count}})",
   "product.inventory.stock_level.medium": "disponibilité limitée ({{count}})",
-  "product.inventory.stock_level.none": "en rupture de stock",
+  "product.inventory.stock_level.none": "stock épuisé",
   "product.itemNumber.label": "ID de produit :",
   "product.items.label": "{{0, plural, one{# élément} other{# éléments}}}",
   "product.items.sorting.default.label": "Tri par défaut",
