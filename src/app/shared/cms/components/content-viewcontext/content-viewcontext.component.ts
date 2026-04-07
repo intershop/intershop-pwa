@@ -22,22 +22,25 @@ import { ContentPageletEntryPointView } from 'ish-core/models/content-view/conte
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentViewcontextComponent implements OnChanges {
-  /**
-   * The ID of the View Context whose content is to be rendered.
-   */
+  /** The ID of the View Context whose content is to be rendered. */
   @Input({ required: true }) viewContextId: string;
 
-  /**
-   * The call parameter object to provide the context, e.g. { Product: product.sku, Category: category.categoryRef }.
-   */
+  /** The call parameter object to provide the context, e.g. { Product: product.sku, Category: category.categoryRef }. */
   @Input({ required: true }) callParameters: CallParameters;
+
+  /** Optionally provide the resource set ID (cartridge) of the view context model. If not given, the `defaultResourceSetId` is used. */
+  @Input() resourceSetId: string;
 
   viewContextEntrypoint$: Observable<ContentPageletEntryPointView>;
 
   constructor(private cmsFacade: CMSFacade, private hostElement: ElementRef) {}
 
   ngOnChanges() {
-    this.viewContextEntrypoint$ = this.cmsFacade.viewContext$(this.viewContextId, this.callParameters);
+    this.viewContextEntrypoint$ = this.cmsFacade.viewContext$(
+      this.viewContextId,
+      this.callParameters,
+      this.resourceSetId
+    );
 
     // the 'callparametersstring' attribute is needed for the Design View - do not remove this code
     this.hostElement.nativeElement.setAttribute(
