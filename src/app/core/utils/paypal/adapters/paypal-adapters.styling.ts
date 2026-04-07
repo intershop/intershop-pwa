@@ -84,3 +84,10 @@ export const PAYPAL_CART_FIELDS_STYLING = {
   },
   '.invalid': { color: '#dc3545', border: '1px solid #dc3545', 'box-shadow': 'none' },
 };
+
+// Styling configuration for PayPal buttons.
+export const PAYPAL_GOOGLE_PAY_BUTTON_STYLING = {
+  buttonColor: 'white',
+  buttonType: 'order',
+  buttonSizeMode: 'fill',
+};

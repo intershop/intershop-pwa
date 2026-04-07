@@ -50,3 +50,12 @@ export const selectOrderAfterRedirectFail = createAction(
 );
 
 export const resetOrderErrors = createAction('[Order Internal] Reset Order Errors');
+
+export const startPaypalOrderCreation = createAction('[Orders] Start Paypal Order Creation');
+
+export const continuePaypalOrderCreation = createAction(
+  '[Orders] Continue Paypal Order Creation',
+  payload<{ orderId: string }>()
+);
+
+export const cancelPaypalOrderCreation = createAction('[Orders Internal] Cancel Paypal Order Creation');

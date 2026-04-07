@@ -13,6 +13,7 @@ import { PaypalAdapterTypes, PaypalPageType } from 'ish-core/utils/paypal/paypal
 import { PaypalAdaptersBuilder } from './paypal-adapters.builder';
 import { PaypalButtonsAdapter } from './paypal-buttons/paypal-buttons.adapter';
 import { PaypalCardFieldsAdapter } from './paypal-card-fields/paypal-card-fields.adapter';
+import { PaypalGooglePayAdapter } from './paypal-google-pay/paypal-google-pay.adapter';
 import { PaypalMessagesAdapter } from './paypal-messages/paypal-messages.adapter';
 
 describe('Paypal Adapters Builder', () => {
@@ -22,6 +23,7 @@ describe('Paypal Adapters Builder', () => {
   let paypalButtons: PaypalButtonsAdapter;
   let paypalMessages: PaypalMessagesAdapter;
   let paypalCardFields: PaypalCardFieldsAdapter;
+  let paypalGooglePay: PaypalGooglePayAdapter;
 
   const mockBasket = BasketMockData.getBasket();
   const mockPaymentMethod = {
@@ -36,6 +38,7 @@ describe('Paypal Adapters Builder', () => {
     paypalButtons = mock(PaypalButtonsAdapter);
     paypalMessages = mock(PaypalMessagesAdapter);
     paypalCardFields = mock(PaypalCardFieldsAdapter);
+    paypalGooglePay = mock(PaypalGooglePayAdapter);
 
     when(checkoutFacade.basket$).thenReturn(of(mockBasket));
     when(shoppingFacade.selectedProductId$).thenReturn(of('test-product-sku'));
@@ -49,6 +52,7 @@ describe('Paypal Adapters Builder', () => {
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: PaypalButtonsAdapter, useFactory: () => instance(paypalButtons) },
         { provide: PaypalCardFieldsAdapter, useFactory: () => instance(paypalCardFields) },
+        { provide: PaypalGooglePayAdapter, useFactory: () => instance(paypalGooglePay) },
         { provide: PaypalMessagesAdapter, useFactory: () => instance(paypalMessages) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
         PaypalAdaptersBuilder,

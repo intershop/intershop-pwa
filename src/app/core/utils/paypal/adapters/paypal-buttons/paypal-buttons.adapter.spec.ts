@@ -87,7 +87,7 @@ describe('Paypal Buttons Adapter', () => {
 
     // Mock paypalOrder$ to emit orderId
     when(paypalDataTransferService.paypalOrder$).thenReturn(
-      of({ orderId: 'ORDER123', paymentInstrumentId: 'test-instrument-id' })
+      of({ paypalOrderId: 'ORDER123', paymentInstrumentId: 'test-instrument-id' })
     );
 
     // Create mock PayPal Buttons component
@@ -150,7 +150,7 @@ describe('Paypal Buttons Adapter', () => {
 
     it('should resolve with orderId from paypalOrder$ stream', async () => {
       when(paypalDataTransferService.paypalOrder$).thenReturn(
-        of({ orderId: 'ORDER999', paymentInstrumentId: 'test-instrument-id' })
+        of({ paypalOrderId: 'ORDER999', paymentInstrumentId: 'test-instrument-id' })
       );
 
       const orderId = await paypalButtons.testCreateOrder(mockPaymentMethod);
@@ -166,7 +166,7 @@ describe('Paypal Buttons Adapter', () => {
 
     it('should reject when paypalOrder$ emits empty orderId', async () => {
       when(paypalDataTransferService.paypalOrder$).thenReturn(
-        of({ orderId: '', paymentInstrumentId: 'test-instrument-id' })
+        of({ paypalOrderId: '', paymentInstrumentId: 'test-instrument-id' })
       );
 
       await expect(paypalButtons.testCreateOrder(mockPaymentMethod)).rejects.toThrow('PayPal order ID is empty');

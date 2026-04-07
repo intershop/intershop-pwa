@@ -173,7 +173,7 @@ export class PaymentService {
    */
   private sendRedirectUrlsIfRequired(pm: PaymentMethodBaseData, paymentInstrument: string): Observable<string> {
     if (
-      !pm?.capabilities?.some(data => ['RedirectBeforeCheckout'].includes(data)) ||
+      !pm?.capabilities?.some(data => ['RedirectBeforeCheckout', 'PaypalAlternativeWallet'].includes(data)) ||
       pm?.capabilities?.some(data => ['PaypalCheckout'].includes(data))
     ) {
       return of(paymentInstrument);
@@ -181,7 +181,7 @@ export class PaymentService {
     } else {
       return this.sendRedirectUrls(
         paymentInstrument,
-        pm.capabilities.some(data => ['RedirectAfterCheckout'].includes(data))
+        pm.capabilities.some(data => ['RedirectAfterCheckout', 'PaypalAlternativeWallet'].includes(data))
       ).pipe(map(() => paymentInstrument));
     }
   }

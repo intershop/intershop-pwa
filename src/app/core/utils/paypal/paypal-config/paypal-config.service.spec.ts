@@ -5,6 +5,7 @@ import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
+import { PaypalGooglePayAdapter } from 'ish-core/utils/paypal/adapters/paypal-google-pay/paypal-google-pay.adapter';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
 import { PaypalConfigService } from './paypal-config.service';
@@ -292,6 +293,7 @@ describe('Paypal Config Service', () => {
       delete windowRef.PPCP_ISH_PAYPAL_CARD;
       delete windowRef.PPCP_ISH_PAYPAL_GOOGLEPAY;
       delete windowRef.PPCP_ISH_PAYPAL_INELIGIBLE;
+      delete windowRef.google;
     });
 
     afterEach(() => {
@@ -300,6 +302,7 @@ describe('Paypal Config Service', () => {
       delete windowRef.PPCP_ISH_PAYPAL_CARD;
       delete windowRef.PPCP_ISH_PAYPAL_GOOGLEPAY;
       delete windowRef.PPCP_ISH_PAYPAL_INELIGIBLE;
+      delete windowRef.google;
     });
 
     it('should return empty array when input is null', async () => {
@@ -356,8 +359,36 @@ describe('Paypal Config Service', () => {
         capabilities: ['PaypalAlternativeWallet', 'PaypalGooglePay'],
       };
 
+      const mockGooglePayConfig = {
+        allowedPaymentMethods: [{ type: 'CARD' }],
+        merchantInfo: { merchantId: 'test-merchant' },
+      };
+
       windowRef.PPCP_ISH_PAYPAL_GOOGLEPAY = {
-        Googlepay: () => ({}),
+        Googlepay: () => ({
+          config: () => Promise.resolve(mockGooglePayConfig),
+        }),
+      };
+
+      // Mock Google Pay SDK load
+      when(scriptLoader.load(PaypalGooglePayAdapter.GOOGLE_PAY_SDK_URL)).thenReturn(
+        of({ src: PaypalGooglePayAdapter.GOOGLE_PAY_SDK_URL, loaded: true })
+      );
+
+      // Mock paypalClientConfig$
+      when(appFacade.paypalClientConfig$()).thenReturn(of({ googlePayEnvironment: 'TEST' }));
+
+      // Mock Google Pay PaymentsClient
+      windowRef.google = {
+        payments: {
+          api: {
+            PaymentsClient: class {
+              isReadyToPay() {
+                return Promise.resolve({ result: true });
+              }
+            },
+          },
+        },
       };
 
       const result = await firstValueFrom(service.filterByPaypalEligibility([paypalGooglePayMethod]));

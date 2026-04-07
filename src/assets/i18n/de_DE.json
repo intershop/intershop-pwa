@@ -821,6 +821,8 @@
   "checkout.button.continue.label": "Fortfahren",
   "checkout.button.continue.label.aria_label": "Zahlungsmittel anlegen und Bestellvorgang fortsetzen.",
   "checkout.button.label": "Bestellvorgang fortsetzen",
+  "checkout.button.processing.label": "Processing Payment",
+  "checkout.button.processing.label.aria_label": "Your payment is being processed. Please wait.",
   "checkout.cancel.button.label": "Abbrechen",
   "checkout.cancel.button.label.aria_label": "Anlegen des Zahlungsmittels abbrechen.",
   "checkout.cart.estimated_shipping_handling.label": "Versand (voraussichtlich)",

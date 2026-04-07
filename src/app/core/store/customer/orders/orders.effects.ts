@@ -12,11 +12,18 @@ import { concatMap, distinctUntilChanged, filter, map, mergeMap, switchMap, take
 import { OrderService } from 'ish-core/services/order/order.service';
 import { ofUrl, selectQueryParam, selectQueryParams, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { continueCheckoutWithIssues, getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
+import {
+  continueCheckoutWithIssues,
+  emitPaypalOrderId,
+  getCurrentBasketId,
+  loadBasket,
+} from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import {
+  cancelPaypalOrderCreation,
+  continuePaypalOrderCreation,
   createOrder,
   createOrderFail,
   createOrderSuccess,
@@ -31,6 +38,7 @@ import {
   selectOrder,
   selectOrderAfterRedirect,
   selectOrderAfterRedirectFail,
+  startPaypalOrderCreation,
 } from './orders.actions';
 import { getOrder, getOrderListQuery, getSelectedOrder } from './orders.selectors';
 
@@ -255,5 +263,65 @@ export class OrdersEffects {
         )
       )
     )
+  );
+
+  processPaypalOrderCreation$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(startPaypalOrderCreation, continuePaypalOrderCreation),
+      map(action => (action.type === startPaypalOrderCreation.type ? { orderId: '' } : action.payload)),
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasketId))),
+      switchMap(([payload, basketId]) => {
+        if (payload.orderId === '') {
+          return this.orderService.createOrder(basketId, true).pipe(
+            map(order =>
+              emitPaypalOrderId({
+                paypalOrderId:
+                  order.orderCreation.redirect?.parameters.find(p => p.name === 'PayPalOrderID')?.value || '',
+                orderId: order.id,
+              })
+            ),
+            mapErrorToAction(createOrderFail)
+          );
+        } else {
+          return this.orderService.continueOrderCreation(payload.orderId).pipe(
+            mergeMap(order => {
+              const cancelReason = order.infos?.find(info => info.code === 'order.cancelled.info');
+              return cancelReason
+                ? [
+                    cancelPaypalOrderCreation(),
+                    emitPaypalOrderId({
+                      paypalOrderId:
+                        order.orderCreation.redirect?.parameters.find(p => p.name === 'PayPalOrderID')?.value || '',
+                      orderId: order.id,
+                      orderStatus: 'CANCELLED',
+                    }),
+                  ]
+                : [
+                    createOrderSuccess({ order, basketId }),
+                    emitPaypalOrderId({
+                      paypalOrderId:
+                        order.orderCreation.redirect?.parameters.find(p => p.name === 'PayPalOrderID')?.value || '',
+                      orderId: order.id,
+                      orderStatus: 'SUCCESS',
+                    }),
+                  ];
+            }),
+            mapErrorToAction(createOrderFail)
+          );
+        }
+      })
+    )
+  );
+
+  cancelPaypalOrderCreation$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(cancelPaypalOrderCreation),
+        concatMap(() => {
+          from(this.router.navigate(['/checkout/payment'], { queryParams: { redirect: 'cancel' } }));
+          return EMPTY;
+        })
+      ),
+    { dispatch: false }
   );
 }

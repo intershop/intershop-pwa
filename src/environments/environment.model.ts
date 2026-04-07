@@ -1,5 +1,6 @@
 import { Auth0Config } from 'ish-core/identity-provider/auth0.identity-provider';
 import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
+import { PaypalClientConfig } from 'ish-core/models/paypal-client-config/paypal-client-config';
 import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
@@ -143,6 +144,9 @@ export interface Environment {
 
   // sparque integration
   sparque?: SparqueConfig;
+
+  // paypal client configuration
+  paypalClientConfig?: PaypalClientConfig;
 }
 
 export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
@@ -210,4 +214,8 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
     recently: 60 * 24 * 7, // 1 week
   },
   priceUpdate: 'always',
+
+  paypalClientConfig: {
+    googlePayEnvironment: 'TEST',
+  },
 };

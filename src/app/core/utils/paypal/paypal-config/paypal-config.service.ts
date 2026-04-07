@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, catchError, combineLatest, defer, iif, map, of, switchMap, tap } from 'rxjs';
+import { Observable, catchError, combineLatest, defer, from, iif, map, of, switchMap, take, tap } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
+import { PaypalGooglePayAdapter } from 'ish-core/utils/paypal/adapters/paypal-google-pay/paypal-google-pay.adapter';
 import { PaypalComponent } from 'ish-core/utils/paypal/paypal-model/paypal.model';
 import { ScriptLoaderService, ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
 
@@ -18,7 +19,7 @@ export type PaypalPageType = 'cart' | 'checkout' | 'home' | 'product-details' | 
  * These components determine which PayPal UI elements are available in the application.
  * The SDK can be loaded with different combinations of components based on the use case.
  */
-export type PaypalAdapterTypes = 'Buttons' | 'Messages' | 'CardFields';
+export type PaypalAdapterTypes = 'Buttons' | 'Messages' | 'CardFields' | 'Googlepay';
 
 interface PaypalScriptParams {
   /** The current application locale (e.g., 'en_US', 'de_DE') */
@@ -42,6 +43,13 @@ export class PaypalConfigService {
   private readonly eligibilityCache = new Map<string, boolean>();
 
   constructor(private appFacade: AppFacade, private scriptLoader: ScriptLoaderService) {}
+
+  /**
+   * Generates the PayPal SDK namespace based on the payment method ID.
+   */
+  static getPaypalScriptNameSpace(paymentMethod?: PaymentMethod): string {
+    return paymentMethod ? 'PPCP_'.concat(`${paymentMethod.id}`.replace(/\s/g, '')).toUpperCase() : 'PPCP_MESSAGES';
+  }
 
   /**
    * Loads the PayPal JavaScript SDK with the appropriate configuration.
@@ -79,7 +87,7 @@ export class PaypalConfigService {
                   ...(paymentMethod?.hostedPaymentPageParameters?.filter(attr => attr.name.startsWith('data-')) ?? []),
                   {
                     name: 'data-namespace',
-                    value: this.getPaypalScriptNameSpace(paymentMethod),
+                    value: PaypalConfigService.getPaypalScriptNameSpace(paymentMethod),
                   },
                   { name: 'data-page-type', value: pageType },
                   {
@@ -97,7 +105,7 @@ export class PaypalConfigService {
               attributes: [
                 {
                   name: 'data-namespace',
-                  value: this.getPaypalScriptNameSpace(),
+                  value: PaypalConfigService.getPaypalScriptNameSpace(),
                 },
                 { name: 'data-page-type', value: pageType },
               ],
@@ -126,13 +134,6 @@ export class PaypalConfigService {
   }
 
   /**
-   * Generates the PayPal SDK namespace based on the payment method ID.
-   */
-  private getPaypalScriptNameSpace(paymentMethod?: PaymentMethod): string {
-    return paymentMethod ? 'PPCP_'.concat(`${paymentMethod.id}`).toUpperCase() : 'PPCP_MESSAGES';
-  }
-
-  /**
    * Checks if a PayPal payment method is eligible for the current session.
    * Loads the PayPal SDK and validates eligibility based on the payment method's capabilities
    * (Card Fields, Google Pay, or Apple Pay).
@@ -152,12 +153,12 @@ export class PaypalConfigService {
     }
 
     return this.loadPaypalScript('checkout', paymentMethod).pipe(
-      map(script => {
+      switchMap(script => {
         if (!script) {
-          return false;
+          return of(false);
         }
         const paypalObject = (window as unknown as Record<string, PaypalComponent>)[
-          'PPCP_'.concat(`${paymentMethod.id}`).toUpperCase()
+          'PPCP_'.concat(`${paymentMethod.id}`)
         ] as PaypalComponent;
 
         if (paymentMethod.capabilities.includes('PaypalGooglePay')) {
@@ -179,23 +180,42 @@ export class PaypalConfigService {
   /**
    * Checks if PayPal Card Fields are eligible for the current session.
    */
-  private checkPaypalCardFieldsEligibility(paypalObject: PaypalComponent): boolean {
-    return !!paypalObject?.CardFields()?.isEligible();
+  private checkPaypalCardFieldsEligibility(paypalObject: PaypalComponent): Observable<boolean> {
+    return of(!!paypalObject?.CardFields()?.isEligible());
   }
 
   /**
    * Checks if PayPal Google Pay is eligible by querying the Google Pay API.
    */
-  private checkPaypalGooglePayEligibility(_paypalObject: PaypalComponent): boolean {
-    return true;
+  private checkPaypalGooglePayEligibility(paypalObject: PaypalComponent): Observable<boolean> {
+    return this.scriptLoader.load(PaypalGooglePayAdapter.GOOGLE_PAY_SDK_URL).pipe(
+      switchMap(() =>
+        combineLatest([from(paypalObject.Googlepay().config()), this.appFacade.paypalClientConfig$().pipe(take(1))])
+      ),
+      switchMap(([googlePayConfig, paypalSettings]) => {
+        const environment = paypalSettings?.googlePayEnvironment ?? 'TEST';
+        return from(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          new (window as any).google.payments.api.PaymentsClient({
+            environment,
+            merchantInfo: googlePayConfig.merchantInfo,
+          }).isReadyToPay({
+            apiVersion: parseInt(PaypalGooglePayAdapter.GOOGLE_PAY_API_VERSION.split('.')[0], 10),
+            apiVersionMinor: parseInt(PaypalGooglePayAdapter.GOOGLE_PAY_API_VERSION.split('.')[1], 10),
+            allowedPaymentMethods: googlePayConfig.allowedPaymentMethods,
+          }) as Promise<{ result: boolean }>
+        );
+      }),
+      map(result => result.result)
+    );
   }
 
   /**
    * Checks if PayPal Apple Pay is eligible.
    * Currently always returns `true` as Apple Pay eligibility is determined client-side.
    */
-  private checkPaypalApplePayEligibility(_paypalObject: PaypalComponent): boolean {
-    return true;
+  private checkPaypalApplePayEligibility(_paypalObject: PaypalComponent): Observable<boolean> {
+    return of(true);
   }
 
   /**
@@ -211,6 +231,9 @@ export class PaypalConfigService {
    */
   private calculateURL(param: PaypalScriptParams): string {
     if (param.paymentMethod) {
+      if (param.paymentMethod.capabilities.includes('PaypalGooglePay')) {
+        return this.scriptUrl.concat(`?${this.getScriptQueryParameterForGooglePay(param)}`);
+      }
       return this.scriptUrl.concat(`?${this.getScriptQueryParameters(param)}`);
     }
     return this.scriptUrl.concat(`?${this.getScriptQueryParameterForMessages(param)}`);
@@ -229,6 +252,34 @@ export class PaypalConfigService {
     params = `${params}&locale=${param.locale}`;
     params = `${params}&components=messages`;
     params = `${params}&enable-funding=paylater`;
+    return params;
+  }
+
+  /**
+   * Constructs query parameters for the PayPal SDK Google Pay component.
+   *
+   * Google Pay requires specific parameters including intent for proper authorization.
+   * Note: In sandbox environment, buyer-country might be needed for testing.
+   *
+   * @param param - Script parameters including PayPal config, currency, and locale
+   * @returns Query string with parameters for Google Pay SDK
+   */
+  private getScriptQueryParameterForGooglePay(param: PaypalScriptParams): string {
+    let params = `client-id=${param.paypalConfig.clientId}`;
+    params = `${params}&merchant-id=${param.paypalConfig.merchantId}`;
+    params = `${params}&currency=${param.currency}`;
+    params = `${params}&locale=${param.locale}`;
+    params = `${params}&components=googlepay`;
+
+    // Intent is required for Google Pay
+    const intentParam = param.paymentMethod?.hostedPaymentPageParameters?.find(attr => attr.name === 'intent');
+    if (intentParam) {
+      params = `${params}&intent=${intentParam.value}`;
+    } else {
+      // Default to capture if no intent specified
+      params = `${params}&intent=capture`;
+    }
+
     return params;
   }
 

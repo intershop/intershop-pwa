@@ -81,7 +81,7 @@ export class PaypalButtonsAdapter {
     const orderIdPromise = new Promise<string>((resolve, reject) => {
       race(
         this.paypalDataTransferService.paypalOrder$.pipe(
-          map(data => data.orderId),
+          map(data => data.paypalOrderId),
           take(1)
         ),
         timer(30000).pipe(
@@ -90,9 +90,9 @@ export class PaypalButtonsAdapter {
           })
         )
       ).subscribe({
-        next: orderID => {
-          if (orderID) {
-            resolve(orderID);
+        next: paypalOrderId => {
+          if (paypalOrderId && paypalOrderId.trim() !== '') {
+            resolve(paypalOrderId);
           } else {
             this.serviceAvailable = false;
             reject(new Error('PayPal order ID is empty'));

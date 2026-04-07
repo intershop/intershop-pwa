@@ -17,8 +17,18 @@ export interface Order extends OrderBasket {
     status: 'COMPLETED' | 'ROLLED_BACK' | 'STOPPED' | 'CONTINUE';
     stopAction?: {
       type: 'Redirect' | 'Workflow';
-      exitReason?: 'waiting_for_pending_payments' | 'redirect_urls_required' | 'recurring.order';
+      exitReason?:
+        | 'waiting_for_pending_payments'
+        | 'redirect_urls_required'
+        | 'recurring.order'
+        | 'paypal_wallet_initialized';
       redirectUrl?: string;
+    };
+    redirect?: {
+      parameters: {
+        name: string;
+        value: string;
+      }[];
     };
   };
   statusCode: string;

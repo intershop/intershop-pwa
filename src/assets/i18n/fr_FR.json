@@ -821,6 +821,8 @@
   "checkout.button.continue.label": "Continuer",
   "checkout.button.continue.label.aria_label": "Créer un mode de paiement et poursuivre le processus de commande.",
   "checkout.button.label": "Poursuivre le paiement",
+  "checkout.button.processing.label": "Processing Payment",
+  "checkout.button.processing.label.aria_label": "Your payment is being processed. Please wait.",
   "checkout.cancel.button.label": "Annuler",
   "checkout.cancel.button.label.aria_label": "Annuler la création du mode de paiement.",
   "checkout.cart.estimated_shipping_handling.label": "Estimation des frais d’expédition",

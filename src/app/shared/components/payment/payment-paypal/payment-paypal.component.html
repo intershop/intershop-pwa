@@ -1,9 +1,22 @@
-<div class="row pt-2">
-  <div [ngClass]="'col-12'">
+<div class="row">
+  <div [ngClass]="getContainerClass()">
     <!-- PayPal Button container -->
-    @if (adapterType !== 'CardFields') {
-    <div [id]="paypalComponentContainerId"></div>
+    @if (adapterType !== 'CardFields') { @if(processPayment$ | async) {
+    <div class="d-grid">
+      <button
+        type="button"
+        class="btn btn-lg btn-block btn-primary"
+        id="disable-processing-button"
+        [attr.aria-label]="'checkout.button.processing.label.aria_label' | translate"
+        [disabled]="true"
+      >
+        <i class="bi bi-arrow-clockwise spin-icon"></i>
+        {{ 'checkout.button.processing.label' | translate }}
+      </button>
+    </div>
     } @else {
+    <div [id]="paypalComponentContainerId"></div>
+    } } @else {
     <!-- PayPal Card Fields containers -->
     <div class="card_container">
       <div class="row form-group">

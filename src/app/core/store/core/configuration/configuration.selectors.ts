@@ -164,3 +164,5 @@ export const getStaticEndpoint = createSelector(
         }/${locale}`
       : undefined
 );
+
+export const getPaypalClientConfig = createSelector(getConfigurationState, state => state.paypal);

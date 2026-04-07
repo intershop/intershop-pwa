@@ -13,6 +13,7 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { PaypalAdaptersBuilder } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
 import { PaypalCardFieldsAdapter } from 'ish-core/utils/paypal/adapters/paypal-card-fields/paypal-card-fields.adapter';
+import { PaypalGooglePayAdapter } from 'ish-core/utils/paypal/adapters/paypal-google-pay/paypal-google-pay.adapter';
 import { PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 
 import { PaymentPaypalComponent } from './payment-paypal.component';
@@ -26,6 +27,7 @@ describe('Payment Paypal Component', () => {
   let paypalConfigService: PaypalConfigService;
   let paypalAdaptersBuilder: PaypalAdaptersBuilder;
   let paypalCardFields: PaypalCardFieldsAdapter;
+  let paypalGooglePayAdapter: PaypalGooglePayAdapter;
   let router: Router;
   let closeForm$: Subject<void>;
 
@@ -51,6 +53,7 @@ describe('Payment Paypal Component', () => {
     paypalConfigService = mock(PaypalConfigService);
     paypalAdaptersBuilder = mock(PaypalAdaptersBuilder);
     paypalCardFields = mock(PaypalCardFieldsAdapter);
+    paypalGooglePayAdapter = mock(PaypalGooglePayAdapter);
     router = mock(Router);
     closeForm$ = new Subject<void>();
 
@@ -64,6 +67,7 @@ describe('Payment Paypal Component', () => {
     when(paypalCardFields.numberFieldError$).thenReturn(new BehaviorSubject<boolean>(false));
     when(paypalCardFields.cvvFieldError$).thenReturn(new BehaviorSubject<boolean>(false));
     when(paypalCardFields.expiryFieldError$).thenReturn(new BehaviorSubject<boolean>(false));
+    when(paypalGooglePayAdapter.processPayment$).thenReturn(new BehaviorSubject<boolean>(false));
     when(router.url).thenReturn('/checkout/payment');
 
     await TestBed.configureTestingModule({
@@ -79,6 +83,7 @@ describe('Payment Paypal Component', () => {
           providers: [
             { provide: PaypalCardFieldsAdapter, useFactory: () => instance(paypalCardFields) },
             { provide: PaypalAdaptersBuilder, useFactory: () => instance(paypalAdaptersBuilder) },
+            { provide: PaypalGooglePayAdapter, useFactory: () => instance(paypalGooglePayAdapter) },
           ],
         },
       })

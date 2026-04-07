@@ -821,6 +821,8 @@
   "checkout.button.continue.label": "Continue",
   "checkout.button.continue.label.aria_label": "Create payment instrument and continue checkout.",
   "checkout.button.label": "Continue checkout",
+  "checkout.button.processing.label": "Processing Payment",
+  "checkout.button.processing.label.aria_label": "Your payment is being processed. Please wait.",
   "checkout.cancel.button.label": "Cancel",
   "checkout.cancel.button.label.aria_label": "Cancel payment instrument creation.",
   "checkout.cart.estimated_shipping_handling.label": "Estimated shipping",
