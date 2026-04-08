@@ -26,7 +26,7 @@ export class CMSService {
   ) {}
 
   /** Configure the default `resource set id` - the cartridge id - for view context requests */
-  defaultResourceSetId = 'app_sf_base_cm';
+  private defaultResourceSetId = 'app_sf_base_cm';
 
   /**
    * Get the content for the given Content Include ID.
