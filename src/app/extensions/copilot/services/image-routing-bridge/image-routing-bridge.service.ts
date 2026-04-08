@@ -45,14 +45,14 @@ export class ImageRoutingBridgeService {
       const imageUploads = uploads.filter(u => u.mime?.startsWith('image/'));
 
       if (!imageUploads.length) {
-        return undefined;
+        return;
       }
 
       const nonImageUploads = uploads.filter(u => !u.mime?.startsWith('image/'));
       const transformedBody = this.buildTransformedBody(body, imageUploads, nonImageUploads);
       return { ...init, body: JSON.stringify(transformedBody) };
     } catch {
-      return undefined;
+      return;
     }
   }
 
