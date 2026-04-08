@@ -136,10 +136,10 @@ environment:
       }
 ```
 
-This example will cache `/configurations` for 20 minutes and product `/variations` for 2 hours.
+In this example, `/configurations` is cached for 20 minutes and product `/variations` is cached for 2 hours.
 
 > [!NOTE]
-> This feature can also be used to benchmark the SSR render performance locally by caching all ICM calls e.g. with `".*": "10m"`.
+> You can also use this feature to benchmark the SSR rendering performance locally by caching all ICM calls, for example, with `".*": "10m"`.
 > This setting of caching everything for 10 minutes is not recommended for production deployments but can be useful for local performance testing to exclude the ICM call times from the measurements.
 
 ## Heap Dumps
