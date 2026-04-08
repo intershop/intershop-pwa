@@ -12,7 +12,7 @@
 
   "git.rebaseWhenSync": true,
   "git.autoStash": true,
-  "typescript.tsdk": "node_modules/typescript/lib",
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
   "workbench.iconTheme": "vscode-icons",
 
   // stylelint
@@ -50,5 +50,7 @@
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
   "prettier.requireConfig": true,
-  "github.copilot.enable": true
+  "github.copilot.enable": {
+    "*": true
+  }
 }
