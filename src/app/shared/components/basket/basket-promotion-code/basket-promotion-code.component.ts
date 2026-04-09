@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -34,6 +34,7 @@ import { SuccessMessageComponent } from 'ish-shared/components/common/success-me
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
+    NgClass,
     ErrorMessageComponent,
     TranslatePipe,
     AsyncPipe,

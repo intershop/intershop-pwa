@@ -9,7 +9,7 @@
     (click)="isCollapsed = !isCollapsed"
   >
     {{ 'shopping_cart.promotional_code.heading' | translate
-    }}<i [class]="isCollapsed ? 'bi float-end bi-chevron-down' : 'bi float-end bi-chevron-up'"></i>
+    }}<i class="bi float-end" [ngClass]="isCollapsed ? 'bi-chevron-down' : 'bi-chevron-up'"></i>
   </button>
 
   <ish-error-message [error]="promotionError$ | async" [toast]="toast" />

@@ -16,7 +16,7 @@
         (editMode === 'edit' ? 'checkout.custom-fields.edit.link.label' : 'checkout.custom-fields.add.link.label')
           | translate
       }}
-      <i [class]="collapsed ? 'bi bi-chevron-down' : 'bi bi-chevron-up'"></i>
+      <i class="bi" [ngClass]="collapsed ? 'bi-chevron-down' : 'bi-chevron-up'"></i>
     </button>
     }
     <div [id]="'line-item-information-input_' + getLineItemId()" [ngbCollapse]="collapsed">
