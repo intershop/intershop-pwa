@@ -18,7 +18,7 @@ import { CustomFieldsViewComponent } from 'ish-shared/components/custom-fields/c
   templateUrl: './basket-custom-fields-view.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ AsyncPipe, CustomFieldsViewComponent],
+  imports: [AsyncPipe, CustomFieldsViewComponent],
 })
 export class BasketCustomFieldsViewComponent implements OnInit {
   @Input({ required: true }) set data(val: Basket | Order | RecurringOrder | Requisition | undefined) {
@@ -34,7 +34,8 @@ export class BasketCustomFieldsViewComponent implements OnInit {
   ngOnInit(): void {
     this.fields$ = combineLatest([
       this.customFields$.asObservable(),
-      this.checkoutFacade.customFieldsForScope$('Basket')]).pipe(
+      this.checkoutFacade.customFieldsForScope$('Basket'),
+    ]).pipe(
       map(([customFields, customFieldsForScope]) =>
         customFieldsForScope.map(({ name, editable }) => ({ name, value: customFields[name], editable }))
       )

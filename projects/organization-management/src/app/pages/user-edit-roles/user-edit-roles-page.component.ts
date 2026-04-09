@@ -29,7 +29,8 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
     ReactiveFormsModule,
     TranslatePipe,
     UserRolesSelectionComponent,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class UserEditRolesPageComponent implements OnInit {
   selectedUser$: Observable<B2bUser>;

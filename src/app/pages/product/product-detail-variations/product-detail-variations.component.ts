@@ -19,7 +19,8 @@ import { ProductMasterLinkComponent } from '../product-master-link/product-maste
     AsyncPipe,
     ServerSettingPipe,
     ProductVariationDisplayComponent,
-    ProductVariationSelectComponent],
+    ProductVariationSelectComponent,
+  ],
 })
 export class ProductDetailVariationsComponent implements OnInit {
   visible$: Observable<boolean>;

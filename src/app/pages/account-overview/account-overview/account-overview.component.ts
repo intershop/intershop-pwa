@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -48,10 +47,10 @@ import { WishlistWidgetComponent } from '../../../extensions/wishlists/shared/wi
     ...ROLE_TOGGLE_IMPORTS,
     TranslatePipe,
     WishlistWidgetComponent,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class AccountOverviewComponent {
   @Input({ required: true }) user: User;
   @Input() customer: Customer;
 }
-

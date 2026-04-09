@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
+
 import { ProductReview, ProductReviewCreationType } from '../models/product-reviews/product-review.model';
 import {
   createProductReview,

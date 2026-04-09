@@ -28,7 +28,8 @@ import { QuoteStateComponent } from '../quote-state/quote-state.component';
     QuoteLineItemListComponent,
     QuoteStateComponent,
     ReactiveFormsModule,
-    TranslatePipe],
+    TranslatePipe,
+  ],
 })
 export class QuoteEditComponent implements OnInit {
   quote$: Observable<QuoteRequest>;

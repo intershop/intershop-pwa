@@ -16,4 +16,3 @@ export function provideStoreLocatorFeature(): (Provider | EnvironmentProviders)[
 }
 
 export const STORE_LOCATOR_FEATURE_PROVIDERS = provideStoreLocatorFeature();
-

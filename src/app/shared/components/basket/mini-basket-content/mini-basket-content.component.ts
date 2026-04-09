@@ -27,7 +27,8 @@ import { ProductNameComponent } from 'ish-shared/components/product/product-name
     ProductContextDirective,
     SlicePipe,
     BasketErrorMessageComponent,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class MiniBasketContentComponent implements OnInit {
   /**

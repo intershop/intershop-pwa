@@ -5,8 +5,6 @@ import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { FeatureToggleModule, FeatureToggleType } from 'ish-core/feature-toggle.module';
-import { IconModule } from 'ish-core/icon.module';
 
 import { CompareFacade } from '../../facades/compare.facade';
 

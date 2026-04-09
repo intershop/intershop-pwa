@@ -2,8 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, switchMap } from 'rxjs';
 
-import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 import { toObservable } from 'ish-core/utils/functions';
+import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
 import {
   addToCompare,
@@ -28,7 +28,9 @@ export class CompareFacade {
 
   inCompareProducts$(sku: string | Observable<string>) {
     return toObservable(sku).pipe(
-      switchMap(plainSKU => this.moduleLoader.whenLoaded('compare', () => this.store.pipe(select(isInCompareProducts(plainSKU)))))
+      switchMap(plainSKU =>
+        this.moduleLoader.whenLoaded('compare', () => this.store.pipe(select(isInCompareProducts(plainSKU))))
+      )
     );
   }
 

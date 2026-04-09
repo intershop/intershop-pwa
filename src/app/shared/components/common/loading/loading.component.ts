@@ -15,7 +15,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   styleUrls: ['./loading.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ NgTemplateOutlet],
+  imports: [NgTemplateOutlet],
 })
 export class LoadingComponent {
   /**

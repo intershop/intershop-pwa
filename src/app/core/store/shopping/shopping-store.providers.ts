@@ -1,9 +1,4 @@
-import {
-  EnvironmentProviders,
-  Injectable,
-  InjectionToken,
-  makeEnvironmentProviders,
-} from '@angular/core';
+import { EnvironmentProviders, Injectable, InjectionToken, makeEnvironmentProviders } from '@angular/core';
 import { provideEffects } from '@ngrx/effects';
 import { ActionReducerMap, StoreConfig, StoreModule, provideState } from '@ngrx/store';
 import { pick } from 'lodash-es';

@@ -22,7 +22,8 @@ import { FilterTextComponent } from 'ish-shared/components/filter/filter-text/fi
     FilterSwatchImagesComponent,
     FilterCheckboxComponent,
     FilterDropdownComponent,
-    FilterCollapsibleComponent],
+    FilterCollapsibleComponent,
+  ],
 })
 export class FilterNavigationSidebarComponent {
   @Input({ required: true }) filterNavigation: FilterNavigation;

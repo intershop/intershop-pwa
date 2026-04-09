@@ -1,6 +1,7 @@
 import { NgClass, NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
 
@@ -14,7 +15,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   templateUrl: './cms-video.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ NgClass, NgStyle],
+  imports: [NgClass, NgStyle],
 })
 export class CMSVideoComponent implements CMSComponent, OnInit {
   @Input({ required: true }) pagelet: ContentPageletView;

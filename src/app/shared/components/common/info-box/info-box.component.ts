@@ -17,7 +17,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './info-box.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ RouterLink, NgClass, TranslatePipe],
+  imports: [RouterLink, NgClass, TranslatePipe],
 })
 export class InfoBoxComponent {
   /**

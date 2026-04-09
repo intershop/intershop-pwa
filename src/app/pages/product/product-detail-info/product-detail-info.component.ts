@@ -12,6 +12,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.helper';
 import { ProductAttachmentsComponent } from 'ish-shared/components/product/product-attachments/product-attachments.component';
 import { ProductAttributesComponent } from 'ish-shared/components/product/product-attributes/product-attributes.component';
+
 import { ProductReviewsComponent } from '../../../extensions/rating/shared/product-reviews/product-reviews.component';
 
 @Component({
@@ -27,7 +28,8 @@ import { ProductReviewsComponent } from '../../../extensions/rating/shared/produ
     TranslatePipe,
     ProductAttachmentsComponent,
     ProductAttributesComponent,
-    ServerHtmlDirective],
+    ServerHtmlDirective,
+  ],
 })
 export class ProductDetailInfoComponent implements OnInit {
   product$: Observable<ProductView>;
@@ -50,4 +52,3 @@ export class ProductDetailInfoComponent implements OnInit {
     this.isVariationMaster$ = this.context.select('product').pipe(map(ProductHelper.isMasterProduct));
   }
 }
-

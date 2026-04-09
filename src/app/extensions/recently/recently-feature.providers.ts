@@ -16,4 +16,3 @@ export function provideRecentlyFeature(): (Provider | EnvironmentProviders)[] {
 }
 
 export const RECENTLY_FEATURE_PROVIDERS = provideRecentlyFeature();
-

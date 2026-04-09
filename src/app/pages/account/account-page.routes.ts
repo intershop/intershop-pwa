@@ -180,4 +180,3 @@ export const accountPageRoutes: Routes = [
     ],
   },
 ];
-

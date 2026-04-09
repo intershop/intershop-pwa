@@ -25,7 +25,8 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
     ReactiveFormsModule,
     TranslatePipe,
     UserProfileFormComponent,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class UserEditProfilePageComponent implements OnInit {
   loading$: Observable<boolean>;

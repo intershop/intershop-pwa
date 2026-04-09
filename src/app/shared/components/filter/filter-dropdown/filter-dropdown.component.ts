@@ -1,5 +1,6 @@
 import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
@@ -19,7 +20,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./filter-dropdown.component.scss'],
   standalone: true,
-  imports: [ NgClass],
+  imports: [NgClass],
 })
 export class FilterDropdownComponent implements OnInit {
   @Input({ required: true }) filterElement: Filter;

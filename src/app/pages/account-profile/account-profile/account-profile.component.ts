@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -13,12 +12,7 @@ import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
   templateUrl: './account-profile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    IdentityProviderCapabilityDirective,
-    ServerHtmlDirective,
-    TranslatePipe,
-    ServerSettingPipe,
-    RouterLink],
+  imports: [IdentityProviderCapabilityDirective, ServerHtmlDirective, TranslatePipe, ServerSettingPipe, RouterLink],
 })
 export class AccountProfileComponent {
   @Input({ required: true }) user: User;

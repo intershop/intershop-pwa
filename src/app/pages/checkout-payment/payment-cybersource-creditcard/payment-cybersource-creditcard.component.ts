@@ -16,6 +16,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { range } from 'lodash-es';
+
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
@@ -42,7 +43,8 @@ declare let Flex: any;
     ShowFormFeedbackDirective,
     FormControlFeedbackComponent,
     NgbPopoverModule,
-    PaymentSaveCheckboxComponent],
+    PaymentSaveCheckboxComponent,
+  ],
 })
 export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit {
   cyberSourceCreditCardForm: FormGroup;
@@ -220,7 +222,8 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit 
           {
             name: 'expirationDate',
             value: `${payloadJson.content.paymentInformation.card.expirationMonth.value}/${payloadJson.content.paymentInformation.card.expirationYear.value}`,
-          }],
+          },
+        ],
         saveAllowed: this.paymentMethod.saveAllowed && this.cyberSourceCreditCardForm.get('saveForLater').value,
       });
     }

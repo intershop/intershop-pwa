@@ -27,7 +27,8 @@ import { CostCenterCsvImportComponent } from './cost-center-csv-import/cost-cent
     LoadingComponent,
     ReactiveFormsModule,
     TranslatePipe,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class CostCenterCreatePageComponent implements OnInit {
   loading$: Observable<boolean>;

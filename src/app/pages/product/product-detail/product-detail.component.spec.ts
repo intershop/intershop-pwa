@@ -6,7 +6,6 @@ import { instance, mock, when } from 'ts-mockito';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-paypal/payment-paypal.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
@@ -46,14 +45,14 @@ describe('Product Detail Component', () => {
         MockComponent(ProductBrandComponent),
         MockComponent(ProductDetailActionsComponent),
         MockComponent(ProductDetailVariationsComponent),
-        MockComponent(ProductNotificationEditComponent),
-        MockComponent(ProductRatingComponent),
         MockComponent(ProductIdComponent),
         MockComponent(ProductImagesComponent),
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductNameComponent),
+        MockComponent(ProductNotificationEditComponent),
         MockComponent(ProductPriceComponent),
         MockComponent(ProductPromotionComponent),
+        MockComponent(ProductRatingComponent),
         MockComponent(ProductQuantityComponent),
         MockComponent(ProductQuantityLabelComponent),
         MockComponent(ProductShipmentComponent),

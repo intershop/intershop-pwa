@@ -12,7 +12,7 @@ import { NavigationCategory } from 'ish-core/models/navigation-category/navigati
   templateUrl: './category-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ AsyncPipe, NgClass, RouterLink],
+  imports: [AsyncPipe, NgClass, RouterLink],
 })
 export class CategoryNavigationComponent implements OnInit, OnChanges {
   @Input({ required: true }) uniqueId: string;

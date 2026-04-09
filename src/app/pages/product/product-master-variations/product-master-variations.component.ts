@@ -16,7 +16,7 @@ import { ProductListingComponent } from 'ish-shared/components/product/product-l
   templateUrl: './product-master-variations.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ AsyncPipe, ProductListingComponent, SkipContentLinkComponent, FilterNavigationComponent],
+  imports: [AsyncPipe, ProductListingComponent, SkipContentLinkComponent, FilterNavigationComponent],
 })
 export class ProductMasterVariationsComponent implements OnInit {
   sku$: Observable<string>;
@@ -37,7 +37,8 @@ export class ProductMasterVariationsComponent implements OnInit {
       this.context.select('variations').pipe(
         map(variations => variations?.length > 0),
         whenTruthy()
-      )]).pipe(
+      ),
+    ]).pipe(
       map(([isMaster, hasVariations]) => isMaster && hasVariations),
       startWith(false)
     );

@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Requisition } from 'projects/requisition-management/src/app/models/requisition/requisition.model';
 

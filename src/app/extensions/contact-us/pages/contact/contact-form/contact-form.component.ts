@@ -134,7 +134,8 @@ export class ContactFormComponent implements OnInit {
             required: isCaptchaV2 && isCaptchaTopicEnabled,
             fieldClass: 'offset-md-4 col-md-8',
           },
-        }])
+        },
+      ])
     );
   }
 

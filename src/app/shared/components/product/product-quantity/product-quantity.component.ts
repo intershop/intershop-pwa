@@ -15,14 +15,7 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
   styleUrls: ['./product-quantity.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    AsyncPipe,
-    NgClass,
-    TranslateDirective,
-    TranslatePipe,
-    NgSwitch,
-    NgSwitchCase,
-    NgSwitchDefault],
+  imports: [AsyncPipe, NgClass, TranslateDirective, TranslatePipe, NgSwitch, NgSwitchCase, NgSwitchDefault],
 })
 export class ProductQuantityComponent implements OnInit {
   @Input() type: 'input' | 'select' | 'counter' = 'counter';

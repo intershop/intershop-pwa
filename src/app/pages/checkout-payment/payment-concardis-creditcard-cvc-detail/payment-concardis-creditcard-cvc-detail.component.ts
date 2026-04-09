@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -20,7 +19,7 @@ declare let PayEngine: any;
   templateUrl: './payment-concardis-creditcard-cvc-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ TranslatePipe, ReactiveFormsModule, FormlyForm],
+  imports: [TranslatePipe, ReactiveFormsModule, FormlyForm],
 })
 export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcardisComponent implements OnInit {
   @Input({ required: true }) paymentInstrument: PaymentInstrument;
@@ -53,7 +52,8 @@ export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcard
         validation: {
           messages: { required: 'checkout.credit_card.cvc.error.default' },
         },
-      }];
+      },
+    ];
   }
 
   /**

@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
-import { FieldTooltipComponent } from '../../components/field-tooltip/field-tooltip.component';
-import { ValidationMessageComponent } from '../../components/validation-message/validation-message.component';
+import { FieldTooltipComponent } from 'ish-shared/formly/components/field-tooltip/field-tooltip.component';
+import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
 
 /**
  * Wrapper that works with checkboxes and radio buttons.

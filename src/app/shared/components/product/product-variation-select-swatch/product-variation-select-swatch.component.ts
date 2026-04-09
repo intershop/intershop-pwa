@@ -9,7 +9,7 @@ import { VariationOptionGroup } from 'ish-core/models/product-variation/variatio
   styleUrls: ['./product-variation-select-swatch.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ NgStyle, NgClass],
+  imports: [NgStyle, NgClass],
 })
 export class ProductVariationSelectSwatchComponent {
   @Input({ required: true }) group: VariationOptionGroup;

@@ -24,4 +24,3 @@ export const routes: Routes = [
     data: { feature: 'wishlists' },
   },
 ];
-

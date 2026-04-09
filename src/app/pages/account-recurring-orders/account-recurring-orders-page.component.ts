@@ -31,7 +31,8 @@ import {
     NgbNavModule,
     RecurringOrderListComponent,
     TranslatePipe,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class AccountRecurringOrdersPageComponent implements OnInit {
   recurringOrders$: Observable<RecurringOrder[]>;
@@ -59,7 +60,8 @@ export class AccountRecurringOrdersPageComponent implements OnInit {
             'nextOrderDate',
             'buyer',
             'orderTotal',
-            'actions'])
+            'actions',
+          ])
         : (this.columnsToDisplay = [
             'recurringOrderNo',
             'creationDate',
@@ -67,7 +69,8 @@ export class AccountRecurringOrdersPageComponent implements OnInit {
             'lastOrderDate',
             'nextOrderDate',
             'orderTotal',
-            'actions']);
+            'actions',
+          ]);
     });
   }
 }

@@ -46,16 +46,18 @@ export class ProductNotificationsFacade {
 
   // create a product notification
   createProductNotification(productNotification: ProductNotification) {
-    void this.moduleLoader.ensureLoaded('productNotifications').then(() =>
-      this.store.dispatch(productNotificationsActions.createProductNotification({ productNotification }))
-    );
+    void this.moduleLoader
+      .ensureLoaded('productNotifications')
+      .then(() => this.store.dispatch(productNotificationsActions.createProductNotification({ productNotification })));
   }
 
   // update a product notification
   updateProductNotification(sku: string, productNotification: ProductNotification) {
-    void this.moduleLoader.ensureLoaded('productNotifications').then(() =>
-      this.store.dispatch(productNotificationsActions.updateProductNotification({ sku, productNotification }))
-    );
+    void this.moduleLoader
+      .ensureLoaded('productNotifications')
+      .then(() =>
+        this.store.dispatch(productNotificationsActions.updateProductNotification({ sku, productNotification }))
+      );
   }
 
   // delete a product notification
@@ -64,11 +66,13 @@ export class ProductNotificationsFacade {
     productNotificationType: ProductNotificationType,
     productNotificationId: string
   ) {
-    void this.moduleLoader.ensureLoaded('productNotifications').then(() =>
-      this.store.dispatch(
-        productNotificationsActions.deleteProductNotification({ sku, productNotificationType, productNotificationId })
-      )
-    );
+    void this.moduleLoader
+      .ensureLoaded('productNotifications')
+      .then(() =>
+        this.store.dispatch(
+          productNotificationsActions.deleteProductNotification({ sku, productNotificationType, productNotificationId })
+        )
+      );
   }
 
   productNotificationsLoading$: Observable<boolean> = this.moduleLoader.whenLoaded('productNotifications', () =>

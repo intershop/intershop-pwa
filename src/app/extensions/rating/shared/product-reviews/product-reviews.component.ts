@@ -30,13 +30,14 @@ import { ProductReviewCreateDialogComponent } from '../product-review-create-dia
     DatePipe,
     ErrorMessageComponent,
     LoadingComponent,
-    ModalDialogComponent, 
+    ModalDialogComponent,
     NgTemplateOutlet,
     NotRoleToggleDirective,
     ProductRatingStarComponent,
     ProductReviewCreateDialogComponent,
     RouterLink,
-    TranslatePipe],
+    TranslatePipe,
+  ],
 })
 export class ProductReviewsComponent implements OnInit, OnDestroy {
   recentProductReviews$: Observable<ProductReview[]>;

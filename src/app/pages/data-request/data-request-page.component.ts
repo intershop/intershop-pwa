@@ -17,7 +17,7 @@ import { LoadingComponent } from 'ish-shared/components/common/loading/loading.c
   templateUrl: './data-request-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ ErrorMessageComponent, AsyncPipe, TranslatePipe, ServerHtmlDirective, LoadingComponent],
+  imports: [ErrorMessageComponent, AsyncPipe, TranslatePipe, ServerHtmlDirective, LoadingComponent],
 })
 export class DataRequestPageComponent implements OnInit {
   loading$: Observable<boolean>;

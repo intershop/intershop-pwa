@@ -1,4 +1,3 @@
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -24,7 +23,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   templateUrl: './basket-desired-delivery-date.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ ReactiveFormsModule, TranslatePipe, SuccessMessageComponent, FormlyForm],
+  imports: [ReactiveFormsModule, TranslatePipe, SuccessMessageComponent, FormlyForm],
 })
 export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: Basket;
@@ -87,7 +86,8 @@ export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
             },
           },
         },
-      }];
+      },
+    ];
   }
 
   ngOnChanges(changes: SimpleChanges) {

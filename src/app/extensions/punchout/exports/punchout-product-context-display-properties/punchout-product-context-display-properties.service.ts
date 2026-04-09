@@ -30,4 +30,3 @@ export class PunchoutProductContextDisplayPropertiesService implements ExternalD
     );
   }
 }
-

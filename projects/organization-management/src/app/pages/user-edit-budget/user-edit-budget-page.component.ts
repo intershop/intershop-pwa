@@ -30,7 +30,8 @@ import { UserBudget } from '../../models/user-budget/user-budget.model';
     ServerSettingPipe,
     TranslatePipe,
     UserBudgetFormComponent,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class UserEditBudgetPageComponent implements OnInit {
   constructor(private organizationManagementFacade: OrganizationManagementFacade) {}

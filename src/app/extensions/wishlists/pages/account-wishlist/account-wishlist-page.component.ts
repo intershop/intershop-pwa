@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
+
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
@@ -25,7 +26,8 @@ import { AccountWishlistListComponent } from './account-wishlist-list/account-wi
     TranslatePipe,
     ErrorMessageComponent,
     NgbPopover,
-    LoadingComponent],
+    LoadingComponent,
+  ],
 })
 export class AccountWishlistPageComponent implements OnInit {
   /**

@@ -31,7 +31,8 @@ import { BasketValidationProductsComponent } from 'ish-shared/components/basket/
     BasketValidationItemsComponent,
     BasketValidationProductsComponent,
     AsyncPipe,
-    ScrollDirective],
+    ScrollDirective,
+  ],
 })
 export class BasketValidationResultsComponent implements OnInit {
   private validationResults$: Observable<BasketValidationResultType>;
@@ -77,7 +78,8 @@ export class BasketValidationResultsComponent implements OnInit {
                 !this.isLineItemMessage(error) &&
                 ![
                   'basket.validation.line_item_shipping_restrictions.error',
-                  'basket.validation.basket_not_covered.error'].includes(error.code)
+                  'basket.validation.basket_not_covered.error',
+                ].includes(error.code)
             )
             .map(error =>
               error.parameters?.shippingRestriction ? error.parameters.shippingRestriction : error.message

@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldArrayType, FormlyField } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';

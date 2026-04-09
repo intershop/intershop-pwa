@@ -26,7 +26,8 @@ import { CustomFieldsViewComponent } from 'ish-shared/components/custom-fields/c
     CustomFieldsViewComponent,
     NgbCollapse,
     ReactiveFormsModule,
-    CustomFieldsFormlyComponent],
+    CustomFieldsFormlyComponent,
+  ],
 })
 export class BasketCustomFieldsComponent implements OnInit {
   customFields$: Observable<CustomFieldsComponentInput[]>;
@@ -41,7 +42,8 @@ export class BasketCustomFieldsComponent implements OnInit {
   ngOnInit(): void {
     this.customFields$ = combineLatest([
       this.checkoutFacade.customFieldsForScope$('Basket'),
-      this.checkoutFacade.basket$.pipe(debounce(() => this.checkoutFacade.basketLoading$.pipe(whenFalsy())))]).pipe(
+      this.checkoutFacade.basket$.pipe(debounce(() => this.checkoutFacade.basketLoading$.pipe(whenFalsy()))),
+    ]).pipe(
       map(([customFields, basket]) =>
         customFields.map(customField => ({ ...customField, value: basket?.customFields?.[customField.name] }))
       )

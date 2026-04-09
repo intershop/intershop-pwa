@@ -22,4 +22,3 @@ export function provideTrackingFeature(): (Provider | EnvironmentProviders)[] {
 }
 
 export const TRACKING_FEATURE_PROVIDERS = provideTrackingFeature();
-

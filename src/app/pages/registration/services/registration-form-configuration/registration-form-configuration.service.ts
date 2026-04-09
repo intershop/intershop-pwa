@@ -427,4 +427,3 @@ export class RegistrationFormConfigurationService {
       : [];
   }
 }
-

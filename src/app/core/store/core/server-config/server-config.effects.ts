@@ -202,4 +202,3 @@ export class ServerConfigEffects {
     return featureConfig.features?.length || featureConfig.addFeatures?.length ? featureConfig : undefined;
   }
 }
-

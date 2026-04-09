@@ -5,6 +5,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { range } from 'lodash-es';
+
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
@@ -40,7 +41,8 @@ declare let PayEngine: any;
     NgbPopoverModule,
     ReactiveFormsModule,
     ShowFormFeedbackDirective,
-    PaymentSaveCheckboxComponent],
+    PaymentSaveCheckboxComponent,
+  ],
 })
 export class PaymentConcardisCreditcardComponent extends PaymentConcardisComponent implements OnInit {
   constructor(
@@ -171,7 +173,8 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
           { name: 'cardType', value: result.attributes.brand },
           { name: 'expirationDate', value: `${result.attributes.expiryMonth}/${result.attributes.expiryYear}` },
           { name: 'cvcLastUpdated', value: new Date().toISOString() },
-          { name: 'token', value: result.paymentInstrumentId }],
+          { name: 'token', value: result.paymentInstrumentId },
+        ],
         saveAllowed: this.paymentMethod.saveAllowed && this.parameterForm.get('saveForLater').value,
       });
     }

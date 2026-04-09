@@ -2,6 +2,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 

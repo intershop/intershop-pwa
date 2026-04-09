@@ -23,4 +23,3 @@ export function featureToggleGuard(route: ActivatedRouteSnapshot) {
   }
   return true;
 }
-

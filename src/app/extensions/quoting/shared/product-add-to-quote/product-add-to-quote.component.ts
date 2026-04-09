@@ -15,7 +15,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
   templateUrl: './product-add-to-quote.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ AsyncPipe, NgClass, TranslatePipe],
+  imports: [AsyncPipe, NgClass, TranslatePipe],
 })
 export class ProductAddToQuoteComponent implements OnInit {
   @Input() displayType: 'icon' | 'link' = 'link';

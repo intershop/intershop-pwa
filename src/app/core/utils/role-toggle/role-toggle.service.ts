@@ -17,7 +17,9 @@ export class RoleToggleService {
   private roleIds$: Observable<string[]>;
 
   constructor(@Optional() store: Store) {
-    this.roleIds$ = store ? store.pipe(select(getUserRoles)).pipe(map(roles => roles.map(role => role.roleId))) : of([]);
+    this.roleIds$ = store
+      ? store.pipe(select(getUserRoles)).pipe(map(roles => roles.map(role => role.roleId)))
+      : of([]);
   }
 
   hasRole(roleId: string | string[]): Observable<boolean> {

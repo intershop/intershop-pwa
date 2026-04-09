@@ -1,9 +1,4 @@
-import {
-  APP_INITIALIZER,
-  EnvironmentProviders,
-  TransferState,
-  makeEnvironmentProviders,
-} from '@angular/core';
+import { APP_INITIALIZER, EnvironmentProviders, TransferState, makeEnvironmentProviders } from '@angular/core';
 import { Router } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 

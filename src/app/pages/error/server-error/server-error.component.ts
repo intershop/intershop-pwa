@@ -16,7 +16,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
   templateUrl: './server-error.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ TranslatePipe, NgSwitch, ServerHtmlDirective, NgSwitchCase, NgSwitchDefault, JsonPipe],
+  imports: [TranslatePipe, NgSwitch, ServerHtmlDirective, NgSwitchCase, NgSwitchDefault, JsonPipe],
 })
 export class ServerErrorComponent {
   /**

@@ -81,4 +81,3 @@ export class ModuleLoaderService {
     this.loadedInjectors.push(environmentInjector);
   }
 }
-

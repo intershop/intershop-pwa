@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -13,12 +12,7 @@ import { ProductNameComponent } from 'ish-shared/components/product/product-name
   templateUrl: './basket-items-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    TranslatePipe,
-    PricePipe,
-    BasketPromotionComponent,
-    ProductNameComponent,
-    ProductContextDirective],
+  imports: [TranslatePipe, PricePipe, BasketPromotionComponent, ProductNameComponent, ProductContextDirective],
 })
 export class BasketItemsSummaryComponent {
   @Input({ required: true }) basket: BasketView;

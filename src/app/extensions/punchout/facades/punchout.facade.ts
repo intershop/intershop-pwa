@@ -59,7 +59,10 @@ export class PunchoutFacade {
   );
 
   selectedPunchoutType$ = this.moduleLoader.whenLoaded('punchout', () =>
-    combineLatest([this.store.pipe(select(selectQueryParam('format'))), this.store.pipe(select(getPunchoutTypes))]).pipe(
+    combineLatest([
+      this.store.pipe(select(selectQueryParam('format'))),
+      this.store.pipe(select(getPunchoutTypes)),
+    ]).pipe(
       filter(([format, types]) => !!format || types?.length > 0),
       map(([format, types]) => (format as PunchoutType) || types[0]),
       distinctUntilChanged()
@@ -73,7 +76,9 @@ export class PunchoutFacade {
     );
   }
 
-  selectedPunchoutUser$ = this.moduleLoader.whenLoaded('punchout', () => this.store.pipe(select(getSelectedPunchoutUser)));
+  selectedPunchoutUser$ = this.moduleLoader.whenLoaded('punchout', () =>
+    this.store.pipe(select(getSelectedPunchoutUser))
+  );
 
   addPunchoutUser(user: PunchoutUser) {
     void this.moduleLoader.ensureLoaded('punchout').then(() => this.store.dispatch(addPunchoutUser({ user })));

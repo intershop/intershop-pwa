@@ -253,15 +253,14 @@ export const appRoutes: Routes = [
   {
     path: 'forgotPassword',
     loadChildren: () =>
-      Promise.all([
-        import('./forgot-password/forgot-password-page.routes'),
-        import('ish-shared/formly/formly'),
-      ]).then(([{ forgotPasswordPageRoutes }, { provideIshFormly }]) => {
-        const [rootRoute, ...nestedRoutes] = forgotPasswordPageRoutes;
-        return rootRoute
-          ? [{ ...rootRoute, providers: [...(rootRoute.providers ?? []), ...provideIshFormly()] }, ...nestedRoutes]
-          : [];
-      }),
+      Promise.all([import('./forgot-password/forgot-password-page.routes'), import('ish-shared/formly/formly')]).then(
+        ([{ forgotPasswordPageRoutes }, { provideIshFormly }]) => {
+          const [rootRoute, ...nestedRoutes] = forgotPasswordPageRoutes;
+          return rootRoute
+            ? [{ ...rootRoute, providers: [...(rootRoute.providers ?? []), ...provideIshFormly()] }, ...nestedRoutes]
+            : [];
+        }
+      ),
     data: {
       meta: {
         title: 'account.forgotdata.password_retrieval.heading',
@@ -338,7 +337,9 @@ export const appRoutes: Routes = [
   {
     path: 'quick-order',
     loadComponent: () =>
-      import('../extensions/quickorder/pages/quickorder/quickorder-page.component').then(m => m.QuickorderPageComponent),
+      import('../extensions/quickorder/pages/quickorder/quickorder-page.component').then(
+        m => m.QuickorderPageComponent
+      ),
     canActivate: [featureToggleGuard],
     data: {
       feature: 'quickorder',
@@ -453,4 +454,3 @@ export const appRoutes: Routes = [
       }),
   },
 ];
-

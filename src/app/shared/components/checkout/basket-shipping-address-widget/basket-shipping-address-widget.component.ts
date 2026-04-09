@@ -39,7 +39,8 @@ import { AddressDoctorComponent } from '../../../../extensions/address-doctor/sh
     FormlyCustomerAddressFormComponent,
     AddressDoctorComponent,
     NgbCollapseModule,
-    AddressComponent],
+    AddressComponent,
+  ],
 })
 export class BasketShippingAddressWidgetComponent implements OnInit {
   @Input({ required: true }) eligibleAddresses$: Observable<Address[]>;
@@ -106,7 +107,8 @@ export class BasketShippingAddressWidgetComponent implements OnInit {
     this.displayAddAddressLink$ = combineLatest([
       this.collapseChange,
       this.accountFacade.isLoggedIn$,
-      this.basketInvoiceAndShippingAddressEqual$]).pipe(map(([collapseChange, loggedIn, addressesEqual]) => collapseChange && (loggedIn || addressesEqual)));
+      this.basketInvoiceAndShippingAddressEqual$,
+    ]).pipe(map(([collapseChange, loggedIn, addressesEqual]) => collapseChange && (loggedIn || addressesEqual)));
 
     this.fields = [
       {
@@ -126,7 +128,8 @@ export class BasketShippingAddressWidgetComponent implements OnInit {
               .subscribe(addressId => this.checkoutFacade.assignBasketAddress(addressId, 'shipping'));
           },
         },
-      }];
+      },
+    ];
 
     // preassign a shipping address if the user has only one shipping address
     combineLatest([this.addresses$, this.checkoutFacade.basket$])
@@ -202,4 +205,3 @@ export class BasketShippingAddressWidgetComponent implements OnInit {
     this.checkoutFacade.deleteBasketAddress(address.id);
   }
 }
-

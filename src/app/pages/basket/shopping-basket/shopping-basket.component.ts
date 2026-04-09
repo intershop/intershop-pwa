@@ -82,7 +82,8 @@ import { ShoppingBasketPaymentComponent } from '../shopping-basket-payment/shopp
     PunchoutTransferBasketComponent,
     ShoppingBasketPaymentComponent,
     LazyLoadingContentDirective,
-    AuthorizationToggleDirective],
+    AuthorizationToggleDirective,
+  ],
 })
 export class ShoppingBasketComponent {
   @Input({ required: true }) basket: BasketView;

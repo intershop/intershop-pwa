@@ -1,4 +1,3 @@
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -52,7 +51,8 @@ export class BasketMerchantMessageComponent implements OnInit, OnChanges {
           maxLength: 1000,
           rows: 2,
         },
-      }];
+      },
+    ];
   }
 
   ngOnChanges(changes: SimpleChanges) {

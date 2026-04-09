@@ -8,7 +8,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './checkout-progress-bar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ NgClass, RouterLink, TranslatePipe],
+  imports: [NgClass, RouterLink, TranslatePipe],
 })
 export class CheckoutProgressBarComponent {
   @Input() step = 1;
@@ -46,7 +46,8 @@ export class CheckoutProgressBarComponent {
       link: '/checkout/receipt',
       labelKey: 'checkout.progress.receipt.label',
       stepKey: 'checkout.progress.step5.text',
-    }];
+    },
+  ];
 
   /**
    * Checks whether a checkout step should be displayed as link or not.

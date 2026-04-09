@@ -16,7 +16,7 @@ import { CategoryProductsComponent } from './category-products/category-products
   templateUrl: './category-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ AsyncPipe, CategoryCategoriesComponent, CategoryProductsComponent],
+  imports: [AsyncPipe, CategoryCategoriesComponent, CategoryProductsComponent],
 })
 export class CategoryPageComponent implements OnInit {
   category$: Observable<CategoryView>;

@@ -15,7 +15,7 @@ import { InjectSingle } from 'ish-core/utils/injection';
   templateUrl: './cookies-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ TranslatePipe, KeyValuePipe],
+  imports: [TranslatePipe, KeyValuePipe],
 })
 export class CookiesModalComponent implements OnInit {
   @Output() readonly closeModal = new EventEmitter<void>();

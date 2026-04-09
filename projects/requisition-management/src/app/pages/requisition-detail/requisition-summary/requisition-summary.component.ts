@@ -2,6 +2,7 @@ import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { BasketApprover } from 'ish-core/models/basket-approval/basket-approval.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
@@ -15,7 +16,7 @@ import { Requisition, RequisitionViewer } from '../../../models/requisition/requ
   templateUrl: './requisition-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [DatePipe,  TranslatePipe, BasketCustomFieldsViewComponent, PricePipe, NgClass, RouterLink],
+  imports: [DatePipe, TranslatePipe, BasketCustomFieldsViewComponent, PricePipe, NgClass, RouterLink],
 })
 export class RequisitionSummaryComponent implements OnInit {
   @Input({ required: true }) requisition: Requisition;

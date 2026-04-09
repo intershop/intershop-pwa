@@ -32,7 +32,8 @@ import { OciConfigurationItem } from '../../../models/oci-configuration-item/oci
     ReactiveFormsModule,
     RouterLink,
     TranslatePipe,
-    NgbPopoverModule],
+    NgbPopoverModule,
+  ],
 })
 export class OciConfigurationFormComponent implements OnInit {
   form: FormGroup = new FormGroup({});
@@ -117,7 +118,8 @@ export class OciConfigurationFormComponent implements OnInit {
                   validators: {
                     validation: [
                       SpecialValidators.dependentlyRequired('mapToValue', 'mapFromValue'),
-                      SpecialValidators.dependentlyRequired('mapFromValue', 'mapToValue')],
+                      SpecialValidators.dependentlyRequired('mapFromValue', 'mapToValue'),
+                    ],
                   },
                   fieldGroup: [
                     {
@@ -147,7 +149,8 @@ export class OciConfigurationFormComponent implements OnInit {
                           dependentlyRequired: 'account.punchout.configuration.form.mapping.to.error',
                         },
                       },
-                    }],
+                    },
+                  ],
                 },
               },
 
@@ -160,9 +163,11 @@ export class OciConfigurationFormComponent implements OnInit {
                   options,
                   ariaLabel: 'account.punchout.oci.formatter.aria_label',
                 },
-              }],
+              },
+            ],
           },
-        }])
+        },
+      ])
     );
   }
 

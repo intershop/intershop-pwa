@@ -11,9 +11,9 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { IdentityProviderLoginComponent } from 'ish-shared/components/login/identity-provider-login/identity-provider-login.component';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { CheckoutAddressAnonymousFormComponent } from '../formly/components/checkout-address-anonymous-form/checkout-address-anonymous-form.component';
-import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Checkout Address Anonymous Component renders the initial checkout address page of an anonymous user. On this page the user can either login or checkout as guest by entering an invoice and (optionally) shipping address.
@@ -40,7 +40,8 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
     NgClass,
     FeatureToggleDirective,
     CheckoutAddressAnonymousFormComponent,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class CheckoutAddressAnonymousComponent implements OnChanges {
   @Input({ required: true }) basket: Basket;

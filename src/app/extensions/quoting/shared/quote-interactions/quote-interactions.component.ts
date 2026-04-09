@@ -11,7 +11,7 @@ import { Quote, QuoteRequest, QuoteStatus } from '../../models/quoting/quoting.m
   templateUrl: './quote-interactions.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ TranslatePipe, AsyncPipe],
+  imports: [TranslatePipe, AsyncPipe],
 })
 export class QuoteInteractionsComponent implements OnInit {
   quote$: Observable<Quote | QuoteRequest>;

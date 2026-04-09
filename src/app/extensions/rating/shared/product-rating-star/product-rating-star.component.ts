@@ -14,7 +14,7 @@ export type RatingFilledType = 'full' | 'half' | 'empty';
   styleUrls: ['./product-rating-star.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ NgClass],
+  imports: [NgClass],
 })
 export class ProductRatingStarComponent {
   /**

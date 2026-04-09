@@ -175,7 +175,8 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
       this.submitPayment.emit({
         parameters: [
           { name: 'pseudocardpan', value: response.pseudocardpan },
-          { name: 'truncatedcardpan', value: response.truncatedcardpan }],
+          { name: 'truncatedcardpan', value: response.truncatedcardpan },
+        ],
         saveAllowed: this.paymentMethod.saveAllowed && this.payoneCreditCardForm.get('saveForLater').value,
       });
     }

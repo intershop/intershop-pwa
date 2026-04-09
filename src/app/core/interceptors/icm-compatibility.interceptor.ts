@@ -29,4 +29,3 @@ export class ICMCompatibilityInterceptor implements HttpInterceptor {
     return next.handle(req);
   }
 }
-

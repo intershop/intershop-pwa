@@ -1,4 +1,3 @@
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -62,7 +61,8 @@ export class BasketOrderReferenceComponent implements OnInit, OnChanges {
             noSpecialChars: 'account.name.error.forbidden.chars',
           },
         },
-      }];
+      },
+    ];
   }
 
   ngOnChanges(changes: SimpleChanges) {

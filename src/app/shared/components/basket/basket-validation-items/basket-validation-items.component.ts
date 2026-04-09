@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -26,7 +25,8 @@ import { ProductNameComponent } from 'ish-shared/components/product/product-name
     TranslatePipe,
     ProductNameComponent,
     ProductInventoryComponent,
-    ProductContextDirective],
+    ProductContextDirective,
+  ],
 })
 export class BasketValidationItemsComponent {
   @Input({ required: true }) lineItems: LineItemView[];

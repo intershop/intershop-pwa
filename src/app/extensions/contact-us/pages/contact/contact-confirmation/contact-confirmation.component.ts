@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -15,7 +14,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './contact-confirmation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ TranslatePipe, RouterLink],
+  imports: [TranslatePipe, RouterLink],
 })
 export class ContactConfirmationComponent {
   /**

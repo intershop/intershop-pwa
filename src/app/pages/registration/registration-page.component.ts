@@ -40,7 +40,8 @@ import {
     AddressDoctorComponent,
     LoadingComponent,
     ReactiveFormsModule,
-    FormlyForm],
+    FormlyForm,
+  ],
 })
 export class RegistrationPageComponent implements OnInit {
   error$: Observable<HttpError>;
@@ -121,4 +122,3 @@ export class RegistrationPageComponent implements OnInit {
     this.form.get('captcha')?.setValue(undefined);
   }
 }
-

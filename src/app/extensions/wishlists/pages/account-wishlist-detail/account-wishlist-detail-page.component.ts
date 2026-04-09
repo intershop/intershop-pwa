@@ -23,7 +23,7 @@ import { WishlistSharingDialogComponent } from '../../shared/wishlist-sharing-di
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    AsyncPipe, 
+    AsyncPipe,
     NgbPopoverModule,
     ProductContextDirective,
     TranslatePipe,
@@ -32,7 +32,8 @@ import { WishlistSharingDialogComponent } from '../../shared/wishlist-sharing-di
     WishlistLineItemComponent,
     WishlistPreferencesDialogComponent,
     WishlistSharingDialogComponent,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class AccountWishlistDetailPageComponent implements OnInit {
   wishlist$: Observable<Wishlist>;

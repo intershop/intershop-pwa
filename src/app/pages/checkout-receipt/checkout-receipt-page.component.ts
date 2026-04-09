@@ -22,7 +22,8 @@ import { CheckoutReceiptComponent } from './checkout-receipt/checkout-receipt.co
     CheckoutReceiptComponent,
     LoadingComponent,
     CheckoutReceiptOrderComponent,
-    CheckoutReceiptRequisitionComponent],
+    CheckoutReceiptRequisitionComponent,
+  ],
 })
 export class CheckoutReceiptPageComponent implements OnInit {
   order$: Observable<Order | RecurringOrder>;

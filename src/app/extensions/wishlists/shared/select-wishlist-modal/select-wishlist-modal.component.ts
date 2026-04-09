@@ -44,7 +44,8 @@ import { SelectWishlistFormComponent } from '../select-wishlist-form/select-wish
     ReactiveFormsModule,
     HtmlEncodePipe,
     FormSubmitDirective,
-    SelectWishlistFormComponent],
+    SelectWishlistFormComponent,
+  ],
 })
 export class SelectWishlistModalComponent implements OnInit {
   /**

@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -31,7 +30,8 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
     ReactiveFormsModule,
     TranslatePipe,
     ServerSettingPipe,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class OrganizationSettingsPageComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
@@ -65,9 +65,11 @@ export class OrganizationSettingsPageComponent implements OnInit {
             {
               value: 'net',
               label: 'account.customer.price_type.net.label',
-            }],
+            },
+          ],
         },
-      }];
+      },
+    ];
     this.model = pick(this.customer, 'budgetPriceType');
   }
 

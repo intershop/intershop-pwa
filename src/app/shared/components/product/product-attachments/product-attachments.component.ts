@@ -11,7 +11,7 @@ import { Attachment } from 'ish-core/models/attachment/attachment.model';
   templateUrl: './product-attachments.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ AsyncPipe, TranslatePipe],
+  imports: [AsyncPipe, TranslatePipe],
 })
 export class ProductAttachmentsComponent implements OnInit {
   attachments$: Observable<Attachment[]>;

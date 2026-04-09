@@ -86,4 +86,3 @@ export class IdentityProviderFactory {
     return this.config?.type;
   }
 }
-

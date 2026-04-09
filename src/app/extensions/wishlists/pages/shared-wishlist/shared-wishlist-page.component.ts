@@ -13,12 +13,7 @@ import { WishlistLineItemComponent } from '../../shared/wishlist-line-item/wishl
   templateUrl: './shared-wishlist-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    AsyncPipe,
-    LoadingComponent, 
-    ProductContextDirective,
-    TranslatePipe,
-    WishlistLineItemComponent],
+  imports: [AsyncPipe, LoadingComponent, ProductContextDirective, TranslatePipe, WishlistLineItemComponent],
 })
 export class SharedWishlistPageComponent {
   wishlist$ = this.wishlistsFacade.sharedWishlist$;

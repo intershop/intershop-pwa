@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { Address } from 'ish-core/models/address/address.model';

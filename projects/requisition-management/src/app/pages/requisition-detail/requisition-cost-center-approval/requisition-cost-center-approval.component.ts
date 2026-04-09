@@ -34,7 +34,8 @@ interface BudgetValues {
     PercentPipe,
     PricePipe,
     TranslatePipe,
-    BudgetInfoComponent],
+    BudgetInfoComponent,
+  ],
 })
 export class RequisitionCostCenterApprovalComponent implements OnInit, OnChanges {
   @Input({ required: true }) requisition: Requisition;

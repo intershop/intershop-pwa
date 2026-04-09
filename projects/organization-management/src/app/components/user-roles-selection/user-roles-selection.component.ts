@@ -25,9 +25,10 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
       provide: NG_VALUE_ACCESSOR,
       multi: true,
       useExisting: forwardRef(() => UserRolesSelectionComponent),
-    }],
+    },
+  ],
   standalone: true,
-  imports: [AsyncPipe, KeyValuePipe, NgClass,  ReactiveFormsModule, TranslatePipe],
+  imports: [AsyncPipe, KeyValuePipe, NgClass, ReactiveFormsModule, TranslatePipe],
 })
 export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit {
   @Input() staticRoles: string[];
@@ -131,7 +132,7 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
 
   private modelToRoles(values: Record<string, boolean>, staticRoles: string[]): string[] {
     return Object.entries(values)
-      .filter(([ value]) => !!value)
+      .filter(([value]) => !!value)
       .map(([key]) => key)
       .concat(staticRoles);
   }

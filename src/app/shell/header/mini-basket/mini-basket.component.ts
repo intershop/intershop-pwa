@@ -39,7 +39,8 @@ import { MiniBasketContentComponent } from 'ish-shared/components/basket/mini-ba
     PricePipe,
     RouterLink,
     MiniBasketContentComponent,
-    TranslatePipe],
+    TranslatePipe,
+  ],
 })
 export class MiniBasketComponent implements OnInit {
   @ViewChild('miniBasketDropdown', { static: true }) miniBasketDropdown!: NgbDropdown;

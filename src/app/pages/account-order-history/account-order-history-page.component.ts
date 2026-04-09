@@ -36,7 +36,8 @@ import { AccountOrderFiltersComponent } from './account-order-filters/account-or
     OrderListComponent,
     PagingComponent,
     ServerHtmlDirective,
-    TranslatePipe],
+    TranslatePipe,
+  ],
 })
 export class AccountOrderHistoryPageComponent implements OnInit {
   orders$: Observable<Order[]>;

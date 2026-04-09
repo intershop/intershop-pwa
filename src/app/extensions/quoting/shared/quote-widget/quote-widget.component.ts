@@ -50,7 +50,8 @@ export class QuoteWidgetComponent implements OnInit {
       quotingStates$.pipe(
         map(states => states.filter(state => state === 'Submitted').length),
         distinctUntilChanged()
-      )])
+      ),
+    ])
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(([responded, submitted]) => {
         this.respondedQuotes = responded;

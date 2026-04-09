@@ -48,7 +48,8 @@ import { RequisitionSummaryComponent } from './requisition-summary/requisition-s
     TranslatePipe,
     RequisitionRejectDialogComponent,
     LoadingComponent,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class RequisitionDetailPageComponent implements OnInit {
   requisition$: Observable<Requisition>;

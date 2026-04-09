@@ -41,7 +41,8 @@ import { QuoteItem, QuoteRequestItem } from '../../models/quoting/quoting.model'
     ProductQuantityLabelComponent,
     ProductVariationDisplayComponent,
     TranslatePipe,
-    DecimalPipe],
+    DecimalPipe,
+  ],
 })
 export class QuoteLineItemListElementComponent implements OnInit {
   @Input({ required: true }) lineItem: Partial<

@@ -16,4 +16,3 @@ export function provideQuotingFeature(): (Provider | EnvironmentProviders)[] {
 }
 
 export const QUOTING_FEATURE_PROVIDERS = provideQuotingFeature();
-

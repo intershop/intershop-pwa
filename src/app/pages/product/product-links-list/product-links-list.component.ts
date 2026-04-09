@@ -23,7 +23,7 @@ import { ProductItemComponent } from 'ish-shared/components/product/product-item
   templateUrl: './product-links-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ AsyncPipe, ProductItemComponent, ProductContextDirective],
+  imports: [AsyncPipe, ProductItemComponent, ProductContextDirective],
 })
 export class ProductLinksListComponent implements OnChanges {
   /**
@@ -50,7 +50,8 @@ export class ProductLinksListComponent implements OnChanges {
             combineLatest([
               // make sure to load product and inventory data
               this.shoppingFacade.product$(sku, ProductCompletenessLevel.List),
-              this.shoppingFacade.productInventory$(sku)]).pipe(map(([_, inventory]) => ({ sku, available: inventory?.inStock ?? false })))
+              this.shoppingFacade.productInventory$(sku),
+            ]).pipe(map(([_, inventory]) => ({ sku, available: inventory?.inStock ?? false })))
           )
         ).pipe(map(results => results.filter(r => r.available).map(r => r.sku)))
       : of(this.links.products);

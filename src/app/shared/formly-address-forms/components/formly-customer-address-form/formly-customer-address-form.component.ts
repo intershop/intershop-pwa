@@ -121,4 +121,3 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
     this.cancelForm.emit();
   }
 }
-

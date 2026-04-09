@@ -78,7 +78,9 @@ export class WishlistsFacade {
   }
 
   deleteWishlist(id: string): void {
-    void this.moduleLoader.ensureLoaded('wishlists').then(() => this.store.dispatch(deleteWishlist({ wishlistId: id })));
+    void this.moduleLoader
+      .ensureLoaded('wishlists')
+      .then(() => this.store.dispatch(deleteWishlist({ wishlistId: id })));
   }
 
   updateWishlist(wishlist: Wishlist): void {
@@ -98,17 +100,21 @@ export class WishlistsFacade {
   }
 
   moveItemToWishlist(sourceWishlistId: string, targetWishlistId: string, sku: string): void {
-    void this.moduleLoader.ensureLoaded('wishlists').then(() =>
-      this.store.dispatch(
-        moveItemToWishlist({ source: { id: sourceWishlistId }, target: { id: targetWishlistId, sku } })
-      )
-    );
+    void this.moduleLoader
+      .ensureLoaded('wishlists')
+      .then(() =>
+        this.store.dispatch(
+          moveItemToWishlist({ source: { id: sourceWishlistId }, target: { id: targetWishlistId, sku } })
+        )
+      );
   }
 
   moveItemToNewWishlist(sourceWishlistId: string, title: string, sku: string): void {
-    void this.moduleLoader.ensureLoaded('wishlists').then(() =>
-      this.store.dispatch(moveItemToWishlist({ source: { id: sourceWishlistId }, target: { title, sku } }))
-    );
+    void this.moduleLoader
+      .ensureLoaded('wishlists')
+      .then(() =>
+        this.store.dispatch(moveItemToWishlist({ source: { id: sourceWishlistId }, target: { title, sku } }))
+      );
   }
 
   removeProductFromWishlist(wishlistId: string, sku: string): void {

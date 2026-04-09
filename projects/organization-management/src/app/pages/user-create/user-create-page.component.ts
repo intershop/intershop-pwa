@@ -35,7 +35,8 @@ import { UserCsvImportComponent } from './user-csv-import/user-csv-import.compon
     UserCsvImportComponent,
     UserProfileFormComponent,
     UserRolesSelectionComponent,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class UserCreatePageComponent implements OnInit {
   loading$: Observable<boolean>;

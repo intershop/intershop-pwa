@@ -30,7 +30,8 @@ import { QuoteViewComponent } from '../../shared/quote-view/quote-view.component
     RouterLink,
     TranslatePipe,
     NgSwitchCase,
-    NgSwitch],
+    NgSwitch,
+  ],
   providers: [{ provide: QuoteContextFacade, useClass: SelectedQuoteContextFacade }],
 })
 export class QuotePageComponent implements OnInit {

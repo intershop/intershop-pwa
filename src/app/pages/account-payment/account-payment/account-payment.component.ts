@@ -23,12 +23,7 @@ import { AccountPaymentConcardisDirectdebitComponent } from '../account-payment-
   templateUrl: './account-payment.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    AccountPaymentConcardisDirectdebitComponent,
-    NgClass, 
-    NgTemplateOutlet,
-    ReactiveFormsModule,
-    TranslatePipe],
+  imports: [AccountPaymentConcardisDirectdebitComponent, NgClass, NgTemplateOutlet, ReactiveFormsModule, TranslatePipe],
 })
 export class AccountPaymentComponent implements OnInit, OnChanges {
   @Input({ required: true }) paymentMethods: PaymentMethod[];

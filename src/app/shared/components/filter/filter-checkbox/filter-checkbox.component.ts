@@ -19,7 +19,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
   templateUrl: './filter-checkbox.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ NgClass, TranslatePipe],
+  imports: [NgClass, TranslatePipe],
 })
 export class FilterCheckboxComponent {
   @Input({ required: true }) filterElement: Filter;

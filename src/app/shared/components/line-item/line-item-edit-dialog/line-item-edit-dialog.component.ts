@@ -31,7 +31,8 @@ import { ProductVariationSelectComponent } from 'ish-shared/components/product/p
     PricePipe,
     ProductVariationSelectComponent,
     ProductQuantityComponent,
-    ProductQuantityLabelComponent],
+    ProductQuantityLabelComponent,
+  ],
 })
 export class LineItemEditDialogComponent implements OnInit {
   variation$: Observable<ProductView>;

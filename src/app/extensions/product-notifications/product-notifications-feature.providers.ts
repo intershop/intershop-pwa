@@ -9,11 +9,11 @@ export function provideProductNotificationsFeature(): (Provider | EnvironmentPro
       multi: true,
       useValue: {
         feature: 'productNotifications',
-        providers: () => import('./store/product-notifications-store.providers').then(m => m.provideProductNotificationsStore()),
+        providers: () =>
+          import('./store/product-notifications-store.providers').then(m => m.provideProductNotificationsStore()),
       },
     },
   ];
 }
 
 export const PRODUCT_NOTIFICATIONS_FEATURE_PROVIDERS = provideProductNotificationsFeature();
-

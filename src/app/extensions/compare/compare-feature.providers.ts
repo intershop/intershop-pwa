@@ -16,4 +16,3 @@ export function provideCompareFeature(): (Provider | EnvironmentProviders)[] {
 }
 
 export const COMPARE_FEATURE_PROVIDERS = provideCompareFeature();
-

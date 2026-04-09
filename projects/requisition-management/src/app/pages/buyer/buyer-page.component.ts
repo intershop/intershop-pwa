@@ -29,7 +29,8 @@ import { Requisition, RequisitionStatus } from '../../models/requisition/requisi
     NgbNavModule,
     RequisitionsListComponent,
     TranslatePipe,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class BuyerPageComponent implements OnInit {
   requisitions$: Observable<Requisition[]>;
@@ -59,7 +60,8 @@ export class BuyerPageComponent implements OnInit {
             'creationDate',
             'approver',
             'approvalDate',
-            'orderTotal'];
+            'orderTotal',
+          ];
           break;
         case 'REJECTED':
           this.columnsToDisplay = [
@@ -68,7 +70,8 @@ export class BuyerPageComponent implements OnInit {
             'approver',
             'rejectionDate',
             'lineItems',
-            'orderTotal'];
+            'orderTotal',
+          ];
           break;
         default:
           this.columnsToDisplay = ['requisitionNo', 'creationDate', 'lineItems', 'orderTotal'];

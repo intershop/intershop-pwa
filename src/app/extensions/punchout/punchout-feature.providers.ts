@@ -24,4 +24,3 @@ export function providePunchoutFeature(): (Provider | EnvironmentProviders)[] {
 }
 
 export const PUNCHOUT_FEATURE_PROVIDERS = providePunchoutFeature();
-

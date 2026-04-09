@@ -35,7 +35,8 @@ import { RetailSetPartsComponent } from './retail-set-parts/retail-set-parts.com
     ProductLinksComponent,
     RecentlyViewedComponent,
     FeatureTogglePipe,
-    AsyncPipe],
+    AsyncPipe,
+  ],
 })
 export class ProductPageComponent implements OnInit {
   productLoading$: Observable<boolean>;

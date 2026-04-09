@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -21,13 +20,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   templateUrl: './account-profile-email.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    ErrorMessageComponent,
-    FormSubmitDirective,
-    FormlyForm,
-    ReactiveFormsModule,
-    TranslatePipe,
-    RouterLink],
+  imports: [ErrorMessageComponent, FormSubmitDirective, FormlyForm, ReactiveFormsModule, TranslatePipe, RouterLink],
 })
 export class AccountProfileEmailComponent implements OnInit {
   @Input({ required: true }) currentUser: User;
@@ -92,8 +85,10 @@ export class AccountProfileEmailComponent implements OnInit {
                 required: 'account.update_password.old_password.error.required',
               },
             },
-          }],
-      }];
+          },
+        ],
+      },
+    ];
   }
 
   /**

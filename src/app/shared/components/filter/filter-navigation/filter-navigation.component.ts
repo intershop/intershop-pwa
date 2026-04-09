@@ -19,7 +19,8 @@ import { FilterNavigationSidebarComponent } from 'ish-shared/components/filter/f
     AsyncPipe,
     FilterNavigationSidebarComponent,
     FilterNavigationHorizontalComponent,
-    FilterNavigationBadgesComponent],
+    FilterNavigationBadgesComponent,
+  ],
 })
 export class FilterNavigationComponent implements OnInit {
   @Input() fragmentOnRouting: string;

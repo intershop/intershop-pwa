@@ -40,7 +40,8 @@ import { SuccessMessageComponent } from 'ish-shared/components/common/success-me
     AsyncPipe,
     SuccessMessageComponent,
     NgbCollapseModule,
-    ReactiveFormsModule],
+    ReactiveFormsModule,
+  ],
 })
 export class BasketPromotionCodeComponent implements OnInit {
   @Input() toast = true;

@@ -15,4 +15,3 @@ export const routes: Routes = [
     providers: [provideWishlistsStore()],
   },
 ];
-

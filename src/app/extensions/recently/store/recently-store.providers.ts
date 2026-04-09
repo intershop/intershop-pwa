@@ -1,11 +1,5 @@
 import { APP_BASE_HREF } from '@angular/common';
-import {
-  EnvironmentProviders,
-  Inject,
-  Injectable,
-  InjectionToken,
-  makeEnvironmentProviders,
-} from '@angular/core';
+import { EnvironmentProviders, Inject, Injectable, InjectionToken, makeEnvironmentProviders } from '@angular/core';
 import { provideEffects } from '@ngrx/effects';
 import { ActionReducerMap, StoreConfig, StoreModule, provideState } from '@ngrx/store';
 import { pick } from 'lodash-es';

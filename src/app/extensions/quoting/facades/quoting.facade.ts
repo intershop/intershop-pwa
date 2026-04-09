@@ -63,7 +63,10 @@ export class QuotingFacade {
 
   name$(quoteId: string) {
     return this.moduleLoader.whenLoaded('quoting', () =>
-      this.store.pipe(select(getQuotingEntity(quoteId)), map((quote: Quote | QuoteRequest) => quote?.displayName))
+      this.store.pipe(
+        select(getQuotingEntity(quoteId)),
+        map((quote: Quote | QuoteRequest) => quote?.displayName)
+      )
     );
   }
 

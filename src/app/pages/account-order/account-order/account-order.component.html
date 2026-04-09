@@ -82,7 +82,7 @@
   </ish-info-box>
   }
 </div>
-} @if ('shipping.messageToMerchant' | ishServerSetting) {
+@if ('shipping.messageToMerchant' | ishServerSetting) {
 <!-- MessageToMerchant-->
 <ish-basket-merchant-message-view [data]="order" />
 }
@@ -135,6 +135,7 @@
     }
   </div>
 </div>
+}
 
 <!-- Links -->
 <div class="section d-flex justify-content-between">

@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -10,7 +9,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   templateUrl: './cms-text.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ ServerHtmlDirective],
+  imports: [ServerHtmlDirective],
 })
 export class CMSTextComponent implements CMSComponent {
   @Input({ required: true }) pagelet: ContentPageletView;

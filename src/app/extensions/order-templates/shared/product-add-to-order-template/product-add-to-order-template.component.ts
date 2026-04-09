@@ -30,7 +30,8 @@ import { SelectOrderTemplateModalComponent } from '../select-order-template-moda
     NgClass,
     NgSwitch,
     NgSwitchCase,
-    NgSwitchDefault],
+    NgSwitchDefault,
+  ],
 })
 export class ProductAddToOrderTemplateComponent implements OnInit {
   @Input() displayType: 'icon' | 'link' | 'animated' = 'link';

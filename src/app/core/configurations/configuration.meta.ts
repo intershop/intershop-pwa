@@ -98,4 +98,3 @@ export function configurationMeta(reducer: ActionReducer<CoreState>): ActionRedu
     return reducer(newState, action);
   };
 }
-

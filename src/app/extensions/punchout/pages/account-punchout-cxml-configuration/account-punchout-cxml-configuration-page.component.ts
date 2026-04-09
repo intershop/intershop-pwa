@@ -18,12 +18,7 @@ import { CxmlHelpTextWrapperComponent } from './formly/cxml-help-text-wrapper/cx
   templateUrl: './account-punchout-cxml-configuration-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    AsyncPipe,
-    CxmlConfigurationFormComponent,
-    CxmlHelpTextWrapperComponent,
-    LoadingComponent,
-    TranslatePipe],
+  imports: [AsyncPipe, CxmlConfigurationFormComponent, CxmlHelpTextWrapperComponent, LoadingComponent, TranslatePipe],
 })
 export class AccountPunchoutCxmlConfigurationPageComponent implements OnInit {
   selectedUser$: Observable<PunchoutUser>;

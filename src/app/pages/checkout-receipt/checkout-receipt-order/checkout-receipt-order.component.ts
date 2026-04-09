@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -14,12 +13,7 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
   templateUrl: './checkout-receipt-order.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    TranslatePipe,
-    ModalDialogLinkComponent,
-    ContentIncludeComponent,
-    RouterLink,
-    LazyLoadingContentDirective],
+  imports: [TranslatePipe, ModalDialogLinkComponent, ContentIncludeComponent, RouterLink, LazyLoadingContentDirective],
 })
 export class CheckoutReceiptOrderComponent {
   @Input({ required: true }) order: Order | RecurringOrder;

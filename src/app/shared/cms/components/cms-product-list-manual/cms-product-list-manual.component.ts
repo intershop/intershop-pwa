@@ -10,7 +10,7 @@ import { ProductsListComponent } from 'ish-shared/components/product/products-li
   templateUrl: './cms-product-list-manual.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ NgClass, ProductsListComponent],
+  imports: [NgClass, ProductsListComponent],
 })
 export class CMSProductListManualComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;

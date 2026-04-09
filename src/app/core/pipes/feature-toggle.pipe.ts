@@ -43,4 +43,3 @@ export class FeatureTogglePipe implements PipeTransform {
     return this.enabled;
   }
 }
-

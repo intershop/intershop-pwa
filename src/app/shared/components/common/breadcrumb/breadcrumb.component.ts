@@ -19,7 +19,7 @@ import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.
   templateUrl: './breadcrumb.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ TranslatePipe, AsyncPipe, NgClass, RouterLink, NgForOf],
+  imports: [TranslatePipe, AsyncPipe, NgClass, RouterLink, NgForOf],
 })
 export class BreadcrumbComponent implements OnInit {
   @Input() separator = '/';

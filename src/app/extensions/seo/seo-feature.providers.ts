@@ -17,4 +17,3 @@ export function provideSeoFeature(): (Provider | EnvironmentProviders)[] {
 }
 
 export const SEO_FEATURE_PROVIDERS = provideSeoFeature();
-

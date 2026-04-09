@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FieldType, FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
@@ -15,11 +14,6 @@ import { ValidationMessageComponent } from 'ish-shared/formly/components/validat
   templateUrl: './registration-tac-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    ValidationMessageComponent,
-    ServerHtmlDirective,
-    TranslatePipe,
-    ReactiveFormsModule,
-    FormlyAttributes],
+  imports: [ValidationMessageComponent, ServerHtmlDirective, TranslatePipe, ReactiveFormsModule, FormlyAttributes],
 })
 export class RegistrationTacFieldComponent extends FieldType<FieldTypeConfig> {}

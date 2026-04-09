@@ -11,7 +11,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
   templateUrl: './buyers-select.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ TranslatePipe, FormlyAttributes, AsyncPipe, ReactiveFormsModule],
+  imports: [TranslatePipe, FormlyAttributes, AsyncPipe, ReactiveFormsModule],
 })
 export class BuyersSelectComponent implements OnInit {
   @Input({ required: true }) control: FormControl;

@@ -23,7 +23,8 @@ import { HeaderSimpleComponent } from 'ish-shell/header/header-simple/header-sim
     HeaderCheckoutComponent,
     HeaderDefaultComponent,
     BackToTopComponent,
-    AsyncPipe],
+    AsyncPipe,
+  ],
 })
 export class HeaderComponent implements OnInit {
   headerType$: Observable<HeaderType>;

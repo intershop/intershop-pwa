@@ -25,7 +25,8 @@ import { UserRolesBadgesComponent } from '../users/user-roles-badges/user-roles-
     TranslatePipe,
     PricePipe,
     UserRolesBadgesComponent,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class UserImportPageComponent implements OnInit {
   importedUsers$: Observable<{ user: B2bUser; status: string }[]> = of([]);
@@ -45,7 +46,8 @@ export class UserImportPageComponent implements OnInit {
 
     this.importProgress$ = combineLatest([
       this.organizationManagementFacade.usersImportTotal$,
-      this.importedUsers$]).pipe(
+      this.importedUsers$,
+    ]).pipe(
       map(([totalUsersToImport, importedUsers]) => ({
         total: totalUsersToImport,
         current: importedUsers.length,

@@ -17,7 +17,7 @@ import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wi
   templateUrl: './product-add-to-wishlist.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ NgClass, NgSwitch, TranslatePipe, AsyncPipe, SelectWishlistModalComponent, NgSwitchCase],
+  imports: [NgClass, NgSwitch, TranslatePipe, AsyncPipe, SelectWishlistModalComponent, NgSwitchCase],
 })
 /**
  * The Product Add To Wishlist Component adds a product to a wishlist.

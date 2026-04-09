@@ -14,7 +14,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   templateUrl: './cms-image-enhanced.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ RouterLink, NgTemplateOutlet, NgClass, ServerHtmlDirective, TranslatePipe],
+  imports: [RouterLink, NgTemplateOutlet, NgClass, ServerHtmlDirective, TranslatePipe],
 })
 export class CMSImageEnhancedComponent implements CMSComponent {
   @Input({ required: true }) pagelet: ContentPageletView;

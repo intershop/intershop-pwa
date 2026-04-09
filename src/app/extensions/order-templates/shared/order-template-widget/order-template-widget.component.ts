@@ -23,11 +23,12 @@ import { OrderTemplate } from '../../models/order-template/order-template.model'
   imports: [
     AsyncPipe,
     InfoBoxComponent,
-    LoadingComponent, 
+    LoadingComponent,
     ProductAddToBasketComponent,
     ProductContextDirective,
     TranslatePipe,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class OrderTemplateWidgetComponent implements OnInit {
   loading$: Observable<boolean>;

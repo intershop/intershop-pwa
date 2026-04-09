@@ -17,13 +17,7 @@ import { QuoteLineItemListElementComponent } from '../quote-line-item-list-eleme
   templateUrl: './quote-line-item-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    AsyncPipe,
-    NgClass, 
-    PricePipe,
-    ProductContextDirective,
-    QuoteLineItemListElementComponent,
-    TranslatePipe],
+  imports: [AsyncPipe, NgClass, PricePipe, ProductContextDirective, QuoteLineItemListElementComponent, TranslatePipe],
 })
 export class QuoteLineItemListComponent implements OnInit {
   total$: Observable<Price>;

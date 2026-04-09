@@ -11,7 +11,7 @@ import { BasketView } from 'ish-core/models/basket/basket.model';
   templateUrl: './promotion-remove.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ AsyncPipe, TranslatePipe],
+  imports: [AsyncPipe, TranslatePipe],
 })
 export class PromotionRemoveComponent implements OnInit {
   basket$: Observable<BasketView>;

@@ -35,7 +35,8 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
     LoadingComponent,
     ReactiveFormsModule,
     TranslatePipe,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class CostCenterBuyersPageComponent implements OnInit {
   loading$: Observable<boolean>;
@@ -150,9 +151,11 @@ export class CostCenterBuyersPageComponent implements OnInit {
                 options: FormsService.getCostCenterBudgetPeriodOptions(),
                 ariaLabel: 'account.costcenter.budget.period.select.label',
               },
-            }],
+            },
+          ],
         },
-      }];
+      },
+    ];
   }
 
   toggleItemSelection() {

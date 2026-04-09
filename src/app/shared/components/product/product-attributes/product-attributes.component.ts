@@ -9,7 +9,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
   templateUrl: './product-attributes.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ SlicePipe, AttributeToStringPipe],
+  imports: [SlicePipe, AttributeToStringPipe],
 })
 export class ProductAttributesComponent {
   @Input({ required: true }) product: ProductView;

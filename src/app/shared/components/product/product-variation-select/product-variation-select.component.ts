@@ -24,7 +24,8 @@ import { ProductVariationSelectSwatchComponent } from 'ish-shared/components/pro
     NgSwitchDefault,
     ProductVariationSelectSwatchComponent,
     ProductVariationSelectEnhancedComponent,
-    ProductVariationSelectDefaultComponent],
+    ProductVariationSelectDefaultComponent,
+  ],
 })
 export class ProductVariationSelectComponent implements OnInit {
   uuid = uuid();
@@ -37,7 +38,8 @@ export class ProductVariationSelectComponent implements OnInit {
     this.variationOptions$ = combineLatest([
       this.context.select('product').pipe(filter(ProductHelper.isVariationProduct)),
       this.context.select('variations'),
-      this.context.select('productMaster')]).pipe(
+      this.context.select('productMaster'),
+    ]).pipe(
       map(([product, variations, masterProduct]) =>
         ProductVariationHelper.buildVariationOptionGroups(product, masterProduct, variations)
       )

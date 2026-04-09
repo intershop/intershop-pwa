@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -28,7 +27,8 @@ import { ProductNameComponent } from 'ish-shared/components/product/product-name
     ProductNameComponent,
     ProductInventoryComponent,
     PricePipe,
-    TranslatePipe],
+    TranslatePipe,
+  ],
 })
 export class BasketValidationProductsComponent {
   @Input({ required: true }) items: { message: string; productSKU: string; price: PriceItem }[];

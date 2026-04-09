@@ -28,7 +28,8 @@ import { QuoteStateComponent } from '../quote-state/quote-state.component';
     QuoteStateComponent,
     RouterLink,
     TranslatePipe,
-    ServerHtmlDirective],
+    ServerHtmlDirective,
+  ],
 })
 export class QuoteViewComponent implements OnInit {
   quote$: Observable<Quote | QuoteRequest>;

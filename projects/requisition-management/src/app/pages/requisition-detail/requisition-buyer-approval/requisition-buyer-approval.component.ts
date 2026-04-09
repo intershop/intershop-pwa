@@ -28,7 +28,8 @@ import { BudgetBarComponent } from '../budget-bar/budget-bar.component';
     PercentPipe,
     PricePipe,
     TranslatePipe,
-    BudgetInfoComponent],
+    BudgetInfoComponent,
+  ],
 })
 export class RequisitionBuyerApprovalComponent implements OnChanges {
   @Input({ required: true }) requisition: Requisition;

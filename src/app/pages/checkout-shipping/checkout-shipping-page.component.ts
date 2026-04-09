@@ -48,7 +48,8 @@ import { CheckoutShippingComponent } from './checkout-shipping/checkout-shipping
     BasketItemsSummaryComponent,
     BasketCostSummaryComponent,
     ServerHtmlDirective,
-    LoadingComponent],
+    LoadingComponent,
+  ],
 })
 export class CheckoutShippingPageComponent implements OnInit {
   loading$: Observable<boolean>;

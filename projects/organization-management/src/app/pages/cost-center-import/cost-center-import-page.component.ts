@@ -35,7 +35,8 @@ export class CostCenterImportPageComponent implements OnInit {
 
     this.importProgress$ = combineLatest([
       this.organizationManagementFacade.costCentersImportTotal$,
-      this.importedCostCenters$]).pipe(
+      this.importedCostCenters$,
+    ]).pipe(
       map(([totalCostCentersToImport, importedCostCenters]) => ({
         total: totalCostCentersToImport,
         current: importedCostCenters.length,

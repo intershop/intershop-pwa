@@ -15,7 +15,7 @@ import { QuotingFacade } from '../../facades/quoting.facade';
   templateUrl: './quoting-basket-line-items.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, LineItemListComponent,  TranslatePipe],
+  imports: [AsyncPipe, LineItemListComponent, TranslatePipe],
 })
 export class QuotingBasketLineItemsComponent implements OnInit {
   lineItems$: Observable<[string, LineItem[]][]>;

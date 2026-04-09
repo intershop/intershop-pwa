@@ -29,13 +29,7 @@ import { LineItemListElementComponent } from 'ish-shared/components/line-item/li
   templateUrl: './line-item-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    TranslatePipe,
-    PricePipe,
-    LineItemListElementComponent,
-    ProductContextDirective,
-    PagingComponent,
-    NgForOf],
+  imports: [TranslatePipe, PricePipe, LineItemListElementComponent, ProductContextDirective, PagingComponent, NgForOf],
 })
 export class LineItemListComponent implements OnChanges {
   @Input({ required: true }) lineItems: Partial<LineItemView & OrderLineItem>[];

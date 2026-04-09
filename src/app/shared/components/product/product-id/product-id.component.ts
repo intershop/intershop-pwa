@@ -13,7 +13,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
   templateUrl: './product-id.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ AsyncPipe, TranslatePipe],
+  imports: [AsyncPipe, TranslatePipe],
 })
 export class ProductIdComponent implements OnInit {
   visible$: Observable<boolean>;

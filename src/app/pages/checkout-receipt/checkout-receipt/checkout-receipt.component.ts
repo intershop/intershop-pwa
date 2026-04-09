@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -38,7 +37,8 @@ import { OrderRecurrenceComponent } from 'ish-shared/components/order/order-recu
     TranslatePipe,
     BasketCostSummaryComponent,
     BasketCostCenterViewComponent,
-    BasketCustomFieldsViewComponent],
+    BasketCustomFieldsViewComponent,
+  ],
 })
 export class CheckoutReceiptComponent {
   @Input({ required: true }) order: Order | RecurringOrder | Basket;

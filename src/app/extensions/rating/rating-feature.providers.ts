@@ -16,4 +16,3 @@ export function provideRatingFeature(): (Provider | EnvironmentProviders)[] {
 }
 
 export const RATING_FEATURE_PROVIDERS = provideRatingFeature();
-

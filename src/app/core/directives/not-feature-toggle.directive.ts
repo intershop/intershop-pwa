@@ -50,4 +50,3 @@ export class NotFeatureToggleDirective {
     this.feature$.next(val);
   }
 }
-

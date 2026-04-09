@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -10,7 +9,7 @@ import { IdentityProviderLoginComponent } from 'ish-shared/components/login/iden
   templateUrl: './login-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ TranslatePipe, ServerHtmlDirective, IdentityProviderLoginComponent],
+  imports: [TranslatePipe, ServerHtmlDirective, IdentityProviderLoginComponent],
 })
 export class LoginModalComponent {
   @Input() loginMessageKey: string;

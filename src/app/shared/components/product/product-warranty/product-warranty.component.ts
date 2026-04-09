@@ -30,7 +30,8 @@ import { ProductWarrantyDetailsComponent } from 'ish-shared/components/product/p
     NgSwitchCase,
     NgSwitchDefault,
     ProductWarrantyDetailsComponent,
-    PricePipe],
+    PricePipe,
+  ],
 })
 export class ProductWarrantyComponent implements OnInit {
   // preselect a warranty

@@ -10,7 +10,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
   templateUrl: './product-name.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ AsyncPipe, RouterLink],
+  imports: [AsyncPipe, RouterLink],
 })
 export class ProductNameComponent implements OnInit {
   @Input() link = true;

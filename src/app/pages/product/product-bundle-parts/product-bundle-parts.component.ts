@@ -14,12 +14,7 @@ import { ProductItemComponent } from 'ish-shared/components/product/product-item
   templateUrl: './product-bundle-parts.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    AsyncPipe,
-    TranslatePipe,
-    ProductAddToBasketComponent,
-    ProductItemComponent,
-    ProductContextDirective],
+  imports: [AsyncPipe, TranslatePipe, ProductAddToBasketComponent, ProductItemComponent, ProductContextDirective],
 })
 export class ProductBundlePartsComponent implements OnInit {
   parts$: Observable<SkuQuantityType[]>;

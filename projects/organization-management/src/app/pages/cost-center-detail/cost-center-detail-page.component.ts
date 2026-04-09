@@ -30,7 +30,8 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
     PricePipe,
     SlicePipe,
     TranslatePipe,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class CostCenterDetailPageComponent implements OnInit {
   costCenter$: Observable<CostCenter>;

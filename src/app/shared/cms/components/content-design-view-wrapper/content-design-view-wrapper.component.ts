@@ -15,14 +15,7 @@ import { PreviewService } from 'ish-core/utils/preview/preview.service';
   styleUrls: ['./content-design-view-wrapper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    NgClass,
-    NgSwitch,
-    TranslatePipe,
-    AsyncPipe,
-    NgTemplateOutlet,
-    NgSwitchCase,
-    ScrollDirective],
+  imports: [NgClass, NgSwitch, TranslatePipe, AsyncPipe, NgTemplateOutlet, NgSwitchCase, ScrollDirective],
 })
 export class ContentDesignViewWrapperComponent implements OnInit {
   // pagelet parameter
@@ -83,7 +76,8 @@ export class ContentDesignViewWrapperComponent implements OnInit {
 
       this.isPageletPreviewed$ = combineLatest([
         this.cmsFacade.designViewPreviewedPageletId$,
-        this.cmsFacade.designViewSelectedPageletId$]).pipe(
+        this.cmsFacade.designViewSelectedPageletId$,
+      ]).pipe(
         map(
           ([previewedId, selectedId]) =>
             this.isDesignViewMode && this.pageletId === previewedId && this.pageletId !== selectedId

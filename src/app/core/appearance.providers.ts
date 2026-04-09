@@ -1,8 +1,8 @@
 import {
   ENVIRONMENT_INITIALIZER,
   EnvironmentProviders,
-  inject,
   importProvidersFrom,
+  inject,
   makeEnvironmentProviders,
 } from '@angular/core';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';

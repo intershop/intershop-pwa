@@ -15,7 +15,7 @@ import { PromotionRemoveComponent } from 'ish-shared/components/promotion/promot
   templateUrl: './basket-promotion.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ ServerHtmlDirective, AsyncPipe, TranslatePipe, PromotionDetailsComponent, PromotionRemoveComponent],
+  imports: [ServerHtmlDirective, AsyncPipe, TranslatePipe, PromotionDetailsComponent, PromotionRemoveComponent],
 })
 export class BasketPromotionComponent implements OnChanges {
   @Input({ required: true }) rebate: BasketRebate;

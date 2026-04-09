@@ -24,7 +24,8 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
     LoadingComponent,
     ReactiveFormsModule,
     TranslatePipe,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class CostCenterEditPageComponent implements OnInit {
   loading$: Observable<boolean>;

@@ -11,7 +11,7 @@ import { VariationAttributePipe } from 'ish-core/pipes/variation-attribute.pipe'
   templateUrl: './product-variation-display.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ AsyncPipe, VariationAttributePipe],
+  imports: [AsyncPipe, VariationAttributePipe],
 })
 export class ProductVariationDisplayComponent implements OnInit {
   product$: Observable<ProductView>;

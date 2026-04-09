@@ -16,4 +16,3 @@ export function provideWishlistsFeature(): (Provider | EnvironmentProviders)[] {
 }
 
 export const WISHLISTS_FEATURE_PROVIDERS = provideWishlistsFeature();
-

@@ -22,7 +22,8 @@ import { RecentlyFacade } from '../../facades/recently.facade';
     ProductsListComponent,
     RouterLink,
     SkipContentLinkComponent,
-    TranslatePipe],
+    TranslatePipe,
+  ],
 })
 export class RecentlyViewedComponent implements OnInit {
   recentlyProducts$: Observable<string[]>;

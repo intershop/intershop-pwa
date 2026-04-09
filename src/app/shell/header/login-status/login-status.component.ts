@@ -12,7 +12,7 @@ import { User } from 'ish-core/models/user/user.model';
   templateUrl: './login-status.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ RouterLink, NgClass, AsyncPipe, TranslatePipe],
+  imports: [RouterLink, NgClass, AsyncPipe, TranslatePipe],
 })
 export class LoginStatusComponent implements OnInit {
   @Input() logoutOnly = false;

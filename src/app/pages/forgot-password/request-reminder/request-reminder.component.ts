@@ -27,7 +27,8 @@ import { RequestReminderFormComponent } from '../request-reminder-form/request-r
     ServerHtmlDirective,
     ErrorMessageComponent,
     RequestReminderFormComponent,
-    LoadingComponent],
+    LoadingComponent,
+  ],
 })
 export class RequestReminderComponent implements OnInit {
   success$: Observable<boolean>;

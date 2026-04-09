@@ -30,7 +30,8 @@ import { QuoteViewComponent } from '../quote-view/quote-view.component';
     QuoteInteractionsComponent,
     QuoteViewComponent,
     TranslatePipe,
-    RouterLink],
+    RouterLink,
+  ],
   providers: [{ provide: QuoteContextFacade, useClass: ActiveQuoteContextFacade }],
 })
 export class ProductAddToQuoteDialogComponent implements OnInit {

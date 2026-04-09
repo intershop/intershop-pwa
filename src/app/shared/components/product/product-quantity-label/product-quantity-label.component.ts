@@ -10,7 +10,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
   templateUrl: './product-quantity-label.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ AsyncPipe, TranslatePipe],
+  imports: [AsyncPipe, TranslatePipe],
 })
 export class ProductQuantityLabelComponent implements OnInit {
   @Input() for = '';

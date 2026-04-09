@@ -17,7 +17,7 @@ import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
   templateUrl: './basket-info.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [ AsyncPipe],
+  imports: [AsyncPipe],
 })
 export class BasketInfoComponent implements OnInit {
   infoMessages$: Observable<BasketInfo[]>;

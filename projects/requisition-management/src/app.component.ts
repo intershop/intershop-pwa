@@ -12,7 +12,7 @@ import { User } from 'ish-core/models/user/user.model';
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ AsyncPipe, RouterLink, RouterOutlet, TranslatePipe],
+  imports: [AsyncPipe, RouterLink, RouterOutlet, TranslatePipe],
 })
 export class AppComponent implements OnInit {
   user$: Observable<User>;

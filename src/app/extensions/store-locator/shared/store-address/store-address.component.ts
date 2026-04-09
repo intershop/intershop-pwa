@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { StoreLocation as StoreModel } from '../../models/store-location/store-location.model';

@@ -3,9 +3,6 @@ import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, SimpleCha
 import { RouterLink } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ProductCompareStatusComponent } from '../../../extensions/compare/shared/product-compare-status/product-compare-status.component';
-import { QuickorderLinkComponent } from '../../../extensions/quickorder/shared/quickorder-link/quickorder-link.component';
-import { WishlistsLinkComponent } from '../../../extensions/wishlists/shared/wishlists-link/wishlists-link.component';
 
 import { FEATURE_TOGGLE_IMPORTS } from 'ish-core/feature-toggle';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
@@ -15,6 +12,10 @@ import { LanguageSwitchComponent as LanguageSwitchComponent_1 } from 'ish-shell/
 import { LoginStatusComponent as LoginStatusComponent_1 } from 'ish-shell/header/login-status/login-status.component';
 import { MiniBasketComponent as MiniBasketComponent_1 } from 'ish-shell/header/mini-basket/mini-basket.component';
 import { UserInformationMobileComponent } from 'ish-shell/header/user-information-mobile/user-information-mobile.component';
+
+import { ProductCompareStatusComponent } from '../../../extensions/compare/shared/product-compare-status/product-compare-status.component';
+import { QuickorderLinkComponent } from '../../../extensions/quickorder/shared/quickorder-link/quickorder-link.component';
+import { WishlistsLinkComponent } from '../../../extensions/wishlists/shared/wishlists-link/wishlists-link.component';
 
 type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
 
@@ -52,7 +53,8 @@ type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
     RouterLink,
     HeaderNavigationComponent_1,
     UserInformationMobileComponent,
-    TranslatePipe],
+    TranslatePipe,
+  ],
 })
 export class HeaderDefaultComponent implements OnChanges {
   @Input() isSticky = false;
@@ -137,4 +139,3 @@ export class HeaderDefaultComponent implements OnChanges {
     this.document.getElementById('header-search-input').focus();
   }
 }
-

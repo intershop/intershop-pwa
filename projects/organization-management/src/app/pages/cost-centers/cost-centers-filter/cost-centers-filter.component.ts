@@ -96,7 +96,8 @@ export class CostCentersFilterComponent implements OnInit, AfterViewInit {
           placeholder: 'account.costcenter.filter.label.nameOrId',
           fieldClass: 'col-12',
         },
-      }];
+      },
+    ];
   }
 
   ngAfterViewInit(): void {

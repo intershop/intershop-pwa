@@ -22,7 +22,7 @@ const ShippingWrapperConfig: ConfigOption = {
   templateUrl: './checkout-shipping.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ AsyncPipe, ReactiveFormsModule, FormlyForm],
+  imports: [AsyncPipe, ReactiveFormsModule, FormlyForm],
 })
 export class CheckoutShippingComponent implements OnInit {
   shippingMethods$: Observable<ShippingMethod[]>;

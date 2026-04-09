@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -17,7 +16,7 @@ import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.
   templateUrl: './basket-cost-center-view.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ TranslatePipe],
+  imports: [TranslatePipe],
 })
 export class BasketCostCenterViewComponent {
   @Input({ required: true }) set data(val: Basket | Order | RecurringOrder) {

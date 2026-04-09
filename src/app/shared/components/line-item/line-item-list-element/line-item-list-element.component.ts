@@ -62,7 +62,8 @@ import { ProductVariationDisplayComponent } from 'ish-shared/components/product/
     DecimalPipe,
     BasketPromotionComponent,
     LineItemWarrantyComponent,
-    LineItemInformationEditComponent],
+    LineItemInformationEditComponent,
+  ],
 })
 export class LineItemListElementComponent implements OnChanges {
   @Input({ required: true }) pli: Partial<LineItemView & OrderLineItem>;

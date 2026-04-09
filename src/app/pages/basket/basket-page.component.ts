@@ -26,7 +26,8 @@ import { ShoppingBasketComponent } from './shopping-basket/shopping-basket.compo
     ShoppingBasketComponent,
     ShoppingBasketEmptyComponent,
     LoadingComponent,
-    RecentlyViewedComponent],
+    RecentlyViewedComponent,
+  ],
 })
 export class BasketPageComponent implements OnInit {
   basket$: Observable<BasketView>;

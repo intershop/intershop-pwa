@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { CategoryTileComponent } from '../category-tile/category-tile.component';
@@ -8,7 +7,7 @@ import { CategoryTileComponent } from '../category-tile/category-tile.component'
   templateUrl: './category-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ CategoryTileComponent],
+  imports: [CategoryTileComponent],
 })
 export class CategoryListComponent {
   @Input({ required: true }) categories: string[];

@@ -29,12 +29,13 @@ import { UserRolesBadgesComponent } from './user-roles-badges/user-roles-badges.
     BudgetInfoComponent,
     ErrorMessageComponent,
     LoadingComponent,
-    ModalDialogComponent, 
+    ModalDialogComponent,
     ServerSettingPipe,
     TranslatePipe,
     UserBudgetComponent,
     UserRolesBadgesComponent,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class UsersPageComponent implements OnInit {
   currentUser$: Observable<User>;

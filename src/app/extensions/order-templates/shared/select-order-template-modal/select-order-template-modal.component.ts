@@ -43,7 +43,8 @@ import { SelectOrderTemplateFormComponent } from '../select-order-template-form/
     HtmlEncodePipe,
     ReactiveFormsModule,
     FormSubmitDirective,
-    SelectOrderTemplateFormComponent],
+    SelectOrderTemplateFormComponent,
+  ],
 })
 export class SelectOrderTemplateModalComponent implements OnInit {
   /**

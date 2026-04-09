@@ -64,4 +64,3 @@ export class TrackingConfigEffects {
     this.domService.setProperty(gtmScript, 'src', `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`);
   }
 }
-

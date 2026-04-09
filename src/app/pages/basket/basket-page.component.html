@@ -2,28 +2,22 @@
   <ish-content-include includeId="include.basket.base.top.pagelet2-Include" />
 </div>
 
-@if (basket$ | async; as basket) {
-  @if (basket.lineItems.length) {
-    <ish-shopping-basket
-      [basket]="basket"
-      [error]="basketError$ | async"
-      [loading]="basketLoading$ | async"
-      (nextStep)="nextStep()"
-    />
-  } @else {
-    <ish-shopping-basket-empty [error]="basketError$ | async" />
-    @if (basketLoading$ | async) {
-      <ish-loading />
-    }
-  }
+@if (basket$ | async; as basket) { @if (basket.lineItems.length) {
+<ish-shopping-basket
+  [basket]="basket"
+  [error]="basketError$ | async"
+  [loading]="basketLoading$ | async"
+  (nextStep)="nextStep()"
+/>
 } @else {
-  <ish-shopping-basket-empty [error]="basketError$ | async" />
-  @if (basketLoading$ | async) {
-    <ish-loading />
-  }
-}
-
-@defer (when ('recently' | ishFeature)) {
+<ish-shopping-basket-empty [error]="basketError$ | async" />
+@if (basketLoading$ | async) {
+<ish-loading />
+} } } @else {
+<ish-shopping-basket-empty [error]="basketError$ | async" />
+@if (basketLoading$ | async) {
+<ish-loading />
+} } @defer (when ('recently' | ishFeature)) {
 <ish-recently-viewed />
 }
 

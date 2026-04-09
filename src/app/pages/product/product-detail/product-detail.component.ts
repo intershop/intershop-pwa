@@ -54,7 +54,8 @@ import { ProductImagesComponent } from '../product-images/product-images.compone
     ProductWarrantyComponent,
     PaymentPaypalComponent,
     ServerSettingPipe,
-    FeatureToggleDirective],
+    FeatureToggleDirective,
+  ],
 })
 export class ProductDetailComponent implements OnInit {
   product$: Observable<ProductView>;

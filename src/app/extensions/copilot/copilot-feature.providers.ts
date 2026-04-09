@@ -16,4 +16,3 @@ export function provideCopilotFeature(): (Provider | EnvironmentProviders)[] {
 }
 
 export const COPILOT_FEATURE_PROVIDERS = provideCopilotFeature();
-

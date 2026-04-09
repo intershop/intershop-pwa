@@ -63,4 +63,3 @@ export class FeatureToggleDirective {
     this.elseSet$.next(true);
   }
 }
-

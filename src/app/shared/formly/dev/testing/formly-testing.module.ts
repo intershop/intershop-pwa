@@ -4,9 +4,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {
   FORMLY_CONFIG,
   FieldArrayType,
-  FormlyField,
   FieldType,
   FieldWrapper,
+  FormlyField,
   FormlyFieldConfig,
   FormlyForm,
   FormlyModule,

@@ -29,7 +29,8 @@ import { UserBudgetComponent } from '../user-budget/user-budget.component';
     InfoBoxComponent,
     LoadingComponent,
     AuthorizationToggleDirective,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class BudgetWidgetComponent implements OnInit {
   userBudget$: Observable<UserBudget>;

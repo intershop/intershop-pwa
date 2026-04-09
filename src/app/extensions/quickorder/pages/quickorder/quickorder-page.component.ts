@@ -23,7 +23,8 @@ import { QuickorderCsvFormComponent } from '../../shared/quickorder-csv-form/qui
     TranslatePipe,
     BreadcrumbComponent,
     LoadingComponent,
-    SkipContentLinkComponent],
+    SkipContentLinkComponent,
+  ],
 })
 export class QuickorderPageComponent implements OnInit {
   loading$: Observable<boolean>;

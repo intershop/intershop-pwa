@@ -28,7 +28,7 @@ import { ProductsListComponent } from 'ish-shared/components/product/products-li
   templateUrl: './cms-product-list-rest.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ NgClass, ProductsListComponent, AsyncPipe],
+  imports: [NgClass, ProductsListComponent, AsyncPipe],
 })
 export class CMSProductListRestComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;

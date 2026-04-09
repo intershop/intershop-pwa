@@ -18,7 +18,7 @@ import { ProductRatingStarComponent } from '../product-rating-star/product-ratin
   templateUrl: './product-rating.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ AsyncPipe, ProductRatingStarComponent, TranslatePipe],
+  imports: [AsyncPipe, ProductRatingStarComponent, TranslatePipe],
 })
 export class ProductRatingComponent implements OnInit {
   @Input() hideNumberOfReviews = false;

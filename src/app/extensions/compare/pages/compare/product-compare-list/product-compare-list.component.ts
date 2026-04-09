@@ -47,7 +47,8 @@ import { ProductComparePagingComponent as ProductComparePagingComponent_1 } from
     ProductPriceComponent,
     ProductContextDirective,
     ServerHtmlDirective,
-    AttributeToStringPipe],
+    AttributeToStringPipe,
+  ],
 })
 export class ProductCompareListComponent implements OnInit {
   /**
@@ -122,4 +123,3 @@ export class ProductCompareListComponent implements OnInit {
     this.compareFacade.removeProductFromCompare(sku);
   }
 }
-

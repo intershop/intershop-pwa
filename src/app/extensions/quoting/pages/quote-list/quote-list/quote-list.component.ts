@@ -6,12 +6,11 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { DatePipe as IshDatePipe } from 'ish-core/pipes/date.pipe';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
-import { QuoteExpirationDateComponent } from '../../../shared/quote-expiration-date/quote-expiration-date.component';
-import { QuoteStateComponent } from '../../../shared/quote-state/quote-state.component';
-
 import { QuotingFacade } from '../../../facades/quoting.facade';
 import { QuotingHelper } from '../../../models/quoting/quoting.helper';
 import { Quote, QuoteRequest, QuoteStubFromAttributes } from '../../../models/quoting/quoting.model';
+import { QuoteExpirationDateComponent } from '../../../shared/quote-expiration-date/quote-expiration-date.component';
+import { QuoteStateComponent } from '../../../shared/quote-state/quote-state.component';
 
 type QuoteColumnsType =
   | 'quoteNo'

@@ -64,7 +64,8 @@ export class ProductAddToBasketComponent implements OnInit {
       // this connection is not automatically the case if the product context is not used to display product prices too (e.g. product compare)
       // the prices itself are not directly used here but in the ProductContextDisplayPropertiesService canBeOrderedWithPrice calculation
       // start with undefined to trigger the visibility calculation for cases where there is no product context (e.g. order templates)
-      this.context.select('prices').pipe(startWith(undefined))]).pipe(map(([addToBasketVisible]) => addToBasketVisible));
+      this.context.select('prices').pipe(startWith(undefined)),
+    ]).pipe(map(([addToBasketVisible]) => addToBasketVisible));
 
     this.translationKey$ = this.context.select('product').pipe(
       map(product =>
@@ -90,7 +91,8 @@ export class ProductAddToBasketComponent implements OnInit {
       hasProductError$,
       hasNoQuantity$,
       this.accountFacade.userLoading$,
-      this.basketLoading$]).pipe(map(conditions => conditions.some(c => c)));
+      this.basketLoading$,
+    ]).pipe(map(conditions => conditions.some(c => c)));
   }
 
   addToBasket() {

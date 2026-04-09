@@ -32,7 +32,8 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
     ModalDialogLinkComponent,
     LoadingComponent,
     ErrorMessageComponent,
-    ServerHtmlDirective],
+    ServerHtmlDirective,
+  ],
 })
 export class ProductWarrantyDetailsComponent {
   @Input({ required: true }) warranty: Warranty;

@@ -24,7 +24,8 @@ import { ContactFormComponent } from './contact-form/contact-form.component';
     ContactConfirmationComponent,
     ContactFormComponent,
     LoadingComponent,
-    TranslatePipe],
+    TranslatePipe,
+  ],
 })
 export class ContactPageComponent implements OnInit, OnDestroy {
   /**

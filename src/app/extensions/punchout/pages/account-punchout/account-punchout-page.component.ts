@@ -26,12 +26,13 @@ import { AccountPunchoutHeaderComponent } from './account-punchout-header/accoun
     AccountPunchoutHeaderComponent,
     AsyncPipe,
     LoadingComponent,
-    ModalDialogComponent, 
+    ModalDialogComponent,
     NgSwitch,
     NgSwitchCase,
     ServerSettingPipe,
     TranslatePipe,
-    RouterLink],
+    RouterLink,
+  ],
 })
 export class AccountPunchoutPageComponent implements OnInit {
   punchoutTypes$: Observable<PunchoutType[]>;

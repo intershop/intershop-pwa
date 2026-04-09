@@ -15,14 +15,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   templateUrl: './cms-navigation-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [
-    NgClass,
-    AsyncPipe,
-    RouterLink,
-    NgStyle,
-    NgTemplateOutlet,
-    ContentPageRoutePipe,
-    ServerHtmlDirective],
+  imports: [NgClass, AsyncPipe, RouterLink, NgStyle, NgTemplateOutlet, ContentPageRoutePipe, ServerHtmlDirective],
 })
 export class CMSNavigationPageComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;
