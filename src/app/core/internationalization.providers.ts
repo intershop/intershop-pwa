@@ -35,7 +35,7 @@ function initializeInternationalization(
     registerLocaleData(localeDe);
     registerLocaleData(localeFr);
 
-    let defaultLang = angularDefaultLocale.replace(/\-/, '_');
+    let defaultLang = angularDefaultLocale.replace(/-/, '_');
     if (transferState.hasKey(SSR_LOCALE)) {
       defaultLang = transferState.get(SSR_LOCALE, defaultLang);
     }

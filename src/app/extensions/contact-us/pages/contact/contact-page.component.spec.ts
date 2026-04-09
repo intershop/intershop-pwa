@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 
@@ -14,7 +13,7 @@ describe('Contact Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ContactPageComponent, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [ContactPageComponent, TranslateModule.forRoot()],
       providers: [{ provide: ContactUsFacade, useFactory: () => instance(mock(ContactUsFacade)) }],
     }).compileComponents();
   });

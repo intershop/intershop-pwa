@@ -1,5 +1,5 @@
+/* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 /* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
-// eslint-disable-next-line ish-custom-rules/ban-imports-file-pattern
 import { AsyncPipe, NgClass } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';

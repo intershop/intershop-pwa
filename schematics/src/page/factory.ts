@@ -70,7 +70,7 @@ async function determineRoutingModule(
   const findExisting = (candidates: string[]) =>
     candidates.find(file => host.exists(`${project.sourceRoot}/app/${file}`));
 
-  const match = options.name.match(/(.*)\-([a-z0-9]+)/);
+  const match = options.name.match(/(.*)-([a-z0-9]+)/);
   if (options.lazy && match?.[1] && match[2]) {
     const parent = match[1];
     const possibleChild = match[2];
