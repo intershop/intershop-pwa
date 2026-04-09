@@ -20,7 +20,6 @@ import { OrderTemplatesFacade } from '../../../order-templates/facades/order-tem
 import { CopilotFacade } from '../../facades/copilot.facade';
 import { ChatbotMessage, ChatbotToolCall } from '../../models/copilot-chatbot/copilot-chatbot.model';
 import { CopilotConfig } from '../../models/copilot-config/copilot-config.model';
-import { ImageRoutingBridgeService } from '../../services/image-routing-bridge/image-routing-bridge.service';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- allows access to Flowise Chatbot js functionality */
 declare let Chatbot: any;
@@ -55,7 +54,6 @@ export class CopilotComponent {
     private compareFacade: CompareFacade,
     private accountFacade: AccountFacade,
     private orderTemplatesFacade: OrderTemplatesFacade,
-    private imageRoutingBridgeService: ImageRoutingBridgeService,
     @Inject(THEME_COLOR) private themeColor: InjectSingle<typeof THEME_COLOR>
   ) {
     // afterNextRender = only rendered in browser
@@ -109,7 +107,7 @@ export class CopilotComponent {
     let previousLoading = false;
 
     if (copilotConfig.imageRoutingEnabled) {
-      this.imageRoutingBridgeService.enable();
+      this.copilotFacade.enableImageRouting();
     }
 
     Chatbot.init({
