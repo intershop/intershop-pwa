@@ -38,9 +38,7 @@
         }
       </ul>
       <div class="clearfix" [ishServerHtml]="'footer.disclaimer' | translate"></div>
-      @defer {
-        <ish-content-include includeId="include.footer.content.pagelet2-Include" />
-      }
+      <ish-content-include includeId="include.footer.content.pagelet2-Include" />
       <div class="clearfix" [ishServerHtml]="'footer.copyright' | translate : { appVersion: appVersion }"></div>
     </div>
   </div>
