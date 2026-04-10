@@ -32,7 +32,8 @@ beforeEach(() => {
       typeof arg !== 'string' ||
       !(
         arg.startsWith('Navigation triggered outside Angular zone') ||
-        arg.startsWith('A router outlet has not been instantiated during routes activation. URL Segment:')
+        arg.startsWith('A router outlet has not been instantiated during routes activation. URL Segment:') ||
+        arg.startsWith('PayPal')
       )
     ) {
       // eslint-disable-next-line no-console
