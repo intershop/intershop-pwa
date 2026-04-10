@@ -29,6 +29,10 @@ If `app_sf_base_cm` is not the correct resource set ID for the view contexts use
 > [!NOTE]
 > Using view context REST requests with the added resource set ID requires ICM 12.1.0 or later.
 
+**RegEx support for `OVERRIDE_IDENTITY_PROVIDERS` configuration**
+
+The `OVERRIDE_IDENTITY_PROVIDERS` matching pattern configuration has been enhanced to not only support exact matches with `MULTI_CHANNEL` matching patterns; it can now also be configured as a RegEx that matches several `MULTI_CHANNEL` matching patterns.
+
 ## From 9.1.0 to 10.0.0
 
 **Node.js update**

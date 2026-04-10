@@ -74,17 +74,9 @@ services:
       #   params:
       OVERRIDE_IDENTITY_PROVIDERS: |
         .+:
-          - path: /en/punchout
+          - path: /punchout
             type: Punchout
-          - path: /de/punchout
-            type: Punchout
-          - path: /fr/punchout
-            type: Punchout
-          - path: /en/cobrowse
-            type: CoBrowse
-          - path: /de/cobrowse
-            type: CoBrowse
-          - path: /fr/cobrowse
+          - path: /cobrowse
             type: CoBrowse
       # MULTI_CHANNEL_SOURCE: env:///ASDF?type=application/yaml
       MULTI_CHANNEL: |
