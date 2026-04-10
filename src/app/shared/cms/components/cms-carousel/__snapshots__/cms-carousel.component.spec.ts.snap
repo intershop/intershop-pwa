@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Cms Carousel Component should be created 1`] = `
 <div ng-reflect-ng-class="foo-class" class="foo-class">

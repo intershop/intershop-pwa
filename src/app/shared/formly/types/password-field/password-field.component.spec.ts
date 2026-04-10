@@ -13,6 +13,15 @@ describe('Password Field Component', () => {
   let fixture: ComponentFixture<FormlyTestingContainerComponent>;
   let element: HTMLElement;
 
+  beforeAll(() => {
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: jest.fn((query: string) => ({
+        media: query,
+      })),
+    });
+  });
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [

@@ -9,7 +9,6 @@
 
     /* Modules */
     "module": "CommonJs",
-    "isolatedModules": true,
     "allowJs": true
   },
   "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]

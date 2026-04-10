@@ -233,17 +233,17 @@ This increases readability of test cases.
 :warning:
 
 ```typescript
-it('should create the app', async(() => {
+it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const component = fixture.componentInstance;
     ...
 });
-it('should have the title "app"', async(() => {
+it('should have the title "app"', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const component = fixture.componentInstance;
    ...
 });
-it('should match the text passed in Header Component', async(() => {
+it('should match the text passed in Header Component', () => {
     const fixture = TestBed.createComponent(AppComponent);
 });
 ```
@@ -256,8 +256,8 @@ describe('AppComponent', () => {
     let fixture: ComponentFixture<AppComponent>;
     let component: AppComponent;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
             declarations: [ ... ] });
         fixture = TestBed.createComponent(AppComponent);
         component = fixture.componentInstance;
@@ -276,13 +276,13 @@ If you do not need the following features, do not use them:
 
 - `ComponentFixture.debugElement`
 - `TestBed`
-- `async, fakeAsync`
+- `waitForAsync, fakeAsync`
 - `inject`
 
 :warning: **Wrong Test With Useless Features (TestBed, ComponentFixture.debugElement)**
 
 ```typescript
-it('should create the app', async(() => {
+it('should create the app', waitForAsync(() => {
   const app = fixture.debugElement.componentInstance;
   expect(app).toBeTruthy();
 }));
@@ -299,7 +299,7 @@ it('should be created', () => {
 
 ### Structure Long Tests
 
-The `describe` methods in Jasmine are nestable.
+The `describe` methods are nestable.
 You can use this to group various `it` methods into a nested `describe` where you can also use an additional `beforeEach` initialization method.
 
 :heavy_check_mark: **Nested describe Methods**
@@ -413,7 +413,7 @@ Be careful when using `toBeDefined`, because a dynamic language like JavaScript 
 
 ### Be Careful With Variable Initialization
 
-Jasmine does not automatically reset all your variables for each test like other test frameworks do.
+Jest does not automatically reset all your variables for each test like other test frameworks do.
 If you initialize directly under `describe`, the variable is initialized only once.
 
 > [!WARNING]
