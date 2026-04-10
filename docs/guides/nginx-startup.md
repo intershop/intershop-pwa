@@ -197,7 +197,9 @@ nginx:
           type: Punchout
 ```
 
-This setting will generate rewrite rules for the URL paths for all given domains.
+The configuration `.+` will generate rewrite rules for all [Multi-Site Configurations](../guides/multi-site-configurations.md#Examples).
+The `OVERRIDE_IDENTITY_PROVIDERS` configuration can either exactly match a `MULTI_CHANNEL` configuration or be configured as a RegEx that matches several `MULTI_CHANNEL` configurations.
+
 Alternatively, the source can be supplied by setting `OVERRIDE_IDENTITY_PROVIDERS_SOURCE` in any supported format by gomplate.
 
 If no environment variable is set, this feature is disabled.
