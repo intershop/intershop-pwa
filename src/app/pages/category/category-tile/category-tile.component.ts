@@ -5,9 +5,9 @@ import { Observable } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
+import { ImageLoading } from 'ish-core/models/image/image.model';
 import { CategoryRoutePipe } from 'ish-core/routing/category/category-route.pipe';
 import { CategoryImageComponent } from 'ish-shared/components/category/category-image/category-image.component';
-import { ImageLoading } from 'ish-core/models/image/image.model';
 
 /**
  * The Category Tile Component renders a category tile with the image of the

@@ -14,8 +14,8 @@ import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-in
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { PriceType } from 'ish-core/models/price/price.model';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { CheckoutPaymentComponent } from './checkout-payment/checkout-payment.component';
 

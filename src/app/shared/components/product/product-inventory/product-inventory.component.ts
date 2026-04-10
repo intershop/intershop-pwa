@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, map, shareReplay, startWith } from 'rxjs';
@@ -18,7 +18,7 @@ enum StockLevel {
   styleUrls: ['./product-inventory.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, TranslatePipe],
+  imports: [AsyncPipe, TranslatePipe, NgClass],
 })
 export class ProductInventoryComponent implements OnInit {
   @Input() displayType: 'default' | 'extended' = 'default';
