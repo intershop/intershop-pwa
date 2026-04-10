@@ -9,10 +9,10 @@ kb_sync_latest_only
 
 ## From 10.1.0 to 11.0.0
 
-**CMS View Contexts REST requests with Resource Set ID**
+**CMS view context REST requests with resource set ID**
 
-The REST requests to get CMS View Context data now append the resource set ID (the defining view context models cartridge name) by default to improve performance.
-A default resource set ID - `app_sf_base_cm` - is defined at the [`CMSService`](../../src/app/core/services/cms/cms.service.ts) and can be overridden at the individual view context inclusion if necessary.
+The REST requests to get CMS view context data now append the resource set ID (the defining view context model's cartridge name) by default to improve performance.
+A default resource set ID, `app_sf_base_cm`, is defined at the [`CMSService`](../../src/app/core/services/cms/cms.service.ts) and can be overridden at the individual view context inclusion if necessary.
 
 ```html
 <ish-content-viewcontext
@@ -22,12 +22,12 @@ A default resource set ID - `app_sf_base_cm` - is defined at the [`CMSService`](
 />
 ```
 
-In migration projects nothing needs to be done if the default resource set ID is sufficient.
-If the default resource set ID is not sufficient, the `resourceSetId` input parameter needs to be added to all `ish-content-viewcontext` uses in the project that require a different resource set ID.
-If `app_sf_base_cm` is not the correct resource set ID for the view contexts used in the project, it is also possible to change the `defaultResourceSetId` at the `CMSService` to avoid adding the `resourceSetId` input parameter to every `ish-content-viewcontext` use.
+In migration projects, nothing needs to be done if the default resource set ID is sufficient.
+If the default resource set ID is not sufficient, the `resourceSetId` input parameter needs to be added to all `ish-content-viewcontext` usages in the project that require a different resource set ID.
+If `app_sf_base_cm` is not the correct resource set ID for the view contexts used in the project, you can also change the `defaultResourceSetId` at the `CMSService` to avoid adding the `resourceSetId` input parameter to every `ish-content-viewcontext` usage.
 
 > [!NOTE]
-> Making View Context REST requests with the added resource set ID requires ICM 12.1.0.
+> Making view context REST requests with the added resource set ID requires ICM 12.1.0.
 
 ## From 9.1.0 to 10.0.0
 
