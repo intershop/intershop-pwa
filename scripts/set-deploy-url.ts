@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import * as fs from 'fs';
-import * as glob from 'glob';
+import { globSync } from 'glob';
 import * as path from 'path';
 
 import { setDeployUrlInFile } from '../src/ssr/deploy-url';
@@ -16,7 +16,7 @@ if (!deployUrl.endsWith('/')) {
   deployUrl += '/';
 }
 
-glob.sync('dist/browser/*.{js,css,html}').forEach(file => {
+globSync('dist/browser/*.{js,css,html}').forEach(file => {
   console.log(`setting deployUrl "${deployUrl}" in`, file);
 
   const input = fs.readFileSync(file, { encoding: 'utf-8' });

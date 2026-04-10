@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
-const glob = require('glob');
+const { globSync } = require('glob');
 const fs = require('fs');
 
 if (!fs.existsSync('src/ssr/server-scripts/ecosystem-ports.json')) {
@@ -25,7 +25,7 @@ fs.writeFileSync(
   { encoding: 'utf-8' }
 );
 
-glob.sync('./src/ssr/server-scripts/*.js', { dotRelative: true }).forEach(file => {
+globSync('./src/ssr/server-scripts/*.js', { dotRelative: true }).forEach(file => {
   console.log('compiling', file);
   webpack(
     {

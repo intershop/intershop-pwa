@@ -1,4 +1,4 @@
-const glob = require('glob');
+const { globSync } = require('glob');
 const fs = require('fs');
 const path = require('path');
 
@@ -6,10 +6,9 @@ function countFolders(pathName) {
   return (pathName.match(/\//g) || []).length;
 }
 
-const content = glob
-  .sync('**/.gitignore', {
-    ignore: ['**/node_modules/**'],
-  })
+const content = globSync('**/.gitignore', {
+  ignore: ['**/node_modules/**'],
+})
   .sort((a, b) => countFolders(a) - countFolders(b))
   .sort()
   .map(gitignore => {
