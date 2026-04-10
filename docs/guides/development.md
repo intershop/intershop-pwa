@@ -197,4 +197,4 @@ The parallelism of `npm run test` and `npm run build:multi` can be customized wi
 
 The environment variable `JEST_MAX_WORKERS` is deferred to [`maxWorkers`](https://jestjs.io/docs/configuration#maxworkers-number--string) of `jest`.
 
-The environment variable `PWA_BUILD_MAX_WORKERS` is deferred to [`--max-parallel`](https://github.com/mysticatea/npm-run-all/blob/master/docs/npm-run-all.md#npm-run-all-command) of `npm-run-all`.
+The environment variable `PWA_BUILD_MAX_WORKERS` is deferred to [`--max-parallel`](https://github.com/bcomnes/npm-run-all2/blob/master/docs/npm-run-all.md) of `npm-run-all2`.

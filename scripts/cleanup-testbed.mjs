@@ -2,13 +2,11 @@ import { execSync, spawnSync } from 'child_process';
 import { copyFileSync, existsSync, statSync } from 'fs';
 import { globSync } from 'glob';
 import { minimatch } from 'minimatch';
-import runAll from 'npm-run-all';
+import runAll from 'npm-run-all2';
 import { cpus } from 'os';
 import { basename, dirname, join, normalize, sep } from 'path';
 import rimraf from 'rimraf';
 import { Node, Project } from 'ts-morph';
-
-/* eslint-disable no-console */
 
 const args = process.argv.splice(2).filter(a => !a.startsWith('--'));
 
@@ -96,7 +94,7 @@ if (args.length === 0) {
   let statRes;
   try {
     statRes = statSync(normalizedPath);
-  } catch (err) {
+  } catch {
     console.warn(`File "${normalizedPath}" doesn't exist.`);
   }
   if (!minimatch(normalizedPath, jestProjects)) {
@@ -224,7 +222,7 @@ if (!files.length) {
                     foundSomething = true;
 
                     break;
-                  } catch (err) {
+                  } catch {
                     continue next;
                   }
                 }
