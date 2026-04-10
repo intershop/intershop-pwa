@@ -7,8 +7,8 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
 import { PAYPAL_BUTTON_STYLING } from 'ish-core/utils/paypal/adapters/paypal-adapters.styling';
+import { PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 import { PaypalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
-import { PaypalComponent } from 'ish-core/utils/paypal/paypal-model/paypal.model';
 
 interface PaypalShippingAddress {
   city: string;
@@ -41,7 +41,7 @@ export class PaypalButtonsAdapter {
    */
   renderButtons(config: PaypalComponentsConfig): Promise<void> {
     const containerId = config.containerId;
-    const paypalObject = (window as unknown as Record<string, PaypalComponent>)[config.scriptNamespace];
+    const paypalObject = PaypalConfigService.getPaypalComponent(config.paypalPaymentMethod);
     // Verify element exists right before rendering
     if (!this.document.getElementById(containerId)) {
       throw new Error(`Container element '${containerId}' does not exist in DOM`);

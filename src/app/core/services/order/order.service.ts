@@ -71,7 +71,6 @@ export class OrderService {
    */
   createOrder(basketId: string, termsAndConditionsAccepted: boolean = false): Observable<Order> {
     const params = new HttpParams().set('include', this.allOrderIncludes.join());
-
     if (!basketId) {
       return throwError(() => new Error('createOrder() called without basketId'));
     }

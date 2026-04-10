@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { firstValueFrom, of } from 'rxjs';
+import { Observable, firstValueFrom, of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -11,6 +11,7 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { PaypalAdapterTypes, PaypalPageType } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 
 import { PaypalAdaptersBuilder } from './paypal-adapters.builder';
+import { PaypalApplePayAdapter } from './paypal-apple-pay/paypal-apple-pay.adapter';
 import { PaypalButtonsAdapter } from './paypal-buttons/paypal-buttons.adapter';
 import { PaypalCardFieldsAdapter } from './paypal-card-fields/paypal-card-fields.adapter';
 import { PaypalGooglePayAdapter } from './paypal-google-pay/paypal-google-pay.adapter';
@@ -24,6 +25,7 @@ describe('Paypal Adapters Builder', () => {
   let paypalMessages: PaypalMessagesAdapter;
   let paypalCardFields: PaypalCardFieldsAdapter;
   let paypalGooglePay: PaypalGooglePayAdapter;
+  let paypalApplePay: PaypalApplePayAdapter;
 
   const mockBasket = BasketMockData.getBasket();
   const mockPaymentMethod = {
@@ -39,17 +41,21 @@ describe('Paypal Adapters Builder', () => {
     paypalMessages = mock(PaypalMessagesAdapter);
     paypalCardFields = mock(PaypalCardFieldsAdapter);
     paypalGooglePay = mock(PaypalGooglePayAdapter);
+    paypalApplePay = mock(PaypalApplePayAdapter);
 
     when(checkoutFacade.basket$).thenReturn(of(mockBasket));
     when(shoppingFacade.selectedProductId$).thenReturn(of('test-product-sku'));
     when(shoppingFacade.productPrices$('test-product-sku')).thenReturn(of({ salePrice: { value: 49.99 } as Price }));
     when(paypalButtons.renderButtons(anything())).thenReturn(Promise.resolve());
     when(paypalMessages.renderMessages(anything())).thenReturn(Promise.resolve());
-    when(paypalCardFields.renderCardFields(anything(), anything())).thenReturn(Promise.resolve());
+    when(paypalCardFields.renderCardFields(anything())).thenReturn(Promise.resolve());
+    when(paypalGooglePay.renderGooglePayButton(anything())).thenReturn(Promise.resolve());
+    when(paypalApplePay.renderApplePayButton(anything())).thenReturn(Promise.resolve());
 
     TestBed.configureTestingModule({
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        { provide: PaypalApplePayAdapter, useFactory: () => instance(paypalApplePay) },
         { provide: PaypalButtonsAdapter, useFactory: () => instance(paypalButtons) },
         { provide: PaypalCardFieldsAdapter, useFactory: () => instance(paypalCardFields) },
         { provide: PaypalGooglePayAdapter, useFactory: () => instance(paypalGooglePay) },
@@ -220,7 +226,158 @@ describe('Paypal Adapters Builder', () => {
 
         await builder.build(config);
 
-        verify(paypalCardFields.renderCardFields('test-namespace', mockPaymentMethod)).once();
+        verify(paypalCardFields.renderCardFields(mockPaymentMethod)).once();
+      });
+    });
+
+    describe('PayPal Google Pay', () => {
+      const mockGooglePayPaymentMethod = {
+        id: 'ISH_PAYPAL_GOOGLEPAY',
+        serviceId: 'PayPalGooglePay',
+        displayName: 'Google Pay',
+      } as PaymentMethod;
+
+      it('should render Google Pay button component', async () => {
+        const config = {
+          pageType: 'checkout' as PaypalPageType,
+          scriptNamespace: 'PPCP_ISH_PAYPAL_GOOGLEPAY',
+          adapterType: 'Googlepay' as PaypalAdapterTypes,
+          paypalPaymentMethod: mockGooglePayPaymentMethod,
+          containerId: 'googlepay-button-container',
+          merchantId: 'Test Merchant',
+        };
+
+        await builder.build(config);
+
+        verify(paypalGooglePay.renderGooglePayButton(anything())).once();
+      });
+
+      it('should pass correct config to Google Pay adapter', async () => {
+        const config = {
+          pageType: 'checkout' as PaypalPageType,
+          scriptNamespace: 'PPCP_ISH_PAYPAL_GOOGLEPAY',
+          adapterType: 'Googlepay' as PaypalAdapterTypes,
+          paypalPaymentMethod: mockGooglePayPaymentMethod,
+          containerId: 'googlepay-button-container',
+          merchantId: 'My Shop',
+        };
+
+        await builder.build(config);
+
+        const [passedConfig] = capture(paypalGooglePay.renderGooglePayButton).last();
+        expect(passedConfig.containerId).toBe('googlepay-button-container');
+        expect(passedConfig.merchantId).toBe('My Shop');
+        expect(passedConfig.paypalPaymentMethod).toEqual(mockGooglePayPaymentMethod);
+      });
+
+      it('should handle Google Pay render error gracefully', async () => {
+        when(paypalGooglePay.renderGooglePayButton(anything())).thenReturn(
+          Promise.reject(new Error('Google Pay not available'))
+        );
+
+        const config = {
+          pageType: 'checkout' as PaypalPageType,
+          scriptNamespace: 'PPCP_ISH_PAYPAL_GOOGLEPAY',
+          adapterType: 'Googlepay' as PaypalAdapterTypes,
+          paypalPaymentMethod: mockGooglePayPaymentMethod,
+          containerId: 'googlepay-button-container',
+        };
+
+        await expect(firstValueFrom(builder.build(config) as Observable<void>)).rejects.toThrow(
+          'Google Pay not available'
+        );
+      });
+    });
+
+    describe('PayPal Apple Pay', () => {
+      const mockApplePayPaymentMethod = {
+        id: 'ISH_PAYPAL_APPLEPAY',
+        serviceId: 'PayPalApplePay',
+        displayName: 'Apple Pay',
+      } as PaymentMethod;
+
+      it('should render Apple Pay button component', async () => {
+        const config = {
+          pageType: 'checkout' as PaypalPageType,
+          scriptNamespace: 'PPCP_ISH_PAYPAL_APPLEPAY',
+          adapterType: 'Applepay' as PaypalAdapterTypes,
+          paypalPaymentMethod: mockApplePayPaymentMethod,
+          containerId: 'applepay-button-container',
+          merchantId: 'Test Merchant',
+        };
+
+        await builder.build(config);
+
+        verify(paypalApplePay.renderApplePayButton(anything())).once();
+      });
+
+      it('should pass correct config to Apple Pay adapter', async () => {
+        const config = {
+          pageType: 'checkout' as PaypalPageType,
+          scriptNamespace: 'PPCP_ISH_PAYPAL_APPLEPAY',
+          adapterType: 'Applepay' as PaypalAdapterTypes,
+          paypalPaymentMethod: mockApplePayPaymentMethod,
+          containerId: 'applepay-button-container',
+          merchantId: 'My Apple Shop',
+        };
+
+        await builder.build(config);
+
+        const [passedConfig] = capture(paypalApplePay.renderApplePayButton).last();
+        expect(passedConfig.containerId).toBe('applepay-button-container');
+        expect(passedConfig.merchantId).toBe('My Apple Shop');
+        expect(passedConfig.paypalPaymentMethod).toEqual(mockApplePayPaymentMethod);
+      });
+
+      it('should handle Apple Pay render error gracefully', async () => {
+        when(paypalApplePay.renderApplePayButton(anything())).thenReturn(
+          Promise.reject(new Error('Apple Pay not available'))
+        );
+
+        const config = {
+          pageType: 'checkout' as PaypalPageType,
+          scriptNamespace: 'PPCP_ISH_PAYPAL_APPLEPAY',
+          adapterType: 'Applepay' as PaypalAdapterTypes,
+          paypalPaymentMethod: mockApplePayPaymentMethod,
+          containerId: 'applepay-button-container',
+        };
+
+        await expect(firstValueFrom(builder.build(config) as Observable<void>)).rejects.toThrow(
+          'Apple Pay not available'
+        );
+      });
+
+      it('should handle Apple Pay not eligible error', async () => {
+        when(paypalApplePay.renderApplePayButton(anything())).thenReturn(
+          Promise.reject(new Error('Apple Pay is not eligible for this merchant'))
+        );
+
+        const config = {
+          pageType: 'checkout' as PaypalPageType,
+          scriptNamespace: 'PPCP_ISH_PAYPAL_APPLEPAY',
+          adapterType: 'Applepay' as PaypalAdapterTypes,
+          paypalPaymentMethod: mockApplePayPaymentMethod,
+          containerId: 'applepay-button-container',
+        };
+
+        await expect(firstValueFrom(builder.build(config) as Observable<void>)).rejects.toThrow(
+          'Apple Pay is not eligible for this merchant'
+        );
+      });
+    });
+
+    describe('Unsupported adapter type', () => {
+      it('should reject with error for unsupported adapter type', async () => {
+        const config = {
+          pageType: 'checkout' as PaypalPageType,
+          scriptNamespace: 'test-namespace',
+          adapterType: 'UnsupportedType' as PaypalAdapterTypes,
+          containerId: 'container',
+        };
+
+        await expect(firstValueFrom(builder.build(config) as Observable<void>)).rejects.toThrow(
+          'Unsupported PayPal component type: UnsupportedType'
+        );
       });
     });
   });

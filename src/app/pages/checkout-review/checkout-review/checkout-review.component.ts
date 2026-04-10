@@ -82,6 +82,9 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
     if (method?.capabilities?.includes('PaypalGooglePay')) {
       return 'Googlepay';
     }
+    if (method?.capabilities?.includes('PaypalApplePay')) {
+      return 'Applepay';
+    }
 
     return 'Buttons';
   }

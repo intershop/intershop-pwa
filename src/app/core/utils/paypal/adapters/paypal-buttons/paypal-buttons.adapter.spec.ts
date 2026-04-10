@@ -73,7 +73,7 @@ describe('Paypal Buttons Adapter', () => {
 
   const mockConfig: PaypalComponentsConfig = {
     containerId: 'paypal-button-container',
-    scriptNamespace: 'testPaypal',
+    scriptNamespace: 'PPCP_ISH_PAYPAL',
     paypalPaymentMethod: mockPaymentMethod,
     pageType: 'checkout',
     adapterType: 'Buttons',
@@ -96,7 +96,7 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     // Setup mock PayPal SDK on window
-    (window as any).testPaypal = {
+    (window as any).PPCP_ISH_PAYPAL = {
       Buttons: mockPaypalButtons,
     };
 
@@ -113,7 +113,7 @@ describe('Paypal Buttons Adapter', () => {
 
   afterEach(() => {
     // Cleanup window mock
-    delete (window as any).testPaypal;
+    delete (window as any).PPCP_ISH_PAYPAL;
     // Cleanup DOM elements
     document.body.innerHTML = '';
   });
@@ -480,30 +480,28 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     it('should throw error when PayPal Buttons is not available', async () => {
-      delete (window as any).testPaypal.Buttons;
+      delete (window as any).PPCP_ISH_PAYPAL.Buttons;
 
       try {
         await paypalButtons.renderButtons(mockConfig);
         fail('Should have thrown an error');
       } catch (error) {
         expect(error.message).toBe(
-          "PayPal Buttons not available in loaded paypal sdk script with namespace 'testPaypal'"
+          "PayPal Buttons not available in loaded paypal sdk script with namespace 'PPCP_ISH_PAYPAL'"
         );
       }
     });
 
     it('should throw error when PayPal namespace does not exist', async () => {
-      const invalidConfig = {
-        ...mockConfig,
-        scriptNamespace: 'nonExistentNamespace',
-      };
+      // Delete the PayPal namespace to simulate it not being loaded
+      delete (window as any).PPCP_ISH_PAYPAL;
 
       try {
-        await paypalButtons.renderButtons(invalidConfig);
+        await paypalButtons.renderButtons(mockConfig);
         fail('Should have thrown an error');
       } catch (error) {
         expect(error.message).toBe(
-          "PayPal Buttons not available in loaded paypal sdk script with namespace 'nonExistentNamespace'"
+          "PayPal Buttons not available in loaded paypal sdk script with namespace 'PPCP_ISH_PAYPAL'"
         );
       }
     });

@@ -7,6 +7,7 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
 import { PAYPAL_GOOGLE_PAY_BUTTON_STYLING } from 'ish-core/utils/paypal/adapters/paypal-adapters.styling';
+import { PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 import { PaypalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 import {
   GooglePayButton,
@@ -64,15 +65,14 @@ export class PaypalGooglePayAdapter {
       .paypalClientConfig$()
       .pipe(take(1))
       .subscribe(paypalSettings => {
-        this.googlePayEnvironment = paypalSettings.googlePayEnvironment ? paypalSettings.googlePayEnvironment : 'TEST';
+        this.googlePayEnvironment = paypalSettings?.googlePayEnvironment ?? 'TEST';
       });
 
     if (!container) {
       return Promise.reject(new Error(`Container element '${containerId}' not found in DOM`));
     }
 
-    // Access PayPal SDK from window object
-    const paypalObject = (window as unknown as Record<string, PaypalComponent>)[config.scriptNamespace];
+    const paypalObject = PaypalConfigService.getPaypalComponent(config.paypalPaymentMethod);
 
     if (!paypalObject?.Googlepay) {
       return Promise.reject(new Error(`PayPal Googlepay not available on namespace '${config.scriptNamespace}'`));
@@ -127,10 +127,8 @@ export class PaypalGooglePayAdapter {
       this.scriptLoaderService.load(PaypalGooglePayAdapter.GOOGLE_PAY_SDK_URL).pipe(take(1))
     );
     if (!result.loaded) {
-      Promise.reject(new Error('Failed to load Google Pay SDK'));
+      throw new Error('Failed to load Google Pay SDK');
     }
-
-    return Promise.resolve();
   }
 
   /**

@@ -129,21 +129,23 @@
           <div id="checkout-button-help" aria-live="polite" class="visually-hidden">
             {{ 'checkout.order_review.submit.validation.message' | translate }}
           </div>
-          } @if (paypalPaymentMethod$ | async; ; as paypalMethod) {
+          } @if (paypalPaymentMethod$ | async; as paypalMethod) {
 
-          <button
-            type="submit"
-            class="btn p-0"
+          <div
+            role="button"
+            tabindex="-1"
             (click)="(form.invalid || multipleBuckets || submitting) && tcForm.onSubmit($any($event))"
             (keydown.enter)="(form.invalid || multipleBuckets || submitting) && tcForm.onSubmit($any($event))"
+            [attr.aria-label]="'checkout.button.processing.label.aria_label' | translate"
           >
             <ish-payment-paypal
               [class.pe-none]="form.invalid || multipleBuckets || submitting"
+              [attr.inert]="form.invalid || multipleBuckets || submitting ? '' : null"
               [adapterType]="getPaypalAdapterType(paypalMethod)"
               [pageType]="'checkout'"
               [selectedPaymentMethod]="paypalMethod"
             />
-          </button>
+          </div>
 
           } @else {
 

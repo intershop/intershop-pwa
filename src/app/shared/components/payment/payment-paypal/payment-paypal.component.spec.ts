@@ -12,6 +12,7 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { PaypalAdaptersBuilder } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
+import { PaypalApplePayAdapter } from 'ish-core/utils/paypal/adapters/paypal-apple-pay/paypal-apple-pay.adapter';
 import { PaypalCardFieldsAdapter } from 'ish-core/utils/paypal/adapters/paypal-card-fields/paypal-card-fields.adapter';
 import { PaypalGooglePayAdapter } from 'ish-core/utils/paypal/adapters/paypal-google-pay/paypal-google-pay.adapter';
 import { PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
@@ -28,6 +29,7 @@ describe('Payment Paypal Component', () => {
   let paypalAdaptersBuilder: PaypalAdaptersBuilder;
   let paypalCardFields: PaypalCardFieldsAdapter;
   let paypalGooglePayAdapter: PaypalGooglePayAdapter;
+  let paypalApplePayAdapter: PaypalApplePayAdapter;
   let router: Router;
   let closeForm$: Subject<void>;
 
@@ -54,6 +56,7 @@ describe('Payment Paypal Component', () => {
     paypalAdaptersBuilder = mock(PaypalAdaptersBuilder);
     paypalCardFields = mock(PaypalCardFieldsAdapter);
     paypalGooglePayAdapter = mock(PaypalGooglePayAdapter);
+    paypalApplePayAdapter = mock(PaypalApplePayAdapter);
     router = mock(Router);
     closeForm$ = new Subject<void>();
 
@@ -68,6 +71,7 @@ describe('Payment Paypal Component', () => {
     when(paypalCardFields.cvvFieldError$).thenReturn(new BehaviorSubject<boolean>(false));
     when(paypalCardFields.expiryFieldError$).thenReturn(new BehaviorSubject<boolean>(false));
     when(paypalGooglePayAdapter.processPayment$).thenReturn(new BehaviorSubject<boolean>(false));
+    when(paypalApplePayAdapter.processPayment$).thenReturn(new BehaviorSubject<boolean>(false));
     when(router.url).thenReturn('/checkout/payment');
 
     await TestBed.configureTestingModule({
@@ -84,6 +88,7 @@ describe('Payment Paypal Component', () => {
             { provide: PaypalCardFieldsAdapter, useFactory: () => instance(paypalCardFields) },
             { provide: PaypalAdaptersBuilder, useFactory: () => instance(paypalAdaptersBuilder) },
             { provide: PaypalGooglePayAdapter, useFactory: () => instance(paypalGooglePayAdapter) },
+            { provide: PaypalApplePayAdapter, useFactory: () => instance(paypalApplePayAdapter) },
           ],
         },
       })

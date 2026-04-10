@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
 import { PAYPAL_MESSAGE_STYLING } from 'ish-core/utils/paypal/adapters/paypal-adapters.styling';
-import { PaypalComponent } from 'ish-core/utils/paypal/paypal-model/paypal.model';
+import { PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 
 /**
  * Representation of the PayPal SDK Messages object, responsible for rendering PayPal messages.
@@ -22,7 +22,7 @@ export class PaypalMessagesAdapter {
    * @returns
    */
   renderMessages(config: PaypalComponentsConfig): Promise<void> {
-    const paypalObject = (window as unknown as Record<string, PaypalComponent>)[config.scriptNamespace];
+    const paypalObject = PaypalConfigService.getPaypalComponent();
     const containerId = config.containerId;
 
     // Verify element exists at initialization

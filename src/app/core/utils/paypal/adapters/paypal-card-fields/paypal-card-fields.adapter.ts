@@ -7,6 +7,7 @@ import { map, take } from 'rxjs/operators';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PAYPAL_CART_FIELDS_STYLING } from 'ish-core/utils/paypal/adapters/paypal-adapters.styling';
+import { PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 import { PaypalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 import {
   PaypalCardFieldError,
@@ -69,13 +70,17 @@ export class PaypalCardFieldsAdapter {
    * @param paymentMethod - PayPal payment method configuration
    * @returns Promise that resolves when all fields are rendered
    */
-  async renderCardFields(scriptNamespace: string, paymentMethod: PaymentMethod): Promise<void> {
-    // Access PayPal SDK from window object
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const paypalObject = (window as any)[scriptNamespace];
+  async renderCardFields(paymentMethod: PaymentMethod): Promise<void> {
+    const paypalObject = PaypalConfigService.getPaypalComponent(paymentMethod);
 
     if (!paypalObject?.CardFields) {
-      return Promise.reject(new Error(`PayPal CardFields not available on namespace '${scriptNamespace}'`));
+      return Promise.reject(
+        new Error(
+          `PayPal CardFields not available on namespace '${PaypalConfigService.getPaypalScriptNameSpace(
+            paymentMethod
+          )}'`
+        )
+      );
     }
 
     // Reset state for reinitialization

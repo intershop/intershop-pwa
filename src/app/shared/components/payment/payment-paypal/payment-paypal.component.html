@@ -1,6 +1,6 @@
 <div class="row">
   <div [ngClass]="getContainerClass()">
-    <!-- PayPal Button container -->
+    <!-- PayPal Button, Messages, Google Pay and Apple Pay container -->
     @if (adapterType !== 'CardFields') { @if(processPayment$ | async) {
     <div class="d-grid">
       <button

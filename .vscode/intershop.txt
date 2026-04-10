@@ -4,6 +4,7 @@ addtocart
 angulartics
 anonymization
 apitoken
+Applepay
 appr
 appserver
 backoffice
@@ -96,6 +97,7 @@ loglevel
 luarocks
 matomo
 maxlength
+merchantid
 mergeable
 minibasket
 minlength

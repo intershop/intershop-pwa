@@ -9,7 +9,7 @@ import {
   Output,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, EMPTY, Observable, shareReplay, switchMap, take } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, merge, shareReplay, switchMap, take, tap } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -17,6 +17,7 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalAdaptersBuilder, PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
+import { PaypalApplePayAdapter } from 'ish-core/utils/paypal/adapters/paypal-apple-pay/paypal-apple-pay.adapter';
 import { PaypalButtonsAdapter } from 'ish-core/utils/paypal/adapters/paypal-buttons/paypal-buttons.adapter';
 import { PaypalCardFieldsAdapter } from 'ish-core/utils/paypal/adapters/paypal-card-fields/paypal-card-fields.adapter';
 import { PaypalGooglePayAdapter } from 'ish-core/utils/paypal/adapters/paypal-google-pay/paypal-google-pay.adapter';
@@ -44,6 +45,7 @@ import { ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
     PaypalCardFieldsAdapter,
     PaypalMessagesAdapter,
     PaypalGooglePayAdapter,
+    PaypalApplePayAdapter,
   ],
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit {
@@ -74,6 +76,9 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   /** Flag for current state of payment processing  */
   processPayment$ = new BehaviorSubject(false);
 
+  /** Merchant ID for PayPal transactions. */
+  private merchantId: string;
+
   /** Error state observables for card fields */
   nameFieldError$: Observable<boolean>;
   numberFieldError$: Observable<boolean>;
@@ -86,7 +91,8 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
     private paypalConfigService: PaypalConfigService,
     private paypalAdaptersBuilder: PaypalAdaptersBuilder,
     private paypalCardFields: PaypalCardFieldsAdapter,
-    private paypalGooglePay: PaypalGooglePayAdapter
+    private paypalGooglePay: PaypalGooglePayAdapter,
+    private paypalApplePay: PaypalApplePayAdapter
   ) {}
 
   ngOnInit(): void {
@@ -99,6 +105,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
     this.loadingScript$ = this.appFacade.serverSetting$<PaypalConfig>('payment.paypal').pipe(
       whenTruthy(),
       take(1),
+      tap(paypalConfig => (this.merchantId = paypalConfig.merchantId)),
       switchMap(paypalConfig => this.loadPaypalScript(paypalConfig)),
       shareReplay(1)
     );
@@ -116,10 +123,12 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
     this.cvvFieldError$ = this.paypalCardFields.cvvFieldError$;
     this.expiryFieldError$ = this.paypalCardFields.expiryFieldError$;
 
-    // Subscribe to processPayment$ from Google Pay adapter
-    this.paypalGooglePay.processPayment$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
-      this.processPayment$.next(value);
-    });
+    // Subscribe to processPayment$ from Google Pay and Apple Pay adapters
+    merge(this.paypalGooglePay.processPayment$, this.paypalApplePay.processPayment$)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(value => {
+        this.processPayment$.next(value);
+      });
   }
 
   /**
@@ -154,6 +163,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
           adapterType: this.adapterType,
           pageType: this.pageType,
           paypalPaymentMethod: this.selectedPaymentMethod,
+          merchantId: this.merchantId,
         };
 
         this.paypalAdaptersBuilder.build(
