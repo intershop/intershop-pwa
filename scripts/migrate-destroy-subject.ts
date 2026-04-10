@@ -24,7 +24,7 @@ const project = new Project();
 const sourceFiles = project.addSourceFilesAtPaths('{src,projects}/**/!(*.spec).ts');
 
 /**
- * Checks if a declarated class is of a certain type
+ * Checks if a declared class is of a certain type
  */
 const isType = (node: ClassDeclaration, types: string[]): boolean => {
   if (!node.getModifiers()?.length) {

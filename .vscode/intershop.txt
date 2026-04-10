@@ -4,6 +4,7 @@ addtocart
 angulartics
 anonymization
 apitoken
+appl
 applepay
 appr
 appserver
@@ -12,10 +13,12 @@ bitnami
 blocklist
 breakline
 brotli
+buttonstyle
 callparametersstring
 categoryref
 chatflow
 chatflowid
+clazz
 clickability
 clickjacking
 clid
@@ -52,6 +55,7 @@ entrypoint
 errorpage
 extralarge
 fastpay
+fesm
 fieldgroup
 flowise
 flushdb
@@ -62,6 +66,7 @@ foos
 formly
 français
 geolocation
+getmetrics
 giftwrap
 gomplate
 googlepay
@@ -74,6 +79,7 @@ hoverable
 iban
 icecat
 iframes
+iisnode
 includeid
 infobox
 installable
@@ -108,6 +114,7 @@ mouseout
 ngcc
 ngmodule
 ngrx
+nodir
 nofollow
 noindex
 noneditable

@@ -52,15 +52,15 @@ function crawlFiles(folder: string, callback: (files: string[]) => void) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function traverse(obj: object, ftest: (value: unknown) => boolean, func: (obj: any, key: string) => void) {
+function traverse(obj: object, filterTest: (value: unknown) => boolean, func: (obj: any, key: string) => void) {
   Object.entries(obj).forEach(([k, v]) => {
-    if (ftest(v)) {
+    if (filterTest(v)) {
       func(obj, k);
     }
   });
   Object.values(obj).forEach(v => {
     if (v && typeof v === 'object') {
-      traverse(v, ftest, func);
+      traverse(v, filterTest, func);
     }
   });
 }

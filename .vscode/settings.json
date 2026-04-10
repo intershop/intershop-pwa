@@ -53,5 +53,9 @@
   "prettier.requireConfig": true,
   "github.copilot.enable": {
     "*": true
+  },
+  "cSpell.enabledFileTypes": {
+    "typescript": false,
+    "javascript": false
   }
 }

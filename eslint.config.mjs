@@ -1,3 +1,4 @@
+import cspellESLintPluginRecommended from '@cspell/eslint-plugin/recommended';
 import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import ngrx from '@ngrx/eslint-plugin';
@@ -25,6 +26,7 @@ const compat = new FlatCompat({
 });
 
 export default defineConfig([
+  cspellESLintPluginRecommended,
   globalIgnores([
     '**/node_modules',
     'src/polyfills.ts',
@@ -958,6 +960,7 @@ export default defineConfig([
   {
     files: ['**/*.module.ts', '**/*.spec.ts'],
     rules: {
+      '@cspell/spellchecker': 'off',
       'max-classes-per-file': 'off',
       'max-lines': 'off',
     },
@@ -966,6 +969,7 @@ export default defineConfig([
   {
     files: ['e2e/**/*.ts'],
     rules: {
+      '@cspell/spellchecker': 'off',
       '@typescript-eslint/naming-convention': [
         'error',
         {

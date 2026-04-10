@@ -44,7 +44,7 @@ app.use((req, res, next) => {
     }
 
     Promise.all(purgePromises)
-      .then(() => res.status(200).send('PURGE requests proxied sucessfully'))
+      .then(() => res.status(200).send('PURGE requests proxied successfully'))
       .catch(err => res.status(500).send('Error proxying PURGE request: ' + err));
     return;
   }
