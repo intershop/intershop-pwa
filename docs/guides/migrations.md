@@ -64,6 +64,16 @@ _Changed rules:_
 | :----------- | :-------- | :----------------------------- |
 | `complexity` | `max: 10` | `max: 15, variant: 'modified'` |
 
+**CSpell ESLint integration**
+
+Spell checking for TypeScript and JavaScript files is now performed by `@cspell/eslint-plugin` during ESLint linting instead of the standalone CSpell CLI.
+The VS Code CSpell extension is disabled for TypeScript and JavaScript files to avoid duplicate warnings.
+
+To migrate custom code:
+
+- Run `npm run lint` to check for spelling errors in TypeScript and JavaScript files.
+- Add project-specific words to `intershop.txt`.
+
 **CMS view context REST requests with resource set ID**
 
 The REST requests to get CMS view context data now append the resource set ID (the defining view context model's cartridge name) by default to improve performance.

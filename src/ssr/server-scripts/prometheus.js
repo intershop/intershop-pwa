@@ -28,11 +28,11 @@ const pm2Memory = new client.Gauge({
   help: 'counter for pm2 memory',
   labelNames: ['name', 'pm2_id'],
 });
-const pm2GetmetricsSuccess = new client.Counter({
+const pm2GetMetricsSuccess = new client.Counter({
   name: 'pm2_getmetrics_success',
   help: 'counter for successful getmetrics messages',
 });
-const pm2GetmetricsFailure = new client.Counter({
+const pm2GetMetricsFailure = new client.Counter({
   name: 'pm2_getmetrics_failure',
   help: 'counter for unsuccessful getmetrics messages',
 });
@@ -88,9 +88,9 @@ app.get('/metrics', (_, res) => {
                 err => {
                   if (err) {
                     console.error(err);
-                    pm2GetmetricsFailure.inc();
+                    pm2GetMetricsFailure.inc();
                   } else {
-                    pm2GetmetricsSuccess.inc();
+                    pm2GetMetricsSuccess.inc();
                   }
                 }
               );

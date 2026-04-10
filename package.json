@@ -33,7 +33,7 @@
     "dead-code": "npx ts-node scripts/find-dead-code.ts",
     "clean-localizations": "node scripts/clean-up-localizations",
     "cleanup-testbed": "node scripts/cleanup-testbed.mjs",
-    "spell-check": "cspell lint --no-summary --no-progress \"{src,projects,docs}/**/*{.{html,ts,scss,md},en_US.json}\"",
+    "spell-check": "cspell lint --no-summary --no-progress \"{src,projects,docs}/**/*{.{html,scss,md},en_US.json}\"",
     "clean": "git clean -xdf -e \"*environment.local.ts\" -e \"*environment.development.ts\" -e \"*node_modules\"",
     "postclean": "npm ci --prefer-offline --no-audit",
     "check": "npm-run-all \"lint -- --fix\" format compile build:multi test dead-code update-dockerignore clean-localizations",
@@ -129,6 +129,7 @@
     "@commitlint/cli": "^20.5.2",
     "@commitlint/config-conventional": "^20.5.0",
     "@commitlint/cz-commitlint": "^20.5.2",
+    "@cspell/eslint-plugin": "^10.0.0",
     "@lhci/cli": "^0.15.1",
     "@ngrx/eslint-plugin": "^21.1.0",
     "@phenomnomnominal/tsquery": "^6.2.0",
@@ -212,16 +213,17 @@
       "cspell lint --no-summary --no-progress"
     ],
     "*.{scss,css}": [
-      "stylelint --fix"
+      "stylelint --fix",
+      "cspell lint --no-summary --no-progress"
     ],
     "*": [
       "prettier --loglevel warn --write"
     ],
     "*.{html,js,mjs}": [
-      "eslint --fix"
+      "eslint --fix --max-warnings 0"
     ],
     "*.ts": [
-      "eslint --fix",
+      "eslint --fix --max-warnings 0",
       "jest --ci --bail --findRelatedTests --passWithNoTests"
     ],
     "src/assets/i18n/*.json": [
