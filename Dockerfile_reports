@@ -12,7 +12,7 @@ RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
 # synchronize-marker:docker-cache-share:end
 COPY . /workspace/
 RUN npm run postinstall
-RUN npm i --no-save jest-html-reporter jest-junit && npx jest -c jest-reports.config.js --ci --testFailureExitCode 0
+RUN npm i --no-save jest-html-reporter jest-junit && npx jest -c jest-reports.config.ts --ci --testFailureExitCode 0
 RUN npx license-checker --csv --out reports/licenses/licenses.csv --customPath templates/3rd-party-licenses_format.json && npm i --no-save htmlify-csv && node node_modules/htmlify-csv/htmlify-csv convert reports/licenses/licenses.csv --output reports/licenses/index.html
 RUN npm i --no-save jscpd-html-reporter && node reports/jscpd-report
 RUN npm i -g webpack-bundle-analyzer

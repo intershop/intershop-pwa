@@ -74,6 +74,18 @@ To migrate custom code:
 - Run `npm run lint` to check for spelling errors in TypeScript and JavaScript files.
 - Add project-specific words to `intershop.txt`.
 
+**Jest 30 update**
+
+Jest and related packages such as `jest-preset-angular` have been updated to their latest major versions, including several breaking changes.
+
+Key changes:
+
+- The configuration format changed from `jest.config.js` to `jest.config.ts`, using the new `createCjsPreset()` from `jest-preset-angular` instead of the previous `preset` string.
+- The test runner is explicitly set to `jest-jasmine2` to maintain backward compatibility, since Jest 30 defaults to `jest-circus`.
+- The `jest-environment-jsdom` package now uses JSDOM v26, which may introduce behavior changes in the DOM test environment. Mocking `window.location` is no longer possible with the current JSDOM version, so affected tests must be refactored or temporarily disabled.
+
+For more details about the Jest 30 update, see the [Jest Upgrade Guide](https://jestjs.io/docs/upgrading-to-jest30).
+
 **CMS view context REST requests with resource set ID**
 
 The REST requests to get CMS view context data now append the resource set ID (the defining view context model's cartridge name) by default to improve performance.

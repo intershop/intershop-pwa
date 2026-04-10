@@ -139,7 +139,7 @@
     "@types/estree": "^1.0.8",
     "@types/express-http-proxy": "^1.6.7",
     "@types/google.maps": "^3.64.0",
-    "@types/jest": "^29.5.14",
+    "@types/jest": "^30.0.0",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^22.19.17",
     "@types/webpack": "^5.28.5",
@@ -154,7 +154,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-ban": "^2.0.0",
     "eslint-plugin-ish-custom-rules": "file:eslint-rules",
-    "eslint-plugin-jest": "^28.14.0",
+    "eslint-plugin-jest": "^29.15.2",
     "eslint-plugin-jsdoc": "^62.9.0",
     "eslint-plugin-prettier": "^4.2.5",
     "eslint-plugin-rxjs-angular-x": "^0.1.2",
@@ -164,10 +164,11 @@
     "husky": "^9.1.7",
     "intershop-schematics": "file:schematics",
     "jasmine-marbles": "^0.9.2",
-    "jest": "^29.7.0",
-    "jest-extended": "^6.0.0",
-    "jest-jasmine2": "^29.7.0",
-    "jest-preset-angular": "14.2.4",
+    "jest": "^30.3.0",
+    "jest-environment-jsdom": "^30.3.0",
+    "jest-extended": "^7.0.0",
+    "jest-jasmine2": "^30.3.0",
+    "jest-preset-angular": "^15.0.3",
     "json-schema-to-typescript": "^15.0.4",
     "lint-staged": "^16.4.0",
     "ng-mocks": "^14.15.2",
@@ -192,6 +193,10 @@
     "xliff": "^6.3.0"
   },
   "overrides": {
+    "@angular-devkit/build-angular": {
+      "jest": "$jest",
+      "jest-environment-jsdom": "$jest-environment-jsdom"
+    },
     "ajv@^8.0.0": "8.20.0",
     "express-robots-txt": {
       "express": "$express"
