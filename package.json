@@ -163,6 +163,7 @@
     "eslint-plugin-rxjs-angular": "^2.0.1",
     "eslint-plugin-unicorn": "^56.0.1",
     "eslint-plugin-unused-imports": "^4.4.1",
+    "glob": "^13.0.6",
     "husky": "^9.1.7",
     "intershop-schematics": "file:schematics",
     "jasmine-marbles": "^0.9.2",
@@ -195,6 +196,7 @@
   "overrides": {
     "ajv@^8.0.0": "8.18.0",
     "brace-expansion@^5.0.0": "5.0.5",
+    "glob@>=9.0.0": "^13.0.6",
     "picomatch@^2.0.0": "2.3.2",
     "picomatch@^4.0.0": "4.0.4"
   },

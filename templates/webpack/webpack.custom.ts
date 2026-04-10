@@ -10,7 +10,7 @@ import { Configuration, DefinePlugin, WebpackPluginInstance } from 'webpack';
 
 const { PurgeCSSPlugin } = require('purgecss-webpack-plugin');
 
-const glob = require('glob');
+const { globSync } = require('glob');
 
 class Logger {
   constructor(private target: string, private config: string, progressActive: boolean) {
@@ -281,7 +281,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     logger.log('setting up purgecss CSS minification');
     config.plugins.push(
       new PurgeCSSPlugin({
-        paths: glob.sync('./**/src/app/**/!(*.spec.ts)*', { nodir: true }),
+        paths: globSync('./**/src/app/**/!(*.spec.ts)*', { nodir: true }),
         safelist: {
           standard: [/(?:((m|p)(t|b|s|e|x|y)?(-(sm|md|lg|xl))?-([0-5]|auto))|((w|h)-(25|50|75|100|auto)))/],
           greedy: [

@@ -1,5 +1,5 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
-import glob from 'glob';
+import { globSync } from 'glob';
 import { compileFromFile } from 'json-schema-to-typescript';
 import { dirname, join, normalize } from 'path';
 
@@ -32,7 +32,7 @@ if (existsSync(prettierConfigPath)) {
 }
 
 Promise.all(
-  glob.sync('src/**/schema.json').map(async schemaFile => {
+  globSync('src/**/schema.json').map(async schemaFile => {
     const output = await compileFromFile(schemaFile, {
       ...formatting,
       unknownAny: true,
