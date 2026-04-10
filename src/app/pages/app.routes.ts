@@ -43,6 +43,7 @@ export const appRoutes: Routes = [
             path: '',
             component: HomePageComponent,
             providers: [...provideIshFormly()],
+            data: { wrapperClass: 'homepage' },
           },
         ]
       ),
