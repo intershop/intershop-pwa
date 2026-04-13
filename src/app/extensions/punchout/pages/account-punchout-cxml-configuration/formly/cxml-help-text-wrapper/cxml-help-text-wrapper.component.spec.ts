@@ -27,6 +27,7 @@ describe('Cxml Help Text Wrapper Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        CxmlHelpTextWrapperComponent,
         FormlyModule.forRoot({
           types: [{ name: 'example', component: FormlyTestingExampleComponent }],
           wrappers: [{ name: 'description', component: CxmlHelpTextWrapperComponent }],
@@ -34,8 +35,12 @@ describe('Cxml Help Text Wrapper Component', () => {
         FormlyTestingComponentsModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [CxmlHelpTextWrapperComponent, MockDirective(NgbCollapse), MockDirective(ServerHtmlDirective)],
-    }).compileComponents();
+    })
+      .overrideComponent(CxmlHelpTextWrapperComponent, {
+        remove: { imports: [NgbCollapse, ServerHtmlDirective] },
+        add: { imports: [MockDirective(NgbCollapse), MockDirective(ServerHtmlDirective)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

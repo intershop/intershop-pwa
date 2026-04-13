@@ -8,16 +8,16 @@ import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
 import { OrderTemplate } from '../../models/order-template/order-template.model';
 import { OrderTemplateService } from '../../services/order-template/order-template.service';
-import { OrderTemplatesStoreModule } from '../order-templates-store.module';
+import { OrderTemplatesStoreProviders } from '../order-templates-store.providers';
 
 import {
   addProductToNewOrderTemplate,
@@ -75,9 +75,9 @@ describe('Order Template Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['router']),
-        CustomerStoreModule.forTesting('user'),
-        OrderTemplatesStoreModule.forTesting('orderTemplates'),
+        ...CoreStoreProviders.forTesting(['router']),
+        CustomerStoreProviders.forTesting('user'),
+        OrderTemplatesStoreProviders.forTesting('orderTemplates'),
       ],
       providers: [
         { provide: OrderTemplateService, useFactory: () => instance(orderTemplateServiceMock) },

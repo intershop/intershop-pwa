@@ -22,17 +22,17 @@ describe('Product Notification Delete Component', () => {
     context = mock(ProductContextFacade);
     productNotificationsFacade = mock(ProductNotificationsFacade);
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(ModalDialogComponent),
-        MockDirective(ServerHtmlDirective),
-        ProductNotificationDeleteComponent,
-      ],
-      imports: [TranslateModule.forRoot()],
+      imports: [ProductNotificationDeleteComponent, TranslateModule.forRoot()],
       providers: [
         { provide: ProductContextFacade, useFactory: () => instance(context) },
         { provide: ProductNotificationsFacade, useFactory: () => instance(productNotificationsFacade) },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductNotificationDeleteComponent, {
+        remove: { imports: [ModalDialogComponent, ServerHtmlDirective] },
+        add: { imports: [MockComponent(ModalDialogComponent), MockDirective(ServerHtmlDirective)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

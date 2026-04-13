@@ -28,14 +28,14 @@ describe('Account Punchout Details Page Component', () => {
     when(punchoutFacade.punchoutLoading$).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [
-        AccountPunchoutDetailsPageComponent,
-        MockComponent(ErrorMessageComponent),
-        MockComponent(PunchoutUserFormComponent),
-      ],
+      imports: [AccountPunchoutDetailsPageComponent, TranslateModule.forRoot()],
       providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountPunchoutDetailsPageComponent, {
+        remove: { imports: [ErrorMessageComponent, PunchoutUserFormComponent] },
+        add: { imports: [MockComponent(ErrorMessageComponent), MockComponent(PunchoutUserFormComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

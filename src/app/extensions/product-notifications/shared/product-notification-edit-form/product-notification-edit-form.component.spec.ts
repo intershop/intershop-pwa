@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormlyForm } from '@ngx-formly/core';
+import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -21,11 +23,17 @@ describe('Product Notification Edit Form Component', () => {
     appFacade = mock(AppFacade);
 
     await TestBed.configureTestingModule({
+      imports: [ProductNotificationEditFormComponent],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductNotificationEditFormComponent, {
+        remove: { imports: [FormlyForm] },
+        add: { imports: [MockComponent(FormlyForm)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
