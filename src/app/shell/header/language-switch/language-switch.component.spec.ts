@@ -1,13 +1,14 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { MakeHrefPipe } from 'ish-core/pipes/make-href.pipe';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 
@@ -29,14 +30,25 @@ describe('Language Switch Component', () => {
     when(appFacade.currentLocale$).thenReturn(of('en_US'));
 
     await TestBed.configureTestingModule({
-      declarations: [LanguageSwitchComponent, MockPipe(MakeHrefPipe, (_, urlParams) => of(urlParams.lang))],
-      imports: [NgbDropdownModule, TranslateModule.forRoot()],
+      imports: [LanguageSwitchComponent, TranslateModule.forRoot()],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: CookiesService, useValue: instance(cookiesServiceMock) },
         { provide: FeatureToggleService, useValue: instance(featureToggleServiceMock) },
+        provideRouter([]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(LanguageSwitchComponent, {
+        set: {
+          imports: [
+            NgbDropdownModule,
+            AsyncPipe,
+            MockPipe(MakeHrefPipe, (_, urlParams) => of(urlParams.lang)),
+            TranslatePipe,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

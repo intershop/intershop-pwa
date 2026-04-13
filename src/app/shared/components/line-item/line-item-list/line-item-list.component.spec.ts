@@ -20,15 +20,20 @@ describe('Line Item List Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        LineItemListComponent,
-        MockComponent(LineItemListElementComponent),
-        MockComponent(PagingComponent),
-        MockDirective(ProductContextDirective),
-        MockPipe(PricePipe),
-      ],
-      imports: [TranslateModule.forRoot()],
-    }).compileComponents();
+      imports: [LineItemListComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(LineItemListComponent, {
+        remove: { imports: [LineItemListElementComponent, PagingComponent, ProductContextDirective, PricePipe] },
+        add: {
+          imports: [
+            MockComponent(LineItemListElementComponent),
+            MockComponent(PagingComponent),
+            MockDirective(ProductContextDirective),
+            MockPipe(PricePipe),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

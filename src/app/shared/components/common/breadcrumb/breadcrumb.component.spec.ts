@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -18,8 +18,7 @@ describe('Breadcrumb Component', () => {
   beforeEach(() => {
     appFacade = mock(AppFacade);
     TestBed.configureTestingModule({
-      declarations: [BreadcrumbComponent],
-      imports: [RouterModule, TranslateModule.forRoot()],
+      imports: [BreadcrumbComponent, TranslateModule.forRoot()],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }, provideRouter([])],
     });
     fixture = TestBed.createComponent(BreadcrumbComponent);

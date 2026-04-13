@@ -15,12 +15,13 @@ describe('Basket Payment Cost Info Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [
-        BasketPaymentCostInfoComponent,
-        MockPipe(PricePipe, (price: Price) => `${price.currency} ${price.value}`),
-      ],
-    }).compileComponents();
+      imports: [BasketPaymentCostInfoComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(BasketPaymentCostInfoComponent, {
+        remove: { imports: [PricePipe] },
+        add: { imports: [MockPipe(PricePipe, (price: Price) => `${price.currency} ${price.value}`)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

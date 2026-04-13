@@ -13,9 +13,14 @@ describe('Confirm Leave Modal Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ConfirmLeaveModalComponent, MockPipe(TranslatePipe)],
+      imports: [ConfirmLeaveModalComponent],
       providers: [{ provide: NgbActiveModal, useFactory: () => instance(mock(NgbActiveModal)) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ConfirmLeaveModalComponent, {
+        remove: { imports: [TranslatePipe] },
+        add: { imports: [MockPipe(TranslatePipe)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

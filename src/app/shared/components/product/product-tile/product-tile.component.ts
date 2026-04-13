@@ -2,11 +2,6 @@ import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { ProductAddToCompareComponent } from 'src/app/extensions/compare/shared/product-add-to-compare/product-add-to-compare.component';
-import { ProductAddToOrderTemplateComponent } from 'src/app/extensions/order-templates/shared/product-add-to-order-template/product-add-to-order-template.component';
-import { ProductAddToQuoteComponent } from 'src/app/extensions/quoting/shared/product-add-to-quote/product-add-to-quote.component';
-import { ProductRatingComponent } from 'src/app/extensions/rating/shared/product-rating/product-rating.component';
-import { ProductAddToWishlistComponent } from 'src/app/extensions/wishlists/shared/product-add-to-wishlist/product-add-to-wishlist.component';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ProductContextDisplayProperties, ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -19,6 +14,12 @@ import { ProductLabelComponent } from 'ish-shared/components/product/product-lab
 import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
 import { ProductPromotionComponent } from 'ish-shared/components/product/product-promotion/product-promotion.component';
+
+import { ProductAddToCompareComponent } from '../../../../extensions/compare/shared/product-add-to-compare/product-add-to-compare.component';
+import { ProductAddToOrderTemplateComponent } from '../../../../extensions/order-templates/shared/product-add-to-order-template/product-add-to-order-template.component';
+import { ProductAddToQuoteComponent } from '../../../../extensions/quoting/shared/product-add-to-quote/product-add-to-quote.component';
+import { ProductRatingComponent } from '../../../../extensions/rating/shared/product-rating/product-rating.component';
+import { ProductAddToWishlistComponent } from '../../../../extensions/wishlists/shared/product-add-to-wishlist/product-add-to-wishlist.component';
 
 @Component({
   selector: 'ish-product-tile',

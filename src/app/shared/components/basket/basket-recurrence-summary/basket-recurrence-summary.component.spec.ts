@@ -13,9 +13,13 @@ describe('Basket Recurrence Summary Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [BasketRecurrenceSummaryComponent, MockComponent(OrderRecurrenceComponent)],
-    }).compileComponents();
+      imports: [BasketRecurrenceSummaryComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(BasketRecurrenceSummaryComponent, {
+        remove: { imports: [OrderRecurrenceComponent] },
+        add: { imports: [MockComponent(OrderRecurrenceComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,12 +1,16 @@
+import { AsyncPipe, NgClass, NgStyle } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { RouterLink, provideRouter } from '@angular/router';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { NavigationCategory } from 'ish-core/models/navigation-category/navigation-category.model';
-import { LazyContentIncludeComponent } from 'ish-shell/shared/lazy-content-include/lazy-content-include.component';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
+import { SubCategoryNavigationComponent } from 'ish-shell/header/sub-category-navigation/sub-category-navigation.component';
 
 import { HeaderNavigationComponent } from './header-navigation.component';
 
@@ -20,10 +24,27 @@ describe('Header Navigation Component', () => {
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterModule],
-      declarations: [HeaderNavigationComponent, MockComponent(LazyContentIncludeComponent)],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }, provideRouter([])],
-    }).compileComponents();
+      imports: [HeaderNavigationComponent, TranslateModule.forRoot()],
+      providers: [
+        { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
+        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
+        provideRouter([]),
+      ],
+    })
+      .overrideComponent(HeaderNavigationComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            NgClass,
+            NgStyle,
+            RouterLink,
+            MockComponent(ContentIncludeComponent),
+            MockComponent(SubCategoryNavigationComponent),
+            TranslatePipe,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -50,11 +71,20 @@ describe('Header Navigation Component', () => {
             class="main-navigation-link"
             ng-reflect-router-link="/cat/A"
             data-testing-id="A-link"
-            style="width: 100%"
             href="/cat/A"
           >
-            CAT_A
-          </a>
+            CAT_A </a
+          ><a
+            role="button"
+            tabindex="0"
+            class="dropdown-toggle"
+            aria-label="header.navigation.expand_category.aria_label"
+            ><i class="bi bi-plus"></i></a
+          ><ish-sub-category-navigation
+            ng-reflect-category-unique-id="A"
+            ng-reflect-sub-categories-depth="1"
+            ng-reflect-view="auto"
+          ></ish-sub-category-navigation>
         </li>
         <li class="dropdown">
           <a
@@ -67,11 +97,6 @@ describe('Header Navigation Component', () => {
             CAT_C
           </a>
         </li>
-        <ish-lazy-content-include
-          includeid="include.header.navigation.pagelet2-Include"
-          role="listitem"
-          ng-reflect-include-id="include.header.navigation.page"
-        ></ish-lazy-content-include>
       </ul>
     `);
   });

@@ -13,8 +13,7 @@ describe('Filter Navigation Badges Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [FilterNavigationBadgesComponent],
+      imports: [FilterNavigationBadgesComponent, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

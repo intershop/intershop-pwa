@@ -21,13 +21,14 @@ describe('Product Bundle Display Component', () => {
     when(context.select('displayProperties', 'bundleParts')).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(ProductNameComponent),
-        MockDirective(ProductContextDirective),
-        ProductBundleDisplayComponent,
-      ],
+      imports: [ProductBundleDisplayComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductBundleDisplayComponent, {
+        remove: { imports: [ProductContextDirective, ProductNameComponent] },
+        add: { imports: [MockDirective(ProductContextDirective), MockComponent(ProductNameComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

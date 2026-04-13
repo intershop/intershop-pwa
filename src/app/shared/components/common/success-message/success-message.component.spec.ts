@@ -15,8 +15,7 @@ describe('Success Message Component', () => {
   beforeEach(async () => {
     messageFacade = mock(MessageFacade);
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [SuccessMessageComponent],
+      imports: [SuccessMessageComponent, TranslateModule.forRoot()],
       providers: [{ provide: MessageFacade, useFactory: () => instance(messageFacade) }],
     }).compileComponents();
   });

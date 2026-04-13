@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { MockComponent } from 'ng-mocks';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 
 import { BasketMerchantMessageViewComponent } from './basket-merchant-message-view.component';
 
@@ -11,7 +13,14 @@ describe('Basket Merchant Message View Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({}).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [BasketMerchantMessageViewComponent],
+    })
+      .overrideComponent(BasketMerchantMessageViewComponent, {
+        remove: { imports: [InfoBoxComponent] },
+        add: { imports: [MockComponent(InfoBoxComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

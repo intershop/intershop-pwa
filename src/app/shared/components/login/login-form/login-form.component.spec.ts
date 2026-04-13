@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
+import { provideMockStore } from '@ngrx/store/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
@@ -20,16 +21,21 @@ describe('Login Form Component', () => {
     accountFacade = mock(AccountFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [LoginFormComponent, MockComponent(ErrorMessageComponent)],
-      imports: [FormlyTestingModule, RouterModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, LoginFormComponent, TranslateModule.forRoot()],
       providers: [
         {
           provide: AccountFacade,
           useFactory: () => instance(accountFacade),
         },
+        provideMockStore(),
         provideRouter([]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(LoginFormComponent, {
+        remove: { imports: [ErrorMessageComponent] },
+        add: { imports: [MockComponent(ErrorMessageComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,18 +1,27 @@
 import { APP_BASE_HREF } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { noop, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
-import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { CMSTextComponent } from 'ish-shared/cms/components/cms-text/cms-text.component';
+import { ContentDesignViewWrapperComponent } from 'ish-shared/cms/components/content-design-view-wrapper/content-design-view-wrapper.component';
 import { CMS_COMPONENT } from 'ish-shared/cms/configurations/injection-keys';
 
 import { ContentPageletComponent } from './content-pagelet.component';
+
+@Component({
+  selector: 'ish-content-design-view-wrapper',
+  template: '<ng-content />',
+  standalone: true,
+})
+class MockContentDesignViewWrapperComponent {
+  @Input() pageletId: string;
+}
 
 describe('Content Pagelet Component', () => {
   let component: ContentPageletComponent;
@@ -28,7 +37,7 @@ describe('Content Pagelet Component', () => {
     when(appFacade.icmBaseUrl).thenReturn('http://example.org');
 
     await TestBed.configureTestingModule({
-      declarations: [CMSTextComponent, ServerHtmlDirective],
+      imports: [CMSTextComponent, ContentPageletComponent],
       providers: [
         {
           provide: CMS_COMPONENT,
@@ -40,7 +49,12 @@ describe('Content Pagelet Component', () => {
         { provide: CMSFacade, useFactory: () => instance(cmsFacade) },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideComponent(ContentPageletComponent, {
+        remove: { imports: [ContentDesignViewWrapperComponent] },
+        add: { imports: [MockContentDesignViewWrapperComponent] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -24,9 +24,14 @@ describe('Line Item Custom Fields Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      declarations: [LineItemCustomFieldsComponent, MockComponent(CustomFieldsViewComponent)],
+      imports: [LineItemCustomFieldsComponent],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(LineItemCustomFieldsComponent, {
+        remove: { imports: [CustomFieldsViewComponent] },
+        add: { imports: [MockComponent(CustomFieldsViewComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

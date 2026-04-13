@@ -24,14 +24,26 @@ describe('Filter Navigation Component', () => {
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        FilterNavigationComponent,
-        MockComponent(FilterNavigationBadgesComponent),
-        MockComponent(FilterNavigationHorizontalComponent),
-        MockComponent(FilterNavigationSidebarComponent),
-      ],
+      imports: [FilterNavigationComponent],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }, provideRouter([])],
-    }).compileComponents();
+    })
+      .overrideComponent(FilterNavigationComponent, {
+        remove: {
+          imports: [
+            FilterNavigationBadgesComponent,
+            FilterNavigationHorizontalComponent,
+            FilterNavigationSidebarComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockComponent(FilterNavigationBadgesComponent),
+            MockComponent(FilterNavigationHorizontalComponent),
+            MockComponent(FilterNavigationSidebarComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

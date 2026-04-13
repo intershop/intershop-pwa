@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent, MockDirective, MockInstance } from 'ng-mocks';
 import { of } from 'rxjs';
+import { SwiperModule } from 'swiper/angular';
 import { instance, mock, when } from 'ts-mockito';
 
-import { BrowserLazyViewDirective } from 'ish-core/directives/browser-lazy-view.directive';
 import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -25,16 +25,21 @@ describe('Products List Component', () => {
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(DeferredItemComponent),
-        MockComponent(ProductItemComponent),
-        MockDirective(BrowserLazyViewDirective),
-        MockDirective(LazyLoadingContentDirective),
-        MockDirective(ProductContextDirective),
-        ProductsListComponent,
-      ],
+      imports: [ProductsListComponent],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductsListComponent, {
+        remove: { imports: [ProductContextDirective, ProductItemComponent, SwiperModule] },
+        add: {
+          imports: [
+            MockDirective(ProductContextDirective),
+            MockComponent(ProductItemComponent),
+            MockComponent(DeferredItemComponent),
+            MockDirective(LazyLoadingContentDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

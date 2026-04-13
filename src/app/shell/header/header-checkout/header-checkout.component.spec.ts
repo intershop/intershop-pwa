@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -14,9 +15,14 @@ describe('Header Checkout Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [HeaderCheckoutComponent, MockComponent(LoginStatusComponent)],
-    }).compileComponents();
+      imports: [HeaderCheckoutComponent, TranslateModule.forRoot()],
+      providers: [provideRouter([])],
+    })
+      .overrideComponent(HeaderCheckoutComponent, {
+        remove: { imports: [LoginStatusComponent] },
+        add: { imports: [MockComponent(LoginStatusComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

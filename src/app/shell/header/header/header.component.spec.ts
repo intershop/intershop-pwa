@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -24,16 +25,30 @@ describe('Header Component', () => {
     when(appFacade.headerType$).thenReturn(of(undefined));
 
     await TestBed.configureTestingModule({
-      declarations: [
-        HeaderComponent,
-        MockComponent(BackToTopComponent),
-        MockComponent(HeaderCheckoutComponent),
-        MockComponent(HeaderDefaultComponent),
-        MockComponent(HeaderErrorComponent),
-        MockComponent(HeaderSimpleComponent),
-      ],
-      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
-    }).compileComponents();
+      imports: [HeaderComponent],
+      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }, provideRouter([])],
+    })
+      .overrideComponent(HeaderComponent, {
+        remove: {
+          imports: [
+            BackToTopComponent,
+            HeaderCheckoutComponent,
+            HeaderDefaultComponent,
+            HeaderErrorComponent,
+            HeaderSimpleComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockComponent(BackToTopComponent),
+            MockComponent(HeaderCheckoutComponent),
+            MockComponent(HeaderDefaultComponent),
+            MockComponent(HeaderErrorComponent),
+            MockComponent(HeaderSimpleComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

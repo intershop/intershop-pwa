@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 
 import { ProductListPagingComponent } from './product-list-paging.component';
 
@@ -10,9 +10,8 @@ describe('Product List Paging Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterModule],
+      imports: [ProductListPagingComponent],
       providers: [provideRouter([])],
-      declarations: [ProductListPagingComponent],
     }).compileComponents();
   });
 
@@ -45,8 +44,8 @@ describe('Product List Paging Component', () => {
             queryparamshandling="merge"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
-            class="active"
             href="/?page=1"
+            class="active"
             >1</a
           >
         </li>
@@ -110,8 +109,8 @@ describe('Product List Paging Component', () => {
             queryparamshandling="merge"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
-            class="active"
             href="/?page=2"
+            class="active"
             >2</a
           >
         </li>
@@ -175,8 +174,8 @@ describe('Product List Paging Component', () => {
             queryparamshandling="merge"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
-            class="active"
             href="/?page=3"
+            class="active"
             >3</a
           >
         </li>

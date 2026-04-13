@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -32,15 +31,18 @@ describe('Line Item Information Edit Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [
-        LineItemInformationEditComponent,
-        MockComponent(CustomFieldsFormlyComponent),
-        MockComponent(LineItemCustomFieldsComponent),
-        MockDirective(NgbCollapse),
-      ],
-      providers: [],
+      imports: [LineItemInformationEditComponent, TranslateModule.forRoot()],
     })
+      .overrideComponent(LineItemInformationEditComponent, {
+        remove: { imports: [CustomFieldsFormlyComponent, LineItemCustomFieldsComponent, NgbCollapse] },
+        add: {
+          imports: [
+            MockComponent(CustomFieldsFormlyComponent),
+            MockComponent(LineItemCustomFieldsComponent),
+            MockDirective(NgbCollapse),
+          ],
+        },
+      })
       .overrideComponent(LineItemInformationEditComponent, {
         set: {
           providers: [
@@ -90,13 +92,25 @@ describe('Line Item Information Edit Component', () => {
 
   it('should render the toggle link if there are custom fields', () => {
     fixture.detectChanges();
-    expect(element.querySelector('button.line-item-edit-link')).toMatchInlineSnapshot(`null`);
+    const toggleButton = element.querySelector('button[data-testing-id="line-item-custom-fields-toggle-link"]');
+
+    expect(toggleButton).toMatchInlineSnapshot(`
+      <button
+        type="button"
+        data-testing-id="line-item-custom-fields-toggle-link"
+        class="btn btn-link btn-link-with-icon"
+        aria-expanded="false"
+        aria-controls="line-item-information-input_123"
+      >
+        checkout.custom-fields.edit.link.label <i class="bi bi-chevron-down"></i>
+      </button>
+    `);
   });
 
   it('should not render the toggle link if the fields are not editable', () => {
     component.editable = false;
     fixture.detectChanges();
-    expect(element.querySelector('button.line-item-edit-link')).toBeFalsy();
+    expect(element.querySelector('button[data-testing-id="line-item-custom-fields-toggle-link"]')).toBeFalsy();
   });
 
   it('should render the form if there are custom fields', () => {

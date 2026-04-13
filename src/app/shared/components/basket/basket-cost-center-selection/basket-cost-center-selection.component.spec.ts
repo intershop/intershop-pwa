@@ -36,8 +36,7 @@ describe('Basket Cost Center Selection Component', () => {
     when(checkoutFacade.basket$).thenReturn(of(BasketMockData.getBasket()));
 
     await TestBed.configureTestingModule({
-      declarations: [BasketCostCenterSelectionComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [BasketCostCenterSelectionComponent, FormlyTestingModule, TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },

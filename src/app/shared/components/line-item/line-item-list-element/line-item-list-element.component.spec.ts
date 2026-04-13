@@ -1,10 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { ComponentFixture, DeferBlockBehavior, TestBed } from '@angular/core/testing';
+import { NgbPopover, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
@@ -24,10 +26,22 @@ import { ProductQuantityComponent } from 'ish-shared/components/product/product-
 import { ProductShipmentComponent } from 'ish-shared/components/product/product-shipment/product-shipment.component';
 import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
 
-import { LazyProductAddToOrderTemplateComponent } from '../../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
-import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
+import { ProductAddToOrderTemplateComponent } from '../../../../extensions/order-templates/shared/product-add-to-order-template/product-add-to-order-template.component';
+import { ProductAddToWishlistComponent } from '../../../../extensions/wishlists/shared/product-add-to-wishlist/product-add-to-wishlist.component';
 
 import { LineItemListElementComponent } from './line-item-list-element.component';
+
+@Directive({
+  selector: '[ishFeature]',
+  standalone: true,
+})
+class MockFeatureToggleDirective {
+  @Input('ishFeature') feature: unknown;
+
+  constructor(templateRef: TemplateRef<unknown>, viewContainer: ViewContainerRef) {
+    viewContainer.createEmbeddedView(templateRef);
+  }
+}
 
 describe('Line Item List Element Component', () => {
   let component: LineItemListElementComponent;
@@ -41,30 +55,58 @@ describe('Line Item List Element Component', () => {
     when(context.select('quantity')).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [MockComponent(ProductImageComponent), TranslateModule.forRoot()],
-      declarations: [
-        LineItemListElementComponent,
-        MockComponent(LazyProductAddToOrderTemplateComponent),
-        MockComponent(LazyProductAddToWishlistComponent),
-        MockComponent(LineItemInformationEditComponent),
-        MockComponent(LineItemWarrantyComponent),
-        MockComponent(ProductBundleDisplayComponent),
-        MockComponent(ProductIdComponent),
-        MockComponent(ProductInventoryComponent),
-        MockComponent(ProductNameComponent),
-        MockComponent(ProductQuantityComponent),
-        MockComponent(ProductQuantityLabelComponent),
-        MockComponent(ProductShipmentComponent),
-        MockComponent(ProductVariationDisplayComponent),
-        MockDirective(NgbPopover),
-        MockPipe(PricePipe),
-        MockPipe(ServerSettingPipe, () => true),
-      ],
+      imports: [LineItemListElementComponent, TranslateModule.forRoot()],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
       ],
-    }).compileComponents();
+      deferBlockBehavior: DeferBlockBehavior.Playthrough,
+    })
+      .overrideComponent(LineItemListElementComponent, {
+        remove: {
+          imports: [
+            FeatureToggleDirective,
+            LineItemInformationEditComponent,
+            LineItemWarrantyComponent,
+            NgbPopoverModule,
+            PricePipe,
+            ProductAddToOrderTemplateComponent,
+            ProductAddToWishlistComponent,
+            ProductBundleDisplayComponent,
+            ProductIdComponent,
+            ProductImageComponent,
+            ProductInventoryComponent,
+            ProductNameComponent,
+            ProductQuantityComponent,
+            ProductQuantityLabelComponent,
+            ProductShipmentComponent,
+            ProductVariationDisplayComponent,
+            ServerSettingPipe,
+          ],
+        },
+        add: {
+          imports: [
+            MockFeatureToggleDirective,
+            MockComponent(LineItemInformationEditComponent),
+            MockComponent(LineItemWarrantyComponent),
+            MockDirective(NgbPopover),
+            MockPipe(PricePipe),
+            MockComponent(ProductAddToOrderTemplateComponent),
+            MockComponent(ProductAddToWishlistComponent),
+            MockComponent(ProductBundleDisplayComponent),
+            MockComponent(ProductIdComponent),
+            MockComponent(ProductImageComponent),
+            MockComponent(ProductInventoryComponent),
+            MockComponent(ProductNameComponent),
+            MockComponent(ProductQuantityComponent),
+            MockComponent(ProductQuantityLabelComponent),
+            MockComponent(ProductShipmentComponent),
+            MockComponent(ProductVariationDisplayComponent),
+            MockPipe(ServerSettingPipe, () => true),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -124,7 +166,9 @@ describe('Line Item List Element Component', () => {
     expect(element.querySelectorAll('.details-tooltip')).toHaveLength(0);
   });
 
-  it('should display standard elements for normal products', () => {
+  it('should display standard elements for normal products', async () => {
+    fixture.detectChanges();
+    await fixture.whenRenderingDone();
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       [
@@ -140,8 +184,8 @@ describe('Line Item List Element Component', () => {
         "ish-product-quantity",
         "ish-line-item-warranty",
         "ish-line-item-information-edit",
-        "ish-lazy-product-add-to-order-template",
-        "ish-lazy-product-add-to-wishlist",
+        "ish-product-add-to-order-template",
+        "ish-product-add-to-wishlist",
       ]
     `);
   });

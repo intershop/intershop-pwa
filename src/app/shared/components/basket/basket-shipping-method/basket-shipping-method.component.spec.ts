@@ -15,12 +15,17 @@ describe('Basket Shipping Method Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [
-        BasketShippingMethodComponent,
-        MockPipe(DatePipe, value => formatDate(new Date(Date.parse(value as string)), 'mediumDate', 'en-US')),
-      ],
-    }).compileComponents();
+      imports: [BasketShippingMethodComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(BasketShippingMethodComponent, {
+        remove: { imports: [DatePipe] },
+        add: {
+          imports: [
+            MockPipe(DatePipe, value => formatDate(new Date(Date.parse(value as string)), 'mediumDate', 'en-US')),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -11,8 +11,7 @@ describe('Modal Dialog Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [ModalDialogComponent],
+      imports: [ModalDialogComponent, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

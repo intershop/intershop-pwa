@@ -25,8 +25,7 @@ describe('Product Quantity Component', () => {
     when(context.select('hasQuantityError')).thenReturn(hasQuantityError$);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [ProductQuantityComponent],
+      imports: [ProductQuantityComponent, TranslateModule.forRoot()],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });

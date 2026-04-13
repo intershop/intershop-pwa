@@ -19,8 +19,7 @@ describe('Promotion Remove Component', () => {
     when(checkoutFacade.basket$).thenReturn(of({} as BasketView));
 
     await TestBed.configureTestingModule({
-      declarations: [PromotionRemoveComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [PromotionRemoveComponent, TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
   });

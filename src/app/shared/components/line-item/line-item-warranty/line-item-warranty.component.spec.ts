@@ -31,12 +31,17 @@ describe('Line Item Warranty Component', () => {
     when(checkoutFacade.basketLineItems$).thenReturn(of([pli]));
 
     await TestBed.configureTestingModule({
-      declarations: [LineItemWarrantyComponent, MockComponent(ProductWarrantyComponent), MockPipe(PricePipe)],
+      imports: [LineItemWarrantyComponent],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(LineItemWarrantyComponent, {
+        remove: { imports: [ProductWarrantyComponent, PricePipe] },
+        add: { imports: [MockComponent(ProductWarrantyComponent), MockPipe(PricePipe)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

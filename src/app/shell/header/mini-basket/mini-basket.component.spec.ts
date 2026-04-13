@@ -1,17 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { PriceItem } from 'ish-core/models/price-item/price-item.model';
+import { Price } from 'ish-core/models/price/price.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { LazyMiniBasketContentComponent } from 'ish-shell/shared/lazy-mini-basket-content/lazy-mini-basket-content.component';
+import { MiniBasketContentComponent } from 'ish-shared/components/basket/mini-basket-content/mini-basket-content.component';
 
 import { MiniBasketComponent } from './mini-basket.component';
 
@@ -29,14 +32,31 @@ describe('Mini Basket Component', () => {
     when(appFacade.routingInProgress$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      declarations: [MiniBasketComponent, MockComponent(LazyMiniBasketContentComponent), PricePipe],
-      imports: [NgbDropdownModule, TranslateModule.forRoot()],
+      imports: [MiniBasketComponent, NgbDropdownModule, TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        provideRouter([]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(MiniBasketComponent, {
+        remove: { imports: [MiniBasketContentComponent, PricePipe] },
+        add: {
+          imports: [
+            MockComponent(MiniBasketContentComponent),
+            MockPipe(
+              PricePipe,
+              (price: Price | PriceItem) =>
+                `$${new Intl.NumberFormat('en-US', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }).format(price?.type === 'PriceItem' ? price.gross : price?.value)}`
+            ),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

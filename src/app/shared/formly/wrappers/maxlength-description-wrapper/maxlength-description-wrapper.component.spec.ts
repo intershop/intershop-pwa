@@ -24,9 +24,9 @@ describe('Maxlength Description Wrapper Component', () => {
           wrappers: [{ name: 'maxlength-description-wrapper', component: MaxlengthDescriptionWrapperComponent }],
         }),
         FormlyTestingComponentsModule,
+        MaxlengthDescriptionWrapperComponent,
         TranslateModule.forRoot(),
       ],
-      declarations: [MaxlengthDescriptionWrapperComponent],
     }).compileComponents();
   });
 

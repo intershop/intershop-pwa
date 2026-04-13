@@ -12,8 +12,7 @@ describe('Cms Image Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [CMSImageComponent],
+      imports: [CMSImageComponent, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

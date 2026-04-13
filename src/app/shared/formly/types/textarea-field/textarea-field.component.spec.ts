@@ -15,7 +15,6 @@ describe('Textarea Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TextareaFieldComponent],
       imports: [
         FormlyModule.forRoot({
           types: [
@@ -27,6 +26,7 @@ describe('Textarea Field Component', () => {
         }),
         FormlyTestingComponentsModule,
         ReactiveFormsModule,
+        TextareaFieldComponent,
         TranslateModule.forRoot(),
       ],
     }).compileComponents();

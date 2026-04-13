@@ -1,9 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
+import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
-import { RoleToggleModule } from 'ish-core/role-toggle.module';
-import { LazyContentIncludeComponent } from 'ish-shell/shared/lazy-content-include/lazy-content-include.component';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
+import { RoleToggleModule } from 'ish-core/role-toggle';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 
+import { CopilotComponent } from '../../../extensions/copilot/shared/copilot/copilot.component';
+import { StoreLocatorFooterComponent } from '../../../extensions/store-locator/shared/store-locator-footer/store-locator-footer.component';
 import { FooterComponent } from './footer.component';
 
 describe('Footer Component', () => {
@@ -13,9 +18,30 @@ describe('Footer Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RoleToggleModule.forTesting()],
-      declarations: [FooterComponent, MockComponent(LazyContentIncludeComponent)],
-    }).compileComponents();
+      imports: [FooterComponent, TranslateModule.forRoot()],
+      providers: [...(RoleToggleModule.forTesting().providers ?? [])],
+    })
+      .overrideComponent(FooterComponent, {
+        remove: {
+          imports: [
+            ContentIncludeComponent,
+            CopilotComponent,
+            FeatureTogglePipe,
+            ServerHtmlDirective,
+            StoreLocatorFooterComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockComponent(ContentIncludeComponent),
+            MockComponent(CopilotComponent),
+            MockPipe(FeatureTogglePipe, () => false),
+            MockDirective(ServerHtmlDirective),
+            MockComponent(StoreLocatorFooterComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

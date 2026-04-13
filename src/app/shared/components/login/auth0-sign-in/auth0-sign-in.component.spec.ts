@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { Auth0SignInComponent } from './auth0-sign-in.component';
 
@@ -6,6 +7,13 @@ describe('Auth0 Sign In Component', () => {
   let component: Auth0SignInComponent;
   let fixture: ComponentFixture<Auth0SignInComponent>;
   let element: HTMLElement;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Auth0SignInComponent],
+      providers: [provideRouter([])],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(Auth0SignInComponent);

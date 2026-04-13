@@ -1,9 +1,9 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock, when } from 'ts-mockito';
 
-import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
@@ -21,12 +21,18 @@ describe('Cms Dialog Component', () => {
     when(appFacade.icmBaseUrl).thenReturn('http://example.com');
 
     await TestBed.configureTestingModule({
-      declarations: [CMSDialogComponent, MockComponent(ContentSlotComponent), ServerHtmlDirective],
+      imports: [CMSDialogComponent],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
+        provideRouter([]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CMSDialogComponent, {
+        remove: { imports: [ContentSlotComponent] },
+        add: { imports: [MockComponent(ContentSlotComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

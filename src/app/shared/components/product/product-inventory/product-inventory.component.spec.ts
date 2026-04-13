@@ -21,8 +21,7 @@ describe('Product Inventory Component', () => {
     when(context.select('inventory', 'availableStock')).thenReturn(of(-1));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [ProductInventoryComponent],
+      imports: [ProductInventoryComponent, TranslateModule.forRoot()],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
