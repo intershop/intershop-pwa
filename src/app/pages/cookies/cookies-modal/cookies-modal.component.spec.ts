@@ -19,8 +19,7 @@ describe('Cookies Modal Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [CookiesModalComponent],
+      imports: [CookiesModalComponent, TranslateModule.forRoot()],
       providers: [
         {
           provide: COOKIE_CONSENT_OPTIONS,

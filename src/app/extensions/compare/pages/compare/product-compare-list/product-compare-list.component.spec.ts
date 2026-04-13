@@ -1,10 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AsyncPipe, SlicePipe } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA, Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { ComponentFixture, DeferBlockBehavior, TestBed } from '@angular/core/testing';
+import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -16,10 +17,23 @@ import { ProductImageComponent } from 'ish-shared/components/product/product-ima
 import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
 
+import { ProductRatingComponent } from '../../../../rating/shared/product-rating/product-rating.component';
 import { CompareFacade } from '../../../facades/compare.facade';
 import { ProductComparePagingComponent } from '../product-compare-paging/product-compare-paging.component';
 
 import { ProductCompareListComponent } from './product-compare-list.component';
+
+@Directive({
+  selector: '[ishFeature]',
+  standalone: true,
+})
+class MockFeatureToggleDirective {
+  @Input('ishFeature') feature: unknown;
+
+  constructor(templateRef: TemplateRef<unknown>, viewContainerRef: ViewContainerRef) {
+    viewContainerRef.createEmbeddedView(templateRef);
+  }
+}
 
 describe('Product Compare List Component', () => {
   let fixture: ComponentFixture<ProductCompareListComponent>;
@@ -70,23 +84,34 @@ describe('Product Compare List Component', () => {
     compareFacade = mock(CompareFacade);
 
     await TestBed.configureTestingModule({
-      imports: [MockComponent(ProductImageComponent), TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(ProductAttributesComponent),
-        MockComponent(ProductComparePagingComponent),
-        MockComponent(ProductNameComponent),
-        MockComponent(ProductPriceComponent),
-        MockDirective(FeatureToggleDirective),
-        MockDirective(ProductContextDirective),
-        MockDirective(ServerHtmlDirective),
-        MockPipe(AttributeToStringPipe),
-        ProductCompareListComponent,
-      ],
+      imports: [ProductCompareListComponent, TranslateModule.forRoot()],
       providers: [
         { provide: CompareFacade, useFactory: () => instance(compareFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
       ],
-    }).compileComponents();
+      deferBlockBehavior: DeferBlockBehavior.Playthrough,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+      .overrideComponent(ProductCompareListComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            SlicePipe,
+            TranslatePipe,
+            MockPipe(AttributeToStringPipe),
+            MockFeatureToggleDirective,
+            MockComponent(ProductAttributesComponent),
+            MockComponent(ProductComparePagingComponent),
+            MockDirective(ProductContextDirective),
+            MockComponent(ProductImageComponent),
+            MockComponent(ProductNameComponent),
+            MockComponent(ProductPriceComponent),
+            MockComponent(ProductRatingComponent),
+            MockDirective(ServerHtmlDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

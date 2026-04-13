@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -25,14 +26,20 @@ describe('Product Master Variations Component', () => {
     when(context.select('variations')).thenReturn(of([{ sku: '123456789-01' }] as VariationProduct[]));
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(FilterNavigationComponent),
-        MockComponent(ProductListingComponent),
-        MockComponent(SkipContentLinkComponent),
-        ProductMasterVariationsComponent,
-      ],
-      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
-    }).compileComponents();
+      imports: [ProductMasterVariationsComponent],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }, provideRouter([])],
+    })
+      .overrideComponent(ProductMasterVariationsComponent, {
+        remove: { imports: [FilterNavigationComponent, ProductListingComponent, SkipContentLinkComponent] },
+        add: {
+          imports: [
+            MockComponent(FilterNavigationComponent),
+            MockComponent(ProductListingComponent),
+            MockComponent(SkipContentLinkComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

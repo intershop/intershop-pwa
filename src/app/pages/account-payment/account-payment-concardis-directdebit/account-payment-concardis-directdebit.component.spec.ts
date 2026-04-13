@@ -17,13 +17,13 @@ describe('Account Payment Concardis Directdebit Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [
-        AccountPaymentConcardisDirectdebitComponent,
-        MockComponent(ModalDialogLinkComponent),
-        MockPipe(DatePipe),
-      ],
-    }).compileComponents();
+      imports: [AccountPaymentConcardisDirectdebitComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(AccountPaymentConcardisDirectdebitComponent, {
+        remove: { imports: [DatePipe, ModalDialogLinkComponent] },
+        add: { imports: [MockPipe(DatePipe), MockComponent(ModalDialogLinkComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

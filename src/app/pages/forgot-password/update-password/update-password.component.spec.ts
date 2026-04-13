@@ -22,14 +22,14 @@ describe('Update Password Component', () => {
     when(accountFacade.passwordReminderSuccess$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(ErrorMessageComponent),
-        MockComponent(UpdatePasswordFormComponent),
-        UpdatePasswordComponent,
-      ],
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot(), UpdatePasswordComponent],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideRouter([])],
-    }).compileComponents();
+    })
+      .overrideComponent(UpdatePasswordComponent, {
+        remove: { imports: [ErrorMessageComponent, UpdatePasswordFormComponent] },
+        add: { imports: [MockComponent(ErrorMessageComponent), MockComponent(UpdatePasswordFormComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -8,6 +8,7 @@ import { ProductContextDirective } from 'ish-core/directives/product-context.dir
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
+import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 import { RetailSetPartsComponent } from './retail-set-parts.component';
 
@@ -28,14 +29,20 @@ describe('Retail Set Parts Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(ProductAddToBasketComponent),
-        MockDirective(ProductContextDirective),
-        RetailSetPartsComponent,
-      ],
+      imports: [RetailSetPartsComponent, TranslateModule.forRoot()],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
-    }).compileComponents();
+    })
+      .overrideComponent(RetailSetPartsComponent, {
+        remove: { imports: [ProductAddToBasketComponent, ProductContextDirective, ProductItemComponent] },
+        add: {
+          imports: [
+            MockComponent(ProductAddToBasketComponent),
+            MockDirective(ProductContextDirective),
+            MockComponent(ProductItemComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

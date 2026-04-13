@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
-import { FormlyModule } from '@ngx-formly/core';
+import { FormlyForm, FormlyModule } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 
@@ -17,13 +17,18 @@ describe('Payment Parameter Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormlyModule.forRoot({ types: [{ name: 'example', component: FormlyTestingExampleComponent }] })],
-      declarations: [
-        MockComponent(PaymentSaveCheckboxComponent),
-        MockPipe(TranslatePipe),
+      imports: [
+        FormlyModule.forRoot({ types: [{ name: 'example', component: FormlyTestingExampleComponent }] }),
         PaymentParameterFormComponent,
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(PaymentParameterFormComponent, {
+        remove: { imports: [FormlyForm, PaymentSaveCheckboxComponent, TranslatePipe] },
+        add: {
+          imports: [MockComponent(FormlyForm), MockComponent(PaymentSaveCheckboxComponent), MockPipe(TranslatePipe)],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

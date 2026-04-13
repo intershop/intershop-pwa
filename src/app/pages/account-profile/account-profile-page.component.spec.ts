@@ -25,9 +25,14 @@ describe('Account Profile Page Component', () => {
     when(accountFacade.user$).thenReturn(of(user));
 
     await TestBed.configureTestingModule({
-      declarations: [AccountProfilePageComponent, MockComponent(AccountProfileComponent)],
+      imports: [AccountProfilePageComponent],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountProfilePageComponent, {
+        remove: { imports: [AccountProfileComponent] },
+        add: { imports: [MockComponent(AccountProfileComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

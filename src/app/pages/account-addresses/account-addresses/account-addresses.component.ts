@@ -6,7 +6,6 @@ import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, map, shareReplay, take, withLatestFrom } from 'rxjs/operators';
-import { AddressDoctorComponent } from 'src/app/extensions/address-doctor/shared/address-doctor/address-doctor.component';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle';
@@ -21,6 +20,8 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
 import { mapToAddressOptions } from 'ish-shared/forms/utils/forms.service';
+
+import { AddressDoctorComponent } from '../../../extensions/address-doctor/shared/address-doctor/address-doctor.component';
 
 /**
  * The Account Address Page Component displays the preferred InvoiceTo and ShipTo addresses of the user

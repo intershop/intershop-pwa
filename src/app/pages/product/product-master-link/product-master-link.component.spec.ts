@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -19,8 +19,7 @@ describe('Product Master Link Component', () => {
     when(context.select('productURL')).thenReturn(of('/product/MASTER'));
 
     await TestBed.configureTestingModule({
-      imports: [RouterModule, TranslateModule.forRoot()],
-      declarations: [ProductMasterLinkComponent],
+      imports: [ProductMasterLinkComponent, TranslateModule.forRoot()],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }, provideRouter([])],
     })
       .overrideComponent(ProductMasterLinkComponent, {

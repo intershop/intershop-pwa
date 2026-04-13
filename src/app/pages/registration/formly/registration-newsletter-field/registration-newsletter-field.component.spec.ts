@@ -23,10 +23,15 @@ describe('Registration Newsletter Field Component', () => {
         }),
         FormlyTestingComponentsModule,
         ReactiveFormsModule,
+        RegistrationNewsletterFieldComponent,
         TranslateModule.forRoot(),
       ],
-      declarations: [MockPipe(ServerSettingPipe, () => true), RegistrationNewsletterFieldComponent],
-    }).compileComponents();
+    })
+      .overrideComponent(RegistrationNewsletterFieldComponent, {
+        remove: { imports: [ServerSettingPipe] },
+        add: { imports: [MockPipe(ServerSettingPipe, () => true)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

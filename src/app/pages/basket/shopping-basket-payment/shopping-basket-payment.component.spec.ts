@@ -1,18 +1,21 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-import { MockPipe } from 'ng-mocks';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketPaymentCostInfoComponent } from 'ish-shared/components/basket/basket-payment-cost-info/basket-payment-cost-info.component';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-paypal/payment-paypal.component';
 
 import { ShoppingBasketPaymentComponent } from './shopping-basket-payment.component';
 
@@ -27,14 +30,26 @@ describe('Shopping Basket Payment Component', () => {
     checkoutFacade = mock(CheckoutFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [BasketPaymentCostInfoComponent, MockPipe(ServerSettingPipe), ShoppingBasketPaymentComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [ShoppingBasketPaymentComponent, TranslateModule.forRoot()],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: FeatureToggleService, useValue: instance(featureToggleService) },
         provideRouter([]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ShoppingBasketPaymentComponent, {
+        set: {
+          imports: [
+            MockComponent(ErrorMessageComponent),
+            AsyncPipe,
+            TranslatePipe,
+            MockComponent(BasketPaymentCostInfoComponent),
+            MockComponent(PaymentPaypalComponent),
+            MockPipe(ServerSettingPipe),
+          ],
+        },
+      })
+      .compileComponents();
 
     when(checkoutFacade.eligibleFastCheckoutPaymentMethods$).thenReturn(of([BasketMockData.getPaymentMethod()]));
     when(featureToggleService.enabled('guestCheckout')).thenReturn(false);

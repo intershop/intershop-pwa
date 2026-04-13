@@ -39,8 +39,7 @@ describe('Account Order To Basket Component', () => {
     shoppingFacadeMock = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [AccountOrderToBasketComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [AccountOrderToBasketComponent, TranslateModule.forRoot()],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacadeMock) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacadeMock) },

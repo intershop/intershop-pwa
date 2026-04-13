@@ -28,10 +28,15 @@ describe('Rating Stars Field Component', () => {
           ],
         }),
         FormlyTestingComponentsModule,
+        RatingStarsFieldComponent,
         TranslateModule.forRoot(),
       ],
-      declarations: [MockComponent(ProductRatingStarComponent), RatingStarsFieldComponent],
-    }).compileComponents();
+    })
+      .overrideComponent(RatingStarsFieldComponent, {
+        remove: { imports: [ProductRatingStarComponent] },
+        add: { imports: [MockComponent(ProductRatingStarComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

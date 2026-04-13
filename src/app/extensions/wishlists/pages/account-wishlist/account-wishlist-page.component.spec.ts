@@ -21,15 +21,20 @@ describe('Account Wishlist Page Component', () => {
     const wishlistsFacade = mock(WishlistsFacade);
 
     await TestBed.configureTestingModule({
-      imports: [NgbPopoverModule, TranslateModule.forRoot()],
-      declarations: [
-        AccountWishlistPageComponent,
-        MockComponent(AccountWishlistListComponent),
-        MockComponent(ErrorMessageComponent),
-        MockComponent(WishlistPreferencesDialogComponent),
-      ],
+      imports: [AccountWishlistPageComponent, NgbPopoverModule, TranslateModule.forRoot()],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistsFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountWishlistPageComponent, {
+        remove: { imports: [AccountWishlistListComponent, ErrorMessageComponent, WishlistPreferencesDialogComponent] },
+        add: {
+          imports: [
+            MockComponent(AccountWishlistListComponent),
+            MockComponent(ErrorMessageComponent),
+            MockComponent(WishlistPreferencesDialogComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

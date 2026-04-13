@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe, ngMocks } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -29,15 +29,7 @@ describe('Recently Viewed Component', () => {
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterModule],
-      declarations: [
-        MockComponent(ProductsListComponent),
-        MockComponent(SkipContentLinkComponent),
-        MockDirective(BrowserLazyViewDirective),
-        MockPipe(TranslatePipe),
-        RecentlyViewedComponent,
-        RouterTestingModule.withRoutes([{ path: 'recently', component: RecentlyViewedComponent }]),
-      ],
+      imports: [RecentlyViewedComponent],
       providers: [
         { provide: RecentlyFacade, useFactory: () => instance(recentlyFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
@@ -45,11 +37,14 @@ describe('Recently Viewed Component', () => {
       ],
     })
       .overrideComponent(RecentlyViewedComponent, {
-        set: {
+        remove: {
+          imports: [BrowserLazyViewDirective, ProductsListComponent, SkipContentLinkComponent, TranslatePipe],
+        },
+        add: {
           imports: [
+            MockDirective(BrowserLazyViewDirective),
             MockComponent(ProductsListComponent),
             MockComponent(SkipContentLinkComponent),
-            MockDirective(BrowserLazyViewDirective),
             MockPipe(TranslatePipe),
           ],
         },

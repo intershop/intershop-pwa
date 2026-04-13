@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
 import { instance, mock } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { PaymentConcardisCreditcardCvcDetailComponent } from './payment-concardis-creditcard-cvc-detail.component';
@@ -16,9 +18,11 @@ describe('Payment Concardis Creditcard Cvc Detail Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PaymentConcardisCreditcardCvcDetailComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }],
+      imports: [PaymentConcardisCreditcardCvcDetailComponent, FormlyTestingModule, TranslateModule.forRoot()],
+      providers: [
+        { provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) },
+        { provide: ScriptLoaderService, useValue: { load: jest.fn(() => of(undefined)) } },
+      ],
     }).compileComponents();
   });
 
@@ -31,6 +35,7 @@ describe('Payment Concardis Creditcard Cvc Detail Component', () => {
       id: 'Concardis_CreditCard',
       saveAllowed: false,
       serviceId: 'Concardis_CreditCard',
+      hostedPaymentPageParameters: [],
     } as PaymentMethod;
 
     component.paymentInstrument = {

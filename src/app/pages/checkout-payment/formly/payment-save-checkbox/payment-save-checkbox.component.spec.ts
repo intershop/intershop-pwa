@@ -13,8 +13,7 @@ describe('Payment Save Checkbox Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PaymentSaveCheckboxComponent],
-      imports: [FormlyTestingModule],
+      imports: [FormlyTestingModule, PaymentSaveCheckboxComponent],
     }).compileComponents();
   });
 

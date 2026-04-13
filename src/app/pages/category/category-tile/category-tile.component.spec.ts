@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -42,10 +42,14 @@ describe('Category Tile Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [MockComponent(CategoryImageComponent), RouterModule],
-      declarations: [CategoryTileComponent, MockPipe(CategoryRoutePipe)],
+      imports: [CategoryTileComponent],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }, provideRouter([])],
-    }).compileComponents();
+    })
+      .overrideComponent(CategoryTileComponent, {
+        remove: { imports: [CategoryImageComponent, CategoryRoutePipe] },
+        add: { imports: [MockComponent(CategoryImageComponent), MockPipe(CategoryRoutePipe)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

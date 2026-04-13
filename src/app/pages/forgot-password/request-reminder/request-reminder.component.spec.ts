@@ -18,15 +18,20 @@ describe('Request Reminder Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(ErrorMessageComponent),
-        MockComponent(RequestReminderFormComponent),
-        MockDirective(ServerHtmlDirective),
-        RequestReminderComponent,
-      ],
-      imports: [TranslateModule.forRoot()],
+      imports: [RequestReminderComponent, TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
-    }).compileComponents();
+    })
+      .overrideComponent(RequestReminderComponent, {
+        remove: { imports: [ErrorMessageComponent, RequestReminderFormComponent, ServerHtmlDirective] },
+        add: {
+          imports: [
+            MockComponent(ErrorMessageComponent),
+            MockComponent(RequestReminderFormComponent),
+            MockDirective(ServerHtmlDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

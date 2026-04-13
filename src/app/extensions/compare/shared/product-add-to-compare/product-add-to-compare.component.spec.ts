@@ -1,12 +1,12 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { FeatureToggleModule, FeatureToggleType } from 'ish-core/feature-toggle.module';
-import { IconModule } from 'ish-core/icon.module';
+import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
 
 import { CompareFacade } from '../../facades/compare.facade';
 
@@ -26,13 +26,18 @@ describe('Product Add To Compare Component', () => {
     compareFacade = mock(CompareFacade);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [MockPipe(FeatureTogglePipe, () => true), ProductAddToCompareComponent],
+      imports: [ProductAddToCompareComponent, TranslateModule.forRoot()],
       providers: [
         { provide: CompareFacade, useFactory: () => instance(compareFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductAddToCompareComponent, {
+        set: {
+          imports: [NgClass, AsyncPipe, TranslatePipe, MockPipe(FeatureTogglePipe, () => true)],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

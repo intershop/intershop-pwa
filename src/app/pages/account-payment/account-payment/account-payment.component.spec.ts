@@ -21,10 +21,14 @@ describe('Account Payment Component', () => {
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [AccountPaymentComponent, MockComponent(AccountPaymentConcardisDirectdebitComponent)],
+      imports: [AccountPaymentComponent, ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountPaymentComponent, {
+        remove: { imports: [AccountPaymentConcardisDirectdebitComponent] },
+        add: { imports: [MockComponent(AccountPaymentConcardisDirectdebitComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

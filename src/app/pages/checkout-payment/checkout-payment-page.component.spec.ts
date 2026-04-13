@@ -21,11 +21,14 @@ describe('Checkout Payment Page Component', () => {
     when(checkoutFacade.eligiblePaymentMethods$()).thenReturn(of([]));
 
     await TestBed.configureTestingModule({
-      declarations: [CheckoutPaymentPageComponent, MockComponent(CheckoutPaymentComponent)],
-
-      imports: [TranslateModule.forRoot()],
+      imports: [CheckoutPaymentPageComponent, TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(CheckoutPaymentPageComponent, {
+        remove: { imports: [CheckoutPaymentComponent] },
+        add: { imports: [MockComponent(CheckoutPaymentComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

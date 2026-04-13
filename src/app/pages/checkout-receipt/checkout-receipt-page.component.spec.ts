@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
+import { CheckoutReceiptRequisitionComponent } from 'requisition-management';
 import { instance, mock } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { CheckoutReceiptOrderComponent } from './checkout-receipt-order/checkout-receipt-order.component';
 import { CheckoutReceiptPageComponent } from './checkout-receipt-page.component';
@@ -15,13 +17,28 @@ describe('Checkout Receipt Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        CheckoutReceiptPageComponent,
-        MockComponent(CheckoutReceiptComponent),
-        MockComponent(CheckoutReceiptOrderComponent),
-      ],
+      imports: [CheckoutReceiptPageComponent],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }],
-    }).compileComponents();
+    })
+      .overrideComponent(CheckoutReceiptPageComponent, {
+        remove: {
+          imports: [
+            CheckoutReceiptComponent,
+            LoadingComponent,
+            CheckoutReceiptOrderComponent,
+            CheckoutReceiptRequisitionComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockComponent(CheckoutReceiptComponent),
+            MockComponent(LoadingComponent),
+            MockComponent(CheckoutReceiptOrderComponent),
+            MockComponent(CheckoutReceiptRequisitionComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

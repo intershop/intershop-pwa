@@ -3,12 +3,12 @@ import { Router, provideRouter } from '@angular/router';
 import { flatten } from 'lodash-es';
 
 import { Product, VariationProduct, VariationProductMaster } from 'ish-core/models/product/product.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { loadProductSuccess, loadProductVariationsSuccess } from 'ish-core/store/shopping/products';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { ShoppingStoreProviders } from 'ish-core/store/shopping/shopping-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { RecentlyStoreModule } from '../recently-store.module';
+import { RecentlyStoreProviders } from '../recently-store.providers';
 
 import { clearRecently } from './recently.actions';
 import { RecentlyEffects } from './recently.effects';
@@ -21,9 +21,9 @@ describe('Recently Integration', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], [RecentlyEffects]),
-        RecentlyStoreModule.forTesting('_recently'),
-        ShoppingStoreModule.forTesting('categories', 'products', 'productPrices'),
+        ...CoreStoreProviders.forTesting(['router', 'configuration', 'serverConfig'], [RecentlyEffects]),
+        RecentlyStoreProviders.forTesting('_recently'),
+        ShoppingStoreProviders.forTesting('categories', 'products', 'productPrices'),
       ],
       providers: [provideRouter([{ path: 'product/:sku', children: [] }]), provideStoreSnapshots()],
     });

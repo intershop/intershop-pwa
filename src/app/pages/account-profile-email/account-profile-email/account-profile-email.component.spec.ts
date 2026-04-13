@@ -1,9 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UntypedFormGroup } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { FormlyForm } from '@ngx-formly/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { User } from 'ish-core/models/user/user.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
@@ -17,9 +21,21 @@ describe('Account Profile Email Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      declarations: [AccountProfileEmailComponent, MockComponent(ErrorMessageComponent)],
-    }).compileComponents();
+      imports: [AccountProfileEmailComponent, FormlyTestingModule, TranslateModule.forRoot()],
+    })
+      .overrideComponent(AccountProfileEmailComponent, {
+        set: {
+          imports: [
+            MockComponent(ErrorMessageComponent),
+            FormSubmitDirective,
+            FormlyForm,
+            ReactiveFormsModule,
+            TranslatePipe,
+            MockDirective(RouterLink),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

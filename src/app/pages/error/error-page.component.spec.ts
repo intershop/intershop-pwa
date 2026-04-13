@@ -14,9 +14,14 @@ describe('Error Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ErrorPageComponent, MockComponent(ErrorComponent)],
+      imports: [ErrorPageComponent],
       providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ErrorPageComponent, {
+        remove: { imports: [ErrorComponent] },
+        add: { imports: [MockComponent(ErrorComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

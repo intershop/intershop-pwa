@@ -1,16 +1,40 @@
+import { AsyncPipe, NgClass } from '@angular/common';
+import { Component, Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { SwiperComponent } from 'swiper/angular';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 import { ProductLabelComponent } from 'ish-shared/components/product/product-label/product-label.component';
 
 import { ProductImagesComponent } from './product-images.component';
+
+/* eslint-disable @angular-eslint/directive-selector, @angular-eslint/component-selector, ish-custom-rules/newline-before-root-members */
+@Directive({
+  selector: '[swiperSlide]',
+  standalone: true,
+})
+class MockSwiperSlideDirective {
+  constructor(templateRef: TemplateRef<unknown>, viewContainerRef: ViewContainerRef) {
+    viewContainerRef.createEmbeddedView(templateRef);
+  }
+}
+
+@Component({
+  selector: 'swiper',
+  template: '<ng-content />',
+  standalone: true,
+  imports: [MockSwiperSlideDirective],
+})
+class MockSwiperComponent {
+  @Input() navigation: unknown;
+}
+/* eslint-enable @angular-eslint/directive-selector, @angular-eslint/component-selector, ish-custom-rules/newline-before-root-members */
 
 describe('Product Images Component', () => {
   let component: ProductImagesComponent;
@@ -69,10 +93,23 @@ describe('Product Images Component', () => {
       } as ProductView)
     );
     await TestBed.configureTestingModule({
-      imports: [MockComponent(ProductImageComponent)],
-      declarations: [MockComponent(ProductLabelComponent), MockComponent(SwiperComponent), ProductImagesComponent],
+      imports: [ProductImagesComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductImagesComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            NgClass,
+            MockComponent(ModalDialogComponent),
+            MockComponent(ProductImageComponent),
+            MockComponent(ProductLabelComponent),
+            MockSwiperComponent,
+            MockSwiperSlideDirective,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -89,7 +126,7 @@ describe('Product Images Component', () => {
 
   it('should render carousel on component', () => {
     fixture.detectChanges();
-    expect(element.getElementsByTagName('ish-product-image')).toHaveLength(2);
+    expect(element.querySelector('.product-detail-img').getElementsByTagName('ish-product-image')).toHaveLength(2);
   });
 
   it('should render thumbnails on component', () => {
@@ -116,6 +153,6 @@ describe('Product Images Component', () => {
     );
 
     fixture.detectChanges();
-    expect(element.getElementsByTagName('ish-product-image')).toHaveLength(1);
+    expect(element.querySelector('.product-detail-img').getElementsByTagName('ish-product-image')).toHaveLength(1);
   });
 });

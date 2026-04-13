@@ -5,7 +5,7 @@ import { anyString, instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.imports';
 import { extractKeys } from 'ish-shared/formly/dev/testing/formly-testing-utils';
 import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
 
@@ -58,8 +58,8 @@ describe('Registration Form Configuration Service', () => {
     ]);
 
     TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting()],
       providers: [
+        ...(FeatureToggleModule.forTesting().providers ?? []),
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: FieldLibrary, useFactory: () => instance(fieldLibrary) },

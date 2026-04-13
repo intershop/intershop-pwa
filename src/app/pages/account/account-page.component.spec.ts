@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -18,16 +18,23 @@ describe('Account Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AccountPageComponent,
-        MockComponent(AccountNavigationComponent),
-        MockComponent(BreadcrumbComponent),
-        MockComponent(ContentIncludeComponent),
-        MockComponent(SkipContentLinkComponent),
-      ],
-      imports: [RouterModule],
-      providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
-    }).compileComponents();
+      imports: [AccountPageComponent],
+      providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }, provideRouter([])],
+    })
+      .overrideComponent(AccountPageComponent, {
+        remove: {
+          imports: [AccountNavigationComponent, BreadcrumbComponent, ContentIncludeComponent, SkipContentLinkComponent],
+        },
+        add: {
+          imports: [
+            MockComponent(AccountNavigationComponent),
+            MockComponent(BreadcrumbComponent),
+            MockComponent(ContentIncludeComponent),
+            MockComponent(SkipContentLinkComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

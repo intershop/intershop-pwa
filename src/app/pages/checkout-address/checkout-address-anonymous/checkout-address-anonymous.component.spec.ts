@@ -1,13 +1,14 @@
+import { NgClass } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule, provideRouter } from '@angular/router';
+import { RouterLink, provideRouter } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, verify } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleDirective, FeatureToggleModule } from 'ish-core/feature-toggle.imports';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -28,21 +29,29 @@ describe('Checkout Address Anonymous Component', () => {
     checkoutFacade = mock(CheckoutFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        CheckoutAddressAnonymousComponent,
-        MockComponent(CheckoutAddressAnonymousFormComponent),
-        MockComponent(ErrorMessageComponent),
-        MockComponent(IdentityProviderLoginComponent),
+      imports: [CheckoutAddressAnonymousComponent, TranslateModule.forRoot()],
+      providers: [
+        ...(FeatureToggleModule.forTesting('guestCheckout').providers ?? []),
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        provideRouter([]),
       ],
-      imports: [
-        FeatureToggleModule.forTesting('guestCheckout'),
-        NgbCollapseModule,
-        ReactiveFormsModule,
-        RouterModule,
-        TranslateModule.forRoot(),
-      ],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, provideRouter([])],
-    }).compileComponents();
+    })
+      .overrideComponent(CheckoutAddressAnonymousComponent, {
+        set: {
+          imports: [
+            MockComponent(ErrorMessageComponent),
+            TranslatePipe,
+            NgbCollapseModule,
+            ReactiveFormsModule,
+            MockComponent(IdentityProviderLoginComponent),
+            NgClass,
+            FeatureToggleDirective,
+            MockComponent(CheckoutAddressAnonymousFormComponent),
+            RouterLink,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

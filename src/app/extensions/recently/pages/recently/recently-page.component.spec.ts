@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -33,8 +34,11 @@ describe('Recently Page Component', () => {
       ],
     })
       .overrideComponent(RecentlyPageComponent, {
-        set: {
-          imports: [MockComponent(BreadcrumbComponent), MockComponent(ProductsListComponent), TranslateModule],
+        remove: {
+          imports: [AsyncPipe, BreadcrumbComponent, ProductsListComponent],
+        },
+        add: {
+          imports: [AsyncPipe, MockComponent(BreadcrumbComponent), MockComponent(ProductsListComponent)],
         },
       })
       .compileComponents();

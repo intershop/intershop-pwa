@@ -1,12 +1,12 @@
+import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
+import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -14,6 +14,20 @@ import { LoadingComponent } from 'ish-shared/components/common/loading/loading.c
 
 import { AccountRecurringOrdersPageComponent } from './account-recurring-orders-page.component';
 import { RecurringOrderListComponent } from './recurring-order-list/recurring-order-list.component';
+
+@Directive({
+  selector: '[ishIsAuthorizedTo]',
+  standalone: true,
+})
+class MockAuthorizationToggleDirective {
+  @Input() set ishIsAuthorizedTo(permission: unknown) {
+    void permission;
+    this.viewContainerRef.clear();
+    this.viewContainerRef.createEmbeddedView(this.templateRef);
+  }
+
+  constructor(private templateRef: TemplateRef<unknown>, private viewContainerRef: ViewContainerRef) {}
+}
 
 describe('Account Recurring Orders Page Component', () => {
   let component: AccountRecurringOrdersPageComponent;
@@ -30,20 +44,23 @@ describe('Account Recurring Orders Page Component', () => {
     when(accountFacade.recurringOrdersError$).thenReturn(of(undefined));
 
     await TestBed.configureTestingModule({
-      imports: [
-        AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_ORDERS'),
-        NgbNavModule,
-        RouterModule,
-        TranslateModule.forRoot(),
-      ],
-      declarations: [
-        AccountRecurringOrdersPageComponent,
-        MockComponent(ErrorMessageComponent),
-        MockComponent(LoadingComponent),
-        MockComponent(RecurringOrderListComponent),
-      ],
+      imports: [AccountRecurringOrdersPageComponent, TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideRouter([])],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountRecurringOrdersPageComponent, {
+        remove: {
+          imports: [AuthorizationToggleDirective, ErrorMessageComponent, LoadingComponent, RecurringOrderListComponent],
+        },
+        add: {
+          imports: [
+            MockAuthorizationToggleDirective,
+            MockComponent(ErrorMessageComponent),
+            MockComponent(LoadingComponent),
+            MockComponent(RecurringOrderListComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -66,12 +83,14 @@ describe('Account Recurring Orders Page Component', () => {
 
   it('should display my tab as active if context is MY', () => {
     fixture.detectChanges();
-    expect(element.querySelector('[data-testing-id=tab-link-my]').getAttribute('class')).toContain('active');
+    fixture.detectChanges();
+    expect(element.querySelector('.nav-tabs .active')?.textContent).toContain('account.recurring_orders.tab_my');
   });
 
   it('should display admin tab as active if context is ADMIN', () => {
     when(accountFacade.recurringOrdersContext$).thenReturn(of('ADMIN'));
     fixture.detectChanges();
-    expect(element.querySelector('[data-testing-id=tab-link-admin]').getAttribute('class')).toContain('active');
+    fixture.detectChanges();
+    expect(element.querySelector('.nav-tabs .active')?.textContent).toContain('account.recurring_orders.tab_all');
   });
 });

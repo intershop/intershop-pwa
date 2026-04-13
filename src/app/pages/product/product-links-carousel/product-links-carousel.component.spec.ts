@@ -1,15 +1,41 @@
+import { AsyncPipe } from '@angular/common';
+import { Component, Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { forkJoin, of, switchMap } from 'rxjs';
-import { SwiperComponent } from 'swiper/angular';
+import { SwiperModule } from 'swiper/angular';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
 import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 import { ProductLinksCarouselComponent } from './product-links-carousel.component';
+
+/* eslint-disable @angular-eslint/directive-selector, @angular-eslint/component-selector, ish-custom-rules/newline-before-root-members */
+@Directive({
+  selector: '[swiperSlide]',
+  standalone: true,
+})
+class MockSwiperSlideDirective {
+  constructor(templateRef: TemplateRef<unknown>, viewContainerRef: ViewContainerRef) {
+    viewContainerRef.createEmbeddedView(templateRef, { $implicit: { isVisible: true } });
+  }
+}
+
+@Component({
+  selector: 'swiper',
+  template: '<ng-content />',
+  standalone: true,
+  imports: [MockSwiperSlideDirective],
+})
+class MockSwiperComponent {
+  @Input() config: unknown;
+}
+/* eslint-enable @angular-eslint/directive-selector, @angular-eslint/component-selector, ish-custom-rules/newline-before-root-members */
 
 describe('Product Links Carousel Component', () => {
   let component: ProductLinksCarouselComponent;
@@ -21,9 +47,23 @@ describe('Product Links Carousel Component', () => {
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(SwiperComponent), ProductLinksCarouselComponent],
+      imports: [ProductLinksCarouselComponent],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductLinksCarouselComponent, {
+        remove: {
+          imports: [AsyncPipe, ProductContextDirective, ProductItemComponent, SwiperModule],
+        },
+        add: {
+          imports: [
+            AsyncPipe,
+            MockDirective(ProductContextDirective),
+            MockComponent(ProductItemComponent),
+            MockSwiperComponent,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
