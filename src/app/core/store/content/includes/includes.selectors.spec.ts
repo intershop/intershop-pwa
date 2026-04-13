@@ -13,7 +13,7 @@ describe('Includes Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ContentStoreProviders.forTesting('includes'), ...CoreStoreProviders.forTesting()],
+      imports: [...CoreStoreProviders.forTesting(), ContentStoreProviders.forTesting('includes')],
       providers: [provideStoreSnapshots()],
     });
 

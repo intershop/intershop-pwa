@@ -12,6 +12,7 @@ import { ContentStoreProviders } from 'ish-core/store/content/content-store.prov
 import { IncludesEffects } from 'ish-core/store/content/includes/includes.effects';
 import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { whenTruthy } from 'ish-core/utils/operators';
+
 import { getContentInclude, loadContentInclude, loadContentIncludeSuccess } from './includes';
 
 describe('Content Store', () => {
@@ -34,8 +35,8 @@ describe('Content Store', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        ContentStoreProviders.forTesting('includes', 'pagelets'),
         ...CoreStoreProviders.forTesting([], true),
+        ContentStoreProviders.forTesting('includes', 'pagelets'),
         EffectsModule.forFeature([IncludesEffects]),
       ],
       providers: [
