@@ -19,17 +19,31 @@ describe('Search Result Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(BreadcrumbComponent),
-        MockComponent(ContentIncludeComponent),
-        MockComponent(FilterNavigationComponent),
-        MockComponent(ProductListingComponent),
-        MockComponent(SkipContentLinkComponent),
-        MockDirective(NgbCollapse),
-        SearchResultComponent,
-      ],
-    }).compileComponents();
+      imports: [SearchResultComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(SearchResultComponent, {
+        remove: {
+          imports: [
+            BreadcrumbComponent,
+            ContentIncludeComponent,
+            FilterNavigationComponent,
+            NgbCollapse,
+            ProductListingComponent,
+            SkipContentLinkComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockComponent(BreadcrumbComponent),
+            MockComponent(ContentIncludeComponent),
+            MockComponent(FilterNavigationComponent),
+            MockDirective(NgbCollapse),
+            MockComponent(ProductListingComponent),
+            MockComponent(SkipContentLinkComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
@@ -33,9 +34,15 @@ describe('Content Page Component', () => {
     when(cmsFacade.contentPageLoading$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      declarations: [ContentPageComponent, MockComponent(ContentPageletComponent), MockComponent(LoadingComponent)],
+      imports: [ContentPageComponent],
       providers: [{ provide: CMSFacade, useFactory: () => instance(cmsFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ContentPageComponent, {
+        set: {
+          imports: [MockComponent(ContentPageletComponent), MockComponent(LoadingComponent), AsyncPipe],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

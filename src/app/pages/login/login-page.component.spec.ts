@@ -23,14 +23,18 @@ describe('Login Page Component', () => {
     accountFacade = mock(AccountFacade);
     appFacade = mock(AppFacade);
     await TestBed.configureTestingModule({
-      imports: [RouterModule, TranslateModule.forRoot()],
-      declarations: [LoginPageComponent, MockComponent(IdentityProviderLoginComponent)],
+      imports: [LoginPageComponent, RouterModule, TranslateModule.forRoot()],
       providers: [
-        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         provideRouter([]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(LoginPageComponent, {
+        remove: { imports: [IdentityProviderLoginComponent] },
+        add: { imports: [MockComponent(IdentityProviderLoginComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

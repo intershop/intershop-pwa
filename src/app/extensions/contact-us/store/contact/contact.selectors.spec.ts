@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Contact } from 'ish-core/models/contact/contact.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { ContactUsStoreModule } from '../contact-us-store.module';
+import { ContactUsStoreProviders } from '../contact-us-store.providers';
 
 import {
   createContact,
@@ -33,7 +33,7 @@ describe('Contact Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ContactUsStoreModule.forTesting('contact'), CoreStoreModule.forTesting()],
+      imports: [ContactUsStoreProviders.forTesting('contact'), ...CoreStoreProviders.forTesting()],
       providers: [provideStoreSnapshots()],
     });
 

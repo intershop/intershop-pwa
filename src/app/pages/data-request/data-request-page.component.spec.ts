@@ -24,15 +24,20 @@ describe('Data Request Page Component', () => {
     when(accountFacade.dataRequestLoading$).thenReturn(of(false));
     when(accountFacade.isFirstGDPRDataRequest$).thenReturn(of(true));
     await TestBed.configureTestingModule({
-      declarations: [
-        DataRequestPageComponent,
-        MockComponent(ErrorMessageComponent),
-        MockComponent(LoadingComponent),
-        MockDirective(ServerHtmlDirective),
-      ],
-      imports: [TranslateModule.forRoot()],
+      imports: [DataRequestPageComponent, TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(DataRequestPageComponent, {
+        remove: { imports: [ErrorMessageComponent, LoadingComponent, ServerHtmlDirective] },
+        add: {
+          imports: [
+            MockComponent(ErrorMessageComponent),
+            MockComponent(LoadingComponent),
+            MockDirective(ServerHtmlDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

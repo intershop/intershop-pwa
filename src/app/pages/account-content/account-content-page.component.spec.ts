@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { BehaviorSubject, EMPTY, of } from 'rxjs';
@@ -30,13 +31,15 @@ describe('Account Content Page Component', () => {
     when(cmsFacade.setBreadcrumbForContentPage(anyString())).thenReturn(undefined);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        AccountContentPageComponent,
-        MockComponent(ContentPageletComponent),
-        MockComponent(LoadingComponent),
-      ],
+      imports: [AccountContentPageComponent],
       providers: [{ provide: CMSFacade, useFactory: () => instance(cmsFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountContentPageComponent, {
+        set: {
+          imports: [MockComponent(LoadingComponent), MockComponent(ContentPageletComponent), AsyncPipe],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

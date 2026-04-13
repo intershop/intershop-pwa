@@ -18,10 +18,14 @@ describe('Registration Approval Component', () => {
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [MockDirective(ServerHtmlDirective), RegistrationApprovalComponent],
+      imports: [RegistrationApprovalComponent, TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(RegistrationApprovalComponent, {
+        remove: { imports: [ServerHtmlDirective] },
+        add: { imports: [MockDirective(ServerHtmlDirective)] },
+      })
+      .compileComponents();
 
     when(accountFacade.getCustomerApprovalEmail$).thenReturn(of('test@intershop.de'));
   });

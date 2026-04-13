@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { StoreLocation as StoreModel } from '../../models/store-location/store-location.model';
-import { StoreLocatorStoreModule } from '../store-locator-store.module';
+import { StoreLocatorStoreProviders } from '../store-locator-store.providers';
 
 import { getLoading, highlightStore } from '.';
 import { loadStores, loadStoresSuccess } from './stores.actions';
@@ -30,7 +30,7 @@ describe('Stores Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), StoreLocatorStoreModule.forTesting('stores')],
+      imports: [...CoreStoreProviders.forTesting(), StoreLocatorStoreProviders.forTesting('stores')],
       providers: [provideStoreSnapshots()],
     });
 

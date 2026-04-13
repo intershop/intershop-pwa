@@ -17,9 +17,13 @@ describe('Payment Payone Creditcard Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(PaymentSaveCheckboxComponent), PaymentPayoneCreditcardComponent],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-    }).compileComponents();
+      imports: [PaymentPayoneCreditcardComponent, ReactiveFormsModule, TranslateModule.forRoot()],
+    })
+      .overrideComponent(PaymentPayoneCreditcardComponent, {
+        remove: { imports: [PaymentSaveCheckboxComponent] },
+        add: { imports: [MockComponent(PaymentSaveCheckboxComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

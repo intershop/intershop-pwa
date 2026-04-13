@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { OrderCreateOrderTemplateComponent } from 'src/app/extensions/order-templates/shared/order-create-order-template/order-create-order-template.component';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -19,6 +18,7 @@ import { BasketCustomFieldsViewComponent } from 'ish-shared/components/checkout/
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
+import { OrderCreateOrderTemplateComponent } from '../../../extensions/order-templates/shared/order-create-order-template/order-create-order-template.component';
 import { AccountOrderToBasketComponent } from '../account-order-to-basket/account-order-to-basket.component';
 
 /**

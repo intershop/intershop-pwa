@@ -2,11 +2,6 @@
 
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { BasketCreateOrderTemplateComponent } from 'src/app/extensions/order-templates/shared/basket-create-order-template/basket-create-order-template.component';
-import { PunchoutTransferBasketComponent } from 'src/app/extensions/punchout/shared/punchout-transfer-basket/punchout-transfer-basket.component';
-import { DirectOrderComponent } from 'src/app/extensions/quickorder/shared/direct-order/direct-order.component';
-import { BasketAddToQuoteComponent } from 'src/app/extensions/quoting/shared/basket-add-to-quote/basket-add-to-quote.component';
-import { QuotingBasketLineItemsComponent } from 'src/app/extensions/quoting/shared/quoting-basket-line-items/quoting-basket-line-items.component';
 
 import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
@@ -30,6 +25,11 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
 import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
+import { BasketCreateOrderTemplateComponent } from '../../../extensions/order-templates/shared/basket-create-order-template/basket-create-order-template.component';
+import { PunchoutTransferBasketComponent } from '../../../extensions/punchout/shared/punchout-transfer-basket/punchout-transfer-basket.component';
+import { DirectOrderComponent } from '../../../extensions/quickorder/shared/direct-order/direct-order.component';
+import { BasketAddToQuoteComponent } from '../../../extensions/quoting/shared/basket-add-to-quote/basket-add-to-quote.component';
+import { QuotingBasketLineItemsComponent } from '../../../extensions/quoting/shared/quoting-basket-line-items/quoting-basket-line-items.component';
 import { BasketOrderRecurrenceEditComponent } from '../basket-order-recurrence-edit/basket-order-recurrence-edit.component';
 import { ShoppingBasketPaymentComponent } from '../shopping-basket-payment/shopping-basket-payment.component';
 

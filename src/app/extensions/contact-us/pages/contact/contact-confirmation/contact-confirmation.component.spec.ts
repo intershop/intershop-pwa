@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ContactConfirmationComponent } from './contact-confirmation.component';
@@ -10,8 +11,8 @@ describe('Contact Confirmation Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ContactConfirmationComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [ContactConfirmationComponent, TranslateModule.forRoot()],
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 
@@ -35,7 +36,11 @@ describe('Contact Confirmation Component', () => {
         helpdesk.contactus.thankyou<br />
         helpdesk.contactus.youwillreceive
       </p>
-      <p><a routerlink="/home">helpdesk.contactus.continueshopping</a></p>
+      <p>
+        <a routerlink="/home" ng-reflect-router-link="/home" href="/home"
+          >helpdesk.contactus.continueshopping</a
+        >
+      </p>
     `);
   });
 
@@ -47,7 +52,11 @@ describe('Contact Confirmation Component', () => {
         <p>helpdesk.mail_not_sent.message</p>
         <p>helpdesk.try_again.message</p>
       </div>
-      <p><a routerlink="/home">helpdesk.contactus.continueshopping</a></p>
+      <p>
+        <a routerlink="/home" ng-reflect-router-link="/home" href="/home"
+          >helpdesk.contactus.continueshopping</a
+        >
+      </p>
     `);
   });
 });

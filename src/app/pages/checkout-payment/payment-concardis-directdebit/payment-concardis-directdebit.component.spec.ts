@@ -17,13 +17,13 @@ describe('Payment Concardis Directdebit Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(FormlyForm),
-        MockComponent(PaymentSaveCheckboxComponent),
-        PaymentConcardisDirectdebitComponent,
-      ],
-      imports: [TranslateModule.forRoot()],
-    }).compileComponents();
+      imports: [PaymentConcardisDirectdebitComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(PaymentConcardisDirectdebitComponent, {
+        remove: { imports: [FormlyForm, PaymentSaveCheckboxComponent] },
+        add: { imports: [MockComponent(FormlyForm), MockComponent(PaymentSaveCheckboxComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

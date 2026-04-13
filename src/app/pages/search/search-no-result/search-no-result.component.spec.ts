@@ -18,15 +18,29 @@ describe('Search No Result Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MockComponent(SearchBoxComponent), TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(BreadcrumbComponent),
-        MockComponent(ContentIncludeComponent),
-        MockDirective(ServerHtmlDirective),
-        MockPipe(HtmlEncodePipe, value => value),
-        SearchNoResultComponent,
-      ],
-    }).compileComponents();
+      imports: [SearchNoResultComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(SearchNoResultComponent, {
+        remove: {
+          imports: [
+            BreadcrumbComponent,
+            ContentIncludeComponent,
+            HtmlEncodePipe,
+            SearchBoxComponent,
+            ServerHtmlDirective,
+          ],
+        },
+        add: {
+          imports: [
+            MockComponent(BreadcrumbComponent),
+            MockComponent(ContentIncludeComponent),
+            MockPipe(HtmlEncodePipe, value => value),
+            MockComponent(SearchBoxComponent),
+            MockDirective(ServerHtmlDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

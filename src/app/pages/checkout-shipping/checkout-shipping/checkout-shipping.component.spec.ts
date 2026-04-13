@@ -26,8 +26,7 @@ describe('Checkout Shipping Component', () => {
   beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
     await TestBed.configureTestingModule({
-      declarations: [CheckoutShippingComponent],
-      imports: [FormlyTestingModule],
+      imports: [CheckoutShippingComponent, FormlyTestingModule],
       providers: [
         {
           provide: FORMLY_CONFIG,

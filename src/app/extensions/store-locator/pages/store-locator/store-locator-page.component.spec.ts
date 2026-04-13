@@ -1,14 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
+import { NotFeatureToggleDirective } from 'ish-core/directives/not-feature-toggle.directive';
+import { ScrollDirective } from 'ish-core/directives/scroll.directive';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { StoreLocatorFacade } from '../../facades/store-locator.facade';
+import { StoreAddressComponent } from '../../shared/store-address/store-address.component';
+import { StoresMapComponent } from '../../shared/stores-map/stores-map.component';
 
 import { StoreLocatorPageComponent } from './store-locator-page.component';
 
@@ -21,13 +29,41 @@ describe('Store Locator Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      declarations: [MockComponent(ErrorMessageComponent), StoreLocatorPageComponent],
+      imports: [FormlyTestingModule, StoreLocatorPageComponent, TranslateModule.forRoot()],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: StoreLocatorFacade, useFactory: () => instance(storeLocatorFacade) },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(StoreLocatorPageComponent, {
+        remove: {
+          imports: [
+            ErrorMessageComponent,
+            FeatureToggleDirective,
+            LoadingComponent,
+            NotFeatureToggleDirective,
+            ScrollDirective,
+            ServerHtmlDirective,
+            SkipContentLinkComponent,
+            StoreAddressComponent,
+            StoresMapComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockComponent(ErrorMessageComponent),
+            MockDirective(FeatureToggleDirective),
+            MockComponent(LoadingComponent),
+            MockDirective(NotFeatureToggleDirective),
+            MockDirective(ScrollDirective),
+            MockDirective(ServerHtmlDirective),
+            MockComponent(SkipContentLinkComponent),
+            MockComponent(StoreAddressComponent),
+            MockComponent(StoresMapComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

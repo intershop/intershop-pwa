@@ -23,13 +23,17 @@ describe('Captcha V3 Component', () => {
     appFacade = mock(AppFacade);
     when(appFacade.appBecameStable$).thenReturn(of(true));
     await TestBed.configureTestingModule({
-      declarations: [CaptchaV3Component, MockDirective(ServerHtmlDirective)],
-      imports: [RecaptchaV3Module, TranslateModule.forRoot()],
+      imports: [CaptchaV3Component, RecaptchaV3Module, TranslateModule.forRoot()],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: RECAPTCHA_V3_SITE_KEY, useValue: captchaSiteKey },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CaptchaV3Component, {
+        remove: { imports: [ServerHtmlDirective] },
+        add: { imports: [MockDirective(ServerHtmlDirective)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

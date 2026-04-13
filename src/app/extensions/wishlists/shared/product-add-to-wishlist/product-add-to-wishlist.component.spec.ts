@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
@@ -53,13 +54,19 @@ describe('Product Add To Wishlist Component', () => {
     when(context.get('sku')).thenReturn('test sku');
 
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(SelectWishlistModalComponent), ProductAddToWishlistComponent],
+      imports: [ProductAddToWishlistComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacadeMock) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
         { provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) },
+        provideRouter([]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductAddToWishlistComponent, {
+        remove: { imports: [SelectWishlistModalComponent] },
+        add: { imports: [MockComponent(SelectWishlistModalComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { FormlyForm } from '@ngx-formly/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.imports';
 import { FormlyAddressExtensionFormComponent } from 'ish-shared/formly-address-forms/components/formly-address-extension-form/formly-address-extension-form.component';
 import { FormlyAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-address-form/formly-address-form.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
@@ -19,18 +20,21 @@ describe('Checkout Address Anonymous Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        CheckoutAddressAnonymousFormComponent,
-        MockComponent(FormlyAddressExtensionFormComponent),
-        MockComponent(FormlyAddressFormComponent),
-      ],
-      imports: [
-        FeatureToggleModule.forTesting('businessCustomerRegistration'),
-        FormlyTestingModule.withPresetMocks(['taxationID']),
-        NgbCollapseModule,
-        TranslateModule.forRoot(),
-      ],
-    }).compileComponents();
+      imports: [CheckoutAddressAnonymousFormComponent, FormlyTestingModule.withPresetMocks(['taxationID']), TranslateModule.forRoot()],
+      providers: [...(FeatureToggleModule.forTesting('businessCustomerRegistration').providers ?? [])],
+    })
+      .overrideComponent(CheckoutAddressAnonymousFormComponent, {
+        set: {
+          imports: [
+            MockComponent(FormlyAddressFormComponent),
+            MockComponent(FormlyAddressExtensionFormComponent),
+            TranslatePipe,
+            NgbCollapseModule,
+            FormlyForm,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

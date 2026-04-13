@@ -1,15 +1,16 @@
+import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { NotRoleToggleDirective } from 'ish-core/directives/not-role-toggle.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
-import { RoleToggleModule } from 'ish-core/role-toggle.module';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
@@ -19,6 +20,20 @@ import { ProductRatingStarComponent } from '../product-rating-star/product-ratin
 import { ProductReviewCreateDialogComponent } from '../product-review-create-dialog/product-review-create-dialog.component';
 
 import { ProductReviewsComponent } from './product-reviews.component';
+
+@Directive({
+  selector: '[ishHasNotRole]',
+  standalone: true,
+})
+class MockNotRoleToggleDirective {
+  @Input() set ishHasNotRole(role: unknown) {
+    void role;
+    this.viewContainerRef.clear();
+    this.viewContainerRef.createEmbeddedView(this.templateRef);
+  }
+
+  constructor(private templateRef: TemplateRef<unknown>, private viewContainerRef: ViewContainerRef) {}
+}
 
 describe('Product Reviews Component', () => {
   let component: ProductReviewsComponent;
@@ -50,23 +65,39 @@ describe('Product Reviews Component', () => {
     when(accountFacade.isLoggedIn$).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
-      imports: [RoleToggleModule.forTesting(), RouterModule],
-      declarations: [
-        MockComponent(ErrorMessageComponent),
-        MockComponent(ModalDialogComponent),
-        MockComponent(ProductRatingStarComponent),
-        MockComponent(ProductReviewCreateDialogComponent),
-        MockPipe(DatePipe),
-        MockPipe(TranslatePipe),
-        ProductReviewsComponent,
-      ],
+      imports: [ProductReviewsComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
         { provide: ProductReviewsFacade, useFactory: () => instance(reviewsFacade) },
         provideRouter([]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductReviewsComponent, {
+        remove: {
+          imports: [
+            DatePipe,
+            ErrorMessageComponent,
+            ModalDialogComponent,
+            NotRoleToggleDirective,
+            ProductRatingStarComponent,
+            ProductReviewCreateDialogComponent,
+            TranslatePipe,
+          ],
+        },
+        add: {
+          imports: [
+            MockPipe(DatePipe),
+            MockComponent(ErrorMessageComponent),
+            MockComponent(ModalDialogComponent),
+            MockNotRoleToggleDirective,
+            MockComponent(ProductRatingStarComponent),
+            MockComponent(ProductReviewCreateDialogComponent),
+            MockPipe(TranslatePipe),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

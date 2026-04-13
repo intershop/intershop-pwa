@@ -21,16 +21,17 @@ describe('Checkout Review Page Component', () => {
     checkoutFacade = mock(CheckoutFacade);
     accountFacade = mock(AccountFacade);
     await TestBed.configureTestingModule({
-      declarations: [
-        CheckoutReviewPageComponent,
-        MockComponent(CheckoutReviewComponent),
-        MockComponent(LoadingComponent),
-      ],
+      imports: [CheckoutReviewPageComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CheckoutReviewPageComponent, {
+        remove: { imports: [CheckoutReviewComponent, LoadingComponent] },
+        add: { imports: [MockComponent(CheckoutReviewComponent), MockComponent(LoadingComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

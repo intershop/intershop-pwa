@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { AddressDoctorStoreModule } from '../address-doctor-store.module';
+import { AddressDoctorStoreProviders } from '../address-doctor-store.providers';
 
 import { addressDoctorInternalActions } from './address-doctor.actions';
 import { getAddressDoctorConfig } from './address-doctor.selectors';
@@ -13,7 +13,7 @@ describe('Address Doctor Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [AddressDoctorStoreModule.forTesting('addressDoctorConfig'), CoreStoreModule.forTesting()],
+      imports: [AddressDoctorStoreProviders.forTesting('addressDoctorConfig'), ...CoreStoreProviders.forTesting()],
       providers: [provideStoreSnapshots()],
     });
 

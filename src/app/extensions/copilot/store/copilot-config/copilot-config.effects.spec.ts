@@ -5,10 +5,10 @@ import { cold, hot } from 'jasmine-marbles';
 import { Observable, of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
-import { CopilotStoreModule } from '../copilot-store.module';
+import { CopilotStoreProviders } from '../copilot-store.providers';
 
 import { copilotConfigInternalActions } from './copilot-config.actions';
 import { CopilotConfigEffects } from './copilot-config.effects';
@@ -28,7 +28,7 @@ describe('Copilot Config Effects', () => {
     statePropertiesService = mock(StatePropertiesService);
 
     TestBed.configureTestingModule({
-      imports: [CopilotStoreModule.forTesting('copilotConfig'), CoreStoreModule.forTesting()],
+      imports: [CopilotStoreProviders.forTesting('copilotConfig'), ...CoreStoreProviders.forTesting()],
       providers: [
         { provide: StatePropertiesService, useFactory: () => instance(statePropertiesService) },
         CopilotConfigEffects,

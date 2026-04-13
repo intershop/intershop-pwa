@@ -30,14 +30,17 @@ describe('Checkout Payment Page Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      declarations: [CheckoutPaymentPageComponent, MockComponent(CheckoutPaymentComponent)],
-
-      imports: [TranslateModule.forRoot()],
+      imports: [CheckoutPaymentPageComponent, TranslateModule.forRoot()],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: PaypalConfigService, useFactory: () => instance(paypalConfigService) },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CheckoutPaymentPageComponent, {
+        remove: { imports: [CheckoutPaymentComponent] },
+        add: { imports: [MockComponent(CheckoutPaymentComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

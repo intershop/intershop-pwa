@@ -16,14 +16,19 @@ describe('Registration Heading Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockPipe(TranslatePipe), RegistrationHeadingFieldComponent],
       imports: [
         FormlyModule.forRoot({
           types: [{ name: 'heading', component: RegistrationHeadingFieldComponent }],
         }),
         FormlyTestingComponentsModule,
+        RegistrationHeadingFieldComponent,
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(RegistrationHeadingFieldComponent, {
+        remove: { imports: [TranslatePipe] },
+        add: { imports: [MockPipe(TranslatePipe)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
@@ -20,15 +20,27 @@ describe('Payment Concardis Creditcard Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(FormControlFeedbackComponent),
-        MockComponent(PaymentSaveCheckboxComponent),
-        MockDirective(NgbPopover),
-        MockDirective(ShowFormFeedbackDirective),
-        PaymentConcardisCreditcardComponent,
-      ],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-    }).compileComponents();
+      imports: [PaymentConcardisCreditcardComponent, ReactiveFormsModule, TranslateModule.forRoot()],
+    })
+      .overrideComponent(PaymentConcardisCreditcardComponent, {
+        remove: {
+          imports: [
+            FormControlFeedbackComponent,
+            NgbPopoverModule,
+            PaymentSaveCheckboxComponent,
+            ShowFormFeedbackDirective,
+          ],
+        },
+        add: {
+          imports: [
+            MockComponent(FormControlFeedbackComponent),
+            MockDirective(NgbPopover),
+            MockComponent(PaymentSaveCheckboxComponent),
+            MockDirective(ShowFormFeedbackDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -23,10 +23,15 @@ describe('Registration Tac Field Component', () => {
         }),
         FormlyTestingComponentsModule,
         ReactiveFormsModule,
+        RegistrationTacFieldComponent,
         TranslateModule.forRoot(),
       ],
-      declarations: [MockDirective(ServerHtmlDirective), RegistrationTacFieldComponent],
-    }).compileComponents();
+    })
+      .overrideComponent(RegistrationTacFieldComponent, {
+        remove: { imports: [ServerHtmlDirective] },
+        add: { imports: [MockDirective(ServerHtmlDirective)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

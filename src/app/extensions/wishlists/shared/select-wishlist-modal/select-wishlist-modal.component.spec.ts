@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
@@ -7,7 +8,6 @@ import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testin
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 import { Wishlist } from '../../models/wishlist/wishlist.model';
-import { SelectWishlistFormComponent } from '../select-wishlist-form/select-wishlist-form.component';
 
 import { SelectWishlistModalComponent } from './select-wishlist-modal.component';
 
@@ -16,6 +16,7 @@ describe('Select Wishlist Modal Component', () => {
   let fixture: ComponentFixture<SelectWishlistModalComponent>;
   let element: HTMLElement;
   let wishlistFacadeMock: WishlistsFacade;
+  let ngbModalMock: NgbModal;
 
   /**
    * A fixture.detectChanges() is necessary to make sure the newList
@@ -49,11 +50,15 @@ describe('Select Wishlist Modal Component', () => {
 
   beforeEach(async () => {
     wishlistFacadeMock = mock(WishlistsFacade);
+    ngbModalMock = mock(NgbModal);
+    when(ngbModalMock.open(anything(), anything())).thenReturn({ close: jest.fn() } as never);
 
     await TestBed.configureTestingModule({
-      declarations: [SelectWishlistFormComponent, SelectWishlistModalComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }],
+      imports: [FormlyTestingModule, SelectWishlistModalComponent, TranslateModule.forRoot()],
+      providers: [
+        { provide: NgbModal, useFactory: () => instance(ngbModalMock) },
+        { provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) },
+      ],
     }).compileComponents();
   });
 

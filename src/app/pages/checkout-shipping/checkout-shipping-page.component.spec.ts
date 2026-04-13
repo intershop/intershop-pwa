@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
@@ -12,11 +13,14 @@ import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketAddressSummaryComponent } from 'ish-shared/components/basket/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketDesiredDeliveryDateComponent } from 'ish-shared/components/basket/basket-desired-delivery-date/basket-desired-delivery-date.component';
 import { BasketErrorMessageComponent } from 'ish-shared/components/basket/basket-error-message/basket-error-message.component';
 import { BasketItemsSummaryComponent } from 'ish-shared/components/basket/basket-items-summary/basket-items-summary.component';
 import { BasketMerchantMessageComponent } from 'ish-shared/components/basket/basket-merchant-message/basket-merchant-message.component';
+import { BasketOrderReferenceComponent } from 'ish-shared/components/basket/basket-order-reference/basket-order-reference.component';
 import { BasketRecurrenceSummaryComponent } from 'ish-shared/components/basket/basket-recurrence-summary/basket-recurrence-summary.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { CheckoutShippingPageComponent } from './checkout-shipping-page.component';
 import { CheckoutShippingComponent } from './checkout-shipping/checkout-shipping.component';
@@ -30,25 +34,34 @@ describe('Checkout Shipping Page Component', () => {
   beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
     await TestBed.configureTestingModule({
-      declarations: [
-        CheckoutShippingPageComponent,
-        MockComponent(BasketAddressSummaryComponent),
-        MockComponent(BasketCostSummaryComponent),
-        MockComponent(BasketErrorMessageComponent),
-        MockComponent(BasketItemsSummaryComponent),
-        MockComponent(BasketMerchantMessageComponent),
-        MockComponent(BasketRecurrenceSummaryComponent),
-        MockComponent(BasketValidationResultsComponent),
-        MockComponent(CheckoutShippingComponent),
-        MockDirective(ServerHtmlDirective),
-        MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
-      ],
-      imports: [TranslateModule.forRoot()],
+      imports: [CheckoutShippingPageComponent, TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CheckoutShippingPageComponent, {
+        set: {
+          imports: [
+            TranslateModule,
+            AsyncPipe,
+            MockComponent(BasketAddressSummaryComponent),
+            MockComponent(BasketCostSummaryComponent),
+            MockComponent(BasketDesiredDeliveryDateComponent),
+            MockComponent(BasketErrorMessageComponent),
+            MockComponent(BasketItemsSummaryComponent),
+            MockComponent(BasketMerchantMessageComponent),
+            MockComponent(BasketOrderReferenceComponent),
+            MockComponent(BasketRecurrenceSummaryComponent),
+            MockComponent(BasketValidationResultsComponent),
+            MockComponent(CheckoutShippingComponent),
+            MockComponent(LoadingComponent),
+            MockDirective(ServerHtmlDirective),
+            MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -57,7 +70,9 @@ describe('Checkout Shipping Page Component', () => {
     element = fixture.nativeElement;
 
     when(checkoutFacade.basket$).thenReturn(of(BasketMockData.getBasket()));
+    when(checkoutFacade.basketLoading$).thenReturn(of(false));
     when(checkoutFacade.eligibleShippingMethods$()).thenReturn(of([BasketMockData.getShippingMethod()]));
+    when(checkoutFacade.isDesiredDeliveryDateEnabled$).thenReturn(of(false));
     when(checkoutFacade.basketError$).thenReturn(of(undefined));
   });
 
