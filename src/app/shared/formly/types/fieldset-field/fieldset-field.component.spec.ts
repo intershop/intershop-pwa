@@ -18,6 +18,7 @@ describe('Fieldset Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        FieldsetFieldComponent,
         FormlyModule.forRoot({
           types: [
             {
@@ -30,7 +31,6 @@ describe('Fieldset Field Component', () => {
         FormlyTestingComponentsModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [FieldsetFieldComponent],
     }).compileComponents();
   });
 

@@ -12,8 +12,7 @@ describe('Basket Cost Center View Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [BasketCostCenterViewComponent],
+      imports: [BasketCostCenterViewComponent, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

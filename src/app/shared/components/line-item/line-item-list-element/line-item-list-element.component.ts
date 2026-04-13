@@ -5,8 +5,6 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
 import { Subscription } from 'rxjs';
-import { ProductAddToOrderTemplateComponent } from 'src/app/extensions/order-templates/shared/product-add-to-order-template/product-add-to-order-template.component';
-import { ProductAddToWishlistComponent } from 'src/app/extensions/wishlists/shared/product-add-to-wishlist/product-add-to-wishlist.component';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
@@ -30,6 +28,9 @@ import { ProductQuantityLabelComponent } from 'ish-shared/components/product/pro
 import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 import { ProductShipmentComponent } from 'ish-shared/components/product/product-shipment/product-shipment.component';
 import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
+
+import { ProductAddToOrderTemplateComponent } from '../../../../extensions/order-templates/shared/product-add-to-order-template/product-add-to-order-template.component';
+import { ProductAddToWishlistComponent } from '../../../../extensions/wishlists/shared/product-add-to-wishlist/product-add-to-wishlist.component';
 
 @Component({
   selector: 'ish-line-item-list-element',
@@ -62,7 +63,8 @@ import { ProductVariationDisplayComponent } from 'ish-shared/components/product/
     DecimalPipe,
     BasketPromotionComponent,
     LineItemWarrantyComponent,
-    LineItemInformationEditComponent],
+    LineItemInformationEditComponent,
+  ],
 })
 export class LineItemListElementComponent implements OnChanges {
   @Input({ required: true }) pli: Partial<LineItemView & OrderLineItem>;

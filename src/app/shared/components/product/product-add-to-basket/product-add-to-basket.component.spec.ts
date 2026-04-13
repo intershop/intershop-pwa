@@ -32,8 +32,7 @@ describe('Product Add To Basket Component', () => {
     when(context.select('hasProductError')).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [ProductAddToBasketComponent],
+      imports: [ProductAddToBasketComponent, TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },

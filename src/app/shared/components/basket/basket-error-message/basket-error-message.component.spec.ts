@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
+import { ScrollDirective } from 'ish-core/directives/scroll.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
 import { BasketErrorMessageComponent } from './basket-error-message.component';
 
@@ -8,6 +12,18 @@ describe('Basket Error Message Component', () => {
   let component: BasketErrorMessageComponent;
   let fixture: ComponentFixture<BasketErrorMessageComponent>;
   let element: HTMLElement;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [BasketErrorMessageComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(BasketErrorMessageComponent, {
+        set: {
+          imports: [TranslatePipe, MockComponent(ErrorMessageComponent), MockDirective(ScrollDirective)],
+        },
+      })
+      .compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BasketErrorMessageComponent);

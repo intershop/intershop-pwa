@@ -12,7 +12,7 @@ describe('Product Quantity Label Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ProductQuantityLabelComponent],
+      imports: [ProductQuantityLabelComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(mock(ProductContextFacade)) }],
     }).compileComponents();
   });

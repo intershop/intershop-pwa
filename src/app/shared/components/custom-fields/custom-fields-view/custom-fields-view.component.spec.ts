@@ -25,8 +25,7 @@ describe('Custom Fields View Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [CustomFieldsViewComponent],
+      imports: [CustomFieldsViewComponent, TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
   });

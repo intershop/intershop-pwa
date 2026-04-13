@@ -14,13 +14,13 @@ describe('Basket Approval Info Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [
-        BasketApprovalInfoComponent,
-        MockComponent(ModalDialogLinkComponent),
-        MockDirective(ServerHtmlDirective),
-      ],
-    }).compileComponents();
+      imports: [BasketApprovalInfoComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(BasketApprovalInfoComponent, {
+        remove: { imports: [ModalDialogLinkComponent, ServerHtmlDirective] },
+        add: { imports: [MockComponent(ModalDialogLinkComponent), MockDirective(ServerHtmlDirective)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

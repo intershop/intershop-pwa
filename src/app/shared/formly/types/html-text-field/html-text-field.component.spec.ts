@@ -14,7 +14,6 @@ describe('Html Text Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HtmlTextFieldComponent],
       imports: [
         FormlyModule.forRoot({
           types: [
@@ -25,6 +24,7 @@ describe('Html Text Field Component', () => {
           ],
         }),
         FormlyTestingComponentsModule,
+        HtmlTextFieldComponent,
       ],
     }).compileComponents();
   });

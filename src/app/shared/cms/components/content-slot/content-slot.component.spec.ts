@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
 
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { ContentDesignViewWrapperComponent } from 'ish-shared/cms/components/content-design-view-wrapper/content-design-view-wrapper.component';
+import { ContentPageletComponent } from 'ish-shared/cms/components/content-pagelet/content-pagelet.component';
 
 import { ContentSlotComponent } from './content-slot.component';
 
@@ -11,7 +14,15 @@ describe('Content Slot Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({}).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [ContentSlotComponent],
+    })
+      .overrideComponent(ContentSlotComponent, {
+        set: {
+          imports: [MockComponent(ContentDesignViewWrapperComponent), MockComponent(ContentPageletComponent)],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

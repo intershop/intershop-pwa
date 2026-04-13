@@ -16,9 +16,8 @@ describe('Product Label Component', () => {
   beforeEach(async () => {
     context = mock(ProductContextFacade);
     await TestBed.configureTestingModule({
-      declarations: [ProductLabelComponent],
+      imports: [ProductLabelComponent, TranslateModule.forRoot()],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
-      imports: [TranslateModule.forRoot()],
     }).compileComponents();
   });
 

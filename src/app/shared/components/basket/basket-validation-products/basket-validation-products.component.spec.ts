@@ -19,16 +19,31 @@ describe('Basket Validation Products Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        BasketValidationProductsComponent,
-        MockComponent(ProductIdComponent),
-        MockComponent(ProductInventoryComponent),
-        MockComponent(ProductNameComponent),
-        MockDirective(ProductContextDirective),
-        MockPipe(PricePipe),
-      ],
-      imports: [MockComponent(ProductImageComponent), TranslateModule.forRoot()],
-    }).compileComponents();
+      imports: [BasketValidationProductsComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(BasketValidationProductsComponent, {
+        remove: {
+          imports: [
+            PricePipe,
+            ProductContextDirective,
+            ProductIdComponent,
+            ProductImageComponent,
+            ProductInventoryComponent,
+            ProductNameComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockPipe(PricePipe),
+            MockDirective(ProductContextDirective),
+            MockComponent(ProductIdComponent),
+            MockComponent(ProductImageComponent),
+            MockComponent(ProductInventoryComponent),
+            MockComponent(ProductNameComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -21,8 +21,7 @@ describe('Basket Order Reference Component', () => {
     checkoutFacade = mock(CheckoutFacade);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      declarations: [BasketOrderReferenceComponent],
+      imports: [BasketOrderReferenceComponent, FormlyTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
   });

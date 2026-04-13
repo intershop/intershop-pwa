@@ -13,9 +13,13 @@ describe('Modal Dialog Link Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(ModalDialogComponent), ModalDialogLinkComponent],
-      imports: [TranslateModule.forRoot()],
-    }).compileComponents();
+      imports: [ModalDialogLinkComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(ModalDialogLinkComponent, {
+        remove: { imports: [ModalDialogComponent] },
+        add: { imports: [MockComponent(ModalDialogComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

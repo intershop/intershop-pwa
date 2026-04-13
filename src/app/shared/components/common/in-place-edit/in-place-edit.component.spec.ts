@@ -13,6 +13,8 @@ import { InPlaceEditComponent } from './in-place-edit.component';
       <input editModeForm />
     </ish-in-place-edit>
   `,
+  standalone: true,
+  imports: [InPlaceEditComponent],
 })
 class DummyComponent {}
 
@@ -26,8 +28,7 @@ describe('In Place Edit Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [DummyComponent, InPlaceEditComponent],
+      imports: [DummyComponent, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

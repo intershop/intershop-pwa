@@ -12,7 +12,7 @@ describe('Line Item Edit Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LineItemEditComponent],
+      imports: [LineItemEditComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(mock(ProductContextFacade)) }],
     }).compileComponents();
   });

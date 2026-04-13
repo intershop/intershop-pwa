@@ -18,10 +18,14 @@ describe('Clear Basket Component', () => {
     checkoutFacade = mock(CheckoutFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [ClearBasketComponent, MockComponent(ModalDialogComponent)],
-      imports: [TranslateModule.forRoot()],
+      imports: [ClearBasketComponent, TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ClearBasketComponent, {
+        remove: { imports: [ModalDialogComponent] },
+        add: { imports: [MockComponent(ModalDialogComponent)] },
+      })
+      .compileComponents();
 
     when(checkoutFacade.deleteBasketItems()).thenReturn(undefined);
   });

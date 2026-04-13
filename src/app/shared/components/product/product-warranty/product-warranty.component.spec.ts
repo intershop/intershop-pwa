@@ -37,10 +37,14 @@ describe('Product Warranty Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [MockComponent(ProductWarrantyDetailsComponent), MockPipe(PricePipe), ProductWarrantyComponent],
+      imports: [ProductWarrantyComponent, TranslateModule.forRoot()],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(productContext) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductWarrantyComponent, {
+        remove: { imports: [PricePipe, ProductWarrantyDetailsComponent] },
+        add: { imports: [MockPipe(PricePipe), MockComponent(ProductWarrantyDetailsComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -11,7 +11,7 @@ describe('Filter Collapsible Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FilterCollapsibleComponent],
+      imports: [FilterCollapsibleComponent],
     }).compileComponents();
   });
 
@@ -45,7 +45,7 @@ describe('Filter Collapsible Component', () => {
           aria-controls="PriceFilterId"
         >
           <h3 class="m-0">Price</h3>
-          <i class="bi bi-chevron-up" ng-reflect-ng-class="bi-chevron-up"></i>
+          <i class="bi bi-chevron-up"></i>
         </button>
       </div>
     `);
@@ -66,7 +66,7 @@ describe('Filter Collapsible Component', () => {
           aria-controls="PriceFilterId"
         >
           <h3 class="m-0">Price</h3>
-          <i class="bi bi-chevron-down" ng-reflect-ng-class="bi-chevron-down"></i>
+          <i class="bi bi-chevron-down"></i>
         </button>
       </div>
     `);

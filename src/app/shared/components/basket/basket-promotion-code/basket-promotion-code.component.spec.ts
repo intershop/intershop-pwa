@@ -8,6 +8,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { SuccessMessageComponent } from 'ish-shared/components/common/success-message/success-message.component';
 
 import { BasketPromotionCodeComponent } from './basket-promotion-code.component';
 
@@ -21,10 +22,20 @@ describe('Basket Promotion Code Component', () => {
     when(checkoutFacade.basket$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [BasketPromotionCodeComponent, MockComponent(ErrorMessageComponent), MockDirective(NgbCollapse)],
+      imports: [BasketPromotionCodeComponent, ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(BasketPromotionCodeComponent, {
+        remove: { imports: [ErrorMessageComponent, SuccessMessageComponent] },
+        add: {
+          imports: [
+            MockComponent(ErrorMessageComponent),
+            MockDirective(NgbCollapse),
+            MockComponent(SuccessMessageComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

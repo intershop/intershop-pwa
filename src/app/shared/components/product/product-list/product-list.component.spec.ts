@@ -21,14 +21,20 @@ describe('Product List Component', () => {
   beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(LoadingComponent),
-        MockComponent(ProductItemComponent),
-        MockDirective(ProductContextDirective),
-        ProductListComponent,
-      ],
+      imports: [ProductListComponent],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductListComponent, {
+        remove: { imports: [LoadingComponent, ProductContextDirective, ProductItemComponent] },
+        add: {
+          imports: [
+            MockComponent(LoadingComponent),
+            MockDirective(ProductContextDirective),
+            MockComponent(ProductItemComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

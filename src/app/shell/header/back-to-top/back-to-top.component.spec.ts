@@ -13,9 +13,13 @@ describe('Back To Top Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [BackToTopComponent, MockPipe(FeatureTogglePipe, () => true)],
-    }).compileComponents();
+      imports: [BackToTopComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(BackToTopComponent, {
+        remove: { imports: [FeatureTogglePipe] },
+        add: { imports: [MockPipe(FeatureTogglePipe, () => true)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

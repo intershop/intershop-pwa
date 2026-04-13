@@ -11,8 +11,7 @@ describe('Header Error Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [HeaderErrorComponent],
+      imports: [HeaderErrorComponent, TranslateModule.forRoot()],
       providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
     }).compileComponents();
   });

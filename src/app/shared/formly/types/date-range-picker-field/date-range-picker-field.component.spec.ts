@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NgbCalendar, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDatepickerModule, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
@@ -25,15 +25,20 @@ describe('Date Range Picker Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DateRangePickerFieldComponent, MockDirective(NgbInputDatepicker)],
       imports: [
+        DateRangePickerFieldComponent,
         FormlyModule.forRoot({
           types: [{ name: 'ish-date-range-picker-field', component: DateRangePickerFieldComponent }],
         }),
         FormlyTestingComponentsModule,
         TranslateModule.forRoot(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(DateRangePickerFieldComponent, {
+        remove: { imports: [NgbDatepickerModule] },
+        add: { imports: [MockDirective(NgbInputDatepicker)] },
+      })
+      .compileComponents();
 
     calendar = TestBed.inject(NgbCalendar);
   });

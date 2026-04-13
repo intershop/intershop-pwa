@@ -13,8 +13,7 @@ describe('Formly Address Extension Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FormlyAddressExtensionFormComponent],
-      imports: [FormlyTestingModule.withPresetMocks(['taxationID'])],
+      imports: [FormlyAddressExtensionFormComponent, FormlyTestingModule.withPresetMocks(['taxationID'])],
     }).compileComponents();
   });
 

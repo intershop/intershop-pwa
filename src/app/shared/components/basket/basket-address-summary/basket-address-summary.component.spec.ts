@@ -15,9 +15,13 @@ describe('Basket Address Summary Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BasketAddressSummaryComponent, MockComponent(AddressComponent)],
-      imports: [TranslateModule.forRoot()],
-    }).compileComponents();
+      imports: [BasketAddressSummaryComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(BasketAddressSummaryComponent, {
+        remove: { imports: [AddressComponent] },
+        add: { imports: [MockComponent(AddressComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

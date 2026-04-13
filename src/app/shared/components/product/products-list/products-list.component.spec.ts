@@ -1,8 +1,9 @@
+import { Component, Directive, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
-import { SwiperComponent } from 'swiper/angular';
+import { SwiperModule } from 'swiper/angular';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
@@ -10,6 +11,24 @@ import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 import { ProductsListComponent } from './products-list.component';
+
+/* eslint-disable @angular-eslint/directive-selector, @angular-eslint/component-selector, ish-custom-rules/newline-before-root-members */
+@Directive({
+  selector: '[swiperSlide]',
+  standalone: true,
+})
+class MockSwiperSlideDirective {}
+
+@Component({
+  selector: 'swiper',
+  template: '<ng-content />',
+  standalone: true,
+  imports: [MockSwiperSlideDirective],
+})
+class MockSwiperComponent {
+  @Input() config: unknown;
+}
+/* eslint-enable @angular-eslint/directive-selector, @angular-eslint/component-selector, ish-custom-rules/newline-before-root-members */
 
 describe('Products List Component', () => {
   let component: ProductsListComponent;
@@ -21,14 +40,16 @@ describe('Products List Component', () => {
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(ProductItemComponent),
-        MockComponent(SwiperComponent),
-        MockDirective(ProductContextDirective),
-        ProductsListComponent,
-      ],
+      imports: [ProductsListComponent],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductsListComponent, {
+        remove: { imports: [ProductContextDirective, ProductItemComponent, SwiperModule] },
+        add: {
+          imports: [MockDirective(ProductContextDirective), MockComponent(ProductItemComponent), MockSwiperComponent],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

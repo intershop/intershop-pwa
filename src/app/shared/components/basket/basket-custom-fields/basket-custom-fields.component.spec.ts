@@ -28,15 +28,20 @@ describe('Basket Custom Fields Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [
-        BasketCustomFieldsComponent,
-        MockComponent(CustomFieldsFormlyComponent),
-        MockComponent(CustomFieldsViewComponent),
-        MockDirective(NgbCollapse),
-      ],
+      imports: [BasketCustomFieldsComponent, ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(BasketCustomFieldsComponent, {
+        remove: { imports: [CustomFieldsFormlyComponent, CustomFieldsViewComponent, NgbCollapse] },
+        add: {
+          imports: [
+            MockComponent(CustomFieldsFormlyComponent),
+            MockComponent(CustomFieldsViewComponent),
+            MockDirective(NgbCollapse),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -78,8 +83,7 @@ describe('Basket Custom Fields Component', () => {
         class="btn btn-link btn-link-with-icon"
         aria-expanded="false"
       >
-        checkout.custom-fields.basket.add.link.label
-        <i class="bi bi-chevron-down" ng-reflect-ng-class="bi-chevron-down"></i>
+        checkout.custom-fields.basket.add.link.label <i class="bi bi-chevron-down"></i>
       </button>
     `);
   });

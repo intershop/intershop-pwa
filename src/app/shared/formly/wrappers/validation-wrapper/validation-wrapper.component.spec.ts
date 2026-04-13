@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
+import { MockComponent } from 'ng-mocks';
 
+import { ValidationIconsComponent } from 'ish-shared/formly/components/validation-icons/validation-icons.component';
+import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 import { FormlyTestingExampleComponent } from 'ish-shared/formly/dev/testing/formly-testing-example/formly-testing-example.component';
@@ -36,8 +39,14 @@ describe('Validation Wrapper Component', () => {
           },
         }),
         FormlyTestingComponentsModule,
+        ValidationWrapperComponent,
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ValidationWrapperComponent, {
+        remove: { imports: [ValidationIconsComponent, ValidationMessageComponent] },
+        add: { imports: [MockComponent(ValidationIconsComponent), MockComponent(ValidationMessageComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

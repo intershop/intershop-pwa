@@ -14,13 +14,13 @@ describe('Promotion Details Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(ModalDialogLinkComponent),
-        MockDirective(ServerHtmlDirective),
-        PromotionDetailsComponent,
-      ],
-      imports: [TranslateModule.forRoot()],
-    }).compileComponents();
+      imports: [PromotionDetailsComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(PromotionDetailsComponent, {
+        remove: { imports: [ModalDialogLinkComponent, ServerHtmlDirective] },
+        add: { imports: [MockComponent(ModalDialogLinkComponent), MockDirective(ServerHtmlDirective)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

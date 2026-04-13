@@ -12,7 +12,7 @@ describe('Filter Swatch Images Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FilterSwatchImagesComponent, SanitizePipe],
+      imports: [FilterSwatchImagesComponent, SanitizePipe],
     }).compileComponents();
   });
 

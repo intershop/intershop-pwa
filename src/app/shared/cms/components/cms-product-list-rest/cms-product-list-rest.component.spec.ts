@@ -2,12 +2,14 @@
 // eslint-disable-next-line ish-custom-rules/ban-imports-file-pattern
 import { HttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { SparqueApiService } from 'ish-core/services/sparque-api/sparque-api.service';
+import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
 
 import { CMSProductListRestComponent } from './cms-product-list-rest.component';
 
@@ -51,13 +53,18 @@ describe('Cms Product List Rest Component', () => {
     httpClient = mock(HttpClient);
 
     await TestBed.configureTestingModule({
-      declarations: [CMSProductListRestComponent],
+      imports: [CMSProductListRestComponent],
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },
         { provide: HttpClient, useFactory: () => instance(httpClient) },
         { provide: SparqueApiService, useFactory: () => instance(sparqueApiService) },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CMSProductListRestComponent, {
+        remove: { imports: [ProductsListComponent] },
+        add: { imports: [MockComponent(ProductsListComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

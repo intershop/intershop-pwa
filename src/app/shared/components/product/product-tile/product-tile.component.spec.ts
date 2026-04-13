@@ -1,8 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AsyncPipe } from '@angular/common';
+import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { ComponentFixture, DeferBlockBehavior, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyString, instance, mock, when } from 'ts-mockito';
 
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
@@ -14,13 +17,25 @@ import { ProductNameComponent } from 'ish-shared/components/product/product-name
 import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
 import { ProductPromotionComponent } from 'ish-shared/components/product/product-promotion/product-promotion.component';
 
-import { LazyProductAddToCompareComponent } from '../../../../extensions/compare/exports/lazy-product-add-to-compare/lazy-product-add-to-compare.component';
-import { LazyProductAddToOrderTemplateComponent } from '../../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
-import { LazyProductAddToQuoteComponent } from '../../../../extensions/quoting/exports/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
-import { LazyProductRatingComponent } from '../../../../extensions/rating/exports/lazy-product-rating/lazy-product-rating.component';
-import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
+import { ProductAddToCompareComponent } from '../../../../extensions/compare/shared/product-add-to-compare/product-add-to-compare.component';
+import { ProductAddToOrderTemplateComponent } from '../../../../extensions/order-templates/shared/product-add-to-order-template/product-add-to-order-template.component';
+import { ProductAddToQuoteComponent } from '../../../../extensions/quoting/shared/product-add-to-quote/product-add-to-quote.component';
+import { ProductRatingComponent } from '../../../../extensions/rating/shared/product-rating/product-rating.component';
+import { ProductAddToWishlistComponent } from '../../../../extensions/wishlists/shared/product-add-to-wishlist/product-add-to-wishlist.component';
 
 import { ProductTileComponent } from './product-tile.component';
+
+@Directive({
+  selector: '[ishFeature]',
+  standalone: true,
+})
+class MockFeatureToggleDirective {
+  @Input('ishFeature') feature: unknown;
+
+  constructor(templateRef: TemplateRef<unknown>, viewContainerRef: ViewContainerRef) {
+    viewContainerRef.createEmbeddedView(templateRef);
+  }
+}
 
 describe('Product Tile Component', () => {
   let component: ProductTileComponent;
@@ -35,23 +50,49 @@ describe('Product Tile Component', () => {
     when(context.select('displayProperties', 'readOnly')).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      imports: [MockComponent(ProductImageComponent)],
-      declarations: [
-        MockComponent(LazyProductAddToCompareComponent),
-        MockComponent(LazyProductAddToOrderTemplateComponent),
-        MockComponent(LazyProductAddToQuoteComponent),
-        MockComponent(LazyProductAddToWishlistComponent),
-        MockComponent(LazyProductRatingComponent),
-        MockComponent(ProductAddToBasketComponent),
-        MockComponent(ProductItemVariationsComponent),
-        MockComponent(ProductLabelComponent),
-        MockComponent(ProductNameComponent),
-        MockComponent(ProductPriceComponent),
-        MockComponent(ProductPromotionComponent),
-        ProductTileComponent,
-      ],
+      imports: [ProductTileComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
-    }).compileComponents();
+      deferBlockBehavior: DeferBlockBehavior.Playthrough,
+    })
+      .overrideComponent(ProductTileComponent, {
+        remove: {
+          imports: [
+            AsyncPipe,
+            FeatureToggleDirective,
+            ProductAddToBasketComponent,
+            ProductAddToCompareComponent,
+            ProductAddToOrderTemplateComponent,
+            ProductAddToQuoteComponent,
+            ProductAddToWishlistComponent,
+            ProductImageComponent,
+            ProductItemVariationsComponent,
+            ProductLabelComponent,
+            ProductNameComponent,
+            ProductPriceComponent,
+            ProductPromotionComponent,
+            ProductRatingComponent,
+          ],
+        },
+        add: {
+          imports: [
+            AsyncPipe,
+            MockFeatureToggleDirective,
+            MockComponent(ProductAddToBasketComponent),
+            MockComponent(ProductAddToCompareComponent),
+            MockComponent(ProductAddToOrderTemplateComponent),
+            MockComponent(ProductAddToQuoteComponent),
+            MockComponent(ProductAddToWishlistComponent),
+            MockComponent(ProductImageComponent),
+            MockComponent(ProductItemVariationsComponent),
+            MockComponent(ProductLabelComponent),
+            MockComponent(ProductNameComponent),
+            MockComponent(ProductPriceComponent),
+            MockComponent(ProductPromotionComponent),
+            MockComponent(ProductRatingComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -66,21 +107,24 @@ describe('Product Tile Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should render default elements when not specifically configured', () => {
+  it('should render default elements when not specifically configured', async () => {
     fixture.detectChanges();
+    await fixture.whenRenderingDone();
+    fixture.detectChanges();
+
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       [
         "ish-product-image",
         "ish-product-label",
         "ish-product-name",
-        "ish-lazy-product-rating",
+        "ish-product-rating",
         "ish-product-promotion",
         "ish-product-price",
         "ish-product-item-variations",
-        "ish-lazy-product-add-to-quote",
-        "ish-lazy-product-add-to-compare",
-        "ish-lazy-product-add-to-order-template",
-        "ish-lazy-product-add-to-wishlist",
+        "ish-product-add-to-quote",
+        "ish-product-add-to-compare",
+        "ish-product-add-to-order-template",
+        "ish-product-add-to-wishlist",
         "ish-product-add-to-basket",
       ]
     `);
