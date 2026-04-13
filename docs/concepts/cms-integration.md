@@ -199,7 +199,7 @@ With resource set ID, the request is more performant when the view context model
 ```
 
 With PWA 11.0.0, the Intershop PWA automatically adds the resource set ID to view context REST requests via configured `defaultResourceSetId` defined at the [`CMSService`](../../src/app/core/services/cms/cms.service.ts).
-The default resource set ID is configured to the standard ICM cartridge name that contains the defining view context models: `app_sf_base_cm`.
+The default resource set ID is configured to match the name of the standard ICM cartridge that contains the view context model definitions: `app_sf_base_cm`.
 The resource set ID can be overridden at the individual view context inclusion by providing the `resourceSetId` input parameter at the `ish-content-viewcontext` component.
 
 ```html
