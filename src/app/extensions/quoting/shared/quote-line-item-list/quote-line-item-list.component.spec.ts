@@ -34,15 +34,20 @@ describe('Quote Line Item List Component', () => {
     when(quoteContext.select('entity', 'total')).thenReturn(of({ value: 1 } as Price));
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(QuoteLineItemListElementComponent),
-        MockDirective(ProductContextDirective),
-        MockPipe(PricePipe),
-        QuoteLineItemListComponent,
-      ],
-      imports: [TranslateModule.forRoot()],
+      imports: [QuoteLineItemListComponent, TranslateModule.forRoot()],
       providers: [{ provide: QuoteContextFacade, useFactory: () => instance(quoteContext) }],
-    }).compileComponents();
+    })
+      .overrideComponent(QuoteLineItemListComponent, {
+        remove: { imports: [PricePipe, ProductContextDirective, QuoteLineItemListElementComponent] },
+        add: {
+          imports: [
+            MockComponent(QuoteLineItemListElementComponent),
+            MockDirective(ProductContextDirective),
+            MockPipe(PricePipe),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

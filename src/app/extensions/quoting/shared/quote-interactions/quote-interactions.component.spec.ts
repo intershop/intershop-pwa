@@ -12,7 +12,7 @@ describe('Quote Interactions Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [QuoteInteractionsComponent],
+      imports: [QuoteInteractionsComponent],
       providers: [{ provide: QuoteContextFacade, useFactory: () => instance(mock(QuoteContextFacade)) }],
     }).compileComponents();
   });

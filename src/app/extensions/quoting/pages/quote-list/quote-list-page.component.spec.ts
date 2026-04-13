@@ -21,10 +21,14 @@ describe('Quote List Page Component', () => {
   beforeEach(async () => {
     quotingFacade = mock(QuotingFacade);
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(LoadingComponent), MockComponent(QuoteListComponent), QuoteListPageComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [QuoteListPageComponent, TranslateModule.forRoot()],
       providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(QuoteListPageComponent, {
+        remove: { imports: [LoadingComponent, QuoteListComponent] },
+        add: { imports: [MockComponent(LoadingComponent), MockComponent(QuoteListComponent)] },
+      })
+      .compileComponents();
 
     when(quotingFacade.quotingEntities$()).thenReturn(of([]));
     when(quotingFacade.loading$).thenReturn(of(false));

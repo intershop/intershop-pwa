@@ -1,4 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { ComponentFixture, DeferBlockBehavior, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -17,11 +18,23 @@ import { ProductQuantityLabelComponent } from 'ish-shared/components/product/pro
 import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
 
-import { LazyProductAddToOrderTemplateComponent } from '../../../order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
-import { LazyProductAddToWishlistComponent } from '../../../wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
+import { ProductAddToOrderTemplateComponent } from '../../../order-templates/shared/product-add-to-order-template/product-add-to-order-template.component';
+import { ProductAddToWishlistComponent } from '../../../wishlists/shared/product-add-to-wishlist/product-add-to-wishlist.component';
 import { QuoteContextFacade } from '../../facades/quote-context.facade';
 
 import { QuoteLineItemListElementComponent } from './quote-line-item-list-element.component';
+
+@Directive({
+  selector: '[ishFeature]',
+  standalone: true,
+})
+class MockFeatureToggleDirective {
+  @Input('ishFeature') feature: unknown;
+
+  constructor(templateRef: TemplateRef<unknown>, viewContainer: ViewContainerRef) {
+    viewContainer.createEmbeddedView(templateRef);
+  }
+}
 
 describe('Quote Line Item List Element Component', () => {
   let component: QuoteLineItemListElementComponent;
@@ -41,25 +54,47 @@ describe('Quote Line Item List Element Component', () => {
     quoteContext = mock(QuoteContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [MockComponent(ProductImageComponent), TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(LazyProductAddToOrderTemplateComponent),
-        MockComponent(LazyProductAddToWishlistComponent),
-        MockComponent(ProductBundleDisplayComponent),
-        MockComponent(ProductIdComponent),
-        MockComponent(ProductInventoryComponent),
-        MockComponent(ProductNameComponent),
-        MockComponent(ProductQuantityComponent),
-        MockComponent(ProductQuantityLabelComponent),
-        MockComponent(ProductVariationDisplayComponent),
-        MockPipe(PricePipe),
-        QuoteLineItemListElementComponent,
-      ],
+      imports: [QuoteLineItemListElementComponent, TranslateModule.forRoot()],
       providers: [
         { provide: ProductContextFacade, useFactory: () => instance(productContext) },
         { provide: QuoteContextFacade, useFactory: () => instance(quoteContext) },
       ],
-    }).compileComponents();
+      deferBlockBehavior: DeferBlockBehavior.Playthrough,
+    })
+      .overrideComponent(QuoteLineItemListElementComponent, {
+        remove: {
+          imports: [
+            PricePipe,
+            ProductAddToOrderTemplateComponent,
+            ProductAddToWishlistComponent,
+            ProductBundleDisplayComponent,
+            ProductIdComponent,
+            ProductImageComponent,
+            ProductInventoryComponent,
+            ProductNameComponent,
+            ProductQuantityComponent,
+            ProductQuantityLabelComponent,
+            ProductVariationDisplayComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockFeatureToggleDirective,
+            MockPipe(PricePipe),
+            MockComponent(ProductAddToOrderTemplateComponent),
+            MockComponent(ProductAddToWishlistComponent),
+            MockComponent(ProductBundleDisplayComponent),
+            MockComponent(ProductIdComponent),
+            MockComponent(ProductImageComponent),
+            MockComponent(ProductInventoryComponent),
+            MockComponent(ProductNameComponent),
+            MockComponent(ProductQuantityComponent),
+            MockComponent(ProductQuantityLabelComponent),
+            MockComponent(ProductVariationDisplayComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -100,9 +135,11 @@ describe('Quote Line Item List Element Component', () => {
     `);
   });
 
-  it('should render all sub elements when initialized editable', () => {
+  it('should render all sub elements when initialized editable', async () => {
     when(quoteContext.select('editable')).thenReturn(of(true));
 
+    fixture.detectChanges();
+    await fixture.whenRenderingDone();
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
@@ -113,8 +150,8 @@ describe('Quote Line Item List Element Component', () => {
         "ish-product-variation-display",
         "ish-product-bundle-display",
         "ish-product-inventory",
-        "ish-lazy-product-add-to-order-template",
-        "ish-lazy-product-add-to-wishlist",
+        "ish-product-add-to-order-template",
+        "ish-product-add-to-wishlist",
         "ish-product-quantity-label",
         "ish-product-quantity",
         "ish-product-quantity",
