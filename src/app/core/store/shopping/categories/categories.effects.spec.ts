@@ -10,9 +10,9 @@ import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configuration
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category, CategoryCompletenessLevel, CategoryHelper } from 'ish-core/models/category/category.model';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { ShoppingStoreProviders } from 'ish-core/store/shopping/shopping-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
@@ -65,7 +65,7 @@ describe('Categories Effects', () => {
     when(categoriesServiceMock.getCategoryTree(anything(), anyNumber())).thenReturn(of(CATEGORIES_TREE));
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router']), ShoppingStoreModule.forTesting('categories')],
+      imports: [...CoreStoreProviders.forTesting(['router']), ShoppingStoreProviders.forTesting('categories')],
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },

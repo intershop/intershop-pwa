@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FeatureToggleModule, FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { FeatureToggleDirective, FeatureToggleModule, FeatureToggleType } from 'ish-core/feature-toggle.imports';
 
 @Component({
   template: `
@@ -14,6 +14,8 @@ import { FeatureToggleModule, FeatureToggleType } from 'ish-core/feature-toggle.
     <div *ishFeature="'never'">contentNever</div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [FeatureToggleDirective],
 })
 class TestComponent {}
 
@@ -23,8 +25,8 @@ describe('Feature Toggle Directive', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestComponent],
-      imports: [FeatureToggleModule.forTesting('feature1' as FeatureToggleType)],
+      imports: [TestComponent],
+      providers: [...(FeatureToggleModule.forTesting('feature1' as FeatureToggleType).providers ?? [])],
     }).compileComponents();
   });
 

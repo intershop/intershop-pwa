@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { ShoppingStoreProviders } from 'ish-core/store/shopping/shopping-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { suggestSearchSuccess } from './search.actions';
@@ -12,7 +12,7 @@ describe('Search Selector', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('search')],
+      imports: [...CoreStoreProviders.forTesting(), ShoppingStoreProviders.forTesting('search')],
       providers: [provideStoreSnapshots()],
     });
 

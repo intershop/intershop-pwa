@@ -14,9 +14,9 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { Order, Orders } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { OrderService } from 'ish-core/services/order/order.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { loadBasket, loadBasketSuccess } from 'ish-core/store/customer/basket';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -60,8 +60,8 @@ describe('Orders Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['router']),
-        CustomerStoreModule.forTesting('user', 'orders', 'basket'),
+        ...CoreStoreProviders.forTesting(['router']),
+        CustomerStoreProviders.forTesting('user', 'orders', 'basket'),
 
         TranslateModule.forRoot(),
       ],

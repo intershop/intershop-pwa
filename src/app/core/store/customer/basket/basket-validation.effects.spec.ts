@@ -11,9 +11,9 @@ import { BasketValidation } from 'ish-core/models/basket-validation/basket-valid
 import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { Product } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { createOrder } from 'ish-core/store/customer/orders';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -46,7 +46,7 @@ describe('Basket Validation Effects', () => {
     basketServiceMock = mock(BasketService);
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['serverConfig']), CustomerStoreModule.forTesting('user', 'basket')],
+      imports: [...CoreStoreProviders.forTesting(['serverConfig']), CustomerStoreProviders.forTesting('user', 'basket')],
       providers: [
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         BasketValidationEffects,

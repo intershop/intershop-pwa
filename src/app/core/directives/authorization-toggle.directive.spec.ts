@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
+import { AuthorizationToggleDirective, AuthorizationToggleModule } from 'ish-core/authorization-toggle.imports';
 
 @Component({
   template: `
@@ -14,6 +14,8 @@ import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module'
   `,
   // Default change detection for dynamic permission test
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [AuthorizationToggleDirective],
 })
 class TestComponent {
   dynamicPermission: string;
@@ -25,8 +27,8 @@ describe('Authorization Toggle Directive', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestComponent],
-      imports: [AuthorizationToggleModule.forTesting('DO_THIS')],
+      imports: [TestComponent],
+      providers: [...(AuthorizationToggleModule.forTesting('DO_THIS').providers ?? [])],
     }).compileComponents();
   });
 

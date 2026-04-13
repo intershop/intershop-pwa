@@ -1,8 +1,8 @@
 import { TestBed, fakeAsync } from '@angular/core/testing';
 
 import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { ShoppingStoreProviders } from 'ish-core/store/shopping/shopping-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { productInventoryApiActions } from './product-inventory.actions';
@@ -13,7 +13,10 @@ describe('Product Inventory Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['serverConfig']), ShoppingStoreModule.forTesting('productInventory')],
+      imports: [
+        ...CoreStoreProviders.forTesting(['serverConfig']),
+        ShoppingStoreProviders.forTesting('productInventory'),
+      ],
       providers: [provideStoreSnapshots()],
     });
 

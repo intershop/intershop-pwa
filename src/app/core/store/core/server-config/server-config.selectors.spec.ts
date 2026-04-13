@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { isEqual } from 'lodash-es';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { loadServerConfigSuccess } from './server-config.actions';
@@ -17,7 +17,7 @@ describe('Server Config Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['serverConfig'])],
+      imports: [...CoreStoreProviders.forTesting(['serverConfig'])],
       providers: [provideStoreSnapshots()],
     });
 

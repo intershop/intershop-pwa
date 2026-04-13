@@ -12,11 +12,11 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { BasketItemsService } from 'ish-core/services/basket-items/basket-items.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { loadProduct, loadProductSuccess } from 'ish-core/store/shopping/products';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { ShoppingStoreProviders } from 'ish-core/store/shopping/shopping-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { BasketItemsEffects } from './basket-items.effects';
@@ -53,10 +53,9 @@ describe('Basket Items Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['serverConfig']),
-        CustomerStoreModule.forTesting('basket'),
-
-        ShoppingStoreModule.forTesting('products', 'categories'),
+        ...CoreStoreProviders.forTesting(['serverConfig']),
+        CustomerStoreProviders.forTesting('basket'),
+        ShoppingStoreProviders.forTesting('products', 'categories'),
       ],
       providers: [
         { provide: BasketItemsService, useFactory: () => instance(basketItemsServiceMock) },

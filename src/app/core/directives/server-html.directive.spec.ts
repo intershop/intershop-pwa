@@ -20,6 +20,8 @@ describe('Server Html Directive', () => {
       @Component({
         template: ` <div [ishServerHtml]="html"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
+        standalone: true,
+        imports: [ServerHtmlDirective],
       })
       class TestComponent {
         html = `<div><a href="product://8182790134362@inSPIRED-inTRONICS">Product</a></div>
@@ -29,7 +31,7 @@ describe('Server Html Directive', () => {
       }
 
       TestBed.configureTestingModule({
-        declarations: [ServerHtmlDirective, TestComponent],
+        imports: [TestComponent],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/' },
           { provide: AppFacade, useFactory: () => instance(appFacade) },
@@ -62,6 +64,8 @@ describe('Server Html Directive', () => {
       @Component({
         template: ` <div [ishServerHtml]="html"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
+        standalone: true,
+        imports: [ServerHtmlDirective],
       })
       class TestComponent {
         html = `<img src="https://./?[ismediaobject]isfile://inSPIRED-Site/inTRONICS_Business/inSPIRED/en_US/logo.png|/INTERSHOP/static/WFS/inSPIRED-Site/inTRONICS_Business/inSPIRED/en_US/logo.png[/ismediaobject]" alt="logo" width="100" height="100"/>
@@ -72,7 +76,7 @@ describe('Server Html Directive', () => {
       when(appFacade.icmBaseUrl).thenReturn('http://example.org');
 
       TestBed.configureTestingModule({
-        declarations: [ServerHtmlDirective, TestComponent],
+        imports: [TestComponent],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/' },
           { provide: AppFacade, useFactory: () => instance(appFacade) },
@@ -111,13 +115,15 @@ describe('Server Html Directive', () => {
       @Component({
         template: ` <div [ishServerHtml]="html"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
+        standalone: true,
+        imports: [ServerHtmlDirective],
       })
       class TestComponent {
         html = `<img src="https://google.de/logo.png" alt="LOGO" />`;
       }
 
       TestBed.configureTestingModule({
-        declarations: [ServerHtmlDirective, TestComponent],
+        imports: [TestComponent],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/' },
           { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
@@ -142,12 +148,13 @@ describe('Server Html Directive', () => {
       @Component({
         template: ` <div [ishServerHtml]="'get.help.at' | translate : { '0': 'page://page.helpdesk' }"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
+        standalone: true,
+        imports: [ServerHtmlDirective, TranslateModule],
       })
       class TestComponent {}
 
       TestBed.configureTestingModule({
-        declarations: [ServerHtmlDirective, TestComponent],
-        imports: [TranslateModule.forRoot()],
+        imports: [TestComponent, TranslateModule.forRoot()],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/' },
           { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
@@ -188,12 +195,13 @@ describe('Server Html Directive', () => {
       @Component({
         template: ` <div [ishServerHtml]="'get.help.at' | translate : { '0': 'page://page.helpdesk' }"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
+        standalone: true,
+        imports: [ServerHtmlDirective, TranslateModule],
       })
       class TestComponent {}
 
       TestBed.configureTestingModule({
-        declarations: [ServerHtmlDirective, TestComponent],
-        imports: [TranslateModule.forRoot()],
+        imports: [TestComponent, TranslateModule.forRoot()],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/americas' },
           { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },

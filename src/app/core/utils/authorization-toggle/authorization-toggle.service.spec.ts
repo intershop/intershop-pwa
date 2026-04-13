@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { cold } from 'jasmine-marbles';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { loadRolesAndPermissionsSuccess } from 'ish-core/store/customer/authorization';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 
 import { AuthorizationToggleService } from './authorization-toggle.service';
 
@@ -14,7 +14,7 @@ describe('Authorization Toggle Service', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('authorization')],
+      imports: [...CoreStoreProviders.forTesting(), CustomerStoreProviders.forTesting('authorization')],
     });
 
     store = TestBed.inject(Store);

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RoleToggleModule } from 'ish-core/role-toggle.module';
+import { NotRoleToggleDirective, RoleToggleModule } from 'ish-core/role-toggle.imports';
 
 @Component({
   template: `
@@ -14,6 +14,8 @@ import { RoleToggleModule } from 'ish-core/role-toggle.module';
   `,
   // Default change detection for dynamic role test
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [NotRoleToggleDirective],
 })
 class TestComponent {
   dynamicRole: string;
@@ -25,8 +27,8 @@ describe('Not Role Toggle Directive', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestComponent],
-      imports: [RoleToggleModule.forTesting('ROLE1')],
+      imports: [TestComponent],
+      providers: [...(RoleToggleModule.forTesting('ROLE1').providers ?? [])],
     }).compileComponents();
   });
 

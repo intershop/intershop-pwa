@@ -6,13 +6,13 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { CustomerLoginType } from 'ish-core/models/customer/customer.model';
 import { Order } from 'ish-core/models/order/order.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { loadBasketSuccess } from 'ish-core/store/customer/basket';
 import {
   CUSTOMER_STORE_CONFIG,
   CustomerStoreConfig,
-  CustomerStoreModule,
-} from 'ish-core/store/customer/customer-store.module';
+  CustomerStoreProviders,
+} from 'ish-core/store/customer/customer-store.providers';
 import { loadOrderSuccess, selectOrder } from 'ish-core/store/customer/orders';
 import { loginUserSuccess, resetUserData } from 'ish-core/store/customer/user';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
@@ -33,8 +33,8 @@ describe('Api Token Service', () => {
   const injectServices = (cookieServiceMock: CookiesService) => {
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(),
-        CustomerStoreModule.forTestingWithMetaReducer('basket', 'user', 'orders'),
+        ...CoreStoreProviders.forTesting(),
+        CustomerStoreProviders.forTestingWithMetaReducer('basket', 'user', 'orders'),
       ],
       providers: [
         { provide: CookiesService, useFactory: () => instance(cookieServiceMock) },
