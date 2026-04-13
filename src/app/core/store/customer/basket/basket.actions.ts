@@ -40,6 +40,69 @@ export const createBasketFail = createAction('[Basket API] Create Basket Fail', 
 
 export const createBasketSuccess = createAction('[Basket API] Create Basket Success', payload<{ basket: Basket }>());
 
+export const createSingleProductBasket = createAction(
+  '[Basket] Create Single Product Basket',
+  payload<AddLineItemType>()
+);
+
+export const createSingleProductBasketSuccess = createAction(
+  '[Basket API] Create Single Product Basket Success',
+  payload<{ basket: Basket }>()
+);
+
+export const createSingleProductBasketFail = createAction(
+  '[Basket API] Create Single Product Basket Fail',
+  httpError()
+);
+
+export const replaceCurrentBasketWithSingleProductBasket = createAction(
+  '[Basket] Replace Current Basket with Single Product Basket'
+);
+
+export const replaceSingleProductBasketItem = createAction(
+  '[Basket] Replace Single Product Basket Item',
+  payload<{ oldItemIds: string[]; newItem: AddLineItemType }>()
+);
+
+export const deleteSingleProductBasketItemSuccess = createAction(
+  '[Basket API] Delete Single Product Basket Item Success',
+  payload<{ itemId: string; info: BasketInfo[] }>()
+);
+
+export const deleteSingleProductBasketItemFail = createAction(
+  '[Basket API] Delete Single Product Basket Item Fail',
+  httpError()
+);
+
+export const addProductToSingleProductBasket = createAction(
+  '[Basket] Add Product to Single Product Basket',
+  payload<AddLineItemType>()
+);
+
+export const addProductToSingleProductBasketSuccess = createAction(
+  '[Basket API] Add Product to Single Product Basket Success',
+  payload<{ lineItems: LineItem[]; info: BasketInfo[]; errors?: ErrorFeedback[] }>()
+);
+
+export const addProductToSingleProductBasketFail = createAction(
+  '[Basket API] Add Product to Single Product Basket Fail',
+  httpError()
+);
+
+export const loadSingleProductBasketEligiblePaymentMethods = createAction(
+  '[Basket] Load SingProduct Basket Eligible Payment Methods'
+);
+
+export const loadSingleProductBasketEligiblePaymentMethodsFail = createAction(
+  '[Basket API] Load SingProduct Basket Eligible Payment Methods Fail',
+  httpError()
+);
+
+export const loadSingleProductBasketEligiblePaymentMethodsSuccess = createAction(
+  '[Basket API] Load SingProduct Basket Eligible Payment Methods Success',
+  payload<{ paymentMethods: PaymentMethod[] }>()
+);
+
 export const createBasketAddress = createAction(
   '[Basket] Create Basket Address',
   payload<{ address: Address; scope: 'invoice' | 'shipping' | 'any' }>()
@@ -321,7 +384,10 @@ export const updatePaypalCreditCardPaymentInstrument = createAction(
   payload<{ paymentInstrument: PaymentInstrument }>()
 );
 
-export const loadPaypalToken = createAction('[Basket] Load Paypal Token', payload<{ paymentInstrumentId: string }>());
+export const loadPaypalToken = createAction(
+  '[Basket] Load Paypal Token',
+  payload<{ paymentInstrumentId: string; basketId?: string }>()
+);
 
 export const updatePaymentInstrument = createAction(
   '[Basket Internal] Update Payment Instrument',

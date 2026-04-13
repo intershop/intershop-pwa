@@ -15,7 +15,7 @@ import { BasketPaymentEffects } from './basket/basket-payment.effects';
 import { BasketPromotionCodeEffects } from './basket/basket-promotion-code.effects';
 import { BasketValidationEffects } from './basket/basket-validation.effects';
 import { BasketEffects } from './basket/basket.effects';
-import { basketReducer } from './basket/basket.reducer';
+import { basketReducer, singleProductBasketReducer } from './basket/basket.reducer';
 import { CustomerState } from './customer-store';
 import { DataRequestsEffects } from './data-requests/data-requests.effects';
 import { dataRequestsReducer } from './data-requests/data-requests.reducer';
@@ -40,6 +40,7 @@ const customerReducers: ActionReducerMap<CustomerState> = {
   authorization: authorizationReducer,
   ssoRegistration: ssoRegistrationReducer,
   dataRequests: dataRequestsReducer,
+  singleProductBasket: singleProductBasketReducer,
 };
 
 const customerEffects = [

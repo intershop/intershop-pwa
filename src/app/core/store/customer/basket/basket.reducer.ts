@@ -16,6 +16,9 @@ import {
   addItemsToBasketFail,
   addItemsToBasketSuccess,
   addProductToBasket,
+  addProductToSingleProductBasket,
+  addProductToSingleProductBasketFail,
+  addProductToSingleProductBasketSuccess,
   addPromotionCodeToBasket,
   addPromotionCodeToBasketFail,
   addPromotionCodeToBasketSuccess,
@@ -31,6 +34,9 @@ import {
   createBasketPaymentFail,
   createBasketPaymentSuccess,
   createBasketSuccess,
+  createSingleProductBasket,
+  createSingleProductBasketFail,
+  createSingleProductBasketSuccess,
   deleteBasketAttribute,
   deleteBasketAttributeFail,
   deleteBasketAttributeSuccess,
@@ -40,6 +46,8 @@ import {
   deleteBasketPayment,
   deleteBasketPaymentFail,
   deleteBasketPaymentSuccess,
+  deleteSingleProductBasketItemFail,
+  deleteSingleProductBasketItemSuccess,
   loadBasket,
   loadBasketByAPIToken,
   loadBasketByAPITokenFail,
@@ -55,6 +63,9 @@ import {
   loadBasketFail,
   loadBasketSuccess,
   loadBasketWithId,
+  loadSingleProductBasketEligiblePaymentMethods,
+  loadSingleProductBasketEligiblePaymentMethodsFail,
+  loadSingleProductBasketEligiblePaymentMethodsSuccess,
   mergeBasketFail,
   mergeBasketInProgress,
   mergeBasketSuccess,
@@ -126,6 +137,58 @@ const initialState: BasketState = {
   validationResults: initialValidationResults,
   submittedBasket: undefined,
 };
+
+export const singleProductBasketReducer = createReducer(
+  initialState,
+  setLoadingOn(
+    createSingleProductBasket,
+    addProductToSingleProductBasket,
+    loadSingleProductBasketEligiblePaymentMethods
+  ),
+  unsetLoadingAndErrorOn(
+    createSingleProductBasketSuccess,
+    addProductToSingleProductBasketSuccess,
+    loadSingleProductBasketEligiblePaymentMethodsSuccess,
+    deleteSingleProductBasketItemSuccess
+  ),
+  setErrorOn(
+    createSingleProductBasketFail,
+    addProductToSingleProductBasketFail,
+    loadSingleProductBasketEligiblePaymentMethodsFail,
+    deleteSingleProductBasketItemFail
+  ),
+  on(createSingleProductBasketSuccess, (state, action): BasketState => {
+    const basket = {
+      ...action.payload.basket,
+    };
+
+    return {
+      ...state,
+      basket,
+    };
+  }),
+  on(deleteSingleProductBasketItemSuccess, (state, action) => ({
+    ...state,
+    basket: { ...state.basket, lineItems: state.basket.lineItems.filter(item => item.id !== action.payload.itemId) },
+    info: action.payload.info,
+    validationResults: initialValidationResults,
+  })),
+  on(addProductToSingleProductBasketSuccess, (state, action) => ({
+    ...state,
+    basket: { ...state.basket, lineItems: unionBy(action.payload.lineItems, state.basket.lineItems ?? [], 'id') },
+    info: action.payload.info,
+    error: { name: 'HttpErrorResponse' as const, errors: action.payload.errors },
+    lastTimeProductAdded: new Date().getTime(),
+    submittedBasket: undefined,
+  })),
+  on(
+    loadSingleProductBasketEligiblePaymentMethodsSuccess,
+    (state, action): BasketState => ({
+      ...state,
+      eligiblePaymentMethods: action.payload.paymentMethods,
+    })
+  )
+);
 
 export const basketReducer = createReducer(
   initialState,

@@ -10,6 +10,7 @@ import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { CustomFieldDefinitionScopes } from 'ish-core/models/custom-field-definition/custom-field-definition.model';
 import { CustomFields } from 'ish-core/models/custom-field/custom-field.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
+import { AddLineItemType } from 'ish-core/models/line-item/line-item.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PriceType } from 'ish-core/models/price/price.model';
 import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
@@ -21,6 +22,7 @@ import {
 } from 'ish-core/store/core/server-config';
 import {
   addMessageToMerchant,
+  addProductToSingleProductBasket,
   addPromotionCodeToBasket,
   assignBasketAddress,
   continueCheckout,
@@ -28,6 +30,7 @@ import {
   createBasketAddress,
   createBasketPayment,
   createPaypalCreditCardBasketPayment,
+  createSingleProductBasket,
   deleteBasketAttribute,
   deleteBasketItem,
   deleteBasketItems,
@@ -47,6 +50,8 @@ import {
   getBasketValidationResults,
   getCurrentBasket,
   getEligibleFastCheckoutPaymentMethods,
+  getSingleProductBasket,
+  getSingleProductBasketEligiblePaymentMethods,
   getSubmittedBasket,
   isBasketInvoiceAndShippingAddressEqual,
   loadBasketEligibleAddresses,
@@ -55,6 +60,7 @@ import {
   loadBasketWithId,
   loadPaypalToken,
   removePromotionCodeFromBasket,
+  replaceCurrentBasketWithSingleProductBasket,
   setBasketAttribute,
   setBasketCustomFields,
   setBasketDesiredDeliveryDate,
@@ -126,6 +132,8 @@ export class CheckoutFacade {
   basketItemTotal$ = this.basket$.pipe(map(basket => basket?.totals?.itemTotal));
   basketLineItems$ = this.basket$.pipe(map(basket => (basket?.lineItems?.length ? basket.lineItems : undefined)));
   submittedBasket$ = this.store.pipe(select(getSubmittedBasket));
+  singleProductBasket$ = this.store.pipe(select(getSingleProductBasket));
+
   basketMaxItemQuantity$ = this.store.pipe(
     select(getServerConfigParameter<number>('basket.maxItemQuantity')),
     map(qty => qty || 100)
@@ -137,6 +145,14 @@ export class CheckoutFacade {
 
   createBasket() {
     this.store.dispatch(createBasket());
+  }
+
+  createSingleProductBasket(item: AddLineItemType) {
+    this.store.dispatch(createSingleProductBasket(item));
+  }
+
+  addProductToSingleProductBasket(item: AddLineItemType) {
+    this.store.dispatch(addProductToSingleProductBasket(item));
   }
 
   deleteBasketItem(itemId: string) {
@@ -307,8 +323,10 @@ export class CheckoutFacade {
       switchMap(() => this.store.pipe(select(getBasketEligiblePaymentMethods)))
     );
   }
+  getSingleProductBasketEligiblePaymentMethods$ = this.store.pipe(select(getSingleProductBasketEligiblePaymentMethods));
 
   eligibleFastCheckoutPaymentMethods$ = this.store.pipe(select(getEligibleFastCheckoutPaymentMethods));
+
   loadEligiblePaymentMethods() {
     this.store.dispatch(loadBasketEligiblePaymentMethods());
   }
@@ -335,8 +353,15 @@ export class CheckoutFacade {
 
   // PAYPAL PAYMENTS
 
-  loadPaypalToken(paymentInstrumentId: string) {
-    this.store.dispatch(loadPaypalToken({ paymentInstrumentId }));
+  replaceCurrentBasketWithSingleProductBasket() {
+    this.store.dispatch(replaceCurrentBasketWithSingleProductBasket());
+  }
+
+  loadPaypalToken(paymentInstrumentId: string, basketId?: string) {
+    if (basketId) {
+      this.store.dispatch(loadBasketWithId({ basketId }));
+    }
+    this.store.dispatch(loadPaypalToken({ paymentInstrumentId, basketId }));
   }
 
   createPaypalCreditCardBasketPayment(paymentInstrument: PaymentInstrument) {

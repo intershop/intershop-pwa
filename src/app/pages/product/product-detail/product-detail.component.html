@@ -29,6 +29,16 @@
           <ish-product-quantity elementId="product-detail-quantity" />
         </div>
       </div>
+      @if (paypalCheckoutPaymentMethod$ | async; as paypalCheckoutPaymentMethod) {
+      <div class="d-grid pb-2">
+        <ish-payment-paypal
+          [selectedPaymentMethod]="paypalCheckoutPaymentMethod"
+          adapterType="Buttons"
+          pageType="product-details"
+        />
+      </div>
+      }
+
       <div class="d-grid">
         <ish-product-add-to-basket [cssClass]="'btn-lg w-100'" />
       </div>

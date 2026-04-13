@@ -15,6 +15,7 @@ import { v4 as uuid } from 'uuid';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalAdaptersBuilder, PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
 import { PaypalApplePayAdapter } from 'ish-core/utils/paypal/adapters/paypal-apple-pay/paypal-apple-pay.adapter';
@@ -57,6 +58,9 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
 
   /** The selected PayPal payment method configuration. Required for Buttons and CardFields. */
   @Input() selectedPaymentMethod: PaymentMethod;
+
+  /** Product for single checkout */
+  @Input() product: ProductView;
 
   /** Emits when the card fields form should be closed. */
   @Output() closeForm = new EventEmitter<void>();

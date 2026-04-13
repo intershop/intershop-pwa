@@ -18,6 +18,7 @@ import { BasketBaseData, BasketData } from 'ish-core/models/basket/basket.interf
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { CustomFieldData } from 'ish-core/models/custom-field/custom-field.interface';
+import { AddLineItemType } from 'ish-core/models/line-item/line-item.model';
 import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
@@ -164,6 +165,38 @@ export class BasketService {
           headers: this.basketHeaders,
         }
       )
+      .pipe(map(BasketMapper.fromData));
+  }
+
+  deleteBasketWithId(basketId: string) {
+    return this.apiService.delete<{ infos: BasketInfo[] }>(`baskets/${this.apiService.encodeResourceId(basketId)}`, {
+      headers: this.basketHeaders,
+    });
+  }
+
+  /**
+   * Creates a new basket for the current user.
+   *
+   * @returns         The basket.
+   */
+  createBasketWithProduct(item: AddLineItemType): Observable<Basket> {
+    if (!item) {
+      return throwError(() => new Error('createBasketWithProduct() called without item'));
+    }
+
+    const body = {
+      lineItems: [
+        {
+          sku: item.sku,
+          quantity: item.quantity,
+        },
+      ],
+    };
+
+    return this.apiService
+      .post<BasketData>(`baskets`, body, {
+        headers: this.basketHeaders,
+      })
       .pipe(map(BasketMapper.fromData));
   }
 

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { Observable, forkJoin, iif, of, throwError } from 'rxjs';
-import { concatMap, first, map } from 'rxjs/operators';
+import { concatMap, first, map, switchMap, take } from 'rxjs/operators';
 
 import { BasketInfoMapper } from 'ish-core/models/basket-info/basket-info.mapper';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
@@ -15,7 +15,8 @@ import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
 import { AddLineItemType, LineItem, LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
-import { getCurrentBasket } from 'ish-core/store/customer/basket';
+import { getCurrentBasket, getSingleProductBasket } from 'ish-core/store/customer/basket';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 export interface BasketItemUpdateType {
   quantity?: { value: number; unit: string };
@@ -84,6 +85,36 @@ export class BasketItemsService {
     );
   }
 
+  addItemToSingleProductBasket(
+    item: AddLineItemType
+  ): Observable<{ lineItems: LineItem[]; info: BasketInfo[]; errors: ErrorFeedback[] }> {
+    if (!item) {
+      return throwError(() => new Error('addItemsToBasket() called without items'));
+    }
+
+    return this.store.pipe(
+      select(getSingleProductBasket),
+      first(),
+      concatMap(basket =>
+        this.apiService
+          .post<{ data: LineItemData[]; infos: BasketInfo[]; errors?: ErrorFeedback[] }>(
+            `baskets/${this.apiService.encodeResourceId(basket.id)}/items`,
+            this.mapItemsToAdd(basket, [item], false),
+            {
+              headers: this.basketHeaders,
+            }
+          )
+          .pipe(
+            map(payload => ({
+              lineItems: payload.data.map(item => LineItemMapper.fromData(item)),
+              info: BasketInfoMapper.fromInfo({ infos: payload.infos }),
+              errors: payload.errors,
+            }))
+          )
+      )
+    );
+  }
+
   private mapItemsToAdd(basket: Basket, items: AddLineItemType[], multipleShipmentsSupported: boolean) {
     return items.map(item => ({
       product: item.sku,
@@ -94,6 +125,31 @@ export class BasketItemsService {
       ...(multipleShipmentsSupported && { shippingMethod: basket?.commonShippingMethod?.id }),
       ...(item.warrantySku && { warranty: item.warrantySku }),
     }));
+  }
+
+  /**
+   * Removes a specific line item from the currently used basket.
+   *
+   * @param itemId    The id of the line item that should be deleted.
+   */
+  deleteSingleProductBasketItem(itemId: string): Observable<BasketInfo[]> {
+    return this.store.pipe(select(getSingleProductBasket)).pipe(
+      whenTruthy(),
+      take(1),
+      switchMap(basket =>
+        this.apiService
+          .delete<{ infos: BasketInfo[] }>(
+            `baskets/${this.apiService.encodeResourceId(basket.id)}/items/${this.apiService.encodeResourceId(itemId)}`,
+            {
+              headers: this.basketHeaders,
+            }
+          )
+          .pipe(
+            map(payload => ({ ...payload, itemId })),
+            map(BasketInfoMapper.fromInfo)
+          )
+      )
+    );
   }
 
   /**

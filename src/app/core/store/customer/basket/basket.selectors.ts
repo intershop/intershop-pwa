@@ -12,6 +12,8 @@ import { BasketState } from './basket.reducer';
 
 const getBasketState = createSelector(getCustomerState, state => state?.basket);
 
+const getSingleProductBasketState = createSelector(getCustomerState, state => state?.singleProductBasket);
+
 const getInternalBasket = createSelector(getBasketState, basket => basket.basket);
 
 export const getBasketValidationResults = createSelectorFactory<object, BasketValidationResultType>(projector =>
@@ -59,6 +61,16 @@ export const getCurrentBasketId = createSelector(getBasketState, basket =>
 
 export const getBasketIdOrCurrent = createSelector(getBasketState, basket =>
   basket.basket ? basket.basket.id : 'current'
+);
+
+export const getSingleProductBasket = createSelector(getSingleProductBasketState, state => state.basket);
+
+export const getCurrentSingleProductBasketId = createSelector(getSingleProductBasketState, basket =>
+  basket.basket ? basket.basket.id : undefined
+);
+
+export const getSingleProductBasketEligiblePaymentMethods = createSelector(getSingleProductBasketState, state =>
+  state.eligiblePaymentMethods?.filter(pm => pm.capabilities?.includes('FastCheckout'))
 );
 
 export const getBasketLoading = createSelector(getBasketState, basket => basket.loading);

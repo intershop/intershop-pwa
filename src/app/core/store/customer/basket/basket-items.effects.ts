@@ -20,21 +20,31 @@ import {
   addItemsToBasketFail,
   addItemsToBasketSuccess,
   addProductToBasket,
+  addProductToSingleProductBasket,
+  addProductToSingleProductBasketFail,
+  addProductToSingleProductBasketSuccess,
   createBasketFail,
   createBasketSuccess,
+  createSingleProductBasketFail,
+  createSingleProductBasketSuccess,
   deleteBasketItem,
   deleteBasketItemFail,
   deleteBasketItemSuccess,
   deleteBasketItems,
   deleteBasketItemsFail,
   deleteBasketItemsSuccess,
+  deleteSingleProductBasketItemFail,
+  deleteSingleProductBasketItemSuccess,
+  emitPaypalOrderId,
   loadBasket,
+  loadSingleProductBasketEligiblePaymentMethods,
+  replaceSingleProductBasketItem,
   updateBasketItem,
   updateBasketItemFail,
   updateBasketItemSuccess,
   validateBasket,
 } from './basket.actions';
-import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
+import { getCurrentBasket, getCurrentBasketId, getSingleProductBasket } from './basket.selectors';
 
 @Injectable()
 export class BasketItemsEffects {
@@ -90,6 +100,65 @@ export class BasketItemsEffects {
       })
     )
   );
+
+  addItemToSingleProductBasket$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addProductToSingleProductBasket),
+      mapToPayload(),
+      concatLatestFrom(() => this.store.pipe(select(getSingleProductBasket))),
+      concatMap(([item, basket]) => {
+        console.log('ITEM: ', item, 'BASKET: ', basket);
+        if (basket) {
+          return basket.lineItems?.length
+            ? [replaceSingleProductBasketItem({ oldItemIds: basket.lineItems.map(li => li.id), newItem: item })]
+            : this.basketItemsService.addItemToSingleProductBasket(item).pipe(
+                concatMap(payload => [
+                  addProductToSingleProductBasketSuccess(payload),
+                  loadSingleProductBasketEligiblePaymentMethods(),
+                ]),
+                mapErrorToAction(addProductToSingleProductBasketFail)
+              );
+        } else {
+          return this.basketService.createBasket().pipe(
+            concatMap(basket => [createSingleProductBasketSuccess({ basket }), addProductToSingleProductBasket(item)]),
+            mapErrorToAction(createSingleProductBasketFail)
+          );
+        }
+      })
+    )
+  );
+
+  removeOldItemsFromSingleProductBasket$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(replaceSingleProductBasketItem),
+      mapToPayload(),
+      concatMap(payload =>
+        from(payload.oldItemIds).pipe(
+          concatMap(oldItemId =>
+            this.basketItemsService
+              .deleteSingleProductBasketItem(oldItemId)
+              .pipe(map(info => deleteSingleProductBasketItemSuccess({ itemId: oldItemId, info })))
+          ),
+          toArray(),
+          mergeMap(deleteSuccessActions => [...deleteSuccessActions, addProductToSingleProductBasket(payload.newItem)])
+        )
+      ),
+      mapErrorToAction(deleteSingleProductBasketItemFail)
+    )
+  );
+
+  createNewSingleProductBasket$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(emitPaypalOrderId),
+      switchMap(() =>
+        this.basketService.createBasket().pipe(
+          map(basket => createSingleProductBasketSuccess({ basket })),
+          mapErrorToAction(createSingleProductBasketFail)
+        )
+      )
+    )
+  );
+
   /**
    * Reload products when they are added to basket to update price and availability information
    */

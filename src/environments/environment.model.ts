@@ -216,6 +216,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   priceUpdate: 'always',
 
   paypalClientConfig: {
+    singlePayment: true,
     googlePayEnvironment: 'TEST',
   },
 };

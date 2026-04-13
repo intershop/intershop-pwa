@@ -21,6 +21,7 @@ import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
+import { getSingleProductBasket } from 'ish-core/store/customer/basket';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
@@ -55,6 +56,28 @@ export class PaymentService {
         params,
       })
       .pipe(map(PaymentMethodMapper.fromData));
+  }
+
+  /**
+   * Get eligible payment methods for selected basket.
+   *
+   * @returns         The eligible payment methods.
+   */
+  getSingleProductBasketEligiblePaymentMethods(): Observable<PaymentMethod[]> {
+    const params = new HttpParams().set('include', 'paymentInstruments');
+
+    return this.store.pipe(select(getSingleProductBasket)).pipe(
+      whenTruthy(),
+      take(1),
+      switchMap(basket =>
+        this.apiService
+          .get(`baskets/${this.apiService.encodeResourceId(basket.id)}/eligible-payment-methods`, {
+            headers: this.basketHeaders,
+            params,
+          })
+          .pipe(map(PaymentMethodMapper.fromData))
+      )
+    );
   }
 
   /**

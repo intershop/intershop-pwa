@@ -1,10 +1,12 @@
 import { getCurrencySymbol } from '@angular/common';
 import { ApplicationRef, Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, merge, noop } from 'rxjs';
 import { filter, map, sample, shareReplay, startWith, take, withLatestFrom } from 'rxjs/operators';
 
+import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import {
   getAvailableLocales,
   getCurrentCurrency,
@@ -154,5 +156,13 @@ export class AppFacade {
 
   paypalClientConfig$() {
     return this.store.pipe(select(getPaypalClientConfig));
+  }
+
+  paypalSinglePayment$() {
+    return this.serverSetting$<PaypalConfig>('payment.paypal').pipe(
+      concatLatestFrom(() => this.paypalClientConfig$()),
+      map(([paypalConfig, paypalClientConfig]) => !!paypalConfig && paypalClientConfig?.singlePayment),
+      take(1)
+    );
   }
 }

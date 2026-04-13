@@ -32,6 +32,9 @@ import {
   loadBasketEligiblePaymentMethodsFail,
   loadBasketEligiblePaymentMethodsSuccess,
   loadPaypalToken,
+  loadSingleProductBasketEligiblePaymentMethods,
+  loadSingleProductBasketEligiblePaymentMethodsFail,
+  loadSingleProductBasketEligiblePaymentMethodsSuccess,
   setBasketPayment,
   setBasketPaymentFail,
   setBasketPaymentSuccess,
@@ -76,6 +79,21 @@ export class BasketPaymentEffects {
   );
 
   /**
+   * The load basket eligible payment methods effect.
+   */
+  loadSingleProductBasketEligiblePaymentMethods$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadSingleProductBasketEligiblePaymentMethods),
+      exhaustMap(() =>
+        this.paymentService.getSingleProductBasketEligiblePaymentMethods().pipe(
+          map(result => loadSingleProductBasketEligiblePaymentMethodsSuccess({ paymentMethods: result })),
+          mapErrorToAction(loadSingleProductBasketEligiblePaymentMethodsFail)
+        )
+      )
+    )
+  );
+
+  /**
    * Sets a payment at the current basket.
    */
   setPaymentAtBasket$ = createEffect(() =>
@@ -94,16 +112,25 @@ export class BasketPaymentEffects {
   loadPaypalToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadPaypalToken),
-      mapToPayloadProperty('paymentInstrumentId'),
-      concatMap(paymentInstrumentId =>
-        this.paymentPaypalService.getPaypalToken(paymentInstrumentId).pipe(
-          concatMap(token => [
-            setBasketPaymentSuccess(),
-            emitPaypalOrderId({ paypalOrderId: token, paymentInstrumentId }),
-          ]),
-          // In case of an error during token retrieval, the information must passed to the adapter
-          // to handle this error in the correct way e.g close the overlay.
-          catchError(() => [emitPaypalOrderId({ paymentInstrumentId })])
+      mapToPayload(),
+      switchMap(payload =>
+        this.store.pipe(
+          select(getCurrentBasket),
+          whenTruthy(),
+          filter(basket => !payload.basketId || basket.id === payload.basketId),
+          take(1),
+          map(() => payload.paymentInstrumentId),
+          concatMap(paymentInstrumentId =>
+            this.paymentPaypalService.getPaypalToken(paymentInstrumentId).pipe(
+              concatMap(token => [
+                setBasketPaymentSuccess(),
+                emitPaypalOrderId({ paypalOrderId: token, paymentInstrumentId }),
+              ]),
+              // In case of an error during token retrieval, the information must passed to the adapter
+              // to handle this error in the correct way e.g close the overlay.
+              catchError(() => [emitPaypalOrderId({ paymentInstrumentId })])
+            )
+          )
         )
       )
     )

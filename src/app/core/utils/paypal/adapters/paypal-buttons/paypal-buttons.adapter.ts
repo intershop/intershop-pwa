@@ -25,6 +25,7 @@ interface PaypalShippingAddress {
 export class PaypalButtonsAdapter {
   paypalShippingAddress: PaypalShippingAddress;
   serviceAvailable = true;
+  isSingleProductCheckout = false;
 
   constructor(
     private ngZone: NgZone,
@@ -52,6 +53,7 @@ export class PaypalButtonsAdapter {
         `PayPal Buttons not available in loaded paypal sdk script with namespace '${config.scriptNamespace}'`
       );
     }
+    this.isSingleProductCheckout = config.pageType === 'product-details';
 
     return paypalObject.Buttons(this.getButtonConfig(config)).render(`#${containerId}`);
   }
@@ -102,7 +104,18 @@ export class PaypalButtonsAdapter {
       });
     });
 
-    this.checkoutFacade.loadPaypalToken(paypalPaymentMethod.paymentInstruments[0]?.id || paypalPaymentMethod.serviceId);
+    if (this.isSingleProductCheckout) {
+      this.checkoutFacade.singleProductBasket$.pipe(take(1)).subscribe(basket => {
+        this.checkoutFacade.loadPaypalToken(
+          paypalPaymentMethod.paymentInstruments[0]?.id || paypalPaymentMethod.serviceId,
+          basket.id
+        );
+      });
+    } else {
+      this.checkoutFacade.loadPaypalToken(
+        paypalPaymentMethod.paymentInstruments[0]?.id || paypalPaymentMethod.serviceId
+      );
+    }
 
     return orderIdPromise;
   }

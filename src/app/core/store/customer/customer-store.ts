@@ -16,6 +16,7 @@ export interface CustomerState {
   orders: OrdersState;
   recurringOrders: RecurringOrdersState;
   basket: BasketState;
+  singleProductBasket: BasketState;
   authorization: Authorization;
   ssoRegistration: SsoRegistrationState;
   dataRequests: DataRequestsState;
