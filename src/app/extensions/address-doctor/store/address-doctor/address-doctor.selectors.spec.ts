@@ -13,7 +13,7 @@ describe('Address Doctor Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [AddressDoctorStoreProviders.forTesting('addressDoctorConfig'), ...CoreStoreProviders.forTesting()],
+      imports: [...CoreStoreProviders.forTesting(), AddressDoctorStoreProviders.forTesting('addressDoctorConfig')],
       providers: [provideStoreSnapshots()],
     });
 

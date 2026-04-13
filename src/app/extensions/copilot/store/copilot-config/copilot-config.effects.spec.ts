@@ -28,7 +28,7 @@ describe('Copilot Config Effects', () => {
     statePropertiesService = mock(StatePropertiesService);
 
     TestBed.configureTestingModule({
-      imports: [CopilotStoreProviders.forTesting('copilotConfig'), ...CoreStoreProviders.forTesting()],
+      imports: [...CoreStoreProviders.forTesting(), CopilotStoreProviders.forTesting('copilotConfig')],
       providers: [
         { provide: StatePropertiesService, useFactory: () => instance(statePropertiesService) },
         CopilotConfigEffects,
