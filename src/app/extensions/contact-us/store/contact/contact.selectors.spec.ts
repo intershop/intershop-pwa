@@ -33,7 +33,7 @@ describe('Contact Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ContactUsStoreProviders.forTesting('contact'), ...CoreStoreProviders.forTesting()],
+      imports: [...CoreStoreProviders.forTesting(), ContactUsStoreProviders.forTesting('contact')],
       providers: [provideStoreSnapshots()],
     });
 

@@ -20,7 +20,7 @@ describe('Compare Facade', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideMockStore(), { provide: ModuleLoaderService, useValue: moduleLoaderService }],
+      providers: [{ provide: ModuleLoaderService, useValue: moduleLoaderService }, provideMockStore()],
     });
 
     facade = TestBed.inject(CompareFacade);
@@ -37,7 +37,7 @@ describe('Compare Facade', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CompareStoreProviders.forTesting('_compare'), ...CoreStoreProviders.forTesting()],
+      imports: [...CoreStoreProviders.forTesting(), CompareStoreProviders.forTesting('_compare')],
       providers: [{ provide: ModuleLoaderService, useValue: moduleLoaderService }],
     });
 

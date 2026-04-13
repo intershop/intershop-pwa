@@ -13,7 +13,7 @@ describe('Copilot Config Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CopilotStoreProviders.forTesting('copilotConfig'), ...CoreStoreProviders.forTesting()],
+      imports: [...CoreStoreProviders.forTesting(), CopilotStoreProviders.forTesting('copilotConfig')],
       providers: [provideStoreSnapshots()],
     });
 

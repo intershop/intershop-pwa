@@ -7,6 +7,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 import { WishlistLineItemComponent } from '../../shared/wishlist-line-item/wishlist-line-item.component';
 

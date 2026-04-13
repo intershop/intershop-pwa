@@ -29,7 +29,7 @@ describe('Address Doctor Effects', () => {
     statePropertiesService = mock(StatePropertiesService);
 
     TestBed.configureTestingModule({
-      imports: [AddressDoctorStoreProviders.forTesting('addressDoctorConfig'), ...CoreStoreProviders.forTesting()],
+      imports: [...CoreStoreProviders.forTesting(), AddressDoctorStoreProviders.forTesting('addressDoctorConfig')],
       providers: [
         { provide: StatePropertiesService, useFactory: () => instance(statePropertiesService) },
         AddressDoctorEffects,
