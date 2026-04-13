@@ -18,7 +18,7 @@ describe('Viewcontexts Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ContentStoreProviders.forTesting('viewcontexts'), ...CoreStoreProviders.forTesting()],
+      imports: [...CoreStoreProviders.forTesting(), ContentStoreProviders.forTesting('viewcontexts')],
       providers: [provideStoreSnapshots()],
     });
 

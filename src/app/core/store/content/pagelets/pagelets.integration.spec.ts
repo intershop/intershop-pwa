@@ -14,7 +14,7 @@ describe('Pagelets Integration', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ContentStoreProviders.forTesting('pagelets'), ...CoreStoreProviders.forTesting()],
+      imports: [...CoreStoreProviders.forTesting(), ContentStoreProviders.forTesting('pagelets')],
       providers: [provideStoreSnapshots()],
     });
 

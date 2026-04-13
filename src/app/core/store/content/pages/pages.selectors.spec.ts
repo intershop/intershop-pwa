@@ -18,7 +18,7 @@ describe('Pages Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ContentStoreProviders.forTesting('pages', 'pagetree'), ...CoreStoreProviders.forTesting(['router'])],
+      imports: [...CoreStoreProviders.forTesting(['router']), ContentStoreProviders.forTesting('pages', 'pagetree')],
       providers: [provideRouter([{ path: '**', children: [] }]), provideStoreSnapshots()],
     });
 

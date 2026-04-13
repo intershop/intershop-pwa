@@ -34,7 +34,7 @@ describe('Page Tree Selectors', () => {
     tree6 = { contentPageId: '2', path: ['2'], name: '2' } as ContentPageTreeElement;
 
     TestBed.configureTestingModule({
-      imports: [ContentStoreProviders.forTesting('pagetree'), ...CoreStoreProviders.forTesting(['router'])],
+      imports: [...CoreStoreProviders.forTesting(['router']), ContentStoreProviders.forTesting('pagetree')],
       providers: [provideRouter([{ path: 'page/:contentPageId', children: [] }]), provideStoreSnapshots()],
     });
 

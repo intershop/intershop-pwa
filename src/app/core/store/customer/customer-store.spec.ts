@@ -24,8 +24,8 @@ import { ShoppingStoreProviders } from 'ish-core/store/shopping/shopping-store.p
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { addProductToBasket, loadBasketSuccess, startCheckout } from './basket';
-import { BasketEffects } from './basket/basket.effects';
 import { BasketValidationEffects } from './basket/basket-validation.effects';
+import { BasketEffects } from './basket/basket.effects';
 import { loginUser, personalizationStatusDetermined } from './user';
 import { UserEffects } from './user/user.effects';
 
@@ -94,8 +94,8 @@ describe('Customer Store', () => {
       imports: [
         ...CoreStoreProviders.forTesting(['configuration', 'serverConfig'], true),
         CustomerStoreProviders.forTesting('user', 'basket'),
-        ShoppingStoreProviders.forTesting('products', 'productInventory'),
         EffectsModule.forFeature([UserEffects, BasketEffects, BasketValidationEffects]),
+        ShoppingStoreProviders.forTesting('products', 'productInventory'),
         TranslateModule.forRoot(),
       ],
       providers: [
