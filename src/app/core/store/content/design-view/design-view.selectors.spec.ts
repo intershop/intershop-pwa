@@ -16,7 +16,7 @@ describe('Design View Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ContentStoreProviders.forTesting('designView'), ...CoreStoreProviders.forTesting()],
+      imports: [...CoreStoreProviders.forTesting(), ContentStoreProviders.forTesting('designView')],
       providers: [provideStoreSnapshots()],
     });
 
