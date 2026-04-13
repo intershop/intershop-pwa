@@ -12,7 +12,7 @@ describe('Parameters Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ContentStoreProviders.forTesting('parameters'), ...CoreStoreProviders.forTesting()],
+      imports: [...CoreStoreProviders.forTesting(), ContentStoreProviders.forTesting('parameters')],
       providers: [provideStoreSnapshots()],
     });
 

@@ -46,7 +46,10 @@ describe('Basket Validation Effects', () => {
     basketServiceMock = mock(BasketService);
 
     TestBed.configureTestingModule({
-      imports: [...CoreStoreProviders.forTesting(['serverConfig']), CustomerStoreProviders.forTesting('user', 'basket')],
+      imports: [
+        ...CoreStoreProviders.forTesting(['serverConfig']),
+        CustomerStoreProviders.forTesting('user', 'basket'),
+      ],
       providers: [
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         BasketValidationEffects,
