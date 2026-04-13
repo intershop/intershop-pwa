@@ -7,8 +7,8 @@ import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { Region } from 'ish-core/models/region/region.model';
 import { CountryService } from 'ish-core/services/country/country.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { GeneralStoreProviders } from 'ish-core/store/general/general-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { loadRegions, loadRegionsFail, loadRegionsSuccess } from './regions.actions';
@@ -31,7 +31,7 @@ describe('Regions Effects', () => {
     when(countryServiceMock.getRegionsByCountry(anyString())).thenReturn(of(regions));
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), GeneralStoreModule.forTesting('regions')],
+      imports: [...CoreStoreProviders.forTesting(), GeneralStoreProviders.forTesting('regions')],
       providers: [
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         provideMockActions(() => actions$),

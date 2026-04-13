@@ -15,9 +15,9 @@ import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { PaymentPaypalService } from 'ish-core/services/payment-paypal/payment-paypal.service';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -72,8 +72,8 @@ describe('Basket Payment Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['configuration', 'serverConfig', 'router']),
-        CustomerStoreModule.forTesting('user', 'basket'),
+        ...CoreStoreProviders.forTesting(['configuration', 'serverConfig', 'router']),
+        CustomerStoreProviders.forTesting('user', 'basket'),
       ],
       providers: [
         { provide: PaymentPaypalService, useFactory: () => instance(paymentPaypalServiceMock) },

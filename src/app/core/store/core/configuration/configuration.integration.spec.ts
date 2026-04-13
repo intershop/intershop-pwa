@@ -11,7 +11,7 @@ import { ConfigurationService } from 'ish-core/services/configuration/configurat
 import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
 import { applyConfiguration, getFeatures, getRestEndpoint } from 'ish-core/store/core/configuration';
 import { ConfigurationEffects } from 'ish-core/store/core/configuration/configuration.effects';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -28,12 +28,11 @@ describe('Configuration Integration', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(
+        ...CoreStoreProviders.forTesting(
           ['router', 'configuration', 'serverConfig'],
           [ConfigurationEffects],
           [configurationMeta]
         ),
-
         TranslateModule.forRoot(),
       ],
       providers: [

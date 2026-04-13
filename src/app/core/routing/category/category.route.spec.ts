@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { selectRouter } from 'ish-core/store/core/router';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
@@ -167,7 +167,7 @@ describe('Category Route', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router'])],
+      imports: [...CoreStoreProviders.forTesting(['router'])],
       providers: [provideRouter([{ path: '**', children: [] }])],
     });
 

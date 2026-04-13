@@ -6,10 +6,11 @@ import { cold, hot } from 'jasmine-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { FeatureToggleService } from 'ish-core/feature-toggle.imports';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/configuration/configuration.selectors';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { serverConfigError } from 'ish-core/store/core/error';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -35,7 +36,7 @@ describe('Server Config Effects', () => {
     when(multiSiteServiceMock.appendUrlParams(anything(), anything(), anything())).thenReturn('/home;lang=de_DE');
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['serverConfig', 'configuration'], [ServerConfigEffects])],
+      imports: [...CoreStoreProviders.forTesting(['serverConfig', 'configuration'], [ServerConfigEffects])],
       providers: [
         { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
         { provide: CookiesService, useFactory: () => instance(cookiesServiceMock) },

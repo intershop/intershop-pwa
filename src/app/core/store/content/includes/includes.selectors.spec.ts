@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
-import { ContentStoreModule } from 'ish-core/store/content/content-store.module';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { ContentStoreProviders } from 'ish-core/store/content/content-store.providers';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { loadContentIncludeSuccess } from './includes.actions';
@@ -13,7 +13,7 @@ describe('Includes Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ContentStoreModule.forTesting('includes'), CoreStoreModule.forTesting()],
+      imports: [ContentStoreProviders.forTesting('includes'), ...CoreStoreProviders.forTesting()],
       providers: [provideStoreSnapshots()],
     });
 

@@ -1,5 +1,6 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { EffectsModule } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { identity, of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
@@ -7,10 +8,10 @@ import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { ContentStoreProviders } from 'ish-core/store/content/content-store.providers';
+import { IncludesEffects } from 'ish-core/store/content/includes/includes.effects';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { whenTruthy } from 'ish-core/utils/operators';
-
-import { ContentStoreModule } from './content-store.module';
 import { getContentInclude, loadContentInclude, loadContentIncludeSuccess } from './includes';
 
 describe('Content Store', () => {
@@ -32,7 +33,11 @@ describe('Content Store', () => {
     );
 
     TestBed.configureTestingModule({
-      imports: [ContentStoreModule, CoreStoreModule.forTesting([], true)],
+      imports: [
+        ContentStoreProviders.forTesting('includes', 'pagelets'),
+        ...CoreStoreProviders.forTesting([], true),
+        EffectsModule.forFeature([IncludesEffects]),
+      ],
       providers: [
         { provide: CMSService, useFactory: () => instance(cmsService) },
         provideHttpClient(withInterceptorsFromDi()),

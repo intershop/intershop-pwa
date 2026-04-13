@@ -2,8 +2,8 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 
 import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -27,7 +27,7 @@ describe('Recurring Orders Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router']), CustomerStoreModule.forTesting('recurringOrders')],
+      imports: [...CoreStoreProviders.forTesting(['router']), CustomerStoreProviders.forTesting('recurringOrders')],
       providers: [
         provideRouter([{ path: 'recurring-orders/:recurringOrderId', children: [] }]),
         provideStoreSnapshots(),

@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Address } from 'ish-core/models/address/address.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { updateBasketAddress } from 'ish-core/store/customer/basket';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
@@ -33,7 +33,7 @@ describe('Addresses Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('addresses')],
+      imports: [...CoreStoreProviders.forTesting(), CustomerStoreProviders.forTesting('addresses')],
       providers: [provideStoreSnapshots()],
     });
     store$ = TestBed.inject(StoreWithSnapshots);

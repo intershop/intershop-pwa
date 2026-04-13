@@ -13,10 +13,10 @@ import {
 } from 'ish-core/models/recommendations/recommendations.model';
 import { RecommendationsServiceProvider } from 'ish-core/service-provider/recommendations.service-provider';
 import { SparqueRecommendationsService } from 'ish-core/services/sparque-recommendations/sparque-recommendations.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { loadProductSuccess } from 'ish-core/store/shopping/products/products.actions';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { ShoppingStoreProviders } from 'ish-core/store/shopping/shopping-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { recommendationsActions } from './recommendations.actions';
@@ -66,9 +66,9 @@ describe('Recommendations Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['configuration']),
-        CustomerStoreModule.forTesting('basket'),
-        ShoppingStoreModule.forTesting('categories', 'products', 'productRecommendations'),
+        ...CoreStoreProviders.forTesting(['configuration']),
+        CustomerStoreProviders.forTesting('basket'),
+        ShoppingStoreProviders.forTesting('categories', 'products', 'productRecommendations'),
       ],
       providers: [
         { provide: RecommendationsServiceProvider, useFactory: () => instance(recommendationsServiceProviderMock) },

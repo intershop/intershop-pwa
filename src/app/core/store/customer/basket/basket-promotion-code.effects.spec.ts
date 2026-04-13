@@ -7,7 +7,7 @@ import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { BasketPromotionCodeEffects } from './basket-promotion-code.effects';
@@ -31,7 +31,7 @@ describe('Basket Promotion Code Effects', () => {
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting()],
+      imports: [...CoreStoreProviders.forTesting()],
       providers: [
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         BasketPromotionCodeEffects,

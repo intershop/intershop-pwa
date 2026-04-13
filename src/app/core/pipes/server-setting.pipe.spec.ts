@@ -9,15 +9,10 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { ServerSettingPipe } from './server-setting.pipe';
 
 @Component({
-  template: `@if ('service.ABC.runnable' | ishServerSetting) {
-      TEST
-    }
-    @if ('always' | ishServerSetting) {
-      [always]
-    }
-    @if ('never' | ishServerSetting) {
-      [never]
-    }`,
+  template: `@if ('service.ABC.runnable' | ishServerSetting) { TEST } @if ('always' | ishServerSetting) { [always] } @if
+  ('never' | ishServerSetting) { [never] }`,
+  standalone: true,
+  imports: [ServerSettingPipe],
 })
 class TestComponent {}
 
@@ -29,7 +24,7 @@ describe('Server Setting Pipe', () => {
   beforeEach(async () => {
     appFacade = mock(AppFacade);
     TestBed.configureTestingModule({
-      declarations: [ServerSettingPipe, TestComponent],
+      imports: [TestComponent],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();
   });

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { anything } from 'ts-mockito';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
@@ -14,7 +14,7 @@ describe('Error Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['error'])],
+      imports: [...CoreStoreProviders.forTesting(['error'])],
       providers: [provideStoreSnapshots()],
     });
 

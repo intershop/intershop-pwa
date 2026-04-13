@@ -2,6 +2,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { EffectsModule } from '@ngrx/effects';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -16,14 +17,17 @@ import { BasketService } from 'ish-core/services/basket/basket.service';
 import { InventoryService } from 'ish-core/services/inventory/inventory.service';
 import { TokenService } from 'ish-core/services/token/token.service';
 import { UserService } from 'ish-core/services/user/user.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { ShoppingStoreProviders } from 'ish-core/store/shopping/shopping-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { addProductToBasket, loadBasketSuccess, startCheckout } from './basket';
+import { BasketEffects } from './basket/basket.effects';
+import { BasketValidationEffects } from './basket/basket-validation.effects';
 import { loginUser, personalizationStatusDetermined } from './user';
+import { UserEffects } from './user/user.effects';
 
 describe('Customer Store', () => {
   let store: StoreWithSnapshots;
@@ -88,9 +92,10 @@ describe('Customer Store', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['configuration', 'serverConfig'], true),
-        CustomerStoreModule,
-        ShoppingStoreModule,
+        ...CoreStoreProviders.forTesting(['configuration', 'serverConfig'], true),
+        CustomerStoreProviders.forTesting('user', 'basket'),
+        ShoppingStoreProviders.forTesting('products', 'productInventory'),
+        EffectsModule.forFeature([UserEffects, BasketEffects, BasketValidationEffects]),
         TranslateModule.forRoot(),
       ],
       providers: [
