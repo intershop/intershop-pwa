@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 import { MockComponent } from 'ng-mocks';
@@ -25,10 +26,14 @@ describe('Quote Widget Component', () => {
     when(quotingFacade.loading$).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [MockComponent(InfoBoxComponent), MockComponent(LoadingComponent), QuoteWidgetComponent],
-      providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }],
-    }).compileComponents();
+      imports: [QuoteWidgetComponent, TranslateModule.forRoot()],
+      providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }, provideRouter([])],
+    })
+      .overrideComponent(QuoteWidgetComponent, {
+        remove: { imports: [InfoBoxComponent, LoadingComponent] },
+        add: { imports: [MockComponent(InfoBoxComponent), MockComponent(LoadingComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

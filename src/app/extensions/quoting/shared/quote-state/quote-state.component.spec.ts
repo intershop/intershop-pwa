@@ -13,8 +13,7 @@ describe('Quote State Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [QuoteStateComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [QuoteStateComponent, TranslateModule.forRoot()],
       providers: [{ provide: QuotingFacade, useFactory: () => instance(mock(QuotingFacade)) }],
     }).compileComponents();
   });
