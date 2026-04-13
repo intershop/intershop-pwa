@@ -20,15 +20,22 @@ describe('Account Order Template Page Component', () => {
     const orderTemplatesFacade = mock(OrderTemplatesFacade);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [
-        AccountOrderTemplatePageComponent,
-        MockComponent(AccountOrderTemplateListComponent),
-        MockComponent(ErrorMessageComponent),
-        MockComponent(OrderTemplatePreferencesDialogComponent),
-      ],
+      imports: [AccountOrderTemplatePageComponent, TranslateModule.forRoot()],
       providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountOrderTemplatePageComponent, {
+        remove: {
+          imports: [AccountOrderTemplateListComponent, ErrorMessageComponent, OrderTemplatePreferencesDialogComponent],
+        },
+        add: {
+          imports: [
+            MockComponent(AccountOrderTemplateListComponent),
+            MockComponent(ErrorMessageComponent),
+            MockComponent(OrderTemplatePreferencesDialogComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

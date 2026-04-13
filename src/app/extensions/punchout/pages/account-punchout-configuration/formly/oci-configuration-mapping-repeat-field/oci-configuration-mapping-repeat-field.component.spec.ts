@@ -20,9 +20,9 @@ describe('Oci Configuration Mapping Repeat Field Component', () => {
           types: [{ name: 'repeat-oci-configuration-mapping', component: OciConfigurationMappingRepeatFieldComponent }],
         }),
         FormlyTestingComponentsModule,
+        OciConfigurationMappingRepeatFieldComponent,
         TranslateModule.forRoot(),
       ],
-      declarations: [OciConfigurationMappingRepeatFieldComponent],
     }).compileComponents();
   });
 

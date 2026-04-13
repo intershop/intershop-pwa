@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -13,14 +13,14 @@ import {
   ociConfigurationActions,
   ociConfigurationApiActions,
 } from '../oci-configuration';
-import { PunchoutStoreModule } from '../punchout-store.module';
+import { PunchoutStoreProviders } from '../punchout-store.providers';
 
 describe('Oci Configuration Selectors', () => {
   let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), PunchoutStoreModule.forTesting('ociConfiguration')],
+      imports: [...CoreStoreProviders.forTesting(), PunchoutStoreProviders.forTesting('ociConfiguration')],
       providers: [provideStoreSnapshots()],
     });
 

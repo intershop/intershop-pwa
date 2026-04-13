@@ -22,14 +22,14 @@ describe('Account Punchout Cxml Configuration Page Component', () => {
   beforeEach(async () => {
     punchoutFacade = mock(PunchoutFacade);
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [
-        AccountPunchoutCxmlConfigurationPageComponent,
-        MockComponent(CxmlConfigurationFormComponent),
-        MockComponent(LoadingComponent),
-      ],
+      imports: [AccountPunchoutCxmlConfigurationPageComponent, TranslateModule.forRoot()],
       providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountPunchoutCxmlConfigurationPageComponent, {
+        remove: { imports: [CxmlConfigurationFormComponent, LoadingComponent] },
+        add: { imports: [MockComponent(CxmlConfigurationFormComponent), MockComponent(LoadingComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

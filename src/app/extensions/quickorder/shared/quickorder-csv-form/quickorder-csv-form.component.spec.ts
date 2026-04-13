@@ -17,8 +17,7 @@ describe('Quickorder Csv Form Component', () => {
   beforeEach(async () => {
     shoppingFacadeMock = mock(ShoppingFacade);
     await TestBed.configureTestingModule({
-      declarations: [QuickorderCsvFormComponent],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [QuickorderCsvFormComponent, ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [{ provide: ShoppingFacade, useValue: instance(shoppingFacadeMock) }],
     }).compileComponents();
   });

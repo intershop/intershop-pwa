@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyNumber, anyString, instance, mock, verify, when } from 'ts-mockito';
@@ -48,13 +49,19 @@ describe('Product Add To Order Template Component', () => {
     when(productContext.get('quantity')).thenReturn(1);
 
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(SelectOrderTemplateModalComponent), ProductAddToOrderTemplateComponent],
+      imports: [ProductAddToOrderTemplateComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(productContext) },
+        provideRouter([]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductAddToOrderTemplateComponent, {
+        remove: { imports: [SelectOrderTemplateModalComponent] },
+        add: { imports: [MockComponent(SelectOrderTemplateModalComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

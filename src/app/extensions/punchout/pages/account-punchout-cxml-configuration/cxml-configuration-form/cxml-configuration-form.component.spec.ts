@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -22,10 +22,14 @@ describe('Cxml Configuration Form Component', () => {
   beforeEach(async () => {
     punchoutFacade = mock(PunchoutFacade);
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, RouterModule, TranslateModule.forRoot()],
-      declarations: [CxmlConfigurationFormComponent, MockComponent(ErrorMessageComponent), MockComponent(FormlyForm)],
+      imports: [CxmlConfigurationFormComponent, FormlyTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }, provideRouter([])],
-    }).compileComponents();
+    })
+      .overrideComponent(CxmlConfigurationFormComponent, {
+        remove: { imports: [ErrorMessageComponent, FormlyForm] },
+        add: { imports: [MockComponent(ErrorMessageComponent), MockComponent(FormlyForm)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

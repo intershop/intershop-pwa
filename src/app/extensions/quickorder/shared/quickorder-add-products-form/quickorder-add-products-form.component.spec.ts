@@ -15,10 +15,15 @@ describe('Quickorder Add Products Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [QuickorderAddProductsFormComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, QuickorderAddProductsFormComponent, TranslateModule.forRoot()],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(QuickorderAddProductsFormComponent, {
+        set: {
+          providers: [],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

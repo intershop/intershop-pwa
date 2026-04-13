@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { OrderTemplatesStoreModule } from '../order-templates-store.module';
+import { OrderTemplatesStoreProviders } from '../order-templates-store.providers';
 
 import {
   createOrderTemplate,
@@ -35,7 +35,7 @@ describe('Order Template Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), OrderTemplatesStoreModule.forTesting('orderTemplates')],
+      imports: [...CoreStoreProviders.forTesting(), OrderTemplatesStoreProviders.forTesting('orderTemplates')],
       providers: [provideStoreSnapshots()],
     });
 

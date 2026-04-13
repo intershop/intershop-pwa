@@ -25,8 +25,7 @@ describe('Select Order Template Form Component', () => {
   beforeEach(async () => {
     orderTemplatesFacade = mock(OrderTemplatesFacade);
     await TestBed.configureTestingModule({
-      declarations: [SelectOrderTemplateFormComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, SelectOrderTemplateFormComponent, TranslateModule.forRoot()],
       providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) }],
     }).compileComponents();
   });

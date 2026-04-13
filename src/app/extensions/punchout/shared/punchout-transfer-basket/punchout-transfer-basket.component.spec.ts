@@ -16,8 +16,7 @@ describe('Punchout Transfer Basket Component', () => {
     punchoutFacade = mock(PunchoutFacade);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [PunchoutTransferBasketComponent],
+      imports: [PunchoutTransferBasketComponent, TranslateModule.forRoot()],
       providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }],
     }).compileComponents();
   });
