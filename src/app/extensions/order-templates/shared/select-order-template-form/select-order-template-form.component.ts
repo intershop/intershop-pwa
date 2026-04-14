@@ -16,7 +16,7 @@ import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
   templateUrl: './select-order-template-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ FormlyForm, AsyncPipe],
+  imports: [FormlyForm, AsyncPipe],
 })
 export class SelectOrderTemplateFormComponent implements OnInit {
   @Input() formGroup: FormGroup;
@@ -25,6 +25,9 @@ export class SelectOrderTemplateFormComponent implements OnInit {
    * changes the some logic and the translations keys between add or move a product (default: 'add')
    */
   @Input() addMoveProduct: 'add' | 'move' = 'add';
+
+  readonly emptyOptions: SelectOption[] = [];
+  readonly emptyFieldConfig: FormlyFieldConfig[] = [];
 
   orderTemplatesOptions$: Observable<SelectOption[]>;
 
@@ -57,7 +60,8 @@ export class SelectOrderTemplateFormComponent implements OnInit {
             noHtmlTags: 'account.name.error.forbidden.html.chars',
           },
         },
-      }];
+      },
+    ];
 
     // formly config for the radio button form (one or more other order templates exist)
     this.multipleFieldConfig$ = this.orderTemplatesOptions$.pipe(
@@ -109,8 +113,10 @@ export class SelectOrderTemplateFormComponent implements OnInit {
               expressions: {
                 'props.disabled': conf => conf.model.orderTemplate !== 'new',
               },
-            }],
-        }])
+            },
+          ],
+        },
+      ])
     );
   }
 }

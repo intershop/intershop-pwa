@@ -162,46 +162,31 @@ describe('Select Order Template Modal Component', () => {
     expect(element.querySelector('form')).toBeFalsy();
   }));
 
-  describe('selectedOrderTemplateTitle$', () => {
-    it('should return correct title of known order template', done => {
-      startup();
-      component.formGroup.patchValue({ orderTemplate: orderTemplateDetails.id });
-      component.selectedOrderTemplateTitle$.subscribe(t => {
-        expect(t).toBe('testing order template');
-        done();
-      });
-    });
-
-    it('should return correct title of new order template', done => {
-      startup();
-      updateOrderTemplateAndNew();
-
-      component.selectedOrderTemplateTitle$.subscribe(t => {
-        expect(t).toBe('New Ordertemplate Title');
-        done();
-      });
-    });
-  });
-
-  describe('selectedOrderTemplateRoute$', () => {
-    it('should return correct route of known order template', done => {
+  describe('success state', () => {
+    it('should store correct title and route for known order template', done => {
       startup();
       component.formGroup.patchValue({ orderTemplate: orderTemplateDetails.id });
 
-      component.selectedOrderTemplateRoute$.subscribe(r => {
+      component.submitForm();
+
+      expect(component.successOrderTemplateTitle).toBe('testing order template');
+      component.successOrderTemplateRoute$.subscribe(r => {
         expect(r).toBe('route://account/order-templates/.SKsEQAE4FIAAAFuNiUBWx0d');
         done();
       });
     });
 
-    it('should return correct route of new order template', done => {
+    it('should store correct title and route for new order template', done => {
       startup();
       updateOrderTemplateAndNew();
 
-      component.selectedOrderTemplateRoute$.subscribe(r => {
+      component.submitForm();
+
+      expect(component.successOrderTemplateTitle).toBe('New Ordertemplate Title');
+      component.successOrderTemplateRoute$.subscribe(r => {
         expect(r).toBe('route://account/order-templates/.SKsEQAE4FIAAAFuNiUBWx0d');
+        done();
       });
-      done();
     });
   });
 });

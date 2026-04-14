@@ -48,14 +48,21 @@ export class OrderTemplatesFacade {
   );
 
   orderTemplatesSelectOptions$(filterCurrent = true): Observable<SelectOption[]> {
-    return this.orderTemplates$.pipe(
+    const orderTemplateOptions$ = this.orderTemplates$.pipe(
       startWith([] as OrderTemplate[]),
       map(orderTemplates =>
         orderTemplates.map(orderTemplate => ({
           value: orderTemplate.id,
           label: orderTemplate.title,
         }))
-      ),
+      )
+    );
+
+    if (!filterCurrent) {
+      return orderTemplateOptions$;
+    }
+
+    return orderTemplateOptions$.pipe(
       withLatestFrom(this.currentOrderTemplate$),
       map(([orderTemplateOptions, currentOrderTemplate]) => {
         if (filterCurrent && currentOrderTemplate) {
@@ -73,9 +80,11 @@ export class OrderTemplatesFacade {
   }
 
   createOrderTemplateFromLineItems(orderTemplate: OrderTemplateHeader, lineItems: LineItem[]): void | HttpError {
-    void this.moduleLoader.ensureLoaded('orderTemplates').then(() =>
-      this.store.dispatch(orderTemplatesActions.createOrderTemplateFromLineItems({ orderTemplate, lineItems }))
-    );
+    void this.moduleLoader
+      .ensureLoaded('orderTemplates')
+      .then(() =>
+        this.store.dispatch(orderTemplatesActions.createOrderTemplateFromLineItems({ orderTemplate, lineItems }))
+      );
   }
 
   deleteOrderTemplate(id: string): void {
@@ -119,11 +128,13 @@ export class OrderTemplatesFacade {
   }
 
   moveItemToNewOrderTemplate(sourceOrderTemplateId: string, title: string, sku: string, quantity: number): void {
-    void this.moduleLoader.ensureLoaded('orderTemplates').then(() =>
-      this.store.dispatch(
-        moveItemToOrderTemplate({ source: { id: sourceOrderTemplateId }, target: { title, sku, quantity } })
-      )
-    );
+    void this.moduleLoader
+      .ensureLoaded('orderTemplates')
+      .then(() =>
+        this.store.dispatch(
+          moveItemToOrderTemplate({ source: { id: sourceOrderTemplateId }, target: { title, sku, quantity } })
+        )
+      );
   }
 
   removeProductFromOrderTemplate(orderTemplateId: string, sku: string): void {
