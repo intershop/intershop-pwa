@@ -7,7 +7,7 @@ import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 export const loadViewContextEntrypoint = createAction(
   '[Content View Context] Load Entrypoint',
-  payload<{ viewContextId: string; callParameters: CallParameters }>()
+  payload<{ viewContextId: string; callParameters: CallParameters; resourceSetId?: string }>()
 );
 
 export const loadViewContextEntrypointFail = createAction(

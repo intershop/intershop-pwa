@@ -32,7 +32,7 @@ describe('Viewcontexts Effects', () => {
 
   describe('loadViewContextEntrypoint$', () => {
     it('should dispatch success actions when encountering loadViewcontexts', () => {
-      when(cmsServiceMock.getViewContextContent(anything(), anything())).thenReturn(
+      when(cmsServiceMock.getViewContextContent(anything(), anything(), anything())).thenReturn(
         of({ entrypoint: { id: 'test' } as ContentPageletEntryPoint, pagelets: [] })
       );
 
@@ -43,6 +43,53 @@ describe('Viewcontexts Effects', () => {
         }),
       });
       const expected$ = cold('-c-c-c', {
+        c: loadViewContextEntrypointSuccess({
+          entrypoint: { id: 'test' } as ContentPageletEntryPoint,
+          pagelets: [],
+          viewContextId: 'test',
+          callParameters: {},
+        }),
+      });
+
+      expect(effects.loadViewContextEntrypoint$).toBeObservable(expected$);
+    });
+
+    it('should pass resourceSetId to cmsService when provided', () => {
+      when(cmsServiceMock.getViewContextContent(anything(), anything(), anything())).thenReturn(
+        of({ entrypoint: { id: 'test' } as ContentPageletEntryPoint, pagelets: [] })
+      );
+
+      actions$ = hot('-a', {
+        a: loadViewContextEntrypoint({
+          viewContextId: 'test',
+          callParameters: { Product: 'SKU' },
+          resourceSetId: 'custom_cartridge',
+        }),
+      });
+      const expected$ = cold('-c', {
+        c: loadViewContextEntrypointSuccess({
+          entrypoint: { id: 'test' } as ContentPageletEntryPoint,
+          pagelets: [],
+          viewContextId: 'test',
+          callParameters: { Product: 'SKU' },
+        }),
+      });
+
+      expect(effects.loadViewContextEntrypoint$).toBeObservable(expected$);
+    });
+
+    it('should pass undefined resourceSetId to cmsService when not provided', () => {
+      when(cmsServiceMock.getViewContextContent(anything(), anything(), anything())).thenReturn(
+        of({ entrypoint: { id: 'test' } as ContentPageletEntryPoint, pagelets: [] })
+      );
+
+      actions$ = hot('-a', {
+        a: loadViewContextEntrypoint({
+          viewContextId: 'test',
+          callParameters: {},
+        }),
+      });
+      const expected$ = cold('-c', {
         c: loadViewContextEntrypointSuccess({
           entrypoint: { id: 'test' } as ContentPageletEntryPoint,
           pagelets: [],

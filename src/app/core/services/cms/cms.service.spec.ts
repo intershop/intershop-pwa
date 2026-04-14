@@ -4,6 +4,7 @@ import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { ContentPageTreeData } from 'ish-core/models/content-page-tree/content-page-tree.interface';
 import { ContentPageletEntryPointMapper } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.mapper';
+import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 
 import { CMSService } from './cms.service';
@@ -104,6 +105,63 @@ describe('Cms Service', () => {
       });
 
       verify(apiService.get(anything())).never();
+    });
+  });
+  describe('getViewContextContent', () => {
+    beforeEach(() => {
+      when(cpepMapper.fromData(anything())).thenReturn([{ id: 'vc-ep' } as ContentPageletEntryPoint, []]);
+    });
+
+    it('should use default resourceSetId when none is provided', done => {
+      when(apiService.get(anything(), anything())).thenReturn(of({}));
+
+      cmsService.getViewContextContent('vc.test', { Product: 'SKU' }).subscribe({
+        next: () => {
+          const [url] = capture(apiService.get).last();
+          expect(url).toEqual('cms/viewcontexts/vc.test@app_sf_base_cm/entrypoint');
+        },
+        error: fail,
+        complete: done,
+      });
+    });
+
+    it('should use custom resourceSetId when provided', done => {
+      when(apiService.get(anything(), anything())).thenReturn(of({}));
+
+      cmsService.getViewContextContent('vc.test', { Product: 'SKU' }, 'custom_cartridge').subscribe({
+        next: () => {
+          const [url] = capture(apiService.get).last();
+          expect(url).toEqual('cms/viewcontexts/vc.test@custom_cartridge/entrypoint');
+        },
+        error: fail,
+        complete: done,
+      });
+    });
+
+    it('should pass call parameters as HTTP params', done => {
+      when(apiService.get(anything(), anything())).thenReturn(of({}));
+
+      cmsService.getViewContextContent('vc.test', { Product: 'SKU', Category: 'CAT' }).subscribe({
+        next: () => {
+          const options: AvailableOptions = capture(apiService.get).last()[1];
+          expect(options.params.toString()).toContain('Product=SKU');
+          expect(options.params.toString()).toContain('Category=CAT');
+        },
+        error: fail,
+        complete: done,
+      });
+    });
+
+    it('should throw error when viewContextId is not given', done => {
+      cmsService.getViewContextContent(undefined, {}).subscribe({
+        next: fail,
+        error: err => {
+          expect(err.message).toContain('getViewContextContent() called without a viewContextId');
+          done();
+        },
+      });
+
+      verify(apiService.get(anything(), anything())).never();
     });
   });
 });
