@@ -381,23 +381,31 @@ export const appRoutes: Routes = [
     loadChildren: () =>
       Promise.all([
         import('../extensions/store-locator/pages/store-locator/store-locator-page.component'),
+        import('../extensions/store-locator/store/store-locator-store.providers'),
         import('ish-core/store/general/general-store.providers'),
         import('ish-shared/formly/formly'),
-      ]).then(([{ StoreLocatorPageComponent }, { provideGeneralStore }, { provideIshFormly }]) => [
-        {
-          path: '',
-          component: StoreLocatorPageComponent,
-          canActivate: [featureToggleGuard],
-          providers: [...provideIshFormly(), provideGeneralStore()],
-          data: {
-            feature: 'storeLocator',
-            meta: {
-              title: 'store_locator.title',
-              robots: 'noindex, nofollow',
+      ]).then(
+        ([
+          { StoreLocatorPageComponent },
+          { provideStoreLocatorStore },
+          { provideGeneralStore },
+          { provideIshFormly },
+        ]) => [
+          {
+            path: '',
+            component: StoreLocatorPageComponent,
+            canActivate: [featureToggleGuard],
+            providers: [...provideIshFormly(), provideGeneralStore(), provideStoreLocatorStore()],
+            data: {
+              feature: 'storeLocator',
+              meta: {
+                title: 'store_locator.title',
+                robots: 'noindex, nofollow',
+              },
             },
           },
-        },
-      ]),
+        ]
+      ),
   },
 
   // Recently Extension
