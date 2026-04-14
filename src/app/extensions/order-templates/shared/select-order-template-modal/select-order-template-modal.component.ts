@@ -64,6 +64,9 @@ export class SelectOrderTemplateModalComponent implements OnInit {
     newOrderTemplate: new FormControl(''),
   });
 
+  successOrderTemplateTitle = '';
+  successOrderTemplateRoute$: Observable<string> = of('');
+
   showForm: boolean;
   modal: NgbModalRef;
 
@@ -106,6 +109,8 @@ export class SelectOrderTemplateModalComponent implements OnInit {
           id: orderTemplateId,
           title: label,
         });
+        this.successOrderTemplateTitle = label;
+        this.successOrderTemplateRoute$ = of(`route://account/order-templates/${orderTemplateId}`);
         this.showForm = false;
       });
   }
@@ -114,6 +119,11 @@ export class SelectOrderTemplateModalComponent implements OnInit {
       id: undefined,
       title: newOrderTemplate,
     });
+    this.successOrderTemplateTitle = newOrderTemplate;
+    this.successOrderTemplateRoute$ = this.orderTemplatesFacade.currentOrderTemplate$.pipe(
+      map(currentOrderTemplate => `route://account/order-templates/${currentOrderTemplate?.id}`),
+      take(1)
+    );
     this.showForm = false;
   }
 
@@ -149,33 +159,6 @@ export class SelectOrderTemplateModalComponent implements OnInit {
     return () => {
       this.hide();
     };
-  }
-
-  get selectedOrderTemplateTitle$(): Observable<string> {
-    const selectedValue = this.formGroup.value.orderTemplate;
-    if (selectedValue === 'new' || !selectedValue) {
-      return of(this.formGroup.value.newOrderTemplate);
-    } else {
-      return this.orderTemplateOptions$.pipe(
-        filter(options => options.length > 0),
-        map(options => options.find(opt => opt.value === selectedValue).label),
-        take(1)
-      );
-    }
-  }
-
-  /** returns the route to the selected order template */
-  get selectedOrderTemplateRoute$(): Observable<string> {
-    const selectedValue = this.formGroup.value.orderTemplate;
-
-    if (selectedValue === 'new' || !selectedValue) {
-      return this.orderTemplatesFacade.currentOrderTemplate$.pipe(
-        map(currentOrderTemplate => `route://account/order-templates/${currentOrderTemplate?.id}`),
-        take(1)
-      );
-    } else {
-      return of(`route://account/order-templates/${selectedValue}`);
-    }
   }
 
   /** translation key for the modal header */

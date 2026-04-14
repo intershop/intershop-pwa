@@ -26,6 +26,9 @@ export class SelectOrderTemplateFormComponent implements OnInit {
    */
   @Input() addMoveProduct: 'add' | 'move' = 'add';
 
+  readonly emptyOptions: SelectOption[] = [];
+  readonly emptyFieldConfig: FormlyFieldConfig[] = [];
+
   orderTemplatesOptions$: Observable<SelectOption[]>;
 
   singleFieldConfig: FormlyFieldConfig[];

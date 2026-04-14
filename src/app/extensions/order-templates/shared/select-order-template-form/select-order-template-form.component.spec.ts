@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
@@ -42,6 +42,16 @@ describe('Select Order Template Form Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+    expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should not throw before order template options are emitted', () => {
+    const orderTemplateOptions$ = new Subject<{ value: string; label: string }[]>();
+    when(orderTemplatesFacade.orderTemplatesSelectOptions$(anything())).thenReturn(orderTemplateOptions$);
+
+    fixture = TestBed.createComponent(SelectOrderTemplateFormComponent);
+    component = fixture.componentInstance;
+
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 });
