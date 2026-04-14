@@ -256,15 +256,14 @@ export const appRoutes: Routes = [
   {
     path: 'forgotPassword',
     loadChildren: () =>
-      Promise.all([
-        import('./forgot-password/forgot-password-page.routes'),
-        import('ish-shared/formly/formly'),
-      ]).then(([{ forgotPasswordPageRoutes }, { provideIshFormly }]) => {
-        const [rootRoute, ...nestedRoutes] = forgotPasswordPageRoutes;
-        return rootRoute
-          ? [{ ...rootRoute, providers: [...(rootRoute.providers ?? []), ...provideIshFormly()] }, ...nestedRoutes]
-          : [];
-      }),
+      Promise.all([import('./forgot-password/forgot-password-page.routes'), import('ish-shared/formly/formly')]).then(
+        ([{ forgotPasswordPageRoutes }, { provideIshFormly }]) => {
+          const [rootRoute, ...nestedRoutes] = forgotPasswordPageRoutes;
+          return rootRoute
+            ? [{ ...rootRoute, providers: [...(rootRoute.providers ?? []), ...provideIshFormly()] }, ...nestedRoutes]
+            : [];
+        }
+      ),
     data: {
       meta: {
         title: 'account.forgotdata.password_retrieval.heading',
@@ -341,7 +340,9 @@ export const appRoutes: Routes = [
   {
     path: 'quick-order',
     loadComponent: () =>
-      import('../extensions/quickorder/pages/quickorder/quickorder-page.component').then(m => m.QuickorderPageComponent),
+      import('../extensions/quickorder/pages/quickorder/quickorder-page.component').then(
+        m => m.QuickorderPageComponent
+      ),
     canActivate: [featureToggleGuard],
     data: {
       feature: 'quickorder',
@@ -382,23 +383,31 @@ export const appRoutes: Routes = [
     loadChildren: () =>
       Promise.all([
         import('../extensions/store-locator/pages/store-locator/store-locator-page.component'),
+        import('../extensions/store-locator/store/store-locator-store.providers'),
         import('ish-core/store/general/general-store.providers'),
         import('ish-shared/formly/formly'),
-      ]).then(([{ StoreLocatorPageComponent }, { provideGeneralStore }, { provideIshFormly }]) => [
-        {
-          path: '',
-          component: StoreLocatorPageComponent,
-          canActivate: [featureToggleGuard],
-          providers: [...provideIshFormly(), provideGeneralStore()],
-          data: {
-            feature: 'storeLocator',
-            meta: {
-              title: 'store_locator.title',
-              robots: 'noindex, nofollow',
+      ]).then(
+        ([
+          { StoreLocatorPageComponent },
+          { provideStoreLocatorStore },
+          { provideGeneralStore },
+          { provideIshFormly },
+        ]) => [
+          {
+            path: '',
+            component: StoreLocatorPageComponent,
+            canActivate: [featureToggleGuard],
+            providers: [...provideIshFormly(), provideGeneralStore(), provideStoreLocatorStore()],
+            data: {
+              feature: 'storeLocator',
+              meta: {
+                title: 'store_locator.title',
+                robots: 'noindex, nofollow',
+              },
             },
           },
-        },
-      ]),
+        ]
+      ),
   },
 
   // Recently Extension

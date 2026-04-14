@@ -31,7 +31,6 @@ import { provideQuotingFeature } from './extensions/quoting/quoting-feature.prov
 import { provideRatingFeature } from './extensions/rating/rating-feature.providers';
 import { provideRecentlyFeature } from './extensions/recently/recently-feature.providers';
 import { provideSeoFeature } from './extensions/seo/seo-feature.providers';
-import { provideStoreLocatorFeature } from './extensions/store-locator/store-locator-feature.providers';
 import { provideTrackingFeature } from './extensions/tracking/tracking-feature.providers';
 import { provideWishlistsFeature } from './extensions/wishlists/wishlists-feature.providers';
 import { appLastRoutes } from './pages/app-last.routes';
@@ -95,7 +94,6 @@ export const appConfig: ApplicationConfig = {
     ...provideRatingFeature(),
     ...provideRecentlyFeature(),
     ...provideSeoFeature(),
-    ...provideStoreLocatorFeature(),
     ...provideTrackingFeature(),
     ...provideWishlistsFeature(),
     ...provideFeatureStores(),
