@@ -22,7 +22,7 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-c", "/etc/nginx/nginx.conf", "-g", "daemon off;"]
 
 RUN apt-get update \
-  && apt-get install --no-install-recommends --no-install-suggests -y apache2-utils libnss3-tools \
+  && apt-get install --no-install-recommends --no-install-suggests -y apache2-utils \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 COPY nginx.conf.tmpl /etc/nginx/nginx.conf.tmpl
@@ -39,8 +39,6 @@ RUN chmod 700 /cache_clearer.sh
 
 COPY --from=hairyhenderson/gomplate:v4.3.3 /gomplate /gomplate
 RUN chmod 700 /gomplate
-ADD https://github.com/FiloSottile/mkcert/releases/download/v1.4.4/mkcert-v1.4.4-linux-amd64 /usr/bin/mkcert
-RUN chmod 700 /usr/bin/mkcert
 COPY --from=nginx/nginx-prometheus-exporter:1.4.2 /usr/bin/nginx-prometheus-exporter /nginx-prometheus-exporter
 COPY --from=buildstep /app/nginx-1.27.1/objs/ngx_http_brotli_static_module.so /etc/nginx/modules/
 COPY --from=buildstep /app/nginx-1.27.1/objs/ngx_http_brotli_filter_module.so /etc/nginx/modules/

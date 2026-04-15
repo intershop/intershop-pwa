@@ -50,20 +50,11 @@ For further information, please refer to [the official OpenResty Docker image pa
 
 ### HTTPS or SSL
 
-You can switch on HTTPS for the NGINX container to execute a production-like setup locally, or for demo purposes by changing `ENV SSL=0` to `ENV SSL=1` and adjusting the port mapping in `docker-compose.yml`.
-No need to supply a certificate and a key.
-They are automatically generated inside the running container with [mkcert](https://github.com/FiloSottile/mkcert).
-The certificate is self-signed and will not work in your browser.
-You have to confirm the security exception.
-As developer convenience, you can volume mount an internal folder to your host system to effectively trust the generated certificate.
-Please check the NGINX logs for the following output.
+You can switch on HTTPS for the NGINX container to execute a production-like setup locally, or for demo purposes by overriding the image default `SSL=off` with `SSL=on` in _docker-compose.yml_ and adjusting the port mapping accordingly.
 
-```
-You can now export the local CA by adjusting your docker-compose.yml /home/your-user/ca-dir:/root/.local/share/mkcert/rootCA.pem
-```
-
-If you want to run your NGINX container with HTTPS but want to use your own certificates, e.g., the same certificates that are used for a local ICM deployment for the Hybrid Approach, you can enable `SSL` but need to disable mkcert with `SSL_MKCERT_OFF`.
-Besides this, you map the certificate files you want to use in the NGINX container.
+To use HTTPS, provide your own SSL certificates by volume mounting them into the NGINX container.
+For local development, you can generate locally trusted development certificates using [mkcert](https://github.com/FiloSottile/mkcert), or self-signed certificates using OpenSSL on your host machine.
+For the Hybrid Approach with a local ICM deployment, use the same certificates as your ICM instance.
 
 ```yaml
 nginx:
@@ -72,12 +63,16 @@ nginx:
       - '443:443'
     environment:
       ...
-      SSL: 1
-      SSL_MKCERT_OFF: 1
+      SSL: 'on'
     volumes:
       - <LOCAL_PATH>/fullchain.pem:/var/nginx/certs/cert.pem
       - <LOCAL_PATH>/privkey.pem:/var/nginx/certs/key.pem
 ```
+
+The certificate files must be mapped to:
+
+- _/var/nginx/certs/cert.pem_ - The certificate file
+- _/var/nginx/certs/key.pem_ - The private key file
 
 ### Basic Auth
 
@@ -109,7 +104,7 @@ For more information on the multi-site syntax, see [Multi-Site Configurations](.
 
 The configuration can be supplied by setting the environment variable `MULTI_CHANNEL`.
 Alternatively, the source can be supplied by setting `MULTI_CHANNEL_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources/).
-If no environment variables for multi-channel configuration are provided, the configuration will fall back to the content of [`nginx/multi-channel.yaml`](../../nginx/multi-channel.yaml), which can also be customized.
+If no environment variables for multi-channel configuration are provided, the configuration will fall back to the content of [_nginx/multi-channel.yaml_](../../nginx/multi-channel.yaml), which can also be customized.
 
 > [!WARNING]
 > Multi-channel configuration with context paths does not work in conjunction with [service workers](../concepts/progressive-web-app.md#service-worker).
@@ -127,7 +122,7 @@ As with multi-site handling, the configuration can be supplied by setting the en
 Alternatively, the source can be supplied by setting `CACHING_IGNORE_PARAMS_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources/).
 Be aware that the supplied list of parameters must be declared under a `params` property.
 
-If no environment variables for ignoring parameters are provided, the configuration will fall back to the content of [`nginx/caching-ignore-params.yaml`](../../nginx/caching-ignore-params.yaml), which can also be customized.
+If no environment variables for ignoring parameters are provided, the configuration will fall back to the content of [_nginx/caching-ignore-params.yaml_](../../nginx/caching-ignore-params.yaml), which can also be customized.
 
 ### Access ICM Sitemap
 
@@ -138,9 +133,9 @@ http://foo.com/en/sitemap_pwa.xml
 ```
 
 To make above sitemap index file available under your deployment, add the environment variable `ICM_BASE_URL` to your NGINX container.
-Let `ICM_BASE_URL` point to your ICM backend installation, e.g., `https://develop.icm.intershop.de`.
+Let `ICM_BASE_URL` point to your ICM backend installation, e.g., _https://develop.icm.intershop.de_.
 
-On a local development system, add it to [`docker-compose.yml`](../../docker-compose.yml), e.g.,
+On a local development system, add it to [_docker-compose.yml_](../../docker-compose.yml), e.g.,
 
 ```yaml
 nginx:
@@ -244,7 +239,7 @@ Alternatively, the source can be supplied by setting `ADDITIONAL_HEADERS_SOURCE`
 
 For every entry, NGINX will add this header to every possible response.
 
-To make the additional headers available during build-time, the value for the environment variable `ADDITIONAL_HEADERS` can be put into the [additional-headers.yaml](../../nginx/additional-headers.yaml) file.
+To make the additional headers available during build-time, the value for the environment variable `ADDITIONAL_HEADERS` can be put into the [_additional-headers.yaml_](../../nginx/additional-headers.yaml) file.
 
 #### Content Security Policy
 
@@ -400,7 +395,7 @@ docker run --rm -it bitnami/redis redis-cli -u <REDIS_URI> flushdb
 
 #### Redis for Development
 
-For development environments, a local Redis can be started with the example `docker-compose.yml` configuration.
+For development environments, a local Redis can be started with the example _docker-compose.yml_ configuration.
 
 ```yaml
 redis:
@@ -441,7 +436,7 @@ The two NGINX modules
 - `ngx_http_brotli_filter_module.so` – for compressing responses on-the-fly
 - `ngx_http_brotli_static_module.so` - for serving pre-compressed files
 
-are built in the [`Dockerfile`](../../nginx/Dockerfile) using an NGINX archive in a version which matches the openresty Docker image version and are referenced in [`nginx.conf.tmpl`](../../nginx/nginx.conf.tmpl).
+are built in the [`Dockerfile`](../../nginx/Dockerfile) using an NGINX archive in a version which matches the openresty Docker image version and are referenced in [_nginx.conf.tmpl_](../../nginx/nginx.conf.tmpl).
 The archive needs to be used because it includes the `configure` command.
 The `./configure` [arguments](https://github.com/google/ngx_brotli?tab=readme-ov-file#dynamically-loaded) are taken from the current openresty configuration using `nginx -V` (`--add-module` arguments are excluded), see [ngx_brotli
 ](https://github.com/google/ngx_brotli?tab=readme-ov-file#dynamically-loaded).
