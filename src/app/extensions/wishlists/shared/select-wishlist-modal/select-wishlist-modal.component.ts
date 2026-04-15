@@ -65,6 +65,9 @@ export class SelectWishlistModalComponent implements OnInit {
     newList: new FormControl(''),
   });
 
+  successWishlistTitle = '';
+  successWishlistRoute$: Observable<string> = of('');
+
   showForm: boolean;
 
   modal: NgbModalRef;
@@ -107,6 +110,8 @@ export class SelectWishlistModalComponent implements OnInit {
           id: wishlistId,
           title: label,
         });
+        this.successWishlistTitle = label;
+        this.successWishlistRoute$ = of(`route://account/wishlists/${wishlistId}`);
         this.showForm = false;
       });
   }
@@ -116,6 +121,11 @@ export class SelectWishlistModalComponent implements OnInit {
       id: undefined,
       title: newList,
     });
+    this.successWishlistTitle = newList;
+    this.successWishlistRoute$ = this.wishlistsFacade.currentWishlist$.pipe(
+      map(currentWishlist => `route://account/wishlists/${currentWishlist?.id}`),
+      take(1)
+    );
     this.showForm = false;
   }
 
@@ -130,6 +140,17 @@ export class SelectWishlistModalComponent implements OnInit {
     this.showForm = true;
     this.modal = this.ngbModal.open(this.modalTemplate, { ariaLabelledBy: 'select-wishlist-modal-title' });
 
+    if (this.addMoveProduct === 'add') {
+      this.wishlistsFacade.preferredWishlist$
+        .pipe(whenTruthy(), take(1), takeUntilDestroyed(this.destroyRef))
+        .subscribe(preferredWishlist => {
+          this.formGroup.patchValue({ wishlist: preferredWishlist.id });
+          this.submitForm();
+        });
+
+      return;
+    }
+
     this.wishlistsFacade.preferredWishlist$
       .pipe(
         whenTruthy(),
@@ -139,15 +160,9 @@ export class SelectWishlistModalComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(data => {
-        // don't show wishlist selection form but add a product immediately if there is a preferred wishlist
-        if (this.addMoveProduct === 'add') {
+        // set default form value to preferred wishlist unless the current wishlist is the preferred one
+        if (data.preferredWishlist.id !== data.selectedWishlist?.id) {
           this.formGroup.patchValue({ wishlist: data.preferredWishlist.id });
-          this.submitForm();
-        } else {
-          // set default form value to preferred wishlist unless the current wishlist is the preferred one
-          if (data.preferredWishlist.id !== data.selectedWishlist.id) {
-            this.formGroup.patchValue({ wishlist: data.preferredWishlist.id });
-          }
         }
       });
   }
@@ -159,32 +174,6 @@ export class SelectWishlistModalComponent implements OnInit {
     return () => {
       this.hide();
     };
-  }
-
-  get selectedWishlistTitle$(): Observable<string> {
-    const selectedValue = this.formGroup.value.wishlist;
-    if (selectedValue === 'new' || !selectedValue) {
-      return of(this.formGroup.value.newList);
-    } else {
-      return this.wishlistOptions$.pipe(
-        filter(options => options.length > 0),
-        map(options => options.find(opt => opt.value === selectedValue).label),
-        take(1)
-      );
-    }
-  }
-
-  /** returns the route to the selected wishlist */
-  get selectedWishlistRoute$(): Observable<string> {
-    const selectedValue = this.formGroup.get('wishlist')?.value;
-    if (selectedValue === 'new' || !selectedValue) {
-      return this.wishlistsFacade.currentWishlist$.pipe(
-        map(currentWishlist => `route://account/wishlists/${currentWishlist?.id}`),
-        take(1)
-      );
-    } else {
-      return of(`route://account/wishlists/${selectedValue}`);
-    }
   }
 
   /** translation key for the modal header */
