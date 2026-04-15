@@ -12,8 +12,11 @@ import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
+import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductAttributesComponent } from 'ish-shared/components/product/product-attributes/product-attributes.component';
+import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
 import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
+import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
 import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
 
@@ -48,6 +51,9 @@ import { ProductComparePagingComponent as ProductComparePagingComponent_1 } from
     ProductContextDirective,
     ServerHtmlDirective,
     AttributeToStringPipe,
+    ProductInventoryComponent,
+    ProductIdComponent,
+    ProductAddToBasketComponent,
   ],
 })
 export class ProductCompareListComponent implements OnInit {
