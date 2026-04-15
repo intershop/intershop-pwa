@@ -166,79 +166,49 @@ describe('Select Wishlist Modal Component', () => {
     expect(element.querySelector('form')).toBeFalsy();
   }));
 
-  describe('selectedWishlistTitle', () => {
-    it('should return correct title of known wishlist', done => {
-      startup();
+  it('should store correct success data for known wishlist', done => {
+    startup();
 
-      component.formGroup.patchValue({ wishlist: wishlistDetails.id });
-      component.selectedWishlistTitle$.subscribe(t => {
-        expect(t).toBe('testing wishlist');
-        done();
-      });
-    });
+    component.formGroup.patchValue({ wishlist: wishlistDetails.id });
+    component.submitForm();
 
-    it('should return correct title of new wishlist', done => {
-      startup();
-      updateWishlistAndNewList();
-
-      component.selectedWishlistTitle$.subscribe(t => {
-        expect(t).toBe('New Wishlist Title');
-        done();
-      });
-    });
-    it('should return correct title of new wishlist at single field form', done => {
-      when(wishlistFacadeMock.wishlistSelectOptions$(anything())).thenReturn(of([]));
-      startup();
-
-      component.formGroup.patchValue({ newList: 'New Wishlist Title' });
-      component.selectedWishlistTitle$.subscribe(t => {
-        expect(t).toBe('New Wishlist Title');
-        done();
-      });
+    expect(component.successWishlistTitle).toBe('testing wishlist');
+    component.successWishlistRoute$.subscribe(r => {
+      expect(r).toBe(`route://account/wishlists/${wishlistDetails.id}`);
+      done();
     });
   });
 
-  describe('selectedWishlistRoute', () => {
-    it('should return correct route of known wishlist', done => {
-      startup();
+  it('should store correct success data for new wishlist', done => {
+    startup();
+    updateWishlistAndNewList();
 
-      component.formGroup.patchValue({ wishlist: wishlistDetails.id });
-      component.selectedWishlistRoute$.subscribe(r => {
-        expect(r).toBe(`route://account/wishlists/${wishlistDetails.id}`);
-        done();
-      });
-    });
+    when(wishlistFacadeMock.currentWishlist$).thenReturn(
+      of({
+        id: 'newList',
+      } as Wishlist)
+    );
 
-    it('should return correct route of new wishlist', done => {
-      startup();
+    component.submitForm();
 
-      updateWishlistAndNewList();
-
-      when(wishlistFacadeMock.currentWishlist$).thenReturn(
-        of({
-          id: 'newList',
-        } as Wishlist)
-      );
-      component.selectedWishlistRoute$.subscribe(r => {
-        expect(r).toBe('route://account/wishlists/newList');
-        done();
-      });
-    });
-    it('should return correct route of new wishlist at single field form', done => {
-      when(wishlistFacadeMock.wishlistSelectOptions$(anything())).thenReturn(of([]));
-      startup();
-
-      updateWishlistAndNewList();
-      when(wishlistFacadeMock.currentWishlist$).thenReturn(
-        of({
-          id: 'newList',
-        } as Wishlist)
-      );
-
-      component.selectedWishlistRoute$.subscribe(r => {
-        expect(r).toBe('route://account/wishlists/newList');
-        done();
-      });
+    expect(component.successWishlistTitle).toBe('New Wishlist Title');
+    component.successWishlistRoute$.subscribe(r => {
+      expect(r).toBe('route://account/wishlists/newList');
+      done();
     });
   });
+
+  it('should auto-submit to preferred wishlist in add mode', fakeAsync(() => {
+    const emitter = spy(component.submitEmitter);
+    when(wishlistFacadeMock.preferredWishlist$).thenReturn(of(wishlistDetails as Wishlist));
+
+    startup();
+    tick(1000);
+
+    verify(emitter.emit(anything())).once();
+    const [arg] = capture(emitter.emit).last();
+    expect(arg).toEqual({ id: wishlistDetails.id, title: wishlistDetails.title });
+    expect(component.showForm).toBeFalse();
+    expect(component.successWishlistTitle).toBe(wishlistDetails.title);
+  }));
 });

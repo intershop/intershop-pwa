@@ -26,8 +26,8 @@
           | translate
             : {
                 '0': product.name,
-                '1': (selectedWishlistRoute$ | async),
-                '2': (selectedWishlistTitle$ | async | ishHtmlEncode)
+                '1': (successWishlistRoute$ | async),
+                '2': (successWishlistTitle | ishHtmlEncode)
               }
       "
       [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
