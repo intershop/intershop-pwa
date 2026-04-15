@@ -1,5 +1,5 @@
-
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
@@ -38,7 +38,9 @@ import { OrderRecurrenceComponent } from 'ish-shared/components/order/order-recu
     TranslatePipe,
     BasketCostSummaryComponent,
     BasketCostCenterViewComponent,
-    BasketCustomFieldsViewComponent],
+    BasketCustomFieldsViewComponent,
+    RouterLink,
+  ],
 })
 export class CheckoutReceiptComponent {
   @Input({ required: true }) order: Order | RecurringOrder | Basket;
