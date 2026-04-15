@@ -1081,6 +1081,7 @@ export default defineConfig([
     ),
 
     rules: {
+      '@angular-eslint/template/attributes-order': ['warn', { alphabetical: true }],
       '@angular-eslint/template/button-has-type': 'warn',
       '@angular-eslint/template/cyclomatic-complexity': ['warn', { maxComplexity: 10 }],
       '@angular-eslint/template/eqeqeq': 'error',
