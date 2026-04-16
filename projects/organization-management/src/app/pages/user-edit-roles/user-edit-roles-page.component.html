@@ -5,15 +5,15 @@
     <ish-error-message [error]="error$ | async" />
 
     @if (form$ | async; as form) {
-      <form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate>
+      <form class="form-horizontal" novalidate [formGroup]="form" (ngSubmit)="submitForm()">
         <ish-user-roles-selection formControlName="roleIDs" [staticRoles]="staticRoles$ | async" />
 
         <div class="row">
           <div class="offset-md-4 col-md-8">
-            <button type="submit" class="btn btn-primary" data-testing-id="edit-roles-submit">
+            <button class="btn btn-primary" data-testing-id="edit-roles-submit" type="submit">
               {{ 'account.update.button.label' | translate }}
             </button>
-            <a routerLink="../" class="btn btn-secondary" data-testing-id="edit-roles-cancel">{{
+            <a class="btn btn-secondary" data-testing-id="edit-roles-cancel" routerLink="../">{{
               'account.cancel.link' | translate
             }}</a>
           </div>

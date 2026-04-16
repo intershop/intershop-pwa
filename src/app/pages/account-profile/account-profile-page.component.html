@@ -1,3 +1,3 @@
 @if (user$ | async; as user) {
-  <ish-account-profile [user]="user" [subscribedToNewsletter]="subscribedToNewsletter$ | async" />
+  <ish-account-profile [subscribedToNewsletter]="subscribedToNewsletter$ | async" [user]="user" />
 }

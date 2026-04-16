@@ -1,18 +1,18 @@
 @if (fields$ | async; as fields) {
   <form [formGroup]="form" (ngSubmit)="submitForm()">
     <div>
-      <formly-form [form]="form" [fields]="[fields[0]]" [model]="model$ | async" />
+      <formly-form [fields]="[fields[0]]" [form]="form" [model]="model$ | async" />
     </div>
     <div [ngbCollapse]="formIsCollapsed">
-      <formly-form [form]="form" [fields]="fields.slice(1)" [model]="model$ | async" />
+      <formly-form [fields]="fields.slice(1)" [form]="form" [model]="model$ | async" />
     </div>
     <div class="row mb-4">
       <div class="col-md-4 d-flex align-items-center">
         <button
-          type="button"
           class="btn btn-link btn-link-with-icon"
-          (click)="expandForm()"
+          type="button"
           [attr.aria-expanded]="!formIsCollapsed"
+          (click)="expandForm()"
         >
           @if (formIsCollapsed) {
             {{ 'account.order_history.filter.show' | translate }}<i class="bi bi-chevron-down"></i>
@@ -22,10 +22,10 @@
         </button>
       </div>
       <div class="col-md-8 text-end">
-        <button type="reset" class="btn btn-link" [hidden]="!showResetButton()" (click)="resetForm()">
+        <button class="btn btn-link" type="reset" [hidden]="!showResetButton()" (click)="resetForm()">
           {{ 'account.order_history.filter.clear' | translate }}
         </button>
-        <button type="submit" class="btn btn-primary me-0">
+        <button class="btn btn-primary me-0" type="submit">
           {{ 'account.order_history.filter.apply' | translate }}
         </button>
       </div>

@@ -1,15 +1,15 @@
 <!-- display addToCart Icon/animated Icon or link-->
 @if (visible$ | async) {
   <button
-    type="button"
-    name="addProduct"
     class="btn add-to-wishlist"
-    [ngClass]="cssClass"
-    [title]="displayType === 'icon' ? ('product.add_to_wishlist.link' | translate) : ''"
-    [tabindex]="ariaHidden ? -1 : 0"
-    [attr.aria-hidden]="ariaHidden"
-    (click)="openModal(modal)"
     data-testing-id="addToWishlistButton"
+    name="addProduct"
+    type="button"
+    [attr.aria-hidden]="ariaHidden"
+    [ngClass]="cssClass"
+    [tabindex]="ariaHidden ? -1 : 0"
+    [title]="displayType === 'icon' ? ('product.add_to_wishlist.link' | translate) : ''"
+    (click)="openModal(modal)"
   >
     @switch (displayType) {
       @case ('animated') {

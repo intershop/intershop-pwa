@@ -1,11 +1,11 @@
 <ng-select
   bindLabel="label"
   bindValue="value"
-  [ngClass]="props.inputClass"
-  [formControl]="formControl"
-  [attr.data-testing-id]="field.key"
   [attr.aria-label]="props.ariaLabel"
-  [items]="props.options | formlySelectOptions: field | async"
+  [attr.data-testing-id]="field.key"
   [clearable]="props.clearable || false"
+  [formControl]="formControl"
+  [items]="props.options | formlySelectOptions: field | async"
+  [ngClass]="props.inputClass"
   [virtualScroll]="props.virtualScroll || false"
 />

@@ -5,8 +5,8 @@
         {{ 'quote.basket_items.label' | translate: { '0': getName(item[0]) | async } }}
       </h2>
       <button
-        type="button"
         class="float-md-end px-2 mx-1 d-block d-md-inline btn btn-link btn-link-action"
+        type="button"
         title="{{ 'quote.basket_items.remove.button.label' | translate }}"
         (click)="onDeleteQuote(item[0])"
       >

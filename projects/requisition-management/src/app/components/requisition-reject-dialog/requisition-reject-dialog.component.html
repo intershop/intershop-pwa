@@ -1,22 +1,22 @@
 <ng-template #modal let-rejectModal>
   <div class="modal-content">
     <div class="modal-header">
-      <h2 id="requisition-reject-modal-title" class="modal-title">
+      <h2 class="modal-title" id="requisition-reject-modal-title">
         {{ 'approval.rejectform.reject_order.heading' | translate }}
       </h2>
-      <button type="button" class="btn-close" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
+      <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
     </div>
 
-    <form [formGroup]="rejectForm" ishFormSubmit #form="ngForm" (ngSubmit)="submitForm()" class="clearfix" novalidate>
+    <form #form="ngForm" class="clearfix" ishFormSubmit novalidate [formGroup]="rejectForm" (ngSubmit)="submitForm()">
       <div class="modal-body">
-        <formly-form [form]="rejectForm" [fields]="fields" />
+        <formly-form [fields]="fields" [form]="rejectForm" />
       </div>
 
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" [disabled]="rejectForm.invalid && form.submitted">
+        <button class="btn btn-primary" type="submit" [disabled]="rejectForm.invalid && form.submitted">
           {{ 'approval.rejectform.button.reject.label' | translate }}
         </button>
-        <button type="button" class="btn btn-secondary" (click)="hide()">
+        <button class="btn btn-secondary" type="button" (click)="hide()">
           {{ 'approval.rejectform.button.cancel.label' | translate }}
         </button>
       </div>

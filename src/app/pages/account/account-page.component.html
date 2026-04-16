@@ -4,13 +4,13 @@
 <div class="account-wrapper">
   <div class="row account-main">
     <div class="col-lg-3 account-nav-box">
-      <ish-skip-content-link skipToElementId="nav-breadcrumbs" linkText="account.navigation.skip_content.link.text" />
+      <ish-skip-content-link linkText="account.navigation.skip_content.link.text" skipToElementId="nav-breadcrumbs" />
       <ish-account-navigation [deviceType]="deviceType$ | async" />
       <div class="marketing-area">
         <ish-content-include includeId="include.account.navigation.pagelet2-Include" />
       </div>
     </div>
-    <div id="page-main-content" class="col-lg-9" tabindex="-1">
+    <div class="col-lg-9" id="page-main-content" tabindex="-1">
       <ish-breadcrumb [account]="true" />
       <div class="marketing-area">
         <ish-content-include includeId="include.account.content.top.pagelet2-Include" />

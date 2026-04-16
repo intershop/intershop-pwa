@@ -11,14 +11,14 @@
           <div class="col-md-12">
             <dl class="row dl-horizontal dl-separator">
               <dt class="col-md-4">{{ 'account.costcenter.id.label' | translate }}</dt>
-              <dd data-testing-id="id-field" class="col-md-8">
+              <dd class="col-md-8" data-testing-id="id-field">
                 {{ costCenter.costCenterId }}
                 @if (costCenter.active === false) {
                   <span class="input-help">{{ 'account.costCenter.status.inactive' | translate }}</span>
                 }
               </dd>
               <dt class="col-md-4">{{ 'account.costcenter.name.label' | translate }}</dt>
-              <dd data-testing-id="name-field" class="col-md-8">{{ costCenter.name }}</dd>
+              <dd class="col-md-8" data-testing-id="name-field">{{ costCenter.name }}</dd>
               <dt class="col-md-4">{{ 'account.costcenter.manager.label' | translate }}</dt>
               <dd class="col-md-8" data-testing-id="owner-field">
                 {{ costCenter.costCenterOwner.firstName }} {{ costCenter.costCenterOwner.lastName }}
@@ -38,10 +38,10 @@
       @if (isEditable$ | async) {
         <div class="col-2 col-lg-4 mt-2">
           <a
-            routerLink="edit"
             class="btn-tool"
-            [title]="'account.costcenter.update.link' | translate: { '0': costCenter.name }"
             data-testing-id="edit-cost-center"
+            routerLink="edit"
+            [title]="'account.costcenter.update.link' | translate: { '0': costCenter.name }"
           >
             <i class="bi bi-pencil-fill"></i>
           </a>
@@ -53,15 +53,15 @@
     @if ((user$ | async)?.login === costCenter.costCenterOwner?.login) {
       <h2 class="h3">{{ 'account.costcenter.details.orders.list.title' | translate }}</h2>
       <ish-order-list
-        [orders]="costCenter?.orders | slice: 0 : 10"
         [columnsToDisplay]="['creationDate', 'orderNo', 'buyer', 'lineItems', 'status', 'orderTotal']"
+        [orders]="costCenter?.orders | slice: 0 : 10"
       />
     }
 
     <h2 class="h3">
       {{ 'account.costcenter.details.buyers.list.title' | translate }}
       @if (isEditable$ | async) {
-        <a routerLink="buyers" class="btn btn-secondary" data-testing-id="add-cost-center-buyers">{{
+        <a class="btn btn-secondary" data-testing-id="add-cost-center-buyers" routerLink="buyers">{{
           'account.costcenter.details.buyers.action.add' | translate
         }}</a>
       }
@@ -71,6 +71,6 @@
   </div>
 }
 
-<a routerLink=".." data-testing-id="back-to-cost-center-management">{{
+<a data-testing-id="back-to-cost-center-management" routerLink="..">{{
   'account.organization.cost_center_management.back_to_list' | translate
 }}</a>

@@ -1,5 +1,5 @@
 @if (paymentMethods?.length) {
-  <form [formGroup]="paymentForm" class="form-horizontal">
+  <form class="form-horizontal" [formGroup]="paymentForm">
     <p>{{ 'account.payment.message' | translate }}</p>
     <!-- Preferred Payment Method -->
     <div class="section payment-methods">
@@ -7,8 +7,8 @@
       <div class="panel">
         @if (preferredPaymentInstrument) {
           <div
-            [ngClass]="{ 'fw-bold': preferredPaymentInstrument.accountIdentifier }"
             data-testing-id="preferred-payment-method"
+            [ngClass]="{ 'fw-bold': preferredPaymentInstrument.accountIdentifier }"
           >
             {{ getPreferredPaymentMethod()?.displayName }}
           </div>
@@ -48,9 +48,9 @@
             @for (method of standardPaymentMethods; track method.id) {
               <div class="pb-2">
                 <input
-                  type="radio"
-                  formControlName="id"
                   class="form-check-input"
+                  formControlName="id"
+                  type="radio"
                   [id]="'paymentOption_' + method.id"
                   [value]="method.id"
                 />
@@ -63,7 +63,7 @@
         }
         @if (preferredPaymentInstrument) {
           <div class="panel">
-            <input type="radio" formControlName="id" class="form-check-input" [id]="'paymentOption_empty'" value="" />
+            <input class="form-check-input" formControlName="id" type="radio" value="" [id]="'paymentOption_empty'" />
             <label class="form-check-label" [for]="'paymentOption_empty'">
               {{ 'account.payment.no_preferred_method' | translate }}
             </label>
@@ -71,26 +71,26 @@
         }
       </div>
     }
-    <ng-template #paymentWidget let-pi="pi" let-isPreferred="isPreferred">
+    <ng-template #paymentWidget let-isPreferred="isPreferred" let-pi="pi">
       <div class="col-sm-7 col-md-5" [ngClass]="{ 'pt-2': !isPreferred }">
         <button
-          type="button"
           class="float-end btn btn-link btn-link-action"
-          (click)="deleteUserPayment(pi.id)"
           data-testing-id="delete-payment-link"
+          type="button"
+          (click)="deleteUserPayment(pi.id)"
         >
           {{ 'checkout.payment.method.delete.link' | translate }}
         </button>
         @if (!isPreferred) {
           <input
-            type="radio"
-            formControlName="id"
             class="form-check-input"
+            formControlName="id"
+            type="radio"
             [id]="'paymentOption_' + pi.id"
             [value]="pi.id"
           />
         }
-        <label class="form-check-label" [ngClass]="{ 'ms-0': isPreferred }" [for]="'paymentOption_' + pi.id">
+        <label class="form-check-label" [for]="'paymentOption_' + pi.id" [ngClass]="{ 'ms-0': isPreferred }">
           {{ pi.accountIdentifier }}
         </label>
         <ish-account-payment-concardis-directdebit [paymentInstrument]="pi" />

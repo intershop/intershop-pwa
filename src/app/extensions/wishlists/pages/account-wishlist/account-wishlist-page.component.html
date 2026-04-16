@@ -6,10 +6,10 @@
         <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
       </ng-template>
       <button
-        type="button"
         class="btn btn-link details-tooltip header-note mt-1"
-        [ngbPopover]="WishlistDescription"
         placement="bottom"
+        type="button"
+        [ngbPopover]="WishlistDescription"
         popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
       >
         {{ 'account.wishlists.heading.tooltip.link' | translate }}<i class="bi bi-info-circle-fill"></i>
@@ -17,9 +17,9 @@
     </h1>
 
     <button
-      type="button"
       class="btn btn-secondary m-0"
       data-testing-id="add-wishlist"
+      type="button"
       (click)="addWishlistDialog.show()"
     >
       {{ 'account.wishlists.add_wishlist' | translate }}

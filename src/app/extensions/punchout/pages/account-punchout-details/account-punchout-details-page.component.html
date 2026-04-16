@@ -7,8 +7,8 @@
   <div class="row">
     <div class="col-md-10 col-xl-8">
       <ish-punchout-user-form
-        [punchoutUser]="user"
         [punchoutType]="user.punchoutType"
+        [punchoutUser]="user"
         (submitUser)="submitForm($event)"
       />
     </div>

@@ -1,28 +1,28 @@
 @if (showBanner) {
   <div
-    [@bottomOut]="transitionBanner"
-    (@bottomOut.done)="setCookiesConsent($event)"
     class="cookies-banner"
     role="region"
+    [@bottomOut]="transitionBanner"
     [attr.aria-label]="'cookies.banner.title' | translate"
+    (@bottomOut.done)="setCookiesConsent($event)"
   >
     <div class="d-lg-flex justify-content-between align-items-center">
-      <div [ishServerHtml]="'cookies.banner.text' | translate" class="cookies-banner-text"></div>
+      <div class="cookies-banner-text" [ishServerHtml]="'cookies.banner.text' | translate"></div>
       <div class="d-md-flex flex-nowrap justify-content-end">
         <!-- Accept All -->
         <button
-          type="button"
           class="btn btn-light text-nowrap ms-lg-2"
+          data-testing-id="acceptAllButton"
+          type="button"
           [title]="'cookies.banner.accept_all.tooltip' | translate"
           (click)="acceptAll()"
-          data-testing-id="acceptAllButton"
         >
           {{ 'cookies.banner.accept_all' | translate }}
         </button>
         <!-- Accept Essential -->
         <button
-          type="button"
           class="btn btn-outline-light text-nowrap me-lg-0"
+          type="button"
           [title]="'cookies.banner.accept_only_required.tooltip' | translate"
           (click)="acceptOnlyRequired()"
         >
@@ -30,9 +30,9 @@
         </button>
         <!-- Set Preferences -->
         <button
-          type="button"
           class="btn btn-link text-nowrap me-lg-0"
           routerLink="/cookies"
+          type="button"
           [title]="'cookies.banner.set_preferences.tooltip' | translate"
         >
           {{ 'cookies.banner.set_preferences' | translate }}

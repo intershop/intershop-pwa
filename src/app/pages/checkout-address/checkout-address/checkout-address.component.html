@@ -18,18 +18,18 @@
     <!-- ------------------------------- invoice address ---------------------------------- -->
     <div class="col-md-6 col-lg-4" data-testing-id="invoiceToAddress">
       <ish-basket-invoice-address-widget
+        [collapse]="active === 'shipping'"
         [eligibleAddresses$]="eligibleAddresses$"
         [showErrors]="nextDisabled"
-        [collapse]="active === 'shipping'"
         (collapseChange)="invoiceCollapsed($event)"
       />
     </div>
     <!-- ------------------------------ shipping address ----------------------------------------- -->
     <div class="col-md-6 col-lg-4" data-testing-id="shipToAddress">
       <ish-basket-shipping-address-widget
+        [collapse]="active === 'invoice'"
         [eligibleAddresses$]="eligibleAddresses$"
         [showErrors]="nextDisabled"
-        [collapse]="active === 'invoice'"
         (collapseChange)="shippingCollapsed($event)"
       />
     </div>
@@ -42,7 +42,7 @@
         <ish-basket-cost-summary [totals]="basket.totals" />
         <div class="d-grid">
           @if (nextDisabled) {
-            <div id="checkout-button-help" aria-live="polite" class="visually-hidden">
+            <div aria-live="polite" class="visually-hidden" id="checkout-button-help">
               {{ 'checkout.continue.validation.message' | translate }}
             </div>
           }

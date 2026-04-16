@@ -1,8 +1,8 @@
 <button
-  type="button"
   class="btn btn-link me-0"
-  [ngClass]="cssClass"
   data-testing-id="clearBasketButton"
+  type="button"
+  [ngClass]="cssClass"
   (click)="clearDialog.show()"
 >
   {{ 'shopping_cart.clear_cart.button' | translate }}

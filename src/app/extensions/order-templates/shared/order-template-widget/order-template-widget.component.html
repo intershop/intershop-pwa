@@ -1,7 +1,7 @@
 <ish-info-box
-  heading="account.ordertemplates.widget.heading"
   class="infobox-wrapper h-100"
   cssClass="infobox-color-widget d-flex flex-column"
+  heading="account.ordertemplates.widget.heading"
 >
   <div class="loading-container">
     @if ((loading$ | async) !== true) {
@@ -14,10 +14,10 @@
                 @if (orderTemplate.items?.length) {
                   <a class="align-top float-end">
                     <ish-product-add-to-basket
+                      cssClass="p-0 mb-0"
+                      displayType="icon"
                       ishProductContext
                       [parts]="getParts(orderTemplate)"
-                      displayType="icon"
-                      cssClass="p-0 mb-0"
                     />
                   </a>
                 }
@@ -36,7 +36,7 @@
   </div>
 
   <div class="mt-auto">
-    <a routerLink="/account/order-templates" data-testing-id="order-templates-list-link">
+    <a data-testing-id="order-templates-list-link" routerLink="/account/order-templates">
       {{ 'account.ordertemplates.widget.view_all.link' | translate }}
     </a>
   </div>

@@ -54,9 +54,9 @@
         @if (costCenter.budget) {
           <div class="col-md-6 mb-2">
             <ish-budget-bar
+              [additionalAmount]="orderTotal"
               [budget]="costCenter.budget"
               [spentBudget]="costCenter.spentBudget"
-              [additionalAmount]="orderTotal"
             />
           </div>
         }
@@ -101,9 +101,9 @@
           @if (buyer.budget) {
             <div class="col-md-6 mb-2">
               <ish-budget-bar
+                [additionalAmount]="orderTotal"
                 [budget]="buyer.budget"
                 [spentBudget]="buyer.spentBudget"
-                [additionalAmount]="orderTotal"
               />
             </div>
           }
@@ -112,7 +112,7 @@
       @if (requisition.recurrence) {
         <div class="row mb-3">
           <div class="col-md-6">
-            <ish-order-recurrence [recurrence]="requisition.recurrence" labelCssClass="col-6" valueCssClass="col-6" />
+            <ish-order-recurrence labelCssClass="col-6" valueCssClass="col-6" [recurrence]="requisition.recurrence" />
           </div>
         </div>
       }

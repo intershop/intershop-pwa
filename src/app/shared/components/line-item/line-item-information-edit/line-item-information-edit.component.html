@@ -3,16 +3,16 @@
     <div class="row">
       <div class="offset-2 col-10 list-item-actions pt-0">
         @if (collapsed) {
-          <ish-line-item-custom-fields [lineItem]="select('lineItem') | async" [editable]="editable" />
+          <ish-line-item-custom-fields [editable]="editable" [lineItem]="select('lineItem') | async" />
         }
         @if (editable) {
           <button
-            (click)="collapsed = !collapsed"
-            type="button"
             class="btn btn-link btn-link-with-icon"
-            [attr.aria-expanded]="!collapsed"
-            [attr.aria-controls]="'line-item-information-input_' + getLineItemId()"
             data-testing-id="line-item-custom-fields-toggle-link"
+            type="button"
+            [attr.aria-controls]="'line-item-information-input_' + getLineItemId()"
+            [attr.aria-expanded]="!collapsed"
+            (click)="collapsed = !collapsed"
           >
             {{
               (editMode === 'edit' ? 'checkout.custom-fields.edit.link.label' : 'checkout.custom-fields.add.link.label')
@@ -22,15 +22,15 @@
           </button>
         }
         <div [id]="'line-item-information-input_' + getLineItemId()" [ngbCollapse]="collapsed">
-          <form [formGroup]="customFieldsForm" ishFormSubmit (ngSubmit)="save()">
+          <form ishFormSubmit [formGroup]="customFieldsForm" (ngSubmit)="save()">
             <ish-custom-fields-formly
-              [form]="customFieldsForm"
-              [fields]="select('customFields') | async"
               fieldClass="col-md-8 col-xl-6"
+              [fields]="select('customFields') | async"
+              [form]="customFieldsForm"
             />
             <div class="row">
               <div class="col-12 offset-md-4 col-md-8">
-                <button type="submit" class="btn btn-primary">
+                <button class="btn btn-primary" type="submit">
                   {{
                     (editMode === 'edit'
                       ? 'checkout.custom-fields.save.button.label'
@@ -38,7 +38,7 @@
                     ) | translate
                   }}
                 </button>
-                <button (click)="cancel()" type="button" class="btn btn-secondary">
+                <button class="btn btn-secondary" type="button" (click)="cancel()">
                   {{ 'checkout.custom-fields.cancel.button.label' | translate }}
                 </button>
               </div>

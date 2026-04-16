@@ -6,12 +6,12 @@
     <!-- Add address link -->
     @if (isCreateAddressFormCollapsed && !updateFormExpandedAddressId) {
       <button
-        type="button"
-        class="btn btn-secondary m-0"
-        (click)="showCreateAddressForm()"
-        [attr.aria-expanded]="!isCreateAddressFormCollapsed"
         aria-controls="collapseBasic"
+        class="btn btn-secondary m-0"
         data-testing-id="create-address-button"
+        type="button"
+        [attr.aria-expanded]="!isCreateAddressFormCollapsed"
+        (click)="showCreateAddressForm()"
       >
         {{ 'account.addresses.add_address.button.text' | translate }}
       </button>
@@ -23,13 +23,13 @@
 
   <!-- create address form -->
   @if (!isCreateAddressFormCollapsed) {
-    <div id="collapseBasic" class="section" data-testing-id="create-address-form">
+    <div class="section" data-testing-id="create-address-form" id="collapseBasic">
       <div class="row">
         <div class="col-md-10 col-xl-8">
           <ish-formly-customer-address-form
             [resetForm]="isCreateAddressFormCollapsed"
-            (save)="createAddress($event)"
             (cancelForm)="hideCreateAddressForm()"
+            (save)="createAddress($event)"
           />
         </div>
       </div>
@@ -56,7 +56,7 @@
           @if (isUpdateAddressFormCollapsed(preferredInvoiceToAddress)) {
             <div class="col-sm-7 col-md-5">
               <form [formGroup]="preferredAddressForm">
-                <formly-form [form]="preferredAddressForm" [fields]="[selectInvoiceConfig, selectShippingConfig]" />
+                <formly-form [fields]="[selectInvoiceConfig, selectShippingConfig]" [form]="preferredAddressForm" />
               </form>
             </div>
           }
@@ -82,7 +82,7 @@
           @if (isUpdateAddressFormCollapsed(preferredInvoiceToAddress)) {
             <div class="col-sm-7 col-md-5">
               <form [formGroup]="preferredAddressForm">
-                <formly-form [form]="preferredAddressForm" [fields]="[selectInvoiceConfig]" />
+                <formly-form [fields]="[selectInvoiceConfig]" [form]="preferredAddressForm" />
               </form>
             </div>
           }
@@ -105,7 +105,7 @@
           @if (isUpdateAddressFormCollapsed(preferredShipToAddress)) {
             <div class="col-sm-7 col-md-5">
               <form [formGroup]="preferredAddressForm">
-                <formly-form [form]="preferredAddressForm" [fields]="[selectShippingConfig]" />
+                <formly-form [fields]="[selectShippingConfig]" [form]="preferredAddressForm" />
               </form>
             </div>
           }
@@ -145,24 +145,24 @@
               <div class="float-end">
                 @if (isUpdateAddressFormCollapsed(address)) {
                   <button
-                    type="button"
+                    aria-controls="CollapseBasicEdit"
                     class="btn-tool btn-link"
+                    data-testing-id="update-address-button"
+                    type="button"
+                    [attr.aria-expanded]="!isUpdateAddressFormCollapsed(address)"
                     title="{{ 'account.addresses.edit_address.button.label' | translate }}"
                     (click)="showUpdateAddressForm(address)"
-                    [attr.aria-expanded]="!isUpdateAddressFormCollapsed(address)"
-                    aria-controls="CollapseBasicEdit"
-                    data-testing-id="update-address-button"
                   >
                     <i class="bi bi-pencil-fill"></i>
                   </button>
                 }
                 @if (deletable) {
                   <button
-                    type="button"
                     class="btn-tool btn-link"
+                    data-testing-id="delete-address-icon"
+                    type="button"
                     title="{{ 'account.addresses.delete_address.text' | translate }}"
                     (click)="modalDialog.show(address)"
-                    data-testing-id="delete-address-icon"
                   >
                     <i class="bi bi-trash-fill"></i>
                   </button>
@@ -186,14 +186,14 @@
       }
       <!-- edit address form -->
       @if (!isUpdateAddressFormCollapsed(address)) {
-        <div id="CollapseBasicEdit" class="section" data-testing-id="update-address-form">
+        <div class="section" data-testing-id="update-address-form" id="CollapseBasicEdit">
           <div class="row">
             <div class="col-md-10 col-xl-8">
               <ish-formly-customer-address-form
                 [address]="address"
                 [resetForm]="isUpdateAddressFormCollapsed(address)"
-                (save)="updateAddress($event)"
                 (cancelForm)="hideUpdateAddressForm()"
+                (save)="updateAddress($event)"
               />
             </div>
           </div>

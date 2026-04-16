@@ -7,12 +7,12 @@
   <div class="col-md-10 col-xl-8">
     <div class="section">
       <form
-        [formGroup]="form"
-        ishFormSubmit
         #emailForm="ngForm"
-        (ngSubmit)="submit()"
         class="form-horizontal"
+        ishFormSubmit
         novalidate
+        [formGroup]="form"
+        (ngSubmit)="submit()"
       >
         <div class="row form-group">
           <div class="col-md-4 col-form-label">{{ 'account.update_email.email.label' | translate }}</div>
@@ -21,14 +21,14 @@
           }
         </div>
 
-        <formly-form [form]="form" [fields]="fields" [model]="model" />
+        <formly-form [fields]="fields" [form]="form" [model]="model" />
 
         <div class="row">
           <div class="offset-md-4 col-md-8">
-            <button type="submit" class="btn btn-primary" [disabled]="form.invalid && emailForm.submitted">
+            <button class="btn btn-primary" type="submit" [disabled]="form.invalid && emailForm.submitted">
               {{ 'account.update.button.label' | translate }}
             </button>
-            <a routerLink="/account/profile" class="btn btn-secondary">{{ 'account.cancel.link' | translate }}</a>
+            <a class="btn btn-secondary" routerLink="/account/profile">{{ 'account.cancel.link' | translate }}</a>
           </div>
         </div>
       </form>

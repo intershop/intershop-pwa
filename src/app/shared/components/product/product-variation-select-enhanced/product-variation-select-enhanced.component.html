@@ -1,22 +1,22 @@
 <!-- desktop: display enhanced select boxes with color codes or swatch images with labels -->
 @if ((deviceType$ | async) === 'desktop') {
   <div ngbDropdown>
-    <button ngbDropdownToggle type="button" class="btn variation-select" [id]="uuid + group.id">
+    <button class="btn variation-select" ngbDropdownToggle type="button" [id]="uuid + group.id">
       @for (option of group.options; track option.value) {
         @if (option.active) {
           <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }" />
         }
       }
     </button>
-    <div ngbDropdownMenu class="variation-options" [attr.aria-labelledby]="uuid + group.id + 'label'">
+    <div class="variation-options" ngbDropdownMenu [attr.aria-labelledby]="uuid + group.id + 'label'">
       @for (option of group.options; track option.value) {
         @if (!option.alternativeCombination || multipleOptions) {
           <button
             ngbDropdownItem
             type="button"
+            [attr.data-testing-id]="group.id + '-' + option.value"
             [value]="option.value"
             (click)="optionChange(group.id, option.value)"
-            [attr.data-testing-id]="group.id + '-' + option.value"
           >
             <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }" />
           </button>
@@ -29,7 +29,7 @@
   <div class="mobile-variation-select">
     @for (option of group.options; track option.value) {
       <div class="mobile-variation-option">
-        <button type="button" class="btn btn-link btn-link-action" (click)="optionChange(group.id, option.value)">
+        <button class="btn btn-link btn-link-action" type="button" (click)="optionChange(group.id, option.value)">
           <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }" />
         </button>
       </div>
@@ -42,12 +42,12 @@
   @if (group.attributeType === 'defaultAndColorCode') {
     <span
       class="color-code"
-      [ngStyle]="{ 'background-color': '#' + option.metaData }"
       [ngClass]="{ 'light-color': option.label.toLowerCase() === 'white' }"
+      [ngStyle]="{ 'background-color': '#' + option.metaData }"
     ></span>
   }
   @if (group.attributeType === 'defaultAndSwatchImage') {
-    <img class="image-swatch" [src]="option.metaData" alt="{{ option.label }}" />
+    <img class="image-swatch" alt="{{ option.label }}" [src]="option.metaData" />
   }
   <span class="label" [ngClass]="{ selected: option.active }"
     >{{ option.label }}

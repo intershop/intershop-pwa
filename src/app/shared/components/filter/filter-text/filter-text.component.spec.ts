@@ -52,8 +52,8 @@ describe('Filter Text Component', () => {
         </li>
         <li class="filter-item filter-layer0 filter-selected">
           <button
-            type="button"
             aria-current="true"
+            type="button"
             class="btn btn-link btn-link-action link-decoration-hover"
             data-testing-id="filter-link-LogitechName"
           >

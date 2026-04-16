@@ -5,12 +5,12 @@
       <!-- edit icon -->
       <div class="d-grid">
         <button
-          type="button"
           class="btn"
+          data-testing-id="product-notification-edit"
+          type="button"
           [ngClass]="cssClass"
           [title]="'product.notification.edit.link.title' | translate"
           (click)="openModal(modal)"
-          data-testing-id="product-notification-edit"
         >
           <i class="bi bi-pencil-fill"></i>
         </button>
@@ -20,11 +20,11 @@
       <!-- button -->
       <div class="d-grid">
         <button
+          data-testing-id="product-notification-edit"
           type="button"
           [ngClass]="cssClass"
           [title]="buttonKey('title') | async | translate"
           (click)="openModal(modal)"
-          data-testing-id="product-notification-edit"
         >
           {{ buttonKey('label') | async | translate }}
         </button>
@@ -33,4 +33,4 @@
   }
 }
 
-<ish-product-notification-edit-dialog [productNotification]="productNotification" #modal />
+<ish-product-notification-edit-dialog #modal [productNotification]="productNotification" />

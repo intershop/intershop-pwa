@@ -6,8 +6,8 @@
           @case ('checkbox') {
             <ish-filter-checkbox
               [filterElement]="element"
-              (applyFilter)="applyFilter.emit($event)"
               [(showAll)]="showAllElements[element.name]"
+              (applyFilter)="applyFilter.emit($event)"
             />
           }
           @case ('swatch') {
@@ -25,8 +25,8 @@
           @default {
             <ish-filter-text
               [filterElement]="element"
-              (applyFilter)="applyFilter.emit($event)"
               [(showAll)]="showAllElements[element.name]"
+              (applyFilter)="applyFilter.emit($event)"
             />
           }
         }

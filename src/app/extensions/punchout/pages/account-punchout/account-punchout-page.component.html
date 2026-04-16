@@ -1,7 +1,7 @@
 <ish-account-punchout-header
+  [error]="error$ | async"
   [punchoutTypes]="punchoutTypes$ | async"
   [selectedType]="selectedPunchoutType$ | async"
-  [error]="error$ | async"
 />
 
 @if (selectedPunchoutType$ | async; as selectedType) {
@@ -9,10 +9,10 @@
     <h2 class="mt-1">
       {{ 'account.punchout.user.list.heading' | translate: { '0': selectedType } }}
       <a
-        [routerLink]="['/account/punchout/create']"
-        [queryParams]="{ format: selectedType }"
         class="btn btn-secondary"
         data-testing-id="add-user-button"
+        [queryParams]="{ format: selectedType }"
+        [routerLink]="['/account/punchout/create']"
       >
         {{ 'account.punchout.user.add.button.label' | translate }}
       </a>
@@ -35,29 +35,29 @@
                   <div class="float-end">
                     @if (selectedType === 'cxml' && ('punchout.cxmlUserConfigurationEnabled' | ishServerSetting)) {
                       <a
-                        [routerLink]="['cxmlConfiguration', user.id]"
-                        [queryParams]="{ format: selectedType }"
                         class="btn-tool"
+                        [queryParams]="{ format: selectedType }"
+                        [routerLink]="['cxmlConfiguration', user.id]"
                         [title]="'account.punchout.configure.link' | translate: { '0': user.login }"
                       >
                         <i class="bi bi-gear-fill"></i>
                       </a>
                     }
                     <a
-                      [routerLink]="[user.login]"
-                      [queryParams]="{ format: selectedType }"
                       class="btn-tool"
-                      [title]="'account.profile.update.link' | translate: { '0': user.login }"
                       data-testing-id="edit-user"
+                      [queryParams]="{ format: selectedType }"
+                      [routerLink]="[user.login]"
+                      [title]="'account.profile.update.link' | translate: { '0': user.login }"
                     >
                       <i class="bi bi-pencil-fill"></i>
                     </a>
                     <button
-                      type="button"
                       class="btn-tool btn-link"
+                      data-testing-id="delete-user"
+                      type="button"
                       [title]="'account.user.delete_user_dialog.header' | translate: { '0': user.login }"
                       (click)="modalDialog.show(user)"
-                      data-testing-id="delete-user"
                     >
                       <i class="bi bi-trash-fill"></i>
                     </button>

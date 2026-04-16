@@ -4,13 +4,13 @@
       <div class="product-list-container" data-testing-id="recently-viewed">
         <h2>{{ 'recentlyViewed.component.heading' | translate }}</h2>
         <ish-skip-content-link skipToElementId="pdp-view-all-link" />
-        <ish-products-list [productSKUs]="products" listStyle="carousel" listItemStyle="tile" />
+        <ish-products-list listItemStyle="tile" listStyle="carousel" [productSKUs]="products" />
         <a
-          id="pdp-view-all-link"
-          [routerLink]="['/recently']"
           class="view-all"
           data-testing-id="view-all"
+          id="pdp-view-all-link"
           [attr.aria-label]="'common.view_all.link.label' | translate"
+          [routerLink]="['/recently']"
           >{{ 'common.view_all.link' | translate }}</a
         >
       </div>

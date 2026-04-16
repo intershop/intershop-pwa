@@ -1,7 +1,7 @@
 @if (activeQuoteRequest$ | async; as quote) {
   @if (state$ | async; as state) {
     <div class="modal-header">
-      <h2 id="product-add-to-quote-modal-title" class="modal-title">
+      <h2 class="modal-title" id="product-add-to-quote-modal-title">
         @if (state === 'Submitted') {
           {{ 'quote.edit.submitted.heading' | translate }}
         } @else {
@@ -9,7 +9,7 @@
           {{ quote.displayName || quote.number }}
         }
       </h2>
-      <button type="button" class="btn-close" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
+      <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
     </div>
     <div class="modal-body">
       <ish-error-message [error]="error$ | async" />

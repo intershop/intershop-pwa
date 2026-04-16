@@ -3,10 +3,10 @@
     <li>
       @if (currentPage > 1) {
         <a
-          [routerLink]="[]"
           queryParamsHandling="merge"
-          [queryParams]="{ page: currentPage - 1 }"
           [fragment]="fragmentOnRouting"
+          [queryParams]="{ page: currentPage - 1 }"
+          [routerLink]="[]"
           >&laquo;</a
         >
       } @else {
@@ -16,11 +16,11 @@
     @for (p of pageIndices; track p.value) {
       <li>
         <a
-          [routerLink]="[]"
           queryParamsHandling="merge"
-          [queryParams]="{ page: p.value }"
           [fragment]="fragmentOnRouting"
           [ngClass]="{ active: p.value === currentPage }"
+          [queryParams]="{ page: p.value }"
+          [routerLink]="[]"
           >{{ p.display }}</a
         >
       </li>
@@ -28,10 +28,10 @@
     <li class="pagination-list-next">
       @if (pageIndices[pageIndices.length - 1].value !== currentPage) {
         <a
-          [routerLink]="[]"
           queryParamsHandling="merge"
-          [queryParams]="{ page: currentPage + 1 }"
           [fragment]="fragmentOnRouting"
+          [queryParams]="{ page: currentPage + 1 }"
+          [routerLink]="[]"
           >&raquo;</a
         >
       } @else {

@@ -5,13 +5,13 @@
 
   <ish-checkout-payment
     [basket]="basket$ | async"
+    [error]="basketError$ | async"
     [paymentMethods]="paymentMethods$ | async"
     [priceType]="priceType$ | async"
-    [error]="basketError$ | async"
-    (updatePaymentMethod)="updateBasketPaymentMethod($event)"
     (createPaymentInstrument)="createPaymentInstrument($event)"
     (deletePaymentInstrument)="deletePaymentInstrument($event)"
     (nextStep)="nextStep()"
+    (updatePaymentMethod)="updateBasketPaymentMethod($event)"
   />
 
   @if (loading$ | async) {

@@ -5,7 +5,7 @@
       <div class="product-list">
         @for (sku of productSKUs; track sku) {
           <div class="product-list-item list-view">
-            <ish-product-item ishProductContext [sku]="sku" displayType="row" />
+            <ish-product-item displayType="row" ishProductContext [sku]="sku" />
           </div>
         }
       </div>

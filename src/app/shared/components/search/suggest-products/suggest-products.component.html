@@ -4,10 +4,10 @@
     @for (productSku of products | slice: 0 : maxAutoSuggests; track productSku) {
       <ish-suggest-products-tile
         ishProductContext
-        [sku]="productSku"
         [completeness]="1"
-        [inputTerms$]="inputTerms$"
         [deviceType]="deviceType"
+        [inputTerms$]="inputTerms$"
+        [sku]="productSku"
         (routeChange)="handleInputFocus()"
       />
     }

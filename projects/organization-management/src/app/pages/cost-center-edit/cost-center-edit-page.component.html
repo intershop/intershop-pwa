@@ -3,25 +3,25 @@
 @if (costCenter$ | async; as costCenter) {
   <div>
     <form
-      [formGroup]="form"
-      (ngSubmit)="submitForm(costCenter)"
-      ishFormSubmit
       #ccForm="ngForm"
       class="form-horizontal"
+      ishFormSubmit
       novalidate
+      [formGroup]="form"
+      (ngSubmit)="submitForm(costCenter)"
     >
-      <ish-cost-center-form [form]="form" [costCenter]="costCenter" />
+      <ish-cost-center-form [costCenter]="costCenter" [form]="form" />
       <div class="row">
         <div class="offset-md-4 col-md-8">
           <button
-            type="submit"
             class="btn btn-primary"
-            [disabled]="form.invalid && ccForm.submitted"
             data-testing-id="edit-cost-center-submit"
+            type="submit"
+            [disabled]="form.invalid && ccForm.submitted"
           >
             {{ 'account.update.button.label' | translate }}
           </button>
-          <a routerLink="../" class="btn btn-secondary" data-testing-id="edit-cost-center-cancel">{{
+          <a class="btn btn-secondary" data-testing-id="edit-cost-center-cancel" routerLink="../">{{
             'account.cancel.link' | translate
           }}</a>
         </div>

@@ -2,7 +2,7 @@
   <h1>{{ 'servererror.page.title' | translate }}</h1>
   <div class="error-text">
     <div [ishServerHtml]="'servererror.page.text' | translate"></div>
-    <p class="text-body-secondary" (click)="expand()" (keydown.enter)="expand()" tabindex="0">
+    <p class="text-body-secondary" tabindex="0" (click)="expand()" (keydown.enter)="expand()">
       @switch (httpError?.status) {
         @case (undefined) {
           {{ stringError | translate }}

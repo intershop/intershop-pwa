@@ -10,7 +10,7 @@
           <!-- Render error message for card fields -->
           @if (renderError$ | async; as errorMessageKey) {
             <div class="col-12">
-              <div role="alert" class="alert alert-danger">
+              <div class="alert alert-danger" role="alert">
                 <span [ishServerHtml]="errorMessageKey | translate"></span>
               </div>
             </div>
@@ -19,12 +19,12 @@
           <div class="col-form-label col-md-4" id="card-name-field-container-label">
             {{ 'checkout.credit_card.holder.label' | translate }}
           </div>
-          <div id="card-name-field-container" class="col-md-6 fix-height"></div>
+          <div class="col-md-6 fix-height" id="card-name-field-container"></div>
           <div class="offset-md-4">
             <small
-              [ishPaypalError]="nameFieldError$ | async"
-              labelId="card-name-field-container-label"
               class="validation-error hide-validation-error"
+              labelId="card-name-field-container-label"
+              [ishPaypalError]="nameFieldError$ | async"
             >
               {{ 'checkout.credit_card.holder.error.invalid' | translate }}
             </small>
@@ -34,14 +34,14 @@
         <div class="row form-group">
           <div class="col-form-label col-md-4" id="card-number-field-container-label">
             {{ 'checkout.credit_card.number.label' | translate }}
-            <span class="required" aria-hidden="true">*</span>
+            <span aria-hidden="true" class="required">*</span>
           </div>
-          <div id="card-number-field-container" class="col-md-6 fix-height"></div>
+          <div class="col-md-6 fix-height" id="card-number-field-container"></div>
           <div class="offset-md-4">
             <small
-              [ishPaypalError]="numberFieldError$ | async"
-              labelId="card-number-field-container-label"
               class="validation-error hide-validation-error"
+              labelId="card-number-field-container-label"
+              [ishPaypalError]="numberFieldError$ | async"
             >
               {{ 'checkout.credit_card.number.error.default' | translate }}
             </small>
@@ -55,12 +55,12 @@
           </div>
           <div class="col-md-8">
             <div class="row">
-              <div id="card-expiry-field-container" class="pe-0 col-4 fix-height"></div>
+              <div class="pe-0 col-4 fix-height" id="card-expiry-field-container"></div>
             </div>
             <small
-              [ishPaypalError]="expiryFieldError$ | async"
-              labelId="card-expiry-field-container-label"
               class="validation-error hide-validation-error"
+              labelId="card-expiry-field-container-label"
+              [ishPaypalError]="expiryFieldError$ | async"
             >
               {{ 'checkout.credit_card.expiry_date.invalid.error' | translate }}
             </small>
@@ -70,30 +70,30 @@
         <div class="row form-group">
           <div class="col-form-label col-md-4" id="card-cvv-field-container-label">
             {{ 'checkout.payment.paypal.credit_card.cvc.label' | translate }}
-            <span class="required" aria-hidden="true">*</span>
+            <span aria-hidden="true" class="required">*</span>
           </div>
           <div class="col-md-8">
             <div class="row">
-              <div id="card-cvv-field-container" class="pe-0 col-4 fix-height"></div>
+              <div class="pe-0 col-4 fix-height" id="card-cvv-field-container"></div>
               <div class="ps-0 col-auto">
                 <ng-template #CVCHelp>
                   <span [innerHTML]="'checkout.credit_card.cvc.popover.content' | translate"></span>
                 </ng-template>
                 <button
-                  type="button"
                   class="btn btn-link"
+                  placement="auto"
+                  type="button"
+                  [attr.aria-label]="'checkout.payment.paypal.credit_card.cvc.popover.title' | translate"
                   [ngbPopover]="CVCHelp"
                   [popoverTitle]="'checkout.payment.paypal.credit_card.cvc.popover.title' | translate"
-                  [attr.aria-label]="'checkout.payment.paypal.credit_card.cvc.popover.title' | translate"
-                  placement="auto"
                 >
                   <i class="bi bi-question-circle"></i>
                 </button>
               </div>
               <small
-                [ishPaypalError]="cvvFieldError$ | async"
-                labelId="card-cvv-field-container-label"
                 class="validation-error hide-validation-error"
+                labelId="card-cvv-field-container-label"
+                [ishPaypalError]="cvvFieldError$ | async"
               >
                 {{ 'checkout.credit_card.cvc_cvv.error.default' | translate }}
               </small>
@@ -105,9 +105,9 @@
       <div class="row">
         <div class="offset-md-4 col-md-8">
           <button
-            type="button"
             class="btn btn-primary"
             id="card-field-submit-button"
+            type="button"
             [attr.aria-label]="'checkout.button.continue.label.aria_label' | translate"
             [disabled]="loadingIframe$ | async"
           >
@@ -118,9 +118,9 @@
           </button>
 
           <button
-            type="button"
             class="btn btn-secondary"
             id="card-field-cancel-button"
+            type="button"
             [attr.aria-label]="'checkout.cancel.button.label.aria_label' | translate"
           >
             {{ 'checkout.cancel.button.label' | translate }}

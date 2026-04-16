@@ -1,12 +1,12 @@
 @if ((visible$ | async) && ('compare' | ishFeature)) {
   <button
-    type="button"
     class="btn add-to-compare"
-    [ngClass]="cssClass"
-    [class.is-selected]="isInCompareList$ | async"
-    [title]="displayType === 'icon' ? ('product.compare.link' | translate) : ''"
-    [tabindex]="ariaHidden ? -1 : 0"
+    type="button"
     [attr.aria-hidden]="ariaHidden"
+    [class.is-selected]="isInCompareList$ | async"
+    [ngClass]="cssClass"
+    [tabindex]="ariaHidden ? -1 : 0"
+    [title]="displayType === 'icon' ? ('product.compare.link' | translate) : ''"
     (click)="toggleCompare()"
   >
     @if (displayType === 'icon') {

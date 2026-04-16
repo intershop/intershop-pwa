@@ -21,11 +21,11 @@
       <div class="list-body">
         @for (pli of lineItems; track pli.productSKU) {
           <ish-quote-line-item-list-element
-            [lineItem]="pli"
             ishProductContext
             [allowZeroQuantity]="true"
-            [sku]="pli.productSKU"
+            [lineItem]="pli"
             [quantity]="pli.quantity?.value"
+            [sku]="pli.productSKU"
           />
         }
       </div>

@@ -1,8 +1,8 @@
 @if (paymentInstrument.paymentMethod === 'Concardis_DirectDebit') {
   <ish-modal-dialog-link
-    (click)="showSepaMandateText()"
     linkText="account.payment.view_sepa_mandate.link"
     [options]="{ titleText: 'account.payment.view_sepa_mandate_text.link' | translate }"
+    (click)="showSepaMandateText()"
   >
     <div class="col-md-12">
       <dl class="row dl-horizontal dl-separator">

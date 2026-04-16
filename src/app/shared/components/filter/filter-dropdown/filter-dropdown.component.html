@@ -1,10 +1,10 @@
-<div ngbDropdown autoClose="outside" [id]="filterElement.id">
+<div autoClose="outside" ngbDropdown [id]="filterElement.id">
   <button
+    class="form-control"
+    data-bs-toggle="dropdown"
     ngbDropdownToggle
     type="button"
     [id]="'dropdownMenuLink-' + filterElement.id"
-    class="form-control"
-    data-bs-toggle="dropdown"
     [title]="placeholder !== filterElement.name ? placeholder : ''"
   >
     <span>{{ placeholder }}</span>
@@ -13,12 +13,12 @@
   <div ngbDropdownMenu [attr.aria-labelledby]="'dropdownMenuLink-' + filterElement.id">
     @for (facet of filterElement.facets; track facet.name) {
       <button
+        class="dropdown-item btn btn-link btn-link-action"
         ngbDropdownItem
         type="button"
-        class="dropdown-item btn btn-link btn-link-action"
+        [attr.aria-current]="facet.selected ? 'true' : undefined"
         [ngClass]="{ selected: facet.selected }"
         (click)="apply(facet)"
-        [attr.aria-current]="facet.selected ? 'true' : undefined"
       >
         {{ facet.displayName }}
         @if (facet.count) {

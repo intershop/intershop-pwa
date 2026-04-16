@@ -14,7 +14,7 @@
   @if (wishlist) {
     <div class="list-item-row row mx-0" data-testing-id="wishlist-list-item-container">
       <div class="col-7 list-item" data-testing-id="wishlist-list-item">
-        <a [routerLink]="'/account/wishlists/' + wishlist.id" data-testing-id="wishlist-list-title">{{
+        <a data-testing-id="wishlist-list-title" [routerLink]="'/account/wishlists/' + wishlist.id">{{
           wishlist.title
         }}</a>
         @if (wishlist.preferred) {
@@ -33,11 +33,11 @@
       </div>
       <div class="col-3 list-item text-end">
         <button
-          type="button"
           class="btn-tool btn-link"
+          data-testing-id="delete-wishlist"
+          type="button"
           title="{{ 'account.wishlist.list.remove' | translate }}"
           (click)="openDeleteConfirmationDialog(wishlist, deleteDialog)"
-          data-testing-id="delete-wishlist"
         >
           <i class="bi bi-trash-fill"></i>
         </button>

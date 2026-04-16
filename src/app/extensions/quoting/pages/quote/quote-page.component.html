@@ -22,7 +22,7 @@
       <ish-quote-view />
     }
     <ish-quote-interactions />
-    <a [routerLink]="['/account/quotes']" class="d-block mt-3">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
+    <a class="d-block mt-3" [routerLink]="['/account/quotes']">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
   }
 }
 @if (loading$ | async) {

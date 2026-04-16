@@ -5,14 +5,14 @@
     #subMenu
     [class]="'dropdown ' + pagelet.stringParam('CSSClass', '')"
     [ngClass]="{ open: opened }"
+    (click)="subMenuHide(subMenu)"
     (mouseenter)="subMenuShow(subMenu)"
     (mouseleave)="subMenuHide(subMenu)"
-    (click)="subMenuHide(subMenu)"
   >
     @if (isRouterLink(pagelet, 'Link')) {
       <a
-        [routerLink]="routerLink(pagelet, 'Link')"
         [ngStyle]="{ width: !pagelet.hasParam('SubNavigationHTML') ? '100%' : '' }"
+        [routerLink]="routerLink(pagelet, 'Link')"
       >
         {{ pagelet.stringParam('LinkText') }}
       </a>

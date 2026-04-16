@@ -14,12 +14,12 @@
     @for (pli of displayItems; track pli; let i = $index) {
       <ish-line-item-list-element
         ishProductContext
-        [sku]="pli.productSKU"
-        [quantity]="pli.quantity.value"
         [allowZeroQuantity]="true"
-        [pli]="pli"
-        [lineItemViewType]="lineItemViewType"
         [editable]="editable && pli.editable"
+        [lineItemViewType]="lineItemViewType"
+        [pli]="pli"
+        [quantity]="pli.quantity.value"
+        [sku]="pli.productSKU"
       />
     }
   </div>

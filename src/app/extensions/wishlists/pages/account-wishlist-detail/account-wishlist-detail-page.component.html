@@ -7,31 +7,31 @@
   </ng-template>
   <div class="float-end pt-3">
     <button
-      type="button"
       class="btn-tool btn-link"
+      data-testing-id="wishlist-sharing"
+      type="button"
       title="{{ 'account.wishlist.header.send_wishlist.label' | translate }}"
       (click)="shareWishlistDialog.show()"
-      data-testing-id="wishlist-sharing"
     >
       <i class="bi bi-share-fill"></i>
     </button>
     @if (wishlist.shared) {
       <button
-        type="button"
         class="btn-tool btn-link ms-3"
+        data-testing-id="wishlist-stop-sharing"
+        type="button"
         title="{{ 'account.wishlist.header.stop_wishlist_sharing.label' | translate }}"
         (click)="unshareWishlist(wishlist.id)"
-        data-testing-id="wishlist-stop-sharing"
       >
         <i class="bi bi-pause-fill"></i>
       </button>
     }
     <button
-      type="button"
-      (click)="editWishlistDialog.show()"
       class="btn-tool btn-link ms-3"
-      [title]="'account.wishlist.header.edit_wishlist.label' | translate"
       data-testing-id="wishlist-details-edit"
+      type="button"
+      [title]="'account.wishlist.header.edit_wishlist.label' | translate"
+      (click)="editWishlistDialog.show()"
     >
       <i class="bi bi-pencil-fill"></i>
     </button>
@@ -39,10 +39,10 @@
   <h1>
     <span data-testing-id="wishlist-title">{{ wishlist?.title }}</span>
     <button
+      class="btn btn-link details-tooltip header-note mt-1"
+      placement="bottom-start"
       type="button"
       [ngbPopover]="WishlistDescription"
-      placement="bottom-start"
-      class="btn btn-link details-tooltip header-note mt-1"
       popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
     >
       {{ 'account.wishlists.heading.tooltip.link' | translate }}<i class="bi bi-info-circle-fill"></i>
@@ -66,9 +66,9 @@
           <div class="list-item-row">
             <ish-wishlist-line-item
               ishProductContext
+              [currentWishlist]="wishlist"
               [sku]="item.sku"
               [wishlistItemData]="item"
-              [currentWishlist]="wishlist"
             />
           </div>
         }

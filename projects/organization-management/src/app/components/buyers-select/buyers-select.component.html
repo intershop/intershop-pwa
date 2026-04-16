@@ -1,5 +1,5 @@
 @if (buyers$ | async; as buyers) {
-  <select [formControl]="control" class="form-control" [formlyAttributes]="field" data-testing-id="buyers-select-box">
+  <select class="form-control" data-testing-id="buyers-select-box" [formControl]="control" [formlyAttributes]="field">
     <option value="all">
       {{ 'account.order_history.filter.all_buyers' | translate }}
     </option>

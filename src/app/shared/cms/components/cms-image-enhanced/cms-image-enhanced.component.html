@@ -1,10 +1,10 @@
 @if (pagelet?.hasParam('Link') && !pagelet.hasParam('LinkText')) {
   @if (isRouterLink(pagelet, 'Link')) {
-    <a [routerLink]="routerLink(pagelet, 'Link')" [attr.title]="pagelet.stringParam('LinkTitle')" class="teaser-link">
+    <a class="teaser-link" [attr.title]="pagelet.stringParam('LinkTitle')" [routerLink]="routerLink(pagelet, 'Link')">
       <ng-container *ngTemplateOutlet="imageEnhanced" />
     </a>
   } @else {
-    <a [href]="pagelet.stringParam('Link')" [attr.title]="pagelet.stringParam('LinkTitle')" class="teaser-link">
+    <a class="teaser-link" [attr.title]="pagelet.stringParam('LinkTitle')" [href]="pagelet.stringParam('Link')">
       <ng-container *ngTemplateOutlet="imageEnhanced" />
     </a>
   }
@@ -16,20 +16,20 @@
   <div class="enhanced-image-container" [ngClass]="pagelet.stringParam('CSSClass')">
     <picture class="enhanced-image">
       @if (pagelet.hasParam('ImageXS')) {
-        <source [srcset]="pagelet.stringParam('ImageXS')" media="(max-width: 767px)" />
+        <source media="(max-width: 767px)" [srcset]="pagelet.stringParam('ImageXS')" />
       }
       @if (pagelet.hasParam('ImageSM')) {
-        <source [srcset]="pagelet.stringParam('ImageSM')" media="(max-width: 991px)" />
+        <source media="(max-width: 991px)" [srcset]="pagelet.stringParam('ImageSM')" />
       }
       @if (pagelet.hasParam('ImageMD')) {
-        <source [srcset]="pagelet.stringParam('ImageMD')" media="(max-width: 1199px)" />
+        <source media="(max-width: 1199px)" [srcset]="pagelet.stringParam('ImageMD')" />
       }
       <img
-        [src]="pagelet.stringParam('Image')"
-        [alt]="pagelet.stringParam('AlternateText') || ('image.alt_text.default' | translate)"
-        [attr.loading]="loading"
-        [attr.fetchpriority]="loading === 'eager' ? 'high' : null"
         class="enhanced-image"
+        [alt]="pagelet.stringParam('AlternateText') || ('image.alt_text.default' | translate)"
+        [attr.fetchpriority]="loading === 'eager' ? 'high' : null"
+        [attr.loading]="loading"
+        [src]="pagelet.stringParam('Image')"
       />
     </picture>
     <div class="enhanced-image-text">
@@ -44,9 +44,9 @@
       }
       @if (pagelet.hasParam('Link') && pagelet.hasParam('LinkText')) {
         <a
-          [routerLink]="routerLink(pagelet, 'Link')"
-          [attr.title]="pagelet.stringParam('LinkTitle')"
           class="btn btn-lg btn-primary"
+          [attr.title]="pagelet.stringParam('LinkTitle')"
+          [routerLink]="routerLink(pagelet, 'Link')"
         >
           {{ pagelet.stringParam('LinkText') }}
         </a>

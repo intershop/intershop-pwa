@@ -2,14 +2,14 @@
 <div [ishScroll]="scrollToMessage$ | async" [scrollSpacing]="scrollSpacing"></div>
 <!-- error messages -->
 @for (message of errorMessages$ | async; track message) {
-  <div class="alert alert-danger" role="alert" data-testing-id="validation-error-message">
+  <div class="alert alert-danger" data-testing-id="validation-error-message" role="alert">
     {{ message }}
   </div>
 }
 
 <!-- info messages -->
 @for (message of infoMessages$ | async; track message) {
-  <div class="alert alert-info" role="alert" data-testing-id="validation-info-message">
+  <div class="alert alert-info" data-testing-id="validation-info-message" role="alert">
     {{ message }}
   </div>
 }
@@ -22,7 +22,7 @@
 <!-- undeliverable items -->
 @if (undeliverableItems$ | async; as undeliverableItems) {
   @if (undeliverableItems.length) {
-    <div class="alert alert-box" role="alert" data-testing-id="undeliverable-items-message">
+    <div class="alert alert-box" data-testing-id="undeliverable-items-message" role="alert">
       <div class="alert-box-header">
         <p>
           {{ 'restricted-items.error.message1' | translate }}<br />

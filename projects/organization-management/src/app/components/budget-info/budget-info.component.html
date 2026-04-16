@@ -9,11 +9,11 @@
 ></ng-template>
 @if ('services.OrderApprovalServiceDefinition.runnable' | ishServerSetting) {
   <button
-    type="button"
     class="btn btn-link budget-info"
-    [ngbPopover]="BudgetPriceTypeInfo"
-    placement="auto"
     data-testing-id="budgetPriceTypeInfoTestingID"
+    placement="auto"
+    type="button"
+    [ngbPopover]="BudgetPriceTypeInfo"
     [title]="'account.organization.budget_price_type.icon' | translate"
   >
     <i class="bi bi-info-circle-fill"></i>

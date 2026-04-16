@@ -91,9 +91,9 @@
         @if (requisition.userBudget?.budget) {
           <div class="col-md-6 mb-3">
             <ish-budget-bar
+              [additionalAmount]="requisition.approval.statusCode !== 'APPROVED' ? orderTotal : undefined"
               [budget]="requisition.userBudget?.budget"
               [spentBudget]="requisition.userBudget?.spentBudget"
-              [additionalAmount]="requisition.approval.statusCode !== 'APPROVED' ? orderTotal : undefined"
             />
           </div>
         }
@@ -101,7 +101,7 @@
       @if (requisition.recurrence) {
         <div class="row mb-3">
           <div class="col-md-6">
-            <ish-order-recurrence [recurrence]="requisition.recurrence" labelCssClass="col-6" valueCssClass="col-6" />
+            <ish-order-recurrence labelCssClass="col-6" valueCssClass="col-6" [recurrence]="requisition.recurrence" />
           </div>
         </div>
       }

@@ -1,7 +1,7 @@
 @if (searchTerm$ | async; as searchTerm) {
   <!-- search result with products -->
   @if ((numberOfItems$ | async) || (filterParams$ | async)) {
-    <ish-search-result [searchTerm]="searchTerm" [deviceType]="deviceType$ | async" />
+    <ish-search-result [deviceType]="deviceType$ | async" [searchTerm]="searchTerm" />
   } @else {
     @if ((searchLoading$ | async) === false) {
       <ish-search-no-result [searchTerm]="searchTerm" />

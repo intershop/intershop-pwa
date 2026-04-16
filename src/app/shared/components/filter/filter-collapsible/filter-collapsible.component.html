@@ -1,11 +1,11 @@
 <div class="filter-group" [ngClass]="{ collapsed: isCollapsed }">
   <button
-    type="button"
-    (click)="toggle()"
     class="btn btn-link btn-content-toggle mb-3"
-    [attr.aria-expanded]="!isCollapsed"
-    [attr.aria-controls]="filterElement.id"
     data-testing-id="filter-toggle-button"
+    type="button"
+    [attr.aria-controls]="filterElement.id"
+    [attr.aria-expanded]="!isCollapsed"
+    (click)="toggle()"
   >
     <h3 class="m-0">{{ filterElement.name }}</h3>
     <i class="bi" [ngClass]="isCollapsed ? 'bi-chevron-down' : 'bi-chevron-up'"></i>

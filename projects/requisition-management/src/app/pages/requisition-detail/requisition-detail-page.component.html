@@ -4,8 +4,8 @@
       <ul class="share-tools">
         <li>
           <a
-            href="javascript:window.print();"
             class="link-print"
+            href="javascript:window.print();"
             rel="nofollow"
             [title]="'account.orderdetails.print_link.text' | translate"
           >
@@ -50,12 +50,12 @@
 
         <div class="row d-flex">
           <!-- Invoice Address -->
-          <ish-info-box heading="checkout.widget.billing-address.heading" class="infobox-wrapper col-md-6">
+          <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.billing-address.heading">
             <ish-address [address]="requisition.invoiceToAddress" [displayEmail]="true" />
           </ish-info-box>
 
           <!-- Payment Method -->
-          <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper col-md-6">
+          <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.payment_method.heading">
             <p>
               {{ requisition.payment?.displayName }}<br />{{
                 requisition.payment?.paymentInstrument?.accountIdentifier
@@ -69,19 +69,19 @@
 
         <div class="row d-flex">
           <!-- Shipping Address -->
-          <ish-info-box heading="checkout.widget.shipping-address.heading" class="infobox-wrapper col-md-6">
+          <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.shipping-address.heading">
             <ish-address [address]="requisition.commonShipToAddress" />
           </ish-info-box>
 
           <!-- Shipping Method -->
-          <ish-info-box heading="checkout.widget.shipping_method.heading" class="infobox-wrapper col-md-6">
+          <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.shipping_method.heading">
             <ish-basket-shipping-method [data]="requisition" />
           </ish-info-box>
         </div>
 
         <!-- Line Items -->
         @if (requisition.lineItems?.length > 0) {
-          <ish-line-item-list [lineItems]="requisition.lineItems" [editable]="false" lineItemViewType="simple" />
+          <ish-line-item-list lineItemViewType="simple" [editable]="false" [lineItems]="requisition.lineItems" />
         }
 
         <!-- order summary -->
@@ -99,10 +99,10 @@
         <ng-template #approvalButtonBar let-requisition="requisition">
           @if (requisition.approval?.statusCode === 'PENDING' && view === 'approver') {
             <div class="section text-end">
-              <button (click)="approveRequisition()" type="button" class="btn btn-primary">
+              <button class="btn btn-primary" type="button" (click)="approveRequisition()">
                 {{ 'approval.detailspage.approve.button.label' | translate }}
               </button>
-              <button (click)="rejectDialog.show()" type="button" class="btn btn-secondary">
+              <button class="btn btn-secondary" type="button" (click)="rejectDialog.show()">
                 {{ 'approval.detailspage.reject.button.label' | translate }}
               </button>
             </div>
@@ -111,14 +111,14 @@
         <ish-requisition-reject-dialog #rejectDialog (submitRejectRequisition)="rejectRequisition($event)" />
 
         <div class="section d-flex d-flex justify-content-between">
-          <a [routerLink]="['../../' + view, { status: requisition.approval.statusCode }]" class="no-print">
+          <a class="no-print" [routerLink]="['../../' + view, { status: requisition.approval.statusCode }]">
             @if (view === 'buyer') {
               {{ 'approval.detailspage.links.return_to_requisitions' | translate }}
             } @else {
               {{ 'approval.detailspage.links.return_to_approvals' | translate }}
             }
           </a>
-          <a routerLink="/home" class="no-print" data-testing-id="home-link">{{
+          <a class="no-print" data-testing-id="home-link" routerLink="/home">{{
             'account.orderdetails.links.continue_shopping' | translate
           }}</a>
         </div>

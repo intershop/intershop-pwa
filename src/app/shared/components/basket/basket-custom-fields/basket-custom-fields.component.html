@@ -5,12 +5,12 @@
       <ish-custom-fields-view [fields]="customFields$ | async" />
     }
     <button
-      type="button"
-      class="btn btn-link btn-link-with-icon"
-      [attr.aria-expanded]="!collapsed"
       aria-controls="basket-custom-fields-input"
-      (click)="collapsed = !collapsed"
+      class="btn btn-link btn-link-with-icon"
       data-testing-id="basket-custom-fields-toggle-link"
+      type="button"
+      [attr.aria-expanded]="!collapsed"
+      (click)="collapsed = !collapsed"
     >
       {{
         (editMode === 'edit'
@@ -22,10 +22,10 @@
     </button>
     <div id="basket-custom-fields-input" [ngbCollapse]="collapsed">
       <form [formGroup]="form" (ngSubmit)="submit()">
-        <ish-custom-fields-formly [form]="form" [fields]="customFields$ | async" />
+        <ish-custom-fields-formly [fields]="customFields$ | async" [form]="form" />
         <div class="row">
           <div class="col-12 offset-md-4 col-md-8">
-            <button type="submit" class="btn btn-primary">
+            <button class="btn btn-primary" type="submit">
               {{
                 (editMode === 'edit'
                   ? 'checkout.custom-fields.save.button.label'
@@ -33,7 +33,7 @@
                 ) | translate
               }}
             </button>
-            <button (click)="cancel()" type="button" class="btn btn-secondary">
+            <button class="btn btn-secondary" type="button" (click)="cancel()">
               {{ 'checkout.custom-fields.cancel.button.label' | translate }}
             </button>
           </div>

@@ -28,10 +28,10 @@
           <li class="d-block">
             <div class="d-grid mt-2">
               <button
-                type="button"
-                (click)="fastCheckout(paymentMethod.id)"
                 class="btn btn-lg btn-block btn-secondary"
+                type="button"
                 [disabled]="paymentMethod.isRestricted"
+                (click)="fastCheckout(paymentMethod.id)"
               >
                 {{ paymentMethod.displayName }}
               </button>
@@ -47,7 +47,7 @@
         @if ('payment.paypal' | ishServerSetting) {
           @if (getPayPalPaymentMethod() | async; as paypalPaymentMethod) {
             <li>
-              <ish-payment-paypal [selectedPaymentMethod]="paypalPaymentMethod" adapterType="Buttons" pageType="cart" />
+              <ish-payment-paypal adapterType="Buttons" pageType="cart" [selectedPaymentMethod]="paypalPaymentMethod" />
             </li>
           }
         }

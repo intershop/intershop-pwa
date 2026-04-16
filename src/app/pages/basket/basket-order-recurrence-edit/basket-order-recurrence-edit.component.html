@@ -3,11 +3,11 @@
     <fieldset class="mt-1">
       <legend class="visually-hidden">{{ 'order.recurrence.form.legend' | translate }}</legend>
       <input
-        type="radio"
+        class="form-check-input"
         id="order_recurrence_single"
         name="order_recurrence"
+        type="radio"
         value="single-order"
-        class="form-check-input"
         [checked]="!recurrence"
         (change)="updateOrderRecurrence(null)"
       />
@@ -16,14 +16,14 @@
       }}</label>
       <div class="mt-2">
         <input
-          type="radio"
+          class="form-check-input"
+          data-testing-id="enable-recurring-order"
           id="order_recurrence_recurring"
           name="order_recurrence"
+          type="radio"
           value="recurring-order"
-          class="form-check-input"
           [checked]="!!recurrence"
           (change)="updateOrderRecurrence(defaultRecurrence)"
-          data-testing-id="enable-recurring-order"
         />
         <label class="form-check-label" for="order_recurrence_recurring">{{
           'order.recurrence.recurring_order.label' | translate
@@ -31,20 +31,20 @@
       </div>
       <ish-content-include includeId="include.basket.recurringorder.ordersummary.pagelet2-Include" />
     </fieldset>
-    <div class="visually-hidden" aria-live="polite" role="text">
+    <div aria-live="polite" class="visually-hidden" role="text">
       {{
         (!!recurrence ? 'order.recurrence.form.announcement.open' : 'order.recurrence.form.announcement.close')
           | translate
       }}
     </div>
     <div
-      [ngbCollapse]="!recurrence"
-      id="order_recurrence_form"
       aria-labelledby="order_recurrence_recurring"
       class="mt-3"
+      id="order_recurrence_form"
+      [ngbCollapse]="!recurrence"
     >
       <form [formGroup]="form">
-        <formly-form [form]="form" [fields]="fields" [model]="model" />
+        <formly-form [fields]="fields" [form]="form" [model]="model" />
       </form>
     </div>
   </div>

@@ -21,15 +21,15 @@
       @if (editable$ | async) {
         <div class="d-flex align-items-center">
           <ish-lazy-product-add-to-order-template
-            [cssClass]="'btn-link btn-tool add-to-order-template'"
             displayType="icon"
+            [cssClass]="'btn-link btn-tool add-to-order-template'"
           />
-          <ish-lazy-product-add-to-wishlist [cssClass]="'btn-link btn-tool ms-0'" displayType="icon" />
+          <ish-lazy-product-add-to-wishlist displayType="icon" [cssClass]="'btn-link btn-tool ms-0'" />
           <button
-            type="button"
             class="btn-tool btn-link"
-            [attr.data-testing-id]="'remove-line-item'"
+            type="button"
             [attr.data-id]="lineItem.id"
+            [attr.data-testing-id]="'remove-line-item'"
             title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
             (click)="onDeleteItem()"
           >

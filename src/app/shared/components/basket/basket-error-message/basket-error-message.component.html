@@ -3,7 +3,7 @@
   <div [ishScroll]="scrollToMessage$ | async" [scrollSpacing]="scrollSpacing">
     @if (basketError.errors?.length) {
       @for (error of basketError.errors; track $index) {
-        <div [class]="cssClass" data-testing-id="basket-errors">
+        <div data-testing-id="basket-errors" [class]="cssClass">
           <strong>{{ error.message }}</strong>
           @if (error.causes; as causes) {
             @for (cause of causes; track $index) {

@@ -13,23 +13,23 @@
           </div>
         }
         <div class="marketing-area">
-          <ish-content-slot [slot]="'app_sf_base_cm:slot.marketing.sidePanel.pagelet2-Slot'" [pagelet]="pagelet" />
+          <ish-content-slot [pagelet]="pagelet" [slot]="'app_sf_base_cm:slot.marketing.sidePanel.pagelet2-Slot'" />
         </div>
       </div>
       <div class="col-md-9">
         <ish-breadcrumb />
         <div class="marketing-area">
-          <ish-content-slot [slot]="'app_sf_base_cm:slot.marketing.base.pagelet2-Slot'" [pagelet]="pagelet" />
+          <ish-content-slot [pagelet]="pagelet" [slot]="'app_sf_base_cm:slot.marketing.base.pagelet2-Slot'" />
         </div>
-        <ish-content-slot [slot]="'app_sf_base_cm:slot.staticPage.content.pagelet2-Slot'" [pagelet]="pagelet" />
+        <ish-content-slot [pagelet]="pagelet" [slot]="'app_sf_base_cm:slot.staticPage.content.pagelet2-Slot'" />
       </div>
     } @else {
       <div class="col-md-12">
         <ish-breadcrumb />
         <div class="marketing-area">
-          <ish-content-slot [slot]="'app_sf_base_cm:slot.marketing.base.pagelet2-Slot'" [pagelet]="pagelet" />
+          <ish-content-slot [pagelet]="pagelet" [slot]="'app_sf_base_cm:slot.marketing.base.pagelet2-Slot'" />
         </div>
-        <ish-content-slot [slot]="'app_sf_base_cm:slot.staticPage.content.pagelet2-Slot'" [pagelet]="pagelet" />
+        <ish-content-slot [pagelet]="pagelet" [slot]="'app_sf_base_cm:slot.staticPage.content.pagelet2-Slot'" />
       </div>
     }
   </div>

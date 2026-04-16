@@ -40,13 +40,13 @@
     }
     <!-- 'Show All' and 'Hide All' links -->
     @if (isShowAllLinkVisible()) {
-      <button type="button" class="btn btn-link btn-content-toggle mt-3" (click)="toggleCollapse()">
+      <button class="btn btn-link btn-content-toggle mt-3" type="button" (click)="toggleCollapse()">
         {{ 'checkout.show_all.link' | translate: { '0': basket.lineItems.length } }}
         <i class="bi bi-chevron-down float-end"></i>
       </button>
     }
     @if (isHideLinkVisible()) {
-      <button type="button" class="btn btn-link btn-content-toggle mt-3" (click)="toggleCollapse()">
+      <button class="btn btn-link btn-content-toggle mt-3" type="button" (click)="toggleCollapse()">
         {{ 'checkout.hide_all.link' | translate }}
         <i class="bi bi-chevron-up float-end"></i>
       </button>

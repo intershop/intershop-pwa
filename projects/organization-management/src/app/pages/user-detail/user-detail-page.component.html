@@ -10,7 +10,7 @@
         <div class="col-md-12">
           <dl class="row dl-horizontal dl-separator">
             <dt class="col-md-4">{{ 'account.user.details.profile.name' | translate }}</dt>
-            <dd data-testing-id="name-field" class="col-md-8">
+            <dd class="col-md-8" data-testing-id="name-field">
               @if (user.title) {
                 {{ user.title }}
               }
@@ -20,7 +20,7 @@
               }
             </dd>
             <dt class="col-md-4">{{ 'account.user.details.profile.email' | translate }}</dt>
-            <dd data-testing-id="email-field" class="col-md-8">{{ user.email }}</dd>
+            <dd class="col-md-8" data-testing-id="email-field">{{ user.email }}</dd>
             <dt class="col-md-4">{{ 'account.user.details.profile.phone' | translate }}</dt>
             @if (user.phoneHome) {
               <dd class="col-md-8">{{ user.phoneHome }}</dd>
@@ -32,10 +32,10 @@
 
     <div class="col-2 col-lg-4">
       <a
-        routerLink="profile"
         class="btn-tool"
-        [title]="'account.profile.update.link' | translate: { '0': 'account.user.details.profile.heading' | translate }"
         data-testing-id="edit-user"
+        routerLink="profile"
+        [title]="'account.profile.update.link' | translate: { '0': 'account.user.details.profile.heading' | translate }"
       >
         <i class="bi bi-pencil-fill"></i>
       </a>
@@ -66,13 +66,13 @@
 
       <div class="col-2 col-lg-4">
         <a
-          routerLink="roles"
           class="btn-tool"
+          data-testing-id="edit-roles"
+          routerLink="roles"
           [title]="
             'account.profile.update.link'
               | translate: { '0': 'account.user.details.profile.role_permissions.heading' | translate }
           "
-          data-testing-id="edit-roles"
         >
           <i class="bi bi-pencil-fill"></i>
         </a>
@@ -84,6 +84,6 @@
   }
 }
 
-<a routerLink=".." data-testing-id="back-to-user-management">{{
+<a data-testing-id="back-to-user-management" routerLink="..">{{
   'account.organization.user_management.back_to_list' | translate
 }}</a>

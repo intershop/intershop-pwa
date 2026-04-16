@@ -1,20 +1,20 @@
 @if (isLoggedIn$ | async) {
   <button
-    type="button"
     *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']"
     class="btn btn-secondary"
     data-testing-id="create-quote-from-basket"
+    type="button"
     (click)="addToQuote()"
   >
     {{ 'shopping_cart.quote.create.button' | translate }}
   </button>
 } @else {
   <button
-    type="button"
     class="btn btn-secondary"
+    data-testing-id="create-quote-from-basket"
+    type="button"
     [title]="'account.login.quotes.message' | translate"
     (click)="login()"
-    data-testing-id="create-quote-from-basket"
   >
     {{ 'shopping_cart.quote.create.button' | translate }}
   </button>

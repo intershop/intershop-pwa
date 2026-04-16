@@ -2,8 +2,8 @@
   @if (product.manufacturer; as manufacturer) {
     <div class="product-brand">
       <a
-        [routerLink]="['/search', manufacturer]"
         [attr.aria-label]="'product.details.company.label' | translate: { '0': manufacturer }"
+        [routerLink]="['/search', manufacturer]"
       >
         <span itemprop="brand">{{ manufacturer }}</span>
       </a>

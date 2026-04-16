@@ -1,5 +1,5 @@
 @if (quote$ | async; as quote) {
-  <form [formGroup]="form" class="form-horizontal">
+  <form class="form-horizontal" [formGroup]="form">
     <div class="row">
       <div class="col-4 col-md-3 col-xl-2 col-form-label">
         {{ 'quote.edit.unsubmitted.quote_no.label' | translate }}
@@ -17,29 +17,29 @@
     <div class="section">
       <!-- displayName -->
       <div class="row">
-        <label for="quote-displayname" class="col-4 col-md-3 col-xl-2 col-form-label"
+        <label class="col-4 col-md-3 col-xl-2 col-form-label" for="quote-displayname"
           >{{ 'quote.edit.unsubmitted.name.label' | translate }}:</label
         >
         <div class="col-8 col-md-9 col-xl-10">
           <ish-in-place-edit
             #inPlaceEditName
-            (edited)="update()"
-            (aborted)="reset()"
             ariaLabelName="quote.edit.unsubmitted.name.label"
+            (aborted)="reset()"
+            (edited)="update()"
           >
             <p
-              viewModeContent
               class="form-control-plaintext w-auto"
+              viewModeContent
               [ngClass]="{ 'fst-italic': !form.get('displayName').value }"
             >
               {{ form.get('displayName').value || 'quote.edit.unsubmitted.enter_an_optional_name.text' | translate }}
             </p>
             <input
-              editModeForm
-              type="text"
-              formControlName="displayName"
               class="form-control"
+              editModeForm
+              formControlName="displayName"
               id="quote-displayname"
+              type="text"
               (keydown.enter)="inPlaceEditName.confirm()"
               (keydown.esc)="inPlaceEditName.cancel()"
             />
@@ -48,27 +48,27 @@
       </div>
       <!-- Comment -->
       <div class="row">
-        <label for="quote-description" class="col-4 col-md-3 col-xl-2 col-form-label"
+        <label class="col-4 col-md-3 col-xl-2 col-form-label" for="quote-description"
           >{{ 'quote.edit.unsubmitted.comment.label' | translate }}:</label
         >
         <div class="col-8 col-md-9 col-xl-10">
           <ish-in-place-edit
             #inPlaceEditComment
-            (edited)="update()"
-            (aborted)="reset()"
             ariaLabelName="quote.edit.unsubmitted.comment.label"
+            (aborted)="reset()"
+            (edited)="update()"
           >
             <p
-              viewModeContent
               class="form-control-plaintext w-auto"
+              viewModeContent
               [ngClass]="{ 'fst-italic': !form.get('description').value }"
             >
               {{ form.get('description').value || 'quote.edit.unsubmitted.provide_comment.text' | translate }}
             </p>
             <textarea
+              class="form-control"
               editModeForm
               formControlName="description"
-              class="form-control"
               id="quote-description"
               (keydown.enter)="inPlaceEditComment.confirm()"
               (keydown.esc)="inPlaceEditComment.cancel()"

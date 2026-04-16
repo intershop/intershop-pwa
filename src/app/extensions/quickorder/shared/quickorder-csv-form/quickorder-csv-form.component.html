@@ -2,19 +2,19 @@
   <h2 class="h3">{{ 'quickorder.page.csv.title' | translate }}</h2>
   <p>{{ 'quickorder.page.csv.subtitle' | translate }}</p>
   <form
+    [attr.aria-label]="'quickorder.page.csv.form.label' | translate"
     [formGroup]="csvForm"
     (ngSubmit)="addCsvToCart()"
-    [attr.aria-label]="'quickorder.page.csv.form.label' | translate"
   >
     <div class="form-group section">
       <input
         #fileInput
-        type="file"
+        accept=".csv"
         name="csvFile"
         size="35"
-        accept=".csv"
-        (change)="onFileChange($event)"
+        type="file"
         [attr.aria-label]="'quickorder.page.csv.file.upload.aria_label' | translate"
+        (change)="onFileChange($event)"
       />
       <div>
         @switch (status) {
@@ -49,10 +49,10 @@
       ></small>
     </div>
     <div>
-      <button type="submit" class="btn btn-primary" name="addToCartCsv" [disabled]="isCsvDisabled">
+      <button class="btn btn-primary" name="addToCartCsv" type="submit" [disabled]="isCsvDisabled">
         {{ 'quickorder.page.add.cart' | translate }}
       </button>
-      <button type="reset" class="btn btn-link" name="reset" (click)="resetInput()">
+      <button class="btn btn-link" name="reset" type="reset" (click)="resetInput()">
         {{ 'quickorder.page.csv.reset.form' | translate }}
       </button>
     </div>

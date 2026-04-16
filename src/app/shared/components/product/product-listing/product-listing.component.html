@@ -5,26 +5,26 @@
   @if (isEndlessScrolling) {
     <div
       infiniteScroll
-      (scrolled)="loadMoreProducts('down')"
-      (scrolledUp)="loadMoreProducts('up')"
       [alwaysCallback]="true"
       [immediateCheck]="true"
       [infiniteScrollDistance]="scrollDistance"
+      (scrolled)="loadMoreProducts('down')"
+      (scrolledUp)="loadMoreProducts('up')"
     >
       <ish-product-list-toolbar
+        [fragmentOnRouting]="fragmentOnRouting"
         [itemCount]="listing.itemCount"
+        [sortBy]="sortBy$ | async"
         [sortableAttributes]="listing.sortableAttributes"
         [viewType]="viewType$ | async"
-        [sortBy]="sortBy$ | async"
-        [fragmentOnRouting]="fragmentOnRouting"
       />
-      <ish-product-list [products]="listing.products()" [categoryId]="categoryId" [viewType]="viewType$ | async" />
+      <ish-product-list [categoryId]="categoryId" [products]="listing.products()" [viewType]="viewType$ | async" />
       <div class="row justify-content-center">
         @if (!listing.allPagesAvailable()) {
           <ish-product-list-paging
             [currentPage]="listing.lastPage"
-            [pageIndices]="listing.pageIndices()"
             [fragmentOnRouting]="fragmentOnRouting"
+            [pageIndices]="listing.pageIndices()"
           />
         }
       </div>
@@ -35,20 +35,20 @@
       @if (currentPage$ | async; as currentPage) {
         <ng-template #pagingToolbar>
           <ish-product-list-toolbar
-            [itemCount]="listing.itemCount"
-            [sortableAttributes]="listing.sortableAttributes"
-            [viewType]="viewType$ | async"
-            [sortBy]="sortBy$ | async"
             [currentPage]="currentPage"
-            [pageIndices]="listing.pageIndices(currentPage)"
             [fragmentOnRouting]="fragmentOnRouting"
             [isPaging]="true"
+            [itemCount]="listing.itemCount"
+            [pageIndices]="listing.pageIndices(currentPage)"
+            [sortBy]="sortBy$ | async"
+            [sortableAttributes]="listing.sortableAttributes"
+            [viewType]="viewType$ | async"
           />
         </ng-template>
         <ng-container *ngTemplateOutlet="pagingToolbar" />
         <ish-product-list
-          [products]="listing.productsOfPage(currentPage)"
           [categoryId]="categoryId"
+          [products]="listing.productsOfPage(currentPage)"
           [viewType]="viewType$ | async"
         />
         @if (listingLoading$ | async) {

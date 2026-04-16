@@ -12,22 +12,22 @@
 @if (budget) {
   <div class="budget-bar">
     <div
-      class="budget-bar-used"
-      [title]="spentBudget | ishPrice"
-      [ngClass]="displayClass"
       aria-hidden="true"
+      class="budget-bar-used"
+      [ngClass]="displayClass"
       [ngStyle]="{ width: budgetPercentage / 100 | percent }"
+      [title]="spentBudget | ishPrice"
     >
       {{ spentBudget | ishPrice }}
     </div>
     @if (additionalAmount?.value) {
       <div
-        [title]="additionalAmount | ishPrice"
-        class="budget-bar-used budget-bar-used-additional border-start"
-        [ngClass]="addDisplayClass"
-        role="progressbar"
-        [ngStyle]="{ width: additionalPercentage / 100 | percent }"
         aria-hidden="true"
+        class="budget-bar-used budget-bar-used-additional border-start"
+        role="progressbar"
+        [ngClass]="addDisplayClass"
+        [ngStyle]="{ width: additionalPercentage / 100 | percent }"
+        [title]="additionalAmount | ishPrice"
       >
         <span>{{ additionalAmount | ishPrice }}</span>
       </div>

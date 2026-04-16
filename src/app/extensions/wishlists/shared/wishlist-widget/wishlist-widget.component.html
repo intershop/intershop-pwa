@@ -5,10 +5,10 @@
       <ng-container class="section">
         <div class="product-list" data-testing-id="wishlistProductsList">
           <ish-products-list
-            [productSKUs]="wishlistsItemsSkus"
-            listStyle="carousel"
             listItemStyle="tile"
+            listStyle="carousel"
             [listItemConfiguration]="tileConfiguration"
+            [productSKUs]="wishlistsItemsSkus"
           />
         </div>
       </ng-container>
@@ -16,7 +16,7 @@
       <p>{{ 'account.wishlists.no_items' | translate }}</p>
     }
   }
-  <a routerLink="/account/wishlists" data-testing-id="emptyWishlistProductsList">{{
+  <a data-testing-id="emptyWishlistProductsList" routerLink="/account/wishlists">{{
     'account.overview.wishlist.view_all' | translate
   }}</a>
 </div>
