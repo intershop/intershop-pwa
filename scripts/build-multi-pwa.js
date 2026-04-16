@@ -59,6 +59,7 @@ configurations.forEach(({ theme }) => {
     `dist/${theme}/run-standalone.js`,
     `const path = require('path');
 process.env.BROWSER_FOLDER = path.join(__dirname, 'browser');
+process.env.THEME = process.env.THEME || '${theme}';
 require('child_process').fork(path.join(__dirname, 'server', 'main'));
 `
   );

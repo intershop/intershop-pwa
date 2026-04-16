@@ -1,0 +1,65 @@
+# Multi-Theme Setup: One SSR container per theme, Nginx as reverse proxy.
+# Replaces PM2-based multi-theme management.
+#
+# Usage:
+#   export ICM_BASE_URL=https://develop.icm.intershop.de
+#   docker compose -f docker-compose.multi-theme.yml up --build
+
+services:
+  ssr-b2c:
+    image: intershophub/intershop-pwa-ssr:b2c
+    build:
+      context: .
+      args:
+        activeThemes: b2c
+    command: ['node', 'dist/b2c/run-standalone']
+    environment:
+      ICM_BASE_URL: ${ICM_BASE_URL:-https://develop.icm.intershop.de}
+      SOURCE_MAPS: 'true'
+      LOGLEVEL: ${LOGLEVEL:-error}
+      LOGFORMAT: ${LOGFORMAT:-json}
+    expose:
+      - '4200'
+    restart: unless-stopped
+
+  ssr-b2b:
+    image: intershophub/intershop-pwa-ssr:b2b
+    build:
+      context: .
+      args:
+        activeThemes: b2b
+    command: ['node', 'dist/b2b/run-standalone']
+    environment:
+      ICM_BASE_URL: ${ICM_BASE_URL:-https://develop.icm.intershop.de}
+      DEPLOY_URL: '/b2b/'
+      SOURCE_MAPS: 'true'
+      LOGLEVEL: ${LOGLEVEL:-error}
+      LOGFORMAT: ${LOGFORMAT:-json}
+    expose:
+      - '4200'
+    restart: unless-stopped
+
+  nginx:
+    image: intershophub/intershop-pwa-nginx
+    build: nginx
+    depends_on:
+      - ssr-b2c
+      - ssr-b2b
+    ports:
+      - '4200:80'
+    environment:
+      UPSTREAM_PWA: 'http://ssr-b2c:4200'
+      THEME_UPSTREAMS: 'b2c=ssr-b2c:4200,b2b=ssr-b2b:4200'
+      ICM_BASE_URL: ${ICM_BASE_URL:-https://develop.icm.intershop.de}
+      NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
+      CACHE: 0
+      # Multi-channel config: path-based routing for b2b and b2c
+      MULTI_CHANNEL: |
+        .+:
+          - baseHref: /b2b
+            channel: default
+            theme: b2b
+          - baseHref: /
+            channel: default
+            theme: b2c
+    restart: unless-stopped

@@ -4,12 +4,10 @@ set -e
 
 if [ -z "$*" ]
 then
-  # use 'exec node dist/<theme>/run-standalone'
-  # instead of pm2 to fallback to running
-  # a single theme only
-
-  node dist/build-ecosystem.js
-  exec pm2-runtime dist/ecosystem.yml
+  # Run directly with Node (single theme per container, no PM2)
+  # THEME is determined by the build's activeThemes arg
+  THEME_DIR=$(ls -d dist/*/server 2>/dev/null | head -1 | cut -d'/' -f2)
+  exec node "dist/${THEME_DIR}/run-standalone.js"
 else
   exec "$@"
 fi
