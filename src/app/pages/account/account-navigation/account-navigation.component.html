@@ -54,15 +54,13 @@
                 [routerLinkActive]="activeClass"
                 [routerLinkActiveOptions]="{ exact: item.routerLink === '/account' ? true : false }"
               >
+                <!-- prettier-ignore-->
                 <a
                   [routerLink]="item.routerLink"
                   class="link-decoration-hover"
                   [attr.data-testing-id]="item.id + '-nav-link'"
                 >
-                  @if (item.icon) {
-                    <i class="bi" [class]="item.icon"></i>
-                  }
-                  {{ item.localizationKey | translate }}
+                  @if (item.icon) {<i class="bi" [class]="item.icon"></i>}{{ item.localizationKey | translate }}
                 </a>
               </li>
             }

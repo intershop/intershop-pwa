@@ -57,27 +57,22 @@
         @if (recurringOrder.approvalStatuses) {
           <dl class="row dl-horizontal dl-separator">
             <dt class="col-6">{{ 'account.recurring_order.details.requisition_number.label' | translate }}</dt>
+            <!-- prettier-ignore -->
             <dd class="col-6">
               <a
                 [routerLink]="['/account/requisitions/buyer', recurringOrder.id, { status: 'APPROVED' }]"
                 data-testing-id="requisiton-link"
                 >{{ recurringOrder.documentNo }}</a
               ><br />
-              (
-              @for (approval of recurringOrder.approvalStatuses; track approval.approver.email; let last = $last) {
-                {{
+              (@for (approval of recurringOrder.approvalStatuses; track approval.approver.email; let last = $last) {{{
                   'account.recurring_order.details.approved.text'
                     | translate
                       : {
                           name: approval.approver.firstName + ' ' + approval.approver.lastName,
                           date: approval.approvalDate | ishDate: 'shortDate',
                         }
-                }}
-                @if (!last) {
-                  ,
-                }
-              }
-              )
+                }}@if (!last) {, }
+              })
             </dd>
           </dl>
         }
