@@ -14,7 +14,11 @@ const { PurgeCSSPlugin } = require('purgecss-webpack-plugin');
 const { globSync } = require('glob');
 
 class Logger {
-  constructor(private target: string, private config: string, progressActive: boolean) {
+  constructor(
+    private target: string,
+    private config: string,
+    progressActive: boolean
+  ) {
     if (progressActive) {
       console.log('\n');
     }

@@ -1,13 +1,13 @@
 @if (success) {
-<p data-testing-id="successText">
-  {{ 'helpdesk.contactus.thankyou' | translate }}<br />
-  {{ 'helpdesk.contactus.youwillreceive' | translate }}
-</p>
+  <p data-testing-id="successText">
+    {{ 'helpdesk.contactus.thankyou' | translate }}<br />
+    {{ 'helpdesk.contactus.youwillreceive' | translate }}
+  </p>
 } @else {
-<div class="alert alert-danger" role="alert">
-  <p>{{ 'helpdesk.mail_not_sent.message' | translate }}</p>
-  <p>{{ 'helpdesk.try_again.message' | translate }}</p>
-</div>
+  <div class="alert alert-danger" role="alert">
+    <p>{{ 'helpdesk.mail_not_sent.message' | translate }}</p>
+    <p>{{ 'helpdesk.try_again.message' | translate }}</p>
+  </div>
 }
 
 <p>

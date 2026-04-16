@@ -27,7 +27,10 @@ export type ConcardisErrorMessageType =
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PaymentConcardisComponent implements OnInit, OnChanges {
-  constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {}
+  constructor(
+    protected scriptLoader: ScriptLoaderService,
+    protected cd: ChangeDetectorRef
+  ) {}
   /**
    * concardis payment method, needed to get configuration parameters
    */

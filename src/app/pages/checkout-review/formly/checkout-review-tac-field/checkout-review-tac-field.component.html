@@ -12,13 +12,13 @@
         [attr.aria-describedby]="props.ariaDescribedByIds"
       />
       <span
-        [ishServerHtml]="'checkout.tac.text' | translate : { '0': 'page://page.termsAndConditions.pagelet2-Page' }"
+        [ishServerHtml]="'checkout.tac.text' | translate: { '0': 'page://page.termsAndConditions.pagelet2-Page' }"
       ></span>
     </label>
   </div>
   @if (showError) {
-  <div class="validation-message">
-    <ish-validation-message [field]="field" class="validation-message" />
-  </div>
+    <div class="validation-message">
+      <ish-validation-message [field]="field" class="validation-message" />
+    </div>
   }
 </div>

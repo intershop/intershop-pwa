@@ -1,31 +1,37 @@
 @if (paymentCostThresholdReached(paymentMethod)) {
-<p>
-  {{ 'checkout.payment.payment_cost_threshold.amount_reached' | translate }}
-  {{ basket.totals.total | ishPrice }}
-</p>
-} @else { @if (!paymentMethod.isRestricted) {
-<div>
-  @if (paymentMethod.paymentCosts?.[priceType]) {
   <p>
-    {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{ paymentMethod.paymentCosts | ishPrice }}&nbsp; @if
-    (paymentMethod.paymentCostsThreshold) {
-    <span class="text-body-secondary">
-      <span>-&nbsp;</span>{{ 'checkout.payment.payment_cost_threshold.text' | translate }}
-      <span class="text-nowrap" data-testing-id="basket-payment-cost">{{
-        paymentMethod.paymentCostsThreshold | ishPrice
-      }}</span>
-    </span>
-    }
+    {{ 'checkout.payment.payment_cost_threshold.amount_reached' | translate }}
+    {{ basket.totals.total | ishPrice }}
   </p>
-  }
-</div>
 } @else {
-{{ 'checkout.payment.method.charges.text' | translate }}
-&nbsp;
-{{ paymentMethod.paymentCosts | ishPrice }}
-&nbsp; @for (restriction of paymentMethod.restrictionCauses; track restriction.code) {
-<p class="text-info" data-testing-id="basket-payment-restriction-information">
-  {{ restriction.message }}
-</p>
-} } }
+  @if (!paymentMethod.isRestricted) {
+    <div>
+      @if (paymentMethod.paymentCosts?.[priceType]) {
+        <p>
+          {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{
+            paymentMethod.paymentCosts | ishPrice
+          }}&nbsp;
+          @if (paymentMethod.paymentCostsThreshold) {
+            <span class="text-body-secondary">
+              <span>-&nbsp;</span>{{ 'checkout.payment.payment_cost_threshold.text' | translate }}
+              <span class="text-nowrap" data-testing-id="basket-payment-cost">{{
+                paymentMethod.paymentCostsThreshold | ishPrice
+              }}</span>
+            </span>
+          }
+        </p>
+      }
+    </div>
+  } @else {
+    {{ 'checkout.payment.method.charges.text' | translate }}
+    &nbsp;
+    {{ paymentMethod.paymentCosts | ishPrice }}
+    &nbsp;
+    @for (restriction of paymentMethod.restrictionCauses; track restriction.code) {
+      <p class="text-info" data-testing-id="basket-payment-restriction-information">
+        {{ restriction.message }}
+      </p>
+    }
+  }
+}
 <!--payment restriction information -->

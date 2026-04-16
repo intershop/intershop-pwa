@@ -47,7 +47,10 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
     formState: {},
   };
 
-  constructor(private appFacade: AppFacade, private afcProvider: AddressFormConfigurationProvider) {}
+  constructor(
+    private appFacade: AppFacade,
+    private afcProvider: AddressFormConfigurationProvider
+  ) {}
 
   ngOnInit(): void {
     this.countries$ = this.appFacade.countries$()?.pipe(

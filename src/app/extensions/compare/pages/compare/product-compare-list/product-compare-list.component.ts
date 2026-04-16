@@ -46,7 +46,10 @@ export class ProductCompareListComponent implements OnInit {
 
   getProductWithoutCommonAttributes = ProductHelper.getProductWithoutCommonAttributes;
 
-  constructor(private shoppingFacade: ShoppingFacade, private compareFacade: CompareFacade) {}
+  constructor(
+    private shoppingFacade: ShoppingFacade,
+    private compareFacade: CompareFacade
+  ) {}
 
   ngOnInit() {
     this.compareProducts$ = this.compareProductSKUs$.pipe(

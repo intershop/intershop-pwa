@@ -2,74 +2,74 @@
 <ish-error-message [error]="orderTemplateError$ | async" />
 
 @if (orderTemplate$ | async; as orderTemplate) {
-<ng-container ishProductContext>
-  <ish-in-place-edit
-    #inPlaceEdit
-    (edited)="updateTitle()"
-    (aborted)="resetTitle()"
-    ariaLabelName="account.order_template.edit.name.label"
-    buttonClass="btn-lg"
-    [confirmDisabled]="!form.valid"
-  >
-    <h1 viewModeContent>
-      {{ orderTemplate?.title }}
-    </h1>
-    <div editModeForm class="flex-grow-1 position-relative" style="margin-top: 12px; margin-bottom: 16px">
-      <formly-form
-        [form]="form"
-        [model]="model"
-        [fields]="fields"
-        (keydown.enter)="inPlaceEdit.confirm()"
-        (keydown.esc)="inPlaceEdit.cancel()"
-      />
-    </div>
-  </ish-in-place-edit>
-  @if (noOfUnavailableProducts$ | async; as noOfUnavailableProducts) {
-  <p data-testing-id="out-of-stock-warning" class="alert alert-info">
-    {{ 'account.order_template.out_of_stock.warning' | translate : { num: noOfUnavailableProducts } }}
-  </p>
-  }
-  <div class="section">
-    @if (orderTemplate.itemsCount && orderTemplate.itemsCount > 0) {
-    <ng-container class="section">
-      <div class="list-header d-md-flex">
-        <div class="col-6 list-header-item">{{ 'account.order_template.table.header.item' | translate }}</div>
-        <div class="col-2 list-header-item text-end">
-          {{ 'shopping_cart.qty.heading' | translate }}
-        </div>
-        <div class="col-2 list-header-item text-end">
-          {{ 'account.order_template.table.header.date_added' | translate }}
-        </div>
-        <div class="col-2 list-header-item column-price text-end">
-          {{ 'account.order_template.table.header.price' | translate }}
-        </div>
+  <ng-container ishProductContext>
+    <ish-in-place-edit
+      #inPlaceEdit
+      (edited)="updateTitle()"
+      (aborted)="resetTitle()"
+      ariaLabelName="account.order_template.edit.name.label"
+      buttonClass="btn-lg"
+      [confirmDisabled]="!form.valid"
+    >
+      <h1 viewModeContent>
+        {{ orderTemplate?.title }}
+      </h1>
+      <div editModeForm class="flex-grow-1 position-relative" style="margin-top: 12px; margin-bottom: 16px">
+        <formly-form
+          [form]="form"
+          [model]="model"
+          [fields]="fields"
+          (keydown.enter)="inPlaceEdit.confirm()"
+          (keydown.esc)="inPlaceEdit.cancel()"
+        />
       </div>
-      <div class="list-body">
-        @for (item of orderTemplate.items; track item.id; let i = $index) {
-        <div class="list-item-row list-item-row-big">
-          <ish-account-order-template-detail-line-item
-            ishProductContext
-            [propagateIndex]="i"
-            [sku]="item.sku"
-            [quantity]="item.desiredQuantity.value"
-            [orderTemplateItemData]="item"
-            [currentOrderTemplate]="orderTemplate"
-          />
-        </div>
-        }
-      </div>
-    </ng-container>
-    } @else {
-    <p>{{ 'account.order_template.no_entries' | translate }}</p>
+    </ish-in-place-edit>
+    @if (noOfUnavailableProducts$ | async; as noOfUnavailableProducts) {
+      <p data-testing-id="out-of-stock-warning" class="alert alert-info">
+        {{ 'account.order_template.out_of_stock.warning' | translate: { num: noOfUnavailableProducts } }}
+      </p>
     }
-  </div>
-  @if (orderTemplate.itemsCount) {
-  <ish-product-add-to-basket [cssClass]="'btn btn-primary float-end'" />
-  }
-</ng-container>
+    <div class="section">
+      @if (orderTemplate.itemsCount && orderTemplate.itemsCount > 0) {
+        <ng-container class="section">
+          <div class="list-header d-md-flex">
+            <div class="col-6 list-header-item">{{ 'account.order_template.table.header.item' | translate }}</div>
+            <div class="col-2 list-header-item text-end">
+              {{ 'shopping_cart.qty.heading' | translate }}
+            </div>
+            <div class="col-2 list-header-item text-end">
+              {{ 'account.order_template.table.header.date_added' | translate }}
+            </div>
+            <div class="col-2 list-header-item column-price text-end">
+              {{ 'account.order_template.table.header.price' | translate }}
+            </div>
+          </div>
+          <div class="list-body">
+            @for (item of orderTemplate.items; track item.id; let i = $index) {
+              <div class="list-item-row list-item-row-big">
+                <ish-account-order-template-detail-line-item
+                  ishProductContext
+                  [propagateIndex]="i"
+                  [sku]="item.sku"
+                  [quantity]="item.desiredQuantity.value"
+                  [orderTemplateItemData]="item"
+                  [currentOrderTemplate]="orderTemplate"
+                />
+              </div>
+            }
+          </div>
+        </ng-container>
+      } @else {
+        <p>{{ 'account.order_template.no_entries' | translate }}</p>
+      }
+    </div>
+    @if (orderTemplate.itemsCount) {
+      <ish-product-add-to-basket [cssClass]="'btn btn-primary float-end'" />
+    }
+  </ng-container>
 }
 
 <a routerLink="/account/order-templates">{{ 'account.order_template.list.link.back' | translate }}</a>
 @if (orderTemplateLoading$ | async) {
-<ish-loading />
+  <ish-loading />
 }

@@ -1,19 +1,21 @@
 <div class="section">
   <h2 class="h3">{{ 'account.wishlists.widget.heading' | translate }}</h2>
-  @if (allWishlistsItemsSkus$ | async; as wishlistsItemsSkus) { @if (wishlistsItemsSkus.length > 0) {
-  <ng-container class="section">
-    <div class="product-list" data-testing-id="wishlistProductsList">
-      <ish-products-list
-        [productSKUs]="wishlistsItemsSkus"
-        listStyle="carousel"
-        listItemStyle="tile"
-        [listItemConfiguration]="tileConfiguration"
-      />
-    </div>
-  </ng-container>
-  } @else {
-  <p>{{ 'account.wishlists.no_items' | translate }}</p>
-  } }
+  @if (allWishlistsItemsSkus$ | async; as wishlistsItemsSkus) {
+    @if (wishlistsItemsSkus.length > 0) {
+      <ng-container class="section">
+        <div class="product-list" data-testing-id="wishlistProductsList">
+          <ish-products-list
+            [productSKUs]="wishlistsItemsSkus"
+            listStyle="carousel"
+            listItemStyle="tile"
+            [listItemConfiguration]="tileConfiguration"
+          />
+        </div>
+      </ng-container>
+    } @else {
+      <p>{{ 'account.wishlists.no_items' | translate }}</p>
+    }
+  }
   <a routerLink="/account/wishlists" data-testing-id="emptyWishlistProductsList">{{
     'account.overview.wishlist.view_all' | translate
   }}</a>

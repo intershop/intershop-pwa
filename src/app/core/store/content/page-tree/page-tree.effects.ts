@@ -9,7 +9,10 @@ import { loadContentPageTree, loadContentPageTreeFail, loadContentPageTreeSucces
 
 @Injectable()
 export class PageTreeEffects {
-  constructor(private actions$: Actions, private cmsService: CMSService) {}
+  constructor(
+    private actions$: Actions,
+    private cmsService: CMSService
+  ) {}
 
   loadContentPageTree$ = createEffect(() =>
     this.actions$.pipe(

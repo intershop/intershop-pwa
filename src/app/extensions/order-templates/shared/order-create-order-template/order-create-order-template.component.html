@@ -8,12 +8,13 @@
     data-testing-id="addOrderToOrderTemplateButton"
   >
     @if (displaySpinner() !== true) {
-    {{ 'order_template.create.heading' | translate }}
+      {{ 'order_template.create.heading' | translate }}
     } @else {
-    <!-- spinning animation after clicking button -->
-    <i class="bi bi-arrow-clockwise spin-icon"></i>
-    <span>{{ 'common.button.spinning.label' | translate }}</span>
-    }&nbsp;
+      <!-- spinning animation after clicking button -->
+      <i class="bi bi-arrow-clockwise spin-icon"></i>
+      <span>{{ 'common.button.spinning.label' | translate }}</span>
+    }
+    &nbsp;
   </button>
 </div>
 

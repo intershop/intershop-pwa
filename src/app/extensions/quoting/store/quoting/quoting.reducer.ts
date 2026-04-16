@@ -95,10 +95,10 @@ export const quotingReducer = createReducer(
             ? // add if entity does not exist
               quotingAdapter.addOne(val, acc)
             : acc.entities[val.id].type !== val.type
-            ? // overwrite when type changes on server
-              quotingAdapter.setOne(val, acc)
-            : // no change by default
-              acc,
+              ? // overwrite when type changes on server
+                quotingAdapter.setOne(val, acc)
+              : // no change by default
+                acc,
         state
       )
   ),

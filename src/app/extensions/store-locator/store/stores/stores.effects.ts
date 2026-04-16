@@ -10,7 +10,10 @@ import { loadStores, loadStoresFail, loadStoresSuccess } from './stores.actions'
 
 @Injectable()
 export class StoresEffects {
-  constructor(private actions$: Actions, private storesService: StoresService) {}
+  constructor(
+    private actions$: Actions,
+    private storesService: StoresService
+  ) {}
 
   loadStores$ = createEffect(() =>
     this.actions$.pipe(

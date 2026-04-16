@@ -16,7 +16,10 @@ export class CategoryPageComponent implements OnInit {
   category$: Observable<CategoryView>;
   deviceType$: Observable<DeviceType>;
 
-  constructor(private shoppingFacade: ShoppingFacade, private appFacade: AppFacade) {}
+  constructor(
+    private shoppingFacade: ShoppingFacade,
+    private appFacade: AppFacade
+  ) {}
 
   ngOnInit() {
     // prevent flickering after login by waiting for a valid category

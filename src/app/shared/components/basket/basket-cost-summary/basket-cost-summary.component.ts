@@ -28,7 +28,10 @@ export class BasketCostSummaryComponent implements OnInit {
   taxTranslation$: Observable<string>;
   invert = PriceHelper.invert;
 
-  constructor(private accountFacade: AccountFacade, private router: Router) {}
+  constructor(
+    private accountFacade: AccountFacade,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.taxTranslation$ = this.accountFacade.userPriceDisplayType$.pipe(

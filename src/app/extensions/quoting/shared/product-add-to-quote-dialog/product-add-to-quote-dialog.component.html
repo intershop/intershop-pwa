@@ -1,29 +1,32 @@
-@if (activeQuoteRequest$ | async; as quote) { @if (state$ | async; as state) {
-<div class="modal-header">
-  <h2 id="product-add-to-quote-modal-title" class="modal-title">
-    @if (state === 'Submitted') {
-    {{ 'quote.edit.submitted.heading' | translate }}
-    } @else {
-    {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate }} -
-    {{ quote.displayName || quote.number }}
-    }
-  </h2>
-  <button type="button" class="btn-close" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
-</div>
-<div class="modal-body">
-  <ish-error-message [error]="error$ | async" />
-  @if (state === 'New') {
-  <ish-quote-edit />
-  } @else {
-  <ish-quote-view />
+@if (activeQuoteRequest$ | async; as quote) {
+  @if (state$ | async; as state) {
+    <div class="modal-header">
+      <h2 id="product-add-to-quote-modal-title" class="modal-title">
+        @if (state === 'Submitted') {
+          {{ 'quote.edit.submitted.heading' | translate }}
+        } @else {
+          {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate }} -
+          {{ quote.displayName || quote.number }}
+        }
+      </h2>
+      <button type="button" class="btn-close" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
+    </div>
+    <div class="modal-body">
+      <ish-error-message [error]="error$ | async" />
+      @if (state === 'New') {
+        <ish-quote-edit />
+      } @else {
+        <ish-quote-view />
+      }
+    </div>
+    <div class="modal-footer">
+      <a class="btn btn-link me-auto" [routerLink]="['/account/quotes']">{{
+        'account.quotes.widget.view_all_quotes.link' | translate
+      }}</a>
+      <ish-quote-interactions />
+    </div>
   }
-</div>
-<div class="modal-footer">
-  <a class="btn btn-link me-auto" [routerLink]="['/account/quotes']">{{
-    'account.quotes.widget.view_all_quotes.link' | translate
-  }}</a>
-  <ish-quote-interactions />
-</div>
-} } @if (loading$ | async) {
-<ish-loading />
+}
+@if (loading$ | async) {
+  <ish-loading />
 }

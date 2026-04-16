@@ -36,7 +36,11 @@ export class ProductNotificationEditComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private context: ProductContextFacade, private accountFacade: AccountFacade, private router: Router) {}
+  constructor(
+    private context: ProductContextFacade,
+    private accountFacade: AccountFacade,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.visible$ = this.context.select('displayProperties', 'addToNotification');

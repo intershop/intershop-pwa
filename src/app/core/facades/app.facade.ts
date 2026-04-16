@@ -26,7 +26,11 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {
-  constructor(private store: Store, private router: Router, private appRef: ApplicationRef) {
+  constructor(
+    private store: Store,
+    private router: Router,
+    private appRef: ApplicationRef
+  ) {
     this.routingInProgress$.subscribe(noop);
 
     store.pipe(select(getICMBaseURL)).subscribe(icmBaseUrl => (this.icmBaseUrl = icmBaseUrl));

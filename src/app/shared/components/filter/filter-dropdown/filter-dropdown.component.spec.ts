@@ -18,7 +18,7 @@ describe('Filter Dropdown Component', () => {
       count: 0,
       selected: false,
       level: 0,
-    } as Facet);
+    }) as Facet;
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FilterDropdownComponent);

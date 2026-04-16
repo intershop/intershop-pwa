@@ -1,8 +1,10 @@
 @for (info of infoMessages$ | async; track info.code) {
-<div class="alert alert-info" data-testing-id="info-messages">
-  {{ info.message }}
-  @if (info.causes) { @for (cause of info.causes; track cause.code) {
-  <p>{{ cause.message }}</p>
-  } }
-</div>
+  <div class="alert alert-info" data-testing-id="info-messages">
+    {{ info.message }}
+    @if (info.causes) {
+      @for (cause of info.causes; track cause.code) {
+        <p>{{ cause.message }}</p>
+      }
+    }
+  </div>
 }

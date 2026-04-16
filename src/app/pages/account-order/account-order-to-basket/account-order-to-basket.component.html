@@ -8,11 +8,12 @@
     data-testing-id="addOrderToBasketButton"
   >
     @if (displaySpinner() !== true) {
-    {{ 'account.orderdetails.add_to_cart.button.label' | translate }}
-    <!-- spinning animation after clicking button -->
+      {{ 'account.orderdetails.add_to_cart.button.label' | translate }}
+      <!-- spinning animation after clicking button -->
     } @else {
-    <i class="bi bi-arrow-clockwise spin-icon"></i>
-    <span>{{ 'common.button.spinning.label' | translate }}</span>
-    }&nbsp;
+      <i class="bi bi-arrow-clockwise spin-icon"></i>
+      <span>{{ 'common.button.spinning.label' | translate }}</span>
+    }
+    &nbsp;
   </button>
 </div>

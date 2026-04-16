@@ -1,34 +1,34 @@
 @if (visible$ | async) {
-<div class="bundled-product-list">
-  <h2 class="h3">{{ 'product.productBundle.products.heading' | translate }}</h2>
-  <div class="product-list row">
-    @for (part of parts$ | async; track part.sku) {
-    <div class="col-lg-8 product-list-item list-view">
-      <ish-product-item
-        displayType="row"
-        ishProductContext
-        [sku]="part.sku"
-        [quantity]="part.quantity"
-        [configuration]="{
-          readOnly: true,
-          price: false,
-          inventory: false,
-          shipment: false,
-          promotions: false,
-          addToBasket: false,
-          addToWishlist: false,
-          addToOrderTemplate: false,
-          addToQuote: false,
-          addToCompare: false
-        }"
-      />
+  <div class="bundled-product-list">
+    <h2 class="h3">{{ 'product.productBundle.products.heading' | translate }}</h2>
+    <div class="product-list row">
+      @for (part of parts$ | async; track part.sku) {
+        <div class="col-lg-8 product-list-item list-view">
+          <ish-product-item
+            displayType="row"
+            ishProductContext
+            [sku]="part.sku"
+            [quantity]="part.quantity"
+            [configuration]="{
+              readOnly: true,
+              price: false,
+              inventory: false,
+              shipment: false,
+              promotions: false,
+              addToBasket: false,
+              addToWishlist: false,
+              addToOrderTemplate: false,
+              addToQuote: false,
+              addToCompare: false,
+            }"
+          />
+        </div>
+      }
     </div>
-    }
-  </div>
-  <div class="product-info">
-    <div class="col align-self-start g-0">
-      <ish-product-add-to-basket />
+    <div class="product-info">
+      <div class="col align-self-start g-0">
+        <ish-product-add-to-basket />
+      </div>
     </div>
   </div>
-</div>
 }

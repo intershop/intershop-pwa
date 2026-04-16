@@ -4,15 +4,16 @@
   <h1>{{ 'helpdesk.contact_us.heading' | translate }}</h1>
 
   @if ((success$ | async) === undefined) {
-  <div class="row">
-    <div class="col-md-10 col-lg-8 col-xl-7">
-      <ish-contact-form (request)="createRequest($event)" />
+    <div class="row">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <ish-contact-form (request)="createRequest($event)" />
+      </div>
     </div>
-  </div>
-  <p [innerHTML]="'helpdesk.user_service.message' | translate"></p>
+    <p [innerHTML]="'helpdesk.user_service.message' | translate"></p>
   } @else {
-  <ish-contact-confirmation [success]="success$ | async" />
-  } @if (loading$ | async) {
-  <ish-loading />
+    <ish-contact-confirmation [success]="success$ | async" />
+  }
+  @if (loading$ | async) {
+    <ish-loading />
   }
 </div>

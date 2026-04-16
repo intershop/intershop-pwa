@@ -1,7 +1,9 @@
 @if (contentPage$ | async; as contentPage) {
-<!-- the 'pageid' attribute is needed for the Design View and should not be removed -->
-@if (contentPage.pageletIDs.length) {
-<ish-content-pagelet [pageletId]="contentPage.pageletIDs[0]" [attr.pageid]="contentPage.id" />
-} } @if (contentPageLoading$ | async) {
-<ish-loading />
+  <!-- the 'pageid' attribute is needed for the Design View and should not be removed -->
+  @if (contentPage.pageletIDs.length) {
+    <ish-content-pagelet [pageletId]="contentPage.pageletIDs[0]" [attr.pageid]="contentPage.id" />
+  }
+}
+@if (contentPageLoading$ | async) {
+  <ish-loading />
 }

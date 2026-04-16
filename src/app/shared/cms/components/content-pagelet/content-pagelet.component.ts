@@ -46,7 +46,11 @@ export class ContentPageletComponent implements OnChanges, OnInit {
   private pageletId$ = new ReplaySubject<string>(1);
   private destroyRef = inject(DestroyRef);
 
-  constructor(private injector: Injector, private cmsFacade: CMSFacade, private cdRef: ChangeDetectorRef) {}
+  constructor(
+    private injector: Injector,
+    private cmsFacade: CMSFacade,
+    private cdRef: ChangeDetectorRef
+  ) {}
   ngOnInit() {
     this.pageletId$
       .pipe(

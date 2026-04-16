@@ -18,7 +18,10 @@ export class PaypalErrorDirective implements OnChanges {
   /** ID of the associated label element to toggle validation-error class */
   @Input({ required: true }) labelId: string;
 
-  constructor(private elementRef: ElementRef<HTMLElement>, private renderer: Renderer2) {}
+  constructor(
+    private elementRef: ElementRef<HTMLElement>,
+    private renderer: Renderer2
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasError) {

@@ -73,7 +73,10 @@ import { mapToProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 @Injectable({ providedIn: 'root' })
 export class ShoppingFacade {
-  constructor(private store: Store, @Inject(PRICE_UPDATE) private priceUpdate: InjectSingle<typeof PRICE_UPDATE>) {}
+  constructor(
+    private store: Store,
+    @Inject(PRICE_UPDATE) private priceUpdate: InjectSingle<typeof PRICE_UPDATE>
+  ) {}
 
   // CATEGORY
 

@@ -23,7 +23,10 @@ export class QuoteViewComponent implements OnInit {
   asQuote = QuotingHelper.asQuote;
   asQuoteRequest = QuotingHelper.asQuoteRequest;
 
-  constructor(private accountFacade: AccountFacade, private context: QuoteContextFacade) {}
+  constructor(
+    private accountFacade: AccountFacade,
+    private context: QuoteContextFacade
+  ) {}
 
   ngOnInit() {
     this.quote$ = this.context.select('entity');

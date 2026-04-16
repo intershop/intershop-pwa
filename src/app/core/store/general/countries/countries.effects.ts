@@ -12,7 +12,11 @@ import { getAllCountries } from './countries.selectors';
 
 @Injectable()
 export class CountriesEffects {
-  constructor(private actions$: Actions, private store: Store, private countryService: CountryService) {}
+  constructor(
+    private actions$: Actions,
+    private store: Store,
+    private countryService: CountryService
+  ) {}
 
   loadCountries$ = createEffect(() =>
     this.actions$.pipe(

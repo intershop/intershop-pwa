@@ -5,20 +5,20 @@
   </div>
 
   <div class="modal-body">
-    @for (option of cookieConsentOptions?.options | keyvalue : unsorted; track $index) {
-    <div class="cookie-option">
-      <label class="mb-2">
-        <input
-          type="checkbox"
-          class="form-check-input mt-0"
-          [checked]="option.value.required || cookieConsentSettings?.enabledOptions.includes(option.key)"
-          [disabled]="option.value.required"
-          (change)="selectedIds[option.key] = !selectedIds[option.key]"
-        />
-        <span>{{ option.value.name | translate }}</span>
-      </label>
-      <p>{{ option.value.description | translate }}</p>
-    </div>
+    @for (option of cookieConsentOptions?.options | keyvalue: unsorted; track $index) {
+      <div class="cookie-option">
+        <label class="mb-2">
+          <input
+            type="checkbox"
+            class="form-check-input mt-0"
+            [checked]="option.value.required || cookieConsentSettings?.enabledOptions.includes(option.key)"
+            [disabled]="option.value.required"
+            (change)="selectedIds[option.key] = !selectedIds[option.key]"
+          />
+          <span>{{ option.value.name | translate }}</span>
+        </label>
+        <p>{{ option.value.description | translate }}</p>
+      </div>
     }
   </div>
 

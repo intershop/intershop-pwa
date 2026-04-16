@@ -60,8 +60,8 @@ export class PunchoutService {
     return punchoutType === 'cxml'
       ? this.punchoutHeaderCXML
       : punchoutType === 'oci'
-      ? this.punchoutHeaderOCI
-      : this.punchoutHeader;
+        ? this.punchoutHeaderOCI
+        : this.punchoutHeader;
   }
 
   /**
@@ -224,8 +224,8 @@ export class PunchoutService {
         permissions.includes('APP_B2B_SEND_CXML_BASKET')
           ? this.transferCxmlPunchoutBasket()
           : permissions.includes('APP_B2B_SEND_OCI_BASKET')
-          ? this.transferOciPunchoutBasket()
-          : EMPTY
+            ? this.transferOciPunchoutBasket()
+            : EMPTY
       )
     );
   }
@@ -520,10 +520,11 @@ export class PunchoutService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .get<{ items: OciConfigurationItem[] }>(
-            `customers/${this.apiService.encodeResourceId(customer.customerNo)}/punchouts/oci5/configurations`,
-            { headers: this.punchoutHeaderOCI }
-          )
+          .get<{
+            items: OciConfigurationItem[];
+          }>(`customers/${this.apiService.encodeResourceId(customer.customerNo)}/punchouts/oci5/configurations`, {
+            headers: this.punchoutHeaderOCI,
+          })
           .pipe(map(data => data.items))
       )
     );
@@ -561,7 +562,9 @@ export class PunchoutService {
     return this.currentCustomer$.pipe(
       switchMap(customer =>
         this.apiService
-          .put<{ items: OciConfigurationItem[] }>(
+          .put<{
+            items: OciConfigurationItem[];
+          }>(
             `customers/${this.apiService.encodeResourceId(customer.customerNo)}/punchouts/oci5/configurations`,
             { items: ociConfiguration },
             { headers: this.punchoutHeaderOCI }

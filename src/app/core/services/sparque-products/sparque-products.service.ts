@@ -21,7 +21,10 @@ export class SparqueProductsService implements ProductsServiceInterface {
   // Maximum number of facet options to request from the Sparque API.
   private readonly facetOptionsCount = '10';
 
-  constructor(private sparqueApiService: SparqueApiService, private sparqueSearchMapper: SparqueSearchMapper) {}
+  constructor(
+    private sparqueApiService: SparqueApiService,
+    private sparqueSearchMapper: SparqueSearchMapper
+  ) {}
 
   /**
    * Searches for products based on the provided search parameters.

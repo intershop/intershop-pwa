@@ -18,7 +18,7 @@
   <div>
     <!-- Error message -->
     @if (error) {
-    <ish-basket-error-message [error]="error" />
+      <ish-basket-error-message [error]="error" />
     }
 
     <!-- Basket Info messages -->
@@ -29,17 +29,17 @@
 
     <!-- Dynamic Promotion Message -->
     @if (basket?.dynamicMessages?.length) {
-    <div class="alert alert-info">
-      <ul class="list-unstyled">
-        @for (msg of basket.dynamicMessages; track msg) {
-        <li>
-          @if (msg) {
-          <span [ishServerHtml]="msg"></span>
+      <div class="alert alert-info">
+        <ul class="list-unstyled">
+          @for (msg of basket.dynamicMessages; track msg) {
+            <li>
+              @if (msg) {
+                <span [ishServerHtml]="msg"></span>
+              }
+            </li>
           }
-        </li>
-        }
-      </ul>
-    </div>
+        </ul>
+      </div>
     }
   </div>
 
@@ -62,20 +62,20 @@
             </ng-container>
             <ng-template #elseTemplate>
               @if (basket) {
-              <ish-line-item-list [lineItems]="basket.lineItems" />
+                <ish-line-item-list [lineItems]="basket.lineItems" />
               }
             </ng-template>
           </ish-skip-content-link>
 
           @if (loading) {
-          <ish-loading />
+            <ish-loading />
           }
 
           <div class="button-group clearfix">
             <div class="float-md-start">
               <ish-lazy-basket-add-to-quote />
               @if (basket) {
-              <ish-lazy-basket-create-order-template [cssClass]="'btn btn-secondary'" [products]="basket.lineItems" />
+                <ish-lazy-basket-create-order-template [cssClass]="'btn btn-secondary'" [products]="basket.lineItems" />
               }
             </div>
             <ish-clear-basket cssClass="float-md-end" />
@@ -105,9 +105,10 @@
 
           <ng-container *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']">
             @if (loading) {
-            <ish-loading />
-            } @if ('recurringOrder.enabled' | ishServerSetting) {
-            <ish-basket-order-recurrence-edit [recurrence]="basket.recurrence" />
+              <ish-loading />
+            }
+            @if ('recurringOrder.enabled' | ishServerSetting) {
+              <ish-basket-order-recurrence-edit [recurrence]="basket.recurrence" />
             }
           </ng-container>
 

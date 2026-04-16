@@ -9,8 +9,15 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { ServerSettingPipe } from './server-setting.pipe';
 
 @Component({
-  template: `@if ('service.ABC.runnable' | ishServerSetting) { TEST } @if ('always' | ishServerSetting) { [always] } @if
-  ('never' | ishServerSetting) { [never] }`,
+  template: `@if ('service.ABC.runnable' | ishServerSetting) {
+      TEST
+    }
+    @if ('always' | ishServerSetting) {
+      [always]
+    }
+    @if ('never' | ishServerSetting) {
+      [never]
+    }`,
 })
 class TestComponent {}
 

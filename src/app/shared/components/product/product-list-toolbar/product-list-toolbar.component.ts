@@ -22,7 +22,10 @@ export class ProductListToolbarComponent implements OnChanges {
 
   sortOptions: SelectOption[] = [];
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnChanges() {
     this.sortOptions = this.mapSortableAttributesToSelectOptions(this.sortableAttributes);

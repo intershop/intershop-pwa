@@ -6,7 +6,10 @@ import { RESPONSE } from 'ish-core/utils/ssr/ssr.tokens';
 
 @Injectable({ providedIn: 'root' })
 export class HttpStatusCodeService {
-  constructor(private router: Router, @Optional() @Inject(RESPONSE) private response: InjectSingle<typeof RESPONSE>) {}
+  constructor(
+    private router: Router,
+    @Optional() @Inject(RESPONSE) private response: InjectSingle<typeof RESPONSE>
+  ) {}
 
   /**
    * set status for SSR response

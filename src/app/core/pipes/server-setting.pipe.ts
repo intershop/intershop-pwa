@@ -23,7 +23,10 @@ export class ServerSettingPipe implements PipeTransform {
 
   private sub: Subscription;
 
-  constructor(private appFacade: AppFacade, private cdRef: ChangeDetectorRef) {}
+  constructor(
+    private appFacade: AppFacade,
+    private cdRef: ChangeDetectorRef
+  ) {}
 
   transform(path: string) {
     if (path === 'always') {

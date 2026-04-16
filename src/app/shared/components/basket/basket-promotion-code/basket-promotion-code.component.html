@@ -15,7 +15,7 @@
   <ish-error-message [error]="promotionError$ | async" [toast]="toast" />
 
   @if (displaySuccessMessage) {
-  <ish-success-message message="shopping_cart.promotion.qualified_promo.text" [toast]="toast" />
+    <ish-success-message message="shopping_cart.promotion.qualified_promo.text" [toast]="toast" />
   }
 
   <div id="promo-code-input" class="promo-code-input" [ngbCollapse]="isCollapsed" data-testing-id="promo-code-form">

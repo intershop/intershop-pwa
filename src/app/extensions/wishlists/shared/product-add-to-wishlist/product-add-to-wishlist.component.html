@@ -1,25 +1,29 @@
 <!-- display addToCart Icon/animated Icon or link-->
 @if (visible$ | async) {
-<button
-  type="button"
-  name="addProduct"
-  class="btn add-to-wishlist"
-  [ngClass]="cssClass"
-  [title]="displayType === 'icon' ? ('product.add_to_wishlist.link' | translate) : ''"
-  [tabindex]="ariaHidden ? -1 : 0"
-  [attr.aria-hidden]="ariaHidden"
-  (click)="openModal(modal)"
-  data-testing-id="addToWishlistButton"
->
-  @switch (displayType) { @case ('animated') {
-  <i class="bi bi-heart-fill"></i>
-  <span class="share-label">{{ 'product.add_to_wishlist.link' | translate }}</span>
-  } @case ('icon') {
-  <i class="bi bi-heart-fill"></i>
-  } @default {
-  {{ 'product.add_to_wishlist.link' | translate }}
-  } }
-</button>
+  <button
+    type="button"
+    name="addProduct"
+    class="btn add-to-wishlist"
+    [ngClass]="cssClass"
+    [title]="displayType === 'icon' ? ('product.add_to_wishlist.link' | translate) : ''"
+    [tabindex]="ariaHidden ? -1 : 0"
+    [attr.aria-hidden]="ariaHidden"
+    (click)="openModal(modal)"
+    data-testing-id="addToWishlistButton"
+  >
+    @switch (displayType) {
+      @case ('animated') {
+        <i class="bi bi-heart-fill"></i>
+        <span class="share-label">{{ 'product.add_to_wishlist.link' | translate }}</span>
+      }
+      @case ('icon') {
+        <i class="bi bi-heart-fill"></i>
+      }
+      @default {
+        {{ 'product.add_to_wishlist.link' | translate }}
+      }
+    }
+  </button>
 }
 
 <ish-select-wishlist-modal #modal (submitEmitter)="addProductToWishlist($event)" />

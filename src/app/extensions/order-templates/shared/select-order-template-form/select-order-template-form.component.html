@@ -1,7 +1,7 @@
 @if ((orderTemplatesOptions$ | async).length === 0) {
-<formly-form [form]="formGroup" [fields]="singleFieldConfig" />
+  <formly-form [form]="formGroup" [fields]="singleFieldConfig" />
 } @else {
-<div class="col-md-12">
-  <formly-form [form]="formGroup" [fields]="multipleFieldConfig$ | async" />
-</div>
+  <div class="col-md-12">
+    <formly-form [form]="formGroup" [fields]="multipleFieldConfig$ | async" />
+  </div>
 }

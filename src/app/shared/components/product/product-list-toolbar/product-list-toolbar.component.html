@@ -3,37 +3,37 @@
     <div class="row align-items-center">
       <div class="col-sm-3 col-4">
         @if (itemCount >= 0) {
-        <div class="pagination-total text-nowrap" aria-live="polite">
-          {{ 'product.items.label' | translate : { '0': itemCount } }}
-        </div>
+          <div class="pagination-total text-nowrap" aria-live="polite">
+            {{ 'product.items.label' | translate: { '0': itemCount } }}
+          </div>
         }
       </div>
       <div class="col-sm-9 col-8">
         @if (pageIndices?.length && currentPage) {
-        <ish-product-list-paging
-          [currentPage]="currentPage"
-          [pageIndices]="pageIndices"
-          [fragmentOnRouting]="fragmentOnRouting"
-        />
+          <ish-product-list-paging
+            [currentPage]="currentPage"
+            [pageIndices]="pageIndices"
+            [fragmentOnRouting]="fragmentOnRouting"
+          />
         }
       </div>
     </div>
   </div>
   @if (sortOptions?.length) {
-  <div class="col-8 col-sm-9 col-md-3 sort-by">
-    <select
-      class="form-control sort-by-filter"
-      [attr.aria-label]="'product.items.sorting.label' | translate"
-      (change)="changeSortBy($event.target)"
-    >
-      <option value="default" [selected]="sortBy === 'default'">
-        {{ 'product.items.sorting.default.label' | translate }}
-      </option>
-      @for (o of sortOptions; track o.value) {
-      <option [value]="o.value" [selected]="o.value === sortBy">{{ o.label }}</option>
-      }
-    </select>
-  </div>
+    <div class="col-8 col-sm-9 col-md-3 sort-by">
+      <select
+        class="form-control sort-by-filter"
+        [attr.aria-label]="'product.items.sorting.label' | translate"
+        (change)="changeSortBy($event.target)"
+      >
+        <option value="default" [selected]="sortBy === 'default'">
+          {{ 'product.items.sorting.default.label' | translate }}
+        </option>
+        @for (o of sortOptions; track o.value) {
+          <option [value]="o.value" [selected]="o.value === sortBy">{{ o.label }}</option>
+        }
+      </select>
+    </div>
   }
   <div class="col-4 col-sm-3 col-md-2 switch-layout">
     <div class="d-flex align-items-center justify-content-end">

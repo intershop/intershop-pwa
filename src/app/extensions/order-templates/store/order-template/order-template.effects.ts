@@ -54,7 +54,11 @@ import {
 
 @Injectable()
 export class OrderTemplateEffects {
-  constructor(private actions$: Actions, private orderTemplateService: OrderTemplateService, private store: Store) {}
+  constructor(
+    private actions$: Actions,
+    private orderTemplateService: OrderTemplateService,
+    private store: Store
+  ) {}
 
   loadOrderTemplates$ = createEffect(() =>
     this.actions$.pipe(

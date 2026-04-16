@@ -1,6 +1,6 @@
 @if (visible$ | async) {
-<div class="product-id">
-  <span class="product-id-label">{{ 'product.itemNumber.label' | translate }}</span>
-  <span itemprop="sku">{{ sku$ | async }}</span>
-</div>
+  <div class="product-id">
+    <span class="product-id-label">{{ 'product.itemNumber.label' | translate }}</span>
+    <span itemprop="sku">{{ sku$ | async }}</span>
+  </div>
 }

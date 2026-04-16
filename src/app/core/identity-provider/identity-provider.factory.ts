@@ -28,7 +28,11 @@ export class IdentityProviderFactory {
     type?: string;
   };
 
-  constructor(private store: Store, private injector: Injector, private featureToggleService: FeatureToggleService) {
+  constructor(
+    private store: Store,
+    private injector: Injector,
+    private featureToggleService: FeatureToggleService
+  ) {
     if (!SSR) {
       this.store.pipe(select(getIdentityProvider), whenTruthy(), first()).subscribe(config => {
         const provider = this.injector

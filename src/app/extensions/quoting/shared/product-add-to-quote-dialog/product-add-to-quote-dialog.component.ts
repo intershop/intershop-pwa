@@ -25,7 +25,10 @@ export class ProductAddToQuoteDialogComponent implements OnInit {
   // not-dead-code
   modalRef: NgbModalRef;
 
-  constructor(private context: QuoteContextFacade, private router: Router) {}
+  constructor(
+    private context: QuoteContextFacade,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.activeQuoteRequest$ = this.context.select('entity');

@@ -1,45 +1,48 @@
 @if (wishlists?.length > 0) {
-<div class="list-body">
-  <ng-container *ngTemplateOutlet="wishlistRow; context: { wishlist: preferredWishlist }" />
-  @for (wishlist of wishlists; track wishlist.id) { @if (!preferredWishlist || wishlist.id !== preferredWishlist.id) {
-  <ng-container *ngTemplateOutlet="wishlistRow; context: { wishlist: wishlist }" />
-  } }
-</div>
+  <div class="list-body">
+    <ng-container *ngTemplateOutlet="wishlistRow; context: { wishlist: preferredWishlist }" />
+    @for (wishlist of wishlists; track wishlist.id) {
+      @if (!preferredWishlist || wishlist.id !== preferredWishlist.id) {
+        <ng-container *ngTemplateOutlet="wishlistRow; context: { wishlist: wishlist }" />
+      }
+    }
+  </div>
 } @else {
-<p>{{ 'account.wishlists.no_wishlists' | translate }}</p>
+  <p>{{ 'account.wishlists.no_wishlists' | translate }}</p>
 }
 <ng-template #wishlistRow let-wishlist="wishlist">
   @if (wishlist) {
-  <div class="list-item-row row mx-0" data-testing-id="wishlist-list-item-container">
-    <div class="col-7 list-item" data-testing-id="wishlist-list-item">
-      <a [routerLink]="'/account/wishlists/' + wishlist.id" data-testing-id="wishlist-list-title">{{
-        wishlist.title
-      }}</a
-      >@if (wishlist.preferred) {
-      <span class="input-help ps-3">{{ 'account.wishlists.table.preferred' | translate }}</span>
-      } @if (wishlist.shared) {
-      <span
-        class="input-help"
-        [ngClass]="{ 'link-separator': wishlist.preferred && wishlist.shared, 'ps-3': !wishlist.preferred }"
-        >{{ 'account.wishlists.table.shared' | translate }}</span
-      >
-      }
+    <div class="list-item-row row mx-0" data-testing-id="wishlist-list-item-container">
+      <div class="col-7 list-item" data-testing-id="wishlist-list-item">
+        <a [routerLink]="'/account/wishlists/' + wishlist.id" data-testing-id="wishlist-list-title">{{
+          wishlist.title
+        }}</a>
+        @if (wishlist.preferred) {
+          <span class="input-help ps-3">{{ 'account.wishlists.table.preferred' | translate }}</span>
+        }
+        @if (wishlist.shared) {
+          <span
+            class="input-help"
+            [ngClass]="{ 'link-separator': wishlist.preferred && wishlist.shared, 'ps-3': !wishlist.preferred }"
+            >{{ 'account.wishlists.table.shared' | translate }}</span
+          >
+        }
+      </div>
+      <div class="col-2 list-item">
+        {{ 'account.wishlists.items' | translate: { '0': wishlist.itemsCount } }}
+      </div>
+      <div class="col-3 list-item text-end">
+        <button
+          type="button"
+          class="btn-tool btn-link"
+          title="{{ 'account.wishlist.list.remove' | translate }}"
+          (click)="openDeleteConfirmationDialog(wishlist, deleteDialog)"
+          data-testing-id="delete-wishlist"
+        >
+          <i class="bi bi-trash-fill"></i>
+        </button>
+      </div>
     </div>
-    <div class="col-2 list-item">
-      {{ 'account.wishlists.items' | translate : { '0': wishlist.itemsCount } }}
-    </div>
-    <div class="col-3 list-item text-end">
-      <button
-        type="button"
-        class="btn-tool btn-link"
-        title="{{ 'account.wishlist.list.remove' | translate }}"
-        (click)="openDeleteConfirmationDialog(wishlist, deleteDialog)"
-        data-testing-id="delete-wishlist"
-      >
-        <i class="bi bi-trash-fill"></i>
-      </button>
-    </div>
-  </div>
   }
 </ng-template>
 
@@ -49,7 +52,7 @@
   [options]="{
     titleText: 'undefined',
     confirmText: 'account.wishlists.delete_wishlist_dialog.delete_button.text' | translate,
-    rejectText: 'account.wishlists.delete_wishlist_dialog.cancel_button.text' | translate
+    rejectText: 'account.wishlists.delete_wishlist_dialog.cancel_button.text' | translate,
   }"
   (confirmed)="delete($event)"
 >

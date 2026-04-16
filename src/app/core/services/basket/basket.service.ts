@@ -45,7 +45,11 @@ export type BasketUpdateType =
  */
 @Injectable({ providedIn: 'root' })
 export class BasketService {
-  constructor(private apiService: ApiService, private orderService: OrderService, private tokenService: TokenService) {}
+  constructor(
+    private apiService: ApiService,
+    private orderService: OrderService,
+    private tokenService: TokenService
+  ) {}
 
   /**
    * http header for Basket API v1

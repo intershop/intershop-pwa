@@ -43,7 +43,10 @@ export class PaypalConfigService {
   /** Cache for PayPal payment eligibility results to avoid redundant checks */
   private readonly eligibilityCache = new Map<string, boolean>();
 
-  constructor(private appFacade: AppFacade, private scriptLoader: ScriptLoaderService) {}
+  constructor(
+    private appFacade: AppFacade,
+    private scriptLoader: ScriptLoaderService
+  ) {}
 
   /**
    * Generates the PayPal SDK namespace based on the payment method ID.

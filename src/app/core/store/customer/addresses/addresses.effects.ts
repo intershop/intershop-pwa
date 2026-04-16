@@ -26,7 +26,11 @@ import {
 
 @Injectable()
 export class AddressesEffects {
-  constructor(private actions$: Actions, private addressService: AddressService, private store: Store) {}
+  constructor(
+    private actions$: Actions,
+    private addressService: AddressService,
+    private store: Store
+  ) {}
 
   loadAddresses$ = createEffect(() =>
     this.actions$.pipe(

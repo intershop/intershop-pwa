@@ -15,9 +15,9 @@
   <div class="row form-group">
     <div class="offset-md-4 col-md-8">
       @if (form.submitted && form.invalid) {
-      <div id="submit-button-help" aria-live="polite" class="visually-hidden">
-        {{ 'form.submit.validation.message' | translate }}
-      </div>
+        <div id="submit-button-help" aria-live="polite" class="visually-hidden">
+          {{ 'form.submit.validation.message' | translate }}
+        </div>
       }
       <input
         type="submit"

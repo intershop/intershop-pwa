@@ -29,7 +29,10 @@ declare let PayEngine: any;
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PaymentConcardisCreditcardComponent extends PaymentConcardisComponent implements OnInit {
-  constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
+  constructor(
+    protected scriptLoader: ScriptLoaderService,
+    protected cd: ChangeDetectorRef
+  ) {
     super(scriptLoader, cd);
 
     this.monthOptions = range(1, 13)

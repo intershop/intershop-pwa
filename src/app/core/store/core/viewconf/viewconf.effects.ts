@@ -14,7 +14,11 @@ import { setBreadcrumbData, setStickyHeader } from './viewconf.actions';
 
 @Injectable()
 export class ViewconfEffects {
-  constructor(private store: Store, private actions$: Actions, private featureToggleService: FeatureToggleService) {}
+  constructor(
+    private store: Store,
+    private actions$: Actions,
+    private featureToggleService: FeatureToggleService
+  ) {}
 
   toggleStickyHeader$ =
     !SSR &&

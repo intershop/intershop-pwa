@@ -1,99 +1,102 @@
 @if (paymentMethods?.length) {
-<form [formGroup]="paymentForm" class="form-horizontal">
-  <p>{{ 'account.payment.message' | translate }}</p>
-  <!-- Preferred Payment Method -->
-  <div class="section payment-methods">
-    <h2 class="h3">{{ 'account.payment.preferred_method' | translate }}</h2>
-    <div class="panel">
-      @if (preferredPaymentInstrument) {
-      <div
-        [ngClass]="{ 'fw-bold': preferredPaymentInstrument.accountIdentifier }"
-        data-testing-id="preferred-payment-method"
-      >
-        {{ getPreferredPaymentMethod()?.displayName }}
+  <form [formGroup]="paymentForm" class="form-horizontal">
+    <p>{{ 'account.payment.message' | translate }}</p>
+    <!-- Preferred Payment Method -->
+    <div class="section payment-methods">
+      <h2 class="h3">{{ 'account.payment.preferred_method' | translate }}</h2>
+      <div class="panel">
+        @if (preferredPaymentInstrument) {
+          <div
+            [ngClass]="{ 'fw-bold': preferredPaymentInstrument.accountIdentifier }"
+            data-testing-id="preferred-payment-method"
+          >
+            {{ getPreferredPaymentMethod()?.displayName }}
+          </div>
+          @if (preferredPaymentInstrument.accountIdentifier) {
+            <div class="row mt-2" data-testing-id="preferred-payment-instrument">
+              <ng-container
+                *ngTemplateOutlet="paymentWidget; context: { pi: preferredPaymentInstrument, isPreferred: true }"
+              />
+            </div>
+          }
+        } @else {
+          {{ 'account.payment.no_preferred_method' | translate }}
+        }
       </div>
-      @if (preferredPaymentInstrument.accountIdentifier) {
-      <div class="row mt-2" data-testing-id="preferred-payment-instrument">
-        <ng-container
-          *ngTemplateOutlet="paymentWidget; context: { pi: preferredPaymentInstrument, isPreferred: true }"
-        />
-      </div>
-      } } @else {
-      {{ 'account.payment.no_preferred_method' | translate }}
-      }
     </div>
-  </div>
-  <!-- Further Payment Methods -->
-  @if (savedPaymentMethods?.length || standardPaymentMethods?.length) {
-  <div class="payment-methods">
-    <h2 class="h3">{{ 'account.payment.further_payments.heading' | translate }}</h2>
-    @for (method of savedPaymentMethods; track method.id) {
-    <div class="panel section" data-testing-id="paymentMethodList">
-      <div class="fw-bold">
-        {{ method.displayName }}
+    <!-- Further Payment Methods -->
+    @if (savedPaymentMethods?.length || standardPaymentMethods?.length) {
+      <div class="payment-methods">
+        <h2 class="h3">{{ 'account.payment.further_payments.heading' | translate }}</h2>
+        @for (method of savedPaymentMethods; track method.id) {
+          <div class="panel section" data-testing-id="paymentMethodList">
+            <div class="fw-bold">
+              {{ method.displayName }}
+            </div>
+            @for (payment of method.paymentInstruments; track payment.id) {
+              <div class="row">
+                <ng-container *ngTemplateOutlet="paymentWidget; context: { pi: payment, isPreferred: false }" />
+              </div>
+            }
+          </div>
+        }
+        @if (standardPaymentMethods?.length) {
+          <div class="panel" data-testing-id="standardPaymentMethodList">
+            <p class="fw-bold">
+              {{ 'account.payment.standard_methods' | translate }}
+            </p>
+            @for (method of standardPaymentMethods; track method.id) {
+              <div class="pb-2">
+                <input
+                  type="radio"
+                  formControlName="id"
+                  class="form-check-input"
+                  [id]="'paymentOption_' + method.id"
+                  [value]="method.id"
+                />
+                <label class="form-check-label" [for]="'paymentOption_' + method.id">
+                  {{ method.displayName }}
+                </label>
+              </div>
+            }
+          </div>
+        }
+        @if (preferredPaymentInstrument) {
+          <div class="panel">
+            <input type="radio" formControlName="id" class="form-check-input" [id]="'paymentOption_empty'" value="" />
+            <label class="form-check-label" [for]="'paymentOption_empty'">
+              {{ 'account.payment.no_preferred_method' | translate }}
+            </label>
+          </div>
+        }
       </div>
-      @for (payment of method.paymentInstruments; track payment.id) {
-      <div class="row">
-        <ng-container *ngTemplateOutlet="paymentWidget; context: { pi: payment, isPreferred: false }" />
-      </div>
-      }
-    </div>
-    } @if (standardPaymentMethods?.length) {
-    <div class="panel" data-testing-id="standardPaymentMethodList">
-      <p class="fw-bold">
-        {{ 'account.payment.standard_methods' | translate }}
-      </p>
-      @for (method of standardPaymentMethods; track method.id) {
-      <div class="pb-2">
-        <input
-          type="radio"
-          formControlName="id"
-          class="form-check-input"
-          [id]="'paymentOption_' + method.id"
-          [value]="method.id"
-        />
-        <label class="form-check-label" [for]="'paymentOption_' + method.id">
-          {{ method.displayName }}
-        </label>
-      </div>
-      }
-    </div>
-    } @if (preferredPaymentInstrument) {
-    <div class="panel">
-      <input type="radio" formControlName="id" class="form-check-input" [id]="'paymentOption_empty'" value="" />
-      <label class="form-check-label" [for]="'paymentOption_empty'">
-        {{ 'account.payment.no_preferred_method' | translate }}
-      </label>
-    </div>
     }
-  </div>
-  }
-  <ng-template #paymentWidget let-pi="pi" let-isPreferred="isPreferred">
-    <div class="col-sm-7 col-md-5" [ngClass]="{ 'pt-2': !isPreferred }">
-      <button
-        type="button"
-        class="float-end btn btn-link btn-link-action"
-        (click)="deleteUserPayment(pi.id)"
-        data-testing-id="delete-payment-link"
-      >
-        {{ 'checkout.payment.method.delete.link' | translate }}
-      </button>
-      @if (!isPreferred) {
-      <input
-        type="radio"
-        formControlName="id"
-        class="form-check-input"
-        [id]="'paymentOption_' + pi.id"
-        [value]="pi.id"
-      />
-      }
-      <label class="form-check-label" [ngClass]="{ 'ms-0': isPreferred }" [for]="'paymentOption_' + pi.id">
-        {{ pi.accountIdentifier }}
-      </label>
-      <ish-account-payment-concardis-directdebit [paymentInstrument]="pi" />
-    </div>
-  </ng-template>
-</form>
+    <ng-template #paymentWidget let-pi="pi" let-isPreferred="isPreferred">
+      <div class="col-sm-7 col-md-5" [ngClass]="{ 'pt-2': !isPreferred }">
+        <button
+          type="button"
+          class="float-end btn btn-link btn-link-action"
+          (click)="deleteUserPayment(pi.id)"
+          data-testing-id="delete-payment-link"
+        >
+          {{ 'checkout.payment.method.delete.link' | translate }}
+        </button>
+        @if (!isPreferred) {
+          <input
+            type="radio"
+            formControlName="id"
+            class="form-check-input"
+            [id]="'paymentOption_' + pi.id"
+            [value]="pi.id"
+          />
+        }
+        <label class="form-check-label" [ngClass]="{ 'ms-0': isPreferred }" [for]="'paymentOption_' + pi.id">
+          {{ pi.accountIdentifier }}
+        </label>
+        <ish-account-payment-concardis-directdebit [paymentInstrument]="pi" />
+      </div>
+    </ng-template>
+  </form>
 } @else {
-<p data-testing-id="emptyMessage">{{ 'account.payment.no_entries' | translate }}</p>
+  <p data-testing-id="emptyMessage">{{ 'account.payment.no_entries' | translate }}</p>
 }

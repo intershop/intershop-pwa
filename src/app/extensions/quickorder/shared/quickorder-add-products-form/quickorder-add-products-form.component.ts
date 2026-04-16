@@ -22,7 +22,10 @@ export class QuickorderAddProductsFormComponent implements OnInit {
 
   private numberOfRows = 5;
 
-  constructor(private translate: TranslateService, private shoppingFacade: ShoppingFacade) {}
+  constructor(
+    private translate: TranslateService,
+    private shoppingFacade: ShoppingFacade
+  ) {}
 
   ngOnInit() {
     this.initModel();

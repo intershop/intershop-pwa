@@ -2,9 +2,9 @@
   <!-- This element is used by Payone scripts for error handling. -->
   <p class="text-danger col-sm-offset-4" id="error"></p>
   @if (generalErrorMessage) {
-  <p class="text-danger col-sm-offset-4">
-    {{ generalErrorMessage | translate }}
-  </p>
+    <p class="text-danger col-sm-offset-4">
+      {{ generalErrorMessage | translate }}
+    </p>
   }
   <!-- card number -->
   <div class="row form-group">
@@ -41,19 +41,19 @@
 
   <!-- security code CVC -->
   @if (isSecurityCodeCheckRequired()) {
-  <div class="row form-group">
-    <label class="col-form-label col-md-4" for="cvcInput"
-      >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required" aria-hidden="true">*</span></label
-    >
-    <div class="col-sm-6">
-      <span id="cardcvc2" class="inputIframe"></span>
+    <div class="row form-group">
+      <label class="col-form-label col-md-4" for="cvcInput"
+        >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required" aria-hidden="true">*</span></label
+      >
+      <div class="col-sm-6">
+        <span id="cardcvc2" class="inputIframe"></span>
+      </div>
     </div>
-  </div>
   }
 </div>
 
 @if (paymentMethod) {
-<ish-payment-save-checkbox [paymentMethod]="paymentMethod" [form]="payoneCreditCardForm" />
+  <ish-payment-save-checkbox [paymentMethod]="paymentMethod" [form]="payoneCreditCardForm" />
 }
 
 <div class="row">

@@ -21,7 +21,10 @@ export class QuoteWidgetComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private quotingFacade: QuotingFacade, private cd: ChangeDetectorRef) {}
+  constructor(
+    private quotingFacade: QuotingFacade,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.loading$ = this.quotingFacade.loading$;

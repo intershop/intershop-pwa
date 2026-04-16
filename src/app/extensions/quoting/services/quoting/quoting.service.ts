@@ -15,7 +15,10 @@ import { QuoteCompletenessLevel, QuoteRequest, QuoteStub, QuotingEntity } from '
 
 @Injectable({ providedIn: 'root' })
 export class QuotingService {
-  constructor(private apiService: ApiService, private quoteMapper: QuotingMapper) {}
+  constructor(
+    private apiService: ApiService,
+    private quoteMapper: QuotingMapper
+  ) {}
 
   getQuotes() {
     return forkJoin([
@@ -180,21 +183,21 @@ export class QuotingService {
                 pick(change, 'description', 'displayName')
               )
           : change.type === 'change-item'
-          ? this.apiService
-              .b2bUserEndpoint()
-              .put(
-                `quoterequests/${this.apiService.encodeResourceId(
-                  quoteRequestId
-                )}/items/${this.apiService.encodeResourceId(change.itemId)}`,
-                { quantity: { value: change.quantity } }
-              )
-          : this.apiService
-              .b2bUserEndpoint()
-              .delete(
-                `quoterequests/${this.apiService.encodeResourceId(
-                  quoteRequestId
-                )}/items/${this.apiService.encodeResourceId(change.itemId)}`
-              )
+            ? this.apiService
+                .b2bUserEndpoint()
+                .put(
+                  `quoterequests/${this.apiService.encodeResourceId(
+                    quoteRequestId
+                  )}/items/${this.apiService.encodeResourceId(change.itemId)}`,
+                  { quantity: { value: change.quantity } }
+                )
+            : this.apiService
+                .b2bUserEndpoint()
+                .delete(
+                  `quoterequests/${this.apiService.encodeResourceId(
+                    quoteRequestId
+                  )}/items/${this.apiService.encodeResourceId(change.itemId)}`
+                )
       )
     ).pipe(
       last(),

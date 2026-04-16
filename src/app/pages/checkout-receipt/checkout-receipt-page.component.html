@@ -1,14 +1,14 @@
 @if ({ order: order$ | async, basket: submittedBasket$ | async }; as data) {
-<div data-testing-id="checkout-receipt-page">
-  <ish-checkout-receipt [order]="data.basket || data.order">
-    @if (data.basket) {
-    <ish-lazy-checkout-receipt-requisition [basket]="data.basket" />
-    } @else {
-    <ish-checkout-receipt-order [order]="data.order" />
+  <div data-testing-id="checkout-receipt-page">
+    <ish-checkout-receipt [order]="data.basket || data.order">
+      @if (data.basket) {
+        <ish-lazy-checkout-receipt-requisition [basket]="data.basket" />
+      } @else {
+        <ish-checkout-receipt-order [order]="data.order" />
+      }
+    </ish-checkout-receipt>
+    @if (loading$ | async) {
+      <ish-loading />
     }
-  </ish-checkout-receipt>
-  @if (loading$ | async) {
-  <ish-loading />
-  }
-</div>
+  </div>
 }

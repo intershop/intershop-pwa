@@ -1,25 +1,32 @@
-@if (visible$ | async) { @if (promotions$ | async; as promotions) {
-<ul class="promotion-list">
-  @for (promotion of promotions; track promotion.id) { @if (!promotion.disableMessages) {
-  <li class="promotion-list-item">
-    @if (displayType === 'simple' || displayType === 'simpleWithDetail') {
-    <span class="promotion-short-title" [ishServerHtml]="promotion.title"></span>
-    @if (displayType === 'simpleWithDetail') {
-    <ish-promotion-details [promotion]="promotion" />
-    } } @else { @if (promotion.icon) {
-    <div class="promotion-icon" [ishServerHtml]="promotion.icon"></div>
-    } @if (promotion.title) {
-    <div class="promotion-short-title" [ishServerHtml]="promotion.title"></div>
-    }
-    <br />
-    <div>
-      @if (promotion.longTitle) {
-      <span class="promotion-long-title" [ishServerHtml]="promotion.longTitle"></span>
+@if (visible$ | async) {
+  @if (promotions$ | async; as promotions) {
+    <ul class="promotion-list">
+      @for (promotion of promotions; track promotion.id) {
+        @if (!promotion.disableMessages) {
+          <li class="promotion-list-item">
+            @if (displayType === 'simple' || displayType === 'simpleWithDetail') {
+              <span class="promotion-short-title" [ishServerHtml]="promotion.title"></span>
+              @if (displayType === 'simpleWithDetail') {
+                <ish-promotion-details [promotion]="promotion" />
+              }
+            } @else {
+              @if (promotion.icon) {
+                <div class="promotion-icon" [ishServerHtml]="promotion.icon"></div>
+              }
+              @if (promotion.title) {
+                <div class="promotion-short-title" [ishServerHtml]="promotion.title"></div>
+              }
+              <br />
+              <div>
+                @if (promotion.longTitle) {
+                  <span class="promotion-long-title" [ishServerHtml]="promotion.longTitle"></span>
+                }
+                <ish-promotion-details [promotion]="promotion" />
+              </div>
+            }
+          </li>
+        }
       }
-      <ish-promotion-details [promotion]="promotion" />
-    </div>
-    }
-  </li>
-  } }
-</ul>
-} }
+    </ul>
+  }
+}

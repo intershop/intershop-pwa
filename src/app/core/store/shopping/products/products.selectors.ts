@@ -82,8 +82,8 @@ export const getProduct = (sku: string) =>
       ProductHelper.isMasterProduct(product)
         ? createVariationProductMasterView(product, defaultVariationSKU, defaultCategory)
         : ProductHelper.isVariationProduct(product)
-        ? createVariationProductView(product, defaultCategory)
-        : createProductView(product, defaultCategory)
+          ? createVariationProductView(product, defaultCategory)
+          : createProductView(product, defaultCategory)
   );
 
 export const getSelectedProduct = createSelectorFactory<object, ProductView>(projector =>

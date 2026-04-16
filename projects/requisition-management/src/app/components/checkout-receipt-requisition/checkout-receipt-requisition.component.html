@@ -1,45 +1,43 @@
 @if (basket) {
-<div>
-  <h1>
-    <span id="page-main-content" tabindex="-1">{{ 'checkout.cart_for_approval.title' | translate }}</span>
-  </h1>
   <div>
-    @if (requisition$ | async; as req) {
-    <p>
-      {{ 'checkout.id_of_order.label' | translate
-      }}<strong data-testing-id="order-document-number"
-        >&nbsp;
-        <a
-          [routerLink]="['/account/requisitions/buyer/' + req.id, { status: 'PENDING' }]"
-          data-testing-id="requisition-number"
-          >{{ req.requisitionNo || req.recurringOrderDocumentNo }}</a
-        >
-      </strong>
-    </p>
-    }
-
-    <p>{{ 'approval.cart.order_has_been_submitted' | translate }}</p>
-    @if (basket.customerNo) {
+    <h1>
+      <span id="page-main-content" tabindex="-1">{{ 'checkout.cart_for_approval.title' | translate }}</span>
+    </h1>
     <div>
-      <p
-        [ishServerHtml]="
-          'approval.cart.once_order_approved'
-            | translate : { '0': 'route://account/requisitions/buyer', '1': 'route://account' }
-        "
-      ></p>
-      <p [innerHTML]="'approval.cart.notification.mail.text' | translate : { '0': basket.email }"></p>
-    </div>
-    } @else {
-
-    <p [innerHTML]="'approval.cart.notification.mail.text' | translate : { '0': basket.invoiceToAddress.email }"></p>
-
-    }
-
-    <div>
-      @if (basket.approval) {
-      <ish-basket-approval-info [approval]="basket.approval" />
+      @if (requisition$ | async; as req) {
+        <p>
+          {{ 'checkout.id_of_order.label' | translate
+          }}<strong data-testing-id="order-document-number"
+            >&nbsp;
+            <a
+              [routerLink]="['/account/requisitions/buyer/' + req.id, { status: 'PENDING' }]"
+              data-testing-id="requisition-number"
+              >{{ req.requisitionNo || req.recurringOrderDocumentNo }}</a
+            >
+          </strong>
+        </p>
       }
+
+      <p>{{ 'approval.cart.order_has_been_submitted' | translate }}</p>
+      @if (basket.customerNo) {
+        <div>
+          <p
+            [ishServerHtml]="
+              'approval.cart.once_order_approved'
+                | translate: { '0': 'route://account/requisitions/buyer', '1': 'route://account' }
+            "
+          ></p>
+          <p [innerHTML]="'approval.cart.notification.mail.text' | translate: { '0': basket.email }"></p>
+        </div>
+      } @else {
+        <p [innerHTML]="'approval.cart.notification.mail.text' | translate: { '0': basket.invoiceToAddress.email }"></p>
+      }
+
+      <div>
+        @if (basket.approval) {
+          <ish-basket-approval-info [approval]="basket.approval" />
+        }
+      </div>
     </div>
   </div>
-</div>
 }

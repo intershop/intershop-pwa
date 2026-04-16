@@ -68,7 +68,10 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private route: ActivatedRoute, private paypalConfigService: PaypalConfigService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private paypalConfigService: PaypalConfigService
+  ) {}
 
   /**
    * create payment form

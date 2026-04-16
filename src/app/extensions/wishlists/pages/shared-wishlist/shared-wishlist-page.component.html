@@ -1,32 +1,33 @@
 @if (wishlist$ | async; as wishlist) {
-<div class="col-9" data-testing-id="shared-wishlist">
-  <h1>{{ wishlist.title }}</h1>
-  @if (wishlist.itemsCount) {
-  <div class="container">
-    <div class="list-header row">
-      <div class="col-3 col-sm-3 list-header-item">{{ 'wishlist.table.header.item' | translate }}</div>
-      <div class="col-sm-9 col-9 list-header-item column-price">
-        {{ 'wishlist.table.header.price' | translate }}
+  <div class="col-9" data-testing-id="shared-wishlist">
+    <h1>{{ wishlist.title }}</h1>
+    @if (wishlist.itemsCount) {
+      <div class="container">
+        <div class="list-header row">
+          <div class="col-3 col-sm-3 list-header-item">{{ 'wishlist.table.header.item' | translate }}</div>
+          <div class="col-sm-9 col-9 list-header-item column-price">
+            {{ 'wishlist.table.header.price' | translate }}
+          </div>
+        </div>
+        <div class="list-body">
+          @for (item of wishlist.items; track item.id) {
+            <div class="list-item-row">
+              <ish-wishlist-line-item
+                ishProductContext
+                [sku]="item.sku"
+                [wishlistItemData]="item"
+                [currentWishlist]="wishlist"
+                [readOnly]="true"
+              />
+            </div>
+          }
+        </div>
       </div>
-    </div>
-    <div class="list-body">
-      @for (item of wishlist.items; track item.id) {
-      <div class="list-item-row">
-        <ish-wishlist-line-item
-          ishProductContext
-          [sku]="item.sku"
-          [wishlistItemData]="item"
-          [currentWishlist]="wishlist"
-          [readOnly]="true"
-        />
-      </div>
-      }
-    </div>
+    } @else {
+      <p>{{ 'wishlist.no_entries' | translate }}</p>
+    }
   </div>
-  } @else {
-  <p>{{ 'wishlist.no_entries' | translate }}</p>
-  }
-</div>
-} @if (wishlistLoading$ | async) {
-<ish-loading />
+}
+@if (wishlistLoading$ | async) {
+  <ish-loading />
 }

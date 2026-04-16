@@ -15,7 +15,10 @@ import {
 
 @Injectable()
 export class DataRequestsEffects {
-  constructor(private actions$: Actions, private dataRequestsService: DataRequestsService) {}
+  constructor(
+    private actions$: Actions,
+    private dataRequestsService: DataRequestsService
+  ) {}
 
   confirmGDPRDataRequest$ = createEffect(() =>
     this.actions$.pipe(

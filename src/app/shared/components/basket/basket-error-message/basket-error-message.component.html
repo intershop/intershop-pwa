@@ -1,24 +1,28 @@
 <!-- target element to scroll to the messages -->
 @if (error; as basketError) {
-<div [ishScroll]="scrollToMessage$ | async" [scrollSpacing]="scrollSpacing">
-  @if (basketError.errors?.length) { @for (error of basketError.errors; track $index) {
-  <div [class]="cssClass" data-testing-id="basket-errors">
-    <strong>{{ error.message }}</strong>
-    @if (error.causes; as causes) { @for (cause of causes; track $index) {
-    <p role="alert">
-      <span> {{ cause.message }}</span>
-      @if (cause.parameters?.sku) {
-      <span class="product-id"
-        ><br />
-        <span class="product-id-label">{{ 'product.itemNumber.label' | translate }}</span>
-        <span itemprop="sku">{{ cause.parameters.sku }}</span>
-      </span>
+  <div [ishScroll]="scrollToMessage$ | async" [scrollSpacing]="scrollSpacing">
+    @if (basketError.errors?.length) {
+      @for (error of basketError.errors; track $index) {
+        <div [class]="cssClass" data-testing-id="basket-errors">
+          <strong>{{ error.message }}</strong>
+          @if (error.causes; as causes) {
+            @for (cause of causes; track $index) {
+              <p role="alert">
+                <span> {{ cause.message }}</span>
+                @if (cause.parameters?.sku) {
+                  <span class="product-id"
+                    ><br />
+                    <span class="product-id-label">{{ 'product.itemNumber.label' | translate }}</span>
+                    <span itemprop="sku">{{ cause.parameters.sku }}</span>
+                  </span>
+                }
+              </p>
+            }
+          }
+        </div>
       }
-    </p>
-    } }
+    } @else {
+      <ish-error-message [error]="error" [toast]="false" />
+    }
   </div>
-  } } @else {
-  <ish-error-message [error]="error" [toast]="false" />
-  }
-</div>
 }

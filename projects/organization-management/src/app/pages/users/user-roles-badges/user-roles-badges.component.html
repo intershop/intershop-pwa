@@ -1,9 +1,9 @@
 @for (role of roles$ | async; track role.id) {
-<dd>
-  <span
-    class="border border-primary badge"
-    [ngClass]="{ 'bg-light text-dark': role.fixed, 'bg-primary': !role.fixed }"
-    >{{ role.displayName }}</span
-  >
-</dd>
+  <dd>
+    <span
+      class="border border-primary badge"
+      [ngClass]="{ 'bg-light text-dark': role.fixed, 'bg-primary': !role.fixed }"
+      >{{ role.displayName }}</span
+    >
+  </dd>
 }

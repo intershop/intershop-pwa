@@ -17,7 +17,10 @@ import { QuotingFacade } from '../../facades/quoting.facade';
 export class QuotingBasketLineItemsComponent implements OnInit {
   lineItems$: Observable<[string, LineItem[]][]>;
 
-  constructor(private checkoutFacade: CheckoutFacade, private quotingFacade: QuotingFacade) {}
+  constructor(
+    private checkoutFacade: CheckoutFacade,
+    private quotingFacade: QuotingFacade
+  ) {}
 
   ngOnInit() {
     this.quotingFacade.loadQuoting();

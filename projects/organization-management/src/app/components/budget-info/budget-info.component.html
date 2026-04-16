@@ -1,21 +1,21 @@
 <ng-template #BudgetPriceTypeInfo>
   <span
     [ishServerHtml]="
-      ('account.organization.budget_price_type.info' | translate : { type: (customer$ | async).budgetPriceType }) +
+      ('account.organization.budget_price_type.info' | translate: { type: (customer$ | async).budgetPriceType }) +
       (suffix ?? '' | translate)
     "
   >
   </span
 ></ng-template>
 @if ('services.OrderApprovalServiceDefinition.runnable' | ishServerSetting) {
-<button
-  type="button"
-  class="btn btn-link budget-info"
-  [ngbPopover]="BudgetPriceTypeInfo"
-  placement="auto"
-  data-testing-id="budgetPriceTypeInfoTestingID"
-  [title]="'account.organization.budget_price_type.icon' | translate"
->
-  <i class="bi bi-info-circle-fill"></i>
-</button>
+  <button
+    type="button"
+    class="btn btn-link budget-info"
+    [ngbPopover]="BudgetPriceTypeInfo"
+    placement="auto"
+    data-testing-id="budgetPriceTypeInfoTestingID"
+    [title]="'account.organization.budget_price_type.icon' | translate"
+  >
+    <i class="bi bi-info-circle-fill"></i>
+  </button>
 }

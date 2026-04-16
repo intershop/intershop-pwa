@@ -1,13 +1,20 @@
-@switch (state$ | async) { @case ('New') {
-{{ 'quote.state.new' | translate }}
-} @case ('Submitted') {
-{{ 'quote.state.submitted' | translate }}
-} @case ('Responded') {
-{{ 'quote.state.responded' | translate }}
-} @case ('Expired') {
-{{ 'quote.state.expired' | translate }}
-} @case ('Rejected') {
-{{ 'quote.state.rejected' | translate }}
-} @default {
-{{ 'quote.state.unknown' | translate }}
-} }
+@switch (state$ | async) {
+  @case ('New') {
+    {{ 'quote.state.new' | translate }}
+  }
+  @case ('Submitted') {
+    {{ 'quote.state.submitted' | translate }}
+  }
+  @case ('Responded') {
+    {{ 'quote.state.responded' | translate }}
+  }
+  @case ('Expired') {
+    {{ 'quote.state.expired' | translate }}
+  }
+  @case ('Rejected') {
+    {{ 'quote.state.rejected' | translate }}
+  }
+  @default {
+    {{ 'quote.state.unknown' | translate }}
+  }
+}

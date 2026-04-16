@@ -12,14 +12,14 @@
       <ish-user-profile-form [form]="profile" [error]="userError$ | async" />
       <ish-user-roles-selection formControlName="roleIDs" />
       @if ('services.OrderApprovalServiceDefinition.runnable' | ishServerSetting) {
-      <ish-user-budget-form [form]="budgetForm" />
+        <ish-user-budget-form [form]="budgetForm" />
       }
       <div class="row">
         <div class="offset-md-4 col-md-8">
           @if (form.invalid && userForm.submitted) {
-          <div id="submit-button-help" aria-live="polite" class="visually-hidden">
-            {{ 'form.submit.validation.message' | translate }}
-          </div>
+            <div id="submit-button-help" aria-live="polite" class="visually-hidden">
+              {{ 'form.submit.validation.message' | translate }}
+            </div>
           }
           <button
             type="submit"
@@ -37,7 +37,7 @@
     </form>
   </div>
   @if (loading$ | async) {
-  <ish-loading />
+    <ish-loading />
   }
 </div>
 

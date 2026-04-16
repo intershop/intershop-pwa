@@ -23,14 +23,14 @@
 
 <div class="recurring-orders">
   @if (recurringOrders$ | async; as recurringOrders) {
-  <ish-recurring-order-list
-    [recurringOrders]="recurringOrders"
-    [columnsToDisplay]="columnsToDisplay"
-    [context]="context"
-  />
+    <ish-recurring-order-list
+      [recurringOrders]="recurringOrders"
+      [columnsToDisplay]="columnsToDisplay"
+      [context]="context"
+    />
   }
 </div>
 
 @if (recurringOrdersLoading$ | async) {
-<ish-loading />
+  <ish-loading />
 }

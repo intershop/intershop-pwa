@@ -53,7 +53,10 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
 
   @ViewChild('addressForm') addressForm: FormGroupDirective;
 
-  constructor(private accountFacade: AccountFacade, private featureToggleService: FeatureToggleService) {}
+  constructor(
+    private accountFacade: AccountFacade,
+    private featureToggleService: FeatureToggleService
+  ) {}
 
   get buttonLabel() {
     return Object.keys(this.address ?? {}).length > 0

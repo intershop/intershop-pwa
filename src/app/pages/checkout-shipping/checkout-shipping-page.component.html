@@ -6,74 +6,77 @@
   <div class="row">
     <!-- Messages -->
     <div class="col-md-12">
-      @if(basketError$ | async; as error) {
-      <ish-basket-error-message [error]="error" />
+      @if (basketError$ | async; as error) {
+        <ish-basket-error-message [error]="error" />
       }
       <ish-basket-validation-results />
     </div>
     <!-- Shipping method form-->
     @if (shippingMethods$ | async; as shippingMethods) {
-    <div class="col-md-12 col-lg-8">
-      <div class="section">
-        @if (shippingMethods.length) {
-        <div class="shipping-methods">
-          @if ((basketError$ | async) === undefined && nextDisabled) {
-          <div role="alert" class="alert alert-danger">
-            {{ 'checkout.shipping_method.no_Selection.error' | translate }}
-          </div>
+      <div class="col-md-12 col-lg-8">
+        <div class="section">
+          @if (shippingMethods.length) {
+            <div class="shipping-methods">
+              @if ((basketError$ | async) === undefined && nextDisabled) {
+                <div role="alert" class="alert alert-danger">
+                  {{ 'checkout.shipping_method.no_Selection.error' | translate }}
+                </div>
+              }
+              <h2 class="h3">{{ 'checkout.shipping_method.selection.heading' | translate }}</h2>
+              <ish-checkout-shipping />
+            </div>
+          } @else {
+            <div role="alert" class="alert alert-danger">{{ 'checkout.shipping.no_methods.message' | translate }}</div>
+            <a routerLink="/basket">{{ 'checkout.general.back_to_cart.button.label' | translate }}</a>
           }
-          <h2 class="h3">{{ 'checkout.shipping_method.selection.heading' | translate }}</h2>
-          <ish-checkout-shipping />
         </div>
-        } @else {
-        <div role="alert" class="alert alert-danger">{{ 'checkout.shipping.no_methods.message' | translate }}</div>
-        <a routerLink="/basket">{{ 'checkout.general.back_to_cart.button.label' | translate }}</a>
+        @if (isDesiredDeliveryDate$ | async) {
+          <ish-basket-desired-delivery-date [basket]="basket$ | async" />
+        }
+        @if (isBusinessCustomer$ | async) {
+          <ish-basket-order-reference [basket]="basket$ | async" />
+        }
+        @if ('shipping.messageToMerchant' | ishServerSetting) {
+          <ish-basket-merchant-message [basket]="basket$ | async" />
         }
       </div>
-      @if (isDesiredDeliveryDate$ | async) {
-      <ish-basket-desired-delivery-date [basket]="basket$ | async" />
-      } @if (isBusinessCustomer$ | async) {
-      <ish-basket-order-reference [basket]="basket$ | async" />
-      } @if ('shipping.messageToMerchant' | ishServerSetting) {
-      <ish-basket-merchant-message [basket]="basket$ | async" />
-      }
-    </div>
     }
     <!-- basket summary -->
     @if (basket$ | async; as basket) {
-    <div class="col-md-12 col-lg-4 order-summary">
-      <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
-      <ish-basket-address-summary [basket]="basket" />
-      <ish-basket-recurrence-summary [recurrence]="basket.recurrence" />
-      <ish-basket-items-summary [basket]="basket" />
-      <div class="cost-summary">
-        <ish-basket-cost-summary [totals]="basket.totals" />
-        <div class="d-grid">
-          @if (nextDisabled) {
-          <div id="checkout-button-help" aria-live="polite" class="visually-hidden">
-            {{ 'checkout.continue.validation.message' | translate }}
+      <div class="col-md-12 col-lg-4 order-summary">
+        <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
+        <ish-basket-address-summary [basket]="basket" />
+        <ish-basket-recurrence-summary [recurrence]="basket.recurrence" />
+        <ish-basket-items-summary [basket]="basket" />
+        <div class="cost-summary">
+          <ish-basket-cost-summary [totals]="basket.totals" />
+          <div class="d-grid">
+            @if (nextDisabled) {
+              <div id="checkout-button-help" aria-live="polite" class="visually-hidden">
+                {{ 'checkout.continue.validation.message' | translate }}
+              </div>
+            }
+            <button
+              class="btn btn-lg btn-block btn-primary"
+              type="button"
+              [attr.aria-describedby]="nextDisabled ? 'checkout-button-help' : null"
+              (click)="goToNextStep()"
+            >
+              {{ 'checkout.button.label' | translate }}
+            </button>
           </div>
-          }
-          <button
-            class="btn btn-lg btn-block btn-primary"
-            type="button"
-            [attr.aria-describedby]="nextDisabled ? 'checkout-button-help' : null"
-            (click)="goToNextStep()"
-          >
-            {{ 'checkout.button.label' | translate }}
-          </button>
         </div>
+        <!-- Privacy policy link -->
+        <span
+          [ishServerHtml]="
+            'checkout.widget.security_privacy_policy.link'
+              | translate: { '0': 'page://page.privacyPolicy.pagelet2-Page' }
+          "
+        ></span>
       </div>
-      <!-- Privacy policy link -->
-      <span
-        [ishServerHtml]="
-          'checkout.widget.security_privacy_policy.link'
-            | translate : { '0': 'page://page.privacyPolicy.pagelet2-Page' }
-        "
-      ></span>
-    </div>
-    } @if (loading$ | async) {
-    <ish-loading />
+    }
+    @if (loading$ | async) {
+      <ish-loading />
     }
   </div>
 </div>

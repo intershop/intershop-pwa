@@ -1,34 +1,35 @@
 <div class="container line-item-edit-dialog">
   @if (loading$ | async) {
-  <ish-loading />
-  } @if (variation$ | async; as variation) {
-  <div class="row">
-    <!-- right box -->
-    <div class="col-12 col-md">
-      <div class="text-center"><ish-product-image imageType="M" /></div>
-    </div>
-    <!-- left box -->
-    <div class="col-12 col-md product-info">
-      <!-- sku -->
-      <ish-product-id />
-      <!-- price -->
-      <div class="current-price">{{ variationSalePrice$ | async | ishPrice }}</div>
-      <!-- Availability -->
-      <ish-product-inventory />
-      <!-- select (variation) -->
-      <div class="product-variation-container">
-        <ish-product-variation-select />
+    <ish-loading />
+  }
+  @if (variation$ | async; as variation) {
+    <div class="row">
+      <!-- right box -->
+      <div class="col-12 col-md">
+        <div class="text-center"><ish-product-image imageType="M" /></div>
       </div>
-      <!-- input (quantity) -->
-      <div class="form-group">
-        <div class="row">
-          <ish-product-quantity-label for="line-item-edit-quantity" class="col" />
-          <div class="col">
-            <ish-product-quantity elementId="line-item-edit-quantity" />
+      <!-- left box -->
+      <div class="col-12 col-md product-info">
+        <!-- sku -->
+        <ish-product-id />
+        <!-- price -->
+        <div class="current-price">{{ variationSalePrice$ | async | ishPrice }}</div>
+        <!-- Availability -->
+        <ish-product-inventory />
+        <!-- select (variation) -->
+        <div class="product-variation-container">
+          <ish-product-variation-select />
+        </div>
+        <!-- input (quantity) -->
+        <div class="form-group">
+          <div class="row">
+            <ish-product-quantity-label for="line-item-edit-quantity" class="col" />
+            <div class="col">
+              <ish-product-quantity elementId="line-item-edit-quantity" />
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   }
 </div>

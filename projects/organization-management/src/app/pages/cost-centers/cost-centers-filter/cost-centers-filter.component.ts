@@ -78,7 +78,10 @@ export class CostCentersFilterComponent implements OnInit, AfterViewInit {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.fields = [

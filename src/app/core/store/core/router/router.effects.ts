@@ -8,7 +8,10 @@ import { DomService } from 'ish-core/utils/dom/dom.service';
 
 @Injectable()
 export class RouterEffects {
-  constructor(private actions$: Actions, private domService: DomService) {}
+  constructor(
+    private actions$: Actions,
+    private domService: DomService
+  ) {}
 
   setKeyboardFocusOnMainContentAfterNavigation$ =
     !SSR &&

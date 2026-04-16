@@ -17,7 +17,10 @@ import {
 
 @Injectable()
 export class BasketPromotionCodeEffects {
-  constructor(private actions$: Actions, private basketService: BasketService) {}
+  constructor(
+    private actions$: Actions,
+    private basketService: BasketService
+  ) {}
 
   /**
    * Add promotion code to the current basket.

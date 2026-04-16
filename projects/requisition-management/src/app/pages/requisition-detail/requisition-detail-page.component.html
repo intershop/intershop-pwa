@@ -1,136 +1,132 @@
 @if (view$ | async; as view) {
-<div>
-  <div class="float-end">
-    <ul class="share-tools">
-      <li>
-        <a
-          href="javascript:window.print();"
-          class="link-print"
-          rel="nofollow"
-          [title]="'account.orderdetails.print_link.text' | translate"
-        >
-          <i class="bi bi-printer-fill"></i>
-        </a>
-      </li>
-    </ul>
-  </div>
-
-  <h1>
-    @if (view === 'approver') {
-    {{ 'approval.detailspage.approval.heading' | translate }}
-    } @else {
-    {{ 'approval.detailspage.requisition.heading' | translate }}
-    }
-  </h1>
-  <ish-error-message [error]="error$ | async" />
-
-  @if (requisition$ | async; as requisition) {
-  <div class="section loading-container" data-testing-id="order-summary-info">
-    <ish-requisition-summary [requisition]="requisition" [view]="view" />
-
-    <!-- display approval box in buyer view or for customer approvers only -->
-    @if (view === 'buyer') {
-    <ish-requisition-buyer-approval [requisition]="requisition" />
-    } @else {
-
-    <ish-requisition-buyer-approval *ishIsAuthorizedTo="'APP_B2B_ORDER_APPROVAL'" [requisition]="requisition" />
-
-    }
-
-    <ish-requisition-cost-center-approval [requisition]="requisition" />
-
-    <ng-container *ngTemplateOutlet="approvalButtonBar; context: { requisition: requisition }" />
-
-    <h1 class="h2">{{ 'approval.detailspage.order_details.heading' | translate }}</h1>
-
-    @if ('shipping.messageToMerchant' | ishServerSetting) {
-    <div>
-      <!-- MessageToMerchant-->
-      <ish-basket-merchant-message-view [data]="requisition" />
-    </div>
-    }
-
-    <div class="row d-flex">
-      <!-- Invoice Address -->
-      <ish-info-box heading="checkout.widget.billing-address.heading" class="infobox-wrapper col-md-6">
-        <ish-address [address]="requisition.invoiceToAddress" [displayEmail]="true" />
-      </ish-info-box>
-
-      <!-- Payment Method -->
-      <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper col-md-6">
-        <p>
-          {{ requisition.payment?.displayName }}<br />{{ requisition.payment?.paymentInstrument?.accountIdentifier }}
-          @if (!requisition.payment?.displayName && !requisition.payment?.paymentInstrument?.accountIdentifier) {
-
-          {{ requisition.payment?.paymentInstrument }}
-
-          }
-        </p>
-      </ish-info-box>
+  <div>
+    <div class="float-end">
+      <ul class="share-tools">
+        <li>
+          <a
+            href="javascript:window.print();"
+            class="link-print"
+            rel="nofollow"
+            [title]="'account.orderdetails.print_link.text' | translate"
+          >
+            <i class="bi bi-printer-fill"></i>
+          </a>
+        </li>
+      </ul>
     </div>
 
-    <div class="row d-flex">
-      <!-- Shipping Address -->
-      <ish-info-box heading="checkout.widget.shipping-address.heading" class="infobox-wrapper col-md-6">
-        <ish-address [address]="requisition.commonShipToAddress" />
-      </ish-info-box>
-
-      <!-- Shipping Method -->
-      <ish-info-box heading="checkout.widget.shipping_method.heading" class="infobox-wrapper col-md-6">
-        <ish-basket-shipping-method [data]="requisition" />
-      </ish-info-box>
-    </div>
-
-    <!-- Line Items -->
-    @if (requisition.lineItems?.length > 0) {
-    <ish-line-item-list [lineItems]="requisition.lineItems" [editable]="false" lineItemViewType="simple" />
-    }
-
-    <!-- order summary -->
-    <div class="section row">
-      <div class="col-12 col-md-6 offset-md-6">
-        <div class="cost-summary">
-          <h2 class="h3">{{ 'checkout.order_summary.heading' | translate }}</h2>
-          <ish-basket-cost-summary [totals]="requisition.totals" />
-        </div>
-      </div>
-    </div>
-
-    <ng-container *ngTemplateOutlet="approvalButtonBar; context: { requisition: requisition }" />
-
-    <ng-template #approvalButtonBar let-requisition="requisition">
-      @if (requisition.approval?.statusCode === 'PENDING' && view === 'approver') {
-      <div class="section text-end">
-        <button (click)="approveRequisition()" type="button" class="btn btn-primary">
-          {{ 'approval.detailspage.approve.button.label' | translate }}
-        </button>
-        <button (click)="rejectDialog.show()" type="button" class="btn btn-secondary">
-          {{ 'approval.detailspage.reject.button.label' | translate }}
-        </button>
-      </div>
+    <h1>
+      @if (view === 'approver') {
+        {{ 'approval.detailspage.approval.heading' | translate }}
+      } @else {
+        {{ 'approval.detailspage.requisition.heading' | translate }}
       }
-    </ng-template>
-    <ish-requisition-reject-dialog #rejectDialog (submitRejectRequisition)="rejectRequisition($event)" />
+    </h1>
+    <ish-error-message [error]="error$ | async" />
 
-    <div class="section d-flex d-flex justify-content-between">
-      <a [routerLink]="['../../' + view, { status: requisition.approval.statusCode }]" class="no-print">
+    @if (requisition$ | async; as requisition) {
+      <div class="section loading-container" data-testing-id="order-summary-info">
+        <ish-requisition-summary [requisition]="requisition" [view]="view" />
+
+        <!-- display approval box in buyer view or for customer approvers only -->
         @if (view === 'buyer') {
-
-        {{ 'approval.detailspage.links.return_to_requisitions' | translate }}
-
+          <ish-requisition-buyer-approval [requisition]="requisition" />
         } @else {
-        {{ 'approval.detailspage.links.return_to_approvals' | translate }}
+          <ish-requisition-buyer-approval *ishIsAuthorizedTo="'APP_B2B_ORDER_APPROVAL'" [requisition]="requisition" />
         }
-      </a>
-      <a routerLink="/home" class="no-print" data-testing-id="home-link">{{
-        'account.orderdetails.links.continue_shopping' | translate
-      }}</a>
-    </div>
 
-    @if (loading$ | async) {
-    <ish-loading />
+        <ish-requisition-cost-center-approval [requisition]="requisition" />
+
+        <ng-container *ngTemplateOutlet="approvalButtonBar; context: { requisition: requisition }" />
+
+        <h1 class="h2">{{ 'approval.detailspage.order_details.heading' | translate }}</h1>
+
+        @if ('shipping.messageToMerchant' | ishServerSetting) {
+          <div>
+            <!-- MessageToMerchant-->
+            <ish-basket-merchant-message-view [data]="requisition" />
+          </div>
+        }
+
+        <div class="row d-flex">
+          <!-- Invoice Address -->
+          <ish-info-box heading="checkout.widget.billing-address.heading" class="infobox-wrapper col-md-6">
+            <ish-address [address]="requisition.invoiceToAddress" [displayEmail]="true" />
+          </ish-info-box>
+
+          <!-- Payment Method -->
+          <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper col-md-6">
+            <p>
+              {{ requisition.payment?.displayName }}<br />{{
+                requisition.payment?.paymentInstrument?.accountIdentifier
+              }}
+              @if (!requisition.payment?.displayName && !requisition.payment?.paymentInstrument?.accountIdentifier) {
+                {{ requisition.payment?.paymentInstrument }}
+              }
+            </p>
+          </ish-info-box>
+        </div>
+
+        <div class="row d-flex">
+          <!-- Shipping Address -->
+          <ish-info-box heading="checkout.widget.shipping-address.heading" class="infobox-wrapper col-md-6">
+            <ish-address [address]="requisition.commonShipToAddress" />
+          </ish-info-box>
+
+          <!-- Shipping Method -->
+          <ish-info-box heading="checkout.widget.shipping_method.heading" class="infobox-wrapper col-md-6">
+            <ish-basket-shipping-method [data]="requisition" />
+          </ish-info-box>
+        </div>
+
+        <!-- Line Items -->
+        @if (requisition.lineItems?.length > 0) {
+          <ish-line-item-list [lineItems]="requisition.lineItems" [editable]="false" lineItemViewType="simple" />
+        }
+
+        <!-- order summary -->
+        <div class="section row">
+          <div class="col-12 col-md-6 offset-md-6">
+            <div class="cost-summary">
+              <h2 class="h3">{{ 'checkout.order_summary.heading' | translate }}</h2>
+              <ish-basket-cost-summary [totals]="requisition.totals" />
+            </div>
+          </div>
+        </div>
+
+        <ng-container *ngTemplateOutlet="approvalButtonBar; context: { requisition: requisition }" />
+
+        <ng-template #approvalButtonBar let-requisition="requisition">
+          @if (requisition.approval?.statusCode === 'PENDING' && view === 'approver') {
+            <div class="section text-end">
+              <button (click)="approveRequisition()" type="button" class="btn btn-primary">
+                {{ 'approval.detailspage.approve.button.label' | translate }}
+              </button>
+              <button (click)="rejectDialog.show()" type="button" class="btn btn-secondary">
+                {{ 'approval.detailspage.reject.button.label' | translate }}
+              </button>
+            </div>
+          }
+        </ng-template>
+        <ish-requisition-reject-dialog #rejectDialog (submitRejectRequisition)="rejectRequisition($event)" />
+
+        <div class="section d-flex d-flex justify-content-between">
+          <a [routerLink]="['../../' + view, { status: requisition.approval.statusCode }]" class="no-print">
+            @if (view === 'buyer') {
+              {{ 'approval.detailspage.links.return_to_requisitions' | translate }}
+            } @else {
+              {{ 'approval.detailspage.links.return_to_approvals' | translate }}
+            }
+          </a>
+          <a routerLink="/home" class="no-print" data-testing-id="home-link">{{
+            'account.orderdetails.links.continue_shopping' | translate
+          }}</a>
+        </div>
+
+        @if (loading$ | async) {
+          <ish-loading />
+        }
+      </div>
     }
   </div>
-  }
-</div>
 }

@@ -100,7 +100,10 @@ import { AccountFacade } from './account.facade';
 export class CheckoutFacade {
   private basketChangeInternal$ = new Subject<void>();
 
-  constructor(private store: Store, private accountFacade: AccountFacade) {
+  constructor(
+    private store: Store,
+    private accountFacade: AccountFacade
+  ) {
     if (!SSR) {
       this.store
         .pipe(

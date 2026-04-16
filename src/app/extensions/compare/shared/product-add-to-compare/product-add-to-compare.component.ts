@@ -26,7 +26,10 @@ export class ProductAddToCompareComponent implements OnInit {
   isInCompareList$: Observable<boolean>;
   visible$: Observable<boolean>;
 
-  constructor(private context: ProductContextFacade, private compareFacade: CompareFacade) {}
+  constructor(
+    private context: ProductContextFacade,
+    private compareFacade: CompareFacade
+  ) {}
 
   ngOnInit() {
     this.isInCompareList$ = this.compareFacade.inCompareProducts$(this.context.select('sku'));

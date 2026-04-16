@@ -1,8 +1,8 @@
 @if (fields$ | async; as fields) {
-<div class="section" data-testing-id="cost-center-select">
-  <h2 class="h3">{{ 'checkout.cost_center.select.heading' | translate }}</h2>
-  <form [formGroup]="form">
-    <formly-form [form]="form" [fields]="fields" [model]="model" />
-  </form>
-</div>
+  <div class="section" data-testing-id="cost-center-select">
+    <h2 class="h3">{{ 'checkout.cost_center.select.heading' | translate }}</h2>
+    <form [formGroup]="form">
+      <formly-form [form]="form" [fields]="fields" [model]="model" />
+    </form>
+  </div>
 }

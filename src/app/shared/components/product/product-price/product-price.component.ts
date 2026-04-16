@@ -47,8 +47,8 @@ export class ProductPriceComponent implements OnInit {
         upperPrice: ProductHelper.isMasterProduct(product)
           ? prices.maxSalePrice
           : ProductHelper.isRetailSet(product)
-          ? prices.summedUpSalePrice
-          : undefined,
+            ? prices.summedUpSalePrice
+            : undefined,
       }))
     );
   }

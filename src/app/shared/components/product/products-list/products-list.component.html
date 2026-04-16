@@ -1,33 +1,37 @@
-@if (productSKUs$ | async; as products) { @if (products.length) { @if (listStyle === 'carousel') {
-<div class="product-list">
-  <swiper [config]="swiperConfig">
-    @for (sku of products; track sku) {
-    <ng-template swiperSlide let-data>
-      <div [ngClass]="listItemCSSClass">
-        @if (lazyFetch(data.isVisible, sku)) {
-        <ish-product-item
-          ishProductContext
-          [sku]="sku"
-          [configuration]="listItemConfiguration"
-          [displayType]="listItemStyle"
-        />
+@if (productSKUs$ | async; as products) {
+  @if (products.length) {
+    @if (listStyle === 'carousel') {
+      <div class="product-list">
+        <swiper [config]="swiperConfig">
+          @for (sku of products; track sku) {
+            <ng-template swiperSlide let-data>
+              <div [ngClass]="listItemCSSClass">
+                @if (lazyFetch(data.isVisible, sku)) {
+                  <ish-product-item
+                    ishProductContext
+                    [sku]="sku"
+                    [configuration]="listItemConfiguration"
+                    [displayType]="listItemStyle"
+                  />
+                }
+              </div>
+            </ng-template>
+          }
+        </swiper>
+      </div>
+    } @else {
+      <div class="product-list row">
+        @for (sku of products; track sku) {
+          <div class="product-list-item" [ngClass]="listItemCSSClass">
+            <ish-product-item
+              ishProductContext
+              [sku]="sku"
+              [configuration]="listItemConfiguration"
+              [displayType]="listItemStyle"
+            />
+          </div>
         }
       </div>
-    </ng-template>
     }
-  </swiper>
-</div>
-} @else {
-<div class="product-list row">
-  @for (sku of products; track sku) {
-  <div class="product-list-item" [ngClass]="listItemCSSClass">
-    <ish-product-item
-      ishProductContext
-      [sku]="sku"
-      [configuration]="listItemConfiguration"
-      [displayType]="listItemStyle"
-    />
-  </div>
   }
-</div>
-} } }
+}

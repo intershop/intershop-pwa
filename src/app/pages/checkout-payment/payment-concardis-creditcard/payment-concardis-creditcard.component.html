@@ -1,8 +1,8 @@
 <!-- error messages -->
 @if (errorMessage.general.message) {
-<p class="text-danger col-sm-offset-4">
-  {{ errorMessage.general.message | translate }}
-</p>
+  <p class="text-danger col-sm-offset-4">
+    {{ errorMessage.general.message | translate }}
+  </p>
 }
 
 <div [formGroup]="parameterForm">
@@ -14,7 +14,7 @@
     <div class="col-sm-6">
       <div id="a_credit_card_number_container" class="iframe-container"></div>
       @if (errorMessage.cardNumber?.messageKey) {
-      <small class="validation-message">{{ errorMessage.cardNumber.messageKey | translate }}</small>
+        <small class="validation-message">{{ errorMessage.cardNumber.messageKey | translate }}</small>
       }
     </div>
   </div>
@@ -41,7 +41,7 @@
           >
             <option value="">{{ 'account.date.month' | translate }}</option>
             @for (option of monthOptions; track $index) {
-            <option [value]="option.value">{{ option.label | translate }}</option>
+              <option [value]="option.value">{{ option.label | translate }}</option>
             }
           </select>
           <ish-form-control-feedback
@@ -59,7 +59,7 @@
           >
             <option value="">{{ 'account.date.year' | translate }}</option>
             @for (option of yearOptions; track $index) {
-            <option [value]="option.value">{{ option.label | translate }}</option>
+              <option [value]="option.value">{{ option.label | translate }}</option>
             }
           </select>
           <ish-form-control-feedback
@@ -71,7 +71,7 @@
     </div>
     <div class="col-sm-6 offset-sm-4">
       @if (errorMessage.expiryMonth?.messageKey) {
-      <small class="validation-message">{{ errorMessage.expiryMonth.messageKey | translate }}</small>
+        <small class="validation-message">{{ errorMessage.expiryMonth.messageKey | translate }}</small>
       }
     </div>
   </div>
@@ -84,7 +84,7 @@
     <div class="col-3 col-md-2">
       <div id="a_verification_container" class="iframe-container"></div>
       @if (errorMessage.cvc?.message) {
-      <small class="validation-message">{{ errorMessage.cvc.messageKey | translate }}</small>
+        <small class="validation-message">{{ errorMessage.cvc.messageKey | translate }}</small>
       }
     </div>
     <div>
@@ -105,7 +105,7 @@
 </div>
 
 @if (paymentMethod) {
-<ish-payment-save-checkbox [paymentMethod]="paymentMethod" [form]="parameterForm" />
+  <ish-payment-save-checkbox [paymentMethod]="paymentMethod" [form]="parameterForm" />
 }
 
 <div class="row">

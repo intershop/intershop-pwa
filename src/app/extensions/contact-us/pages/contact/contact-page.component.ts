@@ -22,7 +22,10 @@ export class ContactPageComponent implements OnInit, OnDestroy {
    */
   success$: Observable<boolean>;
 
-  constructor(private contactUsFacade: ContactUsFacade, private router: Router) {}
+  constructor(
+    private contactUsFacade: ContactUsFacade,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.loading$ = this.contactUsFacade.contactLoading$;

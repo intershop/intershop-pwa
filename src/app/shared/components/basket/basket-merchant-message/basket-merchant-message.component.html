@@ -4,9 +4,9 @@
   <form [formGroup]="form" (ngSubmit)="submitForm()">
     <div class="row">
       @if (showSuccessMessage) {
-      <div class="col-md-12">
-        <ish-success-message message="checkout.basket_merchant_message.success.message" [toast]="false" />
-      </div>
+        <div class="col-md-12">
+          <ish-success-message message="checkout.basket_merchant_message.success.message" [toast]="false" />
+        </div>
       }
 
       <div class="col-md-9">

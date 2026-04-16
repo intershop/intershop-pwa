@@ -1,5 +1,7 @@
-@if (visible$ | async) { @if (masterProductURL$ | async; as url) {
-<a [routerLink]="url" class="product-variation all-variations-link">{{
-  'product.choose_another_variation.link' | translate
-}}</a>
-} }
+@if (visible$ | async) {
+  @if (masterProductURL$ | async; as url) {
+    <a [routerLink]="url" class="product-variation all-variations-link">{{
+      'product.choose_another_variation.link' | translate
+    }}</a>
+  }
+}

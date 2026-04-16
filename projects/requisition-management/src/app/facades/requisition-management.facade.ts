@@ -20,7 +20,10 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class RequisitionManagementFacade {
-  constructor(private store: Store, private router: Router) {}
+  constructor(
+    private store: Store,
+    private router: Router
+  ) {}
 
   requisitionsError$ = this.store.pipe(select(getRequisitionsError));
   requisitionsLoading$ = this.store.pipe(select(getRequisitionsLoading));

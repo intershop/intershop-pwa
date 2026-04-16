@@ -6,20 +6,20 @@
   </div>
   <div class="loading-container">
     @if (budgetLoading$ | async) {
-    <ish-loading />
+      <ish-loading />
     } @else {
-    <div class="row">
-      <div class="col-12">
-        <ish-user-budget progressBarClass="background-inverse" [budget]="userBudget$ | async" />
+      <div class="row">
+        <div class="col-12">
+          <ish-user-budget progressBarClass="background-inverse" [budget]="userBudget$ | async" />
+        </div>
       </div>
-    </div>
-    <div *ishIsAuthorizedTo="'APP_B2B_MANAGE_USERS'" class="row mt-3">
-      <div class="col">
-        <a routerLink="/account/organization/users">
-          {{ 'account.requisitions.widget.manage_budgets' | translate }}
-        </a>
+      <div *ishIsAuthorizedTo="'APP_B2B_MANAGE_USERS'" class="row mt-3">
+        <div class="col">
+          <a routerLink="/account/organization/users">
+            {{ 'account.requisitions.widget.manage_budgets' | translate }}
+          </a>
+        </div>
       </div>
-    </div>
     }
   </div>
 </ish-info-box>

@@ -2,7 +2,7 @@
   class="compare-status item-count-container"
   routerLink="/compare"
   rel="nofollow"
-  [attr.aria-label]="'product.compare.label' | translate : { '0': productCompareCount$ | async }"
+  [attr.aria-label]="'product.compare.label' | translate: { '0': productCompareCount$ | async }"
 >
   <i class="bi bi-arrow-left-right header-icon"></i>
   <span class="badge rounded-pill" data-testing-id="product-compare-count">{{ productCompareCount$ | async }}</span>

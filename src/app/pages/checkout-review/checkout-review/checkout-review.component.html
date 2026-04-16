@@ -1,176 +1,180 @@
 <div class="cart-header">
   <h1 class="d-flex flex-wrap align-items-baseline">
-    <span id="page-main-content" tabindex="-1" class="cart-header-title">{{
+    <span class="cart-header-title" id="page-main-content" tabindex="-1">{{
       (basket.recurrence ? 'checkout.order_review.recurring.heading.title' : 'checkout.order_review.heading.title')
         | translate
     }}</span>
     <span class="header-note">
       <span>{{ 'shopping_cart.transaction.text' | translate }}</span>
       <ish-modal-dialog-link
+        class="details-link"
         linkText="shopping_cart.read_more.link"
         [options]="{ titleText: 'checkout.safeandsecure.details.title' | translate, size: 'lg' }"
-        class="details-link"
       >
-        <ish-content-include includeId="include.dialog.safeAndSecure.pagelet2-Include" *ishLazyLoadingContent />
+        <ish-content-include *ishLazyLoadingContent includeId="include.dialog.safeAndSecure.pagelet2-Include" />
       </ish-modal-dialog-link>
     </span>
   </h1>
 </div>
 
 @if (basket) {
-<div class="row">
-  <!-- Error Message-->
-  <div class="col-md-12">
-    @if (error) {
-    <ish-basket-error-message [error]="error" />
-    } @if (multipleBuckets) {
-    <div role="alert" class="alert alert-danger">
-      {{ 'checkout.shipping.no_methods.message' | translate }}
+  <div class="row">
+    <!-- Error Message-->
+    <div class="col-md-12">
+      @if (error) {
+        <ish-basket-error-message [error]="error" />
+      }
+      @if (multipleBuckets) {
+        <div class="alert alert-danger" role="alert">
+          {{ 'checkout.shipping.no_methods.message' | translate }}
+        </div>
+      }
+      <ish-basket-validation-results />
     </div>
-    }
-    <ish-basket-validation-results />
-  </div>
-  <div class="col-md-12 col-lg-8">
-    <p>
-      {{
-        (basket.recurrence ? 'checkout.order_review.recurring.heading.text' : 'checkout.order_review.heading.text')
-          | translate
-      }}
-    </p>
-    @if (basket.approval) {
-    <ish-basket-approval-info [approval]="basket.approval" />
-    } @if ('shipping.messageToMerchant' | ishServerSetting) {
-    <!-- MessageToMerchant-->
-    <ish-basket-merchant-message-view [data]="basket" editRouterLink="/checkout/shipping" />
-    }
-    <div class="row">
-      <!-- Buyer-->
-      <ng-container *ishFeature="'businessCustomerRegistration'">
-        <ish-info-box heading="checkout.widget.buyer.heading" class="infobox-wrapper col-md-6">
-          <ish-basket-buyer [object]="basket" editRouterLink="/checkout/shipping" />
-        </ish-info-box>
-      </ng-container>
-      <!-- Additional Information -->
-      @if (basket.costCenter || hasCustomFields() || basket.recurrence) {
-      <ish-info-box
-        heading="checkout.widget.additional-information.heading"
-        editRouterLink="/basket"
-        class="infobox-wrapper col-md-6"
-        cssClass="pb-3"
-      >
-        <ish-basket-cost-center-view [data]="basket" />
-        <ish-basket-custom-fields-view [data]="basket" />
-        @if (basket.recurrence) {
-        <ish-order-recurrence [recurrence]="basket.recurrence" labelCssClass="col-4" valueCssClass="col-8" />
+    <div class="col-md-12 col-lg-8">
+      <p>
+        {{
+          (basket.recurrence ? 'checkout.order_review.recurring.heading.text' : 'checkout.order_review.heading.text')
+            | translate
+        }}
+      </p>
+      @if (basket.approval) {
+        <ish-basket-approval-info [approval]="basket.approval" />
+      }
+      @if ('shipping.messageToMerchant' | ishServerSetting) {
+        <!-- MessageToMerchant-->
+        <ish-basket-merchant-message-view editRouterLink="/checkout/shipping" [data]="basket" />
+      }
+      <div class="row">
+        <!-- Buyer-->
+        <ng-container *ishFeature="'businessCustomerRegistration'">
+          <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.buyer.heading">
+            <ish-basket-buyer editRouterLink="/checkout/shipping" [object]="basket" />
+          </ish-info-box>
+        </ng-container>
+        <!-- Additional Information -->
+        @if (basket.costCenter || hasCustomFields() || basket.recurrence) {
+          <ish-info-box
+            class="infobox-wrapper col-md-6"
+            cssClass="pb-3"
+            editRouterLink="/basket"
+            heading="checkout.widget.additional-information.heading"
+          >
+            <ish-basket-cost-center-view [data]="basket" />
+            <ish-basket-custom-fields-view [data]="basket" />
+            @if (basket.recurrence) {
+              <ish-order-recurrence labelCssClass="col-4" valueCssClass="col-8" [recurrence]="basket.recurrence" />
+            }
+          </ish-info-box>
         }
-      </ish-info-box>
+      </div>
+      <div class="row d-flex">
+        <!-- Invoice Address -->
+        <ish-info-box
+          class="infobox-wrapper col-md-6"
+          editRouterLink="/checkout/address"
+          heading="checkout.widget.billing-address.heading"
+        >
+          <ish-address [address]="basket.invoiceToAddress" [displayEmail]="true" />
+        </ish-info-box>
+        <!-- Shipping Address -->
+        <ish-info-box
+          class="infobox-wrapper col-md-6"
+          editRouterLink="/checkout/address"
+          heading="checkout.widget.shipping-address.heading"
+        >
+          <ish-address [address]="basket.commonShipToAddress" />
+        </ish-info-box>
+      </div>
+      <div class="row d-flex">
+        <!-- Shipping Method -->
+        <ish-info-box
+          class="infobox-wrapper col-md-6"
+          editRouterLink="/checkout/shipping"
+          heading="checkout.widget.shipping_method.heading"
+        >
+          <ish-basket-shipping-method [data]="basket" />
+        </ish-info-box>
+        <!-- Payment Method -->
+        <ish-info-box
+          class="infobox-wrapper col-md-6"
+          editRouterLink="/checkout/payment"
+          heading="checkout.widget.payment_method.heading"
+        >
+          <p>
+            {{ basket.payment?.displayName }}<br />{{ basket.payment?.paymentInstrument?.accountIdentifier }}
+            @if (!basket.payment?.displayName && !basket.payment?.paymentInstrument?.accountIdentifier) {
+              {{ basket.payment?.paymentInstrument }}
+            }
+          </p>
+        </ish-info-box>
+      </div>
+      <p class="text-end">
+        <a routerLink="/basket">{{ 'checkout.widget.return_to_cart.link' | translate }}</a>
+      </p>
+      <!-- Line Items -->
+      @if (basket.lineItems?.length > 0) {
+        <ish-skip-content-link>
+          <ish-line-item-list [editable]="false" [lineItems]="basket.lineItems" />
+        </ish-skip-content-link>
       }
     </div>
-    <div class="row d-flex">
-      <!-- Invoice Address -->
-      <ish-info-box
-        heading="checkout.widget.billing-address.heading"
-        editRouterLink="/checkout/address"
-        class="infobox-wrapper col-md-6"
-      >
-        <ish-address [address]="basket.invoiceToAddress" [displayEmail]="true" />
-      </ish-info-box>
-      <!-- Shipping Address -->
-      <ish-info-box
-        heading="checkout.widget.shipping-address.heading"
-        editRouterLink="/checkout/address"
-        class="infobox-wrapper col-md-6"
-      >
-        <ish-address [address]="basket.commonShipToAddress" />
-      </ish-info-box>
-    </div>
-    <div class="row d-flex">
-      <!-- Shipping Method -->
-      <ish-info-box
-        heading="checkout.widget.shipping_method.heading"
-        editRouterLink="/checkout/shipping"
-        class="infobox-wrapper col-md-6"
-      >
-        <ish-basket-shipping-method [data]="basket" />
-      </ish-info-box>
-      <!-- Payment Method -->
-      <ish-info-box
-        heading="checkout.widget.payment_method.heading"
-        editRouterLink="/checkout/payment"
-        class="infobox-wrapper col-md-6"
-      >
-        <p>
-          {{ basket.payment?.displayName }}<br />{{ basket.payment?.paymentInstrument?.accountIdentifier }}
-          @if (!basket.payment?.displayName && !basket.payment?.paymentInstrument?.accountIdentifier) {
-          {{ basket.payment?.paymentInstrument }}
-          }
-        </p>
-      </ish-info-box>
-    </div>
-    <p class="text-end">
-      <a routerLink="/basket">{{ 'checkout.widget.return_to_cart.link' | translate }}</a>
-    </p>
-    <!-- Line Items -->
-    @if (basket.lineItems?.length > 0) {
-    <ish-skip-content-link>
-      <ish-line-item-list [lineItems]="basket.lineItems" [editable]="false" />
-    </ish-skip-content-link>
-    }
-  </div>
-  <!-- basket summary -->
-  <div class="col-md-12 col-lg-4 order-summary">
-    <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
-    <div class="cost-summary">
-      <ish-basket-cost-summary [totals]="basket.totals" />
-      <form [formGroup]="form" ishFormSubmit #tcForm="ngForm" (ngSubmit)="submitOrder()">
-        <formly-form [form]="form" [model]="model" [fields]="fields$ | async" [options]="options" />
-        <div class="d-grid">
-          @if (form.invalid && tcForm.submitted || multipleBuckets || submitting) {
-          <div id="checkout-button-help" aria-live="polite" class="visually-hidden">
-            {{ 'checkout.order_review.submit.validation.message' | translate }}
-          </div>
-          } @if (paypalPaymentMethod$ | async; as paypalMethod) {
-          <div class="position-relative">
-            <ish-payment-paypal
-              [attr.inert]="form.invalid ? '' : null"
-              [adapterType]="getPaypalAdapterType(paypalMethod)"
-              [pageType]="'checkout'"
-              [selectedPaymentMethod]="paypalMethod"
-            />
-            @if (form.invalid) {
-            <button
-              class="position-absolute top-0 start-0 w-100 h-100 bg-transparent border-0"
-              [attr.tabindex]="form.invalid ? 0 : -1"
-              type="submit"
-              [attr.aria-label]="
-                getPaypalAdapterType(paypalMethod) === 'GooglePay'
-                  ? ('checkout.payment.paypal.google_pay.button.label' | translate)
-                  : ('checkout.payment.paypal.apple_pay.button.label' | translate)
-              "
-            ></button>
+    <!-- basket summary -->
+    <div class="col-md-12 col-lg-4 order-summary">
+      <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
+      <div class="cost-summary">
+        <ish-basket-cost-summary [totals]="basket.totals" />
+        <form #tcForm="ngForm" ishFormSubmit [formGroup]="form" (ngSubmit)="submitOrder()">
+          <formly-form [fields]="fields$ | async" [form]="form" [model]="model" [options]="options" />
+          <div class="d-grid">
+            @if ((form.invalid && tcForm.submitted) || multipleBuckets || submitting) {
+              <div aria-live="polite" class="visually-hidden" id="checkout-button-help">
+                {{ 'checkout.order_review.submit.validation.message' | translate }}
+              </div>
+            }
+            @if (paypalPaymentMethod$ | async; as paypalMethod) {
+              <div class="position-relative">
+                <ish-payment-paypal
+                  [adapterType]="getPaypalAdapterType(paypalMethod)"
+                  [attr.inert]="form.invalid ? '' : null"
+                  [pageType]="'checkout'"
+                  [selectedPaymentMethod]="paypalMethod"
+                />
+                @if (form.invalid) {
+                  <button
+                    class="position-absolute top-0 start-0 w-100 h-100 bg-transparent border-0"
+                    type="submit"
+                    [attr.aria-label]="
+                      getPaypalAdapterType(paypalMethod) === 'GooglePay'
+                        ? ('checkout.payment.paypal.google_pay.button.label' | translate)
+                        : ('checkout.payment.paypal.apple_pay.button.label' | translate)
+                    "
+                    [attr.tabindex]="form.invalid ? 0 : -1"
+                  ></button>
+                }
+              </div>
+            } @else {
+              <button
+                class="btn btn-lg btn-block btn-primary"
+                type="submit"
+                [attr.aria-describedby]="
+                  (form.invalid && tcForm.submitted) || multipleBuckets || submitting ? 'checkout-button-help' : null
+                "
+              >
+                @if (submitting) {
+                  <i class="bi bi-arrow-clockwise spin-icon"></i>
+                }
+                {{
+                  (basket.recurrence
+                    ? 'checkout.order_review.recurring.send.button'
+                    : 'checkout.order_review.send.button'
+                  ) | translate
+                }}
+              </button>
             }
           </div>
-          } @else {
-
-          <button
-            class="btn btn-lg btn-block btn-primary"
-            [attr.aria-describedby]="
-              (form.invalid && tcForm.submitted) || multipleBuckets || submitting ? 'checkout-button-help' : null
-            "
-            type="submit"
-          >
-            @if (submitting) {
-            <i class="bi bi-arrow-clockwise spin-icon"></i>
-            }
-            {{
-              (basket.recurrence ? 'checkout.order_review.recurring.send.button' : 'checkout.order_review.send.button')
-                | translate
-            }}
-          </button>
-          }
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 }

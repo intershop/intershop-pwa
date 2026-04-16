@@ -23,7 +23,10 @@ export class UserCreatePageComponent implements OnInit {
     userBudget: this.fb.group({}),
   });
 
-  constructor(private fb: FormBuilder, private organizationManagementFacade: OrganizationManagementFacade) {}
+  constructor(
+    private fb: FormBuilder,
+    private organizationManagementFacade: OrganizationManagementFacade
+  ) {}
 
   ngOnInit() {
     this.loading$ = this.organizationManagementFacade.usersLoading$;

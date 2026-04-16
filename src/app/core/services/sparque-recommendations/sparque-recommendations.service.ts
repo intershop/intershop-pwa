@@ -24,7 +24,10 @@ export class SparqueRecommendationsService implements RecommendationsServiceInte
   // API version for Sparque API.
   private readonly apiVersion = 'v4';
 
-  constructor(private sparqueApiService: SparqueApiService, private sparqueProductMapper: SparqueProductMapper) {}
+  constructor(
+    private sparqueApiService: SparqueApiService,
+    private sparqueProductMapper: SparqueProductMapper
+  ) {}
 
   /**
    * Retrieves product recommendations from the Sparque API based on the provided parameters.

@@ -1,13 +1,14 @@
 <div class="row list-item-row" data-testing-id="product-list-item">
   <!-- Errors and Infos -->
   @if (pli.validationError?.message) {
-  <div class="alert alert-inline alert-danger col-12">
-    {{ pli.validationError.message }}
-  </div>
-  } @if (pli.info?.message) {
-  <div class="alert alert-inline alert-info col-12">
-    {{ pli.info.message }}
-  </div>
+    <div class="alert alert-inline alert-danger col-12">
+      {{ pli.validationError.message }}
+    </div>
+  }
+  @if (pli.info?.message) {
+    <div class="alert alert-inline alert-info col-12">
+      {{ pli.info.message }}
+    </div>
   }
 
   <!-- Product Image -->
@@ -29,48 +30,58 @@
       <ish-product-bundle-display />
 
       <!-- switch by lineItemViewType -->
-      @switch (lineItemViewType) { @case ('simple') { } @case ('availability') {
-      <ish-product-inventory />
-      } @default {
-      <!-- edit variation & quantity -->
-      @if (editable) { @if (!('preferences.ChannelPreferences.EnableAdvancedVariationHandling' | ishServerSetting)) {
-      <ish-line-item-edit
-        ishProductContext
-        [sku]="pli.productSKU"
-        [quantity]="pli.quantity.value"
-        [itemId]="pli.id"
-        (updateItem)="onUpdateItem($event)"
-      />
-      } }
+      @switch (lineItemViewType) {
+        @case ('simple') {}
+        @case ('availability') {
+          <ish-product-inventory />
+        }
+        @default {
+          <!-- edit variation & quantity -->
+          @if (editable) {
+            @if (!('preferences.ChannelPreferences.EnableAdvancedVariationHandling' | ishServerSetting)) {
+              <ish-line-item-edit
+                ishProductContext
+                [sku]="pli.productSKU"
+                [quantity]="pli.quantity.value"
+                [itemId]="pli.id"
+                (updateItem)="onUpdateItem($event)"
+              />
+            }
+          }
 
-      <!-- availability -->
-      <ish-product-inventory />
+          <!-- availability -->
+          <ish-product-inventory />
 
-      <!-- ship window message -->
-      <ish-product-shipment />
+          <!-- ship window message -->
+          <ish-product-shipment />
 
-      <!-- surcharges -->
-      @for (surcharge of pli.itemSurcharges; track $index) {
-      {{ surcharge.displayName }} @if (!surcharge.displayName) {
-      <span>{{ surcharge.text }}</span>
+          <!-- surcharges -->
+          @for (surcharge of pli.itemSurcharges; track $index) {
+            {{ surcharge.displayName }}
+            @if (!surcharge.displayName) {
+              <span>{{ surcharge.text }}</span>
+            }
+            <span class="text-nowrap"> {{ surcharge.amount | ishPrice }} </span>
+            <ng-template #SurchargeDescription> <span [innerHTML]="surcharge.description"></span> </ng-template>
+            <button
+              type="button"
+              class="btn btn-link details-tooltip"
+              [ngbPopover]="SurchargeDescription"
+              [popoverTitle]="surcharge.displayName"
+              placement="top"
+            >
+              <i class="bi bi-info-circle-fill"></i>
+            </button>
+          }
+        }
       }
-      <span class="text-nowrap"> {{ surcharge.amount | ishPrice }} </span>
-      <ng-template #SurchargeDescription> <span [innerHTML]="surcharge.description"></span> </ng-template>
-      <button
-        type="button"
-        class="btn btn-link details-tooltip"
-        [ngbPopover]="SurchargeDescription"
-        [popoverTitle]="surcharge.displayName"
-        placement="top"
-      >
-        <i class="bi bi-info-circle-fill"></i>
-      </button>
-      } } }
 
       <!-- promotions -->
-      @if (pli.valueRebates?.length) { @for (rebate of pli.valueRebates; track rebate.id) {
-      <ish-basket-promotion [rebate]="rebate" class="list-item-promo" />
-      } }
+      @if (pli.valueRebates?.length) {
+        @for (rebate of pli.valueRebates; track rebate.id) {
+          <ish-basket-promotion [rebate]="rebate" class="list-item-promo" />
+        }
+      }
     </div>
 
     <!-- mobile quantity -->
@@ -82,9 +93,9 @@
           class="d-xl-none col-form-label"
         />
         @if (editable) {
-        <ish-product-quantity [elementId]="'pli-quantity_' + pli.position" />
+          <ish-product-quantity [elementId]="'pli-quantity_' + pli.position" />
         } @else {
-        {{ pli.quantity.value | number }}
+          {{ pli.quantity.value | number }}
         }
       </div>
     </div>
@@ -94,9 +105,9 @@
   <div class="quantity col-xl-2 list-item d-none d-xl-flex">
     <div class="form-group w-100 text-end" [ngClass]="{ 'pe-2': !editable }">
       @if (editable) {
-      <ish-product-quantity [elementId]="'pli-quantity_' + pli.position" />
+        <ish-product-quantity [elementId]="'pli-quantity_' + pli.position" />
       } @else {
-      {{ pli.quantity.value | number }}
+        {{ pli.quantity.value | number }}
       }
     </div>
   </div>
@@ -109,31 +120,31 @@
     </div>
     <!-- Undiscounted single price -->
     @if (oldPrice) {
-    <div class="old-price">
-      <span class="price-value">{{ oldPrice | ishPrice }}</span>
-    </div>
+      <div class="old-price">
+        <span class="price-value">{{ oldPrice | ishPrice }}</span>
+      </div>
     }
   </div>
 
   @if (pli.totals) {
-  <div class="col-3 col-md-2 list-item column-price">
-    <div>
-      <!-- (Suggested) Total Price  -->
-      <div data-testing-id="total-price">{{ pli.totals.total | ishPrice }}</div>
-    </div>
+    <div class="col-3 col-md-2 list-item column-price">
+      <div>
+        <!-- (Suggested) Total Price  -->
+        <div data-testing-id="total-price">{{ pli.totals.total | ishPrice }}</div>
+      </div>
 
-    <!-- Value Rebates Total -->
-    @if (pli.totals.valueRebatesTotal) {
-    <div class="old-price">
-      <span class="price-value">{{ pli.totals.undiscountedTotal | ishPrice }}</span>
-    </div>
-    }
+      <!-- Value Rebates Total -->
+      @if (pli.totals.valueRebatesTotal) {
+        <div class="old-price">
+          <span class="price-value">{{ pli.totals.undiscountedTotal | ishPrice }}</span>
+        </div>
+      }
 
-    <!-- Gift -->
-    @if (pli.isFreeGift) {
-    <div class="list-item-promo">{{ 'checkout.pli.freegift.text' | translate }}</div>
-    }
-  </div>
+      <!-- Gift -->
+      @if (pli.isFreeGift) {
+        <div class="list-item-promo">{{ 'checkout.pli.freegift.text' | translate }}</div>
+      }
+    </div>
   }
 
   <!-- display/select warranty if available -->
@@ -150,23 +161,25 @@
 
   <div class="offset-2 col-10 d-flex align-items-end list-item-actions">
     @if (editable) {
-    <ish-lazy-product-add-to-order-template
-      [cssClass]="'btn-link btn-tool ps-0 add-to-order-template'"
-      displayType="icon"
-    />
-    } @if (editable) {
-    <ish-lazy-product-add-to-wishlist [cssClass]="'btn-link btn-tool'" displayType="icon" />
-    } @if (!pli.isFreeGift && editable) {
-    <button
-      type="button"
-      class="btn-tool btn-link"
-      [attr.data-testing-id]="'remove-line-item'"
-      [attr.data-id]="pli.id"
-      title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
-      (click)="onDeleteItem(pli.id)"
-    >
-      <i class="bi bi-trash-fill"></i>
-    </button>
+      <ish-lazy-product-add-to-order-template
+        [cssClass]="'btn-link btn-tool ps-0 add-to-order-template'"
+        displayType="icon"
+      />
+    }
+    @if (editable) {
+      <ish-lazy-product-add-to-wishlist [cssClass]="'btn-link btn-tool'" displayType="icon" />
+    }
+    @if (!pli.isFreeGift && editable) {
+      <button
+        type="button"
+        class="btn-tool btn-link"
+        [attr.data-testing-id]="'remove-line-item'"
+        [attr.data-id]="pli.id"
+        title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
+        (click)="onDeleteItem(pli.id)"
+      >
+        <i class="bi bi-trash-fill"></i>
+      </button>
     }
   </div>
 </div>

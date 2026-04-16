@@ -1,112 +1,112 @@
 @if (requisition?.userBudget) {
-<div class="row">
-  <ish-info-box class="infobox-wrapper col-12">
-    <div class="d-flex align-items-start">
-      <h2 class="h3 pe-2">
-        {{ 'approval.detailspage.buyer_budget.heading' | translate }}
-      </h2>
-      <ish-lazy-budget-info />
-    </div>
-
-    <div class="row">
-      <div class="col-md-6">
-        <dl class="row dl-horizontal dl-separator">
-          <dt class="col-6">{{ 'approval.detailspage.buyer.label' | translate }}</dt>
-          <dd class="col-6">{{ requisition.user.firstName }} {{ requisition.user.lastName }}</dd>
-        </dl>
+  <div class="row">
+    <ish-info-box class="infobox-wrapper col-12">
+      <div class="d-flex align-items-start">
+        <h2 class="h3 pe-2">
+          {{ 'approval.detailspage.buyer_budget.heading' | translate }}
+        </h2>
+        <ish-lazy-budget-info />
       </div>
-    </div>
-    <div class="row section">
-      <div class="col-md-6 pt-1">
-        <dl class="row dl-horizontal dl-separator">
-          <dt class="col-6">{{ 'approval.detailspage.order_spend_limit.label' | translate }}</dt>
-          <dd class="col-6">
-            <strong>
-              @if (requisition.userBudget?.orderSpentLimit) {
 
-              {{ requisition.userBudget.orderSpentLimit | ishPrice }}
-
-              } @else {
-
-              {{ 'account.budget.unlimited' | translate }}
-
-              }
-            </strong>
-          </dd>
-        </dl>
+      <div class="row">
+        <div class="col-md-6">
+          <dl class="row dl-horizontal dl-separator">
+            <dt class="col-6">{{ 'approval.detailspage.buyer.label' | translate }}</dt>
+            <dd class="col-6">{{ requisition.user.firstName }} {{ requisition.user.lastName }}</dd>
+          </dl>
+        </div>
       </div>
-      @if (requisition.userBudget?.orderSpentLimit) {
-      <div class="col-md-6 mb-2">
-        <ish-budget-bar [budget]="requisition.userBudget?.orderSpentLimit" [spentBudget]="orderTotal" />
+      <div class="row section">
+        <div class="col-md-6 pt-1">
+          <dl class="row dl-horizontal dl-separator">
+            <dt class="col-6">{{ 'approval.detailspage.order_spend_limit.label' | translate }}</dt>
+            <dd class="col-6">
+              <strong>
+                @if (requisition.userBudget?.orderSpentLimit) {
+                  {{ requisition.userBudget.orderSpentLimit | ishPrice }}
+                } @else {
+                  {{ 'account.budget.unlimited' | translate }}
+                }
+              </strong>
+            </dd>
+          </dl>
+        </div>
+        @if (requisition.userBudget?.orderSpentLimit) {
+          <div class="col-md-6 mb-2">
+            <ish-budget-bar [budget]="requisition.userBudget?.orderSpentLimit" [spentBudget]="orderTotal" />
+          </div>
+        }
       </div>
+      <div class="row">
+        <div class="col-md-6">
+          @if (requisition.userBudget.budgetPeriod !== 'none') {
+            <dl class="row dl-horizontal dl-separator">
+              <!-- prettier-ignore -->
+              <dt class="col-6">{{ 'account.budget.label' | translate: { '0': requisition?.userBudget?.budgetPeriod } }}</dt>
+              <dd class="col-6">
+                <strong>
+                  @if (requisition.userBudget.budget) {
+                    {{ requisition.userBudget.budget | ishPrice }}
+                  } @else {
+                    {{ 'account.budget.unlimited' | translate }}
+                  }
+                </strong>
+              </dd>
+            </dl>
+          }
+          @if (requisition.userBudget?.spentBudget?.value !== undefined) {
+            <dl class="row dl-horizontal dl-separator">
+              <dt class="col-6">{{ 'account.budget.already_spent.label' | translate }}</dt>
+              <dd class="col-6" [ngClass]="{ 'text-danger': spentPercentage > 1 }">
+                {{ requisition.userBudget.spentBudget | ishPrice }}
+                @if (requisition.userBudget.budget) {
+                  ({{ spentPercentage | percent }})
+                }
+              </dd>
+            </dl>
+          }
+          @if (requisition.approval.statusCode !== 'APPROVED') {
+            <dl class="row dl-horizontal dl-separator">
+              <!-- prettier-ignore -->
+              <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate : { recurring: !requisition.requisitionNo } }}</dt>
+              <dd class="col-6" [ngClass]="{ 'text-danger': spentPercentageIncludingThisRequisition > 1 }">
+                {{
+                  requisition.userBudget?.spentBudgetIncludingThisRequisition || requisition.totals.total
+                    | ishPrice: 'gross'
+                }}
+                @if (requisition.userBudget.budget) {
+                  ({{ spentPercentageIncludingThisRequisition | percent }})
+                }
+              </dd>
+            </dl>
+          } @else {
+            @if (requisition.userBudget.budget) {
+              <dl class="row dl-horizontal dl-separator">
+                <dt class="col-6">{{ 'account.budget.left.label' | translate }}</dt>
+                <dd class="col-6">
+                  {{ this.requisition.userBudget?.remainingBudget | ishPrice }} ({{ leftPercentage | percent }})
+                </dd>
+              </dl>
+            }
+          }
+        </div>
+        @if (requisition.userBudget?.budget) {
+          <div class="col-md-6 mb-3">
+            <ish-budget-bar
+              [budget]="requisition.userBudget?.budget"
+              [spentBudget]="requisition.userBudget?.spentBudget"
+              [additionalAmount]="requisition.approval.statusCode !== 'APPROVED' ? orderTotal : undefined"
+            />
+          </div>
+        }
+      </div>
+      @if (requisition.recurrence) {
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <ish-order-recurrence [recurrence]="requisition.recurrence" labelCssClass="col-6" valueCssClass="col-6" />
+          </div>
+        </div>
       }
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        @if (requisition.userBudget.budgetPeriod !== 'none') {
-        <dl class="row dl-horizontal dl-separator">
-          <!-- prettier-ignore -->
-          <dt class="col-6">{{ 'account.budget.label' | translate: { '0': requisition?.userBudget?.budgetPeriod } }}</dt>
-          <dd class="col-6">
-            <strong>
-              @if (requisition.userBudget.budget) {
-
-              {{ requisition.userBudget.budget | ishPrice }}
-
-              } @else {
-
-              {{ 'account.budget.unlimited' | translate }}
-
-              }
-            </strong>
-          </dd>
-        </dl>
-        } @if (requisition.userBudget?.spentBudget?.value !== undefined) {
-        <dl class="row dl-horizontal dl-separator">
-          <dt class="col-6">{{ 'account.budget.already_spent.label' | translate }}</dt>
-          <dd class="col-6" [ngClass]="{ 'text-danger': spentPercentage > 1 }">
-            {{ requisition.userBudget.spentBudget | ishPrice }}
-            @if (requisition.userBudget.budget) {({{ spentPercentage | percent }})}
-          </dd>
-        </dl>
-        } @if (requisition.approval.statusCode !== 'APPROVED') {
-        <dl class="row dl-horizontal dl-separator">
-          <!-- prettier-ignore -->
-          <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate : { recurring: !requisition.requisitionNo } }}</dt>
-          <dd class="col-6" [ngClass]="{ 'text-danger': spentPercentageIncludingThisRequisition > 1 }">
-            {{
-              requisition.userBudget?.spentBudgetIncludingThisRequisition || requisition.totals.total
-                | ishPrice : 'gross'
-            }}
-            @if (requisition.userBudget.budget) {({{ spentPercentageIncludingThisRequisition | percent }})}
-          </dd>
-        </dl>
-        } @else { @if (requisition.userBudget.budget) {
-        <dl class="row dl-horizontal dl-separator">
-          <dt class="col-6">{{ 'account.budget.left.label' | translate }}</dt>
-          <dd class="col-6">
-            {{ this.requisition.userBudget?.remainingBudget | ishPrice }} ({{ leftPercentage | percent }})
-          </dd>
-        </dl>
-        } }
-      </div>
-      @if (requisition.userBudget?.budget) {
-      <div class="col-md-6 mb-3">
-        <ish-budget-bar
-          [budget]="requisition.userBudget?.budget"
-          [spentBudget]="requisition.userBudget?.spentBudget"
-          [additionalAmount]="requisition.approval.statusCode !== 'APPROVED' ? orderTotal : undefined"
-        />
-      </div>
-      }
-    </div>
-    @if (requisition.recurrence) {
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <ish-order-recurrence [recurrence]="requisition.recurrence" labelCssClass="col-6" valueCssClass="col-6" />
-      </div>
-    </div>
-    }
-  </ish-info-box>
-</div>
+    </ish-info-box>
+  </div>
 }

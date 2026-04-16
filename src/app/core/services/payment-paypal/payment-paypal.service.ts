@@ -202,6 +202,6 @@ export class PaymentPaypalService {
   }
 
   private getPaypalTokenFromRedirectUrl(redirectUrl: string): string {
-    return redirectUrl ? new URL(redirectUrl).searchParams.get('token') ?? '' : '';
+    return redirectUrl ? (new URL(redirectUrl).searchParams.get('token') ?? '') : '';
   }
 }

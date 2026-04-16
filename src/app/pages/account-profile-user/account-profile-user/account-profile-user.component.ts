@@ -36,7 +36,11 @@ export class AccountProfileUserComponent extends RxState<ComponentState> impleme
 
   accountProfileUserForm = new FormGroup({});
 
-  constructor(private fieldLibrary: FieldLibrary, private accountFacade: AccountFacade, private appFacade: AppFacade) {
+  constructor(
+    private fieldLibrary: FieldLibrary,
+    private accountFacade: AccountFacade,
+    private appFacade: AppFacade
+  ) {
     super();
   }
 

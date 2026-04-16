@@ -2,9 +2,9 @@
   <h1>{{ 'product.compare.link' | translate }}</h1>
 
   @if (compareProductsCount$ | async; as compareProductsCount) {
-  <p>{{ 'product.compare.selected_product_count.message' | translate : { '0': compareProductsCount } }}</p>
-  <ish-product-compare-list [compareProducts]="compareProducts$ | async" />
+    <p>{{ 'product.compare.selected_product_count.message' | translate: { '0': compareProductsCount } }}</p>
+    <ish-product-compare-list [compareProducts]="compareProducts$ | async" />
   } @else {
-  <p>{{ 'product.compare.no_product_selected.message' | translate }}</p>
+    <p>{{ 'product.compare.no_product_selected.message' | translate }}</p>
   }
 </div>

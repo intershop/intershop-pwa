@@ -55,7 +55,10 @@ export class SelectWishlistModalComponent implements OnInit {
 
   @ViewChild('modal') modalTemplate: TemplateRef<unknown>;
 
-  constructor(private ngbModal: NgbModal, private wishlistsFacade: WishlistsFacade) {}
+  constructor(
+    private ngbModal: NgbModal,
+    private wishlistsFacade: WishlistsFacade
+  ) {}
 
   ngOnInit() {
     this.wishlistOptions$ = this.wishlistsFacade.wishlistSelectOptions$(this.addMoveProduct === 'move');
