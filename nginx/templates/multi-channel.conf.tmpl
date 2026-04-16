@@ -2,6 +2,16 @@
 
 {{ $UPSTREAM_PWA := getenv "UPSTREAM_PWA" }}
 
+# Theme-based upstream routing (one SSR container per theme)
+{{- if getenv "THEME_UPSTREAMS" }}
+{{- range (getenv "THEME_UPSTREAMS" | strings.Split ",") }}
+{{- $parts := . | strings.Split "=" }}
+upstream theme_{{ index $parts 0 | strings.TrimSpace }} {
+    server {{ index $parts 1 | strings.TrimSpace }};
+}
+{{- end }}
+{{- end }}
+
 {{ define "LOCATION_TEMPLATE" }}
         {{- $channel := .channel }}
         {{- $application := "" }}{{ if (has . "application") }}{{ $application = join ( coll.Slice ";application" .application ) "=" }}{{ end }}
@@ -61,7 +71,11 @@
 
         rewrite '^(.*)$' '$1$default_rewrite_params' break;
 
+      {{- if and (has . "theme") (getenv "THEME_UPSTREAMS") }}
+        proxy_pass http://theme_{{ .theme }};
+      {{- else }}
         proxy_pass {{ getenv "UPSTREAM_PWA" }};
+      {{- end }}
         proxy_buffer_size 128k;
         proxy_buffers 4 256k;
         proxy_busy_buffers_size 256k;
@@ -185,6 +199,28 @@ server {
     }
 
     # respect cache entries of static assets
+  {{- if and (not (has $mapping "channel")) (getenv "THEME_UPSTREAMS") }}
+    {{- range $mapping }}
+    {{- if and (ne .baseHref "/") (has . "theme") }}
+    location ~* ^{{ .baseHref }}(?:/(?!ngsw\.json))(metrics|assets|.*\.(js|css|json|txt|webmanifest|woff|woff2))(.*)$ {
+        allow all;
+        auth_basic off;
+
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $thescheme;
+
+        add_header X-Cache-Status $cache_status;
+
+        proxy_pass http://theme_{{ .theme }};
+        proxy_buffer_size 128k;
+        proxy_buffers 4 256k;
+        proxy_busy_buffers_size 256k;
+    }
+    {{- end }}
+    {{- end }}
+  {{- end }}
     location ~* ^/(?!ngsw\.json)(metrics|assets|.*\.(js|css|json|txt|webmanifest|woff|woff2))(.*)$ {
         allow all;
         auth_basic off;

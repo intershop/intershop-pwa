@@ -45,8 +45,10 @@ function getBaseLogData(req: express.Request) {
 }
 
 process.on('SIGUSR2', () => {
-  const pm2Name = process.env.name || 'no-pm2';
-  const filename = `/tmp/Heap.${pm2Name}.${process.pid}.${new Date().toISOString().replaceAll(':', '-')}.heapsnapshot`;
+  const processName = process.env.THEME || `pid-${process.pid}`;
+  const filename = `/tmp/Heap.${processName}.${process.pid}.${new Date()
+    .toISOString()
+    .replaceAll(':', '-')}.heapsnapshot`;
   writeHeapSnapshot(filename);
   logger.info({ file: { path: filename } }, 'Heap snapshot written');
 });
@@ -69,10 +71,7 @@ const metricsDetailLevel =
 
 const collectDetailedMetrics = metricsDetailLevel === MetricsDetailLevel.DETAILED;
 
-const defaultLabels =
-  process.env.pm_id && process.env.name && collectDetailedMetrics
-    ? { theme: process.env.name, pm2_id: process.env.pm_id }
-    : undefined;
+const defaultLabels = process.env.THEME && collectDetailedMetrics ? { theme: process.env.THEME } : undefined;
 
 if (defaultLabels) {
   client.register.setDefaultLabels(defaultLabels);
@@ -624,22 +623,7 @@ export function app() {
   return server;
 }
 
-if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
-  type MetricsMessage = { topic: string };
-  process.on('message', (msg: MetricsMessage) => {
-    if (msg.topic === 'getMetrics') {
-      client.register.getMetricsAsJSON().then((data: client.MetricObject[]) => {
-        process.send({
-          type: 'process:msg',
-          data: {
-            body: data,
-            topic: 'returnMetrics',
-          },
-        });
-      });
-    }
-  });
-}
+// Metrics are now exposed via the /metrics endpoint directly (no PM2 IPC needed)
 
 function run() {
   const http = require('http');
