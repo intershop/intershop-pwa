@@ -1,0 +1,173 @@
+name: Integration
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    paths-ignore:
+      - docs/**
+      - '**.md'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  NODE_OPTIONS: --max-old-space-size=8192
+  ICM_BASE_URL: https://review.icm.intershop.de
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    env:
+      TESTING: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+          cache: npm
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Disable ServiceWorker
+        run: node schematics/customization/service-worker false
+
+      - name: Build SSR
+        run: npm run build:multi
+
+      - name: Upload Build Output
+        uses: actions/upload-artifact@v6
+        with:
+          name: dist
+          path: dist
+
+  SSR:
+    needs: [Build]
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        test: ['b2c', 'b2b']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+          cache: npm
+
+      - name: Download Build Output
+        uses: actions/download-artifact@v7
+        with:
+          name: dist
+          path: dist
+
+      - name: Set Environment
+        run: |
+          echo "LOGLEVEL=error" >> $GITHUB_ENV
+          echo "LOGFORMAT=text" >> $GITHUB_ENV
+
+      - name: Set B2C Environment
+        if: matrix.test == 'b2c'
+        run: |
+          echo "THEME=b2c" >> $GITHUB_ENV
+
+      - name: Set B2B Environment
+        if: matrix.test == 'b2b'
+        run: |
+          echo "THEME=b2b" >> $GITHUB_ENV
+
+      - name: Test SSR
+        run: |
+          node dist/$THEME/run-standalone &
+          sh e2e/test-ssr.sh
+
+  Cypress:
+    needs: [Build, SSR]
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        test: ['b2c', 'b2b']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install e2e dependencies
+        run: cd e2e && npm i
+
+      - name: Download Build Output
+        uses: actions/download-artifact@v7
+        with:
+          name: dist
+          path: dist
+
+      - name: Set Environment
+        run: |
+          echo "PWA_BASE_URL=http://localhost:4200" >> $GITHUB_ENV
+          echo "BROWSER=chrome" >> $GITHUB_ENV
+
+      - name: Set B2C Environment
+        if: matrix.test == 'b2c'
+        run: |
+          echo "THEME=b2c" >> $GITHUB_ENV
+
+      - name: Set B2B Environment
+        if: matrix.test == 'b2b'
+        run: |
+          echo "THEME=b2b" >> $GITHUB_ENV
+
+      - name: Start SSR
+        run: |
+          node dist/$THEME/run-standalone &
+
+      - name: Cypress
+        uses: cypress-io/github-action@v7
+        with:
+          install: false
+          wait-on: 'http://localhost:4200'
+          wait-on-timeout: 180
+          working-directory: e2e
+          command: npx ts-node cypress-ci-e2e **/*${{ matrix.test }}*.e2e-spec.ts
+
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: screenshots_${{ matrix.test }}
+          path: e2e/cypress/screenshots
+
+      - name: Upload Videos
+        uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: videos_${{ matrix.test }}
+          path: e2e/cypress/videos
+
+  Shellspec:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Execute shellspec tests
+        run: |
+          docker run --rm -v "${{ github.workspace }}/nginx/docker-entrypoint.d:/src" shellspec/shellspec
