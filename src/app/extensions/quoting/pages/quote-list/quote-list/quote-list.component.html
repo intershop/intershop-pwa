@@ -1,67 +1,67 @@
 @if (quotes.length > 0) {
-  <table cdk-table [dataSource]="quotes" class="table table-lg mobile-optimized" data-testing-id="quote-list">
+  <table cdk-table class="table table-lg mobile-optimized" data-testing-id="quote-list" [dataSource]="quotes">
     <!-- Quote Number -->
     <ng-container cdkColumnDef="quoteNo">
-      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-number">
+      <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-quote-number" scope="col">
         <span aria-hidden="true">{{ 'quote.list.table.quote_no' | translate }}</span>
         <span class="visually-hidden">{{ 'quote.list.table.quote_no.title' | translate }}</span>
       </th>
-      <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.quote_no.title' | translate">
+      <td *cdkCellDef="let quote" cdk-cell [attr.data-label]="'quote.list.table.quote_no.title' | translate">
         <a [routerLink]="[quote.id]">{{ quote.number }}</a>
       </td>
     </ng-container>
     <!-- Display name -->
     <ng-container cdkColumnDef="displayName">
-      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-name">
+      <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-quote-name" scope="col">
         {{ 'quote.list.table.name' | translate }}
       </th>
-      <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.name' | translate">
+      <td *cdkCellDef="let quote" cdk-cell [attr.data-label]="'quote.list.table.name' | translate">
         <a [routerLink]="[quote.id]">{{ quote.displayName }}</a>
       </td>
     </ng-container>
     <!-- Number of line items -->
     <ng-container cdkColumnDef="lineItems">
-      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-line-items">
+      <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-quote-line-items" scope="col">
         {{ 'quote.list.table.line_items' | translate }}
       </th>
-      <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.line_items' | translate">
+      <td *cdkCellDef="let quote" cdk-cell [attr.data-label]="'quote.list.table.line_items' | translate">
         {{ itemCount(quote) }}
       </td>
     </ng-container>
     <!-- Creation date -->
     <ng-container cdkColumnDef="creationDate">
-      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-creation-date">
+      <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-quote-creation-date" scope="col">
         {{ 'quote.list.table.creation_date' | translate }}
       </th>
-      <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.creation_date' | translate">
+      <td *cdkCellDef="let quote" cdk-cell [attr.data-label]="'quote.list.table.creation_date' | translate">
         {{ quote.creationDate | ishDate: 'shortDate' }}
       </td>
     </ng-container>
     <!-- Expiration date -->
     <ng-container cdkColumnDef="expirationDate">
-      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-expiration-date">
+      <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-quote-expiration-date" scope="col">
         {{ 'quote.list.table.expiration_date' | translate }}
       </th>
-      <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.expiration_date' | translate">
+      <td *cdkCellDef="let quote" cdk-cell [attr.data-label]="'quote.list.table.expiration_date' | translate">
         <ish-quote-expiration-date [quote]="quote" />
       </td>
     </ng-container>
     <!-- Status -->
     <ng-container cdkColumnDef="status">
-      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-status">
+      <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-quote-status" scope="col">
         {{ 'quote.list.table.status' | translate }}
       </th>
-      <td cdk-cell *cdkCellDef="let quote" [attr.data-label]="'quote.list.table.status' | translate">
+      <td *cdkCellDef="let quote" cdk-cell [attr.data-label]="'quote.list.table.status' | translate">
         <ish-quote-state [quoteId]="quote.id" />
       </td>
     </ng-container>
     <!-- Actions -->
     <ng-container cdkColumnDef="actions">
-      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-quote-actions"></th>
-      <td cdk-cell *cdkCellDef="let quote" class="column-price">
+      <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-quote-actions" scope="col"></th>
+      <td *cdkCellDef="let quote" cdk-cell class="column-price">
         <button
-          type="button"
           class="btn-tool btn-link"
+          type="button"
           [title]="'quote.list.delete.button.delete.label' | translate"
           (click)="modalDialog.show(quote)"
         >
@@ -70,8 +70,8 @@
       </td>
     </ng-container>
     <!-- Header and Row Declarations -->
-    <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
-    <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay" data-testing-id="quotes-list-item"></tr>
+    <tr *cdkHeaderRowDef="columnsToDisplay" cdk-header-row></tr>
+    <tr *cdkRowDef="let row; columns: columnsToDisplay" cdk-row data-testing-id="quotes-list-item"></tr>
   </table>
   <ish-modal-dialog
     #modalDialog

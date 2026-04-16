@@ -1,10 +1,10 @@
 @if (customer?.isBusinessCustomer) {
   <h1
+    data-testing-id="personal-message-b2b"
     [innerHTML]="
       'account.overview.personal_message_b2b.text'
         | translate: { '0': user.firstName + '&nbsp;' + user.lastName, '1': customer.companyName | ishHtmlEncode }
     "
-    data-testing-id="personal-message-b2b"
   ></h1>
   <p *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']">
     {{ 'account.overview.message_b2b.text' | translate }}
@@ -14,8 +14,8 @@
   </div>
 } @else {
   <h1
-    [innerHTML]="'account.overview.personal_message.text' | translate: { '0': user.firstName }"
     data-testing-id="personal-message-default"
+    [innerHTML]="'account.overview.personal_message.text' | translate: { '0': user.firstName }"
   ></h1>
   <p>{{ 'account.overview.message.text' | translate }}</p>
   <div class="marketing-area">
@@ -80,7 +80,7 @@
 
 <!-- Order Template Widget for punchout users -->
 <ng-container *ishIsAuthorizedTo="['APP_B2B_SEND_PUNCHOUT_BASKET']">
-  <div class="row" *ishFeature="'orderTemplates'">
+  <div *ishFeature="'orderTemplates'" class="row">
     <ish-lazy-order-template-widget class="col-12 col-md-4" />
   </div>
 </ng-container>

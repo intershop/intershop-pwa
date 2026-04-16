@@ -1,9 +1,9 @@
 <!-- tabindex is necessary to be a valid focus target for the <ish-skip-content-link> component -->
 <nav
-  id="nav-breadcrumbs"
   class="breadcrumbs row"
-  [attr.aria-label]="'breadcrumbs.aria_label' | translate"
+  id="nav-breadcrumbs"
   tabindex="-1"
+  [attr.aria-label]="'breadcrumbs.aria_label' | translate"
 >
   <ol class="breadcrumbs-list">
     @if (showHome) {
@@ -27,14 +27,14 @@
     @for (item of trail$ | async; track item.key; let index = $index; let last = $last) {
       <li class="breadcrumbs-list" [ngClass]="{ 'breadcrumbs-list-active': last }">
         @if (item.link) {
-          <a [routerLink]="item.link" [queryParams]="item.linkParams" class="breadcrumbs-list-link">{{
+          <a class="breadcrumbs-list-link" [queryParams]="item.linkParams" [routerLink]="item.link">{{
             item.text || (item.key | translate)
           }}</a>
         } @else {
           <div aria-current="location">{{ item.text || (item.key | translate) }}</div>
         }
         @if (!last) {
-          <span class="breadcrumb-list-separator" aria-hidden="true">{{ separator }}</span>
+          <span aria-hidden="true" class="breadcrumb-list-separator">{{ separator }}</span>
         }
       </li>
     }

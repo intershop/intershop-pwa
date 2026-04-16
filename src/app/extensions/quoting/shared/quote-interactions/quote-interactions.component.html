@@ -4,23 +4,23 @@
       <div class="clearfix">
         @if (state === 'New') {
           <button
+            class="btn btn-primary float-end"
             data-testing-id="submit-quote-request"
             type="submit"
-            class="btn btn-primary float-end"
             (click)="submit()"
           >
             {{ 'quote.edit.button.submit.label' | translate }}
           </button>
         }
         @if (state === 'Responded' && (isQuoteValid$ | async)) {
-          <button type="submit" class="btn btn-primary float-end" name="add2cart" (click)="addToBasket()">
+          <button class="btn btn-primary float-end" name="add2cart" type="submit" (click)="addToBasket()">
             {{ 'quote.edit.button.add_quote_to_cart.label' | translate }}
           </button>
         }
         @if (quote.type === 'Quote' || state === 'Submitted') {
           <button
-            data-testing-id="copy-quote-request"
             class="btn btn-secondary"
+            data-testing-id="copy-quote-request"
             name="copy"
             type="submit"
             (click)="copy()"
@@ -29,7 +29,7 @@
           </button>
         }
         @if (state === 'Responded') {
-          <button type="submit" id="button-reject" class="btn btn-secondary float-end" name="refuse" (click)="reject()">
+          <button class="btn btn-secondary float-end" id="button-reject" name="refuse" type="submit" (click)="reject()">
             {{ 'quote.edit.reject.button.reject.label' | translate }}
           </button>
         }

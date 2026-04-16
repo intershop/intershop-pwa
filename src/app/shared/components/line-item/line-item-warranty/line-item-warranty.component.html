@@ -4,9 +4,9 @@
     <!-- check if warranty can be edited, else only display its name -->
     <div class="offset-2 col-7 col-md-6 list-item pt-1">
       <ish-product-warranty
-        (submitWarranty)="updateLineItemWarranty($event)"
         [selectedWarrantySku]="pli.warranty?.sku"
         [viewType]="editable ? 'select' : 'display'"
+        (submitWarranty)="updateLineItemWarranty($event)"
       />
     </div>
     @if (pli.warranty) {

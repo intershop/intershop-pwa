@@ -7,7 +7,7 @@
   </div>
   <div class="ms-auto py-2">
     @if (!!(costCentersError$ | async) === false) {
-      <a routerLink="create" class="btn btn-secondary" data-testing-id="add-cost-center-link">{{
+      <a class="btn btn-secondary" data-testing-id="add-cost-center-link" routerLink="create">{{
         'account.costcenter.list.link.add' | translate
       }}</a>
     }
@@ -21,16 +21,16 @@
     @if (costCenters.length > 0) {
       <table
         cdk-table
-        [dataSource]="costCenters"
         class="table table-lg mobile-optimized"
         data-testing-id="costCenter-list"
+        [dataSource]="costCenters"
       >
         <!-- Cost Center Id -->
         <ng-container cdkColumnDef="costCenterId">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-id">
+          <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-costCenter-id" scope="col">
             {{ 'account.costcenter.list.header.no' | translate }}
           </th>
-          <td cdk-cell *cdkCellDef="let costCenter" [attr.data-label]="'account.costcenter.list.header.no' | translate">
+          <td *cdkCellDef="let costCenter" cdk-cell [attr.data-label]="'account.costcenter.list.header.no' | translate">
             <a [routerLink]="[costCenter.id]">{{ costCenter.costCenterId }}</a>
             @if (costCenter.active === false) {
               <span class="input-help"> {{ 'account.costCenter.status.inactive' | translate }}</span>
@@ -40,12 +40,12 @@
 
         <!-- Cost Center Name -->
         <ng-container cdkColumnDef="costCenterName">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-name">
+          <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-costCenter-name" scope="col">
             {{ 'account.costcenter.list.header.name' | translate }}
           </th>
           <td
-            cdk-cell
             *cdkCellDef="let costCenter"
+            cdk-cell
             [attr.data-label]="'account.costcenter.list.header.name' | translate"
           >
             <a [routerLink]="[costCenter.id]">{{ costCenter.name }}</a>
@@ -54,12 +54,12 @@
 
         <!-- Cost Center Manager -->
         <ng-container cdkColumnDef="costCenterManager">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-manager">
+          <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-costCenter-manager" scope="col">
             {{ 'account.costcenter.list.header.manager' | translate }}
           </th>
           <td
-            cdk-cell
             *cdkCellDef="let costCenter"
+            cdk-cell
             [attr.data-label]="'account.costcenter.list.header.manager' | translate"
           >
             {{ costCenter.costCenterOwner.firstName }} {{ costCenter.costCenterOwner.lastName }}
@@ -68,12 +68,12 @@
 
         <!-- Cost Center Budget -->
         <ng-container cdkColumnDef="costCenterBudget">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-budget">
+          <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-costCenter-budget" scope="col">
             {{ 'account.costcenter.list.header.budgetspent' | translate }}
           </th>
           <td
-            cdk-cell
             *cdkCellDef="let costCenter"
+            cdk-cell
             [attr.data-label]="'account.costcenter.list.header.budgetspent' | translate"
           >
             <ish-cost-center-budget [costCenter]="costCenter" />
@@ -82,27 +82,27 @@
 
         <!-- Actions -->
         <ng-container cdkColumnDef="actions">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-costCenter-actions"></th>
-          <td cdk-cell *cdkCellDef="let costCenter" class="column-price">
+          <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-costCenter-actions" scope="col"></th>
+          <td *cdkCellDef="let costCenter" cdk-cell class="column-price">
             @if (isEditable(costCenter) | async) {
               <!-- Deactivate -->
               @if (costCenter.active) {
                 <button
-                  type="button"
                   class="btn-tool btn-link"
+                  data-testing-id="deactivate-cost-center"
+                  type="button"
                   title="{{ 'account.costcenter.deactivate.button.title' | translate }}"
                   (click)="openConfirmationDialog(costCenter, deactivateDialog)"
-                  data-testing-id="deactivate-cost-center"
                 >
                   <i class="bi bi-ban"></i>
                 </button>
               } @else {
                 <button
-                  type="button"
                   class="btn-tool btn-link"
+                  data-testing-id="activate-cost-center"
+                  type="button"
                   title="{{ 'account.costcenter.activate.button.title' | translate }}"
                   (click)="activate(costCenter)"
-                  data-testing-id="activate-cost-center"
                 >
                   <i class="bi bi-check-circle"></i>
                 </button>
@@ -112,8 +112,9 @@
 
               <!-- Delete -->
               <button
-                type="button"
                 class="btn-tool btn-link"
+                data-testing-id="delete-cost-center"
+                type="button"
                 [ngClass]="{ inactive: !isDeletable(costCenter) }"
                 title="{{
                   isDeletable(costCenter)
@@ -121,7 +122,6 @@
                     : ('account.costcenter.delete.disabled.icon' | translate)
                 }}"
                 (click)="openConfirmationDialog(costCenter, deleteDialog)"
-                data-testing-id="delete-cost-center"
               >
                 <i class="bi bi-trash-fill"></i>
               </button>
@@ -130,8 +130,8 @@
         </ng-container>
 
         <!-- Header and Row Declarations -->
-        <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
-        <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay"></tr>
+        <tr *cdkHeaderRowDef="columnsToDisplay" cdk-header-row></tr>
+        <tr *cdkRowDef="let row; columns: columnsToDisplay" cdk-row></tr>
       </table>
     } @else {
       <!-- Empty List -->

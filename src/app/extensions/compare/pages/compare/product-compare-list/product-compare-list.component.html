@@ -1,8 +1,8 @@
 @if (compareProducts$ | async; as compareProducts) {
   <ish-product-compare-paging
-    [totalItems]="compareProducts.length"
-    [itemsPerPage]="itemsPerPage"
     [currentPage]="currentPage"
+    [itemsPerPage]="itemsPerPage"
+    [totalItems]="compareProducts.length"
     (changePage)="changeCurrentPage($event)"
   />
   <div class="product-list table-compare">
@@ -19,12 +19,12 @@
                 &nbsp;
               </th>
               @for (product of visibleProducts; track product.sku) {
-                <td ishProductContext [sku]="product?.sku" class="legacy-col-6 legacy-col-md-3 no-border">
+                <td class="legacy-col-6 legacy-col-md-3 no-border" ishProductContext [sku]="product?.sku">
                   <div class="product-image">
                     <ish-product-image imageType="M" [link]="true" />
                     <button
-                      type="button"
                       class="btn-tool btn-link"
+                      type="button"
                       [title]="'product.compare.remove.link' | translate: { productName: product.name }"
                       (click)="removeFromCompare(product.sku)"
                     >
@@ -66,7 +66,7 @@
               <th scope="row">{{ 'product.compare.price.label' | translate }}</th>
               @for (product of visibleProducts; track product.sku) {
                 <td>
-                  <ish-product-price ishProductContext [sku]="product?.sku" [showInformationalPrice]="true" />
+                  <ish-product-price ishProductContext [showInformationalPrice]="true" [sku]="product?.sku" />
                 </td>
               }
             </tr>
@@ -132,9 +132,9 @@
     </div>
   </div>
   <ish-product-compare-paging
-    [totalItems]="compareProducts.length"
-    [itemsPerPage]="itemsPerPage"
     [currentPage]="currentPage"
+    [itemsPerPage]="itemsPerPage"
+    [totalItems]="compareProducts.length"
     (changePage)="changeCurrentPage($event)"
   />
 }

@@ -2,10 +2,10 @@
   @if (link) {
     <a
       data-testing-id="product-image-link"
-      [routerLink]="linkTarget || (productURL$ | async)"
-      [queryParamsHandling]="computedQueryParamsHandling"
-      [queryParams]="{ page: null }"
       tabindex="-1"
+      [queryParams]="{ page: null }"
+      [queryParamsHandling]="computedQueryParamsHandling"
+      [routerLink]="linkTarget || (productURL$ | async)"
       ><ng-container *ngTemplateOutlet="image" />
     </a>
   } @else {
@@ -17,14 +17,14 @@
   @if (productImage$ | async; as image) {
     @if (image.effectiveUrl) {
       <img
-        [src]="image.effectiveUrl"
-        [alt]="altText || (defaultAltText$ | async)"
-        [attr.loading]="loading"
-        [attr.fetchpriority]="loading === 'eager' ? 'high' : null"
-        [attr.height]="image.imageActualHeight"
-        [attr.width]="image.imageActualWidth"
         class="product-image"
         itemprop="image"
+        [alt]="altText || (defaultAltText$ | async)"
+        [attr.fetchpriority]="loading === 'eager' ? 'high' : null"
+        [attr.height]="image.imageActualHeight"
+        [attr.loading]="loading"
+        [attr.width]="image.imageActualWidth"
+        [src]="image.effectiveUrl"
       />
     } @else {
       <ng-container *ngTemplateOutlet="noImage" />
@@ -35,11 +35,11 @@
 
   <ng-template #noImage>
     <img
+      class="product-image"
       src="/assets/img/not-available.svg"
       [alt]="'product.image.not_available.alttext' | translate"
-      [attr.loading]="loading"
       [attr.fetchpriority]="loading === 'eager' ? 'high' : null"
-      class="product-image"
+      [attr.loading]="loading"
     />
   </ng-template>
 </ng-template>

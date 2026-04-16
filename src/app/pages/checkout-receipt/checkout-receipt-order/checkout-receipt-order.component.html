@@ -2,7 +2,7 @@
   <div>
     <div class="cart-header">
       <h1 class="d-flex flex-wrap align-items-baseline">
-        <span id="page-main-content" tabindex="-1" class="cart-header-title">
+        <span class="cart-header-title" id="page-main-content" tabindex="-1">
           {{
             (order.recurrence ? 'checkout.receipt.recurring.tankyou.message' : 'checkout.receipt.tankyou.message')
               | translate
@@ -11,11 +11,11 @@
         <span class="header-note">
           <span>{{ 'shopping_cart.transaction.text' | translate }}</span>
           <ish-modal-dialog-link
+            class="details-link"
             linkText="shopping_cart.read_more.link"
             [options]="{ titleText: 'checkout.safeandsecure.details.title' | translate, size: 'lg' }"
-            class="details-link"
           >
-            <ish-content-include includeId="include.dialog.safeAndSecure.pagelet2-Include" *ishLazyLoadingContent />
+            <ish-content-include *ishLazyLoadingContent includeId="include.dialog.safeAndSecure.pagelet2-Include" />
           </ish-modal-dialog-link>
         </span>
       </h1>

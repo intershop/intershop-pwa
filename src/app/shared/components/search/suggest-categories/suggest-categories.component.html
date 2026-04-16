@@ -5,8 +5,8 @@
       <ish-suggest-categories-tile
         [categoryUniqueId]="categoryId"
         [inputTerms$]="inputTerms$"
-        (routeChange)="routeChange.emit($event)"
         (click)="handleInputFocus()"
+        (routeChange)="routeChange.emit($event)"
       />
     }
   </ul>

@@ -1,7 +1,7 @@
 @if (visible$ | async) {
   <ul>
     @for (part of parts$ | async; track part.sku) {
-      <li>{{ part.quantity }} x <ish-product-name ishProductContext [sku]="part.sku" [link]="false" /></li>
+      <li>{{ part.quantity }} x <ish-product-name ishProductContext [link]="false" [sku]="part.sku" /></li>
     }
   </ul>
 }

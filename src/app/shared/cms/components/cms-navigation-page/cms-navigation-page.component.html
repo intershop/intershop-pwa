@@ -5,13 +5,13 @@
     #subMenu
     [class]="'dropdown ' + pagelet.stringParam('CSSClass', '')"
     [ngClass]="{ open: isOpened(page.contentPageId) }"
+    (click)="subMenuHide(subMenu)"
     (mouseenter)="subMenuShow(subMenu)"
     (mouseleave)="subMenuHide(subMenu)"
-    (click)="subMenuHide(subMenu)"
   >
     <a
-      [routerLink]="page | ishContentPageRoute"
       [ngStyle]="{ width: !showSubMenu(page.children.length) ? '100%' : '' }"
+      [routerLink]="page | ishContentPageRoute"
     >
       @if (pagelet.hasParam('DisplayName')) {
         {{ pagelet.stringParam('DisplayName') }}
@@ -32,11 +32,11 @@
       <ng-container [ngTemplateOutlet]="treeNodeTemplate" [ngTemplateOutletContext]="{ treeNode: page, depth: 1 }" />
 
       <!-- the recursively used template to render the tree nodes -->
-      <ng-template #treeNodeTemplate let-treeNode="treeNode" let-depth="depth">
+      <ng-template #treeNodeTemplate let-depth="depth" let-treeNode="treeNode">
         <ul class="category-level{{ depth }}" [ngClass]="{ 'dropdown-menu': depth === 1 }">
           @for (node of treeNode.children; track node.contentPageId) {
             <li class="main-navigation-level{{ depth }}-item" [ngClass]="{ open: isOpened(node.contentPageId) }">
-              <a [routerLink]="node | ishContentPageRoute" [ngStyle]="{ width: !node.children.length ? '100%' : '' }">
+              <a [ngStyle]="{ width: !node.children.length ? '100%' : '' }" [routerLink]="node | ishContentPageRoute">
                 {{ node.name }}
               </a>
               @if (node.children.length) {

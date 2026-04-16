@@ -1,8 +1,8 @@
 @if ((basket$ | async) && (shippingMethods$ | async)) {
   <div>
     <!-- shipping method selection -->
-    <form [formGroup]="shippingForm" class="form-horizontal">
-      <formly-form [form]="shippingForm" [fields]="shippingConfig$ | async" [model]="model" />
+    <form class="form-horizontal" [formGroup]="shippingForm">
+      <formly-form [fields]="shippingConfig$ | async" [form]="shippingForm" [model]="model" />
     </form>
   </div>
 }

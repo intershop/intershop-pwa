@@ -18,7 +18,7 @@
           @if (shippingMethods.length) {
             <div class="shipping-methods">
               @if ((basketError$ | async) === undefined && nextDisabled) {
-                <div role="alert" class="alert alert-danger">
+                <div class="alert alert-danger" role="alert">
                   {{ 'checkout.shipping_method.no_Selection.error' | translate }}
                 </div>
               }
@@ -26,7 +26,7 @@
               <ish-checkout-shipping />
             </div>
           } @else {
-            <div role="alert" class="alert alert-danger">{{ 'checkout.shipping.no_methods.message' | translate }}</div>
+            <div class="alert alert-danger" role="alert">{{ 'checkout.shipping.no_methods.message' | translate }}</div>
             <a routerLink="/basket">{{ 'checkout.general.back_to_cart.button.label' | translate }}</a>
           }
         </div>
@@ -52,7 +52,7 @@
           <ish-basket-cost-summary [totals]="basket.totals" />
           <div class="d-grid">
             @if (nextDisabled) {
-              <div id="checkout-button-help" aria-live="polite" class="visually-hidden">
+              <div aria-live="polite" class="visually-hidden" id="checkout-button-help">
                 {{ 'checkout.continue.validation.message' | translate }}
               </div>
             }

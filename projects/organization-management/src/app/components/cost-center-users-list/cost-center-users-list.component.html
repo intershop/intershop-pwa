@@ -3,18 +3,18 @@
     @if (costCenter.buyers?.length > 0) {
       <table
         cdk-table
-        [dataSource]="costCenter.buyers"
         class="table table-lg mobile-optimized"
         data-testing-id="costCenterBuyers-list"
+        [dataSource]="costCenter.buyers"
       >
         <!-- Buyer Name -->
         <ng-container cdkColumnDef="buyerName">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-buyer-name">
+          <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-buyer-name" scope="col">
             {{ 'account.costcenter.details.buyers.list.header.name' | translate }}
           </th>
           <td
-            cdk-cell
             *cdkCellDef="let buyer"
+            cdk-cell
             [attr.data-label]="'account.costcenter.details.buyers.list.header.name' | translate"
           >
             <a *ishIsAuthorizedTo="'APP_B2B_MANAGE_USERS'" [routerLink]="'../../users/' + buyer.login"
@@ -31,12 +31,12 @@
 
         <!-- Orders -->
         <ng-container cdkColumnDef="orders">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-orders">
+          <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-orders" scope="col">
             {{ 'account.costcenter.details.buyers.list.header.approvedorders' | translate }}
           </th>
           <td
-            cdk-cell
             *cdkCellDef="let buyer"
+            cdk-cell
             [attr.data-label]="'account.costcenter.details.buyers.list.header.approvedorders' | translate"
           >
             {{ buyer.approvedOrders }}
@@ -45,12 +45,12 @@
 
         <!-- Pending Orders -->
         <ng-container cdkColumnDef="pendingOrders">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-pending-orders">
+          <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-pending-orders" scope="col">
             {{ 'account.costcenter.details.buyers.list.header.pendingorders' | translate }}
           </th>
           <td
-            cdk-cell
             *cdkCellDef="let buyer"
+            cdk-cell
             [attr.data-label]="'account.costcenter.details.buyers.list.header.pendingorders' | translate"
           >
             {{ buyer.pendingOrders }}
@@ -59,12 +59,12 @@
 
         <!-- Budget -->
         <ng-container cdkColumnDef="budget">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-user-budget">
+          <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-user-budget" scope="col">
             {{ 'account.costcenter.details.buyers.list.header.orderspendlimit' | translate }}
           </th>
           <td
-            cdk-cell
             *cdkCellDef="let buyer"
+            cdk-cell
             [attr.data-label]="'account.costcenter.details.buyers.list.header.orderspendlimit' | translate"
           >
             {{ buyer.budget | ishPrice }} ({{
@@ -74,16 +74,16 @@
         </ng-container>
 
         <ng-container cdkColumnDef="actions">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-cost-center-buyers-actions"></th>
-          <td cdk-cell *cdkCellDef="let buyer" class="column-price">
+          <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-cost-center-buyers-actions" scope="col"></th>
+          <td *cdkCellDef="let buyer" cdk-cell class="column-price">
             <!-- Edit buyer -->
             <button
-              type="button"
               class="btn-tool btn-link"
+              data-testing-id="cost-center-buyer-edit"
+              type="button"
               [title]="
                 'account.costcenter.details.action.edit' | translate: { '0': buyer.firstName + ' ' + buyer.lastName }
               "
-              data-testing-id="cost-center-buyer-edit"
               (click)="openEditCostCenterBuyerDialog(buyer, editCostCenterBuyerDialog)"
             >
               <i class="bi bi-pencil-fill"></i>
@@ -91,13 +91,13 @@
 
             <!-- Remove buyer -->
             <button
-              type="button"
               class="btn-tool btn-link"
+              data-testing-id="cost-center-buyer-remove"
+              type="button"
               [title]="
                 'account.costcenter.remove.button.label' | translate: { '0': buyer.firstName + ' ' + buyer.lastName }
               "
               (click)="removeBuyerConfirmation(buyer, removeBuyerDialog)"
-              data-testing-id="cost-center-buyer-remove"
             >
               <i class="bi bi-trash-fill"></i>
             </button>
@@ -105,8 +105,8 @@
         </ng-container>
 
         <!-- Header and Row Declarations -->
-        <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
-        <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay"></tr>
+        <tr *cdkHeaderRowDef="columnsToDisplay" cdk-header-row></tr>
+        <tr *cdkRowDef="let row; columns: columnsToDisplay" cdk-row></tr>
       </table>
     } @else {
       <p data-testing-id="emptyBuyerList">{{ 'account.costcenter.details.buyers.list.nobuyers' | translate }}</p>

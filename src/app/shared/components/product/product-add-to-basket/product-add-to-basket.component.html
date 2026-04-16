@@ -1,17 +1,17 @@
 @if (visible$ | async) {
   <div class="add-to-cart">
     <button
-      type="submit"
-      name="addProduct"
       class="btn"
-      [ngClass]="cssClass"
+      data-testing-id="addToCartButton"
+      name="addProduct"
+      type="submit"
+      [attr.aria-hidden]="ariaHidden"
       [class.btn-primary]="!displayIcon"
       [disabled]="buttonDisabled$ | async"
-      [title]="displayIcon ? (translationKey$ | async | translate) : ''"
+      [ngClass]="cssClass"
       [tabindex]="ariaHidden ? -1 : 0"
-      [attr.aria-hidden]="ariaHidden"
+      [title]="displayIcon ? (translationKey$ | async | translate) : ''"
       (click)="addToBasket()"
-      data-testing-id="addToCartButton"
     >
       <!-- prettier-ignore -->
       @if ((displaySpinner$ | async) !== true) {

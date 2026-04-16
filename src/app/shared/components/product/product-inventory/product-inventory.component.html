@@ -6,7 +6,7 @@
         @if (availableStock$ | async; as stock) {
           <ng-container class="availableStock">({{ stock }})</ng-container>
         }
-        <link itemprop="availability" href="http://schema.org/InStock" />
+        <link href="http://schema.org/InStock" itemprop="availability" />
       </span>
       @if (displayType === 'extended') {
         @if (supplierStock$ | async; as supplierStock) {
@@ -31,7 +31,7 @@
     } @else {
       <span class="product-out-of-stock">
         {{ 'product.out_of_stock.text' | translate }}
-        <link itemprop="availability" href="http://schema.org/OutOfStock" />
+        <link href="http://schema.org/OutOfStock" itemprop="availability" />
       </span>
     }
   </div>

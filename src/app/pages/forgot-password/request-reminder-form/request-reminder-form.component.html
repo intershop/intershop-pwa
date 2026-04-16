@@ -1,20 +1,20 @@
 <form
-  [formGroup]="requestReminderForm"
-  ishFormSubmit
   #form="ngForm"
-  (ngSubmit)="submitForm()"
   class="form-horizontal"
+  ishFormSubmit
   novalidate
+  [formGroup]="requestReminderForm"
+  (ngSubmit)="submitForm()"
 >
-  <formly-form [form]="requestReminderForm" [fields]="fields$ | async" />
+  <formly-form [fields]="fields$ | async" [form]="requestReminderForm" />
 
   <div class="row form-group">
     <div class="offset-md-4 col-md-8">
       <button
+        class="btn btn-primary"
+        name="passwordReminder"
         type="submit"
         value="PasswordReminder"
-        name="passwordReminder"
-        class="btn btn-primary"
         [disabled]="requestReminderForm.invalid && form.submitted"
       >
         {{ 'forgot_password.form.send.button.label' | translate }}

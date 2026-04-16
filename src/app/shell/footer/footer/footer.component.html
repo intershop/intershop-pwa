@@ -2,9 +2,9 @@
   <ish-lazy-store-locator-footer />
   <div class="footer">
     <div class="container">
-      <div [ishServerHtml]="'footer.disclaimer' | translate" class="clearfix"></div>
+      <div class="clearfix" [ishServerHtml]="'footer.disclaimer' | translate"></div>
       <ish-lazy-content-include includeId="include.footer.content.pagelet2-Include" />
-      <div [ishServerHtml]="'footer.copyright' | translate: { appVersion: appVersion }" class="clearfix"></div>
+      <div class="clearfix" [ishServerHtml]="'footer.copyright' | translate: { appVersion: appVersion }"></div>
     </div>
   </div>
 </ng-container>

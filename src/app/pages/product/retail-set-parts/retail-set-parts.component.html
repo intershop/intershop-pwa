@@ -8,14 +8,14 @@
             <ish-product-item
               displayType="tile"
               ishProductContext
-              [sku]="part.sku"
-              [propagateIndex]="i"
               [configuration]="{
                 addToCompare: false,
                 addToWishlist: false,
                 addToOrderTemplate: false,
                 addToQuote: false,
               }"
+              [propagateIndex]="i"
+              [sku]="part.sku"
             />
           </div>
         }
@@ -24,8 +24,6 @@
             <ish-product-item
               displayType="row"
               ishProductContext
-              [sku]="part.sku"
-              [propagateIndex]="i"
               [allowZeroQuantity]="true"
               [configuration]="{
                 addToCompare: false,
@@ -33,6 +31,8 @@
                 addToOrderTemplate: false,
                 addToQuote: false,
               }"
+              [propagateIndex]="i"
+              [sku]="part.sku"
             />
           </div>
         }

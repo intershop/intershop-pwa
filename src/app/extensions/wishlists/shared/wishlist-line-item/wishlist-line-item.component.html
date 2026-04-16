@@ -18,20 +18,20 @@
             @if (!readOnly) {
               <div class="mb-2">
                 <button
-                  type="button"
                   class="btn-tool btn-link"
+                  data-testing-id="move-wishlist"
+                  type="button"
                   [title]="'wishlist.table.options.move_to_another_wishlist' | translate"
                   (click)="moveDialog.show()"
-                  data-testing-id="move-wishlist"
                 >
                   <i class="bi bi-arrows-move"></i>
                 </button>
                 <button
-                  type="button"
                   class="btn-tool btn-link"
+                  data-testing-id="delete-wishlist"
+                  type="button"
                   [title]="'wishlist.table.options.remove' | translate"
                   (click)="removeProductFromWishlist(wishlistItemData.sku)"
-                  data-testing-id="delete-wishlist"
                 >
                   <i class="bi bi-trash-fill"></i>
                 </button>

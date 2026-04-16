@@ -8,24 +8,24 @@
       <div class="video-wrapper">
         <!-- spell-checker: words allowfullscreen -->
         <iframe
-          [title]="pagelet?.displayName"
+          allowfullscreen
+          frameborder="0"
           loading="lazy"
           [src]="iframeVideoUrl"
-          frameborder="0"
-          allowfullscreen
+          [title]="pagelet?.displayName"
         ></iframe>
       </div>
     } @else {
       <video
         #videoPlayer
-        [src]="nativeVideoUrl"
         class="video"
-        width="100%"
         height="auto"
+        width="100%"
         [autoplay]="autoplay"
         [controls]="autoplay"
         [muted]="mute"
         [poster]="pagelet.stringParam('Image')"
+        [src]="nativeVideoUrl"
         [title]="pagelet?.displayName"
       ></video>
       @if (!autoplay && !playing) {
@@ -33,7 +33,7 @@
           @if (pagelet.hasParam('Heading')) {
             <h1>{{ pagelet.stringParam('Heading') }}</h1>
           }
-          <button type="button" class="video-link btn btn-link btn-link-action" (click)="playing = true; playVideo()">
+          <button class="video-link btn btn-link btn-link-action" type="button" (click)="playing = true; playVideo()">
             <i class="bi bi-play-circle"></i>
           </button>
         </div>

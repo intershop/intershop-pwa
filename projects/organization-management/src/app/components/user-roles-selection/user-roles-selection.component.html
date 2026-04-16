@@ -7,11 +7,11 @@
         <div class="row" [formGroup]="form">
           @for (item of form.controls | keyvalue: unsorted; track item.key; let i = $index) {
             @if (role$(item.key) | async; as role) {
-              <div [ngClass]="{ 'd-none': hideRole(form.get(item.key)) }" class="col-12">
+              <div class="col-12" [ngClass]="{ 'd-none': hideRole(form.get(item.key)) }">
                 <div class="form-control-checkbox">
                   <div class="form-check form-control">
-                    <label [for]="item.key" class="mb-2">
-                      <input type="checkbox" [id]="item.key" [formControlName]="item.key" class="form-check-input" />
+                    <label class="mb-2" [for]="item.key">
+                      <input class="form-check-input" type="checkbox" [formControlName]="item.key" [id]="item.key" />
                       <span>{{ role.displayName }}</span
                       ><br />
                       @if (role.description) {
@@ -31,9 +31,9 @@
                 <p>
                   <!-- Expand/Collapse user permissions -->
                   <button
+                    class="btn btn-link btn-link-with-icon btn-link-action"
                     type="button"
                     (click)="toggleExpanded(i)"
-                    class="btn btn-link btn-link-with-icon btn-link-action"
                   >
                     @if (isExpanded[i]) {
                       {{ 'account.user.details.profile.role.hide_permissions.link' | translate

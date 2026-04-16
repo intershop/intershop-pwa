@@ -10,19 +10,19 @@
 
 <ish-account-order-filters
   fragmentOnRouting="order-list-top"
-  (modelChange)="loadFilteredOrders($event)"
   [ngClass]="{ 'd-none': !filtersActive && !(orders$ | async)?.length }"
+  (modelChange)="loadFilteredOrders($event)"
 />
 
 <ish-order-list
-  [orders]="ordersForPage$ | async"
   [columnsToDisplay]="columnsToDisplay$ | async"
+  [loading]="ordersLoading$ | async"
   [noOrdersMessageKey]="
     !filtersActive
       ? 'account.orderlist.no_placed_orders_message'
       : 'account.order_history.filter.no_results_found_message'
   "
-  [loading]="ordersLoading$ | async"
+  [orders]="ordersForPage$ | async"
 />
 
 @if (pagingInfo$ | async; as paging) {

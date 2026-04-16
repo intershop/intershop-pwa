@@ -1,13 +1,13 @@
 @if (isDesignViewMode && type) {
   <div
     class="design-view-wrapper"
+    scrollContainer="root"
+    [ishScroll]="shouldScroll$ | async"
     [ngClass]="[
       type,
       (isPageletSelected$ | async) ? 'pagelet-selected' : '',
       (isPageletPreviewed$ | async) ? 'pagelet-previewed' : '',
     ]"
-    [ishScroll]="shouldScroll$ | async"
-    scrollContainer="root"
     [scrollDuration]="500"
     [scrollSpacing]="50"
     (mouseenter)="onPageletHover()"
@@ -19,12 +19,12 @@
         @case ('pagelet') {
           @if (pagelet$ | async; as pagelet) {
             <button
-              type="button"
-              (click)="triggerAction(pagelet.id, 'pageletEdit')"
               class="btn"
+              type="button"
               title="{{
                 ('designview.edit.link.title' | translate) + (pagelet.displayName ? ' ' + pagelet.displayName : '')
               }}"
+              (click)="triggerAction(pagelet.id, 'pageletEdit')"
             >
               <i class="bi bi-pencil-fill"></i>
             </button>
@@ -43,10 +43,10 @@
         @case ('slot') {
           <div class="name">{{ pagelet.slot(this.slotId).displayName }}</div>
           <button
-            type="button"
-            (click)="triggerAction(this.slotId, 'slotAdd')"
             class="btn"
+            type="button"
             title="{{ 'designview.add.link.title' | translate }}"
+            (click)="triggerAction(this.slotId, 'slotAdd')"
           >
             <i class="bi bi-plus"></i>
           </button>
@@ -55,10 +55,10 @@
         @case ('include') {
           <div class="name">{{ include.displayName }}</div>
           <button
-            type="button"
-            (click)="triggerAction(include.id, 'includeAdd')"
             class="btn"
+            type="button"
             title="{{ 'designview.add.link.title' | translate }}"
+            (click)="triggerAction(include.id, 'includeAdd')"
           >
             <i class="bi bi-plus"></i>
           </button>

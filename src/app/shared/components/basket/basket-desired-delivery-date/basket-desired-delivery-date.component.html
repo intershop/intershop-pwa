@@ -9,10 +9,10 @@
           </div>
         }
         <div class="col-md-6">
-          <formly-form [form]="form" [fields]="fields" [model]="model" />
+          <formly-form [fields]="fields" [form]="form" [model]="model" />
         </div>
         <div class="col-md-2 ps-md-0">
-          <button type="submit" class="btn btn-secondary" [disabled]="disabled">
+          <button class="btn btn-secondary" type="submit" [disabled]="disabled">
             {{ 'checkout.desired_delivery_date.apply.button.label' | translate }}
           </button>
         </div>

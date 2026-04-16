@@ -1,21 +1,21 @@
 <div #searchBox class="search clearfix" [ngClass]="{ focus: searchBoxFocus, 'scaled-up': searchBoxScaledUp }">
   <input
     #searchInput
-    id="header-search-input"
-    type="search"
-    [placeholder]="configuration?.placeholder || ''"
     autocomplete="off"
     class="form-control searchTerm search-input"
-    [value]="(inputSearchTerms$ | async) ?? ''"
+    id="header-search-input"
+    type="search"
     [attr.aria-label]="'search.searchbox.label' | translate"
-    (input)="handleInput($event.target)"
+    [placeholder]="configuration?.placeholder || ''"
+    [value]="(inputSearchTerms$ | async) ?? ''"
     (focus)="handleFocus(true)"
+    (input)="handleInput($event.target)"
     (keydown.enter)="submitSearch(searchInput.value)"
   />
 
   @if (configuration?.autoSuggest && suggestions$ | async; as results) {
     @if ((searchBoxResults$ | async) && (hasMinimumCharCount$ | async)) {
-      <div id="search-suggest-layer" class="search-suggest-container" aria-labelledby="header-search-input">
+      <div aria-labelledby="header-search-input" class="search-suggest-container" id="search-suggest-layer">
         <div
           class="col-12 d-flex flex-column"
           [ngClass]="{
@@ -24,51 +24,51 @@
         >
           @if (results.keywords?.length) {
             <ish-suggest-keywords
-              [keywords]="results.keywords"
               [inputTerms$]="inputSearchTerms$"
-              (submitSearch)="submitSearch($event)"
+              [keywords]="results.keywords"
               [maxAutoSuggests]="configuration?.maxAutoSuggests"
+              (submitSearch)="submitSearch($event)"
             />
           }
           @if (results.categories?.length) {
             <ish-suggest-categories
               [categories]="results.categories"
               [inputTerms$]="inputSearchTerms$"
-              (routeChange)="resetInput()"
               [maxAutoSuggests]="3"
+              (routeChange)="resetInput()"
             />
           }
           @if (results.brands?.length) {
             <ish-suggest-brands
               [brands]="results.brands"
               [inputTerms$]="inputSearchTerms$"
-              (routeChange)="resetInput($event)"
               [maxAutoSuggests]="3"
+              (routeChange)="resetInput($event)"
             />
           }
         </div>
         @if (results.products?.length) {
           <div
+            class="col-12"
             [ngClass]="{
               'col-md-7': results.keywords.length || results.brands.length || results.categories.length,
               'products-only': !results.keywords.length && !results.brands.length && !results.categories.length,
             }"
-            class="col-12"
           >
             <ish-suggest-products
-              [products]="results.products"
-              [inputTerms$]="inputSearchTerms$"
               [deviceType]="deviceType"
-              (routeChange)="resetInput()"
+              [inputTerms$]="inputSearchTerms$"
               [maxAutoSuggests]="8"
+              [products]="results.products"
+              (routeChange)="resetInput()"
             />
           </div>
         }
         <div class="col-12">
           <div class="show-all">
             <button
-              type="button"
               class="btn btn-link"
+              type="button"
               [title]="'search.searchbox.button.title' | translate"
               (click)="submitSearch(searchInput.value)"
             >
@@ -79,7 +79,7 @@
       </div>
     } @else {
       @if ((hasMinimumCharCount$ | async) || (searchedTerms$ | async)) {
-        <div class="search-suggest-container" aria-live="polite">
+        <div aria-live="polite" class="search-suggest-container">
           @if (hasMinimumCharCount$ | async) {
             <div class="col-12">
               <div class="d-flex justify-content-start headline">{{ 'suggest.no_results.headline' | translate }}</div>
@@ -89,8 +89,8 @@
           @if (searchedTerms$ | async) {
             <div class="col-12">
               <ish-suggest-search-terms
-                [maxRecentlySearchedWords]="5"
                 [inputTerms$]="inputSearchTerms$"
+                [maxRecentlySearchedWords]="5"
                 (submitSearch)="submitSearch($event)"
               />
             </div>
@@ -103,8 +103,8 @@
       <div class="search-suggest-container">
         <div class="col-12">
           <ish-suggest-search-terms
-            [maxRecentlySearchedWords]="5"
             [inputTerms$]="inputSearchTerms$"
+            [maxRecentlySearchedWords]="5"
             (submitSearch)="submitSearch($event)"
           />
         </div>
@@ -120,11 +120,11 @@
     @if (inputSearchTerms$ | async) {
       <button
         class="btn btn-reset"
-        type="reset"
         name="reset"
+        type="reset"
         [title]="'search.searchbox.button.reset.title' | translate"
-        (focus)="handleFocus(true)"
         (click)="handleResetButton($event); setFocusOnSearchInput()"
+        (focus)="handleFocus(true)"
       >
         <i class="bi bi-x searchbox-icon"></i>
       </button>
@@ -133,11 +133,11 @@
     <!-- Search button -->
     <button
       class="btn btn-secondary btn-search"
-      type="submit"
       name="search"
+      type="submit"
       [title]="'search.searchbox.button.title' | translate"
-      (focus)="handleFocus(true)"
       (click)="submitSearch(searchInput.value)"
+      (focus)="handleFocus(true)"
     >
       <!-- search button with icon -->
       @if (!configuration?.buttonText) {

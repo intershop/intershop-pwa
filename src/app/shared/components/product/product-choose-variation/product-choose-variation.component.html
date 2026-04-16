@@ -1,5 +1,5 @@
 @if (visible$ | async) {
-  <a [routerLink]="productURL$ | async" queryParamsHandling="merge" class="btn btn-primary" role="button">
+  <a class="btn btn-primary" queryParamsHandling="merge" role="button" [routerLink]="productURL$ | async">
     {{ 'product.choose_variation.link' | translate }}
   </a>
 }

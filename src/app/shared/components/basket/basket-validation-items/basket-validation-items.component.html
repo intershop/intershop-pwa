@@ -8,7 +8,7 @@
   <div class="list-body">
     @for (pli of lineItems; track pli.id) {
       <div class="list-item-row list-item-row-big">
-        <div ishProductContext [sku]="pli.productSKU" class="row clearfix">
+        <div class="row clearfix" ishProductContext [sku]="pli.productSKU">
           <!---Product Image --->
           <div class="col-2 list-item">
             <ish-product-image imageType="S" [link]="true" />
@@ -32,10 +32,10 @@
             <p>{{ pli.totals.total | ishPrice }}</p>
             <div class="d-none d-lg-block">
               <button
-                type="button"
                 class="btn btn-secondary"
-                (click)="onDeleteItem(pli.id)"
                 data-testing-id="delete-button"
+                type="button"
+                (click)="onDeleteItem(pli.id)"
               >
                 {{ 'restricted-items.Remove.button' | translate }}
               </button>
@@ -43,7 +43,7 @@
           </div>
         </div>
         <div class="d-lg-none text-end">
-          <button type="button" class="btn btn-secondary" (click)="onDeleteItem(pli.id)">
+          <button class="btn btn-secondary" type="button" (click)="onDeleteItem(pli.id)">
             {{ 'restricted-items.Remove.button' | translate }}
           </button>
         </div>

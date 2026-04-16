@@ -8,7 +8,7 @@
           <dl class="row dl-horizontal dl-separator">
             <dt class="col-md-4">{{ 'account.user.new.order_spend_limit.label' | translate }}</dt>
             @if (budget.orderSpentLimit) {
-              <dd data-testing-id="order-spend-limit-field" class="col-md-8">
+              <dd class="col-md-8" data-testing-id="order-spend-limit-field">
                 {{ budget.orderSpentLimit | ishPrice }}
               </dd>
             } @else {
@@ -30,13 +30,13 @@
 
     <div class="col-2 col-lg-4">
       <a
-        routerLink="budget"
         class="btn-tool"
+        data-testing-id="edit-budget"
+        routerLink="budget"
         [title]="
           'account.profile.update.link'
             | translate: { '0': 'account.user.details.profile.budget_limits.heading' | translate }
         "
-        data-testing-id="edit-budget"
       >
         <i class="bi bi-pencil-fill"></i>
       </a>

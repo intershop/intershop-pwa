@@ -2,14 +2,14 @@
   <div class="form-check form-control" [attr.data-testing-id]="'checkout-review-wrapper'">
     <label class="mb-2" [attr.for]="id">
       <input
-        type="checkbox"
         class="form-check-input"
+        type="checkbox"
+        [attr.aria-describedby]="props.ariaDescribedByIds"
+        [attr.aria-invalid]="showError ? 'true' : undefined"
+        [attr.aria-required]="props.required ? 'true' : undefined"
+        [attr.data-testing-id]="field.key"
         [formControl]="formControl"
         [formlyAttributes]="field"
-        [attr.data-testing-id]="field.key"
-        [attr.aria-required]="props.required ? 'true' : undefined"
-        [attr.aria-invalid]="showError ? 'true' : undefined"
-        [attr.aria-describedby]="props.ariaDescribedByIds"
       />
       <span
         [ishServerHtml]="'checkout.tac.text' | translate: { '0': 'page://page.termsAndConditions.pagelet2-Page' }"
@@ -18,7 +18,7 @@
   </div>
   @if (showError) {
     <div class="validation-message">
-      <ish-validation-message [field]="field" class="validation-message" />
+      <ish-validation-message class="validation-message" [field]="field" />
     </div>
   }
 </div>

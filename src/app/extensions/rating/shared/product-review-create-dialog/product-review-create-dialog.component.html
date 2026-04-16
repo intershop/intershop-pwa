@@ -1,19 +1,19 @@
 <ng-template #modal let-reviewModal>
   <ng-container *ishProductContextAccess="let product = product">
     <form
-      [formGroup]="form"
-      ishFormSubmit
       #reviewForm="ngForm"
-      (ngSubmit)="submitForm(product.sku)"
       class="form-horizontal"
       data-testing-id="create-product-review-form"
+      ishFormSubmit
+      [formGroup]="form"
+      (ngSubmit)="submitForm(product.sku)"
     >
       <div class="modal-content">
         <div class="modal-header">
-          <h2 id="product-review-create-modal-title" class="modal-title">
+          <h2 class="modal-title" id="product-review-create-modal-title">
             {{ 'product.reviews.create.dialog.heading' | translate }}
           </h2>
-          <button type="button" class="btn-close" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
+          <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
         </div>
 
         <div class="modal-body">
@@ -28,13 +28,13 @@
 
           <p>{{ 'product.reviews.create.dialog.description.text' | translate }}</p>
 
-          <formly-form [form]="form" [fields]="fields" [model]="model$ | async" />
+          <formly-form [fields]="fields" [form]="form" [model]="model$ | async" />
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary" [disabled]="form.invalid && reviewForm.submitted">
+          <button class="btn btn-primary" type="submit" [disabled]="form.invalid && reviewForm.submitted">
             {{ 'product.reviews.create.dialog.confirm.button.label' | translate }}
           </button>
-          <button type="button" class="btn btn-secondary" (click)="hide()">
+          <button class="btn btn-secondary" type="button" (click)="hide()">
             {{ 'product.reviews.create.dialog.cancel.button.label' | translate }}
           </button>
         </div>

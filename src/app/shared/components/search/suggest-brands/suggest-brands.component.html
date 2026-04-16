@@ -4,9 +4,9 @@
     @for (brand of brands | slice: 0 : maxAutoSuggests; track brand.brandName) {
       <li>
         <a
-          [routerLink]="['search', brand.brandName]"
-          [queryParams]="{ filters: 'brand=' + brand.brandName }"
           [innerHTML]="brand.brandName | ishHighlight: (inputTerms$ | async)"
+          [queryParams]="{ filters: 'brand=' + brand.brandName }"
+          [routerLink]="['search', brand.brandName]"
           (click)="handleInputFocus(brand.brandName)"
         ></a>
       </li>

@@ -5,27 +5,27 @@
   <ng-container ishProductContext>
     <ish-in-place-edit
       #inPlaceEdit
-      (edited)="updateTitle()"
-      (aborted)="resetTitle()"
       ariaLabelName="account.order_template.edit.name.label"
       buttonClass="btn-lg"
       [confirmDisabled]="!form.valid"
+      (aborted)="resetTitle()"
+      (edited)="updateTitle()"
     >
       <h1 viewModeContent>
         {{ orderTemplate?.title }}
       </h1>
-      <div editModeForm class="flex-grow-1 position-relative" style="margin-top: 12px; margin-bottom: 16px">
+      <div class="flex-grow-1 position-relative" editModeForm style="margin-top: 12px; margin-bottom: 16px">
         <formly-form
+          [fields]="fields"
           [form]="form"
           [model]="model"
-          [fields]="fields"
           (keydown.enter)="inPlaceEdit.confirm()"
           (keydown.esc)="inPlaceEdit.cancel()"
         />
       </div>
     </ish-in-place-edit>
     @if (noOfUnavailableProducts$ | async; as noOfUnavailableProducts) {
-      <p data-testing-id="out-of-stock-warning" class="alert alert-info">
+      <p class="alert alert-info" data-testing-id="out-of-stock-warning">
         {{ 'account.order_template.out_of_stock.warning' | translate: { num: noOfUnavailableProducts } }}
       </p>
     }
@@ -49,11 +49,11 @@
               <div class="list-item-row list-item-row-big">
                 <ish-account-order-template-detail-line-item
                   ishProductContext
-                  [propagateIndex]="i"
-                  [sku]="item.sku"
-                  [quantity]="item.desiredQuantity.value"
-                  [orderTemplateItemData]="item"
                   [currentOrderTemplate]="orderTemplate"
+                  [orderTemplateItemData]="item"
+                  [propagateIndex]="i"
+                  [quantity]="item.desiredQuantity.value"
+                  [sku]="item.sku"
                 />
               </div>
             }

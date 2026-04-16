@@ -4,9 +4,9 @@
       <a
         class="product-title link-decoration-hover"
         data-testing-id="product-name-link"
-        [routerLink]="productURL$ | async"
-        [queryParamsHandling]="computedQueryParamsHandling"
         [queryParams]="{ page: null }"
+        [queryParamsHandling]="computedQueryParamsHandling"
+        [routerLink]="productURL$ | async"
         >{{ alternate || productName }}</a
       >
     } @else {

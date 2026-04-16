@@ -1,11 +1,11 @@
 <div class="d-grid">
   <button
-    type="button"
     class="btn btn-secondary"
+    data-testing-id="addOrderToOrderTemplateButton"
+    type="button"
+    [disabled]="displaySpinner()"
     [ngClass]="cssClass"
     (click)="openModal(modal)"
-    [disabled]="displaySpinner()"
-    data-testing-id="addOrderToOrderTemplateButton"
   >
     @if (displaySpinner() !== true) {
       {{ 'order_template.create.heading' | translate }}

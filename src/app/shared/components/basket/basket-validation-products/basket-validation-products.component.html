@@ -1,6 +1,6 @@
 @for (item of items; track item.productSKU) {
   @if (item) {
-    <div class="alert alert-box" role="alert" data-testing-id="validation-removed-items-message">
+    <div class="alert alert-box" data-testing-id="validation-removed-items-message" role="alert">
       <div class="alert-box-header">
         {{ item.message }}
       </div>

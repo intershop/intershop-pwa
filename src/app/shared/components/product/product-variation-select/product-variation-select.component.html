@@ -3,7 +3,7 @@
     @for (group of variationOptions; track group.id) {
       <div class="product-variation">
         <div class="form-group">
-          <label [for]="uuid + group.id" [id]="uuid + group.id + 'label'" class="col-form-label">{{
+          <label class="col-form-label" [for]="uuid + group.id" [id]="uuid + group.id + 'label'">{{
             group.label
           }}</label>
           <!-- multiple switch case expressions - https://stackoverflow.com/a/45950368 -->
@@ -14,16 +14,16 @@
             @case (group.attributeType === 'defaultAndColorCode' || group.attributeType === 'defaultAndSwatchImage') {
               <ish-product-variation-select-enhanced
                 [group]="group"
-                [uuid]="uuid"
                 [multipleOptions]="variationOptions.length > 1"
+                [uuid]="uuid"
                 (changeOption)="optionChange($event)"
               />
             }
             @default {
               <ish-product-variation-select-default
                 [group]="group"
-                [uuid]="uuid"
                 [multipleOptions]="variationOptions.length > 1"
+                [uuid]="uuid"
                 (changeOption)="optionChange($event)"
               />
             }

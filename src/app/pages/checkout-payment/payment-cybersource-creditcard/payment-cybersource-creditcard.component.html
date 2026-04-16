@@ -9,10 +9,10 @@
   <!-- Containers in which we will load microform -->
   <div class="row form-group" [ngClass]="{ 'has-error': errorMessage?.number.message }">
     <label class="col-form-label col-md-4" for="number-container"
-      >{{ 'checkout.credit_card.number.label' | translate }}<span class="required" aria-hidden="true">*</span></label
+      >{{ 'checkout.credit_card.number.label' | translate }}<span aria-hidden="true" class="required">*</span></label
     >
     <div class="col-sm-6">
-      <div id="number-container" class="iframe-container form-control"></div>
+      <div class="iframe-container form-control" id="number-container"></div>
       @if (errorMessage.number?.message) {
         <small class="validation-message">{{ errorMessage.number.message | translate }}</small>
       }
@@ -27,19 +27,19 @@
       cyberSourceCreditCardForm.controls.expirationYear,
     ]"
   >
-    <label for="month" class="col-form-label col-md-4"
+    <label class="col-form-label col-md-4" for="month"
       >{{ 'checkout.credit_card.expiration_date.label' | translate
-      }}<span class="required" aria-hidden="true">*</span></label
+      }}<span aria-hidden="true" class="required">*</span></label
     >
     <div class="col-sm-6">
       <div class="clearfix row">
         <div class="col-6">
           <select
             class="form-control"
-            id="cybersource_creditcard_month"
-            formControlName="expirationMonth"
-            [attr.aria-label]="'checkout.credit_card.expiration_month.select.label' | translate"
             data-testing-id="expirationMonth"
+            formControlName="expirationMonth"
+            id="cybersource_creditcard_month"
+            [attr.aria-label]="'checkout.credit_card.expiration_month.select.label' | translate"
           >
             <option value="">{{ 'account.date.month' | translate }}</option>
             @for (option of monthOptions; track $index) {
@@ -47,17 +47,17 @@
             }
           </select>
           <ish-form-control-feedback
-            [messages]="{ required: 'account.date.month.error.required' }"
             [control]="cyberSourceCreditCardForm.controls.expirationMonth"
+            [messages]="{ required: 'account.date.month.error.required' }"
           />
         </div>
         <div class="col-6">
           <select
             class="form-control"
-            id="cybersource_creditcard_year"
-            formControlName="expirationYear"
-            [attr.aria-label]="'checkout.credit_card.expiration_year.select.label' | translate"
             data-testing-id="expirationYear"
+            formControlName="expirationYear"
+            id="cybersource_creditcard_year"
+            [attr.aria-label]="'checkout.credit_card.expiration_year.select.label' | translate"
           >
             <option value="">{{ 'account.date.year' | translate }}</option>
             @for (option of yearOptions; track $index) {
@@ -65,8 +65,8 @@
             }
           </select>
           <ish-form-control-feedback
-            [messages]="{ required: 'account.date.year.error.required' }"
             [control]="cyberSourceCreditCardForm.controls.expirationYear"
+            [messages]="{ required: 'account.date.year.error.required' }"
           />
         </div>
       </div>
@@ -76,10 +76,10 @@
   <!-- security code CVC -->
   <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.securityCode?.message }">
     <label class="col-form-label col-md-4" for="securityCode-container"
-      >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required" aria-hidden="true">*</span></label
+      >{{ 'checkout.credit_card.cvc.label' | translate }}<span aria-hidden="true" class="required">*</span></label
     >
     <div class="col-sm-6">
-      <div id="securityCode-container" class="iframe-container form-control"></div>
+      <div class="iframe-container form-control" id="securityCode-container"></div>
       @if (errorMessage.securityCode?.message) {
         <small class="validation-message">{{ errorMessage.securityCode.message | translate }}</small>
       }
@@ -89,11 +89,11 @@
         <span [innerHTML]="'checkout.credit_card.cvc.popover.content' | translate"></span>
       </ng-template>
       <button
-        type="button"
         class="btn btn-link details-tooltip"
+        placement="auto"
+        type="button"
         [ngbPopover]="CVCHelp"
         [popoverTitle]="'checkout.credit_card.cvc.popover.title' | translate"
-        placement="auto"
       >
         <i class="bi bi-question-circle"></i>
       </button>
@@ -102,18 +102,18 @@
 </div>
 
 @if (paymentMethod) {
-  <ish-payment-save-checkbox [paymentMethod]="paymentMethod" [form]="cyberSourceCreditCardForm" />
+  <ish-payment-save-checkbox [form]="cyberSourceCreditCardForm" [paymentMethod]="paymentMethod" />
 }
 
 <div class="offset-md-4 col-md-8">
   <div class="form-group">
     <input
-      type="button"
-      (click)="submitNewPaymentInstrument()"
       class="btn btn-primary"
+      type="button"
       value="{{ 'checkout.account.submit.button.label' | translate }}"
+      (click)="submitNewPaymentInstrument()"
     />
-    <button type="button" class="btn btn-secondary" (click)="cancelNewPaymentInstrument()">
+    <button class="btn btn-secondary" type="button" (click)="cancelNewPaymentInstrument()">
       {{ 'checkout.cancel.button.label' | translate }}
     </button>
   </div>

@@ -5,7 +5,7 @@
       <div class="product-list">
         <swiper [config]="swiperConfig">
           @for (sku$ of productSKUs; track sku$) {
-            <ng-template swiperSlide let-data>
+            <ng-template let-data swiperSlide>
               @if (lazyFetch(data.isVisible, sku$) | async; as sku) {
                 <ish-product-item ishProductContext [sku]="sku" />
               }

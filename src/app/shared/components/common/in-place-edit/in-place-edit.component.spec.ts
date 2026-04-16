@@ -72,15 +72,15 @@ describe('In Place Edit Component', () => {
       <ish-in-place-edit
         ><div class="d-flex flex-row align-items-baseline">
           <input editmodeform="" /><button
-            type="button"
             data-testing-id="confirm"
+            type="button"
             class="btn btn-link"
             title="inplace_edit.save"
           >
             <i class="bi bi-check-lg"></i></button
           ><button
-            type="button"
             data-testing-id="cancel"
+            type="button"
             class="btn btn-link"
             title="inplace_edit.cancel"
           >

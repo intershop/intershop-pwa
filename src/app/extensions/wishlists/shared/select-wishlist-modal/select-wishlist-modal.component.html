@@ -1,26 +1,28 @@
 <ng-template #modal let-selectModal>
   <div class="modal-header">
-    <h2 id="select-wishlist-modal-title" class="modal-title">{{ headerTranslationKey | translate }}</h2>
-    <button type="button" class="btn-close" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
+    <h2 class="modal-title" id="select-wishlist-modal-title">{{ headerTranslationKey | translate }}</h2>
+    <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
   </div>
 
   @if (showForm) {
-    <form [formGroup]="formGroup" ishFormSubmit (ngSubmit)="submitForm()" novalidate>
+    <form ishFormSubmit novalidate [formGroup]="formGroup" (ngSubmit)="submitForm()">
       <div class="modal-body">
-        <ish-select-wishlist-form [formGroup]="formGroup" [addMoveProduct]="addMoveProduct" />
+        <ish-select-wishlist-form [addMoveProduct]="addMoveProduct" [formGroup]="formGroup" />
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">
+        <button class="btn btn-primary" type="submit">
           {{ submitButtonTranslationKey | translate }}
         </button>
-        <button type="button" class="btn btn-secondary" (click)="hide()">
+        <button class="btn btn-secondary" type="button" (click)="hide()">
           {{ 'account.wishlists.add_to_wishlist.cancel_button.text' | translate }}
         </button>
       </div>
     </form>
   } @else {
-    <div class="modal-body" *ishProductContextAccess="let product = product">
+    <div *ishProductContextAccess="let product = product" class="modal-body">
       <span
+        data-testing-id="wishlist-success-link"
+        [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
         [ishServerHtml]="
           successTranslationKey
             | translate
@@ -30,12 +32,10 @@
                   '2': (selectedWishlistTitle$ | async | ishHtmlEncode),
                 }
         "
-        [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
-        data-testing-id="wishlist-success-link"
       ></span>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="hide()">
+      <button class="btn btn-secondary" type="button" (click)="hide()">
         {{ 'account.wishlists.add_to_wishlist.confirmation.ok_button.text' | translate }}
       </button>
     </div>

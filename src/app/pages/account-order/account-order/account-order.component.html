@@ -2,8 +2,8 @@
   <ul class="share-tools">
     <li>
       <a
-        href="javascript:window.print();"
         class="link-print"
+        href="javascript:window.print();"
         rel="nofollow"
         [title]="'account.orderdetails.print_link.text' | translate"
       >
@@ -59,24 +59,24 @@
   <div class="row">
     <div class="col-md-6">
       <!-- Add Order Items to Cart Button -->
-      <ish-account-order-to-basket [order]="order" [cssClass]="'mb-3'" />
+      <ish-account-order-to-basket [cssClass]="'mb-3'" [order]="order" />
       <!-- Create Order-Template from Order Button -->
-      <ish-lazy-order-create-order-template [lineItems]="order.lineItems" [cssClass]="'mb-3'" />
+      <ish-lazy-order-create-order-template [cssClass]="'mb-3'" [lineItems]="order.lineItems" />
     </div>
   </div>
   <div class="row">
     <!-- Buyer-->
     <ng-container *ishFeature="'businessCustomerRegistration'">
-      <ish-info-box heading="checkout.widget.buyer.heading" class="infobox-wrapper col-md-6">
+      <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.buyer.heading">
         <ish-basket-buyer [object]="order" />
       </ish-info-box>
     </ng-container>
     <!-- Additional Information -->
     @if (order.costCenter || hasCustomFields()) {
       <ish-info-box
-        heading="checkout.widget.additional-information.heading"
         class="infobox-wrapper col-md-6"
         cssClass="pb-3"
+        heading="checkout.widget.additional-information.heading"
       >
         <ish-basket-cost-center-view [data]="order" />
         <ish-basket-custom-fields-view [data]="order" />
@@ -89,21 +89,21 @@
   }
   <div class="row d-flex">
     <!-- Invoice Address -->
-    <ish-info-box heading="checkout.widget.billing-address.heading" class="infobox-wrapper col-md-6">
+    <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.billing-address.heading">
       <ish-address [address]="order.invoiceToAddress" [displayEmail]="true" />
     </ish-info-box>
     <!-- Shipping Address -->
-    <ish-info-box heading="checkout.widget.shipping-address.heading" class="infobox-wrapper col-md-6">
+    <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.shipping-address.heading">
       <ish-address [address]="order.commonShipToAddress" />
     </ish-info-box>
   </div>
   <div class="row d-flex">
     <!-- Shipping Method -->
-    <ish-info-box heading="checkout.widget.shipping_method.heading" class="infobox-wrapper col-md-6">
+    <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.shipping_method.heading">
       <ish-basket-shipping-method [data]="order" />
     </ish-info-box>
     <!-- Payment -->
-    <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper col-md-6">
+    <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.payment_method.heading">
       @if (order.payment) {
         <div class="float-end">
           <p class="badge text-bg-info">{{ order.payment.status }}</p>
@@ -119,7 +119,7 @@
   </div>
   <!-- Line Items -->
   @if (order.lineItems?.length > 0) {
-    <ish-line-item-list [lineItems]="order.lineItems" [editable]="false" lineItemViewType="simple" />
+    <ish-line-item-list lineItemViewType="simple" [editable]="false" [lineItems]="order.lineItems" />
   }
   <!-- Cost Summary -->
   <div class="section row">
@@ -129,19 +129,19 @@
         <ish-basket-cost-summary [totals]="order.totals" />
       </div>
       <!-- Add Order Items to Cart Button -->
-      <ish-account-order-to-basket [order]="order" [cssClass]="'mb-3'" />
+      <ish-account-order-to-basket [cssClass]="'mb-3'" [order]="order" />
       <!-- Create Order-Template from Order Button -->
-      <ish-lazy-order-create-order-template [lineItems]="order.lineItems" [cssClass]="'mb-3'" />
+      <ish-lazy-order-create-order-template [cssClass]="'mb-3'" [lineItems]="order.lineItems" />
     </div>
   </div>
 }
 
 <!-- Links -->
 <div class="section d-flex justify-content-between">
-  <a routerLink="/account/orders" class="no-print" data-testing-id="orders-link">{{
+  <a class="no-print" data-testing-id="orders-link" routerLink="/account/orders">{{
     'account.orderdetails.links.return_to_orders' | translate
   }}</a>
-  <a routerLink="/home" class="no-print" data-testing-id="home-link">{{
+  <a class="no-print" data-testing-id="home-link" routerLink="/home">{{
     'account.orderdetails.links.continue_shopping' | translate
   }}</a>
 </div>

@@ -1,13 +1,13 @@
 @if ('marketing.newsletterSubscriptionEnabled' | ishServerSetting) {
   <div class="row form-group">
-    <div [class.has-error]="showError" class="offset-md-4 col-md-8">
+    <div class="offset-md-4 col-md-8" [class.has-error]="showError">
       <div class="form-check" [attr.data-testing-id]="'registration_newsletter-wrapper'">
         <input
-          type="checkbox"
           class="form-check-input"
+          type="checkbox"
+          [attr.data-testing-id]="field.key"
           [formControl]="formControl"
           [formlyAttributes]="field"
-          [attr.data-testing-id]="field.key"
         />
         <label class="form-check-label" [attr.for]="id">
           <div>{{ 'registration.newsletter_subscription.text' | translate }}</div>

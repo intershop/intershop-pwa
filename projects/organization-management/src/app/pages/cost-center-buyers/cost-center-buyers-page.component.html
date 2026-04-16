@@ -12,7 +12,7 @@
       <div class="container">
         <div class="row list-header d-none d-md-flex">
           <div class="col-md-2 list-header-item no-seperator">
-            <button type="button" (click)="toggleItemSelection()" class="btn btn-link">
+            <button class="btn btn-link" type="button" (click)="toggleItemSelection()">
               @if (selectAll) {
                 {{ 'account.costcenter.details.buyers.list.header.selectall' | translate }}
               } @else {
@@ -28,22 +28,22 @@
           </div>
         </div>
 
-        <form [formGroup]="form" (ngSubmit)="submitForm()" #buyersForm="ngForm" novalidate>
+        <form #buyersForm="ngForm" novalidate [formGroup]="form" (ngSubmit)="submitForm()">
           <div class="list-body">
-            <formly-form [model]="model" [fields]="fields" [form]="form" class="pt-1" />
+            <formly-form class="pt-1" [fields]="fields" [form]="form" [model]="model" />
           </div>
           <div class="row">
             <div class="button-group w-100 gx-0 clearfix">
               <div class="float-md-end">
                 <button
-                  type="submit"
                   class="btn btn-primary"
-                  [disabled]="formDisabled || (buyersForm.submitted && form.invalid)"
                   data-testing-id="add-buyers-submit"
+                  type="submit"
+                  [disabled]="formDisabled || (buyersForm.submitted && form.invalid)"
                 >
                   {{ 'account.costcenter.details.buyers.action.add' | translate }}
                 </button>
-                <a routerLink="../" class="btn btn-secondary" data-testing-id="add-cost-center-buyers-cancel">{{
+                <a class="btn btn-secondary" data-testing-id="add-cost-center-buyers-cancel" routerLink="../">{{
                   'account.cancel.link' | translate
                 }}</a>
               </div>
@@ -60,7 +60,7 @@
     }
 
     <div class="section text-end">
-      <a routerLink="../" class="btn btn-secondary" data-testing-id="add-cost-center-buyers-cancel">{{
+      <a class="btn btn-secondary" data-testing-id="add-cost-center-buyers-cancel" routerLink="../">{{
         'account.cancel.link' | translate
       }}</a>
     </div>

@@ -7,8 +7,6 @@
           <ish-product-item
             displayType="row"
             ishProductContext
-            [sku]="part.sku"
-            [quantity]="part.quantity"
             [configuration]="{
               readOnly: true,
               price: false,
@@ -21,6 +19,8 @@
               addToQuote: false,
               addToCompare: false,
             }"
+            [quantity]="part.quantity"
+            [sku]="part.sku"
           />
         </div>
       }

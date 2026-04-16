@@ -20,15 +20,15 @@
         <dt class="col-7">{{ 'account.budget.already_spent.label' | translate }}</dt>
         <dd class="col-5 fw-bold text-end">{{ usedBudget | ishPrice }}</dd>
       </dl>
-      <div [ngbPopover]="BudgetPopover" placement="top" data-testing-id="user-budget-popover" triggers="hover">
+      <div data-testing-id="user-budget-popover" placement="top" triggers="hover" [ngbPopover]="BudgetPopover">
         <div class="progress" [ngClass]="progressBarClass">
           <div
             class="progress-bar"
-            [ngClass]="{ 'bg-danger': usedBudgetPercentage * 100 > 90 }"
-            [ngStyle]="{ width: usedBudgetPercentage | percent }"
             role="progressbar"
             [attr.aria-label]="'account.budget.already_spent.label' | translate"
             [attr.aria-valuetext]="usedBudgetPercentage | percent"
+            [ngClass]="{ 'bg-danger': usedBudgetPercentage * 100 > 90 }"
+            [ngStyle]="{ width: usedBudgetPercentage | percent }"
           >
             <span class="progress-display">{{ usedBudgetPercentage | percent }}</span>
             <ng-template #BudgetPopover>

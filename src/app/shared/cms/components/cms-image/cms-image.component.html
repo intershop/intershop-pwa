@@ -1,10 +1,10 @@
 @if (pagelet?.hasParam('Link')) {
   @if (isRouterLink(pagelet, 'Link')) {
-    <a [routerLink]="routerLink(pagelet, 'Link')" [attr.title]="pagelet.stringParam('LinkTitle')" class="teaser-link">
+    <a class="teaser-link" [attr.title]="pagelet.stringParam('LinkTitle')" [routerLink]="routerLink(pagelet, 'Link')">
       <ng-container *ngTemplateOutlet="image" />
     </a>
   } @else {
-    <a [href]="pagelet.stringParam('Link')" [attr.title]="pagelet.stringParam('LinkTitle')" class="teaser-link">
+    <a class="teaser-link" [attr.title]="pagelet.stringParam('LinkTitle')" [href]="pagelet.stringParam('Link')">
       <ng-container *ngTemplateOutlet="image" />
     </a>
   }
@@ -16,8 +16,8 @@
   <div [ngClass]="pagelet.stringParam('CSSClass')">
     <img
       loading="lazy"
-      [src]="pagelet.stringParam('Image')"
       [alt]="pagelet.stringParam('AlternateText') || ('image.alt_text.default' | translate)"
+      [src]="pagelet.stringParam('Image')"
     />
   </div>
 </ng-template>

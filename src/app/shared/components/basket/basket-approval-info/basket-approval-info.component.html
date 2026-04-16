@@ -5,8 +5,8 @@
     <!-- details link and dialog -->
     <ish-modal-dialog-link
       linkText="approval.cart.link.details"
-      [options]="{ titleText: 'approval.details.heading' | translate }"
       [ngClass]="'details-link'"
+      [options]="{ titleText: 'approval.details.heading' | translate }"
     >
       <p>
         {{ 'approval.details.conditions' | translate }}
@@ -23,10 +23,10 @@
         {{ 'approval.details.place_order' | translate }}
       </p>
       <p
+        [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
         [ishServerHtml]="
           'approval.details.after' | translate: { '0': 'route://account/requisitions/buyer', '1': 'route://account' }
         "
-        [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
       ></p>
       <!-- display approvers -->
       @if (approval.customerApproval?.approvers?.length || approval.costCenterApproval?.approvers?.length) {
@@ -41,7 +41,7 @@
             <tr>
               <td class="w-50">{{ approver.firstName }} {{ approver.lastName }}</td>
               <td>
-                <a href="mailto:{{ approver.email }}" class="link-primary">{{ approver.email }}</a>
+                <a class="link-primary" href="mailto:{{ approver.email }}">{{ approver.email }}</a>
               </td>
             </tr>
           }
@@ -60,7 +60,7 @@
             <tr>
               <td class="w-50">{{ approver.firstName }} {{ approver.lastName }}</td>
               <td>
-                <a href="mailto:{{ approver.email }}" class="link-primary">{{ approver.email }}</a>
+                <a class="link-primary" href="mailto:{{ approver.email }}">{{ approver.email }}</a>
               </td>
             </tr>
           }

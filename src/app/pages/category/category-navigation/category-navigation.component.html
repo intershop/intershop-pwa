@@ -8,9 +8,9 @@
               <li class="filter-item">
                 <a
                   class="filter-item-name link-decoration-hover"
+                  [attr.aria-current]="category.uniqueId === currentCategoryId ? 'true' : undefined"
                   [ngClass]="{ 'filter-selected': category.uniqueId === currentCategoryId }"
                   [routerLink]="category.url"
-                  [attr.aria-current]="category.uniqueId === currentCategoryId ? 'true' : undefined"
                 >
                   {{ category.name }}
                 </a>

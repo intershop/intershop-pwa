@@ -10,8 +10,8 @@
           }}<strong data-testing-id="order-document-number"
             >&nbsp;
             <a
-              [routerLink]="['/account/requisitions/buyer/' + req.id, { status: 'PENDING' }]"
               data-testing-id="requisition-number"
+              [routerLink]="['/account/requisitions/buyer/' + req.id, { status: 'PENDING' }]"
               >{{ req.requisitionNo || req.recurringOrderDocumentNo }}</a
             >
           </strong>

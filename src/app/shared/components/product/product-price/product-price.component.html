@@ -9,11 +9,11 @@
     @if (data$ | async; as d) {
       <div
         class="current-price"
+        data-testing-id="current-price"
         [ngClass]="{
           'sale-price': showInformationalPrice && d.isListPriceGreaterThanSalePrice,
           'sale-price-higher': showInformationalPrice && d.isListPriceLessThanSalePrice,
         }"
-        data-testing-id="current-price"
       >
         @if (d.salePrice) {
           {{

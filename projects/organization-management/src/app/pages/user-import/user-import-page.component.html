@@ -12,10 +12,10 @@
               <div
                 class="progress-bar"
                 role="progressbar"
-                [style.width.%]="progress.percentage"
+                [attr.aria-valuemax]="progress.total"
                 [attr.aria-valuemin]="0"
                 [attr.aria-valuenow]="progress.current"
-                [attr.aria-valuemax]="progress.total"
+                [style.width.%]="progress.percentage"
               >
                 <span class="progress-display">
                   {{
@@ -35,14 +35,14 @@
       }
 
       <!-- imported user table -->
-      <table cdk-table [dataSource]="importedUsers" class="table table-lg mobile-optimized">
+      <table cdk-table class="table table-lg mobile-optimized" [dataSource]="importedUsers">
         <!-- User Name -->
         <ng-container cdkColumnDef="userName">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef>
+          <th *cdkHeaderCellDef cdk-header-cell scope="col">
             {{ 'account.user.list.header.name' | translate }}
           </th>
-          <td cdk-cell *cdkCellDef="let imported" [attr.data-label]="'account.user.list.header.name' | translate">
-            <a [routerLink]="['/account/organization/users', imported.user.email]" class="d-block">
+          <td *cdkCellDef="let imported" cdk-cell [attr.data-label]="'account.user.list.header.name' | translate">
+            <a class="d-block" [routerLink]="['/account/organization/users', imported.user.email]">
               {{ imported.user.firstName }} {{ imported.user.lastName }}
             </a>
             @if (!imported.user.active) {
@@ -55,20 +55,20 @@
 
         <!-- User Roles -->
         <ng-container cdkColumnDef="userRoles">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef>
+          <th *cdkHeaderCellDef cdk-header-cell scope="col">
             {{ 'account.user.list.header.roles' | translate }}
           </th>
-          <td cdk-cell *cdkCellDef="let imported" [attr.data-label]="'account.user.list.header.roles' | translate">
+          <td *cdkCellDef="let imported" cdk-cell [attr.data-label]="'account.user.list.header.roles' | translate">
             <ish-user-roles-badges [roleIDs]="imported.user.roleIDs" />
           </td>
         </ng-container>
 
         <!-- User Budget -->
         <ng-container cdkColumnDef="userBudget">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef>
+          <th *cdkHeaderCellDef cdk-header-cell scope="col">
             {{ 'account.user.list.header.budget' | translate }}
           </th>
-          <td cdk-cell *cdkCellDef="let imported" [attr.data-label]="'account.user.list.header.budget' | translate">
+          <td *cdkCellDef="let imported" cdk-cell [attr.data-label]="'account.user.list.header.budget' | translate">
             <dl>
               <dt>{{ 'account.user.new.order_spend_limit.label' | translate }}</dt>
               <dd>
@@ -91,10 +91,10 @@
 
         <!-- Import Status -->
         <ng-container cdkColumnDef="status">
-          <th scope="col" cdk-header-cell *cdkHeaderCellDef class="w-25">
+          <th *cdkHeaderCellDef cdk-header-cell class="w-25" scope="col">
             {{ 'account.user.list.header.status' | translate }}
           </th>
-          <td cdk-cell *cdkCellDef="let imported" [attr.data-label]="'account.user.list.header.status' | translate">
+          <td *cdkCellDef="let imported" cdk-cell [attr.data-label]="'account.user.list.header.status' | translate">
             <span [ngClass]="imported.status === 'success' ? 'text-success' : 'text-error'">
               {{
                 imported.status === 'success'
@@ -106,8 +106,8 @@
         </ng-container>
 
         <!-- Header and Row Declarations -->
-        <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
-        <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay"></tr>
+        <tr *cdkHeaderRowDef="columnsToDisplay" cdk-header-row></tr>
+        <tr *cdkRowDef="let row; columns: columnsToDisplay" cdk-row></tr>
       </table>
 
       <a [routerLink]="['/account/organization/users']">

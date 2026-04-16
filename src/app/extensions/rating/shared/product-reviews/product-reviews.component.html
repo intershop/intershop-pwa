@@ -18,15 +18,15 @@
     {{ 'product.reviews.review_this_item.text' | translate }}
     @if (isUserLoggedIn$ | async) {
       <button
-        type="button"
         class="btn btn-link btn-link-action"
-        (click)="reviewCreateDialog.show()"
         data-testing-id="open-review-dialog"
+        type="button"
+        (click)="reviewCreateDialog.show()"
       >
         {{ 'product.reviews.review_this_item.link' | translate }}
       </button>
     } @else {
-      <a routerLink="/login" [queryParams]="{ messageKey: 'review' }" data-testing-id="login-link">{{
+      <a data-testing-id="login-link" routerLink="/login" [queryParams]="{ messageKey: 'review' }">{{
         'product.reviews.review_this_item.link' | translate
       }}</a>
     }
@@ -74,10 +74,10 @@
 
       @if (review.own) {
         <button
-          type="button"
           class="btn btn-link btn-link-action"
-          (click)="modalDialog.show(review)"
           data-testing-id="delete-review"
+          type="button"
+          (click)="modalDialog.show(review)"
         >
           {{ 'product.reviews.delete.review.link' | translate }}
         </button>

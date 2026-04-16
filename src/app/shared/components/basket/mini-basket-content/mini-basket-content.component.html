@@ -1,7 +1,7 @@
 @if (lineItems$ | async; as lineItems) {
   <div class="product-rows-block">
     @if (basketError$ | async; as basketError) {
-      <ish-basket-error-message [error]="basketError" cssClass="text-danger" />
+      <ish-basket-error-message cssClass="text-danger" [error]="basketError" />
     }
     @for (lineItem of lineItems | slice: 0 : maxItemNumber; track lineItem.id) {
       <div class="product-row">
@@ -32,7 +32,7 @@
   </div>
 } @else {
   @if (basketError$ | async; as basketError) {
-    <ish-basket-error-message [error]="basketError" cssClass="text-danger" />
+    <ish-basket-error-message cssClass="text-danger" [error]="basketError" />
   }
   {{ 'shopping_cart.ministatus.empty_cart.text' | translate }}
 }

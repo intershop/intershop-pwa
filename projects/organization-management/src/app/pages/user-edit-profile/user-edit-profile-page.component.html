@@ -2,25 +2,25 @@
   <div>
     <h1>{{ 'account.user.update_profile.heading' | translate }} - {{ user.firstName }} {{ user.lastName }}</h1>
     <form
-      [formGroup]="profileForm"
-      ishFormSubmit
       #form="ngForm"
-      (ngSubmit)="submitForm(user)"
       class="form-horizontal"
+      ishFormSubmit
       novalidate
+      [formGroup]="profileForm"
+      (ngSubmit)="submitForm(user)"
     >
-      <ish-user-profile-form [form]="profileForm" [user]="user" [error]="userError$ | async" />
+      <ish-user-profile-form [error]="userError$ | async" [form]="profileForm" [user]="user" />
       <div class="row">
         <div class="offset-md-4 col-md-8">
           <button
-            type="submit"
             class="btn btn-primary"
-            [disabled]="profileForm.invalid && form.submitted"
             data-testing-id="edit-user-submit"
+            type="submit"
+            [disabled]="profileForm.invalid && form.submitted"
           >
             {{ 'account.update.button.label' | translate }}
           </button>
-          <a routerLink="../" class="btn btn-secondary" data-testing-id="edit-user-cancel">{{
+          <a class="btn btn-secondary" data-testing-id="edit-user-cancel" routerLink="../">{{
             'account.cancel.link' | translate
           }}</a>
         </div>

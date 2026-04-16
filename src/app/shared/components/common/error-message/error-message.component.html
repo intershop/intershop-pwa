@@ -1,5 +1,5 @@
 @if ((error?.message || error?.code) && !toast) {
-  <div role="alert" class="alert alert-danger">
+  <div class="alert alert-danger" role="alert">
     @if (error.message) {
       <span [ishServerHtml]="error.message"></span>
     } @else {

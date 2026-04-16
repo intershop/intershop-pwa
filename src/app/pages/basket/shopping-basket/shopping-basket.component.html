@@ -5,11 +5,11 @@
       <span class="header-note">
         <span>{{ 'shopping_cart.transaction.text' | translate }}</span>
         <ish-modal-dialog-link
+          class="details-link"
           linkText="shopping_cart.read_more.link"
           [options]="{ titleText: 'checkout.safeandsecure.details.title' | translate, size: 'lg' }"
-          class="details-link"
         >
-          <ish-content-include includeId="include.dialog.safeAndSecure.pagelet2-Include" *ishLazyLoadingContent />
+          <ish-content-include *ishLazyLoadingContent includeId="include.dialog.safeAndSecure.pagelet2-Include" />
         </ish-modal-dialog-link>
       </span>
     </h1>
@@ -84,7 +84,7 @@
         <ish-lazy-direct-order />
 
         <p>
-          <a routerLink="/home" class="text-nowrap no-print">{{
+          <a class="text-nowrap no-print" routerLink="/home">{{
             'shopping_cart.detailed.continue_shopping.link' | translate
           }}</a>
         </p>
@@ -115,8 +115,8 @@
           <div class="d-grid">
             <button
               *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']"
-              type="submit"
               class="btn btn-lg btn-primary"
+              type="submit"
               (click)="checkout()"
             >
               {{ 'shopping_cart.proceed_to_checkout.button.label' | translate }}

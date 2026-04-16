@@ -16,12 +16,12 @@
           }
         </ng-template>
         <button
-          type="button"
           class="btn btn-link header-note details-tooltip"
-          [ngbPopover]="OciConfigurationPlaceholder"
           placement="bottom"
-          [title]="'account.punchout.configuration.form.tooltip.placeholder.icon' | translate"
+          type="button"
+          [ngbPopover]="OciConfigurationPlaceholder"
           popoverTitle="{{ 'account.punchout.configuration.form.tooltip.placeholder.headline' | translate }}"
+          [title]="'account.punchout.configuration.form.tooltip.placeholder.icon' | translate"
         >
           <i class="bi bi-info-circle-fill"></i>
         </button>
@@ -30,17 +30,17 @@
         {{ 'account.punchout.configuration.form.heading.mapping' | translate }}
         <ng-template #OciConfigurationMapping>
           <div
-            innerHTML="{{ 'account.punchout.configuration.form.tooltip.mapping.content' | translate }}"
             class="list-position-outside"
+            innerHTML="{{ 'account.punchout.configuration.form.tooltip.mapping.content' | translate }}"
           ></div>
         </ng-template>
         <button
-          type="button"
           class="btn btn-link header-note details-tooltip"
-          [ngbPopover]="OciConfigurationMapping"
           placement="bottom"
-          [title]="'account.punchout.configuration.form.tooltip.mapping.icon' | translate"
+          type="button"
+          [ngbPopover]="OciConfigurationMapping"
           popoverTitle="{{ 'account.punchout.configuration.form.tooltip.mapping.headline' | translate }}"
+          [title]="'account.punchout.configuration.form.tooltip.mapping.icon' | translate"
         >
           <i class="bi bi-info-circle-fill"></i>
         </button>
@@ -49,32 +49,32 @@
         {{ 'account.punchout.configuration.form.heading.format' | translate }}
       </div>
     </div>
-    <form [formGroup]="form" ishFormSubmit #configForm="ngForm" (ngSubmit)="submitForm()" class="pt-1" novalidate>
+    <form #configForm="ngForm" class="pt-1" ishFormSubmit novalidate [formGroup]="form" (ngSubmit)="submitForm()">
       <div class="list-body">
-        <formly-form [model]="model$ | async" [fields]="fields$ | async" [form]="form" class="pt-1" />
+        <formly-form class="pt-1" [fields]="fields$ | async" [form]="form" [model]="model$ | async" />
       </div>
       <div class="row">
         <div class="button-group w-100 gx-0 clearfix">
           <div class="float-md-end">
             @if (form.invalid && configForm.submitted) {
-              <div id="submit-button-help" aria-live="polite" class="visually-hidden">
+              <div aria-live="polite" class="visually-hidden" id="submit-button-help">
                 {{ 'form.submit.validation.message' | translate }}
               </div>
             }
             <button
-              type="submit"
               class="btn btn-primary"
-              [attr.aria-describedby]="form.invalid && configForm.submitted ? 'submit-button-help' : null"
               data-testing-id="update-oci-configuration"
+              type="submit"
+              [attr.aria-describedby]="form.invalid && configForm.submitted ? 'submit-button-help' : null"
             >
               {{ 'account.update.button.label' | translate }}
             </button>
-            <a [routerLink]="['/account/punchout']" [queryParams]="{ format: 'oci' }" class="btn btn-secondary">{{
+            <a class="btn btn-secondary" [queryParams]="{ format: 'oci' }" [routerLink]="['/account/punchout']">{{
               'account.cancel.link' | translate
             }}</a>
           </div>
           <div class="float-md-start">
-            <a class="btn btn-link ps-md-0" [routerLink]="['/account/punchout']" [queryParams]="{ format: 'oci' }">{{
+            <a class="btn btn-link ps-md-0" [queryParams]="{ format: 'oci' }" [routerLink]="['/account/punchout']">{{
               'account.punchout.configuration.back_to_list' | translate
             }}</a>
           </div>

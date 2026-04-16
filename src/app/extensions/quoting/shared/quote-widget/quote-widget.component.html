@@ -1,7 +1,7 @@
 <ish-info-box
-  heading="account.quotes.widget.my_quotes.heading"
   class="infobox-wrapper h-100"
   cssClass="infobox-color-widget d-flex flex-column"
+  heading="account.quotes.widget.my_quotes.heading"
 >
   <div class="loading-container mt-auto">
     @if ((loading$ | async) !== true) {
@@ -26,7 +26,7 @@
         </div>
         <div class="row">
           <div class="col">
-            <a routerLink="/account/quotes" data-testing-id="quote-list-link">
+            <a data-testing-id="quote-list-link" routerLink="/account/quotes">
               {{ 'account.quotes.widget.view_all_quotes.link' | translate }}
             </a>
           </div>

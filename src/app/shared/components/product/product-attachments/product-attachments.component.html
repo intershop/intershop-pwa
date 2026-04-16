@@ -4,7 +4,7 @@
       @for (attachment of attachments; track attachment.key) {
         <div class="product-attachment">
           <strong>{{ attachment.name }}</strong>
-          <a class="download-link" [href]="attachment.url" rel="enclosure">{{
+          <a class="download-link" rel="enclosure" [href]="attachment.url">{{
             'product.attachments.download.link' | translate
           }}</a>
           @if (attachment.description) {

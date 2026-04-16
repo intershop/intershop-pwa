@@ -4,10 +4,10 @@
     <ish-shipping-info [shippingMethodId]="props.value" />
     @if (props.description) {
       <button
-        type="button"
         class="btn btn-link details-tooltip"
-        [ngbPopover]="ShippingMethodDescription"
         placement="top-start"
+        type="button"
+        [ngbPopover]="ShippingMethodDescription"
       >
         {{ 'checkout.detail.text' | translate }}<i class="bi bi-info-circle-fill"></i>
       </button>

@@ -41,9 +41,9 @@
             @if (!('preferences.ChannelPreferences.EnableAdvancedVariationHandling' | ishServerSetting)) {
               <ish-line-item-edit
                 ishProductContext
-                [sku]="pli.productSKU"
-                [quantity]="pli.quantity.value"
                 [itemId]="pli.id"
+                [quantity]="pli.quantity.value"
+                [sku]="pli.productSKU"
                 (updateItem)="onUpdateItem($event)"
               />
             }
@@ -64,11 +64,11 @@
             <span class="text-nowrap"> {{ surcharge.amount | ishPrice }} </span>
             <ng-template #SurchargeDescription> <span [innerHTML]="surcharge.description"></span> </ng-template>
             <button
-              type="button"
               class="btn btn-link details-tooltip"
+              placement="top"
+              type="button"
               [ngbPopover]="SurchargeDescription"
               [popoverTitle]="surcharge.displayName"
-              placement="top"
             >
               <i class="bi bi-info-circle-fill"></i>
             </button>
@@ -79,7 +79,7 @@
       <!-- promotions -->
       @if (pli.valueRebates?.length) {
         @for (rebate of pli.valueRebates; track rebate.id) {
-          <ish-basket-promotion [rebate]="rebate" class="list-item-promo" />
+          <ish-basket-promotion class="list-item-promo" [rebate]="rebate" />
         }
       }
     </div>
@@ -88,9 +88,9 @@
     <div class="quantity d-xl-none">
       <div class="form-group">
         <ish-product-quantity-label
+          class="d-xl-none col-form-label"
           translationKey="shopping_cart.pli.qty.label"
           [for]="'pli-quantity_' + pli.position"
-          class="d-xl-none col-form-label"
         />
         @if (editable) {
           <ish-product-quantity [elementId]="'pli-quantity_' + pli.position" />
@@ -148,33 +148,33 @@
   }
 
   <!-- display/select warranty if available -->
-  <ish-line-item-warranty [pli]="pli" [editable]="editable" class="col-12" />
+  <ish-line-item-warranty class="col-12" [editable]="editable" [pli]="pli" />
 
   <!-- line item action and edit panel -->
   <ish-line-item-information-edit
-    [lineItem]="pli"
-    (updateItem)="onUpdateItem($event)"
-    [editable]="editable"
     class="col-12"
     [attr.data-testing-id]="'line-item-information-edit_' + pli.productSKU"
+    [editable]="editable"
+    [lineItem]="pli"
+    (updateItem)="onUpdateItem($event)"
   />
 
   <div class="offset-2 col-10 d-flex align-items-end list-item-actions">
     @if (editable) {
       <ish-lazy-product-add-to-order-template
-        [cssClass]="'btn-link btn-tool ps-0 add-to-order-template'"
         displayType="icon"
+        [cssClass]="'btn-link btn-tool ps-0 add-to-order-template'"
       />
     }
     @if (editable) {
-      <ish-lazy-product-add-to-wishlist [cssClass]="'btn-link btn-tool'" displayType="icon" />
+      <ish-lazy-product-add-to-wishlist displayType="icon" [cssClass]="'btn-link btn-tool'" />
     }
     @if (!pli.isFreeGift && editable) {
       <button
-        type="button"
         class="btn-tool btn-link"
-        [attr.data-testing-id]="'remove-line-item'"
+        type="button"
         [attr.data-id]="pli.id"
+        [attr.data-testing-id]="'remove-line-item'"
         title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
         (click)="onDeleteItem(pli.id)"
       >

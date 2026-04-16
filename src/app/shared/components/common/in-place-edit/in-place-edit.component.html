@@ -2,8 +2,8 @@
   <div class="d-flex flex-row align-items-center">
     <ng-content select="[viewModeContent]" />
     <button
-      type="button"
       class="btn btn-link"
+      type="button"
       [ngClass]="buttonClass"
       [title]="
         ariaLabelName === ''
@@ -19,23 +19,23 @@
   <div class="d-flex flex-row align-items-baseline">
     <ng-content select="[editModeForm]" />
     <button
-      type="button"
       class="btn btn-link"
+      data-testing-id="confirm"
+      type="button"
+      [disabled]="confirmDisabled"
       [ngClass]="buttonClass"
       [title]="'inplace_edit.save' | translate"
       (click)="confirm()"
-      data-testing-id="confirm"
-      [disabled]="confirmDisabled"
     >
       <i class="bi bi-check-lg"></i>
     </button>
     <button
-      type="button"
       class="btn btn-link"
+      data-testing-id="cancel"
+      type="button"
       [ngClass]="buttonClass"
       [title]="'inplace_edit.cancel' | translate"
       (click)="cancel()"
-      data-testing-id="cancel"
     >
       <i class="bi bi-x"></i>
     </button>

@@ -1,5 +1,5 @@
 @if (currentContentPage$ | async; as currentContentPage) {
-  <ish-skip-content-link skipToElementId="nav-breadcrumbs" linkText="common.skip_content.link.text.navigation" />
+  <ish-skip-content-link linkText="common.skip_content.link.text.navigation" skipToElementId="nav-breadcrumbs" />
   <ul>
     <ng-container
       [ngTemplateOutlet]="pageTreeNode"
@@ -7,10 +7,10 @@
     />
   </ul>
   <!-- the recursively used template to render the tree nodes -->
-  <ng-template #pageTreeNode let-treeNodes="treeNodes" let-counter="counter">
+  <ng-template #pageTreeNode let-counter="counter" let-treeNodes="treeNodes">
     @for (treeNode of treeNodes; track treeNode.contentPageId) {
       <li [ngClass]="{ 'page-navigation-active': treeNode.contentPageId === currentContentPage.id }">
-        <a [routerLink]="treeNode | ishContentPageRoute" [title]="treeNode.name" class="link-decoration-hover">{{
+        <a class="link-decoration-hover" [routerLink]="treeNode | ishContentPageRoute" [title]="treeNode.name">{{
           treeNode.name
         }}</a>
         @if (treeNode.children.length && depth > counter) {

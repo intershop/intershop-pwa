@@ -42,9 +42,9 @@ exports[`Header Default Component should render normal header adequately for des
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
+          data-testing-id="header-home-link-desktop"
           rel="home"
           routerlink="/home"
-          data-testing-id="header-home-link-desktop"
           class="logo"
           aria-label="common.home.link"
         ></a>
@@ -126,9 +126,9 @@ exports[`Header Default Component should render normal header adequately for mob
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
+          data-testing-id="header-home-link-mobile"
           rel="home"
           routerlink="/home"
-          data-testing-id="header-home-link-mobile"
           class="mobile-logo"
           aria-label="common.home.link"
         ></a>
@@ -197,9 +197,9 @@ exports[`Header Default Component should render normal header adequately for tab
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
+          data-testing-id="header-home-link-desktop"
           rel="home"
           routerlink="/home"
-          data-testing-id="header-home-link-desktop"
           class="logo"
           aria-label="common.home.link"
         ></a>
@@ -264,9 +264,9 @@ exports[`Header Default Component should render sticky header adequately for des
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
+          data-testing-id="header-home-link-desktop"
           rel="home"
           routerlink="/home"
-          data-testing-id="header-home-link-desktop"
           class="logo"
           aria-label="common.home.link"
         ></a>
@@ -337,9 +337,9 @@ exports[`Header Default Component should render sticky header adequately for mob
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
+          data-testing-id="header-home-link-mobile"
           rel="home"
           routerlink="/home"
-          data-testing-id="header-home-link-mobile"
           class="mobile-logo"
           aria-label="common.home.link"
         ></a>
@@ -397,9 +397,9 @@ exports[`Header Default Component should render sticky header adequately for tab
     <div class="col-md-3 logo-col">
       <div class="logo-wrapper">
         <a
+          data-testing-id="header-home-link-mobile"
           rel="home"
           routerlink="/home"
-          data-testing-id="header-home-link-mobile"
           class="mobile-logo"
           aria-label="common.home.link"
         ></a>

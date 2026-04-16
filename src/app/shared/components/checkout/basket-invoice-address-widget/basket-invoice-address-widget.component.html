@@ -4,11 +4,11 @@
     <!-- edit invoice address -->
     @if (collapseChange | async) {
       <button
-        type="button"
         class="btn-tool btn-link float-end"
+        data-testing-id="edit-invoice-address-link"
+        type="button"
         [title]="'checkout.address.update.title' | translate: { '0': 'checkout.address.billing.label' | translate }"
         (click)="showAddressForm(address)"
-        data-testing-id="edit-invoice-address-link"
       >
         <i class="bi bi-pencil-fill"></i>
       </button>
@@ -27,7 +27,7 @@
 @if (addresses$ | async; as addresses) {
   @if (addresses.length) {
     <form [formGroup]="form">
-      <formly-form [form]="form" [fields]="fields" />
+      <formly-form [fields]="fields" [form]="form" />
     </form>
   }
 }
@@ -36,12 +36,12 @@
 @if ((collapseChange | async) && (isLoggedIn$ | async)) {
   <div class="row">
     <button
-      type="button"
-      class="btn btn-link w-auto"
-      (click)="showAddressForm()"
-      [attr.aria-expanded]="(collapseChange | async) === false"
       aria-controls="invoice-address-panel"
+      class="btn btn-link w-auto"
       data-testing-id="create-invoice-address-link"
+      type="button"
+      [attr.aria-expanded]="(collapseChange | async) === false"
+      (click)="showAddressForm()"
     >
       {{ 'checkout.create_invoice_address.link' | translate }}
     </button>
@@ -49,13 +49,13 @@
 }
 
 <!-- invoice address form -->
-<div id="invoice-address-panel" [ngbCollapse]="collapseChange | async" data-testing-id="invoice-address-form">
+<div data-testing-id="invoice-address-form" id="invoice-address-panel" [ngbCollapse]="collapseChange | async">
   <ish-formly-customer-address-form
     [address]="editAddress"
-    [resetForm]="collapseChange | async"
     [extension]="(isLoggedIn$ | async) === false"
-    (save)="saveAddress($event)"
+    [resetForm]="collapseChange | async"
     (cancelForm)="cancelEditAddress()"
+    (save)="saveAddress($event)"
   />
 </div>
 

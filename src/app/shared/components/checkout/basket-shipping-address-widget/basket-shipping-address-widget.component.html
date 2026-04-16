@@ -6,13 +6,13 @@
         <!-- edit shipping address -->
         @if (collapseChange | async) {
           <button
-            type="button"
             class="btn-tool btn-link"
+            data-testing-id="edit-shipping-address-link"
+            type="button"
             [title]="
               'checkout.address.update.title' | translate: { '0': 'checkout.address.shipping.label' | translate }
             "
             (click)="showAddressForm(address)"
-            data-testing-id="edit-shipping-address-link"
           >
             <i class="bi bi-pencil-fill"></i>
           </button>
@@ -20,8 +20,8 @@
         <!-- delete shipping address -->
         @if ((basketShippingAddressDeletable$ | async) && (collapseChange | async)) {
           <button
-            type="button"
             class="btn-tool btn-link"
+            type="button"
             title="{{ 'checkout.address.delete.button.label' | translate }}"
             (click)="modalDialog.show(address)"
           >
@@ -47,7 +47,7 @@
       <ish-address [address]="address" />
     }
     @if (basketInvoiceAndShippingAddressEqual$ | async) {
-      <p data-testing-id="sameAsInvoice" class="section">
+      <p class="section" data-testing-id="sameAsInvoice">
         {{ 'checkout.same_as_billing_address.text' | translate }}
       </p>
     }
@@ -64,7 +64,7 @@
 @if (addresses$ | async; as addresses) {
   @if (addresses.length) {
     <form [formGroup]="form">
-      <formly-form [form]="form" [fields]="fields" />
+      <formly-form [fields]="fields" [form]="form" />
     </form>
   }
 }
@@ -73,12 +73,12 @@
 @if (displayAddAddressLink$ | async) {
   <div class="row">
     <button
-      type="button"
-      class="btn btn-link w-auto"
-      (click)="showAddressForm()"
-      [attr.aria-expanded]="(collapseChange | async) === false"
       aria-controls="shipping-address-panel"
+      class="btn btn-link w-auto"
       data-testing-id="create-shipping-address-link"
+      type="button"
+      [attr.aria-expanded]="(collapseChange | async) === false"
+      (click)="showAddressForm()"
     >
       {{ 'checkout.create_shipping_address.link' | translate }}
     </button>
@@ -86,12 +86,12 @@
 }
 
 <!-- shipping address form -->
-<div id="shipping-address-panel" [ngbCollapse]="collapseChange | async" data-testing-id="shipping-address-form">
+<div data-testing-id="shipping-address-form" id="shipping-address-panel" [ngbCollapse]="collapseChange | async">
   <ish-formly-customer-address-form
     [address]="editAddress"
     [resetForm]="collapseChange | async"
-    (save)="saveAddress($event)"
     (cancelForm)="cancelEditAddress()"
+    (save)="saveAddress($event)"
   />
 </div>
 

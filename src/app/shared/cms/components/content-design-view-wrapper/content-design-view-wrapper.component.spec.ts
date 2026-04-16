@@ -77,8 +77,8 @@ describe('Content Design View Wrapper Component', () => {
         scrollcontainer="root"
         class="design-view-wrapper pagelet pagelet-selected"
         ng-reflect-scroll-container="root"
-        ng-reflect-ng-class="pagelet,pagelet-selected,"
         ng-reflect-ish-scroll="true"
+        ng-reflect-ng-class="pagelet,pagelet-selected,"
         ng-reflect-scroll-duration="500"
         ng-reflect-scroll-spacing="50"
       >

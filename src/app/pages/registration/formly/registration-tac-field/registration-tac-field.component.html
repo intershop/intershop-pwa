@@ -1,15 +1,15 @@
 <div class="row form-group">
-  <div [class.has-error]="showError" class="offset-md-4 col-md-8">
+  <div class="offset-md-4 col-md-8" [class.has-error]="showError">
     <div class="form-check" [attr.data-testing-id]="'registration_tac-wrapper'">
       <input
-        type="checkbox"
         class="form-check-input"
+        type="checkbox"
+        [attr.aria-describedby]="props.ariaDescribedByIds"
+        [attr.aria-invalid]="showError ? 'true' : undefined"
+        [attr.aria-required]="props.required ? 'true' : undefined"
+        [attr.data-testing-id]="field.key"
         [formControl]="formControl"
         [formlyAttributes]="field"
-        [attr.data-testing-id]="field.key"
-        [attr.aria-required]="props.required ? 'true' : undefined"
-        [attr.aria-invalid]="showError ? 'true' : undefined"
-        [attr.aria-describedby]="props.ariaDescribedByIds"
       />
       <label class="form-check-label" [attr.for]="id"
         ><span
@@ -26,7 +26,7 @@
     </div>
     @if (showError) {
       <ng-container class="invalid-feedback d-block mb-2">
-        <ish-validation-message [field]="field" class="validation-message" />
+        <ish-validation-message class="validation-message" [field]="field" />
       </ng-container>
     }
   </div>

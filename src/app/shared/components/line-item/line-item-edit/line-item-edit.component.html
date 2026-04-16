@@ -1,10 +1,10 @@
 @if (product$ | async; as product) {
   @if (product.type === 'VariationProduct') {
     <button
-      type="button"
-      (click)="show()"
       class="line-item-edit-link btn btn-link btn-link-action"
+      type="button"
       title="{{ 'checkout.variation.edit.button.label' | translate }}"
+      (click)="show()"
     >
       {{ 'checkout.variation.edit.button.label' | translate }}
     </button>

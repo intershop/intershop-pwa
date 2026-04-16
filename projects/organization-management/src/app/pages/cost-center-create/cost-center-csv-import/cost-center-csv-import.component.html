@@ -3,19 +3,19 @@
     <h2 class="h3">{{ 'costcenter.csv.import.title' | translate }}</h2>
     <p>{{ 'costcenter.csv.import.subtitle' | translate }}</p>
     <form
+      [attr.aria-label]="'costcenter.csv.import.form.label' | translate"
       [formGroup]="csvForm"
       (ngSubmit)="submitCostCenters()"
-      [attr.aria-label]="'costcenter.csv.import.form.label' | translate"
     >
       <div class="form-group section">
         <input
           #fileInput
-          type="file"
+          accept=".csv"
           name="csvFile"
           size="35"
-          accept=".csv"
-          (change)="onFileChange($event)"
+          type="file"
           [attr.aria-label]="'costcenter.csv.import.file.upload.aria_label' | translate"
+          (change)="onFileChange($event)"
         />
         <div>
           @switch (status) {
@@ -45,10 +45,10 @@
         ></small>
       </div>
       <div>
-        <button type="submit" class="btn btn-primary" name="importCostCenters" [disabled]="isCsvDisabled">
+        <button class="btn btn-primary" name="importCostCenters" type="submit" [disabled]="isCsvDisabled">
           {{ 'costcenter.csv.import.create.button.label' | translate }}
         </button>
-        <button type="reset" class="btn btn-link" name="reset" (click)="resetInput()">
+        <button class="btn btn-link" name="reset" type="reset" (click)="resetInput()">
           {{ 'costcenter.csv.import.reset.button.label' | translate }}
         </button>
       </div>

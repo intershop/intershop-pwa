@@ -4,14 +4,14 @@
       <div class="product-list">
         <swiper [config]="swiperConfig">
           @for (sku of products; track sku) {
-            <ng-template swiperSlide let-data>
+            <ng-template let-data swiperSlide>
               <div [ngClass]="listItemCSSClass">
                 @if (lazyFetch(data.isVisible, sku)) {
                   <ish-product-item
                     ishProductContext
-                    [sku]="sku"
                     [configuration]="listItemConfiguration"
                     [displayType]="listItemStyle"
+                    [sku]="sku"
                   />
                 }
               </div>
@@ -25,9 +25,9 @@
           <div class="product-list-item" [ngClass]="listItemCSSClass">
             <ish-product-item
               ishProductContext
-              [sku]="sku"
               [configuration]="listItemConfiguration"
               [displayType]="listItemStyle"
+              [sku]="sku"
             />
           </div>
         }

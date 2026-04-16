@@ -2,11 +2,11 @@
   <div class="d-flex align-items-center">
     <ng-template #fieldComponent />
     <span
-      [id]="id + '-information'"
       class="ms-2"
-      [ngClass]="props.customInformation.class"
-      [attr.aria-hidden]="props.customInformation.ariaHidden"
       data-testing-id="custom-information"
+      [attr.aria-hidden]="props.customInformation.ariaHidden"
+      [id]="id + '-information'"
+      [ngClass]="props.customInformation.class"
     >
       {{ information | translate: args }}
     </span>

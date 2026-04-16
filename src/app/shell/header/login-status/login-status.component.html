@@ -1,9 +1,9 @@
 @if (logoutOnly) {
   @if (user$ | async; as user) {
     <a
-      routerLink="/logout"
       class="sticky-header-icon"
       data-testing-id="link-logout"
+      routerLink="/logout"
       [attr.aria-label]="'account.logout.link' | translate"
     >
       <i class="bi bi-person-fill header-icon"></i>
@@ -18,9 +18,9 @@
   <!-- logged in -->
   @if (user$ | async; as user) {
     <a
-      routerLink="/account"
       class="my-account-link sticky-header-icon"
       data-testing-id="link-myaccount"
+      routerLink="/account"
       [attr.aria-label]="'account.go_to_account.aria_label' | translate"
     >
       <i class="bi bi-person-fill header-icon"></i>
@@ -34,9 +34,9 @@
     </a>
     <span class="separator" [ngClass]="getViewClasses()">&#124;</span>
     <a
-      routerLink="/logout"
       class="my-account-link my-account-logout"
       data-testing-id="link-logout"
+      routerLink="/logout"
       [attr.aria-label]="'account.logout.link' | translate"
       [ngClass]="getViewClasses()"
     >
@@ -45,23 +45,23 @@
   } @else {
     <!-- not logged in -->
     <a
-      routerLink="/login"
-      [queryParams]="{ returnUrl: '/account' }"
       class="my-account-link my-account-login sticky-header-icon"
       rel="nofollow"
+      routerLink="/login"
       [attr.aria-label]="'account.login.link' | translate"
+      [queryParams]="{ returnUrl: '/account' }"
     >
       <i class="bi bi-person-fill header-icon"></i>
       <span [ngClass]="getViewClasses()">{{ 'account.login.link' | translate }}</span>
     </a>
     <span class="separator" [ngClass]="getViewClasses()">&#124;</span
     ><a
-      routerLink="/register"
-      [queryParams]="{ returnUrl: '/account' }"
       class="my-account-link my-account-register"
       rel="nofollow"
+      routerLink="/register"
       [attr.aria-label]="'account.register.link' | translate"
       [ngClass]="getViewClasses()"
+      [queryParams]="{ returnUrl: '/account' }"
       ><span>{{ 'account.register.link' | translate }}</span>
     </a>
   }

@@ -2,9 +2,9 @@
   @if (promotion.externalUrl && promotion.useExternalUrl) {
     <a
       class="details-link promotion-details-link"
-      [href]="promotion.externalUrl"
-      target="_blank"
       rel="nofollow"
+      target="_blank"
+      [href]="promotion.externalUrl"
       [title]="'promotion.detailslink.label' | translate"
       >{{ 'promotion.detailslink.text' | translate }}</a
     >
@@ -12,8 +12,8 @@
     <!-- details link and dialog -->
     <ish-modal-dialog-link
       linkText="promotion.detailslink.text"
-      [options]="{ titleText: 'promotion.detaillist.title' | translate }"
       [ngClass]="'details-link promotion-details-link'"
+      [options]="{ titleText: 'promotion.detaillist.title' | translate }"
     >
       @if (promotion.longTitle) {
         <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
@@ -30,7 +30,7 @@
       }
       @if (promotion.externalUrl) {
         <p>
-          <a [href]="promotion.externalUrl" rel="nofollow" target="_blank">{{ promotion.externalUrl }}</a>
+          <a rel="nofollow" target="_blank" [href]="promotion.externalUrl">{{ promotion.externalUrl }}</a>
         </p>
       }
     </ish-modal-dialog-link>

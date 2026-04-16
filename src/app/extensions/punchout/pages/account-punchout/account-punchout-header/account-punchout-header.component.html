@@ -2,7 +2,7 @@
   <h1>{{ 'account.punchout.heading' | translate }}</h1>
 
   @if (selectedType === 'oci') {
-    <a routerLink="configuration" class="btn btn-secondary m-0">{{
+    <a class="btn btn-secondary m-0" routerLink="configuration">{{
       'account.punchout.configuration.button.label' | translate
     }}</a>
   }
@@ -19,18 +19,18 @@
 @if (punchoutTypes?.length > 1) {
   <div>
     <nav
-      ngbNav
       class="nav-tabs"
-      [(activeId)]="selectedType"
+      ngbNav
       [attr.aria-label]="'account.punchout.type.tabs.aria_label' | translate"
+      [(activeId)]="selectedType"
     >
       @for (type of punchoutTypes; track type) {
         <ng-container [ngbNavItem]="type">
           <a
             ngbNavLink
-            [routerLink]="['../punchout']"
-            [queryParams]="{ format: type }"
             [attr.data-testing-id]="'account-punchout-tab-' + type"
+            [queryParams]="{ format: type }"
+            [routerLink]="['../punchout']"
             >{{ 'account.punchout.type.text' | translate: { '0': type } }}</a
           >
         </ng-container>
