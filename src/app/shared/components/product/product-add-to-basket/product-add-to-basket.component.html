@@ -13,14 +13,14 @@
       (click)="addToBasket()"
       data-testing-id="addToCartButton"
     >
+      <!-- prettier-ignore -->
       @if ((displaySpinner$ | async) !== true) {
         <!-- Add to Cart button -->
         @if (displayIcon) {
           <i class="bi bi-cart-fill"></i>
-        } @else {
-          {{ translationKey$ | async | translate }}
-        }
-      } @else {
+        } @else {{{ translationKey$ | async | translate }}}
+      }
+      @else {
         <!-- button with spinning animation after Add to Cart -->
         <i class="bi bi-arrow-clockwise spin-icon"></i>
         @if (!displayIcon) {

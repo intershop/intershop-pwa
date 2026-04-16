@@ -59,9 +59,8 @@
               <dt class="col-6">{{ 'account.budget.already_spent.label' | translate }}</dt>
               <dd class="col-6" [ngClass]="{ 'text-danger': spentPercentage > 1 }">
                 {{ requisition.userBudget.spentBudget | ishPrice }}
-                @if (requisition.userBudget.budget) {
-                  ({{ spentPercentage | percent }})
-                }
+                <!-- prettier-ignore -->
+                @if (requisition.userBudget.budget) {({{ spentPercentage | percent }})}
               </dd>
             </dl>
           }
@@ -74,9 +73,8 @@
                   requisition.userBudget?.spentBudgetIncludingThisRequisition || requisition.totals.total
                     | ishPrice: 'gross'
                 }}
-                @if (requisition.userBudget.budget) {
-                  ({{ spentPercentageIncludingThisRequisition | percent }})
-                }
+                <!-- prettier-ignore -->
+                @if (requisition.userBudget.budget) {({{ spentPercentageIncludingThisRequisition | percent }})}
               </dd>
             </dl>
           } @else {

@@ -1,7 +1,7 @@
+<!-- prettier-ignore -->
 @if (isMasterProduct$ | async) {
-  <span class="product-variation read-only">
-    {{ 'product.variations.text' | translate: { '0': variationCount$ | async } }}
-  </span>
+  <span class="product-variation read-only"> {{ 'product.variations.text' | translate: { '0': variationCount$ | async } }}
+</span>
 }
 @if (isVariationProduct$ | async) {
   @if (visible$ | async) {

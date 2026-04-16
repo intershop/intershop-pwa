@@ -44,28 +44,16 @@
                 {{ 'approval.detailspage.approver.label' | translate: { '0': customerApproverCount } }}
               </dt>
               <dd class="col-6">
-                @for (approver of uniqueApprovers; track approver.email; let i = $index) {
-                  @if (i > 0) {
-                    ,
-                  }
-                  {{ approver.firstName }}
-                  {{ approver.lastName }}
-                }
+                <!-- prettier-ignore -->
+                @for (approver of uniqueApprovers; track approver.email; let i = $index) {@if (i > 0) {, }{{ approver.firstName }} {{ approver.lastName }}}
               </dd>
             } @else {
-              <!-- prettier-ignore -->
-              <dt class="col-6">{{ 'approval.detailspage.buyer.approver.label' | translate: { '0': customerApproverCount } }}</dt>
+              <dt class="col-6">
+                {{ 'approval.detailspage.buyer.approver.label' | translate: { '0': customerApproverCount } }}
+              </dt>
               <dd class="col-6">
-                @for (
-                  approver of requisition.approval?.customerApproval?.approvers;
-                  track approver.email;
-                  let i = $index
-                ) {
-                  @if (i > 0) {
-                    ,
-                  }
-                  {{ approver.firstName }} {{ approver.lastName }}
-                }
+                <!-- prettier-ignore -->
+                @for (approver of requisition.approval?.customerApproval?.approvers; track approver.email; let i = $index){@if (i > 0) {, }{{ approver.firstName }} {{ approver.lastName }}}
                 @if (requisition.approval?.customerApproval?.statusCode === 'APPROVED') {
                   <i class="bi bi-check-lg text-success ps-3"></i>
                 }
