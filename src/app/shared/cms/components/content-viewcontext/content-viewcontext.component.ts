@@ -33,7 +33,10 @@ export class ContentViewcontextComponent implements OnChanges {
 
   viewContextEntrypoint$: Observable<ContentPageletEntryPointView>;
 
-  constructor(private cmsFacade: CMSFacade, private hostElement: ElementRef) {}
+  constructor(
+    private cmsFacade: CMSFacade,
+    private hostElement: ElementRef
+  ) {}
 
   ngOnChanges() {
     this.viewContextEntrypoint$ = this.cmsFacade.viewContext$(

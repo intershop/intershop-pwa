@@ -42,7 +42,10 @@ export class BasketPromotionCodeComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private checkoutFacade: CheckoutFacade, private cd: ChangeDetectorRef) {}
+  constructor(
+    private checkoutFacade: CheckoutFacade,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.basket$ = this.checkoutFacade.basket$;

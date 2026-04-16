@@ -1,24 +1,24 @@
 @for (field of field?.fieldGroup; track field.id; let i = $index) {
-<div
-  class="row"
-  [attr.data-testing-id]="'quickorder-line-' + i"
-  ishProductContext
-  [(quantity)]="model[i].quantity"
-  [configuration]="{ quantity: true }"
->
-  <formly-field class="col-6 col-sm-8" [field]="field" />
-  <ish-product-quantity class="col-3 quickorder-line-item" />
-  <div class="col-3 col-sm-1 d-flex align-items-start quickorder-line-item">
-    <button
-      type="button"
-      class="btn-tool btn-link m-2"
-      title="{{ 'quickorder.page.remove.row' | translate }}"
-      (click)="remove(i); updateContexts()"
-    >
-      <i class="bi bi-trash-fill"></i>
-    </button>
+  <div
+    class="row"
+    [attr.data-testing-id]="'quickorder-line-' + i"
+    ishProductContext
+    [(quantity)]="model[i].quantity"
+    [configuration]="{ quantity: true }"
+  >
+    <formly-field class="col-6 col-sm-8" [field]="field" />
+    <ish-product-quantity class="col-3 quickorder-line-item" />
+    <div class="col-3 col-sm-1 d-flex align-items-start quickorder-line-item">
+      <button
+        type="button"
+        class="btn-tool btn-link m-2"
+        title="{{ 'quickorder.page.remove.row' | translate }}"
+        (click)="remove(i); updateContexts()"
+      >
+        <i class="bi bi-trash-fill"></i>
+      </button>
+    </div>
   </div>
-</div>
 }
 <div class="d-flex flex-nowrap pb-4">
   <button
@@ -31,6 +31,6 @@
   </button>
   <span class="link-separator"></span>
   <button type="button" class="btn btn-link btn-link-action" (click)="addMultipleRows(props?.numberMoreRows)">
-    {{ props?.addMoreText | translate : { '0': props?.numberMoreRows } }}
+    {{ props?.addMoreText | translate: { '0': props?.numberMoreRows } }}
   </button>
 </div>

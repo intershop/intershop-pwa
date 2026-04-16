@@ -14,7 +14,10 @@ import { getSparqueConfig } from 'ish-core/store/core/configuration';
  */
 @Injectable({ providedIn: 'root' })
 export class RecommendationsServiceProvider {
-  constructor(private sparqueRecommendationsService: SparqueRecommendationsService, private store: Store) {}
+  constructor(
+    private sparqueRecommendationsService: SparqueRecommendationsService,
+    private store: Store
+  ) {}
 
   /**
    * Gets the appropriate recommendations service implementation based on current configuration.

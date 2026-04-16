@@ -30,11 +30,12 @@ class CheckboxFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-fieldset-test-field',
-  template: `FieldsetFieldComponent: @for (f of field.fieldGroup; track f) {
-    <div>
-      {{ getFieldSummary(f) }}
-      {{ f.props | json }}
-    </div>
+  template: `FieldsetFieldComponent:
+    @for (f of field.fieldGroup; track f) {
+      <div>
+        {{ getFieldSummary(f) }}
+        {{ f.props | json }}
+      </div>
     }`,
 })
 class FieldsetFieldComponent extends FieldType {

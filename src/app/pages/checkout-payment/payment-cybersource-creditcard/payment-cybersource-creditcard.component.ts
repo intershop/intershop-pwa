@@ -32,7 +32,10 @@ declare let Flex: any;
 export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit {
   cyberSourceCreditCardForm: FormGroup;
 
-  constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
+  constructor(
+    protected scriptLoader: ScriptLoaderService,
+    protected cd: ChangeDetectorRef
+  ) {
     this.monthOptions = range(1, 13)
       .map(n => n.toString().padStart(2, '0'))
       .map(n => ({ label: n, value: n }));

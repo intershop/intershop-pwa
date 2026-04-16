@@ -34,7 +34,10 @@ export class ProductWarrantyComponent implements OnInit {
   warranties$: Observable<Warranty[]>;
   private noWarranty: Warranty;
 
-  constructor(private productContext: ProductContextFacade, private translateService: TranslateService) {}
+  constructor(
+    private productContext: ProductContextFacade,
+    private translateService: TranslateService
+  ) {}
 
   ngOnInit() {
     this.noWarranty = {

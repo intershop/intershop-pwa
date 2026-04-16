@@ -10,7 +10,10 @@ import { loadBudget, loadBudgetFail, loadBudgetSuccess } from './budget.actions'
 
 @Injectable()
 export class BudgetEffects {
-  constructor(private actions$: Actions, private usersService: UsersService) {}
+  constructor(
+    private actions$: Actions,
+    private usersService: UsersService
+  ) {}
 
   loadBudget$ = createEffect(() =>
     this.actions$.pipe(

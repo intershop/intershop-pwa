@@ -28,7 +28,10 @@ export class SelectOrderTemplateFormComponent implements OnInit {
   singleFieldConfig: FormlyFieldConfig[];
   multipleFieldConfig$: Observable<FormlyFieldConfig[]>;
 
-  constructor(private orderTemplatesFacade: OrderTemplatesFacade, private translate: TranslateService) {}
+  constructor(
+    private orderTemplatesFacade: OrderTemplatesFacade,
+    private translate: TranslateService
+  ) {}
 
   ngOnInit(): void {
     this.orderTemplatesOptions$ = this.orderTemplatesFacade.orderTemplatesSelectOptions$(

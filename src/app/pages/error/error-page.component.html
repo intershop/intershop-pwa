@@ -1,5 +1,5 @@
 @if (error$ | async; as generalError) {
-<ish-server-error [error]="generalError" [type]="type$ | async" />
+  <ish-server-error [error]="generalError" [type]="type$ | async" />
 } @else {
-<ish-error />
+  <ish-error />
 }

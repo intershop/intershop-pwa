@@ -37,7 +37,10 @@ export class LineItemInformationEditComponent extends RxState<ComponentState> im
   customFieldsForm = new FormGroup({});
   collapsed = true;
 
-  constructor(@Self() private context: ProductContextFacade, private checkoutFacade: CheckoutFacade) {
+  constructor(
+    @Self() private context: ProductContextFacade,
+    private checkoutFacade: CheckoutFacade
+  ) {
     super();
   }
 

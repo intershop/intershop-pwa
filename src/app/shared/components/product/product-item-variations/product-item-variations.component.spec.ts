@@ -33,7 +33,7 @@ describe('Product Item Variations Component', () => {
     context = mock(ProductContextFacade);
     when(context.select('displayProperties', 'variations')).thenReturn(visible$);
     when(context.select('displayProperties', 'readOnly')).thenReturn(readOnly$);
-    when(context.select('product')).thenReturn(productType$.pipe(map(type => ({ type } as ProductView))));
+    when(context.select('product')).thenReturn(productType$.pipe(map(type => ({ type }) as ProductView)));
     when(context.select('variationCount')).thenReturn(variationCount$);
 
     const appFacade = mock(AppFacade);

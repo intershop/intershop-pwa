@@ -1,11 +1,12 @@
 <ng-template #template>
   <div class="modal-header">
     @if (options.titleText) {
-    <h2 [id]="'modal-title-' + uuid" class="modal-title">
-      @if (options.icon) {
-      <i class="bi bi-{{ options.icon }} {{ options.iconClass }} "></i>
-      }{{ options.titleText }}
-    </h2>
+      <h2 [id]="'modal-title-' + uuid" class="modal-title">
+        @if (options.icon) {
+          <i class="bi bi-{{ options.icon }} {{ options.iconClass }} "></i>
+        }
+        {{ options.titleText }}
+      </h2>
     }
     <button type="button" class="btn-close" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
   </div>
@@ -13,22 +14,23 @@
   <div class="modal-body"><ng-content /></div>
 
   @if (options.confirmText || options.rejectText) {
-  <div class="modal-footer">
-    @if (options.confirmText) {
-    <button
-      type="button"
-      class="btn btn-primary"
-      [disabled]="options.confirmDisabled"
-      (click)="confirm()"
-      data-testing-id="confirm"
-    >
-      {{ options.confirmText }}
-    </button>
-    } @if (options.rejectText) {
-    <button type="button" class="btn btn-secondary" (click)="hide()" data-testing-id="reject">
-      {{ options.rejectText }}
-    </button>
-    }
-  </div>
+    <div class="modal-footer">
+      @if (options.confirmText) {
+        <button
+          type="button"
+          class="btn btn-primary"
+          [disabled]="options.confirmDisabled"
+          (click)="confirm()"
+          data-testing-id="confirm"
+        >
+          {{ options.confirmText }}
+        </button>
+      }
+      @if (options.rejectText) {
+        <button type="button" class="btn btn-secondary" (click)="hide()" data-testing-id="reject">
+          {{ options.rejectText }}
+        </button>
+      }
+    </div>
   }
 </ng-template>

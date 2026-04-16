@@ -189,7 +189,7 @@ function getUsedImportName(source: SourceFile, importName: string, libraryName: 
       if (node.getModuleSpecifierValue() === libraryName) {
         return node
           .getNamedImports()
-          ?.map(i => (i.getName() === importName ? i.getAliasNode()?.getText() ?? importName : undefined))
+          ?.map(i => (i.getName() === importName ? (i.getAliasNode()?.getText() ?? importName) : undefined))
           .find(i => !!i);
       }
     })

@@ -33,7 +33,11 @@ import STUB_ATTRS from './products-list-attributes';
  */
 @Injectable({ providedIn: 'root' })
 export class ProductsService implements ProductsServiceInterface {
-  constructor(private apiService: ApiService, private productMapper: ProductMapper, private appFacade: AppFacade) {}
+  constructor(
+    private apiService: ApiService,
+    private productMapper: ProductMapper,
+    private appFacade: AppFacade
+  ) {}
 
   /**
    * Get the full Product data for the given Product SKU.

@@ -84,7 +84,10 @@ export class ModalDialogComponent<T> implements OnDestroy {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private ngbModal: NgbModal, @Inject(DOCUMENT) private document: Document) {}
+  constructor(
+    private ngbModal: NgbModal,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
 
   /**
    * Configure and show modal dialog.

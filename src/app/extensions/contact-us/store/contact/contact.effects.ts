@@ -17,7 +17,10 @@ import {
 
 @Injectable()
 export class ContactEffects {
-  constructor(private actions$: Actions, private contactService: ContactService) {}
+  constructor(
+    private actions$: Actions,
+    private contactService: ContactService
+  ) {}
 
   /**
    * Load the contact subjects, which the customer can select for his request

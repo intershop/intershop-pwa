@@ -15,7 +15,10 @@ import {
 
 @Injectable()
 export class ParametersEffects {
-  constructor(private actions$: Actions, private productsService: ProductsService) {}
+  constructor(
+    private actions$: Actions,
+    private productsService: ProductsService
+  ) {}
 
   loadParametersProductListFilter$ = createEffect(() =>
     this.actions$.pipe(

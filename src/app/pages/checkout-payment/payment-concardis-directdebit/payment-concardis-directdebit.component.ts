@@ -29,7 +29,10 @@ declare let PayEngine: any;
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PaymentConcardisDirectdebitComponent extends PaymentConcardisComponent implements OnInit {
-  constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
+  constructor(
+    protected scriptLoader: ScriptLoaderService,
+    protected cd: ChangeDetectorRef
+  ) {
     super(scriptLoader, cd);
   }
 

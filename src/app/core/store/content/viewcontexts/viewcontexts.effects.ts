@@ -13,7 +13,10 @@ import {
 
 @Injectable()
 export class ViewcontextsEffects {
-  constructor(private actions$: Actions, private cmsService: CMSService) {}
+  constructor(
+    private actions$: Actions,
+    private cmsService: CMSService
+  ) {}
 
   loadViewContextEntrypoint$ = createEffect(() =>
     this.actions$.pipe(

@@ -1,50 +1,52 @@
 @if (currentPage && lastPage) {
-<nav [attr.aria-label]="'navigation.paging.aria_label' | translate">
-  <ul class="pagination">
-    <li class="page-item">
-      <button
-        type="button"
-        class="btn btn-primary mb-0 ps-2"
-        [disabled]="currentPage === 1"
-        (click)="setPage(currentPage - 1)"
-        [title]="'navigation.paging.previous_page.label' | translate"
-        [attr.aria-disabled]="currentPage === 1"
-        data-testing-id="paging-previous-button"
-      >
-        <i class="bi bi-chevron-left"></i>
-      </button>
-    </li>
-    @for (p of pageIndices; track p) {
-    <li class="page-item pt-2" [ngClass]="{ active: p === currentPage }" data-testing-id="paging-link">
-      @if (p !== -1) {
-      <a
-        [attr.aria-current]="p === currentPage ? 'page' : null"
-        [title]="
-          p === currentPage
-            ? ('navigation.paging.current_page.label' | translate : { '0': p })
-            : ('navigation.paging.go_to_page.label' | translate : { '0': p })
-        "
-        tabindex="0"
-        (click)="setPage(p)"
-        (keyup.enter)="setPage(p)"
-        >{{ p }}</a
-      >
-      } @else { ... }
-    </li>
-    }
-    <li class="page-item">
-      <button
-        type="button"
-        class="btn btn-primary m-0 pe-2"
-        [disabled]="currentPage === lastPage"
-        [title]="'navigation.paging.next_page.label' | translate"
-        (click)="setPage(currentPage + 1)"
-        [attr.aria-disabled]="currentPage === lastPage"
-        data-testing-id="paging-next-button"
-      >
-        <i class="bi bi-chevron-right"></i>
-      </button>
-    </li>
-  </ul>
-</nav>
+  <nav [attr.aria-label]="'navigation.paging.aria_label' | translate">
+    <ul class="pagination">
+      <li class="page-item">
+        <button
+          type="button"
+          class="btn btn-primary mb-0 ps-2"
+          [disabled]="currentPage === 1"
+          (click)="setPage(currentPage - 1)"
+          [title]="'navigation.paging.previous_page.label' | translate"
+          [attr.aria-disabled]="currentPage === 1"
+          data-testing-id="paging-previous-button"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+      </li>
+      @for (p of pageIndices; track p) {
+        <li class="page-item pt-2" [ngClass]="{ active: p === currentPage }" data-testing-id="paging-link">
+          @if (p !== -1) {
+            <a
+              [attr.aria-current]="p === currentPage ? 'page' : null"
+              [title]="
+                p === currentPage
+                  ? ('navigation.paging.current_page.label' | translate: { '0': p })
+                  : ('navigation.paging.go_to_page.label' | translate: { '0': p })
+              "
+              tabindex="0"
+              (click)="setPage(p)"
+              (keyup.enter)="setPage(p)"
+              >{{ p }}</a
+            >
+          } @else {
+            ...
+          }
+        </li>
+      }
+      <li class="page-item">
+        <button
+          type="button"
+          class="btn btn-primary m-0 pe-2"
+          [disabled]="currentPage === lastPage"
+          [title]="'navigation.paging.next_page.label' | translate"
+          (click)="setPage(currentPage + 1)"
+          [attr.aria-disabled]="currentPage === lastPage"
+          data-testing-id="paging-next-button"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </li>
+    </ul>
+  </nav>
 }

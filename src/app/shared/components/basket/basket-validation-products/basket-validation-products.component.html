@@ -1,36 +1,38 @@
-@for (item of items; track item.productSKU) { @if (item) {
-<div class="alert alert-box" role="alert" data-testing-id="validation-removed-items-message">
-  <div class="alert-box-header">
-    {{ item.message }}
-  </div>
-  <div class="alert-box-body">
-    <div class="row list-header d-md-flex">
-      <div class="col-md-10 list-header-item">{{ 'checkout.pli.desc.heading' | translate }}</div>
-      <div class="col-md-2 list-header-item column-price">{{ 'checkout.pli.price.heading' | translate }}</div>
-    </div>
-    <div class="list-body">
-      <div class="list-item-row list-item-row-big">
-        <div class="row clearfix" ishProductContext [sku]="item.productSKU">
-          <!---Product Image --->
-          <div class="col-2 list-item">
-            <ish-product-image imageType="S" [link]="true" />
-          </div>
-          <!---Product Description --->
-          <div class="col-7 col-md-6 list-item">
-            <ish-product-name />
-            <ish-product-id />
-          </div>
-          <!---Out of Stock --->
-          <div class="col-2 offset-2 offset-md-0 order-last order-md-3 list-item">
-            <ish-product-inventory />
-          </div>
-          <!---Product Price --->
-          <div class="col-3 col-md-2 order-last list-item column-price">
-            {{ item.price | ishPrice }}
+@for (item of items; track item.productSKU) {
+  @if (item) {
+    <div class="alert alert-box" role="alert" data-testing-id="validation-removed-items-message">
+      <div class="alert-box-header">
+        {{ item.message }}
+      </div>
+      <div class="alert-box-body">
+        <div class="row list-header d-md-flex">
+          <div class="col-md-10 list-header-item">{{ 'checkout.pli.desc.heading' | translate }}</div>
+          <div class="col-md-2 list-header-item column-price">{{ 'checkout.pli.price.heading' | translate }}</div>
+        </div>
+        <div class="list-body">
+          <div class="list-item-row list-item-row-big">
+            <div class="row clearfix" ishProductContext [sku]="item.productSKU">
+              <!---Product Image --->
+              <div class="col-2 list-item">
+                <ish-product-image imageType="S" [link]="true" />
+              </div>
+              <!---Product Description --->
+              <div class="col-7 col-md-6 list-item">
+                <ish-product-name />
+                <ish-product-id />
+              </div>
+              <!---Out of Stock --->
+              <div class="col-2 offset-2 offset-md-0 order-last order-md-3 list-item">
+                <ish-product-inventory />
+              </div>
+              <!---Product Price --->
+              <div class="col-3 col-md-2 order-last list-item column-price">
+                {{ item.price | ishPrice }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-} }
+  }
+}

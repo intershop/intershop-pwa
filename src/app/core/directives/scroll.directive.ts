@@ -22,7 +22,10 @@ import { Directive, ElementRef, Inject, Input, OnChanges } from '@angular/core';
   selector: '[ishScroll]',
 })
 export class ScrollDirective implements OnChanges {
-  constructor(private el: ElementRef, @Inject(DOCUMENT) private document: Document) {}
+  constructor(
+    private el: ElementRef,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
 
   /**
    * Wether or not scrolling should happen
@@ -64,8 +67,8 @@ export class ScrollDirective implements OnChanges {
       this.scrollContainer === 'parent'
         ? target.parentElement
         : this.scrollContainer === 'root'
-        ? this.document.documentElement
-        : this.scrollContainer;
+          ? this.document.documentElement
+          : this.scrollContainer;
 
     // return if there is nothing to scroll
     if (!target.offsetParent) {

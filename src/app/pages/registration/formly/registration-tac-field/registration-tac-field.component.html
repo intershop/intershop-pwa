@@ -19,16 +19,16 @@
               | translate
                 : {
                     '0': 'page://page.termsAndConditions.pagelet2-Page',
-                    '1': 'page://page.privacyPolicy.pagelet2-Page'
+                    '1': 'page://page.privacyPolicy.pagelet2-Page',
                   }
           "
         ></span
       ></label>
     </div>
     @if (showError) {
-    <ng-container class="invalid-feedback d-block mb-2">
-      <ish-validation-message [field]="field" class="validation-message" />
-    </ng-container>
+      <ng-container class="invalid-feedback d-block mb-2">
+        <ish-validation-message [field]="field" class="validation-message" />
+      </ng-container>
     }
   </div>
 </div>

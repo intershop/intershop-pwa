@@ -17,29 +17,35 @@
         [attr.aria-label]="'quickorder.page.csv.file.upload.aria_label' | translate"
       />
       <div>
-        @switch (status) { @case ('InvalidHeader') {
-        <small class="has-error">
-          <span class="validation-message">{{ 'quickorder.page.csv.file.invalid.input' | translate }}</span>
-        </small>
-        } @case ('InvalidData') {
-        <small class="has-error">
-          <span class="validation-message">{{ 'quickorder.page.csv.file.invalid.input' | translate }}</span>
-        </small>
-        } @case ('InvalidFormat') {
-        <small class="has-error">
-          <span class="validation-message">{{ 'quickorder.page.csv.file.invalid.format' | translate }}</span>
-        </small>
-        } @case ('Valid') {
-        <small class="has-success">
-          <span class="validation-message">{{ 'quickorder.page.csv.file.uploaded' | translate }}</span>
-        </small>
-        } @default {
-        <small></small>
-        } }
+        @switch (status) {
+          @case ('InvalidHeader') {
+            <small class="has-error">
+              <span class="validation-message">{{ 'quickorder.page.csv.file.invalid.input' | translate }}</span>
+            </small>
+          }
+          @case ('InvalidData') {
+            <small class="has-error">
+              <span class="validation-message">{{ 'quickorder.page.csv.file.invalid.input' | translate }}</span>
+            </small>
+          }
+          @case ('InvalidFormat') {
+            <small class="has-error">
+              <span class="validation-message">{{ 'quickorder.page.csv.file.invalid.format' | translate }}</span>
+            </small>
+          }
+          @case ('Valid') {
+            <small class="has-success">
+              <span class="validation-message">{{ 'quickorder.page.csv.file.uploaded' | translate }}</span>
+            </small>
+          }
+          @default {
+            <small></small>
+          }
+        }
       </div>
       <small
         class="form-text"
-        [innerHTML]="'quickorder.page.csv.sample' | translate : { '0': 'assets/sample-data/quickorder.csv' }"
+        [innerHTML]="'quickorder.page.csv.sample' | translate: { '0': 'assets/sample-data/quickorder.csv' }"
       ></small>
     </div>
     <div>

@@ -56,8 +56,8 @@ const privateDestroyRefFieldRule: TSESLint.RuleModule<keyof typeof messages> = {
             messageId: usesDestroyRefArg()
               ? 'privateDestroyRefError'
               : usesPrivateAccessibility()
-              ? 'injectDestroyRefError'
-              : 'bothError',
+                ? 'injectDestroyRefError'
+                : 'bothError',
             fix: fixer => fixer.replaceText(node, replaceText),
           });
         } else {

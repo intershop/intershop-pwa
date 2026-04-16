@@ -27,7 +27,10 @@ export class CostCenterFormComponent implements OnInit {
 
   error$: Observable<HttpError>;
 
-  constructor(private organizationManagementFacade: OrganizationManagementFacade, private appFacade: AppFacade) {}
+  constructor(
+    private organizationManagementFacade: OrganizationManagementFacade,
+    private appFacade: AppFacade
+  ) {}
 
   ngOnInit() {
     if (!this.form) {

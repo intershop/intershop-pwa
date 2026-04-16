@@ -10,7 +10,10 @@ import { Inject, Injectable, Renderer2, RendererFactory2, RendererStyleFlags2 } 
 @Injectable({ providedIn: 'root' })
 export class DomService {
   private renderer: Renderer2;
-  constructor(private rendererFactory: RendererFactory2, @Inject(DOCUMENT) private document: Document) {
+  constructor(
+    private rendererFactory: RendererFactory2,
+    @Inject(DOCUMENT) private document: Document
+  ) {
     // Get an instance of Renderer2
     this.renderer = this.rendererFactory.createRenderer(undefined, undefined);
   }

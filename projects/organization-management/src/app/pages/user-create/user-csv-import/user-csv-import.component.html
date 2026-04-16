@@ -14,25 +14,30 @@
           [attr.aria-label]="'user.csv.import.file.upload.aria_label' | translate"
         />
         <div>
-          @switch (status) { @case ('InvalidHeader') {
-          <small class="has-error">
-            <span class="validation-message">{{ 'user.csv.import.file.invalid.input' | translate }}</span>
-          </small>
-          } @case ('InvalidFormat') {
-          <small class="has-error">
-            <span class="validation-message">{{ 'user.csv.import.file.invalid.format' | translate }}</span>
-          </small>
-          } @case ('Valid') {
-          <small class="has-success">
-            <span class="validation-message">{{ 'user.csv.import.file.uploaded' | translate }}</span>
-          </small>
-          } @default {
-          <small></small>
-          } }
+          @switch (status) {
+            @case ('InvalidHeader') {
+              <small class="has-error">
+                <span class="validation-message">{{ 'user.csv.import.file.invalid.input' | translate }}</span>
+              </small>
+            }
+            @case ('InvalidFormat') {
+              <small class="has-error">
+                <span class="validation-message">{{ 'user.csv.import.file.invalid.format' | translate }}</span>
+              </small>
+            }
+            @case ('Valid') {
+              <small class="has-success">
+                <span class="validation-message">{{ 'user.csv.import.file.uploaded' | translate }}</span>
+              </small>
+            }
+            @default {
+              <small></small>
+            }
+          }
         </div>
         <small
           class="form-text"
-          [innerHTML]="'user.csv.import.file.sample' | translate : { '0': 'assets/sample-data/users.csv' }"
+          [innerHTML]="'user.csv.import.file.sample' | translate: { '0': 'assets/sample-data/users.csv' }"
         ></small>
       </div>
       <div>

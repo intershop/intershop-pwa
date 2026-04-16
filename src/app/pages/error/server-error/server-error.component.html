@@ -3,14 +3,21 @@
   <div class="error-text">
     <div [ishServerHtml]="'servererror.page.text' | translate"></div>
     <p class="text-body-secondary" (click)="expand()" (keydown.enter)="expand()" tabindex="0">
-      @switch (httpError?.status) { @case (undefined) {
-      {{ stringError | translate }}
-      } @case (0) { Server timeout } @default { Error code {{ httpError.status }}<br />
-      {{ type }}
-      } }
+      @switch (httpError?.status) {
+        @case (undefined) {
+          {{ stringError | translate }}
+        }
+        @case (0) {
+          Server timeout
+        }
+        @default {
+          Error code {{ httpError.status }}<br />
+          {{ type }}
+        }
+      }
     </p>
     @if (expanded) {
-    <pre>{{ error | json }}</pre>
+      <pre>{{ error | json }}</pre>
     }
   </div>
 </div>

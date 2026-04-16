@@ -1,34 +1,38 @@
-@if (promotion && (promotion.ruleDescription || promotion.legalContentMessage || promotion.externalUrl)) { @if
-(promotion.externalUrl && promotion.useExternalUrl) {
-<a
-  class="details-link promotion-details-link"
-  [href]="promotion.externalUrl"
-  target="_blank"
-  rel="nofollow"
-  [title]="'promotion.detailslink.label' | translate"
-  >{{ 'promotion.detailslink.text' | translate }}</a
->
-} @else {
-<!-- details link and dialog -->
-<ish-modal-dialog-link
-  linkText="promotion.detailslink.text"
-  [options]="{ titleText: 'promotion.detaillist.title' | translate }"
-  [ngClass]="'details-link promotion-details-link'"
->
-  @if (promotion.longTitle) {
-  <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
-  <h3 [ishServerHtml]="promotion.longTitle"></h3>
+@if (promotion && (promotion.ruleDescription || promotion.legalContentMessage || promotion.externalUrl)) {
+  @if (promotion.externalUrl && promotion.useExternalUrl) {
+    <a
+      class="details-link promotion-details-link"
+      [href]="promotion.externalUrl"
+      target="_blank"
+      rel="nofollow"
+      [title]="'promotion.detailslink.label' | translate"
+      >{{ 'promotion.detailslink.text' | translate }}</a
+    >
   } @else {
-  <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
-  <h3 [ishServerHtml]="promotion.title"></h3>
-  } @if (promotion.ruleDescription) {
-  <p [ishServerHtml]="promotion.ruleDescription"></p>
-  } @if (promotion.legalContentMessage) {
-  <p class="text-body-secondary" [ishServerHtml]="promotion.legalContentMessage"></p>
-  } @if (promotion.externalUrl) {
-  <p>
-    <a [href]="promotion.externalUrl" rel="nofollow" target="_blank">{{ promotion.externalUrl }}</a>
-  </p>
+    <!-- details link and dialog -->
+    <ish-modal-dialog-link
+      linkText="promotion.detailslink.text"
+      [options]="{ titleText: 'promotion.detaillist.title' | translate }"
+      [ngClass]="'details-link promotion-details-link'"
+    >
+      @if (promotion.longTitle) {
+        <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
+        <h3 [ishServerHtml]="promotion.longTitle"></h3>
+      } @else {
+        <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
+        <h3 [ishServerHtml]="promotion.title"></h3>
+      }
+      @if (promotion.ruleDescription) {
+        <p [ishServerHtml]="promotion.ruleDescription"></p>
+      }
+      @if (promotion.legalContentMessage) {
+        <p class="text-body-secondary" [ishServerHtml]="promotion.legalContentMessage"></p>
+      }
+      @if (promotion.externalUrl) {
+        <p>
+          <a [href]="promotion.externalUrl" rel="nofollow" target="_blank">{{ promotion.externalUrl }}</a>
+        </p>
+      }
+    </ish-modal-dialog-link>
   }
-</ish-modal-dialog-link>
-} }
+}

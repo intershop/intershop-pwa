@@ -2,50 +2,53 @@
 
 <!-- display the user's own review -->
 @if (ownProductReview$ | async; as ownReview) {
-<div data-testing-id="own-product-review">
-  <h3>{{ 'product.reviews.your_review.heading' | translate }}</h3>
-  @if (ownReview.status === 'NEW') {
-  <p>{{ 'product.review.status.new.text' | translate }}</p>
-  } @if (ownReview.status === 'REJECTED') {
-  <p>{{ 'product.review.status.rejected.text' | translate }}</p>
-  }
-  <ng-container *ngTemplateOutlet="reviewItem; context: { review: ownReview }" />
-</div>
+  <div data-testing-id="own-product-review">
+    <h3>{{ 'product.reviews.your_review.heading' | translate }}</h3>
+    @if (ownReview.status === 'NEW') {
+      <p>{{ 'product.review.status.new.text' | translate }}</p>
+    }
+    @if (ownReview.status === 'REJECTED') {
+      <p>{{ 'product.review.status.rejected.text' | translate }}</p>
+    }
+    <ng-container *ngTemplateOutlet="reviewItem; context: { review: ownReview }" />
+  </div>
 } @else {
-<div *ishHasNotRole="'APP_B2B_OCI_USER'" class="section">
-  <h3>{{ 'product.reviews.rate.heading' | translate }}</h3>
-  {{ 'product.reviews.review_this_item.text' | translate }}
-  @if (isUserLoggedIn$ | async) {
-  <button
-    type="button"
-    class="btn btn-link btn-link-action"
-    (click)="reviewCreateDialog.show()"
-    data-testing-id="open-review-dialog"
-  >
-    {{ 'product.reviews.review_this_item.link' | translate }}
-  </button>
-  } @else {
-  <a routerLink="/login" [queryParams]="{ messageKey: 'review' }" data-testing-id="login-link">{{
-    'product.reviews.review_this_item.link' | translate
-  }}</a>
-  }
-</div>
+  <div *ishHasNotRole="'APP_B2B_OCI_USER'" class="section">
+    <h3>{{ 'product.reviews.rate.heading' | translate }}</h3>
+    {{ 'product.reviews.review_this_item.text' | translate }}
+    @if (isUserLoggedIn$ | async) {
+      <button
+        type="button"
+        class="btn btn-link btn-link-action"
+        (click)="reviewCreateDialog.show()"
+        data-testing-id="open-review-dialog"
+      >
+        {{ 'product.reviews.review_this_item.link' | translate }}
+      </button>
+    } @else {
+      <a routerLink="/login" [queryParams]="{ messageKey: 'review' }" data-testing-id="login-link">{{
+        'product.reviews.review_this_item.link' | translate
+      }}</a>
+    }
+  </div>
 }
 <!-- display the rate product link if the user has not rated this product yet -->
 
 <!-- display the list of reviews -->
 <div class="section pb-4" data-testing-id="product-review-list">
   <h3>{{ 'product.reviews.recent_reviews.heading' | translate }}</h3>
-  @if (recentProductReviews$ | async; as recentProductReviews) { @if (recentProductReviews?.length) {
-  <div>
-    @for (review of recentProductReviews; track review.id) {
-    <ng-container *ngTemplateOutlet="reviewItem; context: { review: review }" />
+  @if (recentProductReviews$ | async; as recentProductReviews) {
+    @if (recentProductReviews?.length) {
+      <div>
+        @for (review of recentProductReviews; track review.id) {
+          <ng-container *ngTemplateOutlet="reviewItem; context: { review: review }" />
+        }
+      </div>
+    } @else {
+      {{ 'product.reviews.no_reviews_yet.text' | translate }}
     }
-  </div>
   } @else {
-  {{ 'product.reviews.no_reviews_yet.text' | translate }}
-  } } @else {
-  {{ 'product.reviews.no_reviews_yet.text' | translate }}
+    {{ 'product.reviews.no_reviews_yet.text' | translate }}
   }
 </div>
 
@@ -54,30 +57,30 @@
   <div class="row review-item">
     <div class="col-md-3 review-item-created">
       @if (review.authorFirstName) {
-      <div>{{ review.authorFirstName }} {{ review.authorLastName?.charAt(0) }}.</div>
+        <div>{{ review.authorFirstName }} {{ review.authorLastName?.charAt(0) }}.</div>
       } @else {
-      <div>{{ 'product.reviews.anonymous_user.text' | translate }}</div>
+        <div>{{ 'product.reviews.anonymous_user.text' | translate }}</div>
       }
-      {{ review.creationDate | ishDate : 'medium' }}
+      {{ review.creationDate | ishDate: 'medium' }}
     </div>
     <div class="col-md-9">
       <div class="review-item-header-title">
         @for (fill of getStars(review.rating); track $index) {
-        <ish-product-rating-star [filled]="fill" />
+          <ish-product-rating-star [filled]="fill" />
         }
         <span class="ps-1">{{ review.title }}</span>
       </div>
       <div class="review-item-text">{{ review.content }}</div>
 
       @if (review.own) {
-      <button
-        type="button"
-        class="btn btn-link btn-link-action"
-        (click)="modalDialog.show(review)"
-        data-testing-id="delete-review"
-      >
-        {{ 'product.reviews.delete.review.link' | translate }}
-      </button>
+        <button
+          type="button"
+          class="btn btn-link btn-link-action"
+          (click)="modalDialog.show(review)"
+          data-testing-id="delete-review"
+        >
+          {{ 'product.reviews.delete.review.link' | translate }}
+        </button>
       }
     </div>
   </div>
@@ -89,7 +92,7 @@
   [options]="{
     titleText: 'product.reviews.delete.dialog.title' | translate,
     confirmText: 'product.reviews.delete.button.label' | translate,
-    rejectText: 'account.cancel.button.label' | translate
+    rejectText: 'account.cancel.button.label' | translate,
   }"
   (confirmed)="deleteReview($event)"
 >
@@ -100,7 +103,7 @@
 <ish-product-review-create-dialog #reviewCreateDialog />
 
 @if ((loading$ | async) === true) {
-<div>
-  <ish-loading />
-</div>
+  <div>
+    <ish-loading />
+  </div>
 }

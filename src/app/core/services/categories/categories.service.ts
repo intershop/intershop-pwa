@@ -14,7 +14,10 @@ import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
  */
 @Injectable({ providedIn: 'root' })
 export class CategoriesService {
-  constructor(private apiService: ApiService, private categoryMapper: CategoryMapper) {}
+  constructor(
+    private apiService: ApiService,
+    private categoryMapper: CategoryMapper
+  ) {}
 
   /**
    * Get the full Category data for the given unique category ID.

@@ -14,10 +14,8 @@
           </dd>
           <!-- Industry -->
           @if (customer.industry) {
-
-          <dt class="col-md-4">{{ 'account.company_profile.industry.label' | translate }}</dt>
-          <dd class="col-md-8">{{ customer.industry }}</dd>
-
+            <dt class="col-md-4">{{ 'account.company_profile.industry.label' | translate }}</dt>
+            <dd class="col-md-8">{{ customer.industry }}</dd>
           }
           <!-- Taxation ID -->
           <dt class="col-md-4">{{ 'account.company_profile.taxation_id.label' | translate }}</dt>
@@ -30,9 +28,7 @@
     <a
       routerLink="/account/organization/settings/company"
       class="btn-tool"
-      [title]="
-        'account.profile.update.link' | translate : { '0': 'account.company_profile.detail.heading' | translate }
-      "
+      [title]="'account.profile.update.link' | translate: { '0': 'account.company_profile.detail.heading' | translate }"
       data-testing-id="edit-company"
     >
       <i class="bi bi-pencil-fill"></i>
@@ -42,19 +38,19 @@
 
 <!-- Preferences -->
 @if ('services.OrderApprovalServiceDefinition.runnable' | ishServerSetting) {
-<div class="row section">
-  <div class="col-10 col-lg-8">
-    <h2 class="h3">{{ 'account.organization.org_settings.preferences.subtitle' | translate }}</h2>
-    <form class="form-horizontal" [formGroup]="budgetTypeForm" novalidate>
-      <formly-form
-        [form]="budgetTypeForm"
-        [fields]="fields"
-        [model]="model"
-        (modelChange)="openConfirmationDialog(budgetTypeChangeConfirmationDialog)"
-      />
-    </form>
+  <div class="row section">
+    <div class="col-10 col-lg-8">
+      <h2 class="h3">{{ 'account.organization.org_settings.preferences.subtitle' | translate }}</h2>
+      <form class="form-horizontal" [formGroup]="budgetTypeForm" novalidate>
+        <formly-form
+          [form]="budgetTypeForm"
+          [fields]="fields"
+          [model]="model"
+          (modelChange)="openConfirmationDialog(budgetTypeChangeConfirmationDialog)"
+        />
+      </form>
+    </div>
   </div>
-</div>
 }
 
 <!-- budget edit confirmation dialog -->
@@ -65,7 +61,7 @@
     rejectText: 'account.cancel.button.label' | translate,
     titleText: 'account.organization.budget_price_type.notification_modal.header' | translate,
     icon: 'exclamation-triangle-fill',
-    iconClass: 'text-warning pe-2'
+    iconClass: 'text-warning pe-2',
   }"
   (confirmed)="submit()"
   (closed)="resetValue()"

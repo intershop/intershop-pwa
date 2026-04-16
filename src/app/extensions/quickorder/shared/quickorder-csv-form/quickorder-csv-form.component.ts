@@ -31,7 +31,11 @@ export class QuickorderCsvFormComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement>;
 
-  constructor(private shoppingFacade: ShoppingFacade, private cdRef: ChangeDetectorRef, private fb: FormBuilder) {}
+  constructor(
+    private shoppingFacade: ShoppingFacade,
+    private cdRef: ChangeDetectorRef,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.productsFromCsv = [];

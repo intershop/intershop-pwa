@@ -1,17 +1,19 @@
-@if (productSKUs$ | async; as productSKUs) { @if (productSKUs?.length) {
-<div class="product-list-container" [ngClass]="pagelet.stringParam('CSSClass')">
-  @if (pagelet.stringParam('Title')) {
-  <h2>{{ pagelet.stringParam('Title') }}</h2>
+@if (productSKUs$ | async; as productSKUs) {
+  @if (productSKUs?.length) {
+    <div class="product-list-container" [ngClass]="pagelet.stringParam('CSSClass')">
+      @if (pagelet.stringParam('Title')) {
+        <h2>{{ pagelet.stringParam('Title') }}</h2>
+      }
+      <ish-products-list
+        [productSKUs]="productSKUs"
+        [listStyle]="pagelet.stringParam('ListStyle')"
+        [slideItems]="pagelet.numberParam('SlideItems')"
+        [listItemStyle]="$any(pagelet.stringParam('ListItemStyle'))"
+        [listItemCSSClass]="pagelet.stringParam('ListItemCSSClass')"
+      />
+      @if (pagelet.booleanParam('ShowViewAll')) {
+        <a [routerLink]="['/categoryref', pagelet.stringParam('Category')]">{{ 'common.view_all.link' | translate }}</a>
+      }
+    </div>
   }
-  <ish-products-list
-    [productSKUs]="productSKUs"
-    [listStyle]="pagelet.stringParam('ListStyle')"
-    [slideItems]="pagelet.numberParam('SlideItems')"
-    [listItemStyle]="$any(pagelet.stringParam('ListItemStyle'))"
-    [listItemCSSClass]="pagelet.stringParam('ListItemCSSClass')"
-  />
-  @if (pagelet.booleanParam('ShowViewAll')) {
-  <a [routerLink]="['/categoryref', pagelet.stringParam('Category')]">{{ 'common.view_all.link' | translate }}</a>
-  }
-</div>
-} }
+}

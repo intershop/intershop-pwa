@@ -18,7 +18,11 @@ export class FilterNavigationComponent implements OnInit {
 
   filter$: Observable<FilterNavigation>;
 
-  constructor(private shoppingFacade: ShoppingFacade, private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private shoppingFacade: ShoppingFacade,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.filter$ = this.shoppingFacade.currentFilter$(this.showCategoryFilter);

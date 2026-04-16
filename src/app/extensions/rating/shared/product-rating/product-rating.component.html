@@ -1,9 +1,10 @@
 @if ((isVariationMaster$ | async) === false) {
-<div role="img" [attr.aria-label]="'product.review.rating.score' | translate : { '0': rating$ | async }">
-  @for (fill of stars$ | async; track $index; let lastStar = $last) {
-  <ish-product-rating-star [filled]="fill" />
-  @if (lastStar && !hideNumberOfReviews) {
-  <span class="product-info">({{ numberOfReviews$ | async }})</span>
-  } }
-</div>
+  <div role="img" [attr.aria-label]="'product.review.rating.score' | translate: { '0': rating$ | async }">
+    @for (fill of stars$ | async; track $index; let lastStar = $last) {
+      <ish-product-rating-star [filled]="fill" />
+      @if (lastStar && !hideNumberOfReviews) {
+        <span class="product-info">({{ numberOfReviews$ | async }})</span>
+      }
+    }
+  </div>
 }

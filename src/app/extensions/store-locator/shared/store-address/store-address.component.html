@@ -1,26 +1,32 @@
 <address>
   @if (store.name) {
-  <div>{{ store.name }}</div>
-  } @if (store.address) {
-  <div>{{ store.address }}</div>
-  } @if (store.postalCode || store.city) {
-  <div>{{ store.postalCode }} {{ store.city }}</div>
-  } @if (store.country) {
-  <div>{{ store.country }}</div>
-  } @if (store.phone) {
-  <div>
-    <i class="bi bi-telephone-fill pe-1"></i>
-    <a href="tel:{{ store.phone }}">{{ store.phone }}</a>
-  </div>
-  } @if (store.fax) {
-  <div>
-    <i class="bi bi-printer-fill pe-1"></i>
-    <span>{{ store.fax }}</span>
-  </div>
-  } @if (store.email) {
-  <div>
-    <i class="bi bi-envelope-fill pe-1"></i>
-    <a href="mailto:{{ store.email }}">{{ store.email }}</a>
-  </div>
+    <div>{{ store.name }}</div>
+  }
+  @if (store.address) {
+    <div>{{ store.address }}</div>
+  }
+  @if (store.postalCode || store.city) {
+    <div>{{ store.postalCode }} {{ store.city }}</div>
+  }
+  @if (store.country) {
+    <div>{{ store.country }}</div>
+  }
+  @if (store.phone) {
+    <div>
+      <i class="bi bi-telephone-fill pe-1"></i>
+      <a href="tel:{{ store.phone }}">{{ store.phone }}</a>
+    </div>
+  }
+  @if (store.fax) {
+    <div>
+      <i class="bi bi-printer-fill pe-1"></i>
+      <span>{{ store.fax }}</span>
+    </div>
+  }
+  @if (store.email) {
+    <div>
+      <i class="bi bi-envelope-fill pe-1"></i>
+      <a href="mailto:{{ store.email }}">{{ store.email }}</a>
+    </div>
   }
 </address>

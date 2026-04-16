@@ -1,9 +1,12 @@
-@if (control.dirty && control.validator) { @if (this.control.valid) {
-<i class="bi bi-check-lg form-control-feedback"></i>
-} @else {
-<i class="bi bi-x form-control-feedback"></i>
-} @for (error of errors | slice : 0 : 1; track error) {
-<small class="validation-message">
-  {{ error | translate }}
-</small>
-} }
+@if (control.dirty && control.validator) {
+  @if (this.control.valid) {
+    <i class="bi bi-check-lg form-control-feedback"></i>
+  } @else {
+    <i class="bi bi-x form-control-feedback"></i>
+  }
+  @for (error of errors | slice: 0 : 1; track error) {
+    <small class="validation-message">
+      {{ error | translate }}
+    </small>
+  }
+}

@@ -20,7 +20,10 @@ export class WishlistWidgetComponent implements OnInit {
   allWishlistsItemsSkus$: Observable<string[]>;
   tileConfiguration: Partial<ProductContextDisplayProperties>;
 
-  constructor(private wishlistsFacade: WishlistsFacade, private shoppingFacade: ShoppingFacade) {
+  constructor(
+    private wishlistsFacade: WishlistsFacade,
+    private shoppingFacade: ShoppingFacade
+  ) {
     this.tileConfiguration = {
       addToWishlist: false,
       addToOrderTemplate: false,

@@ -18,7 +18,10 @@ export class CMSProductListCategoryComponent implements CMSComponent, OnChanges 
 
   productSKUs$: Observable<string[]>;
 
-  constructor(private cmsFacade: CMSFacade, private shoppingFacade: ShoppingFacade) {}
+  constructor(
+    private cmsFacade: CMSFacade,
+    private shoppingFacade: ShoppingFacade
+  ) {}
 
   ngOnChanges() {
     if (this.pagelet.hasParam('Category')) {

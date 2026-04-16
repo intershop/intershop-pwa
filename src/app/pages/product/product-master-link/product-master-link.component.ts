@@ -13,7 +13,10 @@ export class ProductMasterLinkComponent implements OnInit {
   masterProductURL$: Observable<string>;
   visible$: Observable<boolean>;
 
-  constructor(@SkipSelf() private parentContext: ProductContextFacade, private context: ProductContextFacade) {}
+  constructor(
+    @SkipSelf() private parentContext: ProductContextFacade,
+    private context: ProductContextFacade
+  ) {}
 
   ngOnInit() {
     this.context.connect('sku', this.parentContext.select('product', 'productMasterSKU'));

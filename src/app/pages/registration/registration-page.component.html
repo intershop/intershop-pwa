@@ -8,9 +8,9 @@
         <div class="row form-group">
           <div class="offset-md-4 col-md-8">
             @if (form.invalid && registrationForm.submitted) {
-            <div id="submit-button-help" aria-live="polite" class="visually-hidden">
-              {{ 'form.submit.validation.message' | translate }}
-            </div>
+              <div id="submit-button-help" aria-live="polite" class="visually-hidden">
+                {{ 'form.submit.validation.message' | translate }}
+              </div>
             }
             <input
               class="btn btn-primary"
@@ -34,5 +34,5 @@
 <ish-lazy-address-doctor />
 
 @if (loading$ | async) {
-<ish-loading />
+  <ish-loading />
 }

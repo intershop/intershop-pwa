@@ -7,33 +7,36 @@
 >
   <ol class="breadcrumbs-list">
     @if (showHome) {
-    <li class="breadcrumbs-list breadcrumbs-list-home">
-      <a class="breadcrumbs-list-link breadcrumbs-list-link-home" rel="home" routerLink="/home">{{
-        'common.home.link' | translate
-      }}</a
-      ><span class="breadcrumb-list-separator">{{ separator }}</span>
-    </li>
-    } @if (account) {
-    <li class="breadcrumbs-list">
-      @if ((trail$ | async)?.length) {
-      <a class="breadcrumbs-list-link" routerLink="/account">{{ 'account.my_account.link' | translate }}</a
-      ><span class="breadcrumb-list-separator">{{ separator }}</span>
-      } @else {
-      {{ 'account.my_account.link' | translate }}
-      }
-    </li>
-    } @for (item of trail$ | async; track item.key; let index = $index; let last = $last) {
-    <li class="breadcrumbs-list" [ngClass]="{ 'breadcrumbs-list-active': last }">
-      @if (item.link) {
-      <a [routerLink]="item.link" [queryParams]="item.linkParams" class="breadcrumbs-list-link">{{
-        item.text || (item.key | translate)
-      }}</a>
-      } @else {
-      <div aria-current="location">{{ item.text || (item.key | translate) }}</div>
-      } @if (!last) {
-      <span class="breadcrumb-list-separator" aria-hidden="true">{{ separator }}</span>
-      }
-    </li>
+      <li class="breadcrumbs-list breadcrumbs-list-home">
+        <a class="breadcrumbs-list-link breadcrumbs-list-link-home" rel="home" routerLink="/home">{{
+          'common.home.link' | translate
+        }}</a
+        ><span class="breadcrumb-list-separator">{{ separator }}</span>
+      </li>
+    }
+    @if (account) {
+      <li class="breadcrumbs-list">
+        @if ((trail$ | async)?.length) {
+          <a class="breadcrumbs-list-link" routerLink="/account">{{ 'account.my_account.link' | translate }}</a
+          ><span class="breadcrumb-list-separator">{{ separator }}</span>
+        } @else {
+          {{ 'account.my_account.link' | translate }}
+        }
+      </li>
+    }
+    @for (item of trail$ | async; track item.key; let index = $index; let last = $last) {
+      <li class="breadcrumbs-list" [ngClass]="{ 'breadcrumbs-list-active': last }">
+        @if (item.link) {
+          <a [routerLink]="item.link" [queryParams]="item.linkParams" class="breadcrumbs-list-link">{{
+            item.text || (item.key | translate)
+          }}</a>
+        } @else {
+          <div aria-current="location">{{ item.text || (item.key | translate) }}</div>
+        }
+        @if (!last) {
+          <span class="breadcrumb-list-separator" aria-hidden="true">{{ separator }}</span>
+        }
+      </li>
     }
   </ol>
 </nav>

@@ -38,7 +38,10 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
 
   isExpanded: boolean[] = [];
 
-  constructor(private fb: FormBuilder, private organizationManagementFacade: OrganizationManagementFacade) {}
+  constructor(
+    private fb: FormBuilder,
+    private organizationManagementFacade: OrganizationManagementFacade
+  ) {}
 
   ngOnInit() {
     this.calculateStaticRoles();

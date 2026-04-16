@@ -21,7 +21,10 @@ export class FeatureTogglePipe implements PipeTransform {
   private destroyRef = inject(DestroyRef);
   private subscription: Subscription;
 
-  constructor(private featureToggleService: FeatureToggleService, private cdRef: ChangeDetectorRef) {}
+  constructor(
+    private featureToggleService: FeatureToggleService,
+    private cdRef: ChangeDetectorRef
+  ) {}
 
   transform(feature: 'always' | 'never' | FeatureToggleType): boolean {
     if (this.subscription) {

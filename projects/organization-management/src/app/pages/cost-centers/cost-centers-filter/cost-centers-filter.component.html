@@ -1,12 +1,12 @@
 @if (fields) {
-<form [formGroup]="form" (ngSubmit)="submitForm()">
-  <div>
-    <formly-form [form]="form" [fields]="[fields[0]]" [model]="model$ | async" />
-  </div>
-  <div class="row mb-4 justify-content-end">
-    <div class="col-md-8 text-end">
-      <button type="submit" class="btn btn-primary me-0">{{ 'account.costcenter.filter.apply' | translate }}</button>
+  <form [formGroup]="form" (ngSubmit)="submitForm()">
+    <div>
+      <formly-form [form]="form" [fields]="[fields[0]]" [model]="model$ | async" />
     </div>
-  </div>
-</form>
+    <div class="row mb-4 justify-content-end">
+      <div class="col-md-8 text-end">
+        <button type="submit" class="btn btn-primary me-0">{{ 'account.costcenter.filter.apply' | translate }}</button>
+      </div>
+    </div>
+  </form>
 }

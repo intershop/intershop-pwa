@@ -57,8 +57,8 @@ const privateDestroyFieldRule: TSESLint.RuleModule<keyof typeof messages> = {
             messageId: usesVoidTypeParam()
               ? 'privateDestroyError'
               : usesPrivateAccessibility()
-              ? 'voidSubjectError'
-              : 'bothError',
+                ? 'voidSubjectError'
+                : 'bothError',
             fix: fixer => fixer.replaceText(node, replaceText),
           });
         } else {

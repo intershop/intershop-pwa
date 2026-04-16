@@ -33,7 +33,10 @@ export class StoreLocatorPageComponent implements OnInit {
   model = { countryCode: '', postalCode: '', city: '' };
   fields: FormlyFieldConfig[];
 
-  constructor(private storeLocatorFacade: StoreLocatorFacade, private appFacade: AppFacade) {}
+  constructor(
+    private storeLocatorFacade: StoreLocatorFacade,
+    private appFacade: AppFacade
+  ) {}
 
   ngOnInit() {
     this.fields = this.getFields();

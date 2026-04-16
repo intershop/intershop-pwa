@@ -141,7 +141,11 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
 
   formIsCollapsed = true;
 
-  constructor(private route: ActivatedRoute, private router: Router, private accountFacade: AccountFacade) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private accountFacade: AccountFacade
+  ) {}
 
   ngOnInit() {
     this.isAdmin$ = this.accountFacade.isOrderManager$.pipe(

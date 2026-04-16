@@ -9,7 +9,10 @@ import { loadPromotion, loadPromotionFail, loadPromotionSuccess } from './promot
 
 @Injectable()
 export class PromotionsEffects {
-  constructor(private actions$: Actions, private promotionsService: PromotionsService) {}
+  constructor(
+    private actions$: Actions,
+    private promotionsService: PromotionsService
+  ) {}
 
   loadPromotion$ = createEffect(() =>
     this.actions$.pipe(

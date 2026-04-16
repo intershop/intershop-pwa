@@ -32,7 +32,10 @@ export class BasketMerchantMessageComponent implements OnInit, OnChanges {
   fields: FormlyFieldConfig[];
   showSuccessMessage = false;
 
-  constructor(private checkoutFacade: CheckoutFacade, private cd: ChangeDetectorRef) {}
+  constructor(
+    private checkoutFacade: CheckoutFacade,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.fields = [

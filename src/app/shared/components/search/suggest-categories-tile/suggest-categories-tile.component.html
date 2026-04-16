@@ -1,12 +1,12 @@
 @if (category$ | async; as category) {
-<li>
-  <a class="category-image" [routerLink]="category | ishCategoryRoute" (click)="handleInputFocus()" tabindex="-1">
-    <ish-category-image [category]="category" />
-  </a>
-  <a
-    [routerLink]="category | ishCategoryRoute"
-    [innerHTML]="category.name | ishHighlight : (inputTerms$ | async)"
-    (click)="handleInputFocus()"
-  ></a>
-</li>
+  <li>
+    <a class="category-image" [routerLink]="category | ishCategoryRoute" (click)="handleInputFocus()" tabindex="-1">
+      <ish-category-image [category]="category" />
+    </a>
+    <a
+      [routerLink]="category | ishCategoryRoute"
+      [innerHTML]="category.name | ishHighlight: (inputTerms$ | async)"
+      (click)="handleInputFocus()"
+    ></a>
+  </li>
 }

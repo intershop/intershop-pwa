@@ -7,7 +7,7 @@
   <i class="bi bi-heart-fill header-icon"></i>
 
   @if (preferredWishlist$ | async; as wishlist) {
-  <span class="badge rounded-pill">{{ wishlist.itemsCount }}</span>
+    <span class="badge rounded-pill">{{ wishlist.itemsCount }}</span>
   }
   <span [ngClass]="{ 'd-none': view === 'auto' || view === 'small', 'd-md-inline': view === 'auto' }">{{
     'account.wishlists.link' | translate

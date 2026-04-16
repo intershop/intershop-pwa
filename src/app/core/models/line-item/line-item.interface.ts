@@ -17,7 +17,7 @@ export interface LineItemData {
       amount: PriceItemData;
       description?: string;
       name?: string;
-    }
+    },
   ];
   discounts?: string[];
   pricing: {

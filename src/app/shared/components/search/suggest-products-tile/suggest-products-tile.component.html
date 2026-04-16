@@ -1,12 +1,12 @@
 @if (productURL$ | async; as productURL) {
-<li>
-  <a class="product-image" [routerLink]="productURL" (click)="handleInputFocus()" tabindex="-1">
-    <ish-product-image imageType="S" />
-  </a>
-  <a
-    [routerLink]="productURL"
-    [innerHTML]="productName$ | async | ishHighlight : (inputTerms$ | async)"
-    (click)="handleInputFocus()"
-  ></a>
-</li>
+  <li>
+    <a class="product-image" [routerLink]="productURL" (click)="handleInputFocus()" tabindex="-1">
+      <ish-product-image imageType="S" />
+    </a>
+    <a
+      [routerLink]="productURL"
+      [innerHTML]="productName$ | async | ishHighlight: (inputTerms$ | async)"
+      (click)="handleInputFocus()"
+    ></a>
+  </li>
 }

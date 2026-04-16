@@ -71,10 +71,10 @@ export const getCurrentLocale = createSelector(
   (available, requested, defaultLocale, configuredDefault) =>
     isDevMode() && defaultLocale
       ? defaultLocale
-      : available?.find(l => l === requested) ??
+      : (available?.find(l => l === requested) ??
         available?.find(l => l === configuredDefault) ??
         available?.find(l => l === defaultLocale) ??
-        available?.[0]
+        available?.[0])
 );
 
 export const getAvailableCurrencies = createSelector(

@@ -22,7 +22,10 @@ export class ProductContextDirective implements OnInit {
 
   private propIndex$ = new ReplaySubject<IdType>(1);
 
-  constructor(@SkipSelf() @Optional() parentContext: ProductContextFacade, private context: ProductContextFacade) {
+  constructor(
+    @SkipSelf() @Optional() parentContext: ProductContextFacade,
+    private context: ProductContextFacade
+  ) {
     if (parentContext) {
       const removeFromParent = (parent: ProductContext['children'], id: IdType) => {
         delete parent[id];

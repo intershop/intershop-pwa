@@ -1,25 +1,27 @@
 @if (currentCategoryId$ | async; as currentCategoryId) {
-<div class="non-parametric-panel">
-  @if (navigationCategories$ | async; as navigationCategories) { @if (navigationCategories.length) {
-  <div class="filter-group">
-    <ul class="filter-list">
-      @for (category of navigationCategories; track category.uniqueId) {
-      <li class="filter-item">
-        <a
-          class="filter-item-name link-decoration-hover"
-          [ngClass]="{ 'filter-selected': category.uniqueId === currentCategoryId }"
-          [routerLink]="category.url"
-          [attr.aria-current]="category.uniqueId === currentCategoryId ? 'true' : undefined"
-        >
-          {{ category.name }}
-        </a>
-        @if (currentCategoryId.startsWith(category.uniqueId)) {
-        <ish-category-navigation [uniqueId]="category.uniqueId" />
-        }
-      </li>
+  <div class="non-parametric-panel">
+    @if (navigationCategories$ | async; as navigationCategories) {
+      @if (navigationCategories.length) {
+        <div class="filter-group">
+          <ul class="filter-list">
+            @for (category of navigationCategories; track category.uniqueId) {
+              <li class="filter-item">
+                <a
+                  class="filter-item-name link-decoration-hover"
+                  [ngClass]="{ 'filter-selected': category.uniqueId === currentCategoryId }"
+                  [routerLink]="category.url"
+                  [attr.aria-current]="category.uniqueId === currentCategoryId ? 'true' : undefined"
+                >
+                  {{ category.name }}
+                </a>
+                @if (currentCategoryId.startsWith(category.uniqueId)) {
+                  <ish-category-navigation [uniqueId]="category.uniqueId" />
+                }
+              </li>
+            }
+          </ul>
+        </div>
       }
-    </ul>
+    }
   </div>
-  } }
-</div>
 }

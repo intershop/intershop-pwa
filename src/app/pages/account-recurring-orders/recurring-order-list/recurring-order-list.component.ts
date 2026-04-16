@@ -36,7 +36,10 @@ export class RecurringOrderListComponent {
   // - otherwise for the logged-in user
   @Input() context: string;
 
-  constructor(private accountFacade: AccountFacade, private translate: TranslateService) {}
+  constructor(
+    private accountFacade: AccountFacade,
+    private translate: TranslateService
+  ) {}
 
   /** Emits the id of the recurring order to delete. */
   delete(recurringOrderId: string) {

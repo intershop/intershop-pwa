@@ -20,7 +20,10 @@ export function mapToAddressOptions(): OperatorFunction<Address[], SelectOption[
 
 @Injectable({ providedIn: 'root' })
 export class FormsService {
-  constructor(private translate: TranslateService, private store: Store) {}
+  constructor(
+    private translate: TranslateService,
+    private store: Store
+  ) {}
 
   /**
    * Get address select options for addresses in order to render them in an address select box.

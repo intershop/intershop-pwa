@@ -48,7 +48,11 @@ export class PaypalAdaptersBuilder {
   private paypalGooglePay = inject(PaypalGooglePayAdapter);
   private paypalApplePay = inject(PaypalApplePayAdapter);
 
-  constructor(private checkoutFacade: CheckoutFacade, private shoppingFacade: ShoppingFacade, private ngZone: NgZone) {}
+  constructor(
+    private checkoutFacade: CheckoutFacade,
+    private shoppingFacade: ShoppingFacade,
+    private ngZone: NgZone
+  ) {}
 
   // Creates a PayPal component based on the provided configuration.
   build(config: PaypalComponentsConfig) {

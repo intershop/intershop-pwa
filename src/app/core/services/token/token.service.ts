@@ -38,7 +38,11 @@ export class TokenService {
   private oAuthService: OAuthService;
   private serviceConfigured$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private apiService: ApiService, private apiTokenService: ApiTokenService, parent: Injector) {
+  constructor(
+    private apiService: ApiService,
+    private apiTokenService: ApiTokenService,
+    parent: Injector
+  ) {
     this.oAuthService = InstanceCreators.getOAuthServiceInstance(parent, storageFactory);
 
     this.apiService

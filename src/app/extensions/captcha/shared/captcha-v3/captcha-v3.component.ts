@@ -31,7 +31,10 @@ export class CaptchaV3Component implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private recaptchaV3Service: ReCaptchaV3Service, private appFacade: AppFacade) {}
+  constructor(
+    private recaptchaV3Service: ReCaptchaV3Service,
+    private appFacade: AppFacade
+  ) {}
 
   ngOnInit() {
     this.parentForm.get('captchaAction').setValidators([Validators.required]);

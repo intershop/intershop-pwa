@@ -11,7 +11,10 @@ import { loadPunchoutTypes, loadPunchoutTypesFail, loadPunchoutTypesSuccess } fr
 
 @Injectable()
 export class PunchoutTypesEffects {
-  constructor(private actions$: Actions, private punchoutService: PunchoutService) {}
+  constructor(
+    private actions$: Actions,
+    private punchoutService: PunchoutService
+  ) {}
 
   loadPunchoutTypesInitially$ = createEffect(() =>
     this.actions$.pipe(

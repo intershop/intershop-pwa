@@ -14,7 +14,11 @@ import { cxmlConfigurationActions, cxmlConfigurationApiActions } from './cxml-co
 
 @Injectable()
 export class CxmlConfigurationEffects {
-  constructor(private actions$: Actions, private punchoutService: PunchoutService, private store: Store) {}
+  constructor(
+    private actions$: Actions,
+    private punchoutService: PunchoutService,
+    private store: Store
+  ) {}
 
   loadCxmlConfiguration$ = createEffect(() =>
     this.actions$.pipe(

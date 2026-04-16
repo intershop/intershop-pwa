@@ -1,17 +1,21 @@
 @if (isBusinessUser$ | async) {
-<li class="account-welcome" role="presentation">
-  @if (user$ | async; as user) { @if (user.lastName && user.firstName) {
-  <h4>{{ user.lastName }}, {{ user.firstName }}</h4>
-  } @else {
-  <h4 class="ellipsis">{{ user.login }}</h4>
-  } } @if (customer$ | async; as customer) {
-  <div>
-    {{ customer.companyName }}
-  </div>
-  } @if (roles$ | async; as roles) {
-  <div>
-    {{ roles }}
-  </div>
-  }
-</li>
+  <li class="account-welcome" role="presentation">
+    @if (user$ | async; as user) {
+      @if (user.lastName && user.firstName) {
+        <h4>{{ user.lastName }}, {{ user.firstName }}</h4>
+      } @else {
+        <h4 class="ellipsis">{{ user.login }}</h4>
+      }
+    }
+    @if (customer$ | async; as customer) {
+      <div>
+        {{ customer.companyName }}
+      </div>
+    }
+    @if (roles$ | async; as roles) {
+      <div>
+        {{ roles }}
+      </div>
+    }
+  </li>
 }

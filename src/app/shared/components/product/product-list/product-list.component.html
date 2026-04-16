@@ -1,29 +1,33 @@
 <div class="product-list row">
   @if (!products.length) {
-  <div class="gx-0">
-    @if ((listingLoading$ | async) !== true) {
-    {{ 'search.noresult.filtered_products.message' | translate }}
-    }
-  </div>
-  } @if (listingLoading$ | async) {
-  <div class="product-list-loading">
-    <ish-loading [standalone]="true" />
-  </div>
-  } @for (sku of products; track sku; let i = $index) {
-  <ng-container ishProductContext [sku]="sku" [categoryId]="categoryId" [configuration]="{ shipment: false }">
-    @if (isGrid) {
-    <div class="col-6 col-lg-4 product-list-item grid-view">
-      <ish-product-item displayType="tile" [loading]="i < 4 ? 'eager' : 'lazy'" />
+    <div class="gx-0">
+      @if ((listingLoading$ | async) !== true) {
+        {{ 'search.noresult.filtered_products.message' | translate }}
+      }
     </div>
-    } @if (isList) {
-    <div class="col-lg-12 product-list-item list-view">
-      <ish-product-item displayType="row" [loading]="i < 2 ? 'eager' : 'lazy'" />
+  }
+  @if (listingLoading$ | async) {
+    <div class="product-list-loading">
+      <ish-loading [standalone]="true" />
     </div>
-    }
-  </ng-container>
-  } @if (listingLoading$ | async) {
-  <div class="col-12">
-    <ish-loading [standalone]="true" />
-  </div>
+  }
+  @for (sku of products; track sku; let i = $index) {
+    <ng-container ishProductContext [sku]="sku" [categoryId]="categoryId" [configuration]="{ shipment: false }">
+      @if (isGrid) {
+        <div class="col-6 col-lg-4 product-list-item grid-view">
+          <ish-product-item displayType="tile" [loading]="i < 4 ? 'eager' : 'lazy'" />
+        </div>
+      }
+      @if (isList) {
+        <div class="col-lg-12 product-list-item list-view">
+          <ish-product-item displayType="row" [loading]="i < 2 ? 'eager' : 'lazy'" />
+        </div>
+      }
+    </ng-container>
+  }
+  @if (listingLoading$ | async) {
+    <div class="col-12">
+      <ish-loading [standalone]="true" />
+    </div>
   }
 </div>

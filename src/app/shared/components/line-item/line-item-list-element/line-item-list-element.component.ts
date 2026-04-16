@@ -22,7 +22,10 @@ export class LineItemListElementComponent implements OnChanges {
   private updateSubscription: Subscription;
   private destroyRef = inject(DestroyRef);
 
-  constructor(private context: ProductContextFacade, private checkoutFacade: CheckoutFacade) {}
+  constructor(
+    private context: ProductContextFacade,
+    private checkoutFacade: CheckoutFacade
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.pli) {

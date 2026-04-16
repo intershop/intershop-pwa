@@ -1,53 +1,55 @@
 @if (order) {
-<div>
-  <div class="cart-header">
-    <h1 class="d-flex flex-wrap align-items-baseline">
-      <span id="page-main-content" tabindex="-1" class="cart-header-title">
-        {{
-          (order.recurrence ? 'checkout.receipt.recurring.tankyou.message' : 'checkout.receipt.tankyou.message')
-            | translate
-        }}
-      </span>
-      <span class="header-note">
-        <span>{{ 'shopping_cart.transaction.text' | translate }}</span>
-        <ish-modal-dialog-link
-          linkText="shopping_cart.read_more.link"
-          [options]="{ titleText: 'checkout.safeandsecure.details.title' | translate, size: 'lg' }"
-          class="details-link"
-        >
-          <ish-content-include includeId="include.dialog.safeAndSecure.pagelet2-Include" *ishLazyLoadingContent />
-        </ish-modal-dialog-link>
-      </span>
-    </h1>
+  <div>
+    <div class="cart-header">
+      <h1 class="d-flex flex-wrap align-items-baseline">
+        <span id="page-main-content" tabindex="-1" class="cart-header-title">
+          {{
+            (order.recurrence ? 'checkout.receipt.recurring.tankyou.message' : 'checkout.receipt.tankyou.message')
+              | translate
+          }}
+        </span>
+        <span class="header-note">
+          <span>{{ 'shopping_cart.transaction.text' | translate }}</span>
+          <ish-modal-dialog-link
+            linkText="shopping_cart.read_more.link"
+            [options]="{ titleText: 'checkout.safeandsecure.details.title' | translate, size: 'lg' }"
+            class="details-link"
+          >
+            <ish-content-include includeId="include.dialog.safeAndSecure.pagelet2-Include" *ishLazyLoadingContent />
+          </ish-modal-dialog-link>
+        </span>
+      </h1>
+    </div>
+    @if (order.statusCode === 'PENDING') {
+      <p class="alert alert-info">
+        {{ 'checkout.receipt.order_pending.message' | translate }}
+      </p>
+    }
+    <!-- Receipt message -->
+    <div class="section">
+      <p>
+        <span>{{
+          (order.recurrence ? 'checkout.order.recurring.number.label' : 'checkout.order.number.label') | translate
+        }}</span
+        >&nbsp;
+        <strong data-testing-id="order-document-number">
+          @if (order.customerNo) {
+            <a
+              [routerLink]="[
+                order.recurrence ? '/account/recurring-orders/' + order.id : '/account/orders/' + order.id,
+              ]"
+              >{{ order.documentNo }}</a
+            >
+          } @else {
+            {{ order.documentNo }}
+          }
+        </strong>
+      </p>
+      <p
+        [innerHTML]="
+          'checkout.receipt.notification.mail.text' | translate: { '0': order.invoiceToAddress.email || order.email }
+        "
+      ></p>
+    </div>
   </div>
-  @if (order.statusCode === 'PENDING') {
-  <p class="alert alert-info">
-    {{ 'checkout.receipt.order_pending.message' | translate }}
-  </p>
-  }
-  <!-- Receipt message -->
-  <div class="section">
-    <p>
-      <span>{{
-        (order.recurrence ? 'checkout.order.recurring.number.label' : 'checkout.order.number.label') | translate
-      }}</span
-      >&nbsp;
-      <strong data-testing-id="order-document-number">
-        @if (order.customerNo) {
-        <a
-          [routerLink]="[order.recurrence ? '/account/recurring-orders/' + order.id : '/account/orders/' + order.id]"
-          >{{ order.documentNo }}</a
-        >
-        } @else {
-        {{ order.documentNo }}
-        }
-      </strong>
-    </p>
-    <p
-      [innerHTML]="
-        'checkout.receipt.notification.mail.text' | translate : { '0': order.invoiceToAddress.email || order.email }
-      "
-    ></p>
-  </div>
-</div>
 }

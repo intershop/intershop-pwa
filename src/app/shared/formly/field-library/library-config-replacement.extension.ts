@@ -9,7 +9,10 @@ import { FieldLibrary } from './field-library';
  * Uses the FieldLibrary to retrieve reusable configurations.
  */
 class LibraryConfigReplacementExtension implements FormlyExtension {
-  constructor(private fieldLibrary: FieldLibrary, availableConfigIds: string[]) {
+  constructor(
+    private fieldLibrary: FieldLibrary,
+    availableConfigIds: string[]
+  ) {
     this.configIds = new Set(availableConfigIds);
   }
 

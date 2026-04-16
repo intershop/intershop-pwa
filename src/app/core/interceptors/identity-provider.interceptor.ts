@@ -7,7 +7,10 @@ import { IdentityProviderFactory } from 'ish-core/identity-provider/identity-pro
 
 @Injectable()
 export class IdentityProviderInterceptor implements HttpInterceptor {
-  constructor(private identityProviderFactory: IdentityProviderFactory, private appFacade: AppFacade) {}
+  constructor(
+    private identityProviderFactory: IdentityProviderFactory,
+    private appFacade: AppFacade
+  ) {}
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (req.url.startsWith(this.appFacade.icmBaseUrl)) {

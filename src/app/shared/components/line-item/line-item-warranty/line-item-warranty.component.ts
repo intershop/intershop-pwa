@@ -24,7 +24,10 @@ export class LineItemWarrantyComponent implements OnInit {
   @Input({ required: true }) pli: Partial<LineItemView & OrderLineItem>;
   @Input() editable = false;
 
-  constructor(private context: ProductContextFacade, private checkoutFacade: CheckoutFacade) {}
+  constructor(
+    private context: ProductContextFacade,
+    private checkoutFacade: CheckoutFacade
+  ) {}
 
   productHasWarranties$: Observable<boolean>;
 

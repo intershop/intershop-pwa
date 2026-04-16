@@ -17,7 +17,10 @@ export const SPECIAL_HTTP_ERROR_HANDLER = new InjectionToken<SpecialHttpErrorHan
 
 @Injectable()
 export class ICMErrorMapperInterceptor implements HttpInterceptor {
-  constructor(private injector: Injector, private errorHandler: ErrorHandler) {}
+  constructor(
+    private injector: Injector,
+    private errorHandler: ErrorHandler
+  ) {}
 
   // eslint-disable-next-line complexity
   private mapError(httpError: HttpErrorResponse, request: HttpRequest<unknown>): HttpError {

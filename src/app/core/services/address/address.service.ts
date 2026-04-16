@@ -13,7 +13,10 @@ import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
  */
 @Injectable({ providedIn: 'root' })
 export class AddressService {
-  constructor(private apiService: ApiService, private appFacade: AppFacade) {}
+  constructor(
+    private apiService: ApiService,
+    private appFacade: AppFacade
+  ) {}
 
   /**
    * Gets the addresses for the given customer id. Falls back to '-' as customer id to get the addresses for the current user.

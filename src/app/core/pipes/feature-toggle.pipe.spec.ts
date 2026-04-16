@@ -9,13 +9,16 @@ import { FeatureTogglePipe } from './feature-toggle.pipe';
   template: `
     <div>unrelated</div>
     @if ('feature1' | ishFeature) {
-    <div>content1</div>
-    } @if ('feature2' | ishFeature) {
-    <div>content2</div>
-    } @if ('always' | ishFeature) {
-    <div>contentAlways</div>
-    } @if ('never' | ishFeature) {
-    <div>contentNever</div>
+      <div>content1</div>
+    }
+    @if ('feature2' | ishFeature) {
+      <div>content2</div>
+    }
+    @if ('always' | ishFeature) {
+      <div>contentAlways</div>
+    }
+    @if ('never' | ishFeature) {
+      <div>contentNever</div>
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -140,7 +140,7 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
-        template: ` <div [ishServerHtml]="'get.help.at' | translate : { '0': 'page://page.helpdesk' }"></div> `,
+        template: ` <div [ishServerHtml]="'get.help.at' | translate: { '0': 'page://page.helpdesk' }"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
       class TestComponent {}
@@ -186,7 +186,7 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
-        template: ` <div [ishServerHtml]="'get.help.at' | translate : { '0': 'page://page.helpdesk' }"></div> `,
+        template: ` <div [ishServerHtml]="'get.help.at' | translate: { '0': 'page://page.helpdesk' }"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
       class TestComponent {}

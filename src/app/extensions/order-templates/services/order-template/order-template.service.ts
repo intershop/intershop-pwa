@@ -11,7 +11,10 @@ import { OrderTemplate, OrderTemplateHeader } from '../../models/order-template/
 
 @Injectable({ providedIn: 'root' })
 export class OrderTemplateService {
-  constructor(private apiService: ApiService, private orderTemplateMapper: OrderTemplateMapper) {}
+  constructor(
+    private apiService: ApiService,
+    private orderTemplateMapper: OrderTemplateMapper
+  ) {}
 
   /**
    * Gets a list of order template for the current user.

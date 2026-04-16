@@ -1,21 +1,21 @@
 <div class="d-grid">
   @if (visible$ | async) {
-  <button
-    type="submit"
-    class="btn"
-    [ngClass]="cssClass"
-    [disabled]="disabled$ | async"
-    [title]="displayType === 'icon' ? ('quote.add_product_to_quote.button.add_to_quote.label' | translate) : ''"
-    [tabindex]="ariaHidden ? -1 : 0"
-    [attr.aria-hidden]="ariaHidden"
-    (click)="addToQuote()"
-    data-testing-id="addToQuoteButton"
-  >
-    @if (displayType === 'icon') {
-    <i class="bi bi-inbox-fill"></i>
-    } @else {
-    {{ 'quote.add_product_to_quote.button.add_to_quote.label' | translate }}
-    }
-  </button>
+    <button
+      type="submit"
+      class="btn"
+      [ngClass]="cssClass"
+      [disabled]="disabled$ | async"
+      [title]="displayType === 'icon' ? ('quote.add_product_to_quote.button.add_to_quote.label' | translate) : ''"
+      [tabindex]="ariaHidden ? -1 : 0"
+      [attr.aria-hidden]="ariaHidden"
+      (click)="addToQuote()"
+      data-testing-id="addToQuoteButton"
+    >
+      @if (displayType === 'icon') {
+        <i class="bi bi-inbox-fill"></i>
+      } @else {
+        {{ 'quote.add_product_to_quote.button.add_to_quote.label' | translate }}
+      }
+    </button>
   }
 </div>

@@ -1,11 +1,14 @@
 @if (searchTerm$ | async; as searchTerm) {
-<!-- search result with products -->
-@if ((numberOfItems$ | async) || (filterParams$ | async)) {
-<ish-search-result [searchTerm]="searchTerm" [deviceType]="deviceType$ | async" />
-} @else { @if ((searchLoading$ | async) === false) {
-<ish-search-no-result [searchTerm]="searchTerm" />
-} }
-<!-- empty search result -->
-@if (searchLoading$ | async) {
-<ish-loading />
-} }
+  <!-- search result with products -->
+  @if ((numberOfItems$ | async) || (filterParams$ | async)) {
+    <ish-search-result [searchTerm]="searchTerm" [deviceType]="deviceType$ | async" />
+  } @else {
+    @if ((searchLoading$ | async) === false) {
+      <ish-search-no-result [searchTerm]="searchTerm" />
+    }
+  }
+  <!-- empty search result -->
+  @if (searchLoading$ | async) {
+    <ish-loading />
+  }
+}

@@ -26,7 +26,10 @@ export class SelectWishlistFormComponent implements OnInit {
   multipleFieldConfig$: Observable<FormlyFieldConfig[]>;
   wishlistOptions$: Observable<SelectOption[]>;
 
-  constructor(private translate: TranslateService, private wishlistFacade: WishlistsFacade) {}
+  constructor(
+    private translate: TranslateService,
+    private wishlistFacade: WishlistsFacade
+  ) {}
 
   ngOnInit() {
     this.wishlistOptions$ = this.wishlistFacade.wishlistSelectOptions$(this.addMoveProduct === 'move');

@@ -28,7 +28,10 @@ export class ProductNotificationDeleteComponent implements OnInit {
 
   productName$: Observable<string>;
 
-  constructor(private productNotificationsFacade: ProductNotificationsFacade, private context: ProductContextFacade) {}
+  constructor(
+    private productNotificationsFacade: ProductNotificationsFacade,
+    private context: ProductContextFacade
+  ) {}
 
   ngOnInit() {
     this.productName$ = this.context.select('product', 'name');

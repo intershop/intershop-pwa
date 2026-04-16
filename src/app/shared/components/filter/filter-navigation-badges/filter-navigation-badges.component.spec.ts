@@ -31,7 +31,7 @@ describe('Filter Navigation Badges Component', () => {
         count: 0,
         selected,
         level: 0,
-      } as Facet);
+      }) as Facet;
     component.filterNavigation = {
       filter: [
         {

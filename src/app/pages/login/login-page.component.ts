@@ -18,7 +18,11 @@ export class LoginPageComponent implements OnInit {
   loginMessageKey$: Observable<string>;
   routingInProgress$: Observable<boolean>;
 
-  constructor(private accountFacade: AccountFacade, private route: ActivatedRoute, private appFacade: AppFacade) {}
+  constructor(
+    private accountFacade: AccountFacade,
+    private route: ActivatedRoute,
+    private appFacade: AppFacade
+  ) {}
 
   ngOnInit() {
     this.isLoggedIn$ = this.accountFacade.isLoggedIn$;

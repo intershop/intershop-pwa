@@ -1,18 +1,19 @@
 @if (selectedUser$ | async; as user) {
-<h1>
-  {{ 'account.punchout.user.details.heading' | translate : { '0': user.login } }}
-</h1>
-<ish-error-message [error]="error$ | async" />
-<p>{{ 'account.punchout.update.description' | translate }}</p>
-<div class="row">
-  <div class="col-md-10 col-xl-8">
-    <ish-punchout-user-form
-      [punchoutUser]="user"
-      [punchoutType]="user.punchoutType"
-      (submitUser)="submitForm($event)"
-    />
+  <h1>
+    {{ 'account.punchout.user.details.heading' | translate: { '0': user.login } }}
+  </h1>
+  <ish-error-message [error]="error$ | async" />
+  <p>{{ 'account.punchout.update.description' | translate }}</p>
+  <div class="row">
+    <div class="col-md-10 col-xl-8">
+      <ish-punchout-user-form
+        [punchoutUser]="user"
+        [punchoutType]="user.punchoutType"
+        (submitUser)="submitForm($event)"
+      />
+    </div>
   </div>
-</div>
-} @if (loading$ | async) {
-<ish-loading />
+}
+@if (loading$ | async) {
+  <ish-loading />
 }

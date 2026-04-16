@@ -28,7 +28,6 @@ Steps to reproduce the behavior:
 **Environment Details**
 
 - Desktop: <!-- (please complete the following information)-->\*
-
   - OS: [e.g. iOS]
   - Browser [e.g. chrome, safari], Version [e.g. 22]
   - Project Code Version

@@ -1,17 +1,18 @@
 @if (recurrence) {
-<dl class="row dl-horizontal dl-separator" data-testing-id="recurring-order-info">
-  <dt [class]="labelCssClass">{{ 'order.recurrence.interval.label' | translate }}</dt>
-  <dd [class]="valueCssClass">{{ recurrence.interval | ishFrequency }}</dd>
-  <dt [class]="labelCssClass">{{ 'order.recurrence.start.label' | translate }}</dt>
-  <dd [class]="valueCssClass">{{ recurrence.startDate | ishDate }}</dd>
-  @if (recurrence.endDate) {
-  <dt [class]="labelCssClass" data-testing-id="end-date-label">{{ 'order.recurrence.end.label' | translate }}</dt>
-  <dd [class]="valueCssClass">{{ recurrence.endDate | ishDate }}</dd>
-  } @if (recurrence.repetitions) {
-  <!-- prettier-ignore -->
-  <dt [class]="labelCssClass" data-testing-id="repetitions-label">{{ 'order.recurrence.repetitions.label' | translate }}</dt>
-  <!-- prettier-ignore -->
-  <dd [class]="valueCssClass" data-testing-id="repetitions-number">{{ 'order.recurrence.repetitions.text' | translate : { '0': recurrence.repetitions } }}</dd>
-  }
-</dl>
+  <dl class="row dl-horizontal dl-separator" data-testing-id="recurring-order-info">
+    <dt [class]="labelCssClass">{{ 'order.recurrence.interval.label' | translate }}</dt>
+    <dd [class]="valueCssClass">{{ recurrence.interval | ishFrequency }}</dd>
+    <dt [class]="labelCssClass">{{ 'order.recurrence.start.label' | translate }}</dt>
+    <dd [class]="valueCssClass">{{ recurrence.startDate | ishDate }}</dd>
+    @if (recurrence.endDate) {
+      <dt [class]="labelCssClass" data-testing-id="end-date-label">{{ 'order.recurrence.end.label' | translate }}</dt>
+      <dd [class]="valueCssClass">{{ recurrence.endDate | ishDate }}</dd>
+    }
+    @if (recurrence.repetitions) {
+      <!-- prettier-ignore -->
+      <dt [class]="labelCssClass" data-testing-id="repetitions-label">{{ 'order.recurrence.repetitions.label' | translate }}</dt>
+      <!-- prettier-ignore -->
+      <dd [class]="valueCssClass" data-testing-id="repetitions-number">{{ 'order.recurrence.repetitions.text' | translate : { '0': recurrence.repetitions } }}</dd>
+    }
+  </dl>
 }

@@ -17,9 +17,9 @@
           <ish-category-navigation [uniqueId]="category.categoryPath[0]" />
         </nav>
         @if ('payment.paypal.payLaterPreferences.PayLaterMessagingCategoryEnabled' | ishServerSetting) {
-        <div class="mt-2">
-          <ish-payment-paypal pageType="product-listing" />
-        </div>
+          <div class="mt-2">
+            <ish-payment-paypal pageType="product-listing" />
+          </div>
         }
         <!-- DISABLED VIEW CONTEXT --
         <div class="marketing-area">
@@ -48,10 +48,10 @@
 
       <div class="marketing-area">
         @if (category.categoryRef) {
-        <ish-content-viewcontext
-          viewContextId="viewcontext.include.category.content.top"
-          [callParameters]="{ Category: category.categoryRef }"
-        />
+          <ish-content-viewcontext
+            viewContextId="viewcontext.include.category.content.top"
+            [callParameters]="{ Category: category.categoryRef }"
+          />
         }
       </div>
 
@@ -59,10 +59,10 @@
 
       <div class="marketing-area">
         @if (category.categoryRef) {
-        <ish-content-viewcontext
-          viewContextId="viewcontext.include.category.content.bottom"
-          [callParameters]="{ Category: category.categoryRef }"
-        />
+          <ish-content-viewcontext
+            viewContextId="viewcontext.include.category.content.bottom"
+            [callParameters]="{ Category: category.categoryRef }"
+          />
         }
       </div>
     </div>

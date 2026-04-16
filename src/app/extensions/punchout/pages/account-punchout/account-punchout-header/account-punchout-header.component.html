@@ -2,38 +2,39 @@
   <h1>{{ 'account.punchout.heading' | translate }}</h1>
 
   @if (selectedType === 'oci') {
-  <a routerLink="configuration" class="btn btn-secondary m-0">{{
-    'account.punchout.configuration.button.label' | translate
-  }}</a>
+    <a routerLink="configuration" class="btn btn-secondary m-0">{{
+      'account.punchout.configuration.button.label' | translate
+    }}</a>
   }
 </div>
 <ish-error-message [error]="error" />
 
 @if (punchoutTypes?.length > 0) {
-<p>
-  {{ 'account.punchout.subtitle' | translate }}
-</p>
+  <p>
+    {{ 'account.punchout.subtitle' | translate }}
+  </p>
 } @else {
-<ish-info-message message="account.punchout.no.protocols.info" [toast]="false" />
-} @if (punchoutTypes?.length > 1) {
-<div>
-  <nav
-    ngbNav
-    class="nav-tabs"
-    [(activeId)]="selectedType"
-    [attr.aria-label]="'account.punchout.type.tabs.aria_label' | translate"
-  >
-    @for (type of punchoutTypes; track type) {
-    <ng-container [ngbNavItem]="type">
-      <a
-        ngbNavLink
-        [routerLink]="['../punchout']"
-        [queryParams]="{ format: type }"
-        [attr.data-testing-id]="'account-punchout-tab-' + type"
-        >{{ 'account.punchout.type.text' | translate : { '0': type } }}</a
-      >
-    </ng-container>
-    }
-  </nav>
-</div>
+  <ish-info-message message="account.punchout.no.protocols.info" [toast]="false" />
+}
+@if (punchoutTypes?.length > 1) {
+  <div>
+    <nav
+      ngbNav
+      class="nav-tabs"
+      [(activeId)]="selectedType"
+      [attr.aria-label]="'account.punchout.type.tabs.aria_label' | translate"
+    >
+      @for (type of punchoutTypes; track type) {
+        <ng-container [ngbNavItem]="type">
+          <a
+            ngbNavLink
+            [routerLink]="['../punchout']"
+            [queryParams]="{ format: type }"
+            [attr.data-testing-id]="'account-punchout-tab-' + type"
+            >{{ 'account.punchout.type.text' | translate: { '0': type } }}</a
+          >
+        </ng-container>
+      }
+    </nav>
+  </div>
 }

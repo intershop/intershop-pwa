@@ -77,7 +77,6 @@ Read on for a step-by-step walkthrough of the initial connection request.
 ![Current Deployment](pwa-building-blocks-production-deployment.svg)
 
 1. The browser requests the page by URL from the nginx.
-
    1. If the cache is enabled and a cached response is found, the response is returned immediately, go to 6.
    2. If no cached response is available, the SSR process is triggered.
 

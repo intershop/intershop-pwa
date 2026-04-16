@@ -11,7 +11,10 @@ import { ociConfigurationActions, ociConfigurationApiActions } from './oci-confi
 
 @Injectable()
 export class OciConfigurationEffects {
-  constructor(private actions$: Actions, private punchoutService: PunchoutService) {}
+  constructor(
+    private actions$: Actions,
+    private punchoutService: PunchoutService
+  ) {}
 
   loadOciOptionsAndConfiguration$ = createEffect(() =>
     this.actions$.pipe(
