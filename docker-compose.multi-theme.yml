@@ -1,43 +1,34 @@
-# Multi-Theme Setup: One SSR container per theme, Nginx as reverse proxy.
-# Replaces PM2-based multi-theme management.
+# Multi-Theme Setup: One image with all themes, one SSR process per container.
+# Each container has all themes' code/assets but only runs one theme.
+# Static assets can be served by any container (round robin).
 #
 # Usage:
 #   export ICM_BASE_URL=https://develop.icm.intershop.de
 #   docker compose -f docker-compose.multi-theme.yml up --build
 
+x-ssr-defaults: &ssr-defaults
+  image: intershophub/intershop-pwa-ssr
+  build:
+    context: .
+    args:
+      activeThemes: b2c,b2b
+  environment: &ssr-env
+    ICM_BASE_URL: ${ICM_BASE_URL:-https://develop.icm.intershop.de}
+    SOURCE_MAPS: 'true'
+    LOGLEVEL: ${LOGLEVEL:-error}
+    LOGFORMAT: ${LOGFORMAT:-json}
+  expose:
+    - '4200'
+  restart: unless-stopped
+
 services:
   ssr-b2c:
-    image: intershophub/intershop-pwa-ssr:b2c
-    build:
-      context: .
-      args:
-        activeThemes: b2c
+    <<: *ssr-defaults
     command: ['node', 'dist/b2c/run-standalone']
-    environment:
-      ICM_BASE_URL: ${ICM_BASE_URL:-https://develop.icm.intershop.de}
-      SOURCE_MAPS: 'true'
-      LOGLEVEL: ${LOGLEVEL:-error}
-      LOGFORMAT: ${LOGFORMAT:-json}
-    expose:
-      - '4200'
-    restart: unless-stopped
 
   ssr-b2b:
-    image: intershophub/intershop-pwa-ssr:b2b
-    build:
-      context: .
-      args:
-        activeThemes: b2b
+    <<: *ssr-defaults
     command: ['node', 'dist/b2b/run-standalone']
-    environment:
-      ICM_BASE_URL: ${ICM_BASE_URL:-https://develop.icm.intershop.de}
-      DEPLOY_URL: '/b2b/'
-      SOURCE_MAPS: 'true'
-      LOGLEVEL: ${LOGLEVEL:-error}
-      LOGFORMAT: ${LOGFORMAT:-json}
-    expose:
-      - '4200'
-    restart: unless-stopped
 
   nginx:
     image: intershophub/intershop-pwa-nginx
@@ -50,6 +41,7 @@ services:
     environment:
       UPSTREAM_PWA: 'http://ssr-b2c:4200'
       THEME_UPSTREAMS: 'b2c=ssr-b2c:4200,b2b=ssr-b2b:4200'
+      ASSETS_UPSTREAM: 'ssr-b2c:4200,ssr-b2b:4200'
       ICM_BASE_URL: ${ICM_BASE_URL:-https://develop.icm.intershop.de}
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
       CACHE: 0
