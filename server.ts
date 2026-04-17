@@ -128,6 +128,49 @@ const DIST_FOLDER = join(process.cwd(), 'dist');
 
 const BROWSER_FOLDER = process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'browser');
 
+// Discover all theme browser folders for serving static assets from any container
+const ALL_BROWSER_FOLDERS: { baseHref: string; folder: string }[] = (() => {
+  const folders: { baseHref: string; folder: string }[] = [];
+  const distDir = join(process.cwd(), 'dist');
+  if (fs.existsSync(distDir)) {
+    for (const entry of fs.readdirSync(distDir)) {
+      const browserDir = join(distDir, entry, 'browser');
+      if (fs.existsSync(browserDir) && fs.statSync(browserDir).isDirectory()) {
+        folders.push({ baseHref: `/${entry}`, folder: browserDir });
+      }
+    }
+  }
+  return folders;
+})();
+
+/**
+ * Resolve a request URL to a file path by checking if the URL starts with
+ * a known theme baseHref and stripping it before looking up the file.
+ */
+function resolveFileInBrowserFolders(
+  requestUrl: string
+): { filePath: string; folder: string; relativePath: string } | undefined {
+  const cleanUrl = requestUrl.replace(/[;?&].*$/, '');
+  for (const { baseHref, folder } of ALL_BROWSER_FOLDERS) {
+    if (cleanUrl.startsWith(`${baseHref}/`) || cleanUrl === baseHref) {
+      const relativePath = cleanUrl.slice(baseHref.length) || '/';
+      const filePath = join(folder, relativePath);
+      if (filePath.startsWith(folder) && fs.existsSync(filePath)) {
+        return { filePath, folder, relativePath };
+      }
+    }
+  }
+  // Fallback: try all browser folders (handles round-robin where any container may serve any theme's files)
+  const relativePath = cleanUrl.startsWith('/') ? cleanUrl : `/${cleanUrl}`;
+  for (const { folder } of ALL_BROWSER_FOLDERS) {
+    const filePath = join(folder, relativePath);
+    if (filePath.startsWith(folder) && fs.existsSync(filePath)) {
+      return { filePath, folder, relativePath };
+    }
+  }
+  return;
+}
+
 // The Express app is exported so that it can be used by serverless Functions.
 export function app() {
   const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
@@ -403,9 +446,18 @@ export function app() {
     logger.warn('SOURCE_MAPS are active - never use this in production!');
   }
 
-  // Serve static files from browser folder
+  // Serve static files from browser folder(s)
   server.get(/\/.*\.js\.map$/, (req, res, next) => {
     if (SOURCE_MAPS_ACTIVE) {
+      const resolved = resolveFileInBrowserFolders(req.originalUrl);
+      if (resolved) {
+        req.url = resolved.relativePath;
+        return express.static(resolved.folder, {
+          setHeaders: (res, path) => {
+            res.set('Cache-Control', defaultCacheControl(path));
+          },
+        })(req, res, next);
+      }
       return express.static(BROWSER_FOLDER, {
         setHeaders: (res, path) => {
           res.set('Cache-Control', defaultCacheControl(path));
@@ -416,17 +468,20 @@ export function app() {
     }
   });
   server.get(/\/.*\.(js|css)$/, (req, res) => {
-    // remove all parameters
-    const path = req.originalUrl.slice(!DEPLOY_URL.startsWith('http') ? DEPLOY_URL.length : 0).replace(/[;?&].*$/, '');
-    const filename = join(BROWSER_FOLDER, path);
-    if (filename.startsWith(BROWSER_FOLDER)) {
-      fs.readFile(filename, { encoding: 'utf-8' }, (err, data) => {
+    const resolved = resolveFileInBrowserFolders(req.originalUrl);
+    if (resolved) {
+      fs.readFile(resolved.filePath, { encoding: 'utf-8' }, (err, data) => {
         if (err) {
           res.sendStatus(404);
         } else {
-          res.set('Content-Type', `${path.endsWith('css') ? 'text/css' : 'application/javascript'}; charset=UTF-8`);
-          res.set('Cache-Control', defaultCacheControl(path));
-          res.send(setDeployUrlInFile(DEPLOY_URL, path, data));
+          // strip leading slash for setDeployUrlInFile which checks path.startsWith('runtime')
+          const pathForRewrite = resolved.relativePath.replace(/^\//, '');
+          res.set(
+            'Content-Type',
+            `${pathForRewrite.endsWith('css') ? 'text/css' : 'application/javascript'}; charset=UTF-8`
+          );
+          res.set('Cache-Control', defaultCacheControl(pathForRewrite));
+          res.send(setDeployUrlInFile(DEPLOY_URL, pathForRewrite, data));
         }
       });
     } else {
@@ -452,13 +507,36 @@ export function app() {
 
   // route handler for all files that need the DEPLOY_URL replacement
   server.get(/\/assets\/.*|.*\.(woff2?|json)$|.*\/manifest\.webmanifest$/, (req, _, next) => {
-    req.url = req.originalUrl.slice(!DEPLOY_URL.startsWith('http') ? DEPLOY_URL.length : 0).replace(/[;?&].*$/, '');
+    const resolved = resolveFileInBrowserFolders(req.originalUrl);
+    if (resolved) {
+      req.url = resolved.relativePath;
+    } else {
+      req.url = req.originalUrl.slice(!DEPLOY_URL.startsWith('http') ? DEPLOY_URL.length : 0).replace(/[;?&].*$/, '');
+    }
     next();
   });
 
   server.get(/^(?!\/assets\/).*\/favicon.ico.*/, (req, _, next) => {
     req.url = req.originalUrl.replace(/[;?&].*$/, '').replace(/^.*\//g, '/');
     next();
+  });
+
+  // Serve static files from all theme browser folders
+  ALL_BROWSER_FOLDERS.forEach(({ folder }) => {
+    server.get(
+      '*.*',
+      express.static(folder, {
+        setHeaders: (res, path) => {
+          res.set('Cache-Control', defaultCacheControl(path));
+          if (
+            DEPLOY_URL.startsWith('http') &&
+            ['manifest.webmanifest', 'woff2', 'woff', 'json'].some(match => path.endsWith(match))
+          ) {
+            res.set('access-control-allow-origin', '*');
+          }
+        },
+      })
+    );
   });
   server.get(
     '*.*',
