@@ -33,6 +33,11 @@ If `app_sf_base_cm` is not the correct resource set ID for the view contexts use
 
 The `OVERRIDE_IDENTITY_PROVIDERS` matching pattern configuration has been enhanced to not only support exact matches with `MULTI_CHANNEL` matching patterns; it can now also be configured as a RegEx that matches several `MULTI_CHANNEL` matching patterns.
 
+**Removed automatic SSL certificate generation in NGINX container**
+
+The automatic SSL certificate generation feature (development-only) using [mkcert](https://github.com/FiloSottile/mkcert) has been removed from the NGINX container.
+See the updated [NGINX Startup Guide](./nginx-startup.md#https-or-ssl) for detailed instructions on how to configure SSL development deployments.
+
 ## From 9.1.0 to 10.0.0
 
 **Node.js update**
