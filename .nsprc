@@ -6,6 +6,7 @@
   "GHSA-prjf-86w9-mfqv": "Ignored since there probably won't be a fix for Angular 17",
   "GHSA-x288-3778-4hhx": "Ignored since there probably won't be a fix for Angular 17",
   "GHSA-g93w-mfhg-p222": "Ignored since there probably won't be a fix for Angular 17",
+  "GHSA-45q2-gjvg-7973": "Ignored since there probably won't be a fix for Angular 17",
   "GHSA-x5gf-qvw8-r2rm": "Ignored since there is no PM2 version that fixes the issue",
   "GHSA-hmx5-qpq5-p643": "Ignored until we migrate the integration to the current swiper version"
 }
