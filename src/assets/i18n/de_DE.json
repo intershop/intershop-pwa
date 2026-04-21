@@ -415,7 +415,7 @@
   "account.punchout.cxml.configuration.link": "Konfiguration",
   "account.punchout.cxml.configuration.no_configuration": "Derzeit ist keine Konfiguration angelegt.",
   "account.punchout.cxml.configuration.save_success.message": "Die cXML-Punchout-Konfiguration wurde gespeichert.",
-  "account.punchout.cxml.info.url.helptext": "Bitte verwenden Sie die folgende URL für die Punchout-Konfiguration in Ihrem cXML-Procurement-System. Die Anmeldedaten des cXML-Benutzers müssen im Abschnitt „Sender“ angegeben werden: der Benutzername als „Identity“ und das Passwort als „SharedSecret“.",
+  "account.punchout.cxml.info.url.helptext": "Bitte verwenden Sie die folgende URL für die Punchout-Konfiguration in Ihrem cXML-Procurement-System. Die Anmeldedaten des cXML-Benutzers müssen im Abschnitt „Sender“ angegeben werden: der Benutzername als „Identity“ und das Kennwort als „SharedSecret“.",
   "account.punchout.cxml.toggle.helptext_close.title": "Hilfetext ausblenden",
   "account.punchout.cxml.toggle.helptext_open.title": "Hilfetext anzeigen",
   "account.punchout.heading": "Punchout",
