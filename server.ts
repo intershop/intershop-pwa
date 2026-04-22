@@ -7,7 +7,7 @@ import robots from 'express-robots-txt';
 import * as fs from 'fs';
 import { join } from 'path';
 import * as client from 'prom-client';
-import { Agent, install, interceptors, setGlobalDispatcher } from 'undici';
+import { getGlobalDispatcher, install, interceptors, setGlobalDispatcher } from 'undici';
 import { writeHeapSnapshot } from 'v8';
 import 'zone.js/node';
 
@@ -51,14 +51,14 @@ process.on('SIGUSR2', () => {
   logger.info({ file: { path: filename } }, 'Heap snapshot written');
 });
 
-// allowing HTTP/2 uses HTTPClient withFetch() and undici agent allowH2 option
-if (/on|1|true|yes/.test(process.env.ALLOW_H2?.toLowerCase())) {
+// allowing HTTP/2 uses HTTPClient withFetch() and undici 8 agent, allowH2 option defaults to true
+if (/on|1|true|yes/.test((process.env.ALLOW_H2 ?? '').toLowerCase())) {
   install();
 
-  const { decompress, dns, retry } = interceptors;
+  const { dns, retry } = interceptors;
 
-  const h2Agent = new Agent({ allowH2: true }).compose(decompress(), dns(), retry());
-  setGlobalDispatcher(h2Agent);
+  setGlobalDispatcher(getGlobalDispatcher().compose(dns(), retry()));
+
   logger.info('Installed undici globally, enabled HTTP/2 support for backend requests');
 }
 
