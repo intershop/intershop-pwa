@@ -3,8 +3,14 @@ RUN apt-get update \
   && apt-get install --no-install-recommends --no-install-suggests -y libpcre3 libpcre3-dev zlib1g zlib1g-dev openssl libssl-dev wget git gcc make
 
 WORKDIR /app
-RUN wget -q https://nginx.org/download/nginx-1.29.2.tar.gz && tar -zxf nginx-1.29.2.tar.gz \
-  && git clone --recurse-submodules -j8 https://github.com/google/ngx_brotli \
+RUN wget -q https://nginx.org/download/nginx-1.29.2.tar.gz \
+  && echo "5669e3c29d49bf7f6eb577275b86efe4504cf81af885c58a1ed7d2e7b8492437  nginx-1.29.2.tar.gz" | sha256sum -c - \
+  && tar -zxf nginx-1.29.2.tar.gz \
+  && git clone https://github.com/google/ngx_brotli \
+  && cd ngx_brotli \
+  && git checkout a71f9312c2deb28875acc7bacfdd5695a111aa53 \
+  && git submodule update --init --recursive \
+  && cd .. \
   && cd nginx-1.29.2 \
   && ./configure --prefix=/usr/local/openresty/nginx --with-cc-opt='-O2 -DNGX_LUA_ABORT_AT_PANIC -I/usr/local/openresty/pcre/include -I/usr/local/openresty/openssl/include' --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L/usr/local/openresty/pcre/lib -L/usr/local/openresty/openssl/lib -Wl,-rpath,/usr/local/openresty/pcre/lib:/usr/local/openresty/openssl/lib' --with-pcre --with-file-aio --with-http_addition_module --with-http_auth_request_module --with-http_dav_module --with-http_flv_module --with-http_geoip_module=dynamic --with-http_gunzip_module --with-http_gzip_static_module --with-http_image_filter_module=dynamic --with-http_mp4_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-http_xslt_module=dynamic --with-ipv6 --with-mail --with-mail_ssl_module --with-md5-asm --with-sha1-asm --with-stream --with-stream_ssl_module --with-threads --with-pcre-jit --with-stream --with-stream_ssl_preread_module --with-compat --add-dynamic-module=../ngx_brotli \
   && make modules
