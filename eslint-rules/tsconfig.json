@@ -1,19 +1,30 @@
 {
   "compilerOptions": {
+    /* Project */
+    "outDir": "./dist",
+
+    /* Language & Environment */
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "types": ["node", "jest"],
+
+    /* Modules */
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+
+    /* Type Checking */
     "strict": true,
     "strictNullChecks": false, // TODO: enable and fix ~28 null-safety issues
     "noImplicitAny": false, // TODO: enable and fix ~10 implicit any issues
+
+    /* Emit */
     "declaration": false,
-    "isolatedModules": true,
-    "lib": ["ES2022"],
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "outDir": "./dist",
-    "skipLibCheck": true,
-    "target": "ES2022",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "types": ["node", "jest"]
+
+    /* Interop */
+    "skipLibCheck": true
   },
   "include": ["src/**/*.ts"]
 }

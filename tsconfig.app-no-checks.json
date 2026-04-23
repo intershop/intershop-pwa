@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.app.json",
   "compilerOptions": {
+    /* Type Checking */
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noImplicitAny": false

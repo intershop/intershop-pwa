@@ -1,10 +1,14 @@
 {
   "extends": "./tsconfig.app.json",
   "compilerOptions": {
+    /* Project */
     "outDir": "./node_modules/.out-tsc/app-server",
-    "module": "CommonJs",
+
+    /* Language & Environment */
     "types": ["node"],
-    "noImplicitAny": false
+
+    /* Modules */
+    "module": "CommonJs"
   },
   "files": ["src/main.server.ts", "server.ts"]
 }
