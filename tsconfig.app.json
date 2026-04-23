@@ -1,8 +1,11 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    /* Project */
     "outDir": "./node_modules/.out-tsc/app",
-    "types": [],
+
+    /* Language & Environment */
+    "types": []
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
   "include": ["src/typings.d.ts"]

@@ -1,7 +1,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    /* Project */
     "outDir": "./node_modules/.out-tsc/all",
+
+    /* Language & Environment */
     "types": ["jest", "jest-extended", "node"]
   },
   "include": ["src/**/*.ts", "projects/**/*.ts", "server.ts", "src/**/*.d.ts"]

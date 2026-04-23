@@ -1,15 +1,9 @@
 /* To learn more about this file see: https://v18.angular.dev/reference/configs/angular-compiler-options. */
 {
   "compilerOptions": {
+    /* Project */
     "baseUrl": "./",
     "outDir": "./node_modules/.out-tsc/base",
-    "sourceMap": true,
-    "declaration": false,
-    "experimentalDecorators": true,
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "importHelpers": true,
-    "target": "ES2022",
     "paths": {
       "ish-core/*": ["src/app/core/*"],
       "ish-shared/*": ["src/app/shared/*"],
@@ -22,13 +16,28 @@
       ],
       "swiper_angular": ["node_modules/swiper/angular"]
     },
+
+    /* Language & Environment */
+    "target": "ES2022",
     "lib": ["ES2022", "DOM"],
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
+
+    /* Modules */
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "importHelpers": true,
+
+    /* Type Checking */
+    "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitAny": true,
-    "useDefineForClassFields": false,
-    "resolveJsonModule": true,
-    "esModuleInterop": true
+
+    /* Emit */
+    "declaration": false,
+    "sourceMap": true
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,
