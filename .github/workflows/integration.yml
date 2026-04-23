@@ -110,6 +110,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+          cache: npm
+
       - name: Install e2e dependencies
         run: cd e2e && npm i
 
