@@ -24,6 +24,9 @@ describe('Language Switch Component', () => {
 
   beforeEach(async () => {
     appFacade = mock(AppFacade);
+    when(appFacade.serverConfigurationLoaded$).thenReturn(of(true));
+    when(appFacade.availableLocales$).thenReturn(of(['en_US']));
+    when(appFacade.currentLocale$).thenReturn(of('en_US'));
 
     await TestBed.configureTestingModule({
       declarations: [LanguageSwitchComponent, MockPipe(MakeHrefPipe, (_, urlParams) => of(urlParams.lang))],
@@ -73,5 +76,24 @@ describe('Language Switch Component', () => {
     expect(element.querySelector('.language-switch-current-selection').textContent).toMatchInlineSnapshot(
       `"locale.de_DE.long"`
     );
+  });
+
+  it('should not render the language switch when only one locale is available', () => {
+    when(appFacade.availableLocales$).thenReturn(of(['en_US']));
+    when(appFacade.currentLocale$).thenReturn(of('en_US'));
+
+    fixture.detectChanges();
+
+    expect(element.querySelector('.language-switch')).toBeFalsy();
+  });
+
+  it('should not render the language switch when server configuration is not yet loaded', () => {
+    when(appFacade.serverConfigurationLoaded$).thenReturn(of(false));
+    when(appFacade.availableLocales$).thenReturn(of(locales));
+    when(appFacade.currentLocale$).thenReturn(of(locales[0]));
+
+    fixture.detectChanges();
+
+    expect(element.querySelector('.language-switch')).toBeFalsy();
   });
 });

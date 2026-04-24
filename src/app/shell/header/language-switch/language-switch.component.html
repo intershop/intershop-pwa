@@ -1,42 +1,38 @@
 <!-- keep-localization-pattern: ^locale\..*\.(long|short)$ -->
-@if (locale$ | async; as locale) {
+@if (languageSwitchData$ | async; as data) {
   <div class="language-switch" ngbDropdown placement="{{ placement === 'up' ? 'top-right' : 'bottom-right' }}">
     <button
       aria-haspopup="menu"
       class="language-switch-button btn btn-link"
       ngbDropdownToggle
       type="button"
-      [attr.aria-label]="('language_switch.label' | translate) + ('locale.' + locale + '.long' | translate)"
+      [attr.aria-label]="('language_switch.label' | translate) + ('locale.' + data.locale + '.long' | translate)"
     >
       <span class="sticky-header-icon">
         <i class="bi bi-globe-americas header-icon mb-1"></i>
       </span>
       <span class="language-switch-current-selection d-inline"
-        >{{ 'locale.' + locale + (deviceType === 'mobile' ? '.short' : '.long') | translate
+        >{{ 'locale.' + data.locale + (deviceType === 'mobile' ? '.short' : '.long') | translate
         }}<span class="switch_arrow"></span
       ></span>
     </button>
     <div class="language-switch-container dropdown-menu" ngbDropdownMenu role="menu" style="left: 0 !important">
       <div class="language-switch-menu-container">
-        @if (availableLocales$ | async; as availableLocales) {
-          @if (availableLocales.length) {
-            <ul>
-              @for (l of availableLocales; track l) {
-                @if (l !== locale) {
-                  <li>
-                    <a
-                      [href]="location | ishMakeHref: { lang: l } | async"
-                      [lang]="'locale.' + l + '.short' | translate"
-                      (click)="setLocaleCookie(l)"
-                    >
-                      {{ 'locale.' + l + '.long' | translate }}
-                    </a>
-                  </li>
-                }
-              }
-            </ul>
+        <ul>
+          @for (l of data.availableLocales; track l) {
+            @if (l !== data.locale) {
+              <li>
+                <a
+                  [href]="location | ishMakeHref: { lang: l } | async"
+                  [lang]="'locale.' + l + '.short' | translate"
+                  (click)="setLocaleCookie(l)"
+                >
+                  {{ 'locale.' + l + '.long' | translate }}
+                </a>
+              </li>
+            }
           }
-        }
+        </ul>
       </div>
     </div>
   </div>
