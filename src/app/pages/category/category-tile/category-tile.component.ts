@@ -10,7 +10,7 @@ import { ImageLoading } from 'ish-core/models/image/image.model';
  * category using {@link CategoryImageComponent}.
  *
  * @example
- * <ish-category-tile [categoryUniqueId]="category"></ish-category-tile>
+ * <ish-category-tile [categoryUniqueId]="category" />
  */
 @Component({
   selector: 'ish-category-tile',

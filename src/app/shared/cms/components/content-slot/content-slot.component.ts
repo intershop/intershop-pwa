@@ -11,13 +11,11 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-view.mo
  * the 'wrapper' flag needs to be used to use the provided HTML for rendering.
  *
  * @example
- * <ish-content-slot [slot]="'app_pwa:slot.pagelet2-Slot'" [pagelet]="pagelet"></ish-content-slot>
+ * <ish-content-slot [slot]="'app_pwa:slot.pagelet2-Slot'" [pagelet]="pagelet" />
  *
- * <ish-content-slot [wrapper]="true" [slot]="'app_pwa:slot.pagelet2-Slot'" [pagelet]="pagelet">
+ * <ish-content-slot slot="app_pwa:slot.pagelet2-Slot" [pagelet]="pagelet" [wrapper]="true">
  *   @for (slotPagelet of slotPagelets; track slotPagelet) {
- *     <div>
- *       <ish-content-pagelet [pageletId]="slotPagelet"></ish-content-pagelet>
- *     </div>
+ *     <div><ish-content-pagelet [pageletId]="slotPagelet" /></div>
  *   }
  * </ish-content-slot>
  */

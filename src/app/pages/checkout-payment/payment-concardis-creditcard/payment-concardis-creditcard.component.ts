@@ -17,11 +17,11 @@ declare let PayEngine: any;
  *
  * @example
  * <ish-payment-concardis-creditcard
- [paymentMethod]="paymentMethod"
  [activated]="i === openFormIndex"
+ [paymentMethod]="paymentMethod"
  (submitPayment)="createNewPaymentInstrument($event)"
  (cancelPayment)="cancelNewPaymentInstrument()"
-></ish-payment-concardis-creditcard>
+/>
  */
 @Component({
   selector: 'ish-payment-concardis-creditcard',

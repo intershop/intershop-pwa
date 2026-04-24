@@ -21,9 +21,9 @@ import { AddressFormConfigurationProvider } from 'ish-shared/formly-address-form
  * @example
  * <ish-formly-address-form
       [businessCustomer]="isBusinessCustomer$ | async"
-      [shortForm]="true"
       [parentForm]="formGroup"
-   ></ish-formly-address-form>
+      [shortForm]="true"
+   />
  */
 @Component({
   selector: 'ish-formly-address-form',

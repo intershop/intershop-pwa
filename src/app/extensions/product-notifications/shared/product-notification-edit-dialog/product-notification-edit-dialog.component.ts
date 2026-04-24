@@ -35,7 +35,7 @@ import { ProductNotification } from '../../models/product-notification/product-n
  * @example
  * <ish-product-notification-edit-dialog
  *   [productNotification]="productNotification"
- *   #modal></ish-product-notification-dialog>
+ *   #modal />
  */
 @Component({
   selector: 'ish-product-notification-edit-dialog',

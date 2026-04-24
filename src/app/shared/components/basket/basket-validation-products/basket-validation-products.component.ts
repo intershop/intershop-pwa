@@ -6,7 +6,7 @@ import { PriceItem } from 'ish-core/models/price-item/price-item.model';
  * Displays the products that are not valid any more after basket validation and that has been removed from basket
  *
  * @example
- * <ish-basket-validation-products [items]="removedItems"></ish-basket-validation-products>
+ * <ish-basket-validation-products [items]="removedItems" />
  */
 @Component({
   selector: 'ish-basket-validation-products',

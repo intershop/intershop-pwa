@@ -9,10 +9,10 @@ import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
  *
  * @example
  * <ish-product-list
- *               [products]="products$ | async"
  *               [categoryId]="selectedCategoryId$ | async"
+ *               [products]="products$ | async"
  *               [viewType]="viewType$ | async"
- * ></ish-product-list>
+ * />
  */
 @Component({
   selector: 'ish-product-list',

@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
  * Displays a loading animation overlay by default, but is useable as standalone loading animation too.
  *
  * @example
- * <ish-loading></ish-loading>
+ * <ish-loading />
  */
 @Component({
   selector: 'ish-loading',

@@ -12,9 +12,7 @@ import { Warranty } from 'ish-core/models/warranty/warranty.model';
  * This dialog provides information in detail about the specified warranty.
  *
  * @example
- * <ish-warranty-details
- *   [warranty]="warranty"
- * />
+ * <ish-warranty-details [warranty]="warranty" />
  */
 @Component({
   selector: 'ish-product-warranty-details',

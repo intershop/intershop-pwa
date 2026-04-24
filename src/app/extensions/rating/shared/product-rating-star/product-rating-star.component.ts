@@ -5,7 +5,7 @@ export type RatingFilledType = 'full' | 'half' | 'empty';
  * The Product Rating Star Component renders a single rating star.
  *
  * @example
- * <ish-product-rating-star filled="full"></ish-product-rating-star>
+ * <ish-product-rating-star filled="full" />
  */
 @Component({
   selector: 'ish-product-rating-star',

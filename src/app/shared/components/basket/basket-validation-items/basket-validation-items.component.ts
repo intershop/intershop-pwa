@@ -6,7 +6,7 @@ import { LineItemView } from 'ish-core/models/line-item/line-item.model';
  * Displays the basket validation result items, e.g. items that cannot be shipped to the basket shipping address.
  *
  * @example
- * <ish-basket-validation-items [lineItems]="undeliverableItems" (deleteItem)="deleteItem($event)"></ish-basket-validation-items>
+ * <ish-basket-validation-items [lineItems]="undeliverableItems" (deleteItem)="deleteItem($event)" />
  */
 @Component({
   selector: 'ish-basket-validation-items',

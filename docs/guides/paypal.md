@@ -118,7 +118,7 @@ To use the `ish-payment-paypal` component with the Buttons adapter type:
 The following example shows how to integrate [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding adapter type `Buttons` into any component:
 
 ```html
-<ish-payment-paypal [selectedPaymentMethod]="paypalPaymentMethod" adapterType="Buttons" pageType="cart" />
+<ish-payment-paypal adapterType="Buttons" pageType="cart" [selectedPaymentMethod]="paypalPaymentMethod" />
 ```
 
 ### Messages
@@ -143,7 +143,7 @@ This component also provides input validation, error handling, and the callback 
 The following example shows how to integrate [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding adapter type `CardFields` into any component:
 
 ```html
-<ish-payment-paypal [selectedPaymentMethod]="paymentMethod" adapterType="CardFields" pageType="checkout" />
+<ish-payment-paypal adapterType="CardFields" pageType="checkout" [selectedPaymentMethod]="paymentMethod" />
 ```
 
 ### GooglePay
@@ -278,7 +278,7 @@ It provides the following features:
 
 The visibility of Pay Later messages or Pay Later buttons is controlled by the settings of the PayPal Common Configuration Service in Intershop Commerce Management.
 
-<a target="_blank" href="paypal-pay-later.png"><img src="paypal-pay-later.png" alt="PayPal Pay Later configuration in Intershop Commerce Management" width="50%"/></a>
+<a href="paypal-pay-later.png" target="_blank"><img alt="PayPal Pay Later configuration in Intershop Commerce Management" src="paypal-pay-later.png" width="50%"/></a>
 
 The PayPal configuration is retrieved from Intershop Commerce Management via the configurations endpoint.
 

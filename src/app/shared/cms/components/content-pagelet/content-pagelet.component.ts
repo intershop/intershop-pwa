@@ -28,7 +28,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
  * for the DefinitionQualifiedName of the pagelet.
  *
  * @example
- * <ish-content-pagelet [pageletId]="pagelet"></ish-content-pagelet>
+ * <ish-content-pagelet [pageletId]="pagelet" />
  */
 @Component({
   selector: 'ish-content-pagelet',

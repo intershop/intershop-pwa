@@ -11,9 +11,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
  * The Line Item Warranty Component displays the selected warranty. If the parameter editable is true a select box is shown and the user can selects a warranty. Otherwise only the warranty name is displayed.
  *
  * @example
- * <ish-line-item-warranty
- *    [pli]=pli
- *    [editable]="true' />
+ * <ish-line-item-warranty [editable]="true" [pli]=pli />
  */
 @Component({
   selector: 'ish-line-item-warranty',

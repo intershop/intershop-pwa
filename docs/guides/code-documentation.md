@@ -51,7 +51,7 @@ searchProducts(
  * It uses the {@link ProductImageComponent} for the rendering of product images.
  *
  * @example
- * <ish-product-images></ish-product-images>
+ * <ish-product-images />
  */
 ```
 
@@ -68,9 +68,9 @@ searchProducts(
  * @example
  * <div class="form-group has-feedback" [formGroup]="form" [ishShowFormFeedback]="formControl">
  *               <input
- *                 [type]="type"
- *                 class="form-control">
- *               <ish-form-control-feedback [messages]="errorMessages" [control]="formControl"></ish-form-control-feedback>
+ *                 class="form-control"
+ *                 [type]="type">
+ *               <ish-form-control-feedback [control]="formControl" [messages]="errorMessages" />
  * </div>
  */
 ```

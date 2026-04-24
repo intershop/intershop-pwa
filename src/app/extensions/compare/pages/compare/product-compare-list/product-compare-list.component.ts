@@ -15,7 +15,7 @@ import { CompareFacade } from '../../../facades/compare.facade';
  * Displays a table of products to be compared with paging handled by the {@link ProductComparePagingComponent}.
  *
  * @example
- * <ish-product-compare-list [compareProducts]="compareProducts$ | async"></ish-product-compare-list>
+ * <ish-product-compare-list [compareProducts]="compareProducts$ | async" />
  */
 @Component({
   selector: 'ish-product-compare-list',

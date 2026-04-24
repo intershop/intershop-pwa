@@ -6,9 +6,7 @@ import { Address } from 'ish-core/models/address/address.model';
  * The Address Component displays an address. The readout is country-dependent.
  *
  * @example
- * <ish-address
- *   [address]="order.invoiceToAddress" [displayEmail]="true"
- * ></ish-address>
+ * <ish-address [address]="order.invoiceToAddress" [displayEmail]="true" />
  */
 @Component({
   selector: 'ish-address',

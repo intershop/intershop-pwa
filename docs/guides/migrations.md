@@ -107,9 +107,9 @@ A default resource set ID, `app_sf_base_cm`, is defined at the [`CMSService`](..
 
 ```html
 <ish-content-viewcontext
+  resourceSetId="custom_cartridge_name"
   viewContextId="viewcontext.include.product.base.top"
   [callParameters]="{ Product: product.sku }"
-  resourceSetId="custom_cartridge_name"
 />
 ```
 

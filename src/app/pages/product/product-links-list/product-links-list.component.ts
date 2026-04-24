@@ -13,7 +13,7 @@ import { ProductCompletenessLevel } from 'ish-core/models/product/product.helper
  * It uses the {@link ProductItemComponent} for the rendering of products.
  *
  * @example
- * <ish-product-links-list [links]="links.upselling" [productLinkTitle]="'product.product_links.upselling.title' | translate"></ish-product-links-list>
+ * <ish-product-links-list [links]="links.upselling" [productLinkTitle]="'product.product_links.upselling.title' | translate" />
  */
 @Component({
   selector: 'ish-product-links-list',

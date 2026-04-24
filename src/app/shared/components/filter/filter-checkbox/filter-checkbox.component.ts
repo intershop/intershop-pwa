@@ -10,8 +10,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  * @example
  * <ish-filter-checkbox
  *   [filterElement]="element"
- *   (applyFilter)="applyFilter($event)">
- * </ish-filter-checkbox>
+ *   (applyFilter)="applyFilter($event)" />
  */
 @Component({
   selector: 'ish-filter-checkbox',
