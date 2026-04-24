@@ -15,7 +15,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
  *  [basket]="basket$ | async"
  *  [error]="(basketError$ | async) || (addressesError$ | async)"
  *  (createBasketAddress)="createBasketAddress($event)"
- * ></ish-checkout-address-anonymous>
+ * />
  */
 @Component({
   selector: 'ish-checkout-address-anonymous',

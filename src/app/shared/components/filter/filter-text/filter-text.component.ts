@@ -10,8 +10,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  * @example
  * <ish-filter-text
  *   [filterElement]="element"
- *   (applyFilter)="applyFilter($event)">
- * </ish-filter-text>
+ *   (applyFilter)="applyFilter($event)" />
  */
 @Component({
   selector: 'ish-filter-text',

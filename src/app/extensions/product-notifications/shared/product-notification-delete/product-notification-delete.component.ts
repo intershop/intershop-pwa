@@ -15,7 +15,7 @@ import { ProductNotification } from '../../models/product-notification/product-n
  * <ish-product-notification-delete
  *   cssClass="btn-link btn-tool"
  *   [productNotification]="productNotification"
- * ></ish-product-notification-delete>
+ * />
  */
 @Component({
   selector: 'ish-product-notification-delete',

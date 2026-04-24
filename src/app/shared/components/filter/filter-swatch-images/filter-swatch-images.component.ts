@@ -10,8 +10,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  * @example
  * <ish-filter-dropdown
  *   [filterElement]="element"
- *   (applyFilter)="applyFilter($event)">
- * </ish-filter-dropdown>
+ *   (applyFilter)="applyFilter($event)" />
  */
 @Component({
   selector: 'ish-filter-swatch-images',

@@ -5,8 +5,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
  * If an edit routerLink is given a link is displayed to route to an edit page
  *
  * @example
- * <ish-info-box heading="checkout.widget.billing-address.heading" editRouterLink="/checkout/address">
- *  <ish-address [address]="basket.invoiceToAddress"></ish-address>
+ * <ish-info-box editRouterLink="/checkout/address" heading="checkout.widget.billing-address.heading" >
+ *  <ish-address [address]="basket.invoiceToAddress" />
  * </ish-info-box>
  */
 @Component({

@@ -14,7 +14,7 @@ import { ContactUsFacade } from '../../../facades/contact-us.facade';
  * The Contact Form Component show the customer a form to contact the shop
  *
  * @example
- * <ish-contact-form (request)="sendRequest($event)"></ish-contact-form>
+ * <ish-contact-form (request)="sendRequest($event)" />
  */
 @Component({
   selector: 'ish-contact-form',

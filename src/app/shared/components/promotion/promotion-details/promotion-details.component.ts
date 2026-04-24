@@ -7,9 +7,7 @@ import { Promotion } from 'ish-core/models/promotion/promotion.model';
  * This dialog provides information in detail about the specified promotion.
  *
  * @example
- * <ish-promotion-details
- *   [promotion]="promotion"
- * ></ish-promotion-details>
+ * <ish-promotion-details [promotion]="promotion" />
  */
 @Component({
   selector: 'ish-promotion-details',

@@ -233,10 +233,10 @@ Usage in View (.html):
 
 ```html
 <span
-  [ishServerHtml]="'registration.tac_privacy_policy.label' | translate"
   [callbacks]="{
     callbackTAC: showModalDialog(modalDialogTAC)
   }"
+  [ishServerHtml]="'registration.tac_privacy_policy.label' | translate"
 ></span>
 
 <ish-modal-dialog #modalDialogTAC>

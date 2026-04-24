@@ -49,7 +49,7 @@ The easiest way to start a product context is by using the [`ProductContextDirec
 ```html
 @for (item of lineItems$ | async; track item.sku) {
 <div class="..." ishProductContext [sku]="item.sku">
-  <ish-product-name></ish-product-name>
+  <ish-product-name />
 </div>
 }
 ```

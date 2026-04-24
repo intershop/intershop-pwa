@@ -14,7 +14,7 @@ import { PriceItem } from 'ish-core/models/price-item/price-item.model';
  * Displays the basket validation result messages. In case of basket adjustments removed or undeliverable items are
  *
  * @example
- * <ish-basket-validation-results></ish-basket-validation-results>
+ * <ish-basket-validation-results />
  */
 @Component({
   selector: 'ish-basket-validation-results',

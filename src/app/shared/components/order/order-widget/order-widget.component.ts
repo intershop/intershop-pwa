@@ -8,7 +8,7 @@ import { Order } from 'ish-core/models/order/order.model';
  * The Order Widget Component - displays an overview of the latest orders as list.
  *
  * @example
- * <ish-order-widget></ish-order-widget>
+ * <ish-order-widget />
  */
 @Component({
   selector: 'ish-order-widget',

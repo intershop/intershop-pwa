@@ -13,9 +13,7 @@ import { whenFalsy } from 'ish-core/utils/operators';
  * Displays an add to cart button with an icon or a text label. After clicking the button a loading animation is displayed
  *
  * @example
- * <ish-product-add-to-basket
-    [cssClass]="'btn-lg'"
-  ></ish-product-add-to-basket>
+ * <ish-product-add-to-basket cssClass="btn-lg" />
  */
 @Component({
   selector: 'ish-product-add-to-basket',

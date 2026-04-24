@@ -23,8 +23,7 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
  * @example
  * <ish-wishlist-sharing-dialog
     [wishlist]="wishlist"
-    (submitWishlistSharing)="shareWishlist(wishlist.id)">
-   </ish-wishlist-sharing-dialog>
+    (submitWishlistSharing)="shareWishlist(wishlist.id)" />
  */
 @Component({
   selector: 'ish-wishlist-sharing-dialog',

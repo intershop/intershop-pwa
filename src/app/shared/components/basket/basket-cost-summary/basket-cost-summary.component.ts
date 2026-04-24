@@ -13,9 +13,7 @@ import { PaypalPageType } from 'ish-core/utils/paypal/paypal-config/paypal-confi
  * The Cost Summary Component displays a detailed summary of basket or order costs, respectively.
  *
  * @example
- * <ish-basket-cost-summary
- *   [totals]="basket.totals"
- * ></ish-basket-cost-summary>
+ * <ish-basket-cost-summary [totals]="basket.totals" />
  */
 @Component({
   selector: 'ish-basket-cost-summary',

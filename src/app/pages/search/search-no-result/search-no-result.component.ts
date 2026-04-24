@@ -5,9 +5,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
  * It uses the {@link SearchBoxComponent}.
  *
  * @example
- * <ish-search-no-result
- *               [searchTerm]="searchTerm"
- * ></ish-search-no-result>
+ * <ish-search-no-result [searchTerm]="searchTerm" />
  */
 @Component({
   selector: 'ish-search-no-result',

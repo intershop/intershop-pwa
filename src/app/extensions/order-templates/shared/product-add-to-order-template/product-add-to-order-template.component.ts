@@ -15,9 +15,7 @@ import { SelectOrderTemplateModalComponent } from '../select-order-template-moda
  * The Product Add To Order Template Component adds a product to a order template.
  *
  * @example
- * <ish-product-add-to-order-template
- *               displayType="icon"
- * ></ish-product-add-to-order-template>
+ * <ish-product-add-to-order-template displayType="icon" />
  */
 @Component({
   selector: 'ish-product-add-to-order-template',

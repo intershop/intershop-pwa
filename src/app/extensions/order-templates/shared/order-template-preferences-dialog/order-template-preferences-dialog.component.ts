@@ -22,8 +22,7 @@ import { OrderTemplate } from '../../models/order-template/order-template.model'
  *
  * @example
  * <ish-order-template-preferences-dialog
-    (submitOrderTemplate)="createOrderTemplate($event)">
-   </ish-order-template-preferences-dialog>
+    (submitOrderTemplate)="createOrderTemplate($event)" />
  */
 @Component({
   selector: 'ish-order-template-preferences-dialog',

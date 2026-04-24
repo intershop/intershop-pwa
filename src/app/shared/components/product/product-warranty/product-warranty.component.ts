@@ -12,9 +12,7 @@ import { Warranty } from 'ish-core/models/warranty/warranty.model';
  * If the user selects a warranty a submitWarranty event is emitted.
  *
  * @example
- * <ish-product-warranty
- *   [selectedWarrantySku]="pli.warranty?.sku"
- *   viewType="select" />
+ * <ish-product-warranty viewType="select" [selectedWarrantySku]="pli.warranty?.sku" />
  */
 
 @Component({

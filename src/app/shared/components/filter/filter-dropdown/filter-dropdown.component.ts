@@ -9,10 +9,9 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  *
  * @example
  * <ish-filter-dropdown
+ *   placeholderType="selectedFacets"
  *   [filterElement]="element"
- *   [placeholderType]="'selectedFacets'"
- *   (applyFilter)="applyFilter($event)">
- * </ish-filter-dropdown>
+ *   (applyFilter)="applyFilter($event)" />
  */
 @Component({
   selector: 'ish-filter-dropdown',

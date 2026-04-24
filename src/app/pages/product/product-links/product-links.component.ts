@@ -12,7 +12,7 @@ import { ProductLinksDictionary } from 'ish-core/models/product-links/product-li
  * For the carousel swiper is used.
  *
  * @example
- * <ish-product-links></ish-product-links>
+ * <ish-product-links />
  */
 @Component({
   selector: 'ish-product-links',

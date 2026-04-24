@@ -27,7 +27,7 @@ import { Address } from 'ish-core/models/address/address.model';
       [resetForm]="resetForm"
       (save)="createCustomerInvoiceAddress($event)"
       (cancel)="cancelCreateCustomerInvoiceAddress()"
-   ></ish-checkout-address-form>
+   />
  */
 @Component({
   selector: 'ish-formly-customer-address-form',

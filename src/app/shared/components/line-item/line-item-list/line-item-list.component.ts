@@ -12,11 +12,11 @@ import { Price } from 'ish-core/models/price/price.model';
  *
  * @example
  * <ish-line-item-list
- *   [lineItems]="lineItems"
- *   [editable]="editable"
- *   [total]="total"
  *   lineItemViewType="simple"  // simple = no edit-button, inventory, shipment
- * ></ish-line-item-list>
+ *   [editable]="editable"
+ *   [lineItems]="lineItems"
+ *   [total]="total"
+ * />
  */
 @Component({
   selector: 'ish-line-item-list',

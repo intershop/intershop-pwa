@@ -19,7 +19,7 @@ import { InjectSingle } from 'ish-core/utils/injection';
   >
  *
  * @example:
- * <ish-login-form></ish-login-form>
+ * <ish-login-form />
  */
 @Component({
   selector: 'ish-login-form',

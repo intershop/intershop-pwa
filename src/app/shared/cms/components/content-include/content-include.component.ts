@@ -10,9 +10,9 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
  * For rendering it uses the {@link ContentPageletComponent} for each sub pagelet.
  *
  * @example
- * <ish-content-include includeId="pwa.include.homepage.pagelet2-Include"></ish-content-include>
+ * <ish-content-include includeId="pwa.include.homepage.pagelet2-Include" />
  * or with lazy loading within the application shell
- * <ish-lazy-content-include includeId="include.footer.pagelet2-Include"></ish-lazy-content-include>
+ * <ish-lazy-content-include includeId="include.footer.pagelet2-Include" />
  */
 @Component({
   selector: 'ish-content-include',

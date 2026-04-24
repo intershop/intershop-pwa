@@ -18,7 +18,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
  *   [basket]="basket"
  *   [error]="basketError$ | async"
  *   (nextStep)="nextStep()"
- * ></ish-shopping-basket>
+ * />
  */
 @Component({
   selector: 'ish-shopping-basket',

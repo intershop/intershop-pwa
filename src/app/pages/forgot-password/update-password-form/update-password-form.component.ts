@@ -8,9 +8,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
  * The Update Password Form Component displays a Forgot Password Update Password form and triggers the submit.
  *
  * @example
- * <ish-update-password-form
- *               (submitPassword)="submitPassword($event)"
- * ></ish-update-password-form>
+ * <ish-update-password-form (submitPassword)="submitPassword($event)" />
  */
 @Component({
   selector: 'ish-update-password-form',

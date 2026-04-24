@@ -7,7 +7,7 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
  * It uses the {@link ProductListToolbarComponent} to provide list actions and {@link ProductListComponent} for the product list.
  *
  * @example
- * <ish-search-result [searchTerm]="searchTerm"></ish-search-result>
+ * <ish-search-result [searchTerm]="searchTerm" />
  */
 @Component({
   selector: 'ish-search-result',
