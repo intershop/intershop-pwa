@@ -1,5 +1,23 @@
+# Use the Azure-hosted Ubuntu mirror by default to avoid transient failures on
+# archive.ubuntu.com / security.ubuntu.com during CI/CD pipeline builds.
+# azure.archive.ubuntu.com is co-located with Azure and GitHub Actions infrastructure.
+# To use a different mirror:  --build-arg UBUNTU_MIRROR=http://your-mirror/ubuntu/
+# To disable and use the original Ubuntu repos: --build-arg UBUNTU_MIRROR=
+ARG UBUNTU_MIRROR=http://azure.archive.ubuntu.com/ubuntu/
+
 FROM openresty/openresty:1.29.2.3-2-jammy AS buildstep
-RUN apt-get update \
+ARG UBUNTU_MIRROR
+RUN if [ -n "$UBUNTU_MIRROR" ]; then \
+    if [ -f /etc/apt/sources.list ]; then \
+      sed -i "s|http://archive.ubuntu.com/ubuntu/|${UBUNTU_MIRROR}|g" /etc/apt/sources.list && \
+      sed -i "s|http://security.ubuntu.com/ubuntu/|${UBUNTU_MIRROR}|g" /etc/apt/sources.list; \
+    fi && \
+    if [ -f /etc/apt/sources.list.d/ubuntu.sources ]; then \
+      sed -i "s|http://archive.ubuntu.com/ubuntu/|${UBUNTU_MIRROR}|g" /etc/apt/sources.list.d/ubuntu.sources && \
+      sed -i "s|http://security.ubuntu.com/ubuntu/|${UBUNTU_MIRROR}|g" /etc/apt/sources.list.d/ubuntu.sources; \
+    fi; \
+  fi && \
+  apt-get update \
   && apt-get install --no-install-recommends --no-install-suggests -y libpcre3 libpcre3-dev zlib1g zlib1g-dev openssl libssl-dev wget git gcc make
 
 WORKDIR /app
@@ -16,6 +34,21 @@ RUN wget -q https://nginx.org/download/nginx-1.29.2.tar.gz \
   && make modules
 
 FROM openresty/openresty:1.29.2.3-2-jammy
+ARG UBUNTU_MIRROR
+RUN if [ -n "$UBUNTU_MIRROR" ]; then \
+    if [ -f /etc/apt/sources.list ]; then \
+      sed -i "s|http://archive.ubuntu.com/ubuntu/|${UBUNTU_MIRROR}|g" /etc/apt/sources.list && \
+      sed -i "s|http://security.ubuntu.com/ubuntu/|${UBUNTU_MIRROR}|g" /etc/apt/sources.list; \
+    fi && \
+    if [ -f /etc/apt/sources.list.d/ubuntu.sources ]; then \
+      sed -i "s|http://archive.ubuntu.com/ubuntu/|${UBUNTU_MIRROR}|g" /etc/apt/sources.list.d/ubuntu.sources && \
+      sed -i "s|http://security.ubuntu.com/ubuntu/|${UBUNTU_MIRROR}|g" /etc/apt/sources.list.d/ubuntu.sources; \
+    fi; \
+  fi && \
+  apt-get update \
+  && apt-get install --no-install-recommends --no-install-suggests -y apache2-utils \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 COPY --from=nginx:mainline /docker-entrypoint.sh /
 COPY --from=nginx:mainline /docker-entrypoint.d/*.sh /docker-entrypoint.d/
 COPY lua/*.lua /usr/local/openresty/lualib/
@@ -26,11 +59,6 @@ RUN ln -s /usr/local/openresty/nginx/conf/mime.types /etc/nginx/ \
   && luarocks install lua-resty-redis-connector
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-c", "/etc/nginx/nginx.conf", "-g", "daemon off;"]
-
-RUN apt-get update \
-  && apt-get install --no-install-recommends --no-install-suggests -y apache2-utils \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
 COPY nginx.conf.tmpl /etc/nginx/nginx.conf.tmpl
 COPY features /etc/nginx/features/
 COPY loglevel /etc/nginx/loglevel/

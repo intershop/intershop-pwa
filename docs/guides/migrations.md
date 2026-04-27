@@ -38,6 +38,11 @@ The `OVERRIDE_IDENTITY_PROVIDERS` matching pattern configuration has been enhanc
 The automatic SSL certificate generation feature (development-only) using [mkcert](https://github.com/FiloSottile/mkcert) has been removed from the NGINX container.
 See the updated [NGINX Startup Guide](./nginx-startup.md#https-or-ssl) for detailed instructions on how to configure SSL development deployments.
 
+**NGINX Docker build uses Ubuntu mirror**
+
+The NGINX Docker build now defaults to `azure.archive.ubuntu.com` for apt packages to improve build reliability on Azure and GitHub Actions.
+If this mirror is unreachable, pass `--build-arg UBUNTU_MIRROR=` to the pipeline to fall back to the default Ubuntu repositories.
+
 ## From 9.1.0 to 10.0.0
 
 **Node.js update**
